@@ -1,0 +1,155 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:dbs="http://www.dbsoft.com.br/ui/dbsfaces" 
+	xmlns:dbscom="http://www.dbsoft.com.br/ui/dbsfacescom">
+
+	<cc:interface componentType="br.com.dbsoft.ui.component.crudTable" >
+		<cc:attribute name="style"/>
+		<cc:attribute name="styleClass"/>
+		<cc:attribute name="rendered" preferred="true"/>
+		<cc:attribute name="crudBean" preferred="true"/>
+		<cc:attribute name="multipleSelection" default="false"/>
+		<cc:attribute name="columnsWidth"/>
+		<cc:attribute name="insertSelected" preferred="true" type="java.lang.Boolean"/>
+		<cc:attribute name="viewOneAction" preferred="true" type="javax.el.MethodExpression"/>
+		<cc:attribute name="var" />
+		<cc:attribute name="update" preferred="true"/>
+		<cc:attribute name="allowInsert" default="true"/>
+		<cc:attribute name="allowRefresh" default="true"/>
+		<cc:attribute name="allowApproval" default="false"/>
+		<cc:clientBehavior name="select" event="select" targets="dataTable" default="true"/>
+		<cc:facet name="toolbar"/>
+		<cc:facet name="filter"/>
+	</cc:interface>
+ 
+	<cc:implementation>
+		<div id="#{cc.clientId}" class="dbs_crudTable #{cc.attrs.styleClass}" style="#{cc.attrs.style}">
+			<dbs:div id="content" styleClass="-container">
+				<dbs:dataTable id="dataTable"
+				 			   caption="#{cc.crudBean.dialogCaption}"
+				               value="#{cc.crudBean.list}"
+				               multipleSelection="#{cc.attrs.multipleSelection or (cc.attrs.allowApproval and cc.crudBean.allowApproval and cc.crudBean.approvalUserStages!=0)}"
+				               filterAction="#{cc.crudBean.refreshList()}" 
+				               selectAllAction="#{cc.crudBean.selectAll()}"
+				               selected="#{cc.crudBean.selected}"
+				               update=":dialog"
+				               binding="#{cc.dataTable}">
+				    <dbs:setAttributeOnParent attributeName="var" attributeValue="#{cc.attrs.var}"/>
+			    	<dbs:setAttributeOnParent attributeName="viewOneAction" attributeValueExpression="#{cc.viewOneAction()}"/>
+
+				    <c:if test="#{not empty cc.facets.filter}">
+						<f:facet name="filter">
+							<span>foo</span>
+							<cc:insertFacet name="filter"/>
+						</f:facet>
+					</c:if>
+<!-- 				    <c:if test="#{not empty cc.facets.toolbar}"> -->
+<!-- 						<f:facet name="toolbar"> -->
+<!-- 							<span>foo</span> -->
+<!-- 							<cc:insertFacet name="toolbar"/> -->
+<!-- 						</f:facet> -->
+<!-- 					</c:if> -->
+				    <c:if test="#{not empty cc.facets.toolbar or (cc.attrs.multipleSelection and cc.crudBean.multipleSelection) or (cc.attrs.allowInsert and cc.crudBean.allowInsert) or (cc.attrs.allowRefresh and cc.crudBean.allowRefresh) or (cc.attrs.allowApproval and cc.crudBean.allowApproval)}">
+						<f:facet name="toolbar">
+							<cc:renderFacet name="toolbar"/>
+							<dbs:div id="toolbar">
+								<!-- Controle de assinatura -->
+								<c:if test="#{cc.attrs.allowApproval and cc.crudBean.allowApproval and cc.crudBean.approvalUserStages!=0}">
+									<div class="-approval">
+										<c:if test="#{cc.crudBean.hasSelected}">
+											<dbs:button id="aprovar"  iconClass="dbs_icon -i_approval_approve" action="#{cc.crudBean.approve()}" update="#{cc.clientId}:crudTableMessages" execute="@this"  />
+											<dbs:button id="reprovar" iconClass="dbs_icon -i_approval_reprove" action="#{cc.crudBean.reprove()}" update="#{cc.clientId}:crudTableMessages" execute="@this"/>
+										</c:if>
+									</div>
+								</c:if>
+								<!-- Controle de inclusão/atualização/visualização(este desabilitado temporariamente) -->
+								<dbs:button rendered="#{cc.attrs.multipleSelection and cc.crudBean.multipleSelection}" id="view" iconClass="dbs_icon -i_consultar" action="#{cc.crudBean.viewSelection()}" update=":dialog " execute="@this"/>
+								<dbs:button rendered="#{cc.attrs.allowInsert and cc.crudBean.allowInsert}" id="insert" iconClass="dbs_icon -i_inserir" action="#{cc.crudBean.insert()}" update=":dialog " execute="@this"/>
+								<dbs:button rendered="#{cc.attrs.allowRefresh and cc.crudBean.allowRefresh}" id="refresh" iconClass="dbs_icon -i_refresh" action="#{cc.crudBean.refreshList()}" update=":dialog :#{cc.clientId}"/>
+							</dbs:div>
+						</f:facet>
+					</c:if>
+					
+					<c:if test="#{cc.attrs.allowApproval and cc.crudBean.allowApproval and cc.crudBean.approvalUserStages!=0}">
+						<dbs:dataTableColumn width="23px" styleClass="-center">
+							<f:facet name="header"><span class="dbs_icon -i_certificate_green" style="position:relative;top:2px;"/></f:facet>
+							<h:outputText styleClass="dbs_icon -i_approval_aproved" rendered="#{cc.crudBean.approvalStageListValue.code == 1}"/>
+							<h:outputText styleClass="dbs_icon -i_approval_verified" rendered="#{cc.crudBean.approvalStageListValue.code == 2}"/>
+							<h:outputText styleClass="dbs_icon -i_approval_conferred" rendered="#{cc.crudBean.approvalStageListValue.code == 4}"/>
+							<h:outputText styleClass="dbs_icon -i_approval_registered" rendered="#{cc.crudBean.approvalStageListValue.code == 8}"/>
+						</dbs:dataTableColumn>	
+					</c:if>
+					
+<!-- InsertChildren comentado pois em uma chamada ajax para o crud, estava trocando a posição das colunas incluidas automaticamente(Assinatura e checkbox(C0)) -->
+<!-- 					<cc:insertChildren/> -->
+<!-- InsertChildren substituido pelo metodo abaixo para controlar o momento que os filhos são inseridos -->
+					<f:event listener="#{cc.insertChildren}" type="postAddToView"/>
+					
+				</dbs:dataTable>
+			</dbs:div>
+			<!-- Só exibe mensagem se crudForm estiver fechado -->
+			<dbs:div id="crudTableMessages" rendered="#{cc.crudBean.isClosed}">
+				<!-- Mensagens gerais -->
+				<dbscom:beanDialogMessages id="crudTableMessagesDialog"
+							   		 userBean="#{cc.crudBean}"
+					               	   update="#{cc.clientId}">
+				</dbscom:beanDialogMessages>
+				<!-- Mensagem de aprovação				 -->
+				<c:if test="#{!cc.crudBean.hasMessage}">
+					<c:if test="#{cc.crudBean.isApproving}">
+						<c:if test="#{empty cc.facets.approveDialog}">
+							<dbs:dialog id="approve"
+										caption="Aprovação"
+										messageIcon="c"
+										height="160" 
+										width="210" 
+										yesAction="#{cc.crudBean.endEditing(true)}"
+										noAction="#{cc.crudBean.endEditing(false)}"
+										update="#{cc.clientId}" >
+										#{cc.crudBean.dialogConfirmationApproveMessage}
+							</dbs:dialog>
+						</c:if>
+						<!-- Encode de dialog customizado-->
+						<c:if test="#{not empty cc.facets.approveDialog}">
+							<cc:renderFacet name="approveDialog"/>
+						</c:if>
+					</c:if>		
+					<!-- Mensagem de reprovação				 -->
+					<c:if test="#{cc.crudBean.isReproving}">
+						<c:if test="#{empty cc.facets.reproveDialog}">
+							<dbs:dialog id="reprove"
+										caption="Reprovação"
+										rendered="#{cc.crudBean.isReproving}"
+										messageIcon="g"
+										height="150" 
+										width="200" 
+										yesAction="#{cc.crudBean.endEditing(true)}"
+										noAction="#{cc.crudBean.endEditing(false)}"
+										update="#{cc.clientId}" >
+										#{cc.crudBean.dialogConfirmationReproveMessage}
+							</dbs:dialog>	
+						</c:if>
+						<!-- Encode de dialog customizado-->
+						<c:if test="#{not empty cc.facets.reproveDialog}">
+							<cc:renderFacet name="reproveDialog"/>
+						</c:if>
+					</c:if>
+				</c:if>	
+			</dbs:div>	
+
+						
+			<script type="text/javascript">
+			/* <![CDATA[ */
+				$(document).ready(function() {
+					var xCrudTableId = "#" + dbsfaces.util.jsid('#{cc.clientId}');
+					dbs_crudTable(xCrudTableId);
+				}); 
+			/* ]]> */
+			</script>	
+		</div>
+	</cc:implementation>
+</ui:component>

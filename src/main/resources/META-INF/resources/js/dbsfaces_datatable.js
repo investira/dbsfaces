@@ -1,0 +1,261 @@
+dbs_dataTable = function(pId) {
+	var xH = 0;
+	var xW = 15;
+	var xTable = pId + " > .-container > .-content > table ";
+    var xRow = $(xTable + " > tbody > tr:first");
+
+	xW = xW + $(pId + " > .-container > .-header > .-filter > .-input").outerWidth();
+	xW = xW + $(pId + " > .-container > .-header > .-filter > .-button").outerWidth();
+
+	$(pId).css("min-width", xW + "px");
+
+	xW = xRow.outerWidth() + 2;
+	xW = xW - xRow.children(".-CX").outerWidth();
+	$(xTable + " > tbody").css("min-width", xW);
+	$(xTable + " > thead").css("min-width", xW);
+	$(xTable + " > thead > tr").css("min-width", xW);
+
+	xH = $(pId + " > .-container > .-header").outerHeight();
+	$(pId + " > .-container > .-content").css("margin-top", "-" + xH + "px")
+	                                     .css("padding-top", xH + "px");
+
+	xH = $(xTable + " > thead").outerHeight();
+	$(xTable).css("margin-bottom", "-" + xH + "px")
+	         .css("padding-bottom", xH + "px");
+	
+	dbsfaces.dataTable.showOverflowShadow($(xTable));
+	dbsfaces.dataTable.positionOnSelectRow(pId);
+	
+	$(xTable).scroll(function(){
+		dbsfaces.dataTable.showOverflowShadow($(this));
+	});
+	
+	var xMouseover = function(e) {
+		dbsfaces.dataTable.showRowFocus(pId, this, false);
+	}
+
+	var xMousemove = function(e){
+		var xTable = pId + " > .-container > .-content > table ";
+		$(this).off("mousemove");
+		$(xTable + " > tbody > tr").off('mouseover.datatable'); 
+		$(xTable + " > tbody > tr").on('mouseover.datatable', xMouseover); 
+	}
+
+	/*hover*/
+	$(xTable + " > tbody > tr").off('mouseover.datatable'); 
+	$(xTable + " > tbody > tr").on('mouseover.datatable', xMouseover);
+	
+	$(xTable + " > tbody").keydown(function(e){
+		if(e.keyCode==40 ||
+		   e.keyCode==38){
+			return false;
+		}
+	}); 
+	
+	$(pId).mouseout(function(e){
+		dbsfaces.dataTable.removeRowFocus(pId);
+	})
+
+
+	/*Executa o click na linha */
+	$(xTable + " > tbody > tr").dblclick(function (e){
+    	var xB = $(this).find("td > .-selectOne");
+    	if (xB.length > 0){
+    		e.stopImmediatePropagation();
+			e.preventDefault();
+    		xB.click();
+    		dbsfaces.dataTable.removeHeadFocus(pId);
+       		dbsfaces.dataTable.removeRowFocus(pId);
+       		dbsfaces.dataTable.removeRowSelected(pId);
+    	}
+    	return false;
+    });
+ 
+	/*Força o foco no click*/
+	$(xTable + " > tbody > tr").click(function(e){
+//		e.stopImmediatePropagation();
+		dbsfaces.dataTable.showRowFocus(pId, this, true);
+		$(pId + " > .-container > input.-foo").focus().select().click();
+//		e.preventDefault();
+	});
+
+	/*Evitar a propagação do evento click do campo e dispara o click para o datagrid*/
+	$(pId + " > .-container > input.-foo").click(function(e){
+		e.stopImmediatePropagation();
+		$(pId).trigger('click');
+		return false;
+	});
+	
+	$(pId + " > .-container > input.-foo").select(function(e){
+		return false;
+	});
+	
+
+//	$(pId + " > .-container > input.-foo").keypress(function(e){
+//		console.log("keypress");
+//	}); 
+
+	$(pId + " > .-container > input.-foo").keydown(function(e){
+//		console.log("keydown");
+		if(e.keyCode==40 ||
+		   e.keyCode==38){
+			var xTable = pId + " > .-container > .-content > table ";
+			dbsfaces.dataTable.selectRow(pId, e.keyCode);
+			var xRow = $(xTable + " > tbody > tr");
+			var xTBody = xRow.parent();
+			xRow.off("mouseover.datatable");
+			xTBody.off('mousemove.datatable');
+			xTBody.on('mousemove.datatable', xMousemove);
+			return false;
+		}
+	});  
+	
+	$(pId + " > .-container > input.-foo").focusin(function(e){
+		var xTable = pId + " > .-container > .-content > table ";
+		var xE = $(xTable + " > tbody > tr.-selected");
+		//Seleciona linha caso não exista alguma já selecionada
+		if (xE.length == 0){
+			xE = $(xTable + " > tbody > tr.-focus");
+			if (xE.length == 0){
+				xE = $(xTable + " > tbody > tr:first");
+				dbsfaces.dataTable.showRowFocus(pId, xE, true);
+			}
+		}
+		$(xTable + " > thead > tr").addClass("-focus");
+		e.stopPropagation();
+		//Comentado em 28/08/2013 - no IE, retirava o foco do input.-foo, deixando de funcionar a nagevação por seta
+		//$(pId).trigger('focus'); 
+	}); 
+	
+	$(pId + " > .-container > input.-foo").focusout(function(e){
+		dbsfaces.dataTable.removeHeadFocus(pId);
+		e.stopPropagation();
+		$(pId).trigger('blur');
+	}); 
+	//Captura evento ajax dbsoft
+	dbsfaces.ui.captureAjax(".dbs_dataTable");
+}
+
+
+dbsfaces.dataTable = {
+	focus: function(e){
+		var xTBody = $('#' + dbsfaces.util.jsid(e.source.id) + " > .-container > .-content > table > tbody");
+		//Monitora evento ajax recebido e dispara evento dbsoft
+		dbsfaces.onajax(e);
+		
+		if (e.status=='complete'){
+			jQuery.data(e.source, 'wScrollTop', xTBody.scrollTop());
+		}else if (e.status=='success'){
+			var wScrollTopValue = jQuery.data(e.source, 'wScrollTop');
+			if (wScrollTopValue != "undefined"){
+				xTBody.scrollTop(jQuery.data(e.source, 'wScrollTop'));
+			}
+			$('#' + dbsfaces.util.jsid(e.source.id) + " > .-container > input.-foo").focus();
+		}
+	},
+		
+	showRowFocus: function(pId, pNew, pTrigger){
+		dbsfaces.dataTable.removeRowFocus(pId);
+		if ($(pId + " > .-container > input.-foo").val() != $(pNew).attr("index") && pTrigger){
+			$(pId + " > .-container > input.-foo").val($(pNew).attr("index"));
+			dbsfaces.dataTable.removeRowSelected(pId);
+			$(pNew).addClass("-selected");
+			$(pId).trigger(dbsfaces.EVENT.ON_ROW_SELECTED, pNew);
+			$(pId).trigger("select.datatable");
+		}else{
+			$(pNew).addClass("-focus");
+		}
+	},
+	
+	removeRowFocus: function(pId){
+		$(pId + " > .-container > .-content > table > tbody > tr.-focus").removeClass("-focus");
+	},
+	
+	removeHeadFocus: function(pId){
+		$(pId + " > .-container > .-content > table > thead > tr").removeClass("-focus");
+	},
+
+	removeRowSelected: function(pId){
+		$(pId + " > .-container > .-content > table > tbody > tr.-selected").removeClass("-selected");
+	},
+	
+	selectRow: function(pId, pKeyCode){
+		var xNew;
+		var xDirection = 0;
+		var xRow = $(pId + " > .-container > .-content > table > tbody > tr");
+		var xTBody = xRow.parent();
+
+		if (xTBody.find(".-selected").length == 0){
+			xNew = xRow.first();
+		}else{
+			if (pKeyCode==40){
+				xNew = xRow.filter(".-selected").next();
+				if ($(xNew).length == 0){
+					xNew = xRow.last();
+				}else{
+					xDirection = 1;
+				}
+			}else if (pKeyCode==38){
+				xNew = xRow.filter(".-selected").prev();
+				if ($(xNew).length == 0){
+					xNew = xRow.first();
+				}else{
+					xDirection = -1;
+				}
+			}
+		}
+		if ($(xNew).length > 0){ 
+			dbsfaces.dataTable.showRowFocus(pId, xNew, true);
+			if (xDirection!=0){
+				var xPadding = parseInt($(pId + " > .-container > .-content").css("padding-top"));
+				var xHeaderH = $(pId + " > .-container > .-content > table > thead").outerHeight();
+				var xNewPos = xTBody.scrollTop() + xNew.position().top - xPadding + xNew.outerHeight() - xHeaderH;
+				var xLT = xTBody.scrollTop() + xNew.outerHeight();
+				var xLB = xTBody.scrollTop() + xTBody.outerHeight();
+//				sectionRowIndex
+//					console.log("Padding:" + xPadding + "\txNewPosTop:" + xNew.position().top + "\txNewPos:" + xNewPos + "\tLB:" + xLB + "\tTBodyScollTop:" + xTBody.scrollTop() + "\txNewPos-TBodyHeight:" + (xNewPos - xTBody.outerHeight()));
+				if ((xNewPos) > xLB ||
+					(xNewPos) < xLT){
+					if (xDirection<0){
+						xTBody.scrollTop(xNewPos - xNew.outerHeight());
+					}else{
+						xTBody.scrollTop(xNewPos - xTBody.outerHeight());
+					}
+				}
+			}
+		}
+	},
+	
+	showOverflowShadow: function(pE){
+		if (pE.length == 0){return;}
+		var xScrollLeftMax = pE.get(0).scrollWidth - pE.get(0).clientWidth;
+		if (pE.get(0).scrollLeft == 0){
+			pE.removeClass("-scrollLeft");
+			pE.removeClass("-scrollLeftRight");
+			if (xScrollLeftMax > 0){
+				pE.addClass("-scrollRight");
+			} 
+		}else if (pE.get(0).scrollLeft == xScrollLeftMax){
+			pE.removeClass("-scrollRight");
+			pE.removeClass("-scrollLeftRight");
+			if (pE.get(0).scrollLeft > 0){
+				pE.addClass("-scrollLeft");
+			} 
+		}else if (xScrollLeftMax < pE.get(0).scrollWidth){
+			pE.removeClass("-scrollLeft");
+			pE.removeClass("-scrollRight");
+			pE.addClass("-scrollLeftRight");
+		}
+	},	
+	
+	positionOnSelectRow: function(pId){
+		var xNew;
+		var xRow = $(pId + " > .-container > .-content > table > tbody > tr");
+		
+		xNew = xRow.filter(".-selected");
+		if ($(xNew).length != 0){
+			xNew.parent().scrollTop($(xNew).position().top - $(xNew).height());
+		}
+	}
+}
+

@@ -1,0 +1,41 @@
+.dbs_combobox{
+}
+
+.dbs_combobox select {
+	opacity: 0;
+	position: absolute;
+	z-index: 1;
+	cursor: pointer;
+}
+
+.dbs_combobox > .-container{
+	position: relative;
+	z-index:0;
+}
+
+.dbs_combobox > .-container > .dbs_input-label {
+}
+
+.dbs_combobox > .-container > .dbs_input-data {
+	height: 19px;
+	position: relative;
+	paddind: 1px 2px 0 1px !important;
+	line-height: 1.4;
+	text-align: left;
+}
+.dbs_combobox > .-container > .dbs_input-data.-readOnly {
+/* 	line-height: 1.4; */
+}
+
+.dbs_combobox > .-container > .dbs_input-data > .-button {
+	position: absolute;	
+	top: 2px;
+	right: 3px;
+/* 	font-size: 13px; */
+/* 	cursor: pointer; */
+/* 	line-height: 1; */
+/* 	text-rendering:auto; */
+}
+
+.dbs_combobox > .-container > .dbs_input-data > .-button.-disabled {
+}

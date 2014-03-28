@@ -1,0 +1,384 @@
+package br.com.dbsoft.ui.component.inputtext;
+
+import java.io.IOException;
+
+import javax.el.MethodExpression;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIOutput;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.model.ResultDataModel;
+import javax.faces.render.FacesRenderer;
+
+import com.sun.faces.renderkit.RenderKitUtils;
+
+import br.com.dbsoft.core.DBSSDK;
+import br.com.dbsoft.ui.component.DBSRenderer;
+import br.com.dbsoft.ui.component.button.DBSButton;
+import br.com.dbsoft.ui.component.datatable.DBSDataTable;
+import br.com.dbsoft.ui.component.datatable.DBSDataTableColumn;
+import br.com.dbsoft.ui.component.div.DBSDiv;
+import br.com.dbsoft.ui.component.inputtext.DBSInputText;
+import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.util.DBSObject;
+
+@FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSInputText.RENDERER_TYPE)
+public class DBSInputTextRenderer extends DBSRenderer {
+	
+	
+    @Override
+	public void decode(FacesContext pContext, UIComponent pComponent) {
+    	DBSInputText xInputText = (DBSInputText) pComponent;
+    	if (!xInputText.isRendered()){return;}
+        if(xInputText.getReadOnly()) {return;}
+
+    	decodeBehaviors(pContext, xInputText); 
+
+		String xValueClientId; 
+		
+		//Utiliza o valor da chave da sugestão como valor recebido
+		if (xInputText.hasSuggestion()){
+			//Se foi o submit do botão de refresh, chama o método para fazer o refresh da lista passando o valor digitado
+			if (RenderKitUtils.isPartialOrBehaviorAction(pContext, pvGetButtonId(xInputText, true))){
+				//Recupera valor digitado se tiver sido enviado
+				xValueClientId = getInputDataClientId(xInputText);
+				if (pContext.getExternalContext().getRequestParameterMap().containsKey(xValueClientId)){
+					String xDisplayValue = pContext.getExternalContext().getRequestParameterMap().get(xValueClientId);
+					//Chama o método refresh se o valor digitado não for nulo
+			        if(xDisplayValue != null) {
+			        	pvRefreshList(pContext, xInputText, xDisplayValue);
+			        }
+				}
+			}else{
+				//Recupera o valor da chave(key) e seta como submittedvalue
+				xValueClientId = pvGetSuggestionKeyId(xInputText, true);
+				if (pContext.getExternalContext().getRequestParameterMap().containsKey(xValueClientId)){
+					Object xSubmittedValue = pContext.getExternalContext().getRequestParameterMap().get(xValueClientId);
+					//Se valor recebido for igual o valor considerado como nulo ou o vázio
+					//Envia o valor como nulo
+					if (xSubmittedValue.equals(DBSSDK.UI.COMBOBOX.NULL_VALUE) ||
+						(xInputText.getSuggestionNullText()!=null &&
+						 xSubmittedValue.toString().toUpperCase().equals(xInputText.getSuggestionNullText().toUpperCase()))){
+						xInputText.setValue(null);
+						xInputText.setSubmittedValue(null);
+					}else{
+						xInputText.setSubmittedValue(xSubmittedValue); 
+					}
+				}
+			}
+		}else{
+			//Utiliza o próprio valor recebido 
+			xValueClientId = getInputDataClientId(xInputText);
+			if (pContext.getExternalContext().getRequestParameterMap().containsKey(xValueClientId)){
+				String xSubmittedValue = pContext.getExternalContext().getRequestParameterMap().get(xValueClientId);
+		        if(xSubmittedValue != null) {
+		            xInputText.setSubmittedValue(xSubmittedValue);
+		        }
+			}
+		}
+	}	
+	
+
+    
+    @Override
+	public boolean getRendersChildren() {
+		return true; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
+	}
+	
+    @Override
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        //É necessário manter está função para evitar que faça o render dos childrens
+    	//O Render dos childrens é feita do encode
+    }
+    
+	@Override
+	public void encodeBegin(FacesContext pContext, UIComponent pComponent)
+			throws IOException {
+		if (!pComponent.isRendered()){return;}
+
+		DBSInputText xInputText = (DBSInputText) pComponent;
+		ResponseWriter xWriter = pContext.getResponseWriter();
+		String xClientId = xInputText.getClientId(pContext);
+		String xClass = DBSFaces.CSS.INPUTTEXT.MAIN + " " + DBSFaces.CSS.INPUT.MAIN + " "; 
+		if (xInputText.getStyleClass()!=null){
+			xClass = xClass + xInputText.getStyleClass();
+		}
+		xWriter.startElement("div", xInputText);
+			xWriter.writeAttribute("id", xClientId, "id");
+			xWriter.writeAttribute("name", xClientId, "name");
+			xWriter.writeAttribute("class", xClass, "class");
+			DBSFaces.setAttribute(xWriter, "style", xInputText.getStyle(), null);
+				DBSFaces.encodeLabel(pContext, xInputText, xWriter);
+				pvEncodeInput(pContext, xInputText, xWriter);
+				DBSFaces.encodeRightLabel(pContext, xInputText, xWriter);
+				DBSFaces.encodeTooltip(pContext, xInputText, xInputText.getTooltip());
+		xWriter.endElement("div");
+
+		pvEncodeJS(xClientId, xWriter);
+	}
+	
+	private void pvEncodeInput(FacesContext pContext, DBSInputText pInputText, ResponseWriter pWriter) throws IOException{
+		String xClientId = pInputText.getClientId();
+		String xClientIdData = getInputDataClientId(pInputText);
+		String xClientIdSuggestionKey = pvGetSuggestionKeyId(pInputText, true);
+		String xClientIdButton = pvGetButtonId(pInputText, false);
+		String xClientIdSuggestion = xClientId + DBSFaces.CSS.MODIFIER.SUGGESTION.trim();
+		String xClientAjaxUpdate = pvGetListId(pInputText, true);//pvGetListClientId(pInputText); //pvGetDataTableClientId(pInputText);
+		String xStyle = "";
+		String xValue = "";
+		String xValueKey = "";
+		String xClass = DBSFaces.CSS.INPUT.DATA + " -"+ pInputText.getLetterCase().toLowerCase();
+
+		//Seta valor que será exibido e armazena valor da respectiva chave
+		if (pInputText.getValue() != null){			
+			xValue = pInputText.getValue().toString();
+			xValueKey = xValue;
+			//Recupera o respectivo valor a partir da chave
+			if (pInputText.hasSuggestion()){
+				//Recupera a string que será exibida, a partir da chave informada
+				xValue = pvGetDisplayValue(pContext, pInputText, xValue);
+			}
+		}else{
+			if (pInputText.hasSuggestion() &&
+				DBSObject.getNotEmpty(pInputText.getSuggestionNullText(), null) != null){
+				xValue = pInputText.getSuggestionNullText();
+			}
+		}
+		//Define a largura do campo
+		xStyle = DBSFaces.getStyleWidthFromInputSize(pInputText.getSize());
+
+		//Se for somente leitura, gera código como <Span>
+		if (pInputText.getReadOnly()){ 
+			DBSFaces.encodeInputDataReadOnly(pInputText, xClientIdData, xStyle, xValue, pWriter);
+		}else{
+			if (pInputText.hasSuggestion()){ 
+				pWriter.startElement("span", pInputText);
+					DBSFaces.setAttribute(pWriter, "class", "-input", null);
+					//Campo escondido que receberá a chave resultado da pesquisa ajax
+					pWriter.startElement("input", pInputText);
+						DBSFaces.setAttribute(pWriter, "id", xClientIdSuggestionKey, null);
+						DBSFaces.setAttribute(pWriter, "name", xClientIdSuggestionKey, null);
+						DBSFaces.setAttribute(pWriter, "type", "hidden", null);
+						DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.SUGGESTIONKEY.trim(), null);
+						DBSFaces.setAttribute(pWriter, "value", xValueKey, null);
+						DBSFaces.setAttribute(pWriter, "key", xValueKey, null);
+						DBSFaces.setAttribute(pWriter, "nulltext", pInputText.getSuggestionNullText(), null);
+					pWriter.endElement("input");	
+
+					//Icon que indica para indicar que é possível efetuar pesquisa a partir do texto digitado
+					pWriter.startElement("span", pInputText);
+						DBSFaces.setAttribute(pWriter, "class", "dbs_iconsmall -is_pesquisar", null);
+					pWriter.endElement("span");	
+
+					//Campo que receberá o conteúdo integral ou parcial do campo escondido ajax. 
+					pWriter.startElement("input", pInputText);
+						DBSFaces.setAttribute(pWriter, "id", xClientIdSuggestion, null);
+						DBSFaces.setAttribute(pWriter, "name", xClientIdSuggestion, null);
+						DBSFaces.setAttribute(pWriter, "type", "text", null);
+						if (pInputText.getSize()!=0){
+							DBSFaces.setAttribute(pWriter, "size", pInputText.getSize(), null);
+						}
+						if (!xStyle.equals("")){
+							DBSFaces.setAttribute(pWriter, "style", xStyle, null);
+						}						
+						DBSFaces.setAttribute(pWriter, "autocomplete", "off", null);
+						DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.SUGGESTION, null);
+						DBSFaces.setAttribute(pWriter, "tabindex", "-1", null);
+						DBSFaces.setAttribute(pWriter, "value", xValue, null);
+					pWriter.endElement("input");
+					
+					//Botão que efetuará a chamada ajax
+					if (pInputText.hasSuggestion()){
+						DBSButton xBtn = (DBSButton) DBSFaces.findComponent(xClientIdButton, pInputText.getChildren());
+						if (xBtn == null){
+							xBtn = (DBSButton) pContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
+						}
+						xBtn.setId(xClientIdButton);
+						xBtn.setStyleClass(DBSFaces.CSS.INPUT.SUBMIT.trim()); 
+						//xBtn.setActionExpression(DBSFaces.createMethodExpression(pContext, pInputText.getSuggestionRefreshAction(), String.class, new Class[0]));
+						if (pInputText.getSuggestionUpdate()!=null){
+							xBtn.setUpdate(xClientAjaxUpdate + " " + pInputText.getSuggestionUpdate());
+						}else{
+							xBtn.setUpdate(xClientAjaxUpdate);
+						}
+						xBtn.setExecute(xClientId);
+						pInputText.getChildren().add(xBtn);
+						xBtn.encodeAll(pContext);
+					}
+			}
+			//Campo Input
+			pWriter.startElement("input", pInputText);
+				DBSFaces.setAttribute(pWriter, "id", xClientIdData, null);
+				DBSFaces.setAttribute(pWriter, "name", xClientIdData, null);
+				if (pInputText.getSecret()){
+					DBSFaces.setAttribute(pWriter, "type", "password", null);
+				}else{
+					DBSFaces.setAttribute(pWriter, "type", "text", null);
+				}
+				if (pInputText.hasSuggestion() ||
+					pInputText.getAutocomplete().toLowerCase().equals("off") ||
+					pInputText.getAutocomplete().toLowerCase().equals("false")){
+					DBSFaces.setAttribute(pWriter, "autocomplete", "off", null);
+				}
+				DBSFaces.setAttribute(pWriter, "class", xClass, null);
+				if (!xStyle.equals("")){
+					DBSFaces.setAttribute(pWriter, "style", xStyle, null);
+				}
+				//Grava a largura do campo
+				if (pInputText.getSize()!=0){
+					DBSFaces.setAttribute(pWriter, "size", pInputText.getSize(), null);
+				}
+				if (pInputText.getMaxLength()!=0){
+					DBSFaces.setAttribute(pWriter, "maxlength", pInputText.getMaxLength(), null);
+				}
+				DBSFaces.setAttribute(pWriter, "value", xValue, "");
+				encodeClientBehaviors(pContext, pInputText);
+//				encodeClientParameters(pContext, pInputText);
+			pWriter.endElement("input");
+			
+			if (pInputText.hasSuggestion()){
+				//Encode List --------------------------------------------------
+				pvEncodeList(pContext, pInputText, pWriter);
+				pWriter.endElement("span");
+			}
+		}
+	}
+	
+	
+	/**
+	 * Encode da lista de valores da sugestão
+	 * @param pContext
+	 * @param pInputText
+	 * @param pWriter
+	 * @throws IOException
+	 */
+	private void pvEncodeList(FacesContext pContext, DBSInputText pInputText, ResponseWriter pWriter) throws IOException{
+		DBSDiv xDiv = (DBSDiv) DBSFaces.findComponent(pvGetListId(pInputText, false), pInputText.getChildren());
+		String xVar = "list";
+		if (xDiv == null){
+			xDiv = (DBSDiv) pContext.getApplication().createComponent(DBSDiv.COMPONENT_TYPE);
+			xDiv.setStyleClass("-list");
+			xDiv.setStyle("display:none;");//Esconde lista. Deixando para o JS a função de exibir
+			xDiv.setId(pvGetListId(pInputText, false));
+			//Cria dataTable
+			DBSDataTable xDT = (DBSDataTable) pContext.getApplication().createComponent(DBSDataTable.COMPONENT_TYPE);
+				xDT.setId(pvGetDataTableId(pInputText));
+				xDT.setValueExpression("value", DBSFaces.createValueExpression(pContext, pInputText.getValueExpression(DBSInputText.PropertyKeys.suggestionsBean.name()).getExpressionString() + ".list", ResultDataModel.class)); 
+				xDT.setKeyColumnName(pInputText.getSuggestionKeyColumnName());
+				xDT.setVar(xVar);
+	
+				//Se existir, exibe as colunas de sugestão definidas manualmente pelo usuário
+				boolean	xIsUsersColumns = false;
+				int		xY = 0;
+				int 	xZ = pInputText.getChildren().size(); //É necessário guarda o quantidade antes do loop, pois a quantidade é reduzida dinamicamente após cada getChildren().add()
+				for (int xX = 0; xX < xZ; xX++){
+					if (pInputText.getChildren().get(xY) instanceof DBSDataTableColumn){
+						xIsUsersColumns = true;
+						xDT.getChildren().add(pInputText.getChildren().get(xY));
+					}else{
+						xY++; 
+					}
+				}
+	
+				//Adiciona coluna padrão se não existir colunas do usuário
+				if (!xIsUsersColumns){
+					DBSDataTableColumn xDTC = (DBSDataTableColumn) pContext.getApplication().createComponent(DBSDataTableColumn.COMPONENT_TYPE);
+						xDTC.setWidth("100%");
+						xDTC.setId("cd"); //Coluna default
+						//Valor padrão da coluna
+						UIOutput xValue = (UIOutput) pContext.getApplication().createComponent(UIOutput.COMPONENT_TYPE);
+						String xValueColumnName = xVar;
+						if (!pInputText.getSuggestionDisplayColumnName().equals("")){
+							xValueColumnName = xValueColumnName + "." + pInputText.getSuggestionDisplayColumnName().trim();
+						}
+						xValue.setValueExpression("value", DBSFaces.createValueExpression(pContext,  xValueColumnName, String.class));
+						xDTC.getChildren().add(xValue);
+					xDT.getChildren().add(xDTC);
+				}
+				xDiv.getChildren().add(xDT);
+			pInputText.getChildren().add(xDiv);
+		}
+		xDiv.encodeAll(pContext);
+	}	
+	
+
+	private void pvEncodeJS(String pClientId, ResponseWriter pWriter) throws IOException{
+		DBSFaces.encodeJavaScriptTagStart(pWriter);
+		String xJS = "$(document).ready(function() { \n" +
+				     " var xInputTextId = '#' + dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " dbs_inputText(xInputTextId); \n" +
+                     "}); \n"; 
+		pWriter.write(xJS);
+		DBSFaces.encodeJavaScriptTagEnd(pWriter);		
+	}
+
+	
+	private String pvGetDataTableId(UIComponent pInputText){
+		return pInputText.getId() + "-dataTable";
+	}
+
+	private String pvGetSuggestionKeyId(UIComponent pInputText, boolean pFullId){
+		return pvGetId(pInputText, DBSFaces.CSS.MODIFIER.SUGGESTION.trim() + DBSFaces.CSS.MODIFIER.KEY.trim(), pFullId);
+	}
+
+	private String pvGetListId(UIComponent pInputText, boolean pFullId){
+		return pvGetId(pInputText, "-list", pFullId);
+	}
+
+	
+	private String pvGetButtonId(DBSInputText pInputText, boolean pFullId){
+		return pvGetId(pInputText, DBSFaces.CSS.MODIFIER.SUBMIT.trim(), pFullId);
+	}
+	
+	private String pvGetId(UIComponent pInputText, String pSufix, boolean pFullId){
+		String xId;
+		if (pFullId){
+			xId = pInputText.getClientId() + pSufix;
+		}else{
+			xId = pInputText.getId() + pSufix;
+		}
+		return xId;
+	}
+	
+	/**
+	 * Executa o metódo que atualiza a lista 
+	 * @param pContext
+	 * @param pInputText
+	 * @param pString
+	 */
+	private void pvRefreshList(FacesContext pContext, DBSInputText pInputText, String pString){
+    	String[] xParms = new String[1]; 
+    	xParms[0] = pString;
+        MethodExpression xME = DBSFaces.createMethodExpression(pContext, pInputText.getValueExpression(DBSInputText.PropertyKeys.suggestionsBean.name()).getExpressionString() + ".refreshList", null, new Class[]{String.class}); 
+        xME.invoke(pContext.getELContext(), xParms);
+    }
+
+	/**
+	 * Executa o método que retorna o valor a partir da chave informada
+	 * @param pContext
+	 * @param pInputText
+	 * @param pString
+	 * @return
+	 */
+	private String pvGetDisplayValue(FacesContext pContext, DBSInputText pInputText, String pString){
+    	String[] xParms = new String[1]; 
+    	String 	 xDisplayValue;
+    	xParms[0] = pString;
+        MethodExpression xME = DBSFaces.createMethodExpression(pContext, pInputText.getValueExpression(DBSInputText.PropertyKeys.suggestionsBean.name()).getExpressionString() + ".getDisplayValue", String.class, new Class[]{String.class}); 
+        xDisplayValue = (String) xME.invoke(pContext.getELContext(), xParms);
+        if (xDisplayValue == null){
+        	xDisplayValue = DBSSDK.UI.COMBOBOX.NULL_VALUE;
+        }
+        //Atualiza os itens da lista de sugestão somente quando a edição do campo estiver habilitada(not readOnly)
+        if (!pInputText.getReadOnly()){
+        	pvRefreshList(pContext, pInputText, xDisplayValue);
+        }
+        return xDisplayValue;
+    }
+
+}
+
+
+
+
+

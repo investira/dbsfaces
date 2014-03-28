@@ -1,0 +1,26 @@
+.dbs_radio{}
+
+.dbs_radio > table{
+	display: table;
+}
+
+.dbs_radio > table > tbody > tr .dbs_input {}
+
+.dbs_radio > table > tbody > tr > td {
+	display: table;
+	white-space: nowrap;
+}
+
+.dbs_radio > table > tbody > tr > td > .dbs_input-data {
+	background-color: transparent;
+	height: 19px;
+}
+
+.dbs_radio > table > tbody > tr > td > .dbs_input-label {
+	margin-right: 10px;
+	display: inline-block; 
+	padding: 0px 0px 0px 3px;
+	margin: 0px;
+	vertical-align: middle;
+}
+

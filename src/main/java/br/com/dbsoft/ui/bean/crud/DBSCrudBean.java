@@ -1,0 +1,2610 @@
+package br.com.dbsoft.ui.bean.crud;
+
+import java.sql.Connection;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.model.ResultDataModel;
+
+import br.com.dbsoft.core.DBSApproval;
+import br.com.dbsoft.core.DBSApproval.APPROVAL_STAGE;
+import br.com.dbsoft.core.DBSSDK;
+import br.com.dbsoft.error.DBSIOException;
+import br.com.dbsoft.io.DBSColumn;
+import br.com.dbsoft.io.DBSDAO;
+import br.com.dbsoft.message.DBSMessage;
+import br.com.dbsoft.message.DBSMessage.MESSAGE_TYPE;
+import br.com.dbsoft.ui.bean.DBSBean;
+import br.com.dbsoft.ui.bean.crud.DBSCrudBeanEvent.CRUD_EVENT;
+import br.com.dbsoft.ui.component.DBSUIInput;
+import br.com.dbsoft.ui.component.DBSUIInputText;
+import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.util.DBSDate;
+import br.com.dbsoft.util.DBSIO;
+import br.com.dbsoft.util.DBSNumber;
+import br.com.dbsoft.util.DBSObject;
+import br.com.dbsoft.util.DBSString;
+
+
+/**
+ * @author ricardo.villar
+ *
+ */
+public abstract class DBSCrudBean extends DBSBean{
+
+	private static final long serialVersionUID = -8550893738791483527L;
+
+	public static enum FormStage{
+		CLOSED 			("Closed", 0),
+		OPENED 			("Opened", 1);
+		
+		private String 	wName;
+		private int 	wCode;
+		
+		private FormStage(String pName, int pCode) {
+			this.wName = pName;
+			this.wCode = pCode;
+		}
+
+		public String getName() {
+			return wName;
+		}
+
+		public int getCode() {
+			return wCode;
+		}
+		
+		public static FormStage get(int pCode) {
+			switch (pCode) {
+			case 0:
+				return CLOSED;
+			case 1:
+				return OPENED;
+			default:
+				return CLOSED;
+			}
+		}		
+	}
+	  
+	public static enum EditingMode {
+		NONE 			("Not Editing", 0),
+		INSERTING 		("Inserting", 1),
+		UPDATING 		("Updating", 2), 
+		DELETING 		("Deleting", 3),
+		APPROVING 		("Approving", 4),
+		REPROVING 		("Reproving", 5);
+		
+		private String 	wName;
+		private int 	wCode;
+		
+		private EditingMode(String pName, int pCode) {
+			this.wName = pName;
+			this.wCode = pCode;
+		}
+
+		public String getName() {
+			return wName;
+		}
+
+		public int getCode() {
+			return wCode;
+		}
+		
+		public static EditingMode get(int pCode) {
+			switch (pCode) {
+			case 0:
+				return NONE;
+			case 1:
+				return INSERTING;
+			case 2:
+				return UPDATING;
+			case 3:
+				return DELETING;
+			case 4:
+				return APPROVING;
+			case 5:
+				return REPROVING;
+			default:
+				return NONE;
+			}
+		}		
+	}
+	
+	public static enum EditingStage{
+		NONE 			("None", 0),
+		COMMITTING 		("Committing", 1),
+		IGNORING 		("Ignoring", 2);
+		
+		private String 	wName;
+		private int 	wCode;
+		
+		private EditingStage(String pName, int pCode) {
+			this.wName = pName;
+			this.wCode = pCode;
+		}
+
+		public String getName() {
+			return wName;
+		}
+
+		public int getCode() {
+			return wCode;
+		}
+		
+		public static EditingStage get(int pCode) {
+			switch (pCode) {
+			case 0:
+				return NONE;
+			case 1:
+				return COMMITTING;
+			case 2:
+				return IGNORING;
+			default:
+				return NONE;
+			}
+		}		
+	}
+	
+
+	
+	@SuppressWarnings("rawtypes")
+	protected DBSDAO							wDAO;
+	private List<IDBSCrudBeanEventsListener>	wEventListeners = new ArrayList<IDBSCrudBeanEventsListener>();
+	private FormStage 							wFormStage = FormStage.CLOSED;
+	private EditingMode							wEditingMode = EditingMode.NONE;
+	private EditingStage						wEditingStage = EditingStage.NONE;
+	private String								wCrudFormFile = "";
+	private List<Integer> 						wSelectedRowsIndexes =  new ArrayList<Integer>();
+//	private int									wCurrentRowIndex = -1;
+//	private DBSRow								wCurrentRow = new DBSRow();
+	private boolean								wValueChanged;
+	private int									wCopiedRowIndex = -1;
+	private boolean								wValidateComponentHasError = false;
+	private String								wDialogConfirmationEditMessage = "Confirmar a edição?";
+	private String								wDialogConfirmationInsertMessage = "Confirmar a inclusão?";
+	private String								wDialogConfirmationDeleteMessage = "Confirmar a exclusão?";
+	private String								wDialogConfirmationApproveMessage = "Confirmar a aprovação?";
+	private String								wDialogConfirmationReproveMessage = "Confirmar a reprovação?";
+	private String								wDialogIgnoreEditMessage = "Ignorar a edição?";
+	private String								wDialogIgnoreInsertMessage = "Ignorar a inclusão?";
+	private String								wDialogIgnoreDeleteMessage = "Ignorar a exclusão?";
+	private String								wDialogCaption;
+	private	Boolean								wInsertSelected = false;
+	private Boolean								wAllowUpdate = true;
+	private Boolean								wAllowInsert = true;
+	private Boolean								wAllowDelete = true;
+	private Boolean								wAllowRefresh = true;
+	private Boolean								wAllowApproval = false;
+	private Boolean								wAllowApprove = true;
+	private Boolean								wAllowReprove = true;
+	private	Integer								wApprovalUserStages = 0;
+	private String								wColumnNameApprovalStage = null;
+	private String								wColumnNameApprovalUserIdRegistered = null;
+	private String								wColumnNameApprovalUserIdVerified = null;
+	private String								wColumnNameApprovalUserIdConferred = null;
+	private String								wColumnNameApprovalUserIdApproved = null;
+	private String								wColumnNameApprovalDateApproved = null;
+	private String								wColumnNameDateOnInsert = null;
+	private String								wColumnNameDateOnUpdate = null;
+	private String								wColumnNameUserIdOnInsert = null;
+	private String								wColumnNameUserIdOnUpdate = null;
+	private Integer								wUserId;
+	private Boolean								wMultipleSelection = false;
+	private DBSCrudBean							wParentCrudBean = null;
+	private List<DBSCrudBean>					wChildrenCrudBean = new ArrayList<DBSCrudBean>();
+
+
+	//Mensagens
+	private DBSMessage							wMessageNoRowComitted = 
+												new DBSMessage(MESSAGE_TYPE.ERROR,"Erro durante a gravação.\n Nenhum registro foi afetado.\n");
+	private DBSMessage							wMessageOverSize = 
+												new DBSMessage(MESSAGE_TYPE.ERROR,"Quantidade de caracteres do texto digitado no campo '%s' ultrapassou a quantidade permitida de %s caracteres. Por favor, diminua o texto digitado.");
+	private DBSMessage							wMessageNoChange = 
+												new DBSMessage(MESSAGE_TYPE.INFORMATION,"Não houve alteração de informação.");
+	private DBSMessage							wMessaggeApprovalSameUserError =
+												new DBSMessage(MESSAGE_TYPE.ERROR,"Não é permitida a aprovação de um registro incluido pelo próprio usuário.");
+			
+	
+	@Override
+	protected void initializeClass() {
+		pvFireEventInitialize();
+		//Finaliza os outros crudbeans antes de inicializar este.
+		DBSFaces.finalizeDBSBeans(this, false);
+	}
+	
+	@Override
+	protected void finalizeClass(){
+		pvFireEventFinalize();
+		//Exclui os listeners associadao, antes de finalizar
+		wEventListeners.clear();
+	}
+	
+	/**
+	 * Classe que receberá as chamadas dos eventos quando ocorrerem.<br/>
+	 * Para isso, classe deverá implementar a interface DBSTarefa.TarefaEventos<br/>
+	 * Lembre-se de remove-la utilizando removeEventListener quando a classe for destruida, para evitar que ela seja chamada quando já não deveria. 
+	 * @param pEventListener Classe
+	 */
+	public void addEventListener(IDBSCrudBeanEventsListener pEventListener) {
+		if (!wEventListeners.contains(pEventListener)){
+			wEventListeners.add(pEventListener);
+		}
+	}
+
+	
+	public void removeEventListener(IDBSCrudBeanEventsListener pEventListener) {
+		if (wEventListeners.contains(pEventListener)){
+			wEventListeners.remove(pEventListener);
+		}
+	}	
+	
+	/**
+	 * Seta o valor da coluna na posição atual do registro 
+	 * O valor será convertido para a class informada
+	 * obs:Os nomes das colunas são definidos a partir da query efetuado no DAO
+	 * @param pColumnName
+	 * @param pColumnValue
+	 * @param pValueClass Classe para a qual o valor será convertido
+	 */
+	public <T> void setValue(String pColumnName, T pColumnValue, Class<?> pValueClass){
+		T xValue = DBSObject.toClass(pColumnValue, pValueClass);
+		
+		setValue(pColumnName, xValue);
+	}
+
+	/**
+	 * Seta o valor da coluna na posição atual do registro
+	 * O valor será convertido para o mesmo tipo da class
+	 * obs:Os nomes das colunas são definidos a partir da query efetuado no DAO
+	 * @param pColumnName
+	 * @param pColumnValue
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> void setValue(String pColumnName, T pColumnValue){
+		//Verifica se há alguma coluna corrente antes de setar o valor
+		if (wDAO != null 
+		 && wDAO.getColumns().size() > 0){
+			T xOldValue =  getValue(pColumnName);
+			if (pColumnValue != null){
+				//Converte o valor antigo para o mesmo tipo do valor recebido para garantir que verificação correta de houve alteração de valores
+				xOldValue = (T) DBSObject.toClass(getValue(pColumnName), pColumnValue.getClass()); 
+			}
+			//Se valor armazenado(anterior) não for nulo e houve alteração de valores...
+			if(!DBSObject.getNotNull(xOldValue,"").equals(DBSObject.getNotNull(pColumnValue,""))){
+				//marca como valor alterado
+				setValueChanged(true);
+				wDAO.setValue(pColumnName, pColumnValue);
+			}
+		}
+	}
+
+	/**
+	 * Retorna o valor da coluna
+	 * @param pColumnName
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T getValue(String pColumnName){
+		//Se existir registro corrente
+		if (wDAO != null 
+		 && wDAO.getColumns().size() >0){
+			return (T) wDAO.getValue(pColumnName);
+		}else{
+			return null;
+		}
+	}
+	
+	/**
+	 * Retorna o valor da coluna convertida para a classe do tipo informado
+	 * @param pColumnName Nome da coluna
+	 * @param pValueClass Classe para a qual será convertido o valor recebido
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T getValue(String pColumnName, Class<?> pValueClass){
+		return (T) DBSObject.toClass(getValue(pColumnName), pValueClass);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T> T getValueOriginal(String pColumnName){
+		//Se existir registro corrente
+		if (wDAO != null 
+		 && wDAO.getColumns().size() > 0){
+			return (T) wDAO.getValueOriginal(pColumnName);
+		}else{
+			return null;
+		}
+	}
+	
+	/**
+	 * Retorna o valor da coluna convertida para a classe do tipo informado
+	 * @param pColumnName Nome da coluna
+	 * @param pValueClass Classe para a qual será convertido o valor recebido
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T getValueOriginal(String pColumnName, Class<?> pValueClass){
+		return (T) DBSObject.toClass(getValueOriginal(pColumnName), pValueClass);
+	}
+	
+
+	/**
+	 * Retorna o valor da coluna na lista.
+	 * Este valor deve ser utilizado quando o controle do registro atual estiver a cargo do datatable, como é o caso dos na exibição das colunas via DBSDataTableColumn
+	 * @param pColumnName
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T getListValue(String pColumnName){
+		if (wDAO != null){
+			return (T) wDAO.getListValue(pColumnName);
+		}else{
+			return null;
+		}		
+	}
+	
+	/**
+	 * Retorna o valor da coluna na lista.
+	 * Este valor deve ser utilizado quando o controle do registro atual estiver a cargo do datatable, como é o caso dos na exibição das colunas via DBSDataTableColumn
+	 * @param pColumnName
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T getListValue(String pColumnName, Class<?> pValueClass){
+		return (T) DBSObject.toClass(getListValue(pColumnName), pValueClass);
+	}
+
+	/**
+	 * Deve-se sobreescrever este método para colunas que necessitem que formatação específica.<br/>
+	 * Para recuperar os valores das colunas da linha atual deve-se utilizar o atributo <b>getListValue(pColumnName)<b/>.
+	 * @param pColumnId Nome para ser utilizado para identificar qual a coluna será formatada.
+	 * @return Texto formadado
+	 */
+	public String getListFormattedValue(String pColumnId) throws DBSIOException{return "pColumnId '" + pColumnId + "' desconhecida";}
+
+
+	/**
+	 * Configura os inputs da tela
+	 * Metodo chamado pelo DBSCrudForm para poder configurar os atributos dos componentes na tela antes que sejam exibidos
+	 * @param pComponentInput
+	 */
+	public void crudFormBeforeShowComponent(UIComponent pComponent){
+		if (wDAO!=null){
+			//Configura os campos do tipo inputtext
+			if (pComponent instanceof DBSUIInputText){
+				DBSUIInputText xInput = (DBSUIInputText) pComponent;
+				DBSColumn xColumn = pvGetDAOColumnFromInputValueExpression(xInput);
+				if (xColumn!=null){
+					//Configura o tamanho máximo de caracteres do input
+					xInput.setMaxLength(xColumn.getSize()); 
+				}
+			}
+		}
+	}
+
+
+	/**
+	 * Método padrão para validação dos campos que existentes dentro do crudForm do usuário
+	 * Método para validar o conteúdo do valor digitaro em função do DAO
+	 * @param pComponent
+	 */
+	public void crudFormValidateComponent(FacesContext pContext, UIComponent pComponent, Object pValue){
+		//Efetua a validação dos campos conforme estive definido no DAO, 
+		//Se estiver em edição, houve DAO e não tiver sido pressionado o botão de cancela do CrudForm
+		if (wEditingMode!=EditingMode.NONE){ 
+			if (wDAO!=null){
+				if (pValue!=null){
+					String xSourceId = pContext.getExternalContext().getRequestParameterMap().get(DBSFaces.PARTIAL_SOURCE_PARAM);
+					if (xSourceId !=null && 
+						!xSourceId.endsWith(":cancel")){ //TODO verificar se existe uma forma melhor de identificar se foi um cancelamento
+						if (pComponent instanceof DBSUIInputText){
+							DBSUIInputText xInput = (DBSUIInputText) pComponent;
+							DBSColumn 	xColumn = pvGetDAOColumnFromInputValueExpression(xInput);
+							if (xColumn!=null){
+								String xValue = pValue.toString();
+								//Se for número, despreza a os caracteres não numéricos
+								if (pValue instanceof Number){
+									xValue = DBSNumber.getOnlyNumber(xValue);
+								}
+								if (xValue.length() > xColumn.getSize()){
+									wMessageOverSize.setMessageTextParameters(xInput.getLabel(), xColumn.getSize());
+									addMessage(wMessageOverSize);
+									wValidateComponentHasError = true;
+								}
+							}
+						} 
+					}
+				}
+			}
+		}
+	}
+	
+
+	//=================================================================
+
+	/**
+	 * Retorna a situação da execução
+	 * @return
+	 */
+	public FormStage getFormStage() {
+		return wFormStage;
+	}
+
+	/**
+	 * Configura a situação da execução (Método PRIVADO)
+	 * @param pRunningState
+	 */
+	private synchronized void setFormStage(FormStage pFormStage) {
+		if (wFormStage != pFormStage){
+			wFormStage = pFormStage;
+		}
+	}
+
+	/**
+	 * Retorna a situação da execução
+	 * @return
+	 */
+	public EditingMode getEditingMode() {
+		return wEditingMode;
+	}
+
+	/**
+	 * Configura a situação da execução (Método PRIVADO)
+	 * @param pRunningState
+	 */
+	private synchronized void setEditingMode(EditingMode pEditingMode) {
+		if (wEditingMode != pEditingMode){
+			wEditingMode = pEditingMode;
+			//Qualquer troca no editingMode, desativa o editingstage
+			setEditingStage(EditingStage.NONE);
+			if (pEditingMode.equals(EditingMode.NONE)){
+				pvFireEventAfterEdit();
+				setValueChanged(false);
+			}
+		}
+	}
+
+	/**
+	 * Retorna a situação da execução
+	 * @return
+	 */
+	public EditingStage getEditingStage() {
+		return wEditingStage;
+	}
+
+	/**
+	 * Configura a situação da execução (Método PRIVADO)
+	 * @param pRunningState
+	 */
+	private void setEditingStage(EditingStage pEditingStage) {
+		if (wEditingStage != pEditingStage){
+//Comentado em 17/05/2013 por não exibir as mensagens geradas no validateComponent, que ocorre antes de trocar o EditingStage
+//			//Limpa as mensagens da fila, caso existam, antes de iniciar o comando para confirmar ou ignorar
+//			if (wEditingStage.equals(EditingStage.NONE)){
+//				clearMessages();
+//			}
+			//Limpa as mensagens da fila, caso existam
+//			if (pEditingStage.equals(EditingStage.NONE)){
+//				clearMessages();
+//			}
+			//Salva novo estado
+			wEditingStage = pEditingStage;
+		}
+	}
+
+	public String getDialogConfirmationEditMessage() {return wDialogConfirmationEditMessage;}
+	public void setDialogConfirmationEditMessage(String pDialogConfirmationEditMessage) {wDialogConfirmationEditMessage = pDialogConfirmationEditMessage;}
+
+	public String getDialogConfirmationInsertMessage() {return wDialogConfirmationInsertMessage;}
+	public void setDialogConfirmationInsertMessage(String pDialogConfirmationInsertMessage) {wDialogConfirmationInsertMessage = pDialogConfirmationInsertMessage;}
+
+	public String getDialogConfirmationDeleteMessage() {return wDialogConfirmationDeleteMessage;}
+	public void setDialogConfirmationDeleteMessagem(String pDialogConfirmationDeleteMessagem) {wDialogConfirmationDeleteMessage = pDialogConfirmationDeleteMessagem;}
+
+	public String getDialogConfirmationApproveMessage() {return wDialogConfirmationApproveMessage;}
+	public void setDialogConfirmationApproveMessagem(String pDialogConfirmationApproveMessagem) {wDialogConfirmationApproveMessage = pDialogConfirmationApproveMessagem;}
+
+	public String getDialogConfirmationReproveMessage() {return wDialogConfirmationReproveMessage;}
+	public void setDialogConfirmationReproveMessagem(String pDialogConfirmationReproveMessagem) {wDialogConfirmationReproveMessage = pDialogConfirmationReproveMessagem;}
+
+	public String getDialogIgnoreEditMessage() {return wDialogIgnoreEditMessage;}
+	public void setDialogIgnoreEditMessage(String pDialogIgnoreEditMessage) {wDialogIgnoreEditMessage = pDialogIgnoreEditMessage;}
+
+	public String getDialogIgnoreInsertMessage() {return wDialogIgnoreInsertMessage;}
+	public void setDialogIgnoreInsertMessage(String pDialogIgnoreInsertMessage) {wDialogIgnoreInsertMessage = pDialogIgnoreInsertMessage;}
+
+	public String getDialogIgnoreDeleteMessage() {return wDialogIgnoreDeleteMessage;}
+	public void setDialogIgnoreDeleteMessage(String pDialogIgnoreDeleteMessage) {wDialogIgnoreDeleteMessage = pDialogIgnoreDeleteMessage;}
+
+	/**
+	 * Texto que será exibido no cabeçalho do dialog
+	 * @param pDialogCaption
+	 */
+	public void setDialogCaption(String pDialogCaption) {wDialogCaption = pDialogCaption;}
+	public String getDialogCaption() {return wDialogCaption;}
+	
+
+	
+	//==============================================================================
+	/**
+	 * Use este atributo para popular páginas
+	 * Retorna os registros deforma que possar ser acessados nas páginas xhtml por EL.
+	 * As colunas poderão ser acessada como atributos de uma classe diretamente 
+	 * On nomes dos atributos são os próprios nomes definidos as colunas do select
+	 * exemplo de código xhtlm "#{table.campo}"
+	 * @return
+	 * @throws DBSIOException 
+	 */
+	public ResultDataModel getList() throws DBSIOException{
+		//Força a criação do resultdatamodel se ainda não existir
+		if (wDAO==null){
+			this.refreshList();
+			if (wDAO==null
+			 || wDAO.getResultDataModel() == null){
+				return new ResultDataModel();
+			}
+		}
+		return wDAO.getResultDataModel();
+	}
+
+	/**
+	 * Retorna a quantidade de registros da pesquisa principal.
+	 * @return
+	 * @throws DBSIOException
+	 */
+	public Integer getRowCount() throws DBSIOException{
+		if (getList() != null){
+			return getList().getRowCount();
+		}else{
+			return 0;
+		}
+	}
+	
+	public Boolean getAllowDelete() throws DBSIOException {
+		return wAllowDelete && pvApprovalUserAllowRegister() && getApprovalStage() == APPROVAL_STAGE.REGISTERED;
+	}
+	public void setAllowDelete(Boolean pAllowDelete) {wAllowDelete = pAllowDelete;}
+
+	public Boolean getAllowUpdate() throws DBSIOException {
+		return wAllowUpdate && pvApprovalUserAllowRegister() && getApprovalStage() == APPROVAL_STAGE.REGISTERED;
+	}
+	public void setAllowUpdate(Boolean pAllowUpdate) {wAllowUpdate = pAllowUpdate;}
+
+	public Boolean getAllowInsert() {
+		return wAllowInsert && pvApprovalUserAllowRegister();
+	}
+	public void setAllowInsert(Boolean pAllowInsert) {wAllowInsert = pAllowInsert;}
+	
+	public Boolean getAllowRefresh() {return wAllowRefresh;}
+	public void setAllowRefresh(Boolean pAllowRefresh) {wAllowRefresh = pAllowRefresh;}
+
+	public Boolean getMultipleSelection() {return wMultipleSelection;}
+	public void setMultipleSelection(Boolean pMultipleSelection) {wMultipleSelection = pMultipleSelection;}
+
+	public Boolean getAllowApproval() {return wAllowApproval;}
+	public void setAllowApproval(Boolean pAllowApproval) {wAllowApproval = pAllowApproval;}
+
+	public Boolean getAllowApprove(){return wAllowApprove;}
+	public void getAllowApprove(Boolean pAllowApprove){wAllowApprove = pAllowApprove;}
+
+	public Boolean getAllowReprove(){return wAllowReprove;}
+	public void getAllowReprove(Boolean pAllowReprove){wAllowReprove = pAllowReprove;}
+	
+	/**
+	 * Retorna a estágio de aprovação atual do registro corrente
+	 * @return
+	 * @throws DBSIOException 
+	 */
+	public APPROVAL_STAGE getApprovalStage() throws DBSIOException {
+		return pvGetApprovalStage(true);
+	}
+
+	/**
+	 * Retorna a estágio de aprovação atual do registro corrente
+	 * @return
+	 * @throws DBSIOException 
+	 */
+	public APPROVAL_STAGE getApprovalStageListValue() throws DBSIOException {
+		return pvGetApprovalStage(false);
+	}
+	
+	public void setApprovalStage(APPROVAL_STAGE pApprovalStage) {
+//		DBSColumn xColumn = wDAO.getCommandColumn(getColumnNameApprovalStage());
+//		if (xColumn!=null){
+//			xColumn.setValue(pApprovalStage.getCode());
+//		}
+		setValue(getColumnNameApprovalStage(), pApprovalStage.getCode());
+	}
+	
+	/**
+	 * Retorna próximo estágio no processo de aprovação
+	 * @return
+	 * @throws DBSIOException 
+	 */
+	public APPROVAL_STAGE getApprovalUserNextStage() throws DBSIOException{
+		return pvGetApprovalNextUserStage();
+	}
+
+	/**
+	 * Retorna próximo estágio no processo de aprovação
+	 * @return
+	 * @throws DBSIOException 
+	 */
+	public APPROVAL_STAGE getApprovalUserNextStageListValue() throws DBSIOException{
+		return pvGetApprovalNextUserStage();
+	}
+
+	/**
+	 * Retorna o estágio de maior nível do usuário
+	 * @return
+	 */
+	public APPROVAL_STAGE getApprovalUserMaxStage(){
+		return DBSApproval.getMaxStage(getApprovalUserStages());
+	}
+	
+	public Integer getApprovalUserStages() {return wApprovalUserStages;}
+	public void setApprovalUserStages(Integer pApprovalUserStages) {wApprovalUserStages = pApprovalUserStages;}
+
+	public Boolean getIsApprovalStageRegistered() throws DBSIOException{
+		return getApprovalStage() == APPROVAL_STAGE.REGISTERED;
+	}
+
+	public Boolean getIsApprovalStageVerified() throws DBSIOException{
+		return getApprovalStage() == APPROVAL_STAGE.VERIFIED;
+	}
+
+	public Boolean getIsApprovalStageConferred() throws DBSIOException{
+		return getApprovalStage() == APPROVAL_STAGE.CONFERRED;
+	}
+
+	public Boolean getIsApprovalStageApproved() throws DBSIOException{
+		return getApprovalStage() == APPROVAL_STAGE.APPROVED;
+	}
+
+	public String getColumnNameApprovalStage() {return wColumnNameApprovalStage;}
+	public void setColumnNameApprovalStage(String pColumnNameApprovalStage) {wColumnNameApprovalStage = pColumnNameApprovalStage;}
+
+	public String getColumnNameApprovalUserIdRegistered() {return wColumnNameApprovalUserIdRegistered;}
+	public void setColumnNameApprovalUserIdRegistered(String pColumnNameApprovalUserIdRegistered) {wColumnNameApprovalUserIdRegistered = pColumnNameApprovalUserIdRegistered;}
+	
+	public String getColumnNameApprovalUserIdConferred() {return wColumnNameApprovalUserIdConferred;}
+	public void setColumnNameApprovalUserIdConferred(String pColumnNameApprovalUserIdConferred) {wColumnNameApprovalUserIdConferred = pColumnNameApprovalUserIdConferred;}
+
+	public String getColumnNameApprovalUserIdVerified() {return wColumnNameApprovalUserIdVerified;}
+	public void setColumnNameApprovalUserIdVerified(String pColumnNameApprovalUserIdVerified) {wColumnNameApprovalUserIdVerified = pColumnNameApprovalUserIdVerified;}
+
+	public String getColumnNameApprovalUserIdApproved() {return wColumnNameApprovalUserIdApproved;}
+	public void setColumnNameApprovalUserIdApproved(String pColumnNameApprovalUserIdApproved) {wColumnNameApprovalUserIdApproved = pColumnNameApprovalUserIdApproved;}
+	
+	public String getColumnNameApprovalDateApproved() {return wColumnNameApprovalDateApproved;}
+	public void setColumnNameApprovalDateApproved(String pColumnNameApprovalDateApproved) {wColumnNameApprovalDateApproved = pColumnNameApprovalDateApproved;}
+	
+	public String getColumnNameDateOnInsert() {return wColumnNameDateOnInsert;}
+	public void setColumnNameDateOnInsert(String pColumnNameDateOnInsert) {wColumnNameDateOnInsert = pColumnNameDateOnInsert;}
+
+	public String getColumnNameDateOnUpdate() {return wColumnNameDateOnUpdate;}
+	public void setColumnNameDateOnUpdate(String pColumnNameDateOnUpdate) {wColumnNameDateOnUpdate = pColumnNameDateOnUpdate;}
+
+	public String getColumnNameUserIdOnInsert() {return wColumnNameUserIdOnInsert;}
+	public void setColumnNameUserIdOnInsert(String pColumnNameUserIdOnInsert) {wColumnNameUserIdOnInsert = pColumnNameUserIdOnInsert;}
+
+	public String getColumnNameUserIdOnUpdate() {return wColumnNameUserIdOnUpdate;}
+	public void setColumnNameUserIdOnUpdate(String pColumnNameUserIdOnUpdate) {wColumnNameUserIdOnUpdate = pColumnNameUserIdOnUpdate;}
+
+	public Integer getUserId() {return wUserId;}
+	public void setUserId(Integer pUserId) {wUserId = pUserId;}
+
+	/**
+	 * CrudBean Pai, caso este crud estar destro de outro crud.
+	 * Neste caso, a conexão e as trasnsações são herdadas automaticamente do crud pai.
+	 * O commit ou rollback só efetuado do primeiro crud pai.
+	 * @param pCrudBean
+	 */
+	public void setParentCrudBean(DBSCrudBean pCrudBean) {
+		wParentCrudBean = pCrudBean;
+		if (!pCrudBean.getChildrenCrudBean().contains(this)){
+			pCrudBean.getChildrenCrudBean().add(this);
+		}
+	}
+
+	public DBSCrudBean getParentCrudBean() {
+		return wParentCrudBean;
+	}
+
+
+	/**
+	 * Lista de CrudBean dentro deste crud.
+	 * O refreshList, beforeView e o afterView dos CrudBean fihos serão chamados automaticamente caso 
+	 * o beforeView e afterview deste crudBean seja disparado.<br>
+	 * Permitindo que os crud filhos atualizem seus dados em função da posição atual deste crud.
+	 * @return
+	 */
+	public List<DBSCrudBean> getChildrenCrudBean() {
+		return wChildrenCrudBean;
+	}
+	
+
+	/**
+	 * Nome do arquivo(xhtml) que será chamado após as ações de consulta e inclusão 
+	 * @return
+	 */
+	public String getCrudFormFile() {return wCrudFormFile;}
+	/**
+	 * Nome do arquivo(xhtml) que será chamado após as ações de consulta e inclusão 
+	 */
+	public void setCrudFormFile(String pCrudFormFile) {wCrudFormFile = pCrudFormFile;}
+	
+	/**
+	 * Seta se houve alteração de valores
+	 * Metodo só deve ser chamada, caso o valor/coluna anterado não pertença aos valores/colunas controlados pelo wDAO 
+	 * @param pChanged
+	 */
+	public void setValueChanged(Boolean pChanged){
+		wValueChanged = pChanged;
+	}
+	public boolean getIsValueChanged(){
+		return wValueChanged;
+	}
+
+	
+	/**
+	 * Informa se está em validação
+	 * @return
+	 */
+	public Boolean getIsCommitting(){
+		return (wEditingStage == EditingStage.COMMITTING);
+	}
+	
+	/**
+	 * Informa se está em modo UPDATE. Modo de edição
+	 * @return
+	 */
+	public Boolean getIsUpdating(){
+		return (wEditingMode == EditingMode.UPDATING);
+	}
+	
+	/**
+	 * Informa se está em modo UPDATE/INSERT/DELETE. Modo de edição
+	 * @return
+	 */
+	public Boolean getIsEditing(){
+		return (wEditingMode != EditingMode.NONE);
+	}
+	
+	
+	/**
+	 * Informa se está em modo DELETING. Modo de exclusão
+	 * @return
+	 */
+	public Boolean getIsDeleting(){
+		return (wEditingMode == EditingMode.DELETING);
+	}
+	
+	/**
+	 * Informa se está em modo APPROVING(Aprovação).
+	 * @return
+	 */
+	public Boolean getIsApproving(){
+		return (wEditingMode == EditingMode.APPROVING);
+	}
+	
+	/**
+	 * Informa se está em modo REPROVING(Reprovação).
+	 * @return
+	 */
+	public Boolean getIsReproving(){
+		return (wEditingMode == EditingMode.REPROVING);
+	}
+
+//	public Boolean getIsApprovalStageApproved(Integer pApprovalStage){
+//		return DBSApproval.isApproved(pApprovalStage);
+//	}
+//	public Boolean getIsApprovalStageConferred(Integer pApprovalStage){
+//		return DBSApproval.isConferred(pApprovalStage);
+//	}
+//	public Boolean getIsApprovalStageVerified(Integer pApprovalStage){
+//		return DBSApproval.isVerified(pApprovalStage);
+//	}
+//	public Boolean getIsApprovalStageRegistered(Integer pApprovalStage){
+//		return DBSApproval.isRegistered(pApprovalStage);
+//	}
+	
+
+	/**
+	 * Informa se está em modo de APPROVING ou REPROVING
+	 * @return
+	 */
+	public Boolean getIsApprovingOrReproving(){
+		return (wEditingMode == EditingMode.APPROVING || wEditingMode == EditingMode.REPROVING);
+	}
+
+	/**
+	 * Informa se está em cancelamento
+	 * @return
+	 */
+	public Boolean getIsIgnoring(){
+		return (wEditingStage == EditingStage.IGNORING);
+	}
+
+	/**
+	 * Retorna se está no primeiro registro válido
+	 * @return
+	 */	
+	public Boolean getIsFirst(){
+		 if (wDAO != null){
+			 return wDAO.getIsFist();
+		 }else{
+			 return true;
+		 }
+	}
+
+	 /**
+	 * Retorna se está no último registro válido
+	 * @return
+	 */
+	public Boolean getIsLast(){
+		 if (wDAO != null){
+			return wDAO.getIsLast();
+		 }else{
+			 return true;
+		 }
+	}
+
+	/**
+	 * Informa se está em modo VIEWING, quando o(s) item(ns) selecionados estão sendo exibidos
+	 * @return
+	 */
+	public Boolean getIsViewing(){
+		return (wEditingMode ==  EditingMode.NONE);
+	}
+
+	/**
+	 * Informa se está em modo INSERTING. Modo de inclusão
+	 * @return
+	 */
+	public Boolean getIsInserting(){
+		return (wEditingMode == EditingMode.INSERTING);
+	}
+
+	/**
+	 * Informa se está em modo VIEWING, quando o(s) item(ns) selecionados estão sendo exibidos
+	 * @return
+	 */
+	public Boolean getIsReadOnly(){
+		if (wEditingMode == EditingMode.DELETING
+		 || wEditingMode == EditingMode.NONE){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	/**
+	 * Informa se cadastro está fechado
+	 * @return
+	 */
+	public Boolean getIsClosed(){
+		return (wFormStage == FormStage.CLOSED);
+	}
+
+	/**
+	 * Se tem algumm registro copiado
+	 * @return
+	 */
+	public Boolean getIsCopied(){
+		if (wCopiedRowIndex != -1){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	// Methods ############################################################
+	
+	/**
+	 * Retorna se item está selecionado
+	 * @return
+	 * @throws DBSIOException 
+	 */
+	public Boolean getSelected() throws DBSIOException {
+//		Boolean xB = false;
+		if (wSelectedRowsIndexes.contains(getList().getRowIndex())){
+			return true;//xB = getList().getRowIndex());		
+		}
+		//System.out.println("GET SELECTED:" + xB);
+		return false;
+	}
+
+	/**
+	 * Configura se o item está selecionado
+	 * @param pSelectOne
+	 * @throws DBSIOException 
+	 */
+	public void setSelected(Boolean pSelectOne) throws DBSIOException {
+		System.out.println("SELECT " + pSelectOne);
+		
+//		wDAO.synchronize();
+		
+		pvSetSelected(pSelectOne);
+		
+		if (pvFireEventBeforeSelect()){
+			pvFireEventAfterSelect();
+		}else{
+			//Desfaz seleção
+			pvSetSelected(!pSelectOne);
+		}
+	}
+	
+	/**
+	 * Retorna se existem alguma linha selecionada
+	 * @return
+	 */
+	public boolean getHasSelected(){
+		if (wSelectedRowsIndexes != null){
+			if (wSelectedRowsIndexes.size()>0){
+				return true;
+			}
+		}
+		return false;
+	}	
+	// Methods ############################################################
+	
+	/**
+	 * Indica que deseja salvar a edição/inclusão/exclusão que está em andamento.
+	 * Nesta etapa deverão ser efetuadas as validações atráves do evento validate.
+	 * Após esta indicação, passará para a etapa de confirmação, onde efetivamente será efetuado o commit(beforeCommit) 
+	 * @return
+	 */
+	public synchronized String confirmEditing() throws DBSIOException{
+		System.out.println("EDITING CONFIRM");
+		//Se estive em processo de modificação
+		if (wEditingMode!=EditingMode.NONE){
+			//Se já não estiver em processo de validação ou cancelamento das modificações
+			if (wEditingStage==EditingStage.NONE){
+				//Se houve erro na validação automática dos componentes
+				//Nao continua com o confirmEditing e reseta a wValidateComponentHasError pois será novamente verificada no método validateComponent
+				if (wValidateComponentHasError){
+					wValidateComponentHasError = false;
+				}else{
+					//Efetua a validação se for exclusão(não houve mudança de valores) ou houver mudança de valores e não for exclusão 
+					if ((getIsValueChanged() && getIsDeleting() == false) 
+					 || getIsDeleting()){
+						//Chama eventos para validação dos dados
+						if (pvFireEventValidate()){
+							//Exibe tela de confirmação para efetuar o commit
+							setEditingStage(EditingStage.COMMITTING);
+						}else{
+							//Ignora a exclusão em caso de erro de validação
+							//Adicionado em 12/11/13 verificação para ignorar caso haja erro na validacao de assinatura
+							if(getIsDeleting() 
+							|| getIsApprovingOrReproving()){
+								setEditingMode(EditingMode.NONE);
+							}
+						}
+					}else{
+						addMessage(wMessageNoChange);
+					}
+				}
+			}else{
+				//exibe mensagem de erro de procedimento
+			}
+		}else{
+			//exibe mensagem de erro de procedimento
+		}
+		return DBSFaces.getCurrentView();
+	}
+
+	// Methods ############################################################
+	
+	/**
+	 * Indica que deseja ignorar a edição/inclusão/exclusão que está em andamento.
+	 * Após esta indicação, passará para a etapa de confirmação, onde efetivamente será ignorado o comando 
+	 * @return
+	 * @throws DBSIOException 
+	 */
+	public synchronized String ignoreEditing() throws DBSIOException{
+		System.out.println("EDITING IGNORE");
+		//Se estive em processo de modificação
+		if (wEditingMode!=EditingMode.NONE){
+			if (wEditingStage==EditingStage.NONE){
+				//Chama eventos antes de ignorar
+				setEditingStage(EditingStage.IGNORING);
+				//Se não houve alteração de valores, sai sem confirmação
+				if (!getIsValueChanged()){
+					//Confirma o estágio/comando de 'ignorar'
+					endEditing(true);
+				}
+			}else{
+				//exibe mensagem de erro de procedimento
+			}
+		}else{
+			//exibe mensagem de erro de procedimento
+		}
+		return DBSFaces.getCurrentView();
+	}
+
+	/**
+		 * Confirma ou cancela o estágio atual. Podendo, por exemplo, confirmar ou cancelar o pedido de ignorar a edição. 
+		 * Está é a última etapa do CRUD
+		 * @param pConfirm true = Confirma, false = cancela
+		 * @return
+	 * @throws DBSIOException 
+		 */
+		public synchronized String endEditing(Boolean pConfirm) throws DBSIOException{
+			System.out.println("END EDITING :  " + pConfirm  + ":" + getEditingMode().getName() + ":" + getEditingStage().getName());
+			if (pConfirm){
+				//Verifica se está no estágio correto
+				if (wEditingStage!=EditingStage.NONE){
+					if (wEditingStage==EditingStage.COMMITTING){
+						//Chama eventos
+						if (pvFireEventBeforeCommit()){
+							pvFireEventAfterCommit();
+							refreshList();
+							pvFinalizeEditing(true);
+						}else{
+							pvFinalizeEditing(false);
+						}
+					}else if (wEditingStage==EditingStage.IGNORING){
+						//Chama eventos
+						if (pvFireEventBeforeIgnore()){
+							pvFireEventAfterIgnore();
+							pvFinalizeEditing(true);
+						}else{
+							pvFinalizeEditing(false);
+						}
+					}
+				}else{
+					//exibe mensagem de erro de procedimento
+				}
+			}else{
+				//Retorna ao estágio sem edição, inclusão ou deleção
+				setEditingStage(EditingStage.NONE);
+				switch(wEditingMode){
+					case UPDATING:
+						//Restaura os valores anteriores a modificação
+						break;
+					case INSERTING:
+						break;
+					case DELETING: 
+						setEditingMode(EditingMode.NONE);
+						view();
+						break;
+					case APPROVING: 
+						setEditingMode(EditingMode.NONE);
+						close(false);
+						break;
+					case REPROVING: 
+						setEditingMode(EditingMode.NONE);
+						close(false);
+						break;
+					default:
+						//Exibe mensagem de erro de procedimento
+				}
+			}
+			return DBSFaces.getCurrentView();
+		}
+
+	/**
+	 * Selectiona todas as linhas que exibidas
+	 */
+	public synchronized String selectAll() throws DBSIOException{
+		System.out.println("SELECT ALL");
+		//Só permite a seleção quando o dialog estiver fechado
+		if (wFormStage==FormStage.CLOSED){
+			pvSelectAll();
+			if (pvFireEventBeforeSelect()){
+				pvFireEventAfterSelect();
+			}else{
+				//Desfaz seleção
+				pvSelectAll();
+			}			
+		}else{
+			//exibir erro de procedimento
+		}
+		return DBSFaces.getCurrentView();
+	}
+
+	
+
+	// Methods ############################################################
+	
+	/**
+	 * Efetua uma nova pesquisa
+	 * @throws DBSIOException 
+	 */
+	public synchronized String refreshList() throws DBSIOException{
+		
+		Integer xCurrentRowIndex = -1;
+//		//Salva posição atual para reposicionar após o refresh
+		if (wDAO != null){
+			xCurrentRowIndex =  wDAO.getCurrentRowIndex();
+		}
+		//Dispara evento para atualizar os dados
+		if (pvFireEventBeforeRefresh()){
+			//Apaga itens selecionados, se houver.
+			wSelectedRowsIndexes.clear();
+			//Restaura posição salva
+			if (wDAO != null){
+				wDAO.setCurrentRowIndex(xCurrentRowIndex);
+			}
+			pvFireEventAfterRefresh();
+		}
+		return DBSFaces.getCurrentView();
+	}
+	
+	/**
+	 * Copia os valores dos campos para a memória para poderem ser colados em outro registro
+	 * @return
+	 */
+	public synchronized String copy() throws DBSIOException{
+		System.out.println("COPY");
+		wCopiedRowIndex = wDAO.getCurrentRowIndex(); 
+		return DBSFaces.getCurrentView();
+	}
+
+
+
+	/**
+	 * Seta os valores atuais com os valores do registro copiado
+	 * @throws DBSIOException 
+	 */
+	public synchronized String paste() throws DBSIOException{
+		System.out.println("PASTE");
+		//Seta o registro atual como sendo o registro copiado
+		wDAO.paste(wCopiedRowIndex);
+		setValueChanged(true);
+		return DBSFaces.getCurrentView();
+	}
+
+	/**
+	 * Exibe todos os itens selecionados 
+	 */
+	public synchronized String viewSelection() throws DBSIOException{
+		System.out.println("VIEW SELECTION");
+		//Limpa todas as mensagens que estiverem na fila
+		clearMessages();
+
+		if (wDAO.getCurrentRowIndex() != -1){
+			//Só permite a seleção quando o dialog estiver fechado
+			if (wFormStage==FormStage.CLOSED){
+				if (wEditingStage==EditingStage.NONE){
+					//Chama evento
+					if (pvFireEventBeforeView()){
+						setFormStage(FormStage.OPENED);
+						pvFireEventAfterView();
+					}
+				}else{
+					//exibir erro de procedimento
+				}
+			}else{
+				//exibir erro de procedimento
+			}
+		}
+		return DBSFaces.getCurrentView();
+	}
+
+	//==============================================================================================
+	/**
+	 * Exibe o item selecionado
+	 */
+	public synchronized String view() throws DBSIOException{
+		System.out.println("VIEW");
+		//Limpa todas as mensagens que estiverem na fila
+		clearMessages();
+		
+//		wDAO.synchronize();
+		
+		if (wDAO.getCurrentRowIndex()!=-1){
+			//Só permite a seleção quando o dialog estiver fechado
+			if (wEditingStage==EditingStage.NONE){
+				//Chama evento
+				if (pvFireEventBeforeView()){
+					setFormStage(FormStage.OPENED);
+					pvFireEventAfterView();
+				}
+			}else{
+				//exibir erro de procedimento
+			}
+		}else{
+			//exibir erro de procedimento
+		}
+		return DBSFaces.getCurrentView();
+	}
+
+	/**
+	 * Informa com cadastro foi fechado 
+	 */
+	public synchronized String close() throws DBSIOException{
+		return close(true);
+	}
+
+	/**
+	 * Informa que cadastro foi fechado 
+	 */
+	public synchronized String close(Boolean pClearMessage) throws DBSIOException{
+		System.out.println("CLOSE");
+		//Só permite a seleção quando o dialog estiver fechado
+		if (wFormStage==FormStage.OPENED){
+			//Dispara evento
+			if (pvFireEventBeforeClose()){
+				setFormStage(FormStage.CLOSED);
+				if (pClearMessage) {
+					clearMessages();
+				}
+			}
+			//getLastInstance("a");
+		}else{
+			//exibe mensagem de erro de procedimento
+		}
+		return DBSFaces.getCurrentView();
+	}
+
+	public synchronized String insertSelected() throws DBSIOException{
+		System.out.println("INSERT COPY");
+		wInsertSelected = true;
+		view();
+		copy();
+		insert();
+		paste();
+		wCopiedRowIndex = -1; //Reseta registro copiado para evitar a exibição do botão Paste.
+		return DBSFaces.getCurrentView();
+	}
+
+	/**
+	 * Entra no modo de inclusão 
+	 * @throws DBSIOException 
+	 */
+	public synchronized String insert() throws DBSIOException{
+		System.out.println("INSERT");
+		if (wAllowInsert 
+		 || wInsertSelected){
+			if (!wInsertSelected){
+				clearMessages();
+			}
+			//Só permite a seleção do insert quando o dialog estiver fechado
+			if (wEditingMode==EditingMode.NONE){
+				if (pvFireEventBeforeEdit(EditingMode.INSERTING)){
+					//Desmarca registros selecionados
+					wSelectedRowsIndexes.clear();
+					
+					setEditingMode(EditingMode.INSERTING);
+					pvMoveBeforeFistRow();
+					//Não chama os eventos por já foram chamados no view() quando é inclusão de registro selecionado
+					if (!wInsertSelected){
+						if (pvFireEventBeforeView()){
+							setFormStage(FormStage.OPENED);
+							pvFireEventAfterView();
+						}
+					}
+				}else{
+					setValueChanged(false);
+					//exibe mensagem de erro de procedimento
+				}
+			}else{
+				//exibe mensagem de erro de procedimento
+			}
+		}
+		return DBSFaces.getCurrentView();
+	}
+
+	/**
+	 * Entra no modo de inclusão 
+	 * @throws DBSIOException 
+	 */
+	public synchronized String approve() throws DBSIOException{
+		System.out.println("APPROVE");
+		if (wAllowApproval 
+		 && wAllowApprove){
+			if (wUserId== null){
+				//wLogger.error("[DBSCrudBean]UserId - Não informado");
+				addMessage("UserId", MESSAGE_TYPE.ERROR,"DBSCrudBean: UserId - Não informado!");
+				return DBSFaces.getCurrentView();
+			}
+			//Só permite a seleção quando o dialog em exibição
+			if (wEditingMode==EditingMode.NONE){
+				if (pvFireEventBeforeEdit(EditingMode.APPROVING)){
+					setEditingMode(EditingMode.APPROVING);
+					setValueChanged(true);
+					confirmEditing();
+				}else{
+					setValueChanged(false);
+					//exibe mensagem de erro de procedimento
+				}
+			}else{
+				//exibe mensagem de erro de procedimento
+			}
+		}
+		return DBSFaces.getCurrentView();
+	}
+	
+	/**
+	 * Entra no modo de inclusão 
+	 * @throws DBSIOException 
+	 */
+	public synchronized String reprove() throws DBSIOException{
+		System.out.println("REPROVE");
+		//Só permite a seleção quando o dialog em exibição
+		if (wAllowApproval && wAllowApprove){
+			if (wUserId== null){
+				//wLogger.error("[DBSCrudBean]UserId - Não informado");
+				addMessage("UserId", MESSAGE_TYPE.ERROR,"DBSCrudBean: UserId - Não informado!");
+				return DBSFaces.getCurrentView();
+			}
+			if (wEditingMode==EditingMode.NONE){
+				if (pvFireEventBeforeEdit(EditingMode.REPROVING)){
+					setEditingMode(EditingMode.REPROVING);
+					setValueChanged(true);
+					confirmEditing();
+				}else{
+					setValueChanged(false);
+					//exibe mensagem de erro de procedimento
+				}
+			}else{
+				//exibe mensagem de erro de procedimento
+			}
+		}
+		return DBSFaces.getCurrentView();
+	}
+
+	/**
+	 * Entra no modo de edição 
+	 */
+	public synchronized String update() throws DBSIOException{
+		System.out.println("UPDATE");
+		if (wAllowUpdate){
+			clearMessages();
+			//Só permite a seleção quando o dialog em exibição
+			if (wEditingMode==EditingMode.NONE){
+				if (pvFireEventBeforeEdit(EditingMode.UPDATING)){
+					setEditingMode(EditingMode.UPDATING);
+				}else{
+					setValueChanged(false);
+					//exibe mensagem de erro de procedimento
+				}
+			}else{
+				//exibe mensagem de erro de procedimento
+			}
+		}
+		return DBSFaces.getCurrentView();
+	}
+
+	/**
+	 * Entra no modo de exclusão 
+	 * @throws DBSIOException 
+	 */
+	public synchronized String delete() throws DBSIOException{
+		System.out.println("DELETE");
+		if (wAllowDelete){
+			clearMessages();
+			//Só permite a exclusão quando o dialog em exibição
+			if (wEditingMode==EditingMode.NONE){
+				if (pvFireEventBeforeEdit(EditingMode.DELETING)){
+					//Muda para o modo de exclusão
+					setEditingMode(EditingMode.DELETING);
+					//Exibe confirmação da exclusão.
+					confirmEditing();
+					//setEditingStage(EditingStage.COMMITTING);
+				}else{
+					setValueChanged(false);
+					//setEditingStage(EditingStage.COMMITTING);
+				}
+			}else{
+				//exibe mensagem de erro de procedimento
+			}
+		}
+		return DBSFaces.getCurrentView();
+	}
+
+	public synchronized String moveFirst() throws DBSIOException{
+		if (wEditingStage==EditingStage.NONE){
+			wDAO.moveFirstRow();
+			view();
+		}
+		return DBSFaces.getCurrentView();
+	}
+	public synchronized String movePrevious() throws DBSIOException{
+		if (wEditingStage==EditingStage.NONE){
+			wDAO.movePreviousRow();
+			view();
+		}
+		return DBSFaces.getCurrentView();
+	}
+	
+	public synchronized String moveNext() throws DBSIOException{
+		if (wEditingStage==EditingStage.NONE){
+			wDAO.moveNextRow();
+			view();
+		}
+		return DBSFaces.getCurrentView();
+	}
+	
+	public synchronized String moveLast() throws DBSIOException{
+		if (wEditingStage==EditingStage.NONE){
+			wDAO.moveLastRow();
+			view();
+		}
+		return DBSFaces.getCurrentView();
+	}
+
+
+	@Override
+	protected void warningMessageValidated(String pMessageKey, Boolean pIsValidated) throws DBSIOException{
+		if (pIsValidated){
+			//Chama novamente a confirmação da edição
+			confirmEditing();
+		}else{
+			if (getEditingMode().equals(EditingMode.DELETING)){
+				//Ignora exclusão
+				ignoreEditing();
+			}
+		}
+	}	
+	
+	@Override
+	protected boolean openConnection() {
+		if (wParentCrudBean == null){
+			//Abre a conexão se não estiver edição e não estiver processando as chamadas dos eventos, 
+			//pois em ambos os casos a conexão já está aberta
+			if (!getIsEditing() && !wBrodcastingEvent){
+				super.openConnection();
+				//Configura os crudbean filhos que possam existir
+				pvBroadcastConnection(this);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	@Override
+	protected void closeConnection() {
+		if (wParentCrudBean == null){
+			//Fecha a conexão se não estiver edição e não estiver processando as chamadas dos eventos
+			//pois em ambos os casos a conexão não pode ser fechada até que seja finalizados a edição e as chamadas dos eventos
+			if (!getIsEditing() && !wBrodcastingEvent){
+				super.closeConnection();
+				//Configura os crudbean filhos que possam existir
+				pvBroadcastConnection(this);
+			}
+		}
+	}
+	
+	// Abstracted
+	// PROTECTED ============================================================================
+	/* ESTES MÉTODOS FORAM DEFINIDOS DIRETAMENTE NO CÓDIGO DESTA CLASS, AO INVÉS 
+	* DE IMPLEMENTAR IDBSCrudEventsListeners, PARA QUE FIQUEM COMO PROTECTED. 
+	* EVITANDO QUE ESTES MÉTODOS SEJAM CHAMADOS EXTERNAMENTE POR OUTRAS CLASSES.
+	* O QUE SERIA UM PROBLEMA DE SEGURANÇA JÁ QUE ESTA CLASS(DBSCRUD) SERÁ UTILIZADA COMO UM MANAGEDBEAN.
+	*/
+	
+	
+	/**
+	 * Chamado quando a class é instanciada.<br/>
+	 * Conexão com o banco encontra-se aberta.<br/>
+	 * @param pEvent Informações do evento
+	 */
+	protected abstract void initialize(DBSCrudBeanEvent pEvent) throws DBSIOException;
+
+
+	/**
+	 * Chamado antes da class set finalizada.<br/>
+	 * Conexão com o banco já se encontra fechada.<br/>
+	 * @param pEvent Informações do evento
+	 */
+	protected void finalize(DBSCrudBeanEvent pEvent){};
+	
+	
+	/**
+	 * Chamado antes do crudform ser fechado.<br/>
+	 * @param pEvent Informações do evento
+	 */
+	protected void beforeClose(DBSCrudBeanEvent pEvent) throws DBSIOException {} ;
+
+	/**
+	 * Chamado antes de limpar os dados existentes e fazer uma nova pesquisa.<br/>
+	 * A pesquisa principal dos dados que utiliza o wDAO, deverá ser efetuada neste evento.<br/>
+	 * Conexão com o banco encontra-se aberta.<br/>
+	 * @param pEvent Informações do evento
+	 * @throws DBSIOException 
+	 */
+	protected void beforeRefresh(DBSCrudBeanEvent pEvent) throws DBSIOException{};
+	
+	/**
+	 * Chamado após efetuada uma nova pesquisa.
+	 * Conexão com o banco encontra-se aberta.<br/>
+	 * @param pEvent Informações do evento
+	 */
+	protected void afterRefresh(DBSCrudBeanEvent pEvent) throws DBSIOException{};
+
+	
+	/**
+	 * Chamado após o click do usuário no insert/delete/update e antes de iniciar o respectivo insert/delete/update
+	 * Neste evento pode-se ignorar o click do usuário, evitado que continue o comando de insert/update/delete.
+	 * Para isso, informe pEvent.setOk(false);<br> 
+	 * Neste evento o editingMode do Crud ainda não foi configurado, portanto para saber qual a atividade(Inser/update/delete) foi selecionada
+	 * deve-se consultar o atributo editingMode do Evento(ex:if (pEvent.getEditingMode() == EditingMode.INSERTING){}).<br/>
+	 * Pode-se forçar a indicação que houve alteração de dados logo na iniciação da edição, mesmo que ainda não tenha sido efetuada qualquer alteração pelo usuário, setando a propriedade setValueChanged para true.<br/>
+	 * Para reset dos valores de uma inclusão, utilize o beforeView.<br/>
+	 * Conexão com o banco encontra-se aberta.<br/> 
+	 * @param pEvent Informações do evento
+	 */
+	protected void beforeEdit(DBSCrudBeanEvent pEvent) throws DBSIOException {};
+	
+	/**
+	 * Chamado logo após a finalização da edição(insert/delete/update), independentemente da edição ter sido confirmada ou ignorada.<br/>
+	 * Conexão com o banco encontra-se aberta, porém será fechado logo após a finalização deste evento.<br/>
+	 * @param pEvent Informações do evento
+	 */
+	protected void afterEdit(DBSCrudBeanEvent pEvent) throws DBSIOException {};
+	
+	
+	/**
+	 * Chamado antes de exibir os dados ou antes de iniciar uma inclusão.<br/>
+	 * Neste evento pode-se configura os valores default dos campos no caso de uma inclusão(insert) (ex: <b>if (getIsInserting()){})</b>.<br/>
+	 * Para os outros casos(update/delete/approve/reprove) deve-se consultar o <b>pEvent.getEditingMode()</b>, 
+	 * pois o modo de edição só estará disponível após a confirmação do evento beforeEdit.<br/>
+	 * Conexão com o banco encontra-se aberta.<br/>
+	 * @param pEvent Informações do evento
+	 */
+	protected void beforeView(DBSCrudBeanEvent pEvent) throws DBSIOException{};
+	
+	/**
+	 * Chamado depois depois de exibir os dados.<br/>
+	 * Procure utilizar o evento <b>beforeView</b><br/>
+	 * Neste evento pode-se, também, configurar os valores default dos campos no caso de uma inclusão.
+	 * Conexão com o banco encontra-se aberta.<br/>
+	 * @param pEvent Informações do evento
+	 */
+	protected void afterView(DBSCrudBeanEvent pEvent) throws DBSIOException{};
+	
+	/**
+	 * Chamado depois da validação e mensagens de confirmação.
+	 * Ocorre após a gravação dos dados(sem commit) e antes de voltar ao modo sem edição(EditingMode.NONE).<br/>
+	 * A transação(Begintrans/Commit/Rollback) são controladas automaticamete.<br/>
+	 * Será efetuado o <b>rollback</b> em caso de <b>exception</b> ou se o atributo <b>pEvent.setOk</b> do evento for <b>false</b>.<br>
+	 * Neste evento, pode-se forçar o valor de alguma coluna utilizando o <b>wDAO</b>, devendo-se, contudo, chamar o <b>super.beforeCommit()</b> ao final, 
+	 * caso o CRUD seja a tabela definida no próprio wDAO.<br> 
+	 * Caso o CRUD não seja da tabela definida no wDAO, este método deverá ser sobreescrito
+	 * para que seja implementado o CRUD específico e NÃO deverá ser chamado o <b>super.beforeCommit()</b>.<br>
+	 * No caso do método ser sobreescrito, é necessário setar o atributo <b>pEvent.setCommittedRowCount</b> com
+	 * a quantidade de registros afetados.<br>
+	 * Conexão com o banco encontra-se aberta.<br/>
+	 * @param pEvent Informações do evento
+	 * @throws DBSIOException 
+	 */
+	@SuppressWarnings("unchecked")
+	protected void beforeCommit(DBSCrudBeanEvent pEvent) throws DBSIOException {
+		//Copia dos valores pois podem ter sido alterados durante o beforecommit
+		
+		//Aprovação/Reprovação
+		if (getIsApprovingOrReproving()){ 
+			pvBeforeCommitSetAutomaticColumnsValues(pEvent); //TODO
+			if (pEvent.isOk()){
+				pEvent.setCommittedRowCount(wDAO.executeUpdate());
+			}else{
+				return;
+			}
+		//Insert/Update/Delete
+		}else{ 
+			pvBeforeCommitSetAutomaticColumnsValues(pEvent);
+			if (pEvent.isOk()){
+				//Insert
+				if(getIsInserting()){
+					if (wDAO.isAutoIncrementPK()){
+						wDAO.setValue(wDAO.getPK(), null);
+					}
+					pEvent.setCommittedRowCount(wDAO.executeInsert());
+				//Update
+				}else if (getIsUpdating()){
+					pEvent.setCommittedRowCount(wDAO.executeUpdate());
+				//Delete
+				}else if(getIsDeleting()){
+					pEvent.setCommittedRowCount(wDAO.executeDelete());
+				}
+			}
+		}
+	}
+	
+	
+	// PRIVATE ============================================================================
+	
+	/**
+	 * Finaliza a edição, resetando e editing mode.
+	 * @param pOk
+	 * @throws DBSIOException
+	 */
+	private void pvFinalizeEditing(Boolean pOk) throws DBSIOException{
+		switch(wEditingMode){
+			case UPDATING:
+				if (wEditingStage==EditingStage.IGNORING){
+					setEditingMode(EditingMode.NONE); 
+					pvRestoreValuesOriginal();
+				}else{
+					if (pOk){
+						setEditingMode(EditingMode.NONE);
+					}else{
+						//RESTAURAR OS VALORES
+//						wEditingStage==EditingStage.IGNORING
+						setEditingStage(EditingStage.NONE);
+//						pvRestoreValuesOriginal();
+					}
+				}
+				break;
+			case INSERTING:
+				if (pOk){
+					//Fecha crudform se for para ignorar a inclusão ou for uma inclusão a partir da seleção de um item do crudTable
+					if (wEditingStage==EditingStage.IGNORING
+					|| wInsertSelected){
+						setEditingMode(EditingMode.NONE); 
+//						setFormStage(FormStage.CLOSED);
+						close();
+					}else{
+						setEditingMode(EditingMode.NONE); 
+						//Reinicia no processe de inclusão
+						insert();
+					}
+				}else{
+					//Continua no mesmo processo de inclusão até que o erro seja corrigido ou a inclusão ignorada
+					setEditingStage(EditingStage.NONE);
+				}
+				break;
+			case DELETING:
+				if (wEditingStage==EditingStage.IGNORING){
+					setEditingMode(EditingMode.NONE);
+				}else{
+					wCopiedRowIndex = -1; //Reseta registro copiado para evitar a exibição do botão Paste.
+					setEditingMode(EditingMode.NONE);
+					if (pOk){
+						setFormStage(FormStage.CLOSED);
+					}
+				}
+				break;
+			case APPROVING:
+				setEditingMode(EditingMode.NONE); 
+				setEditingStage(EditingStage.NONE);
+				close(false);
+				break;
+			case REPROVING:
+				setEditingMode(EditingMode.NONE); 
+				setEditingStage(EditingStage.NONE);
+				close(false);
+				break;
+			default:
+				setEditingMode(EditingMode.NONE);
+				//Exibe mensagem de erro de procedimento
+		}		
+	}
+
+	/**
+	 * Restaura os valores antes de qualquer modificação
+	 */
+	private void pvRestoreValuesOriginal(){
+		wDAO.restoreValuesOriginal();
+	}
+	
+	private void pvMoveBeforeFistRow() throws DBSIOException{
+		wDAO.moveBeforeFirstRow();
+	}
+		
+	/**
+	 * Restaura os valores antes de qualquer modificação
+	 */
+//	private void pvRestoreCurrentRowValues(){
+//		wDAO.setCurrentRowIndex(wCurrentRowIndex);
+//		pvCopyValuesFromDAOtoCurrentRow();
+//	}
+
+	/**
+	 * Copis os dados localmente a partir do registro selecionado no DAO. 
+	 * Os dados são salvos em wCurrentRow. São criadas colunas, cujos nomes são os mesmos existentes na query que criou o wDAO.
+	 */
+//	private void pvCopyValuesFromDAOtoCurrentRow(){
+//		//Salva posição
+//		wCurrentRowIndex =  wDAO.getCurrentRowIndex();
+//		//Apaga os valores atuais
+//		wCurrentRow.getColumns().clear();
+//		//Set a posição somente para forçar que os valores originais da colunas sejam setados  
+//		wDAO.setCurrentRowIndex(wCurrentRowIndex);
+//		//Cria as colunas locais
+//		for (int xX = 0; xX<wDAO.getColumns().size(); xX++){
+//			DBSColumn xC = wDAO.getColumn(xX);
+//			wCurrentRow.MergeColumn(xC.getColumnName(), xC.getDisplayColumn(), xC.getDisplayColumnName(), xC.getInputFormat(), xC.getSize(), xC.getPK(), xC.getDisplayMerge(), xC.getReadOnly(), xC.getAllowSort(), xC.getInputAllowNull());
+//			wCurrentRow.getColumn(xC.getColumnName()).setDataType(xC.getDataType());
+//			wCurrentRow.setValue(xC.getColumnName(), xC.getValue(), true);
+//		}
+//	}
+
+	/**
+	 * Copia os dados locais para o wDAO 
+	 */
+//	@SuppressWarnings("unchecked")
+//	private void pvCopyValuesFromCurrentRowToDAO(){
+//		wDAO.setCurrentRowIndex(wCurrentRowIndex);
+//		for (int xX = 0; xX<wCurrentRow.getColumns().size(); xX++){
+//			wDAO.setValue(wCurrentRow.getColumn(xX).getColumnName(), wCurrentRow.getColumn(xX).getValue());
+//		}
+//	}
+
+	/**
+	 * Cria colunas locais, a partir do dao, com valores zerados.
+	 * Estas colunas, armazenam os valores do registro corrente.
+	 * Em caso em inclusão, os valores do novo registro.
+	 */
+//	private void pvClearCurrentRow(){
+//		wCurrentRowIndex =  -1;
+//		//Apaga os valores atuais
+//		wCurrentRow.getColumns().clear();
+//		//Set a posição somente para forçar que os valores originais da colunas sejam setados  
+//		if (wDAO!=null){
+//			wDAO.setCurrentRowIndex(wCurrentRowIndex);
+//			pvCreateCurrentRow();
+//		}
+//		wCurrentRow.resetValues();
+//	}
+
+	/**
+	 * Cria colunas que serão utilizadas para armazenar os valores do registro corrente.<br/>
+	 * As colunas são imagens das colunas criada no wDAO.
+	 * Em caso em inclusão, os valores do novo registro.
+	 */
+//	private void pvCreateCurrentRow(){
+//		if (wCurrentRow.size() == 0) {
+//			//Set a posição somente para forçar que os valores originais da colunas sejam setados  
+//			if (wDAO!=null){
+//				//Cria as colunas locais
+//				for (int xX = 0; xX<wDAO.getColumns().size(); xX++){
+//					DBSColumn xC = wDAO.getColumn(xX);
+//					wCurrentRow.MergeColumn(xC.getColumnName(), xC.getDisplayColumn(), xC.getDisplayColumnName(), xC.getInputFormat(), xC.getSize(), xC.getPK(), xC.getDisplayMerge(), xC.getReadOnly(), xC.getAllowSort(), xC.getInputAllowNull());
+//					wCurrentRow.getColumn(xC.getColumnName()).setDataType(xC.getDataType());
+//				}
+//			}
+//		}
+//	}
+
+	/**
+	 * Retorna a respectiva coluna do DAO a partir da propriedade value que foi utilizada no componente
+	 * @param pInput
+	 * @return
+	 */
+	private DBSColumn pvGetDAOColumnFromInputValueExpression(DBSUIInput pInput){
+		String xColumnName = DBSFaces.getAttibuteNameFromInputValueExpression(pInput).toLowerCase();
+		if (xColumnName!=null &&
+			!xColumnName.equals("")){
+			//Retira do os prefixos controlados pelo sistema 
+			if (xColumnName.startsWith(DBSSDK.UI.PREFIX.CRUD)){
+				xColumnName = DBSString.getSubString(xColumnName, DBSSDK.UI.PREFIX.CRUD.length() + 1, xColumnName.length());
+			}else if (xColumnName.startsWith(DBSSDK.UI.PREFIX.AUX)){
+				xColumnName = DBSString.getSubString(xColumnName, DBSSDK.UI.PREFIX.AUX.length() + 1, xColumnName.length());
+			}
+			//Configura o tamanho máximo de caracteres do componente na tela
+			if (wDAO.containsColumn(xColumnName)){
+				return wDAO.getColumn(xColumnName);
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Configura o crudbean filhos com a mesma conexão do pai
+	 * @param pBean
+	 */
+	private void pvBroadcastConnection(DBSCrudBean pBean){
+		for (DBSCrudBean xChildBean:pBean.getChildrenCrudBean()){
+			//Força o fechamento da conexão para evitar que fique uma conexão aberta perdida na memória
+			Connection xCn = xChildBean.getConnection();
+	
+			DBSIO.closeConnection(xCn);
+	
+			//Força para que a conexão do crud filho seja a mesma do crud 'pai'
+			xChildBean.setConnection(pBean.getConnection());
+			//Procura pelos netos
+			pvBroadcastConnection(xChildBean);
+		}
+	}
+
+	/**
+	 * Salva indice do linha selacionada
+	 * @param pSelectOne
+	 * @throws DBSIOException 
+	 */
+	private void pvSetSelected(Boolean pSelectOne) throws DBSIOException{
+		Integer xRowIndex = getList().getRowIndex();
+		if (pSelectOne){
+			if (!wSelectedRowsIndexes.contains(xRowIndex)){
+				wSelectedRowsIndexes.add(xRowIndex);
+			}
+		}else{
+			if (wSelectedRowsIndexes.contains(xRowIndex)){
+				wSelectedRowsIndexes.remove(xRowIndex);
+			}
+		}
+	}
+
+	/**
+	 * Seleciona todas as linhas não selecionadas e desseleciona todas as linha selecionadas
+	 * @throws DBSIOException 
+	 */
+	private void pvSelectAll() throws DBSIOException{
+		for (Integer xX = 0; xX < getList().getRowCount(); xX++){
+			//Recupera se está ou não selecionado e inverte
+			if (wSelectedRowsIndexes.contains(xX)){
+				wSelectedRowsIndexes.remove(xX);
+			}else{
+				wSelectedRowsIndexes.add(xX);
+			}
+		}
+	}
+
+	private APPROVAL_STAGE pvGetApprovalStage(boolean pFromValue){
+		//Retorna estágio de registro, caso aprovação esteja desabilidata ou não tenha sido informado o nome da coluna para garva o estágfio
+		if (!getAllowApproval()){
+			return APPROVAL_STAGE.REGISTERED;
+		}
+		APPROVAL_STAGE xStage;
+		if (pFromValue){
+			xStage = APPROVAL_STAGE.get(getValue(getColumnNameApprovalStage())); 
+		}else{
+			xStage = APPROVAL_STAGE.get(getListValue(getColumnNameApprovalStage())); 
+		}
+		//Força que seja 'REGISTRED' caso o valor retornado seja nulo
+		if (xStage==null){
+			xStage = APPROVAL_STAGE.REGISTERED;
+		}
+		return xStage;
+	}
+
+	/**
+	 * Verifica se há controle de assinatura e se usuário tem poder para registrar.
+	 * Se não tiver, bloqueia inclusão/alteração/deleção
+	 * @return
+	 */
+	private boolean pvApprovalUserAllowRegister(){
+		if (getAllowApproval() &&
+			!DBSApproval.isRegistered(getApprovalUserStages())){
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Retorna os próximos estágios que o usuário poderá efetuar, 
+	 * considerando o estágio do registro atual e os estágios que o usuário tem poder para efetuar.
+	 * @return O somatório dos estágios
+	 * @throws DBSIOException 
+	 */
+	private Integer pvGetApprovalNextUserStages() throws DBSIOException{
+		return DBSApproval.getNextUserStages(getApprovalStage(), getApprovalUserStages());
+	}
+
+	/**
+	 * Retorna o próximo estágio que deverá estar o registro atual, 
+	 * considerando os estágios que o usuário tem poder para efetuar.
+	 * @return
+	 * @throws DBSIOException 
+	 */
+	private APPROVAL_STAGE pvGetApprovalNextUserStage() throws DBSIOException{
+		return DBSApproval.getMaxStage(pvGetApprovalNextUserStages());
+	}
+	
+
+	/**
+	 * Configura os valores das colunas que são preenchidas automaticamente pelo DBSCrudBean
+	 * @param pEvent
+	 * @throws DBSIOException 
+	 */
+	private void pvBeforeCommitSetAutomaticColumnsValues(DBSCrudBeanEvent pEvent) throws DBSIOException{
+		DBSColumn 	xColumn = null;
+		//Configura os valores das assinaturas se assinatura estive habilitada. 
+		if (getAllowApproval()){
+			pvBeforeCommitSetAutomaticColumnsValuesApproval(pEvent);
+		}
+		//Insert
+		if(getIsInserting()){
+			//Salva usuário que incluiu
+			xColumn = wDAO.getCommandColumn(getColumnNameUserIdOnInsert());
+			if (xColumn!=null){
+				xColumn.setValue(getUserId());
+			}
+			//Salva data e hora da inclusão
+			xColumn = wDAO.getCommandColumn(getColumnNameDateOnInsert());
+			if (xColumn!=null){
+				xColumn.setValue(DBSDate.getNowDateTime());
+			}
+		//Update
+		}else if (getIsUpdating()){
+			//Salva usuário que alterou
+			xColumn = wDAO.getCommandColumn(getColumnNameUserIdOnUpdate());
+			if (xColumn!=null){
+				xColumn.setValue(getUserId());
+			}
+			//Salva data e hora da alteração
+			xColumn = wDAO.getCommandColumn(getColumnNameDateOnUpdate());
+			if (xColumn!=null){
+				xColumn.setValue(DBSDate.getNowDateTime());
+			}
+		//Delete
+		}else if(getIsDeleting()){
+		}	
+	}
+	
+	/**
+	 * Configura os valores dos campos da assinatura eletrônica
+	 * @throws DBSIOException 
+	 */
+	private void pvBeforeCommitSetAutomaticColumnsValuesApproval(DBSCrudBeanEvent pEvent) throws DBSIOException{
+		DBSColumn 		xColumn = null;
+		APPROVAL_STAGE 	xApprovalNextStage = null;
+		Integer 		xUserId = null;
+		Timestamp	 	xApprovalDate = null;
+		Integer 		xApprovalNextUserStages = null;
+		xUserId =  getUserId();
+		xApprovalDate = DBSDate.getNowTimestamp();
+		
+		//Aprovação
+		if (getIsApproving()){
+			xApprovalNextUserStages = pvGetApprovalNextUserStages();
+			xApprovalNextStage = pvGetApprovalNextUserStage();
+		//Reprovação
+		}else if (getIsReproving()){
+			//Anula as assinaturas de conferencia,verificação e aprovação
+			xApprovalNextUserStages = DBSApproval.getApprovalStage(false, true,  true,  true);
+			xApprovalNextStage = APPROVAL_STAGE.REGISTERED;
+			xUserId = null;
+			xApprovalDate = null;
+		//Inclusão ou Alteração
+		}else if(getIsInserting() ||
+				 getIsUpdating()){
+			//Força o usuário atual como sendo o responsável pelo registro
+			xApprovalNextStage = APPROVAL_STAGE.REGISTERED;
+			xApprovalNextUserStages = APPROVAL_STAGE.REGISTERED.getCode();
+		}
+		
+		//Salva o usuário que registrou
+		if (xApprovalNextStage==APPROVAL_STAGE.REGISTERED){ 
+			//Salva usuário que registrou
+			xColumn = wDAO.getCommandColumn(getColumnNameApprovalUserIdRegistered());
+			if (xColumn!=null){xColumn.setValue(getUserId());}
+		}else{
+			//Se usuário tem poder para conferir...
+			if (DBSApproval.isConferred(xApprovalNextUserStages)){
+				//Salva ou apaga usuário que conferiu
+				xColumn = wDAO.getCommandColumn(getColumnNameApprovalUserIdConferred());
+				if (xColumn!=null){xColumn.setValue(xUserId);}
+			}
+			//Se usuário tem poder para verificar...
+			if (DBSApproval.isVerified(xApprovalNextUserStages)){
+				//Salva ou apaga usuário que verificou
+				xColumn = wDAO.getCommandColumn(getColumnNameApprovalUserIdVerified());
+				if (xColumn!=null){xColumn.setValue(xUserId);}
+			}
+			//Se usuário tem poder para aprovar...
+			if (DBSApproval.isApproved(xApprovalNextUserStages)){
+				//Ignora a aprovação se usuário for o mesmo que registrou
+				xColumn = wDAO.getCommandColumn(getColumnNameApprovalUserIdRegistered());
+				if (xColumn!=null){
+					if (DBSNumber.toInteger(xColumn.getValue()).equals(xUserId)){
+						addMessage(wMessaggeApprovalSameUserError);
+						pEvent.setOk(false);
+						return;
+					}
+				}
+				//Salva ou apaga usuário que aprovou
+				xColumn = wDAO.getCommandColumn(getColumnNameApprovalUserIdApproved());
+				if (xColumn!=null){xColumn.setValue(xUserId);}
+				//Salva ou apaga data e hora da aprovação
+				xColumn = wDAO.getCommandColumn(getColumnNameApprovalDateApproved());
+				if (xColumn!=null){xColumn.setValue(xApprovalDate);}
+			}
+		}
+		
+		//Salva estágio da aprovação
+		setApprovalStage(xApprovalNextStage);
+	}
+
+	
+	/**
+	 * Chamado depois de efetuado o CRUD com sucesso.<br/>
+	 * Conexão com o banco encontra-se aberta.
+	 * @param pEvent Informações do evento
+	 */
+	protected void afterCommit(DBSCrudBeanEvent pEvent) throws DBSIOException {};
+
+	/**
+	 * Chamado quando houve problema de validação ou não houver a confirmação do usuário para continuar.<br/>
+	 * Conexão com o banco encontra-se aberta.
+	 * @param pEvent Informações do evento
+	 */
+	protected void beforeIgnore(DBSCrudBeanEvent pEvent) throws DBSIOException {};
+	/**
+	 * Chamado depois de ignorar o CRUD.<br/>
+	 * Conexão com o banco encontra-se aberta.
+	 * @param pEvent Informações do evento
+	 */
+	protected void afterIgnore(DBSCrudBeanEvent pEvent){};
+
+	/**
+	 * Chamado antes de efetuar a seleção da linha através do ckeckbox padrão do datatable. Podendo, neste momento, inibir a seleção retornando setOk(false) do evento.<br/> 
+	 * Conexão com o banco encontra-se aberta.
+	 * @param pEvent Informações do evento
+	 */
+	protected void beforeSelect(DBSCrudBeanEvent pEvent) throws DBSIOException {};
+	
+	/**
+	 * Chamado depois da seleção de algum item.<br/>
+	 * Conexão com o banco encontra-se aberta.
+	 * @param pEvent Informações do evento
+	 */
+	protected void afterSelect(DBSCrudBeanEvent pEvent){};
+
+	/**
+	 * Chamado após indicar que seja salvar(commit) os dados, e antes de pedir a confirmação da edição.
+	 * Para indicar problemas na validação deve-se setar <b>pEvent.setOk(false)</b>.<br/>
+	 * Neste método deve-se efetuar as validações das regras de negócios e gerar as mensagens de erro ou alerta, 
+	 * caso necessario, via o comando <b>addMessage</b>.<br/>
+	 * Qualquer alteração direta nos valores de alguma coluna do wDAO, que não esteja vinculada a um campo da tela(getter e setter), 
+	 * serão ignoradas por este evento, deve-se utilizar o evento <b>beforeCommit</b> para tal.<br/>
+	 * Conexão com o banco encontra-se aberta.
+	 * @param pEvent Informações do evento
+	 */
+	protected void validate(DBSCrudBeanEvent pEvent) throws DBSIOException{};
+
+	
+	//Events -----------------------------------------------------
+	private void pvFireEventInitialize(){
+		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.INITIALIZE);
+		xE.setEditingMode(getEditingMode());
+		try {
+			pvBroadcastEvent(xE, false, true, true);
+		} catch (Exception e) {
+			xE.setOk(false);
+			wLogger.error("EventInitialize",e);
+		}
+	}
+	
+	private void pvFireEventFinalize(){
+		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.FINALIZE);
+		xE.setEditingMode(getEditingMode());
+		try {
+			pvBroadcastEvent(xE, false, false, true);
+		} catch (Exception e) {
+			xE.setOk(false);
+			wLogger.error("EventFinalize",e);
+		}
+	}
+
+	private boolean pvFireEventBeforeClose(){
+		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_CLOSE);
+		xE.setEditingMode(getEditingMode());
+		try {
+			pvBroadcastEvent(xE, false, false, false);
+		} catch (Exception e) {
+			xE.setOk(false);
+			wLogger.error("EventBeforeClose",e);
+		}
+		return xE.isOk();
+	}
+
+	private boolean pvFireEventBeforeView(){
+		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_VIEW);
+		xE.setEditingMode(getEditingMode());
+		try {
+			pvBroadcastEvent(xE, true, true, true);
+		} catch (Exception e) {
+			xE.setOk(false);
+			wLogger.error("EventBeforeView",e);
+		}
+		return xE.isOk();
+	}
+	
+	private void pvFireEventAfterView(){
+		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.AFTER_VIEW);
+		xE.setEditingMode(getEditingMode());
+		//Marca que não houve edição nos campos, para que as configurações iniciais nos campos efetuadas no BeforeView sejam aceita sem ficarem caracterizadas como edição do usuário. 
+
+		setValueChanged(false); 
+
+		try {
+			pvBroadcastEvent(xE, true, true, true);
+		} catch (Exception e) {
+			xE.setOk(false);
+			wLogger.error("EventAfterView",e);
+		}
+	}
+
+	private boolean pvFireEventBeforeRefresh(){
+		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_REFRESH);
+		xE.setEditingMode(getEditingMode());
+		try{
+			pvBroadcastEvent(xE, true, true, true);
+		} catch (Exception e) {
+			xE.setOk(false);
+			wLogger.error("EventBeforeRefresh",e);
+		}
+		return xE.isOk();
+	}
+	
+	private void pvFireEventAfterRefresh(){
+		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.AFTER_REFRESH);
+		xE.setEditingMode(getEditingMode());
+		try{
+			pvBroadcastEvent(xE, true, true, true);
+		} catch (Exception e) {
+			xE.setOk(false);
+			wLogger.error("EventInitialize",e);
+		}
+	}
+
+	/**
+	 * Ocorre após a confirmação do estágio de ignore e antes de voltar ao modo sem edição(EditingMode.NONE)
+	 * @return
+	 */
+	private boolean pvFireEventBeforeIgnore(){
+		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_IGNORE);
+		xE.setEditingMode(getEditingMode());
+		try{
+			pvBroadcastEvent(xE, false, false, false);
+		} catch (Exception e) {
+			xE.setOk(false);
+			wLogger.error("EventBeforeIgnore",e);
+		}
+		return xE.isOk();
+	}
+	
+	/**
+	 * Ocorre após a confirmação do estágio de ignore e antes de voltar ao modo sem edição(EditingMode.NONE)
+	 * @return
+	 */
+	private void pvFireEventAfterIgnore(){
+		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.AFTER_IGNORE);
+		xE.setEditingMode(getEditingMode());
+		try{
+			pvBroadcastEvent(xE, false, false, false);
+		} catch (Exception e) {
+			xE.setOk(false);
+			wLogger.error("EventAfterIgnore",e);
+		}
+	}
+
+	/**
+	 * Ocorre após a indicação que se deseja salvar(commit) e antes de trocar para o estágio 
+	 * de confirmação do commit
+	 * @return
+	 */
+	private boolean pvFireEventValidate(){
+		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.VALIDATE);
+		xE.setEditingMode(getEditingMode());
+		try{
+			pvBroadcastEvent(xE, false, false, false);
+		} catch (Exception e) {
+			xE.setOk(false);
+			wLogger.error("EventValidate",e);
+		}
+		return xE.isOk();
+
+	}
+	
+	/**
+	 * Chamado depois da validação e mensagens de confirmação.
+	 * Ocorre após a gravação dos dados(sem commit) e antes de voltar ao modo sem edição(EditingMode.NONE).<br/>
+	 * A transação(Begintrans/Commit/Rollback) são controladas automaticamete.<br/>
+	 * Será efetuado o <b>rollback</b> em caso de <b>exception</b> ou se o atributo <b>pEvent.setOk</b> do evento for <b>false</b>.<br>
+	 * Neste evento, pode-se forçar o valor de alguma coluna utilizando o <b>wDAO</b>, devendo-se, contudo, chamar o <b>super.beforeCommit()</b> ao final, 
+	 * caso o CRUD seja a tabela definida no próprio wDAO.<br> 
+	 * Caso o CRUD não seja da tabela definida no wDAO, este método deverá ser sobreescrito
+	 * para que seja implementado o CRUD específico.<br>
+	 * No caso do método ser sobreescrito, é necessário setar o atributo <b>pEvent.setCommittedRowCount</b> com
+	 * a quantidade de registros afetados.<br>
+	 * @param pEvent Informações do evento
+	 * @throws DBSIOException 
+	 */
+	private boolean pvFireEventBeforeCommit(){
+		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_COMMIT);
+		xE.setEditingMode(getEditingMode());
+		String xErrorMsg = null;
+		//Chame o metodo(evento) local para quando esta classe for extendida
+		try {
+			//Zera a quantidade de registros afetados
+			xE.setCommittedRowCount(0);
+			//Certifica-se que a conexão do wDAO é a conexão do bean
+			wDAO.setConnection(wConnection);
+
+			//Se for o crud principal
+			//Inicia transação
+			if (wParentCrudBean == null){
+				DBSIO.beginTrans(wConnection);
+			}
+			
+			if (getIsApprovingOrReproving()){ 
+				//Loop entre todos os registros selecionados
+				int xCount = 0;
+				for (Integer xRowIndex : wSelectedRowsIndexes){
+					wDAO.setCurrentRowIndex(xRowIndex);
+					pvBroadcastEvent(xE, false, false, false);
+					xCount += xE.getCommittedRowCount();
+					if (!xE.isOk()){
+						break;
+					}
+				}
+				//Ignora assinatura caso quantidade todal de registros afetados seja inferior a quantidade de itens selectionados 
+				if (xCount < wSelectedRowsIndexes.size()){
+					xE.setCommittedRowCount(0);
+					xE.setOk(false);
+					addMessage("erroassinatura", MESSAGE_TYPE.ERROR,"Não foi possível efetuar a assinatura de todos os itens selecionados. Procure efetuar a assinatura individualmente para identificar o registro com problema.");
+				}else{
+					xE.setCommittedRowCount(xCount);
+				}
+
+			}else{
+				pvBroadcastEvent(xE, false, false, false);
+			}
+
+
+			//Exibe mensagem de erro padrão, caso nehum registro tenha sido afedado e já não houver mensagem a ser exibida.
+			if (!wDialogMessages.hasMessages()
+			 && (!xE.isOk() || xE.getCommittedRowCount().equals(0))){
+				xE.setOk(false);
+				addMessage(wMessageNoRowComitted);
+			}
+			
+			//Se for o crud principal
+			//Da commit na transação
+			if (wParentCrudBean == null){
+				DBSIO.endTrans(wConnection, xE.isOk());
+			}
+		} catch (Exception e) {
+			xE.setOk(false);
+			try {
+				//Se for o crud principal
+				//da rollback na transação
+				if (wParentCrudBean == null){
+					DBSIO.endTrans(wConnection, false);
+				}
+				if (e instanceof DBSIOException){
+					DBSIOException xDBException = (DBSIOException) e;
+					xErrorMsg = e.getMessage(); 
+					if (xDBException.isIntegrityConstraint()){
+						clearMessages(); //Limpa mensagem padrão
+//						addMessage("integridate", MESSAGE_TYPE.ERROR, xDBException.getLocalizedMessage());
+						wMessageError.setMessageText(xDBException.getLocalizedMessage());
+						wMessageError.setMessageTooltip(xErrorMsg);
+						addMessage(wMessageError);
+
+					}else{
+						wLogger.error("EventBeforeCommit", e);
+					}
+				}
+			} catch (DBSIOException e1) {
+				xErrorMsg = e1.getMessage();
+			}
+			wMessageNoRowComitted.setMessageTooltip(xErrorMsg);
+			addMessage(wMessageNoRowComitted);
+		}
+		return xE.isOk();
+	}
+	
+	/**
+	 * Evento diaparado após a gravação dos dados e antes de voltar ao modo sem edição(EditingMode.NONE) e anted do beforeRefresh()<br/>
+	 * 
+	 */
+	private void pvFireEventAfterCommit(){
+		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.AFTER_COMMIT);
+		xE.setEditingMode(getEditingMode());
+		try{
+			pvBroadcastEvent(xE, false, false, false);
+			//Marca o parent como alterado caso o crud filho tenha confirmado alguma edição
+			if (wParentCrudBean!=null){
+				wParentCrudBean.setValueChanged(true);
+			}
+		} catch (Exception e) {
+			xE.setOk(false);
+			wLogger.error("EventAfterCommit",e);
+		}
+	}
+
+	/**
+	 * Chamado logo após o click do usuário no insert/delete/update/approve/reprove e antes de iniciar o respectivo insert/delete/update/approve/reprove.
+	 * Podendo, portanto, cancelar o inicio da edição, informando setOk(False) no evento.<br/>
+	 * Neste evento a conexão será aberta e posteriormente fechada no evento AfterEdit(ou em caso de erro ou o usário fechou dentro do evento)
+	 * @return
+	 */
+	private boolean pvFireEventBeforeEdit(EditingMode pEditingMode){
+		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_EDIT);
+		xE.setEditingMode(pEditingMode);
+		//Marca que não houve edição nos campos 
+		setValueChanged(false); 
+		try{
+			pvBroadcastEvent(xE, false, true, false); 
+			return xE.isOk();
+		} catch (Exception e) {
+			xE.setOk(false);
+			wLogger.error("EventBeforeEdit",e);
+		}
+		return xE.isOk();
+	}
+	
+	/**
+	 * Chamado logo após a finalização da edição(insert/delete/update/approve/reprove), 
+	 * independentemente da edição ter sido confirmada ou ignorada.
+	 * Fecha a conexão com o banco.</br>
+	 * @return
+	 */
+	private boolean pvFireEventAfterEdit(){
+		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.AFTER_EDIT);
+		xE.setEditingMode(getEditingMode());
+		try{
+			pvBroadcastEvent(xE, false, false, true);
+		} catch (Exception e) {
+			xE.setOk(false);
+			wLogger.error("EventAfterEdir",e);
+		}
+		return xE.isOk();
+	}
+
+	/**
+	 * Ocorre antes de selecionar um item no checkbox do datatable. Podendo, neste momento, inibir a seleção
+	 * @return
+	 */
+	private boolean pvFireEventBeforeSelect(){
+		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_SELECT);
+		xE.setEditingMode(getEditingMode());
+		try{
+			pvBroadcastEvent(xE, false, true, true);
+		} catch (Exception e) {
+			xE.setOk(false);
+			wLogger.error("EventBeforeIgnore",e);
+		}
+		return xE.isOk();
+	}
+	
+	private void pvFireEventAfterSelect(){
+		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.AFTER_SELECT);
+		xE.setEditingMode(getEditingMode());
+		try{
+			pvBroadcastEvent(xE, false, true, true);
+		} catch (Exception e) {
+			xE.setOk(false);
+			wLogger.error("EventAfterIgnore",e);
+		}
+	}
+	
+	
+	
+	/**
+	 * Chama os eventos localmente, nos filhos e nos listerners que eventualmente possam existir.
+	 * @param pEvent
+	 * @param pInvokeChildren Se chama os filhos
+	 * @param pOpenConnection Se abre a conexão
+	 * @param pCloseConnection Se fecha a conexão
+	 * @throws Exception 
+	 */
+	private void pvBroadcastEvent(DBSCrudBeanEvent pEvent, boolean pInvokeChildren, boolean pOpenConnection, boolean pCloseConnection) throws Exception {
+		try{
+			if (pOpenConnection){
+				openConnection();
+			}
+			wBrodcastingEvent = true;
+			pvFireEventLocal(pEvent);
+			if (pInvokeChildren){
+				pvFireEventChildren(pEvent); 
+			}
+			pvFireEventListeners(pEvent);
+		}catch(DBSIOException e){ 
+			wMessageError.setMessageText(e.getLocalizedMessage());
+			wMessageError.setMessageTooltip(e.getMessage());
+			if (!DBSObject.isEmpty(e.getCause())){
+				wMessageError.setMessageTooltip(e.getCause().getMessage() + "<br/>" + e.getMessage());				
+			}
+			addMessage(wMessageError);
+			pEvent.setOk(false);
+			wLogger.error(e);
+		}catch(Exception e){
+			String xStr = pEvent.getEvent().toString() + ":" + DBSObject.getNotNull(this.getDialogCaption(),"") + ":";   
+			if (e.getLocalizedMessage()!=null){
+				 xStr = xStr + e.getLocalizedMessage();
+			}else{
+				xStr = xStr + e.getClass();
+			}
+			wMessageError.setMessageTextParameters(xStr);
+			addMessage(wMessageError);
+			pEvent.setOk(false);
+			wLogger.error(e);
+			throw e;
+		}finally{
+			wBrodcastingEvent = false;
+			//Fecha conexão em caso de erro ou for informado para fechar
+			if (pCloseConnection
+			 || !pEvent.isOk()){
+				closeConnection();
+			}
+		}	
+	}
+	
+	//Chama a metodo(evento) dentro das classe foram adicionadas na lista que possuem a implementação da respectiva interface
+	private void pvFireEventLocal(DBSCrudBeanEvent pEvent) throws DBSIOException{
+		if (pEvent.isOk()){
+			switch (pEvent.getEvent()) {
+			case INITIALIZE:
+				initialize(pEvent);
+				break;
+			case FINALIZE:
+				finalize(pEvent);
+				break;
+			case BEFORE_CLOSE:
+				beforeClose(pEvent);
+				break;
+			case BEFORE_VIEW:
+				beforeView(pEvent);
+				break;
+			case AFTER_VIEW:
+				afterView(pEvent);
+				break;
+			case BEFORE_REFRESH:
+				beforeRefresh(pEvent);
+				break;
+			case AFTER_REFRESH:
+				afterRefresh(pEvent);
+				break;
+			case BEFORE_COMMIT:
+				beforeCommit(pEvent);
+				break;
+			case AFTER_COMMIT:
+				afterCommit(pEvent);
+				break;
+			case BEFORE_IGNORE:
+				beforeIgnore(pEvent);
+				break;
+			case AFTER_IGNORE:
+				afterIgnore(pEvent);
+				break;
+			case BEFORE_EDIT:
+				beforeEdit(pEvent);
+				break;
+			case AFTER_EDIT:
+				afterEdit(pEvent);
+				break;
+			case BEFORE_SELECT:
+				beforeSelect(pEvent);
+				break;
+			case AFTER_SELECT:
+				afterSelect(pEvent);
+				break;
+			case VALIDATE:
+				validate(pEvent);
+				break;
+			default:
+				break;
+			}
+		}		
+	}
+
+	private void pvFireEventChildren(DBSCrudBeanEvent pEvent) throws DBSIOException{
+		if (pEvent.isOk()){
+			for (DBSCrudBean xBean:wChildrenCrudBean){
+				if (pEvent.getEvent() == CRUD_EVENT.BEFORE_VIEW){
+					xBean.refreshList();
+				}
+				switch (pEvent.getEvent()) {
+				case INITIALIZE:
+					xBean.initialize(pEvent);
+					break;
+				case FINALIZE:
+					xBean.finalize(pEvent);
+					break;
+				case BEFORE_CLOSE:
+					xBean.beforeClose(pEvent);
+					break;
+				case BEFORE_VIEW:
+					xBean.beforeView(pEvent);
+					break;
+				case AFTER_VIEW:
+					xBean.afterView(pEvent);
+					break;
+				case BEFORE_REFRESH:
+					xBean.beforeRefresh(pEvent);
+					break;
+				case AFTER_REFRESH:
+					xBean.afterRefresh(pEvent);
+					break;
+				case BEFORE_COMMIT:
+					xBean.beforeCommit(pEvent);
+					break;
+				case AFTER_COMMIT:
+					xBean.afterCommit(pEvent);
+					break;
+				case BEFORE_IGNORE:
+					xBean.beforeIgnore(pEvent);
+					break;
+				case AFTER_IGNORE:
+					xBean.afterIgnore(pEvent);
+					break;
+				case BEFORE_EDIT:
+					xBean.beforeEdit(pEvent);
+					break;
+				case AFTER_EDIT:
+					xBean.afterEdit(pEvent);
+					break;
+				case BEFORE_SELECT:
+					xBean.beforeSelect(pEvent);
+					break;
+				case AFTER_SELECT:
+					xBean.afterSelect(pEvent);
+					break;
+				case VALIDATE:
+					xBean.validate(pEvent);
+					break;
+				default:
+					break;
+				}
+				if (!pEvent.isOk()){
+					break;
+				}
+	        }
+		}	
+	}
+	
+	//Chama a metodo(evento) dentro das classe foram adicionadas na lista que possuem a implementação da respectiva interface
+	private void pvFireEventListeners(DBSCrudBeanEvent pEvent) throws DBSIOException{
+		if (pEvent.isOk()){
+			for (int xX=0; xX<wEventListeners.size(); xX++){
+				switch (pEvent.getEvent()) {
+				case INITIALIZE:
+					wEventListeners.get(xX).initialize(pEvent);
+					break;
+				case FINALIZE:
+					wEventListeners.get(xX).finalize(pEvent);
+					break;
+				case BEFORE_CLOSE:
+					wEventListeners.get(xX).beforeClose(pEvent);
+					break;
+				case BEFORE_VIEW:
+					wEventListeners.get(xX).beforeView(pEvent);
+					break;
+				case AFTER_VIEW:
+					wEventListeners.get(xX).afterView(pEvent);
+					break;
+				case BEFORE_REFRESH:
+					wEventListeners.get(xX).beforeRefresh(pEvent);
+					break;
+				case AFTER_REFRESH:
+					wEventListeners.get(xX).afterRefresh(pEvent);
+					break;
+				case BEFORE_COMMIT:
+					wEventListeners.get(xX).beforeCommit(pEvent);
+					break;
+				case AFTER_COMMIT:
+					wEventListeners.get(xX).afterCommit(pEvent);
+					break;
+				case BEFORE_IGNORE:
+					wEventListeners.get(xX).beforeIgnore(pEvent);
+					break;
+				case AFTER_IGNORE:
+					wEventListeners.get(xX).afterIgnore(pEvent);
+					break;
+				case BEFORE_EDIT:
+					wEventListeners.get(xX).beforeEdit(pEvent);
+					break;
+				case AFTER_EDIT:
+					wEventListeners.get(xX).afterEdit(pEvent);
+					break;
+				case BEFORE_SELECT:
+					wEventListeners.get(xX).beforeSelect(pEvent);
+					break;
+				case AFTER_SELECT:
+					wEventListeners.get(xX).afterSelect(pEvent);
+					break;
+				case VALIDATE:
+					wEventListeners.get(xX).validate(pEvent);
+					break;
+				default:
+					break;
+				}
+				//Sa do loop se encontrar erro
+				if (!pEvent.isOk()){
+					break;
+				}
+	        }
+		}		
+	}
+}

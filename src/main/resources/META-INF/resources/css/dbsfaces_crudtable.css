@@ -1,0 +1,16 @@
+.dbs_crudTable{
+	display:inline-block;
+}
+
+.dbs_crudTable > .-container{
+	height: 100%;
+}
+
+.dbs_crudTable > .-container > .dbs_dataTable{
+	height: 100%;
+}
+
+.dbs_crudTable > .-container > .dbs_dataTable > .-container > .-header  > .-toolbar > nav > div > .-approval{
+	position: absolute;
+	left:2px;
+}

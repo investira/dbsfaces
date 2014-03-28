@@ -1,0 +1,69 @@
+.dbs_progress{}
+
+.dbs_progress > .-container{
+	position: relative;
+	z-index: 0;	
+}
+
+.dbs_progress > .-container > .-content,
+.dbs_progress > .-container > .-content > .-value{
+	-webkit-border-radius:8px;  
+	-moz-border-radius:8px; 
+	border-radius:8px;	
+}
+
+.dbs_progress > .-container > .-content{
+	position: relative;
+	background-image: url("#{request.contextPath}/images/default_back_texture.png");
+	display: inline-table;
+	border-color: rgba(13, 25, 45, 0.1);
+    border-style: solid;
+    border-width: 1px;
+    margin: 1px;
+    overflow: hidden;
+    min-width: 18px;
+}
+
+.dbs_progress > .-container > .-content > .-value{
+	height: 15px;
+	position: relative;
+	z-index: -1;
+	background-color: rgba(0, 120, 0, 0.9);
+}
+
+.dbs_progress > .-container > .-content > .-label{
+    position: absolute;
+    top: 50%;
+	margin-top: -4px;
+	line-height: 7px;
+    font-size: 6px;
+    text-align: center;
+    width: 100%;
+    left: 0px;
+}
+
+.dbs_progress > .-container > .-content > .-label.-black{
+	color: rgb(10, 10, 10);
+	text-shadow: 0px 0px 1px rgba(250,250,250,1);
+}
+.dbs_progress > .-container > .-content > .-label.-white{
+	color: rgb(250, 250, 250);
+	text-shadow: 0px 0px 1px rgba(0,0,0,1);
+}
+
+.dbs_progress > .-container > .-content > .-label.-green{
+	color: rgb(0, 250, 0);
+	font-weight: bold;
+	text-shadow: 0 0 1px rgb(0, 0, 0);
+}
+
+.dbs_progress > .-container > .-content > .-loading{
+	right: 3px;
+    top: 2px;
+    position:absolute;
+    z-index: -2;
+    opacity:0.40;
+}
+/* 	-webkit-box-shadow:0px 0px 4px 2px #68B7FF inset;  */
+/* 	-moz-box-shadow:0px 0px 4px 2px #68B7FF inset;  */
+/* 	box-shadow:0px 0px 4px 2px #68B7FF inset;  */

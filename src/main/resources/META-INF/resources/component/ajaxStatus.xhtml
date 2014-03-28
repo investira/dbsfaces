@@ -1,0 +1,47 @@
+
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:dbs="http://www.dbsoft.com.br/ui/dbsfaces" 
+	xmlns:dbscom="http://www.dbsoft.com.br/ui/dbsfacescom">
+		
+	<cc:interface>
+	</cc:interface>
+ 
+	<cc:implementation >
+	   <script type="text/javascript">
+	    /* <![CDATA[ */
+	
+		var wMainAjaxTimeout;
+		showLoading = function(pData){
+			if (pData.type === "event") {
+		    	if (pData.status == 'begin'){
+		    		dbsfaces.ui.showLoading("main",true);
+		    	} else if (pData.status == 'complete'){
+		    		wMainAjaxTimeout = window.setTimeout(function(){
+			    		dbsfaces.ui.showLoadingError("main");
+		    		}, 1000); //Time de delay para efetuar a chamada
+		    	} else if (pData.status == 'success'){
+		    		window.clearTimeout(wMainAjaxTimeout);
+		    		dbsfaces.ui.showLoading("main",false);
+		    	}
+		    } else {
+		        text = text + " Error: "+ pData.name +"\n";
+		    }
+		}
+
+		hideLoading = function(pData){
+			dbsfaces.ui.showLoading("main",false);
+		}	
+		
+		/* Captura chamadas ajax */
+		jsf.ajax.addOnEvent(showLoading);
+		jsf.ajax.addOnError(hideLoading);
+	
+	    /* ]]> */
+	    </script>
+	</cc:implementation>
+</ui:component>

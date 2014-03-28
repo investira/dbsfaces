@@ -1,0 +1,21 @@
+.dbs_inputDate{
+}
+
+.dbs_inputDate > .dbs_input-label {
+	xfloat:left;
+}
+
+.dbs_inputDate > .dbs_input-data > input{
+}
+
+
+.dbs_inputDate > .dbs_input-data > input,
+.dbs_inputDate > .dbs_input-data > label{
+	line-height: 100%;
+	border: 0 none;
+	margin-top: 2px;
+	font-size: inherit;
+	background-color: transparent !important;
+	height: 13px;
+	float:left;
+}	

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:dbs="http://www.dbsoft.com.br/ui/dbsfaces" 
+	xmlns:dbscom="http://www.dbsoft.com.br/ui/dbsfacescom">
+		
+	<cc:interface componentType="br.com.dbsoft.ui.component.beanDialogMessage">
+		<cc:attribute name="userBean" prefered="true"/>
+		<cc:attribute name="update"/>
+	</cc:interface>
+ 
+	<cc:implementation>
+		<div id="#{cc.clientId}">
+			<c:if test="#{cc.userBean.hasMessage}">
+				<dbs:dialog id="#{cc.id}_beanDialogMessage"
+							messageIcon="#{cc.userBean.messageIcon}"
+							height="#{cc.userBean.messageHeight}"
+							width="#{cc.userBean.messageWidth}"
+							update="#{cc.attrs.update}"
+							tooltip="#{cc.userBean.messageTooltip}">
+							<c:if test="#{!cc.userBean.messageIsWarning}">
+								<f:attribute name="okAction" value="#{cc.userBean.setMessageValidated(true)}"/>
+							</c:if>
+							<c:if test="#{cc.userBean.messageIsWarning}">
+								<f:attribute name="yesAction" value="#{cc.userBean.setMessageValidated(true)}"/>
+								<f:attribute name="noAction" value="#{cc.userBean.setMessageValidated(false)}"/>
+							</c:if>
+							<h:outputText value="#{cc.userBean.messageText}" escape="false"/>
+				</dbs:dialog>		
+			</c:if>
+		</div>			
+	</cc:implementation>
+</ui:component>

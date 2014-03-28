@@ -1,0 +1,163 @@
+.dbs_tab {
+	padding-top: 2px;
+	display: inline-block; /*INcluido em 15/07/2013 por Ricardo, pois */
+}
+
+.dbs_tab > div, 
+.dbs_tab > div > div, 
+.dbs_tab > div > div > div {
+	width: 100%;
+	height: 100%;
+} 	
+
+.dbs_tab > div{
+	top:0;
+	margin-top:-22px; /*Utilizar o tamanho do título da aba*/
+	padding-top:22px; /*Utilizar o tamanho do título da aba*/
+} 	
+
+.dbs_tab > div > .-content{} 	
+
+.dbs_tab > ul{
+	display:table-row;
+	height:22px; /*Tamanho do título da aba*/
+	position: relative;
+   	z-index: 1;
+   	white-space: pre; /* retira spaços em branco entre o título de as páginas(Problema causado por Strict DOCTYPE */
+}	
+
+
+.dbs_tab > ul > li{
+	position:relative;
+	z-index: 1;
+	padding-left: 8px;
+    padding-right: 8px;
+	float:right;
+    height:22px; /*Utilizar o tamanho do título da aba*/
+    margin:0px -6px 0px 0px;
+	border-top: 1px;
+	border-left: 1px;
+	border-right:1px;
+	border-bottom:0px;
+	border-color: rgb(140,140,140);
+	border-style: outset;
+	color:white;
+	font-weight: normal;
+    text-shadow: 0 -1px 0 rgb(180, 180, 180);
+	cursor:pointer;
+	-webkit-border-radius:0px 8px 0px 0px;  
+	-moz-border-radius: 0px 8px 0px 0px;
+	border-radius:0px 8px 0px 0px;
+	
+	x-webkit-box-shadow:0px 0px 3px 0px #000000;
+	x-moz-box-shadow:0px 0px 3px 0px #000000;
+	xbox-shadow:0px 0px 3px 0px #000000;
+	
+	background-image: url("#{request.contextPath}/images/default_back.png"); /*IE*/
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjQiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=),url("#{request.contextPath}/images/default_back.png");
+	background: -moz-linear-gradient(top, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%), url("#{request.contextPath}/images/default_back.png"); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0.4)), color-stop(100%,rgba(255,255,255,0))), url("#{request.contextPath}/images/default_back.png"); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, rgba(255,255,255,0.4) 0%,rgba(255,255,255,0) 100%), url("#{request.contextPath}/images/default_back.png"); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, rgba(255,255,255,0.4) 0%,rgba(255,255,255,0) 100%), url("#{request.contextPath}/images/default_back.png"); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, rgba(255,255,255,0.4) 0%,rgba(255,255,255,0) 100%), url("#{request.contextPath}/images/default_back.png"); /* IE10+ */
+	background: linear-gradient(top, rgba(255,255,255,0.4) 0%,rgba(255,255,255,0) 100%), url("#{request.contextPath}/images/default_back.png"); /* W3C */
+	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	xfilter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#66ffffff', endColorstr='#00ffffff',GradientType=0 ), url("#{request.contextPath}/images/default_back.png"); /* IE6-8 */
+}	
+
+
+.dbs_tab > ul > li.-selected{
+	border-top: 1px;
+	border-left: 1px;
+	border-right:1px;
+	border-bottom:0px;
+	border-style: outset;
+	text-shadow:1px 1px 0px #DDDDDD;	
+	border-color: rgb(140,140,140);
+	color:rgb(13,25,45);
+	display:block;
+	position:relative;
+	x-webkit-box-shadow:1px 0px 2px -1px #000000;
+	x-moz-box-shadow:1px 0px 2px -1px #000000;
+	xbox-shadow:1px 0px 2px -1px #000000;
+	background: rgb(255,255,255); /* Old browsers */
+	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmYWZhZmEiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(250,250,250,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(250,250,250,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(250,250,250,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(250,250,250,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(250,250,250,1) 100%); /* IE10+ */
+	background: linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(250,250,250,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#fafafa',GradientType=0 ); /* IE6-8 */
+}
+.dbs_tab > ul > li > a {
+	display: block;
+	height: 100%;
+	width: 100%;	
+}
+
+.dbs_tab > ul > li > a > .-icon{
+  	float: left;
+    position: relative;
+    top: 2px	
+}
+
+.dbs_tab > ul > li > a > .-caption{
+	float:left;
+	color:inherit;
+	display:inline-block;
+	line-height: 100%;
+	padding-top:4px;
+	padding-left:4px;
+	padding-right:2px;
+}
+
+.dbs_tab > ul > li > a.-iconclose{
+	display:inline-block;
+	position:relative;
+	margin-left:6px;
+	left:1px;
+	top:4px;
+}
+
+.dbs_tab > ul > li > a.-iconclose:HOVER{
+	background-position: -33px -0px;
+}
+
+.dbs_tabPage{
+	display:none;
+	overflow: visible;
+	position:relative;
+	width:100%;
+	padding: 5px;
+	height: 100%;
+	color:rgb(13, 25, 45);
+	border-top: 0px;
+	border-left: 1px;
+	border-right: 1px;
+	border-bottom: 1px;
+	-webkit-border-radius:0px 0px 5px 5px;  
+	-moz-border-radius: 0px 0px 5px 5px;
+	border-radius: 0px 0px 5px 5px;
+	border-style:outset;
+	border-color: rgb(140,140,140);
+	background: rgb(250,250,250); /* Old browsers */
+	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZhZmFmYSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkY2RjZGMiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  rgba(250,250,250,1) 0%, rgba(220,220,220,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(250,250,250,1)), color-stop(100%,rgba(220,220,220,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(250,250,250,1) 0%,rgba(220,220,220,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(250,250,250,1) 0%,rgba(220,220,220,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(250,250,250,1) 0%,rgba(220,220,220,1) 100%); /* IE10+ */
+	background: linear-gradient(top,  rgba(250,250,250,1) 0%,rgba(220,220,220,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fafafa', endColorstr='#dcdcdc',GradientType=0 ); /* IE6-8 */
+}
+
+.dbs_tabPage.-selected{
+/* 	display:table !important;	10/08/2013 - Comentado por não funcionar a height 100% no dbscom:report */
+	display: inline-block; 
+	xborder-top: solid 1px;
+}
+
+

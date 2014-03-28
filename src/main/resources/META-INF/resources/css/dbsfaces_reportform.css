@@ -1,0 +1,106 @@
+.dbs_reportForm{
+	display:block;
+	font-size:inherit;
+	overflow:hidden;
+	color:inherit;
+	width: 100%;
+	height: 100%;
+	min-width: 540px;
+}
+
+.dbs_reportForm > .-content:first-child {
+	border-width: 0px;
+	-moz-border-radius: 9px 9px 0px 0px;
+  	-webkit-border-radius: 9px 9px 0px 0px;
+	border-radius:9px 9px 0px 0px;
+}
+
+.dbs_reportForm > .-content{
+	height: 100%;
+	width: 100%;
+	display: block;
+	color: inherit;	
+
+	overflow-y:hidden;
+	overflow-x:auto;
+	-webkit-box-shadow:0px 3px 3px 0px rgba(13, 25, 45, 0.4) inset;
+	-moz-box-shadow:0px 3px 3px 0px rgba(13, 25, 45, 0.4) inset;
+	box-shadow:0px 3px 3px 0px rgba(13, 25, 45, 0.4) inset;
+
+	xpadding-bottom: 27px;
+	xmargin-bottom: -27px;
+}
+
+.dbs_reportForm > .-header{
+	position:relative;
+}
+
+
+.dbs_reportForm > .-header > .-caption{
+	padding:2px 2px 2px 3px;
+	width:100%;
+	font-weight:bold;
+	min-height: 27px;
+	line-height: 27px;
+	height: 27px;
+	text-shadow: 0px 1px 0px #FFFFFF;
+	background-image: url("#{request.contextPath}/images/default_back_texture.png");
+	background-repeat: repeat;
+	background-color: rgba(180,180,180,0.1);
+	text-align: left;
+	white-space: nowrap;
+}
+
+.dbs_reportForm > .-header > .-caption > .-icon{
+	position: relative;
+	top: 2px;
+}
+
+.dbs_reportForm > .-header > .-caption > .-content{
+	position: relative;
+	top: -1px;
+}
+
+.dbs_reportForm > .-header > .-caption > .-toolbar{
+	position:absolute;
+	right:0;
+	padding: 0px 27px 0px 0px;
+	top:0px;
+}
+
+.dbs_reportForm > .-header > .-caption > .-toolbar > .dbs_button{
+	margin-left:13px;
+}
+
+.dbs_reportForm > .-header > .-caption > .-toolbar > .dbs_menu{
+	margin-left:2px;
+}
+
+.dbs_reportForm > .-header > .-caption > .-toolbar > .dbs_menu > li > a > .-content > .-label {
+	font-weight: normal;
+}
+
+.dbs_reportForm > .-header > .-caption > .-toolbar > .dbs_button{
+	height: 18px;
+	position: relative;
+	vertical-align: middle;
+}
+
+.dbs_reportForm > .-dialog > .dbs_dialog .dbs_input,
+.dbs_reportForm > .-dialog > .dbs_dialog .dbs_group{
+    margin-bottom: 2px;
+}
+
+.dbs_reportForm > .-content > object,
+.dbs_reportForm > .-content > iframe{
+	display:block;
+	font-family: inherit;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+}
+
+.dbs_reportForm > .-content > object.-disabled,
+.dbs_reportForm > .-content > iframe.-disabled{
+	opacity: 0.2;
+}

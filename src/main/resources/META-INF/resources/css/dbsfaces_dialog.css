@@ -1,0 +1,222 @@
+.dbs_dialog{}
+
+.dbs_dialog {
+	xbackground-color: rgba(0,0,0,0.1);
+	background-image: url("#{request.contextPath}/images/vidro.png");
+	background-repeat: repeat;
+	xposition:absolute; /* Comentado em 12/3/2013 pois dialog dentro de dialog era limitado pelo tamanho do anterior */ 
+	xposition: fixed; /* 24/03/2013 - comentado pois considerava o offsetparent como body, desabilitando todos os inputs. Quando deveria desabilitar somente os dentro do mask. */
+	position: absolute;
+	display: block;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	margin:0px;
+	padding:0px;
+	z-index: 3;
+}
+
+.dbs_dialog > div {
+	opacity:0;
+   	-webkit-box-shadow: 0 0 6px 0px rgba(0, 0, 0, 0.6);
+	-moz-box-shadow: 0 0 6px 0px rgba(0, 0, 0, 0.6);
+	box-shadow: 0 0 6px 0px rgba(0, 0, 0, 0.6);
+	-moz-border-radius: 3px 3px 6px 6px;
+	-webkit-border-radius: 3px 3px 6px 6px;
+	border-radius:3px 3px 6px 6px;
+	position: absolute;
+	xoverflow: hidden; /* 24/04/2013 - desabilitado por cortava o dialog quando fosse superior ao dialog anterior */
+	overflow: visible;
+	xposition: fixed; /* 24/04/2013 - desabilitado por cortava o dialog quando fosse superior ao dialog anterior */
+	border-width: 1px;
+	border-color: rgb(130,130,130);
+	border-style: solid;
+ }
+
+.dbs_dialog > div > .-caption{
+	background-color: rgba(255,255,255,.1);
+	background-image: url("#{request.contextPath}/images/default_back_texture.png");
+	background-repeat: repeat;
+	height: 21px;
+	position: relative;
+	top:0;
+	width: 100%;
+	overflow: hidden;
+	border-width: 0px;
+	-moz-border-radius: 3px 3px 0px 0px;
+	-webkit-border-radius: 3px 3px 0px 0px;
+	border-radius:3px 3px 0px 0px;
+
+	-webkit-box-shadow:0 0px 2px 0px #000000;
+	-moz-box-shadow:0 0px 2px 0px #000000;
+	box-shadow:0 0px 2px 0px #000000;
+	x-webkit-box-shadow:0 1px 0px 0px #BBBBBB;
+	x-moz-box-shadow:0 1px 0px 0px #BBBBBB;
+	xbox-shadow:0 1px 0px 0px #BBBBBB;
+	z-index: 1;
+	cursor: move;
+}
+
+.dbs_dialog > div > .-caption > .-label{
+	xbackground-color: green;
+	position: relative;
+	height: 100%;
+	padding-left: 5px;
+	color:white;
+	text-shadow: 1px 1px 0px #000000;
+	text-align: center;
+}
+
+.dbs_dialog > div > .-caption > .-label > span {
+	vertical-align: middle;
+}
+
+.dbs_dialog > div > .-caption > .-iconclose{
+	xbackground-color: brown;
+	position: absolute;
+	top:0;
+	right:0;
+	width: 20px;
+	height: 100%;
+	float:right;
+}
+
+.dbs_dialog > div > .-caption > .-iconclose > div{
+	xbackground-color: gray;
+	border-width: 1px;
+	border-style: solid;
+	border-color: rgba(100,100,100,0.5);
+    left: 50%;
+    margin-left: -6px;
+    margin-top: -6px;
+    position: absolute;
+    top: 50%;
+}
+
+.dbs_dialog > div > .-caption > .-iconclose > span > div:HOVER{
+    background-position: -33px -0px;
+}
+
+.dbs_dialog > div > .-content.-message{}
+
+.dbs_dialog > div > .-toolbar > ul > li.-icon > span{
+	position: relative;
+	left:1px;
+	top:0px;	
+}
+
+
+
+.dbs_dialog > div > .-content{
+	display: block;
+	xbackground-color: rgba(255,255,0,0.9);
+	height: 100%;
+/* 	overflow: auto; comentado em 24/07/2013 por inibir a exibição de componentes maiores comos os inputAtivos*/
+	overflow: visible;
+	padding: 5px;
+	-moz-border-radius: 0px 0px 6px 6px;
+	-webkit-border-radius: 0px 0px 6px 6px;
+	border-radius:0px 0px 6px 6px;
+}
+
+/* Incluido em 05/fev/14 para padronizar as telas dialog simples */
+.dbs_dialog > div > .-content.dbs_back_gradient_white{ 
+	color:rgb(13,25,45);
+}
+
+.dbs_dialog > div > .-content .dbs_input:not(td){ /* exblui td para evitar a margem nos input type=radio */
+	margin-bottom: 2px;	
+}
+
+.dbs_dialog > div > .-toolbar{
+	background-image: url("#{request.contextPath}/images/default_back_texture.png");
+	background-repeat: repeat;
+	height: 22px;
+	background-color: rgba(240,240,240,1);
+	position: relative;
+	width: 100%;
+	overflow: hidden;
+	text-align: right;
+	x-webkit-box-shadow:0 0px 2px 0px #000000;
+	x-moz-box-shadow:0 0px 2px 0px #000000;
+	xbox-shadow:0 0px 2px 0px #000000;
+	border-color: rgba(0,0,0,0.2);
+	border-style: solid;
+	border-width: 0 0 1px;
+	line-height: 0px;
+}
+
+.dbs_dialog > div > .-toolbar > ul{
+	text-align: left;
+	display: block;
+	xwidth:100%;
+	margin:0px;
+    padding: 2px 4px 1px 2px;
+	border-width: 0px;
+	-moz-border-radius: 0px 0px 3px 3px;
+  	-webkit-border-radius: 0px 0px 3px 3px;
+	border-radius:0px 0px 3px 3px;
+	display: inline-block;
+    height: 22px;	
+}
+
+.dbs_dialog > div > .-toolbar > ul > li{
+	display:inline-block;
+}
+
+.dbs_dialog > div > .-toolbar > ul > li.-icon{
+	background-color: rgba(13, 25, 45, 1);
+    left: 0;
+    padding: 3px;
+    position: absolute;
+    top: 0;
+    xborder-color: rgba(13, 25, 45, 0.2);
+    border-style: outset;
+    border-width: 0 1px 0 0;
+}
+
+.dbs_dialog-confirmation{
+	height: 100%;
+	xbackground-color: red;
+	margin-bottom:-23px;
+	padding-bottom:23px;
+}
+
+
+.dbs_dialog-confirmation > .-content{
+	height: 100%;
+	padding-bottom: 5px;
+}
+
+.dbs_dialog-confirmation > .-content > div{
+	position: relative;
+	height: 100%;
+}
+
+.dbs_dialog-confirmation > .-content > .-icon{
+	float:left;	
+}			
+
+.dbs_dialog-confirmation > .-content > .-icon > div{
+}			
+
+.dbs_dialog-confirmation > .-content > .-content{
+	margin-left: 31px;
+}
+
+.dbs_dialog-confirmation > .-content > .-content > div{
+	width: 100%;
+	text-align: center;
+}
+
+.dbs_dialog-confirmation > .-button{
+	padding: 2px;
+	text-align: right;
+}
+
+.dbs_dialog-confirmation > .-button > button{
+	height: 21px;
+	margin-left: 21px;
+}
+			

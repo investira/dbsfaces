@@ -1,0 +1,276 @@
+		
+/* Todos os submenus */ 
+.dbs_menu > li > ul, 
+.dbs_submenu{
+	display:none;
+}
+
+.dbs_menu{
+	display:inline-block;
+}
+
+.dbs_menu, 
+.dbs_submenu, 
+.dbs_menu > li > a, 
+.dbs_submenu > li > a, 
+.dbs_menu > li > button, 
+.dbs_submenu > li > button{
+	text-shadow:1px 1px 1px rgba(50, 50, 50, 0.5) !important;
+	font-size:11px;
+	white-space: nowrap;
+	xposition:relative;
+	border:none;
+	xpadding-left:0px;
+	xmargin:0px;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box; 
+	box-sizing: border-box;	
+}
+
+.dbs_menu button, 
+.dbs_submenu button{
+	background:none;	
+}
+
+.dbs_menu > li > a > .-label,
+.dbs_menu > li > a > .-content > .-label {
+	font-weight: bold;
+}
+
+.dbs_menu .-label {
+	color: inherit;
+	font-size:11px;
+}
+
+
+
+/* Itens filhos do menu principal(HORIZONTAL)*/
+.dbs_menu > li{
+	display: inline-block;
+	height:26px !important; /*necessário a altura ficar evidente quando o background for alterado no HOVER*/
+	padding-top: 6px;
+	padding-left: 8px;
+	padding-right: 10px;
+	border-top-width:1px;
+	border-bottom-width:0px;
+	border-radius: 10px 10px 0px 0px;
+	border-color: transparent;
+	line-height:100%;
+}
+
+/* Itens filhos do menu principal(HORIZONTAL) e submenus*/
+.dbs_menu > li,  
+.dbs_menu > li > ul, 
+.dbs_submenu{
+	border-left-width:1px;
+	border-right-width:1px;
+	border-style:outset;
+}
+
+
+/* Itens filhos do menu principal(HORIZONTAL) e submenus*/
+.dbs_menu > li ul, 
+.dbs_submenu{
+	border-color: rgb(100,100,100);
+	z-index:2;
+}
+
+.dbs_submenu{
+	padding:4px 5px 4px 5px;
+}
+
+/*Submenu do menu principal(HORIZONTAL)*/
+.dbs_menu > li > ul {
+	padding:2px 5px 4px 5px;
+	position:absolute;
+	border-top-width:0px;
+	border-bottom-width:1px;
+	-webkit-border-radius: 0px 0px 10px 10px;  
+	-moz-border-radius: 0px 0px 10px 10px; 
+	border-radius: 0px 0px 10px 10px;
+	margin-left: -9px;
+	margin-top: 8px;
+	
+	background: url("#{request.contextPath}/images/default_back_transparent.png"); /*IE*/
+	xfilter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#50FFFFFF,endColorstr=#00FFFFFF); /*IE*/
+	x-ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#50FFFFFF,endColorstr=#00FFFFFF); /*IE*/
+	background: -moz-linear-gradient(top, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0)), url("#{request.contextPath}/images/default_back_transparent.png"), -moz-linear-gradient(top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, .3) ), to(rgba(255, 255, 255, 0) ) ), url("#{request.contextPath}/images/default_back_transparent.png"), -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 1) ), to(rgba(0, 0, 0, 0) ) );
+	background-position:2px 0px; /*para alinhar a textura do background com o backgroun do subgrupo*/
+
+}
+
+/* Todos os submenus */ 
+.dbs_menu > li > ul, 
+.dbs_submenu{
+	-webkit-box-shadow:3px 2px 2px -1px rgba(13, 25, 45, 0.4);
+	-moz-box-shadow:3px 2px 2px -1px rgba(13, 25, 45, 0.4);
+	box-shadow:3px 2px 2px -1px rgba(13, 25, 45, 0.4);
+}
+
+.dbs_submenu{
+	position:absolute !important;
+	float:none;
+	top:-5px;
+	border-width:1px;
+	-webkit-border-radius: 10px;  
+	-moz-border-radius: 10px; 
+	border-radius: 10px;
+	background: url("#{request.contextPath}/images/default_back_transparent.png"); /*IE*/
+	xfilter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#66FFFFFF,endColorstr=#00FFFFFF); /*IE*/
+	x-ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#66FFFFFF,endColorstr=#00FFFFFF); /*IE*/
+	background: -moz-linear-gradient(top, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0)), url("#{request.contextPath}/images/default_back_transparent.png");
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, .4) ), to(rgba(255, 255, 255, 0) ) ), url("#{request.contextPath}/images/default_back_transparent.png");
+	background-position:2px 0px; /*para alinhar a textura do background com o backgroun do subgrupo*/
+	background-repeat: repeat;
+}
+
+/*Alinhamento pela esquerda a partir nos filhos pares e após o 5º*/
+.dbs_submenu, 
+.dbs_submenu ul ul, 
+.dbs_submenu ul ul ul ul {
+	left:auto;
+	right: 100%;
+}
+
+/*Alinhamento pela direita a partir nos filhos impares*/
+.dbs_submenu ul, 
+.dbs_submenu ul ul ul {
+	left:100%;
+	right:auto;
+}
+
+
+/*Itens dos submenus*/
+.dbs_menuitem{
+	display:block;
+	height:17px;
+	xpadding: 2px 15px 2px 6px;
+	margin: 2px 0px 1px 0px;
+	padding: 0px 0px 0px 0px;
+	min-height:auto;
+	-webkit-border-radius: 4px;  
+	-moz-border-radius: 4px; 
+	border-radius: 4px;
+	line-height:100%;
+	text-align:left;
+	position:relative;
+}
+
+.dbs_menuitem > span,
+.dbs_menuitem > a{
+	height: 100%;
+	width: 100%;
+	padding: 2px 14px 3px 0px;
+	margin: 0px 0px 0px 3px;
+}
+
+.dbs_menuitem > span, 
+.dbs_menuitem > span > span,
+.dbs_menuitem > a, 
+.dbs_menuitem > a > span {
+	display: inline-block;
+}
+
+
+.dbs_menuitem > span > .-label,
+.dbs_menuitem > a > .-label{
+	font-weight: normal;
+	width: 100%;
+	position: relative;
+ 	vertical-align: middle; /*Incluido para resolver IE */
+	height: 100%; /*Incluido para resolver IE */
+}
+
+.dbs_menu .-icon, 
+.dbs_submenu .-icon {
+	float:left;
+	top:-2px;
+	xleft:-1px;
+	position:relative;
+}
+.dbs_menuitem.-disabled{
+	color:rgb(200,200,200);
+	cursor: default;
+}
+
+.dbs_menuitem:not(.-disabled) > a, 
+.dbs_menuitem:not(.-disabled) button{
+	cursor:pointer; 
+	position:relative;
+}
+
+.dbs_menuitem_plus{
+	position: absolute;
+	right: 4px;
+	top: 3px;
+}
+
+.-is_select_down { 
+	position:absolute;
+	margin-left:-24px;
+	margin-top:1px;
+}
+.-is_menuitem_star { 
+	position:absolute;
+	left:0; 
+	margin-left:-10px;
+}
+
+
+/*Hovers*/
+/*Exibe submenu vinculado ao item*/
+.dbs_menu > li:HOVER > ul, 
+.dbs_menu > li:FOCUS > ul, 
+.dbs_menuitem:HOVER > .dbs_submenu, 
+.dbs_menuitem:FOCUS > .dbs_submenu {
+/* 	display: block; Desabilitado. Hover por JS*/
+}
+
+/*Hovers*/
+/*Exibe submenu vinculado ao item*/ 
+.dbs_menu > li > ul.-hover, 
+.dbs_submenu.-hover {
+	display: block;
+}
+
+
+/*altera exibição do menu principal(Horinzontal)*/
+.dbs_menu > li:not(.-disabled):HOVER, 
+.dbs_menu > li:not(.-disabled):FOCUS{
+	color: white;
+	border-color: rgb(100,100,100);
+	background: url("#{request.contextPath}/images/default_back_transparent.png"); /*IE*/
+	xfilter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#66FFFFFF,endColorstr=#50FFFFFF); /*IE*/
+	x-ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#66FFFFFF,endColorstr=#50FFFFFF); /*IE*/
+	background: -moz-linear-gradient(top, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.3)), url("#{request.contextPath}/images/default_back_transparent.png"),black;
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, .4) ), to(rgba(255, 255, 255, 0.3) ) ), url("#{request.contextPath}/images/default_back_transparent.png"),black;
+	
+	-webkit-box-shadow:0px 0px 4px 1px #68B7FF; 
+	-moz-box-shadow:0px 0px 4px 1px #68B7FF; 
+	box-shadow: 0px 0px 4px 1px #68B7FF;
+}
+
+li.dbs_menuitem.-readOnly {
+	opacity: 0.7;
+	cursor: default;
+}
+
+li.dbs_menuitem.-readOnly:ACTIVE {
+	-webkit-box-shadow: none !important;
+	-moz-box-shadow: none !important;
+	box-shadow: none !important;
+	text-shadow: none;
+}
+
+li.dbs_menuitem.-readOnly:HOVER{
+	-webkit-box-shadow: none !important;
+	-moz-box-shadow: none !important;
+	box-shadow: none !important;
+}
+
+.dbs_menuitemSeparator{
+	border-top: 1px solid rgba(0, 0, 0, 0.4) !important;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+	display: block;
+}

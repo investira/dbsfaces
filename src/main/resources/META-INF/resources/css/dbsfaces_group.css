@@ -1,0 +1,47 @@
+.dbs_group{
+    border-style: none groove groove;
+    border-width: 0 2px 2px;
+    border-color: rgba(255, 255, 255, 0.5);
+    margin-top: 12px;
+    display: table;
+    position: relative;
+}
+
+.dbs_group > .-header{
+	display: table;
+	line-height: 0px;
+	width: 100%;
+}
+
+.dbs_group > .-header > div{
+	display: table-cell;
+}
+
+.dbs_group > .-header > .-line{
+	width: 100%;
+	border-style: groove none none none;
+    border-width: 2px 0px 0px 0px;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.dbs_group > .-header > div > .dbs_input-label{
+	white-space: nowrap;
+	position: relative;
+	top: -2px;
+	min-width:1px;
+}
+
+.dbs_group > .-content{
+	display: block;
+	padding: 4px 5px 4px 5px;
+}
+
+.dbs_group > .-content.-floatleft > div,
+.dbs_group > .-content.-floatleft > span {
+	display: inline-block;
+}
+
+.dbs_group > .-content > div {
+/* 	display: block; Comentado em 04/07/2013 por dar problema quando utilizado float:left no dbs_group*/
+/* 	display: inline-block; Comentado em 08/07/2013 por efetar os componentes div logo abaixo do content*/
+}

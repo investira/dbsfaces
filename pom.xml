@@ -1,0 +1,80 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>br.com.dbsoft</groupId>
+	<artifactId>dbsfaces</artifactId>
+	<version>1.0.0</version>
+	<name>Componentes DBSoft</name>
+	<url>http://www.dbsoft.com.br</url>
+	<organization>
+		<name>DBSoft</name>
+		<url>www.dbsoft.com.br</url>
+	</organization>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jasper.version>5.5.0</jasper.version>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>jboss-public-repository-group</id>
+			<name>JBoss Public Repository Group</name>
+			<url>http://repository.jboss.org/nexus/content/groups/public/</url>
+			<layout>default</layout>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>never</updatePolicy>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>maven2-repository.dev.java.net</id>
+			<name>Java.net Repository for Maven</name>
+			<url>http://download.java.net/maven/2/</url>
+			<layout>default</layout>
+		</repository>
+
+	</repositories>
+	<dependencies>
+		<dependency>
+			<!-- http://repo2.maven.org/maven2/net/sf/jasperreports/jasperreports/ -->
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>${jasper.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>br.com.dbsoft</groupId>
+			<artifactId>dbssdk</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+					<archive></archive>
+				</configuration>
+			</plugin>
+			<plugin> 
+				<groupId>org.apache.maven.plugins</groupId> 
+				<artifactId>maven-resources-plugin</artifactId> 
+				<configuration> 
+					<encoding>UTF-8</encoding> 
+				</configuration> 
+			</plugin> 
+		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+	</build>
+
+</project>

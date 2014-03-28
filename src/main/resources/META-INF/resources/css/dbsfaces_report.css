@@ -1,0 +1,144 @@
+.dbs_report{
+	display:block;
+	font-size:inherit;
+	overflow:hidden;
+	color:inherit;
+	width: 100%;
+	height: 100%;
+	min-width: 540px;
+}
+
+
+.dbs_report > div {
+	background-image: url("#{request.contextPath}/images/default_back_texture.png");
+	background-repeat: repeat;
+	background-color: rgba(0, 0, 0, 0.05);
+}
+
+
+.dbs_report > .-content:first-child {
+	border-width: 0px;
+	-moz-border-radius: 9px 9px 0px 0px;
+  	-webkit-border-radius: 9px 9px 0px 0px;
+	border-radius:9px 9px 0px 0px;
+}
+
+.dbs_report > .-content{
+	height: 100%;
+	width: 100%;
+	display: block;
+/* 	color: inherit;	 */
+
+	overflow-y:hidden;
+	overflow-x:auto;
+/* 	-webkit-box-shadow:0px 3px 3px 0px rgba(13, 25, 45, 0.4) inset; */
+/* 	-moz-box-shadow:0px 3px 3px 0px rgba(13, 25, 45, 0.4) inset; */
+/* 	box-shadow:0px 3px 3px 0px rgba(13, 25, 45, 0.4) inset; */
+
+	xpadding-bottom: 27px;
+	xmargin-bottom: -27px;
+}
+
+.dbs_report > .-content > .dbs_tab{
+	height: 100%;
+	width: 100%;
+	padding: 2px;
+}
+
+
+
+.dbs_report > .-content > .dbs_tab > div > .-content > .-filter .dbs_input:not(td) {
+    margin-bottom: 2px;
+}
+
+.dbs_report > .-content > .dbs_tab > div > .-content > .-report > .-container{
+	height: 100%;
+	width: 100%;
+}
+
+.dbs_report > .-content > .dbs_tab > div > .-content > .-report > .-container > .-toolbar{
+    height: 26px;
+    min-height: 26px;	
+	z-index: 1;
+    padding-right: 16px;
+    text-align: right;	
+}
+
+.dbs_report > .-content > .dbs_tab > div > .-content > .-report > .-container > .-content{
+	height: 100%;
+	padding-top: 30px;
+	margin-top: -30px;
+}
+
+.dbs_report > .-content > .dbs_tab > div > .-content > .-report > .-container > .-content,
+.dbs_report > .-content > .dbs_tab > div > .-content > .-report > .-container > .-toolbar{
+	width: 100%;
+	position: relative;
+}
+
+.dbs_report > .-content > .dbs_tab > div > .-content > .-report > .-container > .-content > object{
+	width: 100%;
+	height: 100%; 
+}
+
+.dbs_report > .-header{
+	position:relative;
+}
+
+
+.dbs_report > .-header > .-caption{
+	padding:2px 2px 2px 3px;
+	width:100%;
+	font-weight:bold;
+	min-height: 27px;
+	line-height: 27px;
+	height: 27px;
+	text-shadow: 0px 1px 0px #FFFFFF;
+/* 	background-image: url("#{request.contextPath}/images/default_back_texture.png"); */
+/* 	background-repeat: repeat; */
+/* 	background-color: rgba(180,180,180,0.1); */
+	text-align: left;
+	white-space: nowrap;
+}
+
+.dbs_report > .-header > .-caption > .-icon{
+	position: relative;
+	top: 2px;
+}
+
+.dbs_report > .-header > .-caption > .-content{
+	position: relative;
+	top: -1px;
+}
+
+.dbs_report > .-header > .-caption > .-toolbar{
+	position:absolute;
+	right:0;
+	padding: 0px 27px 0px 0px;
+	top:0px;
+}
+
+.dbs_report > .-header > .-caption > .-toolbar > .dbs_button{
+	margin-left:13px;
+}
+
+.dbs_report > .-header > .-caption > .-toolbar > .dbs_menu{
+	margin-left:2px;
+}
+
+.dbs_report > .-header > .-caption > .-toolbar > .dbs_menu > li > a > .-content > .-label {
+	font-weight: normal;
+}
+
+.dbs_report > .-header > .-caption > .-toolbar > .dbs_button{
+	height: 18px;
+	position: relative;
+	vertical-align: middle;
+}
+
+
+
+/* .dbs_report > .-content > object.-disabled, */
+/* .dbs_report > .-content > iframe.-disabled{ */
+/* 	opacity: 0.2; */
+/* } */

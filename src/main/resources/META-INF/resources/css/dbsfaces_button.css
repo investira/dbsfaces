@@ -1,0 +1,110 @@
+
+.dbs_button{
+	color: inherit;
+	font-size: inherit;
+	border:none;
+	background:none;
+	-webkit-border-radius:4px;  
+	-moz-border-radius:4px; 
+	border-radius:4px;
+	margin: 0px;
+	padding-bottom: 0px !important;
+	padding-left: 2px !important;
+	padding-right: 2px !important;
+	padding-top: 0px !important;
+	border-width: 0px !important;
+	border-style:none !important;
+	-moz-box-sizing: border-box !important;
+	-webkit-box-sizing: border-box !important; 
+	box-sizing: border-box !important;
+	text-shadow:1px 1px 1px rgba(50, 50, 50, 0.5); 
+}
+
+.dbs_button.-on{
+	background-color: rgba(0, 168, 255, 1) !important;
+/* 	-webkit-box-shadow:0px 0px 4px 2px #68B7FF inset;  */
+/* 	-moz-box-shadow:0px 0px 4px 2px #68B7FF inset;  */
+/* 	box-shadow:0px 0px 4px 2px #68B7FF inset;  */
+}
+
+
+.dbs_button > table{
+	display:inline-block;
+	xdisplay:block; /*Desabilitado em 06/02/2013 para centralizar no IE9 */
+	xdisplay:inline-block; /*Desabilitado em 20/11/2012 para excluir o espaço que existia na parte de baixo do botão*/
+	color: inherit;
+	margin: 0px;
+	padding: 0px;
+	line-height: 0px;
+	font-size: inherit;
+	text-align: center;
+}
+
+.dbs_button > table > tbody {
+	display: inline-block;
+	margin: 0px;
+	padding: 0px;
+	line-height: 0px;
+	font-size: inherit;
+}
+.dbs_button > table > tbody > tr {
+	display:inline-block;
+	margin: 0px;
+	padding: 0px;
+	line-height: 0px;
+	font-size: inherit;
+}
+
+.dbs_button > table > tbody > tr > td {
+	display:inline-block;
+	margin: 0px;
+	padding: 0px;
+	font-size: inherit;
+}
+
+
+.dbs_button > table > tbody > tr > td > .-label,
+.dbs_button > table > tbody > tr > td > .-icon {
+	display: block;
+}
+
+.dbs_button > table > tbody > tr > td > .-label {
+	margin: -1px 0 0;
+	padding: 0 1px 1px 0;
+	line-height: normal;
+	font-size: inherit;
+}
+.dbs_button > table > tbody > tr > td > .-icon {
+	padding: 0px;
+	margin: 0 -1px 1px 0 !important;
+}
+
+.dbs_button:not(.-disabled):ACTIVE, 
+button.dbs_menuitem:not(.-disabled):ACTIVE,
+li.dbs_menuitem:not(.-disabled):ACTIVE {
+	-webkit-box-shadow: 0 0 1px 1px #444444, 0 0 2px 3px #FFFFFF !important;
+	-moz-box-shadow: 0 0 1px 1px #444444, 0 0 2px 3px #FFFFFF !important;
+	box-shadow: 0 0 1px 1px #444444, 0 0 2px 3px #FFFFFF !important;
+	
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6), 0px 0px 1px rgba(100, 180, 255, 1) !important;
+}
+
+.dbs_button:not(.-disabled):HOVER, 
+.dbs_button:not(.-disabled):FOCUS, 
+button.dbs_menuitem:not(.-disabled):HOVER, 
+button.dbs_menuitem:not(.-disabled):FOCUS,
+li.dbs_menuitem:not(.-disabled):HOVER{
+	text-decoration: none !important;
+	
+	-webkit-box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.4), 0 0 0px 1px rgba(100, 180, 255, 1);
+	-moz-box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.4), 0 0 0px 1px rgba(100, 180, 255, 1);
+	box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.4), 0 0 0px 1px rgba(100, 180, 255, 1);
+
+}
+
+button.dbs_button:INACTIVE, 
+button.dbs_menuitem:INACTIVE,
+li.dbs_menuitem:INACTIVE {
+	color:#333333;
+}
+
