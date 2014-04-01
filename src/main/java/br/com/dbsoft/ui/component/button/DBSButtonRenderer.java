@@ -13,9 +13,12 @@ import com.sun.faces.renderkit.RenderKitUtils;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.util.DBSBoolean;
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSButton.RENDERER_TYPE)
 public class DBSButtonRenderer extends DBSRenderer {
+	
+	private Boolean wTimerVerify = false;
 	
     @Override
 	public void decode(FacesContext pContext, UIComponent pComponent) {
@@ -28,7 +31,7 @@ public class DBSButtonRenderer extends DBSRenderer {
 //        if(xButton.isDisabled() || xButton.isReadonly()) {
 //            return;
 //        }
-
+        
         decodeBehaviors(pContext, xButton);
         
 		if (RenderKitUtils.isPartialOrBehaviorAction(pContext, xClientId) || /*Chamada Ajax*/
@@ -81,6 +84,7 @@ public class DBSButtonRenderer extends DBSRenderer {
 		String xClientId = xButton.getClientId(pContext);
 		String xOnClick = null;
 		String xExecute = "";
+		wTimerVerify = xButton.getTimerVerify();
 		if (xButton.getExecute() == null){
 			xExecute = getFormId(pContext, pComponent); 
 		}else{
@@ -181,10 +185,14 @@ public class DBSButtonRenderer extends DBSRenderer {
 	 */
 	private void pvEncodeJS(ResponseWriter pWriter, String pClientId) throws IOException {
 		DBSFaces.encodeJavaScriptTagStart(pWriter);
+		String xTimerVerify = "";
+		if (DBSBoolean.toBoolean(wTimerVerify)) {
+			xTimerVerify = " clearInterval(meuTimer); \n";
+		}
 		String xJS = "$(document).ready(function() { \n" +
 				     " var xButtonId = '#' + dbsfaces.util.jsid('" + pClientId + "'); \n " + 
 				     " dbs_button(xButtonId); \n" +
-                     "}); \n"; 
+                     "}); \n" + xTimerVerify;
 		pWriter.write(xJS);
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);	
 	}

@@ -22,7 +22,8 @@ public class DBSButton extends DBSUICommand {
 		execute,
 		tooptip,
 		readOnly,
-		disabled;
+		disabled,
+		timerVerify;
 
 		String toString;
 
@@ -107,6 +108,15 @@ public class DBSButton extends DBSUICommand {
 	
 	public Boolean getDisabled() {
 		return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-	}	
+	}
+	
+	public void setTimerVerify(Boolean pTimerVerify) {
+		getStateHelper().put(PropertyKeys.timerVerify, pTimerVerify);
+		handleAttribute("timerVerify", pTimerVerify);
+	}
+	
+	public Boolean getTimerVerify() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.timerVerify, false);
+	}
 
 }
