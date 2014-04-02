@@ -2,6 +2,7 @@
 * Input de data
 * Input de números
 * Input de texto
+* Input de dado com máscara
 * Input listbox/combobox
 * Input checkbox
 * Input option
@@ -13,8 +14,9 @@
 * Tabs
 * Relatório em vídeo/XML/Excel/PDF/XLS
 * Cadastros padronizados e automatizados
-* Tela de diálogos
+* Tela de diálogo
 * Lista em árvore
 * Exibição de mensagens
+* Icones
 
 
