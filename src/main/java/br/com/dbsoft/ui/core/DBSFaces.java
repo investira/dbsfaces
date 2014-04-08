@@ -908,7 +908,7 @@ public class  DBSFaces {
 	}
 	
 	/**
-	 * Retorna página corrente sem forçar o refresh(?faces-redirect=false).<br/>
+	 * Retorna página corrente sem forçar o refresh<b>(?faces-redirect=false)</b>.<br/>
 	 * Isto inibe o carregamento integral da página corrente. Artifício importante em chamadas Ajax.
 	 * @param pPage
 	 * @return
