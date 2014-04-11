@@ -6,7 +6,6 @@
 	xmlns:cc="http://java.sun.com/jsf/composite"
 	xmlns:dbs="http://www.dbsoft.com.br/ui/dbsfaces" 
 	xmlns:dbscom="http://www.dbsoft.com.br/ui/dbsfacescom">
-
 	<cc:interface componentType="br.com.dbsoft.ui.component.crudTable" >
 		<cc:attribute name="style"/>
 		<cc:attribute name="styleClass"/>
@@ -21,6 +20,7 @@
 		<cc:attribute name="allowInsert" default="true"/>
 		<cc:attribute name="allowRefresh" default="true"/>
 		<cc:attribute name="allowApproval" default="false"/>
+		<cc:attribute name="readOnly" default="false"/>
 		<cc:clientBehavior name="select" event="select" targets="dataTable" default="true"/>
 		<cc:facet name="toolbar"/>
 		<cc:facet name="filter"/>
@@ -28,18 +28,20 @@
  
 	<cc:implementation>
 		<div id="#{cc.clientId}" class="dbs_crudTable #{cc.attrs.styleClass}" style="#{cc.attrs.style}">
-			<dbs:div id="content" styleClass="-container">
+			<dbs:div id="content" styleClass="-container" style="#{cc.crudBean.dialogEdit ? '':'background-color:white;'}" >
 				<dbs:dataTable id="dataTable"
 				 			   caption="#{cc.crudBean.dialogCaption}"
 				               value="#{cc.crudBean.list}"
-				               multipleSelection="#{cc.attrs.multipleSelection or (cc.attrs.allowApproval and cc.crudBean.allowApproval and cc.crudBean.approvalUserStages!=0)}"
+				               multipleSelection="#{cc.attrs.multipleSelection or (not cc.crudBean.dialogEdit and not cc.attrs.readOnly and not cc.crudBean.isUpdating) or (cc.attrs.allowApproval and cc.crudBean.allowApproval and cc.crudBean.approvalUserStages!=0)}"
 				               filterAction="#{cc.crudBean.refreshList()}" 
 				               selectAllAction="#{cc.crudBean.selectAll()}"
 				               selected="#{cc.crudBean.selected}"
 				               update=":dialog"
 				               binding="#{cc.dataTable}">
 				    <dbs:setAttributeOnParent attributeName="var" attributeValue="#{cc.attrs.var}"/>
-			    	<dbs:setAttributeOnParent attributeName="viewOneAction" attributeValueExpression="#{cc.viewOneAction()}"/>
+				    <c:if test="#{cc.crudBean.dialogEdit}">
+				    	<dbs:setAttributeOnParent attributeName="viewOneAction" attributeValueExpression="#{cc.viewOneAction()}"/>
+				    </c:if>
 
 				    <c:if test="#{not empty cc.facets.filter}">
 						<f:facet name="filter">
@@ -55,8 +57,9 @@
 <!-- 					</c:if> -->
 				    <c:if test="#{not empty cc.facets.toolbar or (cc.attrs.multipleSelection and cc.crudBean.multipleSelection) or (cc.attrs.allowInsert and cc.crudBean.allowInsert) or (cc.attrs.allowRefresh and cc.crudBean.allowRefresh) or (cc.attrs.allowApproval and cc.crudBean.allowApproval)}">
 						<f:facet name="toolbar">
-							<cc:renderFacet name="toolbar"/>
 							<dbs:div id="toolbar">
+								<!-- toolbar incluido manualmente pelo usuário -->
+								<cc:renderFacet name="toolbar"/>
 								<!-- Controle de assinatura -->
 								<c:if test="#{cc.attrs.allowApproval and cc.crudBean.allowApproval and cc.crudBean.approvalUserStages!=0}">
 									<div class="-approval">
@@ -66,14 +69,42 @@
 										</c:if>
 									</div>
 								</c:if>
-								<!-- Controle de inclusão/atualização/visualização(este desabilitado temporariamente) -->
-								<dbs:button rendered="#{cc.attrs.multipleSelection and cc.crudBean.multipleSelection}" id="view" iconClass="dbs_icon -i_consultar" action="#{cc.crudBean.viewSelection()}" update=":dialog " execute="@this"/>
-								<dbs:button rendered="#{cc.attrs.allowInsert and cc.crudBean.allowInsert}" id="insert" iconClass="dbs_icon -i_inserir" action="#{cc.crudBean.insert()}" update=":dialog " execute="@this"/>
-								<dbs:button rendered="#{cc.attrs.allowRefresh and cc.crudBean.allowRefresh}" id="refresh" iconClass="dbs_icon -i_refresh" action="#{cc.crudBean.refreshList()}" update=":dialog :#{cc.clientId}"/>
+								
+								<c:if test="#{not cc.crudBean.dialogEdit and not cc.attrs.readOnly}">
+									<dbs:div id="icon" styleClass="-icon" rendered="#{cc.crudBean.isEditing}">
+										<dbs:img rendered="#{cc.crudBean.isUpdating}" styleClass="dbs_icon -i_editar"/>
+										<dbs:img rendered="#{cc.crudBean.isDeleting}" styleClass="dbs_icon -i_excluir"/>
+										<dbs:img rendered="#{cc.crudBean.isInserting}" styleClass="dbs_icon -i_inserir"/>
+									</dbs:div>
+									<!-- Controle de inclusão/atualização/visualização(este desabilitado temporariamente) -->
+									<ui:fragment rendered="#{not cc.crudBean.isEditing}">
+										<dbs:button id="delete" rendered="#{cc.crudBean.hasSelected}" iconClass="dbs_icon -i_excluir" action="#{cc.crudBean.delete()}" update="#{cc.clientId} " execute="@this"/>
+										<dbs:button id="edit" rendered="#{not cc.crudBean.hasSelected}" iconClass="dbs_icon -i_editar" action="#{cc.crudBean.update()}" update="#{cc.clientId} " execute="@this"/> 
+										<dbs:button rendered="#{cc.attrs.allowRefresh and cc.crudBean.allowRefresh}" id="refresh" iconClass="dbs_icon -i_refresh" action="#{cc.crudBean.refreshList()}" update=":dialog :#{cc.clientId}"/>
+									</ui:fragment>
+									<ui:fragment rendered="#{cc.crudBean.isUpdating}">
+										<dbs:button id="ok" iconClass="dbs_icon -i_ok" action="#{cc.crudBean.confirmEditing()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
+										<dbs:button id="cancelar" iconClass="dbs_icon -i_cancelar" action="#{cc.crudBean.ignoreEditing()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
+									</ui:fragment>
+								</c:if>
+								<c:if test="#{cc.crudBean.dialogEdit}">
+									<dbs:button rendered="#{cc.attrs.multipleSelection and cc.crudBean.multipleSelection}" id="view" iconClass="dbs_icon -i_consultar" action="#{cc.crudBean.viewSelection()}" update=":dialog " execute="@this"/>
+									<dbs:button rendered="#{cc.attrs.allowInsert and cc.crudBean.allowInsert}" id="insert" iconClass="dbs_icon -i_inserir" action="#{cc.crudBean.insert()}" update=":dialog " execute="@this"/>
+									<dbs:button rendered="#{cc.attrs.allowRefresh and cc.crudBean.allowRefresh}" id="refresh" iconClass="dbs_icon -i_refresh" action="#{cc.crudBean.refreshList()}" update=":dialog :#{cc.clientId}"/>
+								</c:if>							
 							</dbs:div>
 						</f:facet>
 					</c:if>
-					
+					<!-- Controle se registro foi editado-->
+					<c:if test="#{not cc.crudBean.dialogEdit and cc.crudBean.isUpdating}">
+						<dbs:dataTableColumn width="17px" styleClass="-center">
+							<dbs:checkbox id="alterado" value="#{cc.crudBean.selected}" styleClass="-foo" style="display:none; position:absolute;">
+								<f:ajax event="click" execute="@this"/>
+							</dbs:checkbox>		
+							<dbs:img rendered="#{cc.crudBean.selected}" styleClass="dbs_icon -i_inserir"/>
+						</dbs:dataTableColumn>	
+					</c:if>
+					<!-- Controle de aprovação de registro -->
 					<c:if test="#{cc.attrs.allowApproval and cc.crudBean.allowApproval and cc.crudBean.approvalUserStages!=0}">
 						<dbs:dataTableColumn width="23px" styleClass="-center">
 							<f:facet name="header"><span class="dbs_icon -i_certificate_green" style="position:relative;top:2px;"/></f:facet>
@@ -95,8 +126,8 @@
 			<dbs:div id="crudTableMessages" rendered="#{cc.crudBean.isClosed}">
 				<!-- Mensagens gerais -->
 				<dbscom:beanDialogMessages id="crudTableMessagesDialog"
-							   		 userBean="#{cc.crudBean}"
-					               	   update="#{cc.clientId}">
+						   		 	 userBean="#{cc.crudBean}"
+									   update="#{cc.clientId}">
 				</dbscom:beanDialogMessages>
 				<!-- Mensagem de aprovação				 -->
 				<c:if test="#{!cc.crudBean.hasMessage}">
@@ -138,8 +169,48 @@
 							<cc:renderFacet name="reproveDialog"/>
 						</c:if>
 					</c:if>
+					<!-- Só exite estes diálogos em edição sem dialog					 -->
+					<c:if test="#{not cc.crudBean.dialogEdit and cc.crudBean.isEditing}">
+						<dbs:dialog id="confirm"
+									rendered="#{cc.crudBean.isCommitting}"
+									messageIcon="c"
+									height="150" 
+									width="200" 
+									yesAction="#{cc.crudBean.endEditing(true)}"
+									noAction="#{cc.crudBean.endEditing(false)}"
+									update="#{cc.clientId}" >
+									<ui:fragment rendered="#{cc.crudBean.isUpdating}">
+										#{cc.crudBean.dialogConfirmationEditMessage}
+									</ui:fragment>		
+									<ui:fragment rendered="#{cc.crudBean.isInserting}">
+										#{cc.crudBean.dialogConfirmationInsertMessage}
+									</ui:fragment>		
+									<ui:fragment rendered="#{cc.crudBean.isDeleting}">
+										#{cc.crudBean.dialogConfirmationDeleteMessage}
+									</ui:fragment>		
+						</dbs:dialog>
+						<dbs:dialog id="ignore" 
+									rendered="#{cc.crudBean.isIgnoring}"
+									messageIcon="g"
+									height="150" 
+									width="200" 
+									yesAction="#{cc.crudBean.endEditing(true)}"
+									noAction="#{cc.crudBean.endEditing(false)}"
+									update="#{cc.clientId}">
+									<ui:fragment rendered="#{cc.crudBean.isUpdating}">
+										#{cc.crudBean.dialogIgnoreEditMessage}
+									</ui:fragment>		
+									<ui:fragment rendered="#{cc.crudBean.isInserting}">
+										#{cc.crudBean.dialogIgnoreInsertMessage}
+									</ui:fragment>		
+									<ui:fragment rendered="#{cc.crudBean.isDeleting}">
+										#{cc.crudBean.dialogIgnoreDeleteMessage}
+									</ui:fragment>		
+						</dbs:dialog>	
+					</c:if>				
 				</c:if>	
 			</dbs:div>	
+
 
 						
 			<script type="text/javascript">

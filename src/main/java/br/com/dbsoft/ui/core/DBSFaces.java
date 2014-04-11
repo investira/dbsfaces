@@ -908,7 +908,7 @@ public class  DBSFaces {
 	}
 	
 	/**
-	 * Retorna página corrente sem forçar o refresh(?faces-redirect=false).<br/>
+	 * Retorna página corrente sem forçar o refresh<b>(?faces-redirect=false)</b>.<br/>
 	 * Isto inibe o carregamento integral da página corrente. Artifício importante em chamadas Ajax.
 	 * @param pPage
 	 * @return
@@ -1470,9 +1470,9 @@ public class  DBSFaces {
 	 */
 	public static void createDataTableSpecialColumns(DBSDataTable pDataTable){
 		FacesContext xContext = FacesContext.getCurrentInstance();	
-		if (pDataTable.getHasViewOneAction() ||
-			pDataTable.getMultipleSelection() ||
-			!pDataTable.getKeyColumnName().equals("")){
+		if (pDataTable.getHasViewOneAction() 
+		 || pDataTable.getMultipleSelection() 
+		 || !pDataTable.getKeyColumnName().equals("")){
 			DBSDataTableColumn xC0 = (DBSDataTableColumn) DBSFaces.findComponent("C0", pDataTable.getFacetsAndChildren());
 			if(xC0 == null){
 				xC0 = (DBSDataTableColumn) xContext.getApplication().createComponent(DBSDataTableColumn.COMPONENT_TYPE);
@@ -1497,7 +1497,7 @@ public class  DBSFaces {
 						xKey.setValueExpression("value", DBSFaces.createValueExpression(pDataTable.getVar() + "." + pDataTable.getKeyColumnName(), String.class));
 					xC0.getChildren().add(xKey);
 				}
-				//Encode: Seleção multipla
+				//Encode: Seleção multipla (habilitada também quando a edição é inline, para poder selecionar vários itens em caso de exclusão)
 				if (pDataTable.getMultipleSelection()){
 					//Troca styleClass para poder exibir a coluna
 					xC0.setStyleClass(DBSFaces.CSS.MODIFIER.CHECKBOX);
@@ -1509,7 +1509,7 @@ public class  DBSFaces {
 						xBtn.setActionExpression(DBSFaces.createMethodExpression(xContext, pDataTable.getSelectAllAction(), String.class, new Class[0]));
 						xBtn.setUpdate("@all"); //Configurado como @All pois na finalizava a chamada ajax corretamente
 						xBtn.setExecute("@this");
-					xC0.getFacets().put("header", xBtn);
+					xC0.getFacets().put(DBSDataTable.FACET_HEADER, xBtn);
 					
 					//Checkbox em cada linha para seleção individual--------------------------------------------
 					DBSCheckbox xCheckbox = (DBSCheckbox) xContext.getApplication().createComponent(DBSCheckbox.COMPONENT_TYPE);
@@ -1548,10 +1548,10 @@ public class  DBSFaces {
 	 */
 	public static void createDataTableBotaoPesquisar(DBSDataTable pDataTable){
 		//Cria botão 'Pesquisar' caso existam campos para a seleção de filtro
-		if (pDataTable.getFacet("filter")!=null){
+		if (pDataTable.getFacet(DBSDataTable.FACET_FILTER)!=null){
 			FacesContext 	xContext = FacesContext.getCurrentInstance();	
 			String 			xClientId = pDataTable.getClientId(xContext);
-			UIComponent 	xFacetPesquisar = pDataTable.getFacet("pesquisar");
+			UIComponent 	xFacetPesquisar = pDataTable.getFacet(DBSDataTable.FACET_PESQUISAR);
 			if (xFacetPesquisar == null){
 				DBSButton xBtPesquisar = (DBSButton) xContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
 				xBtPesquisar.setId("btPesquisar");
@@ -1564,11 +1564,49 @@ public class  DBSFaces {
 				}
 				xBtPesquisar.setUpdate(xClientId);
 				xBtPesquisar.setExecute(xClientId);
-				pDataTable.getFacets().put("pesquisar", xBtPesquisar);
+				pDataTable.getFacets().put(DBSDataTable.FACET_PESQUISAR, xBtPesquisar);
 			}
 		}
 	}
 	
+//	/**
+//	 * Cria botões no toolbar para edição diretamente na linha. 
+//	 * @param pDataTable
+//	 */
+//	public static void createDataTableInlineEditToolbar(DBSDataTable pDataTable){
+//		//Cria botão 'Pesquisar' caso existam campos para a seleção de filtro
+//		if (pDataTable.getInlineEdit()){
+//			FacesContext 	xContext = FacesContext.getCurrentInstance();	
+//			String 			xClientId = pDataTable.getClientId(xContext);
+//			UIComponent 	xFacetInlineToolbar = pDataTable.getFacet(DBSDataTable.FACET_INLINETOOLBAR);
+//			//Cria facet contendo os botões para edição em linha. 
+//			if (xFacetInlineToolbar == null){
+//				DBSButton xBtExcluir = (DBSButton) xContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
+//				xBtExcluir.setId("btExcluir");
+//				xBtExcluir.setIconClass(DBSFaces.CSS.ICON.trim() + " -i_excluir");
+////				if (pDataTable.getFilterAction() == null){
+////					wLogger.error(pDataTable.getClientId() +  ": filterAction não informado");
+////				}else{
+////					xBtPesquisar.setActionExpression(DBSFaces.createMethodExpression(xContext, pDataTable.getFilterAction(), String.class,new Class[0]));
+////				}
+//				xBtExcluir.setUpdate(xClientId);
+//				xBtExcluir.setExecute(xClientId);
+//				//Adiciona o botão ao facet inlinetoolbar.
+//				pDataTable.getFacets().put(DBSDataTable.FACET_INLINETOOLBAR, xBtExcluir);
+//				//Recupera o facet para poder adiciona-lo ao facet principal do toolbar.
+//				xFacetInlineToolbar = pDataTable.getFacet(DBSDataTable.FACET_INLINETOOLBAR);
+//				//Recupera o facet do toolbar
+//				UIComponent xFacetToolbar = pDataTable.getFacet(DBSDataTable.FACET_TOOLBAR);
+//				if (xFacetToolbar == null){
+//					//Se o facet do toolbar não existir, cria adicionando o facet do inlinetoolbar
+//					pDataTable.getFacets().put(DBSDataTable.FACET_TOOLBAR, xFacetInlineToolbar);
+//				}else{
+//					//Se existis, adiciona o facet como filho
+//					xFacetToolbar.getChildren().add(0, xFacetInlineToolbar);
+//				}
+//			}
+//		}
+//	}
 
 	/**
 	 * Retorna no nome do attributo(sem o nome do bean) a partir da EL do value do campo informado

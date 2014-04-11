@@ -37,38 +37,6 @@ public abstract class DBSCrudBean extends DBSBean{
 
 	private static final long serialVersionUID = -8550893738791483527L;
 
-	public static enum FormStage{
-		CLOSED 			("Closed", 0),
-		OPENED 			("Opened", 1);
-		
-		private String 	wName;
-		private int 	wCode;
-		
-		private FormStage(String pName, int pCode) {
-			this.wName = pName;
-			this.wCode = pCode;
-		}
-
-		public String getName() {
-			return wName;
-		}
-
-		public int getCode() {
-			return wCode;
-		}
-		
-		public static FormStage get(int pCode) {
-			switch (pCode) {
-			case 0:
-				return CLOSED;
-			case 1:
-				return OPENED;
-			default:
-				return CLOSED;
-			}
-		}		
-	}
-	  
 	public static enum EditingMode {
 		NONE 			("Not Editing", 0),
 		INSERTING 		("Inserting", 1),
@@ -153,7 +121,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	@SuppressWarnings("rawtypes")
 	protected DBSDAO							wDAO;
 	private List<IDBSCrudBeanEventsListener>	wEventListeners = new ArrayList<IDBSCrudBeanEventsListener>();
-	private FormStage 							wFormStage = FormStage.CLOSED;
 	private EditingMode							wEditingMode = EditingMode.NONE;
 	private EditingStage						wEditingStage = EditingStage.NONE;
 	private String								wCrudFormFile = "";
@@ -163,6 +130,8 @@ public abstract class DBSCrudBean extends DBSBean{
 	private boolean								wValueChanged;
 	private int									wCopiedRowIndex = -1;
 	private boolean								wValidateComponentHasError = false;
+	private boolean								wDialogEdit = true;
+	private Boolean 							wDialogOpened = false;
 	private String								wDialogConfirmationEditMessage = "Confirmar a edição?";
 	private String								wDialogConfirmationInsertMessage = "Confirmar a inclusão?";
 	private String								wDialogConfirmationDeleteMessage = "Confirmar a exclusão?";
@@ -264,23 +233,14 @@ public abstract class DBSCrudBean extends DBSBean{
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> void setValue(String pColumnName, T pColumnValue){
-		//Verifica se há alguma coluna corrente antes de setar o valor
-		if (wDAO != null 
-		 && wDAO.getColumns().size() > 0){
-			T xOldValue =  getValue(pColumnName);
-			if (pColumnValue != null){
-				//Converte o valor antigo para o mesmo tipo do valor recebido para garantir que verificação correta de houve alteração de valores
-				xOldValue = (T) DBSObject.toClass(getValue(pColumnName), pColumnValue.getClass()); 
-			}
-			//Se valor armazenado(anterior) não for nulo e houve alteração de valores...
-			if(!DBSObject.getNotNull(xOldValue,"").equals(DBSObject.getNotNull(pColumnValue,""))){
-				//marca como valor alterado
-				setValueChanged(true);
-				wDAO.setValue(pColumnName, pColumnValue);
-			}
+		//Utiliza ListValue para controlar os valores de todas as linhas
+		if (!wDialogEdit){
+			setListValue(pColumnName, pColumnValue);
+		}else{
+			pvSetValueDAO(pColumnName, pColumnValue);
 		}
 	}
-
+	
 	/**
 	 * Retorna o valor da coluna
 	 * @param pColumnName
@@ -288,12 +248,17 @@ public abstract class DBSCrudBean extends DBSBean{
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T getValue(String pColumnName){
-		//Se existir registro corrente
-		if (wDAO != null 
-		 && wDAO.getColumns().size() >0){
-			return (T) wDAO.getValue(pColumnName);
+		//Utiliza ListValue para controlar os valores de todas as linhas
+		if (!wDialogEdit){
+			return getListValue(pColumnName);
 		}else{
-			return null;
+			//Se existir registro corrente
+			if (wDAO != null 
+			 && wDAO.getColumns().size() >0){
+				return (T) wDAO.getValue(pColumnName);
+			}else{
+				return null;
+			}
 		}
 	}
 	
@@ -355,6 +320,18 @@ public abstract class DBSCrudBean extends DBSBean{
 	@SuppressWarnings("unchecked")
 	public <T> T getListValue(String pColumnName, Class<?> pValueClass){
 		return (T) DBSObject.toClass(getListValue(pColumnName), pValueClass);
+	}
+
+	/**
+	 * Seta o valor da coluna informada diretamenteo no ResultDataModel.
+	 * @param pColumnName Nome da coluna
+	 * @param pValue Valor da coluna
+	 * @return
+	 */		
+	public void setListValue(String pColumnName, Object pColumnValue){
+		if (wDAO != null){
+			wDAO.setListValue(pColumnName, pColumnValue);
+		}		
 	}
 
 	/**
@@ -429,24 +406,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Retorna a situação da execução
 	 * @return
 	 */
-	public FormStage getFormStage() {
-		return wFormStage;
-	}
-
-	/**
-	 * Configura a situação da execução (Método PRIVADO)
-	 * @param pRunningState
-	 */
-	private synchronized void setFormStage(FormStage pFormStage) {
-		if (wFormStage != pFormStage){
-			wFormStage = pFormStage;
-		}
-	}
-
-	/**
-	 * Retorna a situação da execução
-	 * @return
-	 */
 	public EditingMode getEditingMode() {
 		return wEditingMode;
 	}
@@ -495,6 +454,50 @@ public abstract class DBSCrudBean extends DBSBean{
 		}
 	}
 
+	//=================================================================
+	
+	/**
+	 * Texto que será exibido no cabeçalho do dialog
+	 * @param pDialogCaption
+	 */
+	public void setDialogCaption(String pDialogCaption) {wDialogCaption = pDialogCaption;}
+
+	public String getDialogCaption() {return wDialogCaption;}
+
+	/**
+	 * Retorna a situação da execução
+	 * @return
+	 */
+	public Boolean getDialogOpened() {
+		return wDialogOpened;
+	}
+
+	/**
+	 * Configura a situação da execução (Método PRIVADO)
+	 * @param pRunningState
+	 */
+	private synchronized void setDialogOpened(Boolean pDialogOpened) {
+		if (wDialogEdit){
+			if (wDialogOpened != pDialogOpened){
+				wDialogOpened = pDialogOpened;
+			}
+		}
+	}
+
+	/**
+	 * Indica se edição será efetuado dentro de um dialog.<br/>
+	 * Caso positivo, deverá se implementado o form utilizando o componente crudForm e adiciona-lo a view que onde está o crudTable.  
+	 * @return
+	 */
+	
+	public Boolean getDialogEdit() {return wDialogEdit;}
+
+	/**
+	 * Indica se edição será efetuado dentro de um dialog.<br/>
+	 * Caso positivo, deverá se implementado o form utilizando o componente crudForm e adiciona-lo a view que onde está o crudTable.  
+	 */
+	public void setDialogEdit(Boolean pDialogEdit) {wDialogEdit = pDialogEdit;}
+
 	public String getDialogConfirmationEditMessage() {return wDialogConfirmationEditMessage;}
 	public void setDialogConfirmationEditMessage(String pDialogConfirmationEditMessage) {wDialogConfirmationEditMessage = pDialogConfirmationEditMessage;}
 
@@ -519,15 +522,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	public String getDialogIgnoreDeleteMessage() {return wDialogIgnoreDeleteMessage;}
 	public void setDialogIgnoreDeleteMessage(String pDialogIgnoreDeleteMessage) {wDialogIgnoreDeleteMessage = pDialogIgnoreDeleteMessage;}
 
-	/**
-	 * Texto que será exibido no cabeçalho do dialog
-	 * @param pDialogCaption
-	 */
-	public void setDialogCaption(String pDialogCaption) {wDialogCaption = pDialogCaption;}
-	public String getDialogCaption() {return wDialogCaption;}
-	
-
-	
 	//==============================================================================
 	/**
 	 * Use este atributo para popular páginas
@@ -887,7 +881,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @return
 	 */
 	public Boolean getIsClosed(){
-		return (wFormStage == FormStage.CLOSED);
+		return (!wDialogOpened);
 	}
 
 	/**
@@ -1093,7 +1087,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	public synchronized String selectAll() throws DBSIOException{
 		System.out.println("SELECT ALL");
 		//Só permite a seleção quando o dialog estiver fechado
-		if (wFormStage==FormStage.CLOSED){
+		if (!wDialogOpened){
 			pvSelectAll();
 			if (pvFireEventBeforeSelect()){
 				pvFireEventAfterSelect();
@@ -1117,6 +1111,8 @@ public abstract class DBSCrudBean extends DBSBean{
 	 */
 	public synchronized String refreshList() throws DBSIOException{
 		
+		ignoreEditing();
+
 		Integer xCurrentRowIndex = -1;
 //		//Salva posição atual para reposicionar após o refresh
 		if (wDAO != null){
@@ -1169,11 +1165,11 @@ public abstract class DBSCrudBean extends DBSBean{
 
 		if (wDAO.getCurrentRowIndex() != -1){
 			//Só permite a seleção quando o dialog estiver fechado
-			if (wFormStage==FormStage.CLOSED){
+			if (!wDialogOpened){
 				if (wEditingStage==EditingStage.NONE){
 					//Chama evento
 					if (pvFireEventBeforeView()){
-						setFormStage(FormStage.OPENED);
+						setDialogOpened(true);
 						pvFireEventAfterView();
 					}
 				}else{
@@ -1202,7 +1198,7 @@ public abstract class DBSCrudBean extends DBSBean{
 			if (wEditingStage==EditingStage.NONE){
 				//Chama evento
 				if (pvFireEventBeforeView()){
-					setFormStage(FormStage.OPENED);
+					setDialogOpened(true);
 					pvFireEventAfterView();
 				}
 			}else{
@@ -1227,10 +1223,10 @@ public abstract class DBSCrudBean extends DBSBean{
 	public synchronized String close(Boolean pClearMessage) throws DBSIOException{
 		System.out.println("CLOSE");
 		//Só permite a seleção quando o dialog estiver fechado
-		if (wFormStage==FormStage.OPENED){
+		if (wDialogOpened){
 			//Dispara evento
 			if (pvFireEventBeforeClose()){
-				setFormStage(FormStage.CLOSED);
+				setDialogOpened(false);
 				if (pClearMessage) {
 					clearMessages();
 				}
@@ -1275,7 +1271,7 @@ public abstract class DBSCrudBean extends DBSBean{
 					//Não chama os eventos por já foram chamados no view() quando é inclusão de registro selecionado
 					if (!wInsertSelected){
 						if (pvFireEventBeforeView()){
-							setFormStage(FormStage.OPENED);
+							setDialogOpened(true);
 							pvFireEventAfterView();
 						}
 					}
@@ -1360,6 +1356,10 @@ public abstract class DBSCrudBean extends DBSBean{
 			if (wEditingMode==EditingMode.NONE){
 				if (pvFireEventBeforeEdit(EditingMode.UPDATING)){
 					setEditingMode(EditingMode.UPDATING);
+					//Quando for edição sem dialog, força a indicação que houve alteração de registro, logo no inicio.
+					if (!wDialogEdit){
+						setValueChanged(true);
+					}
 				}else{
 					setValueChanged(false);
 					//exibe mensagem de erro de procedimento
@@ -1621,6 +1621,9 @@ public abstract class DBSCrudBean extends DBSBean{
 				if (wEditingStage==EditingStage.IGNORING){
 					setEditingMode(EditingMode.NONE); 
 					pvRestoreValuesOriginal();
+					if (!wDialogEdit){
+						refreshList();
+					}
 				}else{
 					if (pOk){
 						setEditingMode(EditingMode.NONE);
@@ -1638,7 +1641,7 @@ public abstract class DBSCrudBean extends DBSBean{
 					if (wEditingStage==EditingStage.IGNORING
 					|| wInsertSelected){
 						setEditingMode(EditingMode.NONE); 
-//						setFormStage(FormStage.CLOSED);
+//						setDialogStage(DialogStage.CLOSED);
 						close();
 					}else{
 						setEditingMode(EditingMode.NONE); 
@@ -1657,7 +1660,7 @@ public abstract class DBSCrudBean extends DBSBean{
 					wCopiedRowIndex = -1; //Reseta registro copiado para evitar a exibição do botão Paste.
 					setEditingMode(EditingMode.NONE);
 					if (pOk){
-						setFormStage(FormStage.CLOSED);
+						setDialogOpened(false);
 					}
 				}
 				break;
@@ -1833,6 +1836,28 @@ public abstract class DBSCrudBean extends DBSBean{
 				wSelectedRowsIndexes.remove(xX);
 			}else{
 				wSelectedRowsIndexes.add(xX);
+			}
+		}
+	}
+
+	// PRIVATE ============================================================================
+	
+	@SuppressWarnings("unchecked")
+	private <T> void pvSetValueDAO(String pColumnName, T pColumnValue){
+		//Utiliza ListValue para controlar os valores de todas as linhas
+		//Verifica se há alguma coluna corrente antes de setar o valor
+		if (wDAO != null 
+		 && wDAO.getColumns().size() > 0){
+			T xOldValue =  getValue(pColumnName);
+			if (pColumnValue != null){
+				//Converte o valor antigo para o mesmo tipo do valor recebido para garantir que verificação correta de houve alteração de valores
+				xOldValue = (T) DBSObject.toClass(getValue(pColumnName), pColumnValue.getClass()); 
+			}
+			//Se valor armazenado(anterior) não for nulo e houve alteração de valores...
+			if(!DBSObject.getNotNull(xOldValue,"").equals(DBSObject.getNotNull(pColumnValue,""))){
+				//marca como valor alterado
+				setValueChanged(true);
+				wDAO.setValue(pColumnName, pColumnValue);
 			}
 		}
 	}
@@ -2175,8 +2200,25 @@ public abstract class DBSCrudBean extends DBSBean{
 	private boolean pvFireEventValidate(){
 		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.VALIDATE);
 		xE.setEditingMode(getEditingMode());
+		
 		try{
-			pvBroadcastEvent(xE, false, false, false);
+			/*Faz loop entre todos os registros selecionados quando for:
+			 * .Aprovação e reprovação
+			 * .Edição sem dialog
+			*/
+			if (getHasSelected() 
+			&& (getIsApprovingOrReproving() || !wDialogEdit)){ 
+				for (Integer xRowIndex : wSelectedRowsIndexes){
+					wDAO.setCurrentRowIndex(xRowIndex);
+					pvBroadcastEvent(xE, false, false, false);
+					if (!xE.isOk()){
+						addMessage("erroassinatura", MESSAGE_TYPE.ERROR,"Não foi possível efetuar a edição de todos os itens selecionados. Procure efetuar a edição individualmente para identificar o registro com problema.");
+						break;
+					}
+				}
+			}else{
+				pvBroadcastEvent(xE, false, false, false);
+			}		
 		} catch (Exception e) {
 			xE.setOk(false);
 			wLogger.error("EventValidate",e);
@@ -2216,8 +2258,15 @@ public abstract class DBSCrudBean extends DBSBean{
 				DBSIO.beginTrans(wConnection);
 			}
 			
-			if (getIsApprovingOrReproving()){ 
-				//Loop entre todos os registros selecionados
+//Na aprovação ou reprovação, faz oop entre todos os registros selecionados
+//			if (getIsApprovingOrReproving()){ Comentado em 10/04/2014 para possibilitar o loop em qualquer situação que haja mais de um registro selecionado
+
+			/*Faz loop entre todos os registros selecionados quando for:
+			 * .Aprovação e reprovação
+			 * .Edição sem dialog
+			*/
+			if (getHasSelected() 
+			&& (getIsApprovingOrReproving() || !wDialogEdit)){ 
 				int xCount = 0;
 				for (Integer xRowIndex : wSelectedRowsIndexes){
 					wDAO.setCurrentRowIndex(xRowIndex);

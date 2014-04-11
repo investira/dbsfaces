@@ -71,11 +71,20 @@ dbs_dataTable = function(pId) {
     	return false;
     });
  
+	$(xTable + " > tbody > tr").focusin(function(e){
+		dbsfaces.dataTable.showRowFocus(pId, this, true);
+	});
+	
 	/*Força o foco no click*/
 	$(xTable + " > tbody > tr").click(function(e){
 //		e.stopImmediatePropagation();
-		dbsfaces.dataTable.showRowFocus(pId, this, true);
-		$(pId + " > .-container > input.-foo").focus().select().click();
+		//Se click foi em campo de input, não precisa forçar o foco no input-foo.
+		if ($(e.target).hasClass("dbs_input-data")){
+			dbsfaces.dataTable.addHeadFocus(pId);
+		}else{
+			dbsfaces.dataTable.showRowFocus(pId, this, true);
+			$(pId + " > .-container > input.-foo").focus().select().click();
+		}
 //		e.preventDefault();
 	});
 
@@ -121,7 +130,7 @@ dbs_dataTable = function(pId) {
 				dbsfaces.dataTable.showRowFocus(pId, xE, true);
 			}
 		}
-		$(xTable + " > thead > tr").addClass("-focus");
+		dbsfaces.dataTable.addHeadFocus(pId);
 		e.stopPropagation();
 		//Comentado em 28/08/2013 - no IE, retirava o foco do input.-foo, deixando de funcionar a nagevação por seta
 		//$(pId).trigger('focus'); 
@@ -169,6 +178,10 @@ dbsfaces.dataTable = {
 	
 	removeRowFocus: function(pId){
 		$(pId + " > .-container > .-content > table > tbody > tr.-focus").removeClass("-focus");
+	},
+	
+	addHeadFocus: function(pId){
+		$(pId + " > .-container > .-content > table > thead > tr").addClass("-focus");
 	},
 	
 	removeHeadFocus: function(pId){
@@ -254,7 +267,7 @@ dbsfaces.dataTable = {
 		
 		xNew = xRow.filter(".-selected");
 		if ($(xNew).length != 0){
-			xNew.parent().scrollTop($(xNew).position().top - $(xNew).height());
+			xNew.parent().scrollTop($(xNew).position().top - $(xNew).height() - xNew.parent().offset().top);
 		}
 	}
 }

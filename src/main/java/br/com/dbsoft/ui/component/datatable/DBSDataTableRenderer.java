@@ -56,6 +56,9 @@ public class DBSDataTableRenderer extends DBSRenderer {
 		String xClass = DBSFaces.CSS.DATATABLE.MAIN + " " + xDataTable.getStyleClass();
 		String xStyle = xDataTable.getStyle();
 		
+		//Cria botões no toolbar para edição diretamente na linha
+//		DBSFaces.createDataTableInlineEditToolbar(xDataTable);
+		
 		pvSetCurrentRowIndex(pContext, pComponent, false);
 		
 		//Encode principal
@@ -108,11 +111,11 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	 * @return
 	 */
 	private boolean pvHasHeader(DBSDataTable pDataTable){
-		UIComponent xFilter = pDataTable.getFacet("filter");
-		UIComponent xToolbar = pDataTable.getFacet("toolbar");
-		if (!pDataTable.getCaption().equals("") ||
-			xFilter != null ||
-			xToolbar != null){
+		UIComponent xFilter = pDataTable.getFacet(DBSDataTable.FACET_FILTER);
+		UIComponent xToolbar = pDataTable.getFacet(DBSDataTable.FACET_TOOLBAR);
+		if (!pDataTable.getCaption().equals("")
+		 || xFilter != null
+		 || xToolbar != null){
 			return true;
 		}
 		return false;
@@ -127,8 +130,8 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	 * @throws IOException
 	 */
 	private void pvEncodeHeader(FacesContext pContext, DBSDataTable pDataTable,ResponseWriter pWriter) throws IOException {
-		UIComponent xFilter = pDataTable.getFacet("filter");
-		UIComponent xToolbar = pDataTable.getFacet("toolbar");
+		UIComponent xFilter = pDataTable.getFacet(DBSDataTable.FACET_FILTER);
+		UIComponent xToolbar = pDataTable.getFacet(DBSDataTable.FACET_TOOLBAR);
 		
 		if (!pDataTable.getCaption().equals("") ||
 			xFilter != null ||
@@ -164,7 +167,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 						//Botão de "Pesquisar"
 						pWriter.startElement("div", pDataTable);
 							DBSFaces.setAttribute(pWriter, "class",DBSFaces.CSS.MODIFIER.BUTTON.trim(), null);
-							DBSButton xBtPesquisar = (DBSButton) pDataTable.getFacet("pesquisar");
+							DBSButton xBtPesquisar = (DBSButton) pDataTable.getFacet(DBSDataTable.FACET_PESQUISAR);
 							if (xBtPesquisar!=null){
 								//Cria lista com os ids componentes dentro do filtro para que façam parte do submit do botão pesquisar 
 								String xExecute = "";
@@ -265,7 +268,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 		for (UIComponent xC : pDataTable.getChildren()){
 			if (xC instanceof DBSDataTableColumn){
 				DBSDataTableColumn xDTC = (DBSDataTableColumn) xC;
-				UIComponent xHeader = xDTC.getFacet("header");
+				UIComponent xHeader = xDTC.getFacet(DBSDataTable.FACET_HEADER);
 				if (xHeader !=null){
 					xTemTitulo = true;
 					break;
@@ -282,7 +285,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 					if (xC instanceof DBSDataTableColumn){
 						DBSDataTableColumn xDTC = (DBSDataTableColumn) xC;
 						if (xDTC.isRendered()){
-							UIComponent xHeader = xDTC.getFacet("header");
+							UIComponent xHeader = xDTC.getFacet(DBSDataTable.FACET_HEADER);
 							pvEncodeColumn(true, xDTC.getStyleClass(), xHeader, pContext, pDataTable, pWriter);
 						}
 					}else{

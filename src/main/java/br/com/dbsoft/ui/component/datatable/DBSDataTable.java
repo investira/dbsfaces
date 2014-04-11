@@ -21,6 +21,12 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.DATATABLE;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
+	
+	public final static String FACET_PESQUISAR = "pesquisar";
+	public final static String FACET_HEADER = "header";
+	public final static String FACET_TOOLBAR = "toolbar";
+	public final static String FACET_FILTER = "filter";
+	public final static String FACET_INLINETOOLBAR = "inlineEditToolbar";
 
 	protected enum PropertyKeys {
 		style, 

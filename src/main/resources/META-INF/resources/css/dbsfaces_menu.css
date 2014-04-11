@@ -220,20 +220,22 @@
 
 /*Hovers*/
 /*Exibe submenu vinculado ao item*/
+/* Em 09/04/2014 foi desabilitado JS que efetuava o hover */
 .dbs_menu > li:HOVER > ul, 
 .dbs_menu > li:FOCUS > ul, 
 .dbs_menuitem:HOVER > .dbs_submenu, 
 .dbs_menuitem:FOCUS > .dbs_submenu {
-/* 	display: block; Desabilitado. Hover por JS*/
+	display: block; 
 }
 
 /*Hovers*/
 /*Exibe submenu vinculado ao item*/ 
-.dbs_menu > li > ul.-hover, 
-.dbs_submenu.-hover {
-	display: block;
-}
+/* .dbs_menu > li > ul.-hover,  */
+/* .dbs_submenu.-hover { */
+/* 	display: block; */
+/* } */
 
+	
 
 /*altera exibição do menu principal(Horinzontal)*/
 .dbs_menu > li:not(.-disabled):HOVER, 
@@ -246,9 +248,9 @@
 	background: -moz-linear-gradient(top, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.3)), url("#{request.contextPath}/images/default_back_transparent.png"),black;
 	background: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, .4) ), to(rgba(255, 255, 255, 0.3) ) ), url("#{request.contextPath}/images/default_back_transparent.png"),black;
 	
-	-webkit-box-shadow:0px 0px 4px 1px #68B7FF; 
-	-moz-box-shadow:0px 0px 4px 1px #68B7FF; 
-	box-shadow: 0px 0px 4px 1px #68B7FF;
+	-webkit-box-shadow: 0 0 3px 0px rgba(255, 255, 255, 0.8);
+	-moz-box-shadow: 0 0 3px 0px rgba(255, 255, 255, 0.8);
+	box-shadow: 0 0 3px 0px rgba(255, 255, 255, 0.8);
 }
 
 li.dbs_menuitem.-readOnly {

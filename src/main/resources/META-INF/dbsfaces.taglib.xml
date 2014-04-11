@@ -80,6 +80,14 @@
 		</attribute>
 		<attribute>
 			<description>
+				Se haverá edição diretamente na linha do grid. 
+            </description>
+			<name>inlineEdit</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
                 Método que será chamado após usuário pressionar o botão Pesquisar
             </description>
 			<name>filterAction</name>
