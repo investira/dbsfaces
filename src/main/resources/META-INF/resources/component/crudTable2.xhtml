@@ -37,6 +37,7 @@
 				               selectAllAction="#{cc.crudBean.selectAll()}"
 				               selected="#{cc.crudBean.selected}"
 				               update=":dialog"
+				               styleClass="#{cc.crudBean.dialogEdit ? '':'-noDialogEdit'}"
 				               binding="#{cc.dataTable}">
 				    <dbs:setAttributeOnParent attributeName="var" attributeValue="#{cc.attrs.var}"/>
 				    <c:if test="#{cc.crudBean.dialogEdit}">
@@ -97,10 +98,12 @@
 					</c:if>
 					<!-- Controle se registro foi editado-->
 					<c:if test="#{not cc.crudBean.dialogEdit and cc.crudBean.isUpdating}">
-						<dbs:dataTableColumn width="17px" styleClass="-center">
-							<dbs:checkbox id="alterado" value="#{cc.crudBean.selected}" styleClass="-foo" style="display:none; position:absolute;">
-								<f:ajax event="click" execute="@this"/>
-							</dbs:checkbox>		
+						<dbs:dataTableColumn width="17px" styleClass="-center ">
+							<h:inputHidden id="alterado" value="#{cc.crudBean.selected}">
+							</h:inputHidden>
+<!-- 							<dbs:checkbox id="alterado" value="#{cc.crudBean.selected}" styleClass="-foo" style=" "> -->
+<!-- 								<f:ajax event="click" execute="@this"/> -->
+<!-- 							</dbs:checkbox>		 -->
 							<dbs:img rendered="#{cc.crudBean.selected}" styleClass="dbs_icon -i_inserir"/>
 						</dbs:dataTableColumn>	
 					</c:if>

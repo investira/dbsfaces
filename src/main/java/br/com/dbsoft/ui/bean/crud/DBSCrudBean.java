@@ -118,8 +118,8 @@ public abstract class DBSCrudBean extends DBSBean{
 	
 
 	
-	@SuppressWarnings("rawtypes")
-	protected DBSDAO							wDAO;
+
+	protected DBSDAO<?>							wDAO;
 	private List<IDBSCrudBeanEventsListener>	wEventListeners = new ArrayList<IDBSCrudBeanEventsListener>();
 	private EditingMode							wEditingMode = EditingMode.NONE;
 	private EditingStage						wEditingStage = EditingStage.NONE;
@@ -231,7 +231,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @param pColumnName
 	 * @param pColumnValue
 	 */
-	@SuppressWarnings("unchecked")
 	public <T> void setValue(String pColumnName, T pColumnValue){
 		//Utiliza ListValue para controlar os valores de todas as linhas
 		if (!wDialogEdit){
@@ -246,21 +245,16 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @param pColumnName
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
+	
 	public <T> T getValue(String pColumnName){
 		//Utiliza ListValue para controlar os valores de todas as linhas
 		if (!wDialogEdit){
 			return getListValue(pColumnName);
 		}else{
-			//Se existir registro corrente
-			if (wDAO != null 
-			 && wDAO.getColumns().size() >0){
-				return (T) wDAO.getValue(pColumnName);
-			}else{
-				return null;
-			}
+			return pvGetValue(pColumnName);
 		}
 	}
+	
 	
 	/**
 	 * Retorna o valor da coluna convertida para a classe do tipo informado
@@ -1574,7 +1568,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @param pEvent Informações do evento
 	 * @throws DBSIOException 
 	 */
-	@SuppressWarnings("unchecked")
 	protected void beforeCommit(DBSCrudBeanEvent pEvent) throws DBSIOException {
 		//Copia dos valores pois podem ter sido alterados durante o beforecommit
 		
@@ -1679,6 +1672,19 @@ public abstract class DBSCrudBean extends DBSBean{
 				//Exibe mensagem de erro de procedimento
 		}		
 	}
+
+//	/**
+//	 *Na edição diretamente no grid(wDialogEdit=false), os valores são setados e lidos diretamente no ResultDataModel que controla os valores de todos as linhas.
+//	 *Isto impede que se verifique se o valor original foi alterado ou não.
+//	 *Desta forma, é necessário efetuar esta verificação antes de efetuar o commit, para que ele entenda quais os valores foram alterados.	
+//	 */
+//	private void pvMarkChangedValues(){
+//		for (Iterator<DBSColumn> xI = wDAO.getCommandColumns().iterator(); xI.hasNext();){
+//			DBSColumn xC = xI.next();
+//			pvSetValueDAO(xC.getColumnName(), getValue(xC.getColumnName()));
+//		}
+//	
+//	}
 
 	/**
 	 * Restaura os valores antes de qualquer modificação
@@ -1842,16 +1848,21 @@ public abstract class DBSCrudBean extends DBSBean{
 
 	// PRIVATE ============================================================================
 	
-	@SuppressWarnings("unchecked")
+	/**
+	 * Seta o valor da coluna no DAO
+	 * @param pColumnName
+	 * @param pColumnValue
+	 */
+
 	private <T> void pvSetValueDAO(String pColumnName, T pColumnValue){
 		//Utiliza ListValue para controlar os valores de todas as linhas
 		//Verifica se há alguma coluna corrente antes de setar o valor
 		if (wDAO != null 
 		 && wDAO.getColumns().size() > 0){
-			T xOldValue =  getValue(pColumnName);
+			T xOldValue =  pvGetValue(pColumnName);
 			if (pColumnValue != null){
-				//Converte o valor antigo para o mesmo tipo do valor recebido para garantir que verificação correta de houve alteração de valores
-				xOldValue = (T) DBSObject.toClass(getValue(pColumnName), pColumnValue.getClass()); 
+				//Converte o valor antigo para o mesmo tipo do valor recebido para garantir a verificação correta se houve alteração de valores
+				xOldValue = DBSObject.toClass(xOldValue, pColumnValue.getClass()); 
 			}
 			//Se valor armazenado(anterior) não for nulo e houve alteração de valores...
 			if(!DBSObject.getNotNull(xOldValue,"").equals(DBSObject.getNotNull(pColumnValue,""))){
@@ -1861,6 +1872,23 @@ public abstract class DBSCrudBean extends DBSBean{
 			}
 		}
 	}
+	
+	/**
+	 * Retorna valor da coluna a partir do DAO
+	 * @param pColumnName
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	private <T> T pvGetValue(String pColumnName){
+		//Se existir registro corrente
+		if (wDAO != null 
+		 && wDAO.getColumns().size() >0){
+			return (T) wDAO.getValue(pColumnName);
+		}else{
+			return null;
+		}
+	}
+
 
 	private APPROVAL_STAGE pvGetApprovalStage(boolean pFromValue){
 		//Retorna estágio de registro, caso aprovação esteja desabilidata ou não tenha sido informado o nome da coluna para garva o estágfio
@@ -2206,15 +2234,22 @@ public abstract class DBSCrudBean extends DBSBean{
 			 * .Aprovação e reprovação
 			 * .Edição sem dialog
 			*/
-			if (getHasSelected() 
-			&& (getIsApprovingOrReproving() || !wDialogEdit)){ 
-				for (Integer xRowIndex : wSelectedRowsIndexes){
-					wDAO.setCurrentRowIndex(xRowIndex);
-					pvBroadcastEvent(xE, false, false, false);
-					if (!xE.isOk()){
-						addMessage("erroassinatura", MESSAGE_TYPE.ERROR,"Não foi possível efetuar a edição de todos os itens selecionados. Procure efetuar a edição individualmente para identificar o registro com problema.");
-						break;
+			if (getIsApprovingOrReproving() || !wDialogEdit){
+				if (getHasSelected()){
+					for (Integer xRowIndex : wSelectedRowsIndexes){
+						wDAO.setCurrentRowIndex(xRowIndex);
+						if (!wDialogEdit){ 
+							
+							
+						}
+						pvBroadcastEvent(xE, false, false, false);
+						if (!xE.isOk()){
+							addMessage("erroassinatura", MESSAGE_TYPE.ERROR,"Não foi possível efetuar a edição de todos os itens selecionados. Procure efetuar a edição individualmente para identificar o registro com problema.");
+							break;
+						}
 					}
+				}else{
+					addMessage("erroselecao", MESSAGE_TYPE.WARNING,"Não há registro selecionado.");
 				}
 			}else{
 				pvBroadcastEvent(xE, false, false, false);
@@ -2265,26 +2300,29 @@ public abstract class DBSCrudBean extends DBSBean{
 			 * .Aprovação e reprovação
 			 * .Edição sem dialog
 			*/
-			if (getHasSelected() 
-			&& (getIsApprovingOrReproving() || !wDialogEdit)){ 
-				int xCount = 0;
-				for (Integer xRowIndex : wSelectedRowsIndexes){
-					wDAO.setCurrentRowIndex(xRowIndex);
-					pvBroadcastEvent(xE, false, false, false);
-					xCount += xE.getCommittedRowCount();
-					if (!xE.isOk()){
-						break;
+			if (getIsApprovingOrReproving() || !wDialogEdit){
+				if (getHasSelected()){
+					int xCount = 0;
+					for (Integer xRowIndex : wSelectedRowsIndexes){
+						wDAO.setCurrentRowIndex(xRowIndex);
+						if (!wDialogEdit){
+							wDAO.setExecuteOnlyChangedValues(false);
+						}
+						pvBroadcastEvent(xE, false, false, false);
+						xCount += xE.getCommittedRowCount(); 
+						if (!xE.isOk()){
+							break;
+						}
+					}
+					//Ignora assinatura caso quantidade todal de registros afetados seja inferior a quantidade de itens selectionados 
+					if (xCount < wSelectedRowsIndexes.size()){
+						xE.setCommittedRowCount(0);
+						xE.setOk(false);
+						addMessage("erroassinatura", MESSAGE_TYPE.ERROR,"Não foi possível efetuar a assinatura de todos os itens selecionados. Procure efetuar a assinatura individualmente para identificar o registro com problema.");
+					}else{
+						xE.setCommittedRowCount(xCount);
 					}
 				}
-				//Ignora assinatura caso quantidade todal de registros afetados seja inferior a quantidade de itens selectionados 
-				if (xCount < wSelectedRowsIndexes.size()){
-					xE.setCommittedRowCount(0);
-					xE.setOk(false);
-					addMessage("erroassinatura", MESSAGE_TYPE.ERROR,"Não foi possível efetuar a assinatura de todos os itens selecionados. Procure efetuar a assinatura individualmente para identificar o registro com problema.");
-				}else{
-					xE.setCommittedRowCount(xCount);
-				}
-
 			}else{
 				pvBroadcastEvent(xE, false, false, false);
 			}
