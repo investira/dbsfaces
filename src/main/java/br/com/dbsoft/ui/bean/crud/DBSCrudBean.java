@@ -938,6 +938,26 @@ public abstract class DBSCrudBean extends DBSBean{
 		}
 		return false;
 	}	
+	/**
+	 * Selectiona todas as linhas que exibidas
+	 */
+	public synchronized String selectAll() throws DBSIOException{
+		System.out.println("SELECT ALL");
+		//Só permite a seleção quando o dialog estiver fechado
+		if (!wDialogOpened){
+			pvSelectAll();
+			if (pvFireEventBeforeSelect()){
+				pvFireEventAfterSelect();
+			}else{
+				//Desfaz seleção
+				pvSelectAll();
+			}			
+		}else{
+			//exibir erro de procedimento
+		}
+		return DBSFaces.getCurrentView();
+	}
+
 	// Methods ############################################################
 	
 	/**
@@ -1075,28 +1095,6 @@ public abstract class DBSCrudBean extends DBSBean{
 			return DBSFaces.getCurrentView();
 		}
 
-	/**
-	 * Selectiona todas as linhas que exibidas
-	 */
-	public synchronized String selectAll() throws DBSIOException{
-		System.out.println("SELECT ALL");
-		//Só permite a seleção quando o dialog estiver fechado
-		if (!wDialogOpened){
-			pvSelectAll();
-			if (pvFireEventBeforeSelect()){
-				pvFireEventAfterSelect();
-			}else{
-				//Desfaz seleção
-				pvSelectAll();
-			}			
-		}else{
-			//exibir erro de procedimento
-		}
-		return DBSFaces.getCurrentView();
-	}
-
-	
-
 	// Methods ############################################################
 	
 	/**
@@ -1105,7 +1103,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 */
 	public synchronized String refreshList() throws DBSIOException{
 		
-		ignoreEditing();
+		ignoreEditing(); 
 
 		Integer xCurrentRowIndex = -1;
 //		//Salva posição atual para reposicionar após o refresh
@@ -1350,10 +1348,6 @@ public abstract class DBSCrudBean extends DBSBean{
 			if (wEditingMode==EditingMode.NONE){
 				if (pvFireEventBeforeEdit(EditingMode.UPDATING)){
 					setEditingMode(EditingMode.UPDATING);
-					//Quando for edição sem dialog, força a indicação que houve alteração de registro, logo no inicio.
-					if (!wDialogEdit){
-						setValueChanged(true);
-					}
 				}else{
 					setValueChanged(false);
 					//exibe mensagem de erro de procedimento
@@ -1821,6 +1815,11 @@ public abstract class DBSCrudBean extends DBSBean{
 	private void pvSetSelected(Boolean pSelectOne) throws DBSIOException{
 		Integer xRowIndex = getList().getRowIndex();
 		if (pSelectOne){
+			//Força indicação que houve alteração de registro quando edição é efetuada diretamente no grid e há registro selecionado.
+			//A seleção que indica que a linha foi alterada é efetuado via JS.
+			if (!wDialogEdit){
+				setValueChanged(true);
+			}
 			if (!wSelectedRowsIndexes.contains(xRowIndex)){
 				wSelectedRowsIndexes.add(xRowIndex);
 			}
@@ -1845,6 +1844,7 @@ public abstract class DBSCrudBean extends DBSBean{
 			}
 		}
 	}
+	
 
 	// PRIVATE ============================================================================
 	
@@ -2236,20 +2236,23 @@ public abstract class DBSCrudBean extends DBSBean{
 			*/
 			if (getIsApprovingOrReproving() || !wDialogEdit){
 				if (getHasSelected()){
+					wDAO.setCurrentRowIndex(-1);
 					for (Integer xRowIndex : wSelectedRowsIndexes){
 						wDAO.setCurrentRowIndex(xRowIndex);
-						if (!wDialogEdit){ 
-							
-							
-						}
 						pvBroadcastEvent(xE, false, false, false);
 						if (!xE.isOk()){
-							addMessage("erroassinatura", MESSAGE_TYPE.ERROR,"Não foi possível efetuar a edição de todos os itens selecionados. Procure efetuar a edição individualmente para identificar o registro com problema.");
-							break;
+							if (getIsApprovingOrReproving()){
+								addMessage("erroassinatura", MESSAGE_TYPE.ERROR,"Não foi possível efetuar a edição de todos os itens selecionados. Procure efetuar a edição individualmente para identificar o registro com problema.");
+								break;
+							}else{
+								addMessage("erroselecao", MESSAGE_TYPE.ERROR,"Não foi possível efetuar a edição de todos os itens selecionados. Procure efetuar a edição individualmente para identificar o registro com problema.");
+								break;
+							}
 						}
 					}
 				}else{
-					addMessage("erroselecao", MESSAGE_TYPE.WARNING,"Não há registro selecionado.");
+					xE.setOk(false);
+					addMessage("erroselecao", MESSAGE_TYPE.ERROR,"Não há registro selecionado.");
 				}
 			}else{
 				pvBroadcastEvent(xE, false, false, false);
@@ -2303,6 +2306,7 @@ public abstract class DBSCrudBean extends DBSBean{
 			if (getIsApprovingOrReproving() || !wDialogEdit){
 				if (getHasSelected()){
 					int xCount = 0;
+					wDAO.setCurrentRowIndex(-1);
 					for (Integer xRowIndex : wSelectedRowsIndexes){
 						wDAO.setCurrentRowIndex(xRowIndex);
 						if (!wDialogEdit){
