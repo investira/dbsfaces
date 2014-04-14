@@ -21,12 +21,19 @@ dbs_crudTable = function(pId) {
 		});
 	});	
 	
+	//Controle de edição diretamente no grid
 	$(xNoDialogEdit).keyup(function(e){
-		if ($(this).children(".-C1").children("input[type='hidden']")){
-			
+		if (e.which == 9
+		 || e.which == 35
+		 || e.which == 36
+		 || e.which == 37
+		 || e.which == 38
+		 || e.which == 39
+		 || e.which == 40){
+			return;
 		}
-		if ($(e.target).hasClass("dbs_input-data")){
-			var xInput = $(this).children(".-C1").children("input[type='hidden']");
+		if ($(this).children(".-C1").children("input[type='hidden']")){
+			$(this).children(".-C1").children("input[type='hidden']").val("true");
 		}
 	});
 
