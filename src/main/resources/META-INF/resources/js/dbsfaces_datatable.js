@@ -59,16 +59,19 @@ dbs_dataTable = function(pId) {
 
 	/*Executa o click na linha */
 	$(xTable + " > tbody > tr").dblclick(function (e){
-    	var xB = $(this).find("td > .-selectOne");
-    	if (xB.length > 0){
-    		e.stopImmediatePropagation();
-			e.preventDefault();
-    		xB.click();
-    		dbsfaces.dataTable.removeHeadFocus(pId);
-       		dbsfaces.dataTable.removeRowFocus(pId);
-       		dbsfaces.dataTable.removeRowSelected(pId);
-    	}
-    	return false;
+		//ignora execução padrão do dblclick e marca a linha
+		if (!$(pId).hasClass(".noDialogEdit")){
+			var xB = $(this).find("td > .-selectOne");
+	    	if (xB.length > 0){
+	    		e.stopImmediatePropagation();
+				e.preventDefault();
+	    		xB.click();
+	    		dbsfaces.dataTable.removeHeadFocus(pId);
+	       		dbsfaces.dataTable.removeRowFocus(pId);
+	       		dbsfaces.dataTable.removeRowSelected(pId);
+	    	}
+	    	return false;
+		}
     });
  
 	$(xTable + " > tbody > tr").focusin(function(e){
