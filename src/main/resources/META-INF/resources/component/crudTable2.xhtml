@@ -98,13 +98,9 @@
 					</c:if>
 					<!-- Controle se registro foi editado-->
 					<c:if test="#{not cc.crudBean.dialogEdit and cc.crudBean.isUpdating}">
-						<dbs:dataTableColumn width="17px" styleClass="-center ">
-							<h:inputHidden id="alterado" value="#{cc.crudBean.selected}">
-							</h:inputHidden>
-<!-- 							<dbs:checkbox id="alterado" value="#{cc.crudBean.selected}" styleClass="-foo" style=" "> -->
-<!-- 								<f:ajax event="click" execute="@this"/> -->
-<!-- 							</dbs:checkbox>		 -->
-							<dbs:img rendered="#{cc.crudBean.selected}" styleClass="dbs_icon -i_inserir"/>
+						<dbs:dataTableColumn width="16px" styleClass="-center ">
+							<h:inputHidden id="alterado" value="#{cc.crudBean.selected}"/>
+							<dbs:img id="imgselected" rendered="#{cc.crudBean.selected}" styleClass="dbs_icon -i_editar"/>
 						</dbs:dataTableColumn>	
 					</c:if>
 					<!-- Controle de aprovação de registro -->
