@@ -86,7 +86,7 @@ textarea,
 select {
 	font-family: inherit;
 	font-weight: normal;
-	font-color: rgb(13, 25, 45);
+	color: rgb(13, 25, 45);
 	background: white;
 }
 select{

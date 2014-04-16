@@ -1,18 +1,17 @@
 package br.com.dbsoft.ui.component.button;
 
-import javax.faces.event.ActionEvent;
-
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.event.ActionEvent;
 import javax.faces.render.FacesRenderer;
-
-import com.sun.faces.renderkit.RenderKitUtils;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
+
+import com.sun.faces.renderkit.RenderKitUtils;
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSButton.RENDERER_TYPE)
 public class DBSButtonRenderer extends DBSRenderer {
@@ -28,7 +27,7 @@ public class DBSButtonRenderer extends DBSRenderer {
 //        if(xButton.isDisabled() || xButton.isReadonly()) {
 //            return;
 //        }
-
+        
         decodeBehaviors(pContext, xButton);
         
 		if (RenderKitUtils.isPartialOrBehaviorAction(pContext, xClientId) || /*Chamada Ajax*/
@@ -184,7 +183,7 @@ public class DBSButtonRenderer extends DBSRenderer {
 		String xJS = "$(document).ready(function() { \n" +
 				     " var xButtonId = '#' + dbsfaces.util.jsid('" + pClientId + "'); \n " + 
 				     " dbs_button(xButtonId); \n" +
-                     "}); \n"; 
+                     "}); \n";
 		pWriter.write(xJS);
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);	
 	}

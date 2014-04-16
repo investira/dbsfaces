@@ -1,7 +1,7 @@
 .dbs_dialog{}
 
 .dbs_dialog {
-	xbackground-color: rgba(0,0,0,0.1);
+	background-color: rgba(0, 0, 0, 0.05);
 	background-image: url("#{request.contextPath}/images/vidro.png");
 	background-repeat: repeat;
 	xposition:absolute; /* Comentado em 12/3/2013 pois dialog dentro de dialog era limitado pelo tamanho do anterior */ 

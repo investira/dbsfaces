@@ -107,6 +107,6 @@ public class DBSButton extends DBSUICommand {
 	
 	public Boolean getDisabled() {
 		return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-	}	
+	}
 
 }
