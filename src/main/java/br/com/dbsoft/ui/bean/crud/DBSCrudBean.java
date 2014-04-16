@@ -4,17 +4,15 @@ import java.sql.Connection;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.model.ResultDataModel;
-
 import br.com.dbsoft.core.DBSApproval;
 import br.com.dbsoft.core.DBSApproval.APPROVAL_STAGE;
 import br.com.dbsoft.core.DBSSDK;
 import br.com.dbsoft.error.DBSIOException;
 import br.com.dbsoft.io.DBSColumn;
 import br.com.dbsoft.io.DBSDAO;
+import br.com.dbsoft.io.DBSResultDataModel;
 import br.com.dbsoft.message.DBSMessage;
 import br.com.dbsoft.message.DBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.ui.bean.DBSBean;
@@ -518,21 +516,21 @@ public abstract class DBSCrudBean extends DBSBean{
 
 	//==============================================================================
 	/**
-	 * Use este atributo para popular páginas
-	 * Retorna os registros deforma que possar ser acessados nas páginas xhtml por EL.
-	 * As colunas poderão ser acessada como atributos de uma classe diretamente 
-	 * On nomes dos atributos são os próprios nomes definidos as colunas do select
-	 * exemplo de código xhtlm "#{table.campo}"
-	 * @return
+	 * Use este atributo para popular páginas.<br/>
+	 * Retorna os registros de forma que possam ser acessados nas páginas xhtml por EL.<br/>
+	 * As colunas poderão ser acessada diretamente como atributos de uma classe, 
+	 * onde os nomes dos atributos são os próprios nomes definidos as colunas do select.<br/>
+	 * Exemplo de código xhtlm "#{list.campo}"
+	 * @return Retorna registros
 	 * @throws DBSIOException 
 	 */
-	public ResultDataModel getList() throws DBSIOException{
+	public DBSResultDataModel getList() throws DBSIOException{
 		//Força a criação do resultdatamodel se ainda não existir
 		if (wDAO==null){
 			this.refreshList();
 			if (wDAO==null
 			 || wDAO.getResultDataModel() == null){
-				return new ResultDataModel();
+				return new DBSResultDataModel();
 			}
 		}
 		return wDAO.getResultDataModel();
@@ -1257,6 +1255,49 @@ public abstract class DBSCrudBean extends DBSBean{
 				if (pvFireEventBeforeEdit(EditingMode.INSERTING)){
 					//Desmarca registros selecionados
 					wSelectedRowsIndexes.clear();
+					
+					if (!wDialogEdit){
+//						javax.servlet.jsp.jstl.sql.ResultSupport.toResult(arg0, arg1)
+						System.out.println(wDAO.getResultDataModel().getWrappedData().getClass());
+						//javax.servlet.jsp.jstl.sql.ResultImpl
+//						javax.servlet.jsp.jstl.sql.ResultSupport xR = null;
+//						xR.
+//						SortedMap<String,Object> xRows = (SortedMap<String, Object>) wDAO.getResultDataModel().getWrappedData();
+//						ResultSet xD = null;//wDAO.getResultDataModel();
+//						Result xResult = ResultSupport.toResult(wDAO.getResultDataModel());
+//						ArrayDataModel wResultDataModel = new ArrayDataModel();
+//						wResultDataModel.getWrappedData();
+//						SortedMap<String, Object>[] xListNew = new SortedMap[wDAO.getRowsCount()];
+//						for (Iterator<SortedMap<String, Object>> xI = wDAO.getResultDataModel().iterator(); xI.hasNext();){
+//							xListNew = xI.
+//							pvSetValueDAO(xC.getColumnName(), getValue(xC.getColumnName()));
+//						}
+
+//						SortedMap<String, Object> xList =  wDAO.getResultDataModel().getRowData();
+//						xList.firstKey();
+
+//						Iterator<SortedMap<String, Object>> xList = wDAO.getResultDataModel().iterator(); 
+//						Map<String, Object>[] xListNew = new HashMap[10]<String, Object>(); 
+//						for (Iterator<SortedMap<String, Object>> xI = xList, x = 0; xI.hasNext(); x++){
+//							
+//							xListNew[x].putAll(xI.next()); 
+//							
+//						}
+//						System.out.println(xList);
+//						
+//						SortedMap[] xListNew = new SortedMap[xList.length]; 
+//						
+//						for (int i = 0; i < xListNew.length; ++i){  
+//							xListNew[i] = xList[i];  
+//						}
+// ===============================================================================================						
+//						Object[] xList = (Object[]) wDAO.getResultDataModel().getWrappedData();
+//						Object[] xListNew = new Object[xList.length]; 
+//						for (int i = 0; i < xList.length; ++i){  
+//							xListNew[i] = xList[i];  
+//						}
+//						wDAO.getResultDataModel().setWrappedData(xListNew);
+					}
 					
 					setEditingMode(EditingMode.INSERTING);
 					pvMoveBeforeFistRow();
