@@ -845,6 +845,11 @@ td > .dbs_icon{
 .-i_recycle { background-position: -3713px -0px; }
 .-i_step { background-position: -3729px -0px; }
 .-i_thermometer { background-position: -3745px -0px; }
+.-i_on_off { background-position: -3761px -0px; }
+.-i_feed { background-position: -3777px -0px; }
+.-i_cloud_download { background-position: -3793px -0px; }
+.-i_cloud_upload { background-position: -3809px -0px; }
+
 
 /* .-i_thumb_up_blue { background-position: -3537px -0px; } */
 /* .-i_thumb_up_green { background-position: -3553px -0px; } */
