@@ -1,9 +1,8 @@
 package br.com.dbsoft.ui.component.inputtext;
 
 
-import javax.faces.model.ResultDataModel;
-
 import br.com.dbsoft.error.DBSIOException;
+import br.com.dbsoft.io.DBSResultDataModel;
 
 
 public interface IDBSInputTextSuggestions {
@@ -13,7 +12,7 @@ public interface IDBSInputTextSuggestions {
 	 * O primeiro campo do Entry é a chave e o segundo o conteúdo, podendo ser qualquer object
 	 * @return
 	 */
-	public abstract ResultDataModel getList();
+	public abstract DBSResultDataModel getList();
 
 	/**
 	 * Atualiza o conteúdo da lista a partir do valor digitado
