@@ -86,8 +86,8 @@
 									<ui:fragment rendered="#{cc.crudBean.isUpdating}">
 										<dbs:button id="ok" iconClass="dbs_icon -i_ok" action="#{cc.crudBean.confirmEditing()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
 										<dbs:button id="cancelar" iconClass="dbs_icon -i_cancelar" action="#{cc.crudBean.ignoreEditing()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
+										<dbs:button rendered="#{cc.attrs.allowInsert and cc.crudBean.allowInsert}" id="insert" iconClass="dbs_icon -i_inserir" action="#{cc.crudBean.insert()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
 									</ui:fragment>
-									<dbs:button rendered="#{cc.attrs.allowInsert and cc.crudBean.allowInsert}" id="insert" iconClass="dbs_icon -i_inserir" action="#{cc.crudBean.insert()}" update=":dialog " execute="@this"/>
 								</c:if>
 								<c:if test="#{cc.crudBean.dialogEdit}">
 									<dbs:button rendered="#{cc.attrs.multipleSelection and cc.crudBean.multipleSelection}" id="view" iconClass="dbs_icon -i_consultar" action="#{cc.crudBean.viewSelection()}" update=":dialog " execute="@this"/>

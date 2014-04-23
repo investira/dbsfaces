@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+
 import br.com.dbsoft.core.DBSApproval;
 import br.com.dbsoft.core.DBSApproval.APPROVAL_STAGE;
 import br.com.dbsoft.core.DBSSDK;
@@ -910,7 +911,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @throws DBSIOException 
 	 */
 	public void setSelected(Boolean pSelectOne) throws DBSIOException {
-		System.out.println("SELECT " + pSelectOne);
+//		System.out.println("SELECT " + pSelectOne);
 		
 //		wDAO.synchronize();
 		
@@ -1250,70 +1251,34 @@ public abstract class DBSCrudBean extends DBSBean{
 			if (!wInsertSelected){
 				clearMessages();
 			}
-			//Só permite a seleção do insert quando o dialog estiver fechado
-			if (wEditingMode==EditingMode.NONE){
-				if (pvFireEventBeforeEdit(EditingMode.INSERTING)){
-					//Desmarca registros selecionados
-					wSelectedRowsIndexes.clear();
-					
-					if (!wDialogEdit){
-//						javax.servlet.jsp.jstl.sql.ResultSupport.toResult(arg0, arg1)
-						System.out.println(wDAO.getResultDataModel().getWrappedData().getClass());
-						//javax.servlet.jsp.jstl.sql.ResultImpl
-//						javax.servlet.jsp.jstl.sql.ResultSupport xR = null;
-//						xR.
-//						SortedMap<String,Object> xRows = (SortedMap<String, Object>) wDAO.getResultDataModel().getWrappedData();
-//						ResultSet xD = null;//wDAO.getResultDataModel();
-//						Result xResult = ResultSupport.toResult(wDAO.getResultDataModel());
-//						ArrayDataModel wResultDataModel = new ArrayDataModel();
-//						wResultDataModel.getWrappedData();
-//						SortedMap<String, Object>[] xListNew = new SortedMap[wDAO.getRowsCount()];
-//						for (Iterator<SortedMap<String, Object>> xI = wDAO.getResultDataModel().iterator(); xI.hasNext();){
-//							xListNew = xI.
-//							pvSetValueDAO(xC.getColumnName(), getValue(xC.getColumnName()));
-//						}
 
-//						SortedMap<String, Object> xList =  wDAO.getResultDataModel().getRowData();
-//						xList.firstKey();
-
-//						Iterator<SortedMap<String, Object>> xList = wDAO.getResultDataModel().iterator(); 
-//						Map<String, Object>[] xListNew = new HashMap[10]<String, Object>(); 
-//						for (Iterator<SortedMap<String, Object>> xI = xList, x = 0; xI.hasNext(); x++){
-//							
-//							xListNew[x].putAll(xI.next()); 
-//							
-//						}
-//						System.out.println(xList);
-//						
-//						SortedMap[] xListNew = new SortedMap[xList.length]; 
-//						
-//						for (int i = 0; i < xListNew.length; ++i){  
-//							xListNew[i] = xList[i];  
-//						}
-// ===============================================================================================						
-//						Object[] xList = (Object[]) wDAO.getResultDataModel().getWrappedData();
-//						Object[] xListNew = new Object[xList.length]; 
-//						for (int i = 0; i < xList.length; ++i){  
-//							xListNew[i] = xList[i];  
-//						}
-//						wDAO.getResultDataModel().setWrappedData(xListNew);
-					}
-					
-					setEditingMode(EditingMode.INSERTING);
-					pvMoveBeforeFistRow();
-					//Não chama os eventos por já foram chamados no view() quando é inclusão de registro selecionado
-					if (!wInsertSelected){
-						if (pvFireEventBeforeView()){
-							setDialogOpened(true);
-							pvFireEventAfterView();
+			//Inclui linha em branco quando edição for diretamente no grid
+			if (!wDialogEdit
+			 && wEditingMode==EditingMode.UPDATING){
+				pvInsertEmptyRow();
+			}else{
+				//Só permite a seleção do insert quando o dialog estiver fechado
+				if (wEditingMode==EditingMode.NONE){
+					if (pvFireEventBeforeEdit(EditingMode.INSERTING)){
+						//Desmarca registros selecionados
+						wSelectedRowsIndexes.clear();
+						
+						setEditingMode(EditingMode.INSERTING);
+						pvMoveBeforeFistRow();
+						//Não chama os eventos por já foram chamados no view() quando é inclusão de registro selecionado
+						if (!wInsertSelected){
+							if (pvFireEventBeforeView()){
+								setDialogOpened(true);
+								pvFireEventAfterView();
+							}
 						}
+					}else{
+						setValueChanged(false);
+						//exibe mensagem de erro de procedimento
 					}
 				}else{
-					setValueChanged(false);
 					//exibe mensagem de erro de procedimento
 				}
-			}else{
-				//exibe mensagem de erro de procedimento
 			}
 		}
 		return DBSFaces.getCurrentView();
@@ -1389,6 +1354,8 @@ public abstract class DBSCrudBean extends DBSBean{
 			if (wEditingMode==EditingMode.NONE){
 				if (pvFireEventBeforeEdit(EditingMode.UPDATING)){
 					setEditingMode(EditingMode.UPDATING);
+					//Insere linha em branco quando edição for diretamente no grid
+					pvInsertEmptyRow();
 				}else{
 					setValueChanged(false);
 					//exibe mensagem de erro de procedimento
@@ -1626,7 +1593,16 @@ public abstract class DBSCrudBean extends DBSBean{
 					pEvent.setCommittedRowCount(wDAO.executeInsert());
 				//Update
 				}else if (getIsUpdating()){
-					pEvent.setCommittedRowCount(wDAO.executeUpdate());
+					if (wDialogEdit){
+						pEvent.setCommittedRowCount(wDAO.executeUpdate());
+					}else{
+						//Inclui registro se linha atual for maior que a quantidade de linha existentes originalmente
+						if (wDAO.getCurrentRowIndex() > (wDAO.getRowsCountWithoutEmptyRow() - 1)){
+							pEvent.setCommittedRowCount(wDAO.executeInsert());
+						}else{
+							pEvent.setCommittedRowCount(wDAO.executeUpdate());
+						}
+					}
 				//Delete
 				}else if(getIsDeleting()){
 					pEvent.setCommittedRowCount(wDAO.executeDelete());
@@ -1806,6 +1782,45 @@ public abstract class DBSCrudBean extends DBSBean{
 //			}
 //		}
 //	}
+
+	/**
+	 * Inserir linha em branco quando inclusão estiver habilidata<b>(allowInsert=true)</b> 
+	 * e for edição diretamente no grid<b>(dialogEdit=false)</b>
+	 * e estiver no modo de edição<b>(UPDATING)</b>.
+	 */
+	private void pvInsertEmptyRow(){
+		if (wDialogEdit
+		 || wEditingMode != EditingMode.UPDATING
+		 || !wAllowInsert){
+			return;
+		}
+		wDAO.insertEmptyRow();
+//		boolean xAdd = true;
+//		DBSResultDataModel xR = wDAO.getResultDataModel();
+//		
+//		@SuppressWarnings("unchecked")
+//		ArrayList<SortedMap<String, Object>> xListNew = (ArrayList<SortedMap<String, Object>>) IteratorUtils.toList(xR.iterator());
+//		//Verifica a última linha já é um registro linha em branco, para evitar a incluisão desnecessária de uma nova linha.
+//		if (xListNew.size()>0){
+//			for (Entry<String, Object> xColumn:xListNew.get(xListNew.size()-1).entrySet()){
+//				//Verifica se coluna existe e se é PK para testar se o respectivo valor é null.
+//				DBSColumn xC = wDAO.getCommandColumn(xColumn.getKey());
+//				if (xC !=null){
+//					if (xC.getPK()){
+//						if (xColumn.getValue() == null){
+//							xAdd = false;
+//						}
+//					}
+//				}
+//				System.out.println(xColumn.getKey()); 
+//			}
+//		}
+//		if (xAdd){
+//			xListNew.add(new TreeMap<String, Object>());
+//			wDAO.getResultDataModel().setWrappedData(xListNew.toArray());
+//		}
+//	
+	}
 
 	/**
 	 * Retorna a respectiva coluna do DAO a partir da propriedade value que foi utilizada no componente
@@ -2344,7 +2359,8 @@ public abstract class DBSCrudBean extends DBSBean{
 			 * .Aprovação e reprovação
 			 * .Edição sem dialog
 			*/
-			if (getIsApprovingOrReproving() || !wDialogEdit){
+			if (getIsApprovingOrReproving() 
+			|| !wDialogEdit){
 				if (getHasSelected()){
 					int xCount = 0;
 					wDAO.setCurrentRowIndex(-1);
