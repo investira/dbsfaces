@@ -326,6 +326,20 @@ public abstract class DBSCrudBean extends DBSBean{
 			wDAO.setListValue(pColumnName, pColumnValue);
 		}		
 	}
+	
+	/**
+	 * Retorna se o registro atual é um novo registro.<br/>
+	 * Os dados deste registro existem somente em memória, sendo necessário implementar a rotina para salva-los.
+	 * @return
+	 */
+	public boolean getIsListNewRow(){
+		if (wDAO != null){
+			System.out.println(wDAO.getIsNewRow());
+			return wDAO.getIsNewRow();
+		}else{
+			return false;
+		}
+	}
 
 	/**
 	 * Deve-se sobreescrever este método para colunas que necessitem que formatação específica.<br/>
