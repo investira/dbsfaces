@@ -1593,15 +1593,12 @@ public abstract class DBSCrudBean extends DBSBean{
 					pEvent.setCommittedRowCount(wDAO.executeInsert());
 				//Update
 				}else if (getIsUpdating()){
-					if (wDialogEdit){
-						pEvent.setCommittedRowCount(wDAO.executeUpdate());
+					//Incluir registro se for edição diretamente do grid e for novo registro
+					if (!wDialogEdit
+					 && wDAO.getIsNewRow()){
+						pEvent.setCommittedRowCount(wDAO.executeInsert());
 					}else{
-						//Inclui registro se linha atual for maior que a quantidade de linha existentes originalmente
-						if (wDAO.getCurrentRowIndex() > (wDAO.getRowsCountWithoutEmptyRow() - 1)){
-							pEvent.setCommittedRowCount(wDAO.executeInsert());
-						}else{
-							pEvent.setCommittedRowCount(wDAO.executeUpdate());
-						}
+						pEvent.setCommittedRowCount(wDAO.executeUpdate());
 					}
 				//Delete
 				}else if(getIsDeleting()){
