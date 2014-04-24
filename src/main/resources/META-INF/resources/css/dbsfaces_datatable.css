@@ -138,29 +138,6 @@
 	box-shadow:0px 2px 2px -1px rgba(0, 0, 0, 0.3);	
 }
 
-.dbs_dataTable > .-container > .-content > table > tbody .dbs_input-data{
-	border: none;
-	-webkit-border-radius: 0px;
-	-moz-border-radius: 0px;
-	border-radius: 0px !important;
-	padding: 0px 2px 0px 1px !important;
-	-webkit-box-shadow: none;
-	-moz-box-shadow: none;
-	box-shadow: none;
-	background-color: transparent;
-	color: inherit;
-	line-height: 18px;
-}
-
-.dbs_dataTable > .-container > .-content > table > tbody .dbs_input-data:FOCUS,
-.dbs_dataTable > .-container > .-content > table > tbody .dbs_input-data-FOCUS{
-	background-color: rgb(221, 235, 255);
-	color: rgb(13,25,45);
-	-webkit-box-shadow: none;
-	-moz-box-shadow: none;
-	box-shadow: none;
-}
-
 .dbs_dataTable > .-container > .-content > table > tbody{
 	display: inline-block; /* inline-block se tiver tamanho definido */
 	height: 100%;
@@ -185,8 +162,8 @@
 .dbs_dataTable > .-container > .-content > table > tfoot > tr {
 	xdisplay: inline-block; /*Comentado, pois não exibia o título inteiro quando haviam poucas colunas. Incluido para exibir o título inteiro mesmo quando não há linhas */
 	display: table; /*Incluido para exibir o título inteiro mesmo quando não há linhas */
-	min-height: 16px;
-	height: 16px;
+	min-height: 19px;
+	height: 19px;
 	text-shadow: 0px 1px 0px #FFFFFF;
 	border-width:0;
 	border-style: none;
@@ -199,6 +176,12 @@
  	border-width:0px 0px 1px 0px;
 	border-style: solid;
 	border-color: rgba(255,255,255,0.2); 
+	
+	min-height: 16px;
+	display: block;
+}
+
+.dbs_dataTable:not(.-noDialogEdit) > .-container > .-content > table > tbody > tr {
 	cursor: pointer;
 }
 
@@ -213,8 +196,9 @@
 	border-style: solid;
 	border-color: rgba(255,255,255,0.2);
 	overflow: hidden;
-	padding:0px 2px 0px 2px;
-	line-height: 15px;
+	padding:2px 2px 2px 2px;
+/* 	line-height: 15px; */
+	line-height: 100%;
 /* 	white-space: nowrap; Comentado em 18/05/2013 por não expandir linha quando há texto grande*/ 
 	text-align: left;
 }
@@ -232,13 +216,53 @@
 
 .dbs_dataTable > .-container > .-content > table > tbody > tr > td.-checkbox > div {
     display: block;
-    height: 15px;
     position: relative;
-    top: -2px;	
+    height: 100%;
+/*     height: 15px; */
+/*     top: -2px;	 */
+}
+.dbs_dataTable > .-container > .-content > table > tbody .dbs_input{
+	margin: -2px 0;
 }
 
+.dbs_dataTable > .-container > .-content > table > tbody .dbs_input-data{
+	border: none;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px !important;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+	background-color: transparent;
+	color: inherit;
+	padding: 0px 2px 0px 1px !important;
+/* 	min-height: 17px; */
+	display:inline;
+	line-height: 15px;
+	min-height: 15px; !important;
+
+}
+
+.dbs_dataTable > .-container > .-content > table > tbody .dbs_input-data.-readOnly{
+	opacity:0.7;
+	background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.dbs_dataTable > .-container > .-content > table > tbody .dbs_checkbox > .dbs_input-data{
+	height: 12px;
+}
+
+.dbs_dataTable > .-container > .-content > table > tbody .dbs_input-data:FOCUS,
+.dbs_dataTable > .-container > .-content > table > tbody .dbs_input-data-FOCUS{
+	background-color: rgb(221, 235, 255);
+	color: rgb(13,25,45);
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
+
+
 .dbs_dataTable > .-container > .-content > table > tbody > tr > td.-checkbox > div > input {
-	
 }
 
 .dbs_dataTable > .-container > .-content > table > tbody > tr > td > .-selectOne{
@@ -253,8 +277,6 @@
 	width: 100%;
 	border-left: 0px !important;
 }
-
-
 
 
 .dbs_dataTable > .-container > .-content > table > thead > tr > th.-checkbox > button > table{

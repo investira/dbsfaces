@@ -576,6 +576,7 @@ textarea.dbs_input-data:FOCUS,
 .-il_sucesso {background-position: -32px 0px;}
 
 .dbs_iconsmall {
+	display: inline-block;
 	width: 11px !important;
 	height: 11px !important;
 	padding: 0px !important;
@@ -596,6 +597,8 @@ textarea.dbs_input-data:FOCUS,
 .-is_menuitem_minus {background-position: -110px 0px;}
 .-is_unlock {background-position: -121px 0px;}
 .-is_lock {background-position: -132px 0px;}
+.-is_editar {background-position: -143px 0px;}
+.-is_inserir {background-position: -154px 0px;}
 
 .dbs_icon {
 	display: inline-block;
