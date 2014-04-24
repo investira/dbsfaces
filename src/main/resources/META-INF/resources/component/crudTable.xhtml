@@ -77,12 +77,13 @@
 										<dbs:img rendered="#{cc.crudBean.isDeleting}" styleClass="dbs_icon -i_excluir"/>
 										<dbs:img rendered="#{cc.crudBean.isInserting}" styleClass="dbs_icon -i_inserir"/>
 									</dbs:div>
-									<!-- Controle de inclusão/atualização/visualização(este desabilitado temporariamente) -->
+									<!-- Controle de exclusão/edição/refresh									 -->
 									<ui:fragment rendered="#{not cc.crudBean.isEditing}">
-										<dbs:button id="delete" rendered="#{cc.crudBean.hasSelected}" iconClass="dbs_icon -i_excluir" action="#{cc.crudBean.delete()}" update="#{cc.clientId} " execute="@this"/>
-										<dbs:button id="edit" rendered="#{not cc.crudBean.hasSelected}" iconClass="dbs_icon -i_editar" action="#{cc.crudBean.update()}" update="#{cc.clientId} " execute="@this"/> 
+										<dbs:button id="delete" rendered="#{cc.crudBean.hasSelected and cc.crudBean.rowCount gt 0}" iconClass="dbs_icon -i_excluir" action="#{cc.crudBean.delete()}" update="#{cc.clientId} " execute="@this"/>
+										<dbs:button id="edit" rendered="#{not cc.crudBean.hasSelected and cc.crudBean.rowCount gt 0}" iconClass="dbs_icon -i_editar" action="#{cc.crudBean.update()}" update="#{cc.clientId} " execute="@this"/> 
 										<dbs:button rendered="#{cc.attrs.allowRefresh and cc.crudBean.allowRefresh}" id="refresh" iconClass="dbs_icon -i_refresh" action="#{cc.crudBean.refreshList()}" update=":dialog :#{cc.clientId}"/>
 									</ui:fragment>
+									<!-- Confirmação									 -->
 									<ui:fragment rendered="#{cc.crudBean.isUpdating}">
 										<dbs:button id="ok" iconClass="dbs_icon -i_ok" action="#{cc.crudBean.confirmEditing()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
 										<dbs:button id="cancelar" iconClass="dbs_icon -i_cancelar" action="#{cc.crudBean.ignoreEditing()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
@@ -101,7 +102,8 @@
 					<c:if test="#{not cc.crudBean.dialogEdit and cc.crudBean.isUpdating}">
 						<dbs:dataTableColumn width="16px" styleClass="-center ">
 							<h:inputHidden id="alterado" value="#{cc.crudBean.selected}"/>
-							<dbs:img id="imgselected" rendered="#{cc.crudBean.selected}" styleClass="dbs_icon -i_editar"/>
+							<dbs:img id="imginsert" rendered="#{cc.crudBean.isListNewRow}" styleClass="dbs_iconsmall -is_inserir"/>
+							<dbs:img id="imgupdate" rendered="#{not cc.crudBean.isListNewRow and cc.crudBean.selected}" styleClass="dbs_iconsmall -is_editar"/>
 						</dbs:dataTableColumn>	
 					</c:if>
 					<!-- Controle de aprovação de registro -->
