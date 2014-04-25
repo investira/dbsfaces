@@ -68,7 +68,7 @@
             </description>
 			<name>value</name>
 			<required>true</required>
-			<type>javax.faces.model.ResultDataModel</type>
+			<type>javax.faces.model.DBSResultDataModel</type>
 		</attribute>
 		<attribute>
 			<description>
