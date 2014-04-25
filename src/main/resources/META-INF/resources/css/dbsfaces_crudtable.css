@@ -15,7 +15,11 @@
 	left:2px;
 }
 
-.dbs_crudTable > .-container > .dbs_dataTable.-noDialogEdit > .-container > .-content  > table > tbody > tr > .-C1 > span {
+.dbs_crudTable > .-container > .dbs_dataTable > .-container > .-content  > table > thead > tr > .-C1 > label > span > ul > li {
+	display:table;
+}
+
+.dbs_crudTable > .-container > .dbs_dataTable.-noDialogEdit > .-container > .-content  > table > tbody > tr > .-C1 > label {
     position: relative;
 	left: 1px;
     top: 1px;

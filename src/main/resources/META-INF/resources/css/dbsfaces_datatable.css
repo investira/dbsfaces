@@ -143,8 +143,8 @@
 	height: 100%;
 	width: 100%;
 	xfloat: right;
-	overflow-x: hidden;
-	overflow-y: auto;
+	overflow-x: hidden; /*Verificar esta linha, pois está escondendo as colunas quando ultrapassa largura do browser. Testar suggestion*/
+	overflow-y: auto; /*Verificar esta linha, pois está escondendo as colunas quando ultrapassa largura do browser*/
 	border-top:0px ;
 	border-left:1px;
 	border-right:0px;
@@ -160,7 +160,7 @@
 
 .dbs_dataTable > .-container > .-content > table > thead > tr,
 .dbs_dataTable > .-container > .-content > table > tfoot > tr {
-	xdisplay: inline-block; /*Comentado, pois não exibia o título inteiro quando haviam poucas colunas. Incluido para exibir o título inteiro mesmo quando não há linhas */
+/* 	xdisplay: inline-block; Comentado, pois não exibia o título inteiro quando haviam poucas colunas. Incluido para exibir o título inteiro mesmo quando não há linhas */
 	display: table; /*Incluido para exibir o título inteiro mesmo quando não há linhas */
 	min-height: 19px;
 	height: 19px;
@@ -168,8 +168,8 @@
 	border-width:0;
 	border-style: none;
 	border-color: rgba(255,255,255,0.2);
-	xposition: relative; /*Desabilitado pois a sombra dos cabeçalhos funcionam, porém o botão de selecinar todos, não*/
-    xz-index: -1; /*Desabilitado pois a sombra dos cabeçalhos funcionam, porém o botão de selecinar todos, não*/
+/* 	xposition: relative; Desabilitado pois a sombra dos cabeçalhos funcionam, porém o botão de selecinar todos, não */
+/*     xz-index: -1; Desabilitado pois a sombra dos cabeçalhos funcionam, porém o botão de selecinar todos, não */
 }
 
 .dbs_dataTable > .-container > .-content > table > tbody > tr {
@@ -178,7 +178,8 @@
 	border-color: rgba(255,255,255,0.2); 
 	
 	min-height: 16px;
-	display: block;
+	display: block; /*Verificar esta linha, pois está escondendo as colunas quando ultrapassa largura do browser. Testar suggestion*/
+/* 	display: table; <- este resolve o problema acima*/
 }
 
 .dbs_dataTable:not(.-noDialogEdit) > .-container > .-content > table > tbody > tr {
@@ -190,13 +191,21 @@
 	display: none;
 	width: 0px;
 }
+
+.dbs_dataTable > .-container > .-content > table > thead > tr > th{
+	padding:0px 2px 0px 2px;
+}
+
+.dbs_dataTable > .-container > .-content > table > tbody > tr > td{
+	padding:2px 2px 2px 2px;
+}
+
 .dbs_dataTable > .-container > .-content > table > thead > tr > th,
 .dbs_dataTable > .-container > .-content > table > tbody > tr > td{
 	border-width:0px 0px 0px 1px;
 	border-style: solid;
 	border-color: rgba(255,255,255,0.2);
 	overflow: hidden;
-	padding:2px 2px 2px 2px;
 /* 	line-height: 15px; */
 	line-height: 100%;
 /* 	white-space: nowrap; Comentado em 18/05/2013 por não expandir linha quando há texto grande*/ 

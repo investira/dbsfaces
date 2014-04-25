@@ -21,20 +21,51 @@ dbs_crudTable = function(pId) {
 		});
 	});	
 	
+	$(xNoDialogEdit)
 	//Controle de edição diretamente no grid
-	$(xNoDialogEdit).keyup(function(e){
-		if (e.which == 9
-		 || e.which == 35
-		 || e.which == 36
-		 || e.which == 37
-		 || e.which == 38
-		 || e.which == 39
-		 || e.which == 40){
+	$(xNoDialogEdit).keydown(function(e){
+		console.log(e.which);
+		if (e.which == 9 //TAB
+		 || e.which == 33 //PAGEUP
+		 || e.which == 34 //PAGEDOWN
+		 || e.which == 35 //END
+		 || e.which == 36 //HOME
+		 || e.which == 37 //LEFT
+		 || e.which == 38 //UP
+		 || e.which == 39){ //RIGHT
 			return;
 		}
-		if ($(this).children(".-C1").children("input[type='hidden']")){
-			$(this).children(".-C1").children("input[type='hidden']").val("true");
-		}
+		
+//		if(e.keyCode >= 65 && e.keyCode <=90){
+		
+		dbsfaces.crudTable.rowEdit(e, pId, $(this));
+
 	});
 
+}
+
+dbsfaces.crudTable = {
+	rowEdit: function(e, pId, pRow){
+		var xCheckbox = pRow.children(".-C1").children("input[type='hidden']");
+		//Inserir nova linha
+		if (e.which == 40){ //DOWN
+			//É a última linha
+			if (pRow.next().length == 0){
+				//Se foi em campo de input
+				if ($(e.target).hasClass("dbs_input-data")){
+					//Se já foi digitado alguma informação nesta linha. Permitindo que seja incluida outro.
+					if (xCheckbox.val() == "true"){
+						var xBtInsert = $(dbsfaces.util.jsid(pId + ":dataTable:insert"));
+						xBtInsert.click();
+					}
+				}
+			}
+			return;
+		}
+		
+		//Marca como checkbox que indica que foi digitado algo
+		if (xCheckbox.length > 0){
+			xCheckbox.val("true");
+		}
+	}
 }

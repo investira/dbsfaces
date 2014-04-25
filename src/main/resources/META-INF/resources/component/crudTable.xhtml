@@ -87,7 +87,7 @@
 									<ui:fragment rendered="#{cc.crudBean.isUpdating}">
 										<dbs:button id="ok" iconClass="dbs_icon -i_ok" action="#{cc.crudBean.confirmEditing()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
 										<dbs:button id="cancelar" iconClass="dbs_icon -i_cancelar" action="#{cc.crudBean.ignoreEditing()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
-										<dbs:button rendered="#{cc.attrs.allowInsert and cc.crudBean.allowInsert}" id="insert" iconClass="dbs_icon -i_inserir" action="#{cc.crudBean.insert()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
+										<dbs:button id="insert" rendered="#{cc.attrs.allowInsert and cc.crudBean.allowInsert}"  iconClass="dbs_icon -i_inserir" style="display:none;" action="#{cc.crudBean.insert()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
 									</ui:fragment>
 								</c:if>
 								<c:if test="#{cc.crudBean.dialogEdit}">
@@ -109,7 +109,32 @@
 					<!-- Controle de aprovação de registro -->
 					<c:if test="#{cc.attrs.allowApproval and cc.crudBean.allowApproval and cc.crudBean.approvalUserStages!=0}">
 						<dbs:dataTableColumn width="23px" styleClass="-center">
-							<f:facet name="header"><span class="dbs_icon -i_certificate_green" style="position:relative;top:2px;"/></f:facet>
+							<f:facet name="header">
+								<dbs:label styleClass="dbs_icon -i_certificate_green" style="position:relative;top:1px;">
+									<!-- tooltip do assinatura	-->
+									<f:facet name="tooltip">
+										<ul>
+											<li>
+												<span class="dbs_icon -i_approval_aproved" style="float:left;"/>
+												<span>Aprovado</span>
+											</li>
+											<li>
+												<span class="dbs_icon -i_approval_verified" style="float:left;"/>
+												<span>Verificado</span>
+											</li>
+											<li>
+												<span class="dbs_icon -i_approval_conferred" style="float:left;"/>
+												<span>Conferido</span>
+											</li>
+											<li>
+												<span class="dbs_icon -i_approval_registered" style="float:left;"/>
+												<span>Registrado</span>
+											</li>
+										</ul>
+									</f:facet>
+								</dbs:label>
+							</f:facet>
+							<dbs:img rendered="#{cc.crudBean.isUpdating}" styleClass="dbs_icon -i_editar"/>
 							<h:outputText styleClass="dbs_icon -i_approval_aproved" rendered="#{cc.crudBean.approvalStageListValue.code == 1}"/>
 							<h:outputText styleClass="dbs_icon -i_approval_verified" rendered="#{cc.crudBean.approvalStageListValue.code == 2}"/>
 							<h:outputText styleClass="dbs_icon -i_approval_conferred" rendered="#{cc.crudBean.approvalStageListValue.code == 4}"/>

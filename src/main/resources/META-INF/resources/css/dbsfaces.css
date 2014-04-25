@@ -610,7 +610,8 @@ textarea.dbs_input-data:FOCUS,
 	background: url("#{request.contextPath}/images/dbs_icons.png");
 }
 td > .dbs_icon{
-	margin-bottom: -4px !important;
+/* 	margin-bottom: -4px !important; Comentado em 25/abr/2014 Ricardo - ocupava muito espaço para o icone da assinatura*/
+	margin: -4px 0 -4px 0 !important;
 }
 
 .-i_message {background-position: 0px 0px;}

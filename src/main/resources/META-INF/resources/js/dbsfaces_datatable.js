@@ -44,13 +44,14 @@ dbs_dataTable = function(pId) {
 	/*hover*/
 	$(xTable + " > tbody > tr").off('mouseover.datatable'); 
 	$(xTable + " > tbody > tr").on('mouseover.datatable', xMouseover);
-	
-	$(xTable + " > tbody").keydown(function(e){
-		if(e.keyCode==40 ||
-		   e.keyCode==38){
-			return false;
-		}
-	}); 
+
+//comentado em 25/abr/2014 - Ricardo - Não foi identificada a necessidade neste código
+//	$(xTable + " > tbody").keydown(function(e){
+//		if(e.keyCode==40 ||
+//		   e.keyCode==38){
+//			return false;
+//		}
+//	}); 
 	
 	$(pId).mouseout(function(e){
 		dbsfaces.dataTable.removeRowFocus(pId);
@@ -108,9 +109,8 @@ dbs_dataTable = function(pId) {
 //	}); 
 
 	$(pId + " > .-container > input.-foo").keydown(function(e){
-//		console.log("keydown");
-		if(e.keyCode==40 ||
-		   e.keyCode==38){
+		if(e.keyCode==40 || //DOWN
+		   e.keyCode==38){  //UP
 			var xTable = pId + " > .-container > .-content > table ";
 			dbsfaces.dataTable.selectRow(pId, e.keyCode);
 			var xRow = $(xTable + " > tbody > tr");
@@ -204,14 +204,14 @@ dbsfaces.dataTable = {
 		if (xTBody.find(".-selected").length == 0){
 			xNew = xRow.first();
 		}else{
-			if (pKeyCode==40){
+			if (pKeyCode==40){ //DOWN
 				xNew = xRow.filter(".-selected").next();
 				if ($(xNew).length == 0){
 					xNew = xRow.last();
 				}else{
 					xDirection = 1;
 				}
-			}else if (pKeyCode==38){
+			}else if (pKeyCode==38){ //UP
 				xNew = xRow.filter(".-selected").prev();
 				if ($(xNew).length == 0){
 					xNew = xRow.first();

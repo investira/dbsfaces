@@ -43,34 +43,35 @@ dbs_inputText = function(pId) {
 		  	}, 300);
 		}
 	});
-		
-//	$(pId + " > .-input > .dbs_input-data").blur(function(e){
-//		if (wChanged){
-//			$(pId + "-data").trigger("change");
-//			wChanged = false;
-//		}
-//	});
 
 	/* copia a sugestão para o input ou navega pela lista de sugestões*/
 	$(pId + " > .-input > .dbs_input-data").keydown(function(e){
-		if (e.keyCode == 39 && //Se foi digitado a seta para a direita
+		if (e.keyCode == 39 && //RIGHT
 			$(this).get(0).selectionEnd == $(this).val().length) { //Se o cursor estive na última posição
 			e.stopImmediatePropagation();
 			dbsfaces.inputText.acceptSuggestion(pId);
-		}else if(e.keyCode==40 || //Se foi digitados as seta para cima ou para baixo
-				 e.keyCode==38){
-			e.preventDefault();
-			e.stopPropagation();
-			if ($(pId + "-list").css("display") == "none"){
-				$(pId + "-list").css("opacity","1").show();
-			}else{
-				dbsfaces.dataTable.selectRow(pId + "-dataTable", e.keyCode);
+		}else if(e.keyCode==40   //DOWN
+			  || e.keyCode==38){ //UP
+			//Se existe suggestion, controla a exibição e a navegação
+			if ($(pId + "-list").length > 0){
+				e.preventDefault();
+				e.stopPropagation();
+				//Exibe suggestions no primeiro click
+				if ($(pId + "-list").css("display") == "none"){
+					$(pId + "-list").css("opacity","1").show();
+				}else{
+					//Navega na lista de sugestões
+					dbsfaces.dataTable.selectRow(pId + "-dataTable", e.keyCode);
+				}
 			}
 		//Se não for tab, shift ou setas para a direira ou esquerda
-		}else if (e.keyCode != 9 && e.keyCode != 16 && e.keyCode != 37 && e.keyCode != 39){
+		}else if (e.keyCode != 9  //TAB
+			   && e.keyCode != 16 //
+			   && e.keyCode != 37 //LEFT
+			   && e.keyCode != 39){ //RIGHT
 			//Limpa campo caso se não backspaces
 			//Limpa campo caso haja algum texto selecionado para edição
-			if (e.keyCode != 8 ||
+			if (e.keyCode != 8 || 
 				(($(this).get(0).selectionEnd - $(this).get(0).selectionStart) > 0)){
 				dbsfaces.inputText.clearSuggestion(pId);
 			}
@@ -193,9 +194,7 @@ dbsfaces.inputText = {
 	clearSuggestion: function(pId){
 		$(pId + "-suggestion").val("");
 		$(pId + "-suggestion-key").attr("key", "");
-//		$(pId + "-suggestion-key").val("");
 		wChanged = true;
-//		$(pId + "-data").trigger("change");
 	},
 	
 	acceptSuggestion: function(pId){
@@ -204,7 +203,6 @@ dbsfaces.inputText = {
 			$(pId + "-data").val(xSuggestionValue);
 			dbsfaces.inputText.validate(pId, false);
 		}
-//		$(pId + "-data").trigger("change");
 		wChanged = true;
 	},
 	
