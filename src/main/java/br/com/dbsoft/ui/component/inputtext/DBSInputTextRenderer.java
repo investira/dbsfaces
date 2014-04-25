@@ -7,12 +7,12 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.model.ResultDataModel;
 import javax.faces.render.FacesRenderer;
 
 import com.sun.faces.renderkit.RenderKitUtils;
 
 import br.com.dbsoft.core.DBSSDK;
+import br.com.dbsoft.io.DBSResultDataModel;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.button.DBSButton;
 import br.com.dbsoft.ui.component.datatable.DBSDataTable;
@@ -263,7 +263,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 			//Cria dataTable
 			DBSDataTable xDT = (DBSDataTable) pContext.getApplication().createComponent(DBSDataTable.COMPONENT_TYPE);
 				xDT.setId(pvGetDataTableId(pInputText));
-				xDT.setValueExpression("value", DBSFaces.createValueExpression(pContext, pInputText.getValueExpression(DBSInputText.PropertyKeys.suggestionsBean.name()).getExpressionString() + ".list", ResultDataModel.class)); 
+				xDT.setValueExpression("value", DBSFaces.createValueExpression(pContext, pInputText.getValueExpression(DBSInputText.PropertyKeys.suggestionsBean.name()).getExpressionString() + ".list", DBSResultDataModel.class)); 
 				xDT.setKeyColumnName(pInputText.getSuggestionKeyColumnName());
 				xDT.setVar(xVar);
 	
