@@ -334,7 +334,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	 */
 	public boolean getIsListNewRow(){
 		if (wDAO != null){
-			System.out.println(wDAO.getIsNewRow());
 			return wDAO.getIsNewRow();
 		}else{
 			return false;
