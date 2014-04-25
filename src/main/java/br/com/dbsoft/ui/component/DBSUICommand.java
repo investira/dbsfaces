@@ -38,7 +38,7 @@ import br.com.dbsoft.ui.core.DBSFaces;
 	@ResourceDependency(library = "css", name = "dbsfaces_table.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_tooltip.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_radio.css", target = "head"),
-	@ResourceDependency(library = "js", name = "jquery-1.10.2.min.js", target = "head"),
+	@ResourceDependency(library = "js", name = "jquery-1.11.0.min.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsmask.js", target = "head"),
 	@ResourceDependency(library = "javax.faces", name = "jsf.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces.js", target = "head"),
