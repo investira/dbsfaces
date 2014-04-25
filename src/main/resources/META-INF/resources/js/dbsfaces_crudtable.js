@@ -21,10 +21,9 @@ dbs_crudTable = function(pId) {
 		});
 	});	
 	
-	$(xNoDialogEdit)
+
 	//Controle de edição diretamente no grid
 	$(xNoDialogEdit).keydown(function(e){
-		console.log(e.which);
 		if (e.which == 9 //TAB
 		 || e.which == 33 //PAGEUP
 		 || e.which == 34 //PAGEDOWN
