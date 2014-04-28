@@ -104,10 +104,6 @@ dbs_dataTable = function(pId) {
 	});
 	
 
-//	$(pId + " > .-container > input.-foo").keypress(function(e){
-//		console.log("keypress");
-//	}); 
-
 	$(pId + " > .-container > input.-foo").keydown(function(e){
 		if(e.keyCode==40 || //DOWN
 		   e.keyCode==38){  //UP
