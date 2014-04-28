@@ -66,7 +66,7 @@ dbs_inputText = function(pId) {
 			}
 		//Se não for tab, shift ou setas para a direira ou esquerda
 		}else if (e.keyCode != 9  //TAB
-			   && e.keyCode != 16 //
+			   && e.keyCode != 16 //SHIFT
 			   && e.keyCode != 37 //LEFT
 			   && e.keyCode != 39){ //RIGHT
 			//Limpa campo caso se não backspaces
