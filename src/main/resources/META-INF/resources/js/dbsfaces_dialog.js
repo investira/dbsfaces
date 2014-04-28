@@ -44,26 +44,26 @@ dbs_dialog = function(pId) {
     var xLastPosX;
     var xLastPosY;
     
-	$(pId + "> div > .-caption").off("mousedown.dialog");
-	$(pId + "> div > .-caption").on("mousedown.dialog", function(e){
+	$(pId + "> div > .-caption").off("mousedown.dialog")
+								.on("mousedown.dialog", function(e){
 		if (e.which === 1) {
 	    	xLastPosX = e.clientX;
 	    	xLastPosY = e.clientY;
-	    	$(pId + "> div > .-caption").off("mousemove.dialog");
-	        $(pId + "> div > .-caption").on("mousemove.dialog", function(e){
+	    	$(pId + "> div > .-caption").off("mousemove.dialog")
+	        							.on("mousemove.dialog", function(e){
 	        	moveWindow(pId, e);
 	     	});
 			return false; //Inibe a propagação do evento
 		}
  	});
 	
-	$("body").off("mouseout.dialog");
-	$("body").on("mouseout.dialog", function(e){
+	$("body").off("mouseout.dialog")
+			 .on("mouseout.dialog", function(e){
 		$(pId + "> div > .-caption").off("mousemove.dialog");
 	});
 	
-	$(pId + "> div > .-caption").off("mouseup.dialog");
-    $(pId + "> div > .-caption").on("mouseup.dialog", function(e){
+	$(pId + "> div > .-caption").off("mouseup.dialog")
+								.on("mouseup.dialog", function(e){
     	$(pId + "> div > .-caption").off("mousemove.dialog");
  	});
     
