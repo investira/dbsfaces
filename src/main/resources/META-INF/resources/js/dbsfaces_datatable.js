@@ -37,13 +37,13 @@ dbs_dataTable = function(pId) {
 	var xMousemove = function(e){
 		var xTable = pId + " > .-container > .-content > table ";
 		$(this).off("mousemove");
-		$(xTable + " > tbody > tr").off('mouseover.datatable'); 
-		$(xTable + " > tbody > tr").on('mouseover.datatable', xMouseover); 
+		$(xTable + " > tbody > tr").off('mouseover.datatable') 
+								   .on('mouseover.datatable', xMouseover); 
 	}
 
 	/*hover*/
-	$(xTable + " > tbody > tr").off('mouseover.datatable'); 
-	$(xTable + " > tbody > tr").on('mouseover.datatable', xMouseover);
+	$(xTable + " > tbody > tr").off('mouseover.datatable') 
+							   .on('mouseover.datatable', xMouseover);
 
 //comentado em 25/abr/2014 - Ricardo - Não foi identificada a necessidade neste código
 //	$(xTable + " > tbody").keydown(function(e){
