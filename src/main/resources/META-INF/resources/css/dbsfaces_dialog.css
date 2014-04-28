@@ -4,8 +4,8 @@
 	background-color: rgba(0, 0, 0, 0.05);
 	background-image: url("#{request.contextPath}/images/vidro.png");
 	background-repeat: repeat;
-	xposition:absolute; /* Comentado em 12/3/2013 pois dialog dentro de dialog era limitado pelo tamanho do anterior */ 
-	xposition: fixed; /* 24/03/2013 - comentado pois considerava o offsetparent como body, desabilitando todos os inputs. Quando deveria desabilitar somente os dentro do mask. */
+/* 	xposition:absolute; Comentado em 12/3/2013 pois dialog dentro de dialog era limitado pelo tamanho do anterior  */
+/* 	xposition: fixed; 24/03/2013 - comentado pois considerava o offsetparent como body, desabilitando todos os inputs. Quando deveria desabilitar somente os dentro do mask. */
 	position: absolute;
 	display: block;
 	top:0;
@@ -26,12 +26,12 @@
 	-webkit-border-radius: 3px 3px 6px 6px;
 	border-radius:3px 3px 6px 6px;
 	position: absolute;
-	xoverflow: hidden; /* 24/04/2013 - desabilitado por cortava o dialog quando fosse superior ao dialog anterior */
+/* 	xoverflow: hidden; 24/04/2013 - desabilitado por cortava o dialog quando fosse superior ao dialog anterior */
 	overflow: visible;
-	xposition: fixed; /* 24/04/2013 - desabilitado por cortava o dialog quando fosse superior ao dialog anterior */
-	border-width: 1px;
-	border-color: rgb(130,130,130);
-	border-style: solid;
+/* 	xposition: fixed; 24/04/2013 - desabilitado por cortava o dialog quando fosse superior ao dialog anterior */
+/* 	border-width: 1px; 28/04/2014 - desabilitado por Ricardo */ 
+/* 	border-color: rgb(130,130,130); 28/04/2014 - desabilitado por Ricardo */
+/* 	border-style: solid; 28/04/2014 - desabilitado por Ricardo */
  }
 
 .dbs_dialog > div > .-caption{
@@ -51,15 +51,14 @@
 	-webkit-box-shadow:0 0px 2px 0px #000000;
 	-moz-box-shadow:0 0px 2px 0px #000000;
 	box-shadow:0 0px 2px 0px #000000;
-	x-webkit-box-shadow:0 1px 0px 0px #BBBBBB;
-	x-moz-box-shadow:0 1px 0px 0px #BBBBBB;
-	xbox-shadow:0 1px 0px 0px #BBBBBB;
+/* 	x-webkit-box-shadow:0 1px 0px 0px #BBBBBB; */
+/* 	x-moz-box-shadow:0 1px 0px 0px #BBBBBB; */
+/* 	xbox-shadow:0 1px 0px 0px #BBBBBB; */
 	z-index: 1;
 	cursor: move;
 }
 
 .dbs_dialog > div > .-caption > .-label{
-	xbackground-color: green;
 	position: relative;
 	height: 100%;
 	padding-left: 5px;
@@ -73,7 +72,6 @@
 }
 
 .dbs_dialog > div > .-caption > .-iconclose{
-	xbackground-color: brown;
 	position: absolute;
 	top:0;
 	right:0;
@@ -83,7 +81,6 @@
 }
 
 .dbs_dialog > div > .-caption > .-iconclose > div{
-	xbackground-color: gray;
 	border-width: 1px;
 	border-style: solid;
 	border-color: rgba(100,100,100,0.5);
@@ -110,7 +107,6 @@
 
 .dbs_dialog > div > .-content{
 	display: block;
-	xbackground-color: rgba(255,255,0,0.9);
 	height: 100%;
 /* 	overflow: auto; comentado em 24/07/2013 por inibir a exibição de componentes maiores comos os inputAtivos*/
 	overflow: visible;
@@ -138,9 +134,6 @@
 	width: 100%;
 	overflow: hidden;
 	text-align: right;
-	x-webkit-box-shadow:0 0px 2px 0px #000000;
-	x-moz-box-shadow:0 0px 2px 0px #000000;
-	xbox-shadow:0 0px 2px 0px #000000;
 	border-color: rgba(0,0,0,0.2);
 	border-style: solid;
 	border-width: 0 0 1px;
@@ -150,7 +143,6 @@
 .dbs_dialog > div > .-toolbar > ul{
 	text-align: left;
 	display: block;
-	xwidth:100%;
 	margin:0px;
     padding: 2px 4px 1px 2px;
 	border-width: 0px;
@@ -171,14 +163,12 @@
     padding: 3px;
     position: absolute;
     top: 0;
-    xborder-color: rgba(13, 25, 45, 0.2);
     border-style: outset;
     border-width: 0 1px 0 0;
 }
 
 .dbs_dialog-confirmation{
 	height: 100%;
-	xbackground-color: red;
 	margin-bottom:-23px;
 	padding-bottom:23px;
 }
