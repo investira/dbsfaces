@@ -5,30 +5,53 @@ dbs_crudTable = function(pId) {
 	//Foi necessário o artifício de capturar o click, pois o update na linha que tem o checkbox, quebrava o vinculo com on(event).
 	//Desta forma o vinculo é refeito a cada click.
 	$(xCheckbox).click(function(e){
+		//Refresh do toolbar e menssagens após o click no checkbox
 		$(xCheckbox + " > .dbs_checkbox").off(dbsfaces.EVENT.ON_AJAX_SUCCESS)
 										 .on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function (e){
 			//Força o refresh do toolbar quando for selecionado o checkbox para multiplaseleção
 			jsf.ajax.request(e, 'update', {render: $(pId).attr("id") + ':crudTableMessages ' + $(pId).attr("id") + ':dataTable:toolbar', onevent:dbsfaces.onajax});
 		});
 		
-		//Apaga indicador ajax no complete, pois o checkbox que disparou, já não existe no view
+		//Apaga indicador ajax no complete, pois o checkbox que disparou, já não existe no view, nao recebendo, portanto, o SUCESS.
 		$(xCheckbox + " > .dbs_checkbox").off(dbsfaces.EVENT.ON_AJAX_COMPLETE)
 										 .on(dbsfaces.EVENT.ON_AJAX_COMPLETE, function (e){
 			window.clearTimeout(wAjaxTimeout);
 			e.stopImmediatePropagation();
 			//Apaga o indicador do ajax, pois a linha que disparou(Begin) já não existe, então não receberá o SUCESS.
 			dbsfaces.ui.showLoading("main",false);
+//			$(e.target).children("input").focus();
 		});
-	});	
+	});
+	
+//	$(pId).keydown(function(e){
+//		var xBt = $(dbsfaces.util.jsid(pId + ":dataTable:excluir"));
+//		console.log(e.which + ":" + xBt.length);
+//		//Excluir
+//		if (xBt.length > 0 
+//		 && (e.which == 46 //Del
+//		  || e.which == 8)){ //Backspace
+//			xBt.click();
+//			return;
+//		}
+//	});
 	
 
 	//Controle de edição diretamente no grid
 	$(xEditableRows).keydown(function(e){
 		if (e.which == 9 //TAB
+		 || e.which == 19 //PAUSE BREAK
+		 || e.which == 20 //CAPSLOCK
+		 || e.which == 16 //SHIFT
+		 || e.which == 17 //CTRL
+		 || e.which == 18 //ALT
 		 || e.which == 33 //PAGEUP
 		 || e.which == 34 //PAGEDOWN
 		 || e.which == 35 //END
-		 || e.which == 36){ //HOME
+		 || e.which == 36 //HOME
+		 || e.which == 91 //lefg window key
+		 || e.which == 92 //RIGHT window key
+		 || e.which == 93 //select key
+		 || (e.which > 111 && e.which < 186)){ 
 			return;
 		}
 		
@@ -63,16 +86,19 @@ dbsfaces.crudTable = {
 					}
 				}
 			}
-			//Confirma
+			//Confirmar
 			if (e.which == 13){ //Enter
-				var xBtOk = $(dbsfaces.util.jsid(pId + ":dataTable:ok"));
-				xBtOk.click();
+				var xBt = $(dbsfaces.util.jsid(pId + ":dataTable:ok"));
+				xBt.click();
+				return;
 			}
-			//Cancela
+			//Cancelar
 			if (e.which == 27){ //Esc
-				var xBtOk = $(dbsfaces.util.jsid(pId + ":dataTable:cancelar"));
-				xBtOk.click();
+				var xBt = $(dbsfaces.util.jsid(pId + ":dataTable:cancelar"));
+				xBt.click();
+				return;
 			}
+
 
 			//Seleção da nova linha ou coluna
 			var xCurColumn = $(e.target).closest("td");
