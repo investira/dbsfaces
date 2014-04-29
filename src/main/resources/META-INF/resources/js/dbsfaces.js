@@ -16,7 +16,8 @@ $(document).on("keydown", function(e){
 		(e.target.type=="text"))  {
 		return false;
 	} 
-	if ((e.keyCode == 8) && 
+	if ((e.keyCode == 8 
+	  || e.keyCode == 46) && 
 		(e.target.type=="select-one" ||
 		 e.target.type=="radio" ||
 		 e.target.type=="submit" ||
