@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.dbsoft</groupId>
 	<artifactId>dbsfaces</artifactId>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 	<name>DBSoft - Componentes JSF</name>
 	<url>http://www.dbsoft.com.br</url>
 	<organization>
