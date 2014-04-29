@@ -179,6 +179,22 @@ dbsfaces.ui = {
 			window.clearTimeout(wAjaxTimeout); //Cancela o timeout definido no evento COMPLETE, cancelando a respectiva chamada ao showLoadingError.
 			dbsfaces.ui.showLoading("main",false);
 		});
+	},
+	
+	focusOnFirstInput: function(pContainer){
+		//Seta foco no primeiro campo de input
+		var xEle = pContainer.find("input:first");
+		//Se não achou input, procura por combobox.
+		if (xEle.length == 0 ){
+			xEle = pContainer.find("select:first");
+			//Se não achou input, procura por botão.
+			if (xEle.length == 0 ){
+				xEle = pContainer.find("button:first");
+			}
+		}
+		if (xEle.length != 0 ){
+			xEle.focus();
+		}
 	}
 }
 

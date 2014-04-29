@@ -28,9 +28,7 @@ dbs_crudTable = function(pId) {
 		 || e.which == 33 //PAGEUP
 		 || e.which == 34 //PAGEDOWN
 		 || e.which == 35 //END
-		 || e.which == 36 //HOME
-		 || e.which == 37 //LEFT
-		 || e.which == 39){ //RIGHT
+		 || e.which == 36){ //HOME
 			return;
 		}
 		
@@ -40,14 +38,10 @@ dbs_crudTable = function(pId) {
 
 	});
 	
-	//Posiciona a úlima linha após a inclusão
+//	//Posiciona a úlima linha após a inclusão
 	$(dbsfaces.util.jsid(pId + ":dataTable:inserir")).on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
 		dbsfaces.crudTable.setCellFocus($(xEditableRows).last(), 1);
 	});
-	$(pId + " * ").on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
-		console.log("SUCESSO");
-	});
-
 
 }
 
@@ -79,19 +73,29 @@ dbsfaces.crudTable = {
 				var xBtOk = $(dbsfaces.util.jsid(pId + ":dataTable:cancelar"));
 				xBtOk.click();
 			}
-			//Seleção da nova linha
-			if (e.which == 40 //DOWN
+
+			//Seleção da nova linha ou coluna
+			var xCurColumn = $(e.target).closest("td");
+			if (e.which == 37 //LEFT
+			 || e.which == 39 //RIGHT
+			 || e.which == 40 //DOWN
 			 || e.which == 38){ //UP
-				var xCurCell = $(e.target).closest("td").get(0).cellIndex;
-				var xDestRow = null;
+//				var xEditing = xCurColumn.hasClass("-editing");
+				var xCurCell = xCurColumn.get(0).cellIndex;
+				var xDestRow = pRow;
 				if (e.which == 40){ //DOWN
 					xDestRow = pRow.next(); //Proximá linha
 				}else if (e.which == 38){ //UP
 					xDestRow = pRow.prev(); //Linha anterior
+				}else if (e.which == 37){
+					xCurCell++;
+				}else if (e.which == 39){
+					xCurCell--;
 				}
-				
-				dbsfaces.crudTable.setCellFocus(xDestRow, xCurCell);
-
+				if (xCurCell != xCurColumn.get(0).cellIndex
+				 || xDestRow != pRow){	
+					dbsfaces.crudTable.setCellFocus(xDestRow, xCurCell);
+				}
 				return;
 			}
 			//Marca como checkbox que indica que foi digitado algo
@@ -106,10 +110,13 @@ dbsfaces.crudTable = {
 		if (pRow != null){
 			if (pRow.length > 0){
 				//Ativa foco no imput, se existir
-				var xDestInput = pRow.children("td:eq(" + pCurCell + ")").find(".dbs_input-data");
-				if (xDestInput.length > 0){
-					xDestInput.focus();
-				}
+//				$(pRow).children("td").removeClass("-editing");
+				var xTD = pRow.children("td:eq(" + pCurCell + ")");
+				dbsfaces.ui.focusOnFirstInput(xTD);
+//				var xDestInput = pRow.children("td:eq(" + pCurCell + ")").find(".dbs_input-data");
+//				if (xDestInput.length > 0){
+//					xDestInput.focus();
+//				}
 			}
 		}
 	},

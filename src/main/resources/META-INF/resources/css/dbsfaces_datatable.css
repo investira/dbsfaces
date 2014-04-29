@@ -254,7 +254,23 @@
 
 .dbs_dataTable > .-container > .-content > table > tbody .dbs_input-data.-readOnly{
 	opacity:0.7;
-	background-color: rgba(0, 0, 0, 0) !important;
+	background-color: transparent !important;
+}
+
+.dbs_dataTable > .-container > .-content > table > tbody .dbs_input-data:focus:not(.-editing){
+	border:none !important;
+	-webkit-box-shadow: none !important;
+	-moz-box-shadow: none !important;
+	box-shadow: none !important;
+	color:white !important;
+	background: rgb(30,87,153) !important; /* Old browsers */
+	background: -moz-linear-gradient(top,  rgba(30,87,153,1) 0%, rgba(13,25,45,1) 100%) !important; /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(30,87,153,1)), color-stop(100%,rgba(13,25,45,1))) !important; /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(30,87,153,1) 0%,rgba(13,25,45,1) 100%) !important; /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(30,87,153,1) 0%,rgba(13,25,45,1) 100%) !important; /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(30,87,153,1) 0%,rgba(13,25,45,1) 100%) !important; /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(30,87,153,1) 0%,rgba(13,25,45,1) 100%) !important; /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#0d192d',GradientType=0) !important; /* IE6-9 */
 }
 
 .dbs_dataTable > .-container > .-content > table > tbody .dbs_checkbox > .dbs_input-data{
@@ -293,7 +309,7 @@
 }
 
 
-.dbs_dataTable > .-container > .-content > table > tbody > .-selected {
+.dbs_dataTable:not(.-noDialogEdit) > .-container > .-content > table > tbody > .-selected {
 	color:white; 
 	background: rgb(30,87,153); /* Old browsers */
 	background: -moz-linear-gradient(top,  rgba(30,87,153,1) 0%, rgba(13,25,45,1) 100%); /* FF3.6+ */

@@ -25,7 +25,9 @@ dbs_dialog = function(pId) {
 
     dbsfaces.dialog.disableBackgroundInputs(pId);
     
-    dbsfaces.dialog.focuOnFirstElement(pId);
+    dbsfaces.ui.focusOnFirstInput($(pId + " div > .-content"));
+    
+//    dbsfaces.dialog.focuOnFirstElement(pId);
 
     //Habilita os input caso não encontre mais dialogs
     //Asterisco necessário, pois o IE não está enviando o evento para o pId
@@ -95,26 +97,25 @@ dbsfaces.dialog = {
 		pE.find("button").not(".-disabled").attr('disabled', false);
 		pE.find("select").not(".-disabled").attr('disabled', false);
 		pE.find("textarea").not(".-disabled").attr('disabled', false);
-	},
-	
-	focuOnFirstElement: function(pId){
-		//Seta foco no primeiro campo de input
-		var xContent = $(pId + " div > .-content");
-		var xEle = xContent.find("input:first");
-		//Se não achou input, procura por combobox.
-		if (xEle.length == 0 ){
-			xEle = xContent.find("select:first");
-			//Se não achou input, procura por botão.
-			if (xEle.length == 0 ){
-				xEle = xContent.find("button:first");
-			}
-		}else{
-			
-		}
-		if (xEle.length != 0 ){
-			xEle.focus();
-		}
 	}
-
-
+//	,
+//	
+//	focuOnFirstElement: function(pId){
+//		//Seta foco no primeiro campo de input
+//		var xContent = $(pId + " div > .-content");
+//		var xEle = xContent.find("input:first");
+//		//Se não achou input, procura por combobox.
+//		if (xEle.length == 0 ){
+//			xEle = xContent.find("select:first");
+//			//Se não achou input, procura por botão.
+//			if (xEle.length == 0 ){
+//				xEle = xContent.find("button:first");
+//			}
+//		}else{
+//			
+//		}
+//		if (xEle.length != 0 ){
+//			xEle.focus();
+//		}
+//	}
 }
