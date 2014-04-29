@@ -78,6 +78,7 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 			DBSFaces.encodeRightLabel(pContext, xCheckbox, xWriter);
 			DBSFaces.encodeTooltip(pContext, xCheckbox, xCheckbox.getTooltip());
 		xWriter.endElement("div");
+		pvEncodeJS(xWriter, xClientId);
 	}
 
 	private void pvEncodeInput(FacesContext pContext, DBSCheckbox pCheckbox, ResponseWriter pWriter) throws IOException{
@@ -123,6 +124,21 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 	    }
     }
 	
+	/**
+	 * Encode do código JS necessário para o componente
+	 * @param pWriter
+	 * @param pClientId
+	 * @throws IOException
+	 */
+	private void pvEncodeJS(ResponseWriter pWriter, String pClientId) throws IOException {
+		DBSFaces.encodeJavaScriptTagStart(pWriter);
+		String xJS = "$(document).ready(function() { \n" +
+				     " var xCheckboxId = '#' + dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " dbs_checkbox(xCheckboxId); \n" +
+                     "}); \n";
+		pWriter.write(xJS);
+		DBSFaces.encodeJavaScriptTagEnd(pWriter);	
+	}
 }
 
 

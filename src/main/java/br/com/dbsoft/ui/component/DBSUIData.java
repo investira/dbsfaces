@@ -48,6 +48,7 @@ import br.com.dbsoft.ui.core.DBSFaces;
 	@ResourceDependency(library = "js", name = "dbsfaces_accordion.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_button.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_calendar.js", target = "head"),
+	@ResourceDependency(library = "js", name = "dbsfaces_checkbox.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_componenttree.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_combobox.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_crudform.js", target = "head"),
