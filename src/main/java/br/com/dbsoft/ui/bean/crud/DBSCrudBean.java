@@ -492,7 +492,7 @@ public abstract class DBSCrudBean extends DBSBean{
 
 	/**
 	 * Indica se edição será efetuado dentro de um dialog.<br/>
-	 * Caso positivo, deverá se implementado o form utilizando o componente crudForm e adiciona-lo a view que onde está o crudTable.  
+	 * Caso positivo, deverá ser implementado o form utilizando o componente crudForm e adicioná-lo a view que onde está o crudTable.  
 	 * @return
 	 */
 	
@@ -500,7 +500,7 @@ public abstract class DBSCrudBean extends DBSBean{
 
 	/**
 	 * Indica se edição será efetuado dentro de um dialog.<br/>
-	 * Caso positivo, deverá se implementado o form utilizando o componente crudForm e adiciona-lo a view que onde está o crudTable.  
+	 * Caso positivo, deverá ser implementado o form utilizando o componente crudForm e adicioná-lo a view que onde está o crudTable.  
 	 */
 	public void setDialogEdit(Boolean pDialogEdit) {wDialogEdit = pDialogEdit;}
 
