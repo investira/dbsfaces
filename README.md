@@ -1,4 +1,4 @@
-#Componentes JSF 2.0 com Ajax  
+#Componentes JSF 2.1 com Ajax  
 * Input de data
 * Input de números
 * Input de texto
@@ -10,7 +10,7 @@
 * Menu hierarquizado
 * Push
 * Calendário
-* Grid de dados
+* Grid de exibição e edição de dados
 * Tabs
 * Relatório em vídeo/XML/Excel/PDF/XLS
 * Cadastros padronizados e automatizados
