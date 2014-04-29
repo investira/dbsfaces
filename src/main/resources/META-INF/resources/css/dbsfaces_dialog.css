@@ -110,7 +110,7 @@
 	height: 100%;
 /* 	overflow: auto; comentado em 24/07/2013 por inibir a exibição de componentes maiores comos os inputAtivos*/
 	overflow: visible;
-	padding: 5px;
+	padding: 5px 6px 6px 6px;
 	-moz-border-radius: 0px 0px 6px 6px;
 	-webkit-border-radius: 0px 0px 6px 6px;
 	border-radius:0px 0px 6px 6px;

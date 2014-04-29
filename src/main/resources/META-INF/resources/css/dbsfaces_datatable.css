@@ -133,9 +133,13 @@
 	background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(230,230,230,1) 100%); /* IE10+ */
 	background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(230,230,230,1) 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e6e6e6',GradientType=0 ); /* IE6-8 */
-   	-webkit-box-shadow:0px 2px 2px -1px rgba(0, 0, 0, 0.3);
-	-moz-box-shadow:0px 2px 2px -1px rgba(0, 0, 0, 0.3);
-	box-shadow:0px 2px 2px -1px rgba(0, 0, 0, 0.3);	
+/*  -webkit-box-shadow:0px 2px 2px -1px rgba(0, 0, 0, 0.3); */
+/* 	-moz-box-shadow:0px 2px 2px -1px rgba(0, 0, 0, 0.3); */
+/* 	box-shadow:0px 2px 2px -1px rgba(0, 0, 0, 0.3);	 */
+   	-webkit-box-shadow:0 2px 1px -2px rgba(0, 0, 0, 0.8);
+	-moz-box-shadow:0 2px 1px -2px rgba(0, 0, 0, 0.8);
+	box-shadow:0 2px 1px -2px rgba(0, 0, 0, 0.8);	
+
 }
 
 .dbs_dataTable > .-container > .-content > table > tbody{
@@ -173,13 +177,22 @@
 }
 
 .dbs_dataTable > .-container > .-content > table > tbody > tr {
- 	border-width:0px 0px 1px 0px;
-	border-style: solid;
-	border-color: rgba(255,255,255,0.2); 
-	
-	min-height: 16px;
+ 	min-height: 16px;
 	display: block; /*Verificar esta linha, pois está escondendo as colunas quando ultrapassa largura do browser. Testar suggestion*/
 /* 	display: table; <- este resolve o problema acima*/
+}
+
+.dbs_dataTable:not(.-noDialogEdit) > .-container > .-content > table > tbody > tr {
+/*  	border-width:0px 0px 1px 0px; */
+ 	border-width:1px 1px 0px 0px;
+	border-style: solid;
+	border-color: rgba(255,255,255,0.2); 
+}
+
+.dbs_dataTable.-noDialogEdit > .-container > .-content > table > tbody > tr {
+ 	border-width:1px 1px 0px 0px;
+	border-style: solid;
+	border-color: rgba(0,0,0,0.1); 
 }
 
 .dbs_dataTable:not(.-noDialogEdit) > .-container > .-content > table > tbody > tr {
@@ -197,19 +210,29 @@
 }
 
 .dbs_dataTable > .-container > .-content > table > tbody > tr > td{
-	padding:2px 2px 2px 2px;
+	padding:1px 2px 2px 2px;
 }
 
 .dbs_dataTable > .-container > .-content > table > thead > tr > th,
 .dbs_dataTable > .-container > .-content > table > tbody > tr > td{
-	border-width:0px 0px 0px 1px;
-	border-style: solid;
-	border-color: rgba(255,255,255,0.2);
 	overflow: hidden;
 /* 	line-height: 15px; */
 	line-height: 100%;
 /* 	white-space: nowrap; Comentado em 18/05/2013 por não expandir linha quando há texto grande*/ 
 	text-align: left;
+}
+
+.dbs_dataTable.-noDialogEdit > .-container > .-content > table > tbody > tr > td{
+	border-width:0px 0px 0px 1px;
+	border-style: solid;
+	border-color: rgba(0,0,0,0.1);
+}
+
+.dbs_dataTable > .-container > .-content > table > thead > tr > th,
+.dbs_dataTable:not(.-noDialogEdit) > .-container > .-content > table > tbody > tr > td{
+	border-width:0px 0px 0px 1px;
+	border-style: solid;
+	border-color: rgba(255,255,255,0.2);
 }
 
 .dbs_dataTable > .-container > .-content > table > thead > tr > th {
@@ -231,7 +254,7 @@
 /*     top: -2px;	 */
 }
 .dbs_dataTable > .-container > .-content > table > tbody .dbs_input{
-	margin: -2px 0;
+	margin: -2px 0 -2px -1px;
 }
 
 .dbs_dataTable > .-container > .-content > table > tbody .dbs_input-data{
@@ -253,7 +276,6 @@
 }
 
 .dbs_dataTable > .-container > .-content > table > tbody .dbs_input-data.-readOnly{
-	opacity:0.7;
 	background-color: transparent !important;
 }
 
