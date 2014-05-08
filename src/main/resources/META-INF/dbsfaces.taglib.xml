@@ -1221,7 +1221,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Quantidade de casas decimais
+                Quantidade de casas decimais. O padrão são duas casas.
             </description>
 			<name>decimalPlaces</name>
 			<required>false</required>
