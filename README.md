@@ -1,4 +1,4 @@
-#Componentes JSF 2.1 com Ajax  
+#Componentes JSF 2.2 com Ajax  
 * Input de data
 * Input de número
 * Input de texto
@@ -19,4 +19,4 @@
 * Exibição de mensagens
 * Icones
 
-
+É necessário que esteja instalado no AS o JSF 2.1.20 ou superior.
