@@ -371,11 +371,15 @@ public class DBSDataTableRenderer extends DBSRenderer {
 					if (pvIsUserColumn(xDTC)){
 						xI++;
 						if (!DBSObject.isEmpty(xDTC.getWidth())){
+							String xUserStyle = "";
+							if (xDTC.getStyle()!= null){
+								xUserStyle = xDTC.getStyle();
+							}
 							xCSS += "#" + DBSFaces.convertToCSSId(pClientId) + " > .-container > .-content > table > * > tr > ." + DBSFaces.getDataTableDataColumnStyleClass(xI.toString(), "") + "{"  +
 									 "width:" + xDTC.getWidth() + ";"  +
 									 "min-width:" + xDTC.getWidth() + ";"  +
 									 "max-width:"  + xDTC.getWidth() + ";"  +
-									 xDTC.getStyle() +
+									 xUserStyle +
 									"}\n";
 						}
 					}
