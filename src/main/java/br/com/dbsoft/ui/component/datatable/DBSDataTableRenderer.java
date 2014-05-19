@@ -375,6 +375,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 							if (xDTC.getStyle()!= null){
 								xUserStyle = xDTC.getStyle();
 							}
+							//Define a largura da coluna
 							xCSS += "#" + DBSFaces.convertToCSSId(pClientId) + " > .-container > .-content > table > * > tr > ." + DBSFaces.getDataTableDataColumnStyleClass(xI.toString(), "") + "{"  +
 									 "width:" + xDTC.getWidth() + ";"  +
 									 "min-width:" + xDTC.getWidth() + ";"  +
