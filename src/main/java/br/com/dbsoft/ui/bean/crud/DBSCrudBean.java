@@ -1441,8 +1441,9 @@ public abstract class DBSCrudBean extends DBSBean{
 
 	@Override
 	protected void warningMessageValidated(String pMessageKey, Boolean pIsValidated) throws DBSIOException{
+		//Se mensagem de warning foi validade..
 		if (pIsValidated){
-			//Chama novamente a confirmação da edição
+			//Chama novamente a confirmação da edição.
 			confirmEditing();
 		}else{
 			if (getEditingMode().equals(EditingMode.DELETING)){
