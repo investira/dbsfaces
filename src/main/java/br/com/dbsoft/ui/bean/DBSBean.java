@@ -192,20 +192,22 @@ public abstract class DBSBean implements Serializable {
 
 	/**
 	 * Valida mensagem corrente. <br/>
-	 * Se for Warning chama o método warningMessageValidated passando o opção que o usuário escolheu.<br/>
-	 * Para implementar algum código após a confirmação, este método(warningMessageValidated) deverá ser sobreescrito. 
+	 * Se for <i>Warning</i> chama o método warningMessageValidated passando o opção que o usuário escolheu.<br/>
+	 * Para implementar algum código após a confirmação, este método(warningMessageValidated) deverá ser sobreescrito.<br>
 	 * @param pIsValidated
-	 * @return
+	 * @return Retorna view que será exibida logo em seguida. Normalmente é a própria view, porém pode-se retornar outro view
+	 * a partir do overwrite do método <b>warningMessageValidated</b>.
 	 * @throws DBSIOException 
 	 */
 	public String setMessageValidated(Boolean pIsValidated) throws DBSIOException{
 		if (wDialogMessages!=null){
-			String xMessageKey = wDialogMessages.getCurrentMessageKey(); //Salva a chave, pois o setValidated posiciona na próxima mensagem.
+			DBSMessage xMessageKey = wDialogMessages.getCurrentMessage(); //Salva a chave, pois o setValidated posiciona na próxima mensagem.
 			wDialogMessages.setValidated(pIsValidated);
-			if (wDialogMessages.getCurrentMessageType() == MESSAGE_TYPE.WARNING){
-				warningMessageValidated(xMessageKey, pIsValidated);
+			if (xMessageKey.getMessageType() == MESSAGE_TYPE.WARNING){
+				//Chama método indicando que warning foi validado
+				warningMessageValidated(xMessageKey.getMessageKey(), pIsValidated);
 			}
-			return messageValidated(xMessageKey, pIsValidated);
+			return messageValidated(xMessageKey.getMessageKey(), pIsValidated);
 		}
 		return DBSFaces.getCurrentView();
 	}
