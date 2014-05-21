@@ -321,9 +321,9 @@ public class DBSInputDateRenderer extends DBSRenderer {
 	}
 	
 	private void pvEncodeAutocompleteAttribute(DBSInputDate pInputDate, ResponseWriter pWriter) throws IOException{
-		if (pInputDate.getAutocomplete().toLowerCase().equals("on") ||
-			pInputDate.getAutocomplete().toLowerCase().equals("true")){
-			DBSFaces.setAttribute(pWriter, "autocomplete", "on", null);
+		if (pInputDate.getAutocomplete().toLowerCase().equals("off") ||
+			pInputDate.getAutocomplete().toLowerCase().equals("false")){
+			DBSFaces.setAttribute(pWriter, "autocomplete", "off", null);
 		}			
 	}
 }
