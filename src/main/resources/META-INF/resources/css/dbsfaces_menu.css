@@ -196,6 +196,7 @@
 	cursor: default;
 }
 
+.dbs_menu > li:not(.-disabled) > a, 
 .dbs_menuitem:not(.-disabled) > a, 
 .dbs_menuitem:not(.-disabled) button{
 	cursor:pointer; 
