@@ -1,24 +1,27 @@
-.dbs_tab {
+.dbs_tab {}
+
+.dbs_tab > .-container{
 	padding-top: 2px;
 	display: inline-block; /*INcluido em 15/07/2013 por Ricardo, pois */
 }
 
-.dbs_tab > div, 
-.dbs_tab > div > div, 
-.dbs_tab > div > div > div {
+.dbs_tab > .-container, 
+.dbs_tab > .-container > div, 
+.dbs_tab > .-container > div > div, 
+.dbs_tab > .-container > div > div > div {
 	width: 100%;
 	height: 100%;
 } 	
 
-.dbs_tab > div{
+.dbs_tab > .-container > div{
 	top:0;
 	margin-top:-22px; /*Utilizar o tamanho do título da aba*/
 	padding-top:22px; /*Utilizar o tamanho do título da aba*/
 } 	
 
-.dbs_tab > div > .-content{} 	
+.dbs_tab > .-container > div > .-content{} 	
 
-.dbs_tab > ul{
+.dbs_tab > .-container > ul{
 	display:table-row;
 	height:22px; /*Tamanho do título da aba*/
 	position: relative;
@@ -27,7 +30,7 @@
 }	
 
 
-.dbs_tab > ul > li{
+.dbs_tab > .-container > ul > li{
 	position:relative;
 	z-index: 1;
 	padding-left: 8px;
@@ -66,7 +69,7 @@
 }	
 
 
-.dbs_tab > ul > li.-selected{
+.dbs_tab > .-container > ul > li.-selected{
 	border-top: 1px;
 	border-left: 1px;
 	border-right:1px;
@@ -91,19 +94,19 @@
 	background: linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(250,250,250,1) 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#fafafa',GradientType=0 ); /* IE6-8 */
 }
-.dbs_tab > ul > li > a {
+.dbs_tab > .-container > ul > li > a {
 	display: block;
 	height: 100%;
 	width: 100%;	
 }
 
-.dbs_tab > ul > li > a > .-icon{
+.dbs_tab > .-container > ul > li > a > .-icon{
   	float: left;
     position: relative;
     top: 2px	
 }
 
-.dbs_tab > ul > li > a > .-caption{
+.dbs_tab > .-container > ul > li > a > .-caption{
 	float:left;
 	color:inherit;
 	display:inline-block;
@@ -113,7 +116,7 @@
 	padding-right:2px;
 }
 
-.dbs_tab > ul > li > a.-iconclose{
+.dbs_tab > .-container > ul > li > a.-iconclose{
 	display:inline-block;
 	position:relative;
 	margin-left:6px;
@@ -121,7 +124,7 @@
 	top:4px;
 }
 
-.dbs_tab > ul > li > a.-iconclose:HOVER{
+.dbs_tab > .-container > ul > li > a.-iconclose:HOVER{
 	background-position: -33px -0px;
 }
 

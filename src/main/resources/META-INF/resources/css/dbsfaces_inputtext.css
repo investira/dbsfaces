@@ -1,39 +1,43 @@
 .dbs_inputText{
 }
 
-			
-.dbs_inputText > .dbs_input-label {
-}
-
-.dbs_inputText > .-input {
+.dbs_inputText > .-container {
 	display: inline-block;
 	position: relative;
 }
 
-.dbs_inputText > .-input > .dbs_input-suggestion-key,
-.dbs_inputText > .-input > .dbs_input-submit{
+.dbs_inputText > .-container > .-input {
+	display: inline-block;
+	position: relative;
+}
+
+.dbs_inputText > .-container > .dbs_input-label {
+}
+
+.dbs_inputText > .-container > .-input > .dbs_input-suggestion-key,
+.dbs_inputText > .-container > .-input > .dbs_input-submit{
 	display:none;
 }
 
-.dbs_inputText > .-input > .dbs_input-suggestion{
+.dbs_inputText > .-container > .-input > .dbs_input-suggestion{
 	position: absolute;
 	color: rgb(0, 180, 255);	
 	border-color: transparent;
 } 
 
-.dbs_inputText > .-input > .dbs_input-suggestion.dbs_input-data-FOCUS{
+.dbs_inputText > .-container > .-input > .dbs_input-suggestion.dbs_input-data-FOCUS{
 	box-shadow: none !important;
 }
 
-.dbs_inputText > .-input > .dbs_input-data{
+.dbs_inputText > .-container > .-input > .dbs_input-data{
 	position: relative;
 }
 
-.dbs_inputText > .-input > .dbs_input-data:Focus{
+.dbs_inputText > .-container > .-input > .dbs_input-data:Focus{
 	background-color: transparent;
 }
 
-.dbs_inputText	> .-input > .-list{
+.dbs_inputText > .-container > .-input > .-list{
 	background-color: transparent;
 	position: absolute;
 	width: 100%;
@@ -42,19 +46,27 @@
 	z-index: 2;
 }
 
-.dbs_inputText	> .-input > .-list > .dbs_dataTable{
+.dbs_inputText > .-container > .-input > .-list > .dbs_dataTable{
 	width: 100%;
 }
 
-.dbs_inputText	> .-input > .-is_pesquisar{
+.dbs_inputText > .-container > .-input > div.-loading,
+.dbs_inputText > .-container > .-input > .-is_pesquisar{
 	position: absolute;
-	opacity: 0.3;
-	top: 4px;
 	z-index: 1;
 	right: 4px;
 }
 
-.dbs_inputText	> .-input > .-list > .dbs_dataTable > .-container{
+.dbs_inputText > .-container > .-input > .-is_pesquisar{
+	opacity: 0.3;
+	top: 4px;
+}
+
+.dbs_inputText > .-container > .-input > div.-loading{
+	top: 3px;
+}
+
+.dbs_inputText > .-container > .-input > .-list > .dbs_dataTable > .-container{
 	xwidth: 100%;
 	xdisplay: block; /* Comentado pois limitava a largura da lista */
 	display: inline-block;
@@ -73,26 +85,26 @@
 	box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.5);
 }
 
-.dbs_inputText	> .-input > .-list > .dbs_dataTable > .-container > .-content{}
+.dbs_inputText > .-container > .-input > .-list > .dbs_dataTable > .-container > .-content{}
 
-.dbs_inputText	> .-input > .-list > .dbs_dataTable > .-container > .-content > table{
+.dbs_inputText > .-container > .-input > .-list > .dbs_dataTable > .-container > .-content > table{
 /* 	margin-bottom: 0 !important; */
 /* 	padding-bottom: 0 !important; */
 }
 
-.dbs_inputText	> .-input > .-list > .dbs_dataTable > .-container > .-content > table > tbody{
+.dbs_inputText > .-container > .-input > .-list > .dbs_dataTable > .-container > .-content > table > tbody{
 	max-height: 97px;
 	overflow-style: marquee;
 }
 
-.dbs_inputText	> .-input > .-list > .dbs_dataTable > .-container > .-content > table > tbody,
-.dbs_inputText	> .-input > .-list > .dbs_dataTable > .-container > .-content > table > thead{
+.dbs_inputText > .-container > .-input > .-list > .dbs_dataTable > .-container > .-content > table > tbody,
+.dbs_inputText > .-container > .-input > .-list > .dbs_dataTable > .-container > .-content > table > thead{
 	width: inherit;
 	xmargin-right: 15px;
 	display:block;
 }
 
-.dbs_inputText	> .-input > .-list > .dbs_dataTable > .-container > .-content > table > * > tr > .-C1{
+.dbs_inputText > .-container > .-input > .-list > .dbs_dataTable > .-container > .-content > table > * > tr > .-C1{
 	text-align: left;
 	white-space: nowrap;
 }

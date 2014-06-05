@@ -76,64 +76,68 @@ public class DBSTabRenderer extends DBSRenderer {
 				xWriter.writeAttribute("showTabPageOnClick", "false", null);
 			}
 			DBSFaces.setAttribute(xWriter, "style", xTab.getStyle(), null);
-			xWriter.startElement("ul", xTab);
-				//Título
-				for (int xI=xTab.getChildren().size()-1; xI >= 0; xI--){
-					if (xTab.getChildren().get(xI) instanceof DBSTabPage){
-						DBSTabPage xPage = (DBSTabPage) xTab.getChildren().get(xI);
-						if (xPage.isRendered()){
-							xWriter.startElement("li", xTab);  
+			//Container
+			xWriter.startElement("div", xTab);
+				xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER, "class");
+			
+				xWriter.startElement("ul", xTab);
+					//Título
+					for (int xI=xTab.getChildren().size()-1; xI >= 0; xI--){
+						if (xTab.getChildren().get(xI) instanceof DBSTabPage){
+							DBSTabPage xPage = (DBSTabPage) xTab.getChildren().get(xI);
+							if (xPage.isRendered()){
+								xWriter.startElement("li", xTab);  
+									
+									encodeClientBehaviors(pContext, xPage);
 								
-								encodeClientBehaviors(pContext, xPage);
-							
-								String xPageId = xPage.getAttributes().get("id").toString();
-								String xPageClientId = xClientId + DBSFaces.SEPARATOR + xPageId;
-								DBSFaces.setAttribute(xWriter, "tabPage", xPageClientId, "tabPage");
-								if (xI==0){
-									if (xSelectedTabPage.equals("")){
-										xSelectedTabPage = xPageClientId;
-										xTab.setSelectedTabPage(xPageClientId);
+									String xPageId = xPage.getAttributes().get("id").toString();
+									String xPageClientId = xClientId + DBSFaces.SEPARATOR + xPageId;
+									DBSFaces.setAttribute(xWriter, "tabPage", xPageClientId, "tabPage");
+									if (xI==0){
+										if (xSelectedTabPage.equals("")){
+											xSelectedTabPage = xPageClientId;
+											xTab.setSelectedTabPage(xPageClientId);
+										}
 									}
-								}
-								if (xPageClientId.equals(xSelectedTabPage)){
-									xPage.setSelected(true);
-									DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.SELECTED, "class");
-								}
-								
-								xWriter.startElement("a", xTab);
-//									xWriter.writeAttribute("ontouchstart", "javascript:void(0)", "ontouchstart"); //Para ipad ativar o css:ACTIVE
-//									xWriter.writeAttribute("href", "#", "href"); //Para ipad ativar o css:ACTIVE
-									xWriter.startElement("span", xTab);
-										xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.ICON + " " + DBSFaces.CSS.NOT_SELECTABLE + " " + xPage.getIconClass(), "class");
-									xWriter.endElement("span");
-									xWriter.startElement("span", xTab);
-										xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CAPTION + " " + DBSFaces.CSS.NOT_SELECTABLE, "class");
-										xWriter.write(xPage.getCaption());
-									xWriter.endElement("span");
-								xWriter.endElement("a");
-							xWriter.endElement("li");
+									if (xPageClientId.equals(xSelectedTabPage)){
+										xPage.setSelected(true);
+										DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.SELECTED, "class");
+									}
+									
+									xWriter.startElement("a", xTab);
+	//									xWriter.writeAttribute("ontouchstart", "javascript:void(0)", "ontouchstart"); //Para ipad ativar o css:ACTIVE
+	//									xWriter.writeAttribute("href", "#", "href"); //Para ipad ativar o css:ACTIVE
+										xWriter.startElement("span", xTab);
+											xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.ICON + " " + DBSFaces.CSS.NOT_SELECTABLE + " " + xPage.getIconClass(), "class");
+										xWriter.endElement("span");
+										xWriter.startElement("span", xTab);
+											xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CAPTION + " " + DBSFaces.CSS.NOT_SELECTABLE, "class");
+											xWriter.write(xPage.getCaption());
+										xWriter.endElement("span");
+									xWriter.endElement("a");
+								xWriter.endElement("li");
+							}
 						}
 					}
-				}
-			xWriter.endElement("ul");
-			
-			/*Conteúdo da páginas*/
-			xWriter.startElement("div", xTab);
+				xWriter.endElement("ul");
+				
+				/*Conteúdo da páginas*/
 				xWriter.startElement("div", xTab);
-				xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT.trim(), "class");
-					
-					renderChildren(pContext, xTab);
-
+					xWriter.startElement("div", xTab);
+					xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT.trim(), "class");
+						
+						renderChildren(pContext, xTab);
+	
+					xWriter.endElement("div");
 				xWriter.endElement("div");
+				//Input para controle do focus e caracteres digitados----
+				xWriter.startElement("input", xTab);
+					DBSFaces.setAttribute(xWriter, "id", pvGetInputId(xTab, true), null);
+					DBSFaces.setAttribute(xWriter, "name", pvGetInputId(xTab, true), null);
+					DBSFaces.setAttribute(xWriter, "type", "hidden", null);
+					DBSFaces.setAttribute(xWriter, "value", xSelectedTabPage, null);
+				xWriter.endElement("input");	
 			xWriter.endElement("div");
-			//Input para controle do focus e caracteres digitados----
-			xWriter.startElement("input", xTab);
-				DBSFaces.setAttribute(xWriter, "id", pvGetInputId(xTab, true), null);
-				DBSFaces.setAttribute(xWriter, "name", pvGetInputId(xTab, true), null);
-				DBSFaces.setAttribute(xWriter, "type", "hidden", null);
-				DBSFaces.setAttribute(xWriter, "value", xSelectedTabPage, null);
-			xWriter.endElement("input");	
-			
 		xWriter.endElement("div");
 		
 		pvEncodeJS(xWriter, xClientId);

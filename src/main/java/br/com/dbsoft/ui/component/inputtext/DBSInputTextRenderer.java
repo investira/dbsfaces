@@ -108,10 +108,14 @@ public class DBSInputTextRenderer extends DBSRenderer {
 			xWriter.writeAttribute("name", xClientId, "name");
 			xWriter.writeAttribute("class", xClass, "class");
 			DBSFaces.setAttribute(xWriter, "style", xInputText.getStyle(), null);
-				DBSFaces.encodeLabel(pContext, xInputText, xWriter);
-				pvEncodeInput(pContext, xInputText, xWriter);
-				DBSFaces.encodeRightLabel(pContext, xInputText, xWriter);
-				DBSFaces.encodeTooltip(pContext, xInputText, xInputText.getTooltip());
+			//Container
+			xWriter.startElement("div", xInputText);
+				xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER, "class");
+					DBSFaces.encodeLabel(pContext, xInputText, xWriter);
+					pvEncodeInput(pContext, xInputText, xWriter);
+					DBSFaces.encodeRightLabel(pContext, xInputText, xWriter);
+					DBSFaces.encodeTooltip(pContext, xInputText, xInputText.getTooltip());
+			xWriter.endElement("div");
 		xWriter.endElement("div");
 
 		pvEncodeJS(xClientId, xWriter);

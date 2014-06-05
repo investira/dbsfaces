@@ -507,11 +507,6 @@ textarea.dbs_input-data:FOCUS,
 	background-color: rgb(255, 222, 180);
 }
 
-.dbs_input > .-input > .-loading{
-	position: absolute;
-	right: 4px;
-	top:3px;
-}	
 
 
 /* dbs_loading --------------------------------------------------- */

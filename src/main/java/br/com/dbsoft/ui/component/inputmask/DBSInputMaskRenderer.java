@@ -59,10 +59,15 @@ public class DBSInputMaskRenderer extends DBSRenderer {
 			xWriter.writeAttribute("name", xClientId, "name");
 			xWriter.writeAttribute("class", xClass, "class");
 			DBSFaces.setAttribute(xWriter, "style", xInputMask.getStyle(), null);
-				DBSFaces.encodeLabel(pContext, xInputMask, xWriter);
-				pvEncodeInput(pContext, xInputMask, xWriter);
-				DBSFaces.encodeRightLabel(pContext, xInputMask, xWriter);
-				DBSFaces.encodeTooltip(pContext, xInputMask, xInputMask.getTooltip());
+			//Container
+			xWriter.startElement("div", xInputMask);
+				xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER, "class");
+
+					DBSFaces.encodeLabel(pContext, xInputMask, xWriter);
+					pvEncodeInput(pContext, xInputMask, xWriter);
+					DBSFaces.encodeRightLabel(pContext, xInputMask, xWriter);
+					DBSFaces.encodeTooltip(pContext, xInputMask, xInputMask.getTooltip());
+			xWriter.endElement("div");
 		xWriter.endElement("div");
 		DBSFaces.encodeJavaScriptTagStart(xWriter);
 		String xJS = "$(document).ready(function() { \n" +

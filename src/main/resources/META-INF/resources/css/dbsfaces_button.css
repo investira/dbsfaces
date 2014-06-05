@@ -29,8 +29,9 @@
 
 
 .dbs_button > table{
-	display:inline-block;
-	xdisplay:block; /*Desabilitado em 06/02/2013 para centralizar no IE9 */
+	position: relative; /* Incluido em 05/06/2014*/
+	display:block; /*Desabilitado em 06/02/2013 para centralizar no IE9 */
+				   /*Reabilitado pois, aparentemente, problema foi resolvido 05/06/2014 */
 	xdisplay:inline-block; /*Desabilitado em 20/11/2012 para excluir o espaço que existia na parte de baixo do botão*/
 	color: inherit;
 	margin: 0px;
@@ -82,9 +83,9 @@
 .dbs_button:not(.-disabled):ACTIVE, 
 button.dbs_menuitem:not(.-disabled):ACTIVE{
 	background-color: rgba(255, 255, 255, 0.2) !important;
-	-webkit-box-shadow: 1px 1px 1px -1px rgba(0, 0, 0, 0.4), -1px -1px 0 0 rgba(255, 255, 255, 0.4) !important;
-	-moz-box-shadow: 1px 1px 1px -1px rgba(0, 0, 0, 0.4), -1px -1px 0 0 rgba(255, 255, 255, 0.4) !important;
-	box-shadow: 1px 1px 1px -1px rgba(0, 0, 0, 0.4), -1px -1px 0 0 rgba(255, 255, 255, 0.4) !important;
+	-webkit-box-shadow: 1px 1px 0px 0px rgba(0, 0, 0, 0.2), -1px -1px 0 0 rgba(255, 255, 255, 0.4) !important;
+	-moz-box-shadow: 1px 1px 0px 0px rgba(0, 0, 0, 0.2), -1px -1px 0 0 rgba(255, 255, 255, 0.4) !important;
+	box-shadow: 1px 1px 0px 0px rgba(0, 0, 0, 0.2), -1px -1px 0 0 rgba(255, 255, 255, 0.4) !important;
 	
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6), 0px 0px 1px rgba(100, 180, 255, 1) !important;
 }
@@ -97,9 +98,9 @@ button.dbs_menuitem:not(.-disabled):FOCUS{
 	text-decoration: none !important;
 /* 	-webkit-box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.4), -1px -1px 0px 0px rgba(255, 255, 255, 0.4); */
 	background-color: rgba(155, 155, 155, 0.15);
-	-webkit-box-shadow: 1px 1px 1px -1px rgba(0, 0, 0, 0.4), -1px -1px 0px 0px rgba(255, 255, 255, 0.3);
-	-moz-box-shadow: 1px 1px 1px -1px rgba(0, 0, 0, 0.4), -1px -1px 0px 0px rgba(255, 255, 255, 0.3);
-	box-shadow: 1px 1px 1px -1px rgba(0, 0, 0, 0.4), -1px -1px 0px 0px rgba(255, 255, 255, 0.3);
+	-webkit-box-shadow: 1px 1px 0px 0px rgba(0, 0, 0, 0.2), -1px -1px 0px 0px rgba(255, 255, 255, 0.3);
+	-moz-box-shadow: 1px 1px 0px 0px rgba(0, 0, 0, 0.2), -1px -1px 0px 0px rgba(255, 255, 255, 0.3);
+	box-shadow: 1px 1px 0px 0px rgba(0, 0, 0, 0.2), -1px -1px 0px 0px rgba(255, 255, 255, 0.3);
 
 /* 	color:white; */
 /* 	background: rgb(8,114,201); Old browsers */

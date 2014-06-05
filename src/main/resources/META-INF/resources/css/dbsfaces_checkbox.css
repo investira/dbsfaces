@@ -1,7 +1,7 @@
 .dbs_checkbox{
 }
 
-.dbs_checkbox > .dbs_input-data {
+.dbs_checkbox > .-container > .dbs_input-data {
 	background-color: transparent;
 	height: 19px;
 }

@@ -57,10 +57,14 @@ public class DBSListboxRenderer extends DBSRenderer {
 			xWriter.writeAttribute("name", xClientId, "name");
 			xWriter.writeAttribute("class", xClass, "class");
 			DBSFaces.setAttribute(xWriter, "style", xListbox.getStyle(), null);
-				DBSFaces.encodeLabel(pContext, xListbox, xWriter);
-				pvEncodeInput(pContext, xListbox, xWriter);
-				DBSFaces.encodeRightLabel(pContext, xListbox, xWriter);
-				DBSFaces.encodeTooltip(pContext, xListbox, xListbox.getTooltip());
+			//Container
+			xWriter.startElement("div", xListbox);
+				xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER, "class");
+					DBSFaces.encodeLabel(pContext, xListbox, xWriter);
+					pvEncodeInput(pContext, xListbox, xWriter);
+					DBSFaces.encodeRightLabel(pContext, xListbox, xWriter);
+					DBSFaces.encodeTooltip(pContext, xListbox, xListbox.getTooltip());
+			xWriter.endElement("div");
 		xWriter.endElement("div");
 	}
 

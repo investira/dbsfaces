@@ -67,16 +67,19 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 			xWriter.writeAttribute("name", xClientId, "name");
 			xWriter.writeAttribute("class", xClass, "class");
 			DBSFaces.setAttribute(xWriter, "style", xCheckbox.getStyle(), null);
-			
-			if (!xCheckbox.getInvertLabel()){
-				DBSFaces.encodeLabel(pContext, xCheckbox, xWriter);
-			}
-			pvEncodeInput(pContext, xCheckbox, xWriter);
-			if (xCheckbox.getInvertLabel()){
-				DBSFaces.encodeLabel(pContext, xCheckbox, xWriter, false);
-			}
-			DBSFaces.encodeRightLabel(pContext, xCheckbox, xWriter);
-			DBSFaces.encodeTooltip(pContext, xCheckbox, xCheckbox.getTooltip());
+			//Container
+			xWriter.startElement("div", xCheckbox);
+				xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER, "class");
+				if (!xCheckbox.getInvertLabel()){
+					DBSFaces.encodeLabel(pContext, xCheckbox, xWriter);
+				}
+				pvEncodeInput(pContext, xCheckbox, xWriter);
+				if (xCheckbox.getInvertLabel()){
+					DBSFaces.encodeLabel(pContext, xCheckbox, xWriter, false);
+				}
+				DBSFaces.encodeRightLabel(pContext, xCheckbox, xWriter);
+				DBSFaces.encodeTooltip(pContext, xCheckbox, xCheckbox.getTooltip());
+			xWriter.endElement("div");
 		xWriter.endElement("div");
 		pvEncodeJS(xWriter, xClientId);
 	}

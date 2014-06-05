@@ -122,12 +122,17 @@ public class DBSInputDateRenderer extends DBSRenderer {
 			xWriter.writeAttribute("name", xClientId, "name");
 			xWriter.writeAttribute("class", xClass, "class");
 			DBSFaces.setAttribute(xWriter, "style", xInputDate.getStyle(), null);
+			//Container
+			xWriter.startElement("div", xInputDate);
+				xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER, "class");
 
-			DBSFaces.encodeLabel(pContext, xInputDate, xWriter);
-			pvEncodeInput(pContext, xInputDate, xWriter);
-			DBSFaces.encodeRightLabel(pContext, xInputDate, xWriter);
-			DBSFaces.encodeTooltip(pContext, xInputDate, xInputDate.getTooltip());
-			encodeClientBehaviors(pContext, xInputDate);
+				DBSFaces.encodeLabel(pContext, xInputDate, xWriter);
+				pvEncodeInput(pContext, xInputDate, xWriter);
+				DBSFaces.encodeRightLabel(pContext, xInputDate, xWriter);
+				DBSFaces.encodeTooltip(pContext, xInputDate, xInputDate.getTooltip());
+				encodeClientBehaviors(pContext, xInputDate);
+
+			xWriter.endElement("div");
 		xWriter.endElement("div");
 		DBSFaces.encodeJavaScriptTagStart(xWriter);
 		String xJS = "$(document).ready(function() { \n" +

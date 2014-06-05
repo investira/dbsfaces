@@ -73,10 +73,14 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 			xWriter.writeAttribute("name", xClientId, "name");
 			xWriter.writeAttribute("class", xClass, "class");
 			DBSFaces.setAttribute(xWriter, "style", xInputNumber.getStyle(), null);
-				DBSFaces.encodeLabel(pContext, xInputNumber, xWriter);
-				pvEncodeInput(pContext, xInputNumber, xWriter);
-				DBSFaces.encodeRightLabel(pContext, xInputNumber, xWriter);
-				DBSFaces.encodeTooltip(pContext, xInputNumber, xInputNumber.getTooltip());
+			//Container
+			xWriter.startElement("div", xInputNumber);
+				xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER, "class");
+					DBSFaces.encodeLabel(pContext, xInputNumber, xWriter);
+					pvEncodeInput(pContext, xInputNumber, xWriter);
+					DBSFaces.encodeRightLabel(pContext, xInputNumber, xWriter);
+					DBSFaces.encodeTooltip(pContext, xInputNumber, xInputNumber.getTooltip());
+			xWriter.endElement("div");
 		xWriter.endElement("div");
 
 		DBSFaces.encodeJavaScriptTagStart(xWriter);

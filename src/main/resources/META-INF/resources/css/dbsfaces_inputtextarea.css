@@ -1,13 +1,13 @@
 .dbs_inputTextArea{
+}
+.dbs_inputTextArea > .-container{
 	white-space: nowrap;
 }
-
-.dbs_inputTextArea > .dbs_input-label {
+.dbs_inputTextArea > .-container > .dbs_input-label {
 	vertical-align: top !important;
 	float:left;
 }
 
-.dbs_inputTextArea > .dbs_input-data {
-	white-space: normal !important;
-	float:right;
+.dbs_inputTextArea > .-container > .dbs_input-data {
+	resize:none;
 }

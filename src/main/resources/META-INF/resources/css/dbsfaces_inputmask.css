@@ -1,6 +1,6 @@
 .dbs_inputMask{
 }
 
-.dbs_inputMask > .dbs_input-label {
-	xfloat:left;
+.dbs_inputMask > .-container > .dbs_input-label {
+
 }

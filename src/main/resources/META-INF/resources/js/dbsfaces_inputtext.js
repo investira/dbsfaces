@@ -23,12 +23,12 @@ dbs_inputText = function(pId) {
 		dbsfaces.inputText.letterCase($(this), e,"upperfirst");
 	});	
 	
-	$(pId + " > .-input > .dbs_input-data").focus(function(e){
+	$(pId + " > .-container > .-input > .dbs_input-data").focus(function(e){
 		$(pId + "-suggestion").addClass("dbs_input-data-FOCUS");
 	});
 	
 	
-	$(pId + " > .-input > .dbs_input-data").blur(function(e){
+	$(pId + " > .-container > .-input > .dbs_input-data").blur(function(e){
 		$(pId + "-suggestion").removeClass("dbs_input-data-FOCUS");
 		wTime = 0;
 		if ($(pId + "-suggestion").val() == ""){
@@ -45,7 +45,7 @@ dbs_inputText = function(pId) {
 	});
 
 	/* copia a sugestão para o input ou navega pela lista de sugestões*/
-	$(pId + " > .-input > .dbs_input-data").keydown(function(e){
+	$(pId + " > .-container > .-input > .dbs_input-data").keydown(function(e){
 		if (e.keyCode == 39 && //RIGHT
 			$(this).get(0).selectionEnd == $(this).val().length) { //Se o cursor estive na última posição
 			e.stopImmediatePropagation();
@@ -80,11 +80,11 @@ dbs_inputText = function(pId) {
 	
 
 	
-	$(pId + " > .-input > .dbs_input-data").on("paste", function(e){
+	$(pId + " > .-container > .-input > .dbs_input-data").on("paste", function(e){
 		dbsfaces.inputText.clearSuggestion(pId);
 	});
 	
-	$(pId + " > .-input").keydown(function(e){
+	$(pId + " > .-container > .-input").keydown(function(e){
 		if (dbsfaces.inputText.isValidKey(e)){
 			/* delay para evitar chamadas ajax contantes */
 			if (wTime == 0){
@@ -104,25 +104,25 @@ dbs_inputText = function(pId) {
 	});
 
 	$(pId + "-submit").on(dbsfaces.EVENT.ON_AJAX_BEGIN, function(e){
-		$(pId + " > .-input").append("<div class='-loading'></div>");
-		$(pId + " > .-input > .-is_pesquisar").hide();
+		$(pId + " > .-container > .-input").append("<div class='-loading'></div>");
+		$(pId + " > .-container > .-input > .-is_pesquisar").hide();
 		e.stopPropagation();
 	});
 	
 	$(pId + "-submit").on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
-		$(pId + " > .-input > div.-loading").remove();
-		$(pId + " > .-input > .-is_pesquisar").show();
+		$(pId + " > .-container > .-input > div.-loading").remove();
+		$(pId + " > .-container > .-input > .-is_pesquisar").show();
 		dbsfaces.inputText.fixLayout(pId);
 		dbsfaces.inputText.showFirstSuggestion(pId);
 		e.stopPropagation();
 	});
 	
-	$(pId + " > .-input").on(dbsfaces.EVENT.ON_ROW_SELECTED, ".-list", function(e, pRow){
+	$(pId + " > .-container > .-input").on(dbsfaces.EVENT.ON_ROW_SELECTED, ".-list", function(e, pRow){
 		dbsfaces.inputText.updateSuggestion(pId, pRow, false);
 		dbsfaces.inputText.acceptSuggestion(pId, pRow);
 	});
 	
-	$(pId + " > .-input").on("click", ".-list", function(e){
+	$(pId + " > .-container > .-input").on("click", ".-list", function(e){
 		$(pId + "-data").focus();
 		
 		$(this).css("opacity","0");					

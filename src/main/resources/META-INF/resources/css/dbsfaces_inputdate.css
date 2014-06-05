@@ -1,16 +1,16 @@
 .dbs_inputDate{
 }
 
-.dbs_inputDate > .dbs_input-label {
-	xfloat:left;
+.dbs_inputDate > .-container > .dbs_input-label {
+
 }
 
-.dbs_inputDate > .dbs_input-data > input{
+.dbs_inputDate > .-container > .dbs_input-data > input{
 }
 
 
-.dbs_inputDate > .dbs_input-data > input,
-.dbs_inputDate > .dbs_input-data > label{
+.dbs_inputDate > .-container > .dbs_input-data > input,
+.dbs_inputDate > .-container > .dbs_input-data > label{
 	line-height: 100%;
 	border: 0 none;
 	margin-top: 2px;
