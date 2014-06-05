@@ -61,9 +61,14 @@ public class DBSInputTextAreaRenderer extends DBSRenderer {
 			xWriter.writeAttribute("name", xClientId, "name");
 			xWriter.writeAttribute("class", xClass, "class");
 			DBSFaces.setAttribute(xWriter, "style", xInputTextArea.getStyle(), null);
-				DBSFaces.encodeLabel(pContext, xInputTextArea, xWriter);
-				pvEncodeInput(pContext, xInputTextArea, xWriter);
-				DBSFaces.encodeTooltip(pContext, xInputTextArea, xInputTextArea.getTooltip());
+			//Container
+			xWriter.startElement("div", xInputTextArea);
+				xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER, "class");
+	
+					DBSFaces.encodeLabel(pContext, xInputTextArea, xWriter);
+					pvEncodeInput(pContext, xInputTextArea, xWriter);
+					DBSFaces.encodeTooltip(pContext, xInputTextArea, xInputTextArea.getTooltip());
+			xWriter.endElement("div");
 		xWriter.endElement("div");
 	}
 
@@ -88,8 +93,11 @@ public class DBSInputTextAreaRenderer extends DBSRenderer {
 				DBSFaces.setAttribute(pWriter, "name", xClientId, null);
 				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.DATA, null);
 				DBSFaces.setAttribute(pWriter, "style", xStyle, null);
-				DBSFaces.setAttribute(pWriter, "cols", pInputTextArea.getCols(), "10");
-				DBSFaces.setAttribute(pWriter, "rows", pInputTextArea.getRows(), "2");
+				pWriter.writeAttribute("cols", pInputTextArea.getCols(), null);
+				pWriter.writeAttribute("rows", pInputTextArea.getRows(), null);
+				if (pInputTextArea.getResize()){
+					pWriter.writeAttribute("resize", pInputTextArea.getResize(), null);
+				}
 				if (pInputTextArea.getMaxLength()!=0){
 					DBSFaces.setAttribute(pWriter, "maxlength", pInputTextArea.getMaxLength(), null);
 				}			

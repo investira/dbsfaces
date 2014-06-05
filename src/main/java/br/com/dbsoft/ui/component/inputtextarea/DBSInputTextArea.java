@@ -14,6 +14,7 @@ public class DBSInputTextArea extends DBSUIInputText {
 	protected enum PropertyKeys {
 		cols,
 		rows,
+		resize,
 		secret;
 
 		String toString;
@@ -34,28 +35,36 @@ public class DBSInputTextArea extends DBSUIInputText {
 		setRendererType(DBSInputTextArea.RENDERER_TYPE);
     }
 	
-	public java.lang.Integer getCols() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.cols, 10);
+	public Integer getCols() {
+		return (Integer) getStateHelper().eval(PropertyKeys.cols, 10);
 	}
-	public void setCols(java.lang.Integer pCols) {
+	public void setCols(Integer pCols) {
 		getStateHelper().put(PropertyKeys.cols, pCols);
 		handleAttribute("cols", pCols);
 	}
 	
-	public java.lang.Integer getRows() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.rows, 2);
+	public Integer getRows() {
+		return (Integer) getStateHelper().eval(PropertyKeys.rows, 2);
 	}
-	public void setRows(java.lang.Integer pRows) {
+	public void setRows(Integer pRows) {
 		getStateHelper().put(PropertyKeys.rows, pRows);
 		handleAttribute("rows", pRows);
 	}
 
-	public void setSecret(java.lang.Boolean pSecret) {
+	public void setSecret(Boolean pSecret) {
 		getStateHelper().put(PropertyKeys.secret, pSecret);
 		handleAttribute("secret", pSecret);
 	}
-	public java.lang.Boolean getSecret() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.secret, false);
+	public Boolean getSecret() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.secret, false);
+	}	
+	
+	public void setResize(Boolean pResize) {
+		getStateHelper().put(PropertyKeys.resize, pResize);
+		handleAttribute("resize", pResize);
+	}
+	public Boolean getResize() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.resize, false);
 	}	
 
 }
