@@ -8,8 +8,7 @@ import br.com.dbsoft.io.DBSResultDataModel;
 public interface IDBSInputTextSuggestions {
 
 	/**
-	 * Retorna a lista contendo a relação de itens que inicial com o texto digitado no campo
-	 * O primeiro campo do Entry é a chave e o segundo o conteúdo, podendo ser qualquer object
+	 * Retorna a lista contendo a relação de itens que inicia com o texto digitado no campo.
 	 * @return
 	 */
 	public abstract DBSResultDataModel getList();
