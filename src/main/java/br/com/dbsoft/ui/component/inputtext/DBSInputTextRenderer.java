@@ -153,7 +153,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 
 		//Se for somente leitura, gera código como <Span>
 		if (pInputText.getReadOnly()){ 
-			DBSFaces.encodeInputDataReadOnly(pInputText, xClientIdData, xStyle, xValue, pWriter);
+			DBSFaces.encodeInputDataReadOnly(pInputText, pWriter, xClientIdData, xStyle, false, xValue);
 		}else{
 			if (pInputText.hasSuggestion()){ 
 				pWriter.startElement("span", pInputText);

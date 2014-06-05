@@ -95,7 +95,7 @@ public class DBSInputMaskRenderer extends DBSRenderer {
 		}
  
 		if (pInputMask.getReadOnly()){
-			DBSFaces.encodeInputDataReadOnly(pInputMask, xClientId, xStyle, xValue, pWriter);
+			DBSFaces.encodeInputDataReadOnly(pInputMask, pWriter, xClientId, xStyle, false, xValue);
 		}else{
 			//Se for somente leitura, gera código como <Span>
 			pWriter.startElement("input", pInputMask);

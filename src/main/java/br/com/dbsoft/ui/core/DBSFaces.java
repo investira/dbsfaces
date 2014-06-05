@@ -1284,18 +1284,26 @@ public class  DBSFaces {
 	/**
 	 * Gera HTML para campos input como tag <span> para evitar qualquer alteração no cliente
 	 * @param pComponent
-	 * @param pClientId
-	 * @param pStyle
-	 * @param pValue
 	 * @param pWriter
+	 * @param pClientId
+	 * @param pStyle Style adicional
+	 * @param pNormalWhiteSpace Indica se haverá quebra de linha caso o valor do campo seja ao comprimento a linha.<br/>
+	 * true: quebra linha<br/>
+	 * false: não quebra linha
+	 * @param pValue Valor a ser exibido
 	 * @throws IOException
 	 */
-	public static void encodeInputDataReadOnly(UIComponent pComponent, String pClientId, String pStyle, String pValue, ResponseWriter pWriter) throws IOException{
+	public static void encodeInputDataReadOnly(UIComponent pComponent, ResponseWriter pWriter, String pClientId, String pStyle, boolean pNormalWhiteSpace , String pValue) throws IOException{
+		if (pNormalWhiteSpace){
+			pStyle += "white-space: normal;";
+		}else{
+			pStyle += "white-space: nowrap;";
+		}
 		pWriter.startElement("span", pComponent);
 			DBSFaces.setAttribute(pWriter, "id", pClientId, null);
 			DBSFaces.setAttribute(pWriter, "name", pClientId, null);
 			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.DATA + DBSFaces.CSS.MODIFIER.READONLY, null);
-			DBSFaces.setAttribute(pWriter, "style", pStyle + "white-space: nowrap; overflow:hidden;", null);
+			DBSFaces.setAttribute(pWriter, "style", pStyle + "overflow:hidden;", null);
 			if (pValue == null){
 				pWriter.write(" ");
 			}else{

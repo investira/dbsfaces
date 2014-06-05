@@ -160,7 +160,7 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 		}
 
 		if (pInputNumber.getReadOnly()) {
-			DBSFaces.encodeInputDataReadOnly(pInputNumber, xClientId, xStyle, xValue, pWriter);
+			DBSFaces.encodeInputDataReadOnly(pInputNumber, pWriter, xClientId, xStyle, false, xValue);
 		} else {
 			// Se for somente leitura, gera código como <Span>
 			pWriter.startElement("input", pInputNumber);

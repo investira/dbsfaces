@@ -75,7 +75,7 @@ public class DBSListboxRenderer extends DBSRenderer {
 		xStyle = DBSFaces.getStyleWidthFromInputSize(pListbox.getSize());
 
 		if (pListbox.getReadOnly()){
-			DBSFaces.encodeInputDataReadOnly(pListbox, xClientId, xStyle, (String)pListbox.getList().get(pListbox.getValue().toString()), pWriter);
+			DBSFaces.encodeInputDataReadOnly(pListbox, pWriter, xClientId, xStyle, false, (String)pListbox.getList().get(pListbox.getValue().toString()));
 		}else{
 		pWriter.startElement("select", pListbox);
 			DBSFaces.setAttribute(pWriter, "id", xClientId, null);

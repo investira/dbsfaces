@@ -183,7 +183,7 @@ public class DBSInputDateRenderer extends DBSRenderer {
 				}
 			}
 			
-			DBSFaces.encodeInputDataReadOnly(pInputDate, xClientId, xStyle, xValue, pWriter);
+			DBSFaces.encodeInputDataReadOnly(pInputDate, pWriter, xClientId, xStyle, false, xValue);
 		}else{
 			pWriter.startElement("span", pInputDate);
 				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.DATA + xStyleClass, null);

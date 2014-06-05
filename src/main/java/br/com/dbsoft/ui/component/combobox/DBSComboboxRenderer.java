@@ -136,9 +136,9 @@ public class DBSComboboxRenderer extends DBSRenderer {
 
 		if (pCombobox.getList() == null || 
 			pCombobox.getList().size() == 0){
-			DBSFaces.encodeInputDataReadOnly(pCombobox, xClientId, DBSFaces.getStyleWidthFromInputSize(9), "'List' vázio", pWriter);
+			DBSFaces.encodeInputDataReadOnly(pCombobox, pWriter, xClientId, DBSFaces.getStyleWidthFromInputSize(9), false, "'List' vázio");
 		}else if (pCombobox.getReadOnly()){
-			DBSFaces.encodeInputDataReadOnly(pCombobox, xClientId, xStyle, xValue.toString(), pWriter);
+			DBSFaces.encodeInputDataReadOnly(pCombobox, pWriter, xClientId, xStyle, false, xValue.toString());
 		}else{
 			//Encode do combobox escondido
 			pWriter.startElement("select", pCombobox);
