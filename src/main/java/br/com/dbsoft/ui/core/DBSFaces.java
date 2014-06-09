@@ -1295,15 +1295,15 @@ public class  DBSFaces {
 	 */
 	public static void encodeInputDataReadOnly(UIComponent pComponent, ResponseWriter pWriter, String pClientId, String pStyle, boolean pNormalWhiteSpace , String pValue) throws IOException{
 		if (pNormalWhiteSpace){
-			pStyle += "white-space: normal;";
+			pStyle += "white-space: normal; overflow:auto;";
 		}else{
-			pStyle += "white-space: nowrap;";
+			pStyle += "white-space: nowrap; overflow:hidden;";
 		}
 		pWriter.startElement("span", pComponent);
 			DBSFaces.setAttribute(pWriter, "id", pClientId, null);
 			DBSFaces.setAttribute(pWriter, "name", pClientId, null);
 			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.DATA + DBSFaces.CSS.MODIFIER.READONLY, null);
-			DBSFaces.setAttribute(pWriter, "style", pStyle + "overflow:hidden;", null);
+			DBSFaces.setAttribute(pWriter, "style", pStyle , null);
 			if (pValue == null){
 				pWriter.write(" ");
 			}else{
