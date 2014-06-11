@@ -25,7 +25,7 @@ dbs_dialog = function(pId) {
 
     dbsfaces.dialog.disableBackgroundInputs(pId);
     
-    dbsfaces.ui.focusOnFirstInput($(pId + " div > .-content"));
+    dbsfaces.ui.focusOnFirstInput($(pId + " div > .-content").first());
     
 //    dbsfaces.dialog.focuOnFirstElement(pId);
 
