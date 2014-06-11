@@ -36,23 +36,22 @@
 	margin-top: -20px; /* Altura do cebeçalho */
 	cursor: pointer;
 	position: relative;
-	-webkit-box-shadow: 0 2px 2px 0 #888888;
-	-moz-box-shadow: 0 2px 2px 0 #888888;
-	box-shadow: 0 2px 2px 0 #888888;
+	-webkit-box-shadow: 0 3px 2px -1px rgba(150, 150, 150, 0.9);
+	-moz-box-shadow: 0 3px 2px -1px rgba(150, 150, 150, 0.9);
+	box-shadow: 0 3px 2px -1px rgba(150, 150, 150, 0.9);
  	border-color: rgb(255,255,255);
     border-style: solid none none;
     border-width: 1px 0 0;
     	
 	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
 	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2Y1ZjVmNSIgc3RvcC1vcGFjaXR5PSIwLjEiLz4KICA8L2xpbmVhckdyYWRpZW50PgogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9InVybCgjZ3JhZC11Y2dnLWdlbmVyYXRlZCkiIC8+Cjwvc3ZnPg==), url("#{request.contextPath}/images/default_back_texture.png");
-	background: -moz-linear-gradient(top,  rgba(255,255,255,0.1) 0%, rgba(245,245,245,0.1) 100%), url("#{request.contextPath}/images/default_back_texture.png"); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0.1)), color-stop(100%,rgba(245,245,245,0.1))), url("#{request.contextPath}/images/default_back_texture.png"); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  rgba(255,255,255,0.1) 0%,rgba(245,245,245,0.1) 100%), url("#{request.contextPath}/images/default_back_texture.png"); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  rgba(255,255,255,0.1) 0%,rgba(245,245,245,0.1) 100%), url("#{request.contextPath}/images/default_back_texture.png"); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  rgba(255,255,255,0.1) 0%,rgba(245,245,245,0.1) 100%), url("#{request.contextPath}/images/default_back_texture.png"); /* IE10+ */
-	background: linear-gradient(to bottom,  rgba(255,255,255,0.1) 0%,rgba(245,245,245,0.1) 100%), url("#{request.contextPath}/images/default_back_texture.png"); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1affffff', endColorstr='#1af5f5f5',GradientType=0 ); /* IE6-8 */
-
+	background: -moz-linear-gradient(top,  rgba(235,235,235,0.1) 0%, rgba(225,225,225,0.1) 100%), url("#{request.contextPath}/images/default_back_texture.png"); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(235,235,235,0.1)), color-stop(100%,rgba(225,225,225,0.1))), url("#{request.contextPath}/images/default_back_texture.png"); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(235,235,235,0.1) 0%,rgba(225,225,225,0.1) 100%), url("#{request.contextPath}/images/default_back_texture.png"); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(235,235,235,0.1) 0%,rgba(225,225,225,0.1) 100%), url("#{request.contextPath}/images/default_back_texture.png"); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(235,235,235,0.1) 0%,rgba(225,225,225,0.1) 100%), url("#{request.contextPath}/images/default_back_texture.png"); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(235,235,235,0.1) 0%,rgba(225,225,225,0.1) 100%), url("#{request.contextPath}/images/default_back_texture.png"); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1aebebeb', endColorstr='#1ae1e1e1',GradientType=0 ); /* IE6-8 */
 	text-align:left;
 	width: 100%;
 	float: left;
@@ -100,9 +99,9 @@
 .dbs_accordion_section-container > .-cover {
 	background: url("#{request.contextPath}/images/vidro.png");
 	background-repeat: repeat;
-	-webkit-box-shadow: 0 0 0 1px #888888;
-	-moz-box-shadow: 0 0 0 1px #888888;
-	box-shadow: 0 0 0 1px #888888;
-	cursor: pointer;
-	overflow: hidden;
+	border-color: rgb(200, 200, 200);
+    border-style: solid;
+    border-width: 0px 0px 1px 0px;
+    cursor: pointer;
+    overflow: hidden	
 }
