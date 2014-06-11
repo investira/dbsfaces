@@ -1056,7 +1056,7 @@ public class  DBSFaces {
 		if (pInputSize == 0){
 			return "";
 		}
-		int xH = (pInputSize * 15) + 2;
+		int xH = (pInputSize * 15) + 3;
 		return "height:" + xH + "px; height:" + xH + "px; ";
 	}
 	
@@ -1303,7 +1303,7 @@ public class  DBSFaces {
 			DBSFaces.setAttribute(pWriter, "id", pClientId, null);
 			DBSFaces.setAttribute(pWriter, "name", pClientId, null);
 			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.DATA + DBSFaces.CSS.MODIFIER.READONLY, null);
-			DBSFaces.setAttribute(pWriter, "style", pStyle , null);
+			DBSFaces.setAttribute(pWriter, "style", pStyle, null);
 			if (pValue == null){
 				pWriter.write(" ");
 			}else{
