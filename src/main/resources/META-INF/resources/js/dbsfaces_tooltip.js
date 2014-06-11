@@ -2,11 +2,19 @@ dbs_tooltip = function(pId) {
 	var wTimer;
 	
 	$(pId).mouseenter(function(e){
-		dbsfaces.tooltip.showTooltip(this);
+		dbsfaces.tooltip.showTooltip(pId);
 	});
 
 	$(pId).mouseleave(function(e){
-		dbsfaces.tooltip.hideTooltip(this);
+		dbsfaces.tooltip.hideTooltip(pId);
+	});
+	
+	$(pId + " input").focus(function(e){
+		dbsfaces.tooltip.hideTooltip(pId);
+	});
+
+	$(pId + " input").click(function(e){
+		dbsfaces.tooltip.hideTooltip(pId);
 	});
 
 }
@@ -14,6 +22,8 @@ dbs_tooltip = function(pId) {
 dbsfaces.tooltip = {
 	showTooltip: function(e){
 		var xTooltip = $(e).find(".-tooltip");
+		/* Se o foco estiver em algum compenente filho */
+//		if ($(e).has(document.activeElement).length > 0 ||
 		if (xTooltip.css("display") != "none"){
 			return;
 		}
@@ -37,7 +47,7 @@ dbsfaces.tooltip = {
 			wTimer = setTimeout(function(){
 				$(xTooltip).fadeOut("slow");
 			}, xTime);
-		}, 1000);
+		}, 1200);
 	},
 	
 	hideTooltip: function(e){
