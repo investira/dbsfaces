@@ -1,4 +1,6 @@
 dbs_tooltip = function(pId) {
+	var wTimer;
+	
 	$(pId).mouseenter(function(e){
 		dbsfaces.tooltip.showTooltip(this);
 	});
@@ -6,11 +8,15 @@ dbs_tooltip = function(pId) {
 	$(pId).mouseleave(function(e){
 		dbsfaces.tooltip.hideTooltip(this);
 	});
+
 }
 
 dbsfaces.tooltip = {
 	showTooltip: function(e){
 		var xTooltip = $(e).find(".-tooltip");
+		if (xTooltip.css("display") != "none"){
+			return;
+		}
 		var xLeft = $(e).offset().left;
 		var xTop = $(e).offset().top + $(e).outerHeight();
 		/* Se a posição do tooltip for superior ao tamanho do documento, 
@@ -25,13 +31,19 @@ dbsfaces.tooltip = {
 		
 		var xTime = $(xTooltip).text().length;
 		xTime = (xTime / 2) * 200;
-		$(xTooltip).show()
-				   .delay(xTime)
-				   .fadeOut("slow");
+		
+		wTimer = setTimeout(function(){
+			$(xTooltip).fadeIn("fast");
+			wTimer = setTimeout(function(){
+				$(xTooltip).fadeOut("slow");
+			}, xTime);
+		}, 1000);
 	},
 	
 	hideTooltip: function(e){
+		clearTimeout(wTimer);
 		var xTooltip = $(e).find(".-tooltip");
+
 		$(xTooltip).hide();
 	}
 }
