@@ -48,7 +48,7 @@
 					<dbs:tabPage id="#{cc.reportBean.tabPageIdVisualizar}" caption="Visualização" styleClass="-report" iconClass="dbs_icon -i_imprimir_visualizar">
 						<f:ajax event="click" listener="#{cc.reportBean.create()}"  execute=":#{cc.form}:#{cc.clientId}" render=":#{cc.form}:#{cc.clientId}" onevent="dbsfaces.onajax" />
 						<c:if test="#{!cc.reportBean.hasMessage}">
-							<dbs:div id="container" styleClass="-container">
+							<dbs:div id="container" styleClass="-container" style="width:100%; height:100%;">
 								<div class="-toolbar">
 									<dbs:menu id="mnexportar" rendered="#{cc.reportBean.isCreated}">
 	<!-- 									<dbs:menuitem label="#{cc.resourceBundleMap.imprimir}" onclick="document.getElementById('PDFtoPrint').contentWindow.print();" iconClass="dbs_icon -i_imprimir"/> -->
@@ -60,8 +60,8 @@
 										</dbs:submenu>
 									</dbs:menu>
 								</div>
-								<dbs:div id="report" styleClass="-content" rendered="#{cc.reportBean.isCreated}">
-									<object id="report_obj" data="#{cc.reportBean.PDFFilePath}" type="application/pdf" class="dbs_back_texture"/>
+								<dbs:div id="report" styleClass="-content" rendered="#{cc.reportBean.isCreated}" style="width:100%; height:100%;">
+									<object id="report_obj" data="#{cc.reportBean.PDFFilePath}" type="application/pdf" class="dbs_back_texture" style="width:100%; height:100%;"/>
 									
 	<!-- 								<iframe id="#{cc.clientId}:obj" onload="dbsfaces.ui.showLoading('report', false)" src="#{cc.reportBean.PDFFilePath}" width="100%" height="100%" /> -->
 								</dbs:div>
