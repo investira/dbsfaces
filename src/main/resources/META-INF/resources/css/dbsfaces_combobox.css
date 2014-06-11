@@ -10,7 +10,6 @@
 
 .dbs_combobox > .-container{
 	position: relative;
-	z-index:0;
 }
 
 .dbs_combobox > .-container > .dbs_input-label {
