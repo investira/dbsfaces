@@ -7,6 +7,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
 
+import com.sun.faces.renderkit.RenderKitUtils;
+
+import br.com.dbsoft.ui.component.DBSPassThruAttributes;
+import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
 
@@ -58,6 +62,8 @@ public class DBSDivRenderer extends DBSRenderer {
 				DBSFaces.setAttribute(xWriter, "class", xClass, null);
 			}
 			DBSFaces.setAttribute(xWriter, "style", xDiv.getStyle(), null);
+			
+			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xDiv, DBSPassThruAttributes.getAttributes(Key.DIV));
 
 			renderChildren(pContext, xDiv);
 	}
