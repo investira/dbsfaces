@@ -21,6 +21,7 @@
 	paddind: 1px 2px 0 1px !important;
 	line-height: 1.4;
 	text-align: left;
+	overflow: hidden;
 }
 .dbs_combobox > .-container > .dbs_input-data.-readOnly {
 /* 	line-height: 1.4; */
