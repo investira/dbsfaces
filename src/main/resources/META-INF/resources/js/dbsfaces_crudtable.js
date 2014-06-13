@@ -19,21 +19,8 @@ dbs_crudTable = function(pId) {
 			e.stopImmediatePropagation();
 			//Apaga o indicador do ajax, pois a linha que disparou(Begin) já não existe, então não receberá o SUCESS.
 			dbsfaces.ui.showLoading("main",false);
-//			$(e.target).children("input").focus();
 		});
 	});
-	
-//	$(pId).keydown(function(e){
-//		var xBt = $(dbsfaces.util.jsid(pId + ":dataTable:excluir"));
-//		console.log(e.which + ":" + xBt.length);
-//		//Excluir
-//		if (xBt.length > 0 
-//		 && (e.which == 46 //Del
-//		  || e.which == 8)){ //Backspace
-//			xBt.click();
-//			return;
-//		}
-//	});
 	
 
 	//Controle de edição diretamente no grid
@@ -136,13 +123,8 @@ dbsfaces.crudTable = {
 		if (pRow != null){
 			if (pRow.length > 0){
 				//Ativa foco no imput, se existir
-//				$(pRow).children("td").removeClass("-editing");
 				var xTD = pRow.children("td:eq(" + pCurCell + ")");
 				dbsfaces.ui.focusOnFirstInput(xTD);
-//				var xDestInput = pRow.children("td:eq(" + pCurCell + ")").find(".dbs_input-data");
-//				if (xDestInput.length > 0){
-//					xDestInput.focus();
-//				}
 			}
 		}
 	},
