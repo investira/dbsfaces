@@ -52,18 +52,18 @@
 							</dbs:ul>						
 							<dbs:ul >
 								<dbs:li>
-									<dbs:button id="copy" iconClass="dbs_icon -i_copiar" action="#{cc.crudBean.copy()}" update=":dialog " execute="@this"/>
+									<dbs:button id="copy" iconClass="dbs_icon -i_copiar" action="#{cc.crudBean.copy()}" update=":dialog " execute="@this" tooltip="Copiar dados para memória"/>
 								</dbs:li>
 								<dbs:li rendered="#{cc.attrs.allowDelete and cc.crudBean.allowDelete}">
-									<dbs:button id="delete" iconClass="dbs_icon -i_excluir" action="#{cc.crudBean.delete()}" update=":dialog " execute="@this"/>
+									<dbs:button id="delete" iconClass="dbs_icon -i_excluir" action="#{cc.crudBean.delete()}" update=":dialog " execute="@this" tooltip="Excluir"/>
 								</dbs:li>
 								<dbs:li rendered="#{cc.attrs.allowUpdate and cc.crudBean.allowUpdate}">
-									<dbs:button id="edit" iconClass="dbs_icon -i_editar" action="#{cc.crudBean.update()}" update=":dialog" execute="@this"/> 
+									<dbs:button id="edit" iconClass="dbs_icon -i_editar" action="#{cc.crudBean.update()}" update=":dialog" execute="@this" tooltip="Editar"/> 
 								</dbs:li>
 								<dbs:li>
 <!-- Retinado update do cc.clientId								   -->								
 <!-- 								<dbs:button id="close" iconClass="dbs_icon -i_cancelar" action="#{cc.crudBean.close()}" update=":dialog #{cc.clientId} #{cc.attrs.update}" execute="@this"/> -->
-									<dbs:button id="close" iconClass="dbs_icon -i_cancelar" action="#{cc.crudBean.close()}" update=":dialog #{cc.attrs.update}" execute="@this"/>
+									<dbs:button id="close" iconClass="dbs_icon -i_cancelar" action="#{cc.crudBean.close()}" update=":dialog #{cc.attrs.update}" execute="@this" tooltip="Fechar"/>
 								</dbs:li>
 							</dbs:ul>
 						</c:if>
@@ -73,10 +73,10 @@
 									<dbs:img styleClass="dbs_icon -i_editar"/>
 								</dbs:li>
 								<dbs:li>
-									<dbs:button id="ok" iconClass="dbs_icon -i_ok" action="#{cc.crudBean.confirmEditing()}" update=":dialog #{cc.attrs.update}" execute="#{cc.clientId}"/>
+									<dbs:button id="ok" iconClass="dbs_icon -i_ok" action="#{cc.crudBean.confirmEditing()}" update=":dialog #{cc.attrs.update}" execute="#{cc.clientId}" tooltip="Confirmar"/>
 								</dbs:li>
 								<dbs:li>
-									<dbs:button id="cancel" iconClass="dbs_icon -i_cancelar" action="#{cc.crudBean.ignoreEditing()}" update=":dialog" execute="#{cc.clientId}"/>
+									<dbs:button id="cancel" iconClass="dbs_icon -i_cancelar" action="#{cc.crudBean.ignoreEditing()}" update=":dialog" execute="#{cc.clientId}" tooltip="Ignorar"/>
 								</dbs:li>
 							</dbs:ul>
 						</c:if>
@@ -86,15 +86,15 @@
 									<dbs:img styleClass="dbs_icon -i_inserir"/>
 								</dbs:li>
 								<dbs:li>
-									<dbs:button id="paste" iconClass="dbs_icon -i_colar" action="#{cc.crudBean.paste()}" rendered="#{cc.crudBean.isCopied}" update=":dialog " execute="@this"/>
+									<dbs:button id="paste" iconClass="dbs_icon -i_colar" action="#{cc.crudBean.paste()}" rendered="#{cc.crudBean.isCopied}" update=":dialog " execute="@this" tooltip="Colar dados em memória"/>
 								</dbs:li>
 								<dbs:li>
-									<dbs:button id="ok" iconClass="dbs_icon -i_ok" action="#{cc.crudBean.confirmEditing()}" update=":dialog #{cc.attrs.update}" execute="#{cc.clientId}"/>
+									<dbs:button id="ok" iconClass="dbs_icon -i_ok" action="#{cc.crudBean.confirmEditing()}" update=":dialog #{cc.attrs.update}" execute="#{cc.clientId}" tooltip="Confirmar"/>
 								</dbs:li>
 								<dbs:li>
 <!-- Retinado update do cc.clientId								   -->
 <!-- 									<dbs:button id="cancel" iconClass="dbs_icon -i_cancelar" action="#{cc.crudBean.ignoreEditing()}" update=":dialog #{cc.clientId} #{cc.attrs.update}" execute="#{cc.clientId}"/> -->
-									<dbs:button id="cancel" iconClass="dbs_icon -i_cancelar" action="#{cc.crudBean.ignoreEditing()}" update=":dialog #{cc.attrs.update}" execute="#{cc.clientId}"/>
+									<dbs:button id="cancel" iconClass="dbs_icon -i_cancelar" action="#{cc.crudBean.ignoreEditing()}" update=":dialog #{cc.attrs.update}" execute="#{cc.clientId}" tooltip="Ignorar"/>
 								</dbs:li>
 							</dbs:ul>
 						</c:if>
