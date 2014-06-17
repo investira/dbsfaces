@@ -47,7 +47,7 @@ dbsfaces.tooltip = {
 			wTimer = setTimeout(function(){
 				$(xTooltip).fadeOut("slow");
 			}, xTime);
-		}, 1200);
+		}, 1800); //3 Segundos
 	},
 	
 	hideTooltip: function(e){
