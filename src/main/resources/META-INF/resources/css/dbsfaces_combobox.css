@@ -18,7 +18,7 @@
 .dbs_combobox > .-container > .dbs_input-data {
 	height: 19px;
 	position: relative;
-	paddind: 1px 2px 0 1px !important;
+	padding: 0px 14px 0 1px !important;
 	line-height: 1.4;
 	text-align: left;
 	overflow: hidden;
