@@ -36,9 +36,9 @@
 	margin-top: -20px; /* Altura do cebeçalho */
 	cursor: pointer;
 	position: relative;
-	-webkit-box-shadow: 0 3px 2px -1px rgba(150, 150, 150, 0.9);
-	-moz-box-shadow: 0 3px 2px -1px rgba(150, 150, 150, 0.9);
-	box-shadow: 0 3px 2px -1px rgba(150, 150, 150, 0.9);
+	-webkit-box-shadow: 0 2px 2px -1px rgb(150, 150, 150);
+	-moz-box-shadow: 0 2px 2px -1px rgb(150, 150, 150);
+	box-shadow: 0 2px 2px -1px rgb(150, 150, 150);
  	border-color: rgb(255,255,255);
     border-style: solid none none;
     border-width: 1px 0 0;
