@@ -54,7 +54,7 @@
 	padding-right: 10px;
 	border-top-width:1px;
 	border-bottom-width:0px;
-	border-radius: 10px 10px 0px 0px;
+	border-radius: 6px 6px 0px 0px;
 	border-color: transparent;
 	line-height:100%;
 }
@@ -86,9 +86,9 @@
 	position:absolute;
 	border-top-width:0px;
 	border-bottom-width:1px;
-	-webkit-border-radius: 0px 0px 10px 10px;  
-	-moz-border-radius: 0px 0px 10px 10px; 
-	border-radius: 0px 0px 10px 10px;
+	-webkit-border-radius: 0px 0px 6px 6px;  
+	-moz-border-radius: 0px 0px 6px 6px; 
+	border-radius: 0px 0px 6px 6px;
 	margin-left: -9px;
 	margin-top: 8px;
 	
@@ -114,9 +114,9 @@
 	float:none;
 	top:-5px;
 	border-width:1px;
-	-webkit-border-radius: 10px;  
-	-moz-border-radius: 10px; 
-	border-radius: 10px;
+	-webkit-border-radius: 6px;  
+	-moz-border-radius: 6px; 
+	border-radius: 6px;
 	background: url("#{request.contextPath}/images/default_back_transparent.png"); /*IE*/
 	xfilter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#66FFFFFF,endColorstr=#00FFFFFF); /*IE*/
 	x-ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#66FFFFFF,endColorstr=#00FFFFFF); /*IE*/
