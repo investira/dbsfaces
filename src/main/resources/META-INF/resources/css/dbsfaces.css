@@ -295,6 +295,10 @@ input[type=text] {
 /* 	color: rgb(13, 25, 45); Comentado em 14/10/2013 */
 }
 
+.dbs_input-label{
+	text-align: left;
+}
+
 .dbs_back {
 	background-image: url("#{request.contextPath}/images/default_back.png")!important;
 	background-repeat: repeat !important;
