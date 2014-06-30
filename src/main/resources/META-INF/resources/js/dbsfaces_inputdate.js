@@ -153,6 +153,8 @@ dbsfaces.inputDate = {
 			e.keyCode == 40 ||
 			e.keyCode == 47 ||
 			e.keyCode == 191 ||
+			e.keyCode == 110 ||
+			(e.keyCode >= 96 && e.keyCode <= 105) ||
 			(!e.shiftKey && dbsfaces.number.isNumber(String.fromCharCode(e.keyCode))) ){
 			return true;
 		}
