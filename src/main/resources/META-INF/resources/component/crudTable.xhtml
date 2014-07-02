@@ -65,8 +65,8 @@
 								<c:if test="#{cc.attrs.allowApproval and cc.crudBean.allowApproval and cc.crudBean.approvalUserStages!=0}">
 									<div class="-approval">
 										<c:if test="#{cc.crudBean.hasSelected}">
-											<dbs:button id="aprovar"  iconClass="dbs_icon -i_approval_approve" action="#{cc.crudBean.approve()}" update="#{cc.clientId}:crudTableMessages" execute="@this"  />
-											<dbs:button id="reprovar" iconClass="dbs_icon -i_approval_reprove" action="#{cc.crudBean.reprove()}" update="#{cc.clientId}:crudTableMessages" execute="@this"/>
+											<dbs:button id="aprovar"  iconClass="dbs_icon -i_approval_approve" action="#{cc.crudBean.approve()}" update="#{cc.clientId}:crudTableMessages" execute="@this" tooltip="Avançar etapa de aprovação"/>
+											<dbs:button id="reprovar" iconClass="dbs_icon -i_approval_reprove" action="#{cc.crudBean.reprove()}" update="#{cc.clientId}:crudTableMessages" execute="@this" tooltip="Reprovar"/>
 										</c:if>
 									</div>
 								</c:if>
@@ -79,21 +79,21 @@
 									</dbs:div>
 									<!-- Controle de exclusão/edição/refresh									 -->
 									<ui:fragment rendered="#{not cc.crudBean.isEditing}">
-										<dbs:button id="excluir" rendered="#{cc.crudBean.hasSelected and cc.crudBean.rowCount gt 0}" iconClass="dbs_icon -i_excluir" action="#{cc.crudBean.delete()}" update="#{cc.clientId} " execute="@this"/>
-										<dbs:button id="editar" rendered="#{not cc.crudBean.hasSelected and cc.crudBean.rowCount gt 0}" iconClass="dbs_icon -i_editar" action="#{cc.crudBean.update()}" update="#{cc.clientId} " execute="@this"/> 
-										<dbs:button id="refresh" rendered="#{cc.attrs.allowRefresh and cc.crudBean.allowRefresh}"  iconClass="dbs_icon -i_refresh" action="#{cc.crudBean.refreshList()}" update=":dialog :#{cc.clientId}"/>
+										<dbs:button id="excluir" rendered="#{cc.crudBean.hasSelected and cc.crudBean.rowCount gt 0}" iconClass="dbs_icon -i_excluir" action="#{cc.crudBean.delete()}" update="#{cc.clientId} " execute="@this" tooltip="Excluir registros selecionados"/>
+										<dbs:button id="editar" rendered="#{not cc.crudBean.hasSelected and cc.crudBean.rowCount gt 0}" iconClass="dbs_icon -i_editar" action="#{cc.crudBean.update()}" update="#{cc.clientId} " execute="@this" tooltip="Ativar edição"/> 
+										<dbs:button id="refresh" rendered="#{cc.attrs.allowRefresh and cc.crudBean.allowRefresh}"  iconClass="dbs_icon -i_refresh" action="#{cc.crudBean.refreshList()}" update=":dialog :#{cc.clientId}" tooltip="Atualizar os dados"/>
 									</ui:fragment>
 									<!-- Confirmação									 -->
 									<ui:fragment rendered="#{cc.crudBean.isUpdating}">
-										<dbs:button id="ok" iconClass="dbs_icon -i_ok" action="#{cc.crudBean.confirmEditing()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
-										<dbs:button id="cancelar" iconClass="dbs_icon -i_cancelar" action="#{cc.crudBean.ignoreEditing()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
-										<dbs:button id="inserir" rendered="#{cc.attrs.allowInsert and cc.crudBean.allowInsert}"  iconClass="dbs_icon -i_inserir" style="display:none;" action="#{cc.crudBean.insert()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
+										<dbs:button id="ok" iconClass="dbs_icon -i_ok" action="#{cc.crudBean.confirmEditing()}" update="#{cc.clientId} " execute="#{cc.clientId} " tooltip="Confirmar edição"/>
+										<dbs:button id="cancelar" iconClass="dbs_icon -i_cancelar" action="#{cc.crudBean.ignoreEditing()}" update="#{cc.clientId} " execute="#{cc.clientId} " tooltip="Ignorar edição"/>
+										<dbs:button id="inserir" rendered="#{cc.attrs.allowInsert and cc.crudBean.allowInsert}"  iconClass="dbs_icon -i_inserir" style="display:none;" action="#{cc.crudBean.insert()}" update="#{cc.clientId} " execute="#{cc.clientId} " tooltip="Inserir novo registro"/>
 									</ui:fragment>
 								</c:if>
 								<c:if test="#{cc.crudBean.dialogEdit}">
 									<dbs:button id="view" rendered="#{cc.attrs.multipleSelection and cc.crudBean.multipleSelection}"  iconClass="dbs_icon -i_consultar" action="#{cc.crudBean.viewSelection()}" update=":dialog " execute="@this"/>
-									<dbs:button id="insert"  rendered="#{cc.attrs.allowInsert and cc.crudBean.allowInsert}" iconClass="dbs_icon -i_inserir" action="#{cc.crudBean.insert()}" update=":dialog " execute="@this"/>
-									<dbs:button id="refresh" rendered="#{cc.attrs.allowRefresh and cc.crudBean.allowRefresh}" iconClass="dbs_icon -i_refresh" action="#{cc.crudBean.refreshList()}" update=":dialog :#{cc.clientId}"/>
+									<dbs:button id="insert"  rendered="#{cc.attrs.allowInsert and cc.crudBean.allowInsert}" iconClass="dbs_icon -i_inserir" action="#{cc.crudBean.insert()}" update=":dialog " execute="@this" tooltip="Inserir novo registro"/>
+									<dbs:button id="refresh" rendered="#{cc.attrs.allowRefresh and cc.crudBean.allowRefresh}" iconClass="dbs_icon -i_refresh" action="#{cc.crudBean.refreshList()}" update=":dialog :#{cc.clientId}" tooltip="Atualizar os dados"/>
 								</c:if>							
 							</dbs:div>
 						</f:facet>
