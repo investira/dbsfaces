@@ -1562,8 +1562,10 @@ public class  DBSFaces {
 				}else{
 					xBtPesquisar.setActionExpression(DBSFaces.createMethodExpression(xContext, pDataTable.getFilterAction(), String.class,new Class[0]));
 				}
-				xBtPesquisar.setUpdate(xClientId);
+//				xBtPesquisar.setUpdate(xClientId); //Substituido por @all pois dava erro no ajax na seleção da linha por checkbox após o 'pesquisar'
+				xBtPesquisar.setUpdate("@all");
 				xBtPesquisar.setExecute(xClientId);
+				//Cria o facet e inclui botão dentro dele. A inclusão do botão através do facet, evita problemas em incluir o botao na view várias vezes.
 				pDataTable.getFacets().put(DBSDataTable.FACET_PESQUISAR, xBtPesquisar);
 			}
 		}
