@@ -1,3 +1,6 @@
 .dbs_inputNumber{
 }
 
+.dbs_inputNumber > .-container{
+	white-space: nowrap;
+}

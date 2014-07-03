@@ -1,6 +1,10 @@
 .dbs_inputDate{
 }
 
+.dbs_inputDate > .-container{
+	white-space: nowrap;
+}
+
 .dbs_inputDate > .-container > .dbs_input-label {
 
 }
