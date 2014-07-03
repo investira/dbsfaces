@@ -199,6 +199,7 @@
 .dbs_dialog-confirmation > .-content > .-content > div{
 	width: 100%;
 	text-align: center;
+	overflow: auto;
 }
 
 .dbs_dialog-confirmation > .-button{
