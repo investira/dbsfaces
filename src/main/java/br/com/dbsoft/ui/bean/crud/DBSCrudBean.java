@@ -2568,7 +2568,7 @@ public abstract class DBSCrudBean extends DBSBean{
 			wMessageError.setMessageTextParameters(xStr);
 			addMessage(wMessageError);
 			pEvent.setOk(false);
-			wLogger.error(e);
+			wLogger.error(pEvent.getEvent().toString(), e);
 			throw e;
 		}finally{
 			wBrodcastingEvent = false;
