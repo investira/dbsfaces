@@ -83,7 +83,8 @@ dbs_dataTable = function(pId) {
 	$(xTable + " > tbody > tr").click(function(e){
 //		e.stopImmediatePropagation();
 		//Se click foi em campo de input, não precisa forçar o foco no input-foo.
-		if ($(e.target).hasClass("dbs_input-data")){
+		if ($(e.target).hasClass("dbs_input-data")
+		 || $(e.target).is("input")){
 			dbsfaces.dataTable.addHeadFocus(pId);
 		}else{
 			dbsfaces.dataTable.showRowFocus(pId, this, true);

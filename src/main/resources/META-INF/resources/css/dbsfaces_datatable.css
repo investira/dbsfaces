@@ -253,11 +253,14 @@
 /*     height: 15px; */
 /*     top: -2px;	 */
 }
+
 .dbs_dataTable > .-container > .-content > table > tbody .dbs_input{
 	margin: -2px 0 -2px -1px;
 }
 
-.dbs_dataTable > .-container > .-content > table > tbody .dbs_input-data{
+			
+/* .dbs_dataTable > .-container > .-content > table > tbody .dbs_input-data{ */
+.dbs_dataTable > .-container > .-content > table > tbody > tr:not(.-selected) .dbs_input-data{
 	border: none;
 	-webkit-border-radius: 0px;
 	-moz-border-radius: 0px;
@@ -272,7 +275,6 @@
 	display:inline;
 	line-height: 15px;
 	min-height: 15px !important;
-
 }
 
 .dbs_dataTable > .-container > .-content > table > tbody .dbs_input-data.-readOnly{
