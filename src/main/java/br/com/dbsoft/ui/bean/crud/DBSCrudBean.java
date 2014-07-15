@@ -1879,7 +1879,6 @@ public abstract class DBSCrudBean extends DBSBean{
 			//Se valor armazenado(anterior) não for nulo e houve alteração de valores...
 			if(!DBSObject.getNotNull(xOldValue,"").toString().equals(DBSObject.getNotNull(pColumnValue,"").toString())){
 				//marca como valor alterado
-				System.out.println(pColumnName + "[" + DBSObject.getNotNull(xOldValue,"") + "][" + DBSObject.getNotNull(pColumnValue,"") + "]");
 				setValueChanged(true);
 				wDAO.setValue(pColumnName, pColumnValue);
 			}
