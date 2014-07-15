@@ -4,6 +4,7 @@ package br.com.dbsoft.ui.component.combobox;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
@@ -93,15 +94,23 @@ public class DBSComboboxRenderer extends DBSRenderer {
 		String xStyle = "";
 		Object xValueKey = "";
 		Object xValue = "";
+		LinkedHashMap<Object, Object> xList = pCombobox.getList();
 		
-		if (pCombobox.getList() !=null){
+		if (xList !=null){
 			xValueKey = pCombobox.getValue();
-			//Se valor for nulo, busca pela chave DBSSDK.UI.COMBOBOX.NULL_VALUE
-			if (xValueKey==null){
-				xValueKey = DBSSDK.UI.COMBOBOX.NULL_VALUE;
-			}else{
+//			//Se valor for nulo, busca pela chave DBSSDK.UI.COMBOBOX.NULL_VALUE
+//			if (xValueKey==null){
+//				//Posiciona o item referente ao valor nulo se existir na lista, 
+//				//caso contrário posiciona o primeiro item da lista.
+//				if (xList.containsKey(DBSSDK.UI.COMBOBOX.NULL_VALUE)){
+//					xValueKey = DBSSDK.UI.COMBOBOX.NULL_VALUE;
+//				}else{
+//					//Posiciona o primeiro item da lista
+//					xValueKey = xList.entrySet().iterator().next().getKey();
+//				}
+//			}else{
 				//Converte o valor para o mesmo tipo da chave utilizada na lista para garantir que a comparação para verificar se a chave existe será efetuados com valores do mesmo tipo de class
-				Iterator<Object> xListKeyIterator = pCombobox.getList().keySet().iterator();
+				Iterator<Object> xListKeyIterator = xList.keySet().iterator();
 				Class<?> xKeyClass = xValueKey.getClass();
 				Object xListKeyValue;
 				//Pega primeiro item que não seja o valor nulo para poder verificar o seu tipo
@@ -119,9 +128,9 @@ public class DBSComboboxRenderer extends DBSRenderer {
 				}else if (xKeyClass.isAssignableFrom(Double.class)){
 					xValueKey =  DBSNumber.toDouble(xValueKey);
 				}
-			}
+//			}
 			//Busca item na lista para recuperar o valor que será utlizado para exibir a informação
-			xValue = pCombobox.getList().get(xValueKey);
+			xValue = xList.get(xValueKey);
 			if (xValue==null){
 				//Exibe erro no console, se não tiver sido encontrado na lista o respectivo valor conforme a chave informada
 				if  (!xValueKey.equals(DBSSDK.UI.COMBOBOX.NULL_VALUE)){
@@ -134,8 +143,8 @@ public class DBSComboboxRenderer extends DBSRenderer {
 		
 		xStyle = DBSFaces.getStyleWidthFromInputSize(pCombobox.getSize());
 
-		if (pCombobox.getList() == null || 
-			pCombobox.getList().size() == 0){
+		if (xList == null || 
+			xList.size() == 0){
 			DBSFaces.encodeInputDataReadOnly(pCombobox, pWriter, xClientId, DBSFaces.getStyleWidthFromInputSize(9), false, "'List' vázio");
 		}else if (pCombobox.getReadOnly()){
 			DBSFaces.encodeInputDataReadOnly(pCombobox, pWriter, xClientId, xStyle, false, xValue.toString());
@@ -149,10 +158,10 @@ public class DBSComboboxRenderer extends DBSRenderer {
 				encodeClientBehaviors(pContext, pCombobox);
 				//Encode dos itens na lista
 				String xSelectedText = "";
-				if (pCombobox.getList() != null
-				 && pCombobox.getList().size() > 0){
-					xSelectedText =  (String) pCombobox.getList().values().toArray()[0];
-					for (Map.Entry<Object, Object> xListItem : pCombobox.getList().entrySet()) {
+				if (xList != null
+				 && xList.size() > 0){
+					xSelectedText =  (String) xList.values().toArray()[0];
+					for (Map.Entry<Object, Object> xListItem : xList.entrySet()) {
 						if (xListItem.getKey() != null){
 							pWriter.startElement("option", pCombobox);
 								DBSFaces.setAttribute(pWriter, "value", xListItem.getKey(), null);

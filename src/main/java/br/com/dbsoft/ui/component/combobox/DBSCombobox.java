@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 
 import javax.faces.component.FacesComponent;
 
+import br.com.dbsoft.core.DBSSDK;
 import br.com.dbsoft.ui.component.DBSUIInput;
 import br.com.dbsoft.ui.core.DBSFaces;
 
@@ -58,9 +59,24 @@ public class DBSCombobox extends DBSUIInput{
 			xList = new LinkedHashMap<Object, Object>();
 			setList(xList);
 		}
+
 		return xList;
 	}
 
-
+	@Override
+	public Object getValue() {
+		LinkedHashMap<Object, Object> xList = getList();
+		//Posiciona do primeiro item, caso item atual seja nulo e lista possua algum item 
+		if (super.getValue() == null
+		 && xList != null 
+		 && xList.size() > 0){
+			if (xList.containsKey(DBSSDK.UI.COMBOBOX.NULL_VALUE)){
+				setValue(DBSSDK.UI.COMBOBOX.NULL_VALUE);
+			}else{
+				setValue(xList.entrySet().iterator().next().getKey());
+			}
+		}
+		return super.getValue();
+	}
 
 }
