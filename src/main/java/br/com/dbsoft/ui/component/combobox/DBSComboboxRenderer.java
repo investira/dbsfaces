@@ -98,18 +98,11 @@ public class DBSComboboxRenderer extends DBSRenderer {
 		
 		if (xList !=null){
 			xValueKey = pCombobox.getValue();
-//			//Se valor for nulo, busca pela chave DBSSDK.UI.COMBOBOX.NULL_VALUE
-//			if (xValueKey==null){
-//				//Posiciona o item referente ao valor nulo se existir na lista, 
-//				//caso contrário posiciona o primeiro item da lista.
-//				if (xList.containsKey(DBSSDK.UI.COMBOBOX.NULL_VALUE)){
-//					xValueKey = DBSSDK.UI.COMBOBOX.NULL_VALUE;
-//				}else{
-//					//Posiciona o primeiro item da lista
-//					xValueKey = xList.entrySet().iterator().next().getKey();
-//				}
-//			}else{
-				//Converte o valor para o mesmo tipo da chave utilizada na lista para garantir que a comparação para verificar se a chave existe será efetuados com valores do mesmo tipo de class
+			/*Se valor da chave foi informado é não é o item NULL_VALUE
+			 *converte o valor para o mesmo tipo da chave utilizada na lista para garantir que a comparação para verificar se a chave existe será efetuados com valores do mesmo tipo de class
+			*/
+			if (xValueKey!=null
+			 && !xValueKey.equals(DBSSDK.UI.COMBOBOX.NULL_VALUE)){
 				Iterator<Object> xListKeyIterator = xList.keySet().iterator();
 				Class<?> xKeyClass = xValueKey.getClass();
 				Object xListKeyValue;
@@ -128,13 +121,14 @@ public class DBSComboboxRenderer extends DBSRenderer {
 				}else if (xKeyClass.isAssignableFrom(Double.class)){
 					xValueKey =  DBSNumber.toDouble(xValueKey);
 				}
-//			}
+			}
+			
 			//Busca item na lista para recuperar o valor que será utlizado para exibir a informação
 			xValue = xList.get(xValueKey);
 			if (xValue==null){
 				//Exibe erro no console, se não tiver sido encontrado na lista o respectivo valor conforme a chave informada
 				if  (!xValueKey.equals(DBSSDK.UI.COMBOBOX.NULL_VALUE)){
-					wLogger.error("Checkbox " + pCombobox.getClientId() + " não encontrado item na lista com a chave [" + xValueKey + "]");
+					wLogger.error("Combobox [" + pCombobox.getClientId() + "] não encontrado item na lista com a chave [" + xValueKey + "]"); 
 				}
 				xValue = "";
 				xValueKey = "";
