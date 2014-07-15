@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
@@ -356,22 +357,65 @@ public abstract class DBSCrudBean extends DBSBean{
 	 */
 	public void crudFormBeforeShowComponent(UIComponent pComponent){
 		if (wDAO!=null){
-			//Configura os campos do tipo inputtext
-			if (pComponent instanceof DBSUIInputText){
-				DBSUIInputText xInput = (DBSUIInputText) pComponent;
-				DBSColumn xColumn = pvGetDAOColumnFromInputValueExpression(xInput);
+			//Configura os campos do tipo inputtext bases
+			if (pComponent instanceof DBSUIInput){ 
+				DBSColumn xColumn = pvGetDAOColumnFromInputValueExpression((DBSUIInput) pComponent);
 				if (xColumn!=null){
-					//Configura o tamanho máximo de caracteres do input
-					xInput.setMaxLength(xColumn.getSize()); 
+					if (pComponent instanceof DBSUIInputText){
+						//Configura o tamanho máximo de caracteres do input
+						DBSUIInputText xInput = (DBSUIInputText) pComponent;
+						xInput.setMaxLength(xColumn.getSize()); 
+					}
+					if (getIsInserting() &&
+						getEditingStage() == EditingStage.NONE){
+						DBSUIInput xInput = (DBSUIInput) pComponent;
+						setValue(xColumn.getColumnName(), xInput.getValue());
+						setValueChanged(false);
+					}
+//					if (getIsInserting()){
+//						System.out.println("  ");
+//						System.out.println("MODE:	" + getEditingMode());
+//						System.out.println("STAGE:	" + getEditingStage());
+////						System.out.println(xColumn.getColumnName() + ":" + xColumn.getValue());
+//						Object xO = pComponent.getValueExpression("value").getValue(FacesContext.getCurrentInstance().getELContext());
+//						if (xO != null){
+//							System.out.println(xColumn.getColumnName() + "][" + xColumn.getValue() + "][" + xO.toString() + "]");
+//						}else{
+//							System.out.println(xColumn.getColumnName() + "][" + xColumn.getValue() + "]");
+//						}
+//					}
 				}
 			}
 		}
 	}
 
+//	/**
+//	 * Configura os inputs da tela
+//	 * Metodo chamado pelo DBSCrudForm para poder configurar os atributos dos componentes na tela antes que sejam exibidos
+//	 * @param pComponentInput
+//	 */
+//	public void crudFormTESTE(UIComponent pComponent){
+//		if (wDAO!=null){
+//			//Configura os campos do tipo inputtext bases
+//			if (pComponent instanceof DBSUIInput){ 
+//				DBSUIInput xInput = (DBSUIInput) pComponent;
+//				DBSColumn xColumn = pvGetDAOColumnFromInputValueExpression((DBSUIInput) pComponent);
+//				if (xColumn!=null){
+//					if (getIsInserting() &&
+//						getEditingStage() == EditingStage.NONE){
+//						setValue(xColumn.getColumnName(), xInput.getValue());
+//						setValueChanged(false);
+//					}
+//				}
+//			}
+//		}
+//	}
 
+	
 	/**
-	 * Método padrão para validação dos campos que existentes dentro do crudForm do usuário
-	 * Método para validar o conteúdo do valor digitaro em função do DAO
+	 * Método padrão para validação dos campos que existentes dentro do crudForm do usuário.
+	 * Método para validar o conteúdo do valor digitaro em função do DAO.
+	 * Este método é chamado pelo DBSCrudForm.
 	 * @param pComponent
 	 */
 	public void crudFormValidateComponent(FacesContext pContext, UIComponent pComponent, Object pValue){
@@ -954,7 +998,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Selectiona todas as linhas que exibidas
 	 */
 	public synchronized String selectAll() throws DBSIOException{
-		System.out.println("SELECT ALL");
+//		System.out.println("SELECT ALL");
 		//Só permite a seleção quando o dialog estiver fechado
 		if (!wDialogOpened){
 			pvSelectAll();
@@ -979,7 +1023,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @return
 	 */
 	public synchronized String confirmEditing() throws DBSIOException{
-		System.out.println("EDITING CONFIRM");
+//		System.out.println("EDITING CONFIRM");
 		//Se estive em processo de modificação
 		if (wEditingMode!=EditingMode.NONE){
 			//Se já não estiver em processo de validação ou cancelamento das modificações
@@ -1026,7 +1070,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @throws DBSIOException 
 	 */
 	public synchronized String ignoreEditing() throws DBSIOException{
-		System.out.println("EDITING IGNORE");
+//		System.out.println("EDITING IGNORE");
 		//Se estive em processo de modificação
 		if (wEditingMode!=EditingMode.NONE){
 			if (wEditingStage==EditingStage.NONE){
@@ -1054,7 +1098,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @throws DBSIOException 
 		 */
 		public synchronized String endEditing(Boolean pConfirm) throws DBSIOException{
-			System.out.println("END EDITING :  " + pConfirm  + ":" + getEditingMode().getName() + ":" + getEditingStage().getName());
+//			System.out.println("END EDITING :  " + pConfirm  + ":" + getEditingMode().getName() + ":" + getEditingStage().getName());
 			if (pConfirm){
 				//Verifica se está no estágio correto
 				if (wEditingStage!=EditingStage.NONE){
@@ -1140,7 +1184,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @return
 	 */
 	public synchronized String copy() throws DBSIOException{
-		System.out.println("COPY");
+//		System.out.println("COPY");
 		wCopiedRowIndex = wDAO.getCurrentRowIndex(); 
 		return DBSFaces.getCurrentView();
 	}
@@ -1152,7 +1196,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @throws DBSIOException 
 	 */
 	public synchronized String paste() throws DBSIOException{
-		System.out.println("PASTE");
+//		System.out.println("PASTE");
 		//Seta o registro atual como sendo o registro copiado
 		wDAO.paste(wCopiedRowIndex);
 		setValueChanged(true);
@@ -1163,7 +1207,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Exibe todos os itens selecionados 
 	 */
 	public synchronized String viewSelection() throws DBSIOException{
-		System.out.println("VIEW SELECTION");
+//		System.out.println("VIEW SELECTION");
 		//Limpa todas as mensagens que estiverem na fila
 		clearMessages();
 
@@ -1191,7 +1235,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Exibe o item selecionado
 	 */
 	public synchronized String view() throws DBSIOException{
-		System.out.println("VIEW");
+//		System.out.println("VIEW");
 		//Limpa todas as mensagens que estiverem na fila
 		clearMessages();
 		
@@ -1225,7 +1269,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Informa que cadastro foi fechado 
 	 */
 	public synchronized String close(Boolean pClearMessage) throws DBSIOException{
-		System.out.println("CLOSE");
+//		System.out.println("CLOSE");
 		//Só permite a seleção quando o dialog estiver fechado
 		if (wDialogOpened){
 			//Dispara evento
@@ -1243,7 +1287,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 
 	public synchronized String insertSelected() throws DBSIOException{
-		System.out.println("INSERT COPY");
+//		System.out.println("INSERT COPY");
 		wInsertSelected = true;
 		view();
 		copy();
@@ -1258,7 +1302,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @throws DBSIOException 
 	 */
 	public synchronized String insert() throws DBSIOException{
-		System.out.println("INSERT");
+//		System.out.println("INSERT");
 		if (wAllowInsert 
 		 || wInsertSelected){
 			if (!wInsertSelected){
@@ -1302,7 +1346,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @throws DBSIOException 
 	 */
 	public synchronized String approve() throws DBSIOException{
-		System.out.println("APPROVE");
+//		System.out.println("APPROVE");
 		if (wAllowApproval 
 		 && wAllowApprove){
 			if (wUserId== null){
@@ -1332,7 +1376,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @throws DBSIOException 
 	 */
 	public synchronized String reprove() throws DBSIOException{
-		System.out.println("REPROVE");
+//		System.out.println("REPROVE");
 		//Só permite a seleção quando o dialog em exibição
 		if (wAllowApproval && wAllowApprove){
 			if (wUserId== null){
@@ -1360,7 +1404,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Entra no modo de edição 
 	 */
 	public synchronized String update() throws DBSIOException{
-		System.out.println("UPDATE");
+//		System.out.println("UPDATE");
 		if (wAllowUpdate){
 			clearMessages();
 			//Só permite a seleção quando o dialog em exibição
@@ -1385,7 +1429,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @throws DBSIOException 
 	 */
 	public synchronized String delete() throws DBSIOException{
-		System.out.println("DELETE");
+//		System.out.println("DELETE");
 		if (wAllowDelete){
 			clearMessages();
 			//Só permite a exclusão quando o dialog em exibição
@@ -1589,7 +1633,7 @@ public abstract class DBSCrudBean extends DBSBean{
 		
 		//Aprovação/Reprovação
 		if (getIsApprovingOrReproving()){ 
-			pvBeforeCommitSetAutomaticColumnsValues(pEvent); //TODO
+			pvBeforeCommitSetAutomaticColumnsValues(pEvent); 
 			if (pEvent.isOk()){
 				pEvent.setCommittedRowCount(wDAO.executeUpdate());
 			}else{
@@ -1719,80 +1763,6 @@ public abstract class DBSCrudBean extends DBSBean{
 		wDAO.moveBeforeFirstRow();
 	}
 		
-	/**
-	 * Restaura os valores antes de qualquer modificação
-	 */
-//	private void pvRestoreCurrentRowValues(){
-//		wDAO.setCurrentRowIndex(wCurrentRowIndex);
-//		pvCopyValuesFromDAOtoCurrentRow();
-//	}
-
-	/**
-	 * Copis os dados localmente a partir do registro selecionado no DAO. 
-	 * Os dados são salvos em wCurrentRow. São criadas colunas, cujos nomes são os mesmos existentes na query que criou o wDAO.
-	 */
-//	private void pvCopyValuesFromDAOtoCurrentRow(){
-//		//Salva posição
-//		wCurrentRowIndex =  wDAO.getCurrentRowIndex();
-//		//Apaga os valores atuais
-//		wCurrentRow.getColumns().clear();
-//		//Set a posição somente para forçar que os valores originais da colunas sejam setados  
-//		wDAO.setCurrentRowIndex(wCurrentRowIndex);
-//		//Cria as colunas locais
-//		for (int xX = 0; xX<wDAO.getColumns().size(); xX++){
-//			DBSColumn xC = wDAO.getColumn(xX);
-//			wCurrentRow.MergeColumn(xC.getColumnName(), xC.getDisplayColumn(), xC.getDisplayColumnName(), xC.getInputFormat(), xC.getSize(), xC.getPK(), xC.getDisplayMerge(), xC.getReadOnly(), xC.getAllowSort(), xC.getInputAllowNull());
-//			wCurrentRow.getColumn(xC.getColumnName()).setDataType(xC.getDataType());
-//			wCurrentRow.setValue(xC.getColumnName(), xC.getValue(), true);
-//		}
-//	}
-
-	/**
-	 * Copia os dados locais para o wDAO 
-	 */
-//	@SuppressWarnings("unchecked")
-//	private void pvCopyValuesFromCurrentRowToDAO(){
-//		wDAO.setCurrentRowIndex(wCurrentRowIndex);
-//		for (int xX = 0; xX<wCurrentRow.getColumns().size(); xX++){
-//			wDAO.setValue(wCurrentRow.getColumn(xX).getColumnName(), wCurrentRow.getColumn(xX).getValue());
-//		}
-//	}
-
-	/**
-	 * Cria colunas locais, a partir do dao, com valores zerados.
-	 * Estas colunas, armazenam os valores do registro corrente.
-	 * Em caso em inclusão, os valores do novo registro.
-	 */
-//	private void pvClearCurrentRow(){
-//		wCurrentRowIndex =  -1;
-//		//Apaga os valores atuais
-//		wCurrentRow.getColumns().clear();
-//		//Set a posição somente para forçar que os valores originais da colunas sejam setados  
-//		if (wDAO!=null){
-//			wDAO.setCurrentRowIndex(wCurrentRowIndex);
-//			pvCreateCurrentRow();
-//		}
-//		wCurrentRow.resetValues();
-//	}
-
-	/**
-	 * Cria colunas que serão utilizadas para armazenar os valores do registro corrente.<br/>
-	 * As colunas são imagens das colunas criada no wDAO.
-	 * Em caso em inclusão, os valores do novo registro.
-	 */
-//	private void pvCreateCurrentRow(){
-//		if (wCurrentRow.size() == 0) {
-//			//Set a posição somente para forçar que os valores originais da colunas sejam setados  
-//			if (wDAO!=null){
-//				//Cria as colunas locais
-//				for (int xX = 0; xX<wDAO.getColumns().size(); xX++){
-//					DBSColumn xC = wDAO.getColumn(xX);
-//					wCurrentRow.MergeColumn(xC.getColumnName(), xC.getDisplayColumn(), xC.getDisplayColumnName(), xC.getInputFormat(), xC.getSize(), xC.getPK(), xC.getDisplayMerge(), xC.getReadOnly(), xC.getAllowSort(), xC.getInputAllowNull());
-//					wCurrentRow.getColumn(xC.getColumnName()).setDataType(xC.getDataType());
-//				}
-//			}
-//		}
-//	}
 
 	/**
 	 * Inserir linha em branco quando inclusão estiver habilidata<b>(allowInsert=true)</b> 
@@ -1806,31 +1776,6 @@ public abstract class DBSCrudBean extends DBSBean{
 			return;
 		}
 		wDAO.insertEmptyRow();
-//		boolean xAdd = true;
-//		DBSResultDataModel xR = wDAO.getResultDataModel();
-//		
-//		@SuppressWarnings("unchecked")
-//		ArrayList<SortedMap<String, Object>> xListNew = (ArrayList<SortedMap<String, Object>>) IteratorUtils.toList(xR.iterator());
-//		//Verifica a última linha já é um registro linha em branco, para evitar a incluisão desnecessária de uma nova linha.
-//		if (xListNew.size()>0){
-//			for (Entry<String, Object> xColumn:xListNew.get(xListNew.size()-1).entrySet()){
-//				//Verifica se coluna existe e se é PK para testar se o respectivo valor é null.
-//				DBSColumn xC = wDAO.getCommandColumn(xColumn.getKey());
-//				if (xC !=null){
-//					if (xC.getPK()){
-//						if (xColumn.getValue() == null){
-//							xAdd = false;
-//						}
-//					}
-//				}
-//				System.out.println(xColumn.getKey()); 
-//			}
-//		}
-//		if (xAdd){
-//			xListNew.add(new TreeMap<String, Object>());
-//			wDAO.getResultDataModel().setWrappedData(xListNew.toArray());
-//		}
-//	
 	}
 
 	/**
@@ -1932,8 +1877,9 @@ public abstract class DBSCrudBean extends DBSBean{
 				xOldValue = DBSObject.toClass(xOldValue, pColumnValue.getClass()); 
 			}
 			//Se valor armazenado(anterior) não for nulo e houve alteração de valores...
-			if(!DBSObject.getNotNull(xOldValue,"").equals(DBSObject.getNotNull(pColumnValue,""))){
+			if(!DBSObject.getNotNull(xOldValue,"").toString().equals(DBSObject.getNotNull(pColumnValue,"").toString())){
 				//marca como valor alterado
+				System.out.println(pColumnName + "[" + DBSObject.getNotNull(xOldValue,"") + "][" + DBSObject.getNotNull(pColumnValue,"") + "]");
 				setValueChanged(true);
 				wDAO.setValue(pColumnName, pColumnValue);
 			}
