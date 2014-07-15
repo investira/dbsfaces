@@ -11,7 +11,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.component.UIInput;
 import javax.faces.component.UINamingContainer;
-import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PostAddToViewEvent;
@@ -96,24 +95,6 @@ public class DBSCrudForm extends DBSUIComponentBase implements NamingContainer, 
 	public void processEvent(SystemEvent event) throws AbortProcessingException {
 		FacesContext xContext = FacesContext.getCurrentInstance();
 		UIComponent xComponent = (UIComponent) event.getSource();
-//		if (!xContext.isPostback()){
-//			return;
-//		}
-//		System.out.println("=============================================================================");
-//		System.out.println("| postBack     :" + xContext.isPostback());
-//		System.out.println("| processEvent :" + event.getClass().getName() + ":" + xComponent.getClass().getName());
-//		System.out.println("| UIComponentID:" + xComponent.getClientId());
-//		System.out.println("| Children     :" + xComponent.getChildCount());
-//		System.out.println("| Facet     :" + xComponent.getFacetCount());
-//		if (xComponent.getChildren().size() > 0) {
-//			DBSFaces.findComponent(pId)
-//			DBSFaces.showMapContentComponent(xComponent.getChildren(), 0);
-//		}
-//		System.out.println("=============================================================================");
-		
-//		pvFindDBSCrudForm(xContext, xComponent.getChildren());
-		
-
 		//Configura os campos dentro do crudform
 		if (xComponent.getFacets().size() > 0) {
 			UIComponent xF = xComponent.getFacets().get(javax.faces.component.UIComponent.COMPOSITE_FACET_NAME);
@@ -124,53 +105,39 @@ public class DBSCrudForm extends DBSUIComponentBase implements NamingContainer, 
 
 	private void pvInvokeCrudBeanMethods(FacesContext pContext, UIComponent pComponent, SystemEvent pEvent){
 		for (UIComponent xC : pComponent.getChildren()){
+			//Ignora componentes que não precisam de configuração visual. (UICommand e UIData foram incluidos na condição para posterior avaliação se serão mantidos)
 			if (!(xC instanceof UIInstructions) &&
-				 (xC instanceof UICommand ||
-				  xC instanceof UIOutput ||
-				  xC instanceof UIData)){
+				!(xC instanceof UICommand) &&
+				!(xC instanceof UIData)){
 				//Recupera nome do bean
 				String xELString = DBSFaces.getELString(this, PropertyKeys.crudBean.toString());
 				MethodExpression xME = null;
 				Object[] xParms = null;
 				if (pEvent instanceof PostAddToViewEvent){
-					//Cria chamada ao método do bean para configura o campo
-					xME = DBSFaces.createMethodExpression(pContext, xELString + ".crudFormBeforeShowComponent", null, new Class[]{UIComponent.class});
-			    	xParms = new Object[1]; 
-			    	xParms[0] = xC;
-					xME.invoke(pContext.getELContext(), xParms);
-//				}else if (pEvent instanceof PreValidateEvent ||
-//						  pEvent instanceof PostValidateEvent){
-					//Cria validator para que seja testado o valor em função do DAO no crudBean
 					if (xC instanceof UIInput){
+						//Cria chamada ao método do crudBean para configura o campo
+						xME = DBSFaces.createMethodExpression(pContext, xELString + ".crudFormBeforeShowComponent", null, new Class[]{UIComponent.class});
+				    	xParms = new Object[1]; 
+				    	xParms[0] = xC;
+						xME.invoke(pContext.getELContext(), xParms);
+
+						//Cria validator para que seja testado o valor em função do DAO no crudBean
 						UIInput xInput = (UIInput) xC;
 						xME = DBSFaces.createMethodExpression(pContext, xELString + ".crudFormValidateComponent", null, new Class[]{FacesContext.class, UIComponent.class, Object.class});
 						MethodExpressionValidator xV = new MethodExpressionValidator(xME);
 						xInput.addValidator(xV);					
+					}else{
+						//Chamada recursiva para pesquisar dentro do componente, até não haver mais filhos.
+						pvInvokeCrudBeanMethods(pContext, xC, pEvent);
 					}
-//					//Cria chamada ao método do bean para configura o campo
-//					xME = DBSFaces.createMethodExpression(pContext, xELString + ".validateComponent", null, new Class[]{UIComponent.class});
-//			    	xParms = new Object[1]; 
-//			    	xParms[0] = xC;
-//					xME.invoke(pContext.getELContext(), xParms);
 				}
-				pvInvokeCrudBeanMethods(pContext, xC, pEvent);
+
 			}
 		}
 	}
 
 	@Override
 	public boolean isListenerForSource(Object source) {
-//		 String xStr = "";
-//		 if (source instanceof UIComponent){
-//		 xStr = ((UIComponent) source).getClientId();
-//		 }
-//		 xStr = xStr + "\t\t:" + source.getClass().getName();
-//		
-//		 System.out.println("isListenerForSource:" + xStr);
-				
-//		return (source instanceof UIViewRoot);
-//		 return ((source instanceof UIViewRoot) || (source instanceof DBSCrudForm));
 		 return (source instanceof DBSCrudForm);
-//		return true;
 	}
 }
