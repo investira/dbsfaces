@@ -75,20 +75,20 @@ public class DBSInputDateRenderer extends DBSRenderer {
     			if (xTime == null){
     				xInputDate.setSubmittedValue("");
     			}else{
-    				xInputDate.setSubmittedValue(DBSDate.toTimestampDMYHMS("1899/12/30 " + xTime));
+    				xInputDate.setSubmittedValue(DBSDate.toTimestampYMDHMS("1899/12/30 " + xTime));
     			}
     		}else if (xInputDate.getType().equals(DBSInputDate.TYPE.TIMES)){
     			if (xTime == null){
     				xInputDate.setSubmittedValue("");
     			}else{
-    				xInputDate.setSubmittedValue(DBSDate.toTimestampDMYHMS("1899/12/30 " + xTime));
+    				xInputDate.setSubmittedValue(DBSDate.toTimestampYMDHMS("1899/12/30 " + xTime));
     			}
     		}else if (xInputDate.getType().equals(DBSInputDate.TYPE.DATETIME)){
 	   			if (xDate == null ||
 	   				xTime == null){
 	   				xInputDate.setSubmittedValue("");	
     			}else{
-    				xInputDate.setSubmittedValue(DBSDate.toTimestampDMYHMS(xDate + " " + xTime));
+    				xInputDate.setSubmittedValue(DBSDate.toTimestampYMDHMS(xDate + " " + xTime));
     			}
     		}
 
