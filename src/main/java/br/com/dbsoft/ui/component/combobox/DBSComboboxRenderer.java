@@ -12,9 +12,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
 
-import br.com.dbsoft.core.DBSSDK;
+import br.com.dbsoft.core.DBSSDK.UI.COMBOBOX;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSObject;
 
@@ -35,7 +36,7 @@ public class DBSComboboxRenderer extends DBSRenderer {
 			Object xSubmittedValue = pContext.getExternalContext().getRequestParameterMap().get(xClientIdAction);
 			//Se valor recebido for igual o valor considerado como nulo ou o vázio
 			//Envia o valor como nulo
-			if (xSubmittedValue.equals(DBSSDK.UI.COMBOBOX.NULL_VALUE)){
+			if (xSubmittedValue.equals(COMBOBOX.NULL_VALUE)){
 				xCombobox.setValue(null);
 				xCombobox.setSubmittedValue(null);
 			}else{
@@ -61,7 +62,7 @@ public class DBSComboboxRenderer extends DBSRenderer {
 		DBSCombobox xCombobox = (DBSCombobox) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xCombobox.getClientId(pContext);
-		String xClass = DBSFaces.CSS.COMBOBOX.MAIN + " " + DBSFaces.CSS.INPUT.MAIN + " ";
+		String xClass = CSS.COMBOBOX.MAIN + " " + CSS.INPUT.MAIN + " ";
 		if (xCombobox.getStyleClass()!=null){
 			xClass = xClass + xCombobox.getStyleClass();
 		}
@@ -71,7 +72,7 @@ public class DBSComboboxRenderer extends DBSRenderer {
 			xWriter.writeAttribute("class", xClass, "class");
 			DBSFaces.setAttribute(xWriter, "style", xCombobox.getStyle(), null);
 			xWriter.startElement("div", xCombobox);
-				xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER, "class");
+				xWriter.writeAttribute("class", CSS.MODIFIER.CONTAINER, "class");
 					DBSFaces.encodeLabel(pContext, xCombobox, xWriter);
 					pvEncodeInput(pContext, xCombobox, xWriter);
 					DBSFaces.encodeRightLabel(pContext, xCombobox, xWriter);
@@ -96,51 +97,54 @@ public class DBSComboboxRenderer extends DBSRenderer {
 		Object xValue = "";
 		LinkedHashMap<Object, Object> xList = pCombobox.getList();
 		
-		if (xList !=null){
-			xValueKey = pCombobox.getValue();
-			/*Se valor da chave foi informado é não é o item NULL_VALUE
-			 *converte o valor para o mesmo tipo da chave utilizada na lista para garantir que a comparação para verificar se a chave existe será efetuados com valores do mesmo tipo de class
-			*/
-			if (xValueKey!=null
-			 && !xValueKey.equals(DBSSDK.UI.COMBOBOX.NULL_VALUE)){
-				Iterator<Object> xListKeyIterator = xList.keySet().iterator();
-				Class<?> xKeyClass = xValueKey.getClass();
-				Object xListKeyValue;
-				//Pega primeiro item que não seja o valor nulo para poder verificar o seu tipo
-				while (xListKeyIterator.hasNext()){
-					xListKeyValue = xListKeyIterator.next();
-					if (!xListKeyValue.equals(DBSSDK.UI.COMBOBOX.NULL_VALUE)){
-						xKeyClass = xListKeyValue.getClass();
-						break;
-					}
-				}
-				if (xKeyClass.isAssignableFrom(Integer.class)){
-					xValueKey =  DBSNumber.toInteger(xValueKey);
-				}else if (xKeyClass.isAssignableFrom(BigDecimal.class)){
-					xValueKey =  DBSNumber.toBigDecimal(xValueKey);
-				}else if (xKeyClass.isAssignableFrom(Double.class)){
-					xValueKey =  DBSNumber.toDouble(xValueKey);
+		//Se não foi informada a lista ou lista estiver vazia
+		if (xList == null || 
+			xList.size() == 0){
+			DBSFaces.encodeInputDataReadOnly(pCombobox, pWriter, xClientId, DBSFaces.getStyleWidthFromInputSize(9), false, "'List' vázio");
+			return;
+		}
+
+		//Recupera valor
+		xValueKey = pCombobox.getValue();
+
+		//Ira procurar por item nulo
+		if (xValueKey == null){
+			xValueKey = COMBOBOX.NULL_VALUE;
+		//Converte o valor para o mesmo tipo da chave utilizada na lista para garantir que a comparação para verificar se a chave existe será efetuados com valores do mesmo tipo de class
+		}else{
+			Iterator<Object> xListKeyIterator = xList.keySet().iterator();
+			Class<?> xValueKeyClass = xValueKey.getClass();
+			Object xListKeyValue;
+			//Pega primeiro item que não seja o valor nulo para poder verificar o seu tipo
+			while (xListKeyIterator.hasNext()){
+				xListKeyValue = xListKeyIterator.next();
+				if (!xListKeyValue.equals(COMBOBOX.NULL_VALUE)){
+					xValueKeyClass = xListKeyValue.getClass();
+					break;
 				}
 			}
-			
-			//Busca item na lista para recuperar o valor que será utlizado para exibir a informação
-			xValue = xList.get(xValueKey);
-			if (xValue==null){
-				//Exibe erro no console, se não tiver sido encontrado na lista o respectivo valor conforme a chave informada
-				if  (!xValueKey.equals(DBSSDK.UI.COMBOBOX.NULL_VALUE)){
-					wLogger.error("Combobox [" + pCombobox.getClientId() + "] não encontrado item na lista com a chave [" + xValueKey + "]"); 
-				}
-				xValue = "";
-				xValueKey = "";
+			if (xValueKeyClass.isAssignableFrom(Integer.class)){
+				xValueKey =  DBSNumber.toInteger(xValueKey, null);
+			}else if (xValueKeyClass.isAssignableFrom(BigDecimal.class)){
+				xValueKey =  DBSNumber.toBigDecimal(xValueKey, null);
+			}else if (xValueKeyClass.isAssignableFrom(Double.class)){
+				xValueKey =  DBSNumber.toDouble(xValueKey, null);
 			}
+		}
+		
+		//Busca item na lista para recuperar o valor que será utlizado para exibir a informação
+		xValue = xList.get(xValueKey);
+
+		//Se não achar item na lista e lista possuir o item nulo, seta para este item nulo, caso contrário exibe erro.
+		if (xValue==null){
+			wLogger.error("Combobox [" + pCombobox.getClientId() + "] não encontrado item na lista com a chave [" + xValueKey + "]"); 
+			xValue = "*erro*:Item [" + xValueKey + "] não encontrado.";
+			xValueKey = "";
 		}
 		
 		xStyle = DBSFaces.getStyleWidthFromInputSize(pCombobox.getSize());
 
-		if (xList == null || 
-			xList.size() == 0){
-			DBSFaces.encodeInputDataReadOnly(pCombobox, pWriter, xClientId, DBSFaces.getStyleWidthFromInputSize(9), false, "'List' vázio");
-		}else if (pCombobox.getReadOnly()){
+		if (pCombobox.getReadOnly()){
 			DBSFaces.encodeInputDataReadOnly(pCombobox, pWriter, xClientId, xStyle, false, xValue.toString());
 		}else{
 			//Encode do combobox escondido
@@ -174,15 +178,15 @@ public class DBSComboboxRenderer extends DBSRenderer {
 			pWriter.startElement("span", pCombobox);
 				DBSFaces.setAttribute(pWriter, "style", xStyle, null);
 				if (pCombobox.getReadOnly()){
-					DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.DATA + DBSFaces.CSS.MODIFIER.DISABLED, null);
+					DBSFaces.setAttribute(pWriter, "class", CSS.INPUT.DATA + CSS.MODIFIER.DISABLED, null);
 					DBSFaces.setAttribute(pWriter, "disabled","disabled", null);
 				}else{
-					DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.DATA, null);
+					DBSFaces.setAttribute(pWriter, "class", CSS.INPUT.DATA, null);
 				}
 				pWriter.write(xSelectedText);
 				//Encode do botão
 				pWriter.startElement("span", pCombobox);
-					DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.BUTTON + DBSFaces.CSS.ICONSMALL + " -is_select_down", null);
+					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.BUTTON + CSS.ICONSMALL + " -is_select_down", null);
 				pWriter.endElement("span");
 			pWriter.endElement("span");
 		}

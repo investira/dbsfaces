@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 
 import javax.faces.component.FacesComponent;
 
-import br.com.dbsoft.core.DBSSDK;
+import br.com.dbsoft.core.DBSSDK.UI.COMBOBOX;
 import br.com.dbsoft.ui.component.DBSUIInput;
 import br.com.dbsoft.ui.core.DBSFaces;
 
@@ -37,11 +37,11 @@ public class DBSCombobox extends DBSUIInput{
 		setRendererType(DBSCombobox.RENDERER_TYPE);
     }
 
-	public java.lang.Integer getSize() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.size, 0);
+	public Integer getSize() {
+		return (Integer) getStateHelper().eval(PropertyKeys.size, 0);
 	}
 	
-	public void setSize(java.lang.Integer pSize) {
+	public void setSize(Integer pSize) {
 		getStateHelper().put(PropertyKeys.size, pSize);
 		handleAttribute("size", pSize);
 	}
@@ -64,19 +64,19 @@ public class DBSCombobox extends DBSUIInput{
 	}
 
 	@Override
-	public Object getValue() {
+	public void setValue(Object pValue) {
 		LinkedHashMap<Object, Object> xList = getList();
-		//Posiciona do primeiro item, caso item atual seja nulo e lista possua algum item 
-		if (super.getValue() == null
+		//Posiciona do primeiro item existente se valor for nulo e não houver valor nulo na lista
+		if (pValue == null
 		 && xList != null 
 		 && xList.size() > 0){
-			if (xList.containsKey(DBSSDK.UI.COMBOBOX.NULL_VALUE)){
-				setValue(DBSSDK.UI.COMBOBOX.NULL_VALUE);
-			}else{
-				setValue(xList.entrySet().iterator().next().getKey());
+			//Posiciona no primeiro item 
+			if (!xList.containsKey(COMBOBOX.NULL_VALUE)){
+				super.setValue(xList.entrySet().iterator().next().getKey());
+				return;
 			}
 		}
-		return super.getValue();
+		super.setValue(pValue);
 	}
-
+	
 }
