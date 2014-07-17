@@ -1628,8 +1628,9 @@ public class  DBSFaces {
 		return "";
 	}	
 	  /**
-	  * Converte o valor recebido para o mesmo tipo do 'value' definido no bean onde será atualizado o valor
-	  * Para valores númericos, converte o 'vázio' para nulo 
+	  * Converte o valor recebido para o mesmo tipo do 'value' definido no bean onde será atualizado o valor.<br/>
+	  * Para valores númericos, converte o 'vázio' para nulo.<br/>
+	  * obs:Em JSF não submit de valor nulo. O valor nulo é o 'vázio' por isso existe esta conversão.  
 	  * @param pComponent
 	  * @param pSubmittedValue
 	  * @return
@@ -1656,11 +1657,11 @@ public class  DBSFaces {
 					}
 				}else{
 					if (xValueClass.isAssignableFrom(Integer.class)){
-						xSubmittedValue =  DBSNumber.toInteger(pSubmittedValue);
+						xSubmittedValue =  DBSNumber.toInteger(pSubmittedValue, null);
 					}else if (xValueClass.isAssignableFrom(Double.class)){
-						xSubmittedValue = DBSNumber.toDouble(pSubmittedValue);
+						xSubmittedValue = DBSNumber.toDouble(pSubmittedValue, null);
 					}else if (xValueClass.isAssignableFrom(BigDecimal.class)){
-						xSubmittedValue = DBSNumber.toBigDecimal(pSubmittedValue);
+						xSubmittedValue = DBSNumber.toBigDecimal(pSubmittedValue, null);
 					}else if (xValueClass.isAssignableFrom(Boolean.class)){
 						xSubmittedValue = DBSBoolean.toBoolean(pSubmittedValue);
 					}else if (xValueClass.isAssignableFrom(Date.class)){
