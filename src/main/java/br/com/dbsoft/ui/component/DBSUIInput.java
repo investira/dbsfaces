@@ -7,7 +7,6 @@ import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIInput;
 import javax.faces.component.behavior.ClientBehaviorHolder;
-import javax.faces.context.FacesContext;
 
 import br.com.dbsoft.ui.core.DBSFaces;
 
@@ -104,8 +103,7 @@ public abstract class DBSUIInput extends UIInput implements IDBSUIComponentBase,
 	}
 	
 	@Override
-    public String getDefaultEventName()
-    {
+    public String getDefaultEventName(){
         return "change";
     }
 	
@@ -119,11 +117,6 @@ public abstract class DBSUIInput extends UIInput implements IDBSUIComponentBase,
 		DBSFaces.handleAttribute(name, value, this);
 	}
 	
-	@Override
-	public void validate(FacesContext context) {
-		// TODO Auto-generated method stub
-		super.validate(context);
-	}
 	
 	@Override
 	public void setSubmittedValue(Object pSubmittedValue) {
