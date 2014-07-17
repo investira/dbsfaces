@@ -1,6 +1,7 @@
 package br.com.dbsoft.ui.component.inputdate;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 
 import javax.faces.component.FacesComponent;
@@ -86,6 +87,8 @@ public class DBSInputDate extends DBSUIInput {
 			return getDate();
 		}else if (this.getType().equals(DBSInputDate.TYPE.TIME)){
 			return getTime();
+		}else if (this.getType().equals(DBSInputDate.TYPE.TIMES)){
+			return getTimes();
 		}else if (this.getType().equals(DBSInputDate.TYPE.DATETIME)){
 			return getTimestamp();
 		}else{
@@ -134,8 +137,12 @@ public class DBSInputDate extends DBSUIInput {
 		return DBSDate.toDate(super.getValue());
 	}
 
-	public Long getTime(){
-		return DBSDate.toDate(super.getValue()).getTime();
+	public Time getTime(){
+		return DBSDate.toTime(getHour(), getMinute(), "0");
+	}
+
+	public Time getTimes(){
+		return DBSDate.toTime(getHour(), getMinute(), getSecond());
 	}
 
 	public Timestamp getTimestamp(){
