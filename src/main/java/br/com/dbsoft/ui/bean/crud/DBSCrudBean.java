@@ -366,50 +366,10 @@ public abstract class DBSCrudBean extends DBSBean{
 						DBSUIInputText xInput = (DBSUIInputText) pComponent;
 						xInput.setMaxLength(xColumn.getSize()); 
 					}
-					if (getIsInserting() &&
-						getEditingStage() == EditingStage.NONE){
-						DBSUIInput xInput = (DBSUIInput) pComponent;
-						setValue(xColumn.getColumnName(), xInput.getValue());
-						setValueChanged(false);
-					}
-//					if (getIsInserting()){
-//						System.out.println("  ");
-//						System.out.println("MODE:	" + getEditingMode());
-//						System.out.println("STAGE:	" + getEditingStage());
-////						System.out.println(xColumn.getColumnName() + ":" + xColumn.getValue());
-//						Object xO = pComponent.getValueExpression("value").getValue(FacesContext.getCurrentInstance().getELContext());
-//						if (xO != null){
-//							System.out.println(xColumn.getColumnName() + "][" + xColumn.getValue() + "][" + xO.toString() + "]");
-//						}else{
-//							System.out.println(xColumn.getColumnName() + "][" + xColumn.getValue() + "]");
-//						}
-//					}
 				}
 			}
 		}
 	}
-
-//	/**
-//	 * Configura os inputs da tela
-//	 * Metodo chamado pelo DBSCrudForm para poder configurar os atributos dos componentes na tela antes que sejam exibidos
-//	 * @param pComponentInput
-//	 */
-//	public void crudFormTESTE(UIComponent pComponent){
-//		if (wDAO!=null){
-//			//Configura os campos do tipo inputtext bases
-//			if (pComponent instanceof DBSUIInput){ 
-//				DBSUIInput xInput = (DBSUIInput) pComponent;
-//				DBSColumn xColumn = pvGetDAOColumnFromInputValueExpression((DBSUIInput) pComponent);
-//				if (xColumn!=null){
-//					if (getIsInserting() &&
-//						getEditingStage() == EditingStage.NONE){
-//						setValue(xColumn.getColumnName(), xInput.getValue());
-//						setValueChanged(false);
-//					}
-//				}
-//			}
-//		}
-//	}
 
 	
 	/**
@@ -1779,7 +1739,9 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 
 	/**
-	 * Retorna a respectiva coluna do DAO a partir da propriedade value que foi utilizada no componente
+	 * Retorna a respectiva coluna do DAO a partir da propriedade value que foi utilizada no componente.<BR/>
+	 * É necessário que campos fl's tenham o mesmo nome da coluna na tabela.
+	 * 
 	 * @param pInput
 	 * @return
 	 */
@@ -1878,6 +1840,7 @@ public abstract class DBSCrudBean extends DBSBean{
 			}
 			//Se valor armazenado(anterior) não for nulo e houve alteração de valores...
 			if(!DBSObject.getNotNull(xOldValue,"").toString().equals(DBSObject.getNotNull(pColumnValue,"").toString())){
+//				System.out.println("ALTERADO:" + pColumnName + "[" + DBSObject.getNotNull(xOldValue,"") + "] para [" + DBSObject.getNotNull(pColumnValue,"") + "]");
 				//marca como valor alterado
 				setValueChanged(true);
 				wDAO.setValue(pColumnName, pColumnValue);
