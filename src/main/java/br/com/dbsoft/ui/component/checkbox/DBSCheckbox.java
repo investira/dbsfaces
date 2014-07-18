@@ -4,7 +4,6 @@ import javax.faces.component.FacesComponent;
 
 import br.com.dbsoft.ui.component.DBSUIInput;
 import br.com.dbsoft.ui.core.DBSFaces;
-import br.com.dbsoft.util.DBSBoolean;
 
 @FacesComponent(DBSCheckbox.COMPONENT_TYPE)
 public class DBSCheckbox extends DBSUIInput{
@@ -35,16 +34,7 @@ public class DBSCheckbox extends DBSUIInput{
 		setRendererType(DBSCheckbox.RENDERER_TYPE);
     }
 
-    @Override
-    public void setValue(Object pValue) {
-    	super.setValue(DBSBoolean.toBoolean(pValue));
-    }
-    
-    @Override
-    public Boolean getValue() {
-		return DBSBoolean.toBoolean(super.getValue());
-    }
-    
+
 	public void setUpdate(String pUpdate) {
 		getStateHelper().put(PropertyKeys.update, pUpdate);
 		handleAttribute("update", pUpdate);
