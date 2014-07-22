@@ -83,7 +83,8 @@ li {
 
 input,
 textarea,
-select {
+select,
+.dbs_input-data > label {
 	font-family: inherit;
 	font-weight: normal;
 	color: rgb(13, 25, 45);
