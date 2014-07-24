@@ -65,18 +65,37 @@ public class DBSCombobox extends DBSUIInput{
 
 	@Override
 	public void setValue(Object pValue) {
-		LinkedHashMap<Object, Object> xList = getList();
 		//Posiciona do primeiro item existente se valor for nulo e não houver valor nulo na lista
-		if (pValue == null
-		 && xList != null 
-		 && xList.size() > 0){
-			//Posiciona no primeiro item 
-			if (!xList.containsKey(COMBOBOX.NULL_VALUE)){
-				super.setValue(xList.entrySet().iterator().next().getKey());
+		LinkedHashMap<Object, Object> xList = getList();
+		if (xList != null 
+	     && xList.size() > 0){
+			if (pValue != null){
+				//Verifica se item esta na lista 
+				if (!xList.containsKey(pValue)){
+					pValue = null;
+				}
+			}
+			if (pValue == null){
+				//Posiciona no primeiro item 
+				if (!xList.containsKey(COMBOBOX.NULL_VALUE)){
+					super.setValue(xList.entrySet().iterator().next().getKey());
+				}else{
+					super.setValue(COMBOBOX.NULL_VALUE);
+				}
 				return;
 			}
 		}
 		super.setValue(pValue);
+	}
+	
+	@Override
+	public Object getValue() {
+		Object xValue = super.getValue();
+		if (xValue == null){
+			//Força que o valor atual tenha passado pelo setValue para execute a regra ali contida.
+			setValue(xValue);
+		}
+		return super.getValue();
 	}
 	
 }

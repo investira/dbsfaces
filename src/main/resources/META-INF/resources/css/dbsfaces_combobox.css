@@ -9,8 +9,7 @@
 }
 
 .dbs_combobox > .-container{
-	position: relative;
-	white-space: nowrap;
+/* 	position: relative; */
 }
 
 .dbs_combobox > .-container > .dbs_input-label {
@@ -28,15 +27,24 @@
 /* 	line-height: 1.4; */
 }
 
+.dbs_combobox > .-container > .dbs_input-data > .-data {
+	display:block;
+	overflow: hidden;	
+	position: relative;
+/*     top: 1px;	 */
+}
+
 .dbs_combobox > .-container > .dbs_input-data > .-button {
 	position: absolute;	
-	top: 2px;
+	top: 3px;
 	right: 3px;
 /* 	font-size: 13px; */
 /* 	cursor: pointer; */
 /* 	line-height: 1; */
 /* 	text-rendering:auto; */
 }
+
+
 
 .dbs_combobox > .-container > .dbs_input-data > .-button.-disabled {
 }

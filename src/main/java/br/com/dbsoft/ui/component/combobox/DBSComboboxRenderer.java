@@ -106,14 +106,12 @@ public class DBSComboboxRenderer extends DBSRenderer {
 
 		//Força que o valor atual tenha passado pelo setValue para execute a regra ali contida.
 		pCombobox.setValue(pCombobox.getValue());
+		
 		//Recupera valor
 		xValueKey = pCombobox.getValue();
 
-		//Ira procurar por item nulo
-		if (xValueKey == null){
-			xValueKey = COMBOBOX.NULL_VALUE;
 		//Converte o valor para o mesmo tipo da chave utilizada na lista para garantir que a comparação para verificar se a chave existe será efetuados com valores do mesmo tipo de class
-		}else{
+		if (!xValueKey.equals(COMBOBOX.NULL_VALUE)){
 			Iterator<Object> xListKeyIterator = xList.keySet().iterator();
 			Class<?> xValueKeyClass = xValueKey.getClass();
 			Object xListKeyValue;
@@ -179,13 +177,11 @@ public class DBSComboboxRenderer extends DBSRenderer {
 			//Texto selecionado
 			pWriter.startElement("span", pCombobox);
 				DBSFaces.setAttribute(pWriter, "style", xStyle, null);
-				if (pCombobox.getReadOnly()){
-					DBSFaces.setAttribute(pWriter, "class", CSS.INPUT.DATA + CSS.MODIFIER.DISABLED, null);
-					DBSFaces.setAttribute(pWriter, "disabled","disabled", null);
-				}else{
-					DBSFaces.setAttribute(pWriter, "class", CSS.INPUT.DATA, null);
-				}
-				pWriter.write(xSelectedText);
+				DBSFaces.setAttribute(pWriter, "class", CSS.INPUT.DATA, null);
+				pWriter.startElement("span", pCombobox);
+					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.DATA, null);
+					pWriter.write(xSelectedText);
+				pWriter.endElement("span");
 				//Encode do botão
 				pWriter.startElement("span", pCombobox);
 					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.BUTTON + CSS.ICONSMALL + " -is_select_down", null);
