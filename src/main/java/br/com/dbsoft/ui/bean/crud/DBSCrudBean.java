@@ -117,8 +117,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 	
 
-	
-
 	protected DBSDAO<?>							wDAO;
 	private List<IDBSCrudBeanEventsListener>	wEventListeners = new ArrayList<IDBSCrudBeanEventsListener>();
 	private EditingMode							wEditingMode = EditingMode.NONE;
@@ -210,6 +208,7 @@ public abstract class DBSCrudBean extends DBSBean{
 		}
 	}	
 	
+	
 	/**
 	 * Seta o valor da coluna na posição atual do registro 
 	 * O valor será convertido para a class informada
@@ -271,7 +270,8 @@ public abstract class DBSCrudBean extends DBSBean{
 	public <T> T getValueOriginal(String pColumnName){
 		//Se existir registro corrente
 		if (wDAO != null 
-		 && wDAO.getColumns().size() > 0){
+		 && (wDAO.getColumns().size() > 0
+		  || wDAO.getCommandColumns().size() > 0)){
 			return (T) wDAO.getValueOriginal(pColumnName);
 		}else{
 			return null;
@@ -365,6 +365,15 @@ public abstract class DBSCrudBean extends DBSBean{
 						//Configura o tamanho máximo de caracteres do input
 						DBSUIInputText xInput = (DBSUIInputText) pComponent;
 						xInput.setMaxLength(xColumn.getSize()); 
+					}
+					//Força a inicialização dos valores para que no "Insert" seja evitado a solicitação de confirmação do comando de "Ignorar" quando nada tenha sido digitado. 
+					if (getIsInserting() &&
+						getEditingStage() == EditingStage.NONE){
+						DBSUIInput xInput = (DBSUIInput) pComponent;
+						//Move o valor do componente para a coluna
+						setValue(xColumn.getColumnName(), xInput.getValue());
+						//Força a indicação que não houve alteração de valores
+						setValueChanged(false);
 					}
 				}
 			}
@@ -545,7 +554,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	public DBSResultDataModel getList() throws DBSIOException{
 		//Força a criação do resultdatamodel se ainda não existir
 		if (wDAO==null){
-			this.refreshList();
+			refreshList(); 
 			if (wDAO==null
 			 || wDAO.getResultDataModel() == null){
 				return new DBSResultDataModel();
@@ -1114,7 +1123,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	// Methods ############################################################
 	
 	/**
-	 * Efetua uma nova pesquisa
+	 * Efetua uma nova pesquisa e chama os eventos <b>beforeRefresh</b> e <b>afterRefresh</b>.
 	 * @throws DBSIOException 
 	 */
 	public synchronized String refreshList() throws DBSIOException{
@@ -1269,33 +1278,94 @@ public abstract class DBSCrudBean extends DBSBean{
 				clearMessages();
 			}
 
-			//Inclui linha em branco quando edição for diretamente no grid
+			//Inclui linha em branco quando edição for diretamente no grid e edição já estiver habilitada(EditingMode.UPDATING)
 			if (!wDialogEdit
 			 && wEditingMode==EditingMode.UPDATING){
 				pvInsertEmptyRow();
 			}else{
 				//Só permite a seleção do insert quando o dialog estiver fechado
 				if (wEditingMode==EditingMode.NONE){
-					if (pvFireEventBeforeEdit(EditingMode.INSERTING)){
-						//Desmarca registros selecionados
-						wSelectedRowsIndexes.clear();
-						
-						setEditingMode(EditingMode.INSERTING);
-						pvMoveBeforeFistRow();
-						//Não chama os eventos por já foram chamados no view() quando é inclusão de registro selecionado
-						if (!wInsertSelected){
-							if (pvFireEventBeforeView()){
+					try {
+						if (pvFireEventBeforeEdit(EditingMode.INSERTING)){
+							//Desmarca registros selecionados
+							wSelectedRowsIndexes.clear(); 
+							
+							setEditingMode(EditingMode.INSERTING);
+							
+							pvMoveBeforeFistRow();
+							
+							if (pvFireEventBeforeInsert()){
 								setDialogOpened(true);
-								pvFireEventAfterView();
 							}
+						}else{
+							setValueChanged(false);
+							//exibe mensagem de erro de procedimento
 						}
-					}else{
-						setValueChanged(false);
-						//exibe mensagem de erro de procedimento
+					} catch (Exception wE) {
+						setEditingMode(EditingMode.NONE);
 					}
 				}else{
 					//exibe mensagem de erro de procedimento
 				}
+			}
+		}
+		return DBSFaces.getCurrentView();
+	}
+
+	/**
+	 * Entra no modo de edição 
+	 */
+	public synchronized String update() throws DBSIOException{
+//		System.out.println("UPDATE");
+		if (wAllowUpdate){
+			clearMessages();
+			//Só permite a seleção quando o dialog em exibição
+			if (wEditingMode==EditingMode.NONE){
+				try {
+					if (pvFireEventBeforeEdit(EditingMode.UPDATING)){
+						setEditingMode(EditingMode.UPDATING);
+						//Insere inicialmente um linha em branco quando edição for diretamente no grid.
+						pvInsertEmptyRow();
+					}else{
+						setValueChanged(false);
+						//exibe mensagem de erro de procedimento
+					}
+				} catch (Exception wE) {
+					setEditingMode(EditingMode.NONE);
+				}
+			}else{
+				//exibe mensagem de erro de procedimento
+			}
+		}
+		return DBSFaces.getCurrentView();
+	}
+
+	/**
+	 * Entra no modo de exclusão 
+	 * @throws DBSIOException 
+	 */
+	public synchronized String delete() throws DBSIOException{
+//		System.out.println("DELETE");
+		if (wAllowDelete){
+			clearMessages();
+			//Só permite a exclusão quando o dialog em exibição
+			if (wEditingMode==EditingMode.NONE){
+				try {
+					if (pvFireEventBeforeEdit(EditingMode.DELETING)){
+						//Muda para o modo de exclusão
+						setEditingMode(EditingMode.DELETING);
+						//Exibe confirmação da exclusão.
+						confirmEditing();
+						//setEditingStage(EditingStage.COMMITTING);
+					}else{
+						setValueChanged(false);
+						//setEditingStage(EditingStage.COMMITTING);
+					}
+				} catch (Exception wE) {
+					setEditingMode(EditingMode.NONE);
+				}
+			}else{
+				//exibe mensagem de erro de procedimento
 			}
 		}
 		return DBSFaces.getCurrentView();
@@ -1316,13 +1386,17 @@ public abstract class DBSCrudBean extends DBSBean{
 			}
 			//Só permite a seleção quando o dialog em exibição
 			if (wEditingMode==EditingMode.NONE){
-				if (pvFireEventBeforeEdit(EditingMode.APPROVING)){
-					setEditingMode(EditingMode.APPROVING);
-					setValueChanged(true);
-					confirmEditing();
-				}else{
-					setValueChanged(false);
-					//exibe mensagem de erro de procedimento
+				try {
+					if (pvFireEventBeforeEdit(EditingMode.APPROVING)){
+						setEditingMode(EditingMode.APPROVING);
+						setValueChanged(true);
+						confirmEditing();
+					}else{
+						setValueChanged(false);
+						//exibe mensagem de erro de procedimento
+					}
+				} catch (Exception wE) {
+					setEditingMode(EditingMode.NONE);
 				}
 			}else{
 				//exibe mensagem de erro de procedimento
@@ -1330,7 +1404,7 @@ public abstract class DBSCrudBean extends DBSBean{
 		}
 		return DBSFaces.getCurrentView();
 	}
-	
+
 	/**
 	 * Entra no modo de inclusão 
 	 * @throws DBSIOException 
@@ -1345,64 +1419,17 @@ public abstract class DBSCrudBean extends DBSBean{
 				return DBSFaces.getCurrentView();
 			}
 			if (wEditingMode==EditingMode.NONE){
-				if (pvFireEventBeforeEdit(EditingMode.REPROVING)){
-					setEditingMode(EditingMode.REPROVING);
-					setValueChanged(true);
-					confirmEditing();
-				}else{
-					setValueChanged(false);
-					//exibe mensagem de erro de procedimento
-				}
-			}else{
-				//exibe mensagem de erro de procedimento
-			}
-		}
-		return DBSFaces.getCurrentView();
-	}
-
-	/**
-	 * Entra no modo de edição 
-	 */
-	public synchronized String update() throws DBSIOException{
-//		System.out.println("UPDATE");
-		if (wAllowUpdate){
-			clearMessages();
-			//Só permite a seleção quando o dialog em exibição
-			if (wEditingMode==EditingMode.NONE){
-				if (pvFireEventBeforeEdit(EditingMode.UPDATING)){
-					setEditingMode(EditingMode.UPDATING);
-					//Insere linha em branco quando edição for diretamente no grid
-					pvInsertEmptyRow();
-				}else{
-					setValueChanged(false);
-					//exibe mensagem de erro de procedimento
-				}
-			}else{
-				//exibe mensagem de erro de procedimento
-			}
-		}
-		return DBSFaces.getCurrentView();
-	}
-
-	/**
-	 * Entra no modo de exclusão 
-	 * @throws DBSIOException 
-	 */
-	public synchronized String delete() throws DBSIOException{
-//		System.out.println("DELETE");
-		if (wAllowDelete){
-			clearMessages();
-			//Só permite a exclusão quando o dialog em exibição
-			if (wEditingMode==EditingMode.NONE){
-				if (pvFireEventBeforeEdit(EditingMode.DELETING)){
-					//Muda para o modo de exclusão
-					setEditingMode(EditingMode.DELETING);
-					//Exibe confirmação da exclusão.
-					confirmEditing();
-					//setEditingStage(EditingStage.COMMITTING);
-				}else{
-					setValueChanged(false);
-					//setEditingStage(EditingStage.COMMITTING);
+				try {
+					if (pvFireEventBeforeEdit(EditingMode.REPROVING)){
+						setEditingMode(EditingMode.REPROVING);
+						setValueChanged(true);
+						confirmEditing();
+					}else{
+						setValueChanged(false);
+						//exibe mensagem de erro de procedimento
+					}
+				} catch (Exception wE) {
+					setEditingMode(EditingMode.NONE);
 				}
 			}else{
 				//exibe mensagem de erro de procedimento
@@ -1464,6 +1491,10 @@ public abstract class DBSCrudBean extends DBSBean{
 			//pois em ambos os casos a conexão já está aberta
 			if (!getIsEditing() && !wBrodcastingEvent){
 				super.openConnection();
+				//O DAO deve utilizar sempre a mesmo conexão ativa deste CrudBean
+				if (wDAO !=null){
+					wDAO.setConnection(wConnection);
+				}
 				//Configura os crudbean filhos que possam existir
 				pvBroadcastConnection(this);
 				return true;
@@ -1503,7 +1534,7 @@ public abstract class DBSCrudBean extends DBSBean{
 
 
 	/**
-	 * Chamado antes da class set finalizada.<br/>
+	 * Chamado antes da class ser finalizada.<br/>
 	 * Conexão com o banco já se encontra fechada.<br/>
 	 * @param pEvent Informações do evento
 	 */
@@ -1536,11 +1567,11 @@ public abstract class DBSCrudBean extends DBSBean{
 	/**
 	 * Chamado após o click do usuário no insert/delete/update e antes de iniciar o respectivo insert/delete/update
 	 * Neste evento pode-se ignorar o click do usuário, evitado que continue o comando de insert/update/delete.
-	 * Para isso, informe pEvent.setOk(false);<br> 
+	 * Para isso, informe pEvent.setOk(false).<br> 
 	 * Neste evento o editingMode do Crud ainda não foi configurado, portanto para saber qual a atividade(Inser/update/delete) foi selecionada
 	 * deve-se consultar o atributo editingMode do Evento(ex:if (pEvent.getEditingMode() == EditingMode.INSERTING){}).<br/>
 	 * Pode-se forçar a indicação que houve alteração de dados logo na iniciação da edição, mesmo que ainda não tenha sido efetuada qualquer alteração pelo usuário, setando a propriedade setValueChanged para true.<br/>
-	 * Para reset dos valores de uma inclusão, utilize o beforeView.<br/>
+	 * Para configurar os valores default dos campos no caso de uma inclusão, utilize o evento <b>beforeInsert</b>.
 	 * Conexão com o banco encontra-se aberta.<br/> 
 	 * @param pEvent Informações do evento
 	 */
@@ -1553,12 +1584,18 @@ public abstract class DBSCrudBean extends DBSBean{
 	 */
 	protected void afterEdit(DBSCrudBeanEvent pEvent) throws DBSIOException {};
 	
+	/**
+	 * Chamado antes de iniciar um insert.<br/>
+	 * Neste evento pode-se configura os valores default dos campos.<br/>
+	 * Para ignorar a inclusão, deve-se setar setOk(False).<br/>
+	 * Conexão com o banco encontra-se aberta.<br/>
+	 * @param pEvent Informações do evento
+	 */
+	protected void beforeInsert(DBSCrudBeanEvent pEvent) throws DBSIOException{};
 	
 	/**
 	 * Chamado antes de exibir os dados ou antes de iniciar uma inclusão.<br/>
-	 * Neste evento pode-se configura os valores default dos campos no caso de uma inclusão(insert) (ex: <b>if (getIsInserting()){})</b>.<br/>
-	 * Para os outros casos(update/delete/approve/reprove) deve-se consultar o <b>pEvent.getEditingMode()</b>, 
-	 * pois o modo de edição só estará disponível após a confirmação do evento beforeEdit.<br/>
+	 * Durante este evento, para saber o modo de ediçãos deve-se consultar o <b>pEvent.getEditingMode()</b>.<br/>
 	 * Conexão com o banco encontra-se aberta.<br/>
 	 * @param pEvent Informações do evento
 	 */
@@ -1640,9 +1677,9 @@ public abstract class DBSCrudBean extends DBSBean{
 				if (wEditingStage==EditingStage.IGNORING){
 					setEditingMode(EditingMode.NONE); 
 					pvRestoreValuesOriginal();
-					if (!wDialogEdit){
+//					if (!wDialogEdit){
 						refreshList();
-					}
+//					}
 				}else{
 					if (pOk){
 						setEditingMode(EditingMode.NONE);
@@ -1659,7 +1696,7 @@ public abstract class DBSCrudBean extends DBSBean{
 					//Fecha crudform se for para ignorar a inclusão ou for uma inclusão a partir da seleção de um item do crudTable
 					if (wEditingStage==EditingStage.IGNORING
 					|| wInsertSelected){
-						setEditingMode(EditingMode.NONE); 
+						setEditingMode(EditingMode.NONE);
 //						setDialogStage(DialogStage.CLOSED);
 						close();
 					}else{
@@ -1719,6 +1756,11 @@ public abstract class DBSCrudBean extends DBSBean{
 		wDAO.restoreValuesOriginal();
 	}
 	
+	
+	/**
+	 * Move para o registro anterior ao primeiro registro.
+	 * @throws DBSIOException
+	 */
 	private void pvMoveBeforeFistRow() throws DBSIOException{
 		wDAO.moveBeforeFirstRow();
 	}
@@ -1728,14 +1770,17 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Inserir linha em branco quando inclusão estiver habilidata<b>(allowInsert=true)</b> 
 	 * e for edição diretamente no grid<b>(dialogEdit=false)</b>
 	 * e estiver no modo de edição<b>(UPDATING)</b>.
+	 * @throws DBSIOException 
 	 */
-	private void pvInsertEmptyRow(){
+	private void pvInsertEmptyRow() throws DBSIOException{
 		if (wDialogEdit
 		 || wEditingMode != EditingMode.UPDATING
 		 || !wAllowInsert){
 			return;
 		}
 		wDAO.insertEmptyRow();
+		
+		pvFireEventBeforeInsert();
 	}
 
 	/**
@@ -1832,7 +1877,8 @@ public abstract class DBSCrudBean extends DBSBean{
 		//Utiliza ListValue para controlar os valores de todas as linhas
 		//Verifica se há alguma coluna corrente antes de setar o valor
 		if (wDAO != null 
-		 && wDAO.getColumns().size() > 0){
+		 && (wDAO.getColumns().size() > 0
+		  || wDAO.getCommandColumns().size() > 0)){
 			T xOldValue =  pvGetValue(pColumnName);
 			if (pColumnValue != null){
 				//Converte o valor antigo para o mesmo tipo do valor recebido para garantir a verificação correta se houve alteração de valores
@@ -1840,9 +1886,9 @@ public abstract class DBSCrudBean extends DBSBean{
 			}
 			//Se valor armazenado(anterior) não for nulo e houve alteração de valores...
 			if(!DBSObject.getNotNull(xOldValue,"").toString().equals(DBSObject.getNotNull(pColumnValue,"").toString())){
-//				System.out.println("ALTERADO:" + pColumnName + "[" + DBSObject.getNotNull(xOldValue,"") + "] para [" + DBSObject.getNotNull(pColumnValue,"") + "]");
+				System.out.println("ALTERADO:" + pColumnName + "[" + DBSObject.getNotNull(xOldValue,"") + "] para [" + DBSObject.getNotNull(pColumnValue,"") + "]");
 				//marca como valor alterado
-				setValueChanged(true);
+				setValueChanged(true); 
 				wDAO.setValue(pColumnName, pColumnValue);
 			}
 		}
@@ -1857,7 +1903,8 @@ public abstract class DBSCrudBean extends DBSBean{
 	private <T> T pvGetValue(String pColumnName){
 		//Se existir registro corrente
 		if (wDAO != null 
-		 && wDAO.getColumns().size() >0){
+		 && (wDAO.getColumns().size() > 0
+		  || wDAO.getCommandColumns().size() > 0)){
 			return (T) wDAO.getValue(pColumnName);
 		}else{
 			return null;
@@ -2045,6 +2092,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @param pEvent Informações do evento
 	 */
 	protected void beforeIgnore(DBSCrudBeanEvent pEvent) throws DBSIOException {};
+
 	/**
 	 * Chamado depois de ignorar o CRUD.<br/>
 	 * Conexão com o banco encontra-se aberta.
@@ -2139,6 +2187,18 @@ public abstract class DBSCrudBean extends DBSBean{
 			xE.setOk(false);
 			wLogger.error("EventAfterView",e);
 		}
+	}
+
+	private boolean pvFireEventBeforeInsert(){
+		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_INSERT);
+		xE.setEditingMode(getEditingMode());
+		try {
+			pvBroadcastEvent(xE, true, true, true);
+		} catch (Exception e) {
+			xE.setOk(false);
+			wLogger.error("EventBeforeInsert",e);
+		}
+		return xE.isOk();
 	}
 
 	private boolean pvFireEventBeforeRefresh(){
@@ -2507,6 +2567,9 @@ public abstract class DBSCrudBean extends DBSBean{
 			case AFTER_VIEW:
 				afterView(pEvent);
 				break;
+			case BEFORE_INSERT:
+				beforeInsert(pEvent);
+				break;
 			case BEFORE_REFRESH:
 				beforeRefresh(pEvent);
 				break;
@@ -2549,7 +2612,9 @@ public abstract class DBSCrudBean extends DBSBean{
 	private void pvFireEventChildren(DBSCrudBeanEvent pEvent) throws DBSIOException{
 		if (pEvent.isOk()){
 			for (DBSCrudBean xBean:wChildrenCrudBean){
-				if (pEvent.getEvent() == CRUD_EVENT.BEFORE_VIEW){
+				//Força a atualização do lista antes de exibir
+				if (pEvent.getEvent() == CRUD_EVENT.BEFORE_VIEW
+				 || pEvent.getEvent() == CRUD_EVENT.BEFORE_INSERT){
 					xBean.refreshList();
 				}
 				switch (pEvent.getEvent()) {
@@ -2567,6 +2632,9 @@ public abstract class DBSCrudBean extends DBSBean{
 					break;
 				case AFTER_VIEW:
 					xBean.afterView(pEvent);
+					break;
+				case BEFORE_INSERT:
+					xBean.beforeInsert(pEvent);
 					break;
 				case BEFORE_REFRESH:
 					xBean.beforeRefresh(pEvent);
@@ -2633,6 +2701,9 @@ public abstract class DBSCrudBean extends DBSBean{
 					break;
 				case BEFORE_REFRESH:
 					wEventListeners.get(xX).beforeRefresh(pEvent);
+					break;
+				case BEFORE_INSERT:
+					wEventListeners.get(xX).beforeInsert(pEvent);
 					break;
 				case AFTER_REFRESH:
 					wEventListeners.get(xX).afterRefresh(pEvent);

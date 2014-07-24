@@ -18,6 +18,7 @@ public class DBSCrudBeanEvent extends DBSEvent<DBSCrudBean> {
 		AFTER_IGNORE,
 		BEFORE_EDIT,
 		AFTER_EDIT,
+		BEFORE_INSERT,
 		BEFORE_REFRESH,
 		AFTER_REFRESH,
 		BEFORE_SELECT,
