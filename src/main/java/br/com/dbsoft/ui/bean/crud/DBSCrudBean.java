@@ -127,6 +127,7 @@ public abstract class DBSCrudBean extends DBSBean{
 //	private DBSRow								wCurrentRow = new DBSRow();
 	private boolean								wValueChanged;
 	private int									wCopiedRowIndex = -1;
+	private	Integer 							wSavedCurrentRowIndex;
 	private boolean								wValidateComponentHasError = false;
 	private boolean								wDialogEdit = true;
 	private Boolean 							wDialogOpened = false;
@@ -1130,24 +1131,35 @@ public abstract class DBSCrudBean extends DBSBean{
 		
 		ignoreEditing(); 
 
-		Integer xCurrentRowIndex = -1;
-//		//Salva posição atual para reposicionar após o refresh
-		if (wDAO != null){
-			xCurrentRowIndex =  wDAO.getCurrentRowIndex();
-		}
 		//Dispara evento para atualizar os dados
 		if (pvFireEventBeforeRefresh()){
 			//Apaga itens selecionados, se houver.
 			wSelectedRowsIndexes.clear();
-			//Restaura posição salva
-			if (wDAO != null){
-				wDAO.setCurrentRowIndex(xCurrentRowIndex);
-			}
+
 			pvFireEventAfterRefresh();
 		}
 		return DBSFaces.getCurrentView();
 	}
-	
+
+	/**
+	 * Salva posição atual para reposicionar após o refresh
+	 */
+	private void pvCurrentRowIndexSave(){
+		wSavedCurrentRowIndex = -1;
+		if (wDAO != null){
+			wSavedCurrentRowIndex =  wDAO.getCurrentRowIndex();
+		}
+	}
+
+	/**
+	 * Restaura posição após o refresh
+	 */
+	private void pvCurrentRowIndexRestore() throws DBSIOException{
+		if (wDAO != null){
+			wDAO.setCurrentRowIndex(wSavedCurrentRowIndex);
+		}
+	}
+
 	/**
 	 * Copia os valores dos campos para a memória para poderem ser colados em outro registro
 	 * @return
@@ -1886,7 +1898,7 @@ public abstract class DBSCrudBean extends DBSBean{
 			}
 			//Se valor armazenado(anterior) não for nulo e houve alteração de valores...
 			if(!DBSObject.getNotNull(xOldValue,"").toString().equals(DBSObject.getNotNull(pColumnValue,"").toString())){
-				System.out.println("ALTERADO:" + pColumnName + "[" + DBSObject.getNotNull(xOldValue,"") + "] para [" + DBSObject.getNotNull(pColumnValue,"") + "]");
+//				System.out.println("ALTERADO:" + pColumnName + "[" + DBSObject.getNotNull(xOldValue,"") + "] para [" + DBSObject.getNotNull(pColumnValue,"") + "]");
 				//marca como valor alterado
 				setValueChanged(true); 
 				wDAO.setValue(pColumnName, pColumnValue);
@@ -2571,7 +2583,9 @@ public abstract class DBSCrudBean extends DBSBean{
 				beforeInsert(pEvent);
 				break;
 			case BEFORE_REFRESH:
+				pvCurrentRowIndexSave();
 				beforeRefresh(pEvent);
+				pvCurrentRowIndexRestore();
 				break;
 			case AFTER_REFRESH:
 				afterRefresh(pEvent);
