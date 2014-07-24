@@ -229,11 +229,7 @@
 	top: 3px;
 }
 
-.-is_select_down { 
-	position:absolute;
-	margin-left:-24px;
-	margin-top:1px;
-}
+
 .-is_menuitem_star { 
 	position:absolute;
 	left:0; 

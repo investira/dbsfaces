@@ -2,9 +2,8 @@
 }
 
 .dbs_inputText > .-container {
-	display: inline-block;
-	position: relative;
-	white-space: nowrap;
+/* 	display: inline-block; */
+/* 	position: relative; */
 }
 
 .dbs_inputText > .-container > .-input {

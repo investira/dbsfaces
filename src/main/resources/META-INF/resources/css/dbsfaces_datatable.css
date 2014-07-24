@@ -256,11 +256,12 @@
 
 .dbs_dataTable > .-container > .-content > table > tbody .dbs_input{
 	margin: -2px 0 -2px -1px;
+/* 	width: 100%; */
 }
 
 			
 /* .dbs_dataTable.-noDialogEdit > .-container > .-content > table > tbody > tr:not(.-selected) .dbs_input-data{ */
-.dbs_dataTable.-noDialogEdit > .-container > .-content > table > tbody .dbs_input-data{
+.dbs_dataTable.-noDialogEdit > .-container > .-content > table > tbody .dbs_input-data.-readOnly{
 	border: none;
 	-webkit-border-radius: 0px;
 	-moz-border-radius: 0px;
@@ -270,11 +271,10 @@
 	box-shadow: none;
 	background-color: transparent;
 	color: inherit;
-	padding: 0px 2px 0px 1px !important;
-	display:inline;
+	padding: 2px 2px 0px 1px !important;
+	display: inherit;
 	line-height: 15px;
 	min-height: 19px !important;
-/* 	min-height: 15px !important; */
 }
 
 .dbs_dataTable > .-container > .-content > table > tbody .dbs_input-data.-readOnly{

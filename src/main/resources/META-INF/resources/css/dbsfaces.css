@@ -84,12 +84,20 @@ li {
 input,
 textarea,
 select,
-.dbs_input-data > label {
+.dbs_input-data > label,
+.dbs_input-data > .-data {
 	font-family: inherit;
 	font-weight: normal;
 	color: rgb(13, 25, 45);
+}
+
+input,
+textarea,
+select{
 	background: white;
 }
+
+
 select{
 	height: 19px;
 }
@@ -500,7 +508,7 @@ span.dbs_input-data.-readOnly,
 div.dbs_input-data.-readOnly,
 label.dbs_input-data.-readOnly
 	{
-	padding: 1px 1px 1px 2px !important;
+	padding: 1px 1px 1px 1px !important;
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;
 	box-shadow: none;
@@ -524,6 +532,13 @@ textarea.dbs_input-data:FOCUS,
 
 .dbs_input .-error {
 	background-color: rgb(255, 222, 180);
+}
+
+.dbs_input > .-container {
+	white-space: nowrap;
+	display: inline-block;
+    position: relative;
+    width: 100%;
 }
 
 

@@ -1,8 +1,9 @@
 .dbs_inputTextArea{
 }
+
 .dbs_inputTextArea > .-container{
-	white-space: nowrap;
 }
+
 .dbs_inputTextArea > .-container > .dbs_input-label {
 	vertical-align: top !important;
 	float:left;
