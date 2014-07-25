@@ -3,7 +3,11 @@ package br.com.dbsoft.ui.bean.crud;
 import java.sql.Connection;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.SortedMap;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -123,11 +127,9 @@ public abstract class DBSCrudBean extends DBSBean{
 	private EditingStage						wEditingStage = EditingStage.NONE;
 	private String								wCrudFormFile = "";
 	private List<Integer> 						wSelectedRowsIndexes =  new ArrayList<Integer>();
-//	private int									wCurrentRowIndex = -1;
-//	private DBSRow								wCurrentRow = new DBSRow();
+	private	Collection<DBSColumn> 				wSavedCurrentColumns = null;
 	private boolean								wValueChanged;
 	private int									wCopiedRowIndex = -1;
-	private	Integer 							wSavedCurrentRowIndex;
 	private boolean								wValidateComponentHasError = false;
 	private boolean								wDialogEdit = true;
 	private Boolean 							wDialogOpened = false;
@@ -358,7 +360,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 */
 	public void crudFormBeforeShowComponent(UIComponent pComponent){
 		if (wDAO!=null){
-			//Configura os campos do tipo inputtext bases
+			//Configura os campos do tipo input
 			if (pComponent instanceof DBSUIInput){ 
 				DBSColumn xColumn = pvGetDAOColumnFromInputValueExpression((DBSUIInput) pComponent);
 				if (xColumn!=null){
@@ -367,12 +369,31 @@ public abstract class DBSCrudBean extends DBSBean{
 						DBSUIInputText xInput = (DBSUIInputText) pComponent;
 						xInput.setMaxLength(xColumn.getSize()); 
 					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Configura os valores iniciais antes de uma inclusão a partir do valor do componente,
+	 * para diminuir a chance de considerar que houve alteração de valor, mesmo sem o usuário ter digitado algo 
+	 * durante a inclusão.
+	 * @param pComponent
+	 */
+	public void crudFormBeforeInsert(UIComponent pComponent){
+		if (wDAO!=null){
+			//Configura os campos do tipo input
+			if (pComponent instanceof DBSUIInput){ 
+				DBSColumn xColumn = pvGetDAOColumnFromInputValueExpression((DBSUIInput) pComponent);
+				if (xColumn!=null){
 					//Força a inicialização dos valores para que no "Insert" seja evitado a solicitação de confirmação do comando de "Ignorar" quando nada tenha sido digitado. 
-					if (getIsInserting() &&
+					if (getEditingMode() == EditingMode.INSERTING &&
 						getEditingStage() == EditingStage.NONE){
 						DBSUIInput xInput = (DBSUIInput) pComponent;
 						//Move o valor do componente para a coluna
-						setValue(xColumn.getColumnName(), xInput.getValue());
+						if (wDialogEdit){
+							setValue(xColumn.getColumnName(), xInput.getValue());
+						}
 						//Força a indicação que não houve alteração de valores
 						setValueChanged(false);
 					}
@@ -1142,25 +1163,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 
 	/**
-	 * Salva posição atual para reposicionar após o refresh
-	 */
-	private void pvCurrentRowIndexSave(){
-		wSavedCurrentRowIndex = -1;
-		if (wDAO != null){
-			wSavedCurrentRowIndex =  wDAO.getCurrentRowIndex();
-		}
-	}
-
-	/**
-	 * Restaura posição após o refresh
-	 */
-	private void pvCurrentRowIndexRestore() throws DBSIOException{
-		if (wDAO != null){
-			wDAO.setCurrentRowIndex(wSavedCurrentRowIndex);
-		}
-	}
-
-	/**
 	 * Copia os valores dos campos para a memória para poderem ser colados em outro registro
 	 * @return
 	 */
@@ -1219,8 +1221,6 @@ public abstract class DBSCrudBean extends DBSBean{
 //		System.out.println("VIEW");
 		//Limpa todas as mensagens que estiverem na fila
 		clearMessages();
-		
-//		wDAO.synchronize();
 		
 		if (wDAO.getCurrentRowIndex()!=-1){
 			//Só permite a seleção quando o dialog estiver fechado
@@ -1289,7 +1289,6 @@ public abstract class DBSCrudBean extends DBSBean{
 			if (!wInsertSelected){
 				clearMessages();
 			}
-
 			//Inclui linha em branco quando edição for diretamente no grid e edição já estiver habilitada(EditingMode.UPDATING)
 			if (!wDialogEdit
 			 && wEditingMode==EditingMode.UPDATING){
@@ -1301,9 +1300,7 @@ public abstract class DBSCrudBean extends DBSBean{
 						if (pvFireEventBeforeEdit(EditingMode.INSERTING)){
 							//Desmarca registros selecionados
 							wSelectedRowsIndexes.clear(); 
-							
 							setEditingMode(EditingMode.INSERTING);
-							
 							pvMoveBeforeFistRow();
 							
 							if (pvFireEventBeforeInsert()){
@@ -1689,9 +1686,8 @@ public abstract class DBSCrudBean extends DBSBean{
 				if (wEditingStage==EditingStage.IGNORING){
 					setEditingMode(EditingMode.NONE); 
 					pvRestoreValuesOriginal();
-//					if (!wDialogEdit){
-						refreshList();
-//					}
+
+					refreshList();
 				}else{
 					if (pOk){
 						setEditingMode(EditingMode.NONE);
@@ -1748,18 +1744,6 @@ public abstract class DBSCrudBean extends DBSBean{
 		}		
 	}
 
-//	/**
-//	 *Na edição diretamente no grid(wDialogEdit=false), os valores são setados e lidos diretamente no ResultDataModel que controla os valores de todos as linhas.
-//	 *Isto impede que se verifique se o valor original foi alterado ou não.
-//	 *Desta forma, é necessário efetuar esta verificação antes de efetuar o commit, para que ele entenda quais os valores foram alterados.	
-//	 */
-//	private void pvMarkChangedValues(){
-//		for (Iterator<DBSColumn> xI = wDAO.getCommandColumns().iterator(); xI.hasNext();){
-//			DBSColumn xC = xI.next();
-//			pvSetValueDAO(xC.getColumnName(), getValue(xC.getColumnName()));
-//		}
-//	
-//	}
 
 	/**
 	 * Restaura os valores antes de qualquer modificação
@@ -2090,7 +2074,78 @@ public abstract class DBSCrudBean extends DBSBean{
 		setApprovalStage(xApprovalNextStage);
 	}
 
-	
+	/**
+	 * Salva conteúdo da linha atual para posteriormente, após o refresh, procurar pela linha 
+	 * que contenha os mesmos dados para selecionar como sendo o registro atual
+	 */
+	private void pvCurrentRowSave(){
+		wSavedCurrentColumns = null;
+		if (wDAO != null){
+			wSavedCurrentColumns = wDAO.getCommandColumns();
+//			Iterator<DBSColumn> xI = wSavedCurrentColumns.iterator();
+//			while (xI.hasNext()){
+//				DBSColumn xC = xI.next();
+//				System.out.print(xC.getColumnName() + ":" + xC.getValue() + "	");
+//			}
+		}
+	}
+
+	/**
+	 * Posiciona no mesmo registro que foi editado.<br/>
+	 * O reposicionamento é efetuado pesquisando-se dentro dos registros existentes, 
+	 * aquele que contém os dados salvos anteriormente no <b>pvCurrentRowSave</b>.
+	 * @throws DBSIOException
+	 */
+	private void pvCurrentRowRestore() throws DBSIOException{
+		boolean xOk;
+		Integer	xRowIndex;
+		if (wDAO != null
+		 && wSavedCurrentColumns !=null
+		 && wDAO.getResultDataModel() != null){
+//			System.out.println("----RESTORE-----------------------------");
+			//Recupera todas as linhas
+			Iterator<SortedMap<String, Object>> xIR = wDAO.getResultDataModel().iterator();
+			xRowIndex = -1;
+			//Loop por todas as linhas para procurar pela que é igual a linha salva
+			while (xIR.hasNext()){ 
+				xOk = true;
+				xRowIndex++; 
+				//Recupera todas as colunas da linha
+				SortedMap<String, Object> xColumns = xIR.next();
+				//Loop por todas as colunas da linha
+				for (Entry<String, Object> xC:xColumns.entrySet()){
+					Iterator<DBSColumn> xIS = wSavedCurrentColumns.iterator();
+					//Loop por todas as colunas salvas para pesquisar o conteúdo
+					//Procura pelo coluna que possua o mesmo nome
+					while (xIS.hasNext()){
+						DBSColumn xSC = xIS.next();
+						//Verifica se a coluna com o mesmo nome, possui o mesmo conteúdo.
+						if (xSC.getColumnName().equalsIgnoreCase(xC.getKey())){
+							//Verifica se valor é igual ao valor salvo
+							if (!DBSObject.getNotNull(xSC.getValue(),"").equals(DBSObject.getNotNull(xC.getValue(),""))){
+								//Indica que este registro não é igual ao valor salvo
+								xOk = false;
+							}
+							break;
+						}
+					}
+					if (!xOk){
+						//Sai para procurar a próxima linha
+						break;
+					}
+				}
+				if (xOk){
+					wDAO.setCurrentRowIndex(xRowIndex);
+					return;
+				}
+			}
+		}
+		//Posiciona na primeira linha se não consegui encontrar o registro restaurado.
+		wDAO.moveFirstRow();
+	}
+
+
+
 	/**
 	 * Chamado depois de efetuado o CRUD com sucesso.<br/>
 	 * Conexão com o banco encontra-se aberta.
@@ -2583,9 +2638,9 @@ public abstract class DBSCrudBean extends DBSBean{
 				beforeInsert(pEvent);
 				break;
 			case BEFORE_REFRESH:
-				pvCurrentRowIndexSave();
+				pvCurrentRowSave();
 				beforeRefresh(pEvent);
-				pvCurrentRowIndexRestore();
+				pvCurrentRowRestore();
 				break;
 			case AFTER_REFRESH:
 				afterRefresh(pEvent);
