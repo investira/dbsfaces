@@ -14,6 +14,7 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PostAddToViewEvent;
+import javax.faces.event.PreRenderComponentEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import javax.faces.validator.MethodExpressionValidator;
@@ -63,7 +64,7 @@ public class DBSCrudForm extends DBSUIComponentBase implements NamingContainer, 
 //		 xContext.getViewRoot().subscribeToViewEvent(PreValidateEvent.class,this);
 //		 xContext.getViewRoot().subscribeToViewEvent(PostValidateEvent.class,this);
 //		 xContext.getViewRoot().subscribeToViewEvent(PreRenderViewEvent.class,this);
-//		 xContext.getViewRoot().subscribeToViewEvent(PreRenderComponentEvent.class,this);
+		 xContext.getViewRoot().subscribeToViewEvent(PreRenderComponentEvent.class,this);
 //		 //-------------------------------------------------------------------------------
 //		 xContext.getViewRoot().subscribeToViewEvent(PostConstructViewMapEvent.class,this);
 //		 xContext.getViewRoot().subscribeToViewEvent(PostRestoreStateEvent.class,this);
@@ -126,6 +127,17 @@ public class DBSCrudForm extends DBSUIComponentBase implements NamingContainer, 
 						xME = DBSFaces.createMethodExpression(pContext, xELString + ".crudFormValidateComponent", null, new Class[]{FacesContext.class, UIComponent.class, Object.class});
 						MethodExpressionValidator xV = new MethodExpressionValidator(xME);
 						xInput.addValidator(xV);					
+					}else{
+						//Chamada recursiva para pesquisar dentro do componente, até não haver mais filhos.
+						pvInvokeCrudBeanMethods(pContext, xC, pEvent);
+					}
+				}else if (pEvent instanceof PreRenderComponentEvent){
+					if (xC instanceof UIInput){
+						//Cria chamada ao método do crudBean para configura o campo
+						xME = DBSFaces.createMethodExpression(pContext, xELString + ".crudFormBeforeInsert", null, new Class[]{UIComponent.class});
+				    	xParms = new Object[1]; 
+				    	xParms[0] = xC;
+						xME.invoke(pContext.getELContext(), xParms);
 					}else{
 						//Chamada recursiva para pesquisar dentro do componente, até não haver mais filhos.
 						pvInvokeCrudBeanMethods(pContext, xC, pEvent);
