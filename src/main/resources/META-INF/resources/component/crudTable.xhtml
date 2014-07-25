@@ -92,7 +92,7 @@
 								</c:if>
 								<c:if test="#{cc.crudBean.dialogEdit}">
 									<dbs:button id="view" rendered="#{cc.attrs.multipleSelection and cc.crudBean.multipleSelection}"  iconClass="dbs_icon -i_consultar" action="#{cc.crudBean.viewSelection()}" update=":dialog " execute="@this"/>
-									<dbs:button id="insert"  rendered="#{cc.attrs.allowInsert and cc.crudBean.allowInsert}" iconClass="dbs_icon -i_inserir" action="#{cc.crudBean.insert()}" update=":dialog " execute="@this"/>
+									<dbs:button id="insert"  rendered="#{cc.attrs.allowInsert and cc.crudBean.allowInsert}" iconClass="dbs_icon -i_inserir" action="#{cc.crudBean.insert()}" update=":dialog " execute=":dialog @this"/>
 									<dbs:button id="refresh" rendered="#{cc.attrs.allowRefresh and cc.crudBean.allowRefresh}" iconClass="dbs_icon -i_refresh" action="#{cc.crudBean.refreshList()}" update=":dialog :#{cc.clientId}"/>
 								</c:if>							
 							</dbs:div>

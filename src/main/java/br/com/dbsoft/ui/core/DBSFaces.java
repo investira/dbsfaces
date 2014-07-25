@@ -1484,7 +1484,7 @@ public class  DBSFaces {
 						xBtn.setId("btC0");
 						xBtn.setStyleClass("-selectOne");
 						xBtn.setActionExpression(DBSFaces.createMethodExpression(xContext, pDataTable.getViewOneAction(), String.class, new Class[0]));
-						xBtn.setExecute("@this");
+						xBtn.setExecute("@this :dialog"); //:dialog necessário para fazer o submit dos campos dentro do form, em caso de crudtable dentro de crudform 
 						xBtn.setUpdate(pDataTable.getUpdate()); 
 					xC0.getChildren().add(xBtn);
 				}
