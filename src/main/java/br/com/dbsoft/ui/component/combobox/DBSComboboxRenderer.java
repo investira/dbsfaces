@@ -111,7 +111,7 @@ public class DBSComboboxRenderer extends DBSRenderer {
 		xValueKey = pCombobox.getValue();
 
 		//Converte o valor para o mesmo tipo da chave utilizada na lista para garantir que a comparação para verificar se a chave existe será efetuados com valores do mesmo tipo de class
-		if (!xValueKey.equals(COMBOBOX.NULL_VALUE)){
+		if (xValueKey != null){
 			Iterator<Object> xListKeyIterator = xList.keySet().iterator();
 			Class<?> xValueKeyClass = xValueKey.getClass();
 			Object xListKeyValue;
@@ -130,6 +130,8 @@ public class DBSComboboxRenderer extends DBSRenderer {
 			}else if (xValueKeyClass.isAssignableFrom(Double.class)){
 				xValueKey =  DBSNumber.toDouble(xValueKey, null);
 			}
+		}else{
+			xValueKey = COMBOBOX.NULL_VALUE;
 		}
 		
 		//Busca item na lista para recuperar o valor que será utlizado para exibir a informação

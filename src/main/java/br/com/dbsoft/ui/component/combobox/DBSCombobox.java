@@ -70,19 +70,18 @@ public class DBSCombobox extends DBSUIInput{
 		if (xList != null 
 	     && xList.size() > 0){
 			if (pValue != null){
-				//Verifica se item esta na lista 
-				if (!xList.containsKey(pValue)){
+				//Set valor como nulo se valor rtecebido não for encontrado na lista ou
+				//for igual ao valor definido como nulo
+				if (!xList.containsKey(pValue)
+				 || pValue.equals(COMBOBOX.NULL_VALUE)){
 					pValue = null;
 				}
 			}
 			if (pValue == null){
 				//Posiciona no primeiro item 
 				if (!xList.containsKey(COMBOBOX.NULL_VALUE)){
-					super.setValue(xList.entrySet().iterator().next().getKey());
-				}else{
-					super.setValue(COMBOBOX.NULL_VALUE);
+					pValue = xList.entrySet().iterator().next().getKey();
 				}
-				return;
 			}
 		}
 		super.setValue(pValue);
