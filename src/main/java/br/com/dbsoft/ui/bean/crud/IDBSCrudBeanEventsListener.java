@@ -44,10 +44,8 @@ public interface IDBSCrudBeanEventsListener {
 	public abstract void beforeInsert(DBSCrudBeanEvent pEvent) throws DBSIOException;
 
 	/**
-	 * Chamado antes de exibir os dados ou antes de iniciar uma inclusão.<br/>
-	 * Neste evento pode-se configurar os valores do capde algum campo em função do registro lido.<br/>
+	 * Chamado antes de exibir os dados em uma edição ou exclusão.<br/>
 	 * Durante este evento, para saber o modo de ediçãos deve-se consultar o <b>pEvent.getEditingMode()</b>.<br/>
-	 * Para configurar os valores default dos campos no caso de uma inclusão, utilize o evento <b>beforeInsert</b>.
 	 * Conexão com o banco encontra-se aberta.<br/>
 	 * @param pEvent Informações do evento
 	 */
