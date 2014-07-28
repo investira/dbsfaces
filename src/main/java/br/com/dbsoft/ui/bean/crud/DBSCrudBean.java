@@ -25,6 +25,7 @@ import br.com.dbsoft.ui.bean.DBSBean;
 import br.com.dbsoft.ui.bean.crud.DBSCrudBeanEvent.CRUD_EVENT;
 import br.com.dbsoft.ui.component.DBSUIInput;
 import br.com.dbsoft.ui.component.DBSUIInputText;
+import br.com.dbsoft.ui.component.crudform.DBSCrudForm;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSDate;
 import br.com.dbsoft.util.DBSIO;
@@ -126,6 +127,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	private EditingMode							wEditingMode = EditingMode.NONE;
 	private EditingStage						wEditingStage = EditingStage.NONE;
 	private String								wCrudFormFile = "";
+	private DBSCrudForm 						wCrudForm;
 	private List<Integer> 						wSelectedRowsIndexes =  new ArrayList<Integer>();
 	private	Collection<DBSColumn> 				wSavedCurrentColumns = null;
 	private boolean								wValueChanged;
@@ -374,34 +376,43 @@ public abstract class DBSCrudBean extends DBSBean{
 		}
 	}
 	
-	/**
-	 * Configura os valores iniciais antes de uma inclusão a partir do valor do componente,
-	 * para diminuir a chance de considerar que houve alteração de valor, mesmo sem o usuário ter digitado algo 
-	 * durante a inclusão.
-	 * @param pComponent
-	 */
-	public void crudFormBeforeInsert(UIComponent pComponent){
-		if (wDAO!=null){
+//	/**
+//	 * Configura os valores iniciais antes de uma inclusão a partir do valor do componente,
+//	 * para diminuir a chance de considerar que houve alteração de valor, mesmo sem o usuário ter digitado algo 
+//	 * durante a inclusão.
+//	 * @param pComponent
+//	 */
+//	public void crudFormBeforeInsert(UIComponent pComponent){
+//		if (wDAO!=null){
 			//Configura os campos do tipo input
-			if (pComponent instanceof DBSUIInput){ 
-				DBSColumn xColumn = pvGetDAOColumnFromInputValueExpression((DBSUIInput) pComponent);
-				if (xColumn!=null){
+//			if (pComponent instanceof DBSUIInput){ 
+//				DBSColumn xColumn = pvGetDAOColumnFromInputValueExpression((DBSUIInput) pComponent);
+//				if (xColumn!=null){
 					//Força a inicialização dos valores para que no "Insert" seja evitado a solicitação de confirmação do comando de "Ignorar" quando nada tenha sido digitado. 
-					if (getEditingMode() == EditingMode.INSERTING &&
-						getEditingStage() == EditingStage.NONE){
-						DBSUIInput xInput = (DBSUIInput) pComponent;
-						//Move o valor do componente para a coluna
-						if (wDialogEdit){
-							setValue(xColumn.getColumnName(), xInput.getValue());
-						}
-						//Força a indicação que não houve alteração de valores
-						setValueChanged(false);
-					}
-				}
-			}
-		}
+//					if (getEditingMode() == EditingMode.INSERTING &&
+//						getEditingStage() == EditingStage.NONE){
+//						DBSUIInput xInput = (DBSUIInput) pComponent;
+//						//Move o valor do componente para a coluna
+//						if (wDialogEdit){
+//							setValue(xColumn.getColumnName(), xInput.getValue());
+//						}
+//						//Força a indicação que não houve alteração de valores
+//					}
+//					setValueChanged(false);
+//				}
+//			}
+//		}
+//	}
+	
+	/**
+	 * !!! ESTE ATRIBUTO DEVE SER SETADO MANUALMENTE !!!
+	 * Seta a qual crudForm este crudBean esta vinculado.<br/>
+	 * Este método é chamado automaticamente pelo DBSCrudForm.
+	 * @param pCrudForm
+	 */
+	public void setCrudForm(DBSCrudForm pCrudForm){
+		wCrudForm = pCrudForm;
 	}
-
 	
 	/**
 	 * Método padrão para validação dos campos que existentes dentro do crudForm do usuário.
@@ -1090,54 +1101,60 @@ public abstract class DBSCrudBean extends DBSBean{
 		 */
 		public synchronized String endEditing(Boolean pConfirm) throws DBSIOException{
 //			System.out.println("END EDITING :  " + pConfirm  + ":" + getEditingMode().getName() + ":" + getEditingStage().getName());
-			if (pConfirm){
-				//Verifica se está no estágio correto
-				if (wEditingStage!=EditingStage.NONE){
-					if (wEditingStage==EditingStage.COMMITTING){
-						//Chama eventos
-						if (pvFireEventBeforeCommit()){
-							pvFireEventAfterCommit();
-							refreshList();
-							pvFinalizeEditing(true);
-						}else{
-							pvFinalizeEditing(false);
+			try{
+				if (pConfirm){
+					//Verifica se está no estágio correto
+					if (wEditingStage!=EditingStage.NONE){
+						if (wEditingStage==EditingStage.COMMITTING){
+							//Chama eventos
+							if (pvFireEventBeforeCommit()){
+								pvFireEventAfterCommit();
+								refreshList();
+								pvFinalizeEditing(true);
+							}else{
+								pvFinalizeEditing(false);
+							}
+						}else if (wEditingStage==EditingStage.IGNORING){
+							//Chama eventos
+							if (pvFireEventBeforeIgnore()){
+								pvFireEventAfterIgnore();
+								pvFinalizeEditing(true);
+							}else{
+								pvFinalizeEditing(false);
+							}
 						}
-					}else if (wEditingStage==EditingStage.IGNORING){
-						//Chama eventos
-						if (pvFireEventBeforeIgnore()){
-							pvFireEventAfterIgnore();
-							pvFinalizeEditing(true);
-						}else{
-							pvFinalizeEditing(false);
-						}
+					}else{
+						//exibe mensagem de erro de procedimento
 					}
 				}else{
-					//exibe mensagem de erro de procedimento
+					//Retorna ao estágio sem edição, inclusão ou deleção
+					setEditingStage(EditingStage.NONE);
+					switch(wEditingMode){
+						case UPDATING:
+							//Restaura os valores anteriores a modificação
+							break;
+						case INSERTING:
+							break;
+						case DELETING: 
+							setEditingMode(EditingMode.NONE);
+							view();
+							break;
+						case APPROVING: 
+							setEditingMode(EditingMode.NONE);
+							close(false);
+							break;
+						case REPROVING: 
+							setEditingMode(EditingMode.NONE);
+							close(false);
+							break;
+						default:
+							//Exibe mensagem de erro de procedimento
+					}
 				}
-			}else{
-				//Retorna ao estágio sem edição, inclusão ou deleção
-				setEditingStage(EditingStage.NONE);
-				switch(wEditingMode){
-					case UPDATING:
-						//Restaura os valores anteriores a modificação
-						break;
-					case INSERTING:
-						break;
-					case DELETING: 
-						setEditingMode(EditingMode.NONE);
-						view();
-						break;
-					case APPROVING: 
-						setEditingMode(EditingMode.NONE);
-						close(false);
-						break;
-					case REPROVING: 
-						setEditingMode(EditingMode.NONE);
-						close(false);
-						break;
-					default:
-						//Exibe mensagem de erro de procedimento
-				}
+			}catch(Exception e){
+				wLogger.error("Crud:" + getDialogCaption() + ":endEditing", e);
+				setEditingMode(EditingMode.NONE);
+				DBSIO.throwIOException(e);
 			}
 			return DBSFaces.getCurrentView();
 		}
@@ -1301,6 +1318,7 @@ public abstract class DBSCrudBean extends DBSBean{
 							//Desmarca registros selecionados
 							wSelectedRowsIndexes.clear(); 
 							setEditingMode(EditingMode.INSERTING);
+							
 							pvMoveBeforeFistRow();
 							
 							if (pvFireEventBeforeInsert()){
@@ -1311,7 +1329,9 @@ public abstract class DBSCrudBean extends DBSBean{
 							//exibe mensagem de erro de procedimento
 						}
 					} catch (Exception wE) {
+						wLogger.error("Crud:" + getDialogCaption() + ":insert", wE);
 						setEditingMode(EditingMode.NONE);
+						DBSIO.throwIOException(wE);
 					}
 				}else{
 					//exibe mensagem de erro de procedimento
@@ -1340,7 +1360,9 @@ public abstract class DBSCrudBean extends DBSBean{
 						//exibe mensagem de erro de procedimento
 					}
 				} catch (Exception wE) {
+					wLogger.error("Crud:" + getDialogCaption() + ":update", wE);
 					setEditingMode(EditingMode.NONE);
+					DBSIO.throwIOException(wE);
 				}
 			}else{
 				//exibe mensagem de erro de procedimento
@@ -1371,7 +1393,9 @@ public abstract class DBSCrudBean extends DBSBean{
 						//setEditingStage(EditingStage.COMMITTING);
 					}
 				} catch (Exception wE) {
+					wLogger.error("Crud:" + getDialogCaption() + ":delete", wE);
 					setEditingMode(EditingMode.NONE);
+					DBSIO.throwIOException(wE);
 				}
 			}else{
 				//exibe mensagem de erro de procedimento
@@ -1405,7 +1429,9 @@ public abstract class DBSCrudBean extends DBSBean{
 						//exibe mensagem de erro de procedimento
 					}
 				} catch (Exception wE) {
+					wLogger.error("Crud:" + getDialogCaption() + ":approve", wE);
 					setEditingMode(EditingMode.NONE);
+					DBSIO.throwIOException(wE);
 				}
 			}else{
 				//exibe mensagem de erro de procedimento
@@ -1438,7 +1464,9 @@ public abstract class DBSCrudBean extends DBSBean{
 						//exibe mensagem de erro de procedimento
 					}
 				} catch (Exception wE) {
+					wLogger.error("Crud:" + getDialogCaption() + ":reprove", wE);
 					setEditingMode(EditingMode.NONE);
+					DBSIO.throwIOException(wE);
 				}
 			}else{
 				//exibe mensagem de erro de procedimento
@@ -1603,7 +1631,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	protected void beforeInsert(DBSCrudBeanEvent pEvent) throws DBSIOException{};
 	
 	/**
-	 * Chamado antes de exibir os dados ou antes de iniciar uma inclusão.<br/>
+	 * Chamado antes de exibir os dados em uma edição ou exclusão.<br/>
 	 * Durante este evento, para saber o modo de ediçãos deve-se consultar o <b>pEvent.getEditingMode()</b>.<br/>
 	 * Conexão com o banco encontra-se aberta.<br/>
 	 * @param pEvent Informações do evento
@@ -1882,7 +1910,11 @@ public abstract class DBSCrudBean extends DBSBean{
 			}
 			//Se valor armazenado(anterior) não for nulo e houve alteração de valores...
 			if(!DBSObject.getNotNull(xOldValue,"").toString().equals(DBSObject.getNotNull(pColumnValue,"").toString())){
-//				System.out.println("ALTERADO:" + pColumnName + "[" + DBSObject.getNotNull(xOldValue,"") + "] para [" + DBSObject.getNotNull(pColumnValue,"") + "]");
+				if (getEditingMode() == EditingMode.INSERTING
+				 && getDialogOpened()){
+					//TODO Exibição mantida somente para fins de teste, devendo ser excluida o quanto antes.
+					System.out.println("ALTERADO:" + pColumnName + "[" + DBSObject.getNotNull(xOldValue,"") + "] para [" + DBSObject.getNotNull(pColumnValue,"") + "]");
+				}
 				//marca como valor alterado
 				setValueChanged(true); 
 				wDAO.setValue(pColumnName, pColumnValue);
@@ -2147,6 +2179,42 @@ public abstract class DBSCrudBean extends DBSBean{
 
 
 	/**
+	 * Configura os valores iniciais antes de uma inclusão a partir do valor do componente,
+	 * para diminuir a chance de considerar que houve alteração de valor, mesmo sem o usuário 
+	 * ter digitado algo durante a inclusão.
+	 * @param pComponent
+	 */
+	private void pvBeforeInsertResetValues(UIComponent pComponent){
+		if (pComponent==null){return;}
+		Iterator<UIComponent> xI = pComponent.getFacetsAndChildren();
+		if (wDAO!=null){
+			while (xI.hasNext()){
+				UIComponent xC = xI.next();
+				//Configura os campos do tipo input
+				if (xC instanceof DBSUIInput){ 
+					DBSColumn xColumn = pvGetDAOColumnFromInputValueExpression((DBSUIInput) xC);
+					if (xColumn!=null){
+						//Força a inicialização dos valores para que no "Insert" seja evitado a solicitação de confirmação do comando de "Ignorar" quando nada tenha sido digitado. 
+						if (getEditingMode() == EditingMode.INSERTING &&
+							getEditingStage() == EditingStage.NONE){
+							DBSUIInput xInput = (DBSUIInput) xC;
+							//Move o valor do componente para a coluna
+							if (wDialogEdit){
+								setValue(xColumn.getColumnName(), xInput.getValue());
+							}
+							//Força a indicação que não houve alteração de valores
+						}
+						setValueChanged(false);
+					}
+				}else{
+					//Chamada recursiva
+					pvBeforeInsertResetValues(xC);
+				}
+			}
+		}
+	}
+
+	/**
 	 * Chamado depois de efetuado o CRUD com sucesso.<br/>
 	 * Conexão com o banco encontra-se aberta.
 	 * @param pEvent Informações do evento
@@ -2259,12 +2327,18 @@ public abstract class DBSCrudBean extends DBSBean{
 	private boolean pvFireEventBeforeInsert(){
 		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_INSERT);
 		xE.setEditingMode(getEditingMode());
+
+		pvBeforeInsertResetValues(wCrudForm);
+
 		try {
 			pvBroadcastEvent(xE, true, true, true);
 		} catch (Exception e) {
 			xE.setOk(false);
 			wLogger.error("EventBeforeInsert",e);
 		}
+		
+		setValueChanged(false); 
+
 		return xE.isOk();
 	}
 
@@ -2592,7 +2666,7 @@ public abstract class DBSCrudBean extends DBSBean{
 			}
 			addMessage(wMessageError);
 			pEvent.setOk(false);
-			wLogger.error(e);
+			wLogger.error(pEvent.getEvent().toString(), e);
 		}catch(Exception e){
 			String xStr = pEvent.getEvent().toString() + ":" + DBSObject.getNotNull(this.getDialogCaption(),"") + ":";   
 			if (e.getLocalizedMessage()!=null){
