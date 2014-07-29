@@ -480,19 +480,16 @@ span.dbs_input-data,
 div.dbs_input-data,
 label.dbs_input-data,
 .dbs_input-suggestion{
-	border-style: solid;
-	border-top-color: gray;
-	border-left-color: gray;
-	border-bottom-color: rgb(220,220,220);
-	border-right-color: rgb(220,220,220);
-	border-width: 1px;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
+   	border-color: rgba(13, 25, 45, 0.3) rgb(220, 220, 220) rgb(220, 220, 220) rgba(13, 25, 45, 0.3);
+    border-style: solid;
+    border-width: 1px;
+	padding: 0px 1px 0px 1px !important;
+	-webkit-border-radius: 3px !important;
+	-moz-border-radius: 3px !important;
 	border-radius: 3px !important;
-	padding: 0px 0px 0px 1px !important;
-	-webkit-box-shadow: 1px 1px 1px rgb(220,220,220) inset;
-	-moz-box-shadow: 1px 1px 1px rgb(220,220,220) inset;
-	box-shadow: 1px 1px 1px rgb(220,220,220) inset;
+	-webkit-box-shadow: 1px 1px 1px rgba(13, 25, 45, 0.1) inset;
+	-moz-box-shadow: 1px 1px 1px rgba(13, 25, 45, 0.1) inset;
+	box-shadow: 1px 1px 1px rgba(13, 25, 45, 0.1) inset;
 }
 
 .dbs_input-data.-readOnly {
@@ -525,9 +522,9 @@ label.dbs_input-data.-readOnly
 select.dbs_input-data:FOCUS,
 textarea.dbs_input-data:FOCUS,
 .dbs_input-data-FOCUS{
-	-webkit-box-shadow: 0px 0px 2px #0099ff, 0 1px 1px #8F8F8F inset !important;
-	-moz-box-shadow: 0px 0px 2px #0099ff, 0 1px 1px #8F8F8F inset !important;
-	box-shadow: 0px 0px 2px #0099ff, 0 1px 1px #8F8F8F inset !important;
+	-webkit-box-shadow: 0 0 1px rgb(0, 153, 255), 0 0 0 rgb(143, 143, 143) inset !important;
+	-moz-box-shadow: 0 0 1px rgb(0, 153, 255), 0 0 0 rgb(143, 143, 143) inset !important;
+	box-shadow: 0 0 1px rgb(0, 153, 255), 0 0 0 rgb(143, 143, 143) inset !important;
 }
 
 .dbs_input .-error {
@@ -603,6 +600,8 @@ textarea.dbs_input-data:FOCUS,
 .-il_proibido {background-position: -96px 0px;}
 .-il_sobre {background-position: -0px 0px;}
 .-il_sucesso {background-position: -32px 0px;}
+.-il_important {background-position: -256px 0px;}
+.-il_importante {background-position: -256px 0px;}
 
 .dbs_iconsmall {
 	display: inline-block;
