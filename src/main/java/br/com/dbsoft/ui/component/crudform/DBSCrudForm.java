@@ -14,6 +14,7 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PostAddToViewEvent;
+import javax.faces.event.PreRenderViewEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import javax.faces.validator.MethodExpressionValidator;
@@ -62,7 +63,7 @@ public class DBSCrudForm extends DBSUIComponentBase implements NamingContainer, 
 		 xContext.getViewRoot().subscribeToViewEvent(PostAddToViewEvent.class, this);
 //		 xContext.getViewRoot().subscribeToViewEvent(PreValidateEvent.class,this);
 //		 xContext.getViewRoot().subscribeToViewEvent(PostValidateEvent.class,this);
-//		 xContext.getViewRoot().subscribeToViewEvent(PreRenderViewEvent.class,this);
+		 xContext.getViewRoot().subscribeToViewEvent(PreRenderViewEvent.class,this);
 //		 xContext.getViewRoot().subscribeToViewEvent(PreRenderComponentEvent.class,this);
 //		 //-------------------------------------------------------------------------------
 //		 xContext.getViewRoot().subscribeToViewEvent(PostConstructViewMapEvent.class,this);
@@ -92,25 +93,27 @@ public class DBSCrudForm extends DBSUIComponentBase implements NamingContainer, 
 
 	
 	@Override
-	public void processEvent(SystemEvent event) throws AbortProcessingException {
+	public void processEvent(SystemEvent pEvent) throws AbortProcessingException {
 		FacesContext xContext = FacesContext.getCurrentInstance();
-		UIComponent xComponent = (UIComponent) event.getSource();
+		UIComponent xComponent = (UIComponent) pEvent.getSource();
 		
-		//Informa ao crudBean qual a qual crudform ele pertence
-		if (xComponent instanceof DBSCrudForm){
-			String xELString = DBSFaces.getELString(this, PropertyKeys.crudBean.toString());
-			MethodExpression xME = null;
-			Object[] xParms = null;
-			//Cria chamada ao método do crudBean para configura o campo
-			xME = DBSFaces.createMethodExpression(xContext, xELString + ".setCrudForm", null, new Class[]{UIComponent.class});
-	    	xParms = new Object[1]; 
-	    	xParms[0] = xComponent;
-			xME.invoke(xContext.getELContext(), xParms);
+		if (pEvent instanceof PreRenderViewEvent){
+			//Informa ao crudBean qual a qual crudform ele pertence
+			if (xComponent instanceof DBSCrudForm){
+				String xELString = DBSFaces.getELString(this, PropertyKeys.crudBean.toString());
+				MethodExpression xME = null;
+				Object[] xParms = null;
+				//Cria chamada ao método do crudBean para configura o campo
+				xME = DBSFaces.createMethodExpression(xContext, xELString + ".setCrudForm", null, new Class[]{UIComponent.class});
+		    	xParms = new Object[1]; 
+		    	xParms[0] = xComponent;
+				xME.invoke(xContext.getELContext(), xParms);
+			}
 		}
 
 		if (xComponent.getFacets().size() > 0) {
 			UIComponent xF = xComponent.getFacets().get(javax.faces.component.UIComponent.COMPOSITE_FACET_NAME);
-			pvInvokeCrudBeanMethods(xContext, xF, event);
+			pvInvokeCrudBeanMethods(xContext, xF, pEvent);
 		}
 	}
 
