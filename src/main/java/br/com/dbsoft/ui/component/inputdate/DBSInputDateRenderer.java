@@ -159,7 +159,7 @@ public class DBSInputDateRenderer extends DBSRenderer {
 		if (pInputDate.getReadOnly()){
 			if (pInputDate.getDate()==null){
 				if (pInputDate.getType().equals(DBSInputDate.TYPE.DATE)){
-					xStyle =  DBSFaces.getStyleWidthFromInputSize(9);
+					xStyle =  DBSFaces.getStyleWidthFromInputSize(10);
 				}else if (pInputDate.getType().equals(DBSInputDate.TYPE.TIME)){
 					xStyle =  DBSFaces.getStyleWidthFromInputSize(5);
 				}else if (pInputDate.getType().equals(DBSInputDate.TYPE.TIMES)){

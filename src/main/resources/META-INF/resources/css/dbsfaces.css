@@ -489,7 +489,7 @@ label.dbs_input-data,
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 	border-radius: 3px !important;
-	padding: 0px 2px 0px 1px !important;
+	padding: 0px 0px 0px 1px !important;
 	-webkit-box-shadow: 1px 1px 1px rgb(220,220,220) inset;
 	-moz-box-shadow: 1px 1px 1px rgb(220,220,220) inset;
 	box-shadow: 1px 1px 1px rgb(220,220,220) inset;
