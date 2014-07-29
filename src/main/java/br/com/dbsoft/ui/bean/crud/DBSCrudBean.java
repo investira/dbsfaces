@@ -1328,10 +1328,10 @@ public abstract class DBSCrudBean extends DBSBean{
 							setValueChanged(false);
 							//exibe mensagem de erro de procedimento
 						}
-					} catch (Exception wE) {
-						wLogger.error("Crud:" + getDialogCaption() + ":insert", wE);
+					} catch (Exception e) {
+						wLogger.error("Crud:" + getDialogCaption() + ":insert", e);
 						setEditingMode(EditingMode.NONE);
-						DBSIO.throwIOException(wE);
+						DBSIO.throwIOException(e);
 					}
 				}else{
 					//exibe mensagem de erro de procedimento
@@ -1359,10 +1359,10 @@ public abstract class DBSCrudBean extends DBSBean{
 						setValueChanged(false);
 						//exibe mensagem de erro de procedimento
 					}
-				} catch (Exception wE) {
-					wLogger.error("Crud:" + getDialogCaption() + ":update", wE);
+				} catch (Exception e) {
+					wLogger.error("Crud:" + getDialogCaption() + ":update", e);
 					setEditingMode(EditingMode.NONE);
-					DBSIO.throwIOException(wE);
+					DBSIO.throwIOException(e);
 				}
 			}else{
 				//exibe mensagem de erro de procedimento
@@ -1392,10 +1392,10 @@ public abstract class DBSCrudBean extends DBSBean{
 						setValueChanged(false);
 						//setEditingStage(EditingStage.COMMITTING);
 					}
-				} catch (Exception wE) {
-					wLogger.error("Crud:" + getDialogCaption() + ":delete", wE);
+				} catch (Exception e) {
+					wLogger.error("Crud:" + getDialogCaption() + ":delete", e);
 					setEditingMode(EditingMode.NONE);
-					DBSIO.throwIOException(wE);
+					DBSIO.throwIOException(e);
 				}
 			}else{
 				//exibe mensagem de erro de procedimento
@@ -1428,10 +1428,10 @@ public abstract class DBSCrudBean extends DBSBean{
 						setValueChanged(false);
 						//exibe mensagem de erro de procedimento
 					}
-				} catch (Exception wE) {
-					wLogger.error("Crud:" + getDialogCaption() + ":approve", wE);
+				} catch (Exception e) {
+					wLogger.error("Crud:" + getDialogCaption() + ":approve", e);
 					setEditingMode(EditingMode.NONE);
-					DBSIO.throwIOException(wE);
+					DBSIO.throwIOException(e);
 				}
 			}else{
 				//exibe mensagem de erro de procedimento
@@ -1463,10 +1463,10 @@ public abstract class DBSCrudBean extends DBSBean{
 						setValueChanged(false);
 						//exibe mensagem de erro de procedimento
 					}
-				} catch (Exception wE) {
-					wLogger.error("Crud:" + getDialogCaption() + ":reprove", wE);
+				} catch (Exception e) {
+					wLogger.error("Crud:" + getDialogCaption() + ":reprove", e);
 					setEditingMode(EditingMode.NONE);
-					DBSIO.throwIOException(wE);
+					DBSIO.throwIOException(e);
 				}
 			}else{
 				//exibe mensagem de erro de procedimento
@@ -2165,13 +2165,15 @@ public abstract class DBSCrudBean extends DBSBean{
 					return;
 				}
 			}
-			//Se for crud principal e não encontrou o registro anterior
-			if (wParentCrudBean == null){
-				addMessage(MESSAGE_TYPE.IMPORTANT, "Foi selecionado o primeiro registro, por não ter sido encontrato o registro anterior.");
-			}
+//			//Se for crud principal e não encontrou o registro anterior
+//			if (wParentCrudBean == null){
+//				addMessage(MESSAGE_TYPE.IMPORTANT, "Foi selecionado o primeiro registro, por não ter sido encontrato o registro anterior.");
+//			}
 		}
-		//Posiciona na primeira linha se não consegui encontrar o registro restaurado.
-		wDAO.moveFirstRow();
+		if (wDAO != null){
+			//Posiciona na primeira linha se não consegui encontrar o registro restaurado.
+			wDAO.moveFirstRow();
+		}
 	}
 
 
