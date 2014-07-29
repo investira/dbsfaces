@@ -405,7 +405,7 @@ public abstract class DBSCrudBean extends DBSBean{
 //	}
 	
 	/**
-	 * !!! ESTE ATRIBUTO DEVE SER SETADO MANUALMENTE !!!
+	 * !!! ESTE ATRIBUTO NÃO DEVE SER SETADO MANUALMENTE !!!
 	 * Seta a qual crudForm este crudBean esta vinculado.<br/>
 	 * Este método é chamado automaticamente pelo DBSCrudForm.
 	 * @param pCrudForm
