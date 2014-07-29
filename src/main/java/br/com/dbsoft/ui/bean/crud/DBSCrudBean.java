@@ -2114,11 +2114,6 @@ public abstract class DBSCrudBean extends DBSBean{
 		wSavedCurrentColumns = null;
 		if (wDAO != null){
 			wSavedCurrentColumns = wDAO.getCommandColumns();
-//			Iterator<DBSColumn> xI = wSavedCurrentColumns.iterator();
-//			while (xI.hasNext()){
-//				DBSColumn xC = xI.next();
-//				System.out.print(xC.getColumnName() + ":" + xC.getValue() + "	");
-//			}
 		}
 	}
 
@@ -2134,9 +2129,8 @@ public abstract class DBSCrudBean extends DBSBean{
 		if (wDAO != null
 		 && wSavedCurrentColumns !=null
 		 && wDAO.getResultDataModel() != null){
-//			System.out.println("----RESTORE-----------------------------");
 			//Recupera todas as linhas
-			Iterator<SortedMap<String, Object>> xIR = wDAO.getResultDataModel().iterator();
+			Iterator<SortedMap<String, Object>> xIR = wDAO.getResultDataModel().iterator(); 
 			xRowIndex = -1;
 			//Loop por todas as linhas para procurar pela que é igual a linha salva
 			while (xIR.hasNext()){ 
@@ -2170,6 +2164,10 @@ public abstract class DBSCrudBean extends DBSBean{
 					wDAO.setCurrentRowIndex(xRowIndex);
 					return;
 				}
+			}
+			//Se for crud principal e não encontrou o registro anterior
+			if (wParentCrudBean == null){
+				addMessage(MESSAGE_TYPE.IMPORTANT, "Foi selecionado o primeiro registro, por não ter sido encontrato o registro anterior.");
 			}
 		}
 		//Posiciona na primeira linha se não consegui encontrar o registro restaurado.
