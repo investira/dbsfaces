@@ -118,6 +118,8 @@ public class DBSDialogRenderer extends DBSRenderer {
 							xMsgIcon = "-il_sobre";
 						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.SUCESSO.toString())){
 							xMsgIcon = "-il_sucesso";
+						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.IMPORTANTE.toString())){
+							xMsgIcon = "-il_importante";
 						}
 						xWriter.startElement("div", xDialog);
 							xWriter.writeAttribute("class", DBSFaces.CSS.DIALOG.CONFIRMATION, null);

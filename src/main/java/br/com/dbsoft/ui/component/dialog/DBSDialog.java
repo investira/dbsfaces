@@ -29,7 +29,8 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 	    INFORMACAO	("i"),
 	    PROIBIDO 	("p"),
 	    SOBRE 		("b"),
-	    SUCESSO		("s");
+	    SUCESSO		("s"),
+	    IMPORTANTE	("t");
 
 	    String wString;
 

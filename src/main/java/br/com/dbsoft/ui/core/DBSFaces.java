@@ -1043,7 +1043,7 @@ public class  DBSFaces {
 		if (pInputSize == 0){
 			return "";
 		}
-		int xW = (pInputSize * 7) + 7;
+		int xW = (pInputSize * 7) + 5;
 		return "width:" + xW + "px;"; //min-height:19px; 
 	}
 	
@@ -1077,6 +1077,8 @@ public class  DBSFaces {
 			return "Ignorar";
 		}else if (pMessageIcon.equals(DIALOG_ICON.INFORMACAO)){
 			return "Informação";
+		}else if (pMessageIcon.equals(DIALOG_ICON.IMPORTANTE)){
+			return "Importante";
 		}else if (pMessageIcon.equals(DIALOG_ICON.PROIBIDO)){
 			return "Atenção";
 		}else if (pMessageIcon.equals(DIALOG_ICON.SOBRE)){
@@ -1123,7 +1125,7 @@ public class  DBSFaces {
 			}else if (pMessageType == MESSAGE_TYPE.INFORMATION){
 				xDialogIcon = DIALOG_ICON.INFORMACAO;
 			}else if (pMessageType == MESSAGE_TYPE.IMPORTANT){
-				xDialogIcon = DIALOG_ICON.INFORMACAO;
+				xDialogIcon = DIALOG_ICON.IMPORTANTE;
 			}else if (pMessageType == MESSAGE_TYPE.WARNING){
 				xDialogIcon = DIALOG_ICON.ATENCAO;
 			}
