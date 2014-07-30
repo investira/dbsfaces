@@ -37,33 +37,20 @@ public class DBSRenderer extends Renderer {
 	protected static final Param[] EMPTY_PARAMS = new Param[0];
 	
 	protected void renderChildren(FacesContext pFacesContext, UIComponent pComponent) throws IOException {
-		for (UIComponent xChild:pComponent.getChildren()) {
-			xChild.encodeAll(pFacesContext);
+		UIComponent xLastComponent = null;
+		try{
+			for (UIComponent xChild:pComponent.getChildren()) {
+				xLastComponent = xChild;
+				xChild.encodeAll(pFacesContext);
+			}
+		}catch(Exception e){
+			if (xLastComponent!=null){
+				wLogger.error("renderChildren:" + pFacesContext.getCurrentPhaseId().toString() + ":" + xLastComponent.getClass().getSimpleName() + ":" + xLastComponent.getClientId(),e);
+			}
+			throw e;
 		}
-//		for (Iterator<UIComponent> xIterator = pComponent.getFacetsAndChildren(); xIterator.hasNext();) {
-//			UIComponent xChild = (UIComponent) xIterator.next();
-//			xChild.encodeAll(pFacesContext);
-//		}
 	}
 	
-//	protected void renderChild(FacesContext pFacesContext, UIComponent pChild) throws IOException {
-//		pChild.encodeAll(pFacesContext);
-//		if (!pChild.isRendered()) {
-//			return;
-//		}
-//		pChild.encodeBegin(pFacesContext); //<<BEGIN
-//		if (pChild.getRendersChildren()) { 
-//			pChild.encodeChildren(pFacesContext);
-//		} else {
-//			renderChildren(pFacesContext, pChild);
-//		}
-//		pChild.encodeEnd(pFacesContext);
-//	}
-	
-//	protected void renderChildren(FacesContext pFacesContext, UIComponent pComponent) throws IOException {
-//		renderChildren(pFacesContext, pComponent,-1);
-//	}
-
 	protected void renderChildren(FacesContext pFacesContext, UIComponent pComponent, int pNivel) throws IOException {
 		if (pNivel!=-1){  //pNivel = -1, desabilita a exibição da árvore do render no system.out
 			System.out.println(DBSString.repeat(" ", pNivel) + pComponent.getClass().getSimpleName() + ":"  + "render          INI:" + pComponent.getClientId() + "----------------------------------");
