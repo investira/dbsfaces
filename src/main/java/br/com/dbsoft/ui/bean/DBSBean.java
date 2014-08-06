@@ -28,7 +28,8 @@ public abstract class DBSBean implements Serializable {
  
 	private static final long serialVersionUID = -5273728796912868413L;
 
-	protected 	static Logger 		wLogger =  Logger.getLogger(DBSBean.class);
+	protected 	Logger 		wLogger =  Logger.getLogger(this.getClass());
+	
 	protected 	static DBSMessage	wMessageError = 
 									new DBSMessage(MESSAGE_TYPE.ERROR,"Erro: %s");
 

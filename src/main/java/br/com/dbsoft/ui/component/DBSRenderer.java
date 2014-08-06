@@ -32,7 +32,7 @@ import br.com.dbsoft.util.DBSString;
 
 public class DBSRenderer extends Renderer {
 	
-	protected static Logger wLogger =  Logger.getLogger(DBSRenderer.class);
+	protected Logger			wLogger = Logger.getLogger(this.getClass());
 	
 	protected static final Param[] EMPTY_PARAMS = new Param[0];
 	
