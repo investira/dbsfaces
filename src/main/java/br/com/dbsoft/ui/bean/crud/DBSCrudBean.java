@@ -587,11 +587,13 @@ public abstract class DBSCrudBean extends DBSBean{
 	public DBSResultDataModel getList() throws DBSIOException{
 		//Força a criação do resultdatamodel se ainda não existir
 		if (wDAO==null){
-			refreshList(); 
+			refreshList();
 			if (wDAO==null
 			 || wDAO.getResultDataModel() == null){
 				return new DBSResultDataModel();
 			}
+			//Apaga as mensagem que tenham sido incluidas em função da refreshList quando ser tratar da inicialização do wDAO
+			clearMessages();
 		}
 		return wDAO.getResultDataModel();
 	}
@@ -1166,14 +1168,11 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @throws DBSIOException 
 	 */
 	public synchronized String refreshList() throws DBSIOException{
-		
 		ignoreEditing(); 
-
 		//Dispara evento para atualizar os dados
 		if (pvFireEventBeforeRefresh()){
 			//Apaga itens selecionados, se houver.
 			wSelectedRowsIndexes.clear();
-
 			pvFireEventAfterRefresh();
 		}
 		return DBSFaces.getCurrentView();
@@ -1913,7 +1912,7 @@ public abstract class DBSCrudBean extends DBSBean{
 				if (getEditingMode() == EditingMode.INSERTING
 				 && getDialogOpened()){
 					//TODO Exibição mantida somente para fins de teste, devendo ser excluida o quanto antes.
-					System.out.println("ALTERADO:" + pColumnName + "[" + DBSObject.getNotNull(xOldValue,"") + "] para [" + DBSObject.getNotNull(pColumnValue,"") + "]");
+					wLogger.debug("ALTERADO:" + pColumnName + "[" + DBSObject.getNotNull(xOldValue,"") + "] para [" + DBSObject.getNotNull(pColumnValue,"") + "]");
 				}
 				//marca como valor alterado
 				setValueChanged(true); 
