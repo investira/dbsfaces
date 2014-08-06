@@ -47,7 +47,7 @@ dbs_inputText = function(pId) {
 	/* copia a sugestão para o input ou navega pela lista de sugestões*/
 	$(pId + " > .-container > .-input > .dbs_input-data").keydown(function(e){
 		if (e.keyCode == 39 && //RIGHT
-			$(this).get(0).selectionEnd == $(this).val().length) { //Se o cursor estive na última posição
+			$(this).get(0).selectionEnd == $(this).val().length) { //Se o cursor estiver no final do texto digitado pelo usuário
 			e.stopImmediatePropagation();
 			dbsfaces.inputText.acceptSuggestion(pId);
 		}else if(e.keyCode==40   //DOWN
@@ -181,6 +181,8 @@ dbsfaces.inputText = {
 	
 	isValidKey: function(e){
 		if (e.keyCode == 9 || //TAB
+			e.keyCode == 8 || //BACKSPACE
+			e.keyCode == 46 || //DELETE
 			e.keyCode == 37 || //LEFT
 			e.keyCode == 39 || //RIGHT
 			e.ctrlKey ||
@@ -202,6 +204,8 @@ dbsfaces.inputText = {
 		if (xSuggestionValue.length > 0){
 			$(pId + "-data").val(xSuggestionValue);
 			dbsfaces.inputText.validate(pId, false);
+			//Após confirmação apaga somente o texto do suggestion para evitar que a nagevação no texto principal "suje" o valor exibido.
+			$(pId + "-suggestion").val("");
 		}
 		wChanged = true;
 	},
