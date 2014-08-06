@@ -1433,11 +1433,21 @@ public class  DBSFaces {
 	 */
  	public static MethodExpression createMethodExpression(FacesContext pContext, String pELMethod, Class<?> pReturnTypeClass, Class<?>[] pExpectedParamTypes){
 		FacesContext xContext = pContext;
-		if (pContext == null){
+		MethodExpression xME = null;
+		if (xContext == null){
 			xContext = FacesContext.getCurrentInstance();
+			if (xContext == null){
+				return null;
+			}
 		}
 		pELMethod = DBSFaces.addELSignals(DBSFaces.removeELSignals(pELMethod));
-		return xContext.getApplication().getExpressionFactory().createMethodExpression(pContext.getELContext(), pELMethod, pReturnTypeClass, pExpectedParamTypes);
+		try{
+			xME = xContext.getApplication().getExpressionFactory().createMethodExpression(pContext.getELContext(), pELMethod, pReturnTypeClass, pExpectedParamTypes);
+			return xME;
+		}catch(Exception e){
+			wLogger.debug("MethodExpression não pode ser criado:" + pELMethod);
+			return null;
+		}
 	}
 
 
