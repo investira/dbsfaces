@@ -15,6 +15,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.PreRenderViewEvent;
+import javax.faces.event.PreValidateEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import javax.faces.validator.MethodExpressionValidator;
@@ -61,7 +62,7 @@ public class DBSCrudForm extends DBSUIComponentBase implements NamingContainer, 
 		 FacesContext xContext = FacesContext.getCurrentInstance();
 
 		 xContext.getViewRoot().subscribeToViewEvent(PostAddToViewEvent.class, this);
-//		 xContext.getViewRoot().subscribeToViewEvent(PreValidateEvent.class,this);
+		 xContext.getViewRoot().subscribeToViewEvent(PreValidateEvent.class,this);
 //		 xContext.getViewRoot().subscribeToViewEvent(PostValidateEvent.class,this);
 		 xContext.getViewRoot().subscribeToViewEvent(PreRenderViewEvent.class,this);
 //		 xContext.getViewRoot().subscribeToViewEvent(PreRenderComponentEvent.class,this);
@@ -135,7 +136,12 @@ public class DBSCrudForm extends DBSUIComponentBase implements NamingContainer, 
 				    	xParms = new Object[1]; 
 				    	xParms[0] = xC;
 						xME.invoke(pContext.getELContext(), xParms);
-
+					}else{
+						//Chamada recursiva para pesquisar dentro do componente, até não haver mais filhos.
+						pvInvokeCrudBeanMethods(pContext, xC, pEvent);
+					}
+				}else if (pEvent instanceof PreValidateEvent){
+					if (xC instanceof UIInput){
 						//Cria validator para que seja testado o valor em função do DAO no crudBean
 						UIInput xInput = (UIInput) xC;
 						xME = DBSFaces.createMethodExpression(pContext, xELString + ".crudFormValidateComponent", null, new Class[]{FacesContext.class, UIComponent.class, Object.class});
