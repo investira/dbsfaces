@@ -1,7 +1,5 @@
 package br.com.dbsoft.ui.component.dialog;
 
-import org.apache.log4j.Logger;
-
 import br.com.dbsoft.message.DBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.message.DBSMessage;
 import br.com.dbsoft.message.DBSMessages;
@@ -18,8 +16,6 @@ public class DBSDialogMessages extends DBSMessages<DBSDialogMessage> {
 		super(pMessageClass);
 	}
 
-	protected static Logger			wLogger = Logger.getLogger(DBSDialogMessages.class);
-	
 	/**
 	 * Inclui uma mensagem na fila para ser exibida.
 	 * A exibição se derá na mesma ondem da inclusão

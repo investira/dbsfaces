@@ -4,8 +4,6 @@ import javax.faces.component.FacesComponent;
 import javax.faces.component.NamingContainer;
 import javax.faces.context.FacesContext;
 
-import org.apache.log4j.Logger;
-
 import br.com.dbsoft.ui.component.DBSUIOutput;
 import br.com.dbsoft.ui.core.DBSFaces;
 
@@ -13,9 +11,6 @@ import br.com.dbsoft.ui.core.DBSFaces;
 @FacesComponent(DBSDialog.COMPONENT_TYPE)
 public class DBSDialog extends DBSUIOutput implements NamingContainer{  
 
-
-	protected static Logger			wLogger = Logger.getLogger(DBSDialog.class);
-	
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.DIALOG;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 
