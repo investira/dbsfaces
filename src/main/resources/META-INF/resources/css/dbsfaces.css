@@ -525,6 +525,7 @@ textarea.dbs_input-data:FOCUS,
 	-webkit-box-shadow: 0 0 1px rgb(0, 153, 255), 0 0 0 rgb(143, 143, 143) inset !important;
 	-moz-box-shadow: 0 0 1px rgb(0, 153, 255), 0 0 0 rgb(143, 143, 143) inset !important;
 	box-shadow: 0 0 1px rgb(0, 153, 255), 0 0 0 rgb(143, 143, 143) inset !important;
+	outline: none;
 }
 
 .dbs_input .-error {
