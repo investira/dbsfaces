@@ -167,23 +167,28 @@ public class DBSDataTableRenderer extends DBSRenderer {
 						//Botão de "Pesquisar"
 						pWriter.startElement("div", pDataTable);
 							DBSFaces.setAttribute(pWriter, "class",DBSFaces.CSS.MODIFIER.BUTTON.trim(), null);
-							DBSButton xBtPesquisar = (DBSButton) pDataTable.getFacet(DBSDataTable.FACET_PESQUISAR);
-							if (xBtPesquisar!=null){
-								//Cria lista com os ids componentes dentro do filtro para que façam parte do submit do botão pesquisar 
-								String xExecute = "";
-								//Se for UIPanel é pq existe mais de um input como filtro
-								if (xFilter.getClass().equals(UIPanel.class)){
-									for (UIComponent xC:xFilter.getChildren()){
-										if (!(xC instanceof UIInstructions)){
-											xExecute += xC.getClientId() + " "; 
+//							DBSFaces.createDataTableBotaoPesquisar(pDataTable);
+//							xBtPesquisar = (DBSButton) pDataTable.findComponent(DBSDataTable.FACET_PESQUISAR);
+							UIComponent xFacetPesquisar = pDataTable.getFacet(DBSDataTable.FACET_PESQUISAR);
+							if (xFacetPesquisar!=null){
+								DBSButton xBtPesquisar = (DBSButton) xFacetPesquisar.findComponent("btPesquisar");
+								if (xBtPesquisar!=null){
+//									//Cria lista com os ids componentes dentro do filtro para que façam parte do submit do botão pesquisar 
+									String xExecute = "";
+									//Se for UIPanel é pq existe mais de um input como filtro
+									if (xFilter.getClass().equals(UIPanel.class)){
+										for (UIComponent xC:xFilter.getChildren()){
+											if (!(xC instanceof UIInstructions)){
+												xExecute += xC.getClientId() + " "; 
+											}
 										}
+									//O facet é o próprio componente de input do filtro
+									}else{
+										 xExecute = xFilter.getClientId();
 									}
-								//O facet é o próprio componente de input do filtro
-								}else{
-									 xExecute = xFilter.getClientId();
+									xBtPesquisar.setExecute(xExecute); 
+									xBtPesquisar.encodeAll(pContext);
 								}
-								xBtPesquisar.setExecute(xExecute); 
-								xBtPesquisar.encodeAll(pContext);
 							}
 						pWriter.endElement("div");
 					pWriter.endElement("div");
@@ -241,6 +246,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	 */
 	private void pvEncodeDataTable(FacesContext pContext,DBSDataTable pDataTable, ResponseWriter pWriter) throws IOException {
 		pDataTable.setRowIndex(-1);
+		DBSFaces.createDataTableSpecialColumns(pDataTable);
 		pWriter.startElement("div", pDataTable);
 			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT.trim(), null);
 	        pWriter.startElement("table", pDataTable);

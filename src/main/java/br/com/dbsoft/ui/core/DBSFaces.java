@@ -1297,9 +1297,9 @@ public class  DBSFaces {
 	 */
 	public static void encodeInputDataReadOnly(UIComponent pComponent, ResponseWriter pWriter, String pClientId, String pStyle, boolean pNormalWhiteSpace , String pValue) throws IOException{
 		if (pNormalWhiteSpace){
-			pStyle += "white-space: normal; overflow:auto;";
+			pStyle += "white-space: pre-wrap; overflow:auto;";
 		}else{
-			pStyle += "white-space: nowrap; overflow:hidden;";
+			pStyle += "white-space: pre; overflow:hidden;";
 		}
 		pWriter.startElement("span", pComponent);
 			DBSFaces.setAttribute(pWriter, "id", pClientId, null);
@@ -1558,12 +1558,13 @@ public class  DBSFaces {
 	 * Cria botão 'Pesquisar'(como um facet) no dataTable 
 	 * @param pDataTable
 	 */
-	public static void createDataTableBotaoPesquisar(DBSDataTable pDataTable){
+	@Deprecated
+	public static UIComponent createDataTableBotaoPesquisar(DBSDataTable pDataTable){
 		//Cria botão 'Pesquisar' caso existam campos para a seleção de filtro
+		UIComponent 	xFacetPesquisar = pDataTable.getFacet(DBSDataTable.FACET_PESQUISAR);
 		if (pDataTable.getFacet(DBSDataTable.FACET_FILTER)!=null){
 			FacesContext 	xContext = FacesContext.getCurrentInstance();	
 			String 			xClientId = pDataTable.getClientId(xContext);
-			UIComponent 	xFacetPesquisar = pDataTable.getFacet(DBSDataTable.FACET_PESQUISAR);
 			if (xFacetPesquisar == null){
 				DBSButton xBtPesquisar = (DBSButton) xContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
 				xBtPesquisar.setId("btPesquisar");
@@ -1574,13 +1575,15 @@ public class  DBSFaces {
 				}else{
 					xBtPesquisar.setActionExpression(DBSFaces.createMethodExpression(xContext, pDataTable.getFilterAction(), String.class,new Class[0]));
 				}
-//				xBtPesquisar.setUpdate(xClientId); //Substituido por @all pois dava erro no ajax na seleção da linha por checkbox após o 'pesquisar'
-				xBtPesquisar.setUpdate("@all");
+				xBtPesquisar.setUpdate(xClientId); //Substituido por @all pois dava erro no ajax na seleção da linha por checkbox após o 'pesquisar'
+//				xBtPesquisar.setUpdate("@all");
 				xBtPesquisar.setExecute(xClientId);
 				//Cria o facet e inclui botão dentro dele. A inclusão do botão através do facet, evita problemas em incluir o botao na view várias vezes.
-				pDataTable.getFacets().put(DBSDataTable.FACET_PESQUISAR, xBtPesquisar);
+				pDataTable.getFacets().put(DBSDataTable.FACET_PESQUISAR, xBtPesquisar); 
+				xFacetPesquisar = pDataTable.getFacet(DBSDataTable.FACET_PESQUISAR);
 			}
 		}
+		return xFacetPesquisar;
 	}
 	
 //	/**

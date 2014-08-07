@@ -49,6 +49,9 @@
 							<span>foo</span>
 							<cc:insertFacet name="filter"/>
 						</f:facet>
+						<f:facet name="pesquisar">
+							<dbs:button id="btPesquisar" update="#{cc.clientId}" action="#{cc.crudBean.refreshList()}" label="Pesquisar" iconClass="dbs_icon -i_pesquisar"/>
+						</f:facet>
 					</c:if>
 <!-- 				    <c:if test="#{not empty cc.facets.toolbar}"> -->
 <!-- 						<f:facet name="toolbar"> -->

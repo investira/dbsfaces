@@ -9,7 +9,6 @@ import javax.faces.component.FacesComponent;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
-import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 
@@ -69,8 +68,8 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 
 //		DBSFaces.subscribeToDynamicComponentEvent(this);
 
-		 FacesContext xContext = FacesContext.getCurrentInstance();
-		 xContext.getViewRoot().subscribeToViewEvent(PostAddToViewEvent.class, this);
+//		 FacesContext xContext = FacesContext.getCurrentInstance();
+//		 xContext.getViewRoot().subscribeToViewEvent(PostAddToViewEvent.class, this);
 		// xContext.getViewRoot().subscribeToViewEvent(PreValidateEvent.class,this);
 		// xContext.getViewRoot().subscribeToViewEvent(PostValidateEvent.class,this);
 		// xContext.getViewRoot().subscribeToViewEvent(PreRenderViewEvent.class,this);
@@ -127,8 +126,8 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 //		//É necessário ser o evento PostAddToViewEvent para não ocorrer o erro de Id duplicado e funcionar os action dos botões dinamicamente incluidos
 //		if (event.getSource() instanceof DBSDataTable &&
 //			event instanceof PostAddToViewEvent) {
-			DBSFaces.createDataTableSpecialColumns(this); 
-			DBSFaces.createDataTableBotaoPesquisar(this);
+//			DBSFaces.createDataTableSpecialColumns(this); 
+//			DBSFaces.createDataTableBotaoPesquisar(this);
 //		} else {
 			// System.out.println("| IGNORED !!! ");
 			// System.out.println("=============================================================================");
@@ -215,10 +214,20 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 		handleAttribute("multipleSelection", pMultipleSelection);
 	}
 
+	/**
+	 * Verificar necessidade
+	 * @param pFilterAction
+	 */
+	@Deprecated
 	public String getFilterAction() {
 		return DBSFaces.getELString(this,PropertyKeys.filterAction.toString());
 	}
 
+	/**
+	 * Verificar necessidade
+	 * @param pFilterAction
+	 */
+	@Deprecated
 	public void setFilterAction(String pFilterAction) {
 		getStateHelper().put(PropertyKeys.filterAction, pFilterAction);
 		handleAttribute("noAction", pFilterAction);
