@@ -167,13 +167,11 @@ public class DBSDataTableRenderer extends DBSRenderer {
 						//Botão de "Pesquisar"
 						pWriter.startElement("div", pDataTable);
 							DBSFaces.setAttribute(pWriter, "class",DBSFaces.CSS.MODIFIER.BUTTON.trim(), null);
-//							DBSFaces.createDataTableBotaoPesquisar(pDataTable);
-//							xBtPesquisar = (DBSButton) pDataTable.findComponent(DBSDataTable.FACET_PESQUISAR);
 							UIComponent xFacetPesquisar = pDataTable.getFacet(DBSDataTable.FACET_PESQUISAR);
 							if (xFacetPesquisar!=null){
 								DBSButton xBtPesquisar = (DBSButton) xFacetPesquisar.findComponent("btPesquisar");
 								if (xBtPesquisar!=null){
-//									//Cria lista com os ids componentes dentro do filtro para que façam parte do submit do botão pesquisar 
+									//Cria lista com os ids componentes dentro do filtro para que façam parte do submit do botão pesquisar 
 									String xExecute = "";
 									//Se for UIPanel é pq existe mais de um input como filtro
 									if (xFilter.getClass().equals(UIPanel.class)){
@@ -246,7 +244,6 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	 */
 	private void pvEncodeDataTable(FacesContext pContext,DBSDataTable pDataTable, ResponseWriter pWriter) throws IOException {
 		pDataTable.setRowIndex(-1);
-		DBSFaces.createDataTableSpecialColumns(pDataTable);
 		pWriter.startElement("div", pDataTable);
 			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT.trim(), null);
 	        pWriter.startElement("table", pDataTable);
