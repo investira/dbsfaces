@@ -1541,14 +1541,10 @@ public class  DBSFaces {
 				}
 				try{
 					pDataTable.getChildren().add(0,xC0);
-	//				System.out.println("| CRIOU !!!");
 				}catch(javax.faces.FacesException e){
-	//				System.out.println("| ERRO ");
 					DBSFaces.showViewRoot(xContext.getViewRoot().getChildren(), 0);
 					wLogger.error(e);
 				}
-			}else{
-	//			System.out.println("! JÁ EXISTE ");
 			}
 		}
 		
