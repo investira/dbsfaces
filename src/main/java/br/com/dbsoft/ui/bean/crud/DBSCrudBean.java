@@ -9,8 +9,10 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.SortedMap;
 
+import javax.enterprise.context.Conversation;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 
 import br.com.dbsoft.core.DBSApproval;
 import br.com.dbsoft.core.DBSApproval.APPROVAL_STAGE;
@@ -35,13 +37,15 @@ import br.com.dbsoft.util.DBSString;
 
 
 /**
+ * Os DBSCrudBean devem ser declarados como @ConversationScoped.
+ * O timeout da conversação esta definido em 10minutos
  * @author ricardo.villar
  *
  */
 public abstract class DBSCrudBean extends DBSBean{
 
 	private static final long serialVersionUID = -8550893738791483527L;
-
+	
 	public static enum EditingMode {
 		NONE 			("Not Editing", 0),
 		INSERTING 		("Inserting", 1),
@@ -121,6 +125,8 @@ public abstract class DBSCrudBean extends DBSBean{
 		}		
 	}
 	
+	private static final long wTimeout = 600000;  //10 minutos
+
 
 	protected DBSDAO<?>							wDAO;
 	private List<IDBSCrudBeanEventsListener>	wEventListeners = new ArrayList<IDBSCrudBeanEventsListener>();
@@ -182,9 +188,24 @@ public abstract class DBSCrudBean extends DBSBean{
 	
 	@Override
 	protected void initializeClass() {
+		conversationBegin();
 		pvFireEventInitialize();
 		//Finaliza os outros crudbeans antes de inicializar este.
-		DBSFaces.finalizeDBSBeans(this, false);
+//		DBSFaces.finalizeDBSBeans(this, false); << Comentado pois os beans passaram a ser criados como ConversationScoped - 12/Ago/2014
+	}
+	
+
+	@Inject
+	Conversation	wConversation;
+	
+	/**
+	 * Finaliza a conversação
+	 */
+	public void conversationBegin(){
+		if (wConversation.isTransient()){
+			wConversation.begin();
+			wConversation.setTimeout(wTimeout);
+		}
 	}
 	
 	@Override
@@ -1282,6 +1303,7 @@ public abstract class DBSCrudBean extends DBSBean{
 		}
 		return DBSFaces.getCurrentView();
 	}
+
 
 	public synchronized String insertSelected() throws DBSIOException{
 //		System.out.println("INSERT COPY");

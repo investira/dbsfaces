@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.enterprise.context.Conversation;
+import javax.inject.Inject;
+
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -13,19 +16,25 @@ import br.com.dbsoft.message.DBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.ui.bean.DBSBean;
 import br.com.dbsoft.ui.bean.report.DBSReportBeanEvent.REPORT_EVENT;
 import br.com.dbsoft.ui.component.dialog.DBSDialog.DIALOG_ICON;
-import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSReportFormUtil;
 import br.com.dbsoft.util.DBSFormat;
 import br.com.dbsoft.util.DBSString;
 
-
+/**
+ * Os DBSReportBean devem ser declarados como @ConversationScoped.
+ * O timeout da conversação esta definido em 10minutos
+ * @author ricardo.villar
+ *
+ */
 public abstract class DBSReportBean extends DBSBean {
 
 	private static final long serialVersionUID = -4729336621811839199L;
 
+	private static final long wTimeout = 600000;  //10 minutos
+
 	private static final String tabPageIdFiltros = "filtros";
 	private static final String tabPageIdVisualizar = "visualizar";
-
+	
 	private List<IDBSReportBeanEventsListener>	wEventListeners = new ArrayList<IDBSReportBeanEventsListener>();
 	private String					wPDFFilePath = "";
 	private Integer					wRecordCount;
@@ -36,13 +45,28 @@ public abstract class DBSReportBean extends DBSBean {
 
 	@Override
 	protected void initializeClass() {
+		//Inicia conversação
+		conversationBegin();
 	    pvFireEventInitialize();
-	    DBSFaces.finalizeDBSBeans(this, false);
+//		DBSFaces.finalizeDBSBeans(this, false); << Comentado pois os beans passaram a ser criados como ConversationScoped - 12/Ago/2014
 	}
 
 	@Override
 	protected void finalizeClass(){
 		pvFireEventFinalize();
+	}
+	
+	@Inject
+	Conversation	wConversation;
+	
+	/**
+	 * Inicia a conversação
+	 */
+	public void conversationBegin(){
+		if (wConversation.isTransient()){
+			wConversation.begin();
+			wConversation.setTimeout(wTimeout);
+		}
 	}
 	
 	public String getCaption() {

@@ -1730,13 +1730,15 @@ public class  DBSFaces {
 	}
 	
 	/**
+	 * SessionsBean dos Cruds e Repors foram substiuidos por conversation scope
 	 * Exclui todos os DBSBean da sessão, menos o pDBSBean informado.
 	 * @param pDBSBean
 	 * @param pIsChild
 	 */
+	@Deprecated
 	public static void finalizeDBSBeans(DBSBean pDBSBean, Boolean pIsChild){
-		DBSCrudBean xDBSCrudBean = null;
 		if (!pIsChild){ //Se não for chamada recursiva
+			DBSCrudBean xDBSCrudBean = null;
 			if (pDBSBean !=null ){
 	    		if (pDBSBean instanceof DBSCrudBean){
 	    			xDBSCrudBean = (DBSCrudBean) pDBSBean; 
@@ -1782,12 +1784,50 @@ public class  DBSFaces {
             					finalizeDBSBeans(xChild, true);
                 			}
             			}
-	    				xEC.getSessionMap().remove(xEntry.getKey());
+//	    				xEC.getSessionMap().remove(xEntry.getKey());
 	    				xSessionBean = null;
 	    				if (pIsChild){
 	    					return;
 	    				}
             		}
+	            }
+	        }
+	    }
+	}	
+	
+	/**
+	 * Exclui todos os Session Beans
+	 * @param pDBSBean
+	 * @param pIsChild
+	 */
+	public static void finalizeSessionBean(Object pSessionBean, Boolean pIsChild){
+		if (pSessionBean==null){
+			return;
+		}
+		ExternalContext xEC = FacesContext.getCurrentInstance().getExternalContext();
+	    for (Entry<String, Object> xEntry : xEC.getSessionMap().entrySet()) {
+	        if((xEntry.getValue() instanceof SerializableContextualInstanceImpl)){
+	            @SuppressWarnings("rawtypes")
+				SerializableContextualInstanceImpl xImpl = (SerializableContextualInstanceImpl) xEntry.getValue();
+	            
+	            Object xSessionBean = xImpl.getInstance();
+	            if (xSessionBean.equals(pSessionBean)){
+		    		DBSCrudBean xDBSCrudBean = null;
+		    		DBSBean xDBSBean = null;
+	            	if (xSessionBean instanceof DBSBean){
+		    			xDBSBean = (DBSBean) xSessionBean; 
+            			for (DBSBean xChild:xDBSBean.getSlavesBean()){
+    		    			finalizeSessionBean(xChild, true);
+            			}
+    	            	if (xSessionBean instanceof DBSCrudBean){
+    		    			xDBSCrudBean = (DBSCrudBean) xSessionBean; 
+                			for (DBSCrudBean xChild:xDBSCrudBean.getChildrenCrudBean()){
+                				finalizeSessionBean(xChild, true);
+                			}
+    	            	}
+		    		}
+	            	xEC.getSessionMap().remove(xEntry.getKey());
+	            	System.out.println("OK");
 	            }
 	        }
 	    }
