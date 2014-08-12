@@ -47,16 +47,16 @@
 
 
 
-.dbs_report > .-content > .dbs_tab > div > .-content > .-filter .dbs_input:not(td) {
+.dbs_report > .-content > .dbs_tab > .-container > div > .-content > .-filter .dbs_input:not(td) {
     margin-bottom: 2px;
 }
 
-.dbs_report > .-content > .dbs_tab > div > .-content > .-report > .-container{
+.dbs_report > .-content > .dbs_tab > .-container > div > .-content > .-report > .-container{
 	height: 100%;
 	width: 100%;
 }
 
-.dbs_report > .-content > .dbs_tab > div > .-content > .-report > .-container > .-toolbar{
+.dbs_report > .-content > .dbs_tab > .-container > div > .-content > .-report > .-container > .-toolbar{
     height: 26px;
     min-height: 26px;	
 	z-index: 1;
@@ -64,19 +64,19 @@
     text-align: right;	
 }
 
-.dbs_report > .-content > .dbs_tab > div > .-content > .-report > .-container > .-content{
+.dbs_report > .-content > .dbs_tab > .-container > div > .-content > .-report > .-container > .-content{
 	height: 100%;
 	padding-top: 30px;
 	margin-top: -30px;
 }
 
-.dbs_report > .-content > .dbs_tab > div > .-content > .-report > .-container > .-content,
-.dbs_report > .-content > .dbs_tab > div > .-content > .-report > .-container > .-toolbar{
+.dbs_report > .-content > .dbs_tab > .-container > div > .-content > .-report > .-container > .-content,
+.dbs_report > .-content > .dbs_tab > .-container > div > .-content > .-report > .-container > .-toolbar{
 	width: 100%;
 	position: relative;
 }
 
-.dbs_report > .-content > .dbs_tab > div > .-content > .-report > .-container > .-content > object{
+.dbs_report > .-content > .dbs_tab > .-container > div > .-content > .-report > .-container > .-content > object{
 	width: 100%;
 	height: 100%; 
 }
