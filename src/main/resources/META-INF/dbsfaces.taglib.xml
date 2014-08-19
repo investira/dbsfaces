@@ -844,7 +844,7 @@
 		<attribute>
 			<description>
                 Tipo de caixa das letras. upper=Somente maiúscula, lower=Somente minúscula, proper=Nome próprio, upperfirst=Somente a primeiro é obrigatório ser maiúsculo, none=Livre.
-				O padrão é none.			                 
+				O padrão é upperfirst.			                 
             </description>
 			<name>letterCase</name>
 			<required>false</required>
