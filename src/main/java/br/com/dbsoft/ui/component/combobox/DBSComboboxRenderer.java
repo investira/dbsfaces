@@ -100,7 +100,7 @@ public class DBSComboboxRenderer extends DBSRenderer {
 		//Se não foi informada a lista ou lista estiver vazia
 		if (xList == null || 
 			xList.size() == 0){
-			DBSFaces.encodeInputDataReadOnly(pCombobox, pWriter, xClientId, DBSFaces.getStyleWidthFromInputSize(9), false, "'List' vázio");
+			DBSFaces.encodeInputDataReadOnly(pCombobox, pWriter, xClientId,  DBSFaces.getStyleWidthFromInputSize(pCombobox.getSize()), false, "");
 			return;
 		}
 
