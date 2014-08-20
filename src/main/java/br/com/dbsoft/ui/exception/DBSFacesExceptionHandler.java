@@ -55,6 +55,8 @@ public class DBSFacesExceptionHandler  extends ExceptionHandlerWrapper {
 				}else if (xThrowable instanceof ViewExpiredException){
 					//Direciona para a pasta raiz do sistema(normalmente o sistema irá redirecionar para a páginal index.xhtml)
 					xNav.performNavigation(xFC.getExternalContext().getRequestContextPath());
+				}else if (xThrowable instanceof javax.el.PropertyNotFoundException){
+					wLogger.error("Erro no encode do componente - Propriedade não encontrada: " + xThrowable.getMessage());
 				}else{
 					wLogger.error("Severe Exception Occured", xThrowable);
 					xRequestMap.put("exceptionMessage", xThrowable.getMessage());                 
