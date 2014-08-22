@@ -2214,15 +2214,20 @@ public abstract class DBSCrudBean extends DBSBean{
 							xSavedValue = DBSObject.getNotNull(xSC.getValue(),"");
 							xCurrentValue = DBSObject.getNotNull(xC.getValue(),"");
 							xEqual = false;
-							//Faz comperação de bigdecimal com bigdecimal para evitar diferenças por quantidade de casas decimais
-							if (xCurrentValue instanceof Number){
+							if (xCurrentValue == null
+							 && xSavedValue == null){
+								xEqual = true;
+							}else if (xCurrentValue instanceof Number){
 								xCurrentNumberValue = DBSNumber.toBigDecimal(xCurrentValue);
 								if (xSavedValue instanceof Number){
 									xSavedNumberValue = DBSNumber.toBigDecimal(xSavedValue);
 								}
-								//Utiliza o compareTo para evitar diferença por quantidade de casas decimais
-								if (xCurrentNumberValue.compareTo(xSavedNumberValue) == 0){
-									xEqual = true;
+								if (xSavedNumberValue != null 
+								 && xCurrentNumberValue != null){
+									//Utiliza o compareTo para evitar diferença por quantidade de casas decimais
+									if (xCurrentNumberValue.compareTo(xSavedNumberValue) == 0){
+										xEqual = true;
+									}
 								}
 							}else{
 								xEqual = xSavedValue.equals(xCurrentValue);
