@@ -148,7 +148,8 @@ public interface IDBSCrudBeanEventsListener {
 
 	
 	/**
-	 * Chamado antes do form ser fechado
+	 * Chamado antes do crudform ser fechado.<br/>
+	 * Conexão com o banco já se encontra fechada.<br/>
 	 * @param pEvent Informações do evento
 	 */
 	public abstract void beforeClose(DBSCrudBeanEvent pEvent) throws DBSIOException;

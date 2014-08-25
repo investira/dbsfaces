@@ -1602,6 +1602,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	
 	/**
 	 * Chamado antes do crudform ser fechado.<br/>
+	 * Conexão com o banco já se encontra fechada.<br/>
 	 * @param pEvent Informações do evento
 	 */
 	protected void beforeClose(DBSCrudBeanEvent pEvent) throws DBSIOException {} ;
@@ -2337,7 +2338,7 @@ public abstract class DBSCrudBean extends DBSBean{
 		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_CLOSE);
 		xE.setEditingMode(getEditingMode());
 		try {
-			pvBroadcastEvent(xE, false, false, false);
+			pvBroadcastEvent(xE, true, true, true);
 		} catch (Exception e) {
 			xE.setOk(false);
 			wLogger.error("EventBeforeClose",e);
@@ -2691,8 +2692,8 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Chama os eventos localmente, nos filhos e nos listerners que eventualmente possam existir.
 	 * @param pEvent
 	 * @param pInvokeChildren Se chama os filhos
-	 * @param pOpenConnection Se abre a conexão
-	 * @param pCloseConnection Se fecha a conexão
+	 * @param pOpenConnection Se abre a conexão antes de chamar os eventos
+	 * @param pCloseConnection Se fecha a conexão após chmar os eventos
 	 * @throws Exception 
 	 */
 	private void pvBroadcastEvent(DBSCrudBeanEvent pEvent, boolean pInvokeChildren, boolean pOpenConnection, boolean pCloseConnection) throws Exception {
@@ -2707,14 +2708,15 @@ public abstract class DBSCrudBean extends DBSBean{
 			}
 			pvFireEventListeners(pEvent);
 		}catch(DBSIOException e){ 
+			//Configura a mensagem padrão do dialog
 			wMessageError.setMessageText(e.getLocalizedMessage());
-			wMessageError.setMessageTooltip(e.getMessage());
+			wMessageError.setMessageTooltip(e.getOriginalException().getLocalizedMessage()); 
 			if (!DBSObject.isEmpty(e.getCause())){
 				wMessageError.setMessageTooltip(e.getCause().getMessage() + "<br/>" + e.getMessage());				
 			}
 			addMessage(wMessageError);
 			pEvent.setOk(false);
-			wLogger.error(pEvent.getEvent().toString(), e);
+//			wLogger.error(pEvent.getEvent().toString(), e);
 		}catch(Exception e){
 			String xStr = pEvent.getEvent().toString() + ":" + DBSObject.getNotNull(this.getDialogCaption(),"") + ":";   
 			if (e.getLocalizedMessage()!=null){
