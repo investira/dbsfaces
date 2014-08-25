@@ -1,5 +1,8 @@
 package br.com.dbsoft.ui.component.dialog;
 
+import org.joda.time.DateTime;
+
+import br.com.dbsoft.error.DBSIOException;
 import br.com.dbsoft.message.DBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.message.DBSMessage;
 import br.com.dbsoft.message.DBSMessages;
@@ -16,13 +19,37 @@ public class DBSDialogMessages extends DBSMessages<DBSDialogMessage> {
 		super(pMessageClass);
 	}
 
-	/**
-	 * Inclui uma mensagem na fila para ser exibida.
-	 * A exibição se derá na mesma ondem da inclusão
-	 * @param pMessageKey
-	 * @param pMessageType
-	 * @param pMessageText
-	 * @param pMessageTooltip
+	@Override
+	public void add(DBSIOException e){
+		add(MESSAGE_TYPE.ERROR, e.getLocalizedMessage(), e.getOriginalException().getLocalizedMessage());
+	}
+	
+	/* (non-Javadoc)
+	 * @see br.com.dbsoft.message.DBSMessages#add(br.com.dbsoft.message.DBSMessage.MESSAGE_TYPE, java.lang.String)
+	 */
+	@Override
+	public void add(MESSAGE_TYPE pMessageType, String pMessageText){
+		add(pMessageText, pMessageType, pMessageText, "");
+	}
+	
+	/* (non-Javadoc)
+	 * @see br.com.dbsoft.message.DBSMessages#add(br.com.dbsoft.message.DBSMessage.MESSAGE_TYPE, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public void add(MESSAGE_TYPE pMessageType, String pMessageText, String pMessageTooltip){
+		add(pMessageText, pMessageType, pMessageText, pMessageTooltip);
+	}
+
+	/* (non-Javadoc)
+	 * @see br.com.dbsoft.message.DBSMessages#add(br.com.dbsoft.message.DBSMessage.MESSAGE_TYPE, java.lang.String, java.lang.String, org.joda.time.DateTime)
+	 */
+	@Override
+	public void add(MESSAGE_TYPE pMessageType, String pMessageText, String pMessageTooltip, DateTime pTime){
+		add(pMessageText, pMessageType, pMessageText, pMessageTooltip);
+	}
+
+	/* (non-Javadoc)
+	 * @see br.com.dbsoft.message.DBSMessages#add(java.lang.String, br.com.dbsoft.message.DBSMessage.MESSAGE_TYPE, java.lang.String, java.lang.String)
 	 */
 	@Override
 	public void add(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, String pMessageTooltip){
@@ -30,7 +57,7 @@ public class DBSDialogMessages extends DBSMessages<DBSDialogMessage> {
 		DIALOG_ICON xDialogIcon = DBSFaces.toDIALOG_ICON(pMessageType);
 		add(pMessageKey, pMessageType, pMessageText, xDialogIcon, pMessageTooltip);
 	}
-	
+
 	/**
 	 * Inclui uma mensagem na fila para ser exibida.
 	 * A exibição se derá na mesma ondem da inclusão
@@ -40,7 +67,7 @@ public class DBSDialogMessages extends DBSMessages<DBSDialogMessage> {
 	 * @param pButtons Botões que serão exibidos poelo usuario. Deve-se utilizar a constante DBSDialog.MESAGEM_BUTTONS
 	 */
 	public void add(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, DIALOG_ICON pMessageIcon){
-		add(pMessageKey, pMessageType, pMessageText, pMessageIcon, "");
+		add(pMessageKey, pMessageType, pMessageText, pMessageIcon, null);
 	}
 	
 	public void add(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, DIALOG_ICON pMessageIcon, String pMessageTooltip){
