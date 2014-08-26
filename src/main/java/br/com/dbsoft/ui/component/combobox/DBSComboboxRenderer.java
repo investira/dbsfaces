@@ -18,6 +18,7 @@ import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSObject;
+import br.com.dbsoft.util.DBSString;
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSCombobox.RENDERER_TYPE)
 public class DBSComboboxRenderer extends DBSRenderer {
@@ -149,34 +150,10 @@ public class DBSComboboxRenderer extends DBSRenderer {
 		if (pCombobox.getReadOnly()){
 			DBSFaces.encodeInputDataReadOnly(pCombobox, pWriter, xClientId, xStyle, false, xValue.toString());
 		}else{
-			//Encode do combobox escondido
-			pWriter.startElement("select", pCombobox);
-				DBSFaces.setAttribute(pWriter, "id", xClientId, null);
-				DBSFaces.setAttribute(pWriter, "name", xClientId, null);
-				DBSFaces.setAttribute(pWriter, "size", "1", null);
-				DBSFaces.setAttribute(pWriter, "style", xStyle, null);
-				encodeClientBehaviors(pContext, pCombobox);
-				//Encode dos itens na lista
-				String xSelectedText = "";
-				if (xList != null
-				 && xList.size() > 0){
-					xSelectedText =  (String) xList.values().toArray()[0];
-					for (Map.Entry<Object, Object> xListItem : xList.entrySet()) {
-						if (xListItem.getKey() != null){
-							pWriter.startElement("option", pCombobox);
-								DBSFaces.setAttribute(pWriter, "value", xListItem.getKey(), null);
-								if (xListItem.getKey().equals(xValueKey)){
-									DBSFaces.setAttribute(pWriter, "selected", "", null);
-									xSelectedText = (String) DBSObject.getNotEmpty(xListItem.getValue(), "");
-								}
-								pWriter.write((String) DBSObject.getNotEmpty(xListItem.getValue(), "") );
-								
-							pWriter.endElement("option");
-						}
-					}
-				}
-			pWriter.endElement("select"); 
+			//Encode dos itens na lista
+			String xSelectedText = "";
 			//Texto selecionado
+			xSelectedText = DBSString.toString(xList.get(xValueKey));
 			pWriter.startElement("span", pCombobox);
 				DBSFaces.setAttribute(pWriter, "style", xStyle, null);
 				DBSFaces.setAttribute(pWriter, "class", CSS.INPUT.DATA, null);
@@ -188,6 +165,29 @@ public class DBSComboboxRenderer extends DBSRenderer {
 				pWriter.startElement("span", pCombobox);
 					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.BUTTON + CSS.ICONSMALL + " -is_select_down", null);
 				pWriter.endElement("span");
+				//Encode do combobox escondido
+				pWriter.startElement("select", pCombobox);
+					DBSFaces.setAttribute(pWriter, "id", xClientId, null);
+					DBSFaces.setAttribute(pWriter, "name", xClientId, null);
+					DBSFaces.setAttribute(pWriter, "size", "1", null);
+					DBSFaces.setAttribute(pWriter, "style", xStyle, null);
+					encodeClientBehaviors(pContext, pCombobox);
+					if (xList != null
+					 && xList.size() > 0){
+						for (Map.Entry<Object, Object> xListItem : xList.entrySet()) {
+							if (xListItem.getKey() != null){
+								pWriter.startElement("option", pCombobox);
+									DBSFaces.setAttribute(pWriter, "value", xListItem.getKey(), null);
+									if (xListItem.getKey().equals(xValueKey)){
+										DBSFaces.setAttribute(pWriter, "selected", "", null);
+									}
+									pWriter.write((String) DBSObject.getNotEmpty(xListItem.getValue(), "") );
+									
+								pWriter.endElement("option");
+							}
+						}
+					}
+				pWriter.endElement("select"); 
 			pWriter.endElement("span");
 		}
 	}

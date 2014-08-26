@@ -1,12 +1,6 @@
 .dbs_combobox{
 }
 
-.dbs_combobox select {
-	opacity: 0;
-	position: absolute;
-	z-index: 1;
-	cursor: pointer;
-}
 
 .dbs_combobox > .-container{
 /* 	position: relative; */
@@ -23,6 +17,17 @@
 	text-align: left;
 	overflow: hidden;
 }
+
+.dbs_combobox > .-container > .dbs_input-data > select {
+	opacity: 0;
+	position: absolute;
+	cursor: pointer;
+	font-size: inherit;
+	border: medium none;
+	left:-1px;
+	top:-1px;
+}
+
 .dbs_combobox > .-container > .dbs_input-data.-readOnly {
 /* 	line-height: 1.4; */
 }
