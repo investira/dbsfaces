@@ -7,15 +7,15 @@ dbs_combobox = function(pId) {
 		$(pId + " > .-container > .dbs_input-data").removeClass("dbs_input-data-FOCUS");
 	});
 	
-	$(pId + " > .-container > select").keydown(function(e){
+	$(pId + " > .-container > .dbs_input-data > select").keydown(function(e){
 		dbsfaces.combobox.copyText(pId, this);
 	});
 	
-	$(pId + " > .-container > select").keyup(function(e){
+	$(pId + " > .-container > .dbs_input-data > select").keyup(function(e){
 		dbsfaces.combobox.copyText(pId, this);
 	});	
 	
-	$(pId + " > .-container > select").change(function(e){
+	$(pId + " > .-container > .dbs_input-data > select").change(function(e){
 		dbsfaces.combobox.copyText(pId, this);
 	});	
 }
@@ -23,8 +23,7 @@ dbs_combobox = function(pId) {
 dbsfaces.combobox = {
 	copyText: function(pId, e){
 		var xText = e.options[e.selectedIndex].text;
-		console.log("copytext:" + xText);
-		$(pId + " > .-container > .dbs_input-data").get(0).firstChild.textContent = xText;
+		$(pId + " > .-container > .dbs_input-data > .-data").get(0).firstChild.textContent = xText;
 		return;
 	}
 }
