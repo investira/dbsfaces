@@ -174,7 +174,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 									//Cria lista com os ids componentes dentro do filtro para que façam parte do submit do botão pesquisar 
 									String xExecute = "";
 									//Se for UIPanel é pq existe mais de um input como filtro
-									if (xFilter.getClass().equals(UIPanel.class)){
+									if (xFilter instanceof UIPanel){
 										for (UIComponent xC:xFilter.getChildren()){
 											if (!(xC instanceof UIInstructions)){
 												xExecute += xC.getClientId() + " "; 
