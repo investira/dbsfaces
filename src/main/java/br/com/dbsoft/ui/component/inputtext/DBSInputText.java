@@ -21,7 +21,6 @@ public class DBSInputText extends DBSUIInputText{
 		letterCase,
 		autocomplete,
 		suggestionsBean,
-		suggestionDisplayColumnName,
 		suggestionKeyColumnName,
 		suggestionNullText,
 		suggestionUpdate;
@@ -95,14 +94,6 @@ public class DBSInputText extends DBSUIInputText{
 			return true;
 		}
 		return false;
-	}
-
-	public void setSuggestionDisplayColumnName(String pSuggestionDisplayColumnName) {
-		getStateHelper().put(PropertyKeys.suggestionDisplayColumnName, pSuggestionDisplayColumnName);
-		handleAttribute("suggestionDisplayColumnName", pSuggestionDisplayColumnName);
-	}
-	public String getSuggestionDisplayColumnName() {
-		return (String) getStateHelper().eval(PropertyKeys.suggestionDisplayColumnName, "");
 	}
 
 	public void setSuggestionKeyColumnName(String pSuggestionKeyColumnName) {

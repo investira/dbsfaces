@@ -860,15 +860,6 @@
 		</attribute>
 		<attribute>
 			<description>
-				Nome do atributo do objeto será utilizado para exibir os dados na lista, caso a lista de sugestão retorne algum objeto
-				Caso não seja informado, considera que a lista retorna String
-            </description>
-			<name>suggestionDisplayColumnName</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
 				Nome do atributo do objeto será utilizado como chave para identificar o item selecionado, caso a lista de sugestão retorne algum objeto
 				Caso não seja informado, considera que a lista retorna String
             </description>

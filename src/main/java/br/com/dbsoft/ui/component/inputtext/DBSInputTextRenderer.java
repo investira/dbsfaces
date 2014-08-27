@@ -140,7 +140,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 			//Recupera o respectivo valor a partir da chave
 			if (pInputText.hasSuggestion()){
 				//Recupera a string que será exibida, a partir da chave informada
-				xValue = pvGetDisplayValue(pContext, pInputText, xValue);
+				xValue = pvSetDisplayValue(pContext, pInputText, xValue);
 			}
 		}else{
 			if (pInputText.hasSuggestion() &&
@@ -240,6 +240,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 //				encodeClientParameters(pContext, pInputText);
 			pWriter.endElement("input");
 			
+			//Se tiver suggestion
 			if (pInputText.hasSuggestion()){
 				//Encode List --------------------------------------------------
 				pvEncodeList(pContext, pInputText, pWriter);
@@ -276,30 +277,42 @@ public class DBSInputTextRenderer extends DBSRenderer {
 				int		xY = 0;
 				int 	xZ = pInputText.getChildren().size(); //É necessário guarda o quantidade antes do loop, pois a quantidade é reduzida dinamicamente após cada getChildren().add()
 				for (int xX = 0; xX < xZ; xX++){
-					if (pInputText.getChildren().get(xY) instanceof DBSDataTableColumn){
+					UIComponent xComponent = pInputText.getChildren().get(xY);
+					if (xComponent instanceof DBSDataTableColumn){
+						DBSDataTableColumn xC = (DBSDataTableColumn) xComponent;
+						System.out.println(xC.getId());
 						xIsUsersColumns = true;
-						xDT.getChildren().add(pInputText.getChildren().get(xY));
+						xDT.getChildren().add(xC);
 					}else{
 						xY++; 
 					}
 				}
-	
-				//Adiciona coluna padrão se não existir colunas do usuário
-				if (!xIsUsersColumns){
-					DBSDataTableColumn xDTC = (DBSDataTableColumn) pContext.getApplication().createComponent(DBSDataTableColumn.COMPONENT_TYPE);
-						xDTC.setWidth("100%");
-						xDTC.setId("cd"); //Coluna default
-						//Valor padrão da coluna
-						UIOutput xValue = (UIOutput) pContext.getApplication().createComponent(UIOutput.COMPONENT_TYPE);
-						String xValueColumnName = xVar;
-						if (!pInputText.getSuggestionDisplayColumnName().equals("")){
-							xValueColumnName = xValueColumnName + "." + pInputText.getSuggestionDisplayColumnName().trim();
-						}
-						xValue.setValueExpression("value", DBSFaces.createValueExpression(pContext,  xValueColumnName, String.class));
-						xDTC.getChildren().add(xValue);
-					xDT.getChildren().add(xDTC);
-				}
+
+				String xDisplayValue = pInputText.getValueExpression(DBSInputText.PropertyKeys.suggestionsBean.name()).getExpressionString() + ".getDisplayValue()";
+
+				/*
+				 * Adiciona coluna que contém o valor a exibido na seleção selecionado. 
+				 * Caso não haja coluna definidas manualmente, ela será utulizada para exibir os valores a serem selecionados
+				 */
+
+				DBSDataTableColumn xDTC = (DBSDataTableColumn) pContext.getApplication().createComponent(DBSDataTableColumn.COMPONENT_TYPE);
+					xDTC.setWidth("100%");
+					xDTC.setId("dv"); //Coluna default
+					//class para esconder exibição da coluna, pois 
+					xDTC.setStyleClass("-dv");
+					if (xIsUsersColumns){
+						xDTC.setStyle("display:none;");
+					}
+					//Valor padrão da coluna
+					UIOutput xValue = (UIOutput) pContext.getApplication().createComponent(UIOutput.COMPONENT_TYPE);
+
+					xValue.setValueExpression("value", DBSFaces.createValueExpression(pContext,  xDisplayValue, String.class));
+					xDTC.getChildren().add(xValue);
+				xDT.getChildren().add(xDTC);
+					
 				xDiv.getChildren().add(xDT);
+
+				
 			pInputText.getChildren().add(xDiv);
 		}
 		xDiv.encodeAll(pContext);
@@ -364,11 +377,11 @@ public class DBSInputTextRenderer extends DBSRenderer {
 	 * @param pString
 	 * @return
 	 */
-	private String pvGetDisplayValue(FacesContext pContext, DBSInputText pInputText, String pString){
+	private String pvSetDisplayValue(FacesContext pContext, DBSInputText pInputText, String pString){
     	String[] xParms = new String[1]; 
     	String 	 xDisplayValue;
     	xParms[0] = pString;
-        MethodExpression xME = DBSFaces.createMethodExpression(pContext, pInputText.getValueExpression(DBSInputText.PropertyKeys.suggestionsBean.name()).getExpressionString() + ".getDisplayValue", String.class, new Class[]{String.class}); 
+        MethodExpression xME = DBSFaces.createMethodExpression(pContext, pInputText.getValueExpression(DBSInputText.PropertyKeys.suggestionsBean.name()).getExpressionString() + ".setDisplayValue", String.class, new Class[]{String.class}); 
         xDisplayValue = (String) xME.invoke(pContext.getELContext(), xParms);
         if (xDisplayValue == null){
         	xDisplayValue = DBSSDK.UI.COMBOBOX.NULL_VALUE;

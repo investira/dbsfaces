@@ -69,7 +69,7 @@ dbs_inputText = function(pId) {
 			   && e.keyCode != 16 //SHIFT
 			   && e.keyCode != 37 //LEFT
 			   && e.keyCode != 39){ //RIGHT
-			//Limpa campo caso se não backspaces
+			//Limpa campo caso não seja backspaces
 			//Limpa campo caso haja algum texto selecionado para edição
 			if (e.keyCode != 8 || 
 				(($(this).get(0).selectionEnd - $(this).get(0).selectionStart) > 0)){
@@ -204,8 +204,6 @@ dbsfaces.inputText = {
 		if (xSuggestionValue.length > 0){
 			$(pId + "-data").val(xSuggestionValue);
 			dbsfaces.inputText.validate(pId, false);
-			//Após confirmação apaga somente o texto do suggestion para evitar que a nagevação no texto principal "suje" o valor exibido.
-			$(pId + "-suggestion").val("");
 		}
 		wChanged = true;
 	},
@@ -213,7 +211,7 @@ dbsfaces.inputText = {
 	updateSuggestion: function(pId, pRow, pAjax){
 		if ($(pRow).length > 0){
 			var xRowKey = $(pRow).find('td .-key');
-			var xRowValue = $(pRow).children('td.-C1');
+			var xRowValue = $(pRow).children('td.-dv');
 			var xSuggestionValue = $.trim($(xRowValue).text());
 			var xSuggestionKey = $.trim($(xRowKey).text());
 			//Ignora sugestão se for prefixo for diferente do valor retornado
