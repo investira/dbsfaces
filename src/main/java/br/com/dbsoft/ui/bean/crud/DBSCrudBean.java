@@ -1178,7 +1178,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 
 	/**
-	 * Dispara o evento <b>initialize</b> para obrigar que as lista, caso existam, sejam preenchidas novamente com dados atuais. 
+	 * Dispara o evento <b>initialize</b> para obrigar que as listas, caso existam, sejam preenchidas novamente com dados atuais. 
 	 * Efetua uma nova pesquisa e chama os eventos <b>beforeRefresh</b> e <b>afterRefresh</b>.<br/>
 	 * @throws DBSIOException 
 	 */
