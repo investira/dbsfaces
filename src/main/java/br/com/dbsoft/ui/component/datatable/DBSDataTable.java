@@ -34,7 +34,7 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 		rowStyleClass, 
 		caption, 
 		multipleSelection, 
-		filterAction, 
+		refreshAction, 
 		viewOneAction, 
 		selectAllAction, 
 		selected, 
@@ -217,21 +217,21 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 
 	/**
 	 * Verificar necessidade
-	 * @param pFilterAction
+	 * @param pRefreshAction
 	 */
 	@Deprecated
-	public String getFilterAction() {
-		return DBSFaces.getELString(this,PropertyKeys.filterAction.toString());
+	public String getRefreshAction() {
+		return DBSFaces.getELString(this,PropertyKeys.refreshAction.toString());
 	}
 
 	/**
 	 * Verificar necessidade
-	 * @param pFilterAction
+	 * @param pRefreshAction
 	 */
 	@Deprecated
-	public void setFilterAction(String pFilterAction) {
-		getStateHelper().put(PropertyKeys.filterAction, pFilterAction);
-		handleAttribute("noAction", pFilterAction);
+	public void setRefreshAction(String pRefreshAction) {
+		getStateHelper().put(PropertyKeys.refreshAction, pRefreshAction);
+		handleAttribute("refreshAction", pRefreshAction);
 	}
 
 	public String getViewOneAction() {

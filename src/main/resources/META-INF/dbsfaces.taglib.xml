@@ -88,9 +88,9 @@
 		</attribute>
 		<attribute>
 			<description>
-                Método que será chamado após usuário pressionar o botão Pesquisar
+                Método que será chamado para atualizar o conteúdo da lista
             </description>
-			<name>filterAction</name>
+			<name>refreshAction</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>

@@ -1172,16 +1172,21 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Efetua uma nova pesquisa e chama os eventos <b>beforeRefresh</b> e <b>afterRefresh</b>.
 	 * @throws DBSIOException 
 	 */
-	public synchronized String refreshList() throws DBSIOException{
+	public synchronized String searchList() throws DBSIOException{
 		pvRefreshList();
-		/*
-		 *Força a finalização da conversation para obrigar que o bean seja reinicializado, para
-		 *que as lista, caso existam, sejam preenchidas novamente com dados atuais. 
-		 */
-		wConversation.setTimeout(1);
-		return DBSFaces.getCurrentViewRefresh();
+		return DBSFaces.getCurrentView();
 	}
 
+	/**
+	 * Dispara o evento <b>initialize</b> para obrigar que as lista, caso existam, sejam preenchidas novamente com dados atuais. 
+	 * Efetua uma nova pesquisa e chama os eventos <b>beforeRefresh</b> e <b>afterRefresh</b>.<br/>
+	 * @throws DBSIOException 
+	 */
+	public synchronized String refreshList() throws DBSIOException{
+		pvFireEventInitialize();
+		pvRefreshList();
+		return DBSFaces.getCurrentView();
+	}
 
 	/**
 	 * Copia os valores dos campos para a memória para poderem ser colados em outro registro

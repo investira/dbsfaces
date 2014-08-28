@@ -280,7 +280,6 @@ public class DBSInputTextRenderer extends DBSRenderer {
 					UIComponent xComponent = pInputText.getChildren().get(xY);
 					if (xComponent instanceof DBSDataTableColumn){
 						DBSDataTableColumn xC = (DBSDataTableColumn) xComponent;
-						System.out.println(xC.getId());
 						xIsUsersColumns = true;
 						xDT.getChildren().add(xC);
 					}else{

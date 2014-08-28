@@ -33,7 +33,7 @@
 				 			   caption="#{cc.crudBean.dialogCaption}"
 				               value="#{cc.crudBean.list}"
 				               multipleSelection="#{cc.attrs.multipleSelection or (not cc.crudBean.dialogEdit and not cc.attrs.readOnly and not cc.crudBean.isUpdating) or (cc.attrs.allowApproval and cc.crudBean.allowApproval and cc.crudBean.approvalUserStages!=0)}"
-				               filterAction="#{cc.crudBean.refreshList()}" 
+				               refreshAction="#{cc.crudBean.refreshList()}" 
 				               selectAllAction="#{cc.crudBean.selectAll()}"
 				               selected="#{cc.crudBean.selected}"
 				               update=":dialog"
@@ -50,7 +50,7 @@
 							<cc:insertFacet name="filter"/>
 						</f:facet>
 						<f:facet name="pesquisar">
-							<dbs:button id="btPesquisar" update="#{cc.clientId}" action="#{cc.crudBean.refreshList()}" label="Pesquisar" iconClass="dbs_icon -i_pesquisar"/>
+							<dbs:button id="btPesquisar" update="#{cc.clientId}" action="#{cc.crudBean.searchList()}" label="Pesquisar" iconClass="dbs_icon -i_pesquisar"/>
 						</f:facet>
 					</c:if>
 <!-- 				    <c:if test="#{not empty cc.facets.toolbar}"> -->

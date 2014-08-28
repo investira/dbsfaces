@@ -1566,10 +1566,10 @@ public class  DBSFaces {
 				xBtPesquisar.setId("btPesquisar");
 				xBtPesquisar.setLabel("Pesquisar");
 				xBtPesquisar.setIconClass(DBSFaces.CSS.ICON.trim() + " -i_pesquisar");
-				if (pDataTable.getFilterAction() == null){
-					wLogger.error(pDataTable.getClientId() +  ": filterAction não informado");
+				if (pDataTable.getRefreshAction() == null){
+					wLogger.error(pDataTable.getClientId() +  ": refreshAction não informado");
 				}else{
-					xBtPesquisar.setActionExpression(DBSFaces.createMethodExpression(xContext, pDataTable.getFilterAction(), String.class,new Class[0]));
+					xBtPesquisar.setActionExpression(DBSFaces.createMethodExpression(xContext, pDataTable.getRefreshAction(), String.class,new Class[0]));
 				}
 				xBtPesquisar.setUpdate(xClientId); //Substituido por @all pois dava erro no ajax na seleção da linha por checkbox após o 'pesquisar'
 //				xBtPesquisar.setUpdate("@all");
@@ -1597,10 +1597,10 @@ public class  DBSFaces {
 //				DBSButton xBtExcluir = (DBSButton) xContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
 //				xBtExcluir.setId("btExcluir");
 //				xBtExcluir.setIconClass(DBSFaces.CSS.ICON.trim() + " -i_excluir");
-////				if (pDataTable.getFilterAction() == null){
-////					wLogger.error(pDataTable.getClientId() +  ": filterAction não informado");
+////				if (pDataTable.getRefreshAction() == null){
+////					wLogger.error(pDataTable.getClientId() +  ": refreshAction não informado");
 ////				}else{
-////					xBtPesquisar.setActionExpression(DBSFaces.createMethodExpression(xContext, pDataTable.getFilterAction(), String.class,new Class[0]));
+////					xBtPesquisar.setActionExpression(DBSFaces.createMethodExpression(xContext, pDataTable.getRefreshAction(), String.class,new Class[0]));
 ////				}
 //				xBtExcluir.setUpdate(xClientId);
 //				xBtExcluir.setExecute(xClientId);

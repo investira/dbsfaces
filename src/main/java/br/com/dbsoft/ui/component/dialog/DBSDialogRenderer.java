@@ -63,7 +63,7 @@ public class DBSDialogRenderer extends DBSRenderer {
 		// STYLE 
 		if (xDialog.getWidth() == 0 || 
 			xDialog.getHeight() == 0) {
-			System.out.println("Altura e/ou largura do componente " + xClientId + " não foi definida!");
+			wLogger.error("Altura e/ou largura do componente " + xClientId + " não foi definida!");
 		}
 		
 		//DIALOG
