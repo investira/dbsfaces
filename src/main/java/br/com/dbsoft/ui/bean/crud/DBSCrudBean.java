@@ -125,8 +125,11 @@ public abstract class DBSCrudBean extends DBSBean{
 			}
 		}		
 	}
+
+	@Inject
+	private Conversation						wConversation;
 	
-	private static final long wTimeout = 600000;  //10 minutos
+	private static final long wConversationTimeout = 600000;  //10 minutos
 
 
 	protected DBSDAO<?>							wDAO;
@@ -189,25 +192,13 @@ public abstract class DBSCrudBean extends DBSBean{
 	
 	@Override
 	protected void initializeClass() {
-		conversationBegin();
+		pvConversationBegin();
 		pvFireEventInitialize();
 		//Finaliza os outros crudbeans antes de inicializar este.
 //		DBSFaces.finalizeDBSBeans(this, false); << Comentado pois os beans passaram a ser criados como ConversationScoped - 12/Ago/2014
 	}
 	
 
-	@Inject
-	Conversation	wConversation;
-	
-	/**
-	 * Finaliza a conversação
-	 */
-	public void conversationBegin(){
-		if (wConversation.isTransient()){
-			wConversation.begin();
-			wConversation.setTimeout(wTimeout);
-		}
-	}
 	
 	@Override
 	protected void finalizeClass(){
@@ -609,7 +600,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	public DBSResultDataModel getList() throws DBSIOException{
 		//Força a criação do resultdatamodel se ainda não existir
 		if (wDAO==null){
-			refreshList();
+			pvRefreshList();
 			if (wDAO==null
 			 || wDAO.getResultDataModel() == null){
 				return new DBSResultDataModel();
@@ -1133,7 +1124,7 @@ public abstract class DBSCrudBean extends DBSBean{
 							//Chama eventos
 							if (pvFireEventBeforeCommit()){
 								pvFireEventAfterCommit();
-								refreshList();
+								pvRefreshList();
 								pvFinalizeEditing(true);
 							}else{
 								pvFinalizeEditing(false);
@@ -1190,15 +1181,15 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @throws DBSIOException 
 	 */
 	public synchronized String refreshList() throws DBSIOException{
-		ignoreEditing(); 
-		//Dispara evento para atualizar os dados
-		if (pvFireEventBeforeRefresh()){
-			//Apaga itens selecionados, se houver.
-			wSelectedRowsIndexes.clear();
-			pvFireEventAfterRefresh();
-		}
-		return DBSFaces.getCurrentView();
+		pvRefreshList();
+		/*
+		 *Força a finalização da conversation para obrigar que o bean seja reinicializado, para
+		 *que as lista, caso existam, sejam preenchidas novamente com dados atuais. 
+		 */
+		wConversation.setTimeout(1);
+		return DBSFaces.getCurrentViewRefresh();
 	}
+
 
 	/**
 	 * Copia os valores dos campos para a memória para poderem ser colados em outro registro
@@ -1726,6 +1717,33 @@ public abstract class DBSCrudBean extends DBSBean{
 	
 	// PRIVATE ============================================================================
 	
+
+	/**
+	 * Inicializa a conversação
+	 */
+	private void pvConversationBegin(){
+		if (wConversation.isTransient()){
+			System.out.println("CONVERSATION BEGIN");
+			wConversation.begin();
+			wConversation.setTimeout(wConversationTimeout);
+		}
+	}
+	
+	/**
+	 * Atualiza dados da lista
+	 * @throws DBSIOException
+	 */
+	private void pvRefreshList() throws DBSIOException{
+		ignoreEditing(); 
+		//Dispara evento para atualizar os dados
+		if (pvFireEventBeforeRefresh()){
+			//Apaga itens selecionados, se houver.
+			wSelectedRowsIndexes.clear();
+			pvFireEventAfterRefresh();
+		}
+	}
+
+	
 	/**
 	 * Finaliza a edição, resetando e editing mode.
 	 * @param pOk
@@ -1738,7 +1756,7 @@ public abstract class DBSCrudBean extends DBSBean{
 					setEditingMode(EditingMode.NONE); 
 					pvRestoreValuesOriginal();
 
-					refreshList();
+					pvRefreshList();
 				}else{
 					if (pOk){
 						setEditingMode(EditingMode.NONE);
@@ -2808,7 +2826,7 @@ public abstract class DBSCrudBean extends DBSBean{
 				//Força a atualização do lista antes de exibir
 				if (pEvent.getEvent() == CRUD_EVENT.BEFORE_VIEW
 				 || pEvent.getEvent() == CRUD_EVENT.BEFORE_INSERT){
-					xBean.refreshList();
+					pvRefreshList();
 				}
 				switch (pEvent.getEvent()) {
 				case INITIALIZE:
