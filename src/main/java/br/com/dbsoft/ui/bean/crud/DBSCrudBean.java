@@ -971,11 +971,9 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @throws DBSIOException 
 	 */
 	public Boolean getSelected() throws DBSIOException {
-//		Boolean xB = false;
 		if (wSelectedRowsIndexes.contains(getList().getRowIndex())){
-			return true;//xB = getList().getRowIndex());		
+			return true;		
 		}
-		//System.out.println("GET SELECTED:" + xB);
 		return false;
 	}
 
@@ -985,8 +983,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @throws DBSIOException 
 	 */
 	public void setSelected(Boolean pSelectOne) throws DBSIOException {
-//		System.out.println("SELECT " + pSelectOne);
-		
 //		wDAO.synchronize();
 		
 		pvSetSelected(pSelectOne);
@@ -1015,7 +1011,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Selectiona todas as linhas que exibidas
 	 */
 	public synchronized String selectAll() throws DBSIOException{
-//		System.out.println("SELECT ALL");
 		//Só permite a seleção quando o dialog estiver fechado
 		if (!wDialogOpened){
 			pvSelectAll();
@@ -1040,7 +1035,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @return
 	 */
 	public synchronized String confirmEditing() throws DBSIOException{
-//		System.out.println("EDITING CONFIRM");
 		//Se estive em processo de modificação
 		if (wEditingMode!=EditingMode.NONE){
 			//Se já não estiver em processo de validação ou cancelamento das modificações
@@ -1087,7 +1081,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @throws DBSIOException 
 	 */
 	public synchronized String ignoreEditing() throws DBSIOException{
-//		System.out.println("EDITING IGNORE");
 		//Se estive em processo de modificação
 		if (wEditingMode!=EditingMode.NONE){
 			if (wEditingStage==EditingStage.NONE){
@@ -1115,7 +1108,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @throws DBSIOException 
 		 */
 		public synchronized String endEditing(Boolean pConfirm) throws DBSIOException{
-//			System.out.println("END EDITING :  " + pConfirm  + ":" + getEditingMode().getName() + ":" + getEditingStage().getName());
 			try{
 				if (pConfirm){
 					//Verifica se está no estágio correto
@@ -1196,7 +1188,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @return
 	 */
 	public synchronized String copy() throws DBSIOException{
-//		System.out.println("COPY");
 		wCopiedRowIndex = wDAO.getCurrentRowIndex(); 
 		return DBSFaces.getCurrentView();
 	}
@@ -1208,7 +1199,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @throws DBSIOException 
 	 */
 	public synchronized String paste() throws DBSIOException{
-//		System.out.println("PASTE");
 		//Seta o registro atual como sendo o registro copiado
 		wDAO.paste(wCopiedRowIndex);
 		setValueChanged(true);
@@ -1219,7 +1209,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Exibe todos os itens selecionados 
 	 */
 	public synchronized String viewSelection() throws DBSIOException{
-//		System.out.println("VIEW SELECTION");
 		//Limpa todas as mensagens que estiverem na fila
 		clearMessages();
 
@@ -1247,7 +1236,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Exibe o item selecionado
 	 */
 	public synchronized String view() throws DBSIOException{
-//		System.out.println("VIEW");
 		//Limpa todas as mensagens que estiverem na fila
 		clearMessages();
 		
@@ -1279,7 +1267,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Informa que cadastro foi fechado 
 	 */
 	public synchronized String close(Boolean pClearMessage) throws DBSIOException{
-//		System.out.println("CLOSE");
 		//Só permite a seleção quando o dialog estiver fechado
 		if (wDialogOpened){
 			//Dispara evento
@@ -1298,7 +1285,6 @@ public abstract class DBSCrudBean extends DBSBean{
 
 
 	public synchronized String insertSelected() throws DBSIOException{
-//		System.out.println("INSERT COPY");
 		wInsertSelected = true;
 		view();
 		copy();
@@ -1313,7 +1299,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @throws DBSIOException 
 	 */
 	public synchronized String insert() throws DBSIOException{
-//		System.out.println("INSERT");
 		if (wAllowInsert 
 		 || wInsertSelected){
 			if (!wInsertSelected){
@@ -1358,7 +1343,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Entra no modo de edição 
 	 */
 	public synchronized String update() throws DBSIOException{
-//		System.out.println("UPDATE");
 		if (wAllowUpdate){
 			clearMessages();
 			//Só permite a seleção quando o dialog em exibição
@@ -1389,7 +1373,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @throws DBSIOException 
 	 */
 	public synchronized String delete() throws DBSIOException{
-//		System.out.println("DELETE");
 		if (wAllowDelete){
 			clearMessages();
 			//Só permite a exclusão quando o dialog em exibição
@@ -1422,7 +1405,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @throws DBSIOException 
 	 */
 	public synchronized String approve() throws DBSIOException{
-//		System.out.println("APPROVE");
 		if (wAllowApproval 
 		 && wAllowApprove){
 			if (wUserId== null){
@@ -1458,7 +1440,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @throws DBSIOException 
 	 */
 	public synchronized String reprove() throws DBSIOException{
-//		System.out.println("REPROVE");
 		//Só permite a seleção quando o dialog em exibição
 		if (wAllowApproval && wAllowApprove){
 			if (wUserId== null){
@@ -1723,7 +1704,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	 */
 	private void pvConversationBegin(){
 		if (wConversation.isTransient()){
-			System.out.println("CONVERSATION BEGIN");
 			wConversation.begin();
 			wConversation.setTimeout(wConversationTimeout);
 		}
