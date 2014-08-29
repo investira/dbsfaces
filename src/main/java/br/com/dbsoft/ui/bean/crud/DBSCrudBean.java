@@ -189,6 +189,13 @@ public abstract class DBSCrudBean extends DBSBean{
 	private DBSMessage							wMessaggeApprovalSameUserError =
 												new DBSMessage(MESSAGE_TYPE.ERROR,"Não é permitida a aprovação de um registro incluido pelo próprio usuário.");
 			
+	/**
+	 * Retorna o ID da conversação
+	 * @return
+	 */
+	public String getCID(){
+		return wConversation.getId();
+	}
 	
 	@Override
 	protected void initializeClass() {
