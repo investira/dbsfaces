@@ -17,7 +17,7 @@ public interface IDBSInputTextSuggestions {
 	 * Atualiza o conteúdo da lista a partir do valor digitado
 	 * @param pString Valor digitado
 	 */
-	public abstract void refreshList(String pString) throws DBSIOException;
+	public abstract void searchList(String pString) throws DBSIOException;
 	
 	/**
 	 * Retorna o valor a ser exibido a partir do valor da chave informada.<br/>
