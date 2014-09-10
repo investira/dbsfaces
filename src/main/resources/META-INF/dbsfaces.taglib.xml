@@ -90,7 +90,7 @@
 			<description>
                 Método que será chamado para atualizar o conteúdo da lista
             </description>
-			<name>refreshAction</name>
+			<name>searchAction</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
