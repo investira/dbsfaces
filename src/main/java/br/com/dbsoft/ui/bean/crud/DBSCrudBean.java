@@ -1185,7 +1185,8 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 
 	/**
-	 * Dispara o evento <b>initialize</b> para obrigar que as listas, caso existam, sejam preenchidas novamente com dados atuais. 
+	 * Dispara o evento <b>initialize</b> para obrigar valores iniciais sejam refeitos, como as listas, caso existam, 
+	 * sejam preenchidas novamente com dados atuais. 
 	 * Efetua uma nova pesquisa e chama os eventos <b>beforeRefresh</b> e <b>afterRefresh</b>.<br/>
 	 * @throws DBSIOException 
 	 */
@@ -1722,7 +1723,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 	
 	/**
-	 * Atualiza dados da lista
+	 * Atualiza dados da lista e dispara os eventos beforeRefresh e afterRefresh
 	 * @throws DBSIOException
 	 */
 	private void pvRefreshList() throws DBSIOException{
