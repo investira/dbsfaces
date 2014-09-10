@@ -94,6 +94,7 @@
 
 .dbs_accordion_section-container > .-content {
 	overflow: auto;
+	padding: 2px 0px 0px 0px;
 }
 
 .dbs_accordion_section-container > .-cover {
