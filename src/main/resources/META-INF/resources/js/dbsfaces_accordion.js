@@ -50,7 +50,7 @@ dbsfaces.accordion = {
 	contentSectionOpened: function(e, pAnimate){
 		/*posição ABERTA*/
         var xH = parseInt($(e).css('height'));
-        var xT = 40;  /*Altura total considerando (20 * 2)*/
+        var xT = 42;  /*Altura total considerando (21 * 2)*/
         if (xH > xT){ /*Calcula altura da seção que ficará aberta, de forma a ocupar todo o espaço*/
             xH = xH - xT + 'px';
         }
@@ -78,7 +78,7 @@ dbsfaces.accordion = {
         /*posição FECHADA*/ 
         $(e).find("div.dbs_accordion_section.-closed .-caption").css("color","rgb(130,130,130)"); /*troca cor do cebeçalho fechado*/
         $(e).children("div.dbs_accordion_section.-closed").animate({
-            height: "20px" /* Altura do cebeçalho */
+            height: "21px" /* Altura do cebeçalho */
           }, wsAnimationTime
         );  
         
