@@ -34,7 +34,7 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 		rowStyleClass, 
 		caption, 
 		multipleSelection, 
-		refreshAction, 
+		searchAction, 
 		viewOneAction, 
 		selectAllAction, 
 		selected, 
@@ -71,31 +71,32 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 
 		 FacesContext xContext = FacesContext.getCurrentInstance();
 		 xContext.getViewRoot().subscribeToViewEvent(PostAddToViewEvent.class, this);
-		// xContext.getViewRoot().subscribeToViewEvent(PreValidateEvent.class,this);
-		// xContext.getViewRoot().subscribeToViewEvent(PostValidateEvent.class,this);
-		// xContext.getViewRoot().subscribeToViewEvent(PreRenderViewEvent.class,this);
-		// xContext.getViewRoot().subscribeToViewEvent(PreRenderComponentEvent.class,this);
+//		 xContext.getViewRoot().subscribeToViewEvent(PreValidateEvent.class,this);
+//		 xContext.getViewRoot().subscribeToViewEvent(PostValidateEvent.class,this);
+//		 xContext.getViewRoot().subscribeToViewEvent(PreRenderViewEvent.class,this);
+//		 xContext.getViewRoot().subscribeToViewEvent(PreRenderComponentEvent.class,this);
 		// -------------------------------------------------------------------------------
-		// xContext.getViewRoot().subscribeToViewEvent(PostConstructViewMapEvent.class,this);
-		// xContext.getViewRoot().subscribeToViewEvent(PostRestoreStateEvent.class,this);
-		// xContext.getViewRoot().subscribeToViewEvent(PreDestroyViewMapEvent.class,this);
-		// xContext.getViewRoot().subscribeToViewEvent(PreRemoveFromViewEvent.class,this);
+//		 xContext.getViewRoot().subscribeToViewEvent(PostConstructViewMapEvent.class,this);
+//		 xContext.getViewRoot().subscribeToViewEvent(PostRestoreStateEvent.class,this);
+//		 xContext.getViewRoot().subscribeToViewEvent(PreDestroyViewMapEvent.class,this);
+//		 xContext.getViewRoot().subscribeToViewEvent(PreRemoveFromViewEvent.class,this);
 
 	}
-
+	
 	@Override
 	public void processEvent(SystemEvent event) throws AbortProcessingException {
 //		FacesContext xContext = FacesContext.getCurrentInstance();
-		// UIComponent xComponent = (UIComponent) event.getSource();
-		// System.out.println("=============================================================================");
-		// System.out.println("| processEvent :" + event.getClass().getName() +
-		// ":" + xComponent.getClass().getName());
-		// if (xComponent instanceof UIComponent){
-		// System.out.println("| UIComponentID:" + xComponent.getClientId());
-		// if (xComponent.getChildren().size() > 0) {
-		// System.out.println("| Children     :" +
-		// xComponent.getChildren().size());
-		// }
+//		 UIComponent xComponent = (UIComponent) event.getSource();
+//		 System.out.print("=============================================================================");
+//		 System.out.println(event.getClass().getName() +
+//				 		  ":" + xComponent.getClass().getName() + "| UIComponentID:" + xComponent.getClientId());
+//		 if (xComponent != null){
+//			 System.out.println("| UIComponentID:" + xComponent.getClientId());
+//			 if (xComponent.getChildren().size() > 0) {
+//				 System.out.println("| Children     :" +
+//				 xComponent.getChildren().size());
+//			 }
+//		 }
 		// if (xContext.isPostback() && xComponent instanceof DBSDataTable){
 		// UIComponent xC0 = DBSFaces.findComponent("C0",
 		// xComponent.getChildren());
@@ -119,7 +120,7 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 		// if (xContext.isPostback()) {
 		// System.out.println("| Postback");
 		// }
-//		if (xContext.isPostback()) {
+//		if (!xContext.isPostback()) {
 //			return;
 //		}
 			
@@ -127,11 +128,8 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 //		//É necessário ser o evento PostAddToViewEvent para não ocorrer o erro de Id duplicado e funcionar os action dos botões dinamicamente incluidos
 		if (event.getSource() instanceof DBSDataTable &&
 			event instanceof PostAddToViewEvent) {
+			DBSFaces.createDataTableBotaoPesquisar(this);
 			DBSFaces.createDataTableSpecialColumns(this); 
-//			DBSFaces.createDataTableBotaoPesquisar(this);
-//		} else {
-			// System.out.println("| IGNORED !!! ");
-			// System.out.println("=============================================================================");
 		}
 	}
 
@@ -145,13 +143,12 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 		//
 		// System.out.println("isListenerForSource:" + xStr);
 		//
-		// return ((source instanceof UIViewRoot) || (source instanceof
-		// DBSDataTable));
+		// return ((source instanceof UIViewRoot) || (source instanceof DBSDataTable));
 		// return DBSFaces.isDynamicSource(this, source);
 		//return (source instanceof UIViewRoot);
-//		return (source instanceof DBSDataTable);
-		return (source.equals(this));
-
+//		return (source instanceof DBSDataTable) ;
+//		return true && !(source instanceof UIOutput);
+		return source.equals(this);
 	}
 
 	public String getStyle() {
@@ -215,23 +212,13 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 		handleAttribute("multipleSelection", pMultipleSelection);
 	}
 
-	/**
-	 * Verificar necessidade
-	 * @param pRefreshAction
-	 */
-	@Deprecated
-	public String getRefreshAction() {
-		return DBSFaces.getELString(this,PropertyKeys.refreshAction.toString());
+	public String getSearchAction() {
+		return DBSFaces.getELString(this,PropertyKeys.searchAction.toString());
 	}
 
-	/**
-	 * Verificar necessidade
-	 * @param pRefreshAction
-	 */
-	@Deprecated
-	public void setRefreshAction(String pRefreshAction) {
-		getStateHelper().put(PropertyKeys.refreshAction, pRefreshAction);
-		handleAttribute("refreshAction", pRefreshAction);
+	public void setSearchAction(String pSearchAction) {
+		getStateHelper().put(PropertyKeys.searchAction, pSearchAction);
+		handleAttribute("searchAction", pSearchAction);
 	}
 
 	public String getViewOneAction() {
