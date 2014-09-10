@@ -1517,10 +1517,10 @@ public class  DBSFaces {
 					DBSButton xBtn = (DBSButton) xContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
 						xBtn.setId("btSelect");
 						xBtn.setIconClass(DBSFaces.CSS.ICONSMALL + " -is_invert_selection");
-						//xBtn.setTransient(false);
 						xBtn.setActionExpression(DBSFaces.createMethodExpression(xContext, pDataTable.getSelectAllAction(), String.class, new Class[0]));
-						xBtn.setUpdate("@all"); //Configurado como @All pois na finalizava a chamada ajax corretamente
-						xBtn.setExecute("@this");
+//						xBtn.setUpdate("@all"); //Configurado como @All pois não finalizava a chamada ajax corretamente
+						xBtn.setUpdate(pDataTable.getClientId()); //09/09/2014 - Configurado como clienteId para evitar o update de toda tela causando problema nos grid que est
+						xBtn.setExecute("@this"); 
 					xC0.getFacets().put(DBSDataTable.FACET_HEADER, xBtn);
 					
 					//Checkbox em cada linha para seleção individual--------------------------------------------
@@ -1554,26 +1554,29 @@ public class  DBSFaces {
 	 * Cria botão 'Pesquisar'(como um facet) no dataTable 
 	 * @param pDataTable
 	 */
-	@Deprecated
 	public static UIComponent createDataTableBotaoPesquisar(DBSDataTable pDataTable){
 		//Cria botão 'Pesquisar' caso existam campos para a seleção de filtro
 		UIComponent 	xFacetPesquisar = pDataTable.getFacet(DBSDataTable.FACET_PESQUISAR);
 		if (pDataTable.getFacet(DBSDataTable.FACET_FILTER)!=null){
 			FacesContext 	xContext = FacesContext.getCurrentInstance();	
-			String 			xClientId = pDataTable.getClientId(xContext);
+//			String 			xClientId = pDataTable.getClientId(xContext);
 			if (xFacetPesquisar == null){
 				DBSButton xBtPesquisar = (DBSButton) xContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
 				xBtPesquisar.setId("btPesquisar");
 				xBtPesquisar.setLabel("Pesquisar");
 				xBtPesquisar.setIconClass(DBSFaces.CSS.ICON.trim() + " -i_pesquisar");
-				if (pDataTable.getRefreshAction() == null){
-					wLogger.error(pDataTable.getClientId() +  ": refreshAction não informado");
+				if (pDataTable.getSearchAction() == null){
+					wLogger.error(pDataTable.getClientId() +  ": searchAction não informado");
 				}else{
-					xBtPesquisar.setActionExpression(DBSFaces.createMethodExpression(xContext, pDataTable.getRefreshAction(), String.class,new Class[0]));
+					xBtPesquisar.setActionExpression(DBSFaces.createMethodExpression(xContext, pDataTable.getSearchAction(), String.class,new Class[0]));
 				}
-				xBtPesquisar.setUpdate(xClientId); //Substituido por @all pois dava erro no ajax na seleção da linha por checkbox após o 'pesquisar'
-//				xBtPesquisar.setUpdate("@all");
-				xBtPesquisar.setExecute(xClientId);
+				/*
+				 * Incluido em 9/9/2014.
+				 * A principio resolve a questão do erro no ajax na seleção da linha por checkbox após o 'pesquisar'.
+				 */
+				xBtPesquisar.setUpdate(pDataTable.getClientId(xContext)); //Voltou a ser xClientId em 08/set/2014 - Ricardo	
+//				xBtPesquisar.setUpdate("@all");//Substituido por @all pois dava erro no ajax na seleção da linha por checkbox após o 'pesquisar'
+				
 				//Cria o facet e inclui botão dentro dele. A inclusão do botão através do facet, evita problemas em incluir o botao na view várias vezes.
 				pDataTable.getFacets().put(DBSDataTable.FACET_PESQUISAR, xBtPesquisar); 
 				xFacetPesquisar = pDataTable.getFacet(DBSDataTable.FACET_PESQUISAR);
@@ -1581,45 +1584,6 @@ public class  DBSFaces {
 		}
 		return xFacetPesquisar;
 	}
-	
-//	/**
-//	 * Cria botões no toolbar para edição diretamente na linha. 
-//	 * @param pDataTable
-//	 */
-//	public static void createDataTableInlineEditToolbar(DBSDataTable pDataTable){
-//		//Cria botão 'Pesquisar' caso existam campos para a seleção de filtro
-//		if (pDataTable.getInlineEdit()){
-//			FacesContext 	xContext = FacesContext.getCurrentInstance();	
-//			String 			xClientId = pDataTable.getClientId(xContext);
-//			UIComponent 	xFacetInlineToolbar = pDataTable.getFacet(DBSDataTable.FACET_INLINETOOLBAR);
-//			//Cria facet contendo os botões para edição em linha. 
-//			if (xFacetInlineToolbar == null){
-//				DBSButton xBtExcluir = (DBSButton) xContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
-//				xBtExcluir.setId("btExcluir");
-//				xBtExcluir.setIconClass(DBSFaces.CSS.ICON.trim() + " -i_excluir");
-////				if (pDataTable.getRefreshAction() == null){
-////					wLogger.error(pDataTable.getClientId() +  ": refreshAction não informado");
-////				}else{
-////					xBtPesquisar.setActionExpression(DBSFaces.createMethodExpression(xContext, pDataTable.getRefreshAction(), String.class,new Class[0]));
-////				}
-//				xBtExcluir.setUpdate(xClientId);
-//				xBtExcluir.setExecute(xClientId);
-//				//Adiciona o botão ao facet inlinetoolbar.
-//				pDataTable.getFacets().put(DBSDataTable.FACET_INLINETOOLBAR, xBtExcluir);
-//				//Recupera o facet para poder adiciona-lo ao facet principal do toolbar.
-//				xFacetInlineToolbar = pDataTable.getFacet(DBSDataTable.FACET_INLINETOOLBAR);
-//				//Recupera o facet do toolbar
-//				UIComponent xFacetToolbar = pDataTable.getFacet(DBSDataTable.FACET_TOOLBAR);
-//				if (xFacetToolbar == null){
-//					//Se o facet do toolbar não existir, cria adicionando o facet do inlinetoolbar
-//					pDataTable.getFacets().put(DBSDataTable.FACET_TOOLBAR, xFacetInlineToolbar);
-//				}else{
-//					//Se existis, adiciona o facet como filho
-//					xFacetToolbar.getChildren().add(0, xFacetInlineToolbar);
-//				}
-//			}
-//		}
-//	}
 
 	/**
 	 * Retorna no nome do attributo(sem o nome do bean) a partir da EL do value do campo informado
