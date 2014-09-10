@@ -33,7 +33,7 @@
 				 			   caption="#{cc.crudBean.dialogCaption}"
 				               value="#{cc.crudBean.list}"
 				               multipleSelection="#{cc.attrs.multipleSelection or (not cc.crudBean.dialogEdit and not cc.attrs.readOnly and not cc.crudBean.isUpdating) or (cc.attrs.allowApproval and cc.crudBean.allowApproval and cc.crudBean.approvalUserStages!=0)}"
-				               refreshAction="#{cc.crudBean.refreshList()}" 
+				               searchAction="#{cc.crudBean.searchList()}" 
 				               selectAllAction="#{cc.crudBean.selectAll()}"
 				               selected="#{cc.crudBean.selected}"
 				               update=":dialog"
@@ -49,16 +49,11 @@
 							<span>foo</span>
 							<cc:insertFacet name="filter"/>
 						</f:facet>
-						<f:facet name="pesquisar">
-							<dbs:button id="btPesquisar" update="#{cc.clientId}" action="#{cc.crudBean.searchList()}" label="Pesquisar" iconClass="dbs_icon -i_pesquisar"/>
-						</f:facet>
-					</c:if>
-<!-- 				    <c:if test="#{not empty cc.facets.toolbar}"> -->
-<!-- 						<f:facet name="toolbar"> -->
-<!-- 							<span>foo</span> -->
-<!-- 							<cc:insertFacet name="toolbar"/> -->
+<!-- 						Botão pesquisar passou a fazer parte do dataTable -->
+<!-- 						<f:facet name="pesquisar"> -->
+<!-- 							<dbs:button id="btPesquisar" update="#{cc.clientId}" action="#{cc.crudBean.searchList()}" label="Pesquisar" iconClass="dbs_icon -i_pesquisar"/> -->
 <!-- 						</f:facet> -->
-<!-- 					</c:if> -->
+					</c:if>
 				    <c:if test="#{not empty cc.facets.toolbar or (cc.attrs.multipleSelection and cc.crudBean.multipleSelection) or (cc.attrs.allowInsert and cc.crudBean.allowInsert) or (cc.attrs.allowRefresh and cc.crudBean.allowRefresh) or (cc.attrs.allowApproval and cc.crudBean.allowApproval)}">
 						<f:facet name="toolbar">
 							<dbs:div id="toolbar">
@@ -148,6 +143,14 @@
 <!-- 					<cc:insertChildren/> -->
 <!-- InsertChildren substituido pelo metodo abaixo para controlar o momento que os filhos são inseridos -->
 					<f:event listener="#{cc.insertChildren}" type="postAddToView"/>
+					<script type="text/javascript">
+					/* <![CDATA[ */
+						$(document).ready(function() {
+							var xCrudTableId = "#" + dbsfaces.util.jsid('#{cc.clientId}');
+							dbs_crudTable(xCrudTableId);
+						}); 
+					/* ]]> */
+					</script>	
 					
 				</dbs:dataTable>
 			</dbs:div>
@@ -239,17 +242,6 @@
 					</c:if>				
 				</c:if>	
 			</dbs:div>	
-
-
-						
-			<script type="text/javascript">
-			/* <![CDATA[ */
-				$(document).ready(function() {
-					var xCrudTableId = "#" + dbsfaces.util.jsid('#{cc.clientId}');
-					dbs_crudTable(xCrudTableId);
-				}); 
-			/* ]]> */
-			</script>	
 		</div>
 	</cc:implementation>
 </ui:component>
