@@ -1,7 +1,5 @@
 package br.com.dbsoft.ui.component.inputtext;
 
-
-import javax.el.MethodExpression;
 import javax.faces.component.FacesComponent;
 
 import br.com.dbsoft.ui.component.DBSUIInputText;
@@ -13,7 +11,6 @@ public class DBSInputText extends DBSUIInputText{
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.INPUTTEXT;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 	
-	MethodExpression wSuggestionRefreshAction;
 
 	protected enum PropertyKeys {
 		size,
@@ -68,17 +65,6 @@ public class DBSInputText extends DBSUIInputText{
 	public String getAutocomplete() {
 		return (String) getStateHelper().eval(PropertyKeys.autocomplete, "on");
 	}	
-	
-//	public void setSuggestionList(LinkedHashMap<String, Object> pSuggestionList) {
-//		getStateHelper().put(PropertyKeys.suggestionList, pSuggestionList);
-//		handleAttribute("suggestionList", pSuggestionList);
-//	}
-//	@SuppressWarnings("unchecked")
-//	public LinkedHashMap<String, Object> getSuggestionList() {
-//		return (LinkedHashMap<String, Object>) getStateHelper().eval(PropertyKeys.suggestionList, null);
-//	}
-//	
-
 	
 	public void setLetterCase(String pLetterCase) {
 		getStateHelper().put(PropertyKeys.letterCase, pLetterCase);
