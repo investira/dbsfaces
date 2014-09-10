@@ -46,7 +46,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 					String xDisplayValue = pContext.getExternalContext().getRequestParameterMap().get(xValueClientId);
 					//Chama o método refresh se o valor digitado não for nulo
 			        if(xDisplayValue != null) {
-			        	pvRefreshList(pContext, xInputText, xDisplayValue);
+			        	pvSearchList(pContext, xInputText, xDisplayValue);
 			        }
 				}
 			}else{
@@ -199,7 +199,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 						}
 						xBtn.setId(xClientIdButton);
 						xBtn.setStyleClass(DBSFaces.CSS.INPUT.SUBMIT.trim()); 
-						//xBtn.setActionExpression(DBSFaces.createMethodExpression(pContext, pInputText.getSuggestionRefreshAction(), String.class, new Class[0]));
+						//xBtn.setActionExpression(DBSFaces.createMethodExpression(pContext, pInputText.getSuggestionSearchAction(), String.class, new Class[0]));
 						if (pInputText.getSuggestionUpdate()!=null){
 							xBtn.setUpdate(xClientAjaxUpdate + " " + pInputText.getSuggestionUpdate());
 						}else{
@@ -362,10 +362,10 @@ public class DBSInputTextRenderer extends DBSRenderer {
 	 * @param pInputText
 	 * @param pString
 	 */
-	private void pvRefreshList(FacesContext pContext, DBSInputText pInputText, String pString){
+	private void pvSearchList(FacesContext pContext, DBSInputText pInputText, String pString){
     	String[] xParms = new String[1]; 
     	xParms[0] = pString;
-        MethodExpression xME = DBSFaces.createMethodExpression(pContext, pInputText.getValueExpression(DBSInputText.PropertyKeys.suggestionsBean.name()).getExpressionString() + ".refreshList", null, new Class[]{String.class}); 
+        MethodExpression xME = DBSFaces.createMethodExpression(pContext, pInputText.getValueExpression(DBSInputText.PropertyKeys.suggestionsBean.name()).getExpressionString() + ".searchList", null, new Class[]{String.class}); 
         xME.invoke(pContext.getELContext(), xParms);
     }
 
@@ -387,7 +387,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
         }
         //Atualiza os itens da lista de sugestão somente quando a edição do campo estiver habilitada(not readOnly)
         if (!pInputText.getReadOnly()){
-        	pvRefreshList(pContext, pInputText, xDisplayValue);
+        	pvSearchList(pContext, pInputText, xDisplayValue);
         }
         return xDisplayValue;
     }
