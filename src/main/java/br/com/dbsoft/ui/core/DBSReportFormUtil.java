@@ -20,10 +20,10 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.export.JRPdfExporterParameter;
-import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 import net.sf.jasperreports.engine.export.JRXmlExporter;
 import net.sf.jasperreports.engine.export.JRXmlExporterParameter;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 
 import org.apache.log4j.Logger;
 
@@ -213,14 +213,35 @@ public class DBSReportFormUtil {
 	 * @param pReportParameters Parametros para o Relatorio (Titulo 1, Titulo 2...)
 	 * @param pReportData Connection Ou JRBeanCollectionDataSource
 	 */
+	@Deprecated
 	public static void saveXLS(String pReportFileName, JasperPrint pJasperPrint) {
         try {
         	ByteArrayOutputStream 	xFileXLS = new ByteArrayOutputStream();
-            JRXlsExporter 			xExporterXLS = new JRXlsExporter();    
-            xExporterXLS.setParameter(JRXlsExporterParameter.JASPER_PRINT, pJasperPrint);
-            xExporterXLS.setParameter(JRXlsExporterParameter.OUTPUT_STREAM, xFileXLS);
-			xExporterXLS.exportReport();
+        	JRXlsxExporter			xExporterXLSX = new JRXlsxExporter();    
+            xExporterXLSX.setParameter(JRXlsExporterParameter.JASPER_PRINT, pJasperPrint);
+            xExporterXLSX.setParameter(JRXlsExporterParameter.OUTPUT_STREAM, xFileXLS);
+			xExporterXLSX.exportReport();
 			DBSHttp.sendFile(xFileXLS, DBSFile.getFileNameXLS(pReportFileName), DBSFile.CONTENT_TYPE.XLS);
+		} catch (JRException e) {
+			wLogger.error(e);
+		}
+	}
+	
+	/**
+	 * Salvar relatório em XLS.
+	 * 	
+	 * @param pReportFileName Nome do Arquivo sem a extensão
+	 * @param pReportParameters Parametros para o Relatorio (Titulo 1, Titulo 2...)
+	 * @param pReportData Connection Ou JRBeanCollectionDataSource
+	 */
+	public static void saveXLSX(String pReportFileName, JasperPrint pJasperPrint) {
+        try {
+        	ByteArrayOutputStream 	xFileXLS = new ByteArrayOutputStream();
+        	JRXlsxExporter			xExporterXLSX = new JRXlsxExporter();    
+            xExporterXLSX.setParameter(JRXlsExporterParameter.JASPER_PRINT, pJasperPrint);
+            xExporterXLSX.setParameter(JRXlsExporterParameter.OUTPUT_STREAM, xFileXLS);
+			xExporterXLSX.exportReport();
+			DBSHttp.sendFile(xFileXLS, DBSFile.getFileNameXLSX(pReportFileName), DBSFile.CONTENT_TYPE.XLS);
 		} catch (JRException e) {
 			wLogger.error(e);
 		}

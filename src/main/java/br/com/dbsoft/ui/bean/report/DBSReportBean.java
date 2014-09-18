@@ -239,9 +239,6 @@ public abstract class DBSReportBean extends DBSBean {
 		}
 	}
 	
-	
-
-	
 	/**
 	 * Inicia o Download do Relatório em PDF.
 	 */
@@ -254,7 +251,8 @@ public abstract class DBSReportBean extends DBSBean {
 	 * Inicia o Download do Relatório em XLS
 	 */
 	public synchronized void saveXLS() {
-		DBSReportFormUtil.saveXLS(pvGetReportName(), wJasperPrint);
+//		DBSReportFormUtil.saveXLS(pvGetReportName(), wJasperPrint);
+		DBSReportFormUtil.saveXLSX(pvGetReportName(), wJasperPrint);
 	}
 
 	/* 
