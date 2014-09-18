@@ -1020,8 +1020,8 @@ public class  DBSFaces {
 		String xS[] = pMessageText.split("\\s+"); 
 		String xMessageText = "";
 		Double xLarguraMax = (double) pMessageText.length();
-		xLarguraMax = DBSNumber.exp(xLarguraMax, 0.70);
-		xLarguraMax = DBSNumber.round(xLarguraMax, 0);
+		xLarguraMax = DBSNumber.exp(xLarguraMax, 0.70).doubleValue();
+		xLarguraMax = DBSNumber.round(xLarguraMax, 0).doubleValue();
 		int xI = 0;
 		for (String xPalavra :xS){
 			xI = xI + xPalavra.length() + 1;
@@ -1139,9 +1139,8 @@ public class  DBSFaces {
 	 * @return
 	 */
 	public static Integer getDialogMessageWidth(Integer pMessageTextLenght){
-		Double xWidth = DBSNumber.exp((double)(pMessageTextLenght*10), 0.70) + 150;
-		xWidth = DBSNumber.inte(xWidth);
-		return xWidth.intValue();
+		Integer xWidth = DBSNumber.add(DBSNumber.exp(DBSNumber.multiply(pMessageTextLenght, 10), 0.70), 150).intValue();
+		return xWidth;
 	}
 
 	/**
@@ -1150,20 +1149,10 @@ public class  DBSFaces {
 	 * @return
 	 */
 	public static Integer getDialogMessageHeight(Integer pDialogMessageWidth){
-		Double xHeight;
-		xHeight = pDialogMessageWidth * 0.70;
-		xHeight = DBSNumber.inte(xHeight);
-		return xHeight.intValue();
+		Integer xHeight = DBSNumber.multiply(pDialogMessageWidth, 0.70).intValue();
+		return xHeight;
 	}
 	
-//	Double xWidth = DBSNumber.exp((double)(pMessageText.length()*10), 0.70) + 150;
-//	xWidth = DBSNumber.inte(xWidth);
-//	Double xHeight;
-//	xHeight = xWidth * 0.70;
-//	xHeight = DBSNumber.inte(xHeight);
-	
-	
-
 	//############################ COMPONENTS AUXS ENCODES ################################################
 	/**
 	 * Retorna string em JS com o submit
