@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.dbsoft</groupId>
 	<artifactId>dbsfaces</artifactId>
-	<version>1.1.0</version>
+	<version>1.1.1</version>
 	<name>DBSoft - Componentes JSF</name>
 	<url>http://www.dbsoft.com.br</url>
 	<organization>
@@ -15,7 +15,7 @@
 		<jasper.version>5.5.0</jasper.version>
 		<internal.repo.path>${user.home}/Fnt/mvn-repo</internal.repo.path>
 		<github.global.server>github</github.global.server>
-		<dbssdk.version>1.1.0</dbssdk.version>
+		<dbssdk.version>1.1.1</dbssdk.version>
 		<jsf.version>2.1.20</jsf.version>
 	</properties>
 	<distributionManagement>
@@ -65,19 +65,7 @@
 			<groupId>br.com.dbsoft</groupId>
 			<artifactId>dbssdk</artifactId>
 			<version>${dbssdk.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.faces</groupId>
-			<artifactId>jsf-api</artifactId>
-			<version>${jsf.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.faces</groupId>
-			<artifactId>jsf-impl</artifactId>
-			<version>${jsf.version}</version>
-			<scope>provided</scope>
-		</dependency>		
+		</dependency>	
 	</dependencies>
 	<build>
 		<plugins>
@@ -95,24 +83,6 @@
 					<archive></archive>
 				</configuration>
 			</plugin>
-<!-- 			<plugin> -->
-<!-- 				<groupId>org.apache.maven.plugins</groupId>  -->
-<!-- 				<artifactId>maven-assembly-plugin</artifactId> -->
-<!-- 				<executions> -->
-<!-- 					<execution> -->
-<!-- 						<id>create-my-bundle</id> -->
-<!-- 						<phase>package</phase> -->
-<!-- 						<goals> -->
-<!-- 							<goal>single</goal> -->
-<!-- 						</goals> -->
-<!-- 						<configuration> -->
-<!-- 							<descriptorRefs> -->
-<!-- 								<descriptorRef>jar-with-dependencies</descriptorRef> -->
-<!-- 						    </descriptorRefs> -->
-<!-- 						</configuration> -->
-<!-- 					</execution> -->
-<!-- 				</executions> -->
-<!-- 			</plugin> -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
@@ -133,10 +103,28 @@
 		            <altDeploymentRepository>internal.repo::default::file://${internal.repo.path}</altDeploymentRepository>
 		        </configuration>
 		    </plugin>
+<!-- 			<plugin> -->
+<!-- 				<groupId>org.apache.maven.plugins</groupId>  -->
+<!-- 				<artifactId>maven-assembly-plugin</artifactId> -->
+<!-- 				<executions> -->
+<!-- 					<execution> -->
+<!-- 						<id>create-my-bundle</id> -->
+<!-- 						<phase>package</phase> -->
+<!-- 						<goals> -->
+<!-- 							<goal>single</goal> -->
+<!-- 						</goals> -->
+<!-- 						<configuration> -->
+<!-- 							<descriptorRefs> -->
+<!-- 								<descriptorRef>jar-with-dependencies</descriptorRef> -->
+<!-- 						    </descriptorRefs> -->
+<!-- 						</configuration> -->
+<!-- 					</execution> -->
+<!-- 				</executions> -->
+<!-- 			</plugin> -->		    
 	        <plugin>
 	            <groupId>com.github.github</groupId>
 	            <artifactId>site-maven-plugin</artifactId>
-	            <version>0.9</version>
+	            <version>0.11-SNAPSHOT</version>
 	            <configuration>
 	                <message>Maven artifacts for ${project.name} ${project.version}</message>  <!-- git commit message -->
 	                <noJekyll>true</noJekyll>                                  <!-- disable webpage processing -->
