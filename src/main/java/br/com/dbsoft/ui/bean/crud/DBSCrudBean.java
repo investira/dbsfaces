@@ -242,8 +242,8 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @param pColumnValue
 	 * @param pValueClass Classe para a qual o valor será convertido
 	 */
-	public <T> void setValue(String pColumnName, T pColumnValue, Class<?> pValueClass){
-		T xValue = DBSObject.toClass(pColumnValue, pValueClass);
+	public <T> void setValue(String pColumnName, Object pColumnValue, Class<T> pValueClass){
+		T xValue = DBSObject.<T>toClass(pColumnValue, pValueClass);
 		
 		setValue(pColumnName, xValue);
 	}
@@ -255,7 +255,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @param pColumnName
 	 * @param pColumnValue
 	 */
-	public <T> void setValue(String pColumnName, T pColumnValue){
+	public void setValue(String pColumnName, Object pColumnValue){
 		//Utiliza ListValue para controlar os valores de todas as linhas
 		if (!wDialogEdit){
 			setListValue(pColumnName, pColumnValue);
@@ -286,9 +286,8 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @param pValueClass Classe para a qual será convertido o valor recebido
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	public <T> T getValue(String pColumnName, Class<?> pValueClass){
-		return (T) DBSObject.toClass(getValue(pColumnName), pValueClass);
+	public <T> T getValue(String pColumnName, Class<T> pValueClass){
+		return DBSObject.<T>toClass(getValue(pColumnName), pValueClass);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -309,9 +308,8 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @param pValueClass Classe para a qual será convertido o valor recebido
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	public <T> T getValueOriginal(String pColumnName, Class<?> pValueClass){
-		return (T) DBSObject.toClass(getValueOriginal(pColumnName), pValueClass);
+	public <T> T getValueOriginal(String pColumnName, Class<T> pValueClass){
+		return DBSObject.<T>toClass(getValueOriginal(pColumnName), pValueClass);
 	}
 	
 
@@ -336,9 +334,8 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @param pColumnName
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	public <T> T getListValue(String pColumnName, Class<?> pValueClass){
-		return (T) DBSObject.toClass(getListValue(pColumnName), pValueClass);
+	public <T> T getListValue(String pColumnName, Class<T> pValueClass){
+		return DBSObject.<T>toClass(getListValue(pColumnName), pValueClass);
 	}
 
 	/**
@@ -1931,13 +1928,13 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @param pColumnValue
 	 */
 
-	private <T> void pvSetValueDAO(String pColumnName, T pColumnValue){
+	private void pvSetValueDAO(String pColumnName, Object pColumnValue){
 		//Utiliza ListValue para controlar os valores de todas as linhas
 		//Verifica se há alguma coluna corrente antes de setar o valor
 		if (wDAO != null 
 		 && (wDAO.getColumns().size() > 0
 		  || wDAO.getCommandColumns().size() > 0)){
-			T xOldValue =  pvGetValue(pColumnName);
+			Object xOldValue =  pvGetValue(pColumnName);
 			if (pColumnValue != null){
 				//Converte o valor antigo para o mesmo tipo do valor recebido para garantir a verificação correta se houve alteração de valores
 				xOldValue = DBSObject.toClass(xOldValue, pColumnValue.getClass()); 
