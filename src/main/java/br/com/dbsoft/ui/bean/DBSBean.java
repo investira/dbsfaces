@@ -48,8 +48,10 @@ public abstract class DBSBean implements Serializable {
 	//o que faz que por algum motivo o JSF envie algum resposta no momento que não deveria, principalmente com @ResquestScoped
 	@PostConstruct
 	void pvInitializeClass() {
-		if (FacesContext.getCurrentInstance().getExternalContext().getSession(false) == null){
-			FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+		if (FacesContext.getCurrentInstance() == null){
+			wLogger.warn(this.getClass().getCanonicalName() + ":Não há scope ativo para este bean.");
+		}else if(FacesContext.getCurrentInstance().getExternalContext().getSession(false) == null){
+				FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 		}
 		initializeClass();
 	}
