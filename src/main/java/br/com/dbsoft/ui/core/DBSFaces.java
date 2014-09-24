@@ -1167,20 +1167,20 @@ public class  DBSFaces {
 		String xLocalOnClick = xUserOnClick;
 		String xClientUpdate = pvRemoveFirstColon(pClientUpdate);
 		
-		if (!xClientUpdate.equals("")){//Se for ajax
-			String xExecute = "";//TODO
+		//Ajax
+		if (!xClientUpdate.equals("")){
+			String xExecute = "";
 			if (pExecute != null 
 			 && pExecute.equals("") == false){
 				xExecute = "execute:'" + pvRemoveFirstColon(pExecute) + "',";
 			}
 			xLocalOnClick = "jsf.ajax.request(this, event, {" + xExecute + " render:'" +  xClientUpdate +  "', onevent:dbsfaces.onajax}); return false;";
-			//xLocalOnClick = "jsf.ajax.request(this, event, {execute:'@form', render:'" +  pvRemoveFirstColon(pClientUpdate) +  "'}); return false;";
-		}else{//Se Não for ajax
+		//Não Ajax
+		}else{
 			if (pExecute == null || pExecute.equals("")){
 				System.out.println("Form/Execute não definido para o componente " + pComponent.getClientId()  + "!");
 			}
-			xLocalOnClick = "mojarra.jsfcljs(document.getElementById('" + pExecute + "'),{'"+ pComponent.getClientId() + "':'"+ pComponent.getClientId() + "'},'');return false;";
-			//xLocalOnClick = "mojarra.jsfcljs(document.getElementById('" + pFormId + "'),{'"+ pComponent.getClientId() + "':'"+ pComponent.getClientId() + "'},'')";
+			xLocalOnClick = "mojarra.jsfcljs(document.getElementById('" + pExecute + "'),{'"+ pComponent.getClientId() + "':'"+ pComponent.getClientId() + "'},'');return true;";
 		}
 		if (xUserOnClick != null){
 			xLocalOnClick = xLocalOnClick.replaceAll("'", "\\\\'");
