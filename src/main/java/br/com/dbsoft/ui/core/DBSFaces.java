@@ -1180,7 +1180,7 @@ public class  DBSFaces {
 			if (pExecute == null || pExecute.equals("")){
 				System.out.println("Form/Execute não definido para o componente " + pComponent.getClientId()  + "!");
 			}
-			xLocalOnClick = "mojarra.jsfcljs(document.getElementById('" + pExecute + "'),{'"+ pComponent.getClientId() + "':'"+ pComponent.getClientId() + "'},'');return true;";
+			xLocalOnClick = "mojarra.jsfcljs(document.getElementById('" + pExecute + "'),{'"+ pComponent.getClientId() + "':'"+ pComponent.getClientId() + "'},'');return false;";
 		}
 		if (xUserOnClick != null){
 			xLocalOnClick = xLocalOnClick.replaceAll("'", "\\\\'");
