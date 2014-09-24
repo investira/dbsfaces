@@ -878,23 +878,6 @@ td > .dbs_icon{
 .-i_feed { background-position: -3777px -0px; }
 .-i_cloud { background-position: -3793px -0px; }
 
-
-/* .-i_thumb_up_blue { background-position: -3537px -0px; } */
-/* .-i_thumb_up_green { background-position: -3553px -0px; } */
-/* .-i_thumb_down_red { background-position: -3569px -0px; } */
-
-
-
-.-i_indiceseconomicos {background-position: -1153px -0px;}
-.-i_ativo {background-position: -3009px -0px;}
-.-i_rendavariavel {background-position: -529px -0px;}
-.-i_rendafixa {background-position: -1873px -0px;}
-.-i_corporativo {background-position: -1089px -0px;}
-.-i_risco {background-position: -1169px -0px;}
-.-i_seguranca { background-position: -2065px -0px; }
-.-i_configuracao {background-position: -1441px -0px;}
-
-
 .-i_ok {background-position: -289px -0px;}
 .-i_cancelar {background-position: -353px -0px;}
 .-i_ignorar {background-position: -2833px -0px;}
@@ -932,7 +915,6 @@ td > .dbs_icon{
 .-i_acesso {background-position: -801px -0px;}
 .-i_usuario { background-position: -1377px -0px; }
 
-
 .-i_noticias {background-position: -1073px -0px;}
 .-i_indicadores {background-position: -2081px -0px;}
 .-i_tarefas {background-position: -33px -0px;}
@@ -940,7 +922,18 @@ td > .dbs_icon{
 .-i_home {background-position: -1793px -0px;}
 
 
+.-i_indiceseconomicos {background-position: -1153px -0px;}
+.-i_ativo {background-position: -3009px -0px;}
+.-i_rendavariavel {background-position: -529px -0px;}
+.-i_rendafixa {background-position: -1873px -0px;}
+.-i_corporativo {background-position: -1089px -0px;}
+.-i_risco {background-position: -1169px -0px;}
+.-i_seguranca { background-position: -2065px -0px; }
+.-i_configuracao {background-position: -1441px -0px;}
 
+.-i_reprocessar { background-position: -3713px -0px; }
+.-i_fechamento { background-position: -3537px -0px; }
+.-i_abertura { background-position: -3553px -0px; }
 
 .-i_controle {background-position: -1649px -0px;}
 .-i_gestao {background-position: -257px -0px;}
@@ -953,7 +946,6 @@ td > .dbs_icon{
 .-i_custodia {background-position: -1249px -0px;}
 .-i_proventos {background-position: -913px -0px;}
 .-i_subscricoes {background-position: -2177px -0px;}
-.-i_fechamento {background-position: -1777px -0px;}
 .-i_ordem {background-position: -1889px -0px;}
 .-i_contabil {background-position: -1953px -0px;}
 .-i_ajustar_fatura { background-position: -1985px -0px; }
@@ -961,6 +953,8 @@ td > .dbs_icon{
 .-i_procurar_ativo { background-position: -3361px -0px; }
 .-i_procurar_posicao { background-position: -1569px -0px; }
 .-i_posicao { background-position: -1553px -0px; }
+
+
 
 .runningGear {
 	background-image: url("#{request.contextPath}/images/gear16.gif") !important;
