@@ -235,9 +235,12 @@ public abstract class DBSCrudBean extends DBSBean{
 	
 	
 	/**
-	 * Seta o valor da coluna na posição atual do registro 
+	 * Seta o valor da coluna na posição atual do regist.
 	 * O valor será convertido para a class informada
-	 * obs:Os nomes das colunas são definidos a partir da query efetuado no DAO
+	 * Obs:Os nomes das colunas são definidos a partir da query efetuado no DAO.
+	 * Para que os atributos dos componentes na tela, como tamanho máximo, na sejam configurados automaticamente,
+	 * é importante que os <i>getters</i> e <i>setter<i/> tenham o mesmo nome da coluna da tabela e iniciem 'Fl'.<br/>
+	 * ex:setFlNOME_DA_COLUNA, getFlNOME_DA_COLUNA.  
 	 * @param pColumnName
 	 * @param pColumnValue
 	 * @param pValueClass Classe para a qual o valor será convertido
@@ -249,9 +252,12 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 
 	/**
-	 * Seta o valor da coluna na posição atual do registro
-	 * O valor será convertido para o mesmo tipo da class
-	 * obs:Os nomes das colunas são definidos a partir da query efetuado no DAO
+	 * Seta o valor da coluna na posição atual do regist.
+	 * O valor será convertido para o mesmo tipo da class.
+	 * Obs:Os nomes das colunas são definidos a partir da query efetuado no DAO.
+	 * Para que os atributos dos componentes na tela, como tamanho máximo, na sejam configurados automaticamente,
+	 * é importante que os <i>getters</i> e <i>setter<i/> tenham o mesmo nome da coluna da tabela e iniciem 'Fl'.<br/>
+	 * ex:setFlNOME_DA_COLUNA, getFlNOME_DA_COLUNA.  
 	 * @param pColumnName
 	 * @param pColumnValue
 	 */
@@ -265,7 +271,10 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 	
 	/**
-	 * Retorna o valor da coluna
+	 * Retorna o valor da coluna.<br/>
+	 * Para que os atributos dos componentes na tela, como tamanho máximo, na sejam configurados automaticamente,
+	 * é importante que os <i>getters</i> e <i>setter<i/> tenham o mesmo nome da coluna da tabela e iniciem 'Fl'.<br/>
+	 * ex:setFlNOME_DA_COLUNA, getFlNOME_DA_COLUNA.  
 	 * @param pColumnName
 	 * @return
 	 */
@@ -281,7 +290,10 @@ public abstract class DBSCrudBean extends DBSBean{
 	
 	
 	/**
-	 * Retorna o valor da coluna convertida para a classe do tipo informado
+	 * Retorna o valor da coluna convertida para a classe do tipo informado.<br/>
+	 * Para que os atributos dos componentes na tela, como tamanho máximo, na sejam configurados automaticamente,
+	 * é importante que os <i>getters</i> e <i>setter<i/> tenham o mesmo nome da coluna da tabela e iniciem 'Fl'.<br/>
+	 * ex:setFlNOME_DA_COLUNA, getFlNOME_DA_COLUNA.  
 	 * @param pColumnName Nome da coluna
 	 * @param pValueClass Classe para a qual será convertido o valor recebido
 	 * @return
@@ -374,7 +386,7 @@ public abstract class DBSCrudBean extends DBSBean{
 
 	/**
 	 * Configura os inputs da tela
-	 * Metodo chamado pelo DBSCrudForm para poder configurar os atributos dos componentes na tela antes que sejam exibidos
+	 * Método chamado pelo DBSCrudForm para poder configurar os atributos dos componentes na tela antes que sejam exibidos
 	 * @param pComponentInput
 	 */
 	public void crudFormBeforeShowComponent(UIComponent pComponent){
