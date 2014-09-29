@@ -110,10 +110,13 @@ public class DBSButtonRenderer extends DBSRenderer {
 //					xButton.getonclick() != null){				
 //					xWriter.writeAttribute("ontouchstart", "", "ontouchstart"); //Para ipad ativar o css:ACTIVE
 					xWriter.writeAttribute("type", "submit", "type");
-					//if (xButton.getUpdate()!=null){
+					if (xButton.getClientBehaviors().isEmpty()){
 						DBSFaces.setAttribute(xWriter, DBSFaces.HTML.EVENTS.ONCLICK, xOnClick, null); 
+					}else{
+						encodeClientBehaviors(pContext, xButton);
+					}
+					//if (xButton.getUpdate()!=null){
 					//}
-					encodeClientBehaviors(pContext, xButton);
 //				}			
 			}
 			if (xButton.getIconClass()!=null || xButton.getLabel()!=null){
