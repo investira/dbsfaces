@@ -43,7 +43,7 @@
 	border-right:1px;
 	border-bottom:0px;
 	border-color: rgb(140,140,140);
-	border-style: outset;
+	border-style: solid;
 	color:white;
 	font-weight: normal;
     text-shadow: none;
@@ -70,9 +70,9 @@
 	border-left: 1px;
 	border-right:1px;
 	border-bottom:0px;
-	border-style: outset;
+	border-style: solid;
 	text-shadow:1px 1px 0px #DDDDDD;	
-	border-color: rgb(140,140,140);
+	border-color: rgb(210,210,210);
 	color:rgb(13,25,45);
 	display:block;
 	position:relative;
@@ -140,8 +140,8 @@
 	-webkit-border-radius:0px 0px 5px 5px;  
 	-moz-border-radius: 0px 0px 5px 5px;
 	border-radius: 0px 0px 5px 5px;
-	border-style:outset;
-	border-color: rgb(180,180,180);
+	border-style:solid;
+	border-color: rgb(210,210,210);
 	
 	background: rgb(245,245,245); /* Old browsers */
 	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
