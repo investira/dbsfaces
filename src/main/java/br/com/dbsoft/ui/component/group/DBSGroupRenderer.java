@@ -51,34 +51,37 @@ public class DBSGroupRenderer extends DBSRenderer {
 			}
 			DBSFaces.setAttribute(xWriter, "style", xGroup.getStyle(), null);
 			xWriter.startElement("div", xGroup);
-				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.HEADER.trim(), null);
+				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER.trim(), null);
 				xWriter.startElement("div", xGroup);
+					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.HEADER.trim(), null);
 					xWriter.startElement("div", xGroup);
-						DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.INPUT.LABEL.trim() + " " + DBSFaces.CSS.NOT_SELECTABLE.trim(), null);
-						if (!xGroup.getLabel().equals("")){
-							xWriter.write(xGroup.getLabel() + ":");
-						}
+						xWriter.startElement("div", xGroup);
+							DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.INPUT.LABEL.trim() + " " + DBSFaces.CSS.NOT_SELECTABLE.trim(), null);
+							if (!xGroup.getLabel().equals("")){
+								xWriter.write(xGroup.getLabel() + ":");
+							}
+						xWriter.endElement("div");
+					xWriter.endElement("div");
+					xWriter.startElement("div", xGroup);
+						DBSFaces.setAttribute(xWriter, "class", "-line", null);
+						xWriter.startElement("span", xGroup);
+						xWriter.endElement("span");
 					xWriter.endElement("div");
 				xWriter.endElement("div");
 				xWriter.startElement("div", xGroup);
-					DBSFaces.setAttribute(xWriter, "class", "-line", null);
-					xWriter.startElement("span", xGroup);
-					xWriter.endElement("span");
-				xWriter.endElement("div");
-			xWriter.endElement("div");
-			xWriter.startElement("div", xGroup);
-				if (xGroup.getFloatLeft()){ 
-					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT + "-floatleft", null);
-				}else{
-					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
-				}
-				renderChildren(pContext, xGroup);
+					if (xGroup.getFloatLeft()){ 
+						DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT + "-floatleft", null);
+					}else{
+						DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
+					}
+					renderChildren(pContext, xGroup);
 	}
 	
 	@Override
 	public void encodeEnd(FacesContext pContext, UIComponent pComponent) throws IOException{
 		if (!pComponent.isRendered()){return;}
 		ResponseWriter xWriter = pContext.getResponseWriter();
+				xWriter.endElement("div");
 			xWriter.endElement("div");
 		xWriter.endElement("div");
 	}
