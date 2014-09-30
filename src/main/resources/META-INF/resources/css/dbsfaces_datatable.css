@@ -58,7 +58,8 @@
 	
 }
 
-.dbs_dataTable > .-container > .-header > .-filter > .-input .dbs_input{
+.dbs_dataTable > .-container > .-header > .-filter > .-input .dbs_input,
+.dbs_dataTable > .-container > .-header > .-filter > .-input .dbs_group{
 	margin-bottom: 2px;
 }
 
