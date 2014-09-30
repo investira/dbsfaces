@@ -29,14 +29,14 @@
 }
 
 .dbs_combobox > .-container > .dbs_input-data.-readOnly {
-/* 	line-height: 1.4; */
+	line-height: 1.5;
 }
 
 .dbs_combobox > .-container > .dbs_input-data > .-data {
 	display:block;
 	overflow: hidden;	
 	position: relative;
-/*     top: 1px;	 */
+    top: 1px;	
 }
 
 .dbs_combobox > .-container > .dbs_input-data > .-button {
