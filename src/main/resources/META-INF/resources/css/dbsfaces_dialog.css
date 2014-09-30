@@ -114,7 +114,8 @@
 	color:rgb(13,25,45);
 }
 
-.dbs_dialog > div > .-content .dbs_input:not(td){ /* exblui td para evitar a margem nos input type=radio */
+.dbs_dialog > div > .-content .dbs_input:not(td),
+.dbs_dialog > div > .-content .dbs_group{ /* exblui td para evitar a margem nos input type=radio */
 	margin-bottom: 2px;	
 }
 
