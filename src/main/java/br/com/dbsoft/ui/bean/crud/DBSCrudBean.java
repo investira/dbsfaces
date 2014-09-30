@@ -1736,7 +1736,9 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @throws DBSIOException
 	 */
 	private void pvRefreshList() throws DBSIOException{
-		ignoreEditing(); 
+		if (getEditingMode() == EditingMode.UPDATING){
+			ignoreEditing(); 
+		}
 		//Dispara evento para atualizar os dados
 		if (pvFireEventBeforeRefresh()){
 			//Apaga itens selecionados, se houver.
