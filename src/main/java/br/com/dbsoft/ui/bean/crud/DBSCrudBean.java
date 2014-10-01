@@ -154,7 +154,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	private String								wDialogIgnoreInsertMessage = "Ignorar a inclusão?";
 	private String								wDialogIgnoreDeleteMessage = "Ignorar a exclusão?";
 	private String								wDialogCaption;
-	private	Boolean								wInsertSelected = false;
+	private	Boolean								wDialogCloseAfterInsert = false;
 	private Boolean								wAllowUpdate = true;
 	private Boolean								wAllowInsert = true;
 	private Boolean								wAllowDelete = true;
@@ -564,13 +564,32 @@ public abstract class DBSCrudBean extends DBSBean{
 			}
 		}
 	}
+	
+	/**
+	 * Indica se dialog será fechado alogo após a inclusão.<br/>
+	 * Funcionalidade normalmente utilizada quando não for comum inclusões consecutivas.<br/>
+	 * O padrão é <b>false</b>.
+	 * @return
+	 */
+	public Boolean getDialogCloseAfterInsert() {
+		return wDialogCloseAfterInsert;
+	}
+
+	/**
+	 * Indica se dialog será fechado alogo após a inclusão.<br/>
+	 * Funcionalidade normalmente utilizada quando não for comum inclusões consecutivas.<br/>
+	 * O padrão é <b>false</b>.
+	 * @param pDialogCloseAfterInsert
+	 */
+	public void setDialogCloseAfterInsert(Boolean pDialogCloseAfterInsert) {
+		wDialogCloseAfterInsert = pDialogCloseAfterInsert;
+	}
 
 	/**
 	 * Indica se edição será efetuado dentro de um dialog.<br/>
 	 * Caso positivo, deverá ser implementado o form utilizando o componente crudForm e adicioná-lo a view que onde está o crudTable.  
 	 * @return
 	 */
-	
 	public Boolean getDialogEdit() {return wDialogEdit;}
 
 	/**
@@ -1307,7 +1326,7 @@ public abstract class DBSCrudBean extends DBSBean{
 
 
 	public synchronized String insertSelected() throws DBSIOException{
-		wInsertSelected = true;
+		setDialogCloseAfterInsert(true);
 		view();
 		copy();
 		insert();
@@ -1322,8 +1341,8 @@ public abstract class DBSCrudBean extends DBSBean{
 	 */
 	public synchronized String insert() throws DBSIOException{
 		if (wAllowInsert 
-		 || wInsertSelected){
-			if (!wInsertSelected){
+		 || wDialogCloseAfterInsert){
+			if (!wDialogCloseAfterInsert){
 				clearMessages();
 			}
 			//Inclui linha em branco quando edição for diretamente no grid e edição já estiver habilitada(EditingMode.UPDATING)
@@ -1776,9 +1795,10 @@ public abstract class DBSCrudBean extends DBSBean{
 				if (pOk){
 					//Fecha crudform se for para ignorar a inclusão ou for uma inclusão a partir da seleção de um item do crudTable
 					if (wEditingStage==EditingStage.IGNORING
-					|| wInsertSelected){
+					|| wDialogCloseAfterInsert){
 						setEditingMode(EditingMode.NONE);
 //						setDialogStage(DialogStage.CLOSED);
+						setDialogCloseAfterInsert(false);
 						close();
 					}else{
 						setEditingMode(EditingMode.NONE); 
