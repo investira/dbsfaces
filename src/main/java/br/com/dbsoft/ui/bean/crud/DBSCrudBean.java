@@ -1715,6 +1715,7 @@ public abstract class DBSCrudBean extends DBSBean{
 			if (pEvent.isOk()){
 				//Insert
 				if(getIsInserting()){
+					//Zera o valor da coluna que for PK e autoincremente para forçar que o número gera gerado automaticamente pelo banco
 					if (wDAO.isAutoIncrementPK()){
 						wDAO.setValue(wDAO.getPK(), null);
 					}
@@ -1797,8 +1798,6 @@ public abstract class DBSCrudBean extends DBSBean{
 					if (wEditingStage==EditingStage.IGNORING
 					|| wDialogCloseAfterInsert){
 						setEditingMode(EditingMode.NONE);
-//						setDialogStage(DialogStage.CLOSED);
-						setDialogCloseAfterInsert(false);
 						close();
 					}else{
 						setEditingMode(EditingMode.NONE); 
