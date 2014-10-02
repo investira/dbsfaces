@@ -99,7 +99,6 @@ public class DBSReportFormUtil {
 			pReportParameters = new HashMap<String, Object>();
 		}
 
-		pReportParameters.put("pMODO", true); // TODO ALBERTO Modo Definitivo (True) / Provisorio (False) - Talvez isso não seja mais necessário.
 		pReportParameters.put("pDATA_IMPRESSAO", DBSFormat.getFormattedDateTime(System.currentTimeMillis()));
 		pReportParameters.put("pSUBREPORT_DIR", DBSHttp.getResourcePath() + File.separator + REPORT_FOLDER);
 		
@@ -117,6 +116,7 @@ public class DBSReportFormUtil {
 		xReportInputStream.close();
 		return xPrint;
 	}
+
 	/**
 	 * Visualizar relatorio na página HTML.
 	 * 
@@ -166,7 +166,7 @@ public class DBSReportFormUtil {
 
 
 	/**
-	 * Salvar relatório em XML.
+	 * Salvar relatório em PDF.
 	 * 	
 	 * @param pReportFileName Nome do Arquivo sem a extensão
 	 * @param pReportParameters Parametros para o Relatorio (Titulo 1, Titulo 2...)
@@ -179,7 +179,7 @@ public class DBSReportFormUtil {
             xExporterPDF.setParameter(JRPdfExporterParameter.JASPER_PRINT, pJasperPrint);
             xExporterPDF.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, xFilePDF);
             xExporterPDF.exportReport();
-			DBSHttp.sendFile(xFilePDF, DBSFile.getFileNamePDF(pReportFileName), DBSFile.CONTENT_TYPE.XML);
+			DBSHttp.sendFile(xFilePDF, DBSFile.getFileNamePDF(pReportFileName), DBSFile.CONTENT_TYPE.PDF);
 		} catch (JRException e) {
 			wLogger.error(e);
 		}
@@ -241,7 +241,7 @@ public class DBSReportFormUtil {
             xExporterXLSX.setParameter(JRXlsExporterParameter.JASPER_PRINT, pJasperPrint);
             xExporterXLSX.setParameter(JRXlsExporterParameter.OUTPUT_STREAM, xFileXLS);
 			xExporterXLSX.exportReport();
-			DBSHttp.sendFile(xFileXLS, DBSFile.getFileNameXLSX(pReportFileName), DBSFile.CONTENT_TYPE.XLS);
+			DBSHttp.sendFile(xFileXLS, DBSFile.getFileNameXLSX(pReportFileName), DBSFile.CONTENT_TYPE.XLSX);
 		} catch (JRException e) {
 			wLogger.error(e);
 		}
