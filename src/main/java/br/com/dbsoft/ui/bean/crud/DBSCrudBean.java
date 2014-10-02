@@ -2005,6 +2005,11 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 
 
+	/**
+	 * Retorna a estágio de aprovação atual do registro corrente.<br/>
+	 * @param pFromValue Indica ser recuperar o valor do value ou listValue(usado no grid).
+	 * @return
+	 */
 	private APPROVAL_STAGE pvGetApprovalStage(boolean pFromValue){
 		//Retorna estágio de registro, caso aprovação esteja desabilidata ou não tenha sido informado o nome da coluna para garva o estágfio
 		if (!getAllowApproval()){
