@@ -51,11 +51,13 @@ public class DBSFacesExceptionHandler  extends ExceptionHandlerWrapper {
 				if (xThrowable instanceof NonexistentConversationException){
 					//Atualiza integralmente a página atual
 					xNav.performNavigation(DBSFaces.getCurrentViewRefresh());
+					xFC.renderResponse();       
 				//View Expirada
 				}else if (xThrowable instanceof ViewExpiredException){
 					//Direciona para a pasta raiz do sistema(normalmente o sistema irá redirecionar para a páginal index.xhtml)
 //					xNav.performNavigation(xFC.getExternalContext().getRequestContextPath());
-					xNav.performNavigation(DBSFaces.getViewRedirect(xFC.getExternalContext().getRequestContextPath(), true));
+					xNav.performNavigation(DBSFaces.getCurrentViewRefresh());
+					xFC.renderResponse();       
 				}else if (xThrowable instanceof javax.el.PropertyNotFoundException){
 					wLogger.error("Erro no encode do componente - Propriedade não encontrada: " + xThrowable.getMessage());
 				}else{
