@@ -1006,7 +1006,7 @@ public class  DBSFaces {
 	}
 	
 	/**
-	 * Retorna texto com quebra<br/> de linha na proporção 4:3;
+	 * Retorna texto com quebra<br/> de linha na proporção 4:3(aproximadamente);
 	 * @param pMessageText
 	 * @return
 	 */
@@ -1017,7 +1017,13 @@ public class  DBSFaces {
 		if (!(pMessageText.length() > 0)){
 			return "";
 		}
-		String xS[] = pMessageText.split("\\s+"); 
+		//Separa as palavras
+		String xS[] = pMessageText.split("\\s+");
+		//Não quebra linha caso a quantidade de palavras seja inferior a 4 ou a quantidade de caracteres seja inferior a 30.
+		if (xS.length < 4
+		|| pMessageText.length() < 40){
+			return pMessageText.trim();
+		}
 		String xMessageText = "";
 		Double xLarguraMax = (double) pMessageText.length();
 		xLarguraMax = DBSNumber.exp(xLarguraMax, 0.70).doubleValue();
