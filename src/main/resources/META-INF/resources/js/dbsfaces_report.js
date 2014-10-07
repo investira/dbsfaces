@@ -6,7 +6,7 @@ dbs_report = function(pId) {
                           .css("padding-bottom", xH + "px");
 
     //Captura evento ajax que é disparado ao selecionar a aba de 'Visualização' do relatório, para exibir indicador de processamento
-    dbsfaces.ui.captureAjax(pId + "> .-content > .dbs_tab > div > .-content > .dbs_tabPage");
+    dbsfaces.ui.captureAjax(pId + " .dbs_tabPage.-report");
 
 }
 
