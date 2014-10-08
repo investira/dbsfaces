@@ -115,7 +115,7 @@ dbsfaces.ui = {
 	    	$("#" + xId).remove();
 		}
 	    if (pStatus){
-	        $('body').append("<span id='" + xId + "' class='dbs_loading_light'/>");
+	        $('body').append("<span id='" + xId + "' class='dbs_loading'/>");
 	    }
 	},
 	

@@ -191,8 +191,7 @@ H6 {
     filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='2');
 }
 
-.-loading,
-.-loading_dark {
+.-loading {
 	width: 12px;
 	height: 12px;
 	background-repeat: no-repeat;
@@ -200,7 +199,6 @@ H6 {
 }
 
 .-loading {background-image: url("#{request.contextPath}/images/loading_small.gif");}
-.-loading_dark {background-image: url("#{request.contextPath}/images/loading_small_dark.gif");}
 
 .-scrollLeft {
 	-webkit-box-shadow: 3px 0 3px -1px rgba(0, 0, 0, 0.30) inset;
@@ -545,7 +543,6 @@ textarea.dbs_input-data:FOCUS,
 
 /* dbs_loading --------------------------------------------------- */
 .dbs_loading,
-.dbs_loading_light,
 .dbs_loading_error {
 	background-repeat: no-repeat;
 	position: absolute;
@@ -553,24 +550,18 @@ textarea.dbs_input-data:FOCUS,
 	left: 50%;
 }
 
-.dbs_loading {
-	width: 30px;
-	height: 30px;
-	margin: -15px 0 0 -15px;
-	background-image: url("#{request.contextPath}/images/loading.gif");
-}
 
-.dbs_loading_light {
-	width: 51px;
-	height: 51px;
-	margin: -25px 0 0 -25px;
-	background-image: url("#{request.contextPath}/images/loading_light.gif");
+.dbs_loading {
+	width: 43px;
+	height: 43px;
+	margin: -23px 0 0 -23px;
+	background-image: url("#{request.contextPath}/images/loading.gif");
 	background-repeat: no-repeat;
-	background-position: 5px;
-	background-color: rgba(235, 235, 235, 0.7);
-	-webkit-border-radius: 27px;
-	-moz-border-radius: 27px;
-	border-radius: 27px;
+	background-position: 1px;
+	background-color: rgba(235, 235, 235, 0.8);
+	-webkit-border-radius: 23px;
+	-moz-border-radius: 23px;
+	border-radius: 23px;
 	-webkit-box-shadow: 0 0 3px 0 rgba(13, 25, 45, 0.5);
 	-moz-box-shadow: 0 0 3px 0 rgba(13, 25, 45, 0.5);
 	box-shadow: 0 0 3px 0 rgba(13, 25, 45, 0.5);
