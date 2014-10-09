@@ -874,6 +874,7 @@ td > .dbs_icon{
 .-i_on_off { background-position: -3761px -0px; }
 .-i_feed { background-position: -3777px -0px; }
 .-i_cloud { background-position: -3793px -0px; }
+.-i_limit { background-position: -3809px -0px; }
 
 .-i_ok {background-position: -289px -0px;}
 .-i_cancelar {background-position: -353px -0px;}
@@ -951,6 +952,7 @@ td > .dbs_icon{
 .-i_procurar_ativo { background-position: -3361px -0px; }
 .-i_procurar_posicao { background-position: -1569px -0px; }
 .-i_posicao { background-position: -1553px -0px; }
+.-i_limite {background-position: -3809px -0px;}
 
 
 
