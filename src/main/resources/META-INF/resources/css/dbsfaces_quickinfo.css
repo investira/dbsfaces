@@ -1,8 +1,4 @@
 .dbs_quickInfo {
-    left: 222px;
-    position: absolute;
-    top: 10px;
-
 }
 
 .dbs_quickInfo > .-container {
@@ -20,7 +16,7 @@
     left: 16px;
     box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.6);
 
-	position: relative;
+	position: absolute;
 	opacity:1;
 	display: none; 
 }
@@ -28,12 +24,5 @@
 .dbs_quickInfo > .-container:hover > .-content{
 	display: inline-block;
     z-index: 1;
-/* 			background-image: url("#{request.contextPath}/images/default_back_texture.png"); */
-/* 			background-repeat: repeat; */
-/* 			background-color: rgba(180,180,180,0.1); */
-/* 			position: relative; */
-/* 		    border-radius: 5px; */
-/* 		    padding: 3px 5px 2px 6px; */
-/* 		    left: 16px; */
 }
 
