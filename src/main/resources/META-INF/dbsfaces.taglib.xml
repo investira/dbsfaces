@@ -729,6 +729,53 @@
 		</attribute>
 	</tag>
 	<tag>
+		<tag-name>quickInfo</tag-name>
+		<component>
+			<component-type>br.com.dbsoft.ui.component.quickInfo</component-type>
+			<handler-class />
+		</component>
+		<attribute>
+			<description>
+                Exibe tela rápido(sem botão de confirmação).
+            </description>
+			<name>id</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+            	iconClass
+            </description>
+			<name>iconClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+            	style
+            </description>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+            	styleClass
+            </description>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                rendered
+            </description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+	</tag>	
+	<tag>
 		<tag-name>inputText</tag-name>
 		<component>
 			<component-type>br.com.dbsoft.ui.component.inputText</component-type>

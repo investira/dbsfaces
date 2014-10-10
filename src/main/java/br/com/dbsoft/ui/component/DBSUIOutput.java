@@ -36,6 +36,7 @@ import br.com.dbsoft.ui.core.DBSFaces;
 	@ResourceDependency(library = "css", name = "dbsfaces_table.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_tooltip.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_radio.css", target = "head"),
+	@ResourceDependency(library = "css", name = "dbsfaces_quickinfo.css", target = "head"),
 	@ResourceDependency(library = "js", name = "jquery-1.11.1.min.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsmask.js", target = "head"),
 	@ResourceDependency(library = "javax.faces", name = "jsf.js", target = "head"),
@@ -65,7 +66,8 @@ import br.com.dbsoft.ui.core.DBSFaces;
 	@ResourceDependency(library = "js", name = "dbsfaces_reportform.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_report.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_tab.js", target = "head"),
-	@ResourceDependency(library = "js", name = "dbsfaces_tooltip.js", target = "head")
+	@ResourceDependency(library = "js", name = "dbsfaces_tooltip.js", target = "head"),
+	@ResourceDependency(library = "js", name = "dbsfaces_quickinfo.js", target = "head")
 //	@ResourceDependency(library = "js", name = "eventsource.js", target = "head")
 })
 

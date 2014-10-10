@@ -125,6 +125,7 @@ public class  DBSFaces {
 	    public static final String GROUP = "group";
 	    public static final String PUSH = "push";
 	    public static final String MESSAGELIST = "messageList";
+	    public static final String QUICKINFO = "quickInfo";
 	}
 
 	public static class HTML
@@ -421,6 +422,11 @@ public class  DBSFaces {
 		public static class MESSAGELIST
 		{	
 			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.MESSAGELIST;
+		}
+
+		public static class QUICKINFO
+		{	
+			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.QUICKINFO;
 		}
 
 	}
