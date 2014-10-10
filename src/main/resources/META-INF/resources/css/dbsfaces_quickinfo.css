@@ -10,14 +10,11 @@
 	background-color: rgba(13, 25, 45, 0.9);
 	color: white;
 	background-repeat: repeat;
-	position: relative;
     border-radius: 5px;
     padding: 3px 5px 2px 6px;
     left: 16px;
     box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.6);
-
 	position: absolute;
-	opacity:1;
 	display: none; 
 }
 
