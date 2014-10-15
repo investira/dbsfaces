@@ -552,12 +552,12 @@ textarea.dbs_input-data:FOCUS,
 
 
 .dbs_loading {
-	width: 43px;
 	height: 43px;
-	margin: -23px 0 0 -23px;
+	width: 44px;
+	margin: -22px 0 0 -22px;
 	background-image: url("#{request.contextPath}/images/loading.gif");
 	background-repeat: no-repeat;
-	background-position: 1px;
+	background-position: center;
 	background-color: rgba(235, 235, 235, 0.8);
 	-webkit-border-radius: 23px;
 	-moz-border-radius: 23px;
