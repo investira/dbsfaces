@@ -135,7 +135,7 @@ public abstract class DBSUIInput extends UIInput implements IDBSUIComponentBase,
 	}
 	
 	public String getLabelWidth() {
-		return (String) getStateHelper().eval(PropertyKeys.labelWidth, "50px");
+		return (String) getStateHelper().eval(PropertyKeys.labelWidth, "");
 
 	}
 	
