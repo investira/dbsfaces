@@ -1,4 +1,6 @@
 .dbs_quickInfo {
+	position: relative;
+	display: inline-block;
 }
 
 .dbs_quickInfo > .-container {
