@@ -1235,7 +1235,10 @@ public class  DBSFaces {
 	public static void encodeLabel(FacesContext pContext, DBSUIInput pInput, ResponseWriter pWriter, Boolean pRenderSeparator) throws IOException{
 		if (pInput.getLabel()!=null){
 			String xClientId = pInput.getClientId(pContext);
-			String xStyle = "vertical-align: middle; display:inline-block; width:" + pInput.getLabelWidth() + ";";
+			String xStyle = "vertical-align:middle; display:inline-block;";
+			if (!pInput.getLabelWidth().equals("")){
+				xStyle += " width:" + pInput.getLabelWidth() + ";";
+			}
 			pWriter.startElement("label", pInput);
 //				DBSFaces.setAttribute(pWriter, pInput, "id", xClientId + DBSFaces.CSS.MODIFIER.LABEL.trim(), null);
 //				DBSFaces.setAttribute(pWriter, pInput, "name", xClientId + DBSFaces.CSS.MODIFIER.LABEL.trim(), null);
