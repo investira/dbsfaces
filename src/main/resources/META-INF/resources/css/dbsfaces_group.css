@@ -1,6 +1,5 @@
 .dbs_group{
     position: relative;
-    display: table;
 }
 
 .dbs_group > .-container{
@@ -10,7 +9,7 @@
     margin-top: 12px;
     display: table;
     position: relative;
-    width: 100%;
+    width: inherit;
 }
 
 .dbs_group > .-container > .-header{
