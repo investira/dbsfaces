@@ -1,8 +1,6 @@
 package br.com.dbsoft.ui.component.crudform;
 
 
-import java.util.ArrayList;
-
 import javax.el.MethodExpression;
 import javax.faces.component.FacesComponent;
 import javax.faces.component.NamingContainer;
@@ -52,10 +50,6 @@ public class DBSCrudForm extends DBSUIComponentBase implements NamingContainer, 
 			return ((this.toString != null) ? this.toString : super.toString());
 		}
 	}
-	
-	ArrayList<String> 	wColumnsWidths = new ArrayList<String>();
-	String				wColumnsWidth = "";
-	Integer				wWidth = 0;
 	
 	public DBSCrudForm(){
 		setRendererType(DBSCrudForm.RENDERER_TYPE);
