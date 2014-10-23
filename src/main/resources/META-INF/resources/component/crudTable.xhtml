@@ -7,15 +7,14 @@
 	xmlns:dbs="http://www.dbsoft.com.br/ui/dbsfaces" 
 	xmlns:dbscom="http://www.dbsoft.com.br/ui/dbsfacescom">
 	<cc:interface componentType="br.com.dbsoft.ui.component.crudTable" >
+		<cc:attribute name="crudBean" preferred="true" required="true"/>
+		<cc:attribute name="var" required="true"/>
 		<cc:attribute name="style"/>
 		<cc:attribute name="styleClass"/>
 		<cc:attribute name="rendered" preferred="true"/>
-		<cc:attribute name="crudBean" preferred="true"/>
 		<cc:attribute name="multipleSelection" default="false"/>
-		<cc:attribute name="columnsWidth"/>
 		<cc:attribute name="insertSelected" preferred="true" type="java.lang.Boolean"/>
 		<cc:attribute name="viewOneAction" preferred="true" type="javax.el.MethodExpression"/>
-		<cc:attribute name="var" />
 		<cc:attribute name="update" preferred="true"/>
 		<cc:attribute name="allowInsert" default="true"/>
 		<cc:attribute name="allowRefresh" default="true"/>
