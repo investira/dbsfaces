@@ -1,8 +1,6 @@
 package br.com.dbsoft.ui.component.beandialogmessage;
 
 
-import java.util.ArrayList;
-
 import javax.faces.component.FacesComponent;
 import javax.faces.component.UINamingContainer;
 
@@ -37,10 +35,6 @@ public class DBSBeanDialogMessage extends DBSUIComponentBase {
 		}
 	}
 	
-	ArrayList<String> 	wColumnsWidths = new ArrayList<String>();
-	String				wColumnsWidth = "";
-	Integer				wWidth = 0;
-	
 	public DBSBeanDialogMessage(){
 		setRendererType(DBSBeanDialogMessage.RENDERER_TYPE);
 	}
@@ -53,7 +47,7 @@ public class DBSBeanDialogMessage extends DBSUIComponentBase {
 
 	
 	/**
-	 * Retorna a largura individual de cada coluna
+	 * Bean que contém as mensagens
 	 * @return
 	 */
 	public DBSBean getUserBean() {
@@ -61,8 +55,7 @@ public class DBSBeanDialogMessage extends DBSUIComponentBase {
 	}
 
 	/**
-	 * Defini a largura individual de cada culuna. Os valores de cada coluna dever set separados por vírgula sem espaço.
-	 * Os valores devem ser em pixels(px)
+	 * Bean que contém as mensagens
 	 * @param pColumnsWidth
 	 */
 	public void setUserBean(DBSBean pUserBean) {
