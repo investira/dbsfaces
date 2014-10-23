@@ -45,7 +45,7 @@ public interface IDBSCrudBeanEventsListener {
 
 	/**
 	 * Chamado antes de exibir os dados em uma edição ou exclusão.<br/>
-	 * Durante este evento, para saber o modo de ediçãos deve-se consultar o <b>pEvent.getEditingMode()</b>.<br/>
+  	 * Durante este evento para saber o modo de edição, deve-se consultar o <b>pEvent.getEditingMode()</b>.<br/>
 	 * Conexão com o banco encontra-se aberta.<br/>
 	 * @param pEvent Informações do evento
 	 */
