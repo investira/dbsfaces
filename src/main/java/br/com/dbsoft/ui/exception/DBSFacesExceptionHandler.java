@@ -59,7 +59,7 @@ public class DBSFacesExceptionHandler  extends ExceptionHandlerWrapper {
 //					xFC.renderResponse();       
 					xNav.performNavigation("/");
 				}else if (xThrowable instanceof javax.el.PropertyNotFoundException){
-					wLogger.error("Erro no encode do componente - Propriedade não encontrada: " + xThrowable.getMessage());
+					wLogger.error("Erro no encode do componente - Propriedade não encontrada", xThrowable);
 				}else{
 					wLogger.error("Severe Exception Occured", xThrowable);
 					xRequestMap.put("exceptionMessage", xThrowable.getMessage());                 
