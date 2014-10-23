@@ -484,7 +484,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	//=================================================================
 
 	/**
-	 * Retorna a situação da execução
+	 * Informa o modo de edição(inclusão, alteração, etc)(Método PRIVADO)
 	 * @return
 	 */
 	public EditingMode getEditingMode() {
@@ -492,7 +492,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 
 	/**
-	 * Configura a situação da execução (Método PRIVADO)
+	 * Informa o modo de edição(inclusão, alteração, etc)(Método PRIVADO)
 	 * @param pRunningState
 	 */
 	private synchronized void setEditingMode(EditingMode pEditingMode) {
@@ -508,7 +508,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 
 	/**
-	 * Retorna a situação da execução
+	 * Informa se a edição esta sendo confirmada ou ignorada.(Método PRIVADO)
 	 * @return
 	 */
 	public EditingStage getEditingStage() {
@@ -516,7 +516,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 
 	/**
-	 * Configura a situação da execução (Método PRIVADO)
+	 * Informa se a edição esta sendo confirmada ou ignorada.(Método PRIVADO)
 	 * @param pRunningState
 	 */
 	private void setEditingStage(EditingStage pEditingStage) {
@@ -1152,17 +1152,17 @@ public abstract class DBSCrudBean extends DBSBean{
 							if (pvFireEventBeforeCommit()){
 								pvFireEventAfterCommit();
 								pvRefreshList();
-								pvFinalizeEditing(true);
+								pvConfirmEditing(true);
 							}else{
-								pvFinalizeEditing(false);
+								pvConfirmEditing(false);
 							}
 						}else if (wEditingStage==EditingStage.IGNORING){
 							//Chama eventos
 							if (pvFireEventBeforeIgnore()){
 								pvFireEventAfterIgnore();
-								pvFinalizeEditing(true);
+								pvConfirmEditing(true);
 							}else{
-								pvFinalizeEditing(false);
+								pvConfirmEditing(false);
 							}
 						}
 					}else{
@@ -1173,7 +1173,6 @@ public abstract class DBSCrudBean extends DBSBean{
 					setEditingStage(EditingStage.NONE);
 					switch(wEditingMode){
 						case UPDATING:
-							//Restaura os valores anteriores a modificação
 							break;
 						case INSERTING:
 							break;
@@ -1250,6 +1249,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Exibe todos os itens selecionados 
 	 */
 	public synchronized String viewSelection() throws DBSIOException{
+		if (!wDialogEdit){return DBSFaces.getCurrentView();}
 		//Limpa todas as mensagens que estiverem na fila
 		clearMessages();
 
@@ -1277,6 +1277,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Exibe o item selecionado
 	 */
 	public synchronized String view() throws DBSIOException{
+		if (!wDialogEdit){return DBSFaces.getCurrentView();}
 		//Limpa todas as mensagens que estiverem na fila
 		clearMessages();
 		
@@ -1668,7 +1669,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	
 	/**
 	 * Chamado antes de exibir os dados em uma edição ou exclusão.<br/>
-	 * Durante este evento, para saber o modo de ediçãos deve-se consultar o <b>pEvent.getEditingMode()</b>.<br/>
+	 * Durante este evento para saber o modo de edição, deve-se consultar o <b>pEvent.getEditingMode()</b>.<br/>
 	 * Conexão com o banco encontra-se aberta.<br/>
 	 * @param pEvent Informações do evento
 	 */
@@ -1769,26 +1770,24 @@ public abstract class DBSCrudBean extends DBSBean{
 
 	
 	/**
-	 * Finaliza a edição, resetando e editing mode.
-	 * @param pOk
+	 * Finaliza a edição, 
+	 * @param pOk Indica se a confirmação do estágio IGNORING ou COMMITING teve sucesso. 
 	 * @throws DBSIOException
 	 */
-	private void pvFinalizeEditing(Boolean pOk) throws DBSIOException{
+	private void pvConfirmEditing(Boolean pOk) throws DBSIOException{
 		switch(wEditingMode){
 			case UPDATING:
 				if (wEditingStage==EditingStage.IGNORING){
 					setEditingMode(EditingMode.NONE); 
 					pvRestoreValuesOriginal();
-
 					pvRefreshList();
+					view();
 				}else{
 					if (pOk){
 						setEditingMode(EditingMode.NONE);
+						view();
 					}else{
-						//RESTAURAR OS VALORES
-//						wEditingStage==EditingStage.IGNORING
 						setEditingStage(EditingStage.NONE);
-//						pvRestoreValuesOriginal();
 					}
 				}
 				break;
