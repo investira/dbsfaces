@@ -1,6 +1,5 @@
 package br.com.dbsoft.ui.component;
 
-import br.com.dbsoft.ui.core.DBSFaces;
 
 public abstract class DBSUIInputText extends DBSUIInput {
 	
@@ -19,11 +18,6 @@ public abstract class DBSUIInputText extends DBSUIInput {
 		public String toString() {
 			return ((this.toString != null) ? this.toString : super.toString());
 		}
-	}
-	
-	@Override
-	public String getFamily() {
-		return DBSFaces.FAMILY;
 	}
 	
 	public java.lang.Integer getMaxLength() {
