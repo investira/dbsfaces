@@ -18,9 +18,7 @@ public class DBSInputTextAreaRenderer extends DBSRenderer {
     @Override
 	public void decode(FacesContext pContext, UIComponent pComponent) {
     	DBSInputTextArea xInputTextArea = (DBSInputTextArea) pComponent;
-        if(xInputTextArea.getReadOnly()) {
-            return;
-        }
+        if(xInputTextArea.getReadOnly()) {return;}
 
     	decodeBehaviors(pContext, xInputTextArea);
     	
