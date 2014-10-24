@@ -17,7 +17,6 @@ public class DBSRadioRenderer extends DBSRenderer {
     @Override
 	public void decode(FacesContext pContext, UIComponent pComponent) {
     	DBSRadio xRadio = (DBSRadio) pComponent;
-        if(!xRadio.isRendered()) {return;}
         if(xRadio.getReadOnly()) {return;}
         
         decodeBehaviors(pContext, xRadio);
