@@ -326,8 +326,9 @@ public abstract class DBSCrudBean extends DBSBean{
 	
 
 	/**
-	 * Retorna o valor da coluna na lista.
-	 * Este valor deve ser utilizado quando o controle do registro atual estiver a cargo do datatable, como é o caso dos na exibição das colunas via DBSDataTableColumn
+	 * Retorna o valor da coluna.
+	 * Este método deve ser utilizado somente quando o controle do registro atual estiver a cargo do datatable, 
+	 * como é o caso na exibição das colunas via DBSDataTableColumn.<br/>
 	 * @param pColumnName
 	 * @return
 	 */
@@ -341,8 +342,9 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 	
 	/**
-	 * Retorna o valor da coluna na lista.
-	 * Este valor deve ser utilizado quando o controle do registro atual estiver a cargo do datatable, como é o caso dos na exibição das colunas via DBSDataTableColumn
+	 * Retorna o valor da coluna.
+	 * Este método deve ser utilizado somente quando o controle do registro atual estiver a cargo do datatable, 
+	 * como é o caso na exibição das colunas via DBSDataTableColumn.<br/>
 	 * @param pColumnName
 	 * @return
 	 */
@@ -351,12 +353,13 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 
 	/**
-	 * Seta o valor da coluna informada diretamenteo no ResultDataModel.
+	 * Seta o valor da coluna informada diretamenteo no ResultDataModel.<br/>
+	 * Utilizado quando a edição é diretamente no grid.
 	 * @param pColumnName Nome da coluna
 	 * @param pValue Valor da coluna
 	 * @return
 	 */		
-	public void setListValue(String pColumnName, Object pColumnValue){
+	private void setListValue(String pColumnName, Object pColumnValue){
 		if (wDAO != null){
 			wDAO.setListValue(pColumnName, pColumnValue);
 		}		
