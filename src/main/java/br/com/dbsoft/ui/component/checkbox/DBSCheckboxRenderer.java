@@ -17,9 +17,8 @@ public class DBSCheckboxRenderer extends DBSRenderer {
     @Override
 	public void decode(FacesContext pContext, UIComponent pComponent) {
     	DBSCheckbox xCheckbox = (DBSCheckbox) pComponent;
-        if(xCheckbox.getReadOnly()) {
-            return;
-        }
+        if(xCheckbox.getReadOnly()) {return;}
+        
     	decodeBehaviors(pContext, xCheckbox);
     	
 		String xClientIdAction = getInputDataClientId(xCheckbox);
