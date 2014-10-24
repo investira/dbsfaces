@@ -18,9 +18,8 @@ public class DBSInputMaskRenderer extends DBSRenderer {
     @Override
 	public void decode(FacesContext pContext, UIComponent pComponent) {
     	DBSInputMask xInputMask = (DBSInputMask) pComponent;
-        if(xInputMask.getReadOnly()) {
-            return;
-        }
+        if(xInputMask.getReadOnly()) {return;}
+        
     	decodeBehaviors(pContext, xInputMask);
     	
 		String xClientIdAction = getInputDataClientId(xInputMask) ;
