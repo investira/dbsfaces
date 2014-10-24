@@ -16,7 +16,6 @@ public class DBSInputNumber extends DBSUIInputText {
 	private static String wMinValue = "-" + wMaxValue;
 	
 	protected enum PropertyKeys {
-		type,
 		secret,
 		size,
 		decimalPlaces,
@@ -43,16 +42,6 @@ public class DBSInputNumber extends DBSUIInputText {
     public DBSInputNumber(){
 		setRendererType(DBSInputNumber.RENDERER_TYPE);
     }
-	
-	public String getType() {
-		return (String) getStateHelper().eval(PropertyKeys.type, "date");
-	}
-	
-	public void setType(String pType) {
-		getStateHelper().put(PropertyKeys.type, pType);
-		handleAttribute("type", pType);
-	}
-
 	
 	public void setSecret(Boolean pSecret) {
 		getStateHelper().put(PropertyKeys.secret, pSecret);
