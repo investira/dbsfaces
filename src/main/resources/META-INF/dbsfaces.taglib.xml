@@ -1218,7 +1218,7 @@
             </description>
 			<name>value</name>
 			<required>false</required>
-			<type>java.lang.String</type>
+			<type>java.lang.Double</type>
 		</attribute>
 		<attribute>
 			<description>
@@ -1571,7 +1571,7 @@
             </description>
 			<name>value</name>
 			<required>false</required>
-			<type>java.lang.Boolean</type>
+			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
 			<description>
@@ -1745,7 +1745,7 @@
             </description>
 			<name>value</name>
 			<required>false</required>
-			<type>java.lang.Boolean</type>
+			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
 			<description>
