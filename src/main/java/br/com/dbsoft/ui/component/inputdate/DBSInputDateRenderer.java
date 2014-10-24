@@ -20,9 +20,7 @@ public class DBSInputDateRenderer extends DBSRenderer {
     @Override
 	public void decode(FacesContext pContext, UIComponent pComponent) {
     	DBSInputDate xInputDate = (DBSInputDate) pComponent;
-        if(xInputDate.getReadOnly()) {
-            return;
-        }
+        if(xInputDate.getReadOnly()) {return;}
 
     	String xDay = "";
     	String xMonth = "";
