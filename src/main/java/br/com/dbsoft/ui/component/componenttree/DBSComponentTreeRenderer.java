@@ -31,7 +31,6 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 	@Override
 	public void decode(FacesContext pContext, UIComponent pComponent) {
 		DBSComponentTree xComponenttree = (DBSComponentTree) pComponent;
-    	if (!pComponent.isRendered()){return;}
 
 		String xClientId;
 		
