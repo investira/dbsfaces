@@ -20,9 +20,7 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 	@Override
 	public void decode(FacesContext pContext, UIComponent pComponent) {
 		DBSInputNumber xInputNumber = (DBSInputNumber) pComponent;
-        if(xInputNumber.getReadOnly()) {
-            return;
-        }
+        if(xInputNumber.getReadOnly()) {return;}
     	
 		decodeBehaviors(pContext, xInputNumber);
 
