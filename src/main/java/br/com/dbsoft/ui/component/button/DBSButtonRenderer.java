@@ -18,12 +18,10 @@ public class DBSButtonRenderer extends DBSRenderer {
 	
     @Override
 	public void decode(FacesContext pContext, UIComponent pComponent) {
-    	if (!pComponent.isRendered()){return;}
         DBSButton 	xButton = (DBSButton) pComponent;
 		String 		xClientId = xButton.getClientId(pContext);
-        if(xButton.getReadOnly()) {
-            return;
-        }
+        if(xButton.getReadOnly()) {return;}
+        
 //        if(xButton.isDisabled() || xButton.isReadonly()) {
 //            return;
 //        }
