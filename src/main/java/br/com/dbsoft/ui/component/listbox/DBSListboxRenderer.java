@@ -19,9 +19,8 @@ public class DBSListboxRenderer extends DBSRenderer {
     @Override
 	public void decode(FacesContext pContext, UIComponent pComponent) {
     	DBSListbox xListbox = (DBSListbox) pComponent;
-        if(xListbox.getReadOnly()) {
-            return;
-        }
+        if(xListbox.getReadOnly()) {return;}
+        
     	decodeBehaviors(pContext, xListbox);
     	
 		String xClientIdAction = getInputDataClientId(xListbox);
