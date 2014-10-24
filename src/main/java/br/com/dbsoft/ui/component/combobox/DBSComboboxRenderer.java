@@ -27,7 +27,6 @@ public class DBSComboboxRenderer extends DBSRenderer {
 	public void decode(FacesContext pContext, UIComponent pComponent) {
     	DBSCombobox xCombobox = (DBSCombobox) pComponent;
         if(xCombobox.getReadOnly()) {return;}
-    	if (!xCombobox.isRendered()){return;}
 
     	decodeBehaviors(pContext, xCombobox);
     	
@@ -105,9 +104,6 @@ public class DBSComboboxRenderer extends DBSRenderer {
 			return;
 		}
 
-		//Força que o valor atual tenha passado pelo setValue para execute a regra ali contida.
-		pCombobox.setValue(pCombobox.getValue());
-		
 		//Recupera valor
 		xValueKey = pCombobox.getValue();
 
