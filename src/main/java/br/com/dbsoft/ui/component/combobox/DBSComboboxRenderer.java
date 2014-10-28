@@ -94,7 +94,7 @@ public class DBSComboboxRenderer extends DBSRenderer {
 		String xClientId = getInputDataClientId(pCombobox);
 		String xStyle = "";
 		Object xValueKey = "";
-		Object xValue = "";
+		String xValue = "";
 		LinkedHashMap<Object, Object> xList = pCombobox.getList();
 		
 		//Se não foi informada a lista ou lista estiver vazia
@@ -135,14 +135,13 @@ public class DBSComboboxRenderer extends DBSRenderer {
 		}
 		
 		//Busca item na lista para recuperar o valor que será utlizado para exibir a informação
-		xValue = xList.get(xValueKey);
+		xValue = DBSString.toString(xList.get(xValueKey), null);
 
 		//Se não achar item na lista e lista possuir o item nulo, seta para este item nulo, caso contrário exibe erro.
 		if (xValue==null){
 			wLogger.error("Combobox [" + pCombobox.getClientId() + "] não encontrado item na lista com a chave [" + xValueKey + "]"); 
 			xValue = "*erro*:Item [" + xValueKey + "] não encontrado.";
 			xValueKey = "";
-			return;
 		}
 		
 		xStyle = DBSFaces.getStyleWidthFromInputSize(pCombobox.getSize());
@@ -150,16 +149,12 @@ public class DBSComboboxRenderer extends DBSRenderer {
 		if (pCombobox.getReadOnly()){
 			DBSFaces.encodeInputDataReadOnly(pCombobox, pWriter, xClientId, xStyle, false, xValue.toString());
 		}else{
-			//Encode dos itens na lista
-			String xSelectedText = "";
-			//Texto selecionado
-			xSelectedText = DBSString.toString(xList.get(xValueKey));
 			pWriter.startElement("span", pCombobox);
 				DBSFaces.setAttribute(pWriter, "style", xStyle, null);
 				DBSFaces.setAttribute(pWriter, "class", CSS.INPUT.DATA, null);
 				pWriter.startElement("span", pCombobox);
 					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.DATA, null);
-					pWriter.write(xSelectedText);
+					pWriter.write(xValue);
 				pWriter.endElement("span");
 				//Encode do botão
 				pWriter.startElement("span", pCombobox);
