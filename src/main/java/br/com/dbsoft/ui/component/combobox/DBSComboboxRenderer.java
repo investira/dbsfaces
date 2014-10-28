@@ -129,18 +129,28 @@ public class DBSComboboxRenderer extends DBSRenderer {
 					xValueKey =  DBSNumber.toDouble(xValueKey, null);
 				}
 			}
+			//Busca item na lista para recuperar o valor que será utlizado para exibir a informação
+			xValue = DBSString.toString(xList.get(xValueKey), null);
 		}else{
 			//Utiliza o valor vázio ao invés do null, por não existir null em html
 			xValueKey = COMBOBOX.NULL_VALUE;
+			//Busca item na lista para recuperar o valor que será utlizado para exibir a informação
+			xValue = DBSString.toString(xList.get(xValueKey), null);
+			//Se não achar item na lista e lista não possuir o item nulo, seta para o primeiro item deste que existam algum item na lista.
+			if (xValue==null){
+				if (xList.size() > 0){
+					xValueKey = xList.keySet().iterator().next();
+					xValue = DBSString.toString(xList.get(xValueKey), null);
+					pCombobox.setValue(xValueKey);
+				}
+			}
 		}
 		
-		//Busca item na lista para recuperar o valor que será utlizado para exibir a informação
-		xValue = DBSString.toString(xList.get(xValueKey), null);
 
 		//Se não achar item na lista e lista possuir o item nulo, seta para este item nulo, caso contrário exibe erro.
 		if (xValue==null){
 			wLogger.error("Combobox [" + pCombobox.getClientId() + "] não encontrado item na lista com a chave [" + xValueKey + "]"); 
-			xValue = "*erro*:Item [" + xValueKey + "] não encontrado.";
+			xValue = "*Erro*:Item [" + xValueKey + "] não encontrado.";
 			xValueKey = "";
 		}
 		
