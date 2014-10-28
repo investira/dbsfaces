@@ -4,7 +4,6 @@ import java.util.LinkedHashMap;
 
 import javax.faces.component.FacesComponent;
 
-import br.com.dbsoft.core.DBSSDK.UI.COMBOBOX;
 import br.com.dbsoft.ui.component.DBSUIInput;
 import br.com.dbsoft.ui.core.DBSFaces;
 
@@ -63,39 +62,4 @@ public class DBSCombobox extends DBSUIInput{
 		return xList;
 	}
 
-	@Override
-	public void setValue(Object pValue) {
-		//Se lista não for nula, e valor informado não for encontrado ou for nulo
-		//posiciona no primeiro item se não existir o NULL_VALUE na lista
-		LinkedHashMap<Object, Object> xList = getList();
-		if (xList != null 
-	     && xList.size() > 0){
-			if (pValue != null){
-				//Set valor como nulo se valor recebido não for encontrado na lista ou
-				//for igual ao valor definido como nulo
-				if (!xList.containsKey(pValue)
-				 || pValue.equals(COMBOBOX.NULL_VALUE)){
-					pValue = null;
-				}
-			}
-			if (pValue == null){
-				//Posiciona no primeiro item 
-				if (!xList.containsKey(COMBOBOX.NULL_VALUE)){
-					pValue = xList.entrySet().iterator().next().getKey();
-				}
-			}
-		}
-		super.setValue(pValue);
-	}
-	
-	@Override
-	public Object getValue() {
-		Object xValue = super.getValue(); 
-		if (xValue == null){
-			//Força que o valor atual tenha passado pelo setValue para execute a regra ali contida.
-			setValue(xValue);
-		}
-		return super.getValue();
-	}
-	
 }

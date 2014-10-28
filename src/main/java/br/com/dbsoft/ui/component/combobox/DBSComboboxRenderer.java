@@ -103,8 +103,8 @@ public class DBSComboboxRenderer extends DBSRenderer {
 			DBSFaces.encodeInputDataReadOnly(pCombobox, pWriter, xClientId,  DBSFaces.getStyleWidthFromInputSize(pCombobox.getSize()), false, "");
 			return;
 		}
-
-		//Recupera valor
+		
+		//Recupera valor do item selecionado
 		xValueKey = pCombobox.getValue();
 
 		//Converte o valor para o mesmo tipo da chave utilizada na lista para garantir que a comparação para verificar se a chave existe será efetuados com valores do mesmo tipo de class
@@ -120,14 +120,17 @@ public class DBSComboboxRenderer extends DBSRenderer {
 					break;
 				}
 			}
-			if (xValueKeyClass.isAssignableFrom(Integer.class)){
-				xValueKey =  DBSNumber.toInteger(xValueKey, null);
-			}else if (xValueKeyClass.isAssignableFrom(BigDecimal.class)){
-				xValueKey =  DBSNumber.toBigDecimal(xValueKey, null);
-			}else if (xValueKeyClass.isAssignableFrom(Double.class)){
-				xValueKey =  DBSNumber.toDouble(xValueKey, null);
+			if (!xValueKeyClass.isAssignableFrom(String.class)){
+				if (xValueKeyClass.isAssignableFrom(Integer.class)){
+					xValueKey =  DBSNumber.toInteger(xValueKey, null);
+				}else if (xValueKeyClass.isAssignableFrom(BigDecimal.class)){
+					xValueKey =  DBSNumber.toBigDecimal(xValueKey, null);
+				}else if (xValueKeyClass.isAssignableFrom(Double.class)){
+					xValueKey =  DBSNumber.toDouble(xValueKey, null);
+				}
 			}
 		}else{
+			//Utiliza o valor vázio ao invés do null, por não existir null em html
 			xValueKey = COMBOBOX.NULL_VALUE;
 		}
 		
@@ -139,6 +142,7 @@ public class DBSComboboxRenderer extends DBSRenderer {
 			wLogger.error("Combobox [" + pCombobox.getClientId() + "] não encontrado item na lista com a chave [" + xValueKey + "]"); 
 			xValue = "*erro*:Item [" + xValueKey + "] não encontrado.";
 			xValueKey = "";
+			return;
 		}
 		
 		xStyle = DBSFaces.getStyleWidthFromInputSize(pCombobox.getSize());
