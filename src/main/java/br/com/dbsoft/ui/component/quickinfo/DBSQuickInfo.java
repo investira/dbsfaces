@@ -4,14 +4,13 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import javax.faces.component.FacesComponent;
-import javax.faces.component.NamingContainer;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import br.com.dbsoft.ui.component.DBSUIOutput;
 import br.com.dbsoft.ui.core.DBSFaces;
 
 @FacesComponent(DBSQuickInfo.COMPONENT_TYPE)
-public class DBSQuickInfo extends DBSUIOutput implements NamingContainer, ClientBehaviorHolder {
+public class DBSQuickInfo extends DBSUIOutput implements ClientBehaviorHolder {
 
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.QUICKINFO;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
