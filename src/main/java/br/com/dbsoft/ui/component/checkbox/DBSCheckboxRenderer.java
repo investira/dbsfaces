@@ -24,10 +24,8 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 		String xClientIdAction = getInputDataClientId(xCheckbox);
 		String xSubmittedValue = pContext.getExternalContext().getRequestParameterMap().get(xClientIdAction);
         if(xSubmittedValue != null && pvIsChecked(xSubmittedValue)) {
-//        	System.out.println("CHECKBOX:" + xCheckbox.getClientId() + ":TRUE");
         	xCheckbox.setSubmittedValue(true);
         }else{
-//        	System.out.println("CHECKBOX:" + xCheckbox.getClientId() + ":FALSE");
 	    	xCheckbox.setSubmittedValue(false);
         }
 	}	
@@ -92,7 +90,7 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 			xOnChange = DBSFaces.getSubmitString(pCheckbox, DBSFaces.HTML.EVENTS.ONCHANGE, pCheckbox.getExecute(), pCheckbox.getUpdate());
 		}
 
-		pWriter.startElement("input", pCheckbox);
+		pWriter.startElement("input", pCheckbox); 
 			DBSFaces.setAttribute(pWriter, "id", xClientId, null);
 			DBSFaces.setAttribute(pWriter, "name", xClientId, null);
 			DBSFaces.setAttribute(pWriter, "type", "checkbox", null);
@@ -114,7 +112,7 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 	}
 	
     private static boolean pvIsChecked(Object pValue) {
-    	if (pValue==null){
+    	if (pValue==null){ 
     		return false;
     	}else{
     		String xValue = pValue.toString().trim();
