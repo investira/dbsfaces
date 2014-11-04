@@ -289,6 +289,14 @@ dbsfaces.number = {
 	}
 };
 
+dbsfaces.string = {
+	fromCharCode: function(pVal){
+		//Ajuste para os códigos numéricos retornados pelo teclado estendido.
+		return String.fromCharCode((96 <= pVal && pVal <= 105)? pVal-48 : pVal);
+	}	
+}
+
+		
 //Monitora evento ajax recebido e dispara evento dbsoft
 dbsfaces.onajax = function(e){
 	if ($(e.source).length == 0){

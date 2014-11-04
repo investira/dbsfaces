@@ -52,9 +52,9 @@ dbs_inputDate = function(pId) {
 	
 		//Ignora valor digitado se a data não for válida
 		var xS = $(this).get(0).selectionEnd - $(this).get(0).selectionStart; 
-		var xV = String.fromCharCode(e.keyCode);
+		var xV = dbsfaces.string.fromCharCode(e.which);
 		if (xS == 0 &&
-			dbsfaces.number.isNumber(String.fromCharCode(e.keyCode))){
+			dbsfaces.number.isNumber(dbsfaces.string.fromCharCode(e.which))){
 			var xD = dbsfaces.inputDate.getInputDateDay($(this));
 			var xM = dbsfaces.inputDate.getInputDateMonth($(this));
 			var xY = dbsfaces.inputDate.getInputDateYear($(this));
@@ -71,13 +71,13 @@ dbs_inputDate = function(pId) {
 		}
 		
 		//Pula para o próximo campo de input
-		if (e.keyCode == 9 && 
+		if (e.which == 9 && 
 			!e.shiftKey){
 			//Desabilitador até verificar se é bom ter está opção
 			//$(this).parent().children("input").last().focusNextInputField();
 			return;
 		//puda para o próximo campo dento da data com a BARRA
-		}else if (e.keyCode == 191){ 
+		}else if (e.which == 191){ 
 			xC = $(this).nextAll("input:first");
 			e.preventDefault();
 			return;
@@ -91,10 +91,10 @@ dbs_inputDate = function(pId) {
 		
 		var xAdd = 0;
 		//Adiciona data quando pressionado seta para cima
-		if (e.keyCode == 38){
+		if (e.which == 38){
 			xAdd = 1;
 		//Subtrai data quando pressionado seta para baixo
-		}else if (e.keyCode == 40){
+		}else if (e.which == 40){
 			xAdd = -1;
 		}
 		if (xAdd != 0){
@@ -113,7 +113,7 @@ dbs_inputDate = function(pId) {
 		var xS = $(this).get(0).selectionEnd - $(this).get(0).selectionStart; 
 		//Pula para o próximo campo(mes ou ano) da data caso e campo atual esteja completo
 		if (xS == 0 &&
-			dbsfaces.number.isNumber(String.fromCharCode(e.keyCode))){
+			dbsfaces.number.isNumber(dbsfaces.string.fromCharCode(e.which))){
 			var xL = $(this).val().length;
 			//Se estiver completo com os dois digitos, pula
 			if (xL == 2){
@@ -121,11 +121,11 @@ dbs_inputDate = function(pId) {
 			}
 		}
 		//Volta o campo quando digitado a seta para esquerda
-		if (e.keyCode == 37 &&
+		if (e.which == 37 &&
 			!e.shiftKey){
 			xC = $(this).prevAll("input:first");
 		//Avança para o próximo campo quando digitado a seta para direita
-		}else if ((e.keyCode == 39  &&
+		}else if ((e.which == 39  &&
 				  !e.shiftKey) ||
 				  e.which == 47){
 			xC = $(this).nextAll("input:first");
@@ -144,17 +144,17 @@ dbsfaces.inputDate = {
 			e.ctrlKey){
 			return false;
 		} 	
-		if (e.keyCode == 9 ||
-			e.keyCode == 8 ||
-			e.keyCode == 13 ||
-			e.keyCode == 37 ||
-			e.keyCode == 38 ||
-			e.keyCode == 39 ||
-			e.keyCode == 40 ||
-			e.keyCode == 47 ||
-			e.keyCode == 191 ||
-			(e.keyCode >= 96 && e.keyCode <= 105) ||
-			(!e.shiftKey && dbsfaces.number.isNumber(String.fromCharCode(e.keyCode))) ){
+		if (e.which == 9 ||
+			e.which == 8 ||
+			e.which == 13 ||
+			e.which == 37 ||
+			e.which == 38 ||
+			e.which == 39 ||
+			e.which == 40 ||
+			e.which == 47 ||
+			e.which == 191 ||
+			(e.which >= 96 && e.which <= 105) ||
+			(!e.shiftKey && dbsfaces.number.isNumber(dbsfaces.string.fromCharCode(e.which))) ){
 			return true;
 		}
 		return false;
