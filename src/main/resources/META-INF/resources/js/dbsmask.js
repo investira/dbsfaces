@@ -175,6 +175,13 @@
 							break;
 						default:
 							ev.preventDefault();
+							//Se campo inteiro estiver selecionado, apaga conteúdo e posiciona na parte inteira
+							if (this.domNode.value.length == (this.getSelectionEnd() - this.getSelectionStart())){
+								this.domNode.value = "";
+								this.formatNumber();
+								this.moveToIntegerPosition(ev);
+							}
+							
 							if (this.isInputDecimals(ev)){
 								//Seleciona digito anterior para digitação caminha para a direita
 								var curpos = this.getSelectionStart();
@@ -237,6 +244,14 @@
 				this.setSelection(curpos, curpos);
 			} 
 		},
+
+		moveToIntegerPosition: function(ev){
+			ev.preventDefault();
+			if (this.options.decDigits > 0){
+				var curpos = this.domNode.value.indexOf(this.options.decSymbol);
+				this.setSelection(curpos, curpos);
+			} 
+		},
 		
 		isInputDecimals: function(ev){
 			if (this.options.decDigits > 0){
@@ -271,9 +286,9 @@
 			this.sanityTest( this.domNode.value );
 
 			var self = this;
-
+			
 			setTimeout( function(){
-				self[ self.options.type === "fixed" ? 'selectFirst' : 'setEnd' ]();
+				self[ self.options.type === "fixed" ? 'selectFirst' : 'selectAll' ]();
 			}, 1 );
 		},
 
