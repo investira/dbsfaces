@@ -3,10 +3,6 @@ dbs_inputText = function(pId) {
 	var wTimeout;
 	var wChanged = true;
 	
-	$(pId + " input").focusin(function(e){
-		$(this).select();
-	});
-	
 	$(pId + "-data.-upper").keydown(function(e){
 		dbsfaces.inputText.letterCase($(this), e,"upper");
 	});	
@@ -25,11 +21,13 @@ dbs_inputText = function(pId) {
 	
 	$(pId + " > .-container > .-input > .dbs_input-data").focus(function(e){
 		$(pId + "-suggestion").addClass("dbs_input-data-FOCUS");
+		dbsfaces.inputText.selectAll($(this));
 	});
 	
 	
 	$(pId + " > .-container > .-input > .dbs_input-data").blur(function(e){
 		$(pId + "-suggestion").removeClass("dbs_input-data-FOCUS");
+		dbsfaces.inputText.selectNone($(this));
 		wTime = 0;
 		if ($(pId + "-suggestion").val() == ""){
 			dbsfaces.inputText.requestSuggestion(pId);
@@ -237,7 +235,13 @@ dbsfaces.inputText = {
 		dbsfaces.inputText.updateSuggestion(pId, xRow, true);
 	},
 
+	selectAll: function(pInput){
+		pInput.get(0).setSelectionRange(0, pInput.get(0).value.length);
+	},
 
+	selectNone: function(pInput){
+		pInput.get(0).setSelectionRange(0, 0);
+	},
 	
 	letterCase: function(pInput, e, pLetterCase){
 		if (e.metaKey){
