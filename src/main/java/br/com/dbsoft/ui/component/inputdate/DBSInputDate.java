@@ -149,53 +149,5 @@ public class DBSInputDate extends DBSUIInput {
 		return DBSDate.toTimestamp(super.getValue());
 	}
 	
-	
-	
-//	public String getValueDay(){
-//		(Date) this.getValue();
-//	}
-//	
-//	public void setValueDay(java.lang.Integer pValueDay) {
-//		getStateHelper().put(PropertyKeys.valueDay, pValueDay);
-//		handleAttribute("valueDay", pValueDay);
-//	}
-//	public String getValueDay() {
-//		return (String) getStateHelper().eval(PropertyKeys.valueDay, String.format("%02d", DBSDate.getNowDateTime().getDayOfMonth()));
-//	}	
-//
-//	public void setValueMonth(java.lang.Integer pValueMonth) {
-//		getStateHelper().put(PropertyKeys.valueMonth, pValueMonth);
-//		handleAttribute("valueMonth", pValueMonth);
-//	}
-//	public String getValueMonth() {
-//		return (String) getStateHelper().eval(PropertyKeys.valueMonth, String.format("%02d", DBSDate.getNowDateTime().getMonthOfYear()));
-//	}	
-//
-//	public void setValueYear(java.lang.Integer pValueYear) {
-//		getStateHelper().put(PropertyKeys.valueYear, pValueYear);
-//		handleAttribute("valueYear", pValueYear);
-//	}
-//	public String getValueYear() {
-//		return (String) getStateHelper().eval(PropertyKeys.valueYear, String.format("%04d", DBSDate.getNowDateTime().getYear()));
-//	}	
-//	
-	
-//	public Timestamp getTimestamp(){
-//		return DBSDate.toTimestamp(super.getValue());
-//	}
-//	
-//	public Date getDate(){
-//		return DBSDate.toDate(super.getValue());
-//	}
-//	
-//	public Long getTime(){
-//		return getDate().getTime();
-//	}
-//	if (pInputDate.getType().equals("date")){
-//		xW = "100";
-//	}else if (pInputDate.getType().equals("time")){
-//		xW = "100";
-//	}else if (pInputDate.getType().equals("datetime")){
-//		xW = "200";
-//	}	
+
 }
