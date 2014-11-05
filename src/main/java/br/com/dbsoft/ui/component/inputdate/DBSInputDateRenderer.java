@@ -128,7 +128,7 @@ public class DBSInputDateRenderer extends DBSRenderer {
 				pvEncodeInput(pContext, xInputDate, xWriter);
 				DBSFaces.encodeRightLabel(pContext, xInputDate, xWriter);
 				DBSFaces.encodeTooltip(pContext, xInputDate, xInputDate.getTooltip());
-				encodeClientBehaviors(pContext, xInputDate);
+//				encodeClientBehaviors(pContext, xInputDate);
 
 			xWriter.endElement("div");
 		xWriter.endElement("div");
