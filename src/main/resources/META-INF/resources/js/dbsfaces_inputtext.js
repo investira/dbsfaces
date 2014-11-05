@@ -1,8 +1,14 @@
 dbs_inputText = function(pId) {
 	var wTime = +new Date();
 	var wTimeout;
-	var wChanged = true;
+	var wSearching = false;
+	var wBlur = false;
 	
+	$(pId + " input").focusin(function(e){
+		dbsfaces.ui.selectAll(this);
+		wSearching = false;
+	});
+
 	$(pId + "-data.-upper").keydown(function(e){
 		dbsfaces.inputText.letterCase($(this), e,"upper");
 	});	
@@ -21,35 +27,41 @@ dbs_inputText = function(pId) {
 	
 	$(pId + " > .-container > .-input > .dbs_input-data").focus(function(e){
 		$(pId + "-suggestion").addClass("dbs_input-data-FOCUS");
-		dbsfaces.inputText.selectAll($(this));
 	});
 	
 	
 	$(pId + " > .-container > .-input > .dbs_input-data").blur(function(e){
 		$(pId + "-suggestion").removeClass("dbs_input-data-FOCUS");
-		dbsfaces.inputText.selectNone($(this));
+		dbsfaces.ui.selectNone(this);
 		wTime = 0;
-		if ($(pId + "-suggestion").val() == ""){
-			dbsfaces.inputText.requestSuggestion(pId);
-		}
 
-		dbsfaces.inputText.validate(pId, true);
+		dbsfaces.inputText.setNullText(pId);
+		
 		if ($(pId + "-list").length > 0){
 			$(pId + "-list").css("opacity","0");					
 			setTimeout(function() {
 				$(pId + "-list").hide();
 		  	}, 300);
 		}
+
+		//Omite blur caso pesquisa esteja em execução
+		//Irá disparar após recebimento da resposta
+		if (wSearching){
+			wBlur = true;
+			e.preventDefault();
+			e.stopPropagation();
+			e.stopImmediatePropagation();
+		}
 	});
 
 	/* copia a sugestão para o input ou navega pela lista de sugestões*/
 	$(pId + " > .-container > .-input > .dbs_input-data").keydown(function(e){
-		if (e.keyCode == 39 && //RIGHT
+		if (e.which == 39 && //RIGHT
 			$(this).get(0).selectionEnd == $(this).val().length) { //Se o cursor estiver no final do texto digitado pelo usuário
 			e.stopImmediatePropagation();
 			dbsfaces.inputText.acceptSuggestion(pId);
-		}else if(e.keyCode==40   //DOWN
-			  || e.keyCode==38){ //UP
+		}else if(e.which==40   //DOWN
+			  || e.which==38){ //UP
 			//Se existe suggestion, controla a exibição e a navegação
 			if ($(pId + "-list").length > 0){
 				e.preventDefault();
@@ -59,31 +71,37 @@ dbs_inputText = function(pId) {
 					$(pId + "-list").css("opacity","1").show();
 				}else{
 					//Navega na lista de sugestões
-					dbsfaces.dataTable.selectRow(pId + "-dataTable", e.keyCode);
+					dbsfaces.dataTable.selectRow(pId + "-dataTable", e.which);
 				}
 			}
 		//Se não for tab, shift ou setas para a direira ou esquerda
-		}else if (e.keyCode != 9  //TAB
-			   && e.keyCode != 16 //SHIFT
-			   && e.keyCode != 37 //LEFT
-			   && e.keyCode != 39){ //RIGHT
+		}else if (e.which != 9  //TAB
+			   && e.which != 16 //SHIFT
+			   && e.which != 37 //LEFT
+			   && e.which != 39){ //RIGHT
 			//Limpa campo caso não seja backspaces
 			//Limpa campo caso haja algum texto selecionado para edição
-			if (e.keyCode != 8 || 
+			if (e.which != 8 || 
 				(($(this).get(0).selectionEnd - $(this).get(0).selectionStart) > 0)){
 				dbsfaces.inputText.clearSuggestion(pId);
 			}
 		}
 	});
 	
-
-	
 	$(pId + " > .-container > .-input > .dbs_input-data").on("paste", function(e){
 		dbsfaces.inputText.clearSuggestion(pId);
 	});
-	
-	$(pId + " > .-container > .-input").keydown(function(e){
-		if (dbsfaces.inputText.isValidKey(e)){
+
+	//Faz a pesquisa ===================================================
+	$(pId + " > .-container > .-input").keyup(function(e){
+		if (e.which != 37  //LEFT
+		 && e.which != 39  //RIGHT
+		 && e.which != 40  //DOWN
+		 && e.which != 38  //UP
+		 && e.which != 9  //TAB
+		 && e.which != 13  //ENTER
+		 && !e.ctrlKey
+		 && !e.altKey){
 			/* delay para evitar chamadas ajax contantes */
 			if (wTime == 0){
 				wTime = +new Date();
@@ -102,16 +120,26 @@ dbs_inputText = function(pId) {
 	});
 
 	$(pId + "-submit").on(dbsfaces.EVENT.ON_AJAX_BEGIN, function(e){
+		wSearching = true;
+
 		$(pId + " > .-container > .-input").append("<div class='-loading'></div>");
 		$(pId + " > .-container > .-input > .-is_pesquisar").hide();
 		e.stopPropagation();
 	});
 	
 	$(pId + "-submit").on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
+		wSearching = false;
+		
+		//Dispara o blur caso tenha sido ignorado originalmente
+		if (wBlur){
+			dbsfaces.inputText.triggerBlur(pId);
+		}
+
 		$(pId + " > .-container > .-input > div.-loading").remove();
 		$(pId + " > .-container > .-input > .-is_pesquisar").show();
 		dbsfaces.inputText.fixLayout(pId);
 		dbsfaces.inputText.showFirstSuggestion(pId);
+		
 		e.stopPropagation();
 	});
 	
@@ -120,6 +148,7 @@ dbs_inputText = function(pId) {
 		dbsfaces.inputText.acceptSuggestion(pId, pRow);
 	});
 	
+	//Seta foco na lista
 	$(pId + " > .-container > .-input").on("click", ".-list", function(e){
 		$(pId + "-data").focus();
 		
@@ -135,34 +164,56 @@ dbs_inputText = function(pId) {
 
 
 dbsfaces.inputText = {
-	validate: function(pId, pBlur){
+	validate: function(pId){
 		var xSuggestionValue = $.trim($(pId + "-suggestion").val());
 		var xValue = $.trim($(pId + "-data").val());
 		var xNullText = $(pId + "-suggestion-key").attr("nulltext");
 		if (xSuggestionValue==xValue){
-			$(pId + "-suggestion").removeClass("-error");
-			$(pId + "-data").removeClass("-error");
+			dbsfaces.inputText.removeError(pId);
 			if (xValue=="" ||
 				xValue==xNullText){
 				$(pId + "-suggestion-key").val("");
-				if (pBlur){
-					$(pId + "-suggestion").val(xNullText);
-					$(pId + "-data").val(xNullText);
-				}
 			}else{
 				$(pId + "-suggestion-key").val($(pId + "-suggestion-key").attr("key"));
 			}
 			$(pId).trigger(dbsfaces.EVENT.ON_SUGGESTION_ACCEPTED);
 		}else{
-			$(pId + "-suggestion").addClass("-error");
-			$(pId + "-data").addClass("-error");
-			$(pId + "-suggestion-key").val("");
+			//Considerra erro se texto for NULL_TEXT
+			if (xValue!=xNullText){
+				dbsfaces.inputText.addError(pId);
+				$(pId + "-suggestion-key").val("");
+			}		
 		}
-//		if (pBlur){
-//			console.log("CHANGED");
-			$(pId + "-data").trigger("change");
-//		}
+		$(pId + "-data").trigger("change");
 	},		
+	
+	triggerBlur: function(pId){
+		wBlur = false;
+		$(pId + "-data").trigger("blur");
+	},
+	
+	setNullText: function(pId){
+		var xSuggestionValue = $.trim($(pId + "-suggestion").val());
+		var xValue = $.trim($(pId + "-data").val());
+		var xNullText = $(pId + "-suggestion-key").attr("nulltext");
+		if (xValue==""
+		 || xValue==xNullText){
+			$(pId + "-suggestion-key").val("");
+			$(pId + "-suggestion").val(xNullText);
+			$(pId + "-data").val(xNullText);
+			dbsfaces.inputText.removeError(pId);
+		}
+	},
+
+	removeError: function(pId){
+		$(pId + "-suggestion").removeClass("-error");
+		$(pId + "-data").removeClass("-error");
+	},
+
+	addError: function(pId){
+		$(pId + "-suggestion").addClass("-error");
+		$(pId + "-data").addClass("-error");
+	},
 	
 	fixLayout: function(pId){
 		$(pId + "-dataTable tbody:first").attr('tabindex', '-1');
@@ -178,11 +229,11 @@ dbsfaces.inputText = {
 	},
 	
 	isValidKey: function(e){
-		if (e.keyCode == 9 || //TAB
-			e.keyCode == 8 || //BACKSPACE
-			e.keyCode == 46 || //DELETE
-			e.keyCode == 37 || //LEFT
-			e.keyCode == 39 || //RIGHT
+		if (e.which == 9 || //TAB
+			e.which == 8 || //BACKSPACE
+			e.which == 46 || //DELETE
+			e.which == 37 || //LEFT
+			e.which == 39 || //RIGHT
 			e.ctrlKey ||
 			e.altKey){
 			return false;
@@ -194,16 +245,16 @@ dbsfaces.inputText = {
 	clearSuggestion: function(pId){
 		$(pId + "-suggestion").val("");
 		$(pId + "-suggestion-key").attr("key", "");
-		wChanged = true;
+		dbsfaces.inputText.validate(pId);
 	},
+
 	
 	acceptSuggestion: function(pId){
 		var xSuggestionValue = $.trim($(pId + "-suggestion").val());
 		if (xSuggestionValue.length > 0){
 			$(pId + "-data").val(xSuggestionValue);
-			dbsfaces.inputText.validate(pId, false);
+			dbsfaces.inputText.validate(pId);
 		}
-		wChanged = true;
 	},
 	
 	updateSuggestion: function(pId, pRow, pAjax){
@@ -225,7 +276,6 @@ dbsfaces.inputText = {
 		}else{
 			dbsfaces.inputText.clearSuggestion(pId);
 		}
-		dbsfaces.inputText.validate(pId, false);
 	},
 
 	showFirstSuggestion: function(pId){
@@ -235,19 +285,12 @@ dbsfaces.inputText = {
 		dbsfaces.inputText.updateSuggestion(pId, xRow, true);
 	},
 
-	selectAll: function(pInput){
-		pInput.get(0).setSelectionRange(0, pInput.get(0).value.length);
-	},
-
-	selectNone: function(pInput){
-		pInput.get(0).setSelectionRange(0, 0);
-	},
 	
 	letterCase: function(pInput, e, pLetterCase){
 		if (e.metaKey){
 			return; //Sai para não converte o caracter recebido quando foi tecla especial como um Ctrl-C
 		}
-		if(e.keyCode >= 65 && e.keyCode <=90){
+		if(e.which >= 65 && e.which <=90){
 			if (pLetterCase!="upper" &&
 				pLetterCase!="lower" &&
 				pLetterCase!="proper" &&
@@ -284,7 +327,7 @@ dbsfaces.inputText = {
 			}
 			e.preventDefault();
 			//Agrupo o inicio + valor digitado + final da texto. Isto previne os casos que a substituição no meio do texto
-			xValue = xValue.substring(0, pInput.get(0).selectionStart) + String.fromCharCode(e.keyCode + xMinusculo) + xValue.substring(pInput.get(0).selectionEnd, 200);
+			xValue = xValue.substring(0, pInput.get(0).selectionStart) + String.fromCharCode(e.which + xMinusculo) + xValue.substring(pInput.get(0).selectionEnd, 200);
 			pInput.val(xValue);
 			pInput.get(0).setSelectionRange(xSS, xSS); 
 		}	
