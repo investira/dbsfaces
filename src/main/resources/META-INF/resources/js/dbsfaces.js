@@ -196,6 +196,20 @@ dbsfaces.ui = {
 		if (xEle.length != 0 ){
 			xEle.focus();
 		}
+	},
+	
+	selectAll: function(pObj){
+		//timeout para evitar que o click desmarque o item selecionado
+		setTimeout( function(){
+			pObj.setSelectionRange(0, pObj.value.length);
+		}, 1 );
+	},
+
+	selectNone: function(pObj){
+		//timeout para evitar que o click desmarque o item selecionado
+		setTimeout( function(){
+			pObj.setSelectionRange(0, 0);
+		}, 1 );
 	}
 }
 
