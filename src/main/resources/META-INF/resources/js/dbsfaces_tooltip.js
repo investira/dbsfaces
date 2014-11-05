@@ -1,5 +1,5 @@
 dbs_tooltip = function(pId) {
-	var wTimer;
+	var wTimer = +new Date();
 	
 	$(pId).mouseenter(function(e){
 		dbsfaces.tooltip.showTooltip(pId);
@@ -51,9 +51,11 @@ dbsfaces.tooltip = {
 	},
 	
 	hideTooltip: function(e){
-		clearTimeout(wTimer);
-		var xTooltip = $(e).find(".-tooltip");
+		if (typeof(wTimer) != "undefined"){
+			clearTimeout(wTimer);
+			var xTooltip = $(e).find(".-tooltip");
 
-		$(xTooltip).hide();
+			$(xTooltip).hide();
+		}
 	}
 }
