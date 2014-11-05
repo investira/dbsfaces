@@ -1,6 +1,6 @@
 dbs_inputDate = function(pId) {
 	$(pId + " input").focusin(function(e){
-		$(this).select();
+		dbsfaces.ui.selectAll(this);
 	});
 	
 	$(pId + " > .-container > .dbs_input-data").focusin(function(){
@@ -85,7 +85,7 @@ dbs_inputDate = function(pId) {
 		//Se foi configurado um novo campo para receber o foco, pula para ele
 		if (xC.length){
 			e.preventDefault();
-			xC.focus().select();
+			xC.focus();
 			return;
 		}		
 		
@@ -93,9 +93,11 @@ dbs_inputDate = function(pId) {
 		//Adiciona data quando pressionado seta para cima
 		if (e.which == 38){
 			xAdd = 1;
+			e.preventDefault(); 
 		//Subtrai data quando pressionado seta para baixo
 		}else if (e.which == 40){
 			xAdd = -1;
+			e.preventDefault();
 		}
 		if (xAdd != 0){
 			if ($(this).hasClass("-day")){
@@ -133,7 +135,7 @@ dbs_inputDate = function(pId) {
 		//Se foi configurado um novo campo para receber o foco, pula para ele
 		if (xC.length){
 			e.preventDefault();
-			xC.focus().select();
+			xC.focus();
 		}
 	});	
 }
