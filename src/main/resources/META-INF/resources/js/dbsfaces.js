@@ -9,15 +9,16 @@
 
 var wsAnimationTime = 200;   
 
+//var evt = (evt) ? evt : ((event) ? event : null); 
+//var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null); 
+
 $(document).on("keydown", function(e){
-//	var evt = (evt) ? evt : ((event) ? event : null); 
-//	var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null); 
-	if ((e.keyCode == 13) && 
+	if ((e.which == 13) && //ENTER
 		(e.target.type=="text"))  {
 		return false;
 	} 
-	if ((e.keyCode == 8 
-	  || e.keyCode == 46) && 
+	if ((e.which == 8 //BACKSPACE
+	  || e.which == 46) && //DELETE
 		(e.target.type=="select-one" ||
 		 e.target.type=="radio" ||
 		 e.target.type=="submit" ||
