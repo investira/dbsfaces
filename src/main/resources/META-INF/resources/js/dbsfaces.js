@@ -251,7 +251,8 @@ dbsfaces.util = {
 	trigger: function (pEventName, pId){
 		if (dbsfaces.util.exists(pId) && 
 			!dbsfaces.util.isEmpty(pEventName)){
-				var xEvent = $.Event(pEventName);
+				//Cria evento com parametro para indicar que é dbsoft
+				var xEvent = $.Event(pEventName, {dbs: true});
 				//Dispara evento depois de fechar 
 				$(pId).trigger(xEvent);
 				return xEvent;
