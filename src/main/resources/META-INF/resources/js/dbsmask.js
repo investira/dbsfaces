@@ -24,6 +24,7 @@
 			stripMask      : false,
 
 			lastFocus      : 0,
+			oldValue	   : '',
 
 			number : {
 				stripMask : false,
@@ -39,7 +40,6 @@
 
 			this.node
 //				.bind( "mousedown click", function(ev){ ev.stopPropagation(); ev.preventDefault(); } )
-
 				.bind( "mouseup",  function(){ self.onMouseUp .apply(self, arguments); } )
 				.bind( "keypress", function(){ self.onKeyPress.apply(self, arguments); } )
 				.bind( "keydown",  function(){ self.onKeyDown .apply(self, arguments); } )
@@ -63,6 +63,7 @@
 		},
 
 		onKeyDown: function(ev) {
+			if (ev.dbs){return;}
 			if (ev.altKey && ev.which == 18){ //Option + Delete
 				ev.preventDefault(); 
 				return;
@@ -70,11 +71,10 @@
 				return;
 
 			} else if(ev.which == 13) { // enter
-//				this.node.blur(); Comentado em 6/ago/2013 para evitar saldo do campo e o submit
-//
+//				this.node.blur(); Comentado em 6/ago/2013 para evitar salto do campo e o submit
 //				this.submitForm(this.node);
 
-			} else if(!(ev.which == 9)) { // tab
+			} else if(!(ev.which == 9)) { // se não tab
 				if(this.options.type == "fixed") {
 					ev.preventDefault();
 
@@ -202,7 +202,21 @@
 							} else {	
 								this.node.trigger( "invalid", ev, this.node );
 							}
+//							var xEvent = new MouseEvent('keydown', {
+//							    'view': window,
+//							    'bubbles': true,
+//							    'cancelable': true
+//							});
+//							$(this.node).dispatchEvent(xEvent);
+							  
+//							this.node.trigger( "keydown", ev, this.node );
+//							$(this.node).trigger("keydown.dbsmask");
+
+//							var xEvent = $.Event( "change",{dbs: true});
+							//Dispara evento depois de fechar 
+//							$(this.node).trigger(xEvent);
 							break;
+							
 					}
 				}
 			}
@@ -279,6 +293,9 @@
 
 
 		onFocus: function(ev) {
+			//Salva valor atual para comparar com o novo
+			this.options.oldValue = this.domNode.value;
+			
 			ev.stopPropagation();
 			ev.preventDefault();
 
@@ -296,8 +313,14 @@
 			ev.stopPropagation();
 			ev.preventDefault();
 
-			if(this.options.stripMask)
+			if(this.options.stripMask){
 				this.domNode.value = this.stripMask();
+			}
+			
+			//Dispara evento se valor foi alterado
+			if (this.options.oldValue != this.domNode.value){
+				$(this.node).trigger("change");
+			}
 		},
 
 		selectAll: function() {
