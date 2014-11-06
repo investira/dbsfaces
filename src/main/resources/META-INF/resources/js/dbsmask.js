@@ -202,19 +202,6 @@
 							} else {	
 								this.node.trigger( "invalid", ev, this.node );
 							}
-//							var xEvent = new MouseEvent('keydown', {
-//							    'view': window,
-//							    'bubbles': true,
-//							    'cancelable': true
-//							});
-//							$(this.node).dispatchEvent(xEvent);
-							  
-//							this.node.trigger( "keydown", ev, this.node );
-//							$(this.node).trigger("keydown.dbsmask");
-
-//							var xEvent = $.Event( "change",{dbs: true});
-							//Dispara evento depois de fechar 
-//							$(this.node).trigger(xEvent);
 							break;
 							
 					}
