@@ -22,8 +22,10 @@
 .dbs_tab > .-container > div > .-content{} 	
 
 .dbs_tab > .-container > ul{
-	display:table-row;
-	height:22px; /*Tamanho do título da aba*/
+/* 	display:table-row; */
+/* 	height:22px; Tamanho do título da aba */
+	display:inline-block;
+	height:20px; /*Tamanho do título da aba*/
 	position: relative;
    	z-index: 1;
    	white-space: pre; /* retira spaços em branco entre o título de as páginas(Problema causado por Strict DOCTYPE */
