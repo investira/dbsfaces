@@ -157,7 +157,7 @@ dbsfaces.dataTable = {
 			jQuery.data(e.source, 'wScrollTop', xTBody.scrollTop());
 		}else if (e.status=='success'){
 			var wScrollTopValue = jQuery.data(e.source, 'wScrollTop');
-			if (wScrollTopValue != "undefined"){
+			if (typeof(wScrollTopValue) != "undefined"){
 				xTBody.scrollTop(jQuery.data(e.source, 'wScrollTop'));
 			}
 			$('#' + dbsfaces.util.jsid(e.source.id) + " > .-container > input.-foo").focus();
