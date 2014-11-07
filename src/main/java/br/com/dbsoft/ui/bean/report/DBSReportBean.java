@@ -18,6 +18,7 @@ import br.com.dbsoft.ui.bean.report.DBSReportBeanEvent.REPORT_EVENT;
 import br.com.dbsoft.ui.component.dialog.DBSDialog.DIALOG_ICON;
 import br.com.dbsoft.ui.core.DBSReportFormUtil;
 import br.com.dbsoft.util.DBSFormat;
+import br.com.dbsoft.util.DBSObject;
 import br.com.dbsoft.util.DBSString;
 
 /**
@@ -216,6 +217,9 @@ public abstract class DBSReportBean extends DBSBean {
 				setShowFilters(false);
 			} else {
 				wJasperPrint = DBSReportFormUtil.createJasperPrint(pvGetReportName(), getReportParameters(), xDados);
+				if (DBSObject.isEmpty(wJasperPrint)) {
+					addMessage("vazio", MESSAGE_TYPE.INFORMATION, "Relatório não encontrado.", DIALOG_ICON.INFORMACAO);
+				}
 				setPDFFilePath(DBSReportFormUtil.createPDFFile(pvGetReportName(), wJasperPrint));
 				if (xDados.getRecordCount() > 0){
 					//Esconde seleção dos filtros
