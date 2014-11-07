@@ -70,6 +70,7 @@ dbsfaces.sound = {
 	}
 }
 
+
 dbsfaces.ui = {
 	centerVertical : function(pId){
 		var xH = $(pId).outerHeight() / 2;
@@ -208,7 +209,17 @@ dbsfaces.ui = {
 		setTimeout( function(){
 			pObj.setSelectionRange(0, 0);
 		}, 1 );
+	},
+	
+	ajaxTriggerChange: function(e){
+		if ($(e.source).length == 0){
+			return;
+		}
+		if (e.status == "success"){
+			$(e.source).trigger("click");
+		}
 	}
+	
 }
 
 
@@ -323,8 +334,6 @@ dbsfaces.onajax = function(e){
 		$(e.source).trigger(dbsfaces.EVENT.ON_AJAX_SUCCESS);
 	}
 };
-
-
 
 
 $.fn.focusNextInputField = function() {
