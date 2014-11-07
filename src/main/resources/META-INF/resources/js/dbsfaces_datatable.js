@@ -31,7 +31,7 @@ dbs_dataTable = function(pId) {
 	});
 	
 	var xMouseover = function(e) {
-		dbsfaces.dataTable.showRowFocus(pId, this, false);
+		dbsfaces.dataTable.rowFocusAdd(pId, this);
 	}
 
 	var xMousemove = function(e){
@@ -54,7 +54,7 @@ dbs_dataTable = function(pId) {
 //	}); 
 	
 	$(pId).mouseout(function(e){
-		dbsfaces.dataTable.removeRowFocus(pId);
+		dbsfaces.dataTable.rowFocusRemove(pId);
 	})
 
 
@@ -67,16 +67,16 @@ dbs_dataTable = function(pId) {
 	    		e.stopImmediatePropagation();
 				e.preventDefault();
 	    		xB.click();
-	    		dbsfaces.dataTable.removeHeadFocus(pId);
-	       		dbsfaces.dataTable.removeRowFocus(pId);
-	       		dbsfaces.dataTable.removeRowSelected(pId);
+	    		dbsfaces.dataTable.headFocusRemove(pId);
+	       		dbsfaces.dataTable.rowFocusRemove(pId);
+	       		dbsfaces.dataTable.rowDeselect(pId);
 	    	}
 	    	return false;
 		}
     });
  
 	$(xTable + " > tbody > tr").focusin(function(e){
-		dbsfaces.dataTable.showRowFocus(pId, this, true);
+		dbsfaces.dataTable.rowSelect(pId, this);
 	});
 	
 	/*Força o foco no click*/
@@ -85,9 +85,9 @@ dbs_dataTable = function(pId) {
 		//Se click foi em campo de input, não precisa forçar o foco no input-foo.
 		if ($(e.target).hasClass("dbs_input-data")
 		 || $(e.target).is("input")){
-			dbsfaces.dataTable.addHeadFocus(pId);
+			dbsfaces.dataTable.headFocusAdd(pId);
 		}else{
-			dbsfaces.dataTable.showRowFocus(pId, this, true);
+			dbsfaces.dataTable.rowSelect(pId, this);
 			$(pId + " > .-container > input.-foo").focus().select().click();
 		}
 //		e.preventDefault();
@@ -109,7 +109,7 @@ dbs_dataTable = function(pId) {
 		if(e.keyCode==40 || //DOWN
 		   e.keyCode==38){  //UP
 			var xTable = pId + " > .-container > .-content > table ";
-			dbsfaces.dataTable.selectRow(pId, e.keyCode);
+			dbsfaces.dataTable.moveToNextOrPreviousRow(pId, e.keyCode);
 			var xRow = $(xTable + " > tbody > tr");
 			var xTBody = xRow.parent();
 			xRow.off("mouseover.datatable");
@@ -127,17 +127,17 @@ dbs_dataTable = function(pId) {
 			xE = $(xTable + " > tbody > tr.-focus");
 			if (xE.length == 0){
 				xE = $(xTable + " > tbody > tr:first");
-				dbsfaces.dataTable.showRowFocus(pId, xE, true);
+				dbsfaces.dataTable.rowFocusAdd(pId, xE);
 			}
 		}
-		dbsfaces.dataTable.addHeadFocus(pId);
+		dbsfaces.dataTable.headFocusAdd(pId);
 		e.stopPropagation();
 		//Comentado em 28/08/2013 - no IE, retirava o foco do input.-foo, deixando de funcionar a nagevação por seta
 		//$(pId).trigger('focus'); 
 	}); 
 	
 	$(pId + " > .-container > input.-foo").focusout(function(e){
-		dbsfaces.dataTable.removeHeadFocus(pId);
+		dbsfaces.dataTable.headFocusRemove(pId);
 		e.stopPropagation();
 		$(pId).trigger('blur');
 	}); 
@@ -164,36 +164,38 @@ dbsfaces.dataTable = {
 		}
 	},
 		
-	showRowFocus: function(pId, pNew, pTrigger){
-		dbsfaces.dataTable.removeRowFocus(pId);
-		if ($(pId + " > .-container > input.-foo").val() != $(pNew).attr("index") && pTrigger){
-			$(pId + " > .-container > input.-foo").val($(pNew).attr("index"));
-			dbsfaces.dataTable.removeRowSelected(pId);
-			$(pNew).addClass("-selected");
-			$(pId).trigger(dbsfaces.EVENT.ON_ROW_SELECTED, pNew);
-			$(pId).trigger("select.datatable");
-		}else{
-			$(pNew).addClass("-focus");
-		}
-	},
-	
-	removeRowFocus: function(pId){
-		$(pId + " > .-container > .-content > table > tbody > tr.-focus").removeClass("-focus");
-	},
-	
-	addHeadFocus: function(pId){
-		$(pId + " > .-container > .-content > table > thead > tr").addClass("-focus");
-	},
-	
-	removeHeadFocus: function(pId){
-		$(pId + " > .-container > .-content > table > thead > tr").removeClass("-focus");
+	rowSelect: function(pId, pNew){
+		dbsfaces.dataTable.rowFocusRemove(pId);
+		$(pId + " > .-container > input.-foo").val($(pNew).attr("index"));
+		dbsfaces.dataTable.rowDeselect(pId);
+		$(pNew).addClass("-selected");
+		$(pId).trigger(dbsfaces.EVENT.ON_ROW_SELECTED, pNew);
+		$(pId).trigger("select.datatable");
 	},
 
-	removeRowSelected: function(pId){
+	rowDeselect: function(pId){
 		$(pId + " > .-container > .-content > table > tbody > tr.-selected").removeClass("-selected");
 	},
 	
-	selectRow: function(pId, pKeyCode){
+	rowFocusAdd: function(pId, pNew){
+		dbsfaces.dataTable.rowFocusRemove(pId);
+		$(pNew).addClass("-focus");
+	},
+	
+	rowFocusRemove: function(pId){
+		$(pId + " > .-container > .-content > table > tbody > tr.-focus").removeClass("-focus");
+	},
+	
+	headFocusAdd: function(pId){
+		$(pId + " > .-container > .-content > table > thead > tr").addClass("-focus");
+	},
+	
+	headFocusRemove: function(pId){
+		$(pId + " > .-container > .-content > table > thead > tr").removeClass("-focus");
+	},
+
+	
+	moveToNextOrPreviousRow: function(pId, pKeyCode){
 		var xNew;
 		var xDirection = 0;
 		var xRow = $(pId + " > .-container > .-content > table > tbody > tr");
@@ -219,7 +221,7 @@ dbsfaces.dataTable = {
 			}
 		}
 		if ($(xNew).length > 0){ 
-			dbsfaces.dataTable.showRowFocus(pId, xNew, true);
+			dbsfaces.dataTable.rowSelect(pId, xNew);
 			if (xDirection!=0){
 				var xPadding = parseInt($(pId + " > .-container > .-content").css("padding-top"));
 				var xHeaderH = $(pId + " > .-container > .-content > table > thead").outerHeight();
