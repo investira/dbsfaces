@@ -71,7 +71,7 @@ dbs_inputText = function(pId) {
 					$(pId + "-list").css("opacity","1").show();
 				}else{
 					//Navega na lista de sugestões
-					dbsfaces.dataTable.selectRow(pId + "-dataTable", e.which);
+					dbsfaces.dataTable.moveToNextOrPreviousRow(pId + "-dataTable", e.which);
 				}
 			}
 		//Se não for tab, shift ou setas para a direira ou esquerda
@@ -164,7 +164,7 @@ dbs_inputText = function(pId) {
 
 
 dbsfaces.inputText = {
-	validate: function(pId){
+	triggerChange: function(pId){
 		var xSuggestionValue = $.trim($(pId + "-suggestion").val());
 		var xValue = $.trim($(pId + "-data").val());
 		var xNullText = $(pId + "-suggestion-key").attr("nulltext");
@@ -176,7 +176,6 @@ dbsfaces.inputText = {
 			}else{
 				$(pId + "-suggestion-key").val($(pId + "-suggestion-key").attr("key"));
 			}
-			$(pId).trigger(dbsfaces.EVENT.ON_SUGGESTION_ACCEPTED);
 		}else{
 			//Considerra erro se texto for NULL_TEXT
 			if (xValue!=xNullText){
@@ -245,7 +244,7 @@ dbsfaces.inputText = {
 	clearSuggestion: function(pId){
 		$(pId + "-suggestion").val("");
 		$(pId + "-suggestion-key").attr("key", "");
-		dbsfaces.inputText.validate(pId);
+		dbsfaces.inputText.triggerChange(pId);
 	},
 
 	
@@ -253,7 +252,7 @@ dbsfaces.inputText = {
 		var xSuggestionValue = $.trim($(pId + "-suggestion").val());
 		if (xSuggestionValue.length > 0){
 			$(pId + "-data").val(xSuggestionValue);
-			dbsfaces.inputText.validate(pId);
+			dbsfaces.inputText.triggerChange(pId);
 		}
 	},
 	
@@ -279,7 +278,6 @@ dbsfaces.inputText = {
 	},
 
 	showFirstSuggestion: function(pId){
-		$(pId).trigger(dbsfaces.EVENT.ON_SUGGESTION_RESPONSE);
 		var xRow = $(pId + "-dataTable tbody").find("tr:first");
 
 		dbsfaces.inputText.updateSuggestion(pId, xRow, true);
