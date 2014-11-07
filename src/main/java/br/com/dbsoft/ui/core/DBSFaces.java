@@ -452,6 +452,11 @@ public class  DBSFaces {
 	}
 
 	
+	/**
+	 * Retornar qual o form é pai deste controle
+	 * @param pComponent
+	 * @return
+	 */
 	public static UIForm getForm(UIComponent pComponent) {
 		UIComponent xParent = pComponent.getParent();
 		while(xParent != null) {
