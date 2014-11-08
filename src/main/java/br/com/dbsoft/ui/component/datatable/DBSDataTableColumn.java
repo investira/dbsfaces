@@ -31,30 +31,24 @@ public class DBSDataTableColumn extends UIColumn{
 		}
 	}
 
-//	public DBSDataTableColumn(){
-//		super();
-//		//setRendererType(null);
-//	}
-
 	@Override
 	public boolean getRendersChildren() {
-		// TODO Auto-generated method stub
 		return super.getRendersChildren();
 	}
 	
-	public java.lang.String getStyle() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+	public String getStyle() {
+		return (String) getStateHelper().eval(PropertyKeys.style, null);
 	}
 	
-	public void setStyle(java.lang.String pStyle) {
+	public void setStyle(String pStyle) {
 		getStateHelper().put(PropertyKeys.style, pStyle);
 		handleAttribute("style", pStyle);
 	}
 
-	public java.lang.String getStyleClass() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+	public String getStyleClass() {
+		return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
 	}
-	public void setStyleClass(java.lang.String pStyleClass) {
+	public void setStyleClass(String pStyleClass) {
 		getStateHelper().put(PropertyKeys.styleClass, pStyleClass);
 		handleAttribute("styleClass", pStyleClass);
 	}
@@ -63,15 +57,15 @@ public class DBSDataTableColumn extends UIColumn{
 	 * Retorna a largura individual de cada coluna
 	 * @return
 	 */
-	public java.lang.String getWidth() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.width, "10px");
+	public String getWidth() {
+		return (String) getStateHelper().eval(PropertyKeys.width, "10px");
 	}
 	/**
 	 * Defini a largura individual de cada culuna. Os valores de cada coluna dever set separados por vírgula sem espaço.
 	 * Os valores devem ser em pixels(px)
 	 * @param pWidth
 	 */
-	public void setWidth(java.lang.String pWidth) {
+	public void setWidth(String pWidth) {
 		getStateHelper().put(PropertyKeys.width, pWidth);
 		handleAttribute("columnWidth", pWidth);
 	}
