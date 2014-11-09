@@ -192,13 +192,13 @@ H6 {
 }
 
 .-loading {
+	background-image: url("#{request.contextPath}/images/loading_small.gif");
 	width: 12px;
 	height: 12px;
 	background-repeat: no-repeat;
 	position: absolute;
 }
 
-.-loading {background-image: url("#{request.contextPath}/images/loading_small.gif");}
 
 .-scrollLeft {
 	-webkit-box-shadow: 3px 0 3px -1px rgba(0, 0, 0, 0.30) inset;
