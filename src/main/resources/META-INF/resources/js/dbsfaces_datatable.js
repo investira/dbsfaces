@@ -142,8 +142,8 @@ dbs_dataTable = function(pId) {
 		$(pId).trigger('blur');
 	}); 
 	//Captura evento ajax dbsoft
-//	dbsfaces.ui.captureAjax(".dbs_dataTable");
-	dbsfaces.ui.captureAjax(pId);
+//	dbsfaces.ui.ajaxShowLoading(".dbs_dataTable");
+	dbsfaces.ui.ajaxShowLoading(pId);
 }
 
 

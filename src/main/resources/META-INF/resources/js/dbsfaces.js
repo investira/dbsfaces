@@ -159,7 +159,7 @@ dbsfaces.ui = {
 	},
 	
 	//Captura evento ajax dbsoft
-	captureAjax : function(pSelector){
+	ajaxShowLoading : function(pSelector){
 //		console.log("CAPTURE " + pSelector);
 		$(pSelector).off(dbsfaces.EVENT.ON_AJAX_BEGIN + ".default");
 		$(pSelector).on(dbsfaces.EVENT.ON_AJAX_BEGIN + ".default", function(e){
