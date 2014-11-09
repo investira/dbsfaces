@@ -8,6 +8,10 @@ dbs_crudForm = function(pId) {
 }
 
 dbsfaces.crudForm = {
+	getBackgroundComponent: function(pId){
+		return dbsfaces.dialog.getBackgroundComponent(pId + ":dialog");
+	},
+
 	closeEsc: function(e){
 		var tecla_pressionada;
 		if( !e ) {
@@ -44,4 +48,4 @@ dbsfaces.crudForm = {
 //		  	xLista[xLista.length -1].click(); //Clica no último botão da lista, o mais interno.
 		}
 	}
-}
+};

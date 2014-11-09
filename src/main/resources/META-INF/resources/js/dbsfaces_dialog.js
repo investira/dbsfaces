@@ -97,7 +97,12 @@ dbsfaces.dialog = {
 		pE.find("button").not(".-disabled").attr('disabled', false);
 		pE.find("select").not(".-disabled").attr('disabled', false);
 		pE.find("textarea").not(".-disabled").attr('disabled', false);
+	},
+	
+	getBackgroundComponent: function(pId){
+		return $(dbsfaces.util.jsid("#" + pId) + " > div > .-content");
 	}
+	
 //	,
 //	
 //	focuOnFirstElement: function(pId){
