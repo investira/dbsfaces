@@ -77,7 +77,7 @@ dbs_inputDate = function(pId) {
 			//$(this).parent().children("input").last().focusNextInputField();
 			return;
 		//puda para o próximo campo dento da data com a BARRA
-		}else if (e.which == 191){ 
+		}else if (e.which == 191){ // Barra de data
 			xC = $(this).nextAll("input:first");
 			e.preventDefault();
 			return;
