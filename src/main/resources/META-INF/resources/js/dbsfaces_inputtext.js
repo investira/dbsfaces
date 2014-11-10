@@ -56,10 +56,13 @@ dbs_inputText = function(pId) {
 
 	/* copia a sugestão para o input ou navega pela lista de sugestões*/
 	$(pId + " > .-container > .-input > .dbs_input-data").keydown(function(e){
-		if (e.which == 39 && //RIGHT
+		//Confirma sugestão com tab e seta para a direita
+		if ((e.which == 13 || //ENTER
+			 e.which == 39) && //RIGHT
 			$(this).get(0).selectionEnd == $(this).val().length) { //Se o cursor estiver no final do texto digitado pelo usuário
 			e.stopImmediatePropagation();
 			dbsfaces.inputText.acceptSuggestion(pId);
+		//Navega na lista de sugestões	
 		}else if(e.which==40   //DOWN
 			  || e.which==38){ //UP
 			//Se existe suggestion, controla a exibição e a navegação
@@ -81,8 +84,9 @@ dbs_inputText = function(pId) {
 			   && e.which != 39){ //RIGHT
 			//Limpa campo caso não seja backspaces
 			//Limpa campo caso haja algum texto selecionado para edição
-			if (e.which != 8 || 
-				(($(this).get(0).selectionEnd - $(this).get(0).selectionStart) > 0)){
+			if (e.which == 8){
+				dbsfaces.ui.selectEnd($(this));
+			}else if (($(this).get(0).selectionEnd - $(this).get(0).selectionStart) > 0){
 				dbsfaces.inputText.clearSuggestion(pId);
 			}
 		}
@@ -94,14 +98,7 @@ dbs_inputText = function(pId) {
 
 	//Faz a pesquisa ===================================================
 	$(pId + " > .-container > .-input").keyup(function(e){
-		if (e.which != 37  //LEFT
-		 && e.which != 39  //RIGHT
-		 && e.which != 40  //DOWN
-		 && e.which != 38  //UP
-		 && e.which != 9  //TAB
-		 && e.which != 13  //ENTER
-		 && !e.ctrlKey
-		 && !e.altKey){
+		if (dbsfaces.inputText.isValidKey(e)){
 			/* delay para evitar chamadas ajax contantes */
 			if (wTime == 0){
 				wTime = +new Date();
@@ -183,6 +180,7 @@ dbsfaces.inputText = {
 				$(pId + "-suggestion-key").val("");
 			}		
 		}
+		
 		$(pId + "-data").trigger("change");
 	},		
 	
@@ -227,12 +225,14 @@ dbsfaces.inputText = {
 		$(pId + "-submit").click();
 	},
 	
+	//Não fará pesquisa se for uma das teclas abaixo
 	isValidKey: function(e){
 		if (e.which == 9 || //TAB
-			e.which == 8 || //BACKSPACE
-			e.which == 46 || //DELETE
+			e.which == 13 || //ENTER
 			e.which == 37 || //LEFT
+			e.which == 38 || //UP
 			e.which == 39 || //RIGHT
+			e.which == 40 || //DOWN
 			e.ctrlKey ||
 			e.altKey){
 			return false;
