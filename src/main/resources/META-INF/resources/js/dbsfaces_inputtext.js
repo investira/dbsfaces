@@ -3,10 +3,13 @@ dbs_inputText = function(pId) {
 	var wTimeout;
 	var wSearching = false;
 	var wBlur = false;
+
+	//Validação inicial
+	dbsfaces.inputText.validate(pId);
 	
 	$(pId + " input").focusin(function(e){
-		dbsfaces.ui.selectAll(this);
 		wSearching = false;
+		dbsfaces.ui.selectAll(this);
 	});
 
 	$(pId + "-data.-upper").keydown(function(e){
@@ -33,10 +36,9 @@ dbs_inputText = function(pId) {
 	$(pId + " > .-container > .-input > .dbs_input-data").blur(function(e){
 		$(pId + "-suggestion").removeClass("dbs_input-data-FOCUS");
 		dbsfaces.ui.selectNone(this);
-		wTime = 0;
+		wTime = +new Date();
 
-		dbsfaces.inputText.setNullText(pId);
-		
+		//Esconde a lista
 		if ($(pId + "-list").length > 0){
 			$(pId + "-list").css("opacity","0");					
 			setTimeout(function() {
@@ -51,6 +53,8 @@ dbs_inputText = function(pId) {
 			e.preventDefault();
 			e.stopPropagation();
 			e.stopImmediatePropagation();
+		}else{
+			dbsfaces.inputText.validate(pId);
 		}
 	});
 
@@ -62,6 +66,9 @@ dbs_inputText = function(pId) {
 			$(this).get(0).selectionEnd == $(this).val().length) { //Se o cursor estiver no final do texto digitado pelo usuário
 			e.stopImmediatePropagation();
 			dbsfaces.inputText.acceptSuggestion(pId);
+			if (e.which == 13){
+				return false;
+			}
 		//Navega na lista de sugestões	
 		}else if(e.which==40   //DOWN
 			  || e.which==38){ //UP
@@ -78,41 +85,27 @@ dbs_inputText = function(pId) {
 				}
 			}
 		//Se não for tab, shift ou setas para a direira ou esquerda
-		}else if (e.which != 9  //TAB
-			   && e.which != 16 //SHIFT
-			   && e.which != 37 //LEFT
-			   && e.which != 39){ //RIGHT
-			//Limpa campo caso não seja backspaces
-			//Limpa campo caso haja algum texto selecionado para edição
-			if (e.which == 8){
-				dbsfaces.ui.selectEnd($(this));
-			}else if (($(this).get(0).selectionEnd - $(this).get(0).selectionStart) > 0){
+		}else{
+			if (dbsfaces.inputText.isValidKey(e)){
+				//Apaga sugestão, pois será efetuada uma nova pesquisa no keyup
 				dbsfaces.inputText.clearSuggestion(pId);
+			}
+			//Limpa campo da posição do cursos até o fim
+			if (e.which == 8){ //BACKSPACES
+				dbsfaces.ui.selectEnd($(this));
 			}
 		}
 	});
 	
 	$(pId + " > .-container > .-input > .dbs_input-data").on("paste", function(e){
-		dbsfaces.inputText.clearSuggestion(pId);
+		dbsfaces.inputText.requestSuggestion(pId, wTime, wTimeout);
+		
 	});
 
 	//Faz a pesquisa ===================================================
 	$(pId + " > .-container > .-input").keyup(function(e){
 		if (dbsfaces.inputText.isValidKey(e)){
-			/* delay para evitar chamadas ajax contantes */
-			if (wTime == 0){
-				wTime = +new Date();
-			}else{
-				xDelay = +new Date() - wTime;
-				wTime = +new Date();
-				if (xDelay < 350){
-					window.clearTimeout(wTimeout); //Cancela request anterior
-				}
-				//Aguarda um tempo para chamar a rotina de sugestão
-				wTimeout = window.setTimeout(function(){
-					dbsfaces.inputText.requestSuggestion(pId);
-				}, 350); //Time de delay para efetuar a chamada
-			}
+			dbsfaces.inputText.requestSuggestion(pId, wTime, wTimeout);
 		}
 	});
 
@@ -124,6 +117,7 @@ dbs_inputText = function(pId) {
 		e.stopPropagation();
 	});
 	
+	//Recebe a resposta da requisição da sugestão
 	$(pId + "-submit").on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
 		wSearching = false;
 		
@@ -140,9 +134,9 @@ dbs_inputText = function(pId) {
 		e.stopPropagation();
 	});
 	
+	//Item selecionado da lista
 	$(pId + " > .-container > .-input").on(dbsfaces.EVENT.ON_ROW_SELECTED, ".-list", function(e, pRow){
-		dbsfaces.inputText.updateSuggestion(pId, pRow, false);
-		dbsfaces.inputText.acceptSuggestion(pId, pRow);
+		dbsfaces.inputText.suggestionReceived(pId, pRow, true);
 	});
 	
 	//Seta foco na lista
@@ -161,47 +155,140 @@ dbs_inputText = function(pId) {
 
 
 dbsfaces.inputText = {
-	triggerChange: function(pId){
+
+	requestSuggestion: function(pId, pTime, pTimeOut){
+		dbsfaces.inputText.clearSuggestion(pId);
+		//Não faze pesquisa se valor for vázio
+		var xValue = $.trim($(pId + "-data").val());
+		var xNullText = $(pId + "-suggestion-key").attr("nulltext");
+		if (xValue==""
+		 || xValue==xNullText){
+			return;
+		}
+		/* delay para evitar chamadas ajax contantes */
+		if (pTime == 0){
+			pTime = +new Date();
+		}else{
+			xDelay = +new Date() - pTime;
+			pTime = +new Date();
+			if (xDelay < 350){
+				window.clearTimeout(pTimeOut); //Cancela request anterior
+			}
+			//Aguarda um tempo para chamar a rotina de sugestão
+			pTimeOut = window.setTimeout(function(){
+				$(pId + "-submit").click();
+			}, 350); //Time de delay para efetuar a chamada
+		}
+	},
+
+	clearSuggestion: function(pId){
+		$(pId + "-suggestion").val("");
+		$(pId + "-suggestion-key").attr("key", "");
+		//Verifica se houve mudança antes de disparar evento
+		if ($(pId + "-suggestion-key").val() != ""){
+			$(pId + "-suggestion-key").val("");
+			dbsfaces.inputText.triggerChange(pId);
+		};
+		dbsfaces.inputText.validate(pId);
+	},
+
+	acceptSuggestion: function(pId){
+		var xSuggestionValue = $.trim($(pId + "-suggestion").val());
+		//Verifica se houve mudança antes de disparar evento
+		if ($(pId + "-suggestion-key").val() != $(pId + "-suggestion-key").attr("key")){
+			//Seta valor selecionado
+			$(pId + "-suggestion-key").val($(pId + "-suggestion-key").attr("key"));
+			$(pId + "-data").val(xSuggestionValue);
+			dbsfaces.inputText.triggerChange(pId);
+		};
+		dbsfaces.inputText.validate(pId);
+	},
+	
+	//Copia valor da lista para a sugestão
+	suggestionReceived: function(pId, pRow, pFromRowSelected){
+		//Se encontrou alguma sugestão
+		if ($(pRow).length > 0){
+			var xRowKey = $(pRow).find('td .-key');
+			var xRowValue = $(pRow).children('td.-dv');
+			var xSuggestionValue = $.trim($(xRowValue).text());
+			var xSuggestionKey = $.trim($(xRowKey).text());
+			var xValue = $.trim($(pId + "-data").val());
+			//Se não foi seleção da linha a partir da lista de sugestões, verifica se inicio do texto recebido é iqual a texto digitado.
+			//Se não for, ignora sugestão recebida
+			if (!pFromRowSelected){
+				var xSuggestionValueTrunc = xSuggestionValue.substr(0, xValue.length);
+				//Apaga sugestão se inicio do texto recebido não for iqual ao digitado.
+				if (xSuggestionValueTrunc!=xValue){
+					dbsfaces.inputText.clearSuggestion(pId);
+					return;
+				} 
+			}
+			$(pId + "-suggestion-key").attr("key", xSuggestionKey);
+			$(pId + "-suggestion").val(xSuggestionValue);
+			//Se texto digitado já for igual a sugestão ou
+			//foi seleção a partir da lista de sugestões, aceita a sugestão automaticamente
+			if (pFromRowSelected 
+			|| xValue == xSuggestionValue){
+				dbsfaces.inputText.acceptSuggestion(pId);
+			}
+		//Se não encontrou alguma sugestão
+		}else{
+			dbsfaces.inputText.clearSuggestion(pId);
+		}
+		
+	},
+
+	showFirstSuggestion: function(pId){
+		//Le primeiro item da lista
+		var xRow = $(pId + "-dataTable tbody").find("tr:first");
+
+		dbsfaces.inputText.suggestionReceived(pId, xRow, false);
+	},
+
+	validate: function(pId){
 		var xSuggestionValue = $.trim($(pId + "-suggestion").val());
 		var xValue = $.trim($(pId + "-data").val());
 		var xNullText = $(pId + "-suggestion-key").attr("nulltext");
-		if (xSuggestionValue==xValue){
+		if (xValue==""
+		 || xValue==xNullText){
+			$(pId + "-data").val(xNullText);
 			dbsfaces.inputText.removeError(pId);
-			if (xValue=="" ||
-				xValue==xNullText){
-				$(pId + "-suggestion-key").val("");
-			}else{
-				$(pId + "-suggestion-key").val($(pId + "-suggestion-key").attr("key"));
-			}
+		}else if (xSuggestionValue==xValue){
+			//Confirma a sugestão
+			dbsfaces.inputText.removeError(pId);
 		}else{
-			//Considerra erro se texto for NULL_TEXT
-			if (xValue!=xNullText){
-				dbsfaces.inputText.addError(pId);
-				$(pId + "-suggestion-key").val("");
-			}		
+			//Campo com erro
+			dbsfaces.inputText.addError(pId);
 		}
-		
+	},		
+
+	triggerChange: function(pId){
 		$(pId + "-data").trigger("change");
 	},		
 	
 	triggerBlur: function(pId){
 		wBlur = false;
 		$(pId + "-data").trigger("blur");
+		dbsfaces.inputText.validate(pId);
 	},
 	
-	setNullText: function(pId){
-		var xSuggestionValue = $.trim($(pId + "-suggestion").val());
-		var xValue = $.trim($(pId + "-data").val());
-		var xNullText = $(pId + "-suggestion-key").attr("nulltext");
-		if (xValue==""
-		 || xValue==xNullText){
-			$(pId + "-suggestion-key").val("");
-			$(pId + "-suggestion").val(xNullText);
-			$(pId + "-data").val(xNullText);
-			dbsfaces.inputText.removeError(pId);
-		}
+	
+	//Não fará pesquisa se for uma das teclas abaixo
+	isValidKey: function(e){
+		if (e.which == 9 || //TAB
+			e.which == 13 || //ENTER
+			e.which == 16 || //SHIFT
+			e.which == 37 || //LEFT
+			e.which == 38 || //UP
+			e.which == 39 || //RIGHT
+			e.which == 40 || //DOWN
+			e.ctrlKey ||
+			e.altKey){
+			return false;
+		}else{
+			return true;
+		} 	
 	},
-
 	removeError: function(pId){
 		$(pId + "-suggestion").removeClass("-error");
 		$(pId + "-data").removeClass("-error");
@@ -221,68 +308,6 @@ dbsfaces.inputText = {
 		$(pId + "-dataTable tbody:first").css('min-width', xWidth);
 	},
 	
-	requestSuggestion: function(pId){
-		$(pId + "-submit").click();
-	},
-	
-	//Não fará pesquisa se for uma das teclas abaixo
-	isValidKey: function(e){
-		if (e.which == 9 || //TAB
-			e.which == 13 || //ENTER
-			e.which == 37 || //LEFT
-			e.which == 38 || //UP
-			e.which == 39 || //RIGHT
-			e.which == 40 || //DOWN
-			e.ctrlKey ||
-			e.altKey){
-			return false;
-		}else{
-			return true;
-		} 	
-	},
-
-	clearSuggestion: function(pId){
-		$(pId + "-suggestion").val("");
-		$(pId + "-suggestion-key").attr("key", "");
-		dbsfaces.inputText.triggerChange(pId);
-	},
-
-	
-	acceptSuggestion: function(pId){
-		var xSuggestionValue = $.trim($(pId + "-suggestion").val());
-		if (xSuggestionValue.length > 0){
-			$(pId + "-data").val(xSuggestionValue);
-			dbsfaces.inputText.triggerChange(pId);
-		}
-	},
-	
-	updateSuggestion: function(pId, pRow, pAjax){
-		if ($(pRow).length > 0){
-			var xRowKey = $(pRow).find('td .-key');
-			var xRowValue = $(pRow).children('td.-dv');
-			var xSuggestionValue = $.trim($(xRowValue).text());
-			var xSuggestionKey = $.trim($(xRowKey).text());
-			//Ignora sugestão se for prefixo for diferente do valor retornado
-			if (pAjax){
-				var xValue = $.trim($(pId + "-data").val());
-				var xSuggestionValueTrunc = xSuggestionValue.substr(0, xValue.length);
-				if (xSuggestionValueTrunc!=xValue){
-					return;
-				}
-			}
-			$(pId + "-suggestion-key").attr("key", xSuggestionKey);
-			$(pId + "-suggestion").val(xSuggestionValue);
-		}else{
-			dbsfaces.inputText.clearSuggestion(pId);
-		}
-	},
-
-	showFirstSuggestion: function(pId){
-		var xRow = $(pId + "-dataTable tbody").find("tr:first");
-
-		dbsfaces.inputText.updateSuggestion(pId, xRow, true);
-	},
-
 	
 	letterCase: function(pInput, e, pLetterCase){
 		if (e.metaKey){
