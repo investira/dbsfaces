@@ -45,14 +45,6 @@ dbs_dataTable = function(pId) {
 	$(xTable + " > tbody > tr").off('mouseover.datatable') 
 							   .on('mouseover.datatable', xMouseover);
 
-//comentado em 25/abr/2014 - Ricardo - Não foi identificada a necessidade neste código
-//	$(xTable + " > tbody").keydown(function(e){
-//		if(e.keyCode==40 ||
-//		   e.keyCode==38){
-//			return false;
-//		}
-//	}); 
-	
 	$(pId).mouseout(function(e){
 		dbsfaces.dataTable.rowFocusRemove(pId);
 	})
