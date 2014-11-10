@@ -28,11 +28,9 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 		if (pContext.getExternalContext().getRequestParameterMap().containsKey(xClientIdAction)) {
 			Object xSubmittedValue = pContext.getExternalContext().getRequestParameterMap().get(xClientIdAction);
 			try {
-				if (xInputNumber.getDecimalPlaces() == 0){
-					xSubmittedValue = DBSNumber.toInteger(xSubmittedValue);
-				}else {
-					xSubmittedValue = DBSNumber.toDouble(xSubmittedValue);
-				}
+				//Primeiramente converte para double para forçar um valor não nulo
+				xSubmittedValue = DBSNumber.toDouble(xSubmittedValue);
+				//Este submittedValue irá converter o valor para o tipo de dado do campo que o receberá
 				xInputNumber.setSubmittedValue(xSubmittedValue);
 			} catch (Exception xE) {
 				wLogger.error("Erro na conversão do inputnumber", xE);
