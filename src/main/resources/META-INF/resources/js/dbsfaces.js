@@ -70,7 +70,6 @@ dbsfaces.sound = {
 	}
 }
 
-
 dbsfaces.ui = {
 	centerVertical : function(pId){
 		var xH = $(pId).outerHeight() / 2;
@@ -161,12 +160,12 @@ dbsfaces.ui = {
 	//Captura evento ajax dbsoft
 	ajaxShowLoading : function(pSelector){
 //		console.log("CAPTURE " + pSelector);
-		$(pSelector).off(dbsfaces.EVENT.ON_AJAX_BEGIN + ".default");
-		$(pSelector).on(dbsfaces.EVENT.ON_AJAX_BEGIN + ".default", function(e){
+		$(pSelector).off(dbsfaces.EVENT.ON_AJAX_BEGIN + "_default");
+		$(pSelector).on(dbsfaces.EVENT.ON_AJAX_BEGIN + "_default", function(e){
 			dbsfaces.ui.showLoading("main",true);
 		});
-		$(pSelector).off(dbsfaces.EVENT.ON_AJAX_COMPLETE + ".default");
-		$(pSelector).on(dbsfaces.EVENT.ON_AJAX_COMPLETE + ".default", function(e){
+		$(pSelector).off(dbsfaces.EVENT.ON_AJAX_COMPLETE + "_default");
+		$(pSelector).on(dbsfaces.EVENT.ON_AJAX_COMPLETE + "_default", function(e){
 			//Reinicia a contagem do timeout a cada complete, já que existe respostas ajax em andamento
 			window.clearTimeout(wAjaxTimeout);
 			wAjaxTimeout = window.setTimeout(function(e){
@@ -174,13 +173,13 @@ dbsfaces.ui = {
 			}, 1000); //Time de delay para efetuar a chamada acima(showLoadingError). A chamada será cancelada em caso de sucesso. 	
 		});
 
-		$(pSelector).off(dbsfaces.EVENT.ON_AJAX_SUCCESS + ".default");
-		$(pSelector).on(dbsfaces.EVENT.ON_AJAX_SUCCESS + ".default", function(e){
+		$(pSelector).off(dbsfaces.EVENT.ON_AJAX_SUCCESS + "_default");
+		$(pSelector).on(dbsfaces.EVENT.ON_AJAX_SUCCESS + "_default", function(e){
 			window.clearTimeout(wAjaxTimeout); //Cancela o timeout definido no evento COMPLETE, cancelando a respectiva chamada ao showLoadingError.
 			dbsfaces.ui.showLoading("main",false);
 		});
 	},
-	
+	//Posiciona do próximo campo dentro do container informado
 	focusOnFirstInput: function(pContainer){
 		//Seta foco no primeiro campo de input
 		var xEle = pContainer.find("input:first");
@@ -196,21 +195,27 @@ dbsfaces.ui = {
 			xEle.focus();
 		}
 	},
-	
+	//Seleciona todo o texto
 	selectAll: function(pObj){
 		//timeout para evitar que o click desmarque o item selecionado
 		setTimeout( function(){
-			pObj.setSelectionRange(0, pObj.value.length);
+			dbsfaces.ui.selectRange(pObj, 0, $(pObj).get(0).value.length);
 		}, 1 );
+	},
+	//Retira a seleção de qualquer texto
+	selectNone: function(pObj){
+		dbsfaces.ui.selectRange(pObj, 0, 0);
+	},
+	//Seleciona da posição atual até o final do texto
+	selectEnd: function(pObj){
+		dbsfaces.ui.selectRange(pObj, $(pObj).get(0).selectionStart, $(pObj).get(0).value.length);
+	},
+	//Seleciona intervalo
+	selectRange: function(pObj, pStart, pEnd){
+		$(pObj).get(0).setSelectionRange(pStart, pEnd);
 	},
 
-	selectNone: function(pObj){
-		//timeout para evitar que o click desmarque o item selecionado
-		setTimeout( function(){
-			pObj.setSelectionRange(0, 0);
-		}, 1 );
-	},
-	
+	//Dispara evento click
 	ajaxTriggerChange: function(e){
 		if ($(e.source).length == 0){
 			return;
