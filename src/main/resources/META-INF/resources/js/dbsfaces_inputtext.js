@@ -4,8 +4,6 @@ dbs_inputText = function(pId) {
 	var wSearching = false;
 	var wBlur = false;
 
-	//Validação inicial
-	dbsfaces.inputText.validate(pId);
 	
 	$(pId + " input").focusin(function(e){
 		wSearching = false;
@@ -13,19 +11,19 @@ dbs_inputText = function(pId) {
 	});
 
 	$(pId + "-data.-upper").keydown(function(e){
-		dbsfaces.inputText.letterCase($(this), e,"upper");
+		dbsfaces.inputText.letterCase(pId, $(this), e,"upper");
 	});	
 
 	$(pId + "-data.-lower").keydown(function(e){
-		dbsfaces.inputText.letterCase($(this), e,"lower");
+		dbsfaces.inputText.letterCase(pId, $(this), e,"lower");
 	});	
 
 	$(pId + "-data.-proper").keydown(function(e){
-		dbsfaces.inputText.letterCase($(this), e,"proper");
+		dbsfaces.inputText.letterCase(pId, $(this), e,"proper");
 	});	
 	
 	$(pId + "-data.-upperfirst").keydown(function(e){
-		dbsfaces.inputText.letterCase($(this), e,"upperfirst");
+		dbsfaces.inputText.letterCase(pId, $(this), e,"upperfirst");
 	});	
 	
 	$(pId + " > .-container > .-input > .dbs_input-data").focus(function(e){
@@ -54,7 +52,7 @@ dbs_inputText = function(pId) {
 			e.stopPropagation();
 			e.stopImmediatePropagation();
 		}else{
-			dbsfaces.inputText.validate(pId);
+			dbsfaces.inputText.validateNullText(pId);
 		}
 	});
 
@@ -97,17 +95,18 @@ dbs_inputText = function(pId) {
 		}
 	});
 	
-	$(pId + " > .-container > .-input > .dbs_input-data").on("paste", function(e){
-		dbsfaces.inputText.requestSuggestion(pId, wTime, wTimeout);
-		
-	});
-
 	//Faz a pesquisa ===================================================
 	$(pId + " > .-container > .-input").keyup(function(e){
 		if (dbsfaces.inputText.isValidKey(e)){
 			dbsfaces.inputText.requestSuggestion(pId, wTime, wTimeout);
 		}
 	});
+
+	$(pId + " > .-container > .-input > .dbs_input-data").on("paste", function(e){
+		dbsfaces.inputText.requestSuggestion(pId, wTime, wTimeout);
+		
+	});
+
 
 	$(pId + "-submit").on(dbsfaces.EVENT.ON_AJAX_BEGIN, function(e){
 		wSearching = true;
@@ -148,7 +147,11 @@ dbs_inputText = function(pId) {
 			$(pId + "-list").hide();
 	  	}, 300);
 	});
+
 	
+	//Validação inicial
+	dbsfaces.inputText.validateNullText(pId);
+
 	dbsfaces.inputText.fixLayout(pId);
 		
 }
@@ -246,21 +249,34 @@ dbsfaces.inputText = {
 	},
 
 	validate: function(pId){
-		var xSuggestionValue = $.trim($(pId + "-suggestion").val());
-		var xValue = $.trim($(pId + "-data").val());
-		var xNullText = $(pId + "-suggestion-key").attr("nulltext");
-		if (xValue==""
-		 || xValue==xNullText){
-			$(pId + "-data").val(xNullText);
-			dbsfaces.inputText.removeError(pId);
-		}else if (xSuggestionValue==xValue){
-			//Confirma a sugestão
-			dbsfaces.inputText.removeError(pId);
-		}else{
-			//Campo com erro
-			dbsfaces.inputText.addError(pId);
+		//Sai caso input não seja do tipo que controla suggestion
+		if ($(pId + "-suggestion").length > 0){
+			//Verifica conteúdo da seleção
+			var xSuggestionValue = $.trim($(pId + "-suggestion").val());
+			var xValue = $.trim($(pId + "-data").val());
+			var xNullText = $(pId + "-suggestion-key").attr("nulltext");
+			if (xValue==""
+			 || xValue==xNullText){
+				dbsfaces.inputText.removeError(pId);
+			}else if (xSuggestionValue==xValue){
+				//Confirma a sugestão
+				dbsfaces.inputText.removeError(pId);
+			}else{
+				//Campo com erro
+				dbsfaces.inputText.addError(pId);
+			}
 		}
 	},		
+	
+	validateNullText: function(pId){
+		if ($(pId + "-suggestion").length > 0){
+			var xValue = $.trim($(pId + "-data").val());
+			var xNullText = $(pId + "-suggestion-key").attr("nulltext");
+			if (xValue==""){
+				$(pId + "-data").val(xNullText);
+			}
+		}
+	},
 
 	triggerChange: function(pId){
 		$(pId + "-data").trigger("change");
@@ -269,19 +285,30 @@ dbsfaces.inputText = {
 	triggerBlur: function(pId){
 		wBlur = false;
 		$(pId + "-data").trigger("blur");
-		dbsfaces.inputText.validate(pId);
+		dbsfaces.inputText.validateNullText(pId);
 	},
 	
 	
 	//Não fará pesquisa se for uma das teclas abaixo
 	isValidKey: function(e){
 		if (e.which == 9 || //TAB
+			e.which == 12 || //CLEAR
 			e.which == 13 || //ENTER
 			e.which == 16 || //SHIFT
+			e.which == 17 || //CONTROL
+			e.which == 18 || //OPTION
+			e.which == 27 || //ESC
+			e.which == 34 || //PGDOWN
+			e.which == 35 || //END
+			e.which == 36 || //HOME
+			e.which == 36 || //HOME
 			e.which == 37 || //LEFT
 			e.which == 38 || //UP
 			e.which == 39 || //RIGHT
 			e.which == 40 || //DOWN
+			e.which == 91 || //COMMAND
+			e.which == 33 || //PGUP
+			(e.which >= 112 && e.which <= 130) || //fn
 			e.ctrlKey ||
 			e.altKey){
 			return false;
@@ -309,7 +336,7 @@ dbsfaces.inputText = {
 	},
 	
 	
-	letterCase: function(pInput, e, pLetterCase){
+	letterCase: function(pId, pInput, e, pLetterCase){
 		if (e.metaKey){
 			return; //Sai para não converte o caracter recebido quando foi tecla especial como um Ctrl-C
 		}
@@ -320,10 +347,12 @@ dbsfaces.inputText = {
 				pLetterCase!="upperfirst"){
 				return;
 			}
-			
-			if (typeof pInput.attr("maxlength") != "undefined"){
-				if (pInput.val().length >= parseInt(pInput.attr("maxlength"))){
-					return;
+			//Só testa tamanho máximo se imput não for com suggestion
+			if ($(pId + "-suggestion").length == 0){ 
+				if (typeof pInput.attr("maxlength") != "undefined"){
+					if (pInput.val().length >= parseInt(pInput.attr("maxlength"))){
+						return;
+					}
 				}
 			}
 			
@@ -344,7 +373,8 @@ dbsfaces.inputText = {
 					}
 				}
 			}else if (pLetterCase=="upperfirst"){
-				if (pInput.get(0).selectionStart!=0){
+				if (pInput.get(0).selectionStart!=0 
+				 && pInput.get(0).selectionEnd!=0){
 					return; //Sai para não converte o caracter recebido
 				}
 			}
