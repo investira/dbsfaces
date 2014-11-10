@@ -37,12 +37,7 @@ dbs_inputText = function(pId) {
 		wTime = +new Date();
 
 		//Esconde a lista
-		if ($(pId + "-list").length > 0){
-			$(pId + "-list").css("opacity","0");					
-			setTimeout(function() {
-				$(pId + "-list").hide();
-		  	}, 300);
-		}
+		dbsfaces.inputText.hideList(pId);
 
 		//Omite blur caso pesquisa esteja em execução
 		//Irá disparar após recebimento da resposta
@@ -65,13 +60,14 @@ dbs_inputText = function(pId) {
 			e.stopImmediatePropagation();
 			dbsfaces.inputText.acceptSuggestion(pId);
 			if (e.which == 13){
+				dbsfaces.inputText.hideList(pId);
 				return false;
 			}
 		//Navega na lista de sugestões	
 		}else if(e.which==40   //DOWN
 			  || e.which==38){ //UP
 			//Se existe suggestion, controla a exibição e a navegação
-			if ($(pId + "-list").length > 0){
+			if (dbsfaces.inputText.isSuggestion(pId)){
 				e.preventDefault();
 				e.stopPropagation();
 				//Exibe suggestions no primeiro click
@@ -250,7 +246,7 @@ dbsfaces.inputText = {
 
 	validate: function(pId){
 		//Sai caso input não seja do tipo que controla suggestion
-		if ($(pId + "-suggestion").length > 0){
+		if (dbsfaces.inputText.isSuggestion(pId)){
 			//Verifica conteúdo da seleção
 			var xSuggestionValue = $.trim($(pId + "-suggestion").val());
 			var xValue = $.trim($(pId + "-data").val());
@@ -269,7 +265,7 @@ dbsfaces.inputText = {
 	},		
 	
 	validateNullText: function(pId){
-		if ($(pId + "-suggestion").length > 0){
+		if (dbsfaces.inputText.isSuggestion(pId)){
 			var xValue = $.trim($(pId + "-data").val());
 			var xNullText = $(pId + "-suggestion-key").attr("nulltext");
 			if (xValue==""){
@@ -335,6 +331,20 @@ dbsfaces.inputText = {
 		$(pId + "-dataTable tbody:first").css('min-width', xWidth);
 	},
 	
+	//Indica se inputtext é do tipo suggestion
+	isSuggestion: function(pId){
+		return ($(pId + "-list").length > 0);
+	},
+	
+	//Esconde a lista
+	hideList: function(pId){
+		if (dbsfaces.inputText.isSuggestion(pId)){
+			$(pId + "-list").css("opacity","0");					
+			setTimeout(function() {
+				$(pId + "-list").hide();
+		  	}, 100);
+		}
+	},
 	
 	letterCase: function(pId, pInput, e, pLetterCase){
 		if (e.metaKey){
@@ -348,7 +358,7 @@ dbsfaces.inputText = {
 				return;
 			}
 			//Só testa tamanho máximo se imput não for com suggestion
-			if ($(pId + "-suggestion").length == 0){ 
+			if (!dbsfaces.inputText.isSuggestion(pId)){ 
 				if (typeof pInput.attr("maxlength") != "undefined"){
 					if (pInput.val().length >= parseInt(pInput.attr("maxlength"))){
 						return;
