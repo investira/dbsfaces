@@ -291,7 +291,7 @@ input[type=text] {
 
 .dbs_back_gradient_white,
 .dbs_back_gradient_blue,
-.dbs_back_gradient_red,
+.dbs_back_gradient_orange,
 .dbs_text_dark_shadow,
 .dbs_input-data,
 .dbs_input-label{
@@ -361,15 +361,15 @@ input[type=text] {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefeff', endColorstr='#f5f5f5',GradientType=0 ); /* IE6-8 */
 }
 
-.dbs_back_gradient_red {
-	background: rgb(255,215,209); /* Old browsers */
-	background: -moz-linear-gradient(top,  rgb(255,215,209) 0%, rgb(255,204,196) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(255,215,209)), color-stop(100%,rgb(255,204,196))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  rgb(255,215,209) 0%,rgb(255,204,196) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  rgb(255,215,209) 0%,rgb(255,204,196) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  rgb(255,215,209) 0%,rgb(255,204,196) 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  rgb(255,215,209) 0%,rgb(255,204,196) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffd7d1', endColorstr='#ffccc4',GradientType=0 ); /* IE6-9 */
+.dbs_back_gradient_orange {
+	background: rgb(255,221,170); /* Old browsers */
+	background: -moz-linear-gradient(top,  rgb(255,221,170) 0%, rgb(255,229,191) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(255,221,170)), color-stop(100%,rgb(255,229,191))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgb(255,221,170) 0%,rgb(255,229,191) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgb(255,221,170) 0%,rgb(255,229,191) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgb(255,221,170) 0%,rgb(255,229,191) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgb(255,221,170) 0%,rgb(255,229,191) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffddaa', endColorstr='#ffe5bf',GradientType=0 ); /* IE6-9 */
 	
 /* 	background: rgb(255,235,229); Old browsers */
 /* 	/* IE9 SVG, needs conditional override of 'filter' to 'none' */ */
@@ -547,7 +547,7 @@ textarea.dbs_input-data:FOCUS,
 }
 
 .dbs_input .-error {
-	background-color: rgb(255, 222, 180);
+	background-color: rgb(255, 255, 210);
 }
 
 .dbs_input > .-container {
