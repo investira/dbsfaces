@@ -160,12 +160,12 @@ dbsfaces.ui = {
 	//Captura evento ajax dbsoft
 	ajaxShowLoading : function(pSelector){
 //		console.log("CAPTURE " + pSelector);
-		$(pSelector).off(dbsfaces.EVENT.ON_AJAX_BEGIN + "_default");
-		$(pSelector).on(dbsfaces.EVENT.ON_AJAX_BEGIN + "_default", function(e){
+		$(pSelector).off(dbsfaces.EVENT.ON_AJAX_BEGIN);
+		$(pSelector).on(dbsfaces.EVENT.ON_AJAX_BEGIN, function(e){
 			dbsfaces.ui.showLoading("main",true);
 		});
-		$(pSelector).off(dbsfaces.EVENT.ON_AJAX_COMPLETE + "_default");
-		$(pSelector).on(dbsfaces.EVENT.ON_AJAX_COMPLETE + "_default", function(e){
+		$(pSelector).off(dbsfaces.EVENT.ON_AJAX_COMPLETE);
+		$(pSelector).on(dbsfaces.EVENT.ON_AJAX_COMPLETE, function(e){
 			//Reinicia a contagem do timeout a cada complete, já que existe respostas ajax em andamento
 			window.clearTimeout(wAjaxTimeout);
 			wAjaxTimeout = window.setTimeout(function(e){
@@ -173,8 +173,8 @@ dbsfaces.ui = {
 			}, 1000); //Time de delay para efetuar a chamada acima(showLoadingError). A chamada será cancelada em caso de sucesso. 	
 		});
 
-		$(pSelector).off(dbsfaces.EVENT.ON_AJAX_SUCCESS + "_default");
-		$(pSelector).on(dbsfaces.EVENT.ON_AJAX_SUCCESS + "_default", function(e){
+		$(pSelector).off(dbsfaces.EVENT.ON_AJAX_SUCCESS);
+		$(pSelector).on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
 			window.clearTimeout(wAjaxTimeout); //Cancela o timeout definido no evento COMPLETE, cancelando a respectiva chamada ao showLoadingError.
 			dbsfaces.ui.showLoading("main",false);
 		});
