@@ -1,6 +1,4 @@
 dbs_inputText = function(pId) {
-	var wTime = +new Date();
-	var wTimeout;
 	var wSearching = false;
 	var wBlur = false;
 
@@ -94,12 +92,12 @@ dbs_inputText = function(pId) {
 	//Faz a pesquisa ===================================================
 	$(pId + " > .-container > .-input").keyup(function(e){
 		if (dbsfaces.inputText.isValidKey(e)){
-			dbsfaces.inputText.requestSuggestion(pId, wTime, wTimeout);
+			dbsfaces.inputText.requestSuggestion(pId);
 		}
 	});
 
 	$(pId + " > .-container > .-input > .dbs_input-data").on("paste", function(e){
-		dbsfaces.inputText.requestSuggestion(pId, wTime, wTimeout);
+		dbsfaces.inputText.requestSuggestion(pId);
 		
 	});
 
@@ -109,7 +107,8 @@ dbs_inputText = function(pId) {
 
 		$(pId + " > .-container > .-input").append("<div class='-loading'></div>");
 		$(pId + " > .-container > .-input > .-is_pesquisar").hide();
-		e.stopPropagation();
+//		e.stopPropagation();
+		e.stopImmediatePropagation();
 	});
 	
 	//Recebe a resposta da requisição da sugestão
@@ -126,7 +125,8 @@ dbs_inputText = function(pId) {
 		dbsfaces.inputText.fixLayout(pId);
 		dbsfaces.inputText.showFirstSuggestion(pId);
 		
-		e.stopPropagation();
+//		e.stopPropagation();
+		e.stopImmediatePropagation();
 	});
 	
 	//Item selecionado da lista
@@ -154,8 +154,10 @@ dbs_inputText = function(pId) {
 
 
 dbsfaces.inputText = {
+	wTime: +new Date(),
+	wTimeout: 0,
 
-	requestSuggestion: function(pId, pTime, pTimeOut){
+	requestSuggestion: function(pId){
 		dbsfaces.inputText.clearSuggestion(pId);
 		//Não faze pesquisa se valor for vázio
 		var xValue = $.trim($(pId + "-data").val());
@@ -165,18 +167,18 @@ dbsfaces.inputText = {
 			return;
 		}
 		/* delay para evitar chamadas ajax contantes */
-		if (pTime == 0){
-			pTime = +new Date();
+		if (dbsfaces.inputText.wTime == 0){
+			dbsfaces.inputText.wTime = +new Date();
 		}else{
-			xDelay = +new Date() - pTime;
-			pTime = +new Date();
-			if (xDelay < 350){
-				window.clearTimeout(pTimeOut); //Cancela request anterior
+			xDelay = +new Date() - dbsfaces.inputText.wTime;
+			dbsfaces.inputText.wTime = +new Date();
+			if (xDelay < 550){
+				window.clearTimeout(dbsfaces.inputText.wTimeOut); //Cancela request anterior
 			}
 			//Aguarda um tempo para chamar a rotina de sugestão
-			pTimeOut = window.setTimeout(function(){
+			dbsfaces.inputText.wTimeOut = window.setTimeout(function(){
 				$(pId + "-submit").click();
-			}, 350); //Time de delay para efetuar a chamada
+			}, 550); //Time de delay para efetuar a chamada
 		}
 	},
 
