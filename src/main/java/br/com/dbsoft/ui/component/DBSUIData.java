@@ -89,6 +89,7 @@ public abstract class DBSUIData extends UIData implements IDBSUIComponentBase {
 		DBSFaces.handleAttribute(name, value, this);
 	}
 
+	//TODO VERIFICAR SE ESTE CÓDIGO PODE ESTAR INTERFERINDO COM OS ACTIONS DOS CHECKBOX E ETC. RICARDO 11/11/2014
 	@Override
 	public boolean invokeOnComponent(FacesContext context, String clientId, ContextCallback callback) throws FacesException {
 		if (this.getVar() == null || this.getRowIndex() == -1) { //this.getRowIndex() == -1 Incluido para evitar erro //server Error: class java.lang.NumberFormatException Trying to extract rowIndex from clientId
