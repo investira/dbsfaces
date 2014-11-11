@@ -28,7 +28,7 @@ public class DBSComponentTree extends DBSUIInput implements NamingContainer, Sys
 	
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.COMPONENTTREE;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
-	public final static String NOT_SELECTABLE_PREFIX = "ct";
+	public final static String NOT_SELECTABLE_PREFIX = "ct"; //prefixo de componentes chave, que servirão de raiz mas não terão as colunas controle de acesso 
 	public final static String FACET_EXTRAINFO = "extrainfo";
 	private static String[] wAllowedIdsPrefixes;
 
@@ -151,10 +151,10 @@ public class DBSComponentTree extends DBSUIInput implements NamingContainer, Sys
 	}
 	
 
-	public java.lang.String getAllowedIdsPrefixes() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.allowedIdsPrefixes, "");
+	public String getAllowedIdsPrefixes() {
+		return (String) getStateHelper().eval(PropertyKeys.allowedIdsPrefixes, "");
 	}
-	public void setAllowedIdsPrefixes(java.lang.String pAllowedIdsPrefixes) {
+	public void setAllowedIdsPrefixes(String pAllowedIdsPrefixes) {
 		getStateHelper().put(PropertyKeys.allowedIdsPrefixes, pAllowedIdsPrefixes);
 		handleAttribute("allowedIdsPrefixes", pAllowedIdsPrefixes);
 		wAllowedIdsPrefixes = DBSString.changeStr(DBSComponentTree.NOT_SELECTABLE_PREFIX + " " + pAllowedIdsPrefixes.toLowerCase(), ",", " ").split("\\s+");
@@ -199,12 +199,12 @@ public class DBSComponentTree extends DBSUIInput implements NamingContainer, Sys
 		handleAttribute("rows", pRows);
 	}
 	
-	public void setExpandAll(java.lang.Boolean pExpandAll) {
+	public void setExpandAll(Boolean pExpandAll) {
 		getStateHelper().put(PropertyKeys.expandAll, pExpandAll);
 		handleAttribute("expandAll", pExpandAll);
 	}
-	public java.lang.Boolean getExpandAll() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.expandAll, false);
+	public Boolean getExpandAll() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.expandAll, false);
 	}
 
 
