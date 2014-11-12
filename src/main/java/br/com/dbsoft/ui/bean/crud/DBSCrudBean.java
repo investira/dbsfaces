@@ -1085,7 +1085,7 @@ public abstract class DBSCrudBean extends DBSBean{
 					//Efetua a validação se for exclusão(não houve mudança de valores) ou houver mudança de valores e não for exclusão 
 					if ((getIsValueChanged() && getIsDeleting() == false) 
 					 || getIsDeleting()){
-						//Chama eventos para validação dos dados
+						//Disparado eventos para validação dos dados
 						if (pvFireEventValidate()){
 							//Exibe tela de confirmação para efetuar o commit
 							setEditingStage(EditingStage.COMMITTING);
@@ -1122,7 +1122,7 @@ public abstract class DBSCrudBean extends DBSBean{
 		//Se estive em processo de modificação
 		if (wEditingMode!=EditingMode.NONE){
 			if (wEditingStage==EditingStage.NONE){
-				//Chama eventos antes de ignorar
+				//Disparado eventos antes de ignorar
 				setEditingStage(EditingStage.IGNORING);
 				//Se não houve alteração de valores, sai sem confirmação
 				if (!getIsValueChanged()){
@@ -1151,7 +1151,7 @@ public abstract class DBSCrudBean extends DBSBean{
 					//Verifica se está no estágio correto
 					if (wEditingStage!=EditingStage.NONE){
 						if (wEditingStage==EditingStage.COMMITTING){
-							//Chama eventos
+							//Disparado eventos
 							if (pvFireEventBeforeCommit()){
 								pvFireEventAfterCommit();
 								pvRefreshList();
@@ -1160,7 +1160,7 @@ public abstract class DBSCrudBean extends DBSBean{
 								pvConfirmEditing(false);
 							}
 						}else if (wEditingStage==EditingStage.IGNORING){
-							//Chama eventos
+							//Disparado eventos
 							if (pvFireEventBeforeIgnore()){
 								pvFireEventAfterIgnore();
 								pvConfirmEditing(true);
@@ -1206,7 +1206,9 @@ public abstract class DBSCrudBean extends DBSBean{
 	// Methods ############################################################
 	
 	/**
-	 * Efetua uma nova pesquisa e chama os eventos <b>beforeRefresh</b> e <b>afterRefresh</b>.
+	 * Efetua uma nova pesquisa e dispara os eventos <b>beforeRefresh</b> e <b>afterRefresh</b>.<br/>
+	 * sejam preenchidas novamente com dados atuais. 
+	 * Não dispara o evento <b>initialize</b>.
 	 * @throws DBSIOException 
 	 */
 	public synchronized String searchList() throws DBSIOException{
@@ -1215,9 +1217,9 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 
 	/**
-	 * Dispara o evento <b>initialize</b> para obrigar valores iniciais sejam refeitos, como as listas, caso existam, 
+	 * Efetua uma nova pesquisa e dispara os eventos <b>beforeRefresh</b> e <b>afterRefresh</b>.<br/>
 	 * sejam preenchidas novamente com dados atuais. 
-	 * Efetua uma nova pesquisa e chama os eventos <b>beforeRefresh</b> e <b>afterRefresh</b>.<br/>
+	 * Dispara o evento <b>initialize</b> para obrigar valores iniciais sejam refeitos, como as listas, caso existam, 
 	 * @throws DBSIOException 
 	 */
 	public synchronized String refreshList() throws DBSIOException{
@@ -1602,7 +1604,8 @@ public abstract class DBSCrudBean extends DBSBean{
 	
 	
 	/**
-	 * Chamado quando a class é instanciada.<br/>
+	 * Disparado quando a class é instanciada ou quando é efetuado um <b>refreshList()</b>.<br/>
+	 * O método <b>searchList()</b> efetua mesma atualização do <b>refreshList()</b> sem chamar o <b>initialize</b>.
 	 * Conexão com o banco encontra-se aberta.<br/>
 	 * @param pEvent Informações do evento
 	 */
@@ -1610,7 +1613,7 @@ public abstract class DBSCrudBean extends DBSBean{
 
 
 	/**
-	 * Chamado antes da class ser finalizada.<br/>
+	 * Disparado antes da class ser finalizada.<br/>
 	 * Conexão com o banco já se encontra fechada.<br/>
 	 * @param pEvent Informações do evento
 	 */
@@ -1618,14 +1621,14 @@ public abstract class DBSCrudBean extends DBSBean{
 	
 	
 	/**
-	 * Chamado antes do crudform ser fechado.<br/>
+	 * Disparado antes do crudform ser fechado.<br/>
 	 * Conexão com o banco já se encontra fechada.<br/>
 	 * @param pEvent Informações do evento
 	 */
 	protected void beforeClose(DBSCrudBeanEvent pEvent) throws DBSIOException {} ;
 
 	/**
-	 * Chamado antes de limpar os dados existentes e fazer uma nova pesquisa.<br/>
+	 * Disparado antes de limpar os dados existentes e fazer uma nova pesquisa.<br/>
 	 * A pesquisa principal dos dados que utiliza o wDAO, deverá ser efetuada neste evento.<br/>
 	 * Conexão com o banco encontra-se aberta.<br/>
 	 * @param pEvent Informações do evento
@@ -1634,7 +1637,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	protected void beforeRefresh(DBSCrudBeanEvent pEvent) throws DBSIOException{};
 	
 	/**
-	 * Chamado após efetuada uma nova pesquisa.
+	 * Disparado após efetuada uma nova pesquisa.
 	 * Conexão com o banco encontra-se aberta.<br/>
 	 * @param pEvent Informações do evento
 	 */
@@ -1642,7 +1645,7 @@ public abstract class DBSCrudBean extends DBSBean{
 
 	
 	/**
-	 * Chamado após o click do usuário no insert/delete/update e antes de iniciar o respectivo insert/delete/update
+	 * Disparado após o click do usuário no insert/delete/update e antes de iniciar o respectivo insert/delete/update
 	 * Neste evento pode-se ignorar o click do usuário, evitado que continue o comando de insert/update/delete.
 	 * Para isso, informe pEvent.setOk(false).<br> 
 	 * Neste evento o editingMode do Crud ainda não foi configurado, portanto para saber qual a atividade(Inser/update/delete) foi selecionada
@@ -1655,14 +1658,14 @@ public abstract class DBSCrudBean extends DBSBean{
 	protected void beforeEdit(DBSCrudBeanEvent pEvent) throws DBSIOException {};
 	
 	/**
-	 * Chamado logo após a finalização da edição(insert/delete/update), independentemente da edição ter sido confirmada ou ignorada.<br/>
+	 * Disparado logo após a finalização da edição(insert/delete/update), independentemente da edição ter sido confirmada ou ignorada.<br/>
 	 * Conexão com o banco encontra-se aberta, porém será fechado logo após a finalização deste evento.<br/>
 	 * @param pEvent Informações do evento
 	 */
 	protected void afterEdit(DBSCrudBeanEvent pEvent) throws DBSIOException {};
 	
 	/**
-	 * Chamado antes de iniciar um insert.<br/>
+	 * Disparado antes de iniciar um insert.<br/>
 	 * Neste evento pode-se configura os valores default dos campos.<br/>
 	 * Para ignorar a inclusão, deve-se setar setOk(False).<br/>
 	 * Conexão com o banco encontra-se aberta.<br/>
@@ -1671,7 +1674,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	protected void beforeInsert(DBSCrudBeanEvent pEvent) throws DBSIOException{};
 	
 	/**
-	 * Chamado antes de exibir os dados em uma edição ou exclusão.<br/>
+	 * Disparado antes de exibir os dados em uma edição ou exclusão.<br/>
 	 * Durante este evento para saber o modo de edição, deve-se consultar o <b>pEvent.getEditingMode()</b>.<br/>
 	 * Conexão com o banco encontra-se aberta.<br/>
 	 * @param pEvent Informações do evento
@@ -1679,7 +1682,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	protected void beforeView(DBSCrudBeanEvent pEvent) throws DBSIOException{};
 	
 	/**
-	 * Chamado depois depois de exibir os dados.<br/>
+	 * Disparado depois depois de exibir os dados.<br/>
 	 * Procure utilizar o evento <b>beforeView</b><br/>
 	 * Neste evento pode-se, também, configurar os valores default dos campos no caso de uma inclusão.
 	 * Conexão com o banco encontra-se aberta.<br/>
@@ -1688,7 +1691,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	protected void afterView(DBSCrudBeanEvent pEvent) throws DBSIOException{};
 	
 	/**
-	 * Chamado depois da validação e mensagens de confirmação.
+	 * Disparado depois da validação e mensagens de confirmação.
 	 * Ocorre após a gravação dos dados(sem commit) e antes de voltar ao modo sem edição(EditingMode.NONE).<br/>
 	 * A transação(Begintrans/Commit/Rollback) são controladas automaticamete.<br/>
 	 * Será efetuado o <b>rollback</b> em caso de <b>exception</b> ou se o atributo <b>pEvent.setOk</b> do evento for <b>false</b>.<br>
@@ -1756,7 +1759,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 	
 	/**
-	 * Atualiza dados da lista e dispara os eventos beforeRefresh e afterRefresh
+	 * Atualiza dados da lista e dispara os eventos beforeRefresh e afterRefresh.<br/>
 	 * @throws DBSIOException
 	 */
 	private void pvRefreshList() throws DBSIOException{
@@ -2312,42 +2315,42 @@ public abstract class DBSCrudBean extends DBSBean{
 
 
 	/**
-	 * Chamado depois de efetuado o CRUD com sucesso.<br/>
+	 * Disparado depois de efetuado o CRUD com sucesso.<br/>
 	 * Conexão com o banco encontra-se aberta.
 	 * @param pEvent Informações do evento
 	 */
 	protected void afterCommit(DBSCrudBeanEvent pEvent) throws DBSIOException {};
 
 	/**
-	 * Chamado quando houve problema de validação ou não houver a confirmação do usuário para continuar.<br/>
+	 * Disparado quando houve problema de validação ou não houver a confirmação do usuário para continuar.<br/>
 	 * Conexão com o banco encontra-se aberta.
 	 * @param pEvent Informações do evento
 	 */
 	protected void beforeIgnore(DBSCrudBeanEvent pEvent) throws DBSIOException {};
 
 	/**
-	 * Chamado depois de ignorar o CRUD.<br/>
+	 * Disparado depois de ignorar o CRUD.<br/>
 	 * Conexão com o banco encontra-se aberta.
 	 * @param pEvent Informações do evento
 	 */
 	protected void afterIgnore(DBSCrudBeanEvent pEvent){};
 
 	/**
-	 * Chamado antes de efetuar a seleção da linha através do ckeckbox padrão do datatable. Podendo, neste momento, inibir a seleção retornando setOk(false) do evento.<br/> 
+	 * Disparado antes de efetuar a seleção da linha através do ckeckbox padrão do datatable. Podendo, neste momento, inibir a seleção retornando setOk(false) do evento.<br/> 
 	 * Conexão com o banco encontra-se aberta.
 	 * @param pEvent Informações do evento
 	 */
 	protected void beforeSelect(DBSCrudBeanEvent pEvent) throws DBSIOException {};
 	
 	/**
-	 * Chamado depois da seleção de algum item.<br/>
+	 * Disparado depois da seleção de algum item.<br/>
 	 * Conexão com o banco encontra-se aberta.
 	 * @param pEvent Informações do evento
 	 */
 	protected void afterSelect(DBSCrudBeanEvent pEvent){};
 
 	/**
-	 * Chamado após indicar que seja salvar(commit) os dados, e antes de pedir a confirmação da edição.
+	 * Disparado após indicar que seja salvar(commit) os dados, e antes de pedir a confirmação da edição.
 	 * Para indicar problemas na validação deve-se setar <b>pEvent.setOk(false)</b>.<br/>
 	 * Neste método deve-se efetuar as validações das regras de negócios e gerar as mensagens de erro ou alerta, 
 	 * caso necessario, via o comando <b>addMessage</b>.<br/>
@@ -2539,7 +2542,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 	
 	/**
-	 * Chamado depois da validação e mensagens de confirmação.
+	 * Disparado depois da validação e mensagens de confirmação.
 	 * Ocorre após a gravação dos dados(sem commit) e antes de voltar ao modo sem edição(EditingMode.NONE).<br/>
 	 * A transação(Begintrans/Commit/Rollback) são controladas automaticamete.<br/>
 	 * Será efetuado o <b>rollback</b> em caso de <b>exception</b> ou se o atributo <b>pEvent.setOk</b> do evento for <b>false</b>.<br>
@@ -2669,7 +2672,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 
 	/**
-	 * Chamado logo após o click do usuário no insert/delete/update/approve/reprove e antes de iniciar o respectivo insert/delete/update/approve/reprove.
+	 * Disparado logo após o click do usuário no insert/delete/update/approve/reprove e antes de iniciar o respectivo insert/delete/update/approve/reprove.
 	 * Podendo, portanto, cancelar o inicio da edição, informando setOk(False) no evento.<br/>
 	 * Neste evento a conexão será aberta e posteriormente fechada no evento AfterEdit(ou em caso de erro ou o usário fechou dentro do evento)
 	 * @return
@@ -2690,7 +2693,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 	
 	/**
-	 * Chamado logo após a finalização da edição(insert/delete/update/approve/reprove), 
+	 * Disparado logo após a finalização da edição(insert/delete/update/approve/reprove), 
 	 * independentemente da edição ter sido confirmada ou ignorada.
 	 * Fecha a conexão com o banco.</br>
 	 * @return
@@ -2708,7 +2711,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 
 	/**
-	 * Ocorre antes de selecionar um item no checkbox do datatable. Podendo, neste momento, inibir a seleção
+	 * Disparado antes de selecionar um item no checkbox do datatable. Podendo, neste momento, inibir a seleção
 	 * @return
 	 */
 	private boolean pvFireEventBeforeSelect(){
@@ -2737,7 +2740,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	
 	
 	/**
-	 * Chama os eventos localmente, nos filhos e nos listerners que eventualmente possam existir.
+	 * Disparado os eventos localmente, nos filhos e nos listerners que eventualmente possam existir.
 	 * @param pEvent
 	 * @param pInvokeChildren Se chama os filhos
 	 * @param pOpenConnection Se abre a conexão antes de chamar os eventos
