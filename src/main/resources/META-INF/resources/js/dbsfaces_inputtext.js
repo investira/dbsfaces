@@ -41,7 +41,6 @@ dbs_inputText = function(pId) {
 		//Irá disparar após recebimento da resposta
 		if (wSearching){
 			wBlur = true;
-			e.preventDefault();
 			e.stopPropagation();
 			e.stopImmediatePropagation();
 		}else{
