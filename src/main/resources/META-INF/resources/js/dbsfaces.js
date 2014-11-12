@@ -107,13 +107,20 @@ dbsfaces.ui = {
 	},
 	
 	/*Exibe a imagem de que indica que está aguardando o recebimento dos dados*/
-	showLoading : function(pId, pStatus){
+	showLoading : function(pId, pShow){
+		
 		var xId = "dbs_ajaximg_" + $.trim(pId);
+		//Sempre remove loading se já existir 
 		if ($("#" + xId).length > 0){
 	    	$("#" + xId).remove();
 		}
-	    if (pStatus){
+		
+		//Exibe loading
+	    if (pShow){
+//			console.log("showLoading:" + pId + ":" + pStatus);
 	        $('body').append("<span id='" + xId + "' class='dbs_loading'/>");
+//	    }else{
+//			console.log("HIDELoading:" + pId + ":" + pStatus);
 	    }
 	},
 	
@@ -159,6 +166,7 @@ dbsfaces.ui = {
 	
 	//Captura evento ajax dbsoft
 	ajaxShowLoading : function(pSelector){
+//		console.log("ajaxShowLoading:" + pSelector);
 		$(pSelector).off(dbsfaces.EVENT.ON_AJAX_BEGIN);
 		$(pSelector).on(dbsfaces.EVENT.ON_AJAX_BEGIN, function(e){
 			dbsfaces.ui.showLoading("main",true);
