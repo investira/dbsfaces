@@ -197,6 +197,47 @@ public class DBSComboboxRenderer extends DBSRenderer {
 		}
 	}
 	
+//Novo código a ser testado	
+//	//Recupera valor do item selecionado
+//	xValueKey = pCombobox.getValue();
+//
+//	//Converte o valor para o mesmo tipo da chave utilizada na lista para garantir que a 
+//	//comparação para verificar se a chave existe será efetuados com valores do mesmo tipo de class
+//	if (xValueKey != null){
+//		Iterator<Object> xListKeyIterator = xList.keySet().iterator();
+//		Class<?> xValueKeyClass = xValueKey.getClass();
+//		Object xListKeyValue;
+//		//Pega primeiro item que não seja o valor nulo para poder verificar o seu tipo
+//		while (xListKeyIterator.hasNext()){
+//			xListKeyValue = xListKeyIterator.next();
+//			if (!xListKeyValue.equals(COMBOBOX.NULL_VALUE)){
+//				xValueKeyClass = xListKeyValue.getClass();
+//				break;
+//			}
+//		}
+//		//Converte para o tipo
+//		xValueKey = DBSObject.toClass(xValueKey, xValueKeyClass, null);
+//	}
+//	//Busca item na lista para recuperar o valor que será utlizado para exibir a informação
+//	xValue = DBSString.toString(xList.get(xValueKey), null);
+//	
+//	//Se não achou item, tentar setar como item nulo(NULL_VALUE), caso faça parte da lista.
+//	//e se também não encontrar, tentar setar como o primeiro item da lista, se houver algum
+//	if (xValue==null){
+//		//Utiliza o valor vázio ao invés do null, por não existir null em html
+//		xValueKey = COMBOBOX.NULL_VALUE;
+//		//Busca item na lista para recuperar o valor que será utlizado para exibir a informação
+//		xValue = DBSString.toString(xList.get(xValueKey), null);
+//		//Se não achar item nulo na lista e lista possuir algum item, seta para o primeiro item da lista.
+//		if (xValue==null){
+//			if (xList.size() > 0){
+//				xValueKey = xList.keySet().iterator().next();
+//				xValue = DBSString.toString(xList.get(xValueKey), null);
+//				pCombobox.setValue(xValueKey);
+//			}
+//		}
+//	}
+	
 }
 
 
