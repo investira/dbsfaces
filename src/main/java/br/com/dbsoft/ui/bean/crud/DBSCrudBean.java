@@ -1605,7 +1605,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	
 	/**
 	 * Disparado quando a class é instanciada ou quando é efetuado um <b>refreshList()</b>.<br/>
-	 * O método <b>searchList()</b> efetua mesma atualização do <b>refreshList()</b> sem chamar o <b>initialize</b>.
+	 * O método <b>searchList()</b> efetua mesma atualização do <b>refreshList()</b> sem disparar o <b>initialize</b>.
 	 * Conexão com o banco encontra-se aberta.<br/>
 	 * @param pEvent Informações do evento
 	 */
@@ -1695,8 +1695,8 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Ocorre após a gravação dos dados(sem commit) e antes de voltar ao modo sem edição(EditingMode.NONE).<br/>
 	 * A transação(Begintrans/Commit/Rollback) são controladas automaticamete.<br/>
 	 * Será efetuado o <b>rollback</b> em caso de <b>exception</b> ou se o atributo <b>pEvent.setOk</b> do evento for <b>false</b>.<br>
-	 * Neste evento, pode-se forçar o valor de alguma coluna utilizando o <b>wDAO</b>, devendo-se, contudo, chamar o <b>super.beforeCommit()</b> ao final, 
-	 * caso o CRUD seja a tabela definida no próprio wDAO.<br> 
+	 * Neste evento, pode-se forçar o valor de alguma coluna utilizando o <b>setValue</b>, devendo-se, contudo, 
+	 * chamar o <b>super.beforeCommit()</b> ao final caso o CRUD seja a tabela definida no próprio wDAO.<br> 
 	 * Caso o CRUD não seja da tabela definida no wDAO, este método deverá ser sobreescrito
 	 * para que seja implementado o CRUD específico e NÃO deverá ser chamado o <b>super.beforeCommit()</b>.<br>
 	 * No caso do método ser sobreescrito, é necessário setar o atributo <b>pEvent.setCommittedRowCount</b> com
@@ -2546,10 +2546,10 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Ocorre após a gravação dos dados(sem commit) e antes de voltar ao modo sem edição(EditingMode.NONE).<br/>
 	 * A transação(Begintrans/Commit/Rollback) são controladas automaticamete.<br/>
 	 * Será efetuado o <b>rollback</b> em caso de <b>exception</b> ou se o atributo <b>pEvent.setOk</b> do evento for <b>false</b>.<br>
-	 * Neste evento, pode-se forçar o valor de alguma coluna utilizando o <b>wDAO</b>, devendo-se, contudo, chamar o <b>super.beforeCommit()</b> ao final, 
-	 * caso o CRUD seja a tabela definida no próprio wDAO.<br> 
+	 * Neste evento, pode-se forçar o valor de alguma coluna utilizando o <b>setValue</b>, devendo-se, contudo, 
+	 * chamar o <b>super.beforeCommit()</b> ao final caso o CRUD seja a tabela definida no próprio wDAO.<br> 
 	 * Caso o CRUD não seja da tabela definida no wDAO, este método deverá ser sobreescrito
-	 * para que seja implementado o CRUD específico.<br>
+	 * para que seja implementado o CRUD específico e NÃO deverá ser chamado o <b>super.beforeCommit()</b>.<br>
 	 * No caso do método ser sobreescrito, é necessário setar o atributo <b>pEvent.setCommittedRowCount</b> com
 	 * a quantidade de registros afetados.<br>
 	 * @param pEvent Informações do evento
@@ -2743,8 +2743,8 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Disparado os eventos localmente, nos filhos e nos listerners que eventualmente possam existir.
 	 * @param pEvent
 	 * @param pInvokeChildren Se chama os filhos
-	 * @param pOpenConnection Se abre a conexão antes de chamar os eventos
-	 * @param pCloseConnection Se fecha a conexão após chmar os eventos
+	 * @param pOpenConnection Se abre a conexão antes de disparar os eventos
+	 * @param pCloseConnection Se fecha a conexão após disparar os eventos
 	 * @throws Exception 
 	 */
 	private void pvBroadcastEvent(DBSCrudBeanEvent pEvent, boolean pInvokeChildren, boolean pOpenConnection, boolean pCloseConnection) throws Exception {
