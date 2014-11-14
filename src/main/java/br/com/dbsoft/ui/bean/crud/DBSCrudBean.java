@@ -2073,6 +2073,10 @@ public abstract class DBSCrudBean extends DBSBean{
 	 */
 	private void pvBeforeCommitSetAutomaticColumnsValues(DBSCrudBeanEvent pEvent) throws DBSIOException{
 		DBSColumn 	xColumn = null;
+		//Delete
+		if(getIsDeleting()){
+			return;
+		}
 		//Configura os valores das assinaturas se assinatura estive habilitada. 
 		if (getAllowApproval()){
 			pvBeforeCommitSetAutomaticColumnsValuesApproval(pEvent);
@@ -2101,8 +2105,6 @@ public abstract class DBSCrudBean extends DBSBean{
 			if (xColumn!=null){
 				xColumn.setValue(DBSDate.getNowDateTime());
 			}
-		//Delete
-		}else if(getIsDeleting()){
 		}	
 	}
 	
