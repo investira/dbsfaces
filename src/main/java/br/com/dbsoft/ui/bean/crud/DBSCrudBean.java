@@ -1207,8 +1207,8 @@ public abstract class DBSCrudBean extends DBSBean{
 	
 	/**
 	 * Efetua uma nova pesquisa e dispara os eventos <b>beforeRefresh</b> e <b>afterRefresh</b>.<br/>
-	 * sejam preenchidas novamente com dados atuais. 
-	 * Não dispara o evento <b>initialize</b>.
+	 * Não dispara o evento <b>initialize</b>.<br/>
+	 * Como alternativa existe o método <b>refreshList</b> que tem o mesmo efeito, porém dispara o evento <b>initialize</b>.
 	 * @throws DBSIOException 
 	 */
 	public synchronized String searchList() throws DBSIOException{
@@ -1218,14 +1218,13 @@ public abstract class DBSCrudBean extends DBSBean{
 
 	/**
 	 * Efetua uma nova pesquisa e dispara os eventos <b>beforeRefresh</b> e <b>afterRefresh</b>.<br/>
-	 * sejam preenchidas novamente com dados atuais. 
-	 * Dispara o evento <b>initialize</b> para obrigar valores iniciais sejam refeitos, como as listas, caso existam, 
+	 * Dispara o evento <b>initialize</b> para obrigar valores iniciais sejam refeitos, como as listas, caso existam.<br/>
+	 * Como alternativa existe o método <b>searchList</b> que tem o mesmo efeito, porém <b>não</b> dispara o evento <b>initialize</b>.
 	 * @throws DBSIOException 
 	 */
 	public synchronized String refreshList() throws DBSIOException{
 		pvFireEventInitialize();
-		pvRefreshList();
-		return DBSFaces.getCurrentView();
+		return searchList();
 	}
 
 	/**
