@@ -2,7 +2,12 @@ package br.com.dbsoft.ui.bean.crud;
 
 import br.com.dbsoft.event.DBSEvent;
 import br.com.dbsoft.ui.bean.crud.DBSCrudBean.EditingMode;
+import br.com.dbsoft.ui.bean.crud.DBSCrudBean.EditingStage;
 
+/**
+ * @author ricardo.villar
+ *
+ */
 public class DBSCrudBeanEvent extends DBSEvent<DBSCrudBean> {
 
 	public static enum CRUD_EVENT{
@@ -23,6 +28,7 @@ public class DBSCrudBeanEvent extends DBSEvent<DBSCrudBean> {
 		AFTER_REFRESH,
 		BEFORE_SELECT,
 		AFTER_SELECT,
+		BEFORE_VALIDATE,
 		VALIDATE
 	}
 
@@ -30,9 +36,10 @@ public class DBSCrudBeanEvent extends DBSEvent<DBSCrudBean> {
 	private CRUD_EVENT 	wEvent = null;
 	private EditingMode wEditingMode = EditingMode.NONE;
 	
-	public DBSCrudBeanEvent(DBSCrudBean pObject, CRUD_EVENT pEvent) {
+	public DBSCrudBeanEvent(DBSCrudBean pObject, CRUD_EVENT pEvent, EditingMode pEditingMode) {
 		super(pObject);
 		wEvent = pEvent;
+		wEditingMode = pEditingMode;
 	}
 
 	public Integer getCommittedRowCount() {
@@ -55,9 +62,12 @@ public class DBSCrudBeanEvent extends DBSEvent<DBSCrudBean> {
 		return wEditingMode;
 	}
 
-	public void setEditingMode(EditingMode wEditingMode) {
-		this.wEditingMode = wEditingMode;
+	/**
+	 * Informa se a edição está sendo confirmada ou ignorada ou não está em processo de confirmação.
+	 * @return
+	 */
+	public EditingStage getEditingStage(){
+		return getObject().getEditingStage();
 	}
-	
 
 }
