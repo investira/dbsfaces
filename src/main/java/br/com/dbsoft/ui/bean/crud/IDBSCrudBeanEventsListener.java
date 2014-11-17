@@ -177,7 +177,7 @@ public interface IDBSCrudBeanEventsListener {
 	 * Normalmente nos casos que foi feito <i>Override</i> do evento <b>beforeCommit</b> para
 	 * implementação de CRUD específico, deverá também ser implementado o <i>copy</i> e <i>paste</i>
 	 * atráves do <i>Override</i> dos eventos <b>afterCopy</b> e <b>beforePaste</b> ou 
-	 * desabilitar esta funcionalidade através do atributo <b>allowCopy</b>.
+	 * desabilitar esta funcionalidade através do atributo <b>allowCopy</b>.<br/>
 	 * Conexão com o banco encontra-se aberta.
 	 * @param pEvent Informações do evento
 	 */
@@ -188,7 +188,8 @@ public interface IDBSCrudBeanEventsListener {
 	 * Normalmente nos casos que foi feito <i>Override</i> do evento <b>beforeCommit</b> para
 	 * implementação de CRUD específico, deverá também ser implementado o <i>copy</i> e <i>paste</i>
 	 * atráves do <i>Override</i> dos eventos <b>afterCopy</b> e <b>beforePaste</b> ou 
-	 * desabilitar esta funcionalidade através do atributo <b>allowCopy</b>.
+	 * desabilitar esta funcionalidade através do atributo <b>allowCopy</b>.<br/>
+	 * Informar <b>setOk(false)</b> inibe a execução do <b>paste</b> padrão.<br/>
 	 * Conexão com o banco encontra-se aberta.
 	 * @param pEvent Informações do evento
 	 */
