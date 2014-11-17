@@ -28,6 +28,8 @@ public class DBSCrudBeanEvent extends DBSEvent<DBSCrudBean> {
 		AFTER_REFRESH,
 		BEFORE_SELECT,
 		AFTER_SELECT,
+		AFTER_COPY,
+		BEFORE_PASTE,
 		BEFORE_VALIDATE,
 		VALIDATE
 	}

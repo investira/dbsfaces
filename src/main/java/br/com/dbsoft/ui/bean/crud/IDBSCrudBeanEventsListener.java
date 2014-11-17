@@ -79,7 +79,10 @@ public interface IDBSCrudBeanEventsListener {
 	 * para que seja implementado o CRUD específico e NÃO deverá ser chamado o <b>super.beforeCommit()</b>.<br>
 	 * No caso do método ser sobreescrito, é necessário setar o atributo <b>pEvent.setCommittedRowCount</b> com
 	 * a quantidade de registros afetados.<br>
-	 * <b>QUALQUER EDIÇÃO DE DADOS DO BANCO DEVERÁ SERÁ SER IMPLEMENTADA NESTE EVENTO.</b> 
+	 * Deverá também, neste caso, verificar a necessidade de implementação do <i>copy</i> e <i>paste</i>
+	 * atráves do <i>Override</i> dos eventos <b>afterCopy</b> e <b>beforePaste</b> ou 
+	 * desabilitar esta funcionalidade através do atributo <b>allowCopy</b>.<br/>
+	 * <b>É ACONSELHÁVEL QUE QUALQUER EDIÇÃO DE DADOS DO BANCO DEVERÁ SEJA IMPLEMENTADA NESTE EVENTO.</b><br/>
 	 * Conexão com o banco encontra-se aberta.<br/>
 	 * @param pEvent Informações do evento
 	 * @throws DBSIOException 
@@ -169,5 +172,25 @@ public interface IDBSCrudBeanEventsListener {
 	public abstract void afterSelect(DBSCrudBeanEvent pEvent) throws DBSIOException;
 
 	
+	/**
+	 * Disparado depois de copiada a posição do registro atual.<br/>
+	 * Normalmente nos casos que foi feito <i>Override</i> do evento <b>beforeCommit</b> para
+	 * implementação de CRUD específico, deverá também ser implementado o <i>copy</i> e <i>paste</i>
+	 * atráves do <i>Override</i> dos eventos <b>afterCopy</b> e <b>beforePaste</b> ou 
+	 * desabilitar esta funcionalidade através do atributo <b>allowCopy</b>.
+	 * Conexão com o banco encontra-se aberta.
+	 * @param pEvent Informações do evento
+	 */
+	public abstract void afterCopy(DBSCrudBeanEvent pEvent) throws DBSIOException;
 
+	/**
+	 * Disparado depois de copiada a posição do registro atual.<br/>
+	 * Normalmente nos casos que foi feito <i>Override</i> do evento <b>beforeCommit</b> para
+	 * implementação de CRUD específico, deverá também ser implementado o <i>copy</i> e <i>paste</i>
+	 * atráves do <i>Override</i> dos eventos <b>afterCopy</b> e <b>beforePaste</b> ou 
+	 * desabilitar esta funcionalidade através do atributo <b>allowCopy</b>.
+	 * Conexão com o banco encontra-se aberta.
+	 * @param pEvent Informações do evento
+	 */
+	public abstract void beforePaste(DBSCrudBeanEvent pEvent) throws DBSIOException;
 }

@@ -166,6 +166,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	private Boolean								wAllowApproval = false;
 	private Boolean								wAllowApprove = true;
 	private Boolean								wAllowReprove = true;
+	private Boolean								wAllowCopy = true;
 	private	Integer								wApprovalUserStages = 0;
 	private String								wColumnNameApprovalStage = null;
 	private String								wColumnNameApprovalUserIdRegistered = null;
@@ -688,15 +689,64 @@ public abstract class DBSCrudBean extends DBSBean{
 	public Boolean getMultipleSelection() {return wMultipleSelection;}
 	public void setMultipleSelection(Boolean pMultipleSelection) {wMultipleSelection = pMultipleSelection;}
 
+	/**
+	 * Indica se habilita controle de assinatura.<br/>
+	 * Padrão é true.<br/>
+	 * Consulte também <b>allowApproval</b>.
+	 * @return
+	 */
 	public Boolean getAllowApproval() {return wAllowApproval;}
+	/**
+	 * Indica se habilita controle de assinatura.<br/>
+	 * Padrão é true.<br/>
+	 * Consulte também <b>allowApproval</b>.
+	 * @return
+	 */
 	public void setAllowApproval(Boolean pAllowApproval) {wAllowApproval = pAllowApproval;}
 
+	/**
+	 * Indica se habilita botão para aprovação.<br/>
+	 * Padrão é true.<br/>
+	 * Consulte também <b>allowApproval</b>.
+	 * @return
+	 */
 	public Boolean getAllowApprove(){return wAllowApprove;}
-	public void getAllowApprove(Boolean pAllowApprove){wAllowApprove = pAllowApprove;}
+	/**
+	 * Indica se habilita botão para aprovação.<br/>
+	 * Padrão é true.<br/>
+	 * Consulte também <b>allowApproval</b>.
+	 * @return
+	 */
+	public void setAllowApprove(Boolean pAllowApprove){wAllowApprove = pAllowApprove;}
 
+	/**
+	 * Indica se habilita botão para reprovação.<br/>
+	 * Padrão é true.<br/>
+	 * Consulte também <b>allowApproval</b>.
+	 * @return
+	 */
 	public Boolean getAllowReprove(){return wAllowReprove;}
-	public void getAllowReprove(Boolean pAllowReprove){wAllowReprove = pAllowReprove;}
+	/**
+	 * Indica se habilita botão para reprovação.<br/>
+	 * Padrão é true.<br/>
+	 * Consulte também <b>allowApproval</b>.
+	 * @return
+	 */
+	public void setAllowReprove(Boolean pAllowReprove){wAllowReprove = pAllowReprove;}
 	
+	/**
+	 * Indica se habilita função de copy/paste.<br/>
+	 * Padrão é true.
+	 * @return
+	 */
+	public Boolean getAllowCopy(){return wAllowCopy;}
+	/**
+	 * Indica se habilita função de copy/paste.<br/>
+	 * Padrão é true.
+	 * @return
+	 */
+	public void setAllowCopy(Boolean pAllowCopy){wAllowCopy = pAllowCopy;}
+
 	/**
 	 * Retorna a estágio de aprovação atual do registro corrente
 	 * @return
@@ -716,10 +766,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 	
 	public void setApprovalStage(APPROVAL_STAGE pApprovalStage) {
-//		DBSColumn xColumn = wDAO.getCommandColumn(getColumnNameApprovalStage());
-//		if (xColumn!=null){
-//			xColumn.setValue(pApprovalStage.getCode());
-//		}
 		setValue(getColumnNameApprovalStage(), pApprovalStage.getCode());
 	}
 	
@@ -783,19 +829,60 @@ public abstract class DBSCrudBean extends DBSBean{
 	public String getColumnNameApprovalUserIdApproved() {return wColumnNameApprovalUserIdApproved;}
 	public void setColumnNameApprovalUserIdApproved(String pColumnNameApprovalUserIdApproved) {wColumnNameApprovalUserIdApproved = pColumnNameApprovalUserIdApproved;}
 	
+	/**
+	 * Nome da coluna do tabela no banco de dados que amazenará a data da aprovação do registro.<br/>
+	 * @return
+	 */
 	public String getColumnNameApprovalDateApproved() {return wColumnNameApprovalDateApproved;}
+	/**
+	 * Nome da coluna do tabela no banco de dados que amazenará a data da aprovação do registro.<br/>
+	 * @return
+	 */
 	public void setColumnNameApprovalDateApproved(String pColumnNameApprovalDateApproved) {wColumnNameApprovalDateApproved = pColumnNameApprovalDateApproved;}
 	
+	/**
+	 * Nome da coluna do tabela no banco de dados que amazenará a data da inclusão do registro.<br/>
+	 * @return
+	 */
 	public String getColumnNameDateOnInsert() {return wColumnNameDateOnInsert;}
+	/**
+	 * Nome da coluna do tabela no banco de dados que amazenará a data da inclusão do registro.<br/>
+	 */
 	public void setColumnNameDateOnInsert(String pColumnNameDateOnInsert) {wColumnNameDateOnInsert = pColumnNameDateOnInsert;}
 
+	
+	/**
+	 * Nome da coluna do tabela no banco de dados que amazenará a data da alteração do registro.<br/>
+	 * @return
+	 */
 	public String getColumnNameDateOnUpdate() {return wColumnNameDateOnUpdate;}
+	/**
+	 * Nome da coluna do tabela no banco de dados que amazenará a data da alteração do registro.<br/>
+	 */
 	public void setColumnNameDateOnUpdate(String pColumnNameDateOnUpdate) {wColumnNameDateOnUpdate = pColumnNameDateOnUpdate;}
 
+	/**
+	 * Nome da coluna do tabela no banco de dados que amazenará a chave do usuário que inseriu o registro.<br/>
+	 * O usuário deve ser informado no atributo <b>setUsedId</b>, normalmente no eventi <b>initialize<b/>.
+	 * @return
+	 */
 	public String getColumnNameUserIdOnInsert() {return wColumnNameUserIdOnInsert;}
+	/**
+	 * Nome da coluna do tabela no banco de dados que amazenará a chave do usuário que inseriu o registro.<br/>
+	 * O usuário deve ser informado no atributo <b>setUsedId</b>, normalmente no eventi <b>initialize<b/>.
+	 */
 	public void setColumnNameUserIdOnInsert(String pColumnNameUserIdOnInsert) {wColumnNameUserIdOnInsert = pColumnNameUserIdOnInsert;}
 
+	/**
+	 * Nome da coluna do tabela no banco de dados que amazenará a chave do usuário que alterou o registro.<br/>
+	 * O usuário deve ser informado no atributo <b>setUsedId</b>, normalmente no eventi <b>initialize<b/>.
+	 * @return
+	 */
 	public String getColumnNameUserIdOnUpdate() {return wColumnNameUserIdOnUpdate;}
+	/**
+	 * Nome da coluna do tabela no banco de dados que amazenará a chave do usuário que alterou o registro.<br/>
+	 * O usuário deve ser informado no atributo <b>setUsedId</b>, normalmente no eventi <b>initialize<b/>.
+	 */
 	public void setColumnNameUserIdOnUpdate(String pColumnNameUserIdOnUpdate) {wColumnNameUserIdOnUpdate = pColumnNameUserIdOnUpdate;}
 
 	/**
@@ -835,6 +922,12 @@ public abstract class DBSCrudBean extends DBSBean{
 		}
 	}
 
+	/**
+	 * CrudBean Pai, caso este crud estar destro de outro crud.
+	 * Neste caso, a conexão e as trasnsações são herdadas automaticamente do crud pai.
+	 * O commit ou rollback só efetuado do primeiro crud pai.
+	 * @param pCrudBean
+	 */
 	public DBSCrudBean getParentCrudBean() {
 		return wParentCrudBean;
 	}
@@ -1260,7 +1353,10 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @return
 	 */
 	public synchronized String copy() throws DBSIOException{
-		wCopiedRowIndex = wDAO.getCurrentRowIndex(); 
+		if (wAllowCopy){
+			wCopiedRowIndex = wDAO.getCurrentRowIndex();
+			pvFireEventAfterCopy();
+		}
 		return DBSFaces.getCurrentView();
 	}
 
@@ -1271,9 +1367,13 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @throws DBSIOException 
 	 */
 	public synchronized String paste() throws DBSIOException{
-		//Seta o registro atual como sendo o registro copiado
-		wDAO.paste(wCopiedRowIndex);
-		setValueChanged(true);
+		if (wAllowCopy){
+			if (pvFireEventBeforePaste()){
+				//Seta o registro atual como sendo o registro copiado
+				wDAO.paste(wCopiedRowIndex);
+				setValueChanged(true);
+			}
+		}
 		return DBSFaces.getCurrentView();
 	}
 
@@ -1727,7 +1827,10 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * para que seja implementado o CRUD específico e NÃO deverá ser chamado o <b>super.beforeCommit()</b>.<br>
 	 * No caso do método ser sobreescrito, é necessário setar o atributo <b>pEvent.setCommittedRowCount</b> com
 	 * a quantidade de registros afetados.<br>
-	 * <b>QUALQUER EDIÇÃO DE DADOS DO BANCO DEVERÁ SERÁ SER IMPLEMENTADA NESTE EVENTO.</b> 
+	 * Deverá também, neste caso, verificar a necessidade de implementação do <i>copy</i> e <i>paste</i>
+	 * atráves do <i>Override</i> dos eventos <b>afterCopy</b> e <b>beforePaste</b> ou 
+	 * desabilitar esta funcionalidade através do atributo <b>allowCopy</b>.<br/>
+	 * <b>É ACONSELHÁVEL QUE QUALQUER EDIÇÃO DE DADOS DO BANCO DEVERÁ SEJA IMPLEMENTADA NESTE EVENTO.</b><br/>
 	 * Conexão com o banco encontra-se aberta.<br/>
 	 * @param pEvent Informações do evento
 	 * @throws DBSIOException 
@@ -1831,6 +1934,28 @@ public abstract class DBSCrudBean extends DBSBean{
 	 */
 	protected void validate(DBSCrudBeanEvent pEvent) throws DBSIOException{}
 
+	/**
+	 * Disparado depois de copiada a posição do registro atual.<br/>
+	 * Normalmente nos casos que foi feito <i>Override</i> do evento <b>beforeCommit</b> para
+	 * implementação de CRUD específico, deverá também ser implementado o <i>copy</i> e <i>paste</i>
+	 * atráves do <i>Override</i> dos eventos <b>afterCopy</b> e <b>beforePaste</b> ou 
+	 * desabilitar esta funcionalidade através do atributo <b>allowCopy</b>.
+	 * Conexão com o banco encontra-se aberta.
+	 * @param pEvent Informações do evento
+	 */
+	protected void afterCopy(DBSCrudBeanEvent pEvent) throws DBSIOException{};
+
+	/**
+	 * Disparado depois de copiada a posição do registro atual.<br/>
+	 * Normalmente nos casos que foi feito <i>Override</i> do evento <b>beforeCommit</b> para
+	 * implementação de CRUD específico, deverá também ser implementado o <i>copy</i> e <i>paste</i>
+	 * atráves do <i>Override</i> dos eventos <b>afterCopy</b> e <b>beforePaste</b> ou 
+	 * desabilitar esta funcionalidade através do atributo <b>allowCopy</b>.
+	 * Conexão com o banco encontra-se aberta.
+	 * @param pEvent Informações do evento
+	 */
+	protected void beforePaste(DBSCrudBeanEvent pEvent) throws DBSIOException{};
+	
 	// PRIVATE ============================================================================
 	
 
@@ -2781,6 +2906,34 @@ public abstract class DBSCrudBean extends DBSBean{
 		}
 	}
 	
+	/**
+	 * Disparado após o copy.
+	 * @return
+	 */
+	private void pvFireEventAfterCopy(){
+		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.AFTER_COPY, getEditingMode());
+		try{
+			pvBroadcastEvent(xE, false, true, true);
+		} catch (Exception e) {
+			xE.setOk(false);
+			wLogger.error("EventAfterCopy",e);
+		}
+	}
+	
+	/**
+	 * Disparado antes do paste.
+	 * @return
+	 */
+	private boolean pvFireEventBeforePaste(){
+		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_PASTE, getEditingMode());
+		try{
+			pvBroadcastEvent(xE, false, true, true);
+		} catch (Exception e) {
+			xE.setOk(false);
+			wLogger.error("EventBeforePaste",e);
+		}
+		return xE.isOk();
+	}
 	
 	
 	/**
@@ -2894,6 +3047,12 @@ public abstract class DBSCrudBean extends DBSBean{
 			case VALIDATE:
 				validate(pEvent);
 				break;
+			case AFTER_COPY:
+				afterCopy(pEvent);
+				break;
+			case BEFORE_PASTE:
+				beforePaste(pEvent);
+				break;
 			default:
 				break;
 			}
@@ -2963,6 +3122,12 @@ public abstract class DBSCrudBean extends DBSBean{
 				case VALIDATE:
 					xBean.validate(pEvent);
 					break;
+				case AFTER_COPY:
+					xBean.afterCopy(pEvent);
+					break;
+				case BEFORE_PASTE:
+					xBean.beforePaste(pEvent);
+					break;
 				default:
 					break;
 				}
@@ -3026,8 +3191,17 @@ public abstract class DBSCrudBean extends DBSBean{
 				case AFTER_SELECT:
 					wEventListeners.get(xX).afterSelect(pEvent);
 					break;
+				case BEFORE_VALIDATE:
+					wEventListeners.get(xX).beforeValidate(pEvent);
+					break;
 				case VALIDATE:
 					wEventListeners.get(xX).validate(pEvent);
+					break;
+				case AFTER_COPY:
+					wEventListeners.get(xX).afterCopy(pEvent);
+					break;
+				case BEFORE_PASTE:
+					wEventListeners.get(xX).beforePaste(pEvent);
 					break;
 				default:
 					break;
