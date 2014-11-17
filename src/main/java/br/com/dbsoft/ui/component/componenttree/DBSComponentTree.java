@@ -58,57 +58,16 @@ public class DBSComponentTree extends DBSUIInput implements NamingContainer, Sys
     	setRendererType(DBSComponentTree.RENDERER_TYPE);
 		 FacesContext xContext = FacesContext.getCurrentInstance();
 		 xContext.getViewRoot().subscribeToViewEvent(PostAddToViewEvent.class, this);
-//		 xContext.getViewRoot().subscribeToViewEvent(PreValidateEvent.class,this);
-//		 xContext.getViewRoot().subscribeToViewEvent(PostValidateEvent.class,this);
-//		 xContext.getViewRoot().subscribeToViewEvent(PreRenderViewEvent.class,this);
-//		 xContext.getViewRoot().subscribeToViewEvent(PreRenderComponentEvent.class,this);
-		// -------------------------------------------------------------------------------
-//		 xContext.getViewRoot().subscribeToViewEvent(PostConstructViewMapEvent.class,this);
-		// xContext.getViewRoot().subscribeToViewEvent(PostRestoreStateEvent.class,this);
-		// xContext.getViewRoot().subscribeToViewEvent(PreDestroyViewMapEvent.class,this);
-		// xContext.getViewRoot().subscribeToViewEvent(PreRemoveFromViewEvent.class,this);	
-//		 this.setId(this.getId());
     }
 	
 	@Override
 	public void processEvent(SystemEvent event) throws AbortProcessingException {
-		
-//		FacesContext xContext = FacesContext.getCurrentInstance();
-//		 UIComponent xComponent = (UIComponent) event.getSource();
-//		 xComponent.setId(xComponent.getId());
-//		 System.out.println("=============================================================================");
-//		 System.out.println("| processEvent :" + event.getClass().getName() + ":" + xComponent.getClass().getName());
-//		 if (xComponent instanceof UIComponent){
-//			 System.out.println("| UIComponentID:" + xComponent.getClientId());
-//		 }
-		// UIComponent xC0 = DBSFaces.findComponent("C0");
-		// if (xC0 != null){
-		// System.out.println("| FOUND COLUMN : <------!!");
-		// }
-		// xC0 = DBSFaces.findComponent("dataTable:C0");
-		// if (xC0 != null){
-		// System.out.println("| FOUND COLUMN : <------!! 2");
-		// }
-		// }
-		// if (xContext.getMaximumSeverity() != null ) {
-		// System.out.println("| getMaximumSeverity ");
-		// }
-		//
-		// if (xContext.isPostback()) {
-		// System.out.println("| Postback");
-		// }
-//		if (xContext.isPostback()) {
-//			return;
-//		}
-			
-//		//É necessário ser o próprio componente para poder recuperar os atributos com EL já resolvidos
-//		//É necessário ser o evento PostAddToViewEvent para não ocorrer o erro de Id duplicado e funcionar os action dos botões dinamicamente incluidos
-//		if (event.getSource() instanceof DBSDataTable &&
-//			event instanceof PostAddToViewEvent) {
-//		} else {
-//			 System.out.println("| IGNORED !!! ");
-//			 System.out.println("=============================================================================");
-//		}
+		UIComponent xComponent = (UIComponent) event.getSource();
+		//Exclui da view qualquer HtmlForm que seja filho do DBSComponentTree para evitar que os action não funcionem
+		if (pvIsComponentTreeChild(xComponent)){
+			xComponent.getParent().getChildren().addAll(xComponent.getChildren());
+			xComponent.getParent().getChildren().remove(xComponent);
+		}
 	}
 
 	@Override
@@ -116,26 +75,7 @@ public class DBSComponentTree extends DBSUIInput implements NamingContainer, Sys
 		//Força para que quando o clientId for utilizado, seja considerado o RowIndex no nome
 		//Parace ser um bug, mas este artifício também é utilizado no UIData com o comentário // reset the client id (see spec 3.1.6)
 		this.setId(this.getId());
-		//Exclui da view qualquer HtmlForm que seja filho do DBSComponentTree para evitar que os action não funcionem
-		if (source instanceof HtmlForm){
-			UIComponent xComponent = (UIComponent) source;
-			if (pvIsComponentTreeChild(xComponent)){
-				xComponent.getParent().getChildren().addAll(xComponent.getChildren());
-				xComponent.getParent().getChildren().remove(xComponent);
-			}
-		}
-		return false;
-		
-//		 String xStr = "";
-//		 if (source instanceof UIComponent){
-//			 xStr = ((UIComponent) source).getClientId();
-//		 }
-//		 xStr = this.getId() + ":" +  xStr + "\t\t:" + source.getClass().getName();
-//		
-//		 System.out.println("isListenerForSource:" + xStr);
-//		 return pvIsDBSComponentTreeChild((UIComponent) source);
-//		return (source instanceof HtmlForm);
-//		 return (source instanceof DBSComponentTree);
+		return source instanceof HtmlForm;
 	} 
 	
 	private Boolean pvIsComponentTreeChild(UIComponent pComponent){
@@ -223,24 +163,18 @@ public class DBSComponentTree extends DBSUIInput implements NamingContainer, Sys
 	@Override
 	public void processDecodes(FacesContext pContext) {
 		decode(pContext);
-//		Integer xRowIndex = this.getRowIndex();
-//		this.setRowIndex(0);
 		UIComponent xExtraInfo = this.getFacet(DBSComponentTree.FACET_EXTRAINFO);
 		pvProcessChildren(pContext, xExtraInfo.getFacetsAndChildren());
-//		this.setRowIndex(xRowIndex);
-//		pvProcessChildren(pContext, PhaseId.APPLY_REQUEST_VALUES);
 	}
 	
 	@Override
     public void processValidators(FacesContext pContext) {
 		validate(pContext);
-//        pvProcessChildren(pContext, PhaseId.PROCESS_VALIDATIONS);
     }
 	
 	@Override
 	public void processUpdates(FacesContext pContext) {
 		updateModel(pContext);
-//		pvProcessChildren(pContext, PhaseId.UPDATE_MODEL_VALUES);
 	}
 	
 	
