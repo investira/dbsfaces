@@ -51,7 +51,7 @@
 								</dbs:li>
 							</dbs:ul>						
 							<dbs:ul >
-								<dbs:li rendered="#{cc.crudBean.allowCopy}">
+								<dbs:li rendered="#{cc.crudBean.allowCopy and cc.crudBean.allowInsert}">
 									<dbs:button id="copy" iconClass="dbs_icon -i_copiar" action="#{cc.crudBean.copy()}" update=":dialog " execute="@this" tooltip="Copiar dados para memória"/>
 								</dbs:li>
 								<dbs:li rendered="#{cc.attrs.allowDelete and cc.crudBean.allowDelete}">
@@ -85,7 +85,7 @@
 								<dbs:li styleClass="-icon">
 									<dbs:img styleClass="dbs_icon -i_inserir"/>
 								</dbs:li>
-								<dbs:li rendered="#{cc.crudBean.allowCopy}">
+								<dbs:li rendered="#{cc.crudBean.allowCopy and cc.crudBean.allowInsert}">
 									<dbs:button id="paste" iconClass="dbs_icon -i_colar" action="#{cc.crudBean.paste()}" rendered="#{cc.crudBean.isCopied}" update=":dialog " execute="@this" tooltip="Colar dados em memória"/>
 								</dbs:li>
 								<dbs:li>
