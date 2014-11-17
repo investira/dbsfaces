@@ -83,8 +83,7 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
     }
 
 	@Override
-	public void encodeBegin(FacesContext pContext, UIComponent pComponent)
-			throws IOException {
+	public void encodeBegin(FacesContext pContext, UIComponent pComponent) throws IOException {
 		if (!pComponent.isRendered()){return;}
 		DBSComponentTree	xComponenttree = (DBSComponentTree) pComponent;
 		ResponseWriter 		xWriter = pContext.getResponseWriter();
@@ -345,60 +344,8 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 				DBSFaces.setAttribute(pWriter, "type", "hidden", null);
 				DBSFaces.setAttribute(pWriter, "value", pComponenttree.getValue(), null);
 			pWriter.endElement("input");						
-
-			//Botão que ferá o submit após a seleção do item
-			DBSButton xButton = (DBSButton) DBSFaces.findComponent("btSelect", pComponenttree.getChildren());
-				if (xButton==null){
-					xButton = (DBSButton) pContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
-//					xComponenttree.getChildren().add(xButton);
-				}
-				xButton.setId(pvGetBtSelectId());
-				xButton.setStyle("display:none;");
-				xButton.setStyleClass(DBSFaces.CSS.INPUT.SUBMIT.trim());
-				xButton.setExecute(pComponenttree.getClientId());
-				xButton.setUpdate(xExtraInfo.getClientId() + " " + pComponenttree.getUpdate());
-				xButton.setTransient(true);
-				pComponenttree.getChildren().add(xButton);
-			xButton.encodeAll(pContext);
 		}
 	}
-	
-	
-
-	
-//	private String pvRemovedClientIdFromChildId(String pId){
-//		//Inclui ":" para considerar considerar o texto final, também como um Id completo
-//		String xId = pId.trim() + DBSFaces.SEPARATOR;
-//		;
-////		String xId = pId.trim();
-//		if (wTextsToBeRemovedFromClientIdPrefix.length==0){
-//			return pId;
-//		}
-//		for (int xX=0; xX<wTextsToBeRemovedFromClientIdPrefix.length; xX++){
-//			if (xId.toLowerCase().startsWith(wTextsToBeRemovedFromClientIdPrefix[xX])){
-//				xId = DBSString.getSubString(xId, wTextsToBeRemovedFromClientIdPrefix[xX].length()+1, xId.length());
-//			}
-//		}
-//		while (xId.toLowerCase().startsWith(NOT_SELECTABLE_PREFIX)){
-//			int xI = xId.indexOf(DBSFaces.SEPARATOR);
-//			xId = DBSString.getSubString(xId, xI+2, xId.length());
-//		}
-//		//Exclui o ":" do final da do id
-//		if (!xId.equals("")){
-//			xId = xId.substring(0, xId.length()-1); 
-//		}
-//		return xId;
-//	}
-	
-//	private String pvRemoveClientIdFromChildId(String pComponentClientId, String pChildClientId){
-//		pChildClientId = pChildClientId.trim();
-//		pComponentClientId = pComponentClientId.toLowerCase().trim() + DBSFaces.SEPARATOR;
-//		
-//		if (pChildClientId.toLowerCase().startsWith(pComponentClientId)){
-//			pChildClientId = DBSString.getSubString(pChildClientId, pComponentClientId.length()+1, pChildClientId.length());
-//		}
-//		return pChildClientId;
-//	}
 	
 	private String pvGetFxSelectedClientId(UIComponent pInputText){
 		return pInputText.getClientId() + DBSFaces.SEPARATOR + "selection" + DBSFaces.CSS.MODIFIER.INPUT.trim();
@@ -406,10 +353,6 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 	
 	private String pvGetFxExpandedIds(UIComponent pInputText){
 		return pInputText.getClientId() + DBSFaces.SEPARATOR + DBSComponentTree.PropertyKeys.expandedIds.toString();
-	}
-
-	private String pvGetBtSelectId(){
-		return  "selection" + DBSFaces.CSS.MODIFIER.SUBMIT.trim();
 	}
 
 	private int pvGetRowIndexFromSelected(String pKey){
@@ -420,8 +363,6 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
     	}else{
     		return -1;
     	}
-
- 
 	}
 
 	private String pvGetKeyFromSelected(String pKey){
@@ -430,12 +371,6 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 
 	}
 	
-//	private String pvGetKeyFromClientId(DBSComponentTree pComponentTree, String pClientId){
-//		String xKey = pComponentTree.removeClientIdFromChildId(pClientId);
-//		return pvGetKeyFromSelected(xKey);
-//	}
-	
-
 
 	private void pvEncodeJS(String pClientId, ResponseWriter pWriter) throws IOException{
 		DBSFaces.encodeJavaScriptTagStart(pWriter);
