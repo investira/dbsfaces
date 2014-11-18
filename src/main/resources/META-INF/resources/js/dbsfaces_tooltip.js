@@ -39,6 +39,7 @@ dbsfaces.tooltip = {
 		xTooltip.css("top", xTop);
 		xTooltip.css("left", xLeft);
 		
+		//Tempo de exibição
 		var xTime = $(xTooltip).text().length;
 		xTime = (xTime / 2) * 200;
 		
@@ -47,7 +48,7 @@ dbsfaces.tooltip = {
 			wTimer = setTimeout(function(){
 				$(xTooltip).fadeOut("slow");
 			}, xTime);
-		}, 1800); //3 Segundos
+		}, 1200); //2 Segundos -Tempo para exibir
 	},
 	
 	hideTooltip: function(e){
