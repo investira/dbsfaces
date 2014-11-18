@@ -163,15 +163,17 @@ H6 {
 .-icon {}
 .-input {}
 .-label {}
-.-left {text-align: left !important;}
 .-mask {}
 .-message {}
 .-normal {}
 .-not_selectable {}
 .-odd {}
 .-opened {}
+.-left {text-align: left !important;}
 .-right {text-align: right !important;}
 .-nowrap {white-space: nowrap !important;}
+.-bold {font-weight: bold;}
+.-italic {font-style: italic;}
 .-row {}
 .-selected {}
 .-selectable {}
