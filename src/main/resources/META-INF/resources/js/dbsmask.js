@@ -167,9 +167,8 @@
 						case 189: // MENOS
 							this.setSignal(ev);
 							break;
+						case 110: // VIRGULA
 						case 188: // VIRGULA
-							this.moveToDecimalPosition(ev);
-							break;
 						case 190: // PONTO
 							this.moveToDecimalPosition(ev);
 							break;
