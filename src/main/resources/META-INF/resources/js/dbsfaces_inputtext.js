@@ -7,7 +7,7 @@ dbs_inputText = function(pId) {
 		wSearching = false;
 		dbsfaces.ui.selectAll(this);
 	});
-
+	//Verificar caixa da digitação
 	$(pId + "-data.-upper").keydown(function(e){
 		dbsfaces.inputText.letterCase(pId, $(this), e,"upper");
 	});	
@@ -69,7 +69,7 @@ dbs_inputText = function(pId) {
 				e.stopPropagation();
 				//Exibe suggestions no primeiro click
 				if ($(pId + "-list").css("display") == "none"){
-					$(pId + "-list").css("opacity","1").show();
+					dbsfaces.inputText.showList(pId);
 				}else{
 					//Navega na lista de sugestões
 					dbsfaces.dataTable.moveToNextOrPreviousRow(pId + "-dataTable", e.which);
@@ -100,13 +100,23 @@ dbs_inputText = function(pId) {
 		
 	});
 
-
+	//Click o icone de pesquisar
+	$(pId + " > .-container > .-input > .-is_pesquisar").on("click", function(e){
+		if ($(pId + "-list").css("display") == "none"){
+			dbsfaces.inputText.showList(pId);
+			$(pId + "-data").focus();
+		}else{
+			dbsfaces.inputText.hideList(pId);
+		}
+		return false;
+	});
+	
+	//Inicia pesquisa de dados
 	$(pId + "-submit").on(dbsfaces.EVENT.ON_AJAX_BEGIN, function(e){
 		wSearching = true;
 
 		$(pId + " > .-container > .-input").append("<div class='-loading'></div>");
 		$(pId + " > .-container > .-input > .-is_pesquisar").hide();
-//		e.stopPropagation();
 		e.stopImmediatePropagation();
 	});
 	
@@ -124,7 +134,6 @@ dbs_inputText = function(pId) {
 		dbsfaces.inputText.fixLayout(pId);
 		dbsfaces.inputText.showFirstSuggestion(pId);
 		
-//		e.stopPropagation();
 		e.stopImmediatePropagation();
 	});
 	
@@ -337,6 +346,12 @@ dbsfaces.inputText = {
 		return ($(pId + "-list").length > 0);
 	},
 	
+	showList: function(pId){
+		if (dbsfaces.inputText.isSuggestion(pId)){
+			$(pId + "-list").css("opacity","1").show();
+		}
+	},
+
 	//Esconde a lista
 	hideList: function(pId){
 		if (dbsfaces.inputText.isSuggestion(pId)){

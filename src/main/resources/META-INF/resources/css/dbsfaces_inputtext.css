@@ -60,6 +60,7 @@
 .dbs_inputText > .-container > .-input > .-is_pesquisar{
 	opacity: 0.3;
 	top: 4px;
+	cursor: pointer;
 }
 
 .dbs_inputText > .-container > .-input > div.-loading{

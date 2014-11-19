@@ -155,7 +155,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 			DBSFaces.encodeInputDataReadOnly(pInputText, pWriter, xClientIdData, xStyle, false, xValue);
 		}else{
 			if (pInputText.hasSuggestion()){ 
-				pWriter.startElement("span", pInputText);
+				pWriter.startElement("div", pInputText);
 					DBSFaces.setAttribute(pWriter, "class", "-input", null);
 					//Campo escondido que receberá a chave resultado da pesquisa ajax
 					pWriter.startElement("input", pInputText);
@@ -169,9 +169,9 @@ public class DBSInputTextRenderer extends DBSRenderer {
 					pWriter.endElement("input");	
 
 					//Icon que indica para indicar que é possível efetuar pesquisa a partir do texto digitado
-					pWriter.startElement("span", pInputText);
+					pWriter.startElement("div", pInputText);
 						DBSFaces.setAttribute(pWriter, "class", "dbs_iconsmall -is_pesquisar", null);
-					pWriter.endElement("span");	
+					pWriter.endElement("div");	
 
 					//Campo que receberá o conteúdo integral ou parcial do campo escondido ajax. 
 					pWriter.startElement("input", pInputText);
@@ -243,7 +243,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 			if (pInputText.hasSuggestion()){
 				//Encode List --------------------------------------------------
 				pvEncodeList(pContext, pInputText, pWriter);
-				pWriter.endElement("span");
+				pWriter.endElement("div");
 			}
 		}
 	}
