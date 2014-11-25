@@ -69,7 +69,7 @@ public class DBSCrudBeanEvent extends DBSEvent<DBSCrudBean> {
 	 * @return
 	 */
 	public EditingStage getEditingStage(){
-		return getObject().getEditingStage();
+		return getSource().getEditingStage();
 	}
 
 }
