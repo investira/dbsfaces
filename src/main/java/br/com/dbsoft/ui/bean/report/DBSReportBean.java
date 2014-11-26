@@ -235,9 +235,12 @@ public abstract class DBSReportBean extends DBSBean {
 			addMessage("erro_escrita", MESSAGE_TYPE.ERROR, "Relatório com erro de escrita", DIALOG_ICON.ERRO);
 		} catch (JRException e) {
 			wLogger.error(e);
-			addMessage("erro_gravar", MESSAGE_TYPE.ERROR, "Erro ao gravar relatório", DIALOG_ICON.ERRO);
+			addMessage("erro_gerar", MESSAGE_TYPE.ERROR, "Erro ao gerar relatório", DIALOG_ICON.ERRO);
 		} catch (IOException e) {
 			wLogger.error(e);
+		} catch (Exception e) {
+			wLogger.error(e);
+			addMessage("erro_gerar", MESSAGE_TYPE.ERROR, "Erro ao gerar relatório", DIALOG_ICON.ERRO);
 		}finally{
 			this.closeConnection();
 		}
