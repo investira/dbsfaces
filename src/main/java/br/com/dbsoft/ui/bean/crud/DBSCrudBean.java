@@ -34,7 +34,6 @@ import br.com.dbsoft.util.DBSDate;
 import br.com.dbsoft.util.DBSIO;
 import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSObject;
-import br.com.dbsoft.util.DBSString;
 
 
 /**
@@ -2090,7 +2089,7 @@ public abstract class DBSCrudBean extends DBSBean{
 
 	/**
 	 * Retorna a respectiva coluna do DAO a partir da propriedade value que foi utilizada no componente.<BR/>
-	 * É necessário que campos fl's tenham o mesmo nome da coluna na tabela.
+	 * É necessário que campos fl's e fx's tenham o mesmo nome da coluna na tabela após os respectivos prefixos.
 	 * 
 	 * @param pInput
 	 * @return
@@ -2099,11 +2098,11 @@ public abstract class DBSCrudBean extends DBSBean{
 		String xColumnName = DBSFaces.getAttibuteNameFromInputValueExpression(pInput).toLowerCase();
 		if (xColumnName!=null &&
 			!xColumnName.equals("")){
-			//Retira do os prefixos controlados pelo sistema 
-			if (xColumnName.startsWith(DBSSDK.UI.PREFIX.CRUD)){
-				xColumnName = DBSString.getSubString(xColumnName, DBSSDK.UI.PREFIX.CRUD.length() + 1, xColumnName.length());
-			}else if (xColumnName.startsWith(DBSSDK.UI.PREFIX.AUX)){
-				xColumnName = DBSString.getSubString(xColumnName, DBSSDK.UI.PREFIX.AUX.length() + 1, xColumnName.length());
+			//Retira do os prefixos controlados pelo sistema para encontrar o nome da coluna
+			if (xColumnName.startsWith(DBSSDK.UI.ID_PREFIX.FIELD_INPUT.getName())){
+				xColumnName = xColumnName.substring(DBSSDK.UI.ID_PREFIX.FIELD_INPUT.getName().length());
+			}else if (xColumnName.startsWith(DBSSDK.UI.ID_PREFIX.FIELD_AUX.getName())){
+				xColumnName = xColumnName.substring(DBSSDK.UI.ID_PREFIX.FIELD_AUX.getName().length());
 			}
 			//Configura o tamanho máximo de caracteres do componente na tela
 			if (wDAO.containsColumn(xColumnName)){
