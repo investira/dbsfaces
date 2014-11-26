@@ -2099,8 +2099,8 @@ public abstract class DBSCrudBean extends DBSBean{
 		if (xColumnName!=null &&
 			!xColumnName.equals("")){
 			//Retira do os prefixos controlados pelo sistema para encontrar o nome da coluna
-			if (xColumnName.startsWith(DBSSDK.UI.ID_PREFIX.FIELD_INPUT.getName())){
-				xColumnName = xColumnName.substring(DBSSDK.UI.ID_PREFIX.FIELD_INPUT.getName().length());
+			if (xColumnName.startsWith(DBSSDK.UI.ID_PREFIX.FIELD_CRUD.getName())){
+				xColumnName = xColumnName.substring(DBSSDK.UI.ID_PREFIX.FIELD_CRUD.getName().length());
 			}else if (xColumnName.startsWith(DBSSDK.UI.ID_PREFIX.FIELD_AUX.getName())){
 				xColumnName = xColumnName.substring(DBSSDK.UI.ID_PREFIX.FIELD_AUX.getName().length());
 			}
