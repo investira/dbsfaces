@@ -103,6 +103,7 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 			xClass = xClass + DBSFaces.CSS.MODIFIER.READONLY;
 		}
 		
+		//Se houver filhos ou facets como filhos
 		if (xComponenttree.getChildCount() > 0 ||
 			xComponenttree.getFacetCount() > 0){
 			xWriter.startElement("div", xComponenttree);
@@ -114,7 +115,7 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 				xWriter.startElement("div", xComponenttree);
 					xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER.trim(), null);
 
-					//Encode das informações adicioais dos componentes filhos
+					//Encode das informações adicionais dos componentes filhos
 					xWriter.startElement("ul", pComponent);
 						xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.EXTRAINFO.trim(), null);
 						xComponenttree.setRowIndex(0);
@@ -154,9 +155,12 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 		while (pParentComponents.hasNext()){
 			UIComponent xChild = pParentComponents.next();
 			if (!xChild.equals(xExtraInfo)){
+				//Se não for componente que seja controlado
 				if (!pComponenttree.isValidComponent(xChild) ||
 					!pComponenttree.isValidIdPrefix(xChild.getId())){
+					//Chamada recursiva para buscar componentes filhos que sejam controlados
 					pvEncodeExtraInfo(pContext, pWriter, pComponenttree, xChild.getFacetsAndChildren());
+				//Se for componente controlado
 				}else{
 					pComponenttree.setRowIndex(pComponenttree.getRowIndex() + 1);
 					pComponenttree.setRows(pComponenttree.getRowIndex());
@@ -169,8 +173,10 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 							pWriter.writeAttribute("name", xChild.getClientId() + DBSFaces.CSS.MODIFIER.EXTRAINFO.trim(), null);
 							pWriter.writeAttribute("key", xKey, null);
 							pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.LABEL.trim(), null);
-	
-							if (xChild.getChildCount() == 0){
+							//Encode do face 'extrainfo' SOMENTE se for o último item filho ou
+							//Não, dependento do parametro getExtraInfoOnLastChildOnly() 
+							if ((pComponenttree.getExtraInfoOnLastChildOnly() && xChild.getChildCount() == 0)
+							  || !pComponenttree.getExtraInfoOnLastChildOnly()){
 								if (xExtraInfo!=null){
 									pWriter.startElement("div", pComponenttree);
 										
@@ -206,9 +212,6 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 	}
 	
 	private boolean pvExpand(DBSComponentTree pComponenttree, String pKey){
-		if (pComponenttree.getExpandAll()){
-			return true;
-		}
 		pKey = pKey.trim();
 		if (pKey.equals("")){
 			return false;
@@ -381,4 +384,6 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 		pWriter.write(xJS);
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);		
 	}
+	
+	
 }

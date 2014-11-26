@@ -28,7 +28,7 @@ public class DBSComponentTree extends DBSUIInput implements NamingContainer, Sys
 	
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.COMPONENTTREE;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
-	public final static String NOT_SELECTABLE_PREFIX = "ct"; //prefixo de componentes chave, que servirão de raiz mas não terão as colunas controle de acesso 
+	public final static String NOT_SELECTABLE_PREFIX = "ct"; // prefixo de componentes que SEMPRE SERÃO EXIBIDOS, independentemente de a relação informada em wAllowedIdsPrefixes.
 	public final static String FACET_EXTRAINFO = "extrainfo";
 	private static String[] wAllowedIdsPrefixes;
 
@@ -36,7 +36,7 @@ public class DBSComponentTree extends DBSUIInput implements NamingContainer, Sys
 	protected enum PropertyKeys {
 		allowedIdsPrefixes,
 		update,
-		expandAll,
+		extraInfoOnLastChildOnly,
 		rowIndex,
 		rows,
 		expandedIds;
@@ -54,6 +54,7 @@ public class DBSComponentTree extends DBSUIInput implements NamingContainer, Sys
 			return ((this.toString != null) ? this.toString : super.toString());
 		}
 	}
+	
     public DBSComponentTree(){
     	setRendererType(DBSComponentTree.RENDERER_TYPE);
 		 FacesContext xContext = FacesContext.getCurrentInstance();
@@ -139,12 +140,12 @@ public class DBSComponentTree extends DBSUIInput implements NamingContainer, Sys
 		handleAttribute("rows", pRows);
 	}
 	
-	public void setExpandAll(Boolean pExpandAll) {
-		getStateHelper().put(PropertyKeys.expandAll, pExpandAll);
-		handleAttribute("expandAll", pExpandAll);
+	public void setExtraInfoOnLastChildOnly(Boolean pExtraInfoOnLastChildOnly) {
+		getStateHelper().put(PropertyKeys.extraInfoOnLastChildOnly, pExtraInfoOnLastChildOnly);
+		handleAttribute("extraInfoOnLastChildOnly", pExtraInfoOnLastChildOnly);
 	}
-	public Boolean getExpandAll() {
-		return (Boolean) getStateHelper().eval(PropertyKeys.expandAll, false);
+	public Boolean getExtraInfoOnLastChildOnly() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.extraInfoOnLastChildOnly, false);
 	}
 
 

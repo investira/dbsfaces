@@ -2711,10 +2711,9 @@
 		</attribute>
 		<attribute>
 			<description>
-                Exibe toda a árvore já aberta quando for true.
-                O padrão é false.
+                Exibe as informações extras do facet extrainfo somente no último item filho. O padrão é false.
             </description>
-			<name>expandAll</name>
+			<name>extraInfoOnLastChildOnly</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
