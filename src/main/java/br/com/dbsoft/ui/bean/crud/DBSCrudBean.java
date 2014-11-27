@@ -166,6 +166,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	private Boolean								wAllowApprove = true;
 	private Boolean								wAllowReprove = true;
 	private Boolean								wAllowCopy = true;
+	private Boolean								wAllowCopyOnUpdate = false;
 	private	Integer								wApprovalUserStages = 0;
 	private String								wColumnNameApprovalStage = null;
 	private String								wColumnNameApprovalUserIdRegistered = null;
@@ -680,7 +681,18 @@ public abstract class DBSCrudBean extends DBSBean{
 	public Boolean getAllowInsert() {
 		return wAllowInsert && pvApprovalUserAllowRegister();
 	}
-	public void setAllowInsert(Boolean pAllowInsert) {wAllowInsert = pAllowInsert;}
+	/**
+	 * Habilita ou desabilita o botão de inclusão.<br/>
+	 * Como padrão o copy/paste também serão habilitados conforme o valor deste atributo.<br/>
+	 * Isso não impede que seja alterado posteriormente via <b>setAllowCopy</b> e/ou <b>setAllowCopyOnUpdate</b>.
+	 * @param pAllowInsert
+	 */
+	public void setAllowInsert(Boolean pAllowInsert) {
+		wAllowInsert = pAllowInsert;
+		//Habilita ou desabilita o copy/paste conforme a habilitação do insert
+		//Isto não impede que o setAllowCopy seja alterado posteriormente.
+		setAllowCopy(pAllowInsert);
+	}
 	
 	public Boolean getAllowRefresh() {return wAllowRefresh;}
 	public void setAllowRefresh(Boolean pAllowRefresh) {wAllowRefresh = pAllowRefresh;}
@@ -745,6 +757,21 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @return
 	 */
 	public void setAllowCopy(Boolean pAllowCopy){wAllowCopy = pAllowCopy;}
+
+	/**
+	 * Indica se habilita função de copy/paste para a edição.<br/>
+	 * Normalmente o copy/paste está habilidado para o inclusão.<br/>
+	 * Padrão é false.
+	 * @return
+	 */
+	public Boolean getAllowCopyOnUpdate(){return wAllowCopyOnUpdate;}
+	/**
+	 * Indica se habilita função de copy/paste para a edição.<br/>
+	 * Normalmente o copy/paste está habilidado para o inclusão.<br/>
+	 * Padrão é false.
+	 * @return
+	 */
+	public void setAllowCopyOnUpdate(Boolean pAllowCopyOnUpdate){wAllowCopyOnUpdate = pAllowCopyOnUpdate;}
 
 	/**
 	 * Retorna a estágio de aprovação atual do registro corrente
@@ -1352,7 +1379,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @return
 	 */
 	public synchronized String copy() throws DBSIOException{
-		if (wAllowCopy){
+		if (wAllowCopy || wAllowCopyOnUpdate){
 			wCopiedRowIndex = wDAO.getCurrentRowIndex();
 			pvFireEventAfterCopy();
 		}
@@ -1366,7 +1393,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @throws DBSIOException 
 	 */
 	public synchronized String paste() throws DBSIOException{
-		if (wAllowCopy){
+		if (wAllowCopy || wAllowCopyOnUpdate){
 			if (pvFireEventBeforePaste()){
 				//Seta o registro atual como sendo o registro copiado
 				wDAO.paste(wCopiedRowIndex);
@@ -1938,7 +1965,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Normalmente nos casos que foi feito <i>Override</i> do evento <b>beforeCommit</b> para
 	 * implementação de CRUD específico, deverá também ser implementado o <i>copy</i> e <i>paste</i>
 	 * atráves do <i>Override</i> dos eventos <b>afterCopy</b> e <b>beforePaste</b> ou 
-	 * desabilitar esta funcionalidade através do atributo <b>allowCopy</b>.
+	 * desabilitar esta funcionalidade através do atributo <b>allowCopy</b>.<br/>
 	 * Conexão com o banco encontra-se aberta.
 	 * @param pEvent Informações do evento
 	 */
