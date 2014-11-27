@@ -9,6 +9,7 @@ dbs_componenttree = function(pId) {
 	
 	$(pId + " > .-container > .-caption li > .-label .-closable").click(function(e){
 		//dbsclick Implemenado desta forma posid o click também é disparado no dbsclick
+		//Se for duplo click exibe todos os filhos
 		if (xClicked
 		&& $(this).hasClass("-is_menuitem_plus")){
 			clearTimeout(wTimeout);
@@ -19,6 +20,7 @@ dbs_componenttree = function(pId) {
 			xClicked = false;
 			e.stopImmediatePropagation();
 			return false;
+		//Se for click exibe somente o nó clicado
 		}else{
 			//click
 			xClicked = true;
