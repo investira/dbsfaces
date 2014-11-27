@@ -36,9 +36,9 @@ dbsfaces.crudForm = {
 		}
 		//Verifica se a tecla ESC foi pressionada
 		if(tecla_pressionada==27){
-			var xCancel = $(".dbs_crudForm [id$='dialog:cancel']").last();
+			var xCancel = $(".dbs_crudForm [id$='dialog:btCancel']").last();
 			if (xCancel.length==0){
-				xCancel = $(".dbs_crudForm [id$='dialog:close']").last();
+				xCancel = $(".dbs_crudForm [id$='dialog:btClose']").last();
 			}
 			if (xCancel.length > 0){
 				xCancel.click();

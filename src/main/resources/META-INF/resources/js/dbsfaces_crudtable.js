@@ -49,7 +49,7 @@ dbs_crudTable = function(pId) {
 	});
 	
 //	//Posiciona a úlima linha após a inclusão
-	$(dbsfaces.util.jsid(pId + ":dataTable:inserir")).on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
+	$(dbsfaces.util.jsid(pId + ":dataTable:btInserir")).on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
 		dbsfaces.crudTable.setCellFocus($(xEditableRows).last(), 1);
 	});
 
@@ -67,7 +67,7 @@ dbsfaces.crudTable = {
 				//Inclui nova linha se estiver na última linha
 					//Se já foi digitado alguma informação nesta linha. Permitindo que seja incluida outro.
 					if (xCheckbox.val() == "true"){
-						var xBtInserir = $(dbsfaces.util.jsid(pId + ":dataTable:inserir"));
+						var xBtInserir = $(dbsfaces.util.jsid(pId + ":dataTable:btInserir"));
 						xBtInserir.click();
 						return;
 					}
@@ -75,13 +75,13 @@ dbsfaces.crudTable = {
 			}
 			//Confirmar
 			if (e.which == 13){ //Enter
-				var xBt = $(dbsfaces.util.jsid(pId + ":dataTable:ok"));
+				var xBt = $(dbsfaces.util.jsid(pId + ":dataTable:btOk"));
 				xBt.click();
 				return;
 			}
 			//Cancelar
 			if (e.which == 27){ //Esc
-				var xBt = $(dbsfaces.util.jsid(pId + ":dataTable:cancelar"));
+				var xBt = $(dbsfaces.util.jsid(pId + ":dataTable:btCancelar"));
 				xBt.click();
 				return;
 			}
