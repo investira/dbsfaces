@@ -102,9 +102,8 @@
 							this.updateSelection( this.options.maskEmptyChr );
 							this.selectNext();
 							break;
+						case 109: // MENOS
 						case 173: // MENOS
-							this.setSignal(ev);
-							break;
 						case 189: // MENOS
 							this.setSignal(ev);
 							break;
@@ -161,9 +160,8 @@
 								self.formatNumber();
 							}, 1);
 							break;
+						case 109: // MENOS
 						case 173: // MENOS
-							this.setSignal(ev);
-							break;
 						case 189: // MENOS
 							this.setSignal(ev);
 							break;
