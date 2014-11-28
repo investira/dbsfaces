@@ -191,7 +191,7 @@
 .dbs_menuitem > span > span,
 .dbs_menuitem > a, 
 .dbs_menuitem > a > span {
-	display: inline-block;
+	display: inline-flex;
 }
 
 
@@ -208,7 +208,7 @@
 .dbs_submenu .-icon {
 	float:left;
 	top:-2px;
-	xleft:-1px;
+	margin-right: 2px !important;
 	position:relative;
 }
 .dbs_menuitem.-disabled{
