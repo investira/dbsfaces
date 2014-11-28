@@ -191,7 +191,7 @@
 .dbs_menuitem > span > span,
 .dbs_menuitem > a, 
 .dbs_menuitem > a > span {
-	display: inline-flex;
+	display: inline-block;
 }
 
 
@@ -280,8 +280,6 @@
 	-webkit-box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.3);
 	-moz-box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.3);
 	box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.3);
-	
-	
 }
 
 
