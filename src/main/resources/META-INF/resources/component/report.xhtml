@@ -23,9 +23,7 @@
 				<dbs:div id="header" styleClass="-header">
 					<div class="-caption dbs_not_selectable">
 						<span class="-icon dbs_icon -i_relatorio"/>
-						<span class="-content">
-							#{cc.attrs.caption}
-						</span>
+						<span class="-content">#{cc.attrs.caption}</span>
 					</div>
 	 			</dbs:div>
  			</c:if>
@@ -50,13 +48,13 @@
 						<c:if test="#{!cc.reportBean.hasMessage}">
 							<dbs:div id="container" styleClass="-container" style="width:100%; height:100%;">
 								<div class="-toolbar">
-									<dbs:menu id="mnexportar" rendered="#{cc.reportBean.isCreated}">
+									<dbs:menu id="deexportar" rendered="#{cc.reportBean.isCreated}">
 	<!-- 									<dbs:menuitem label="#{cc.resourceBundleMap.imprimir}" onclick="document.getElementById('PDFtoPrint').contentWindow.print();" iconClass="dbs_icon -i_imprimir"/> -->
-										<dbs:submenu id="mnformatos" label="#{cc.resourceBundleMap.exportar}" iconClass="dbs_icon -i_export">
-											<dbs:menuitem id="mnPDF" action="#{cc.reportBean.savePDF()}" label="PDF - Acrobat"/>
-											<dbs:menuitem id="mnXLS" action="#{cc.reportBean.saveXLS()}" label="XLSX - Excel"/>
-											<dbs:menuitem id="mnXML" action="#{cc.reportBean.saveXML()}" label="XML"/>
-											<dbs:menuitem id="mnHTML" action="#{cc.reportBean.saveHTML()}" label="Html"/>
+										<dbs:submenu id="deformatos" label="#{cc.resourceBundleMap.exportar}" iconClass="dbs_icon -i_export">
+											<dbs:menuitem id="dePDF" action="#{cc.reportBean.savePDF()}" label="PDF - Acrobat"/>
+											<dbs:menuitem id="deXLS" action="#{cc.reportBean.saveXLS()}" label="XLSX - Excel"/>
+											<dbs:menuitem id="deXML" action="#{cc.reportBean.saveXML()}" label="XML"/>
+											<dbs:menuitem id="deHTML" action="#{cc.reportBean.saveHTML()}" label="Html"/>
 										</dbs:submenu>
 									</dbs:menu>
 								</div>
