@@ -31,7 +31,7 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 	@Override
 	public void decode(FacesContext pContext, UIComponent pComponent) {
 		DBSComponentTree xComponenttree = (DBSComponentTree) pComponent;
-
+		decodeBehaviors(pContext, pComponent);
 		String xClientId;
 		
 		xClientId = pvGetFxExpandedIds(xComponenttree);
@@ -89,7 +89,10 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 		ResponseWriter 		xWriter = pContext.getResponseWriter();
     	xComponenttree.setRowIndex(-1);
 		String 				xClientId = xComponenttree.getClientId();
-		String				xClass = DBSFaces.CSS.COMPONENTTREE.MAIN + " " + DBSFaces.CSS.INPUT.DATA + " " + xComponenttree.getStyleClass();
+		String				xClass = DBSFaces.CSS.COMPONENTTREE.MAIN + " " + DBSFaces.CSS.INPUT.DATA;
+		if (xComponenttree.getStyleClass()!=null){
+			xClass += " " + xComponenttree.getStyleClass();
+		}
 
 		String xExpandedIdsClientId = pvGetFxExpandedIds(xComponenttree);
 		if (pContext.getExternalContext().getRequestParameterMap().containsKey(xExpandedIdsClientId)){
@@ -111,6 +114,8 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 				xWriter.writeAttribute("name", xClientId, null);
 				xWriter.writeAttribute("class", xClass, null);
 				xWriter.writeAttribute("style", xComponenttree.getStyle(), null);
+
+				encodeClientBehaviors(pContext, xComponenttree);
 
 				xWriter.startElement("div", xComponenttree);
 					xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER.trim(), null);
@@ -134,7 +139,8 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 				
 				//Encode dos componentes para controle da seleção do item da lista
 				pvEncodeSelection(pContext, xWriter, xComponenttree);
-
+				
+				
 			xWriter.endElement("div");
 		}
 		
@@ -279,6 +285,7 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 							pWriter.writeAttribute("name", xChild.getClientId(), null);
 							pWriter.writeAttribute("class", xClass.trim(), null);
 							pWriter.writeAttribute("key", xKey, null);
+
 							pWriter.startElement("div", pComponenttree);
 								pWriter.startElement("span", pComponenttree);
 								if (xChild.getChildCount()>0){

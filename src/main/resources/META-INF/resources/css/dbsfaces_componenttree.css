@@ -3,7 +3,6 @@
 }
 
 .dbs_componenttree ul {
-	overflow: none;
 }
 
 .dbs_componenttree li {
@@ -29,11 +28,10 @@
 	top: 0;
 	width: 100%;
 	height: 100%;
-	overflow: auto;
+	overflow-y: auto;
 }
 
 .dbs_componenttree > .-container > ul > li {
-	
 }
 
 .dbs_componenttree > .-container > ul > li ul {
@@ -43,9 +41,7 @@
 
 .dbs_componenttree > .-container > .-caption,
 .dbs_componenttree > .-container > .-extrainfo{
-/* 	width: 100%; */
 	height: 100%;
-/* 	overflow-x: hidden; */
 }
 
 .dbs_componenttree > .-container > .-caption {
@@ -56,7 +52,6 @@
 
 .dbs_componenttree > .-container > .-extrainfo {
 	position: relative;
-/* 	width: 100%; */
 }
 
 .dbs_componenttree > .-container > .-extrainfo li {
@@ -65,7 +60,6 @@
 
 .dbs_componenttree > .-container > .-caption li {
 	border-color: transparent;
-	/*  		    padding-right: 8px; */
 	left: 15px;
 }
 
@@ -93,9 +87,6 @@
 }
 
 .dbs_componenttree > .-container > .-caption li > .-label > div > .-icon {
-	/* 			margin-left: 2px; */
-	/* 			position: relative; */
-	/* 			top:-2px; */
 }
 
 .dbs_componenttree > .-container > .-caption .-hover {
@@ -119,8 +110,6 @@
 }
 
 .dbs_componenttree > .-container > .-extrainfo li {
-	xdisplay: block;
-	xwidth: 100%;
 }
 
 .dbs_componenttree > .-container > .-extrainfo li > .-label,
@@ -134,15 +123,10 @@
 
 .dbs_componenttree > .-container > .-caption li > .-content,
 .dbs_componenttree > .-container > .-extrainfo li > .-content{
-	/*  			display: inline; */
-	/*  			overflow: auto; */
 }
 
 .dbs_componenttree > .-container > .-caption li > .-content > div,
 .dbs_componenttree > .-container > .-extrainfo li> .-content > div{
-	overflow: visible;
-	/*  			display: inline; */
-	/*  			overflow: auto; */
 }
 
 .dbs_componenttree > .-container > .-caption li > .-label > div,

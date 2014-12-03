@@ -80,6 +80,7 @@ dbsfaces.componenttree = {
 		$(xInputId).val(pSelectedKey);
 		//Faz requuisição para dar submit das seleções e atualizar a linha
 		jsf.ajax.request(e, 'update', {execute:xParentId, onevent:dbsfaces.onajax});
+		$(xParentId).trigger("click");
 	},
 	
 	setExpandedIds: function(pLabel){

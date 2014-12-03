@@ -263,6 +263,10 @@ public class DBSComponentTree extends DBSUIInput implements NamingContainer, Sys
 		return true;
 	}
 
+	@Override
+    public String getDefaultEventName(){
+        return "click";
+    }
 
 //	@Override
 //  public String createUniqueId(FacesContext context, String seed) {
