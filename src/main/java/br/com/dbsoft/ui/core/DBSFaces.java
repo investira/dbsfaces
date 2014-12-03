@@ -15,6 +15,7 @@ import java.util.Map.Entry;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.NavigationHandler;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
@@ -944,18 +945,19 @@ public class  DBSFaces {
 	}
 
 	/**
-	 * Redireciona para página local, dentro da aplicação.
+	 * Redireciona para página local, dentro da aplicação.<br/>
+	 * Pode-se utilizar os nomes definidos no faces-config da aplicação.
 	 * @param pView
 	 * @throws DBSIOException
 	 */
-	public static final void redirectLocal(String pView) throws DBSIOException{
-		if (!pView.startsWith("/")){
-			pView += "/";
-		}
-		String xView = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() 
-					 + pView;
-		redirect(xView);
+	public static final void redirectLocal(String pView){
+		FacesContext xContext = FacesContext.getCurrentInstance();
+		NavigationHandler xNavigationHandler = xContext.getApplication().getNavigationHandler();
+		//Configura a página que deverá ir. Neste caso é a página(ou outcome no faces-config) de login
+		xNavigationHandler.handleNavigation(xContext, null, pView);
+//		xContext.responseComplete();
 	}
+	
 	
 	
 	/**
