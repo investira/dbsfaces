@@ -1114,10 +1114,10 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 
 	/**
-	 * Retorna ser algum dos atributos <b>allowApproval, allowDelete, allowInsert e allowUpdate</b> está habilitado.
+	 * Retorna se algum dos atributos <b>allowApproval, allowDelete, allowInsert e allowUpdate</b> está habilitado.
 	 * @return
 	 */
-	public Boolean getIsReadOnly(){
+	public Boolean getIsEditingDisabled(){
 		if (wAllowApproval
 		 || wAllowDelete 
 		 || wAllowInsert
@@ -1130,7 +1130,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	/**
 	 * Desabilita qualquer tipo de edição setando <b>allowApproval, allowDelete, allowInsert e allowUpdate</b> para <b>false</b>.
 	 */
-	public void setReadOnly(){
+	public void setDisableEditing(){
 		setAllowApproval(false);
 		setAllowDelete(false);
 		setAllowInsert(false);
@@ -1138,11 +1138,10 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 
 	/**
-	 * Vericar a necessiade de utilizar este método ao invés do getIsViewing().
+	 * Retorna se está habilitada a edição dos campos.
 	 * @return
 	 */
-	@Deprecated
-	public Boolean getIsReadOnlyOld(){
+	public Boolean getIsReadOnly(){
 		if (getIsViewing()
 		 || wEditingMode == EditingMode.DELETING){
 			return true;
