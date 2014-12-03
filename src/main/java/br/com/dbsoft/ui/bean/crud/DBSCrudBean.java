@@ -1114,12 +1114,37 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 
 	/**
-	 * Informa se está em modo VIEWING, quando o(s) item(ns) selecionados estão sendo exibidos
+	 * Retorna ser algum dos atributos <b>allowApproval, allowDelete, allowInsert e allowUpdate</b> está habilitado.
 	 * @return
 	 */
 	public Boolean getIsReadOnly(){
-		if (wEditingMode == EditingMode.DELETING
-		 || wEditingMode == EditingMode.NONE){
+		if (wAllowApproval
+		 || wAllowDelete 
+		 || wAllowInsert
+		 || wAllowUpdate){
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Desabilita qualquer tipo de edição setando <b>allowApproval, allowDelete, allowInsert e allowUpdate</b> para <b>false</b>.
+	 */
+	public void setReadOnly(){
+		setAllowApproval(false);
+		setAllowDelete(false);
+		setAllowInsert(false);
+		setAllowUpdate(false);
+	}
+
+	/**
+	 * Vericar a necessiade de utilizar este método ao invés do getIsViewing().
+	 * @return
+	 */
+	@Deprecated
+	public Boolean getIsReadOnlyOld(){
+		if (getIsViewing()
+		 || wEditingMode == EditingMode.DELETING){
 			return true;
 		}else{
 			return false;
