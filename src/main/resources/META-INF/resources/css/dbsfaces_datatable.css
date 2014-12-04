@@ -4,6 +4,11 @@
 	color:inherit;
 }
 
+/* 	desativa altura padrão dos checkbox que por ventura existam dentro do data table */
+.dbs_dataTable .dbs_checkbox > .-container > .dbs_input-data {
+	height: auto;
+}
+
 .dbs_dataTable > .-container{
 	display: inline-block;
 	height: 100%;
