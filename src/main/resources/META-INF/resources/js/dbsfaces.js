@@ -189,17 +189,9 @@ dbsfaces.ui = {
 	//Posiciona do próximo campo dentro do container informado
 	focusOnFirstInput: function(pContainer){
 		//Seta foco no primeiro campo de input
-		var xEle = pContainer.find("input:first");
-		//Se não achou input, procura por combobox.
-		if (xEle.length == 0 ){
-			xEle = pContainer.find("select:first");
-			//Se não achou input, procura por botão.
-			if (xEle.length == 0 ){
-				xEle = pContainer.find("button:first");
-			}
-		}
+		var xEle = pContainer.find("input:first, select:first, textarea:first");
 		if (xEle.length != 0 ){
-			xEle.focus();
+			xEle.get(0).focus();
 		}
 	},
 	//Seleciona todo o texto
