@@ -172,32 +172,36 @@
 							break;
 						default:
 							ev.preventDefault();
+							var chr = this.chrFromEv(ev);
 							//Se campo inteiro estiver selecionado, apaga conteúdo e posiciona na parte inteira
 							if (this.domNode.value.length == (this.getSelectionEnd() - this.getSelectionStart())){
 								this.domNode.value = "";
 								this.formatNumber();
 								this.moveToIntegerPosition(ev);
 							}
-							
-							if (this.isInputDecimals(ev)){
-								//Seleciona digito anterior para digitação caminha para a direita
-								var curpos = this.getSelectionStart();
-								if (curpos == this.getSelectionEnd()){
-									this.setSelection(curpos, curpos + 1);
+							//Valida tamanho máximo
+							chr = this.validateLength(ev, chr);
+							if (chr != ''){
+								if (this.isInputDecimals(ev)){
+									//Seleciona digito anterior para digitação caminha para a direita
+									var curpos = this.getSelectionStart();
+									if (curpos == this.getSelectionEnd()){
+										this.setSelection(curpos, curpos + 1);
+									}
 								}
-							};
-							var chr = this.chrFromEv( ev );
-							if( this.isViableInput( p, chr ) ) {
-								var range = new Range( this )
-								 ,    val = this.sanityTest( range.replaceWith( chr ) );
+								
+								if( this.isViableInput( p, chr ) ) {
+									var range = new Range( this )
+									 ,    val = this.sanityTest( range.replaceWith( chr ) );
 
-								if(val !== false){
-									this.updateSelection( chr );
-									this.formatNumber();
+									if(val !== false){
+										this.updateSelection( chr );
+										this.formatNumber();
+									}
+									this.node.trigger( "valid", ev, this.node );
+								} else {	
+									this.node.trigger( "invalid", ev, this.node );
 								}
-								this.node.trigger( "valid", ev, this.node );
-							} else {	
-								this.node.trigger( "invalid", ev, this.node );
 							}
 							break;
 							
@@ -558,18 +562,32 @@
 		chrFromEv: function(ev) {
 			//Limita o tamanho de digitos
 			var chr = '', key = ev.which;
-			var xL = parseFloat($(this.node).attr("maxlength"));
-			if (xL!="NaN"){
-				if (this.domNode.value.length >= xL){
-					ev.preventDefault();
-					ev.stopPropagation();
-					ev.stopImmediatePropagation();
-					return chr;
-				}
-			}
 
 			if(key >= 96 && key <= 105){ key -= 48; }     // shift number-pad numbers to corresponding character codes
 			chr = String.fromCharCode(key).toLowerCase(); // key pressed as a lowercase string
+			return chr;
+		},
+
+		validateLength: function(ev, chr) {
+			if (this.getSelectionEnd() == this.getSelectionStart() //Não há seleção
+			&& (this.getSelectionStart() == this.domNode.value.length //Cursos na última posição 
+			 || !this.isInputDecimals(ev))){ //Não é casa decimal
+				var xL = parseFloat($(this.node).attr("maxlength"));
+				if (xL!="NaN"){
+					//Com tamanho máximo de 1 caracter, permite a digitação sobreescrevendo o valor corrente
+					if (xL==1){
+						//Seleciona o valor corrente para que possa ser sobreescrito
+						this.selectAll();
+						return chr;
+					//Inibe o valor digitado
+					}else if (this.domNode.value.length >= xL){
+						ev.preventDefault();
+						ev.stopPropagation();
+						ev.stopImmediatePropagation();
+						return '';
+					}
+				}
+			}
 			return chr;
 		},
 

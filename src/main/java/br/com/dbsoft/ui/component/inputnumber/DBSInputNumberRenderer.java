@@ -134,8 +134,9 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 	}
 
 	private void pvEncodeInput(FacesContext pContext, DBSInputNumber pInputNumber, ResponseWriter pWriter) throws IOException {
+		Integer xSize = pvGetSize(pInputNumber); //Ajusta tamanho considerando os pontos e virgulas.
 		String xClientId = getInputDataClientId(pInputNumber);
-		String xStyle = DBSFaces.getStyleWidthFromInputSize(pInputNumber.getSize());
+		String xStyle = DBSFaces.getStyleWidthFromInputSize(xSize);
 		String xStyleClass = "";
 		String xValue = "";
 		if (pInputNumber.getValueDouble() != null){
@@ -181,17 +182,10 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 					!pInputNumber.getAutocomplete().toLowerCase().equals("true")){
 					DBSFaces.setAttribute(pWriter, "autocomplete", "off", null);
 				}
-				// Grava a largura do campo
-				if (pInputNumber.getSize() != 0) {
-					DBSFaces.setAttribute(pWriter, "size", pInputNumber.getSize(), null);
-				}
-				if (pInputNumber.getMaxLength()!=0){
-					DBSFaces.setAttribute(pWriter, "maxlength", pInputNumber.getMaxLength(), null);
-				}else{
-					Integer xMax = DBSFormat.getFormattedNumber(DBSNumber.toDouble(pInputNumber.getMaxValue()), NUMBER_SIGN.MINUS_PREFIX, pvGetNumberMask(pInputNumber)).length();
-					Integer xMin = DBSFormat.getFormattedNumber(DBSNumber.toDouble(pInputNumber.getMinValue()), NUMBER_SIGN.MINUS_PREFIX, pvGetNumberMask(pInputNumber)).length();
-					DBSFaces.setAttribute(pWriter, "maxlength", (xMax > xMin ? xMax: xMin), null);
-				}
+
+
+				DBSFaces.setAttribute(pWriter, "size", xSize, null);
+				DBSFaces.setAttribute(pWriter, "maxlength", xSize, null);
 				DBSFaces.setAttribute(pWriter, "value", xValue, "0");
 				encodeClientBehaviors(pContext, pInputNumber);
 			pWriter.endElement("input");
@@ -202,16 +196,51 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 	private String pvGetNumberMask(DBSInputNumber pInputNumber) {
 		Integer xLeadingZeroSize;
 		Boolean xShowSeparator;
-		// String.format("%02d", DBSDate.getNowDateTime().getMonthOfYear())
 
 		if (pInputNumber.getLeadingZero()) {
-			xLeadingZeroSize = pInputNumber.getSize();
+			xLeadingZeroSize = pInputNumber.getSize() - pInputNumber.getDecimalPlaces();
 			xShowSeparator = false;
 		} else {
 			xLeadingZeroSize = 1;
 			xShowSeparator = pInputNumber.getSeparateThousand();
 		}
 		return DBSFormat.getNumberMask(pInputNumber.getDecimalPlaces(), xShowSeparator, xLeadingZeroSize);
+	}
+	
+	/**
+	 * Retorma tamanho máximo de caracteres que sertão exibidos, considerando o valor máximo e respectivos pontos/virgulas
+	 * @param pInputNumber
+	 * @return
+	 */
+	private Integer pvGetSize(DBSInputNumber pInputNumber){
+		Integer xSize = pInputNumber.getSize();
+		String xFoo;
+		if (xSize == 0){
+			//Utiliza maxlength se tiver sido informado
+			if (pInputNumber.getMaxLength()!=0){
+				xSize = pInputNumber.getMaxLength();
+			}else{
+			//Utiliza tamanho do valor mínimo e/ou máximo se não tiver sido informado.
+				Integer xMax = pInputNumber.getMaxValue().length();
+				Integer xMin = pInputNumber.getMinValue().length();
+				xSize = (xMax > xMin ? xMax: xMin);
+			}
+		}else if (pInputNumber.getMaxLength()!=0
+			   && pInputNumber.getMaxLength() < xSize){
+			xSize = pInputNumber.getMaxLength();
+		}
+		//String somente com a parte inteira, já que a aprte decimal, quando houve, é obrigatória a exibição.
+		xFoo = "-" + DBSString.repeat("1", xSize -  pInputNumber.getDecimalPlaces());
+		if (DBSNumber.toDouble(pInputNumber.getMinValue())<0){
+			xSize = DBSFormat.getFormattedNumber(DBSNumber.toDouble(xFoo), NUMBER_SIGN.MINUS_PREFIX, pvGetNumberMask(pInputNumber)).length();
+		}else{
+			xSize = DBSFormat.getFormattedNumber(DBSNumber.toDouble(xFoo), NUMBER_SIGN.NONE, pvGetNumberMask(pInputNumber)).length();
+		}
+		//Define valor de um caracter como tamanho mínimo
+		if (xSize < 1){
+			xSize = 1;
+		}
+		return xSize;
 	}
 
 }
