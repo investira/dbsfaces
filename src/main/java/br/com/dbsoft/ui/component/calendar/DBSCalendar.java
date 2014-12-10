@@ -65,7 +65,7 @@ public class DBSCalendar extends DBSUIInput {
 	@Override
 	public Object getValue(){
 		if (super.getValue() == null){
-			return DBSDate.getNowDate();
+			return DBSDate.getNowDate(true);
 		}else{
 			return super.getValue();
 		}
