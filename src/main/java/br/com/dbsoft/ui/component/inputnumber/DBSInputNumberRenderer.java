@@ -213,8 +213,7 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 	 * @return
 	 */
 	private Integer pvGetSize(DBSInputNumber pInputNumber){
-		Integer xSize = pInputNumber.getSize();
-		String xFoo;
+		Integer xSize = pInputNumber.getSize(); 
 		if (xSize == 0){
 			//Utiliza maxlength se tiver sido informado
 			if (pInputNumber.getMaxLength()!=0){
@@ -229,13 +228,15 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 			   && pInputNumber.getMaxLength() < xSize){
 			xSize = pInputNumber.getMaxLength();
 		}
-		//String somente com a parte inteira, já que a aprte decimal, quando houve, é obrigatória a exibição.
-		xFoo = "-" + DBSString.repeat("1", xSize -  pInputNumber.getDecimalPlaces());
-		if (DBSNumber.toDouble(pInputNumber.getMinValue())<0){
-			xSize = DBSFormat.getFormattedNumber(DBSNumber.toDouble(xFoo), NUMBER_SIGN.MINUS_PREFIX, pvGetNumberMask(pInputNumber)).length();
-		}else{
-			xSize = DBSFormat.getFormattedNumber(DBSNumber.toDouble(xFoo), NUMBER_SIGN.NONE, pvGetNumberMask(pInputNumber)).length();
-		}
+//		//Ajusta tamanho considerando o valor máximo e respectivos pontos/virgulas		
+//		String xFoo;
+//		//String somente com a parte inteira, já que a aprte decimal, quando houver, é obrigatória a exibição.
+//		xFoo = "-" + DBSString.repeat("1", xSize -  pInputNumber.getDecimalPlaces());
+//		if (DBSNumber.toDouble(pInputNumber.getMinValue())<0){
+//			xSize = DBSFormat.getFormattedNumber(DBSNumber.toDouble(xFoo), NUMBER_SIGN.MINUS_PREFIX, pvGetNumberMask(pInputNumber)).length();
+//		}else{
+//			xSize = DBSFormat.getFormattedNumber(DBSNumber.toDouble(xFoo), NUMBER_SIGN.NONE, pvGetNumberMask(pInputNumber)).length();
+//		}
 		//Define valor de um caracter como tamanho mínimo
 		if (xSize < 1){
 			xSize = 1;
