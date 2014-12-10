@@ -139,8 +139,9 @@ public class DBSComboboxRenderer extends DBSRenderer {
 			}
 		}
 		//Seta valor atual com o valor utilizado considerando as possíveis modificações acima
+		
 		if (!DBSObject.isEqual(pCombobox.getValue(), DBSObject.getNotEmpty(xValueKey, null))){
-			pCombobox.setValue(xValueKey);
+			pCombobox.setValue(DBSObject.getNotEmpty(xValueKey, null));
 			pCombobox.updateModel(pContext);
 		}
 		
