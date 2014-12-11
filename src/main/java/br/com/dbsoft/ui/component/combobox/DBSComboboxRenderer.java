@@ -142,7 +142,7 @@ public class DBSComboboxRenderer extends DBSRenderer {
 		
 		if (!DBSObject.isEqual(pCombobox.getValue(), DBSObject.getNotEmpty(xValueKey, null))){
 			pCombobox.setValue(DBSObject.getNotEmpty(xValueKey, null));
-			pCombobox.updateModel(pContext);
+//			pCombobox.updateModel(pContext);
 		}
 		
 
