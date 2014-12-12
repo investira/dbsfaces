@@ -5,10 +5,7 @@ import java.sql.Connection;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.SortedMap;
 
 import javax.enterprise.context.Conversation;
 import javax.faces.component.UIComponent;
@@ -2509,7 +2506,6 @@ public abstract class DBSCrudBean extends DBSBean{
 			}
 		}
 	}
-
 	/**
 	 * Posiciona no mesmo registro que foi editado.<br/>
 	 * O reposicionamento é efetuado pesquisando-se dentro dos registros existentes, 
@@ -2517,38 +2513,32 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @throws DBSIOException
 	 */
 	private void pvCurrentRowRestore() throws DBSIOException{
-		boolean xOk;
-		Integer	xRowIndex;
-		Object xSavedValue = null;
-		Object xCurrentValue = null;
+		boolean 	xOk;
+		Object 		xSavedValue = null;
+		Object 		xCurrentValue = null;
 		BigDecimal xSavedNumberValue = null;
 		BigDecimal xCurrentNumberValue = null;
-		boolean xEqual;
+		boolean 	xEqual;
+		
 		if (wDAO != null
 		 && wSavedCurrentColumns !=null
 		 && wSavedCurrentColumns.size() > 0
 		 && wDAO.getResultDataModel() != null){
-			//Recupera todas as linhas
-			Iterator<SortedMap<String, Object>> xIR = wDAO.getResultDataModel().iterator(); 
-			xRowIndex = -1;
-			//Loop por todas as linhas para procurar pela que é igual a linha salva
-			while (xIR.hasNext()){ 
+			//Loop por todas as linhas da query para procurar pela que é igual a linha salva
+			DBSResultDataModel xQueryRows =  wDAO.getResultDataModel();
+			for (int xRowIndex = 0; xRowIndex <= xQueryRows.getRowCount()-1; xRowIndex++){
+				xQueryRows.setRowIndex(xRowIndex);
 				xOk = true;
-				xRowIndex++; 
-				//Recupera todas as colunas da linha
-				SortedMap<String, Object> xColumns = xIR.next();
-				//Loop por todas as colunas da linha
-				for (Entry<String, Object> xC:xColumns.entrySet()){
-					Iterator<DBSColumn> xIS = wSavedCurrentColumns.iterator(); 
+				//Loop por todas as colunas da linha da query
+				for (String xQueryColumnName:xQueryRows.getRowData().keySet()){
+					Object xQueryColumnValue = xQueryRows.getRowData().get(xQueryColumnName);
 					//Loop por todas as colunas salvas para pesquisar o conteúdo
 					//Procura pelo coluna que possua o mesmo nome
-					while (xIS.hasNext()){
-						DBSColumn xSC = xIS.next();
-						//Verifica se a coluna com o mesmo nome, possui o mesmo conteúdo.
-						if (xSC.getColumnName().equalsIgnoreCase(xC.getKey())){
-							//Verifica se valor é igual ao valor salvo
-							xSavedValue = DBSObject.getNotNull(xSC.getValue(),"");
-							xCurrentValue = DBSObject.getNotNull(xC.getValue(),"");
+					for (DBSColumn xColumnSaved: wSavedCurrentColumns){
+						if (xColumnSaved.getColumnName().equalsIgnoreCase(xQueryColumnName)){
+							//Verifica se valor é igual ao valor salvo 
+							xSavedValue = DBSObject.getNotNull(xColumnSaved.getValue(),"");
+							xCurrentValue = DBSObject.getNotNull(xQueryColumnValue,""); 
 							xEqual = false;
 							if (xCurrentValue == null
 							 && xSavedValue == null){
@@ -2572,29 +2562,110 @@ public abstract class DBSCrudBean extends DBSBean{
 								//Indica que este registro não é igual ao valor salvo
 								xOk = false;
 							}
-							break;
+							break;							
 						}
 					}
 					if (!xOk){
 						//Sai para procurar a próxima linha
 						break;
-					}
+					}					
 				}
 				if (xOk){
-					wDAO.setCurrentRowIndex(xRowIndex);
 					return;
 				}
 			}
-//			//Se for crud principal e não encontrou o registro anterior
-//			if (wParentCrudBean == null){
-//				addMessage(MESSAGE_TYPE.IMPORTANT, "Foi selecionado o primeiro registro, por não ter sido encontrato o registro anterior.");
-//			}
-		}
-		if (wDAO != null){
-			//Posiciona na primeira linha se não consegui encontrar o registro restaurado.
-			wDAO.moveFirstRow();
+			if (wDAO != null){
+				//Posiciona na primeira linha se não consegui encontrar o registro restaurado.
+				wDAO.moveFirstRow();
+			}			
 		}
 	}
+	
+//	/**
+//	 * Posiciona no mesmo registro que foi editado.<br/>
+//	 * O reposicionamento é efetuado pesquisando-se dentro dos registros existentes, 
+//	 * aquele que contém os dados salvos anteriormente no <b>pvCurrentRowSave</b>.
+//	 * @throws DBSIOException
+//	 */
+//	private void pvCurrentRowRestore() throws DBSIOException{
+//		boolean xOk;
+//		Integer	xRowIndex;
+//		Object xSavedValue = null;
+//		Object xCurrentValue = null;
+//		BigDecimal xSavedNumberValue = null;
+//		BigDecimal xCurrentNumberValue = null;
+//		boolean xEqual;
+//		if (wDAO != null
+//		 && wSavedCurrentColumns !=null
+//		 && wSavedCurrentColumns.size() > 0
+//		 && wDAO.getResultDataModel() != null){
+//			//Recupera todas as linhas
+//			Iterator<SortedMap<String, Object>> xIR = wDAO.getResultDataModel().iterator(); 
+//			xRowIndex = -1;
+//			//Loop por todas as linhas para procurar pela que é igual a linha salva
+//			while (xIR.hasNext()){ 
+//				xOk = true;
+//				xRowIndex++; 
+//				//Recupera todas as colunas da linha
+//				SortedMap<String, Object> xColumns = xIR.next();
+//				//Loop por todas as colunas da linha
+//				for (Entry<String, Object> xC:xColumns.entrySet()){
+//					Iterator<DBSColumn> xIS = wSavedCurrentColumns.iterator(); 
+//					//Loop por todas as colunas salvas para pesquisar o conteúdo
+//					//Procura pelo coluna que possua o mesmo nome
+//					while (xIS.hasNext()){
+//						DBSColumn xSC = xIS.next();
+//						//Verifica se a coluna com o mesmo nome, possui o mesmo conteúdo.
+//						if (xSC.getColumnName().equalsIgnoreCase(xC.getKey())){
+//							//Verifica se valor é igual ao valor salvo 
+//							xSavedValue = DBSObject.getNotNull(xSC.getValue(),"");
+//							xCurrentValue = DBSObject.getNotNull(xC.getValue(),""); 
+//							xEqual = false;
+//							if (xCurrentValue == null
+//							 && xSavedValue == null){
+//								xEqual = true;
+//							}else if (xCurrentValue instanceof Number){
+//								xCurrentNumberValue = DBSNumber.toBigDecimal(xCurrentValue);
+//								if (xSavedValue instanceof Number){
+//									xSavedNumberValue = DBSNumber.toBigDecimal(xSavedValue);
+//								}
+//								if (xSavedNumberValue != null 
+//								 && xCurrentNumberValue != null){
+//									//Utiliza o compareTo para evitar diferença por quantidade de casas decimais
+//									if (xCurrentNumberValue.compareTo(xSavedNumberValue) == 0){
+//										xEqual = true;
+//									}
+//								}
+//							}else{
+//								xEqual = xSavedValue.equals(xCurrentValue);
+//							}
+//							if (!xEqual){
+//								//Indica que este registro não é igual ao valor salvo
+//								xOk = false;
+//							}
+//							break;
+//						}
+//					}
+//					if (!xOk){
+//						//Sai para procurar a próxima linha
+//						break;
+//					}
+//				}
+//				if (xOk){
+//					wDAO.setCurrentRowIndex(xRowIndex);
+//					return;
+//				}
+//			}
+////			//Se for crud principal e não encontrou o registro anterior
+////			if (wParentCrudBean == null){
+////				addMessage(MESSAGE_TYPE.IMPORTANT, "Foi selecionado o primeiro registro, por não ter sido encontrato o registro anterior.");
+////			}
+//		}
+//		if (wDAO != null){
+//			//Posiciona na primeira linha se não consegui encontrar o registro restaurado.
+//			wDAO.moveFirstRow();
+//		}
+//	}
 
 
 
