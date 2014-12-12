@@ -2501,6 +2501,12 @@ public abstract class DBSCrudBean extends DBSBean{
 		wSavedCurrentColumns = null;
 		if (wDAO != null){
 			wSavedCurrentColumns = wDAO.getCommandColumns();
+			//Caso não tenha sido definida tabela que será efetuado a edição,
+			//utiliza as colunas da query
+			if (wDAO.getCommandColumns() == null
+			 || wDAO.getCommandColumns().size() == 0){
+				wSavedCurrentColumns = wDAO.getColumns();
+			}
 		}
 	}
 
@@ -2520,6 +2526,7 @@ public abstract class DBSCrudBean extends DBSBean{
 		boolean xEqual;
 		if (wDAO != null
 		 && wSavedCurrentColumns !=null
+		 && wSavedCurrentColumns.size() > 0
 		 && wDAO.getResultDataModel() != null){
 			//Recupera todas as linhas
 			Iterator<SortedMap<String, Object>> xIR = wDAO.getResultDataModel().iterator(); 
@@ -2532,7 +2539,7 @@ public abstract class DBSCrudBean extends DBSBean{
 				SortedMap<String, Object> xColumns = xIR.next();
 				//Loop por todas as colunas da linha
 				for (Entry<String, Object> xC:xColumns.entrySet()){
-					Iterator<DBSColumn> xIS = wSavedCurrentColumns.iterator();
+					Iterator<DBSColumn> xIS = wSavedCurrentColumns.iterator(); 
 					//Loop por todas as colunas salvas para pesquisar o conteúdo
 					//Procura pelo coluna que possua o mesmo nome
 					while (xIS.hasNext()){
