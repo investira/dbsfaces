@@ -61,6 +61,7 @@ public class DBSComboboxRenderer extends DBSRenderer {
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xCombobox.getClientId(pContext);
 		String xClass = CSS.COMBOBOX.MAIN + " " + CSS.INPUT.MAIN + " ";
+		Object xOldValue = xCombobox.getValue();
 		if (xCombobox.getStyleClass()!=null){
 			xClass = xClass + xCombobox.getStyleClass();
 		}
@@ -79,9 +80,16 @@ public class DBSComboboxRenderer extends DBSRenderer {
 		xWriter.endElement("div");
 		
 		DBSFaces.encodeJavaScriptTagStart(xWriter);
-		String xJS = "$(document).ready(function() { \n" +
+		String xJS = "";
+		//Dispara evento change quando houver mudança de valor durante o encode.
+		//
+		if (!DBSObject.isEqual(xOldValue, xCombobox.getValue())){
+			xJS = " dbsfaces.combobox.triggerChange(xComboboxId); \n";
+		}
+		xJS = "$(document).ready(function() { \n" +
 				     " var xComboboxId = '#' + dbsfaces.util.jsid('" + xClientId + "'); \n " + 
 				     " dbs_combobox(xComboboxId); \n" +
+				     xJS +
                      "}); \n"; 
 		xWriter.write(xJS);
 		DBSFaces.encodeJavaScriptTagEnd(xWriter);			
@@ -141,8 +149,8 @@ public class DBSComboboxRenderer extends DBSRenderer {
 		//Seta valor atual com o valor utilizado considerando as possíveis modificações acima
 		
 		if (!DBSObject.isEqual(pCombobox.getValue(), DBSObject.getNotEmpty(xValueKey, null))){
+			//Seta novo valor atual. Será disparado evento JS change para indicar que houve mudança
 			pCombobox.setValue(DBSObject.getNotEmpty(xValueKey, null));
-//			pCombobox.updateModel(pContext);
 		}
 		
 

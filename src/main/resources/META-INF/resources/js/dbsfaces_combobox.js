@@ -25,7 +25,12 @@ dbsfaces.combobox = {
 		var xText = e.options[e.selectedIndex].text;
 		$(pId + " > .-container > .dbs_input-data > .-data").get(0).firstChild.textContent = xText;
 		return;
-	}
+	},
+	
+	triggerChange: function(pId){
+		$(pId + "-data").trigger("change");
+	}		
+
 }
 
 
