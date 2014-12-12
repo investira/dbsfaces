@@ -11,8 +11,9 @@ import javax.faces.component.UIInput;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
+import javax.faces.event.PhaseId;
 import javax.faces.event.PostAddToViewEvent;
-import javax.faces.event.PreRenderViewEvent;
+//import javax.faces.event.PreRenderViewEvent;
 import javax.faces.event.PreValidateEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
@@ -58,7 +59,7 @@ public class DBSCrudForm extends DBSUIComponentBase implements NamingContainer, 
 		 xContext.getViewRoot().subscribeToViewEvent(PostAddToViewEvent.class, this);
 		 xContext.getViewRoot().subscribeToViewEvent(PreValidateEvent.class,this);
 //		 xContext.getViewRoot().subscribeToViewEvent(PostValidateEvent.class,this);
-		 xContext.getViewRoot().subscribeToViewEvent(PreRenderViewEvent.class,this);
+//		 xContext.getViewRoot().subscribeToViewEvent(PreRenderViewEvent.class,this);
 //		 xContext.getViewRoot().subscribeToViewEvent(PreRenderComponentEvent.class,this);
 //		 //-------------------------------------------------------------------------------
 //		 xContext.getViewRoot().subscribeToViewEvent(PostConstructViewMapEvent.class,this);
@@ -91,10 +92,16 @@ public class DBSCrudForm extends DBSUIComponentBase implements NamingContainer, 
 	public void processEvent(SystemEvent pEvent) throws AbortProcessingException {
 		FacesContext xContext = FacesContext.getCurrentInstance();
 		UIComponent xComponent = (UIComponent) pEvent.getSource();
-		
-		if (pEvent instanceof PreRenderViewEvent){
+//		 System.out.println("=============================================================================");
+//		 System.out.println(pEvent.getClass().getName() + "\t" + 
+//				 		    xComponent.getClass().getName() + "\t" +
+//				 		    xContext.getCurrentPhaseId()  + "\t" +
+//				 		    xContext.isProcessingEvents()  + "\t" +
+//				 		    "UIComponentID:" + xComponent.getClientId());
+		if (pEvent instanceof PostAddToViewEvent){
 			//Informa ao crudBean qual a qual crudform ele pertence
-			if (xComponent instanceof DBSCrudForm){
+			if (xComponent instanceof DBSCrudForm
+			 && xContext.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE){
 				String xELString = DBSFaces.getELString(this, PropertyKeys.crudBean.toString());
 				MethodExpression xME = null;
 				Object[] xParms = null;
@@ -114,6 +121,7 @@ public class DBSCrudForm extends DBSUIComponentBase implements NamingContainer, 
 
 
 	private void pvInvokeCrudBeanMethods(FacesContext pContext, UIComponent pComponent, SystemEvent pEvent){
+		if (pComponent==null){return;}
 		for (UIComponent xC : pComponent.getChildren()){
 			//Ignora componentes que não precisam de configuração visual. (UICommand e UIData foram incluidos na condição para posterior avaliação se serão mantidos)
 			if (!(xC instanceof UIInstructions) &&
@@ -152,6 +160,7 @@ public class DBSCrudForm extends DBSUIComponentBase implements NamingContainer, 
 
 	@Override
 	public boolean isListenerForSource(Object source) {
-		 return (source instanceof DBSCrudForm);
+//		 return (source instanceof DBSCrudForm);
+		 return (source.equals(this));
 	}
 }
