@@ -46,6 +46,10 @@ import br.com.dbsoft.util.DBSObject;
  * @author ricardo.villar
  *
  */
+/**
+ * @author ricardo.villar
+ *
+ */
 public abstract class DBSCrudBean extends DBSBean{
 
 	private static final long serialVersionUID = -8550893738791483527L;
@@ -444,12 +448,20 @@ public abstract class DBSCrudBean extends DBSBean{
 	
 	/**
 	 * !!! ESTE ATRIBUTO NÃO DEVE SER SETADO MANUALMENTE !!!
-	 * Seta a qual crudForm este crudBean esta vinculado.<br/>
+	 * Indica a qual crudForm este crudBean esta vinculado.<br/>
 	 * Este método é chamado automaticamente pelo DBSCrudForm.
 	 * @param pCrudForm
 	 */
 	public void setCrudForm(DBSCrudForm pCrudForm){
 		wCrudForm = pCrudForm;
+	}
+	
+	/**
+	 * Indica a qual crudForm este crudBean esta vinculado.<br/>
+	 * @return
+	 */
+	public DBSCrudForm getCrudForm(){
+		return wCrudForm;
 	}
 	
 	/**
@@ -1543,6 +1555,7 @@ public abstract class DBSCrudBean extends DBSBean{
 							
 							pvMoveBeforeFistRow();
 							
+							//Dispara evento BeforeInsert
 							if (pvFireEventBeforeInsert()){
 								setDialogOpened(true);
 							}
@@ -2444,41 +2457,41 @@ public abstract class DBSCrudBean extends DBSBean{
 		setApprovalStage(xApprovalNextStage);
 	}
 
-	/**
-	 * Configura os valores iniciais antes de uma inclusão a partir do valor do componente,
-	 * para diminuir a chance de considerar que houve alteração de valor, mesmo sem o usuário 
-	 * ter digitado algo durante a inclusão.
-	 * @param pComponent
-	 */
-	private void pvBeforeInsertResetValues(UIComponent pComponent){
-		if (pComponent==null){return;}
-		Iterator<UIComponent> xI = pComponent.getFacetsAndChildren();
-		if (wDAO!=null){
-			while (xI.hasNext()){
-				UIComponent xC = xI.next();
-				//Configura os campos do tipo input
-				if (xC instanceof DBSUIInput){ 
-					DBSColumn xColumn = pvGetDAOColumnFromInputValueExpression((DBSUIInput) xC);
-					if (xColumn!=null){
-						//Força a inicialização dos valores para que no "Insert" seja evitado a solicitação de confirmação do comando de "Ignorar" quando nada tenha sido digitado. 
-						if (getEditingMode() == EditingMode.INSERTING &&
-							getEditingStage() == EditingStage.NONE){
-							DBSUIInput xInput = (DBSUIInput) xC;
-							//Move o valor do componente para a coluna
-							if (wDialogEdit){
-								setValue(xColumn.getColumnName(), xInput.getValue());
-							}
-							//Força a indicação que não houve alteração de valores
-						}
-						setValueChanged(false);
-					}
-				}else{
-					//Chamada recursiva
-					pvBeforeInsertResetValues(xC);
-				}
-			}
-		}
-	}
+//	/**
+//	 * Configura os valores iniciais antes de uma inclusão a partir do valor do componente,
+//	 * para diminuir a chance de considerar que houve alteração de valor, mesmo sem o usuário 
+//	 * ter digitado algo durante a inclusão.
+//	 * @param pComponent
+//	 */
+//	private void pvBeforeInsertResetValues(UIComponent pComponent){
+//		if (pComponent==null){return;}
+//		Iterator<UIComponent> xI = pComponent.getFacetsAndChildren();
+//		if (wDAO!=null){
+//			while (xI.hasNext()){
+//				UIComponent xC = xI.next();
+//				//Configura os campos do tipo input
+//				if (xC instanceof DBSUIInput){ 
+//					DBSColumn xColumn = pvGetDAOColumnFromInputValueExpression((DBSUIInput) xC);
+//					if (xColumn!=null){
+//						//Força a inicialização dos valores para que no "Insert" seja evitado a solicitação de confirmação do comando de "Ignorar" quando nada tenha sido digitado. 
+//						if (getEditingMode() == EditingMode.INSERTING &&
+//							getEditingStage() == EditingStage.NONE){
+//							DBSUIInput xInput = (DBSUIInput) xC;
+//							//Move o valor do componente para a coluna
+//							if (wDialogEdit){
+//								setValue(xColumn.getColumnName(), xInput.getValue());
+//							}
+//							//Força a indicação que não houve alteração de valores
+//						}
+//						setValueChanged(false);
+//					}
+//				}else{
+//					//Chamada recursiva
+//					pvBeforeInsertResetValues(xC);
+//				}
+//			}
+//		}
+//	}
 
 	/**
 	 * Salva conteúdo da linha atual para posteriormente, após o refresh, procurar pela linha 
@@ -2639,7 +2652,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	private boolean pvFireEventBeforeInsert(){
 		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_INSERT, getEditingMode());
 
-		pvBeforeInsertResetValues(wCrudForm);
+//		pvBeforeInsertResetValues(wCrudForm);
 
 		try {
 			pvBroadcastEvent(xE, true, true, true);
