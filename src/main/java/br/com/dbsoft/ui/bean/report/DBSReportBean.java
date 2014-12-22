@@ -18,6 +18,7 @@ import br.com.dbsoft.ui.bean.report.DBSReportBeanEvent.REPORT_EVENT;
 import br.com.dbsoft.ui.component.dialog.DBSDialog.DIALOG_ICON;
 import br.com.dbsoft.ui.core.DBSReportFormUtil;
 import br.com.dbsoft.util.DBSFormat;
+import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSObject;
 import br.com.dbsoft.util.DBSString;
 
@@ -209,7 +210,7 @@ public abstract class DBSReportBean extends DBSBean {
 			JRBeanCollectionDataSource xDados = getCollectionDataSource();
 			//Tempo de processamento do relatório
 			Long xTempo = System.currentTimeMillis() - xStartTime;
-			wLogger.info("Dados recuperados em " + DBSFormat.getFormattedNumber((xTempo.doubleValue() / 1000), "#,###0.000") + " segundos.");
+			wLogger.info("Dados recuperados em " + DBSFormat.getFormattedNumber(DBSNumber.divide(xTempo.doubleValue(), 1000D).doubleValue(), 3) + " segundos.");
 			if (xDados == null) {
 				wJasperPrint = DBSReportFormUtil.createJasperPrint(pvGetReportName(), getReportParameters(), wConnection);
 				setPDFFilePath(DBSReportFormUtil.createPDFFile(pvGetReportName(), wJasperPrint));
@@ -229,7 +230,7 @@ public abstract class DBSReportBean extends DBSBean {
 				}
 			}
 			xTempo = System.currentTimeMillis() - xStartTime;
-			wLogger.info("Relatório gerado em " + DBSFormat.getFormattedNumber((xTempo.doubleValue() / 1000), "#,###0.000") + " segundos.");
+			wLogger.info("Relatório gerado em " +  DBSFormat.getFormattedNumber(DBSNumber.divide(xTempo.doubleValue(), 1000D).doubleValue(), 3) + " segundos.");
 		} catch (DBSIOException e) {
 			wLogger.error(e);
 			addMessage("erro_escrita", MESSAGE_TYPE.ERROR, "Relatório com erro de escrita", DIALOG_ICON.ERRO);
