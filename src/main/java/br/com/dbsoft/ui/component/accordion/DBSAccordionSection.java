@@ -15,10 +15,7 @@ public class DBSAccordionSection extends DBSUIOutput {
 
 	protected enum PropertyKeys {
 		caption,
-		iconClass,
-//		file,
-		style,
-		styleClass;
+		iconClass;
 
 		String toString;
 
@@ -47,24 +44,6 @@ public class DBSAccordionSection extends DBSUIOutput {
     }
     
  	
-	public java.lang.String getStyle() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
-	}
-	
-	public void setStyle(java.lang.String pStyle) {
-		getStateHelper().put(PropertyKeys.style, pStyle);
-		handleAttribute("style", pStyle);
-	}
-
-	public java.lang.String getStyleClass() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
-	}
-	
-	public void setStyleClass(java.lang.String pStyleClass) {
-		getStateHelper().put(PropertyKeys.styleClass, pStyleClass);
-		handleAttribute("styleClass", pStyleClass);
-	}
-	
 	public java.lang.String getCaption() {
 		return (java.lang.String) getStateHelper().eval(PropertyKeys.caption, null);
 	}
