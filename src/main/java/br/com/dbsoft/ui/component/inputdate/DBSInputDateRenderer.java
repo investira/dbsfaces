@@ -36,8 +36,8 @@ public class DBSInputDateRenderer extends DBSRenderer {
 		String xClientIdAction = getInputDataClientId(xInputDate) ;
 		if (pContext.getExternalContext().getRequestParameterMap().containsKey(xClientIdAction + DBSFaces.CSS.INPUTDATE.DAY) ||
 			pContext.getExternalContext().getRequestParameterMap().containsKey(xClientIdAction + DBSFaces.CSS.INPUTDATE.HOUR)){
-    		if (xInputDate.getType().equals(DBSInputDate.TYPE.DATE) ||
-    			xInputDate.getType().equals(DBSInputDate.TYPE.DATETIME)){
+    		if (xInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.DATE) ||
+    			xInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.DATETIME)){
     			xDay = pContext.getExternalContext().getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.DAY);
 	        	xMonth = pContext.getExternalContext().getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.MONTH);
 	        	xYear = pContext.getExternalContext().getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.YEAR);
@@ -49,9 +49,9 @@ public class DBSInputDateRenderer extends DBSRenderer {
 		        	xDate = xDay + "/" + xMonth + "/" + xYear;
 	        	}
     		}
-    		if (xInputDate.getType().equals(DBSInputDate.TYPE.TIME) ||
-    			xInputDate.getType().equals(DBSInputDate.TYPE.TIMES) ||
-	    		xInputDate.getType().equals(DBSInputDate.TYPE.DATETIME)){
+    		if (xInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.TIME) ||
+    			xInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.TIMES) ||
+	    		xInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.DATETIME)){
         		xHour = DBSString.toString(pContext.getExternalContext().getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.HOUR), "");
     			xMinute = DBSString.toString(pContext.getExternalContext().getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.MINUTE), "");
     			xSecond = DBSString.toString(pContext.getExternalContext().getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.SECOND), "00");
@@ -63,25 +63,25 @@ public class DBSInputDateRenderer extends DBSRenderer {
 	        	}
     		}
     		
-    		if (xInputDate.getType().equals(DBSInputDate.TYPE.DATE)){
+    		if (xInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.DATE)){
     			if (xDate == null){
     				xInputDate.setSubmittedValue("");
     			}else{
     				xInputDate.setSubmittedValue(DBSDate.toDate(xDate));
     			}
-    		}else if (xInputDate.getType().equals(DBSInputDate.TYPE.TIME)){
+    		}else if (xInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.TIME)){
     			if (xTime == null){
     				xInputDate.setSubmittedValue("");
     			}else{
     				xInputDate.setSubmittedValue(DBSDate.toTime(xHour, xMinute, "00"));
     			}
-    		}else if (xInputDate.getType().equals(DBSInputDate.TYPE.TIMES)){
+    		}else if (xInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.TIMES)){
     			if (xTime == null){
     				xInputDate.setSubmittedValue("");
     			}else{
     				xInputDate.setSubmittedValue(DBSDate.toTime(xHour, xMinute, xSecond));
     			}
-    		}else if (xInputDate.getType().equals(DBSInputDate.TYPE.DATETIME)){
+    		}else if (xInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.DATETIME)){
 	   			if (xDate == null ||
 	   				xTime == null){
 	   				xInputDate.setSubmittedValue("");	
@@ -156,25 +156,25 @@ public class DBSInputDateRenderer extends DBSRenderer {
 		}		
 		if (pInputDate.getReadOnly()){
 			if (pInputDate.getDate()==null){
-				if (pInputDate.getType().equals(DBSInputDate.TYPE.DATE)){
+				if (pInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.DATE)){
 					xStyle =  DBSFaces.getStyleWidthFromInputSize(10);
-				}else if (pInputDate.getType().equals(DBSInputDate.TYPE.TIME)){
+				}else if (pInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.TIME)){
 					xStyle =  DBSFaces.getStyleWidthFromInputSize(5);
-				}else if (pInputDate.getType().equals(DBSInputDate.TYPE.TIMES)){
+				}else if (pInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.TIMES)){
 					xStyle =  DBSFaces.getStyleWidthFromInputSize(8);
-				}else if (pInputDate.getType().equals(DBSInputDate.TYPE.DATETIME)){
+				}else if (pInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.DATETIME)){
 					xStyle =  DBSFaces.getStyleWidthFromInputSize(16);
 				}else{
 					wLogger.error(xClientId + ":type inválido " + pInputDate.getType());
 				}
 			}else{
-				if (pInputDate.getType().equals(DBSInputDate.TYPE.DATE)){
+				if (pInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.DATE)){
 					xValue = DBSFormat.getFormattedDate(pInputDate.getDate());
-				}else if (pInputDate.getType().equals(DBSInputDate.TYPE.TIME)){
+				}else if (pInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.TIME)){
 					xValue = DBSFormat.getFormattedTime(pInputDate.getDate());
-				}else if (pInputDate.getType().equals(DBSInputDate.TYPE.TIMES)){
+				}else if (pInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.TIMES)){
 					xValue = DBSFormat.getFormattedTime(pInputDate.getDate());
-				}else if (pInputDate.getType().equals(DBSInputDate.TYPE.DATETIME)){
+				}else if (pInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.DATETIME)){
 					xValue = DBSFormat.getFormattedDateTime(pInputDate.getDate());
 				}else{
 					wLogger.error(xClientId + ":type inválido " + pInputDate.getType());
@@ -186,13 +186,13 @@ public class DBSInputDateRenderer extends DBSRenderer {
 			pWriter.startElement("span", pInputDate);
 				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.DATA + xStyleClass, null);
 				//Define a largura do campo
-				if (pInputDate.getType().equals(DBSInputDate.TYPE.DATE)){
+				if (pInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.DATE)){
 					pvEncodeInputDate(pContext, pInputDate, pWriter);
-				}else if (pInputDate.getType().equals(DBSInputDate.TYPE.TIME)){
+				}else if (pInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.TIME)){
 					pvEncodeInputTime(pContext, pInputDate, pWriter);
-				}else if (pInputDate.getType().equals(DBSInputDate.TYPE.TIMES)){
+				}else if (pInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.TIMES)){
 					pvEncodeInputTimes(pContext, pInputDate, pWriter);
-				}else if (pInputDate.getType().equals(DBSInputDate.TYPE.DATETIME)){
+				}else if (pInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.DATETIME)){
 					pvEncodeInputDateTime(pContext, pInputDate, pWriter);
 				}else{
 					wLogger.error(xClientId + ":type inválido [" + pInputDate.getType() + "]");
@@ -324,8 +324,8 @@ public class DBSInputDateRenderer extends DBSRenderer {
 	}
 	
 	private void pvEncodeAutocompleteAttribute(DBSInputDate pInputDate, ResponseWriter pWriter) throws IOException{
-		if (pInputDate.getAutocomplete().toLowerCase().equals("off") ||
-			pInputDate.getAutocomplete().toLowerCase().equals("false")){
+		if (pInputDate.getAutocomplete().equalsIgnoreCase("off") ||
+			pInputDate.getAutocomplete().equalsIgnoreCase("false")){
 			DBSFaces.setAttribute(pWriter, "autocomplete", "off", null);
 		}			
 	}

@@ -2198,7 +2198,92 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
+		<attribute>
+			<description>Tipo de gráfico. bar, line, pie. Padrão é bar.
+            </description>
+			<name>type</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Largura da linha em pontos
+            </description>
+			<name>lineWidth</name>
+			<required>true</required>
+			<type>java.lang.Long</type>
+		</attribute>
 	</tag>	
+	<tag>
+		<tag-name>chartValue</tag-name>
+		<component>
+			<component-type>br.com.dbsoft.ui.component.chartValue</component-type>
+			<handler-class />
+		</component>
+		<attribute>
+			<description>
+                Identificador único do componente.
+            </description>
+			<name>id</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Class CSS que será utilizado com style
+            </description>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Adiciona style 
+            </description>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                rendered
+            </description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+				Número do item 
+            </description>
+			<name>index</name>
+			<required>true</required>
+			<type>java.lang.Long</type>
+		</attribute>
+		<attribute>
+			<description>
+				Valor
+            </description>
+			<name>value</name>
+			<required>true</required>
+			<type>java.lang.Double</type>
+		</attribute>
+		<attribute>
+			<description>
+				Cor
+            </description>
+			<name>fillColor</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+				tooltip
+            </description>
+			<name>tooltip</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>		
 	<tag>
 		<tag-name>menu</tag-name>
 		<component>

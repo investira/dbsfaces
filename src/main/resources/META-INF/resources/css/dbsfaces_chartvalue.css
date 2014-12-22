@@ -1,0 +1,6 @@
+.dbs_chartValue{
+}
+
+.dbs_chartValue > .-container{
+	display: inline-block;
+}

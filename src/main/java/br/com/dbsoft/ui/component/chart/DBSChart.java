@@ -1,9 +1,10 @@
 package br.com.dbsoft.ui.component.chart;
 
 import javax.faces.component.FacesComponent;
-import javax.faces.context.FacesContext;
+import javax.faces.component.UIComponent;
 
 import br.com.dbsoft.ui.component.DBSUIInput;
+import br.com.dbsoft.ui.component.chartvalue.DBSChartValue;
 import br.com.dbsoft.ui.core.DBSFaces;
 
 @FacesComponent(DBSChart.COMPONENT_TYPE)
@@ -11,33 +12,76 @@ public class DBSChart extends DBSUIInput {
 	
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.CHART;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
+	public static class TYPE{
+		public static String BAR = "bar";
+		public static String LINE = "line";
+		public static String PIE = "pie";
+	}
+	protected enum PropertyKeys {
+		type,
+		lineWidth;
 
-//	protected enum PropertyKeys {
-//		styleClass,
-//		style;
-//
-//		String toString;
-//
-//		PropertyKeys(String toString) {
-//			this.toString = toString;
-//		}
-//
-//		PropertyKeys() {}
-//
-//		@Override
-//		public String toString() {
-//			return ((this.toString != null) ? this.toString : super.toString());
-//		}
-//	}
+		String toString;
+
+		PropertyKeys(String toString) {
+			this.toString = toString;
+		}
+
+		PropertyKeys() {}
+
+		@Override
+		public String toString() {
+			return ((this.toString != null) ? this.toString : super.toString());
+		}
+	}
 
 	public DBSChart(){
 		setRendererType(DBSChart.RENDERER_TYPE);
     }
 	
-    @Override
-    public void decode(FacesContext pContext) {
-        super.decode(pContext);
-    }
 
+	public String getType() {
+		return (String) getStateHelper().eval(PropertyKeys.type, TYPE.BAR);
+	}
 	
+	public void setType(String pType) {
+		getStateHelper().put(PropertyKeys.type, pType);
+		handleAttribute("type", pType);
+	}
+	
+	public Long getLineWidth() {
+		return (Long) getStateHelper().eval(PropertyKeys.lineWidth, 1L);
+	}
+	public void setLineWidth(Long pLineWidth) {
+		getStateHelper().put(PropertyKeys.lineWidth, pLineWidth);
+		handleAttribute("lineWidth", pLineWidth);
+	}
+
+	public Double getMaxValue(){
+		Double xMaxValue = 0D;
+		for (UIComponent xChild:getChildren()){
+			if (xChild instanceof DBSChartValue){
+				Double xValue = ((DBSChartValue) xChild).getValue();
+				if (xValue > 0 
+				 && xValue > xMaxValue){
+					xMaxValue = xValue; 
+				}
+			}
+		}
+		return xMaxValue;
+	}
+	
+	public Double getMinValue(){
+		Double xMinValue = 0D;
+		for (UIComponent xChild:getChildren()){
+			if (xChild instanceof DBSChartValue){
+				Double xValue = ((DBSChartValue) xChild).getValue();
+				if (xValue < 0 
+				 && xValue < xMinValue){
+					xMinValue = xValue; 
+				}
+			}
+		}
+		return xMinValue;
+	}
 }

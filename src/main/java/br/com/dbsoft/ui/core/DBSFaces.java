@@ -128,6 +128,7 @@ public class  DBSFaces {
 	    public static final String MESSAGELIST = "messageList";
 	    public static final String QUICKINFO = "quickInfo";
 	    public static final String CHART = "chart";
+	    public static final String CHARTVALUE = "chartValue";
 	}
 
 	public static class HTML
@@ -434,6 +435,11 @@ public class  DBSFaces {
 		public static class CHART
 		{	
 			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.CHART;
+		}
+		
+		public static class CHARTVALUE
+		{	
+			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.CHARTVALUE;
 		}
 	}
 	

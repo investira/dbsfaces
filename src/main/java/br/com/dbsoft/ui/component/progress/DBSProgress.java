@@ -16,10 +16,8 @@ public class DBSProgress extends DBSUIOutput {
 //		label,
 		maxValue,
 		width,
-		tooltip,
-		styleClass,
-		style;
-
+		tooltip;
+		
 		String toString;
 
 		PropertyKeys(String toString) {
@@ -47,24 +45,6 @@ public class DBSProgress extends DBSUIOutput {
 //		handleAttribute("label", pLabel);
 //	}
 //	
-	
-	public String getStyle() {
-		return (String) getStateHelper().eval(PropertyKeys.style, null);
-	}
-	
-	public void setStyle(String pStyle) {
-		getStateHelper().put(PropertyKeys.style, pStyle);
-		handleAttribute("style", pStyle);
-	}
-
-	public String getStyleClass() {
-		return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-	}
-	
-	public void setStyleClass(String pStyleClass) {
-		getStateHelper().put(PropertyKeys.styleClass, pStyleClass);
-		handleAttribute("styleClass", pStyleClass);
-	}
 	
 	public Double getMaxValue() {
 		return (Double) getStateHelper().eval(PropertyKeys.maxValue, 100D);

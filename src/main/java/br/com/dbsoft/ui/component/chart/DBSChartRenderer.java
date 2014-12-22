@@ -31,8 +31,6 @@ public class DBSChartRenderer extends DBSRenderer {
     public void encodeChildren(FacesContext pContext, UIComponent pComponent) throws IOException {
         //É necessário manter está função para evitar que faça o render dos childrens
     	//O Render dos childrens é feita do encode
-//    	if (pComponent.getChildren().size()!=0){
-//    	}
     }
 
 	@Override
@@ -41,17 +39,15 @@ public class DBSChartRenderer extends DBSRenderer {
 		if (!pComponent.isRendered()){return;}
 		DBSChart xChart = (DBSChart) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
-		String xClass = DBSFaces.CSS.CHART.MAIN + " " + xChart.getStyleClass();
+		String xClass = DBSFaces.CSS.CHART.MAIN + " ";
 
 		if (xChart.getStyleClass()!=null){
 			xClass = xClass + xChart.getStyleClass() + " ";
 		}
 		String xClientId = xChart.getClientId(pContext);
 		xWriter.startElement("div", xChart);
-			if (shouldWriteIdAttribute(xChart)){
-				DBSFaces.setAttribute(xWriter, "id", xClientId, null);
-				DBSFaces.setAttribute(xWriter, "name", xClientId, null);
-			}
+			DBSFaces.setAttribute(xWriter, "id", xClientId, null);
+			DBSFaces.setAttribute(xWriter, "name", xClientId, null);
 			DBSFaces.setAttribute(xWriter, "class", xClass, null);
 			DBSFaces.setAttribute(xWriter, "style", xChart.getStyle(), null);
 
@@ -65,7 +61,17 @@ public class DBSChartRenderer extends DBSRenderer {
 					renderChildren(pContext, xChart);
 				xWriter.endElement("svg");
 			xWriter.endElement("div");
+			pvEncodeJS(xClientId, xWriter);
 		xWriter.startElement("div", xChart);
 	}
 	
+	private void pvEncodeJS(String pClientId, ResponseWriter pWriter) throws IOException{
+		DBSFaces.encodeJavaScriptTagStart(pWriter);
+		String xJS = "$(document).ready(function() { \n" +
+				     " var xChartId = '#' + dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " dbs_chart(xChartId); \n" +
+                     "}); \n"; 
+		pWriter.write(xJS);
+		DBSFaces.encodeJavaScriptTagEnd(pWriter);		
+	}
 }

@@ -62,7 +62,7 @@ public class DBSLabelRenderer extends DBSRenderer {
 				xWriter.write(DBSString.toString(xLabel.getValue(), ""));
 			}
 			renderChildren(pContext, xLabel);
-			DBSFaces.encodeTooltip(pContext, xLabel, xLabel.getTooltip().toString());
+			DBSFaces.encodeTooltip(pContext, xLabel, xLabel.getTooltip());
 		xWriter.endElement("label");
 	}
 	

@@ -1,7 +1,6 @@
 package br.com.dbsoft.ui.component.div;
 
 import javax.faces.component.FacesComponent;
-import javax.faces.context.FacesContext;
 
 
 import br.com.dbsoft.ui.component.DBSUIComponentBase;
@@ -35,11 +34,6 @@ public class DBSDiv extends DBSUIComponentBase {
 		setRendererType(DBSDiv.RENDERER_TYPE);
     }
 	
-    @Override
-    public void decode(FacesContext pContext) {
-        super.decode(pContext);
-    }
-
 	public String getStyle() {
 		return (String) getStateHelper().eval(PropertyKeys.style, null);
 	}

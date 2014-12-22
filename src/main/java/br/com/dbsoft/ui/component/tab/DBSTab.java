@@ -19,8 +19,6 @@ public class DBSTab extends DBSUIOutput implements NamingContainer, ClientBehavi
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 	
 	protected enum PropertyKeys {
-		style,
-		styleClass,
 		selectedTabPage,
 		showTabPageOnClick,
 		tabPages;
@@ -45,24 +43,6 @@ public class DBSTab extends DBSUIOutput implements NamingContainer, ClientBehavi
 	    //UIViewRoot xRoot = xContext.getViewRoot();
 	    //xRoot.subscribeToViewEvent(PreRenderViewEvent.class, this );
     }
-	
-	public String getStyle() {
-		return (String) getStateHelper().eval(PropertyKeys.style, null);
-	}
-	
-	public void setStyle(String pStyle) {
-		getStateHelper().put(PropertyKeys.style, pStyle);
-		handleAttribute("style", pStyle);
-	}
-
-	public String getStyleClass() {
-		return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-	}
-	
-	public void setStyleClass(String pStyleClass) {
-		getStateHelper().put(PropertyKeys.styleClass, pStyleClass);
-		handleAttribute("styleClass", pStyleClass);
-	}
 	
 	public String getSelectedTabPage() {
 		return (String) getStateHelper().eval(PropertyKeys.selectedTabPage, "");

@@ -45,13 +45,11 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 		height,
 		resizable,
 		closeable,
-		styleClass,
 		okAction,
 		yesAction,
 		noAction,
 		update,
 		execute,
-		style,
 		messageIcon,
 		tooltip,
 		index;
@@ -113,25 +111,6 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 	}
 	
 
-	public String getStyle() {
-		return (String) getStateHelper().eval(PropertyKeys.style, "");
-	}
-	
-	public void setStyle(String pStyle) {
-		getStateHelper().put(PropertyKeys.style, pStyle);
-		handleAttribute("style", pStyle);
-	}
-
-	public String getStyleClass() {
-		return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-	}
-	
-	public void setStyleClass(String pStyleClass) {
-		getStateHelper().put(PropertyKeys.styleClass, pStyleClass);
-		handleAttribute("styleClass", pStyleClass);
-	}
-		
-	
 	public void setCloseble(Boolean pCloseble) {
 		getStateHelper().put(PropertyKeys.closeable, pCloseble);
 		handleAttribute("closeable", pCloseble);

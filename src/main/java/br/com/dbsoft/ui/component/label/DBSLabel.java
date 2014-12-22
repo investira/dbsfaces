@@ -19,9 +19,7 @@ public class DBSLabel extends DBSUIOutput implements ClientBehaviorHolder {
 //		value,
 		labelFor,
 		labelWidth,
-		style,
 		tooltip,
-		styleClass,
 		selectable;
 
 		String toString;
@@ -50,24 +48,6 @@ public class DBSLabel extends DBSUIOutput implements ClientBehaviorHolder {
 //		handleAttribute("value", pValue);
 //	}
 
-	public String getStyle() {
-		return (String) getStateHelper().eval(PropertyKeys.style, null);
-	}
-	
-	public void setStyle(String pStyle) {
-		getStateHelper().put(PropertyKeys.style, pStyle);
-		handleAttribute("style", pStyle);
-	}
-
-	public String getStyleClass() {
-		return (String) getStateHelper().eval(PropertyKeys.styleClass, "");
-	}
-	
-	public void setStyleClass(String pStyleClass) {
-		getStateHelper().put(PropertyKeys.styleClass, pStyleClass);
-		handleAttribute("styleClass", pStyleClass);
-	}
-	
 	public String getLabelFor() {
 		return (String) getStateHelper().eval(PropertyKeys.labelFor, null);
 	}

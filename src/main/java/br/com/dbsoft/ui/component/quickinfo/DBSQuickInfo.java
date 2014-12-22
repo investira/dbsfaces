@@ -16,9 +16,7 @@ public class DBSQuickInfo extends DBSUIOutput implements ClientBehaviorHolder {
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 
 	protected enum PropertyKeys {
-		iconClass,
-		style,
-		styleClass;
+		iconClass;
 		
 		String toString;
 
@@ -37,24 +35,6 @@ public class DBSQuickInfo extends DBSUIOutput implements ClientBehaviorHolder {
 		setRendererType(DBSQuickInfo.RENDERER_TYPE);
     }
 
-	public String getStyle() {
-		return (String) getStateHelper().eval(PropertyKeys.style, null);
-	}
-	
-	public void setStyle(String pStyle) {
-		getStateHelper().put(PropertyKeys.style, pStyle);
-		handleAttribute("style", pStyle);
-	}
-
-	public String getStyleClass() {
-		return (String) getStateHelper().eval(PropertyKeys.styleClass, "");
-	}
-	
-	public void setStyleClass(String pStyleClass) {
-		getStateHelper().put(PropertyKeys.styleClass, pStyleClass);
-		handleAttribute("styleClass", pStyleClass);
-	}
-	
 	
 	public String getIconClass() {
 		return (String) getStateHelper().eval(PropertyKeys.iconClass, "");

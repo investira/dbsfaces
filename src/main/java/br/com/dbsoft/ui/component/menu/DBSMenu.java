@@ -14,8 +14,6 @@ public class DBSMenu extends DBSUIOutput implements NamingContainer {
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 	 
 	protected enum PropertyKeys {
-		style,
-		styleClass,
 		label,
 		iconClass;
 		
@@ -36,38 +34,20 @@ public class DBSMenu extends DBSUIOutput implements NamingContainer {
 		setRendererType(DBSMenu.RENDERER_TYPE);
     }
 	
-	public java.lang.String getStyle() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
-	}
-	
-	public void setStyle(java.lang.String pStyle) {
-		getStateHelper().put(PropertyKeys.style, pStyle);
-		handleAttribute("style", pStyle);
-	}
-
-	public java.lang.String getStyleClass() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
-	}
-	
-	public void setStyleClass(java.lang.String pStyleClass) {
-		getStateHelper().put(PropertyKeys.styleClass, pStyleClass);
-		handleAttribute("styleClass", pStyleClass);
-	}
-	
-    public java.lang.String getLabel() {
- 		return (java.lang.String) getStateHelper().eval(PropertyKeys.label, null);
+    public String getLabel() {
+ 		return (String) getStateHelper().eval(PropertyKeys.label, null);
  	}
  	
- 	public void setLabel(java.lang.String pLabel) {
+ 	public void setLabel(String pLabel) {
  		getStateHelper().put(PropertyKeys.label, pLabel);
  		handleAttribute("label", pLabel);
  	}
  	
-  	public java.lang.String getIconClass() {
- 		return (java.lang.String) getStateHelper().eval(PropertyKeys.iconClass, null);
+  	public String getIconClass() {
+ 		return (String) getStateHelper().eval(PropertyKeys.iconClass, null);
  	}
 
- 	public void setIconClass(java.lang.String pIconClass) {
+ 	public void setIconClass(String pIconClass) {
  		getStateHelper().put(PropertyKeys.iconClass, pIconClass);
  		handleAttribute("iconClass", pIconClass);
  	}

@@ -13,8 +13,6 @@ public class DBSImg extends DBSUIOutput {
 
 	protected enum PropertyKeys {
 		src,
-		style,
-		styleClass,
 		tooptip,
 		alt;
 		
@@ -35,47 +33,29 @@ public class DBSImg extends DBSUIOutput {
 		setRendererType(DBSImg.RENDERER_TYPE);
     }
 	
-	public java.lang.String getSrc() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.src, null);
+	public String getSrc() {
+		return (String) getStateHelper().eval(PropertyKeys.src, null);
 	}
 	
-	public void setSrc(java.lang.String pSrc) {
+	public void setSrc(String pSrc) {
 		getStateHelper().put(PropertyKeys.src, pSrc);
 		handleAttribute("src", pSrc);
 	}
 	
-	public java.lang.String getAlt() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.alt, null);
+	public String getAlt() {
+		return (String) getStateHelper().eval(PropertyKeys.alt, null);
 	}
 	
-	public void setAlt(java.lang.String pAlt) {
+	public void setAlt(String pAlt) {
 		getStateHelper().put(PropertyKeys.alt, pAlt);
 		handleAttribute("alt", pAlt);
 	}
 	
-	public java.lang.String getStyle() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+	public String getTooltip() {
+		return (String) getStateHelper().eval(PropertyKeys.tooptip, null);
 	}
 	
-	public void setStyle(java.lang.String pStyle) {
-		getStateHelper().put(PropertyKeys.style, pStyle);
-		handleAttribute("style", pStyle);
-	}
-
-	public java.lang.String getStyleClass() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
-	}
-	
-	public void setStyleClass(java.lang.String pStyleClass) {
-		getStateHelper().put(PropertyKeys.styleClass, pStyleClass);
-		handleAttribute("styleClass", pStyleClass);
-	}
-	
-	public java.lang.String getTooltip() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.tooptip, null);
-	}
-	
-	public void setTooltip(java.lang.String pTooltip) {
+	public void setTooltip(String pTooltip) {
 		getStateHelper().put(PropertyKeys.tooptip, pTooltip);
 		handleAttribute("tooltip", pTooltip);
 	}

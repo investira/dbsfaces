@@ -15,7 +15,12 @@ public class DBSInputDate extends DBSUIInput {
 
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.INPUTDATE;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
-
+	public static class TYPE{
+		public static String DATE = "date";
+		public static String TIME = "time";
+		public static String DATETIME = "datetime";
+		public static String TIMES = "times";
+	}
 	protected enum PropertyKeys {
 		type,
 		autocomplete,
@@ -36,19 +41,14 @@ public class DBSInputDate extends DBSUIInput {
 		}
 	}
 	
-	public static class TYPE{
-		public static String DATE = "date";
-		public static String TIME = "time";
-		public static String DATETIME = "datetime";
-		public static String TIMES = "times";
-	}
+
 	
     public DBSInputDate(){
 		setRendererType(DBSInputDate.RENDERER_TYPE);
     }
 	
 	public String getType() {
-		return (String) getStateHelper().eval(PropertyKeys.type, "date");
+		return (String) getStateHelper().eval(PropertyKeys.type, TYPE.DATE);
 	}
 	
 	public void setType(String pType) {
