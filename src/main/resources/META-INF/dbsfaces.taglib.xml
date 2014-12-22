@@ -2161,6 +2161,45 @@
 		</attribute>
 	</tag>
 	<tag>
+		<tag-name>chart</tag-name>
+		<component>
+			<component-type>br.com.dbsoft.ui.component.chart</component-type>
+			<handler-class />
+		</component>
+		<attribute>
+			<description>
+                Identificador único do componente.
+            </description>
+			<name>id</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Class CSS que será utilizado com style
+            </description>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Adiciona style 
+            </description>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                rendered
+            </description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+	</tag>	
+	<tag>
 		<tag-name>menu</tag-name>
 		<component>
 			<component-type>br.com.dbsoft.ui.component.menu</component-type>
