@@ -9,6 +9,7 @@ import javax.faces.render.FacesRenderer;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.util.DBSObject;
 import br.com.dbsoft.util.DBSString;
 
 
@@ -37,15 +38,19 @@ public class DBSLabelRenderer extends DBSRenderer {
 		if (!pComponent.isRendered()){return;}
 		DBSLabel xLabel = (DBSLabel) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
-		String xClass = xLabel.getStyleClass();
+		String xClass = "";
 		
 		if (xLabel.getSelectable()!=null){
 			if (!xLabel.getSelectable()){
-				xClass = xClass + DBSFaces.CSS.NOT_SELECTABLE.trim() + " ";
+				xClass = DBSFaces.CSS.NOT_SELECTABLE.trim() + " ";
 			}
 		}
-		
-		if (xClass.trim().equals("")){xClass = null;}
+		if (!DBSObject.isEmpty(xLabel.getStyleClass())) {
+			xClass += xLabel.getStyleClass();
+		}
+		if (DBSObject.isEmpty(xClass)){
+			xClass = null;
+		}
 		
 		xWriter.startElement("label", xLabel);
 //			if (shouldWriteIdAttribute(xLabel)){
