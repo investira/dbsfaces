@@ -39,6 +39,9 @@ public class DBSChartValue extends DBSUIInput {
 		return (Long) getStateHelper().eval(PropertyKeys.index, 1L);
 	}
 	public void setIndex(Long pIndex) {
+		if (pIndex != null){
+			setId("index_" + pIndex.toString());
+		}
 		getStateHelper().put(PropertyKeys.index, pIndex);
 		handleAttribute("index", pIndex);
 	}

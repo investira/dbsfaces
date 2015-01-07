@@ -14,6 +14,7 @@ import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.chart.DBSChart;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.util.DBSNumber;
 
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSChartValue.RENDERER_TYPE)
@@ -47,38 +48,96 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		DBSChart xChart = (DBSChart) pComponent.getParent();
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClass = DBSFaces.CSS.CHARTVALUE.MAIN + " ";
-		Long xX = (xChartValue.getIndex() - 1) * xChart.getLineWidth();
-		Long xY = 15L;//xChart.getMaxValue() - xChartValue.getValue();
+		
+		Integer xIndexPosition = 0;
+		Integer xZeroPosition = xChart.getZeroPosition();
+		Integer xValue = 0;
+		
+		//Configura id a partir do index
+		xChartValue.setId("index_" + xChartValue.getIndex());
 
+		//Configura class
 		if (xChartValue.getStyleClass()!=null){
 			xClass = xClass + xChartValue.getStyleClass() + " ";
 		}
-		String xClientId = xChartValue.getClientId(pContext);
+	
+		//Calcula valor em pixel a partir do valor real
+		xValue = DBSNumber.multiply(xChart.getHeight(),
+				 					DBSNumber.divide(DBSNumber.abs(xChartValue.getValue()), 
+				 					  	  		     xChart.getTotalValue())).intValue();
 		
-		if (xChart.getType().equalsIgnoreCase(DBSChart.TYPE.BAR)){
-			xWriter.startElement("rect", xChartValue);
-				DBSFaces.setAttribute(xWriter, "id", xClientId, null);
-				DBSFaces.setAttribute(xWriter, "name", xClientId, null);
-				DBSFaces.setAttribute(xWriter, "class", xClass, null);
-				DBSFaces.setAttribute(xWriter, "style", xChartValue.getStyle(), null);
+		String xClientId = xChartValue.getClientId(pContext);
+
+		xWriter.startElement("g", xChartValue);
+			DBSFaces.setAttribute(xWriter, "id", xClientId, null);
+			DBSFaces.setAttribute(xWriter, "index", xChartValue.getIndex(), null);
+			DBSFaces.setAttribute(xWriter, "class", xClass, null);
+			DBSFaces.setAttribute(xWriter, "style", xChartValue.getStyle(), null);
+			
+//			xWriter.startElement("foreignObject", xChartValue);
+//				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.EXTRAINFO.trim(), null);
+//				xWriter.startElement("span", xChartValue);
+//					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT.trim(), null);
+//					renderChildren(pContext, xChartValue);
+//				xWriter.endElement("span");
+//			xWriter.endElement("foreignObject");
+
+			//Grafico
+			if (xChart.getType().equalsIgnoreCase(DBSChart.TYPE.BAR)){
+				//Força a exibição de pelo menos uma linha caso valor não seja zero, mas o tamanho ajustado dê zero
+				if (xValue == 0
+				 && xChartValue.getValue() != 0D){
+					xValue = 1;
+				}
 				
-				DBSFaces.setAttribute(xWriter, "x", 	xX, null);
-				DBSFaces.setAttribute(xWriter, "y", 	xY, null);
-				DBSFaces.setAttribute(xWriter, "width", xChart.getLineWidth(), null);
-				DBSFaces.setAttribute(xWriter, "height", xChartValue.getValue(), null);
-				DBSFaces.setAttribute(xWriter, "stroke", "none", null);
-//				DBSFaces.setAttribute(xWriter, "stroke-width", "0", null);
-				DBSFaces.setAttribute(xWriter, "fill",	xChartValue.getFillColor(), null);
-				DBSFaces.setAttribute(xWriter, "rx", 	"0", null);
-				DBSFaces.setAttribute(xWriter, "ry", 	"0", null);
+				//Ajusta para posição inicial da barra 
+				if (xChartValue.getValue() > 0D){
+					xZeroPosition -= xValue;
+				}
+						
+				//Calcula posição da próxima barra
+				xIndexPosition = DBSNumber.multiply(xChartValue.getIndex() - 1,
+													xChart.getLineWidth() + xChart.getWhiteSpace()).intValue();
+				
+				xWriter.startElement("rect", xChartValue);
+					DBSFaces.setAttribute(xWriter, "x", 	xIndexPosition, null);
+					DBSFaces.setAttribute(xWriter, "y", 	xZeroPosition, null);
+					DBSFaces.setAttribute(xWriter, "width", xChart.getLineWidth(), null);
+					DBSFaces.setAttribute(xWriter, "height", xValue, null);
+					DBSFaces.setAttribute(xWriter, "fill",	xChartValue.getFillColor(), null);
+					DBSFaces.setAttribute(xWriter, "rx", 	"2", null);
+					DBSFaces.setAttribute(xWriter, "ry", 	"2", null);
+	
+					RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xChartValue, DBSPassThruAttributes.getAttributes(Key.DIV));
+					encodeClientBehaviors(pContext, xChartValue);
+					pvEncodeJS(xClientId, xWriter);
 
-				RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xChartValue, DBSPassThruAttributes.getAttributes(Key.DIV));
-				encodeClientBehaviors(pContext, xChartValue);
-				pvEncodeJS(xClientId, xWriter);
-//				DBSFaces.encodeTooltip(pContext, xChartValue, xChartValue.getTooltip());
-			xWriter.endElement("rect");
-		}
+					xWriter.endElement("rect");
+			}
+			
+			//Tooltip
+			xWriter.startElement("foreignObject", xChartValue);
+				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.EXTRAINFO.trim(), null);
+				xWriter.startElement("span", xChartValue);
+					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT.trim(), null);
+					String xExtraInfoStyle = "position:absolute;";
+					Long xLeft = xIndexPosition + xChart.getLineWidth();
+					Integer xTop = xZeroPosition;
+					if (xChartValue.getValue() < 0D){
+						xTop += xValue;
+						xExtraInfoStyle += "bottom:-" + xTop + "px;";
+					}else{
+						xExtraInfoStyle += "top:" + xTop + "px;";
+					}
+					xExtraInfoStyle += "left:" + xLeft + "px;";
+					
+					DBSFaces.setAttribute(xWriter, "style", xExtraInfoStyle, null);
+					
+					renderChildren(pContext, xChartValue);
+				xWriter.endElement("span");
+			xWriter.endElement("foreignObject");
 
+		xWriter.endElement("g");
 	}
 
 	private void pvEncodeJS(String pClientId, ResponseWriter pWriter) throws IOException{

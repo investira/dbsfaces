@@ -435,6 +435,7 @@ public class  DBSFaces {
 		public static class CHART
 		{	
 			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.CHART;
+			public static final String BASELINE = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.CHART + "_baseline";
 		}
 		
 		public static class CHARTVALUE

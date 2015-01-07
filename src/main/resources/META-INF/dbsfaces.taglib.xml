@@ -2212,6 +2212,20 @@
 			<required>true</required>
 			<type>java.lang.Long</type>
 		</attribute>
+		<attribute>
+			<description>Altura do gráfico em px
+            </description>
+			<name>width</name>
+			<required>true</required>
+			<type>java.lang.Long</type>
+		</attribute>
+		<attribute>
+			<description>Largura do gráfico em px
+            </description>
+			<name>height</name>
+			<required>true</required>
+			<type>java.lang.Long</type>
+		</attribute>				
 	</tag>	
 	<tag>
 		<tag-name>chartValue</tag-name>
@@ -2219,14 +2233,6 @@
 			<component-type>br.com.dbsoft.ui.component.chartValue</component-type>
 			<handler-class />
 		</component>
-		<attribute>
-			<description>
-                Identificador único do componente.
-            </description>
-			<name>id</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
 		<attribute>
 			<description>
                 Class CSS que será utilizado com style

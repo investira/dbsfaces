@@ -3,5 +3,17 @@
 
 .dbs_chart > .-container{
 	display: inline-block;
+	height: 100%;
+	width: 100%;
 }
 
+.dbs_chart > .-container > .-content{
+	height: 100%;
+	width: 100%;
+}
+
+.dbs_chart_baseline{
+	fill: rgba(0,0,0,0.3);
+	rx: 0;
+	ry: 0;
+}
