@@ -1,13 +1,14 @@
 package br.com.dbsoft.ui.component.chartvalue;
 
 import javax.faces.component.FacesComponent;
+import javax.faces.component.NamingContainer;
 
 import br.com.dbsoft.ui.component.DBSUIInput;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSNumber;
 
 @FacesComponent(DBSChartValue.COMPONENT_TYPE)
-public class DBSChartValue extends DBSUIInput {
+public class DBSChartValue extends DBSUIInput implements NamingContainer {
 	
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.CHARTVALUE;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;

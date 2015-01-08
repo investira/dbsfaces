@@ -18,6 +18,8 @@ public class DBSChart extends DBSUIInput implements NamingContainer{
 		public static String PIE = "pie";
 	}
 	protected enum PropertyKeys {
+		caption,
+		footer,
 		type,
 		width,
 		height,
@@ -54,6 +56,24 @@ public class DBSChart extends DBSUIInput implements NamingContainer{
 	public void setType(String pType) {
 		getStateHelper().put(PropertyKeys.type, pType);
 		handleAttribute("type", pType);
+	}
+
+	public String getCaption() {
+		return (String) getStateHelper().eval(PropertyKeys.caption, null);
+	}
+	
+	public void setCaption(String pCaption) {
+		getStateHelper().put(PropertyKeys.caption, pCaption);
+		handleAttribute("caption", pCaption);
+	}
+
+	public String getFooter() {
+		return (String) getStateHelper().eval(PropertyKeys.footer, null);
+	}
+	
+	public void setFooter(String pFooter) {
+		getStateHelper().put(PropertyKeys.footer, pFooter);
+		handleAttribute("footer", pFooter);
 	}
 	
 	public Long getLineWidth() {

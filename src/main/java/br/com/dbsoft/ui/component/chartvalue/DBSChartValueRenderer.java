@@ -49,7 +49,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClass = DBSFaces.CSS.CHARTVALUE.MAIN + " ";
 		
-		Integer xIndexPosition = 0;
+		Integer xIndexPosition = 1;
 		Integer xZeroPosition = xChart.getZeroPosition();
 		Integer xValue = 0;
 		
@@ -96,8 +96,8 @@ public class DBSChartValueRenderer extends DBSRenderer {
 				}
 						
 				//Calcula posição da próxima barra
-				xIndexPosition = DBSNumber.multiply(xChartValue.getIndex() - 1,
-													xChart.getLineWidth() + xChart.getWhiteSpace()).intValue();
+				xIndexPosition += DBSNumber.multiply(xChartValue.getIndex() - 1,
+													 xChart.getLineWidth() + xChart.getWhiteSpace()).intValue();
 				
 				xWriter.startElement("rect", xChartValue);
 					DBSFaces.setAttribute(xWriter, "x", 	xIndexPosition, null);
@@ -115,27 +115,30 @@ public class DBSChartValueRenderer extends DBSRenderer {
 					xWriter.endElement("rect");
 			}
 			
-			//Tooltip
-			xWriter.startElement("foreignObject", xChartValue);
-				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.EXTRAINFO.trim(), null);
-				xWriter.startElement("span", xChartValue);
-					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT.trim(), null);
-					String xExtraInfoStyle = "position:absolute;";
-					Long xLeft = xIndexPosition + xChart.getLineWidth();
-					Integer xTop = xZeroPosition;
-					if (xChartValue.getValue() < 0D){
-						xTop += xValue;
-						xExtraInfoStyle += "bottom:-" + xTop + "px;";
-					}else{
-						xExtraInfoStyle += "top:" + xTop + "px;";
-					}
-					xExtraInfoStyle += "left:" + xLeft + "px;";
-					
-					DBSFaces.setAttribute(xWriter, "style", xExtraInfoStyle, null);
-					
-					renderChildren(pContext, xChartValue);
-				xWriter.endElement("span");
-			xWriter.endElement("foreignObject");
+			UIComponent xExtraInfo = xChartValue.getFacet("extrainfo");
+			if (xExtraInfo != null){
+				//Extrainfo
+				xWriter.startElement("foreignObject", xChartValue);
+					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.EXTRAINFO.trim(), null);
+					xWriter.startElement("span", xChartValue);
+						DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT.trim(), null);
+						String xExtraInfoStyle = "position:absolute;";
+						Long xLeft = xIndexPosition + xChart.getLineWidth();
+						Integer xTop = xZeroPosition;
+						if (xChartValue.getValue() < 0D){
+							xTop += xValue;
+							xExtraInfoStyle += "bottom:-" + xTop + "px;";
+						}else{
+							xExtraInfoStyle += "top:" + xTop + "px;";
+						}
+						xExtraInfoStyle += "left:" + xLeft + "px;";
+						
+						DBSFaces.setAttribute(xWriter, "style", xExtraInfoStyle, null);
+						xExtraInfo.encodeAll(pContext);
+//						renderChildren(pContext, xExtraInfo);
+					xWriter.endElement("span");
+				xWriter.endElement("foreignObject");
+			}
 
 		xWriter.endElement("g");
 	}

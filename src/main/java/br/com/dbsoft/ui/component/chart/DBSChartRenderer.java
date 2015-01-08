@@ -44,9 +44,9 @@ public class DBSChartRenderer extends DBSRenderer {
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClass = DBSFaces.CSS.CHART.MAIN + " ";
 		String xStyle = "width:" + xChart.getWidth() + "px; height:" + xChart.getHeight() + "px;";
-		if (xChart.getStyle()!=null){
-			xStyle += " " + xChart.getStyle();
-		}
+//		if (xChart.getStyle()!=null){
+//			xStyle += " " + xChart.getStyle();
+//		}
 
 		if (xChart.getStyleClass()!=null){
 			xClass = xClass + xChart.getStyleClass() + " ";
@@ -59,24 +59,69 @@ public class DBSChartRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "id", xClientId, null);
 			DBSFaces.setAttribute(xWriter, "name", xClientId, null);
 			DBSFaces.setAttribute(xWriter, "class", xClass, null);
-			DBSFaces.setAttribute(xWriter, "style", xStyle, null);
+			DBSFaces.setAttribute(xWriter, "style", xChart.getStyle(), null);
+			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xChart, DBSPassThruAttributes.getAttributes(Key.CHART));
 			
 			encodeClientBehaviors(pContext, xChart);
-			
-			xWriter.startElement("g", xChart);
+			//CONTAINER--------------------------
+			xWriter.startElement("span", xChart);
 				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER, null);
-				xWriter.startElement("svg", xChart);
-					DBSFaces.setAttribute(xWriter, "xmlns", "http://www.w3.org/2000/svg", null);
-					DBSFaces.setAttribute(xWriter, "xmlns:xlink", "http://www.w3.org/1999/xlink", null);
-//					DBSFaces.setAttribute(xWriter, "viewBox", "0 0 widthOfContainer heightOfContainer", null);
-					
-					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
-					RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xChart, DBSPassThruAttributes.getAttributes(Key.DIV));
-					encodeZeroPosition(xChart, xWriter);
-					renderChildren(pContext, xChart);
-				xWriter.endElement("svg");
-			xWriter.endElement("g");
+
+				//CAPTION--------------------------
+				if (xChart.getCaption() !=null){
+					xWriter.startElement("span", xChart);
+						DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CAPTION, null);
+						xWriter.write(xChart.getCaption());
+					xWriter.endElement("span");
+				}
+	
+				//DATA--------------------------
+				xWriter.startElement("span", xChart);
+					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.DATA, null);
+					//CONTAINER--------------------------
+					xWriter.startElement("svg", xChart);
+						DBSFaces.setAttribute(xWriter, "xmlns", "http://www.w3.org/2000/svg", null);
+						DBSFaces.setAttribute(xWriter, "xmlns:xlink", "http://www.w3.org/1999/xlink", null);
+						DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER, null);
+						DBSFaces.setAttribute(xWriter, "style", xStyle, null);
+						
+						//CONTENT--------------------------
+						xWriter.startElement("g", xChart);
+							DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
+							//LEFT--------------------------
+							xWriter.startElement("g", xChart);
+								DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.LEFT, null);
+							xWriter.endElement("g");
+							
+							//DATA--------------------------
+							xWriter.startElement("g", xChart);
+								DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.VALUE, null);
+								//Linhas de marcação
+								encodeLines(xChart, xWriter);
+		
+								renderChildren(pContext, xChart);
+							xWriter.endElement("g");
+							
+							//RIGHT--------------------------
+							xWriter.startElement("g", xChart);
+								DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.RIGHT, null);
+							xWriter.endElement("g");
+						xWriter.endElement("g");
+					xWriter.endElement("svg");
+				xWriter.endElement("span");
+
+				//FOOTER--------------------------
+				if (xChart.getFooter() !=null){
+					xWriter.startElement("span", xChart);
+						DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.FOOTER, null);
+						xWriter.write(xChart.getFooter());
+					xWriter.endElement("span");
+				}
+			xWriter.endElement("span");
+
 			pvEncodeJS(xClientId, xWriter);
+
+			
 		xWriter.startElement("div", xChart);
 	}
 	
@@ -121,7 +166,8 @@ public class DBSChartRenderer extends DBSRenderer {
 			//Distribui o espaço que sobra total, entre as cada coluna
 			if (xCount>1){
 				xWhiteSpace = DBSNumber.divide(DBSNumber.subtract(pChart.getWidth(), 
-												 				  DBSNumber.multiply(xCount, pChart.getLineWidth())),
+												 				  DBSNumber.multiply(xCount, pChart.getLineWidth()),
+												 				  2),
 											   xCount-1).intValue();
 			}
 		}
@@ -131,22 +177,28 @@ public class DBSChartRenderer extends DBSRenderer {
 		pChart.setWhiteSpace(xWhiteSpace);
 		
 	}
-	
-	private void encodeZeroPosition(DBSChart pChart, ResponseWriter pWriter) throws IOException{
+	private void encodeLines(DBSChart pChart, ResponseWriter pWriter) throws IOException{
 		if (pChart.getType().equalsIgnoreCase(DBSChart.TYPE.BAR)){
-			pWriter.startElement("rect", pChart);
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.CHART.BASELINE, null);
-				DBSFaces.setAttribute(pWriter, "x", 	0, null);
-				DBSFaces.setAttribute(pWriter, "y", 	pChart.getZeroPosition(), null);
-				DBSFaces.setAttribute(pWriter, "width", pChart.getWidth() + "px", null);
-				DBSFaces.setAttribute(pWriter, "height", "0.5px", null);
-				DBSFaces.setAttribute(pWriter, "stroke", "none", null);
-//				DBSFaces.setAttribute(xWriter, "stroke-width", "0", null);
-//				DBSFaces.setAttribute(pWriter, "rx", 	"0", null);
-//				DBSFaces.setAttribute(pWriter, "ry", 	"0", null);
-			pWriter.endElement("rect");
+			//Linha base
+			DBSFaces.encodeSVGLine(pChart, pWriter, DBSFaces.CSS.MODIFIER.LINE, 0, pChart.getZeroPosition(), pChart.getWidth().intValue(), pChart.getZeroPosition());
+			encodeLinhaDeValores(pChart, pWriter);
 		}
-
+		
 	}
 
+	private void encodeLinhaDeValores(DBSChart pChart, ResponseWriter pWriter) throws IOException{
+	}
+
+
+//	private void encodeText(DBSChart pChart, ResponseWriter pWriter, String pTexto) throws IOException{
+//		if (pChart.getType().equalsIgnoreCase(DBSChart.TYPE.BAR)){
+//			pWriter.startElement("text", pChart);
+//				DBSFaces.setAttribute(pWriter, "x", "50%", null);
+//				DBSFaces.setAttribute(pWriter, "y", "12", null);
+//				pWriter.write(pTexto);
+//			pWriter.endElement("text");
+//		}
+//
+//	}
+	
 }

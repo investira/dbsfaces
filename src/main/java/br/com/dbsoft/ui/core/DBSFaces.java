@@ -178,6 +178,7 @@ public class  DBSFaces {
 			public static final String NOT_SELECTABLE = " -not_selectable ";
 			public static final String CAPTION = " -caption ";
 			public static final String HEADER = " -header ";
+			public static final String FOOTER = " -footer ";
 			public static final String FILTER = " -filter ";
 			public static final String INPUT = " -input ";
 			public static final String TITLE = " -title ";
@@ -216,6 +217,7 @@ public class  DBSFaces {
 			public static final String EXTRAINFO = " -extrainfo ";
 			public static final String ERROR = " -error ";
 			public static final String PUSHDISABLED = " -pushDisabled ";
+			public static final String LINE = " -line ";
 		}
 
 		public static class CRUDFORM
@@ -435,7 +437,6 @@ public class  DBSFaces {
 		public static class CHART
 		{	
 			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.CHART;
-			public static final String BASELINE = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.CHART + "_baseline";
 		}
 		
 		public static class CHARTVALUE
@@ -1385,6 +1386,44 @@ public class  DBSFaces {
 			xWriter.write(xJS);
 			DBSFaces.encodeJavaScriptTagEnd(xWriter);		
 		}
+	}
+	
+	/**
+	 * Encore da linha para gráfico SVG
+	 * @param pComponent
+	 * @param pWriter
+	 * @param pStyleClass
+	 * @param pX1
+	 * @param pY1
+	 * @param pX2
+	 * @param pY2
+	 * @throws IOException
+	 */
+	public static void encodeSVGLine(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, Integer pX1, Integer pY1, Integer pX2, Integer pY2) throws IOException{
+		pWriter.startElement("line", pComponent);
+			DBSFaces.setAttribute(pWriter, "class", pStyleClass, null);
+			DBSFaces.setAttribute(pWriter, "x1", 	pX1, null);
+			DBSFaces.setAttribute(pWriter, "y1", 	pY1, null);
+			DBSFaces.setAttribute(pWriter, "x2", 	pX2, null);
+			DBSFaces.setAttribute(pWriter, "y2", 	pY2, null);
+		pWriter.endElement("line");
+	}
+
+	/**
+	 * Encode de Retangulo para grádico SVG
+	 * @param pComponent
+	 * @param pWriter
+	 * @param pStyleClass
+	 * @param pX
+	 * @param pY
+	 * @throws IOException
+	 */
+	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, Integer pX, Integer pY) throws IOException{
+		pWriter.startElement("rect", pComponent);
+			DBSFaces.setAttribute(pWriter, "class", pStyleClass, null);
+			DBSFaces.setAttribute(pWriter, "x", 	pX, null);
+			DBSFaces.setAttribute(pWriter, "y", 	pY, null);
+		pWriter.endElement("rect");
 	}
 	
 
