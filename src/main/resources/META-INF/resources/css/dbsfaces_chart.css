@@ -35,7 +35,6 @@
 .dbs_chart > .-container > .-data > .-container{
 	position: relative;
 	display: inline-block;
-	width: 100%;
 }
 
 .dbs_chart > .-container > .-data > .-container > .-content{
@@ -48,8 +47,13 @@
 }	
 
 .dbs_chart > .-container > .-data > .-container > .-content > .-value > .-line{
-	stroke: rgba(0,0,0,0.3);
-	stroke-width: .2; 
+	stroke: rgb(220,220,220);
+	stroke-width: 1px;
+}
+
+.dbs_chart > .-container > .-data > .-container > .-content > .-value > .-label{
+	font-size: 8px;
+	fill: rgb(220,220,220);
 }
 
 .dbs_chart > .-container > .-data > .-container > .-content > .-right{

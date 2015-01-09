@@ -19,6 +19,7 @@ import br.com.dbsoft.util.DBSNumber;
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSChart.RENDERER_TYPE)
 public class DBSChartRenderer extends DBSRenderer {
+	private static int wExtraLines = 6;
 	
 	@Override
 	public void decode(FacesContext pContext, UIComponent pComponent) {
@@ -179,14 +180,29 @@ public class DBSChartRenderer extends DBSRenderer {
 	}
 	private void encodeLines(DBSChart pChart, ResponseWriter pWriter) throws IOException{
 		if (pChart.getType().equalsIgnoreCase(DBSChart.TYPE.BAR)){
+			if (pChart.getCaption()!=null){
+				DBSFaces.encodeSVGLine(pChart, pWriter, DBSFaces.CSS.MODIFIER.LINE, null, 0, 0, pChart.getWidth().intValue(), 0);
+				DBSFaces.encodeSVGLine(pChart, pWriter, DBSFaces.CSS.MODIFIER.LINE, null, 0, pChart.getHeight().intValue()-1, pChart.getWidth().intValue(), pChart.getHeight().intValue()-1);
+			}
 			//Linha base
-			DBSFaces.encodeSVGLine(pChart, pWriter, DBSFaces.CSS.MODIFIER.LINE, 0, pChart.getZeroPosition(), pChart.getWidth().intValue(), pChart.getZeroPosition());
+//			DBSFaces.encodeSVGLine(pChart, pWriter, DBSFaces.CSS.MODIFIER.LINE, null, 0, pChart.getZeroPosition(), pChart.getWidth().intValue(), pChart.getZeroPosition());
 			encodeLinhaDeValores(pChart, pWriter);
 		}
 		
 	}
 
 	private void encodeLinhaDeValores(DBSChart pChart, ResponseWriter pWriter) throws IOException{
+		Double xIncrementoValor = DBSNumber.divide(pChart.getTotalValue(), wExtraLines).doubleValue();
+		Double xIncrementoPosicao = DBSNumber.divide(pChart.getHeight() - 4, wExtraLines).doubleValue();
+		Double xPosicao = DBSNumber.toBigDecimal(pChart.getZeroPosition()).remainder(DBSNumber.toBigDecimal(xIncrementoPosicao)).doubleValue();
+		Double xValor = xIncrementoValor * 2;
+		for (int i=0; i <= wExtraLines; i++){
+			DBSFaces.encodeSVGLine(pChart, pWriter, DBSFaces.CSS.MODIFIER.LINE, null, 0, xPosicao.intValue(), pChart.getWidth().intValue(), xPosicao.intValue());
+			DBSFaces.encodeSVGText(pChart, pWriter,  DBSFaces.CSS.MODIFIER.LABEL, null, 60, xPosicao.intValue() + 8, xValor.toString());
+			xValor -= xIncrementoValor;
+			xPosicao += xIncrementoPosicao;
+		}
+		
 	}
 
 

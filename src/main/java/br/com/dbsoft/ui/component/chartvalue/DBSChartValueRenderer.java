@@ -61,8 +61,8 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			xClass = xClass + xChartValue.getStyleClass() + " ";
 		}
 	
-		//Calcula valor em pixel a partir do valor real
-		xValue = DBSNumber.multiply(xChart.getHeight(),
+		//Calcula valor em pixel a partir do valor real. subtrai 4 pontos para data espaço na margem
+		xValue = DBSNumber.multiply(xChart.getHeight() - 4,
 				 					DBSNumber.divide(DBSNumber.abs(xChartValue.getValue()), 
 				 					  	  		     xChart.getTotalValue())).intValue();
 		
@@ -105,14 +105,14 @@ public class DBSChartValueRenderer extends DBSRenderer {
 					DBSFaces.setAttribute(xWriter, "width", xChart.getLineWidth(), null);
 					DBSFaces.setAttribute(xWriter, "height", xValue, null);
 					DBSFaces.setAttribute(xWriter, "fill",	xChartValue.getFillColor(), null);
-					DBSFaces.setAttribute(xWriter, "rx", 	"2", null);
-					DBSFaces.setAttribute(xWriter, "ry", 	"2", null);
+//					DBSFaces.setAttribute(xWriter, "rx", 	"2", null);
+//					DBSFaces.setAttribute(xWriter, "ry", 	"2", null);
 	
 					RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xChartValue, DBSPassThruAttributes.getAttributes(Key.DIV));
 					encodeClientBehaviors(pContext, xChartValue);
 					pvEncodeJS(xClientId, xWriter);
 
-					xWriter.endElement("rect");
+				xWriter.endElement("rect");
 			}
 			
 			UIComponent xExtraInfo = xChartValue.getFacet("extrainfo");

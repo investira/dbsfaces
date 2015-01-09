@@ -1393,15 +1393,17 @@ public class  DBSFaces {
 	 * @param pComponent
 	 * @param pWriter
 	 * @param pStyleClass
+	 * @param pStyle
 	 * @param pX1
 	 * @param pY1
 	 * @param pX2
 	 * @param pY2
 	 * @throws IOException
 	 */
-	public static void encodeSVGLine(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, Integer pX1, Integer pY1, Integer pX2, Integer pY2) throws IOException{
+	public static void encodeSVGLine(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, String pStyle, Integer pX1, Integer pY1, Integer pX2, Integer pY2) throws IOException{
 		pWriter.startElement("line", pComponent);
 			DBSFaces.setAttribute(pWriter, "class", pStyleClass, null);
+			DBSFaces.setAttribute(pWriter, "style", pStyle, null);
 			DBSFaces.setAttribute(pWriter, "x1", 	pX1, null);
 			DBSFaces.setAttribute(pWriter, "y1", 	pY1, null);
 			DBSFaces.setAttribute(pWriter, "x2", 	pX2, null);
@@ -1414,17 +1416,40 @@ public class  DBSFaces {
 	 * @param pComponent
 	 * @param pWriter
 	 * @param pStyleClass
+	 * @param pStyle
 	 * @param pX
 	 * @param pY
 	 * @throws IOException
 	 */
-	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, Integer pX, Integer pY) throws IOException{
+	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, String pStyle, Integer pX, Integer pY) throws IOException{
 		pWriter.startElement("rect", pComponent);
 			DBSFaces.setAttribute(pWriter, "class", pStyleClass, null);
+			DBSFaces.setAttribute(pWriter, "style", pStyle, null);
 			DBSFaces.setAttribute(pWriter, "x", 	pX, null);
 			DBSFaces.setAttribute(pWriter, "y", 	pY, null);
 		pWriter.endElement("rect");
 	}
+	
+	/**
+	 * Encode de Retangulo para grádico SVG
+	 * @param pComponent
+	 * @param pWriter
+	 * @param pStyleClass
+	 * @param pStyle
+	 * @param pX
+	 * @param pY
+	 * @throws IOException
+	 */
+	public static void encodeSVGText(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, String pStyle, Integer pX, Integer pY, String pText) throws IOException{
+		pWriter.startElement("text", pComponent);
+			DBSFaces.setAttribute(pWriter, "class", pStyleClass, null);
+			DBSFaces.setAttribute(pWriter, "style", pStyle, null);
+			DBSFaces.setAttribute(pWriter, "x", 	pX, null);
+			DBSFaces.setAttribute(pWriter, "y", 	pY, null);
+			pWriter.write(pText);
+		pWriter.endElement("text");
+	}
+	
 	
 
 	//UIComponent =========================================================================
