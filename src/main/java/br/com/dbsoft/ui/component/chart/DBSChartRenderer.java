@@ -14,12 +14,14 @@ import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
 import br.com.dbsoft.ui.component.chartvalue.DBSChartValue;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.util.DBSFormat;
 import br.com.dbsoft.util.DBSNumber;
+import br.com.dbsoft.util.DBSFormat.NUMBER_SIGN;
 
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSChart.RENDERER_TYPE)
 public class DBSChartRenderer extends DBSRenderer {
-	private static int wExtraLines = 6;
+
 	
 	@Override
 	public void decode(FacesContext pContext, UIComponent pComponent) {
@@ -156,6 +158,8 @@ public class DBSChartRenderer extends DBSRenderer {
 				}
 			}
 		}
+		//Largura da coluna dos valores
+		pChart.setFormatMaskWidth(DBSNumber.multiply(pChart.getFormatMask().length(), 5.5D).intValue());
 		//Valor Mínimo
 		pChart.setMinValue(xMinValue);
 		//Valor Máximo
@@ -168,20 +172,23 @@ public class DBSChartRenderer extends DBSRenderer {
 			if (xCount>1){
 				xWhiteSpace = DBSNumber.divide(DBSNumber.subtract(pChart.getWidth(), 
 												 				  DBSNumber.multiply(xCount, pChart.getLineWidth()),
-												 				  2),
+												 				  pChart.getFormatMaskWidth()),
 											   xCount-1).intValue();
 			}
 		}
 		//Posição da linha do zero
 		pChart.setZeroPosition(xZeroPosition);
-		//Espaço entre os valores
+		//Espaço entre as colunas
 		pChart.setWhiteSpace(xWhiteSpace);
-		
+		//Quantidade de linhas
+		pChart.setNumberOfScaleLines(4 + DBSNumber.divide(pChart.getHeight(), 60).intValue());
 	}
 	private void encodeLines(DBSChart pChart, ResponseWriter pWriter) throws IOException{
 		if (pChart.getType().equalsIgnoreCase(DBSChart.TYPE.BAR)){
 			if (pChart.getCaption()!=null){
+				//Linha top
 				DBSFaces.encodeSVGLine(pChart, pWriter, DBSFaces.CSS.MODIFIER.LINE, null, 0, 0, pChart.getWidth().intValue(), 0);
+				//Linha bottom
 				DBSFaces.encodeSVGLine(pChart, pWriter, DBSFaces.CSS.MODIFIER.LINE, null, 0, pChart.getHeight().intValue()-1, pChart.getWidth().intValue(), pChart.getHeight().intValue()-1);
 			}
 			//Linha base
@@ -192,29 +199,32 @@ public class DBSChartRenderer extends DBSRenderer {
 	}
 
 	private void encodeLinhaDeValores(DBSChart pChart, ResponseWriter pWriter) throws IOException{
-		Double xIncrementoValor = DBSNumber.divide(pChart.getTotalValue(), wExtraLines).doubleValue();
-		Double xIncrementoPosicao = DBSNumber.divide(pChart.getHeight() - 4, wExtraLines).doubleValue();
+		Double xIncrementoValor = DBSNumber.divide(pChart.getTotalValue(), pChart.getNumberOfScaleLines()).doubleValue();
+		Double xIncrementoPosicao = DBSNumber.divide(pChart.getHeight() - (DBSChart.Padding * 2), pChart.getNumberOfScaleLines()).doubleValue();
 		Double xPosicao = DBSNumber.toBigDecimal(pChart.getZeroPosition()).remainder(DBSNumber.toBigDecimal(xIncrementoPosicao)).doubleValue();
-		Double xValor = xIncrementoValor * 2;
-		for (int i=0; i <= wExtraLines; i++){
-			DBSFaces.encodeSVGLine(pChart, pWriter, DBSFaces.CSS.MODIFIER.LINE, null, 0, xPosicao.intValue(), pChart.getWidth().intValue(), xPosicao.intValue());
-			DBSFaces.encodeSVGText(pChart, pWriter,  DBSFaces.CSS.MODIFIER.LABEL, null, 60, xPosicao.intValue() + 8, xValor.toString());
+		Double xValor = (DBSNumber.divide(pChart.getMaxValue() / xIncrementoValor).intValue()) *  xIncrementoValor;
+		Integer xAjustePadrao = DBSChart.FontSize / 2;
+		Integer xAjuste = xAjustePadrao;
+		String xFormatedValue;
+		Double xValorTmp;
+		if (xPosicao < xAjustePadrao){
+			xAjuste = DBSChart.FontSize;
+		}
+		for (int i=0; i < pChart.getNumberOfScaleLines(); i++){
+			//Artifício para excluir o sinal (-) do valor zero quando o valor for por exemplo -0.002
+			xValorTmp = DBSNumber.toDouble(DBSFormat.getFormattedNumber(xValor, NUMBER_SIGN.MINUS_PREFIX, pChart.getFormatMask()));
+			xFormatedValue = DBSFormat.getFormattedNumber(xValorTmp, NUMBER_SIGN.MINUS_PREFIX, pChart.getFormatMask());
+			DBSFaces.encodeSVGLine(pChart, pWriter, DBSFaces.CSS.MODIFIER.LINE, null, 0, xPosicao.intValue(), pChart.getWidth().intValue() - pChart.getFormatMaskWidth(), xPosicao.intValue());
+			DBSFaces.encodeSVGText(pChart, pWriter,  DBSFaces.CSS.MODIFIER.LABEL, "text-anchor:end", pChart.getWidth().intValue(), xPosicao.intValue() + xAjuste, xFormatedValue);
 			xValor -= xIncrementoValor;
 			xPosicao += xIncrementoPosicao;
+			if (xPosicao > pChart.getHeight() - (DBSChart.Padding * 2) - xAjustePadrao){
+				xAjuste = 0;
+			}else{
+				xAjuste = xAjustePadrao;
+			}
 		}
 		
 	}
 
-
-//	private void encodeText(DBSChart pChart, ResponseWriter pWriter, String pTexto) throws IOException{
-//		if (pChart.getType().equalsIgnoreCase(DBSChart.TYPE.BAR)){
-//			pWriter.startElement("text", pChart);
-//				DBSFaces.setAttribute(pWriter, "x", "50%", null);
-//				DBSFaces.setAttribute(pWriter, "y", "12", null);
-//				pWriter.write(pTexto);
-//			pWriter.endElement("text");
-//		}
-//
-//	}
-	
 }

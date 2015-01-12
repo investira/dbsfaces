@@ -14,7 +14,9 @@ import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.chart.DBSChart;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.util.DBSFormat;
 import br.com.dbsoft.util.DBSNumber;
+import br.com.dbsoft.util.DBSFormat.NUMBER_SIGN;
 
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSChartValue.RENDERER_TYPE)
@@ -49,7 +51,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClass = DBSFaces.CSS.CHARTVALUE.MAIN + " ";
 		
-		Integer xIndexPosition = 1;
+		Integer xIndexPosition = 0;//DBSChart.Padding / 2;
 		Integer xZeroPosition = xChart.getZeroPosition();
 		Integer xValue = 0;
 		
@@ -61,8 +63,8 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			xClass = xClass + xChartValue.getStyleClass() + " ";
 		}
 	
-		//Calcula valor em pixel a partir do valor real. subtrai 4 pontos para data espaço na margem
-		xValue = DBSNumber.multiply(xChart.getHeight() - 4,
+		//Calcula valor em pixel a partir do valor real. subtrai padding para dar espaço para a margem
+		xValue = DBSNumber.multiply(xChart.getHeight() - (DBSChart.Padding * 2),
 				 					DBSNumber.divide(DBSNumber.abs(xChartValue.getValue()), 
 				 					  	  		     xChart.getTotalValue())).intValue();
 		
@@ -116,30 +118,32 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			}
 			
 			UIComponent xExtraInfo = xChartValue.getFacet("extrainfo");
-			if (xExtraInfo != null){
-				//Extrainfo
-				xWriter.startElement("foreignObject", xChartValue);
-					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.EXTRAINFO.trim(), null);
-					xWriter.startElement("span", xChartValue);
-						DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT.trim(), null);
-						String xExtraInfoStyle = "position:absolute;";
-						Long xLeft = xIndexPosition + xChart.getLineWidth();
-						Integer xTop = xZeroPosition;
-						if (xChartValue.getValue() < 0D){
-							xTop += xValue;
-							xExtraInfoStyle += "bottom:-" + xTop + "px;";
-						}else{
-							xExtraInfoStyle += "top:" + xTop + "px;";
-						}
-						xExtraInfoStyle += "left:" + xLeft + "px;";
-						
-						DBSFaces.setAttribute(xWriter, "style", xExtraInfoStyle, null);
+			//Extrainfo
+			xWriter.startElement("foreignObject", xChartValue);
+				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.EXTRAINFO.trim(), null);
+				xWriter.startElement("span", xChartValue);
+					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT.trim(), null);
+					String xExtraInfoStyle = "position:absolute;";
+					Long xLeft = xIndexPosition + xChart.getLineWidth();
+					Integer xTop = xZeroPosition;
+					if (xChartValue.getValue() < 0D){
+						xTop += xValue;
+						xExtraInfoStyle += "bottom:-" + xTop + "px;";
+					}else{
+						xExtraInfoStyle += "top:" + xTop + "px;";
+					}
+					xExtraInfoStyle += "left:" + xLeft + "px;";
+					
+					DBSFaces.setAttribute(xWriter, "style", xExtraInfoStyle, null);
+					//Se existir o facet Extrainfo
+					if (xExtraInfo != null){
 						xExtraInfo.encodeAll(pContext);
-//						renderChildren(pContext, xExtraInfo);
-					xWriter.endElement("span");
-				xWriter.endElement("foreignObject");
-			}
-
+					//Se não existir, encode o valor como extrainfo
+					}else{
+						xWriter.write(DBSFormat.getFormattedNumber(xChartValue.getValue(), NUMBER_SIGN.MINUS_PREFIX, xChart.getFormatMask()));
+					}
+				xWriter.endElement("span");
+			xWriter.endElement("foreignObject");
 		xWriter.endElement("g");
 	}
 

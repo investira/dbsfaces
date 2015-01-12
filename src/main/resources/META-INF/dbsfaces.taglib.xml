@@ -2192,6 +2192,14 @@
 		</attribute>
 		<attribute>
 			<description>
+                Mascará para formatar o valor
+            </description>
+			<name>formatMask</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>		
+		<attribute>
+			<description>
                 Class CSS que será utilizado com style
             </description>
 			<name>styleClass</name>

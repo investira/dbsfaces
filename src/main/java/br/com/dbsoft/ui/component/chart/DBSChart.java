@@ -17,18 +17,25 @@ public class DBSChart extends DBSUIInput implements NamingContainer{
 		public static String LINE = "line";
 		public static String PIE = "pie";
 	}
+	
+	public static final Integer Padding = 2;
+	public static final Integer FontSize = 8;
+	
 	protected enum PropertyKeys {
 		caption,
 		footer,
 		type,
 		width,
 		height,
+		formatMask,
 		lineWidth,
 
 		maxValue,
 		minValue,
 		zeroPosition,
-		whiteSpace;
+		whiteSpace,
+		formatMaskWidth,
+		numberOfScaleLines;
 
 		String toString;
 
@@ -84,6 +91,7 @@ public class DBSChart extends DBSUIInput implements NamingContainer{
 		handleAttribute("lineWidth", pLineWidth);
 	}
 
+	
 	public Long getHeight() {
 		return (Long) getStateHelper().eval(PropertyKeys.height, 50L);
 	}
@@ -98,6 +106,16 @@ public class DBSChart extends DBSUIInput implements NamingContainer{
 	public void setWidth(Long pWidth) {
 		getStateHelper().put(PropertyKeys.width, pWidth);
 		handleAttribute("width", pWidth);
+	}
+
+	
+	public String getFormatMask() {
+		return (String) getStateHelper().eval(PropertyKeys.formatMask, "");
+	}
+	
+	public void setFormatMask(String pFormatMask) {
+		getStateHelper().put(PropertyKeys.formatMask, pFormatMask);
+		handleAttribute("formatMask", pFormatMask);
 	}
 
 	public Double getMaxValue() {
@@ -135,5 +153,20 @@ public class DBSChart extends DBSUIInput implements NamingContainer{
 		getStateHelper().put(PropertyKeys.whiteSpace, pWhiteSpace);
 		handleAttribute("whiteSpace", pWhiteSpace);
 	}
+
+	public Integer getFormatMaskWidth() {
+		return (Integer) getStateHelper().eval(PropertyKeys.formatMaskWidth, 0);
+	}
+	public void setFormatMaskWidth(Integer pFormatMaskWidth) {
+		getStateHelper().put(PropertyKeys.formatMaskWidth, pFormatMaskWidth);
+		handleAttribute("formatMaskWidth", pFormatMaskWidth);
+	}
 	
+	public Integer getNumberOfScaleLines() {
+		return (Integer) getStateHelper().eval(PropertyKeys.numberOfScaleLines, 6);
+	}
+	public void setNumberOfScaleLines(Integer pNumberOfScaleLines) {
+		getStateHelper().put(PropertyKeys.numberOfScaleLines, pNumberOfScaleLines);
+		handleAttribute("numberOfScaleLines", pNumberOfScaleLines);
+	}
 }
