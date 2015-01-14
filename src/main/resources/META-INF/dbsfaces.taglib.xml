@@ -2175,6 +2175,13 @@
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
+			<description>Tipo de gráfico. bar, line, pie. Padrão é bar.
+            </description>
+			<name>type</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
 			<description>
                 Título
             </description>
@@ -2239,32 +2246,25 @@
 			<type>java.lang.Boolean</type>
 		</attribute>		
 		<attribute>
-			<description>Tipo de gráfico. bar, line, pie. Padrão é bar.
-            </description>
-			<name>type</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
 			<description>Largura da linha em pontos
             </description>
 			<name>lineWidth</name>
 			<required>true</required>
-			<type>java.lang.Long</type>
+			<type>java.lang.Integer</type>
 		</attribute>
 		<attribute>
 			<description>Altura do gráfico em px
             </description>
 			<name>width</name>
 			<required>true</required>
-			<type>java.lang.Long</type>
+			<type>java.lang.Integer</type>
 		</attribute>
 		<attribute>
 			<description>Largura do gráfico em px
             </description>
 			<name>height</name>
 			<required>true</required>
-			<type>java.lang.Long</type>
+			<type>java.lang.Integer</type>
 		</attribute>				
 	</tag>	
 	<tag>

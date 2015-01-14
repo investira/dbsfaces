@@ -61,7 +61,7 @@ public class DBSChart extends DBSUIInput implements NamingContainer{
 	
 
 	public String getType() {
-		return (String) getStateHelper().eval(PropertyKeys.type, TYPE.BAR);
+		return (String) getStateHelper().eval(PropertyKeys.type, null);
 	}
 	
 	public void setType(String pType) {
@@ -87,10 +87,10 @@ public class DBSChart extends DBSUIInput implements NamingContainer{
 		handleAttribute("footer", pFooter);
 	}
 	
-	public Long getLineWidth() {
-		return (Long) getStateHelper().eval(PropertyKeys.lineWidth, 1L);
+	public Integer getLineWidth() {
+		return (Integer) getStateHelper().eval(PropertyKeys.lineWidth, 1L);
 	}
-	public void setLineWidth(Long pLineWidth) {
+	public void setLineWidth(Integer pLineWidth) {
 		getStateHelper().put(PropertyKeys.lineWidth, pLineWidth);
 		handleAttribute("lineWidth", pLineWidth);
 	}
@@ -112,25 +112,22 @@ public class DBSChart extends DBSUIInput implements NamingContainer{
 	}
 
 
-
-	//--------------------
-	public Long getHeight() {
-		return (Long) getStateHelper().eval(PropertyKeys.height, 50L);
+	public Integer getHeight() {
+		return (Integer) getStateHelper().eval(PropertyKeys.height, 50L);
 	}
-	public void setHeight(Long pHeight) {
+	public void setHeight(Integer pHeight) {
 		getStateHelper().put(PropertyKeys.height, pHeight);
 		handleAttribute("hight", pHeight);
 	}
 
-	public Long getWidth() {
-		return (Long) getStateHelper().eval(PropertyKeys.width, 50L);
+	public Integer getWidth() {
+		return (Integer) getStateHelper().eval(PropertyKeys.width, 50L);
 	}
-	public void setWidth(Long pWidth) {
+	public void setWidth(Integer pWidth) {
 		getStateHelper().put(PropertyKeys.width, pWidth);
 		handleAttribute("width", pWidth);
 	}
 
-	
 	public String getValueFormatMask() {
 		return (String) getStateHelper().eval(PropertyKeys.ValueFormatMask, "");
 	}
@@ -139,6 +136,8 @@ public class DBSChart extends DBSUIInput implements NamingContainer{
 		getStateHelper().put(PropertyKeys.ValueFormatMask, pValueFormatMask);
 		handleAttribute("valueFormatMask", pValueFormatMask);
 	}
+
+	//--------------------
 
 	public Double getMaxValue() {
 		return (Double) getStateHelper().eval(PropertyKeys.maxValue, 50D);
@@ -201,8 +200,8 @@ public class DBSChart extends DBSUIInput implements NamingContainer{
 		return (Boolean) getStateHelper().eval(PropertyKeys.showLabel, false);
 	}
 	
-	public Long getChartHeight(){
-		Long xChartHeight = getHeight();
+	public Integer getChartHeight(){
+		Integer xChartHeight = getHeight();
 		if (getShowLabel()){
 			xChartHeight -= DBSChart.FontSize;
 		}

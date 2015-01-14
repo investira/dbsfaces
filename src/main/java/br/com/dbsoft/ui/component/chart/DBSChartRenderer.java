@@ -44,7 +44,8 @@ public class DBSChartRenderer extends DBSRenderer {
 			throws IOException {
 		if (!pComponent.isRendered()){return;}
 		DBSChart xChart = (DBSChart) pComponent;
-		
+		if (xChart.getType()==null){return;}		
+
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClass = DBSFaces.CSS.CHART.MAIN + " ";
 		String xStyle = "width:" + xChart.getWidth() + "px; height:" + xChart.getHeight() + "px;";
@@ -100,9 +101,12 @@ public class DBSChartRenderer extends DBSRenderer {
 							//DATA--------------------------
 							xWriter.startElement("g", xChart);
 								DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.VALUE, null);
-								//Linhas de marcação
-								pvEncodeLines(xChart, xWriter);
-		
+								xWriter.startElement("g", xChart);
+									DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.GRID, null);
+									//Linhas de marcação
+									pvEncodeLines(xChart, xWriter);
+								xWriter.endElement("g");
+								
 								renderChildren(pContext, xChart);
 							xWriter.endElement("g");
 							
@@ -177,7 +181,9 @@ public class DBSChartRenderer extends DBSRenderer {
 		pChart.setMinValue(xMinValue);
 		//Valor Máximo
 		pChart.setMaxValue(xMaxValue);
-		if (pChart.getType().equalsIgnoreCase(DBSChart.TYPE.BAR)){
+		if (pChart.getType().equalsIgnoreCase(DBSChart.TYPE.BAR)
+		 || pChart.getType().equalsIgnoreCase(DBSChart.TYPE.LINE)){
+			//Calcula posição da linha zero
 			xZeroPosition = DBSNumber.multiply(pChart.getChartHeight(),
 					   						   DBSNumber.divide(DBSNumber.abs(xMaxValue), 
 					   								   			pChart.getTotalValue())).intValue();
@@ -198,7 +204,8 @@ public class DBSChartRenderer extends DBSRenderer {
 	}
 	
 	private void pvEncodeLines(DBSChart pChart, ResponseWriter pWriter) throws IOException{
-		if (pChart.getType().equalsIgnoreCase(DBSChart.TYPE.BAR)){
+		if (pChart.getType().equalsIgnoreCase(DBSChart.TYPE.BAR)
+		 || pChart.getType().equalsIgnoreCase(DBSChart.TYPE.LINE)){
 			if (pChart.getCaption()!=null){
 				//Linha top
 				DBSFaces.encodeSVGLine(pChart, pWriter, DBSFaces.CSS.MODIFIER.LINE, null, 0, 0, pChart.getWidth().intValue(), 0);

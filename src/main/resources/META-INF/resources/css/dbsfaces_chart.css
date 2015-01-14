@@ -46,14 +46,17 @@
 .dbs_chart > .-container > .-data > .-container > .-content > .-value{
 }	
 
-.dbs_chart > .-container > .-data > .-container > .-content > .-value > .-line{
+.dbs_chart > .-container > .-data > .-container > .-content > .-value > .-grid {
 	stroke: rgb(220,220,220);
 	stroke-width: 1px;
 }
 
-.dbs_chart > .-container > .-data > .-container > .-content > .-value .-label{
+.dbs_chart > .-container > .-data > .-container > .-content > .-value > .-grid > .-label{
 	font-size: 8px;
 	fill: rgb(220,220,220);
+}
+
+.dbs_chart > .-container > .-data > .-container > .-content > .-value > .-grid > .-line{
 }
 
 .dbs_chart > .-container > .-data > .-container > .-content > .-right{

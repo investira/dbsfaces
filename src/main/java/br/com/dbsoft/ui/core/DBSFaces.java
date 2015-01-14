@@ -1430,11 +1430,35 @@ public class  DBSFaces {
 			DBSFaces.setAttribute(pWriter, "x", 	pX, null);
 			DBSFaces.setAttribute(pWriter, "y", 	pY, null);
 			
-			DBSFaces.setAttribute(pWriter, "width", pWidth, null);
 			DBSFaces.setAttribute(pWriter, "height", pHeight, null);
+			DBSFaces.setAttribute(pWriter, "width", pWidth, null);
 			DBSFaces.setAttribute(pWriter, "fill",	pFill, null);			
 		pWriter.endElement("rect");
 	}
+	
+	/**
+	 * Encode de Circulo/Elipse para grádico SVG
+	 * @param pComponent
+	 * @param pWriter
+	 * @param pStyleClass
+	 * @param pStyle
+	 * @param pX
+	 * @param pY
+	 * @throws IOException
+	 */
+	public static void encodeSVGCircle(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, String pStyle, Integer pX, Integer pY, Integer pHeight, Integer pWidth, String pFill) throws IOException{
+		pWriter.startElement("ellipse", pComponent);
+			DBSFaces.setAttribute(pWriter, "class", pStyleClass, null);
+			DBSFaces.setAttribute(pWriter, "style", pStyle, null);
+			DBSFaces.setAttribute(pWriter, "cx", 	pX, null);
+			DBSFaces.setAttribute(pWriter, "cy", 	pY, null);
+			
+			DBSFaces.setAttribute(pWriter, "rx", pWidth, null);
+			DBSFaces.setAttribute(pWriter, "ry", pHeight, null);
+			DBSFaces.setAttribute(pWriter, "fill",	pFill, null);			
+		pWriter.endElement("ellipse");
+	}
+	
 	
 	/**
 	 * Encode de Retangulo para grádico SVG

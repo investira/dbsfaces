@@ -63,11 +63,6 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			xClass = xClass + xChartValue.getStyleClass() + " ";
 		}
 	
-		//Calcula valor em pixel a partir do valor real. subtrai padding para dar espaço para a margem
-		xValue = DBSNumber.multiply(xChart.getChartHeight() - (DBSChart.Padding * 2),
-				 					DBSNumber.divide(DBSNumber.abs(xChartValue.getValue()), 
-				 					  	  		     xChart.getTotalValue())).intValue();
-		
 		String xClientId = xChartValue.getClientId(pContext);
 
 		xWriter.startElement("g", xChartValue);
@@ -76,38 +71,46 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "class", xClass, null);
 			DBSFaces.setAttribute(xWriter, "style", xChartValue.getStyle(), null);
 			
-//			xWriter.startElement("foreignObject", xChartValue);
-//				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.EXTRAINFO.trim(), null);
-//				xWriter.startElement("span", xChartValue);
-//					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT.trim(), null);
-//					renderChildren(pContext, xChartValue);
-//				xWriter.endElement("span");
-//			xWriter.endElement("foreignObject");
-
 			//Grafico
-			if (xChart.getType().equalsIgnoreCase(DBSChart.TYPE.BAR)){
-				//Força a exibição de pelo menos uma linha caso valor não seja zero, mas o tamanho ajustado dê zero
-				if (xValue == 0
-				 && xChartValue.getValue() != 0D){
-					xValue = 1;
-				}
+			if (xChart.getType().equalsIgnoreCase(DBSChart.TYPE.BAR)
+			 || xChart.getType().equalsIgnoreCase(DBSChart.TYPE.LINE)){
+				//Calcula valor em pixel a partir do valor real. subtrai padding para dar espaço para a margem
+				xValue = DBSNumber.multiply(xChart.getChartHeight() - (DBSChart.Padding * 2),
+						 					DBSNumber.divide(xChartValue.getValue(), 
+						 					  	  		     xChart.getTotalValue())).intValue();
 				
-				//Ajusta para posição inicial da barra 
-				if (xChartValue.getValue() > 0D){
-					xZeroPosition -= xValue;
-				}
-						
-				//Calcula posição da próxima barra
-				xIndexPosition += DBSNumber.multiply(xChartValue.getIndex() - 1,
-													 xChart.getLineWidth() + xChart.getWhiteSpace()).intValue();
-				//Encode barra
-				DBSFaces.encodeSVGRect(xChartValue, xWriter, null, null, xIndexPosition, xZeroPosition, xValue, xChart.getLineWidth().intValue(), xChartValue.getFillColor());
+				//Seta valor absolute dentro do gráfico
+				xChartValue.setAbsoluteY(DBSNumber.subtract(xChart.getZeroPosition(), xValue).intValue());
+				//Seta valor absolute dentro do gráfico
+				xChartValue.setAbsoluteX(DBSNumber.multiply(xChartValue.getIndex() - 1,
+													 		xChart.getLineWidth() + xChart.getWhiteSpace()).intValue());
 				
-				//Encode label
+				//Encode label da coluna
 				if (xChartValue.getLabel() != null){
-					DBSFaces.encodeSVGText(xChartValue, xWriter,  DBSFaces.CSS.MODIFIER.LABEL, "text-anchor:middle", xIndexPosition + (xChart.getLineWidth().intValue()/2), xChart.getHeight().intValue(), xChartValue.getLabel());
+					DBSFaces.encodeSVGText(xChartValue, xWriter,  DBSFaces.CSS.MODIFIER.LABEL, "text-anchor:middle", xChartValue.getAbsoluteX() + (xChart.getLineWidth().intValue()/2), xChart.getHeight().intValue(), xChartValue.getLabel());
+				}
+
+				//Encode barra
+				if (xChart.getType().equalsIgnoreCase(DBSChart.TYPE.BAR)){
+					if (xValue.equals(0)){
+						xValue = 3;
+						xChartValue.setAbsoluteY(xChart.getZeroPosition() -1);					
+					}
+					//Utliza valor absolute
+					xValue = DBSNumber.abs(xValue);
+					if (xChartValue.getAbsoluteY() < xChart.getZeroPosition()){
+						DBSFaces.encodeSVGRect(xChartValue, xWriter, null, null, xChartValue.getAbsoluteX(), xChartValue.getAbsoluteY(), xValue, xChart.getLineWidth().intValue(), xChartValue.getFillColor());
+					}else{
+						DBSFaces.encodeSVGRect(xChartValue, xWriter, null, null, xChartValue.getAbsoluteX(), xChart.getZeroPosition(), xValue, xChart.getLineWidth().intValue(), xChartValue.getFillColor());
+					}
+				//Encode line
+				}else if (xChart.getType().equalsIgnoreCase(DBSChart.TYPE.LINE)){
+					xChartValue.setAbsoluteX(xChartValue.getAbsoluteX() + DBSNumber.divide(xChart.getLineWidth(), 2).intValue());
+					DBSFaces.encodeSVGCircle(xChartValue, xWriter, DBSFaces.CSS.MODIFIER.VALUE, null, xChartValue.getAbsoluteX(), xChartValue.getAbsoluteY(), 2, 2, "red");
 				}
 			}
+			
+
 			
 			UIComponent xExtraInfo = xChartValue.getFacet("extrainfo");
 			//Extrainfo
@@ -116,15 +119,16 @@ public class DBSChartValueRenderer extends DBSRenderer {
 				xWriter.startElement("span", xChartValue);
 					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT.trim(), null);
 					String xExtraInfoStyle = "position:absolute;";
-					Long xLeft = xIndexPosition + xChart.getLineWidth();
-					Integer xTop = xZeroPosition;
-					if (xChartValue.getValue() < 0D){
-						xTop += xValue;
-						xExtraInfoStyle += "bottom:-" + xTop + "px;";
-					}else{
-						xExtraInfoStyle += "top:" + xTop + "px;";
+					
+					if (xChart.getType().equalsIgnoreCase(DBSChart.TYPE.BAR)
+					 || xChart.getType().equalsIgnoreCase(DBSChart.TYPE.LINE)){
+						xExtraInfoStyle += "left:" + (xChartValue.getAbsoluteX() + DBSNumber.divide(xChart.getLineWidth() + xChart.getWhiteSpace(),2).intValue()) + "px;";
+						if (xChartValue.getValue() < 0D){
+							xExtraInfoStyle += "bottom:-" + xChartValue.getAbsoluteY() + "px;";
+						}else{
+							xExtraInfoStyle += "top:" + xChartValue.getAbsoluteY() + "px;";
+						}
 					}
-					xExtraInfoStyle += "left:" + xLeft + "px;";
 					
 					DBSFaces.setAttribute(xWriter, "style", xExtraInfoStyle, null);
 					//Se existir o facet Extrainfo

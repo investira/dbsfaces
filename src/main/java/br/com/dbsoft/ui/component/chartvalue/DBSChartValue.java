@@ -15,7 +15,9 @@ public class DBSChartValue extends DBSUIInput implements NamingContainer {
 
 	protected enum PropertyKeys {
 		index,
-		fillColor;
+		fillColor,
+		absoluteX,
+		absoluteY;
 
 		String toString;
 
@@ -61,5 +63,19 @@ public class DBSChartValue extends DBSUIInput implements NamingContainer {
 		return DBSNumber.toDouble(super.getValue());
 	}
 
-	
+	public Integer getAbsoluteX() {
+		return (Integer) getStateHelper().eval(PropertyKeys.absoluteX, "absoluteX");
+	}
+	public void setAbsoluteX(Integer pAbsoluteX) {
+		getStateHelper().put(PropertyKeys.absoluteX, pAbsoluteX);
+		handleAttribute("absoluteX", pAbsoluteX);
+	}
+
+	public Integer getAbsoluteY() {
+		return (Integer) getStateHelper().eval(PropertyKeys.absoluteY, "absoluteY");
+	}
+	public void setAbsoluteY(Integer pAbsoluteY) {
+		getStateHelper().put(PropertyKeys.absoluteY, pAbsoluteY);
+		handleAttribute("absoluteY", pAbsoluteY);
+	}
 }
