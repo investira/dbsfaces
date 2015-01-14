@@ -2194,7 +2194,7 @@
 			<description>
                 Mascará para formatar o valor
             </description>
-			<name>formatMask</name>
+			<name>valueFormatMask</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>		
@@ -2222,6 +2222,22 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
+		<attribute>
+			<description>
+                Indica se grid será exibido.
+            </description>
+			<name>showGrid</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>		
+		<attribute>
+			<description>
+                Indica se valor do grid será exibido.
+            </description>
+			<name>showGridValue</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>		
 		<attribute>
 			<description>Tipo de gráfico. bar, line, pie. Padrão é bar.
             </description>
@@ -2296,6 +2312,14 @@
 			<name>value</name>
 			<required>true</required>
 			<type>java.lang.Double</type>
+		</attribute>
+		<attribute>
+			<description>
+				Label que será exibido no rodapé. 
+            </description>
+			<name>label</name>
+			<required>false</required>
+			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
 			<description>

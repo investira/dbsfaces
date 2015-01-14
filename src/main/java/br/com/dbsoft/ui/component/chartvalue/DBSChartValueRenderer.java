@@ -64,7 +64,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		}
 	
 		//Calcula valor em pixel a partir do valor real. subtrai padding para dar espaço para a margem
-		xValue = DBSNumber.multiply(xChart.getHeight() - (DBSChart.Padding * 2),
+		xValue = DBSNumber.multiply(xChart.getChartHeight() - (DBSChart.Padding * 2),
 				 					DBSNumber.divide(DBSNumber.abs(xChartValue.getValue()), 
 				 					  	  		     xChart.getTotalValue())).intValue();
 		
@@ -100,21 +100,13 @@ public class DBSChartValueRenderer extends DBSRenderer {
 				//Calcula posição da próxima barra
 				xIndexPosition += DBSNumber.multiply(xChartValue.getIndex() - 1,
 													 xChart.getLineWidth() + xChart.getWhiteSpace()).intValue();
+				//Encode barra
+				DBSFaces.encodeSVGRect(xChartValue, xWriter, null, null, xIndexPosition, xZeroPosition, xValue, xChart.getLineWidth().intValue(), xChartValue.getFillColor());
 				
-				xWriter.startElement("rect", xChartValue);
-					DBSFaces.setAttribute(xWriter, "x", 	xIndexPosition, null);
-					DBSFaces.setAttribute(xWriter, "y", 	xZeroPosition, null);
-					DBSFaces.setAttribute(xWriter, "width", xChart.getLineWidth(), null);
-					DBSFaces.setAttribute(xWriter, "height", xValue, null);
-					DBSFaces.setAttribute(xWriter, "fill",	xChartValue.getFillColor(), null);
-//					DBSFaces.setAttribute(xWriter, "rx", 	"2", null);
-//					DBSFaces.setAttribute(xWriter, "ry", 	"2", null);
-	
-					RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xChartValue, DBSPassThruAttributes.getAttributes(Key.DIV));
-					encodeClientBehaviors(pContext, xChartValue);
-					pvEncodeJS(xClientId, xWriter);
-
-				xWriter.endElement("rect");
+				//Encode label
+				if (xChartValue.getLabel() != null){
+					DBSFaces.encodeSVGText(xChartValue, xWriter,  DBSFaces.CSS.MODIFIER.LABEL, "text-anchor:middle", xIndexPosition + (xChart.getLineWidth().intValue()/2), xChart.getHeight().intValue(), xChartValue.getLabel());
+				}
 			}
 			
 			UIComponent xExtraInfo = xChartValue.getFacet("extrainfo");
@@ -140,10 +132,15 @@ public class DBSChartValueRenderer extends DBSRenderer {
 						xExtraInfo.encodeAll(pContext);
 					//Se não existir, encode o valor como extrainfo
 					}else{
-						xWriter.write(DBSFormat.getFormattedNumber(xChartValue.getValue(), NUMBER_SIGN.MINUS_PREFIX, xChart.getFormatMask()));
+						xWriter.write(DBSFormat.getFormattedNumber(xChartValue.getValue(), NUMBER_SIGN.MINUS_PREFIX, xChart.getValueFormatMask()));
 					}
 				xWriter.endElement("span");
 			xWriter.endElement("foreignObject");
+			
+			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xChartValue, DBSPassThruAttributes.getAttributes(Key.DIV));
+			encodeClientBehaviors(pContext, xChartValue);
+			pvEncodeJS(xClientId, xWriter);
+		
 		xWriter.endElement("g");
 	}
 

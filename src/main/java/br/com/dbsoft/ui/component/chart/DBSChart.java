@@ -12,14 +12,15 @@ public class DBSChart extends DBSUIInput implements NamingContainer{
 	
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.CHART;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
+	public static final Integer Padding = 2;
+	public static final Integer FontSize = 8;
+	
 	public static class TYPE{
 		public static String BAR = "bar";
 		public static String LINE = "line";
 		public static String PIE = "pie";
 	}
 	
-	public static final Integer Padding = 2;
-	public static final Integer FontSize = 8;
 	
 	protected enum PropertyKeys {
 		caption,
@@ -27,15 +28,18 @@ public class DBSChart extends DBSUIInput implements NamingContainer{
 		type,
 		width,
 		height,
-		formatMask,
+		ValueFormatMask,
 		lineWidth,
+		showGrid,
+		showGridValue,
 
 		maxValue,
 		minValue,
 		zeroPosition,
 		whiteSpace,
 		formatMaskWidth,
-		numberOfScaleLines;
+		numberOfGridLines,
+		showLabel;
 
 		String toString;
 
@@ -91,7 +95,25 @@ public class DBSChart extends DBSUIInput implements NamingContainer{
 		handleAttribute("lineWidth", pLineWidth);
 	}
 
-	
+	public Boolean getShowGrid() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.showGrid, true);
+	}
+	public void setShowGrid(Boolean pShowGrid) {
+		getStateHelper().put(PropertyKeys.showGrid, pShowGrid);
+		handleAttribute("showGrid", pShowGrid);
+	}
+
+	public Boolean getShowGridValue() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.showGridValue, true);
+	}
+	public void setShowGridValue(Boolean pShowGridValue) {
+		getStateHelper().put(PropertyKeys.showGridValue, pShowGridValue);
+		handleAttribute("showGridValue", pShowGridValue);
+	}
+
+
+
+	//--------------------
 	public Long getHeight() {
 		return (Long) getStateHelper().eval(PropertyKeys.height, 50L);
 	}
@@ -109,13 +131,13 @@ public class DBSChart extends DBSUIInput implements NamingContainer{
 	}
 
 	
-	public String getFormatMask() {
-		return (String) getStateHelper().eval(PropertyKeys.formatMask, "");
+	public String getValueFormatMask() {
+		return (String) getStateHelper().eval(PropertyKeys.ValueFormatMask, "");
 	}
 	
-	public void setFormatMask(String pFormatMask) {
-		getStateHelper().put(PropertyKeys.formatMask, pFormatMask);
-		handleAttribute("formatMask", pFormatMask);
+	public void setValueFormatMask(String pValueFormatMask) {
+		getStateHelper().put(PropertyKeys.ValueFormatMask, pValueFormatMask);
+		handleAttribute("valueFormatMask", pValueFormatMask);
 	}
 
 	public Double getMaxValue() {
@@ -162,11 +184,28 @@ public class DBSChart extends DBSUIInput implements NamingContainer{
 		handleAttribute("formatMaskWidth", pFormatMaskWidth);
 	}
 	
-	public Integer getNumberOfScaleLines() {
-		return (Integer) getStateHelper().eval(PropertyKeys.numberOfScaleLines, 6);
+	public Integer getNumberOfGridLines() {
+		return (Integer) getStateHelper().eval(PropertyKeys.numberOfGridLines, 6);
 	}
-	public void setNumberOfScaleLines(Integer pNumberOfScaleLines) {
-		getStateHelper().put(PropertyKeys.numberOfScaleLines, pNumberOfScaleLines);
-		handleAttribute("numberOfScaleLines", pNumberOfScaleLines);
+	public void setNumberOfGridLines(Integer pNumberOfGridLines) {
+		getStateHelper().put(PropertyKeys.numberOfGridLines, pNumberOfGridLines);
+		handleAttribute("numberOfGridLines", pNumberOfGridLines);
+	}
+	
+	public void setShowLabel(Boolean pShowLabel) {
+		getStateHelper().put(PropertyKeys.showLabel, pShowLabel);
+		handleAttribute("readOnly", pShowLabel);
+	}
+	
+	public Boolean getShowLabel() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.showLabel, false);
+	}
+	
+	public Long getChartHeight(){
+		Long xChartHeight = getHeight();
+		if (getShowLabel()){
+			xChartHeight -= DBSChart.FontSize;
+		}
+		return xChartHeight;
 	}
 }

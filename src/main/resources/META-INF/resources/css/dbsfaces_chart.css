@@ -51,7 +51,7 @@
 	stroke-width: 1px;
 }
 
-.dbs_chart > .-container > .-data > .-container > .-content > .-value > .-label{
+.dbs_chart > .-container > .-data > .-container > .-content > .-value .-label{
 	font-size: 8px;
 	fill: rgb(220,220,220);
 }

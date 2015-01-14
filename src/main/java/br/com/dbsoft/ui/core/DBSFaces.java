@@ -171,53 +171,54 @@ public class  DBSFaces {
 		
 		public static class MODIFIER
 		{
-			public static final String CLOSABLE = " -closable ";
-			public static final String CLOSED = " -closed ";
-			public static final String SELECTED = " -selected ";
-			public static final String SELECTABLE = " -selectable ";
-			public static final String NOT_SELECTABLE = " -not_selectable ";
+			public static final String AJAX = " -ajax ";
+			public static final String BUTTON = " -button ";
 			public static final String CAPTION = " -caption ";
+			public static final String CHECKBOX = " -checkbox ";
+			public static final String OPENED = " -opened ";
+			public static final String CLOSED = " -closed ";
+			public static final String CLOSABLE = " -closable ";
+			public static final String CONTAINER = " -container ";
+			public static final String CONTENT = " -content ";
+			public static final String COVER = " -cover ";
+			public static final String DATA = " -data ";
+			public static final String DISABLED = " -disabled ";
+			public static final String ERROR = " -error ";
+			public static final String EVEN = " -even ";
+			public static final String ODD = " -odd ";
+			public static final String EXTRAINFO = " -extrainfo ";
+			public static final String FILTER = " -filter ";
+			public static final String FORM = " -form ";
 			public static final String HEADER = " -header ";
 			public static final String FOOTER = " -footer ";
-			public static final String FILTER = " -filter ";
-			public static final String INPUT = " -input ";
-			public static final String TITLE = " -title ";
-			public static final String MASK = " -mask ";
-			public static final String SUBTITLE = " -subtitle ";
-			public static final String COVER = " -cover ";
-			public static final String CONTENT = " -content ";
-			public static final String FORM = " -form ";
-			public static final String LABEL = " -label ";
-			public static final String CHECKBOX = " -checkbox ";
+			public static final String GRID = " -grid ";
 			public static final String ICON = " -icon ";
-			public static final String LOADING = " -loading ";
-			public static final String OPENED = " -opened ";
-			public static final String NORMAL = " -normal ";
-			public static final String CONTAINER = " -container ";
-			public static final String TOOLBAR = " -toolbar ";
 			public static final String ICONCLOSE = " -iconclose ";
-			public static final String DISABLED = " -disabled ";
-			public static final String MESSAGE = " -message ";
-			public static final String DATA = " -data ";
-			public static final String ODD = " -odd ";
-			public static final String EVEN = " -even ";
-			public static final String ROW = " -row ";
-			public static final String TOOLTIP = " -tooltip ";
+			public static final String INPUT = " -input ";
+			public static final String KEY = " -key ";
+			public static final String LABEL = " -label ";
+			public static final String LAST = " -last ";
+			public static final String LEFT = " -left ";
 			public static final String CENTER = " -center ";
 			public static final String RIGHT = " -right ";
-			public static final String LEFT = " -left ";
-			public static final String BUTTON = " -button ";
-			public static final String READONLY = " -readOnly ";
-			public static final String AJAX = " -ajax ";
-			public static final String SUGGESTION = " -suggestion ";
-			public static final String SUBMIT = " -submit ";
-			public static final String KEY = " -key ";
-			public static final String VALUE = " -value ";
-			public static final String LAST = " -last ";
-			public static final String EXTRAINFO = " -extrainfo ";
-			public static final String ERROR = " -error ";
-			public static final String PUSHDISABLED = " -pushDisabled ";
 			public static final String LINE = " -line ";
+			public static final String LOADING = " -loading ";
+			public static final String MASK = " -mask ";
+			public static final String MESSAGE = " -message ";
+			public static final String NORMAL = " -normal ";
+			public static final String PUSHDISABLED = " -pushDisabled ";
+			public static final String READONLY = " -readOnly ";
+			public static final String ROW = " -row ";
+			public static final String NOT_SELECTABLE = " -not_selectable ";
+			public static final String SELECTABLE = " -selectable ";
+			public static final String SELECTED = " -selected ";
+			public static final String SUBMIT = " -submit ";
+			public static final String SUGGESTION = " -suggestion ";
+			public static final String TITLE = " -title ";
+			public static final String SUBTITLE = " -subtitle ";
+			public static final String TOOLBAR = " -toolbar ";
+			public static final String TOOLTIP = " -tooltip ";
+			public static final String VALUE = " -value ";
 		}
 
 		public static class CRUDFORM
@@ -437,6 +438,7 @@ public class  DBSFaces {
 		public static class CHART
 		{	
 			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.CHART;
+//			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.CHART;
 		}
 		
 		public static class CHARTVALUE
@@ -1421,12 +1423,16 @@ public class  DBSFaces {
 	 * @param pY
 	 * @throws IOException
 	 */
-	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, String pStyle, Integer pX, Integer pY) throws IOException{
+	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, String pStyle, Integer pX, Integer pY, Integer pHeight, Integer pWidth, String pFill) throws IOException{
 		pWriter.startElement("rect", pComponent);
 			DBSFaces.setAttribute(pWriter, "class", pStyleClass, null);
 			DBSFaces.setAttribute(pWriter, "style", pStyle, null);
 			DBSFaces.setAttribute(pWriter, "x", 	pX, null);
 			DBSFaces.setAttribute(pWriter, "y", 	pY, null);
+			
+			DBSFaces.setAttribute(pWriter, "width", pWidth, null);
+			DBSFaces.setAttribute(pWriter, "height", pHeight, null);
+			DBSFaces.setAttribute(pWriter, "fill",	pFill, null);			
 		pWriter.endElement("rect");
 	}
 	
@@ -1446,7 +1452,9 @@ public class  DBSFaces {
 			DBSFaces.setAttribute(pWriter, "style", pStyle, null);
 			DBSFaces.setAttribute(pWriter, "x", 	pX, null);
 			DBSFaces.setAttribute(pWriter, "y", 	pY, null);
-			pWriter.write(pText);
+			if (pText != null){
+				pWriter.write(pText);
+			}
 		pWriter.endElement("text");
 	}
 	
