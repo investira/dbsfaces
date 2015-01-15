@@ -51,8 +51,6 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClass = DBSFaces.CSS.CHARTVALUE.MAIN + " ";
 		
-		Integer xIndexPosition = 0;//DBSChart.Padding / 2;
-		Integer xZeroPosition = xChart.getZeroPosition();
 		Integer xValue = 0;
 		
 		//Configura id a partir do index
