@@ -32,9 +32,9 @@ public class DBSChart extends DBSUIInput implements NamingContainer{
 		lineWidth,
 		showGrid,
 		showGridValue,
-
 		maxValue,
 		minValue,
+
 		zeroPosition,
 		whiteSpace,
 		formatMaskWidth,
@@ -140,7 +140,7 @@ public class DBSChart extends DBSUIInput implements NamingContainer{
 	//--------------------
 
 	public Double getMaxValue() {
-		return (Double) getStateHelper().eval(PropertyKeys.maxValue, 50D);
+		return (Double) getStateHelper().eval(PropertyKeys.maxValue, null);
 	}
 	public void setMaxValue(Double pMaxValue) {
 		getStateHelper().put(PropertyKeys.maxValue, pMaxValue);
@@ -148,7 +148,7 @@ public class DBSChart extends DBSUIInput implements NamingContainer{
 	}
 
 	public Double getMinValue() {
-		return (Double) getStateHelper().eval(PropertyKeys.minValue, 50D);
+		return (Double) getStateHelper().eval(PropertyKeys.minValue, null);
 	}
 	public void setMinValue(Double pMinValue) {
 		getStateHelper().put(PropertyKeys.minValue, pMinValue);

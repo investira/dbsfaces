@@ -2231,7 +2231,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Indica se grid será exibido.
+                Indica se grid será exibido. Padrão é true.
             </description>
 			<name>showGrid</name>
 			<required>false</required>
@@ -2239,7 +2239,7 @@
 		</attribute>		
 		<attribute>
 			<description>
-                Indica se valor do grid será exibido.
+                Indica se valor do grid será exibido. Padrão é true.
             </description>
 			<name>showGridValue</name>
 			<required>false</required>

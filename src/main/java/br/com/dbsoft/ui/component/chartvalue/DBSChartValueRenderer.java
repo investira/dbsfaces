@@ -90,7 +90,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 					DBSFaces.encodeSVGText(xChartValue, xWriter,  DBSFaces.CSS.MODIFIER.LABEL, "text-anchor:middle", xChartValue.getAbsoluteX() + (xChart.getLineWidth().intValue()/2), xChart.getHeight().intValue(), xChartValue.getLabel());
 				}
 
-				//Encode barra
+				//Encode bar
 				if (xChart.getType().equalsIgnoreCase(DBSChart.TYPE.BAR)){
 					if (xValue.equals(0)){
 						xValue = 3;
@@ -103,14 +103,12 @@ public class DBSChartValueRenderer extends DBSRenderer {
 					}else{
 						DBSFaces.encodeSVGRect(xChartValue, xWriter, null, null, xChartValue.getAbsoluteX(), xChart.getZeroPosition(), xValue, xChart.getLineWidth().intValue(), xChartValue.getFillColor());
 					}
-				//Encode line
+				//Encode line - ponto. as linhas que ligam os pontos, são desenhadas no código JS.
 				}else if (xChart.getType().equalsIgnoreCase(DBSChart.TYPE.LINE)){
 					xChartValue.setAbsoluteX(xChartValue.getAbsoluteX() + DBSNumber.divide(xChart.getLineWidth(), 2).intValue());
-					DBSFaces.encodeSVGCircle(xChartValue, xWriter, DBSFaces.CSS.MODIFIER.VALUE, null, xChartValue.getAbsoluteX(), xChartValue.getAbsoluteY(), 2, 2, "red");
+					DBSFaces.encodeSVGCircle(xChartValue, xWriter, DBSFaces.CSS.MODIFIER.VALUE, null, xChartValue.getAbsoluteX(), xChartValue.getAbsoluteY(), 2, 2, xChartValue.getFillColor());
 				}
 			}
-			
-
 			
 			UIComponent xExtraInfo = xChartValue.getFacet("extrainfo");
 			//Extrainfo

@@ -106,6 +106,9 @@ public class DBSChartRenderer extends DBSRenderer {
 									//Linhas de marcação
 									pvEncodeLines(xChart, xWriter);
 								xWriter.endElement("g");
+								xWriter.startElement("g", xChart);
+									DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.LINE, null);
+								xWriter.endElement("g");
 								
 								renderChildren(pContext, xChart);
 							xWriter.endElement("g");
@@ -178,14 +181,20 @@ public class DBSChartRenderer extends DBSRenderer {
 			pChart.setFormatMaskWidth(0);
 		}
 		//Valor Mínimo
-		pChart.setMinValue(xMinValue);
+		if (pChart.getMinValue() == null
+		 || pChart.getMinValue() < xMinValue){
+			pChart.setMinValue(xMinValue);
+		}
 		//Valor Máximo
-		pChart.setMaxValue(xMaxValue);
+		if (pChart.getMaxValue() == null
+		 || pChart.getMaxValue() < xMaxValue){
+			pChart.setMaxValue(xMaxValue);
+		}
 		if (pChart.getType().equalsIgnoreCase(DBSChart.TYPE.BAR)
 		 || pChart.getType().equalsIgnoreCase(DBSChart.TYPE.LINE)){
 			//Calcula posição da linha zero
 			xZeroPosition = DBSNumber.multiply(pChart.getChartHeight(),
-					   						   DBSNumber.divide(DBSNumber.abs(xMaxValue), 
+					   						   DBSNumber.divide(DBSNumber.abs(pChart.getMaxValue()), 
 					   								   			pChart.getTotalValue())).intValue();
 			//Distribui o espaço que sobra total, entre as cada coluna
 			if (xCount>1){
