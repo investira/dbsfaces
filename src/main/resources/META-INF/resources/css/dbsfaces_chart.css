@@ -1,63 +1,7 @@
 .dbs_chart{
 }
-.dbs_chart > .-container{
-	position: relative;
-	display: inline-block;
-}
 
-.dbs_chart > .-container > .-caption,
-.dbs_chart > .-container > .-data,
-.dbs_chart > .-container > .-footer{
-	position: relative;
-	display: block;
-	text-align: center;
-}
-
-.dbs_chart > .-container > .-caption{
-	background-image: url("#{request.contextPath}/images/default_back_texture.png");
-	-webkit-border-radius: 3px 3px 0px 0px;
-	-moz-border-radius: 3px 3px 0px 0px;
-	border-radius: 3px 3px 0px 0px;
-}
-
-.dbs_chart > .-container > .-data{
-}
-
-.dbs_chart > .-container > .-data > .-container{
-	position: relative;
-	display: inline-block;
-	shape-rendering: geometricPrecision;
-}
-
-.dbs_chart > .-container > .-data > .-container > .-content{
-}
-
-.dbs_chart > .-container > .-data > .-container > .-content > .-left{
-}
-	
-.dbs_chart > .-container > .-data > .-container > .-content > .-value{
-}	
-
-.dbs_chart > .-container > .-data > .-container > .-content > .-value > .-grid {
-	stroke: rgb(220,220,220);
-	stroke-width: 1px;
-}
-
-.dbs_chart > .-container > .-data > .-container > .-content > .-value > .-grid > .-label{
-	font-size: 8px;
-	fill: rgb(220,220,220);
-}
-
-.dbs_chart > .-container > .-data > .-container > .-content > .-value > .-grid > .-line{
-}
-
-.dbs_chart > .-container > .-data > .-container > .-content > .-value > .-line {
+.dbs_chart > .-line {
 	stroke: rgb(120,120,120);
 	stroke-width: 1px;
-}
-
-.dbs_chart > .-container > .-data > .-container > .-content > .-right{
-}	
-
-.dbs_chart > .-container > .-footer{
 }

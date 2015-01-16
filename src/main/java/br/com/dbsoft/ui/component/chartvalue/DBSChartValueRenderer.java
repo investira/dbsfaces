@@ -13,6 +13,7 @@ import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.chart.DBSChart;
+import br.com.dbsoft.ui.component.charts.DBSCharts;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSFormat;
 import br.com.dbsoft.util.DBSNumber;
@@ -42,17 +43,26 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			throws IOException {
 		if (!pComponent.isRendered()){return;}
 		DBSChartValue xChartValue = (DBSChartValue) pComponent;
-		//Recupera o componente pai
-		if (pComponent.getParent() == null
-		|| !(pComponent.getParent() instanceof DBSChart)){
-			return;
-		}
-		DBSChart xChart = (DBSChart) pComponent.getParent();
+		DBSChart xChart;
+		DBSCharts xCharts;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClass = DBSFaces.CSS.CHARTVALUE.MAIN + " ";
-		
 		Integer xValue = 0;
+		String xClientId = xChartValue.getClientId(pContext);
 		
+		//Recupera DBSChart pai
+		if (xChartValue.getParent() == null
+		|| !(xChartValue.getParent() instanceof DBSChart)){
+			return;
+		}
+		xChart =  (DBSChart) xChartValue.getParent();
+		//Recupera DBSCharts avô
+		if (xChart.getParent() == null
+		|| !(xChart.getParent() instanceof DBSCharts)){
+			return;
+		}
+		xCharts =  (DBSCharts) xChart.getParent();
+
 		//Configura id a partir do index
 		xChartValue.setId("index_" + xChartValue.getIndex());
 
@@ -61,8 +71,6 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			xClass = xClass + xChartValue.getStyleClass() + " ";
 		}
 	
-		String xClientId = xChartValue.getClientId(pContext);
-
 		xWriter.startElement("g", xChartValue);
 			DBSFaces.setAttribute(xWriter, "id", xClientId, null);
 			DBSFaces.setAttribute(xWriter, "index", xChartValue.getIndex(), null);
@@ -73,37 +81,38 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			if (xChart.getType().equalsIgnoreCase(DBSChart.TYPE.BAR)
 			 || xChart.getType().equalsIgnoreCase(DBSChart.TYPE.LINE)){
 				//Calcula valor em pixel a partir do valor real. subtrai padding para dar espaço para a margem
-				xValue = DBSNumber.multiply(xChart.getChartHeight() - (DBSChart.Padding * 2),
+				xValue = DBSNumber.multiply(xCharts.getChartHeight() - (DBSCharts.Padding * 2),
 						 					DBSNumber.divide(xChartValue.getValue(), 
-						 					  	  		     xChart.getTotalValue())).intValue();
+						 									 xCharts.getTotalValue())).intValue();
 				
 				//Seta valor absolute dentro do gráfico
-				xChartValue.setAbsoluteY(DBSNumber.subtract(xChart.getZeroPosition(), xValue).intValue());
+				xChartValue.setAbsoluteY(DBSNumber.subtract(xCharts.getZeroPosition(), xValue).intValue());
 				//Seta valor absolute dentro do gráfico
 				xChartValue.setAbsoluteX(DBSNumber.multiply(xChartValue.getIndex() - 1,
-													 		xChart.getLineWidth() + xChart.getWhiteSpace()).intValue());
+													 		xCharts.getLineWidth() + xCharts.getWhiteSpace()).intValue());
 				
 				//Encode label da coluna
 				if (xChartValue.getLabel() != null){
-					DBSFaces.encodeSVGText(xChartValue, xWriter,  DBSFaces.CSS.MODIFIER.LABEL, "text-anchor:middle", xChartValue.getAbsoluteX() + (xChart.getLineWidth().intValue()/2), xChart.getHeight().intValue(), xChartValue.getLabel());
+					DBSFaces.encodeSVGText(xChartValue, xWriter,  DBSFaces.CSS.MODIFIER.LABEL, "text-anchor:middle", xChartValue.getAbsoluteX() + (xCharts.getLineWidth().intValue()/2), xCharts.getHeight().intValue(), xChartValue.getLabel());
 				}
 
 				//Encode bar
 				if (xChart.getType().equalsIgnoreCase(DBSChart.TYPE.BAR)){
+					//Força tamanho mínimo quando valor for zero
 					if (xValue.equals(0)){
 						xValue = 3;
-						xChartValue.setAbsoluteY(xChart.getZeroPosition() -1);					
+						xChartValue.setAbsoluteY(xCharts.getZeroPosition() -2);		
 					}
 					//Utliza valor absolute
 					xValue = DBSNumber.abs(xValue);
-					if (xChartValue.getAbsoluteY() < xChart.getZeroPosition()){
-						DBSFaces.encodeSVGRect(xChartValue, xWriter, null, null, xChartValue.getAbsoluteX(), xChartValue.getAbsoluteY(), xValue, xChart.getLineWidth().intValue(), xChartValue.getFillColor());
+					if (xChartValue.getAbsoluteY() < xCharts.getZeroPosition()){
+						DBSFaces.encodeSVGRect(xChartValue, xWriter, null, null, xChartValue.getAbsoluteX(), xChartValue.getAbsoluteY(), xValue, xCharts.getLineWidth().intValue(), xChartValue.getFillColor());
 					}else{
-						DBSFaces.encodeSVGRect(xChartValue, xWriter, null, null, xChartValue.getAbsoluteX(), xChart.getZeroPosition(), xValue, xChart.getLineWidth().intValue(), xChartValue.getFillColor());
+						DBSFaces.encodeSVGRect(xChartValue, xWriter, null, null, xChartValue.getAbsoluteX(), xCharts.getZeroPosition(), xValue, xCharts.getLineWidth().intValue(), xChartValue.getFillColor());
 					}
 				//Encode line - ponto. as linhas que ligam os pontos, são desenhadas no código JS.
 				}else if (xChart.getType().equalsIgnoreCase(DBSChart.TYPE.LINE)){
-					xChartValue.setAbsoluteX(xChartValue.getAbsoluteX() + DBSNumber.divide(xChart.getLineWidth(), 2).intValue());
+					xChartValue.setAbsoluteX(xChartValue.getAbsoluteX() + DBSNumber.divide(xCharts.getLineWidth(), 2).intValue());
 					DBSFaces.encodeSVGCircle(xChartValue, xWriter, DBSFaces.CSS.MODIFIER.VALUE, null, xChartValue.getAbsoluteX(), xChartValue.getAbsoluteY(), 2, 2, xChartValue.getFillColor());
 				}
 			}
@@ -118,8 +127,8 @@ public class DBSChartValueRenderer extends DBSRenderer {
 					
 					if (xChart.getType().equalsIgnoreCase(DBSChart.TYPE.BAR)
 					 || xChart.getType().equalsIgnoreCase(DBSChart.TYPE.LINE)){
-						xExtraInfoStyle += "left:" + (xChartValue.getAbsoluteX() + DBSNumber.divide(xChart.getLineWidth() + xChart.getWhiteSpace(),2).intValue()) + "px;";
-						if (xChartValue.getValue() < 0D){
+						xExtraInfoStyle += "left:" + (xChartValue.getAbsoluteX() + DBSNumber.divide(xCharts.getLineWidth() + xCharts.getWhiteSpace(),2).intValue()) + "px;";
+						if (xChartValue.getValue() - DBSCharts.FontSize < 0D){
 							xExtraInfoStyle += "bottom:-" + xChartValue.getAbsoluteY() + "px;";
 						}else{
 							xExtraInfoStyle += "top:" + xChartValue.getAbsoluteY() + "px;";
@@ -132,7 +141,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 						xExtraInfo.encodeAll(pContext);
 					//Se não existir, encode o valor como extrainfo
 					}else{
-						xWriter.write(DBSFormat.getFormattedNumber(xChartValue.getValue(), NUMBER_SIGN.MINUS_PREFIX, xChart.getValueFormatMask()));
+						xWriter.write(DBSFormat.getFormattedNumber(xChartValue.getValue(), NUMBER_SIGN.MINUS_PREFIX, xCharts.getValueFormatMask()));
 					}
 				xWriter.endElement("span");
 			xWriter.endElement("foreignObject");

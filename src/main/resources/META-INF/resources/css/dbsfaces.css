@@ -146,6 +146,7 @@ H6 {
 }
 
 svg{
+/* 	shape-rendering: auto | optimizeSpeed | crispEdges | geometricPrecision | inherit */
 }
 
 /*MODIFIER = nomes padrão para serem utilizado em conjunto com outras classes. NÃO PODEM SER UTILIZADOS ISOLADAMENTE*/

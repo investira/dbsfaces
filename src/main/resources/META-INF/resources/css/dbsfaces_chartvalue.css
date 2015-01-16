@@ -1,11 +1,17 @@
 .dbs_chartValue{
+	cursor:pointer;
+	stroke-width: 0px;
+	font-size: 8px;
+	fill: rgb(180,180,180);
 }
 .dbs_chartValue > ellipse{
 }
 
+.dbs_chartValue > rect{
+	shape-rendering: crispEdges;
+}
+
 .dbs_chartValue > .-label{
-	font-size: 8px;
-	fill: rgb(220,220,220);
 }
 
 .dbs_chartValue > .-extrainfo > .-content{
