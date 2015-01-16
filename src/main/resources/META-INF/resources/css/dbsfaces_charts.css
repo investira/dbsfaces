@@ -1,0 +1,62 @@
+.dbs_charts{
+}
+.dbs_charts > .-container{
+	position: relative;
+	display: inline-block;
+}
+
+.dbs_charts > .-container > .-caption,
+.dbs_charts > .-container > .-data,
+.dbs_charts > .-container > .-footer{
+	position: relative;
+	display: block;
+	text-align: center;
+}
+
+.dbs_charts > .-container > .-caption{
+	background-image: url("#{request.contextPath}/images/default_back_texture.png");
+	-webkit-border-radius: 3px 3px 0px 0px;
+	-moz-border-radius: 3px 3px 0px 0px;
+	border-radius: 3px 3px 0px 0px;
+}
+
+.dbs_charts > .-container > .-data{
+}
+
+.dbs_charts > .-container > .-data > .-container{
+	position: relative;
+	display: inline-block;
+	shape-rendering: geometricPrecision;
+}
+
+.dbs_charts > .-container > .-data > .-container > .-content{
+}
+
+.dbs_charts > .-container > .-data > .-container > .-content > .-left{
+}
+	
+.dbs_charts > .-container > .-data > .-container > .-content > .-value{
+}	
+
+.dbs_charts > .-container > .-data > .-container > .-content > .-value > .-grid {
+	stroke: rgb(220,220,220);
+	stroke-width: 1px;
+	shape-rendering: crispEdges;
+}
+
+.dbs_charts > .-container > .-data > .-container > .-content > .-value > .-grid > .-label{
+	font-size: 8px;
+	fill: rgb(180, 180, 180);
+	stroke-width: 0px;
+}
+
+.dbs_charts > .-container > .-data > .-container > .-content > .-value > .-grid > .-line{
+}
+
+
+
+.dbs_charts > .-container > .-data > .-container > .-content > .-right{
+}	
+
+.dbs_charts > .-container > .-footer{
+}
