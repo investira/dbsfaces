@@ -87,6 +87,7 @@ public class  DBSFaces {
 	    public static final String CRUDFORM = "crudForm";
 	    public static final String CRUDTABLE = "crudTable";
 	    public static final String DIALOG = "dialog";
+	    public static final String FILEUPLOAD = "fileUpload";
 	    public static final String INPUTTEXT = "inputText";
 	    public static final String INPUTTEXTAREA = "inputTextArea";
 	    public static final String INPUTDATE = "inputDate";
@@ -256,6 +257,11 @@ public class  DBSFaces {
 		{	
 			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.DIALOG;
 			public static final String CONFIRMATION = DBSFaces.CSS.DIALOG.MAIN + "-confirmation ";
+		}
+
+		public static class FILEUPLOAD
+		{	
+			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.FILEUPLOAD;
 		}
 
 		public static class INPUT
@@ -1207,27 +1213,55 @@ public class  DBSFaces {
 		String xClientUpdate = pvRemoveFirstColon(pClientUpdate);
 		
 		//Ajax
-		if (!xClientUpdate.equals("")){
+		if (!DBSObject.isEmpty(xClientUpdate)){
 			String xExecute = "";
-			if (pExecute != null 
-			 && pExecute.equals("") == false){
+			if (!DBSObject.isEmpty(pExecute)){
 				xExecute = "execute:'" + pvRemoveFirstColon(pExecute) + "',";
 			}
 			xLocalOnClick = "jsf.ajax.request(this, event, {" + xExecute + " render:'" +  xClientUpdate +  "', onevent:dbsfaces.onajax}); return false;";
+			if (xUserOnClick != null){
+				xLocalOnClick = xLocalOnClick.replaceAll("'", "\\\\'");
+				xUserOnClick = xUserOnClick.replaceAll("'", "\\\\'");
+				xLocalOnClick = "jsf.util.chain(this,event,'" + xUserOnClick + "','" + xLocalOnClick + "');return false";
+			}
 		//Não Ajax
 		}else{
-			if (pExecute == null || pExecute.equals("")){
+			if (DBSObject.isEmpty(pExecute)){
 				System.out.println("Form/Execute não definido para o componente " + pComponent.getClientId()  + "!");
+			}else if (DBSObject.isEmpty(xLocalOnClick)){
+				xLocalOnClick = "mojarra.jsfcljs(document.getElementById('" + pExecute + "'),{'"+ pComponent.getClientId() + "':'"+ pComponent.getClientId() + "'},'');return false;";
 			}
-			xLocalOnClick = "mojarra.jsfcljs(document.getElementById('" + pExecute + "'),{'"+ pComponent.getClientId() + "':'"+ pComponent.getClientId() + "'},'');return false;";
-		}
-		if (xUserOnClick != null){
-			xLocalOnClick = xLocalOnClick.replaceAll("'", "\\\\'");
-			xUserOnClick = xUserOnClick.replaceAll("'", "\\\\'");
-			xLocalOnClick = "jsf.util.chain(this,event,'" + xUserOnClick + "','" + xLocalOnClick + "');return false";
 		}
 		return xLocalOnClick;
-	}	
+	}
+	
+//	public static String getSubmitString(UIComponentBase pComponent, String pSourceEvent, String pExecute, String pClientUpdate){
+//		String xUserOnClick = (String) pComponent.getAttributes().get(pSourceEvent);
+//		String xLocalOnClick = xUserOnClick;
+//		String xClientUpdate = pvRemoveFirstColon(pClientUpdate);
+//		
+//		//Ajax
+//		if (!DBSObject.isEmpty(xClientUpdate)){
+//			String xExecute = "";
+//			if (!DBSObject.isEmpty(pExecute)){
+//				xExecute = "execute:'" + pvRemoveFirstColon(pExecute) + "',";
+//			}
+//			xLocalOnClick = "jsf.ajax.request(this, event, {" + xExecute + " render:'" +  xClientUpdate +  "', onevent:dbsfaces.onajax}); return false;";
+//		//Não Ajax
+//		}else{
+//			if (DBSObject.isEmpty(pExecute)){
+//				System.out.println("Form/Execute não definido para o componente " + pComponent.getClientId()  + "!");
+//			}else{
+//				xLocalOnClick = "mojarra.jsfcljs(document.getElementById('" + pExecute + "'),{'"+ pComponent.getClientId() + "':'"+ pComponent.getClientId() + "'},'');return false;";
+//			}
+//		}
+//		if (xUserOnClick != null){
+//			xLocalOnClick = xLocalOnClick.replaceAll("'", "\\\\'");
+//			xUserOnClick = xUserOnClick.replaceAll("'", "\\\\'");
+//			xLocalOnClick = "jsf.util.chain(this,event,'" + xUserOnClick + "','" + xLocalOnClick + "');return false";
+//		}
+//		return xLocalOnClick;
+//	}	
 	
 	public static void encodeStyleTagStart(ResponseWriter pWriter) throws IOException{
 		pWriter.write("	<style type='text/css'> \n");

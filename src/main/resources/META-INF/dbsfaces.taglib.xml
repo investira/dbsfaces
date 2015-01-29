@@ -325,7 +325,62 @@
 		</attribute>		
 	</tag>
 
-
+	<tag>
+		<tag-name>fileUpload</tag-name>
+		<component>
+			<component-type>br.com.dbsoft.ui.component.fileUpload</component-type>
+			<handler-class />
+		</component>
+		<attribute>
+			<description>
+                Identificador único do componente.
+            </description>
+			<name>id</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+				Caminho completo da DBSFileUploadServlet que receberá o arquivo.
+            </description>
+			<name>fileUploadServletPath</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>			
+		<attribute>
+			<description>
+                Class CSS que será utilizado com style
+            </description>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Adiciona style 
+            </description>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                rendered
+            </description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+                Tooltip
+            </description>
+			<name>tooltip</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>	
+		
+	</tag>
 	
 	<tag>
 		<tag-name>dialog</tag-name>

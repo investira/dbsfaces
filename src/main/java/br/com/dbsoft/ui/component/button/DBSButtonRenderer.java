@@ -107,7 +107,11 @@ public class DBSButtonRenderer extends DBSRenderer {
 //				if (xButton.getActionExpression() != null || 
 //					xButton.getonclick() != null){				
 //					xWriter.writeAttribute("ontouchstart", "", "ontouchstart"); //Para ipad ativar o css:ACTIVE
-					xWriter.writeAttribute("type", "submit", "type");
+					if (xButton.getActionExpression() != null){
+						xWriter.writeAttribute("type", "submit", "type");
+					}else{
+						xWriter.writeAttribute("type", "button", "type");
+					}
 					if (xButton.getClientBehaviors().isEmpty()){
 						DBSFaces.setAttribute(xWriter, DBSFaces.HTML.EVENTS.ONCLICK, xOnClick, null); 
 					}else{
@@ -123,11 +127,11 @@ public class DBSButtonRenderer extends DBSRenderer {
 			
 			renderChildren(pContext, xButton);
 			DBSFaces.encodeTooltip(pContext, xButton, xButton.getTooltip());
-		if (xButton.getReadOnly()){
-			xWriter.endElement("div");
-		}else{
-			xWriter.endElement("button");
-		}
+			if (xButton.getReadOnly()){
+				xWriter.endElement("div");
+			}else{
+				xWriter.endElement("button");
+			}
 		pvEncodeJS(xWriter, xClientId);
 	}
 	

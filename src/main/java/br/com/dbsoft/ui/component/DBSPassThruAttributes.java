@@ -236,6 +236,22 @@ public class DBSPassThruAttributes {
             ,attr("onselect","select")
             ,attr("tabindex")
         ))
+        .add("FileUpload",ar(
+            attr("onblur","blur")
+            ,attr("onchange","change")
+            ,attr("ondblclick","dblclick")
+            ,attr("onfocus","focus")
+            ,attr("onkeydown","keydown")
+            ,attr("onkeypress","keypress")
+            ,attr("onkeyup","keyup")
+            ,attr("onmousedown","mousedown")
+            ,attr("onmousemove","mousemove")
+            ,attr("onmouseout","mouseout")
+            ,attr("onmouseover","mouseover")
+            ,attr("onmouseup","mouseup")
+            ,attr("onselect","select")
+            ,attr("tabindex")
+        ))
         .add("Group",ar(
             attr("onblur","blur")
             ,attr("onchange","change")
@@ -620,6 +636,7 @@ public class DBSPassThruAttributes {
         DATATABLE("DataTable"),
         DIALOG("Dialog"),
         DIV("Div"),
+        FILEUPLOAD("FileUpload"),
         GROUP("Group"),
         IMG("Img"),
         INPUTDATE("InputDate"),
