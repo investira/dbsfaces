@@ -17,7 +17,7 @@
 	left: 0;
 }
 
-.dbs_fileUpload > .-container > .-toolbar > .dbs_button[id*='btStop']{
+.dbs_fileUpload > .-container > .-toolbar > .dbs_button[id*='btCancel']{
 
 }
 

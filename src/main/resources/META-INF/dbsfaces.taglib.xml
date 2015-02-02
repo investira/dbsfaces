@@ -373,6 +373,14 @@
 		</attribute>
 		<attribute>
 			<description>
+                Indica se upload será de mais de um arquivo. O padrão é true.
+            </description>
+			<name>multiple</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>		
+		<attribute>
+			<description>
                 Tooltip
             </description>
 			<name>tooltip</name>

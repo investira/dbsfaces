@@ -1,132 +1,126 @@
 dbs_fileUpload = function(pId, pFileUploadServlet) {
-	dbsfaces.fileUpload.setBean(pFileUploadServlet);
-};
+	var wFile = $(pId).find("input[type='file']");
+	var wBtCancel = $(pId).find("[id*='btCancel']");
+	var wBtStart = $(pId).find("[id*='btStart']");
+	var wMessage = $(pId).find(".-message");
+	var wXHR = 0;
+	
+	wFile.on("change.fileUpload", function(e){
+		start(e);
+	});
+	wBtCancel.on("click.fileUpload", function(e){
+		cancel();
+	});
 
-dbsfaces.fileUpload = {
-	wXHR: 0,
-	wFileUpload: "",
-	wBtStop: "",
-	wBtStart: "",
-	wMessage: "",
-	wFile: "",
-	wFileUploadServlet: "",
-		
-	setBean: function(pFileUploadServlet){
-		wFileUploadServlet = pFileUploadServlet;
-		if (pFileUploadServlet == ""){
-			dbsfaces.fileUpload.showMessageError("Caminho do fileUploadServlet não informado");
-		}
-	},
-
-	select: function(e) {
-		wFileUpload = $(e).closest(".dbs_fileUpload");
-		wFile = wFileUpload.find("input[type='file']");
-		wBtStop = wFileUpload.find("[id*='btStop']");
-		wBtStart = wFileUpload.find("[id*='btStart']");
-		wMessage = wFileUpload.find(".-message");
+	wBtStart.on("click.fileUpload", function(e){
+		reset();
+		wBtCancel.children('.-progress').remove();
+		wBtCancel.prepend("<" + "div class='-progress'/>");
+		hideMessage();
 		wFile.click();
-		wFile.off("change");
-		wFile.on("change", dbsfaces.fileUpload.start);
-		wBtStop.children('.-progress').remove();
-		wBtStop.prepend("<" + "div class='-progress'/>");
-		dbsfaces.fileUpload.hideMessage();
-		return;
-	},
+	});
 
-	start: function() {
+	function start(e){
+		if (wFile.get(0).value == ""){return;}
 		var xFormdata = new FormData();
-		xFormdata.append(wFile.get(0).id, wFile.get(0).files[0]);
-		wXHR = new XMLHttpRequest();       
-		wXHR.upload.addEventListener('loadstart', dbsfaces.fileUpload.onloadstartHandler, false);
-		wXHR.upload.addEventListener('progress', dbsfaces.fileUpload.onprogressHandler, false);
-		wXHR.upload.addEventListener('load', dbsfaces.fileUpload.onloadHandler, false);
-		wXHR.upload.addEventListener('abort', dbsfaces.fileUpload.onabort, false);
-		wXHR.upload.addEventListener('error', dbsfaces.fileUpload.onerror, false);
-		wXHR.upload.addEventListener('timeout', dbsfaces.fileUpload.ontimeout, false);
-		wXHR.addEventListener('readystatechange', dbsfaces.fileUpload.onreadystatechangeHandler, false);
+		
+		for (var i = 0; i < wFile.get(0).files.length; i++) {
+			xFormdata.append(wFile.get(0).files[i].name, wFile.get(0).files[i]);
+		}
 
-		wXHR.open("POST", wFileUploadServlet, true);
+		wXHR = new XMLHttpRequest();       
+		wXHR.upload.addEventListener('loadstart', onloadstartHandler, false);
+		wXHR.upload.addEventListener('progress', onprogressHandler, false);
+		wXHR.upload.addEventListener('load', onloadHandler, false);
+		wXHR.upload.addEventListener('abort', onabort, false);
+		wXHR.upload.addEventListener('error', onerror, false);
+		wXHR.upload.addEventListener('timeout', ontimeout, false);
+		wXHR.addEventListener('readystatechange', onreadystatechangeHandler, false);
+
+		wXHR.open("POST", pFileUploadServlet, true);
 		wXHR.send(xFormdata);
 		wBtStart.hide();
-		wBtStop.show();
-		dbsfaces.fileUpload.hideMessage();
-		return;
-	},
+		wBtCancel.show();
+		hideMessage();
+	};
 
-	stop: function() {
-		wXHR.abort();
-		wBtStop.children('.-progress').remove();
-		wFile.off("change");
+	function cancel() {
+		//Artificio utlizado para cancelar, pois o abort interrompia todos upload
+		wXHR.open("POST", pFileUploadServlet, true);
+		reset();
+	};
+	
+	function reset() {
+		wBtCancel.children('.-progress').remove();
 		wFile.get(0).value = "";
 		wBtStart.show();
-		wBtStop.hide();
-		return;
-	},
+		wBtCancel.hide();
+	};
+	
+	function onloadstartHandler(evt) {
+	};
+	
+	function onloadHandler(evt) {
+		showMessage("Finalizado com sucesso");
+		reset();
+	};
+	
+	function ontimeout(evt) {
+		showMessageError("Erro de timeout");
+		reset();
+	};
 
-	// Handle the start of the transmission
-	onloadstartHandler: function(evt) {
-//	 		var div = document.getElementById('upload-status');
-//	 		div.innerHTML = 'Upload started.';
-	},
-	// Handle the end of the transmission
-	onloadHandler: function(evt) {
-		dbsfaces.fileUpload.showMessage("Finalizado com sucesso");
-		dbsfaces.fileUpload.stop();
-	},
-	// Handle the start of the transmission
-	ontimeout: function(evt) {
-		dbsfaces.fileUpload.showMessageError("Erro de timeout");
-		dbsfaces.fileUpload.stop();
-	},
-	// Handle the progress
-	onprogressHandler: function(evt) {
-//	 		var div = document.getElementById('progress');
-//	 		div.innerHTML = 'Progress: ' + percent + '%';
-		var percent = evt.loaded/evt.total*100;
-		wBtStop.children('.-progress').css("height", percent + '%');
-	},
-	// Handle error
-	onerror: function(evt) {
-		dbsfaces.fileUpload.showMessageError("Erro na transmissão");
-		dbsfaces.fileUpload.stop();
-	},
-	// Handle abort
-	onabort: function(evt) {
-		dbsfaces.fileUpload.showMessageError("Transferencia interrompida");
-		dbsfaces.fileUpload.stop();
-	},
-	// Handle the response from the server
-	onreadystatechangeHandler: function(evt) {
+	function onprogressHandler(evt) {
+		var percent = Math.round(evt.loaded/evt.total*100);
+		wBtCancel.children('.-progress').css("height", percent + '%');
+	};
+
+	function onerror(evt) {
+		showMessageError("Erro na transmissão");
+		reset();
+	};
+
+	function onabort(evt) {
+		showMessageError("Transferencia interrompida");
+		reset();
+	};
+
+	function onreadystatechangeHandler(evt) {
 		var status, text, readyState;
 		try {
 			readyState = evt.target.readyState;
 			text = evt.target.responseText;
 			status = evt.target.status;
+			statusText = evt.target.statusText;
+//			console.log("------------StateChange");
+//			console.log(readyState);
+//			console.log(text);
+//			console.log(status);
+//			console.log(statusText);
 		}catch(e) {
 			return;
 		}
-//	 		if (readyState == 4 && status == '200' && evt.target.responseText) {
-//	 			var status = document.getElementById('upload-status');
-//	 			status.innerHTML += '<' + 'br>Success!';
-//	 			var result = document.getElementById('result');
-//	 			result.innerHTML = '<p>The server saw it as:</p><pre>' + evt.target.responseText + '</pre>';
-//	 		}
-	},
+ 		if (readyState == 4 && status != '200' && statusText) {
+ 			showMessageError(statusText);
+ 		}
+	};
 
-	showMessage: function(pMessage) {
+	function showMessage(pMessage) {
 		wMessage.text(pMessage);
 		wMessage.removeClass("-error");
 		wMessage.fadeIn(200).delay(6000).fadeOut(200);
-	},
+	};
 	
-	showMessageError: function(pMessage) {
+	function showMessageError(pMessage) {
 		wMessage.text(pMessage);
 		wMessage.addClass("-error");
-		wMessage.fadeIn(200).delay(12000).fadeOut(200);
-	},
+		wMessage.fadeIn(200).delay(6000).fadeOut(200);
+	};
 
-	hideMessage: function() {
+	function hideMessage() {
 		wMessage.hide();
-	}
-	
+	};
+		
+
 };
+

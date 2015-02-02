@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PreDestroy;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +13,7 @@ import javax.servlet.http.Part;
 import org.apache.log4j.Logger;
 
 import br.com.dbsoft.error.DBSIOException;
+import br.com.dbsoft.util.DBSFile;
 import br.com.dbsoft.util.DBSIO;
 import br.com.dbsoft.util.DBSObject;
 
@@ -68,12 +68,15 @@ public abstract class DBSFileUploadServlet extends HttpServlet{
 	 * Caminho pasta local onde o arquivo recebido será salvo.
 	 * @param pLocalPath
 	 */
-	public void setLocalPath(String pLocalPath) {wLocalPath = pLocalPath;}
+	public void setLocalPath(String pLocalPath) {
+		wLocalPath = DBSFile.getPathFromFolderName(pLocalPath);
+	}
 	
 	// ========================================================================================================
 	@Override
     protected void doPost(HttpServletRequest pRequest, HttpServletResponse pResponse) {
  		try {
+ 		   //Dispara evento 
  	       if (!pvFireEventBeforeUpload()
 	         || DBSObject.isEmpty(getLocalPath())){
 	        	return;
@@ -85,18 +88,25 @@ public abstract class DBSFileUploadServlet extends HttpServlet{
 			            xFilename = xS.split("=")[1].replaceAll("\"", "");
 			        }
 			    }
+			    //Dispara evento 
 			    if (pvFireEventBeforeSave()){
 			        if (!DBSObject.isEmpty(xFilename)){
 			            xPart.write(wLocalPath + xFilename);
+			            //Dispara evento 
 			            pvFireEventAfterSave();
 			        }
 			    }
 			}
+			//Dispara evento 
 			pvFireEventAfterUpload();
-		} catch (IOException | ServletException | DBSIOException e) {
+		} catch (Exception e) { //java.io.FileNotFoundException
 			try {
+//				System.out.println("EXCEPTION:" + e.getMessage());
+				pResponse.getWriter().print(e.getMessage());
+				pResponse.flushBuffer();
+				pResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				DBSIO.throwIOException(e);
-			} catch (DBSIOException e1) {
+			} catch (DBSIOException | IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}

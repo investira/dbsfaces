@@ -77,9 +77,9 @@ public class DBSFileUploadRenderer extends DBSRenderer {
 
 			xWriter.endElement("div");
 
-			pvEncodeJS(xFileUpload, xWriter, xClientId);
-
 		xWriter.endElement("div");
+		
+		pvEncodeJS(xFileUpload, xWriter, xClientId);
 	}
 
 	private void pvEncodeToolbar(FacesContext pContext, DBSFileUpload pFileUpload, ResponseWriter pWriter) throws IOException{
@@ -87,40 +87,45 @@ public class DBSFileUploadRenderer extends DBSRenderer {
 		DBSButton xButtonStart = (DBSButton) FacesContext.getCurrentInstance().getApplication().createComponent(DBSButton.COMPONENT_TYPE);
 		xButtonStart.setId("btStart");
 		xButtonStart.setIconClass(DBSFaces.CSS.ICON + " -i_upload");
-		xButtonStart.setonclick("dbsfaces.fileUpload.select(this)");
+//		xButtonStart.setonclick("dbsfaces.fileUpload.select(this)");
+		xButtonStart.setonclick("return false;");
 		xButtonStart.setTooltip("Upload de arquivo");
 		if (DBSObject.isEmpty(pFileUpload.getFileUploadServletPath())){
 			xButtonStart.setReadOnly(true);
 		}
 		pFileUpload.getChildren().add(xButtonStart);
 
-		//cria botão STOP ----------------
-		DBSButton xButtonStop = (DBSButton) FacesContext.getCurrentInstance().getApplication().createComponent(DBSButton.COMPONENT_TYPE);
-		xButtonStop.setId("btStop");
-		xButtonStop.setIconClass(DBSFaces.CSS.ICON + " -i_bullet_blue");
-		xButtonStop.setStyle("display:none;");
-		xButtonStop.setonclick("dbsfaces.fileUpload.stop()");
-		xButtonStop.setTooltip("Cancelar upload");
+		//cria botão CANCEL ----------------
+		DBSButton xButtonCancel = (DBSButton) FacesContext.getCurrentInstance().getApplication().createComponent(DBSButton.COMPONENT_TYPE);
+		xButtonCancel.setId("btCancel");
+		xButtonCancel.setIconClass(DBSFaces.CSS.ICON + " -i_bullet_blue");
+		xButtonCancel.setStyle("display:none;");
+//		xButtonCancel.setonclick("dbsfaces.fileUpload.cancel()");
+		xButtonCancel.setonclick("return false;");
+		xButtonCancel.setTooltip("Cancelar upload");
 		if (DBSObject.isEmpty(pFileUpload.getFileUploadServletPath())){
-			xButtonStop.setReadOnly(true);
+			xButtonCancel.setReadOnly(true);
 		}
 		//Adiciona como filho para gerar o id corretamente
-		pFileUpload.getChildren().add(xButtonStop);
+		pFileUpload.getChildren().add(xButtonCancel);
 
 		//Encode do toolbar
 		pWriter.startElement("div", pFileUpload);
 			pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.TOOLBAR, null);
 			xButtonStart.encodeAll(pContext);
-			xButtonStop.encodeAll(pContext);
+			xButtonCancel.encodeAll(pContext);
 		pWriter.endElement("div");
 	}
 
 	private void pvEncodeInput(DBSFileUpload pFileUpload, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("input", pFileUpload);
-		 	pWriter.writeAttribute("id", pFileUpload.getClientId() + DBSFaces.CSS.MODIFIER.INPUT, null);
+		 	pWriter.writeAttribute("id", pFileUpload.getClientId() + DBSFaces.CSS.MODIFIER.INPUT.trim(), null);
 			pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.INPUT, null);
 			pWriter.writeAttribute("style", "display:none;", null);
 			pWriter.writeAttribute("type", "file", null);
+			if (pFileUpload.getMultiple()){
+				pWriter.writeAttribute("multiple", "multiple", null);
+			}
 		pWriter.endElement("input");
 	}
 	

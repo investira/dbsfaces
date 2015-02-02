@@ -13,7 +13,8 @@ public class DBSFileUpload extends DBSUIInput implements NamingContainer{
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 
 	protected enum PropertyKeys {
-		fileUploadServletPath;
+		fileUploadServletPath,
+		multiple;
 
 		String toString;
 
@@ -43,4 +44,12 @@ public class DBSFileUpload extends DBSUIInput implements NamingContainer{
 		getStateHelper().put(PropertyKeys.fileUploadServletPath, pFileUploadServletPath);
 	}
 
+	public void setMultiple(Boolean pMultiple) {
+		getStateHelper().put(PropertyKeys.multiple, pMultiple);
+		handleAttribute("multiple", pMultiple);
+	}
+	
+	public Boolean getMultiple() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.multiple, true);
+	}
 }
