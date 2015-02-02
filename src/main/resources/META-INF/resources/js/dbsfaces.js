@@ -311,9 +311,45 @@ dbsfaces.date = {
 	}
 }
 
+
 dbsfaces.number = {
 	isNumber: function(pVal){
 		return !isNaN(parseFloat(pVal)) && isFinite(pVal);
+	},
+	
+	sizeInBytes: function(pVal){
+		if (typeof(pVal) != 'undefined'){
+			var xVal = pVal.trim().toUpperCase();
+			var xI = xVal.indexOf("KB");
+			var xN = 1024;
+			if (xI == -1){
+				xI = xVal.indexOf("MB");
+				if (xI != -1){
+					xN *= xN;
+				}else{
+					xI = xVal.indexOf("GB");
+					if (xI != -1){
+						xN *= xN;
+					}else{
+						xI = xVal.indexOf("TB");
+						if (xI != -1){
+							xN *= xN;
+						}else{
+							xI = xVal.indexOf("B");
+							if (xI == -1){
+								xI = xVal.length;
+							}
+							xN = 1;
+						}
+					}
+				}
+			}
+			xVal = xVal.substr(0, xI);
+			if (dbsfaces.number.isNumber(xVal)){
+				return xVal * xN;
+			}
+		}
+		return 0;
 	}
 };
 

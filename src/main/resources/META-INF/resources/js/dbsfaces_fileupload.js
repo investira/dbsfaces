@@ -3,6 +3,7 @@ dbs_fileUpload = function(pId, pFileUploadServlet) {
 	var wBtCancel = $(pId).find("[id*='btCancel']");
 	var wBtStart = $(pId).find("[id*='btStart']");
 	var wMessage = $(pId).find(".-message");
+	var wFilesWithError = new Array();
 	var wXHR = 0;
 	
 	wFile.on("change.fileUpload", function(e){
@@ -22,10 +23,23 @@ dbs_fileUpload = function(pId, pFileUploadServlet) {
 
 	function start(e){
 		if (wFile.get(0).value == ""){return;}
+		hideMessage();
+		wFilesWithError.length = 0;
 		var xFormdata = new FormData();
+		var xLimite = wFile.attr("maxSize");
+		if (typeof(xLimite) != 'undefined'){
+			xLimite = dbsfaces.number.sizeInBytes(xLimite);
+		}else{
+			xLimite = -1;
+		}
 		
-		for (var i = 0; i < wFile.get(0).files.length; i++) {
-			xFormdata.append(wFile.get(0).files[i].name, wFile.get(0).files[i]);
+		for (var i = 0; i < wFile.get(0).files.length; i++){
+			if (xLimite < 0 
+			 || wFile.get(0).files[i].size <= xLimite){
+				xFormdata.append(wFile.get(0).files[i].name, wFile.get(0).files[i]);
+			}else{
+				wFilesWithError.push(wFile.get(0).files[i].name);
+			}
 		}
 
 		wXHR = new XMLHttpRequest();       
@@ -41,7 +55,6 @@ dbs_fileUpload = function(pId, pFileUploadServlet) {
 		wXHR.send(xFormdata);
 		wBtStart.hide();
 		wBtCancel.show();
-		hideMessage();
 	};
 
 	function cancel() {
@@ -61,7 +74,25 @@ dbs_fileUpload = function(pId, pFileUploadServlet) {
 	};
 	
 	function onloadHandler(evt) {
-		showMessage("Finalizado com sucesso");
+		var xMsg = "Upload finalizado";
+		if (wFilesWithError.length == 0){
+			xMsg += " com sucesso!";
+		} else{
+			if (wFilesWithError.length == 1){ 
+				xMsg += "! O arquivo " + wFilesWithError[0] + " não foi baixado por exceder";
+			}else{
+				xMsg += "! Os arquivos ";
+				for (i = 0; i < wFilesWithError.length; i++){
+					if (i !=0){
+						xMsg += ",";
+					}
+					xMsg += wFilesWithError[i];
+				}
+				xMsg += " não foram baixados por excederem";
+			}
+			xMsg +=  " o tamanho máximo permitido."; 
+		}
+		showMessage(xMsg);
 		reset();
 	};
 	

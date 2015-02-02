@@ -126,6 +126,12 @@ public class DBSFileUploadRenderer extends DBSRenderer {
 			if (pFileUpload.getMultiple()){
 				pWriter.writeAttribute("multiple", "multiple", null);
 			}
+			if (!DBSObject.isEmpty(pFileUpload.getAccept())){
+				pWriter.writeAttribute("accept", pFileUpload.getAccept(), null);
+			}
+			if (!DBSObject.isEmpty(pFileUpload.getMaxSize())){
+				pWriter.writeAttribute("maxSize", pFileUpload.getMaxSize(), null);
+			}
 		pWriter.endElement("input");
 	}
 	

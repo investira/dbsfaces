@@ -381,6 +381,22 @@
 		</attribute>		
 		<attribute>
 			<description>
+                Arquivo que serão aceitos. ex: accept='audio/*,video/*,image/*' ou accept='text/plain' ou accept='.xls, .xlsx '. Se não informado, todos arquivos serão aceitos. 
+            </description>
+			<name>accept</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Tamanho máximo do arquivo. ex: 3MB, 1GB, 2K, 200.  
+            </description>
+			<name>maxSize</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
                 Tooltip
             </description>
 			<name>tooltip</name>

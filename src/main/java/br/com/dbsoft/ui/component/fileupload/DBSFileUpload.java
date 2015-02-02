@@ -14,7 +14,9 @@ public class DBSFileUpload extends DBSUIInput implements NamingContainer{
 
 	protected enum PropertyKeys {
 		fileUploadServletPath,
-		multiple;
+		multiple,
+		maxSize,
+		accept;
 
 		String toString;
 
@@ -52,4 +54,19 @@ public class DBSFileUpload extends DBSUIInput implements NamingContainer{
 	public Boolean getMultiple() {
 		return (Boolean) getStateHelper().eval(PropertyKeys.multiple, true);
 	}
+	
+	public String getAccept() {
+		return (String) getStateHelper().eval(PropertyKeys.accept, null);
+	}
+	public void setAccept(String pAccept) {
+		getStateHelper().put(PropertyKeys.accept, pAccept);
+	}
+	
+	public String getMaxSize() {
+		return (String) getStateHelper().eval(PropertyKeys.maxSize, null);
+	}
+	public void setMaxSize(String pMaxSize) {
+		getStateHelper().put(PropertyKeys.maxSize, pMaxSize);
+	}
+
 }
