@@ -166,7 +166,6 @@ public abstract class DBSFileUploadServlet extends HttpServlet{
 			return xE.isOk();
 		}catch(Exception e){
 			wLogger.error(":BeforeUpload:", e);
-//			error();
 			throw e;
 		}finally{
 //			closeConnection();
