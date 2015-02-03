@@ -89,11 +89,11 @@ public abstract class DBSFileUploadServlet extends HttpServlet{
 			        }
 			    }
 			    //Dispara evento 
-			    if (pvFireEventBeforeSave()){
+			    if (pvFireEventBeforeSave(xFilename)){
 			        if (!DBSObject.isEmpty(xFilename)){
 			            xPart.write(wLocalPath + xFilename);
 			            //Dispara evento 
-			            pvFireEventAfterSave();
+			            pvFireEventAfterSave(xFilename);
 			        }
 			    }
 			}
@@ -190,8 +190,9 @@ public abstract class DBSFileUploadServlet extends HttpServlet{
 		}
 	}
 	
-	private boolean pvFireEventBeforeSave() throws DBSIOException{
+	private boolean pvFireEventBeforeSave(String pFileName) throws DBSIOException{
 		DBSFileUploadServletEvent xE = new DBSFileUploadServletEvent(this);
+		xE.setFileName(pFileName);
 		try{
 			//Chame o metodo(evento) local para quando esta classe for extendida
 			beforeSave(xE);
@@ -210,8 +211,9 @@ public abstract class DBSFileUploadServlet extends HttpServlet{
 		}
 	}
 
-	private void pvFireEventAfterSave() throws DBSIOException{
+	private void pvFireEventAfterSave(String pFileName) throws DBSIOException{
 		DBSFileUploadServletEvent xE = new DBSFileUploadServletEvent(this);
+		xE.setFileName(pFileName);
 		try{
 			afterSave(xE);
 			if (xE.isOk()){
