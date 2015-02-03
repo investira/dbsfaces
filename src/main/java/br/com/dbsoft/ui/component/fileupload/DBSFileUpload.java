@@ -1,5 +1,8 @@
 package br.com.dbsoft.ui.component.fileupload;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import javax.faces.component.FacesComponent;
 import javax.faces.component.NamingContainer;
 
@@ -68,5 +71,14 @@ public class DBSFileUpload extends DBSUIInput implements NamingContainer{
 	public void setMaxSize(String pMaxSize) {
 		getStateHelper().put(PropertyKeys.maxSize, pMaxSize);
 	}
-
+	
+	@Override
+    public String getDefaultEventName(){
+        return "load";
+    }
+	
+	@Override
+	public Collection<String> getEventNames() {
+		return Arrays.asList("action","click", "blur", "load", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "abort", "error", "loadstart", "timeout", "cancel"); 
+	}
 }

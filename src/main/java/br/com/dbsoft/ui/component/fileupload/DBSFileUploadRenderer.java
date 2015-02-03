@@ -22,7 +22,7 @@ public class DBSFileUploadRenderer extends DBSRenderer {
         if(xFileUpload.getReadOnly()) {return;}
         
     	decodeBehaviors(pContext, xFileUpload);
-    	System.out.println("DECODE");
+//    	System.out.println("DECODE");
 //		String xClientIdAction = getInputDataClientId(xCheckbox);
 //		String xSubmittedValue = pContext.getExternalContext().getRequestParameterMap().get(xClientIdAction);
 //        if(xSubmittedValue != null && pvIsChecked(xSubmittedValue)) {
@@ -65,17 +65,19 @@ public class DBSFileUploadRenderer extends DBSRenderer {
 			xWriter.writeAttribute("name", xClientId, null);
 			xWriter.writeAttribute("class", xClass, null);
 			DBSFaces.setAttribute(xWriter, "style", xFileUpload.getStyle(), null);
+			encodeClientBehaviors(pContext, xFileUpload);
 			//Container
 			xWriter.startElement("div", xFileUpload);
 				xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER, "class");
 				
 				pvEncodeToolbar(pContext, xFileUpload, xWriter);
 		
-				pvEncodeInput(xFileUpload, xWriter);
+				pvEncodeInput(pContext, xFileUpload, xWriter);
 				
 				pvEncodeMessage(xFileUpload, xWriter);
 
 			xWriter.endElement("div");
+
 
 		xWriter.endElement("div");
 		
@@ -117,7 +119,7 @@ public class DBSFileUploadRenderer extends DBSRenderer {
 		pWriter.endElement("div");
 	}
 
-	private void pvEncodeInput(DBSFileUpload pFileUpload, ResponseWriter pWriter) throws IOException{
+	private void pvEncodeInput(FacesContext pContext, DBSFileUpload pFileUpload, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("input", pFileUpload);
 		 	pWriter.writeAttribute("id", pFileUpload.getClientId() + DBSFaces.CSS.MODIFIER.INPUT.trim(), null);
 			pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.INPUT, null);

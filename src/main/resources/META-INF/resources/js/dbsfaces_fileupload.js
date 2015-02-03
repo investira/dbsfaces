@@ -61,6 +61,8 @@ dbs_fileUpload = function(pId, pFileUploadServlet) {
 		//Artificio utlizado para cancelar, pois o abort interrompia todos upload
 		wXHR.open("POST", pFileUploadServlet, true);
 		reset();
+		$(pId).trigger("cancel");
+
 	};
 	
 	function reset() {
@@ -94,11 +96,14 @@ dbs_fileUpload = function(pId, pFileUploadServlet) {
 		}
 		showMessage(xMsg);
 		reset();
+		$(pId).trigger("load");
+
 	};
 	
 	function ontimeout(evt) {
 		showMessageError("Erro de timeout");
 		reset();
+		$(pId).trigger("timeout");
 	};
 
 	function onprogressHandler(evt) {
@@ -109,11 +114,13 @@ dbs_fileUpload = function(pId, pFileUploadServlet) {
 	function onerror(evt) {
 		showMessageError("Erro na transmissão");
 		reset();
+		$(pId).trigger("error");
 	};
 
 	function onabort(evt) {
 		showMessageError("Transferencia interrompida");
 		reset();
+		$(pId).trigger("abort");
 	};
 
 	function onreadystatechangeHandler(evt) {
