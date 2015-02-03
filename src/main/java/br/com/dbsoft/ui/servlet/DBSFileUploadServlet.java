@@ -33,6 +33,7 @@ public abstract class DBSFileUploadServlet extends HttpServlet{
 	private List<IDBSFileUploadServletEventsListener>	wEventListeners = new ArrayList<IDBSFileUploadServletEventsListener>();
 
 	private String wLocalPath = "";
+	private String wFileName = "";
 	
 	@PreDestroy
 	private void finalizeClass(){
@@ -82,18 +83,18 @@ public abstract class DBSFileUploadServlet extends HttpServlet{
 	        	return;
 	        }
 			for (Part xPart : pRequest.getParts()) {
-			    String xFilename = "";
+			    wFileName = "";
 			    for (String xS : xPart.getHeader("content-disposition").split(";")) {
 			        if (xS.trim().startsWith("filename")) {
-			            xFilename = xS.split("=")[1].replaceAll("\"", "");
+			        	wFileName = xS.split("=")[1].replaceAll("\"", "");
 			        }
 			    }
 			    //Dispara evento 
-			    if (pvFireEventBeforeSave(xFilename)){
-			        if (!DBSObject.isEmpty(xFilename)){
-			            xPart.write(wLocalPath + xFilename);
+			    if (pvFireEventBeforeSave()){
+			        if (!DBSObject.isEmpty(wFileName)){
+			            xPart.write(wLocalPath + wFileName);
 			            //Dispara evento 
-			            pvFireEventAfterSave(xFilename);
+			            pvFireEventAfterSave();
 			        }
 			    }
 			}
@@ -133,6 +134,7 @@ public abstract class DBSFileUploadServlet extends HttpServlet{
 
 	/**
 	 * Evento ocorre após finalizado o upload do arquivo e antes que ele seja salvo localmente.<br/>
+	 * Pode-se neste evento, alterar o nome do arquivo utilizando <b>setFileName</b> para que seja salvo com outro nome.
 	 * @param pEvent 
 	 */
 	protected void beforeSave(DBSFileUploadServletEvent pEvent) throws DBSIOException{}
@@ -190,9 +192,9 @@ public abstract class DBSFileUploadServlet extends HttpServlet{
 		}
 	}
 	
-	private boolean pvFireEventBeforeSave(String pFileName) throws DBSIOException{
+	private boolean pvFireEventBeforeSave() throws DBSIOException{
 		DBSFileUploadServletEvent xE = new DBSFileUploadServletEvent(this);
-		xE.setFileName(pFileName);
+		xE.setFileName(wFileName);
 		try{
 			//Chame o metodo(evento) local para quando esta classe for extendida
 			beforeSave(xE);
@@ -204,6 +206,7 @@ public abstract class DBSFileUploadServlet extends HttpServlet{
 					if (!xE.isOk()){break;}
 		        }
 			}
+			wFileName = xE.getFileName();
 			return xE.isOk();
 		}catch(Exception e){
 			wLogger.error("beforeSave:", e);
@@ -211,9 +214,9 @@ public abstract class DBSFileUploadServlet extends HttpServlet{
 		}
 	}
 
-	private void pvFireEventAfterSave(String pFileName) throws DBSIOException{
+	private void pvFireEventAfterSave() throws DBSIOException{
 		DBSFileUploadServletEvent xE = new DBSFileUploadServletEvent(this);
-		xE.setFileName(pFileName);
+		xE.setFileName(wFileName);
 		try{
 			afterSave(xE);
 			if (xE.isOk()){
