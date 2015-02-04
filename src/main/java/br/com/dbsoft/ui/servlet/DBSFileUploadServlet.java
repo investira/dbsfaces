@@ -117,11 +117,11 @@ public abstract class DBSFileUploadServlet extends HttpServlet{
 	//Eventos locais=================================================================
 	/**
 	 * Evento ocorre antes de iniciar o upload.<br/>
-	 * Neste evento deve-se configurar o caminho local onde o arquivo será salvo, bem como os listners ser houver.<br/>
-	 * Pode-se evitar o inicio do upload, retornando <b>false</b>.<br/>
-	 * É obrigatório o retorno <b>true</b> para dar início ao upload.<br/>
-	 * utilizando o método <b>setLocalPath</b>. 
-	 * @return
+	 * Este evento ocorre somente uma vez, mesmo que esteja sendo efetuado o upload de diversos arquivos.<br/>
+	 * Para tratar arquivos individualmente, utilize o evento <b>beforeSave</b>.<br/>  
+	 * Para impedir o upload, deve-se setar <b>setOk(False)</b>.
+	 * Neste evento deve-se configurar o caminho local onde o arquivo será salvo utilizando o método <b>setLocalPath</b>, 
+	 * bem como os listners ser houver.<br/>
 	 */
 	protected abstract void beforeUpload(DBSFileUploadServletEvent pEvent) throws DBSIOException;
 	
@@ -135,6 +135,7 @@ public abstract class DBSFileUploadServlet extends HttpServlet{
 	/**
 	 * Evento ocorre após finalizado o upload do arquivo e antes que ele seja salvo localmente.<br/>
 	 * Pode-se neste evento, alterar o nome do arquivo utilizando <b>setFileName</b> para que seja salvo com outro nome.
+	 * Pode-se impedir que ele seja salvo,  setando <b>setOk(False)</b>.<br/>
 	 * @param pEvent 
 	 */
 	protected void beforeSave(DBSFileUploadServletEvent pEvent) throws DBSIOException{}
@@ -167,7 +168,7 @@ public abstract class DBSFileUploadServlet extends HttpServlet{
 			}
 			return xE.isOk();
 		}catch(Exception e){
-			wLogger.error(":BeforeUpload:", e);
+			wLogger.error("BeforeUpload:", e);
 			throw e;
 		}finally{
 //			closeConnection();
@@ -187,7 +188,7 @@ public abstract class DBSFileUploadServlet extends HttpServlet{
 		        }
 			}
 		}catch(Exception e){
-			wLogger.error(":AfterUpload:", e);
+			wLogger.error("AfterUpload:", e);
 			throw e;
 		}
 	}
