@@ -1,5 +1,6 @@
 package br.com.dbsoft.ui.servlet;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ import br.com.dbsoft.error.DBSIOException;
 import br.com.dbsoft.util.DBSFile;
 import br.com.dbsoft.util.DBSIO;
 import br.com.dbsoft.util.DBSObject;
+import br.com.dbsoft.util.DBSString;
 
 
 /**
@@ -92,6 +94,12 @@ public abstract class DBSFileUploadServlet extends HttpServlet{
 			    //Dispara evento 
 			    if (pvFireEventBeforeSave()){
 			        if (!DBSObject.isEmpty(wFileName)){
+			        	//Verifica se a pasta existe
+			        	if (!DBSFile.exists(wLocalPath+wFileName)) {
+			        		//Cria a pasta caso ela não exista
+			        		String xAbsolutePath = wLocalPath+wFileName;
+			        		DBSFile.mkDir(DBSString.getSubString(xAbsolutePath, 1, xAbsolutePath.lastIndexOf(File.separator)));
+			        	}
 			            xPart.write(wLocalPath + wFileName);
 			            //Dispara evento 
 			            pvFireEventAfterSave();
