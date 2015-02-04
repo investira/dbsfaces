@@ -23,6 +23,9 @@ import br.com.dbsoft.util.DBSFormat.NUMBER_SIGN;
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSChartValue.RENDERER_TYPE)
 public class DBSChartValueRenderer extends DBSRenderer {
 	
+	private Integer wAbsoluteX;
+	private Integer wAbsoluteY;
+	
 	@Override
 	public void decode(FacesContext pContext, UIComponent pComponent) {
 	}
@@ -86,14 +89,14 @@ public class DBSChartValueRenderer extends DBSRenderer {
 						 									 xCharts.getTotalValue())).intValue();
 				
 				//Seta valor absolute dentro do gráfico
-				xChartValue.setAbsoluteY(DBSNumber.subtract(xCharts.getZeroPosition(), xValue).intValue());
+				wAbsoluteY = (DBSNumber.subtract(xCharts.getZeroPosition(), xValue).intValue());
 				//Seta valor absolute dentro do gráfico
-				xChartValue.setAbsoluteX(DBSNumber.multiply(xChartValue.getIndex() - 1,
+				wAbsoluteX = (DBSNumber.multiply(xChartValue.getIndex() - 1,
 													 		xCharts.getLineWidth() + xCharts.getWhiteSpace()).intValue());
 				
 				//Encode label da coluna
 				if (xChartValue.getLabel() != null){
-					DBSFaces.encodeSVGText(xChartValue, xWriter,  DBSFaces.CSS.MODIFIER.LABEL, "text-anchor:middle", xChartValue.getAbsoluteX() + (xCharts.getLineWidth().intValue()/2), xCharts.getHeight().intValue(), xChartValue.getLabel());
+					DBSFaces.encodeSVGText(xChartValue, xWriter,  DBSFaces.CSS.MODIFIER.LABEL, "text-anchor:middle", wAbsoluteX + (xCharts.getLineWidth().intValue()/2), xCharts.getHeight().intValue(), xChartValue.getLabel());
 				}
 
 				//Encode bar
@@ -101,19 +104,19 @@ public class DBSChartValueRenderer extends DBSRenderer {
 					//Força tamanho mínimo quando valor for zero
 					if (xValue.equals(0)){
 						xValue = 3;
-						xChartValue.setAbsoluteY(xCharts.getZeroPosition() -2);		
+						wAbsoluteY =(xCharts.getZeroPosition() -2);		
 					}
 					//Utliza valor absolute
 					xValue = DBSNumber.abs(xValue);
-					if (xChartValue.getAbsoluteY() < xCharts.getZeroPosition()){
-						DBSFaces.encodeSVGRect(xChartValue, xWriter, null, null, xChartValue.getAbsoluteX(), xChartValue.getAbsoluteY(), xValue, xCharts.getLineWidth().intValue(), xChartValue.getFillColor());
+					if (wAbsoluteY < xCharts.getZeroPosition()){
+						DBSFaces.encodeSVGRect(xChartValue, xWriter, null, null, wAbsoluteX, wAbsoluteY, xValue, xCharts.getLineWidth().intValue(), xChartValue.getFillColor());
 					}else{
-						DBSFaces.encodeSVGRect(xChartValue, xWriter, null, null, xChartValue.getAbsoluteX(), xCharts.getZeroPosition(), xValue, xCharts.getLineWidth().intValue(), xChartValue.getFillColor());
+						DBSFaces.encodeSVGRect(xChartValue, xWriter, null, null, wAbsoluteX, xCharts.getZeroPosition(), xValue, xCharts.getLineWidth().intValue(), xChartValue.getFillColor());
 					}
 				//Encode line - ponto. as linhas que ligam os pontos, são desenhadas no código JS.
 				}else if (xChart.getType().equalsIgnoreCase(DBSChart.TYPE.LINE)){
-					xChartValue.setAbsoluteX(xChartValue.getAbsoluteX() + DBSNumber.divide(xCharts.getLineWidth(), 2).intValue());
-					DBSFaces.encodeSVGCircle(xChartValue, xWriter, DBSFaces.CSS.MODIFIER.VALUE, null, xChartValue.getAbsoluteX(), xChartValue.getAbsoluteY(), 2, 2, xChartValue.getFillColor());
+					wAbsoluteX = (wAbsoluteX + DBSNumber.divide(xCharts.getLineWidth(), 2).intValue());
+					DBSFaces.encodeSVGCircle(xChartValue, xWriter, DBSFaces.CSS.MODIFIER.VALUE, null, wAbsoluteX, wAbsoluteY, 2, 2, xChartValue.getFillColor());
 				}
 			}
 			
@@ -127,11 +130,11 @@ public class DBSChartValueRenderer extends DBSRenderer {
 					
 					if (xChart.getType().equalsIgnoreCase(DBSChart.TYPE.BAR)
 					 || xChart.getType().equalsIgnoreCase(DBSChart.TYPE.LINE)){
-						xExtraInfoStyle += "left:" + (xChartValue.getAbsoluteX() + DBSNumber.divide(xCharts.getLineWidth() + xCharts.getWhiteSpace(),2).intValue()) + "px;";
+						xExtraInfoStyle += "left:" + (wAbsoluteX + DBSNumber.divide(xCharts.getLineWidth() + xCharts.getWhiteSpace(),2).intValue()) + "px;";
 						if (xChartValue.getValue() - DBSCharts.FontSize < 0D){
-							xExtraInfoStyle += "bottom:-" + xChartValue.getAbsoluteY() + "px;";
+							xExtraInfoStyle += "bottom:-" + wAbsoluteY + "px;";
 						}else{
-							xExtraInfoStyle += "top:" + xChartValue.getAbsoluteY() + "px;";
+							xExtraInfoStyle += "top:" + wAbsoluteY + "px;";
 						}
 					}
 					
