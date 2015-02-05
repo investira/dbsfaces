@@ -6,6 +6,9 @@
 }
 .dbs_chartValue > ellipse{
 }
+.dbs_chartValue:hover > ellipse{
+	fill:white;	
+}
 
 .dbs_chartValue > rect{
 	shape-rendering: crispEdges;
@@ -14,31 +17,36 @@
 .dbs_chartValue > .-label{
 }
 
-.dbs_chartValue > .-extrainfo > .-content{
+.dbs_chartValue > .-label.-hide{
+	display: none;
+}
+
+
+.dbs_chartValue > .-extrainfo > span{
 	display: none; 
 	position: absolute;
 	background-image: url("#{request.contextPath}/images/default_back_texture.png");
-	background-color: rgba(13, 25, 45, 0.9);
+	background-color: rgb(210, 210, 210);
 	color: white;
 	background-repeat: repeat;
     border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;    
-    padding: 1px 4px 1px 4px;
+    padding: 0px 3px 0px 3px;
     font-size: 8px;
     box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.6);
    	-webkit-box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.6);
 	-moz-box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.6);
     z-index: 1;	
-}
-
-.dbs_chartValue:hover > .-extrainfo > .-content{
-	display: inline-block;
+    color: rgb(13,25,45);
 }
 
 .dbs_chartValue:hover{
 	stroke: rgb(13,25,45);
 	stroke-width: 1px;
+}
+.dbs_chartValue > .-label{
+	stroke-width: 0px !important;
 }
 
 

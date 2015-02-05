@@ -24,6 +24,10 @@ import br.com.dbsoft.util.DBSObject;
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSCharts.RENDERER_TYPE)
 public class DBSChartsRenderer extends DBSRenderer {
 
+	private Double 	wMinValue = 0D;
+	private Double 	wMaxValue = 0D;
+	private Integer wChartValueCount = 0;
+	private Integer wCount = 0;
 	
 	@Override
 	public void decode(FacesContext pContext, UIComponent pComponent) {
@@ -140,39 +144,45 @@ public class DBSChartsRenderer extends DBSRenderer {
 	}
 	
 	private void pvCalcularValores(DBSCharts pCharts){
-		Double xMinValue = 0D;
-		Double xMaxValue = 0D;
 		Integer xZeroPosition = 0;
-		Integer xChartValueCount = 0;
-		Integer xCount = 0;
-		Integer xWhiteSpace = 0;
-		for (UIComponent xChart:pCharts.getChildren()){
-			if (xChart instanceof DBSChart){
-				xCount = 0;
-				for (UIComponent xChild:xChart.getChildren()){
-					if (xChild instanceof DBSChartValue){
-						DBSChartValue xChartValue = (DBSChartValue) xChild;
-						xCount++;
-						Double xValue = xChartValue.getValue();
-						if (xValue < 0 
-						 && xValue < xMinValue){
-							xMinValue = xValue; 
+		Double xWhiteSpace = 0D;
+		
+		wMinValue = 0D;
+		wMaxValue = 0D;
+		wChartValueCount = 0;
+		wCount = 0;		
+		
+		//Loop nos componentes Chart
+		for (UIComponent xObject:pCharts.getChildren()){
+			if (xObject instanceof DBSChart){
+				DBSChart xChart = (DBSChart) xObject;
+				wCount = 0;
+				if (DBSObject.isEmpty(xChart.getVar())
+				 || DBSObject.isEmpty(xChart.getValue())){
+					//Loop nos componentes ChartValues filhos do chart
+					for (UIComponent xChild:xChart.getChildren()){
+						if (xChild instanceof DBSChartValue){
+							DBSChartValue xChartValue = (DBSChartValue) xChild;
+							pvCalculaValoresSet(pCharts, xChartValue);
 						}
-						if (xValue > 0 
-						 && xValue > xMaxValue){
-							xMaxValue = xValue; 
-						}
-						//Verifica se label foi definida e seta indicador que há label a ser exibida
-						if (!pCharts.getShowLabel()){
-							if (!DBSObject.isEmpty(xChartValue.getLabel())){
-								pCharts.setShowLabel(true);
+					}
+				}else{
+			        int xRowCount = xChart.getRowCount(); 
+			        xChart.setRowIndex(-1);
+			        xChart.getFirst();
+			        xChart.getRows(); 
+					//Loop por todos os registros lidos
+			        for (int xRowIndex = 0; xRowIndex < xRowCount; xRowIndex++) {
+			        	xChart.setRowIndex(xRowIndex);
+			        	//Loop no componente filho contendo as definições dos valores
+						for (UIComponent xChild : xChart.getChildren()){
+							if (xChild instanceof DBSChartValue){
+								DBSChartValue xChartValue = (DBSChartValue) xChild;
+								pvCalculaValoresSet(pCharts, xChartValue);
 							}
 						}
-					}
-					//Quantidade de colunas(itens)
-					if (xCount > xChartValueCount){
-						xChartValueCount = xCount;
-					}
+			        }
+			        xChart.setRowIndex(-1);
 				}
 			}
 		}
@@ -186,24 +196,27 @@ public class DBSChartsRenderer extends DBSRenderer {
 		}
 		//Valor Mínimo
 		if (pCharts.getMinValue() == null
-		 || pCharts.getMinValue() < xMinValue){
-			pCharts.setMinValue(xMinValue);
+		 || pCharts.getMinValue() < wMinValue){
+			pCharts.setMinValue(wMinValue);
 		}
 		//Valor Máximo
 		if (pCharts.getMaxValue() == null
-		 || pCharts.getMaxValue() < xMaxValue){
-			pCharts.setMaxValue(xMaxValue);
+		 || pCharts.getMaxValue() < wMaxValue){
+			pCharts.setMaxValue(wMaxValue);
 		}
 		//Calcula posição da linha zero
 		xZeroPosition = DBSNumber.multiply(pCharts.getChartHeight(),
 				   						   DBSNumber.divide(DBSNumber.abs(pCharts.getMaxValue()), 
 				   								   			pCharts.getTotalValue())).intValue();
 		//Distribui o espaço que sobra total, entre as cada coluna
-		if (xChartValueCount>1){
-			xWhiteSpace = DBSNumber.divide(DBSNumber.subtract(pCharts.getWidth(), 
-											 				  DBSNumber.multiply(xChartValueCount, pCharts.getLineWidth()),
+		if (wChartValueCount>1){
+//			xWhiteSpace = DBSNumber.divide(DBSNumber.subtract(pCharts.getWidth(), 
+//											 				  DBSNumber.multiply(wChartValueCount, pCharts.getLineWidth()),
+//											 				  pCharts.getFormatMaskWidth()),
+//										   wChartValueCount-1).intValue();
+			xWhiteSpace = DBSNumber.divide(DBSNumber.subtract(pCharts.getWidth() + 2, 
 											 				  pCharts.getFormatMaskWidth()),
-										   xChartValueCount-1).intValue();
+ 										  wChartValueCount).doubleValue();
 		}
 		//Posição da linha do zero
 		pCharts.setZeroPosition(xZeroPosition);
@@ -213,6 +226,31 @@ public class DBSChartsRenderer extends DBSRenderer {
 		pCharts.setNumberOfGridLines(3 + DBSNumber.divide(pCharts.getChartHeight(), 60).intValue());
 	}
 	
+	private void pvCalculaValoresSet(DBSCharts pCharts, DBSChartValue pChartValue){
+		wCount++;
+		Double xValue = pChartValue.getValue();
+		if (xValue < 0 
+		 && xValue < wMinValue){
+			wMinValue = xValue; 
+		}
+		if (xValue > 0 
+		 && xValue > wMaxValue){
+			wMaxValue = xValue; 
+		}
+		//Verifica se label foi definida e seta indicador que há label a ser exibida
+		if (!pCharts.getShowLabel()){
+			if (!DBSObject.isEmpty(pChartValue.getLabel())){
+				pCharts.setShowLabel(true);
+			}
+		}
+		
+		//Quantidade de colunas(itens)
+		if (wCount > wChartValueCount){
+			wChartValueCount = wCount;
+		}
+		
+	}
+
 	private void pvEncodeLines(DBSCharts pCharts, ResponseWriter pWriter) throws IOException{
 		if (pCharts.getCaption()!=null){
 			//Linha top
@@ -259,5 +297,6 @@ public class DBSChartsRenderer extends DBSRenderer {
 		}
 	}
 
-
+	
+	
 }

@@ -36,10 +36,10 @@ public class DBSChartValue extends DBSUIInput implements NamingContainer {
     }
 	
 
-	public Long getIndex() {
-		return (Long) getStateHelper().eval(PropertyKeys.index, 1L);
+	public Integer getIndex() {
+		return (Integer) getStateHelper().eval(PropertyKeys.index, 1);
 	}
-	public void setIndex(Long pIndex) {
+	public void setIndex(Integer pIndex) {
 		getStateHelper().put(PropertyKeys.index, pIndex);
 		handleAttribute("index", pIndex);
 	}

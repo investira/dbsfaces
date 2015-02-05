@@ -150,10 +150,10 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		handleAttribute("zeroPosition", pZeroPosition);
 	}
 	
-	public Integer getWhiteSpace() {
-		return (Integer) getStateHelper().eval(PropertyKeys.whiteSpace, 0);
+	public Double getWhiteSpace() {
+		return (Double) getStateHelper().eval(PropertyKeys.whiteSpace, 0D);
 	}
-	public void setWhiteSpace(Integer pWhiteSpace) {
+	public void setWhiteSpace(Double pWhiteSpace) {
 		getStateHelper().put(PropertyKeys.whiteSpace, pWhiteSpace);
 		handleAttribute("whiteSpace", pWhiteSpace);
 	}

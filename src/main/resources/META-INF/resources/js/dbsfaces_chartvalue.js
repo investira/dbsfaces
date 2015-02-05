@@ -1,5 +1,19 @@
 dbs_chartValue = function(pId) {
-	dbsfaces.chartValue.drawLines(pId);
+	var xChart = $(pId).closest(".dbs_chart");
+	if (xChart.attr("type") == "line"){
+		dbsfaces.chartValue.drawLines(pId);
+	}
+	
+	dbsfaces.chartValue.showLabel(pId);
+	
+	$(pId).mouseenter(function (e){
+		var xContent = $(pId + " > .-extrainfo > span");
+		xContent.show();
+	});
+	$(pId).mouseleave(function (e){
+		var xContent = $(pId + " > .-extrainfo > span");
+		xContent.hide();
+	});
 };
 
 dbsfaces.chartValue = {
@@ -37,6 +51,40 @@ dbsfaces.chartValue = {
 		xLine.attr("x2", xX2);
 		xLine.attr("y2", xY2);
 		pLineGroup.append(xLine);
+	},
+	
+	showLabel: function(pId){
+		var xValue = $(pId);
+		if (xValue.length == 0){
+			return;
+		}
+		var xLabelAtual = xValue.children(".-label");
+		if (xLabelAtual.length == 0){return;}
+
+		//Procura valor anterior que contenha label sendo exibido
+		var xLabelAnterior = xValue.prevAll(".dbs_chartValue").children(".-label").not("[class ~= '-hide']").first();
+		var xXAtual = 0;
+		var xLabelAtualWidth = xLabelAtual.width();
+		var xXAnterior = 0;
+		//Se não existir coluna anterior a ser exibida,
+		if (xLabelAnterior.length == 0){
+			xXAnterior = xLabelAtualWidth/2;
+			xXAtual = Number(xLabelAtual.attr("x"));
+		}else{
+			xXAnterior = Number(xLabelAnterior.attr("x")) + xLabelAnterior.width() + 4;
+			xXAtual = Number(xLabelAtual.attr("x"));
+		}
+		if (xXAnterior > xXAtual){
+			xLabelAtual.get(0).classList.add("-hide");
+		}else{
+			xLabelAtual.get(0).classList.remove("-hide");
+		}
+
+		var xXLabel = $(pId + " > .-extrainfo > .-x");
+		//Centraliza o texto do extrainfo
+		xXLabel.offset({left: (xXAtual - (xLabelAtualWidth / 2) - 2) })
+
+
 	}
 };
 

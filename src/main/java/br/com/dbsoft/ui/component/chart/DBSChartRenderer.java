@@ -11,8 +11,10 @@ import com.sun.faces.renderkit.RenderKitUtils;
 
 import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
+import br.com.dbsoft.ui.component.chartvalue.DBSChartValue;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.util.DBSObject;
 
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSChart.RENDERER_TYPE)
@@ -35,8 +37,7 @@ public class DBSChartRenderer extends DBSRenderer {
     }
 
 	@Override
-	public void encodeBegin(FacesContext pContext, UIComponent pComponent)
-			throws IOException {
+	public void encodeBegin(FacesContext pContext, UIComponent pComponent) throws IOException {
 		if (!pComponent.isRendered()){return;}
 		DBSChart xChart = (DBSChart) pComponent;
 		if (xChart.getType()==null){return;}
@@ -54,6 +55,7 @@ public class DBSChartRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "name", xClientId, null);
 			DBSFaces.setAttribute(xWriter, "class", xClass, null);
 			DBSFaces.setAttribute(xWriter, "style", xChart.getStyle(), null);
+			DBSFaces.setAttribute(xWriter, "type", xChart.getType(), null);
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xChart, DBSPassThruAttributes.getAttributes(Key.CHART));
 			
 			encodeClientBehaviors(pContext, xChart);
@@ -65,9 +67,13 @@ public class DBSChartRenderer extends DBSRenderer {
 					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.LINE, null);
 				xWriter.endElement("g");
 			}
-
-			renderChildren(pContext, xChart);
 			
+			if (DBSObject.isEmpty(xChart.getVar())
+			 || DBSObject.isEmpty(xChart.getValue())){
+				renderChildren(pContext, xChart);
+			}else{
+				pvEncodeResultSetChartValue(pContext, xChart, xWriter);
+			}
 
 			pvEncodeJS(xClientId, xWriter);
 			
@@ -84,6 +90,34 @@ public class DBSChartRenderer extends DBSRenderer {
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);		
 	}
 	
+	/**
+	 * Encode do corpo da tabela contendo as linhas com os dados
+	 * @param pContext
+	 * @param pChart
+	 * @param pWriter
+	 * @throws IOException
+	 */
+	private void pvEncodeResultSetChartValue(FacesContext pContext, DBSChart pChart, ResponseWriter pWriter) throws IOException {
+        int xRowCount = pChart.getRowCount(); 
+		pChart.setRowIndex(-1);
+		pChart.getFirst();
+		pChart.getRows(); 
+		//Loop por todos os registros lidos
+        for (int xRowIndex = 0; xRowIndex < xRowCount; xRowIndex++) {
+        	pChart.setRowIndex(xRowIndex);
+        	//Loop no componente filho contendo as definições dos valores
+			for (UIComponent xC : pChart.getChildren()){
+				if (xC instanceof DBSChartValue){
+					DBSChartValue xChartValue = (DBSChartValue) xC;
+					xChartValue.setIndex(xRowIndex + 1);
+					if (xChartValue.isRendered()){
+						xChartValue.encodeAll(pContext);
+					}
+				}
+			}
+        }
+        pChart.setRowIndex(-1);
+	}
 
 
 
