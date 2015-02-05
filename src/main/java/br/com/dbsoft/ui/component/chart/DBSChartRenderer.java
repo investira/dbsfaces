@@ -67,9 +67,9 @@ public class DBSChartRenderer extends DBSRenderer {
 					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.LINE, null);
 				xWriter.endElement("g");
 			}
-			
+			//Se não foi informado DBSResultSet
 			if (DBSObject.isEmpty(xChart.getVar())
-			 || DBSObject.isEmpty(xChart.getValue())){
+			 || DBSObject.isEmpty(xChart.getValueExpression("value"))){
 				renderChildren(pContext, xChart);
 			}else{
 				pvEncodeResultSetChartValue(pContext, xChart, xWriter);

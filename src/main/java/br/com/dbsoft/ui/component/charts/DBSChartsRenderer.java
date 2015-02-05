@@ -157,8 +157,9 @@ public class DBSChartsRenderer extends DBSRenderer {
 			if (xObject instanceof DBSChart){
 				DBSChart xChart = (DBSChart) xObject;
 				wCount = 0;
+				//Se não foi informado DBSResultSet
 				if (DBSObject.isEmpty(xChart.getVar())
-				 || DBSObject.isEmpty(xChart.getValue())){
+				 || DBSObject.isEmpty(xChart.getValueExpression("value"))){
 					//Loop nos componentes ChartValues filhos do chart
 					for (UIComponent xChild:xChart.getChildren()){
 						if (xChild instanceof DBSChartValue){

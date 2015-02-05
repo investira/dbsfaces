@@ -6,9 +6,7 @@
 }
 .dbs_chartValue > ellipse{
 }
-.dbs_chartValue:hover > ellipse{
-	fill:white;	
-}
+
 
 .dbs_chartValue > rect{
 	shape-rendering: crispEdges;
@@ -45,6 +43,11 @@
 	stroke: rgb(13,25,45);
 	stroke-width: 1px;
 }
+
+.dbs_chartValue:hover > ellipse{
+	fill:white;	
+}
+
 .dbs_chartValue > .-label{
 	stroke-width: 0px !important;
 }
