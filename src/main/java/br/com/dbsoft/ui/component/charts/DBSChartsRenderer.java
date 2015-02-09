@@ -206,9 +206,11 @@ public class DBSChartsRenderer extends DBSRenderer {
 			pCharts.setMaxValue(wMaxValue);
 		}
 		//Calcula posição da linha zero
-		xZeroPosition = DBSNumber.multiply(pCharts.getChartHeight(),
-				   						   DBSNumber.divide(DBSNumber.abs(pCharts.getMaxValue()), 
-				   								   			pCharts.getTotalValue())).intValue();
+		if (pCharts.getMaxValue() > 0){
+			xZeroPosition = DBSNumber.multiply(pCharts.getChartHeight(),
+					   						   DBSNumber.divide(DBSNumber.abs(pCharts.getMaxValue()), 
+					   								   			pCharts.getTotalValue())).intValue();
+		}
 		//Distribui o espaço que sobra total, entre as cada coluna
 		if (wChartValueCount>1){
 //			xWhiteSpace = DBSNumber.divide(DBSNumber.subtract(pCharts.getWidth(), 
@@ -270,7 +272,10 @@ public class DBSChartsRenderer extends DBSRenderer {
 		Double xIncrementoValor = DBSNumber.divide(pCharts.getTotalValue(), pCharts.getNumberOfGridLines()).doubleValue();
 		Double xIncrementoPosicao = DBSNumber.divide(pCharts.getChartHeight() - (DBSCharts.Padding * 2), pCharts.getNumberOfGridLines()).doubleValue();
 		Double xPosicao = DBSNumber.toBigDecimal(pCharts.getZeroPosition()).remainder(DBSNumber.toBigDecimal(xIncrementoPosicao)).doubleValue();
-		Double xValor = (DBSNumber.divide(pCharts.getMaxValue() / xIncrementoValor).intValue()) *  xIncrementoValor;
+		Double xValor = 0D;
+		if (pCharts.getMaxValue() > 0D){
+			xValor= (DBSNumber.divide(pCharts.getMaxValue() / xIncrementoValor).intValue()) *  xIncrementoValor;
+		}
 		Integer xAjustePadrao = DBSCharts.FontSize / 2;
 		Integer xAjuste = xAjustePadrao;
 		String xFormatedValue;
