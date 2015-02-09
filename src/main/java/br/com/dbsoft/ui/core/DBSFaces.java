@@ -1732,7 +1732,7 @@ public class  DBSFaces {
 				 * Incluido em 9/9/2014.
 				 * A principio resolve a questão do erro no ajax na seleção da linha por checkbox após o 'pesquisar'.
 				 */
-				xBtPesquisar.setUpdate(pDataTable.getClientId(xContext)); //Voltou a ser xClientId em 08/set/2014 - Ricardo	
+				xBtPesquisar.setUpdate(pDataTable.getClientId(xContext) + " " + pDataTable.getUpdate()); //Voltou a ser xClientId em 08/set/2014 - Ricardo	
 //				xBtPesquisar.setUpdate("@all");//Substituido por @all pois dava erro no ajax na seleção da linha por checkbox após o 'pesquisar'
 				
 				//Cria o facet e inclui botão dentro dele. A inclusão do botão através do facet, evita problemas em incluir o botao na view várias vezes.
