@@ -2925,7 +2925,7 @@ public abstract class DBSCrudBean extends DBSBean{
 			}
 
 
-			//Exibe mensagem de erro padrão, caso nehum registro tenha sido afedado e já não houver mensagem a ser exibida.
+			//Exibe mensagem de erro padrão, caso nehum registro tenha sido afetado e já não houver mensagem a ser exibida.
 			if (!wDialogMessages.hasMessages()
 			 && (!xE.isOk() || xE.getCommittedRowCount().equals(0))){
 				xE.setOk(false);
