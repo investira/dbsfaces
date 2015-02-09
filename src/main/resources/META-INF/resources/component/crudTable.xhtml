@@ -35,7 +35,7 @@
 				               searchAction="#{cc.crudBean.searchList()}" 
 				               selectAllAction="#{cc.crudBean.selectAll()}"
 				               selected="#{cc.crudBean.selected}"
-				               update=":dialog"
+				               update=":dialog #{cc.clientId}:crudTableMessages"
 				               styleClass="#{cc.crudBean.dialogEdit ? '':'-noDialogEdit'}"
 				               binding="#{cc.dataTable}">
 				    <dbs:setAttributeOnParent attributeName="var" attributeValue="#{cc.attrs.var}"/>
