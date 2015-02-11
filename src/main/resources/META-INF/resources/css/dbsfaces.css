@@ -51,6 +51,7 @@ div,ul,li,span,a,table,thead,tfoot,tbody,td,th,tr,caption {
 	box-sizing: border-box;
 }
 
+a:not(.-disabled),
 button:not(.-disabled) {
 	cursor: pointer;
 	outline: none !important;
