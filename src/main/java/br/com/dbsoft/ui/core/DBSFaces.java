@@ -981,7 +981,7 @@ public class  DBSFaces {
 		NavigationHandler xNavigationHandler = xContext.getApplication().getNavigationHandler();
 		//Configura a página que deverá ir. Neste caso é a página(ou outcome no faces-config) de login
 		xNavigationHandler.handleNavigation(xContext, null, pView);
-//		xContext.responseComplete();
+		xContext.responseComplete();
 	}
 	
 	
