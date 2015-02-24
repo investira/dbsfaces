@@ -27,14 +27,14 @@
 	display:inline-block;
 	height:20px; /*Tamanho do título da aba*/
 	position: relative;
-   	z-index: 1;
+/*    	z-index: 1; comentado em 24/02/2015 - Ricardo. Estabva sobreponto o menu*/
    	white-space: pre; /* retira spaços em branco entre o título de as páginas(Problema causado por Strict DOCTYPE */
 }	
 
 
 .dbs_tab > .-container > ul > li{
 	position:relative;
-	z-index: 1;
+/*    	z-index: 1; comentado em 24/02/2015 - Ricardo. Estabva sobreponto o menu*/
 	padding-left: 8px;
     padding-right: 8px;
 	float:right;
