@@ -75,12 +75,26 @@ public class DBSInputTextAreaRenderer extends DBSRenderer {
 		String xClientId = getInputDataClientId(pInputTextArea);
 		String xStyle = "";
 		String xValue = "";
-		if (pInputTextArea.getValue() != null){
-			xValue = (String)pInputTextArea.getValue();
+
+		xValue = DBSObject.getNotEmpty(pInputTextArea.getValue(), "").toString();
+
+		//Defino tamanho mínimo quando valor for vázio e não tiver sido informado os valores de quantidade de colunas e linha
+		if (xValue.equals("")){
+			if (pInputTextArea.getCols()==null){
+				pInputTextArea.setCols(10);
+			}
+			if (pInputTextArea.getRows()==null){
+				pInputTextArea.setRows(1);
+			}
 		}
+		
 		//Define a largura do campo
-		xStyle = DBSFaces.getStyleWidthFromInputSize(pInputTextArea.getCols()) + ";" +
-				 DBSFaces.getStyleHeightFromInputSize(pInputTextArea.getRows());
+		if (pInputTextArea.getCols()!=null){
+			xStyle += DBSFaces.getStyleWidthFromInputSize(pInputTextArea.getCols()) + ";";
+		}
+		if (pInputTextArea.getRows()!=null){
+			xStyle += DBSFaces.getStyleHeightFromInputSize(pInputTextArea.getRows());
+		}
 
 		//Se for somente leitura, gera código como <Span>
 		if (pInputTextArea.getReadOnly()){
@@ -91,8 +105,8 @@ public class DBSInputTextAreaRenderer extends DBSRenderer {
 				DBSFaces.setAttribute(pWriter, "name", xClientId, null);
 				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.DATA, null);
 				DBSFaces.setAttribute(pWriter, "style", xStyle, null);
-				pWriter.writeAttribute("cols", pInputTextArea.getCols(), null);
-				pWriter.writeAttribute("rows", pInputTextArea.getRows(), null);
+				DBSFaces.setAttribute(pWriter, "cols", pInputTextArea.getCols(), null);
+				DBSFaces.setAttribute(pWriter, "rows", pInputTextArea.getRows(), null);
 				if (pInputTextArea.getResize()){
 					pWriter.writeAttribute("resize", pInputTextArea.getResize(), null);
 				}

@@ -36,7 +36,7 @@ public class DBSInputTextArea extends DBSUIInputText {
     }
 	
 	public Integer getCols() {
-		return (Integer) getStateHelper().eval(PropertyKeys.cols, 10);
+		return (Integer) getStateHelper().eval(PropertyKeys.cols, null);
 	}
 	public void setCols(Integer pCols) {
 		getStateHelper().put(PropertyKeys.cols, pCols);
@@ -44,7 +44,7 @@ public class DBSInputTextArea extends DBSUIInputText {
 	}
 	
 	public Integer getRows() {
-		return (Integer) getStateHelper().eval(PropertyKeys.rows, 2);
+		return (Integer) getStateHelper().eval(PropertyKeys.rows, null);
 	}
 	public void setRows(Integer pRows) {
 		getStateHelper().put(PropertyKeys.rows, pRows);
