@@ -117,14 +117,18 @@
 	color: inherit;
 	overflow-x: auto;
 	overflow-y: hidden; 
+
+	position: relative;
+	padding-top: 19px;
 }
 
 .dbs_dataTable > .-container > .-content > table > thead{
 	display: inline-block; /* inline-block se tiver tamanho definido */
 	width: 100%;
 	top: -1px; /* Incluio par esconder um ponto de sombra no título 19/04/2013*/
-	position: relative; /* Incluio par esconder um ponto de sombra no título 19/04/2013*/
 	padding-left:1px; /* incluido para alinha a linha da celula do cabeçalho com a linha do body */
+
+	position: absolute; /* Incluio par esconder um ponto de sombra no título 19/04/2013*/
 }
 
 .dbs_dataTable > .-container > .-content > table > thead > tr{
@@ -161,6 +165,8 @@
 	border-bottom:0px;
 	border-style: solid;
 	border-color: rgba(255,255,255,0.2);
+
+	position: relative;
 }
 
 .dbs_dataTable > .-container > .-content > table > thead > tr,

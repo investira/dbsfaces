@@ -19,10 +19,6 @@ dbs_dataTable = function(pId) {
 	$(pId + " > .-container > .-content").css("margin-top", "-" + xH + "px")
 	                                     .css("padding-top", xH + "px");
 
-	xH = $(xTable + " > thead").outerHeight();
-	$(xTable).css("margin-bottom", "-" + xH + "px")
-	         .css("padding-bottom", xH + "px");
-	
 	dbsfaces.dataTable.showOverflowShadow($(xTable));
 	dbsfaces.dataTable.positionOnSelectRow(pId);
 	
@@ -214,13 +210,9 @@ dbsfaces.dataTable = {
 		if ($(xNew).length > 0){ 
 			dbsfaces.dataTable.rowSelect(pId, xNew);
 			if (xDirection!=0){
-				var xPadding = parseInt($(pId + " > .-container > .-content").css("padding-top"));
-				var xHeaderH = $(pId + " > .-container > .-content > table > thead").outerHeight();
-				var xNewPos = xTBody.scrollTop() + xNew.position().top - xPadding + xNew.outerHeight() - xHeaderH;
+				var xNewPos = xTBody.scrollTop() + xNew.position().top + xNew.outerHeight();
 				var xLT = xTBody.scrollTop() + xNew.outerHeight();
 				var xLB = xTBody.scrollTop() + xTBody.outerHeight();
-//				sectionRowIndex
-//					console.log("Padding:" + xPadding + "\txNewPosTop:" + xNew.position().top + "\txNewPos:" + xNewPos + "\tLB:" + xLB + "\tTBodyScollTop:" + xTBody.scrollTop() + "\txNewPos-TBodyHeight:" + (xNewPos - xTBody.outerHeight()));
 				if ((xNewPos) > xLB ||
 					(xNewPos) < xLT){
 					if (xDirection<0){
