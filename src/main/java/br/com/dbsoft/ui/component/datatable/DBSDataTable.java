@@ -40,7 +40,8 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 		selected, 
 		update,
 		keyColumnName,
-		currentRowIndex;
+		currentRowIndex,
+		iconClass;
 
 		String toString;
 
@@ -279,6 +280,15 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 		return getValueExpression("viewOneAction") != null;
 	}
 
+ 	public String getIconClass() {
+ 		return (String) getStateHelper().eval(PropertyKeys.iconClass, null);
+ 	}
+
+ 	public void setIconClass(String pIconClass) {
+ 		getStateHelper().put(PropertyKeys.iconClass, pIconClass);
+ 		handleAttribute("iconClass", pIconClass);
+ 	}
+	
 	private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("change", "click", "blur", "dblclick","keydown", "keypress", "keyup", "mousedown", "mousemove","mouseout", "mouseover", "mouseup", "select"));
 
 	@Override

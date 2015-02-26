@@ -113,7 +113,8 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	private boolean pvHasHeader(DBSDataTable pDataTable){
 		UIComponent xFilter = pDataTable.getFacet(DBSDataTable.FACET_FILTER);
 		UIComponent xToolbar = pDataTable.getFacet(DBSDataTable.FACET_TOOLBAR);
-		if (!pDataTable.getCaption().equals("")
+		if (!DBSObject.isEmpty(pDataTable.getCaption())
+		 || !DBSObject.isEmpty(pDataTable.getIconClass()) 
 		 || xFilter != null
 		 || xToolbar != null){
 			return true;
@@ -133,16 +134,25 @@ public class DBSDataTableRenderer extends DBSRenderer {
 		UIComponent xFilter = pDataTable.getFacet(DBSDataTable.FACET_FILTER);
 		UIComponent xToolbar = pDataTable.getFacet(DBSDataTable.FACET_TOOLBAR);
 		
-		if (!pDataTable.getCaption().equals("") ||
-			xFilter != null ||
-			xToolbar != null) { 
+		if (!DBSObject.isEmpty(pDataTable.getCaption())
+		 || !DBSObject.isEmpty(pDataTable.getIconClass())
+		 ||	xFilter != null 
+		 || xToolbar != null) { 
 			pWriter.startElement("div", pDataTable);
 				DBSFaces.setAttribute(pWriter, "class",DBSFaces.CSS.MODIFIER.HEADER.trim(), null);
 				// Caption -------------------------
-				if (!pDataTable.getCaption().equals("")) {
+				if (!DBSObject.isEmpty(pDataTable.getCaption())
+				 || !DBSObject.isEmpty(pDataTable.getIconClass())) {
 					pWriter.startElement("div", pDataTable);
 						DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CAPTION + DBSFaces.CSS.NOT_SELECTABLE,null);
-						pWriter.write(pDataTable.getCaption());
+						if (!DBSObject.isEmpty(pDataTable.getIconClass())) {
+							pWriter.startElement("span", pDataTable);
+								pWriter.writeAttribute("class", "-icon " + pDataTable.getIconClass(), null);
+							pWriter.endElement("span");
+						}
+						if (!DBSObject.isEmpty(pDataTable.getCaption())){
+							pWriter.write(pDataTable.getCaption());
+						}
 					pWriter.endElement("div");
 				}
 		

@@ -11,6 +11,7 @@
 		<cc:attribute name="var" required="true"/>
 		<cc:attribute name="style"/>
 		<cc:attribute name="styleClass"/>
+		<cc:attribute name="iconClass"/>
 		<cc:attribute name="rendered" preferred="true"/>
 		<cc:attribute name="multipleSelection" default="false"/>
 		<cc:attribute name="insertSelected" preferred="true" type="java.lang.Boolean"/>
@@ -35,6 +36,7 @@
 				               searchAction="#{cc.crudBean.searchList()}" 
 				               selectAllAction="#{cc.crudBean.selectAll()}"
 				               selected="#{cc.crudBean.selected}"
+				               iconClass="#{cc.attrs.iconClass}"
 				               update=":dialog #{cc.clientId}:crudTableMessages"
 				               styleClass="#{cc.crudBean.dialogEdit ? '':'-noDialogEdit'}"
 				               binding="#{cc.dataTable}">
