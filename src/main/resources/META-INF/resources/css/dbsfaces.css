@@ -208,21 +208,21 @@ svg{
 
 
 .-scrollLeft {
-	-webkit-box-shadow: 3px 0 3px -1px rgba(0, 0, 0, 0.30) inset;
-	-moz-box-shadow: 3px 0 3px -1px rgba(0, 0, 0, 0.30) inset;
-	box-shadow: 3px 0 3px -1px rgba(0, 0, 0, 0.30) inset;
+	-webkit-box-shadow: 3px 0 3px -1px rgba(0, 0, 0, 0.3) inset;
+	-moz-box-shadow: 3px 0 3px -1px rgba(0, 0, 0, 0.3) inset;
+	box-shadow: 3px 0 3px -1px rgba(0, 0, 0, 0.3) inset;
 }
 
 .-scrollRight {
-	-webkit-box-shadow: -3px 0 3px -1px rgba(0, 0, 0, 0.30) inset;
-	-moz-box-shadow: -3px 0 3px -1px rgba(0, 0, 0, 0.30) inset;
-	box-shadow: -3px 0 3px -1px rgba(0, 0, 0, 0.30) inset;
+	-webkit-box-shadow: -3px 0 3px -1px rgba(0, 0, 0, 0.3) inset;
+	-moz-box-shadow: -3px 0 3px -1px rgba(0, 0, 0, 0.3) inset;
+	box-shadow: -3px 0 3px -1px rgba(0, 0, 0, 0.3) inset;
 }
 
 .-scrollLeftRight {
-	-webkit-box-shadow: 0px -3px 6px 0px rgba(0, 0, 0, 0.6) inset;
-	-moz-box-shadow: 0px -3px 6px 0px rgba(0, 0, 0, 0.6) inset;
-	box-shadow: 0px -3px 6px 0px rgba(0, 0, 0, 0.6) inset;
+	-webkit-box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.3) inset;
+	-moz-box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.3) inset;
+	box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.3) inset;
 }
 
 input.-foo {
