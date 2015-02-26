@@ -201,7 +201,7 @@ public class DBSPassThruAttributes {
             ,attr("onmouseout","mouseout")
             ,attr("onmouseover","mouseover")
             ,attr("onmouseup","mouseup")
-            ,attr("onselect","select")
+//            ,attr("onselect","select")
             ,attr("tabindex")
         ))
         .add("Dialog",ar(
