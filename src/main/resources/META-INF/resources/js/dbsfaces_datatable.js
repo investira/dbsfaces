@@ -3,6 +3,7 @@ dbs_dataTable = function(pId) {
 	var xW = 15;
 	var xTable = pId + " > .-container > .-content > table ";
     var xRow = $(xTable + " > tbody > tr:first");
+    var xSelectedRow;
 
 	xW = xW + $(pId + " > .-container > .-header > .-filter > .-input").outerWidth();
 	xW = xW + $(pId + " > .-container > .-header > .-filter > .-button").outerWidth();
@@ -11,9 +12,9 @@ dbs_dataTable = function(pId) {
 
 	xW = xRow.outerWidth() + 2;
 	xW = xW - xRow.children(".-CX").outerWidth();
-	$(xTable + " > tbody").css("min-width", xW);
-	$(xTable + " > thead").css("min-width", xW);
-	$(xTable + " > thead > tr").css("min-width", xW);
+//	$(xTable + " > tbody").css("min-width", xW);
+//	$(xTable + " > thead").css("min-width", xW);
+//	$(xTable + " > thead > tr").css("min-width", xW);
 
 	xH = $(pId + " > .-container > .-header").outerHeight();
 	$(pId + " > .-container > .-content").css("margin-top", "-" + xH + "px")
@@ -45,7 +46,26 @@ dbs_dataTable = function(pId) {
 		dbsfaces.dataTable.rowFocusRemove(pId);
 	})
 
-
+	$(xTable + " > tbody > tr").focusin(function(e){
+		dbsfaces.dataTable.rowSelect(pId, this);
+	});
+	
+	/*Força o foco no click*/
+	$(xTable + " > tbody > tr").click(function(e){
+		//Se click foi em campo de input, não precisa forçar o foco no input-foo.
+		if ($(e.target).hasClass("dbs_input-data")
+		 || $(e.target).is("input")){
+			dbsfaces.dataTable.headFocusAdd(pId);
+		}else{
+			//Somente seleciona se for diferente do selecionado anteriormente
+			if (this != xSelectedRow){
+				xSelectedRow = this;
+				dbsfaces.dataTable.rowSelect(pId, this);
+			}
+		}
+//		e.preventDefault();
+	});
+	
 	/*Executa o click na linha */
 	$(xTable + " > tbody > tr").dblclick(function (e){
 		//ignora execução padrão do dblclick e marca a linha
@@ -62,24 +82,6 @@ dbs_dataTable = function(pId) {
 	    	return false;
 		}
     });
- 
-	$(xTable + " > tbody > tr").focusin(function(e){
-		dbsfaces.dataTable.rowSelect(pId, this);
-	});
-	
-	/*Força o foco no click*/
-	$(xTable + " > tbody > tr").click(function(e){
-//		e.stopImmediatePropagation();
-		//Se click foi em campo de input, não precisa forçar o foco no input-foo.
-		if ($(e.target).hasClass("dbs_input-data")
-		 || $(e.target).is("input")){
-			dbsfaces.dataTable.headFocusAdd(pId);
-		}else{
-			dbsfaces.dataTable.rowSelect(pId, this);
-			$(pId + " > .-container > input.-foo").focus().select().click();
-		}
-//		e.preventDefault();
-	});
 
 	/*Evitar a propagação do evento click do campo e dispara o click para o datagrid*/
 	$(pId + " > .-container > input.-foo").click(function(e){
@@ -88,11 +90,10 @@ dbs_dataTable = function(pId) {
 		return false;
 	});
 	
-	$(pId + " > .-container > input.-foo").select(function(e){
+	$(pId + " > .-container > input.-foo").on("select", function(e){
 		return false;
 	});
 	
-
 	$(pId + " > .-container > input.-foo").keydown(function(e){
 		if(e.keyCode==40 || //DOWN
 		   e.keyCode==38){  //UP
@@ -158,6 +159,7 @@ dbsfaces.dataTable = {
 		$(pNew).addClass("-selected");
 		$(pId).trigger(dbsfaces.EVENT.ON_ROW_SELECTED, pNew);
 		$(pId).trigger("select.datatable");
+		$(pId + " > .-container > input.-foo").select();
 	},
 
 	rowDeselect: function(pId){

@@ -45,11 +45,19 @@
 .dbs_dataTable > .-container > .-header > .-caption{
 	min-height: 20px;
 	height: 20px;
+	font-weight: bold;
 	text-shadow: 0px 1px 0px #FFFFFF;
-	font-weight:bold;
-	padding-top:2px;
-	text-align: center;
+	padding-top: 3px;
+	padding-left: 5px;
+	text-align: left;
+	display: block;
+	position: relative;	
 } 
+.dbs_dataTable > .-container > .-header > .-caption > .-icon{
+	position: relative;
+	float: left;
+	top: -1px;
+}
 
 .dbs_dataTable > .-container > .-header > .-filter{
 	padding: 4px;
@@ -118,21 +126,27 @@
 	overflow-x: auto;
 	overflow-y: hidden; 
 
-	position: relative;
 	padding-top: 19px;
+	position: relative;
+}
+	
+.dbs_dataTable > .-container > .-content > table > thead{
+	position: absolute;
+	display: inline-block;
+	top: 0px; /* Incluio par esconder um ponto de sombra no título 19/04/2013*/
+	padding-left:1px; /* incluido para alinha a linha da celula do cabeçalho com a linha do body */
 }
 
-.dbs_dataTable > .-container > .-content > table > thead{
-	display: inline-block; /* inline-block se tiver tamanho definido */
-	width: 100%;
-	top: -1px; /* Incluio par esconder um ponto de sombra no título 19/04/2013*/
-	padding-left:1px; /* incluido para alinha a linha da celula do cabeçalho com a linha do body */
-
-	position: absolute; /* Incluio par esconder um ponto de sombra no título 19/04/2013*/
+.dbs_dataTable > .-container > .-content > table > tbody{
+	position: relative;
+	display: inline-block;
+}
+.dbs_dataTable > .-container > .-content > table > tfoot{
+	position: relative;
+	display: inline-block;
 }
 
 .dbs_dataTable > .-container > .-content > table > thead > tr{
-	display: block;
 	background: rgb(255,255,255); /* Old browsers */
 	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
 	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlNmU2ZTYiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
@@ -153,10 +167,7 @@
 }
 
 .dbs_dataTable > .-container > .-content > table > tbody{
-	display: inline-block; /* inline-block se tiver tamanho definido */
 	height: 100%;
-	width: 100%;
-	xfloat: right;
 	overflow-x: hidden; /*Verificar esta linha, pois está escondendo as colunas quando ultrapassa largura do browser. Testar suggestion*/
 	overflow-y: auto; /*Verificar esta linha, pois está escondendo as colunas quando ultrapassa largura do browser*/
 	border-top:0px ;
@@ -165,19 +176,18 @@
 	border-bottom:0px;
 	border-style: solid;
 	border-color: rgba(255,255,255,0.2);
-
-	position: relative;
 }
 
 .dbs_dataTable > .-container > .-content > table > thead > tr,
 .dbs_dataTable > .-container > .-content > table > tbody > tr,
 .dbs_dataTable > .-container > .-content > table > tfoot > tr{
+	display: block;
+	position: relative;
 }
 
 .dbs_dataTable > .-container > .-content > table > thead > tr,
 .dbs_dataTable > .-container > .-content > table > tfoot > tr {
 /* 	xdisplay: inline-block; Comentado, pois não exibia o título inteiro quando haviam poucas colunas. Incluido para exibir o título inteiro mesmo quando não há linhas */
-	display: table; /*Incluido para exibir o título inteiro mesmo quando não há linhas */
 	min-height: 19px;
 	height: 19px;
 	text-shadow: 0px 1px 0px #FFFFFF;
@@ -190,8 +200,6 @@
 
 .dbs_dataTable > .-container > .-content > table > tbody > tr {
  	min-height: 16px;
-	display: block; /*Verificar esta linha, pois está escondendo as colunas quando ultrapassa largura do browser. Testar suggestion*/
-/* 	display: table; <- este resolve o problema acima*/
 }
 
 .dbs_dataTable:not(.-noDialogEdit) > .-container > .-content > table > tbody > tr {
@@ -218,7 +226,9 @@
 }
 
 .dbs_dataTable > .-container > .-content > table > thead > tr > th{
+	font-weight: normal;
 	padding:0px 2px 0px 2px;
+	height: inherit;
 }
 
 .dbs_dataTable > .-container > .-content > table > tbody > tr > td{
@@ -245,10 +255,6 @@
 	border-width:0px 0px 0px 1px;
 	border-style: solid;
 	border-color: rgba(255,255,255,0.2);
-}
-
-.dbs_dataTable > .-container > .-content > table > thead > tr > th {
-	font-weight: normal;
 }
 
 .dbs_dataTable > .-container > .-content > table > thead > tr > th.-checkbox,
