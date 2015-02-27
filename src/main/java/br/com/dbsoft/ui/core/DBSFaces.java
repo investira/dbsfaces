@@ -1218,7 +1218,7 @@ public class  DBSFaces {
 			if (!DBSObject.isEmpty(pExecute)){
 				xExecute = "execute:'" + pvRemoveFirstColon(pExecute) + "',";
 			}
-			xLocalOnClick = "jsf.ajax.request(this, event, {" + xExecute + " render:'" +  xClientUpdate +  "', onevent:dbsfaces.onajax}); return false;";
+			xLocalOnClick = "jsf.ajax.request(this, event, {" + xExecute + " render:'" +  xClientUpdate +  "', onevent:dbsfaces.onajax, onerror:dbsfaces.onajaxerror}); return false;";
 			if (xUserOnClick != null){
 				xLocalOnClick = xLocalOnClick.replaceAll("'", "\\\\'");
 				xUserOnClick = xUserOnClick.replaceAll("'", "\\\\'");
