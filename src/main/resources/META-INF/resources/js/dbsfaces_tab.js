@@ -36,9 +36,6 @@ dbsfaces.tab = {
 	},
 
 	clickTabPage: function(pTabPageId){
-//		var xTabPage = $(".dbs_tab > ul > li[tabpage='" + pTabPageId + "']");
-//		var xTab = dbsfaces.util.jsid("#" + xTabPage.closest(".dbs_tab").get(0).id);
-//		dbsfaces.tab.showTab(xTab, xTabPage);
 		$(".dbs_tab > .-container > ul > li[tabpage='" + pTabPageId + "']").click();
 	},
 	
