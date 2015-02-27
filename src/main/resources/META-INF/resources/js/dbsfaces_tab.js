@@ -17,23 +17,28 @@ dbsfaces.tab = {
 		if ($(pId).attr("showTabPageOnClick") == "false"){
 			return;
 		}
-		var xTabPage = "#" + $(e).attr("tabpage");
-		xTabPage = dbsfaces.util.jsid(xTabPage);
+		var xTabPageId = "#" + $(e).attr("tabpage");
+		xTabPageId = dbsfaces.util.jsid(xTabPageId);
 
 		/* título */
 		$(pId + " > .-container > ul > li").not($(e)).removeClass("-selected");
 		$(e).addClass("-selected");
 		
 		/* conteúdo */
-		$(pId + " > .-container > div > .-content > .dbs_tabPage").not($(xTabPage)).removeClass("-selected");
-		$(xTabPage).addClass("-selected");
+		$(pId + " > .-container > div > .-content > .dbs_tabPage").not($(xTabPageId)).removeClass("-selected");
+		$(xTabPageId).addClass("-selected");
 
 		/* salva */
 		$(pId + "-input").val($(e).attr("tabpage"));
-
-		/* evento indicando será selecionado*/
-		$(xTabPage).trigger("click.tab");
+		
+//		var xParentId = $(pId).closest(".dbs_tab").get(0).id; 
+//		var xInputId = $(pId + "-input").get(0).id;
+//		jsf.ajax.request($(pId + "-input").get(0), "click", {execute:xInputId, onevent:dbsfaces.onajax, onerror:dbsfaces.onajaxerror})
+		
+//		/* evento indicando será selecionado*/
+		$(xTabPageId).trigger("click.tab");
 	},
+	
 
 	clickTabPage: function(pTabPageId){
 		$(".dbs_tab > .-container > ul > li[tabpage='" + pTabPageId + "']").click();
