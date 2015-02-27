@@ -1837,7 +1837,8 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Para isso, informe pEvent.setOk(false).<br> 
 	 * Neste evento o editingMode do Crud ainda não foi configurado, portanto para saber qual a atividade(Inser/update/delete) foi selecionada
 	 * deve-se consultar o atributo editingMode do Evento(ex:if (pEvent.getEditingMode() == EditingMode.INSERTING){}).<br/>
-	 * Pode-se forçar a indicação que houve alteração de dados logo na iniciação da edição, mesmo que ainda não tenha sido efetuada qualquer alteração pelo usuário, setando a propriedade setValueChanged para true.<br/>
+	 * Pode-se forçar a indicação que houve alteração de dados logo na iniciação da edição, 
+	 * mesmo que ainda não tenha sido efetuada qualquer alteração pelo usuário, setando a propriedade setValueChanged para true.<br/>
 	 * Para configurar os valores default dos campos no caso de uma inclusão, utilize o evento <b>beforeInsert</b>.
 	 * Conexão com o banco encontra-se aberta.<br/> 
 	 * @param pEvent Informações do evento
@@ -1853,7 +1854,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	
 	/**
 	 * Disparado antes de iniciar um insert.<br/>
-	 * Neste evento pode-se configura os valores default dos campos.<br/>
+	 * Neste evento pode-se configurar os valores default dos campos.<br/>
 	 * Para ignorar a inclusão, deve-se setar <b>setOk(False)</b>.<br/>
 	 * Conexão com o banco encontra-se aberta.<br/>
 	 * @param pEvent Informações do evento
