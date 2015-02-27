@@ -55,6 +55,7 @@ dbsfaces = {
 		ON_AJAX_BEGIN: "dbs_ON_AJAX_BEGIN",
 		ON_AJAX_COMPLETE: "dbs_ON_AJAX_COMPLETE",
 		ON_AJAX_SUCCESS: "dbs_ON_AJAX_SUCESS",
+		ON_AJAX_ERROR: "dbs_ON_AJAX_ERROR",
 		ON_ROW_SELECTED: "dbs_ON_ROW_SELECTED"
 	}	
 
@@ -375,6 +376,10 @@ dbsfaces.onajax = function(e){
 	}
 };
 
+dbsfaces.onajaxerror = function(e){
+	$(e.source).trigger(dbsfaces.EVENT.ON_AJAX_ERROR);
+	return false;
+};
 
 $.fn.focusNextInputField = function() {
     return this.each(function() {
