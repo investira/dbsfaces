@@ -402,12 +402,14 @@ public abstract class DBSBean implements Serializable {
 	protected abstract void destroyConnection() throws DBSIOException;
 	
 	/**
-	 * Método após a inicialização do bean
+	 * Método após a inicialização do bean.
+	 * Ao sobre escrever este método, deve-se estar atendo em chamar o <b>super</b>.
 	 */
 	protected void initializeClass(){};
 	
 	/**
-	 * Método após a finalização do bean
+	 * Método após a finalização do bean.
+	 * Ao sobre escrever este método, deve-se estar atendo em chamar o <b>super</b>.
 	 */
 	protected void finalizeClass(){};
 	
