@@ -22,7 +22,6 @@ public class DBSTabRenderer extends DBSRenderer {
 		//Configura página corrente após o submit
 		if (xTab.getShowTabPageOnClick()){
 			String xSelectedTabPage = pContext.getExternalContext().getRequestParameterMap().get(pvGetInputId(xTab, true));
-			
 			if (xSelectedTabPage!=null &&
 				!xSelectedTabPage.equals("")){
 				xTab.setSelectedTabPage(xSelectedTabPage);
@@ -142,53 +141,8 @@ public class DBSTabRenderer extends DBSRenderer {
 		
 		pvEncodeJS(xWriter, xClientId);
 		
-		
-//		UIViewRoot xViewRoot = pContext.getViewRoot();
-//		for (UIComponent xResource : xViewRoot.getComponentResources(pContext, "head")) {
-//			xResource.encodeAll(pContext);
-//		}
-//		for (UIComponent xResource : xViewRoot.getComponentResources(pContext, "body")) {
-//			xResource.encodeAll(pContext);
-//		}
-					
 	}
 	
-	/**Retorna a tabPage que contém a mesma chave da tagPage selecionada
-	 * Se não houver nenhuma tabPage selecionada, retorna a primeira
-	 * @param pTab
-	 * @param pClientId
-	 * @return
-	 */
-//	private String pvGetSelectedPage(DBSTab pTab, String pClientId){
-//		String xSelectedPage = "";
-//		if (pTab.getChildren().size()>0){
-//			DBSTabPage xPage = null;
-//			for (int xI=pTab.getChildren().size()-1; xI >= 0; xI--){
-//				if (pTab.getChildren().get(xI) instanceof DBSTabPage){
-//					if(pTab.getChildren().get(xI).isRendered()){
-//						xPage = (DBSTabPage) pTab.getChildren().get(xI);
-//						//Interrompe a busca, caso tenha encontrado a tabPage selecionada
-//						if (pTab.getSelectedTabPage().toUpperCase().equals(xPage.getId().toUpperCase())){
-//							break;
-//						}
-//					}
-//				}
-//			}
-//			//Marca tabPage como selecionada e armazena o valor neste tab
-//			xPage.setSelected(true);
-//			xSelectedPage = pClientId + DBSFaces.SEPARATOR + xPage.getId();
-//			pTab.setSelectedTabPage(xSelectedPage);
-//		}
-//		return xSelectedPage;
-//	}
-	
-//	private void pvEncodeIcon(FacesContext pContext, DBSTabPage pTabPage, ResponseWriter pWriter) throws IOException{
-//		String xClass = DBSFaces.CSS.NOT_SELECTABLE + " " + DBSFaces.CSS.MODIFIER.ICON + " " +  pTabPage.getIconClass();
-//		pWriter.startElement("span", pTabPage);
-//			pWriter.writeAttribute("class", DBSFaces.CSS.NOT_SELECTABLE + " " + DBSFaces.CSS.MODIFIER.ICON + " " +  pTabPage.getIconClass(), null);
-//		pWriter.endElement("span");
-//	}
-
 	/**
 	 * Encode do código JS necessário para o componente
 	 * @param pWriter
@@ -218,6 +172,36 @@ public class DBSTabRenderer extends DBSRenderer {
 		}
 		return xId;
 	}
+
+	/**Retorna a tabPage que contém a mesma chave da tagPage selecionada
+	 * Se não houver nenhuma tabPage selecionada, retorna a primeira
+	 * @param pTab
+	 * @param pClientId
+	 * @return
+	 */
+//	private String pvGetSelectedPage(DBSTab pTab, String pClientId){
+//		String xSelectedPage = "";
+//		if (pTab.getChildren().size()>0){
+//			DBSTabPage xPage = null;
+//			for (int xI=pTab.getChildren().size()-1; xI >= 0; xI--){
+//				if (pTab.getChildren().get(xI) instanceof DBSTabPage){
+//					if(pTab.getChildren().get(xI).isRendered()){
+//						xPage = (DBSTabPage) pTab.getChildren().get(xI);
+//						//Interrompe a busca, caso tenha encontrado a tabPage selecionada
+//						if (pTab.getSelectedTabPage().toUpperCase().equals(xPage.getId().toUpperCase())){
+//							break;
+//						}
+//					}
+//				}
+//			}
+//			//Marca tabPage como selecionada e armazena o valor neste tab
+//			xPage.setSelected(true);
+//			xSelectedPage = pClientId + DBSFaces.SEPARATOR + xPage.getId();
+//			pTab.setSelectedTabPage(xSelectedPage);
+//		}
+//		return xSelectedPage;
+//	}
+	
 	
 //	/**
 //	 * Retorna a clientId da página que será exibida inicialmente
