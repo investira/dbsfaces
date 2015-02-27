@@ -6,10 +6,13 @@ public interface IDBSCrudBeanEventsListener {
 
 	/**
 	 * Disparado quando a class é instanciada ou quando é efetuado um <b>refreshList()</b>.<br/>
-	 * O método <b>searchList()</b> efetua a mesma atualização do <b>refreshList()</b> sem disparar o <b>initialize</b>.
+	 * O método <b>searchList()</b> efetua a mesma atualização do <b>refreshList()</b> sem disparar o <b>initialize</b>.<br/>
+	 * Este evento deve ser utilizado para configurações iniciais que possam depender de alguma alteração de filtro, por exemplo.<br/>
+	 * Para configurações que não serão modificadas durante o crud, como o <b>dialogCaption</b>, 
+	 * deve-se sobreescrever o evento <b>initializeClass</b> chamando o <b>super</b>.<br/>
 	 * Conexão com o banco encontra-se aberta.<br/>
 	 * @param pEvent Informações do evento
-	 */
+	 */	
 	public abstract void initialize(DBSCrudBeanEvent pEvent) throws DBSIOException;
 	
 	/**
