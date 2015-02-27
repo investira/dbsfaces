@@ -79,7 +79,7 @@ dbsfaces.componenttree = {
 		var xButtonId = dbsfaces.util.jsid("#" + xParentId + ":selection-submit");
 		$(xInputId).val(pSelectedKey);
 		//Faz requuisição para dar submit das seleções e atualizar a linha
-		jsf.ajax.request(e, 'update', {execute:xParentId, onevent:dbsfaces.onajax});
+		jsf.ajax.request(e, 'update', {execute:xParentId, onevent:dbsfaces.onajax, onerror:dbsfaces.onajaxerror});
 		$(xParentId).trigger("click");
 	},
 	

@@ -5,7 +5,7 @@ dbs_push = function(pId, pUrl) {
 	xEventSource.addEventListener('update', function(e) {
 		dbsfaces_push.showUpdate(pId);
 		var xData = dbsfaces_push.validIds(pId, e.data);
-		jsf.ajax.request($(pId), 'update', {render:xData, execute:'@none', onevent:dbsfaces.onajax});
+		jsf.ajax.request($(pId), 'update', {render:xData, execute:'@none', onevent:dbsfaces.onajax, onerror:dbsfaces.onajaxerror});
 		return false;
 	}, false);
 
