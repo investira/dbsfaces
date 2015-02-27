@@ -1957,7 +1957,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	protected void afterIgnore(DBSCrudBeanEvent pEvent){}
 
 	/**
-	 * Disparado antes de efetuar a seleção da linha através do ckeckbox padrão do datatable. 
+	 * Disparado antes de efetuar a seleção da linha através do checkbox padrão do datatable. 
 	 * Podendo, neste momento, inibir a seleção retornando <b>setOk(false)</b> do evento.<br/> 
 	 * Conexão com o banco encontra-se aberta.
 	 * @param pEvent Informações do evento
