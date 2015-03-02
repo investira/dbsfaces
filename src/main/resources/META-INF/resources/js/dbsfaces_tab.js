@@ -19,7 +19,8 @@ dbsfaces.tab = {
 		}
 		var xTabPageId = "#" + $(e).attr("tabpage");
 		xTabPageId = dbsfaces.util.jsid(xTabPageId);
-
+		dbsfaces.ui.ajaxShowLoading(xTabPageId);
+		
 		/* título */
 		$(pId + " > .-container > ul > li").not($(e)).removeClass("-selected");
 		$(e).addClass("-selected");
