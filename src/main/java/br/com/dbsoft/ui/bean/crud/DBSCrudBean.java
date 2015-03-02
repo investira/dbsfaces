@@ -1182,6 +1182,14 @@ public abstract class DBSCrudBean extends DBSBean{
 	// Methods ############################################################
 	
 	/**
+	 * Retorna lista dos itens selecionados
+	 * @return
+	 */
+	public List<Integer> getSelectedRowsIndexes(){
+		return wSelectedRowsIndexes;
+	}
+	
+	/**
 	 * Retorna se item está selecionado
 	 * @return
 	 * @throws DBSIOException 
