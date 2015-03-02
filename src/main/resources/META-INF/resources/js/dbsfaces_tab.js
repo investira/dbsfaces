@@ -1,4 +1,7 @@
 dbs_tab = function(pId) {
+	
+	
+	
 	$(pId + " > .-container > ul > li").click(function(e) {
 		dbsfaces.tab.showTab(pId, this);
    	});
@@ -10,6 +13,8 @@ dbs_tab = function(pId) {
 	$(pId + " > .-container > div > .-content > .dbs_tabPage").on("click.tab", function(e){
 		e.stopPropagation();
 	});
+
+	dbsfaces.ui.ajaxShowLoading($(pId + " > .-container > div > .-content > .dbs_tabPage"));
 }
 
 dbsfaces.tab = {
@@ -19,7 +24,6 @@ dbsfaces.tab = {
 		}
 		var xTabPageId = "#" + $(e).attr("tabpage");
 		xTabPageId = dbsfaces.util.jsid(xTabPageId);
-		dbsfaces.ui.ajaxShowLoading(xTabPageId);
 		
 		/* título */
 		$(pId + " > .-container > ul > li").not($(e)).removeClass("-selected");
