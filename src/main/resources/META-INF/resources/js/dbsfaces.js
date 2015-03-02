@@ -216,7 +216,7 @@ dbsfaces.ui = {
 	},
 
 	//Dispara evento click
-	ajaxTriggerChange: function(e){
+	ajaxTriggerClick: function(e){
 		if ($(e.source).length == 0){
 			return;
 		}
