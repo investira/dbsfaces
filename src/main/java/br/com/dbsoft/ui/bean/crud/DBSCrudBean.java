@@ -1553,21 +1553,34 @@ public abstract class DBSCrudBean extends DBSBean{
 				//Só permite a seleção do insert quando o dialog estiver fechado
 				if (wEditingMode==EditingMode.NONE){
 					try {
-						if (pvFireEventBeforeEdit(EditingMode.INSERTING)){
+						if (pvFireEventBeforeInsert()
+						 && pvFireEventBeforeEdit(EditingMode.INSERTING)){
 							//Desmarca registros selecionados
 							wSelectedRowsIndexes.clear(); 
 							setEditingMode(EditingMode.INSERTING);
 							
 							pvMoveBeforeFistRow();
 							
-							//Dispara evento BeforeInsert
-							if (pvFireEventBeforeInsert()){
-								setDialogOpened(true);
-							}
+							setDialogOpened(true);
 						}else{
 							setValueChanged(false);
-							//exibe mensagem de erro de procedimento
 						}
+
+//						if (pvFireEventBeforeEdit(EditingMode.INSERTING)){
+//							//Desmarca registros selecionados
+//							wSelectedRowsIndexes.clear(); 
+//							setEditingMode(EditingMode.INSERTING);
+//							
+//							pvMoveBeforeFistRow();
+//							
+//							//Dispara evento BeforeInsert
+//							if (pvFireEventBeforeInsert()){
+//								setDialogOpened(true);
+//							}
+//						}else{
+//							setValueChanged(false);
+//							//exibe mensagem de erro de procedimento
+//						}
 					} catch (Exception e) {
 						wLogger.error("Crud:" + getDialogCaption() + ":insert", e);
 						setEditingMode(EditingMode.NONE);
@@ -1850,7 +1863,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * deve-se consultar o atributo editingMode do Evento(ex:if (pEvent.getEditingMode() == EditingMode.INSERTING){}).<br/>
 	 * Pode-se forçar a indicação que houve alteração de dados logo na iniciação da edição, 
 	 * mesmo que ainda não tenha sido efetuada qualquer alteração pelo usuário, setando a propriedade setValueChanged para true.<br/>
-	 * Para configurar os valores default dos campos no caso de uma inclusão, utilize o evento <b>beforeInsert</b>.
+	 * Para configurar os valores default dos campos no caso de uma inclusão, utilize o evento <b>beforeInsert</b> que ocorre antes do <>beforeEdit</b>.<br/>
 	 * Conexão com o banco encontra-se aberta.<br/> 
 	 * @param pEvent Informações do evento
 	 */
@@ -1867,6 +1880,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Disparado antes de iniciar um insert.<br/>
 	 * Neste evento pode-se configurar os valores default dos campos.<br/>
 	 * Para ignorar a inclusão, deve-se setar <b>setOk(False)</b>.<br/>
+	 * Este evento ocorre antes do <b>beforeEdit</b>.<br/>
 	 * Conexão com o banco encontra-se aberta.<br/>
 	 * @param pEvent Informações do evento
 	 */
