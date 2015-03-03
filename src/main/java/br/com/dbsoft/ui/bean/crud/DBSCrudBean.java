@@ -1220,7 +1220,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 	
 	/**
-	 * Retorna se existem alguma linha selecionada
+	 * Retorna se existem alguma linha selecionada via checkbox padrão de multipla-seleção.
 	 * @return
 	 */
 	public boolean getHasSelected(){
