@@ -1871,6 +1871,8 @@ public abstract class DBSCrudBean extends DBSBean{
 	/**
 	 * Disparado logo após a finalização da edição(insert/delete/update), independentemente da edição ter sido confirmada ou ignorada.<br/>
 	 * Conexão com o banco encontra-se aberta, porém será fechado logo após a finalização deste evento.<br/>
+	 * Para saber qual a atividade(Inser/update/delete) foi selecionada, 
+	 * deve-se consultar o atributo editingMode do Evento(ex:if (pEvent.getEditingMode() == EditingMode.INSERTING){}).<br/>
 	 * @param pEvent Informações do evento
 	 */
 	protected void afterEdit(DBSCrudBeanEvent pEvent) throws DBSIOException {};
