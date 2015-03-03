@@ -110,8 +110,10 @@
 	float: right;
 }
 
-.dbs_dataTable > .-container > .-header > .-toolbar > nav > .dbs_button{
+.dbs_dataTable > .-container > .-header > .-toolbar > nav > div > .dbs_button{
 }
+
+
 
 .dbs_dataTable > .-container > .-content{
 	height: 100%;
