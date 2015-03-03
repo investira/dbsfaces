@@ -1557,9 +1557,8 @@ public abstract class DBSCrudBean extends DBSBean{
 						 && pvFireEventBeforeEdit(EditingMode.INSERTING)){
 							//Desmarca registros selecionados
 							wSelectedRowsIndexes.clear(); 
+
 							setEditingMode(EditingMode.INSERTING);
-							
-							pvMoveBeforeFistRow();
 							
 							setDialogOpened(true);
 						}else{
@@ -2753,9 +2752,11 @@ public abstract class DBSCrudBean extends DBSBean{
 		}
 	}
 
-	private boolean pvFireEventBeforeInsert(){
+	private boolean pvFireEventBeforeInsert() throws DBSIOException{
 		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_INSERT, getEditingMode());
-
+		
+		//Seta para posição inicial onse será efetuado os insert
+		pvMoveBeforeFistRow();
 //		pvBeforeInsertResetValues(wCrudForm);
 
 		try {
