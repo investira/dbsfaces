@@ -50,16 +50,16 @@
 }
 .dbs_button > table > tbody > tr {
 	display:inline-block;
-	margin: 0px;
-	padding: 0px;
-	line-height: 0px;
+	margin: 0px !important;
+	padding: 0px !important;
+	line-height: 0px !important;
 	font-size: inherit;
 }
 
 .dbs_button > table > tbody > tr > td {
 	display:inline-block;
-	margin: 0px;
-	padding: 0px;
+	margin: 0px !important;
+	padding: 0px !important;
 	font-size: inherit;
 }
 
