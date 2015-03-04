@@ -27,6 +27,10 @@
 /* 	box-shadow:0px 0px 4px 2px #68B7FF inset;  */
 }
 
+.dbs_button.-disabled {
+	cursor: default;
+	opacity: 0.9;
+}
 
 .dbs_button > table{
 	position: relative; /* Incluido em 05/06/2014*/
