@@ -10,6 +10,7 @@ import javax.faces.render.FacesRenderer;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.util.DBSObject;
 
 import com.sun.faces.renderkit.RenderKitUtils;
 
@@ -76,12 +77,19 @@ public class DBSButtonRenderer extends DBSRenderer {
 		DBSButton xButton = (DBSButton) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xButton.getClientId(pContext);
+		String xClass = DBSFaces.CSS.BUTTON.MAIN.trim();
 		String xOnClick = null;
 		String xExecute = "";
 		if (xButton.getExecute() == null){
 			xExecute = getFormId(pContext, pComponent); 
 		}else{
 			xExecute = xButton.getExecute();
+		}
+		if (!DBSObject.isEmpty(xButton.getClass())){
+			xClass += DBSObject.getNotEmpty(xButton.getStyleClass(), "");
+		}
+		if (xButton.getReadOnly()){
+			xClass += DBSFaces.CSS.MODIFIER.DISABLED;
 		}
 		
 		//if (xButton.getUpdate()!=null){
@@ -95,7 +103,7 @@ public class DBSButtonRenderer extends DBSRenderer {
 		}
 			xWriter.writeAttribute("id", xClientId, "id");
 			xWriter.writeAttribute("name", xClientId, "name");
-			DBSFaces.setAttribute(xWriter, "class", xButton.getStyleClass(),DBSFaces.CSS.BUTTON.MAIN);
+			DBSFaces.setAttribute(xWriter, "class", xClass.trim(), null);
 			DBSFaces.setAttribute(xWriter, "style",xButton.getStyle(), null);
 			DBSFaces.setAttribute(xWriter, "value",xButton.getValue(), null);
 			if (xButton.getDisabled()){
