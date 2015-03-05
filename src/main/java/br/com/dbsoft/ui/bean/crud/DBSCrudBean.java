@@ -2758,11 +2758,13 @@ public abstract class DBSCrudBean extends DBSBean{
 		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_INSERT, getEditingMode());
 		
 		//Seta para posição inicial onse será efetuado os insert
+		openConnection();
+		
 		pvMoveBeforeFistRow();
 //		pvBeforeInsertResetValues(wCrudForm);
 
 		try {
-			pvBroadcastEvent(xE, true, true, true);
+			pvBroadcastEvent(xE, true, false, false);
 		} catch (Exception e) {
 			xE.setOk(false);
 			wLogger.error("EventBeforeInsert",e);
@@ -2770,6 +2772,43 @@ public abstract class DBSCrudBean extends DBSBean{
 		
 		setValueChanged(false); 
 
+		return xE.isOk();
+	}
+
+	/**
+	 * Disparado logo após o click do usuário no insert/delete/update/approve/reprove e antes de iniciar o respectivo insert/delete/update/approve/reprove.
+	 * Podendo, portanto, cancelar o inicio da edição, informando setOk(False) no evento.<br/>
+	 * Neste evento a conexão será aberta e posteriormente fechada no evento AfterEdit(ou em caso de erro ou o usário fechou dentro do evento)
+	 * @return
+	 */
+	private boolean pvFireEventBeforeEdit(EditingMode pEditingMode){
+		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_EDIT, pEditingMode);
+		//Marca que não houve edição nos campos 
+		setValueChanged(false); 
+		try{
+			pvBroadcastEvent(xE, false, true, false); 
+			return xE.isOk();
+		} catch (Exception e) {
+			xE.setOk(false);
+			wLogger.error("EventBeforeEdit",e);
+		}
+		return xE.isOk();
+	}
+
+	/**
+	 * Disparado logo após a finalização da edição(insert/delete/update/approve/reprove), 
+	 * independentemente da edição ter sido confirmada ou ignorada.
+	 * Fecha a conexão com o banco.</br>
+	 * @return
+	 */
+	private boolean pvFireEventAfterEdit(){
+		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.AFTER_EDIT, getEditingMode());
+		try{
+			pvBroadcastEvent(xE, false, false, true);
+		} catch (Exception e) {
+			xE.setOk(false);
+			wLogger.error("EventAfterEdir",e);
+		}
 		return xE.isOk();
 	}
 
@@ -3013,43 +3052,6 @@ public abstract class DBSCrudBean extends DBSBean{
 			xE.setOk(false);
 			wLogger.error("EventAfterCommit",e);
 		}
-	}
-
-	/**
-	 * Disparado logo após o click do usuário no insert/delete/update/approve/reprove e antes de iniciar o respectivo insert/delete/update/approve/reprove.
-	 * Podendo, portanto, cancelar o inicio da edição, informando setOk(False) no evento.<br/>
-	 * Neste evento a conexão será aberta e posteriormente fechada no evento AfterEdit(ou em caso de erro ou o usário fechou dentro do evento)
-	 * @return
-	 */
-	private boolean pvFireEventBeforeEdit(EditingMode pEditingMode){
-		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_EDIT, pEditingMode);
-		//Marca que não houve edição nos campos 
-		setValueChanged(false); 
-		try{
-			pvBroadcastEvent(xE, false, true, false); 
-			return xE.isOk();
-		} catch (Exception e) {
-			xE.setOk(false);
-			wLogger.error("EventBeforeEdit",e);
-		}
-		return xE.isOk();
-	}
-	
-	/**
-	 * Disparado logo após a finalização da edição(insert/delete/update/approve/reprove), 
-	 * independentemente da edição ter sido confirmada ou ignorada.
-	 * Fecha a conexão com o banco.</br>
-	 * @return
-	 */
-	private boolean pvFireEventAfterEdit(){
-		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.AFTER_EDIT, getEditingMode());
-		try{
-			pvBroadcastEvent(xE, false, false, true);
-		} catch (Exception e) {
-			xE.setOk(false);
-			wLogger.error("EventAfterEdir",e);
-		}
-		return xE.isOk();
 	}
 
 	/**
