@@ -105,9 +105,9 @@
 /* Todos os submenus */ 
 .dbs_menu > li > ul, 
 .dbs_submenu{
-	-webkit-box-shadow:3px 2px 2px -1px rgba(13, 25, 45, 0.4);
-	-moz-box-shadow:3px 2px 2px -1px rgba(13, 25, 45, 0.4);
-	box-shadow:3px 2px 2px -1px rgba(13, 25, 45, 0.4);
+	-webkit-box-shadow:2px 2px 2px -1px rgba(13, 25, 45, 0.4);
+	-moz-box-shadow:2px 2px 2px -1px rgba(13, 25, 45, 0.4);
+	box-shadow:2px 2px 2px -1px rgba(13, 25, 45, 0.4);
 }
 
 .dbs_submenu{
@@ -179,9 +179,9 @@
 .dbs_menuitem > span > span,
 .dbs_menuitem > a, 
 .dbs_menuitem > a > span {
-	display: flex;
-	display: -webkit-inline-box;
+	display: -webkit-box;
 	display: -ms-flexbox;
+	display: flex;
 /* 	display: inline-block; Comentado em 5/mar/2015 - Ricardo. Substituido pelos comandos acima para exibir corretamente o icone também no submenu*/
 }
 
