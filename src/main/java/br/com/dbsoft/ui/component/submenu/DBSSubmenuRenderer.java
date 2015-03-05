@@ -37,6 +37,7 @@ public class DBSSubmenuRenderer extends DBSRenderer {
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xSubmenu.getClientId(pContext);
 		Boolean xIsSubmenu = true;
+		Boolean xIsRoot = false;
 
 		String xClass = DBSFaces.CSS.NOT_SELECTABLE;
 		String xClassMenuitem = DBSFaces.CSS.NOT_SELECTABLE;
@@ -45,54 +46,52 @@ public class DBSSubmenuRenderer extends DBSRenderer {
 			xClass = xClass + xSubmenu.getStyleClass(); 
 		}
 		
-		//Ignora o style padão caso o pai/avô seja um DBSMenu
+		//Ignora o style padrão caso o pai/avô seja um DBSMenu
 		UIComponent xParent = pComponent.getParent();
 		xIsSubmenu = (xParent.getAttributes().get("class") != DBSMenu.class);
 		if (xIsSubmenu){
 			xClass = xClass + DBSFaces.CSS.SUBMENU.MAIN; 
 			xClassMenuitem = xClassMenuitem + DBSFaces.CSS.MENUITEM.MAIN; 
+			xIsRoot = (xParent.getAttributes().get("class") != DBSSubmenu.class);
 		}		
 
+		if (!xIsRoot){
+			xWriter.startElement("li", xSubmenu);
+				DBSFaces.setAttribute(xWriter, "class", xClassMenuitem, null);
+				xWriter.startElement("a", xSubmenu);
+	//				DBSFaces.setAttribute(xWriter, xSubmenu, "href", "javascript:void(0)", null);
+					DBSFaces.setAttribute(xWriter, "ontouchstart", "", null);
+					xWriter.startElement("span", xSubmenu);
+					xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT, "class");
+						if (xSubmenu.getIconClass()!=null){
+							xWriter.startElement("span", xSubmenu);
+								xWriter.writeAttribute("class", xSubmenu.getIconClass() + " " + DBSFaces.CSS.MODIFIER.ICON, "class");
+							xWriter.endElement("span");
+						}
+						if (xSubmenu.getLabel()!=null){
+							xWriter.startElement("span", xSubmenu);
+								xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.LABEL + " " + DBSFaces.CSS.INPUT.LABEL, "class");
+								xWriter.write(xSubmenu.getLabel());
+							xWriter.endElement("span");
+						}
+						if (xIsSubmenu && !xIsRoot){
+							xWriter.startElement("span", xSubmenu);
+								xWriter.writeAttribute("class", DBSFaces.CSS.ICONSMALL + " " + DBSFaces.CSS.MENUITEM.PLUS, "class");
+							xWriter.endElement("span");
+						}
+					xWriter.endElement("span");
+				xWriter.endElement("a");
+		}
+
+		xWriter.startElement("ul", xSubmenu);
+			xWriter.writeAttribute("id", xClientId, "id");
+			xWriter.writeAttribute("name", xClientId, "name");
+			DBSFaces.setAttribute(xWriter, "class", xClass, null);
+			renderChildren(pContext, xSubmenu);
+		xWriter.endElement("ul");
 		
-		xWriter.startElement("li", xSubmenu);
-			DBSFaces.setAttribute(xWriter, "class", xClassMenuitem, null);
-			xWriter.startElement("a", xSubmenu);
-//				DBSFaces.setAttribute(xWriter, xSubmenu, "href", "javascript:void(0)", null);
-				DBSFaces.setAttribute(xWriter, "ontouchstart", "", null);
-				xWriter.startElement("span", xSubmenu);
-				xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT, "class");
-					if (xSubmenu.getIconClass()!=null){
-	//					DBSImg xImg = new DBSImg();
-	//					xImg.setStyleClass(xSubmenu.getIconClass() + " " + DBSFaces.CSS.MODIFIER.ICON);
-	//					xImg.encodeAll(pContext);
-						xWriter.startElement("span", xSubmenu);
-							xWriter.writeAttribute("class", xSubmenu.getIconClass() + " " + DBSFaces.CSS.MODIFIER.ICON, "class");
-						xWriter.endElement("span");
-					}
-					if (xSubmenu.getLabel()!=null){
-						xWriter.startElement("span", xSubmenu);
-							xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.LABEL + " " + DBSFaces.CSS.INPUT.LABEL, "class");
-							xWriter.write(xSubmenu.getLabel());
-						xWriter.endElement("span");
-					}
-					if (xIsSubmenu){
-						//Application xApplication =  FacesContext.getCurrentInstance().getApplication();  
-						//DBSImg xImgPlus = (DBSImg) xApplication.createComponent(DBSFaces.COMPONENT_TYPE.IMG);
-	//					DBSImg xImgPlus = new DBSImg();
-	//					xImgPlus.setStyleClass(DBSFaces.CSS.ICONSMALL + " " + DBSFaces.CSS.MENUITEM.PLUS);
-	//					xImgPlus.encodeAll(pContext);
-						xWriter.startElement("span", xSubmenu);
-							xWriter.writeAttribute("class", DBSFaces.CSS.ICONSMALL + " " + DBSFaces.CSS.MENUITEM.PLUS, "class");
-						xWriter.endElement("span");
-					}
-				xWriter.endElement("span");
-			xWriter.endElement("a");
-			xWriter.startElement("ul", xSubmenu);
-				xWriter.writeAttribute("id", xClientId, "id");
-				xWriter.writeAttribute("name", xClientId, "name");
-				DBSFaces.setAttribute(xWriter, "class", xClass, null);
-				renderChildren(pContext, xSubmenu);
-			xWriter.endElement("ul");
-		xWriter.endElement("li");
+		if (!xIsRoot){
+			xWriter.endElement("li");
+		}
 	}
 }
