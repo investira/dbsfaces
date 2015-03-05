@@ -77,7 +77,7 @@ public class DBSButtonRenderer extends DBSRenderer {
 		DBSButton xButton = (DBSButton) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xButton.getClientId(pContext);
-		String xClass = DBSFaces.CSS.BUTTON.MAIN.trim();
+		String xClass = DBSFaces.CSS.BUTTON.MAIN;
 		String xOnClick = null;
 		String xExecute = "";
 		if (xButton.getExecute() == null){
@@ -85,11 +85,11 @@ public class DBSButtonRenderer extends DBSRenderer {
 		}else{
 			xExecute = xButton.getExecute();
 		}
-		if (!DBSObject.isEmpty(xButton.getClass())){
-			xClass += DBSObject.getNotEmpty(xButton.getStyleClass(), "");
+		if (!DBSObject.isEmpty(xButton.getStyleClass())){
+			xClass = DBSObject.getNotEmpty(xButton.getStyleClass(), "");
 		}
 		if (xButton.getReadOnly()){
-			xClass += DBSFaces.CSS.MODIFIER.DISABLED;
+			xClass += " " + DBSFaces.CSS.MODIFIER.DISABLED;
 		}
 		
 		//if (xButton.getUpdate()!=null){
