@@ -6,9 +6,6 @@ dbs_quickInfo = function(pId) {
 		dbsfaces.quickInfo.hideInfo(pId);
 	});
 	
-	$(pId).offsetParent().scroll(function(e){
-		console.log("moved");
-	});
 }
 
 
@@ -27,38 +24,3 @@ dbsfaces.quickInfo = {
 	
 }
 
-
-//$(window).resize(function() {
-//	pvFooterShow();
-//});
-//
-//function pvFooterShow(){
-//	var xEle = $('#footer');
-//	if(window.innerHeight < 380){
-//		if (xEle.is(":visible")){
-//			xEle.fadeOut("slow");
-//		}
-//	}else{
-//		if (!xEle.is(":visible")){
-//			xEle.fadeIn("slow");
-//		}
-//	}
-//}
-//
-//$("button.app_button").mouseleave(function(){
-//	pvShowText(this, false);
-//}).mouseenter(function(){
-//	pvShowText(this, true);
-//}).click(function(){
-//	pvShowText(this, true);
-//	pvShowText(this, false);
-//});	
-//
-//function pvShowText(e, pShow){
-//	var xId = "#" + $(e).attr("id") + "_text";
-//	if (pShow){
-//		$(xId).show();
-//	}else{
-//		$(xId).fadeOut("slow");
-//	}
-//}	
