@@ -55,6 +55,23 @@ public class DBSQuickInfoRenderer extends DBSRenderer {
 				xWriter.endElement("div");
 			xWriter.endElement("div");
 		xWriter.endElement("div");
+		pvEncodeJS(xWriter, xQuickInfo.getClientId());
+
 	}
 	
+	/**
+	 * Encode do código JS necessário para o componente
+	 * @param pWriter
+	 * @param pClientId
+	 * @throws IOException
+	 */
+	private void pvEncodeJS(ResponseWriter pWriter, String pClientId) throws IOException {
+		DBSFaces.encodeJavaScriptTagStart(pWriter);
+		String xJS = "$(document).ready(function() { \n" +
+				     " var xQuickInfoId = '#' + dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " dbs_quickInfo(xQuickInfoId); \n" +
+                     "}); \n";
+		pWriter.write(xJS);
+		DBSFaces.encodeJavaScriptTagEnd(pWriter);	
+	}
 }
