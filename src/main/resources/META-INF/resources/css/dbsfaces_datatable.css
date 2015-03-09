@@ -131,6 +131,12 @@
 	padding-top: 19px;
 	position: relative;
 }
+
+.dbs_dataTable > .-container > .-content > table > thead,
+.dbs_dataTable > .-container > .-content > table > tbody,
+.dbs_dataTable > .-container > .-content > table > tfoot{
+	width: 100%;
+}
 	
 .dbs_dataTable > .-container > .-content > table > thead{
 	position: absolute;
