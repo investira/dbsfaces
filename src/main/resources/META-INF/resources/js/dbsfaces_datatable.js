@@ -62,6 +62,8 @@ dbs_dataTable = function(pId) {
 				xSelectedRow = this;
 				dbsfaces.dataTable.rowSelect(pId, this);
 			}
+			//Força foco no input para possibilitar a navegação pelas setas(up/down)
+			$(pId + " > .-container > input.-foo").focus().click();
 		}
 //		e.preventDefault();
 	});
@@ -130,6 +132,11 @@ dbs_dataTable = function(pId) {
 		e.stopPropagation();
 		$(pId).trigger('blur');
 	}); 
+	
+	$(pId + " > .-container > .-content > table ").scroll(function(e){
+		dbsfaces.dataTable.adjustWidth(pId, this);
+	}); 
+
 	//Captura evento ajax dbsoft
 	dbsfaces.ui.ajaxShowLoading(pId + ".dbs_dataTable");
 }
@@ -257,6 +264,11 @@ dbsfaces.dataTable = {
 		if ($(xNew).length != 0){
 			xNew.parent().scrollTop($(xNew).position().top - $(xNew).height() - xNew.parent().offset().top);
 		}
+	},
+
+	adjustWidth: function(pId, e){
+//		Força o tamanho da conteudo da tabela para evitar problema de exibição no FF
+//		$(e).children().css("width", $(e).scrollLeft() + $(e).width());
 	}
 }
 
