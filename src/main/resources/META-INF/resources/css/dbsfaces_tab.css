@@ -23,12 +23,11 @@
 
 .dbs_tab > .-container > ul{
 /* 	display:table-row; */
-/* 	height:22px; Tamanho do título da aba */
 	display:inline-block;
 	height:20px; /*Tamanho do título da aba*/
 	position: relative;
-/*    	z-index: 1; comentado em 24/02/2015 - Ricardo. Estabva sobreponto o menu*/
    	white-space: pre; /* retira spaços em branco entre o título de as páginas(Problema causado por Strict DOCTYPE */
+/*    	z-index: 1; comentado em 24/02/2015 - Ricardo. Estava sobreponto o menu*/
 }	
 
 
