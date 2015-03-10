@@ -189,31 +189,60 @@ svg{
 .-pushSuspended {}
 .-on {}
 .-blur_soft{
-	filter: url("data:image/svg+xml;utf8,<svg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'blur\'><feGaussianBlur stdDeviation=\'1\' ></feGaussianBlur></filter></svg>#blur"); 
     filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='1');
-    -ms-filter: blur(1px);
+	filter: url("data:image/svg+xml;utf8,<svg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'blur\'><feGaussianBlur stdDeviation=\'1\' ></feGaussianBlur></filter></svg>#blur"); 
+	filter: blur; 
+	-ms-filter: blur(1px);
     -o-filter: blur(1px);
     -moz-filter: blur(1px);
     -webkit-filter: blur(1px);
     filter: blur(1px);
 }
-.-blur_hard{
-	filter: url("data:image/svg+xml;utf8,<svg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'blur\'><feGaussianBlur stdDeviation=\'7\' ></feGaussianBlur></filter></svg>#blur"); 
+.-blur{
     filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='7');
-    -ms-filter: blur(7px);
+	filter: url("data:image/svg+xml;utf8,<svg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'blur\'><feGaussianBlur stdDeviation=\'7\' ></feGaussianBlur></filter></svg>#blur"); 
+	filter: blur; 
+	-ms-filter: blur(7px);
     -o-filter: blur(7px);
     -moz-filter: blur(7px);
     -webkit-filter: blur(7px);
     filter: blur(7px);
 }
 .-blur_hard{
+	filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='18'); 			
 	filter: url("data:image/svg+xml;utf8,<svg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'blur\'><feGaussianBlur stdDeviation=\'18\' ></feGaussianBlur></filter></svg>#blur"); 
-    filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='18');
-    -ms-filter: blur(18px);
-    -o-filter: blur(18px);
-    -moz-filter: blur(18px);
-    -webkit-filter: blur(18px);
-    filter: blur(18px);
+	filter: blur; 
+/* 	-ms-filter : blur(18px); */
+	-o-filter : blur(18px); 
+	-moz-filter : blur(18px);
+	-webkit-filter: blur(18px); 
+	filter: blur(18px);
+	-ms-filter: progid:DXImageTransform.Microsoft.MotionBlur(strength=50), progid:DXImageTransform.Microsoft.BasicImage(mirror=1);
+}
+
+/* Hack para configurar o IE com opacity já que aceita o blur */
+@media all and (-ms-high-contrast:none)
+{
+	.-blur_soft{
+		opacity: 0.7;
+	} 
+	.-blur{
+		opacity: 0.5;
+	} 
+	.-blur_hard{
+		opacity: 0.1;
+	} 
+}
+      
+
+.-glass{
+	background: url("#{request.contextPath}/images/vidro.png");
+	background-repeat: repeat;
+	border-color: rgb(200, 200, 200);
+    border-style: solid;
+    border-width: 0px 0px 1px 0px;
+    overflow: hidden;
+    z-index: 1;	
 }
 
 .-loading {
