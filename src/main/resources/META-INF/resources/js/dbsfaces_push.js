@@ -1,11 +1,15 @@
 dbs_push = function(pId, pUrl) {
 	var xH = 0;
 	var xEventSource = new EventSource(pUrl);
-
+	//Recebe evento update e faz chamada ajax para atualiza-los
 	xEventSource.addEventListener('update', function(e) {
 		dbsfaces_push.showUpdate(pId);
-		var xData = dbsfaces_push.validIds(pId, e.data);
-		jsf.ajax.request($(pId), 'update', {render:xData, execute:'@none', onevent:dbsfaces.onajax, onerror:dbsfaces.onajaxerror});
+		setTimeout(function(){
+			var xData = dbsfaces_push.validIds(pId, e.data);
+			if (xData.length > 0){
+				jsf.ajax.request($(pId), 'update', {render:xData, execute:'@none', onevent:dbsfaces.onajax, onerror:dbsfaces.onajaxerror});
+			}
+		}, 0);	
 		return false;
 	}, false);
 
@@ -35,10 +39,19 @@ dbsfaces_push = {
 
 	//Retorna somente os componentes que estão momentaneamente com o push suspenso
 	validIds: function(pId, pData){
-		//Componentes com class -pushSuspended, serão ignorados pelo push 
+		//Componentes com class -pushDisabled, serão ignorados pelo push 
 		$(".-pushDisabled").each(function(index) {
 			  pData = pDatas.replaceAll($(this).attr("id"),"");
 		});
-		return pData;
+		//Cria lista somente com os componentes que existem na tela
+		//para evitar requests desnecessários
+		var xIds = pData.split(/[\s,]+/);
+		var xData = "";
+		for (var i = 0; i < xIds.length; i++) {
+		    if ($("#" + xIds[i]).length != 0){
+		    	xData += xIds[i] + " "
+		    }
+		}
+		return xData.trim();
 	}									
 }
