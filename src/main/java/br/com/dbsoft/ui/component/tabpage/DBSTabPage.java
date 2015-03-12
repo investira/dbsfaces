@@ -26,7 +26,8 @@ public class DBSTabPage extends DBSUIComponentBase implements NamingContainer, C
 		file,
 		closeble,
 		closeAction,
-		selectedAction;
+		selectedAction,
+		ajaxLoading;
 
 		String toString;
 
@@ -121,6 +122,14 @@ public class DBSTabPage extends DBSUIComponentBase implements NamingContainer, C
 		handleAttribute("iconClass", pIconClass);
 	}	
 
+	public Boolean getAjaxLoading() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.ajaxLoading, false);
+	}
+	
+	public void setAjaxLoading(Boolean pAjaxLoading) {
+		getStateHelper().put(PropertyKeys.ajaxLoading, pAjaxLoading);
+		handleAttribute("ajaxLoading", pAjaxLoading);
+	}	
 
 	//actions ====================================================================
 

@@ -8,7 +8,6 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
-import br.com.dbsoft.ui.component.tab.DBSTab;
 import br.com.dbsoft.ui.core.DBSFaces;
 
 
@@ -38,8 +37,9 @@ public class DBSTabPageRenderer extends DBSRenderer {
 	
     @Override
     public void encodeChildren(FacesContext pContext, UIComponent pComponent) throws IOException {
-    	//É necessário manter está função para evitar que faça o render dos childrens
-    	//O Render dos childrens é feita do encode
+    	if (!pComponent.isRendered()){return;}
+    	DBSTabPage xTabPage = (DBSTabPage) pComponent;
+		renderChildren(pContext, xTabPage);
     }
     
 
@@ -51,21 +51,48 @@ public class DBSTabPageRenderer extends DBSRenderer {
 		DBSTabPage xTabPage = (DBSTabPage) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xTabPage.getClientId(pContext);
-		DBSTab xTab = (DBSTab) xTabPage.getParent();
+//		DBSTab xTab = (DBSTab) xTabPage.getParent();
 
 		String xClass = DBSFaces.CSS.TABPAGE.MAIN + " " + xTabPage.getStyleClass();
+//		String xSelectedPage = DBSObject.getNotNull(pContext.getExternalContext().getRequestParameterMap().get(xTab.getInputId(true)), "").toString().toUpperCase();
 		
 		xWriter.startElement("div", xTabPage);
 			DBSFaces.setAttribute(xWriter, "id", xClientId, "id");
 			DBSFaces.setAttribute(xWriter, "name", xClientId, "name");
-			if (xTab.getSelectedTabPage().toUpperCase().equals(xClientId.toUpperCase())){
-				xClass = xClass + " " + DBSFaces.CSS.MODIFIER.SELECTED;
-			}
+//			if (xClientId.toUpperCase().equals(xTab.getSelectedTabPage().toUpperCase())
+//			 || xClientId.toUpperCase().equals(xSelectedPage)){
+//				xClass = xClass + " " + DBSFaces.CSS.MODIFIER.SELECTED;
+//			}
 			xWriter.writeAttribute("class", xClass.trim(), "class");
 			DBSFaces.setAttribute(xWriter, "style",xTabPage.getStyle(), null);
 //			encodeClientBehaviors(pContext, xTabPage);
-			renderChildren(pContext, xTabPage);
-		xWriter.endElement("div"); //Final do Div com o id _content
-			
 	}
-}
+	
+	@Override
+	public void encodeEnd(FacesContext pContext, UIComponent pComponent)
+			throws IOException {
+		if (!pComponent.isRendered()){return;}
+		
+		ResponseWriter xWriter = pContext.getResponseWriter();
+		xWriter.endElement("div"); //Final do Div com o id _content
+		super.encodeEnd(pContext, pComponent);
+		
+		pvEncodeJS(xWriter, pComponent.getClientId());
+		
+	}
+	
+	/**
+	 * Encode do código JS necessário para o componente
+	 * @param pWriter
+	 * @param pClientId
+	 * @throws IOException
+	 */
+	private void pvEncodeJS(ResponseWriter pWriter, String pClientId) throws IOException {
+		DBSFaces.encodeJavaScriptTagStart(pWriter);
+		String xJS = "$(document).ready(function() { \n" +
+				     " var xTabPageId = '#' + dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " dbs_tabPage(xTabPageId); \n" +
+                     "}); \n"; 
+		pWriter.write(xJS);
+		DBSFaces.encodeJavaScriptTagEnd(pWriter);	
+	}}

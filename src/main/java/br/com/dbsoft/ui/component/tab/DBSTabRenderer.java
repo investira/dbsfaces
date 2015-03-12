@@ -3,6 +3,7 @@ package br.com.dbsoft.ui.component.tab;
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.html.HtmlInputHidden;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
@@ -21,10 +22,11 @@ public class DBSTabRenderer extends DBSRenderer {
 		DBSTab xTab = (DBSTab) pComponent;
 		//Configura página corrente após o submit
 		if (xTab.getShowTabPageOnClick()){
-			String xSelectedTabPage = pContext.getExternalContext().getRequestParameterMap().get(pvGetInputId(xTab, true));
+			String xSelectedTabPage = pContext.getExternalContext().getRequestParameterMap().get(xTab.getInputId(true));
 			if (xSelectedTabPage!=null &&
 				!xSelectedTabPage.equals("")){
 				xTab.setSelectedTabPage(xSelectedTabPage);
+				xTab.setValue(xSelectedTabPage);
 			}
 		}
 	}
@@ -54,7 +56,7 @@ public class DBSTabRenderer extends DBSRenderer {
 		//Recupera a tabpage corrente para evitar que mude quando ocorrer o post
 		String xSelectedTabPage;
 		if (xTab.getShowTabPageOnClick()){
-			xSelectedTabPage = pContext.getExternalContext().getRequestParameterMap().get(pvGetInputId(xTab, true));
+			xSelectedTabPage = pContext.getExternalContext().getRequestParameterMap().get(xTab.getInputId(true));
 			if (xSelectedTabPage!=null &&
 				!xSelectedTabPage.equals("")){
 				xTab.setSelectedTabPage(xSelectedTabPage);
@@ -78,32 +80,39 @@ public class DBSTabRenderer extends DBSRenderer {
 			//Container
 			xWriter.startElement("div", xTab);
 				xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER, "class");
-			
+				//Abas com os título ========================================================================
 				xWriter.startElement("ul", xTab);
-					//Título
 					for (int xI=xTab.getChildren().size()-1; xI >= 0; xI--){
 						if (xTab.getChildren().get(xI) instanceof DBSTabPage){
 							DBSTabPage xPage = (DBSTabPage) xTab.getChildren().get(xI);
 							if (xPage.isRendered()){
 								xWriter.startElement("li", xTab);  
-									
-									encodeClientBehaviors(pContext, xPage);
-								
 									String xPageId = xPage.getAttributes().get("id").toString();
 									String xPageClientId = xClientId + DBSFaces.SEPARATOR + xPageId;
+
+									xWriter.writeAttribute("id", xPageClientId + "_aba", null);
+									xWriter.writeAttribute("name", xPageClientId + "_aba", null);
 									DBSFaces.setAttribute(xWriter, "tabPage", xPageClientId, "tabPage");
+									
+									encodeClientBehaviors(pContext, xPage);
+									
+									//Marca a primiera aba como selecionada
 									if (xI==0){
 										if (xSelectedTabPage.equals("")){
 											xSelectedTabPage = xPageClientId;
 											xTab.setSelectedTabPage(xPageClientId);
 										}
 									}
-									if (xPageClientId.equals(xSelectedTabPage)){
-										xPage.setSelected(true);
-										DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.SELECTED, "class");
-									}
+
+//									if (xPageClientId.equals(xSelectedTabPage)){
+//										xPage.setSelected(true);
+//										DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.SELECTED, null);
+//									}
 									
 									xWriter.startElement("a", xTab);
+										if (xPage.getAjaxLoading()){
+											xWriter.writeAttribute("style", "opacity:0.2", null);
+										}
 	//									xWriter.writeAttribute("ontouchstart", "javascript:void(0)", "ontouchstart"); //Para ipad ativar o css:ACTIVE
 	//									xWriter.writeAttribute("href", "#", "href"); //Para ipad ativar o css:ACTIVE
 										xWriter.startElement("span", xTab);
@@ -114,33 +123,74 @@ public class DBSTabRenderer extends DBSRenderer {
 											xWriter.write(xPage.getCaption());
 										xWriter.endElement("span");
 									xWriter.endElement("a");
+									if (xPage.getAjaxLoading()){
+										xWriter.startElement("span", xTab);
+											xWriter.writeAttribute("class", "loading_container", null);
+											xWriter.startElement("span", xTab);
+												xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.LOADING,  null);
+											xWriter.endElement("span");
+										xWriter.endElement("span");
+									}
 								xWriter.endElement("li");
 							}
 						}
 					}
 				xWriter.endElement("ul");
 				
-				/*Conteúdo da páginas*/
+				//Conteúdo da páginas ======================================================================================
 				xWriter.startElement("div", xTab);
 					xWriter.startElement("div", xTab);
-					xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT.trim(), "class");
-						
-						renderChildren(pContext, xTab);
+						xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT.trim(), "class");
+
+						//Input para salvar a pagina selecionada ====================================================
+						HtmlInputHidden xInput = (HtmlInputHidden) xTab.getFacet("input");
+						if (xInput == null){
+							xInput = (HtmlInputHidden) pContext.getApplication().createComponent(HtmlInputHidden.COMPONENT_TYPE);
+							xInput.setId(xTab.getInputId(false));
+							xTab.getFacets().put("input", xInput);
+						}
+						xInput.setValue(xSelectedTabPage);
+						xInput.encodeAll(pContext);
+
+						//Encode das páginas filhas, sem o conteúdo, pois será posteriormente chamado via atualização ajax
+						for (int xI=xTab.getChildren().size()-1; xI >= 0; xI--){
+							if (xTab.getChildren().get(xI) instanceof DBSTabPage){
+								DBSTabPage xPage = (DBSTabPage) xTab.getChildren().get(xI);
+								if (xPage.isRendered()){
+									xPage.encodeBegin(pContext);
+									if (!xPage.getAjaxLoading()){
+										xPage.encodeChildren(pContext);
+									}
+									xPage.encodeEnd(pContext);
+								}
+							}
+						}
+					
+//						renderChildren(pContext, xTab);
 	
 					xWriter.endElement("div");
 				xWriter.endElement("div");
-				//Input para controle do focus e caracteres digitados----
-				xWriter.startElement("input", xTab);
-					DBSFaces.setAttribute(xWriter, "id", pvGetInputId(xTab, true), null);
-					DBSFaces.setAttribute(xWriter, "name", pvGetInputId(xTab, true), null);
-					DBSFaces.setAttribute(xWriter, "type", "hidden", null);
-					DBSFaces.setAttribute(xWriter, "value", xSelectedTabPage, null);
-				xWriter.endElement("input");	
 			xWriter.endElement("div");
 		xWriter.endElement("div");
-		
+
+		//Chamada assincrona para carregar a página	
+		for (int xI=0; xI <= xTab.getChildren().size()-1; xI++){
+			if (xTab.getChildren().get(xI) instanceof DBSTabPage){
+				DBSTabPage xPage = (DBSTabPage) xTab.getChildren().get(xI);
+				if (xPage.isRendered()){
+					if (xPage.getAjaxLoading()){
+						DBSFaces.encodeJavaScriptTagStart(xWriter);
+						String xJS = "setTimeout(function(){" +
+												"jsf.ajax.request('" + xPage.getClientId() + "_aba" + "', 'update', {render:'" + xPage.getClientId() + "', execute:'" + xTab.getInputId(true) + "', onevent:dbsfaces.onajax, onerror:dbsfaces.onajaxerror});" +
+														   "}, 0);";
+						xWriter.write(xJS);
+						DBSFaces.encodeJavaScriptTagEnd(xWriter);	
+					}
+				}
+			}
+		}
+
 		pvEncodeJS(xWriter, xClientId);
-		
 	}
 	
 	/**
@@ -159,77 +209,6 @@ public class DBSTabRenderer extends DBSRenderer {
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);	
 	}
 	
-	private String pvGetInputId(DBSTab pTab, boolean pFullId){
-		return pvGetId(pTab, DBSFaces.CSS.MODIFIER.INPUT.trim(), pFullId);
-	}
 	
-	private String pvGetId(UIComponent pComponent, String pSufix, boolean pFullId){
-		String xId;
-		if (pFullId){
-			xId = pComponent.getClientId() + pSufix;
-		}else{
-			xId = pComponent.getId() + pSufix;
-		}
-		return xId;
-	}
 
-	/**Retorna a tabPage que contém a mesma chave da tagPage selecionada
-	 * Se não houver nenhuma tabPage selecionada, retorna a primeira
-	 * @param pTab
-	 * @param pClientId
-	 * @return
-	 */
-//	private String pvGetSelectedPage(DBSTab pTab, String pClientId){
-//		String xSelectedPage = "";
-//		if (pTab.getChildren().size()>0){
-//			DBSTabPage xPage = null;
-//			for (int xI=pTab.getChildren().size()-1; xI >= 0; xI--){
-//				if (pTab.getChildren().get(xI) instanceof DBSTabPage){
-//					if(pTab.getChildren().get(xI).isRendered()){
-//						xPage = (DBSTabPage) pTab.getChildren().get(xI);
-//						//Interrompe a busca, caso tenha encontrado a tabPage selecionada
-//						if (pTab.getSelectedTabPage().toUpperCase().equals(xPage.getId().toUpperCase())){
-//							break;
-//						}
-//					}
-//				}
-//			}
-//			//Marca tabPage como selecionada e armazena o valor neste tab
-//			xPage.setSelected(true);
-//			xSelectedPage = pClientId + DBSFaces.SEPARATOR + xPage.getId();
-//			pTab.setSelectedTabPage(xSelectedPage);
-//		}
-//		return xSelectedPage;
-//	}
-	
-	
-//	/**
-//	 * Retorna a clientId da página que será exibida inicialmente
-//	 * @param pTab
-//	 * @return
-//	 */
-//	private String pvGetFirstPageClientId(DBSTab pTab){
-//		for (int xI=0; xI < pTab.getChildren().size(); xI++){
-//			if (pTab.getChildren().get(xI) instanceof DBSTabPage){
-//				DBSTabPage xPage = (DBSTabPage) pTab.getChildren().get(xI);
-//				if (xPage.isRendered()){
-//					return xPage.getClientId();
-//				}
-//			}
-//		}
-//		return "";
-//	}
-	
-//	private String pvGetTabPageId(DBSTabPage pTabPage, String pClientId, int pIndex){
-//		if (pTabPage.getAttributes().get("id")!=null){
-//			return pTabPage.getAttributes().get("id").toString();//Usa Id do usuário
-//		}else{
-//			
-//			if (pTabPage.getCaption()!=null){
-//				return pClientId + "_" + DBSString.changeStr(pTabPage.getCaption(), " ", "_"); //Usa o título da página como complemento do id
-//			}else{
-//				return pClientId + "_tab" + pIndex; //Força um Id sequecial
-//			}
-//		}
-//	}
 }

@@ -83,18 +83,14 @@ public class DBSTab extends DBSUIOutput implements NamingContainer, ClientBehavi
 		return Arrays.asList("click", "dblclick", "blur", "focus", "select", "change"); 
 	}	
 	
-//	@Override
-//	public void processEvent(SystemEvent event) throws AbortProcessingException {
-//		UIComponentBase xO = (UIComponentBase) event.getSource();
-//		//System.out.println("processEvent:" + xO.getFamily());
-//		if ( !FacesContext.getCurrentInstance().isPostback() ) {
-//		     // Safely manipulate component tree here
-//		}
-//	}
-//
-//	@Override
-//	public boolean isListenerForSource(Object source) {
-//		//System.out.println("isListenerForSource:" + source.toString());
-//		return ( source instanceof UIViewRoot );
-//	}
+	public String getInputId(boolean pFullId){
+		String xId;
+		if (pFullId){
+			xId = getClientId() + ":input";
+		}else{
+			xId = "input";
+		}
+		return xId;
+	}
+
 }
