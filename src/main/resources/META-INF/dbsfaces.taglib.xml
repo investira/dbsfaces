@@ -2937,7 +2937,7 @@
 	<tag>
 		<tag-name>push</tag-name>
 		<component>
-			<description>Mantém conexão SSE com o servidor para receber Ids dos componentes que devem ser atualizados via ajax</description>
+			<description>Mantém conexão SSE com o servidor para receber Ids dos componentes que devem ser atualizados via ajax. Componentes com class contendo -pushDisabled serão ignorados</description>
 			<component-type>br.com.dbsoft.ui.component.push</component-type>
 			<handler-class />
 		</component>
