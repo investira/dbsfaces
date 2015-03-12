@@ -33,6 +33,9 @@ public interface IDBSCrudBeanEventsListener {
 	/**
 	 * Disparado antes de limpar os dados existentes e fazer uma nova pesquisa.<br/>
 	 * A pesquisa principal dos dados que utiliza o wDAO, deverá ser implementada neste evento.<br/>
+	 * Após este evento há uma tentativa de se posicionar no mesmo registro selecionado antes do deste <i>refresh</i> dos dados.
+	 * Caso ele não exista, será considerado a primeira posição existente.<br/>
+	 * Caso ele exista, os valores do registro corrente podem ser acessados no evento <b>afterRefresh</b>.
 	 * Conexão com o banco encontra-se aberta.<br/>
 	 * @param pEvent Informações do evento
 	 * @throws DBSIOException 
@@ -40,7 +43,9 @@ public interface IDBSCrudBeanEventsListener {
 	public abstract void beforeRefresh(DBSCrudBeanEvent pEvent) throws DBSIOException;
 
 	/**
-	 * Disparado após efetuada uma nova pesquisa.
+	 * Disparado após efetuada uma nova pesquisa.<br/>
+	 * Antes deste evento há uma tentativa de se posicionar no mesmo registro selecionado antes do <i>refresh</i> dos dados.
+	 * Caso ele não exista, será considerado a primeira posição existente.<br/>
 	 * Conexão com o banco encontra-se aberta.<br/>
 	 * @param pEvent Informações do evento
 	 */
