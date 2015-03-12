@@ -2,7 +2,11 @@ package br.com.dbsoft.ui.component.div;
 
 import java.io.IOException;
 
+import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIData;
+import javax.faces.component.UIInput;
+import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
@@ -29,10 +33,35 @@ public class DBSDivRenderer extends DBSRenderer {
 	
     @Override
     public void encodeChildren(FacesContext pContext, UIComponent pComponent) throws IOException {
-        //É necessário manter está função para evitar que faça o render dos childrens
-    	//O Render dos childrens é feita do encode
-//    	if (pComponent.getChildren().size()!=0){
-//    	}
+		DBSDiv xDiv = (DBSDiv) pComponent;
+    	if (xDiv.getAjaxLoading()){
+    		ResponseWriter xWriter = pContext.getResponseWriter();
+			for (UIComponent xChild:pComponent.getChildren()) {
+				if (UIData.class.isAssignableFrom(xChild.getClass()) 
+				 || UIInput.class.isAssignableFrom(xChild.getClass())
+				 || UIOutput.class.isAssignableFrom(xChild.getClass())
+				 || UICommand.class.isAssignableFrom(xChild.getClass())
+				 || DBSDiv.class.isAssignableFrom(xChild.getClass())){
+		    		xWriter.startElement("div", xDiv);
+						DBSFaces.setAttribute(xWriter, "id", xChild.getClientId(), null);
+						DBSFaces.setAttribute(xWriter, "class", "dbs_div_loading", null);
+			    		xWriter.startElement("div", xDiv);
+							DBSFaces.setAttribute(xWriter, "class", "-loading", null);
+						xWriter.endElement("div");
+						DBSFaces.encodeJavaScriptTagStart(xWriter);
+						String xJS = "setTimeout(function(){" +
+												"jsf.ajax.request('" + xChild.getClientId() + "', 'update', {render:'" + xChild.getClientId() + "', onevent:dbsfaces.onajax, onerror:dbsfaces.onajaxerror});" +
+														   "}, 0);";
+						xWriter.write(xJS);
+						DBSFaces.encodeJavaScriptTagEnd(xWriter);	
+					xWriter.endElement("div");
+				}else{
+					xChild.encodeAll(pContext);
+				}
+			}
+		}else{
+       		renderChildren(pContext, pComponent);
+    	}
     }
 
 	@Override
@@ -43,7 +72,7 @@ public class DBSDivRenderer extends DBSRenderer {
 		//xDiv.setTransient(true);
 		//System.out.println("RENDER DIV #############################" + xDiv.getClientId(pContext) + ":" + xDiv.getStyleClass());		
 		ResponseWriter xWriter = pContext.getResponseWriter();
-		String xClass = "";
+		String xClass = DBSFaces.CSS.DIV.MAIN + " ";
 		if (xDiv.getStyleClass()!=null){
 			xClass = xClass + xDiv.getStyleClass() + " ";
 		}
@@ -65,13 +94,23 @@ public class DBSDivRenderer extends DBSRenderer {
 			
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xDiv, DBSPassThruAttributes.getAttributes(Key.DIV));
 
-			renderChildren(pContext, xDiv);
 	}
 	
 	@Override
 	public void encodeEnd(FacesContext pContext, UIComponent pComponent) throws IOException{
 		if (!pComponent.isRendered()){return;}
 		ResponseWriter xWriter = pContext.getResponseWriter();
+//		DBSDiv xDiv = (DBSDiv) pComponent;
+		//Fim do componente
 		xWriter.endElement("div");
+//		//Chamada alax para carregar o conteúdo
+//		if (xDiv.getAjaxLoading()){
+//			DBSFaces.encodeJavaScriptTagStart(xWriter);
+//			String xJS = "setTimeout(function(){" +
+//									"jsf.ajax.request('" + xDiv.getClientId() + "', 'update', {render:'" + xDiv.getClientId() + "', onevent:dbsfaces.onajax, onerror:dbsfaces.onajaxerror});" +
+//											   "}, 0);";
+//			xWriter.write(xJS);
+//			DBSFaces.encodeJavaScriptTagEnd(xWriter);	
+//		}
 	}
 }

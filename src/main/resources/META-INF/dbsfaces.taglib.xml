@@ -2246,6 +2246,14 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
+		<attribute>
+			<description>
+                Indica se página será carregada via ajax.
+            </description>
+			<name>ajaxLoading</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>		
 	</tag>
 
 	<tag>

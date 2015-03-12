@@ -2,7 +2,6 @@ package br.com.dbsoft.ui.component.div;
 
 import javax.faces.component.FacesComponent;
 
-
 import br.com.dbsoft.ui.component.DBSUIComponentBase;
 import br.com.dbsoft.ui.core.DBSFaces;
 
@@ -15,7 +14,8 @@ public class DBSDiv extends DBSUIComponentBase {
 	protected enum PropertyKeys {
 		styleClass,
 		style,
-		selectable;
+		selectable,
+		ajaxLoading;
 
 		String toString;
 
@@ -60,4 +60,14 @@ public class DBSDiv extends DBSUIComponentBase {
 	public Boolean getSelectable() {
 		return (Boolean) getStateHelper().eval(PropertyKeys.selectable, true);
 	}		
+	
+	public Boolean getAjaxLoading() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.ajaxLoading, false);
+	}
+	
+	public void setAjaxLoading(Boolean pAjaxLoading) {
+		getStateHelper().put(PropertyKeys.ajaxLoading, pAjaxLoading);
+		handleAttribute("ajaxLoading", pAjaxLoading);
+	}	
+
 }
