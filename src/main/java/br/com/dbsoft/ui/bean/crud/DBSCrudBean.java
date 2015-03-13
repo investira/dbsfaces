@@ -1420,7 +1420,8 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @return
 	 */
 	public synchronized String copy() throws DBSIOException{
-		if (wAllowCopy || wAllowCopyOnUpdate){
+		if (wAllowCopy 
+		 || wAllowCopyOnUpdate){
 			wCopiedRowIndex = wDAO.getCurrentRowIndex();
 			pvFireEventAfterCopy();
 		}
@@ -2548,68 +2549,70 @@ public abstract class DBSCrudBean extends DBSBean{
 		boolean 	xOk;
 		Object 		xSavedValue = null;
 		Object 		xCurrentValue = null;
-		BigDecimal xSavedNumberValue = null;
-		BigDecimal xCurrentNumberValue = null;
+		BigDecimal  xSavedNumberValue = null;
+		BigDecimal  xCurrentNumberValue = null;
 		boolean 	xEqual;
-		
-		if (wDAO != null
-		 && wSavedCurrentColumns !=null
-		 && wSavedCurrentColumns.size() > 0
-		 && wDAO.getResultDataModel() != null){
-			//Loop por todas as linhas da query para procurar pela que é igual a linha salva
-			DBSResultDataModel xQueryRows =  wDAO.getResultDataModel();
-			for (int xRowIndex = 0; xRowIndex <= xQueryRows.getRowCount()-1; xRowIndex++){
-				xQueryRows.setRowIndex(xRowIndex);
-				xOk = true;
-				//Loop por todas as colunas da linha da query
-				for (String xQueryColumnName:xQueryRows.getRowData().keySet()){
-					Object xQueryColumnValue = xQueryRows.getRowData().get(xQueryColumnName);
-					//Loop por todas as colunas salvas para pesquisar o conteúdo
-					//Procura pelo coluna que possua o mesmo nome
-					for (DBSColumn xColumnSaved: wSavedCurrentColumns){
-						if (xColumnSaved.getColumnName().equalsIgnoreCase(xQueryColumnName)){
-							//Verifica se valor é igual ao valor salvo 
-							xSavedValue = DBSObject.getNotNull(xColumnSaved.getValue(),"");
-							xCurrentValue = DBSObject.getNotNull(xQueryColumnValue,""); 
-							xEqual = false;
-							if (xCurrentValue == null
-							 && xSavedValue == null){
-								xEqual = true;
-							}else if (xCurrentValue instanceof Number){
-								xCurrentNumberValue = DBSNumber.toBigDecimal(xCurrentValue);
-								if (xSavedValue instanceof Number){
-									xSavedNumberValue = DBSNumber.toBigDecimal(xSavedValue);
-								}
-								if (xSavedNumberValue != null 
-								 && xCurrentNumberValue != null){
-									//Utiliza o compareTo para evitar diferença por quantidade de casas decimais
-									if (xCurrentNumberValue.compareTo(xSavedNumberValue) == 0){
-										xEqual = true;
+		if (wDAO != null){
+			//Posiciona do registro anterior ao primeiro para caracterizar que não existe registro selecionado
+			wDAO.moveBeforeFirstRow();
+			if (wSavedCurrentColumns !=null
+			 && wSavedCurrentColumns.size() > 0
+			 && wDAO.getResultDataModel() != null){
+				//Loop por todas as linhas da query para procurar pela que é igual a linha salva
+				DBSResultDataModel xQueryRows =  wDAO.getResultDataModel();
+				for (int xRowIndex = 0; xRowIndex <= xQueryRows.getRowCount()-1; xRowIndex++){
+					xQueryRows.setRowIndex(xRowIndex);
+					xOk = true;
+					//Loop por todas as colunas da linha da query
+					for (String xQueryColumnName:xQueryRows.getRowData().keySet()){
+						Object xQueryColumnValue = xQueryRows.getRowData().get(xQueryColumnName);
+						//Loop por todas as colunas salvas para pesquisar o conteúdo
+						//Procura pelo coluna que possua o mesmo nome
+						for (DBSColumn xColumnSaved: wSavedCurrentColumns){
+							if (xColumnSaved.getColumnName().equalsIgnoreCase(xQueryColumnName)){
+								//Verifica se valor é igual ao valor salvo 
+								xSavedValue = DBSObject.getNotNull(xColumnSaved.getValue(),"");
+								xCurrentValue = DBSObject.getNotNull(xQueryColumnValue,""); 
+								xEqual = false;
+								if (xCurrentValue == null
+								 && xSavedValue == null){
+									xEqual = true;
+								}else if (xCurrentValue instanceof Number){
+									xCurrentNumberValue = DBSNumber.toBigDecimal(xCurrentValue);
+									if (xSavedValue instanceof Number){
+										xSavedNumberValue = DBSNumber.toBigDecimal(xSavedValue);
 									}
+									if (xSavedNumberValue != null 
+									 && xCurrentNumberValue != null){
+										//Utiliza o compareTo para evitar diferença por quantidade de casas decimais
+										if (xCurrentNumberValue.compareTo(xSavedNumberValue) == 0){
+											xEqual = true;
+										}
+									}
+								}else{
+									xEqual = xSavedValue.equals(xCurrentValue);
 								}
-							}else{
-								xEqual = xSavedValue.equals(xCurrentValue);
+								if (!xEqual){
+									//Indica que este registro não é igual ao valor salvo
+									xOk = false;
+								}
+								break;							
 							}
-							if (!xEqual){
-								//Indica que este registro não é igual ao valor salvo
-								xOk = false;
-							}
-							break;							
 						}
+						if (!xOk){
+							//Sai para procurar a próxima linha
+							break;
+						}					
 					}
-					if (!xOk){
-						//Sai para procurar a próxima linha
-						break;
-					}					
+					if (xOk){
+						return;
+					}
 				}
-				if (xOk){
-					return;
-				}
+				if (wDAO != null){
+					//Posiciona na primeira linha se não consegui encontrar o registro restaurado.
+					wDAO.moveFirstRow();
+				}			
 			}
-			if (wDAO != null){
-				//Posiciona na primeira linha se não consegui encontrar o registro restaurado.
-				wDAO.moveFirstRow();
-			}			
 		}
 	}
 	
@@ -3188,7 +3191,7 @@ public abstract class DBSCrudBean extends DBSBean{
 				beforeInsert(pEvent);
 				break;
 			case BEFORE_REFRESH:
-				pvCurrentRowSave();
+				pvCurrentRowSave(); 
 				beforeRefresh(pEvent);
 				pvCurrentRowRestore();
 				break;
