@@ -76,10 +76,11 @@ dbs_dataTable = function(pId) {
 	    	if (xB.length > 0){
 	    		e.stopImmediatePropagation();
 				e.preventDefault();
-	    		xB.click();
 	    		dbsfaces.dataTable.headFocusRemove(pId);
 	       		dbsfaces.dataTable.rowFocusRemove(pId);
 	       		dbsfaces.dataTable.rowDeselect(pId);
+	       		//Submit da seleção
+	    		xB.click();
 	    	}
 	    	return false;
 		}
@@ -113,14 +114,7 @@ dbs_dataTable = function(pId) {
 	$(pId + " > .-container > input.-foo").focusin(function(e){
 		var xTable = pId + " > .-container > .-content > table ";
 		var xE = $(xTable + " > tbody > tr.-selected");
-		//Seleciona linha caso não exista alguma já selecionada
-		if (xE.length == 0){
-			xE = $(xTable + " > tbody > tr.-focus");
-			if (xE.length == 0){
-				xE = $(xTable + " > tbody > tr:first");
-				dbsfaces.dataTable.rowFocusAdd(pId, xE);
-			}
-		}
+		//Exibe foco do cabeçalho das colunas
 		dbsfaces.dataTable.headFocusAdd(pId);
 		e.stopPropagation();
 		//Comentado em 28/08/2013 - no IE, retirava o foco do input.-foo, deixando de funcionar a nagevação por seta
