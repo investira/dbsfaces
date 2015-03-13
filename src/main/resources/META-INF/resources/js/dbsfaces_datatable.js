@@ -21,7 +21,7 @@ dbs_dataTable = function(pId) {
 	                                     .css("padding-top", xH + "px");
 
 	dbsfaces.dataTable.showOverflowShadow($(xTable));
-	dbsfaces.dataTable.positionOnSelectRow(pId);
+	dbsfaces.dataTable.positionOnSelectedRow(pId);
 	
 	$(xTable).scroll(function(){
 		dbsfaces.dataTable.showOverflowShadow($(this));
@@ -52,18 +52,18 @@ dbs_dataTable = function(pId) {
 	
 	/*Força o foco no click*/
 	$(xTable + " > tbody > tr").click(function(e){
-		//Se click foi em campo de input, não precisa forçar o foco no input-foo.
-		if ($(e.target).hasClass("dbs_input-data")
-		 || $(e.target).is("input")){
+		//Se click foi em campo de input, não precisa forçar o foco no input-foo, para não dar problema na edição diretamente no grid
+		if ($(e.target).hasClass("dbs_input-data:not(.-readOnly)")
+		 || $(e.target).is("input:not(.-readOnly)")){
 			dbsfaces.dataTable.headFocusAdd(pId);
 		}else{
-			//Somente seleciona se for diferente do selecionado anteriormente
-			if (this != xSelectedRow){
-				xSelectedRow = this;
-				dbsfaces.dataTable.rowSelect(pId, this);
-			}
 			//Força foco no input para possibilitar a navegação pelas setas(up/down)
 			$(pId + " > .-container > input.-foo").focus().click();
+		}
+		//Somente seleciona se for diferente do selecionado anteriormente
+		if (this != xSelectedRow){
+			xSelectedRow = this;
+			dbsfaces.dataTable.rowSelect(pId, this);
 		}
 //		e.preventDefault();
 	});
@@ -161,11 +161,15 @@ dbsfaces.dataTable = {
 		
 	rowSelect: function(pId, pNew){
 		dbsfaces.dataTable.rowFocusRemove(pId);
-		$(pId + " > .-container > input.-foo").val($(pNew).attr("index"));
+		var xRowIndex = $(pNew).attr("index");
+		//Valor de fato que será utilizado no submit
+		$(pId + " > .-container > input.-foo").val(xRowIndex);
+		//Sincroniza atributo value com o value interno do componente
+		$(pId + " > .-container > input.-foo").attr("value", xRowIndex);
 		dbsfaces.dataTable.rowDeselect(pId);
 		$(pNew).addClass("-selected");
 		$(pId).trigger(dbsfaces.EVENT.ON_ROW_SELECTED, pNew);
-		$(pId).trigger("select.datatable");
+//		$(pId).trigger("select.datatable");
 		$(pId + " > .-container > input.-foo").select();
 	},
 
@@ -256,7 +260,8 @@ dbsfaces.dataTable = {
 		}
 	},	
 	
-	positionOnSelectRow: function(pId){
+	//Ajuste scroll para o item selectionado
+	positionOnSelectedRow: function(pId){
 		var xNew;
 		var xRow = $(pId + " > .-container > .-content > table > tbody > tr");
 		
