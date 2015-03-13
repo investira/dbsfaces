@@ -56,7 +56,7 @@ dbsfaces = {
 		ON_AJAX_COMPLETE: "dbs_ON_AJAX_COMPLETE",
 		ON_AJAX_SUCCESS: "dbs_ON_AJAX_SUCESS",
 		ON_AJAX_ERROR: "dbs_ON_AJAX_ERROR",
-		ON_ROW_SELECTED: "dbs_ON_ROW_SELECTED"
+		ON_ROW_SELECTED: "select.dataTable"
 	}	
 
 }
