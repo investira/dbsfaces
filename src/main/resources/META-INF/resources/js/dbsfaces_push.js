@@ -48,7 +48,7 @@ dbsfaces_push = {
 		var xIds = pData.split(/[\s,]+/);
 		var xData = "";
 		for (var i = 0; i < xIds.length; i++) {
-		    if ($("#" + xIds[i]).length != 0){
+		    if ($("#" + dbsfaces.util.jsid(xIds[i])).length != 0){
 		    	xData += xIds[i] + " "
 		    }
 		}
