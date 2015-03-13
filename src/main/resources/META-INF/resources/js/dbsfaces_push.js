@@ -48,7 +48,9 @@ dbsfaces_push = {
 		var xIds = pData.split(/[\s,]+/);
 		var xData = "";
 		for (var i = 0; i < xIds.length; i++) {
+			//Verica se componente existe na tela
 		    if ($("#" + dbsfaces.util.jsid(xIds[i])).length != 0){
+		    	//Adiciona a lista se existir
 		    	xData += xIds[i] + " "
 		    }
 		}
