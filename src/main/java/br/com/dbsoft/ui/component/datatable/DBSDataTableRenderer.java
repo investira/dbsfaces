@@ -67,10 +67,10 @@ public class DBSDataTableRenderer extends DBSRenderer {
 			xWriter.writeAttribute("name", xClientId, null);
 			DBSFaces.setAttribute(xWriter, "class", xClass.trim(), null);
 			//Não exibe dataTable caso não exista cabeçalho principal e não possua dados a ser exibidos
-			if (!pvHasHeader(xDataTable) &&
-				!(xDataTable.getRowCount() > 0)){
-				xStyle = xStyle + " display:none;";
-			}
+//			if (!pvHasHeader(xDataTable) &&
+//				!(xDataTable.getRowCount() > 0)){
+//				xStyle = xStyle + " display:none;";
+//			}
 			if (!xStyle.trim().equals("")){
 				DBSFaces.setAttribute(xWriter, "style", xStyle, null);
 			}
@@ -94,7 +94,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 		DBSDataTable 	xDataTable = (DBSDataTable) pComponent;
 		ResponseWriter 	xWriter = pContext.getResponseWriter();
 		String 			xClientId;
-
+		
 			xWriter.endElement("div");
 		xWriter.endElement("div");
 
@@ -134,10 +134,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 		UIComponent xFilter = pDataTable.getFacet(DBSDataTable.FACET_FILTER);
 		UIComponent xToolbar = pDataTable.getFacet(DBSDataTable.FACET_TOOLBAR);
 		
-		if (!DBSObject.isEmpty(pDataTable.getCaption())
-		 || !DBSObject.isEmpty(pDataTable.getIconClass())
-		 ||	xFilter != null 
-		 || xToolbar != null) { 
+		if (pvHasHeader(pDataTable)) { 
 			pWriter.startElement("div", pDataTable);
 				DBSFaces.setAttribute(pWriter, "class",DBSFaces.CSS.MODIFIER.HEADER.trim(), null);
 				// Caption -------------------------
@@ -219,17 +216,8 @@ public class DBSDataTableRenderer extends DBSRenderer {
 				}
 			pWriter.endElement("div");
 		}
-		
-		//Input para controle do focus e caracteres digitados----
-		pWriter.startElement("input", pDataTable);
-			DBSFaces.setAttribute(pWriter, "id", pvGetInputFooId(pContext, pDataTable), null);
-			DBSFaces.setAttribute(pWriter, "name", pvGetInputFooId(pContext, pDataTable), null);
-			DBSFaces.setAttribute(pWriter, "type", "text", null);
-			DBSFaces.setAttribute(pWriter, "class", "-foo", null);
-			DBSFaces.setAttribute(pWriter, "autocomplete", "off", null);
-			DBSFaces.setAttribute(pWriter, "value", pDataTable.getCurrentRowIndex(), null);
-			encodeClientBehaviors(pContext, pDataTable);
-		pWriter.endElement("input");
+		pvEncodeInput(pContext, pDataTable, pWriter);
+
 	}
 	
 	private String pvGetInputFooId(FacesContext pContext, DBSDataTable pDataTable){
@@ -265,6 +253,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 				pvEncodeDataTableBody(pContext, pDataTable, pWriter);
 
 			pWriter.endElement("table");
+			
 		pWriter.endElement("div");
 	}
 
@@ -312,6 +301,25 @@ public class DBSDataTableRenderer extends DBSRenderer {
 		}
 	}
 
+	/**
+	 * Encode do componente input para controle do focus, caracteres digitados e conterá o número da linha selecionada
+	 * @param pContext
+	 * @param pDataTable
+	 * @param pWriter
+	 * @throws IOException
+	 */
+	private void pvEncodeInput(FacesContext pContext, DBSDataTable pDataTable,ResponseWriter pWriter) throws IOException {
+		//Input para controle do focus e caracteres digitados----
+		pWriter.startElement("input", pDataTable);
+			DBSFaces.setAttribute(pWriter, "id", pvGetInputFooId(pContext, pDataTable), null);
+			DBSFaces.setAttribute(pWriter, "name", pvGetInputFooId(pContext, pDataTable), null);
+			DBSFaces.setAttribute(pWriter, "type", "text", null);
+			DBSFaces.setAttribute(pWriter, "class", "-foo", null);
+			DBSFaces.setAttribute(pWriter, "autocomplete", "off", null);
+			DBSFaces.setAttribute(pWriter, "value", pDataTable.getCurrentRowIndex(), null);
+			encodeClientBehaviors(pContext, pDataTable);
+		pWriter.endElement("input");
+	}
 
 	/**
 	 * Encode do corpo da tabela contendo as linhas com os dados
@@ -485,13 +493,12 @@ public class DBSDataTableRenderer extends DBSRenderer {
 		DBSDataTable 	xDataTable = (DBSDataTable) pComponent;
 		String xRowIndex = pContext.getExternalContext().getRequestParameterMap().get(pvGetInputFooId(pContext, xDataTable));
 		if (xRowIndex!=null && !xRowIndex.equals("")){
-			//No decode, set o rowIndex para que o valor selecionado pelo usuário sensibelize efetivamente o valor corrente.
-			//No encode, é ligo novamente o valor recebido para que o encode reflita a linha ainda marcada
+			//No decode, set o rowIndex para que o valor selecionado pelo usuário, via submit, sensibilize efetivamente o valor corrente.
 			if (pDecode){
-				xDataTable.setRowIndex(DBSNumber.toInteger(xRowIndex));
+				xDataTable.setRowIndex(DBSNumber.toInteger(xRowIndex)); 
 			}
-	
-			xDataTable.setCurrentRowIndex(DBSNumber.toInteger(xRowIndex));
+			//No encode, é ligo novamente o valor recebido para que o encode reflita a linha ainda marcada
+			xDataTable.setCurrentRowIndex(DBSNumber.toInteger(xRowIndex)); 
 		}else{
 			xDataTable.setCurrentRowIndex(-1);
 		}
