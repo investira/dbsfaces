@@ -13,7 +13,6 @@ public class DBSCrudBeanEvent extends DBSEvent<DBSCrudBean> {
 	public static enum CRUD_EVENT{
 		INITIALIZE,
 		FINALIZE,
-		FORM_OPENED,
 		BEFORE_CLOSE,
 		BEFORE_VIEW,
 		AFTER_VIEW,
