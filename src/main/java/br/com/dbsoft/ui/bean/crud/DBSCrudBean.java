@@ -39,13 +39,30 @@ import br.com.dbsoft.util.DBSObject;
  * @author ricardo.villar
  *
  */
+
 /**
- * @author ricardo.villar
- *
- */
-/**
- * @author ricardo.villar
- *
+ * INITIALIZE
+ * INITIALIZE,
+ * FINALIZE,
+ * BEFORE_CLOSE,
+ * BEFORE_VIEW,
+ * AFTER_VIEW,
+ * BEFORE_COMMIT,
+ * AFTER_COMMIT,
+ * BEFORE_IGNORE,
+ * AFTER_IGNORE,
+ * BEFORE_EDIT,
+ * AFTER_EDIT,
+ * BEFORE_INSERT,
+ * BEFORE_REFRESH,
+ * AFTER_REFRESH,
+ * BEFORE_SELECT,
+ * AFTER_SELECT,
+ * AFTER_COPY,
+ * BEFORE_PASTE,
+ * BEFORE_VALIDATE,
+ * VALIDATE
+ *  
  */
 public abstract class DBSCrudBean extends DBSBean{
 
