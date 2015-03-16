@@ -91,7 +91,11 @@ public class DBSFileUploadRenderer extends DBSRenderer {
 		xButtonStart.setIconClass(DBSFaces.CSS.ICON + " -i_upload");
 //		xButtonStart.setonclick("dbsfaces.fileUpload.select(this)");
 		xButtonStart.setonclick("return false;");
-		xButtonStart.setTooltip("Upload de arquivo");
+		if (DBSObject.isEmpty(pFileUpload.getTooltip())) {
+			xButtonStart.setTooltip("Upload de arquivo");
+		} else {
+			xButtonStart.setTooltip(pFileUpload.getTooltip());
+		}
 		if (DBSObject.isEmpty(pFileUpload.getFileUploadServletPath())){
 			xButtonStart.setReadOnly(true);
 		}

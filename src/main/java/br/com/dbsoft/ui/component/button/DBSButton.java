@@ -20,7 +20,7 @@ public class DBSButton extends DBSUICommand {
 		label,
 		iconClass,
 		execute,
-		tooptip,
+		tooltip,
 		readOnly,
 		disabled;
 
@@ -83,11 +83,11 @@ public class DBSButton extends DBSUICommand {
 	}
 
 	public String getTooltip() {
-		return (String) getStateHelper().eval(PropertyKeys.tooptip, null);
+		return (String) getStateHelper().eval(PropertyKeys.tooltip, null);
 	}
 	
 	public void setTooltip(String pTooltip) {
-		getStateHelper().put(PropertyKeys.tooptip, pTooltip);
+		getStateHelper().put(PropertyKeys.tooltip, pTooltip);
 		handleAttribute("tooltip", pTooltip);
 	}	
 	
