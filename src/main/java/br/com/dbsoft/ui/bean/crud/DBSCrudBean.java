@@ -41,28 +41,143 @@ import br.com.dbsoft.util.DBSObject;
  */
 
 /**
- * INITIALIZE
- * INITIALIZE,
- * FINALIZE,
- * BEFORE_CLOSE,
- * BEFORE_VIEW,
- * AFTER_VIEW,
- * BEFORE_COMMIT,
- * AFTER_COMMIT,
- * BEFORE_IGNORE,
- * AFTER_IGNORE,
- * BEFORE_EDIT,
- * AFTER_EDIT,
- * BEFORE_INSERT,
- * BEFORE_REFRESH,
- * AFTER_REFRESH,
- * BEFORE_SELECT,
- * AFTER_SELECT,
- * AFTER_COPY,
- * BEFORE_PASTE,
- * BEFORE_VALIDATE,
- * VALIDATE
+ * Ordem de disparo dos eventos conforme a ação executada
  *  
+ * ====================
+ * INITIALIZE
+ * --------------------
+ * initializeClass
+ * INITIALIZE
+ * BEFORE_REFRESH
+ * AFTER_REFRESH
+ *   
+ * ====================
+ * refreshList()
+ * --------------------
+ * INITIALIZE
+ * BEFORE_REFRESH
+ * AFTER_REFRESH
+ * 
+ * ====================
+ * searchList()
+ * --------------------
+ * BEFORE_REFRESH
+ * AFTER_REFRESH
+ * 
+ * ====================
+ * setSelected
+ * --------------------
+ * BEFORE_SELECT
+ * AFTER_SELECT
+ * 
+ * ====================
+ * selectAll()
+ * --------------------
+ * BEFORE_SELECT
+ * AFTER_SELECT
+ * 
+ * ====================
+ * view()
+ * --------------------
+ * BEFORE_VIEW
+ * AFTER_VIEW
+ * 
+ * 	====================
+ * 	VIEW - CLOSE
+ * 	--------------------
+ * 	BEFORE_CLOSE
+ * 
+ * ====================
+ * copy()
+ * --------------------
+ * AFTER_COPY
+ * 
+ * ====================
+ * paste()
+ * --------------------
+ * BEFORE_PASTE
+ * 
+ * ====================
+ * insert()
+ * --------------------
+ * BEFORE_INSERT
+ * BEFORE_EDIT
+ * 
+ *	====================
+ *	INSERT - IGNORE
+ * 	--------------------
+ * 	BEFORE_IGNORE
+ * 	AFTER_IGNORE
+ * 	AFTER_EDIT
+ * 	BEFORE_CLOSE
+ * 
+ * 	====================
+ * 	INSERT - CONFIRM
+ * 	--------------------
+ * 	BEFORE_VALIDATE
+ * 	VALIDATE (ANTES DA CONFIRMAÇÃO)
+ * 	VALIDATE (APÓS A CONFIRMAÇÃO)
+ * 	BEFORE_COMMIT
+ * 	AFTER_COMMIT
+ * 	searchList()
+ * 	AFTER_EDIT
+ * 	BEFORE_INSERT
+ * 	BEFORE_EDIT
+ * 
+ * ====================
+ * insertSelected()
+ * --------------------
+ * view();
+ * copy();
+ * insert();
+ * paste();
+ * 
+ * ====================
+ * update()
+ * --------------------
+ * BEFORE_EDIT
+ * 
+ * 	====================
+ * 	UPDATE - IGNORE
+ * 	--------------------
+ * 	BEFORE_IGNORE
+ * 	AFTER_IGNORE
+ * 	AFTER_EDIT
+ * 	searchList()
+ * 	view()
+ *	 
+ * 	====================
+ * 	UPDATE - CONFIRM
+ * 	--------------------
+ * 	BEFORE_VALIDATE
+ * 	VALIDATE (ANTES DA CONFIRMAÇÃO)
+ * 	VALIDATE (APÓS A CONFIRMAÇÃO)
+ * 	BEFORE_COMMIT
+ * 	AFTER_COMMIT
+ * 	searchList()
+ * 	AFTER_EDIT
+ * 	view()
+ * 
+ * ====================
+ * DELETE - IGNORE
+ * --------------------
+ * BEFORE_EDIT
+ * BEFORE_VALIDATE
+ * AFTER_EDIT
+ * view()
+ * 
+ * 	====================
+ * 	DELETE - CONFIRM
+ * 	--------------------
+ * 	BEFORE_EDIT
+ * 	BEFORE_VALIDATE
+ * 	VALIDATE (ANTES DA CONFIRMAÇÃO)
+ * 	VALIDATE (APÓS A CONFIRMAÇÃO)
+ * 	BEFORE_COMMIT
+ * 	AFTER_COMMIT
+ * 	searchList()
+ * 	AFTER_EDIT
+ * 
  */
 public abstract class DBSCrudBean extends DBSBean{
 
@@ -670,7 +785,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	public DBSResultDataModel getList() throws DBSIOException{
 		//Força a criação do resultdatamodel se ainda não existir
 		if (wDAO==null){
-			pvRefreshList();
+			pvSearchList();
 			if (wDAO==null
 			 || wDAO.getResultDataModel() == null){
 				return new DBSResultDataModel();
@@ -1359,7 +1474,7 @@ public abstract class DBSCrudBean extends DBSBean{
 							if (pvFireEventValidate()
 							 && pvFireEventBeforeCommit()){
 								pvFireEventAfterCommit();
-								pvRefreshList();
+								pvSearchList();
 								pvConfirmEditing(true);
 							}else{
 								pvConfirmEditing(false);
@@ -1417,7 +1532,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @throws DBSIOException 
 	 */
 	public synchronized String searchList() throws DBSIOException{
-		pvRefreshList();
+		pvSearchList();
 		return DBSFaces.getCurrentView();
 	}
 
@@ -2084,7 +2199,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Atualiza dados da lista e dispara os eventos beforeRefresh e afterRefresh.<br/>
 	 * @throws DBSIOException
 	 */
-	private void pvRefreshList() throws DBSIOException{
+	private void pvSearchList() throws DBSIOException{
 		if (getEditingMode() == EditingMode.UPDATING){
 			ignoreEditing(); 
 		}
@@ -2108,7 +2223,7 @@ public abstract class DBSCrudBean extends DBSBean{
 				if (wEditingStage==EditingStage.IGNORING){
 					setEditingMode(EditingMode.NONE); 
 					pvRestoreValuesOriginal();
-					pvRefreshList();
+					pvSearchList();
 					view();
 				}else{
 					if (pOk){
@@ -2744,7 +2859,6 @@ public abstract class DBSCrudBean extends DBSBean{
 
 	private boolean pvFireEventBeforeClose(){
 		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_CLOSE, getEditingMode());
-
 		try {
 			pvBroadcastEvent(xE, true, true, true);
 		} catch (Exception e) {
@@ -2768,7 +2882,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	private void pvFireEventAfterView(){
 		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.AFTER_VIEW, getEditingMode());
 		//Marca que não houve edição nos campos, para que as configurações iniciais nos campos efetuadas no BeforeView sejam aceita sem ficarem caracterizadas como edição do usuário. 
-
 		setValueChanged(false); 
 
 		try {
@@ -2894,7 +3007,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	 */
 	private boolean pvFireEventBeforeValidate(){
 		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_VALIDATE, getEditingMode());
-		
 		try{
 			/*Faz loop entre todos os registros selecionados quando for:
 			 * .Aprovação e reprovação
@@ -2928,7 +3040,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	 */
 	private boolean pvFireEventValidate(){
 		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.VALIDATE, getEditingMode());
-		
 		try{
 			/*Faz loop entre todos os registros selecionados quando for:
 			 * .Aprovação e reprovação
@@ -3263,7 +3374,7 @@ public abstract class DBSCrudBean extends DBSBean{
 				//Força a atualização do lista antes de exibir
 				if (pEvent.getEvent() == CRUD_EVENT.BEFORE_VIEW
 				 || pEvent.getEvent() == CRUD_EVENT.BEFORE_INSERT){
-					pvRefreshList();
+					pvSearchList();
 				}
 				switch (pEvent.getEvent()) {
 				case INITIALIZE:
