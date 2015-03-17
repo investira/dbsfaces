@@ -2077,7 +2077,7 @@ public abstract class DBSCrudBean extends DBSBean{
 			if (pEvent.isOk()){
 				//Insert
 				if(getIsInserting()){
-					//Zera o valor da coluna que for PK e autoincremente para forçar que o número gera gerado automaticamente pelo banco
+					//Zera o valor da coluna que for PK e autoincremente para forçar que o número seja gerado automaticamente pelo banco
 					if (wDAO.isAutoIncrementPK()){
 						wDAO.setValue(wDAO.getPK(), null);
 					}
