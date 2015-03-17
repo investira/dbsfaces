@@ -1077,9 +1077,10 @@ public abstract class DBSCrudBean extends DBSBean{
 	public void setUserId(Integer pUserId) {wUserId = pUserId;}
 
 	/**
-	 * CrudBean Pai, caso este crud estar destro de outro crud.
-	 * Neste caso, a conexão e as trasnsações são herdadas automaticamente do crud pai.
-	 * O commit ou rollback só efetuado do primeiro crud pai.
+	 * Define o CrudBean que é pai deste, como é comum nos cruds dentro de crud.<br/>
+	 * Neste caso, a conexão e as transações são herdadas automaticamente do crud pai.<br/>
+	 * O <i>commit</i> ou <i>rollback</i> só serão efetuados no primeiro crud pai. 
+	 * Desta forma, qualquer edição do crud filho, dependerá da confirmação no crud pai.
 	 * @param pCrudBean
 	 */
 	public void setParentCrudBean(DBSCrudBean pCrudBean) {
@@ -1090,9 +1091,10 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 
 	/**
-	 * CrudBean Pai, caso este crud estar destro de outro crud.
-	 * Neste caso, a conexão e as trasnsações são herdadas automaticamente do crud pai.
-	 * O commit ou rollback só efetuado do primeiro crud pai.
+	 * Define o CrudBean que é pai deste, como é comum nos cruds dentro de crud.<br/>
+	 * Neste caso, a conexão e as transações são herdadas automaticamente do crud pai.<br/>
+	 * O <i>commit</i> ou <i>rollback</i> só serão efetuados no primeiro crud pai. 
+	 * Desta forma, qualquer edição do crud filho, dependerá da confirmação no crud pai.
 	 * @param pCrudBean
 	 */
 	public DBSCrudBean getParentCrudBean() {
@@ -1101,10 +1103,10 @@ public abstract class DBSCrudBean extends DBSBean{
 
 
 	/**
-	 * Lista de CrudBean dentro deste crud.
-	 * O refreshList, beforeView e o afterView dos CrudBean fihos serão chamados automaticamente caso 
-	 * o beforeView e afterview deste crudBean seja disparado.<br>
-	 * Permitindo que os crud filhos atualizem seus dados em função da posição atual deste crud.
+	 * Lista de CrudBean filhos deste crud.<br/>
+	 * O <i>refreshList</i> dos CrudBean filhos serão disparados caso 
+	 * o <i>beforeView</i> e <i>before_insert</i> deste crudBean seja disparado.<br>
+	 * Permitindo que os cruds filhos atualizem seus dados em função da posição atual deste crud.
 	 * @return
 	 */
 	public List<DBSCrudBean> getChildrenCrudBean() {
@@ -2895,14 +2897,17 @@ public abstract class DBSCrudBean extends DBSBean{
 	private boolean pvFireEventBeforeInsert() throws DBSIOException{
 		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_INSERT, getEditingMode());
 		
-		//Seta para posição inicial onse será efetuado os insert
 		openConnection();
 		
+		//Seta para posição inicial onde será efetuado o insert
 		pvMoveBeforeFistRow();
+		
+		closeConnection();
+
 //		pvBeforeInsertResetValues(wCrudForm);
 
 		try {
-			pvBroadcastEvent(xE, true, false, false);
+			pvBroadcastEvent(xE, true, true, true);
 		} catch (Exception e) {
 			xE.setOk(false);
 			wLogger.error("EventBeforeInsert",e);
@@ -3368,13 +3373,23 @@ public abstract class DBSCrudBean extends DBSBean{
 		}		
 	}
 
+	/**
+	 * Dispara o evento nos beans vinculados a este bean 
+	 * @param pEvent
+	 * @throws DBSIOException
+	 */
 	private void pvFireEventChildren(DBSCrudBeanEvent pEvent) throws DBSIOException{
 		if (pEvent.isOk()){
+			//Busca por beans vinculados e este bean
 			for (DBSCrudBean xBean:wChildrenCrudBean){
-				//Força a atualização do lista antes de exibir
+				/* O refreshList dos CrudBean filhos serão disparados caso 
+				 * o beforeView e before_insert deste crudBean seja disparado.<br>
+				 * Permitindo que os cruds filhos atualizem seus dados em função da posição atual deste crud.
+				 */
 				if (pEvent.getEvent() == CRUD_EVENT.BEFORE_VIEW
 				 || pEvent.getEvent() == CRUD_EVENT.BEFORE_INSERT){
-					pvSearchList();
+					//Atualiza conteúdo do filho
+					xBean.searchList();
 				}
 				switch (pEvent.getEvent()) {
 				case INITIALIZE:
