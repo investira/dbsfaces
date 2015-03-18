@@ -49,8 +49,9 @@
 	padding-top: 6px;
 	padding-left: 8px;
 	padding-right: 10px;
-	border-top-width:1px;
-	border-bottom-width:0px;
+/* 	border-top-width:1px; */
+/* 	border-bottom-width:0px; */
+	border:none;
 	border-radius: 6px 6px 0px 0px;
 	border-color: transparent;
 	line-height:100%;
@@ -60,16 +61,17 @@
 .dbs_menu > li,  
 .dbs_menu > li > ul, 
 .dbs_submenu{
-	border-left-width:1px;
-	border-right-width:1px;
-	border-style:solid;
+/* 	border-left-width:1px; */
+/* 	border-right-width:1px; */
+/* 	border-style:solid; */
+	border:none;
 }
 
 .dbs_menu > li ul, 
 .dbs_submenu,
 .dbs_menu > li:not(.-disabled):HOVER, 
 .dbs_menu > li:not(.-disabled):FOCUS{
-	border-color: rgba(0,0,0,0.4);
+/* 	border-color: rgba(150,150,150,.6); */
 }
 
 /* Itens filhos do menu principal(HORIZONTAL) e submenus*/
@@ -86,12 +88,12 @@
 .dbs_menu > li > ul {
 	padding:2px 5px 4px 5px;
 	position:absolute;
-	border-top-width:0px;
-	border-bottom-width:1px;
+/* 	border-top-width:0px; */
+/* 	border-bottom-width:1px; */
 	-webkit-border-radius: 0px 0px 6px 6px;  
 	-moz-border-radius: 0px 0px 6px 6px; 
 	border-radius: 0px 0px 6px 6px;
-	margin-left: -9px;
+	margin-left: -8px;
 	margin-top: 8px;
 	
 	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjMiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjIiLz4KICA8L2xpbmVhckdyYWRpZW50PgogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9InVybCgjZ3JhZC11Y2dnLWdlbmVyYXRlZCkiIC8+Cjwvc3ZnPg==);
@@ -119,7 +121,7 @@
 	position:absolute !important;
 	float:none;
 	top:-5px;
-	border-width:1px;
+/* 	border-width:1px; */
 	-webkit-border-radius: 6px;  
 	-moz-border-radius: 6px; 
 	border-radius: 6px;
