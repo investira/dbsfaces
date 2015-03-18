@@ -976,6 +976,38 @@ td > .dbs_icon{
 .-i_compus { background-position: -4049px -0px; }
 .-i_sharing { background-position: -4065px -0px; }
 
+.-i_pesquisar {background-position: -1409px -0px;}
+.-i_ok {background-position: -289px -0px !important;}
+.-i_cancelar {background-position: -353px -0px !important;}
+.-i_ignorar {background-position: -2833px -0px !important;}
+.-i_inserir {background-position: -17px -0px !important;}
+.-i_editar {background-position: -1137px -0px !important;}
+.-i_excluir {background-position: -673px -0px !important;}
+
+.-i_approval_approve {background-position: -2401px -0px !important;}
+.-i_approval_verify {background-position: -3505px -0px !important;}
+.-i_approval_confer {background-position: -3521px -0px !important;}
+.-i_approval_reprove {background-position: -2417px -0px !important;}
+
+.-i_approval_aproved {background-position: -241px -0px !important;}
+.-i_approval_verified {background-position: -3489px -0px !important;}
+.-i_approval_conferred {background-position: -3473px -0px !important;}
+.-i_approval_registered {background-position: -3457px -0px !important;}
+.-i_relatorio {background-position: -2977px -0px !important;}
+
+.-i_move_primeiro {background-position: -3393px -0px !important;}
+.-i_move_anterior {background-position: -945px -0px !important;}
+.-i_move_proximo {background-position: -1009px -0px !important;}
+.-i_move_ultimo {background-position: -3409px -0px !important;}
+.-i_sim {background-position: -273px -0px !important;}
+.-i_nao {background-position: -337px -0px !important;}
+.-i_copiar {background-position: -305px -0px !important;}
+.-i_colar {background-position: -2849px -0px !important;}
+
+.-i_imprimir {background-position: -1201px -0px !important;}
+.-i_imprimir_filtro {background-position: -1185px -0px !important;}
+.-i_imprimir_visualizar {background-position: -2961px -0px !important;}
+
 .runningGear {
 	background-image: url("#{request.contextPath}/images/gear16.gif") !important;
 	background-repeat: no-repeat;
