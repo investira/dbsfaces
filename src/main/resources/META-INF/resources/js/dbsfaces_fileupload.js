@@ -147,6 +147,7 @@ dbs_fileUpload = function(pId, pFileUploadServlet) {
  		if (readyState == 4 && status != '200' && statusText) {
  			showMessageError(statusText);
  		}
+ 		console.log("UPLOAD READY STATE CHANGE");
 	};
 
 	function showMessage(pMessage) {
