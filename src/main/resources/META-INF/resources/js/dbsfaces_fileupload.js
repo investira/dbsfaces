@@ -62,10 +62,12 @@ dbs_fileUpload = function(pId, pFileUploadServlet) {
 		wXHR.open("POST", pFileUploadServlet, true);
 		reset();
 		$(pId).trigger("cancel");
+		console.log("UPLOAD CANCEL");
 
 	};
 	
 	function reset() {
+		console.log("UPLOAD RESET");
 		wBtCancel.children('.-progress').remove();
 		wFile.get(0).value = "";
 		wBtStart.show();
@@ -73,6 +75,7 @@ dbs_fileUpload = function(pId, pFileUploadServlet) {
 	};
 	
 	function onloadstartHandler(evt) {
+		console.log("UPLOAD START");
 	};
 	
 	function onloadHandler(evt) {
@@ -97,13 +100,14 @@ dbs_fileUpload = function(pId, pFileUploadServlet) {
 		showMessage(xMsg);
 		reset();
 		$(pId).trigger("load");
-
+		console.log("UPLOAD LOAD");
 	};
 	
 	function ontimeout(evt) {
 		showMessageError("Erro de timeout");
 		reset();
 		$(pId).trigger("timeout");
+		console.log("UPLOAD TIMEOUT");
 	};
 
 	function onprogressHandler(evt) {
@@ -115,12 +119,14 @@ dbs_fileUpload = function(pId, pFileUploadServlet) {
 		showMessageError("Erro na transmissão");
 		reset();
 		$(pId).trigger("error");
+		console.log("UPLOAD ERROR");
 	};
 
 	function onabort(evt) {
 		showMessageError("Transferencia interrompida");
 		reset();
 		$(pId).trigger("abort");
+		console.log("UPLOAD ABORT");
 	};
 
 	function onreadystatechangeHandler(evt) {
