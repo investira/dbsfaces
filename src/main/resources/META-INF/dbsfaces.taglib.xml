@@ -3048,37 +3048,6 @@
 		</attribute>
 	</tag>
 	<tag>
-		<tag-name>tooltip</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.tooltip</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
-                Id da subview que será utilizado como namecontainer.
-            </description>
-			<name>id</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                Class CSS que será utilizado com style
-            </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                Adiciona style 
-            </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-	</tag>
-	<tag>
 		<tag-name>setAttributeOnParent</tag-name>
 		<handler-class>br.com.dbsoft.ui.component.setAttribute.DBSSetAttributeOnParent</handler-class>
 		<attribute>
