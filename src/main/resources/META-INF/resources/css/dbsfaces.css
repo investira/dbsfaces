@@ -14,7 +14,7 @@ input::-ms-clear {
 /* Classes de elementos HTML */
 html,body,button,div,table,input,select,tbody {
 	font-family: Verdana, Arial, Helvetica, sans-serif !important;
-	text-rendering: optimizeLegibility !important;
+/* 	text-rendering: optimizeLegibility !important; */
 /* 	-webkit-font-smoothing: antialiased !important; */
 	text-decoration: none !important;
 	outline-style: none !important;
