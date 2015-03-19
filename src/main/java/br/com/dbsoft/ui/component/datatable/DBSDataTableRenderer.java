@@ -75,7 +75,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 				DBSFaces.setAttribute(xWriter, "style", xStyle, null);
 			}
 
-//			encodeClientBehaviors(pContext, xDataTable);
+			encodeClientBehaviors(pContext, xDataTable);
 			//CSS
 			pvEncodeCSS(xDataTable, xWriter, xClientId);
 			xWriter.startElement("div", xDataTable);
@@ -317,7 +317,6 @@ public class DBSDataTableRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(pWriter, "class", "-foo", null);
 			DBSFaces.setAttribute(pWriter, "autocomplete", "off", null);
 			DBSFaces.setAttribute(pWriter, "value", pDataTable.getCurrentRowIndex(), null);
-			encodeClientBehaviors(pContext, pDataTable);
 		pWriter.endElement("input");
 	}
 
