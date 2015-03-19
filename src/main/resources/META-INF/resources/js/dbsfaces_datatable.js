@@ -1,29 +1,29 @@
 dbs_dataTable = function(pId) {
-	var xH = 0;
-	var xW = 15;
-	var xTable = pId + " > .-container > .-content > table ";
-    var xRow = $(xTable + " > tbody > tr:first");
-    var xSelectedRow;
+	var wH = 0;
+	var wW = 15;
+	var wTable = pId + " > .-container > .-content > table ";
+    var wRow = $(wTable + " > tbody > tr:first");
+    var wSelectedRow;
 
-	xW = xW + $(pId + " > .-container > .-header > .-filter > .-input").outerWidth();
-	xW = xW + $(pId + " > .-container > .-header > .-filter > .-button").outerWidth();
+	wW = wW + $(pId + " > .-container > .-header > .-filter > .-input").outerWidth();
+	wW = wW + $(pId + " > .-container > .-header > .-filter > .-button").outerWidth();
+	
+	$(pId).css("min-width", wW + "px");
 
-	$(pId).css("min-width", xW + "px");
+	wW = wRow.outerWidth() + 2;
+	wW = wW - wRow.children(".-CX").outerWidth();
+//	$(wTable + " > tbody").css("min-width", wW);
+//	$(wTable + " > thead").css("min-width", wW);
+//	$(wTable + " > thead > tr").css("min-width", wW);
 
-	xW = xRow.outerWidth() + 2;
-	xW = xW - xRow.children(".-CX").outerWidth();
-//	$(xTable + " > tbody").css("min-width", xW);
-//	$(xTable + " > thead").css("min-width", xW);
-//	$(xTable + " > thead > tr").css("min-width", xW);
+	wH = $(pId + " > .-container > .-header").outerHeight();
+	$(pId + " > .-container > .-content").css("margin-top", "-" + wH + "px")
+	                                     .css("padding-top", wH + "px");
 
-	xH = $(pId + " > .-container > .-header").outerHeight();
-	$(pId + " > .-container > .-content").css("margin-top", "-" + xH + "px")
-	                                     .css("padding-top", xH + "px");
-
-	dbsfaces.dataTable.showOverflowShadow($(xTable));
+	dbsfaces.dataTable.showOverflowShadow($(wTable));
 	dbsfaces.dataTable.positionOnSelectedRow(pId);
 	
-	$(xTable).scroll(function(){
+	$(wTable).scroll(function(){
 		dbsfaces.dataTable.showOverflowShadow($(this));
 	});
 	
@@ -32,26 +32,29 @@ dbs_dataTable = function(pId) {
 	}
 
 	var xMousemove = function(e){
-		var xTable = pId + " > .-container > .-content > table ";
 		$(this).off("mousemove");
-		$(xTable + " > tbody > tr").off('mouseover.datatable') 
+		$(wTable + " > tbody > tr").off('mouseover.datatable') 
 								   .on('mouseover.datatable', xMouseover); 
 	}
 
 	/*hover*/
-	$(xTable + " > tbody > tr").off('mouseover.datatable') 
+	$(wTable + " > tbody > tr").off('mouseover.datatable') 
 							   .on('mouseover.datatable', xMouseover);
 
 	$(pId).mouseout(function(e){
 		dbsfaces.dataTable.rowFocusRemove(pId);
 	})
 
-	$(xTable + " > tbody > tr").focusin(function(e){
-		dbsfaces.dataTable.rowSelect(pId, this);
+	$(wTable + " > tbody > tr").focusin(function(e){
+		//Somente seleciona se for diferente do selecionado anteriormente
+		if (this != wSelectedRow){
+			wSelectedRow = this;
+			dbsfaces.dataTable.rowSelect(pId, this);
+		}
 	});
 	
 	/*Força o foco no click*/
-	$(xTable + " > tbody > tr").click(function(e){
+	$(wTable + " > tbody > tr").click(function(e){
 		//Se click foi em campo de input, não precisa forçar o foco no input-foo, para não dar problema na edição diretamente no grid
 		if ($(e.target).hasClass("dbs_input-data:not(.-readOnly)")
 		 || $(e.target).is("input:not(.-readOnly)")){
@@ -61,15 +64,15 @@ dbs_dataTable = function(pId) {
 			$(pId + " > .-container > input.-foo").focus().click();
 		}
 		//Somente seleciona se for diferente do selecionado anteriormente
-		if (this != xSelectedRow){
-			xSelectedRow = this;
+		if (this != wSelectedRow){
+			wSelectedRow = this;
 			dbsfaces.dataTable.rowSelect(pId, this);
 		}
 //		e.preventDefault();
 	});
 	
 	/*Executa o click na linha */
-	$(xTable + " > tbody > tr").dblclick(function (e){
+	$(wTable + " > tbody > tr").dblclick(function (e){
 		//ignora execução padrão do dblclick e marca a linha
 		if (!$(pId).hasClass(".noDialogEdit")){
 			var xB = $(this).find("td > .-selectOne");
@@ -94,15 +97,22 @@ dbs_dataTable = function(pId) {
 	});
 	
 	$(pId + " > .-container > input.-foo").on("select", function(e){
+//		e.stopImmediatePropagation(); 
 		return false;
 	});
 	
+	//Click no botão pesquisar
+	$(pId + " > .-container > .-header > .-filter > .-button > .dbs_button").on("click", function(e){
+		//Reste da linha selecionada anteriormente
+		wSelectedRow = null;
+		dbsfaces.dataTable.rowSelect(pId, wSelectedRow);
+	});
+
 	$(pId + " > .-container > input.-foo").keydown(function(e){
 		if(e.keyCode==40 || //DOWN
 		   e.keyCode==38){  //UP
-			var xTable = pId + " > .-container > .-content > table ";
 			dbsfaces.dataTable.moveToNextOrPreviousRow(pId, e.keyCode);
-			var xRow = $(xTable + " > tbody > tr");
+			var xRow = $(wTable + " > tbody > tr");
 			var xTBody = xRow.parent();
 			xRow.off("mouseover.datatable");
 			xTBody.off('mousemove.datatable');
@@ -112,8 +122,7 @@ dbs_dataTable = function(pId) {
 	});  
 	
 	$(pId + " > .-container > input.-foo").focusin(function(e){
-		var xTable = pId + " > .-container > .-content > table ";
-		var xE = $(xTable + " > tbody > tr.-selected");
+		var xE = $(wTable + " > tbody > tr.-selected");
 		//Exibe foco do cabeçalho das colunas
 		dbsfaces.dataTable.headFocusAdd(pId);
 		e.stopPropagation();
@@ -155,16 +164,19 @@ dbsfaces.dataTable = {
 		
 	rowSelect: function(pId, pNew){
 		dbsfaces.dataTable.rowFocusRemove(pId);
-		var xRowIndex = $(pNew).attr("index");
-		//Valor de fato que será utilizado no submit
-		$(pId + " > .-container > input.-foo").val(xRowIndex);
-		//Sincroniza atributo value com o value interno do componente
-		$(pId + " > .-container > input.-foo").attr("value", xRowIndex);
 		dbsfaces.dataTable.rowDeselect(pId);
-		$(pNew).addClass("-selected");
+		if (pNew != null){
+			var xRowIndex = $(pNew).attr("index");
+			//Valor de fato que será utilizado no submit
+			$(pId + " > .-container > input.-foo").val(xRowIndex);
+			//Sincroniza atributo value com o value interno do componente
+			$(pId + " > .-container > input.-foo").attr("value", xRowIndex);
+			$(pNew).addClass("-selected");
+		}
+		//Precisa ser o mesmo componente onde está o encodeBehavior
 		$(pId).trigger(dbsfaces.EVENT.ON_ROW_SELECTED, pNew);
 //		$(pId).trigger("select.datatable");
-		$(pId + " > .-container > input.-foo").select();
+//		$(pId + " > .-container > input.-foo").select();
 	},
 
 	rowDeselect: function(pId){
