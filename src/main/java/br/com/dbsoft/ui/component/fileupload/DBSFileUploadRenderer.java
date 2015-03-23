@@ -86,43 +86,40 @@ public class DBSFileUploadRenderer extends DBSRenderer {
 
 	private void pvEncodeToolbar(FacesContext pContext, DBSFileUpload pFileUpload, ResponseWriter pWriter) throws IOException{
 		//cria botão START ----------------
-//		DBSButton xButtonStart = (DBSButton) pFileUpload.getFacet("btStart");
-//		if (xButtonStart == null){
-//			xButtonStart = (DBSButton) FacesContext.getCurrentInstance().getApplication().createComponent(DBSButton.COMPONENT_TYPE);
-//		}
-
-		
-		DBSButton xButtonStart = (DBSButton) FacesContext.getCurrentInstance().getApplication().createComponent(DBSButton.COMPONENT_TYPE);
-		xButtonStart.setId("btStart");
-		xButtonStart.setIconClass(DBSFaces.CSS.ICON + " -i_upload");
-//		xButtonStart.setonclick("dbsfaces.fileUpload.select(this)");
-		xButtonStart.setonclick("return false;");
-		xButtonStart.setTransient(true);
-		if (DBSObject.isEmpty(pFileUpload.getTooltip())) {
-			xButtonStart.setTooltip("Upload de arquivo");
-		} else {
-			xButtonStart.setTooltip(pFileUpload.getTooltip());
+		DBSButton xButtonStart = (DBSButton) pFileUpload.getFacet("btStart");
+		if (xButtonStart == null){
+			xButtonStart = (DBSButton) FacesContext.getCurrentInstance().getApplication().createComponent(DBSButton.COMPONENT_TYPE);
+			xButtonStart.setId("btStart");
+			xButtonStart.setIconClass(DBSFaces.CSS.ICON + " -i_upload");
+//			xButtonStart.setonclick("dbsfaces.fileUpload.select(this)");
+			xButtonStart.setonclick("return false;");
+			if (DBSObject.isEmpty(pFileUpload.getTooltip())) {
+				xButtonStart.setTooltip("Upload de arquivo");
+			} else {
+				xButtonStart.setTooltip(pFileUpload.getTooltip());
+			}
+			if (DBSObject.isEmpty(pFileUpload.getFileUploadServletPath())){
+				xButtonStart.setReadOnly(true);
+			}
 		}
-		if (DBSObject.isEmpty(pFileUpload.getFileUploadServletPath())){
-			xButtonStart.setReadOnly(true);
-		}
-		pFileUpload.getChildren().add(xButtonStart);
 
 		//cria botão CANCEL ----------------
-		DBSButton xButtonCancel = (DBSButton) FacesContext.getCurrentInstance().getApplication().createComponent(DBSButton.COMPONENT_TYPE);
-		xButtonCancel.setId("btCancel");
-		xButtonCancel.setIconClass(DBSFaces.CSS.ICON + " -i_bullet_blue");
-		xButtonCancel.setStyle("display:none;");
-//		xButtonCancel.setonclick("dbsfaces.fileUpload.cancel()");
-		xButtonCancel.setonclick("return false;");
-		xButtonCancel.setTransient(true);
-		xButtonCancel.setTooltip("Cancelar upload");
-		if (DBSObject.isEmpty(pFileUpload.getFileUploadServletPath())){
-			xButtonCancel.setReadOnly(true);
+		DBSButton xButtonCancel = (DBSButton) pFileUpload.getFacet("btCancel");
+		if (xButtonCancel == null){
+			xButtonCancel = (DBSButton) FacesContext.getCurrentInstance().getApplication().createComponent(DBSButton.COMPONENT_TYPE);
+			xButtonCancel.setId("btCancel");
+			xButtonCancel.setIconClass(DBSFaces.CSS.ICON + " -i_bullet_blue");
+			xButtonCancel.setStyle("display:none;");
+	//		xButtonCancel.setonclick("dbsfaces.fileUpload.cancel()");
+			xButtonCancel.setonclick("return false;");
+			xButtonCancel.setTransient(true);
+			xButtonCancel.setTooltip("Cancelar upload");
+			if (DBSObject.isEmpty(pFileUpload.getFileUploadServletPath())){
+				xButtonCancel.setReadOnly(true);
+			}
+			//Adiciona como filho para gerar o id corretamente
+			pFileUpload.getFacets().put("btCancel", xButtonCancel);
 		}
-		//Adiciona como filho para gerar o id corretamente
-		pFileUpload.getChildren().add(xButtonCancel);
-
 		//Encode do toolbar
 		pWriter.startElement("div", pFileUpload);
 			pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.TOOLBAR, null);
