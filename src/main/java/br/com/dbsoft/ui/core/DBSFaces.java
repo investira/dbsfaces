@@ -1227,7 +1227,7 @@ public class  DBSFaces {
 		//Não Ajax
 		}else{
 			if (DBSObject.isEmpty(pExecute)){
-				System.out.println("Form/Execute não definido para o componente " + pComponent.getClientId()  + "!");
+//				System.out.println("Form/Execute não definido para o componente " + pComponent.getClientId()  + "!");
 			}else if (DBSObject.isEmpty(xLocalOnClick)){
 				xLocalOnClick = "mojarra.jsfcljs(document.getElementById('" + pExecute + "'),{'"+ pComponent.getClientId() + "':'"+ pComponent.getClientId() + "'},'');return false;";
 			}

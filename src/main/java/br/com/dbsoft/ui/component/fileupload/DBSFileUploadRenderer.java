@@ -92,7 +92,8 @@ public class DBSFileUploadRenderer extends DBSRenderer {
 			xButtonStart.setId("btStart");
 			xButtonStart.setIconClass(DBSFaces.CSS.ICON + " -i_upload");
 //			xButtonStart.setonclick("dbsfaces.fileUpload.select(this)");
-			xButtonStart.setonclick("return false;");
+//			xButtonStart.setonclick("return false;");
+			xButtonStart.setTransient(true);
 			if (DBSObject.isEmpty(pFileUpload.getTooltip())) {
 				xButtonStart.setTooltip("Upload de arquivo");
 			} else {
@@ -111,7 +112,7 @@ public class DBSFileUploadRenderer extends DBSRenderer {
 			xButtonCancel.setIconClass(DBSFaces.CSS.ICON + " -i_bullet_blue");
 			xButtonCancel.setStyle("display:none;");
 	//		xButtonCancel.setonclick("dbsfaces.fileUpload.cancel()");
-			xButtonCancel.setonclick("return false;");
+//			xButtonCancel.setonclick("return false;");
 			xButtonCancel.setTransient(true);
 			xButtonCancel.setTooltip("Cancelar upload");
 			if (DBSObject.isEmpty(pFileUpload.getFileUploadServletPath())){
