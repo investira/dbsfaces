@@ -39,7 +39,7 @@
 	width: 100%;
 	text-align: center;
 	background-color: rgba(255,255,255,.1);
-	background-image: url("#{request.contextPath}/images/default_back_texture.png");
+	background-image: url("#{request.contextPath}/images/back_texture_white.png");
 	background-repeat: repeat;
 	
 /* 	background: rgb(255,255,255); Old browsers */

@@ -23,7 +23,7 @@
 .dbs_chartValue > .-extrainfo > span{
 	display: none; 
 	position: absolute;
-	background-image: url("#{request.contextPath}/images/default_back_texture.png");
+	background-image: url("#{request.contextPath}/images/back_texture_white.png");
 	background-color: rgb(210, 210, 210);
 	color: white;
 	background-repeat: repeat;
