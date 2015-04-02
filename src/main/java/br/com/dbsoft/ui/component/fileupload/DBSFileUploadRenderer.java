@@ -129,7 +129,7 @@ public class DBSFileUploadRenderer extends DBSRenderer {
 		pWriter.endElement("div");
 	}
 
-	private void pvEncodeInput(FacesContext pContext, DBSFileUpload pFileUpload, ResponseWriter pWriter) throws IOException{
+	private void pvEncodeInput(@SuppressWarnings("unused") FacesContext pContext, DBSFileUpload pFileUpload, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("input", pFileUpload);
 		 	pWriter.writeAttribute("id", pFileUpload.getClientId() + DBSFaces.CSS.MODIFIER.INPUT.trim(), null);
 			pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.INPUT, null);
@@ -149,7 +149,7 @@ public class DBSFileUploadRenderer extends DBSRenderer {
 	
 	private void pvEncodeMessage(DBSFileUpload pFileUpload, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("div", pFileUpload);
-			pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.MESSAGE + " dbs_back_gradient_white_texture", null);
+			pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.MESSAGE + " dbs_back_texture_white_gradient", null);
 			pWriter.writeAttribute("style", "display:none;", null);
 		pWriter.endElement("div");
 	}
