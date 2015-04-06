@@ -159,9 +159,9 @@ public class  DBSFaces {
 		public static final String WINDOW_CENTER = DBSFaces.CSS.CLASS_PREFIX +  "window_center ";
 		public static final String CHILD_CENTER = DBSFaces.CSS.CLASS_PREFIX +  "child_center ";
 		public static final String NOT_SELECTABLE = DBSFaces.CSS.CLASS_PREFIX +  "not_selectable ";
-		public static final String BACK = DBSFaces.CSS.CLASS_PREFIX +  "back ";
-		public static final String BACK_GRADIENT = DBSFaces.CSS.CLASS_PREFIX +  "back_gradient ";
-		public static final String BACK_GRADIENT_TRANSPARENT = DBSFaces.CSS.CLASS_PREFIX +  "back_gradient_transparent ";
+		public static final String BACK_TEXTURE_BLACK = DBSFaces.CSS.CLASS_PREFIX +  "back_texture_black ";
+		public static final String BACK_TEXTURE_BLACK_TRANSPARENT_GRADIENT = DBSFaces.CSS.CLASS_PREFIX +  "back_texture_black_transparent_gradient ";
+		public static final String BACK_TEXTURE_BLACK_GRADIENT = DBSFaces.CSS.CLASS_PREFIX +  "back_texture_black_gradient ";
 		public static final String BACK_GRADIENT_WHITE = DBSFaces.CSS.CLASS_PREFIX +  "back_gradient_white ";
 		public static final String PARENT_FILL = DBSFaces.CSS.CLASS_PREFIX +  "parent_fill ";
 		public static final String ICON = DBSFaces.CSS.CLASS_PREFIX +  "icon ";

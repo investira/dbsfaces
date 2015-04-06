@@ -78,7 +78,7 @@ public class DBSDialogRenderer extends DBSRenderer {
 				//CAPTION 
 				if (xCaption!=null){
 					xWriter.startElement("div", xDialog);
-						xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CAPTION + " " + DBSFaces.CSS.BACK_GRADIENT, null);
+						xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CAPTION + " " + DBSFaces.CSS.BACK_TEXTURE_BLACK_GRADIENT, null);
 						xWriter.startElement("div", xDialog);
 							xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.LABEL, null);
 							xWriter.startElement("span", xDialog);
@@ -101,7 +101,7 @@ public class DBSDialogRenderer extends DBSRenderer {
 						xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT + DBSFaces.CSS.BACK_GRADIENT_WHITE, null);
 						renderChildren(pContext, xDialog);
 					}else{
-						xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT + DBSFaces.CSS.MODIFIER.MESSAGE + DBSFaces.CSS.BACK_GRADIENT_TRANSPARENT, null);
+						xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT + DBSFaces.CSS.MODIFIER.MESSAGE + DBSFaces.CSS.BACK_TEXTURE_BLACK_GRADIENT, null);
 						if (xDialog.getMessageIcon().equals(DIALOG_ICON.INFORMACAO.toString())){
 							xMsgIcon = "-il_informacao";
 						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.ATENCAO.toString())){
