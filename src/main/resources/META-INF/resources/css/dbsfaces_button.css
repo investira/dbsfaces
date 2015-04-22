@@ -8,10 +8,7 @@
 	-moz-border-radius:4px; 
 	border-radius:4px;
 	margin: 0px;
-	padding-bottom: 0px !important;
-	padding-left: 2px !important;
-	padding-right: 2px !important;
-	padding-top: 0px !important;
+	padding: 0px 1px !important;
 	border-width: 0px !important;
 	border-style:none !important;
 	-moz-box-sizing: border-box !important;
@@ -81,8 +78,8 @@
 	font-size: inherit;
 }
 .dbs_button > table > tbody > tr > td > .-icon {
-	padding: 0px;
-	margin: 0 -1px 1px 0 !important;
+	padding: 0px !important;
+	margin: 0px !important;
 }
 
 .dbs_button:not(.-disabled):ACTIVE, 

@@ -65,6 +65,9 @@
 	xfilter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#66ffffff', endColorstr='#00ffffff',GradientType=0 ), url("#{request.contextPath}/images/back_texture_black.png"); /* IE6-8 */
 }	
 
+.dbs_tab > .-container > ul > li:not(.-selected) .dbs_icon{
+	background-position-y: -16px;
+}
 
 .dbs_tab > .-container > ul > li.-selected{
 	border-top: 1px;

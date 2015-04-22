@@ -7,14 +7,14 @@ dbs_messageList = function(pId) {
 	}
 	
 
-	$(pId + " > .-container > .-list > .-content > .-message > .-container > .-button > .dbs_button > .-i_excluir").click(function(e){
+	$(pId + " > .-container > .-list > .-content > .-message > .-container > .-button > .dbs_button > .-i_delete").click(function(e){
 		xMouseenter();
 		$(pId).off('mouseleave.messagelist');
 		dbsfaces.messageList.excluir(this);
 	});
 	
 //	Desabilida atualização via push, quando o cursor estiver sobre o botão de exclusão, para evitar que seja excluido outro registro em caso de atualização automática
-	$(pId + " > .-container > .-list > .-content > .-message > .-container > .-button > .dbs_button > .-i_excluir").hover(function(e){
+	$(pId + " > .-container > .-list > .-content > .-message > .-container > .-button > .dbs_button > .-i_delete").hover(function(e){
 		$(this).closest(".dbs_messageList").toggleClass("-pushDisabled");
 	});
 

@@ -212,7 +212,7 @@ svg{
 	filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='18'); 			
 	filter: url("data:image/svg+xml;utf8,<svg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'blur\'><feGaussianBlur stdDeviation=\'18\' ></feGaussianBlur></filter></svg>#blur"); 
 	filter: blur; 
-/* 	-ms-filter : blur(18px); */
+	-ms-filter : blur(18px);
 	-o-filter : blur(18px); 
 	-moz-filter : blur(18px);
 	-webkit-filter: blur(18px); 
@@ -657,27 +657,20 @@ textarea.dbs_input-data:FOCUS,
 	height: 32px !important;
 	padding: 0px !important;
 	background-repeat: no-repeat;
-	background: url("#{request.contextPath}/images/dbs_icons_large.png");
+	background-image: url("#{request.contextPath}/images/dbs_icons_large.png");
+	background-position-y: 0px;
 }
 
-.-il_about {background-position: 0px 0px;}
-.-il_check {background-position: -32px 0px;}
-.-il_error {background-position: -64px 0px;}
-.-il_forbidden {background-position: -96px 0px;}
-.-il_help {background-position: -128px 0px;}
-.-il_help2 {background-position: -160px 0px;}
-.-il_information {background-position: -192px 0px;}
-.-il_warning {background-position: -224px 0px;}
-.-il_atencao {background-position: -224px 0px;}
-.-il_confirmar {background-position: -128px 0px;}
-.-il_erro {background-position: -64px 0px;}
-.-il_ignorar {background-position: -160px 0px;}
-.-il_informacao {background-position: -192px 0px;}
-.-il_proibido {background-position: -96px 0px;}
-.-il_sobre {background-position: -0px 0px;}
-.-il_sucesso {background-position: -32px 0px;}
-.-il_important {background-position: -256px 0px;}
-.-il_importante {background-position: -256px 0px;}
+.-il_empty {background-position-x: 0px;}
+.-il_yes {background-position-x: -32px;}
+.-il_about {background-position-x: -64px;}
+.-il_information {background-position-x: -96px;}
+.-il_warning {background-position-x: -128px;}
+.-il_important {background-position-x: -160px;}
+.-il_error {background-position-x: -192px;}
+.-il_question_confirm {background-position-x: -224px;}
+.-il_question_ignore {background-position-x: -256px;}
+.-il_forbidden {background-position-x: -288px;}
 
 .dbs_iconsmall {
 	display: inline-block;
@@ -685,24 +678,36 @@ textarea.dbs_input-data:FOCUS,
 	height: 11px !important;
 	padding: 0px !important;
 	background-repeat: no-repeat;
-	background: url("#{request.contextPath}/images/dbs_icons_small.png");
+	background-image: url("#{request.contextPath}/images/dbs_icons_small.png");
+	background-position-y: 0px; 
 }
 
-.-is_menuitem_plus {background-position: 0px 0px;}
-.-is_menuitem_star {background-position: -11px -0px;}
-.-is_tab_iconclose {background-position: -22px -0px;}
-.-is_tab_iconclose_hover {background-position: -33px -0px;}
-.-is_calendar_previous {background-position: -44px -0px;}
-.-is_calendar_next {background-position: -55px -0px;}
-.-is_select_up {background-position: -66px -0px;}
-.-is_select_down {background-position: -77px -0px;}
-.-is_invert_selection {background-position: -88px -0px;}
-.-is_pesquisar {background-position: -99px -0px;}
-.-is_menuitem_minus {background-position: -110px 0px;}
-.-is_unlock {background-position: -121px 0px;}
-.-is_lock {background-position: -132px 0px;}
-.-is_editar {background-position: -143px 0px;}
-.-is_inserir {background-position: -154px 0px;}
+.-is_menuitem_plus {background-position-x: 0px;}
+.-is_menuitem_star {background-position-x: -11px;}
+.-is_tab_iconclose {background-position-x: -22px;}
+.-is_tab_iconclose_hover {background-position-x: -33px;}
+.-is_calendar_previous {background-position-x: -44px;}
+.-is_calendar_next {background-position-x: -55px;}
+.-is_select_up {background-position-x: -66px;}
+.-is_select_down {background-position-x: -77px;}
+.-is_invert_selection {background-position-x: -88px;}
+.-is_pesquisar {background-position-x: -99px;}
+.-is_menuitem_minus {background-position-x: -110px;}
+.-is_unlock {background-position-x: -121px;}
+.-is_lock {background-position-x: -132px;}
+.-is_editar {background-position-x: -143px;}
+.-is_inserir {background-position-x: -154px;}
+
+td > .dbs_icon{
+/* 	margin-bottom: -4px !important; Comentado em 25/abr/2014 Ricardo - ocupava muito espaço para o icone da assinatura*/
+	margin: -4px 0 -4px 0 !important;
+}
+
+/* .dbs_back_texture_black .dbs_icon, */
+/* .dbs_back_texture_black_gradient .dbs_icon, */
+/* .dbs_back_texture_black_transparent_gradient .dbs_icon { */
+/* 	-webkit-filter: invert(1) saturate(0); */
+/* } */
 
 .dbs_icon {
 	display: inline-block;
@@ -711,303 +716,238 @@ textarea.dbs_input-data:FOCUS,
  	margin: 0px !important; /*-4px necessário para retirar um espaço em branco quando imagem está ente td */
 	padding: 0px !important;
 	background-repeat: no-repeat;
-	background: url("#{request.contextPath}/images/dbs_icons.png");
-}
-td > .dbs_icon{
-/* 	margin-bottom: -4px !important; Comentado em 25/abr/2014 Ricardo - ocupava muito espaço para o icone da assinatura*/
-	margin: -4px 0 -4px 0 !important;
+	background-image: url("#{request.contextPath}/images/dbs_icons.png");
+	background-position-y: 0px; 
 }
 
-.-i_message {background-position: 0px 0px;}
-.-i_insert {background-position: -17px -0px;}
-.-i_address_book {background-position: -33px -0px;}
-.-i_alarm {background-position: -49px -0px;}
-.-i_bomb {background-position: -65px -0px;}
-.-i_book {background-position: -81px -0px;}
-.-i_books {background-position: -97px -0px;}
-.-i_branch_element {background-position: -113px -0px;}
-.-i_branch {background-position: -129px -0px;}
-.-i_briefcase {background-position: -145px -0px;}
-.-i_bullet_blue {background-position: -161px -0px;}
-.-i_bullet_green {background-position: -177px -0px;}
-.-i_bullet_red {background-position: -193px -0px;}
-.-i_bullet_yellow {background-position: -209px -0px;}
-.-i_calendar {background-position: -225px -0px;}
-.-i_certificate_green {background-position: -241px -0px;}
-.-i_chart {background-position: -257px -0px;}
-.-i_check {background-position: -273px -0px;}
-.-i_check2 {background-position: -289px -0px;}
-.-i_copy {background-position: -305px -0px;}
-.-i_currency_dolar {background-position: -321px -0px;}
-.-i_delete {background-position: -337px -0px;}
-.-i_delete2 {background-position: -353px -0px;}
-.-i_document_certificate {background-position: -369px -0px;}
-.-i_document_chart {background-position: -385px -0px;}
-.-i_document_check {background-position: -401px -0px;}
-.-i_document_gear {background-position: -417px -0px;}
-.-i_document_pulse {background-position: -433px -0px;}
-.-i_document_time {background-position: -449px -0px;}
-.-i_earth {background-position: -465px -0px;}
-.-i_error {background-position: -481px -0px;}
-.-i_exchange {background-position: -497px -0px;}
-.-i_export {background-position: -513px -0px;}
-.-i_factory {background-position: -529px -0px;}
-.-i_flag_blue {background-position: -545px -0px;}
-.-i_flag_green {background-position: -561px -0px;}
-.-i_flag_red {background-position: -577px -0px;}
-.-i_flag_yellow {background-position: -593px -0px;}
-.-i_flash {background-position: -609px -0px;}
-.-i_folder {background-position: -625px -0px;}
-.-i_forbidden {background-position: -641px -0px;}
-.-i_form_blue {background-position: -657px -0px;}
-.-i_garbage {background-position: -673px -0px;}
-.-i_gauge {background-position: -689px -0px;}
-.-i_gears {background-position: -705px -0px;}
-.-i_goldbars {background-position: -721px -0px;}
-.-i_help {background-position: -737px -0px;}
-.-i_hourglass {background-position: -753px -0px;}
-.-i_import {background-position: -769px -0px;}
-.-i_information {background-position: -785px -0px;}
-.-i_key1 {background-position: -801px -0px;}
-.-i_lock_open {background-position: -817px -0px;}
-.-i_lock {background-position: -833px -0px;}
-.-i_mail_read {background-position: -849px -0px;}
-.-i_chat {background-position: -865px -0px;}
-.-i_chat2 {background-position: -881px -0px;}
-.-i_money {background-position: -897px -0px;}
-.-i_money2 {background-position: -913px -0px;}
-.-i_moneybag {background-position: -929px -0px;}
-.-i_navigate_left {background-position: -945px -0px;}
-.-i_navigate_down {background-position: -961px -0px;}
-.-i_navigate_down2 {background-position: -977px -0px;}
-.-i_navigate_left2 {background-position: -993px -0px;}
-.-i_navigate_right {background-position: -1009px -0px;}
-.-i_navigate_right2 {background-position: -1025px -0px;}
-.-i_navigate_up {background-position: -1041px -0px;}
-.-i_navigate_up2 {background-position: -1057px -0px;}
-.-i_news {background-position: -1073px -0px;}
-.-i_office_building {background-position: -1089px -0px;}
-.-i_package {background-position: -1105px -0px;}
-.-i_paperclip {background-position: -1121px -0px;}
-.-i_pencil {background-position: -1137 -0px;}
-.-i_percent {background-position: -1153px -0px;}
-.-i_pie_chart {background-position: -1169px -0px;}
-.-i_preferences {background-position: -1185px -0px;}
-.-i_printer3 {background-position: -1201px -0px;}
-.-i_refresh {background-position: -1217px -0px;}
-.-i_replace2 {background-position: -1233px -0px;}
-.-i_safe { background-position: -1249px -0px; }
-.-i_star_blue { background-position: -1265px -0px; }
-.-i_stop { background-position: -1281px -0px; }
-.-i_stopwatch { background-position: -1297px -0px; }
-.-i_table_biew { background-position: -1313px -0px; }
-.-i_table { background-position: -1329px -0px; }
-.-i_target { background-position: -1345px -0px; }
-.-i_undo { background-position: -1361px -0px; }
-.-i_user { background-position: -1377px -0px; }
-.-i_users { background-position: -1393px -0px; }
-.-i_view { background-position: -1409px -0px; }
-.-i_warning { background-position: -1425px -0px; }
-.-i_wrench { background-position: -1441px -0px; }
-.-i_zoon_in { background-position: -1457px -0px; }
-.-i_zoon_out { background-position: -1473px -0px; }
-.-i_star_yellow { background-position: -1489px -0px; }
-.-i_calculator { background-position: -1505px -0px; }
-.-i_redo { background-position: -1521px -0px; }
-.-i_find { background-position: -1537px -0px; }
-.-i_box { background-position: -1553px -0px; }
-.-i_box_view { background-position: -1569px -0px; }
-.-i_creditcard { background-position: -1585px -0px; }
-.-i_clients { background-position: -1601px -0px; }
-.-i_cubes { background-position: -1617px -0px; }
-.-i_cut { background-position: -1633px -0px; }
-.-i_data_gear { background-position: -1649px -0px; }
-.-i_data { background-position: -1665px -0px; }
-.-i_doctor { background-position: -1681px -0px; }
-.-i_download { background-position: -1697px -0px; }
-.-i_earth_connection { background-position: -1713px -0px; }
-.-i_earth_delete { background-position: -1729px -0px; }
-.-i_first_aid { background-position: -1745px -0px; }
-.-i_midia_play { background-position: -1761px -0px; }
-.-i_midia_stop { background-position: -1777px -0px; }
-.-i_house { background-position: -1793px -0px; }
-.-i_index { background-position: -1809px -0px; }
-.-i_mda { background-position: -1825px -0px; }
-.-i_notebook { background-position: -1841px -0px; }
-.-i_qa { background-position: -1857px -0px; }
-.-i_app_rendafixa { background-position: -1873px -0px; }
-.-i_auction_hammer { background-position: -1889px -0px; }
-.-i_cabinet { background-position: -1905px -0px; }
-.-i_compass { background-position: -1921px -0px; }
-.-i_component { background-position: -1937px -0px; }
-.-i_document_notebook { background-position: -1953px -0px; }
-.-i_document_exchange { background-position: -1969px -0px; }
-.-i_document_edit { background-position: -1985px -0px; }
-.-i_document_text { background-position: -2001px -0px; }
-.-i_edit { background-position: -2017px -0px; }
-.-i_harddisk { background-position: -2033px -0px; }
-.-i_history { background-position: -2049px -0px; }
-.-i_id_card { background-position: -2065px -0px; }
-.-i_line-chart { background-position: -2081px -0px; }
-.-i_megaphone { background-position: -2097px -0px; }
-.-i_moneybag_dollar { background-position: -2113px -0px; }
-.-i_note { background-position: -2129px -0px; }
-.-i_note_edit { background-position: -2145px -0px; }
-.-i_pie_chart_view { background-position: -2161px -0px; }
-.-i_transform { background-position: -2177px -0px; }
-.-i_businessmen { background-position: -2193px -0px; }
-.-i_bookmark { background-position: -2209px -0px; }
-.-i_chest { background-position: -2225px -0px; }
-.-i_clock { background-position: -2241px -0px; }
-.-i_cube_molecule { background-position: -2257px -0px; }
-.-i_gear { background-position: -2273px -0px; }
-.-i_hammer { background-position: -2289px -0px; }
-.-i_link { background-position: -2305px -0px; }
-.-i_consultar { background-position: -2321px -0px; }
-.-i_lifebelt { background-position: -2337px -0px; }
-.-i_ghost { background-position: -2353px -0px; }
-.-i_bug { background-position: -2369px -0px; }
-.-i_camera { background-position: -2385px -0px; }
-.-i_certificate_ok { background-position: -2401px -0px; }
-.-i_certificate_error { background-position: -2417px -0px; }
-.-i_funnel { background-position: -2433px -0px; }
-.-i_gear_view { background-position: -2449px -0px; }
-.-i_gear_run { background-position: -2465px -0px; }
-.-i_gear_add { background-position: -2481px -0px; }
-.-i_gear_conection { background-position: -2497px -0px; }
-.-i_gear_delete { background-position: -2513px -0px; }
-.-i_gear_error { background-position: -2529px -0px; }
-.-i_gear_find { background-position: -2545px -0px; }
-.-i_gear_forbidden { background-position: -2561px -0px; }
-.-i_gear_information { background-position: -2577px -0px; }
-.-i_gear_new { background-position: -2593px -0px; }
-.-i_gear_ok { background-position: -2609px -0px; }
-.-i_gear_pause { background-position: -2625px -0px; }
-.-i_gear_preferences { background-position: -2641px -0px; }
-.-i_gear_refresh { background-position: -2657px -0px; }
-.-i_gear_replace { background-position: -2673px -0px; }
-.-i_gear_stop { background-position: -2689px -0px; }
-.-i_gear_time { background-position: -2705px -0px; }
-.-i_gear_warning { background-position: -2721px -0px; }
-.-i_home { background-position: -2737px -0px; }
-.-i_mail { background-position: -2753px -0px; }
-.-i_pin_green { background-position: -2769px -0px; }
-.-i_pda2_celular { background-position: -2785px -0px; }
-.-i_telephone { background-position: -2801px -0px; }
-.-i_location { background-position: -2817px -0px; }
-.-i_ignore { background-position: -2833px -0px; }
-.-i_paste { background-position: -2849px -0px; }
-.-i_arrow_down { background-position: -2865px -0px; }
-.-i_arrow_up { background-position: -2881px -0px; }
-.-i_contract { background-position: -2897px -0px; }
-.-i_signpost { background-position: -2913px -0px; }
-.-i_magic-wand { background-position: -2929px -0px; }
-.-i_satellite_dish { background-position: -2945px -0px; }
-.-i_print_preview { background-position: -2961px -0px; }
-.-i_document_printer { background-position: -2977px -0px; }
-.-i_printer_new { background-position: -2993px -0px; }
-.-i_cube_green { background-position: -3009px -0px; }
-.-i_grupos { background-position: -3025px -0px; }
-.-i_acesso_grupo { background-position: -3041px -0px; }
-.-i_usuario_grupos { background-position: -3057px -0px; }
-.-i_grupo_usuarios { background-position: -3073px -0px; }
-.-i_usuarios { background-position: -3089px -0px; }
-.-i_bolsa { background-position: -3105px -0px; }
-.-i_plug {background-position: -3121px -0px;}
-.-i_rubberstamp {background-position: -3137 -0px;}
-.-i_carabiner {background-position: -3153px -0px;}
-.-i_photo_scenery {background-position: -3169px -0px;}
-.-i_pill {background-position: -3185px -0px;}
-.-i_menu {background-position: -3201px -0px;}
-.-i_column-chart {background-position: -3217px -0px;}
-.-i_dot-chart {background-position: -3233px -0px;}
-.-i_chrystal_ball { background-position: -3249px -0px; }
-.-i_die { background-position: -3265px -0px; }
-.-i_folders { background-position: -3281px -0px; }
-.-i_lightbulb { background-position: -3297px -0px; }
-.-i_security_agent { background-position: -3313px -0px; }
-.-i_server_to_client { background-position: -3329px -0px; }
-.-i_server { background-position: -3345px -0px; }
-.-i_find_cube_green { background-position: -3361px -0px; }
-.-i_alerta_retroativo { background-position: -3377px -0px; }
-.-i_navigate_first { background-position: -3393px -0px; }
-.-i_navigate_last { background-position: -3409px -0px; }
-.-i_doc_ok { background-position: -3425px -0px; }
-.-i_doc_error { background-position: -3441px -0px; }
-.-i_certificate_red { background-position: -3457px -0px; }
-.-i_certificate_yellow { background-position: -3473px -0px; }
-.-i_certificate_blue { background-position: -3489px -0px; }
-.-i_certificate_blue_ok { background-position: -3505px -0px; }
-.-i_certificate_yellow_ok { background-position: -3521px -0px; }
-.-i_sun { background-position: -3537px -0px; }
-.-i_moon { background-position: -3553px -0px; }
-.-i_operacao { background-position: -3569px -0px; }
-.-i_operacao_encerrar { background-position: -3585px -0px; }
-.-i_operacao_liberar { background-position: -3601px -0px; }
-.-i_document_clean { background-position: -3617px -0px; }
-.-i_atas { background-position: -3633px -0px; }
-.-i_classificacao { background-position: -3649px -0px; }
-.-i_currency_yen {background-position: -3665px -0px;}
-.-i_cotacao {background-position: -3681px -0px;}
-.-i_worker { background-position: -3697px -0px; }
-.-i_recycle { background-position: -3713px -0px; }
-.-i_step { background-position: -3729px -0px; }
-.-i_thermometer { background-position: -3745px -0px; }
-.-i_on_off { background-position: -3761px -0px; }
-.-i_feed { background-position: -3777px -0px; }
-.-i_cloud { background-position: -3793px -0px; }
-.-i_limit { background-position: -3809px -0px; }
-.-i_upload { background-position: -3825px -0px; }
-.-i_dbsoft { background-position: -3841px -0px; }
-.-i_midia_pause { background-position: -3857px -0px; }
-.-i_send_mail { background-position: -3873px -0px; }
-.-i_send_to_user { background-position: -3889px -0px; }
-.-i_abacus { background-position: -3905px -0px; }
-.-i_eye { background-position: -3921px -0px; }
-.-i_right_checked { background-position: -3937px -0px; }
-.-i_document_money { background-position: -3953px -0px; }
-.-i_action_press { background-position: -3969px -0px; }
-.-i_fire { background-position: -3985px -0px; }
-.-i_stairs_down { background-position: -4001px -0px; }
-.-i_stairs_up { background-position: -4017px -0px; }
-.-i_race_flag { background-position: -4033px -0px; }
-.-i_compus { background-position: -4049px -0px; }
-.-i_sharing { background-position: -4065px -0px; }
-.-i_data_replace { background-position: -4081px -0px; }
+.dbs_icon.-invert {
+	background-position-y: -16px;
+}
 
-.-i_pesquisar {background-position: -1409px -0px;}
-.-i_ok {background-position: -289px -0px;}
-.-i_cancelar {background-position: -353px -0px;}
-.-i_ignorar {background-position: -2833px -0px;}
-.-i_inserir {background-position: -17px -0px;}
-.-i_editar {background-position: -1137px -0px;}
-.-i_excluir {background-position: -673px -0px;}
-.-i_usuario { background-position: -1377px -0px;}
-
-.-i_approval_approve {background-position: -2401px -0px;}
-.-i_approval_verify {background-position: -3505px -0px;}
-.-i_approval_confer {background-position: -3521px -0px;}
-.-i_approval_reprove {background-position: -2417px -0px;}
-
-.-i_approval_aproved {background-position: -241px -0px;}
-.-i_approval_verified {background-position: -3489px -0px;}
-.-i_approval_conferred {background-position: -3473px -0px;}
-.-i_approval_registered {background-position: -3457px -0px;}
-.-i_relatorio {background-position: -2977px -0px;}
-
-.-i_move_primeiro {background-position: -3393px -0px;}
-.-i_move_anterior {background-position: -945px -0px;}
-.-i_move_proximo {background-position: -1009px -0px;}
-.-i_move_ultimo {background-position: -3409px -0px;}
-.-i_sim {background-position: -273px -0px;}
-.-i_nao {background-position: -337px -0px;}
-.-i_copiar {background-position: -305px -0px;}
-.-i_colar {background-position: -2849px -0px;}
-
-.-i_imprimir {background-position: -1201px -0px;}
-.-i_imprimir_filtro {background-position: -1185px -0px;}
-.-i_imprimir_visualizar {background-position: -2961px -0px;}
-
+.-i_empty {background-position-x: -0px;}
+.-i_yes {background-position-x: -16px;}
+.-i_no {background-position-x: -32px;}
+.-i_ok {background-position-x: -48px;}
+.-i_cancel {background-position-x: -64px;}
+.-i_about {background-position-x: -80px;}
+.-i_information {background-position-x: -96px;}
+.-i_warning {background-position-x: -112px;}
+.-i_important {background-position-x: -128px;}
+.-i_error {background-position-x: -144px;}
+.-i_question_confirm {background-position-x: -160px;}
+.-i_question_ignore {background-position-x: -176px;}
+.-i_forbidden {background-position-x: -192px;}
+.-i_prize_ribbon_green {background-position-x: -208px;}
+.-i_prize_ribbon_blue {background-position-x: -224px;}
+.-i_prize_ribbon_yellow {background-position-x: -240px;}
+.-i_prize_ribbon_red {background-position-x: -256px;}
+.-i_dot_green {background-position-x: -272px;}
+.-i_dot_blue {background-position-x: -288px;}
+.-i_dot_yellow {background-position-x: -304px;}
+.-i_dot_red {background-position-x: -320px;}
+.-i_on_off {background-position-x: -336px;}
+.-i_insert {background-position-x: -352px;}
+.-i_edit {background-position-x: -368px;}
+.-i_delete {background-position-x: -384px;}
+.-i_copy {background-position-x: -400px;}
+.-i_paste {background-position-x: -416px;}
+.-i_undo {background-position-x: -432px;}
+.-i_redo {background-position-x: -448px;}
+.-i_find {background-position-x: -464px;}
+.-i_refresh {background-position-x: -480px;}
+.-i_synchronize {background-position-x: -496px;}
+.-i_replace {background-position-x: -512px;}
+.-i_filter {background-position-x: -528px;}
+.-i_history {background-position-x: -544px;}
+.-i_download {background-position-x: -560px;}
+.-i_upload {background-position-x: -576px;}
+.-i_in {background-position-x: -592px;}
+.-i_out {background-position-x: -608px;}
+.-i_receive {background-position-x: -624px;}
+.-i_send {background-position-x: -640px;}
+.-i_user {background-position-x: -656px;}
+.-i_users {background-position-x: -672px;}
+.-i_user_admin {background-position-x: -688px;}
+.-i_user_hat {background-position-x: -704px;}
+.-i_user_id {background-position-x: -720px;}
+.-i_navigate_first {background-position-x: -736px;}
+.-i_navigate_previous {background-position-x: -752px;}
+.-i_navigate_next {background-position-x: -768px;}
+.-i_navigate_last {background-position-x: -784px;}
+.-i_navigate_top {background-position-x: -800px;}
+.-i_navigate_up {background-position-x: -816px;}
+.-i_navigate_down {background-position-x: -832px;}
+.-i_navigate_bottom {background-position-x: -848px;}
+.-i_media_play {background-position-x: -864px;}
+.-i_media_stop {background-position-x: -880px;}
+.-i_media_pause {background-position-x: -896px;}
+.-i_media_rec {background-position-x: -912px;}
+.-i_media_video_play {background-position-x: -928px;}
+.-i_sun {background-position-x: -944px;}
+.-i_moon {background-position-x: -960px;}
+.-i_earth {background-position-x: -976px;}
+.-i_saturn {background-position-x: -992px;}
+.-i_compass {background-position-x: -1008px;}
+.-i_location {background-position-x: -1024px;}
+.-i_stairs_up {background-position-x: -1040px;}
+.-i_stairs_down {background-position-x: -1056px;}
+.-i_unlock {background-position-x: -1072px;}
+.-i_lock {background-position-x: -1088px;}
+.-i_link {background-position-x: -1104px;}
+.-i_unlink {background-position-x: -1120px;}
+.-i_group {background-position-x: -1136px;}
+.-i_ungroup {background-position-x: -1152px;}
+.-i_join {background-position-x: -1168px;}
+.-i_split {background-position-x: -1184px;}
+.-i_home {background-position-x: -1200px;}
+.-i_office_building {background-position-x: -1216px;}
+.-i_factory {background-position-x: -1232px;}
+.-i_parthenon {background-position-x: -1248px;}
+.-i_church {background-position-x: -1264px;}
+.-i_newspaper {background-position-x: -1280px;}
+.-i_portofolio {background-position-x: -1296px;}
+.-i_calendar {background-position-x: -1312px;}
+.-i_todo {background-position-x: -1328px;}
+.-i_certificate {background-position-x: -1344px;}
+.-i_paper {background-position-x: -1360px;}
+.-i_papers {background-position-x: -1376px;}
+.-i_paper_text {background-position-x: -1392px;}
+.-i_papers_text {background-position-x: -1408px;}
+.-i_paper_text_edit {background-position-x: -1424px;}
+.-i_paper_text_find {background-position-x: -1440px;}
+.-i_paper_printer {background-position-x: -1456px;}
+.-i_paper_ribbon {background-position-x: -1472px;}
+.-i_paper_money {background-position-x: -1488px;}
+.-i_chat {background-position-x: -1504px;}
+.-i_message {background-position-x: -1520px;}
+.-i_mail {background-position-x: -1536px;}
+.-i_eye {background-position-x: -1552px;}
+.-i_step {background-position-x: -1568px;}
+.-i_heart {background-position-x: -1584px;}
+.-i_abacus {background-position-x: -1600px;}
+.-i_calculator {background-position-x: -1616px;}
+.-i_graph_pizza {background-position-x: -1632px;}
+.-i_graph_line {background-position-x: -1648px;}
+.-i_graph_bar_line {background-position-x: -1664px;}
+.-i_market_up {background-position-x: -1680px;}
+.-i_market_down {background-position-x: -1696px;}
+.-i_market_up_down {background-position-x: -1712px;}
+.-i_bill {background-position-x: -1728px;}
+.-i_bills {background-position-x: -1744px;}
+.-i_currency_yen {background-position-x: -1760px;}
+.-i_currency_euro {background-position-x: -1776px;}
+.-i_currency_pound {background-position-x: -1792px;}
+.-i_percent {background-position-x: -1808px;}
+.-i_safe {background-position-x: -1824px;}
+.-i_money_box {background-position-x: -1840px;}
+.-i_printer {background-position-x: -1856px;}
+.-i_monitor {background-position-x: -1872px;}
+.-i_mouse {background-position-x: -1888px;}
+.-i_folder {background-position-x: -1904px;}
+.-i_save {background-position-x: -1920px;}
+.-i_action_press {background-position-x: -1936px;}
+.-i_bug {background-position-x: -1952px;}
+.-i_wifi {background-position-x: -1968px;}
+.-i_database {background-position-x: -1984px;}
+.-i_servers {background-position-x: -2000px;}
+.-i_workstation {background-position-x: -2016px;}
+.-i_selection {background-position-x: -2032px;}
+.-i_clock {background-position-x: -2048px;}
+.-i_clock_alarm {background-position-x: -2064px;}
+.-i_clock_timer {background-position-x: -2080px;}
+.-i_clock_schedule {background-position-x: -2096px;}
+.-i_runnig_timer {background-position-x: -2112px;}
+.-i_bike {background-position-x: -2128px;}
+.-i_car {background-position-x: -2144px;}
+.-i_taxi {background-position-x: -2160px;}
+.-i_train {background-position-x: -2176px;}
+.-i_bus {background-position-x: -2192px;}
+.-i_airplane {background-position-x: -2208px;}
+.-i_copter {background-position-x: -2224px;}
+.-i_ship {background-position-x: -2240px;}
+.-i_traffic_cone {background-position-x: -2256px;}
+.-i_traffic_light {background-position-x: -2272px;}
+.-i_gas_pump {background-position-x: -2288px;}
+.-i_wheel {background-position-x: -2304px;}
+.-i_steering_wheel {background-position-x: -2320px;}
+.-i_control_panel {background-position-x: -2336px;}
+.-i_meter {background-position-x: -2352px;}
+.-i_sign_prohibid {background-position-x: -2368px;}
+.-i_sign_recycle {background-position-x: -2384px;}
+.-i_sign_radioactive {background-position-x: -2400px;}
+.-i_sign_accessibility {background-position-x: -2416px;}
+.-i_sign_speed_limit {background-position-x: -2432px;}
+.-i_sign_risk {background-position-x: -2448px;}
+.-i_sign_turns {background-position-x: -2464px;}
+.-i_sign_9 {background-position-x: -2480px;}
+.-i_roundabout {background-position-x: -2496px;}
+.-i_policeman {background-position-x: -2512px;}
+.-i_workman {background-position-x: -2528px;}
+.-i_front_desk {background-position-x: -2544px;}
+.-i_flashlight {background-position-x: -2560px;}
+.-i_shovel {background-position-x: -2576px;}
+.-i_hammer {background-position-x: -2592px;}
+.-i_wrench {background-position-x: -2608px;}
+.-i_magnet {background-position-x: -2624px;}
+.-i_lamp {background-position-x: -2640px;}
+.-i_scissors {background-position-x: -2656px;}
+.-i_key {background-position-x: -2672px;}
+.-i_keyhole {background-position-x: -2688px;}
+.-i_fire_extinguisher {background-position-x: -2704px;}
+.-i_fire {background-position-x: -2720px;}
+.-i_water {background-position-x: -2736px;}
+.-i_snow {background-position-x: -2752px;}
+.-i_umbrella {background-position-x: -2768px;}
+.-i_paper_plane {background-position-x: -2784px;}
+.-i_paper_clip {background-position-x: -2800px;}
+.-i_bomb {background-position-x: -2816px;}
+.-i_hourglass {background-position-x: -2832px;}
+.-i_target {background-position-x: -2848px;}
+.-i_phone {background-position-x: -2864px;}
+.-i_eyedropper {background-position-x: -2880px;}
+.-i_auction_hammer {background-position-x: -2896px;}
+.-i_balance {background-position-x: -2912px;}
+.-i_paper_organizer {background-position-x: -2928px;}
+.-i_file_cabinet {background-position-x: -2944px;}
+.-i_stamper {background-position-x: -2960px;}
+.-i_place123 {background-position-x: -2976px;}
+.-i_medal {background-position-x: -2992px;}
+.-i_dices {background-position-x: -3008px;}
+.-i_lifebelt {background-position-x: -3024px;}
+.-i_anchor {background-position-x: -3040px;}
+.-i_brief_case {background-position-x: -3056px;}
+.-i_first_aid {background-position-x: -3072px;}
+.-i_beaker {background-position-x: -3088px;}
+.-i_dna {background-position-x: -3104px;}
+.-i_atom {background-position-x: -3120px;}
+.-i_molecule {background-position-x: -3136px;}
+.-i_satellite {background-position-x: -3152px;}
+.-i_antenna {background-position-x: -3168px;}
+.-i_gear {background-position-x: -3184px;}
+.-i_gears {background-position-x: -3200px;}
+.-i_photo_camera {background-position-x: -3216px;}
+.-i_video_camera {background-position-x: -3232px;}
+.-i_director_chair {background-position-x: -3248px;}
+.-i_megaphone {background-position-x: -3264px;}
+.-i_microphone {background-position-x: -3280px;}
+.-i_picture {background-position-x: -3296px;}
+.-i_speaker {background-position-x: -3312px;}
+.-i_mixer {background-position-x: -3328px;}
+.-i_flag_finish {background-position-x: -3344px;}
+.-i_flag {background-position-x: -3360px;}
+.-i_box {background-position-x: -3376px;}
+.-i_box_paper {background-position-x: -3392px;}
+.-i_box_gift {background-position-x: -3408px;}
+.-i_box_wood {background-position-x: -3424px;}
+.-i_box_3d {background-position-x: -3440px;}
+.-i_star5 {background-position-x: -3456px;}
+.-i_star6 {background-position-x: -3472px;}
+.-i_star_xerif {background-position-x: -3488px;}
+.-i_shopping_cart {background-position-x: -3504px;}
+.-i_tag {background-position-x: -3520px;}
+.-i_barcode {background-position-x: -3536px;}
+.-i_feed {background-position-x: -3552px;}
+.-i_dbsoft {background-position-x: -3568px;}
 .runningGear {
 	background-image: url("#{request.contextPath}/images/gear16.gif") !important;
 	background-repeat: no-repeat;

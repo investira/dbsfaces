@@ -103,23 +103,23 @@ public class DBSDialogRenderer extends DBSRenderer {
 					}else{
 						xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT + DBSFaces.CSS.MODIFIER.MESSAGE + DBSFaces.CSS.BACK_TEXTURE_BLACK_GRADIENT, null);
 						if (xDialog.getMessageIcon().equals(DIALOG_ICON.INFORMACAO.toString())){
-							xMsgIcon = "-il_informacao";
+							xMsgIcon = "-il_information";
 						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.ATENCAO.toString())){
-							xMsgIcon = "-il_atencao";
+							xMsgIcon = "-il_warning";
 						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.ERRO.toString())){
-							xMsgIcon = "-il_erro";
+							xMsgIcon = "-il_error";
 						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.CONFIRMAR.toString())){
-							xMsgIcon = "-il_confirmar";
+							xMsgIcon = "-il_question_confirm";
 						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.IGNORAR.toString())){
-							xMsgIcon = "-il_ignorar";
+							xMsgIcon = "-il_question_ignore";
 						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.PROIBIDO.toString())){
-							xMsgIcon = "-il_proibido";
+							xMsgIcon = "-il_forbidden";
 						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.SOBRE.toString())){
-							xMsgIcon = "-il_sobre";
+							xMsgIcon = "-il_about";
 						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.SUCESSO.toString())){
-							xMsgIcon = "-il_sucesso";
+							xMsgIcon = "-il_yes";
 						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.IMPORTANTE.toString())){
-							xMsgIcon = "-il_importante";
+							xMsgIcon = "-il_important";
 						}
 						xWriter.startElement("div", xDialog);
 							xWriter.writeAttribute("class", DBSFaces.CSS.DIALOG.CONFIRMATION, null);
@@ -156,13 +156,13 @@ public class DBSDialogRenderer extends DBSRenderer {
 							xWriter.startElement("div", xDialog);
 								xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.BUTTON, null);
 								if (!DBSObject.isEmpty(xDialog.getYesAction())){
-									pvEncodeButton(pContext,xDialog,xDialog.getYesAction(),"btyes", "Sim","-i_sim");
+									pvEncodeButton(pContext,xDialog,xDialog.getYesAction(),"btyes", "Sim","-i_yes");
 								}
 								if (!DBSObject.isEmpty(xDialog.getNoAction())){
-									pvEncodeButton(pContext,xDialog,xDialog.getNoAction(),"btno", "Não","-i_nao");
+									pvEncodeButton(pContext,xDialog,xDialog.getNoAction(),"btno", "Não","-i_no");
 								}
 								if (!DBSObject.isEmpty(xDialog.getOkAction())){
-									pvEncodeButton(pContext,xDialog,xDialog.getOkAction(),"btok", "Ok","-i_sim");
+									pvEncodeButton(pContext,xDialog,xDialog.getOkAction(),"btok", "Ok","-i_yes");
 								}
 							xWriter.endElement("div");
 						xWriter.endElement("div");

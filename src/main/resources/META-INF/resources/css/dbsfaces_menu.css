@@ -15,7 +15,7 @@
 .dbs_submenu > li > a, 
 .dbs_menu > li > button, 
 .dbs_submenu > li > button{
-	text-shadow:1px 1px 1px rgba(50, 50, 50, 0.5) !important;
+/* 	text-shadow:1px 1px 1px rgba(50, 50, 50, 0.5) !important; */
 	font-size:11px;
 	white-space: nowrap;
 	border:none;
@@ -207,10 +207,16 @@
 .dbs_menuitem .-icon {
 	float:left;
 	top:-2px;
-	margin-right: 1px !important;
+	margin-right: 2px !important;
 	position: relative;
 	min-width: 16px;	
 }
+.dbs_menu > li:HOVER .dbs_icon,
+.dbs_submenu .dbs_icon,
+.dbs_menuitem .dbs_icon {
+	background-position-y: -16px;  /*icones brancos*/ 
+}
+
 .dbs_menuitem.-disabled{
 	color:rgb(200,200,200);
 	cursor: default;

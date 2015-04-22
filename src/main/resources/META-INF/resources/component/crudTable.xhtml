@@ -68,26 +68,26 @@
 								
 								<c:if test="#{not cc.crudBean.dialogEdit and not cc.attrs.readOnly}">
 									<dbs:div id="icon" styleClass="-icon" rendered="#{cc.crudBean.isEditing}">
-										<dbs:img rendered="#{cc.crudBean.isUpdating}" styleClass="dbs_icon -i_editar"/>
-										<dbs:img rendered="#{cc.crudBean.isDeleting}" styleClass="dbs_icon -i_excluir"/>
-										<dbs:img rendered="#{cc.crudBean.isInserting}" styleClass="dbs_icon -i_inserir"/>
+										<dbs:img rendered="#{cc.crudBean.isUpdating}" styleClass="dbs_icon -i_edit"/>
+										<dbs:img rendered="#{cc.crudBean.isDeleting}" styleClass="dbs_icon -i_delete"/>
+										<dbs:img rendered="#{cc.crudBean.isInserting}" styleClass="dbs_icon -i_insert"/>
 									</dbs:div>
 									<!-- Controle de exclusão/edição/refresh									 -->
 									<ui:fragment rendered="#{not cc.crudBean.isEditing}">
-										<dbs:button id="btExcluir" rendered="#{cc.crudBean.hasSelected and cc.crudBean.rowCount gt 0}" iconClass="dbs_icon -i_excluir" action="#{cc.crudBean.delete()}" update="#{cc.clientId} " execute="@this"/>
-										<dbs:button id="btEditar" rendered="#{not cc.crudBean.hasSelected and cc.crudBean.rowCount gt 0}" iconClass="dbs_icon -i_editar" action="#{cc.crudBean.update()}" update="#{cc.clientId} " execute="@this"/> 
+										<dbs:button id="btExcluir" rendered="#{cc.crudBean.hasSelected and cc.crudBean.rowCount gt 0}" iconClass="dbs_icon -i_delete" action="#{cc.crudBean.delete()}" update="#{cc.clientId} " execute="@this"/>
+										<dbs:button id="btEditar" rendered="#{not cc.crudBean.hasSelected and cc.crudBean.rowCount gt 0}" iconClass="dbs_icon -i_edit" action="#{cc.crudBean.update()}" update="#{cc.clientId} " execute="@this"/> 
 										<dbs:button id="btRefresh" rendered="#{cc.attrs.allowRefresh and cc.crudBean.allowRefresh}"  iconClass="dbs_icon -i_refresh" action="#{cc.crudBean.refreshList()}" update=":dialog :#{cc.clientId}"/> 
 									</ui:fragment>
 									<!-- Confirmação									 -->
 									<ui:fragment rendered="#{cc.crudBean.isUpdating}">
 										<dbs:button id="btOk" iconClass="dbs_icon -i_ok" action="#{cc.crudBean.confirmEditing()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
-										<dbs:button id="btCancelar" iconClass="dbs_icon -i_cancelar" action="#{cc.crudBean.ignoreEditing()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
-										<dbs:button id="btInserir" rendered="#{cc.attrs.allowInsert and cc.crudBean.allowInsert}"  iconClass="dbs_icon -i_inserir" style="display:none;" action="#{cc.crudBean.insert()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
+										<dbs:button id="btCancelar" iconClass="dbs_icon -i_cancel" action="#{cc.crudBean.ignoreEditing()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
+										<dbs:button id="btInserir" rendered="#{cc.attrs.allowInsert and cc.crudBean.allowInsert}"  iconClass="dbs_icon -i_insert" style="display:none;" action="#{cc.crudBean.insert()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
 									</ui:fragment>
 								</c:if>
 								<c:if test="#{cc.crudBean.dialogEdit}">
-									<dbs:button id="btView" rendered="#{cc.attrs.multipleSelection and cc.crudBean.multipleSelection}"  iconClass="dbs_icon -i_consultar" action="#{cc.crudBean.viewSelection()}" update=":dialog " execute="@this"/>
-									<dbs:button id="btInsert"  rendered="#{cc.attrs.allowInsert and cc.crudBean.allowInsert}" iconClass="dbs_icon -i_inserir" action="#{cc.crudBean.insert()}" update=":dialog " execute=":dialog @this"/>
+									<dbs:button id="btView" rendered="#{cc.attrs.multipleSelection and cc.crudBean.multipleSelection}"  iconClass="dbs_icon -i_document_view" action="#{cc.crudBean.viewSelection()}" update=":dialog " execute="@this"/>
+									<dbs:button id="btInsert"  rendered="#{cc.attrs.allowInsert and cc.crudBean.allowInsert}" iconClass="dbs_icon -i_insert" action="#{cc.crudBean.insert()}" update=":dialog " execute=":dialog @this"/>
 									<dbs:button id="btRefresh" rendered="#{cc.attrs.allowRefresh and cc.crudBean.allowRefresh}" iconClass="dbs_icon -i_refresh" action="#{cc.crudBean.refreshList()}" update=":dialog :#{cc.clientId}"/>
 								</c:if>							
 							</dbs:div>

@@ -158,6 +158,7 @@ public class DBSTabRenderer extends DBSRenderer {
 								DBSTabPage xPage = (DBSTabPage) xTab.getChildren().get(xI);
 								if (xPage.isRendered()){
 									xPage.encodeBegin(pContext);
+									//Ignora o encode do conteúdo da página
 									if (!xPage.getAjaxLoading()){
 										xPage.encodeChildren(pContext);
 									}

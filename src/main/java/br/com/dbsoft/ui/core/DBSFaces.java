@@ -1722,7 +1722,7 @@ public class  DBSFaces {
 				DBSButton xBtPesquisar = (DBSButton) xContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
 				xBtPesquisar.setId("btPesquisar");
 				xBtPesquisar.setLabel("Pesquisar");
-				xBtPesquisar.setIconClass(DBSFaces.CSS.ICON.trim() + " -i_pesquisar");
+				xBtPesquisar.setIconClass(DBSFaces.CSS.ICON.trim() + " -i_find");
 				if (pDataTable.getSearchAction() == null){
 					wLogger.error(pDataTable.getClientId() +  ": searchAction não informado");
 				}else{

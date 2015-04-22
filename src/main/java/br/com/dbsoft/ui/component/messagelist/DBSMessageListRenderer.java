@@ -188,7 +188,7 @@ public class DBSMessageListRenderer extends DBSRenderer {
 									pWriter.startElement("span", pMessageList);
 										pWriter.writeAttribute("class", "dbs_button ", null);
 										pWriter.startElement("span", pMessageList);
-											pWriter.writeAttribute("class", "dbs_icon -i_excluir", null);
+											pWriter.writeAttribute("class", "dbs_icon -i_delete", null);
 										pWriter.endElement("span");
 									pWriter.endElement("span");
 								pWriter.endElement("div");
