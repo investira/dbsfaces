@@ -41,10 +41,10 @@ public class DBSLiRenderer extends DBSRenderer {
 		if (xLi.getStyleClass()!=null){
 			xClass = xClass + xLi.getStyleClass() + " ";
 		}
-//		String xClientId = xLi.getClientId(pContext);
+		String xClientId = xLi.getClientId(pContext);
 		xWriter.startElement("li", xLi);
-//			DBSFaces.setAttribute(xWriter, xLi, "id", xClientId, null);
-//			xWriter.writeAttribute("name", xClientId, "name");
+			xWriter.writeAttribute("id", xClientId, "id");
+			xWriter.writeAttribute("name", xClientId, "name");
 			if (xClass!=""){
 				DBSFaces.setAttribute(xWriter, "class", xClass, null);
 			}
