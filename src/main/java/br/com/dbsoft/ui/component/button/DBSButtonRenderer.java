@@ -86,7 +86,7 @@ public class DBSButtonRenderer extends DBSRenderer {
 			xExecute = xButton.getExecute();
 		}
 		if (!DBSObject.isEmpty(xButton.getStyleClass())){
-			xClass = DBSObject.getNotEmpty(xButton.getStyleClass(), "");
+			xClass += " " + DBSObject.getNotEmpty(xButton.getStyleClass(), "");
 		}
 		if (xButton.getReadOnly()){
 			xClass += " " + DBSFaces.CSS.MODIFIER.DISABLED;
