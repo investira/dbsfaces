@@ -370,6 +370,10 @@
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#133963', endColorstr='#0f2b4c',GradientType=0 );
 }
 
+.dbs_dataTable:not(.-noDialogEdit) > .-container > .-content > table > tbody > .-selected .dbs_icon{
+	background-position-y: -16px; 
+}
+
     
 .dbs_dataTable > .-container > .-content > table > tbody > .-focus {
 	color:white;
@@ -382,6 +386,11 @@
 	background: linear-gradient(to bottom,  rgba(8,114,201,1) 0%,rgba(7,101,178,1) 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0872c9', endColorstr='#0765b2',GradientType=0 );
 }
+
+.dbs_dataTable > .-container > .-content > table > tbody > .-focus .dbs_icon{
+	background-position-y: -16px; 
+}
+
 
 .dbs_dataTable > .-container > .-content > table > thead > .-focus {
 	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
