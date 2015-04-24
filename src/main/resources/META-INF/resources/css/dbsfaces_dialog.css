@@ -74,6 +74,7 @@
 	float:right;
 }
 
+
 .dbs_dialog > div > .-caption > .-iconclose > div{
 	border-width: 1px;
 	border-style: solid;
@@ -160,6 +161,9 @@
     top: 0;
     border-style: outset;
     border-width: 0 1px 0 0;
+}
+.dbs_dialog > div > .-toolbar > ul > li.-icon .dbs_icon {
+	background-position-y: -16px; 
 }
 
 .dbs_dialog-confirmation{
