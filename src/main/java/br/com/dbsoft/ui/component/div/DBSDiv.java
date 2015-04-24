@@ -15,7 +15,8 @@ public class DBSDiv extends DBSUIComponentBase {
 		styleClass,
 		style,
 		selectable,
-		ajaxLoading;
+		ajaxLoading,
+		ajaxLoadingSmallIcon;
 
 		String toString;
 
@@ -70,4 +71,12 @@ public class DBSDiv extends DBSUIComponentBase {
 		handleAttribute("ajaxLoading", pAjaxLoading);
 	}	
 
+	public Boolean getAjaxLoadingSmallIcon() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.ajaxLoadingSmallIcon, false);
+	}
+	
+	public void setAjaxLoadingSmallIcon(Boolean pAjaxLoadingSmallIcon) {
+		getStateHelper().put(PropertyKeys.ajaxLoading, pAjaxLoadingSmallIcon);
+		handleAttribute("ajaxLoadingSmallIcon", pAjaxLoadingSmallIcon);
+	}	
 }

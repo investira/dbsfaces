@@ -2254,6 +2254,14 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>		
+		<attribute>
+			<description>
+                Indica se utilizará o iconé pequeno. Padrão é false.
+            </description>
+			<name>ajaxLoadingSmallIcon</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>		
 	</tag>
 
 	<tag>

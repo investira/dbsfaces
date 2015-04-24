@@ -79,7 +79,11 @@ public class DBSDivRenderer extends DBSRenderer {
 			//Força para que o encode deste componente seja efetuado após, via chamada ajax. 
 			if (pvEncodeLater(pContext, xDiv)){
 	    		xWriter.startElement("div", xDiv);
-					DBSFaces.setAttribute(xWriter, "class", "-loading", null);
+	    			if (xDiv.getAjaxLoadingSmallIcon()){
+						DBSFaces.setAttribute(xWriter, "class", "-loading", null);
+	    			}else{
+						DBSFaces.setAttribute(xWriter, "class", "dbs_loading", null);
+	    			}
 				xWriter.endElement("div");
 				DBSFaces.encodeJavaScriptTagStart(xWriter);
 				String xJS = "setTimeout(function(){" +
