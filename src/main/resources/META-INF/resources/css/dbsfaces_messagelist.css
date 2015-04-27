@@ -36,7 +36,9 @@
     right: 14px;
     z-index: 2;
     width: 270px;
-   	border-radius: 5px 5px 5px 5px;
+	-webkit-border-radius: 3px;  
+	-moz-border-radius: 3px; 
+	border-radius: 3px;
     box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.5);
     -webkit-box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.5);
 	-moz-box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.5);
@@ -46,7 +48,9 @@
 .dbs_messageList > .-container > .-list > .-content{
 	max-height: 296px;
 	overflow-y: auto;
-   	border-radius: 5px 5px 5px 5px;
+	-webkit-border-radius: 3px;  
+	-moz-border-radius: 3px; 
+	border-radius: 3px;
 }
 
 .dbs_messageList > .-container > .-list > .-content > .-message{
@@ -118,7 +122,10 @@
 }
 
 .dbs_messageList > .-container > .-button > .-count{
-    border-radius: 10px;
+	-webkit-border-radius: 10px;  
+	-moz-border-radius: 10px; 
+	border-radius: 10px;
+    
     border-style: none;
     font-size: 8px;
     left: -3px;
@@ -191,10 +198,14 @@
 }
 .dbs_messageList ::-webkit-scrollbar-track {
 	-webkit-box-shadow: inset 0px 0 3px rgba(0,0,0,0.3);
-	border-radius: 0px 5px 5px 0px;
+	-webkit-border-radius: 0px 3px 3px 0px;  
+	-moz-border-radius: 0px 3px 3px 0px; 
+	border-radius: 0px 3px 3px 0px;
 }
 .dbs_messageList ::-webkit-scrollbar-thumb {
-	border-radius: 5px 5px 5px 5px;
+	-webkit-border-radius: 3px;  
+	-moz-border-radius: 3px; 
+	border-radius: 3px;
 	-webkit-box-shadow: inset 0 0 4px rgba(13,25,45,0.05);
 	background: rgba(0,0,0,0.2);
 }

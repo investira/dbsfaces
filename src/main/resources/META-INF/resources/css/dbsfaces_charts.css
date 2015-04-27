@@ -15,9 +15,9 @@
 
 .dbs_charts > .-container > .-caption{
 	background-image: url("#{request.contextPath}/images/back_texture_white.png");
-	-webkit-border-radius: 3px 3px 0px 0px;
-	-moz-border-radius: 3px 3px 0px 0px;
-	border-radius: 3px 3px 0px 0px;
+	-webkit-border-radius: 2px 2px 0px 0px;
+	-moz-border-radius: 2px 2px 0px 0px;
+	border-radius: 2px 2px 0px 0px;
 }
 
 .dbs_charts > .-container > .-data{

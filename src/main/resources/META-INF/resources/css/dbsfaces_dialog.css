@@ -23,9 +23,9 @@
    	-webkit-box-shadow: 0 0 6px 0px rgba(0, 0, 0, 0.6);
 	-moz-box-shadow: 0 0 6px 0px rgba(0, 0, 0, 0.6);
 	box-shadow: 0 0 6px 0px rgba(0, 0, 0, 0.6);
-	-moz-border-radius: 3px 3px 6px 6px;
-	-webkit-border-radius: 3px 3px 6px 6px;
-	border-radius:3px 3px 6px 6px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius:3px;
 	position: absolute;
 /* 	xoverflow: hidden; 24/04/2013 - desabilitado por cortava o dialog quando fosse superior ao dialog anterior */
 	overflow: visible;
@@ -36,9 +36,9 @@
  }
 
 .dbs_dialog > div > .-caption{
-	background-color: rgba(255,255,255,.1);
-	background-image: url("#{request.contextPath}/images/back_texture_white.png");
-	background-repeat: repeat;
+/* 	background-color: rgba(255,255,255,.1); */ /*26-05-2015*/
+/* 	background-image: url("#{request.contextPath}/images/back_texture_white.png"); *//*26-05-2015*/
+/* 	background-repeat: repeat; *//*26-05-2015*/
 	height: 21px;
 	position: relative;
 	top:0;
@@ -57,7 +57,7 @@
 	height: 100%;
 	padding-left: 5px;
 	color:white;
-	text-shadow: 1px 1px 0px #000000;
+/* 	text-shadow: 1px 1px 0px #000000; */ /*26-05-2015*/
 	text-align: center;
 }
 
@@ -106,9 +106,9 @@
 /* 	overflow: auto; comentado em 24/07/2013 por inibir a exibição de componentes maiores comos os inputAtivos*/
 	overflow: visible;
 	padding: 5px 6px 6px 6px;
-	-moz-border-radius: 0px 0px 6px 6px;
-	-webkit-border-radius: 0px 0px 6px 6px;
-	border-radius:0px 0px 6px 6px;
+	-moz-border-radius: 0px 0px 3px 3px;
+	-webkit-border-radius: 0px 0px 3px 3px;
+	border-radius:0px 0px 3px 3px;
 }
 
 /* Incluido em 05/fev/14 para padronizar as telas dialog simples */
@@ -142,9 +142,9 @@
 	margin:0px;
     padding: 2px 4px 1px 2px;
 	border-width: 0px;
-	-moz-border-radius: 0px 0px 3px 3px;
-  	-webkit-border-radius: 0px 0px 3px 3px;
-	border-radius:0px 0px 3px 3px;
+/* 	-moz-border-radius: 0px 0px 3px 3px; */ /*Todo Excluir */
+/*   	-webkit-border-radius: 0px 0px 3px 3px; */ /*Todo Excluir */
+/* 	border-radius:0px 0px 3px 3px; */ /*Todo Excluir */
 	display: inline-block;
     height: 22px;	
 }
@@ -164,6 +164,7 @@
 }
 .dbs_dialog > div > .-toolbar > ul > li.-icon .dbs_icon {
 	background-position-y: -16px; 
+	--dbs_iconY: -16px; /*artifício para contornar a o firefox*/
 }
 
 .dbs_dialog-confirmation{

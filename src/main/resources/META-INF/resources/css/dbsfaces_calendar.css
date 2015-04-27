@@ -1,9 +1,9 @@
 
 
 .dbs_calendar{
-	border-radius: 9px;
-	-webkit-border-radius: 9px;  
-	-moz-border-radius: 9px;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;  
+	-moz-border-radius: 3px;
 	overflow: hidden;
 }
 
@@ -26,9 +26,9 @@
 }
 
 .dbs_calendar > .-container > .-caption {
-/* 	-webkit-border-radius:3px;   */
-/* 	-moz-border-radius: 3px; */
-/* 	border-radius:6px 6px 0px 0px; */
+	-webkit-border-radius:3px 3px 0px 0px;  
+	-moz-border-radius: 3px 3px 0px 0px;
+	border-radius:3px 3px 0px 0px;
 /* 	display:block; */
 	position:relative;
 	top:0px;
@@ -108,7 +108,10 @@
 }
 
 .dbs_calendar_days > div {
-	border-radius:0px 0px 6px 6px;
+	-webkit-border-radius: 0px 0px 3px 3px;  
+	-moz-border-radius: 0px 0px 3px 3px; 
+	border-radius:0px 0px 3px 3px;
+
 	height:100%;
 	padding:3px;
 	xpadding-right:2px;
@@ -151,9 +154,9 @@
 	border-width:0px;
 	border-style:groove;
 	border-color:white;
-	-webkit-border-radius:3px;  
-	-moz-border-radius: 3px;
-	border-radius:3px;
+	-webkit-border-radius:2px;  
+	-moz-border-radius: 2px;
+	border-radius:2px;
 	background-color:rgb(30,30,30);
 }
 
@@ -162,7 +165,7 @@
 	-webkit-box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.4), 0 0 0px 1px rgba(100, 180, 255, 1);
 	-moz-box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.4), 0 0 0px 1px rgba(100, 180, 255, 1);
 	box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.4), 0 0 0px 1px rgba(100, 180, 255, 1);
-	-webkit-border-radius:3px;  
-	-moz-border-radius: 3px;
-	border-radius:3px;
+	-webkit-border-radius:2px;  
+	-moz-border-radius: 2px;
+	border-radius:2px;
 }

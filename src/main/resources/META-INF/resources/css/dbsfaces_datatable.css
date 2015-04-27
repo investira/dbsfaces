@@ -18,9 +18,9 @@
 
 .dbs_dataTable > .-container >.-header:first-child {
 	border-width: 0px;
-	-moz-border-radius: 6px 6px 0px 0px;
-  	-webkit-border-radius: 6px 6px 0px 0px;
-	border-radius:6px 6px 0px 0px;
+	-moz-border-radius: 3px 3px 0px 0px;
+  	-webkit-border-radius: 3px 3px 0px 0px;
+	border-radius:3px 3px 0px 0px;
 }
 
 .dbs_dataTable > .-container > div,
@@ -288,8 +288,8 @@
 /* .dbs_dataTable.-noDialogEdit > .-container > .-content > table > tbody > tr:not(.-selected) .dbs_input-data{ */
 .dbs_dataTable.-noDialogEdit > .-container > .-content > table > tbody .dbs_input-data.-readOnly{
 	border: none;
-	-webkit-border-radius: 0px;
-	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px !important;
+	-moz-border-radius: 0px !important;
 	border-radius: 0px !important;
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;
@@ -372,6 +372,7 @@
 
 .dbs_dataTable:not(.-noDialogEdit) > .-container > .-content > table > tbody > .-selected .dbs_icon{
 	background-position-y: -16px; 
+	--dbs_iconY: -16px; /*artifício para contornar a o firefox*/
 }
 
     
@@ -389,6 +390,7 @@
 
 .dbs_dataTable > .-container > .-content > table > tbody > .-focus .dbs_icon{
 	background-position-y: -16px; 
+	--dbs_iconY: -16px; /*artifício para contornar a o firefox*/
 }
 
 

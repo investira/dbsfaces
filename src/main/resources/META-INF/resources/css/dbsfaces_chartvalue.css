@@ -27,9 +27,9 @@
 	background-color: rgb(210, 210, 210);
 	color: white;
 	background-repeat: repeat;
-    border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;    
+    border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;    
     padding: 0px 3px 0px 3px;
     font-size: 8px;
     box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.6);

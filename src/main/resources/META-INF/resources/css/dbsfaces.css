@@ -188,6 +188,13 @@ svg{
 .-readOnly {}
 .-pushSuspended {}
 .-on {}
+.-flex{
+	display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+	display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+	display: -ms-flexbox;      /* TWEENER - IE 10 */
+	display: -webkit-flex;     /* NEW - Chrome */
+	display: flex;   
+}
 .-blur_soft{
     filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='1');
 	filter: url("data:image/svg+xml;utf8,<svg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'blur\'><feGaussianBlur stdDeviation=\'1\' ></feGaussianBlur></filter></svg>#blur"); 
@@ -565,9 +572,9 @@ label.dbs_input-data,
     border-style: solid;
     border-width: 1px;
 	padding: 0px 1px 0px 1px !important;
-	-webkit-border-radius: 3px !important;
-	-moz-border-radius: 3px !important;
-	border-radius: 3px !important;
+/* 	-webkit-border-radius: 3px !important; */
+/* 	-moz-border-radius: 3px !important; */
+/* 	border-radius: 3px !important; */
 	-webkit-box-shadow: 1px 1px 1px rgba(13, 25, 45, 0.1) inset;
 	-moz-box-shadow: 1px 1px 1px rgba(13, 25, 45, 0.1) inset;
 	box-shadow: 1px 1px 1px rgba(13, 25, 45, 0.1) inset;
@@ -658,19 +665,18 @@ textarea.dbs_input-data:FOCUS,
 	padding: 0px !important;
 	background-repeat: no-repeat;
 	background-image: url("#{request.contextPath}/images/dbs_icons_large.png");
-	background-position-y: 0px;
 }
 
-.-il_empty {background-position-x: 0px;}
-.-il_yes {background-position-x: -32px;}
-.-il_about {background-position-x: -64px;}
-.-il_information {background-position-x: -96px;}
-.-il_warning {background-position-x: -128px;}
-.-il_important {background-position-x: -160px;}
-.-il_error {background-position-x: -192px;}
-.-il_question_confirm {background-position-x: -224px;}
-.-il_question_ignore {background-position-x: -256px;}
-.-il_forbidden {background-position-x: -288px;}
+.-il_empty {background-position: 0px 0px;}
+.-il_yes {background-position: -32px 0px;}
+.-il_about {background-position: -64px 0px;}
+.-il_information {background-position: -96px 0px;}
+.-il_warning {background-position: -128px 0px;}
+.-il_important {background-position: -160px 0px;}
+.-il_error {background-position: -192px 0px;}
+.-il_question_confirm {background-position: -224px 0px;}
+.-il_question_ignore {background-position: -256px 0px;}
+.-il_forbidden {background-position: -288px 0px;}
 
 .dbs_iconsmall {
 	display: inline-block;
@@ -679,24 +685,23 @@ textarea.dbs_input-data:FOCUS,
 	padding: 0px !important;
 	background-repeat: no-repeat;
 	background-image: url("#{request.contextPath}/images/dbs_icons_small.png");
-	background-position-y: 0px; 
 }
 
-.-is_menuitem_plus {background-position-x: 0px;}
-.-is_menuitem_star {background-position-x: -11px;}
-.-is_tab_iconclose {background-position-x: -22px;}
-.-is_tab_iconclose_hover {background-position-x: -33px;}
-.-is_calendar_previous {background-position-x: -44px;}
-.-is_calendar_next {background-position-x: -55px;}
-.-is_select_up {background-position-x: -66px;}
-.-is_select_down {background-position-x: -77px;}
-.-is_invert_selection {background-position-x: -88px;}
-.-is_pesquisar {background-position-x: -99px;}
-.-is_menuitem_minus {background-position-x: -110px;}
-.-is_unlock {background-position-x: -121px;}
-.-is_lock {background-position-x: -132px;}
-.-is_editar {background-position-x: -143px;}
-.-is_inserir {background-position-x: -154px;}
+.-is_menuitem_plus {background-position: 0px 0px;}
+.-is_menuitem_star {background-position: -11px 0px;}
+.-is_tab_iconclose {background-position: -22px 0px;}
+.-is_tab_iconclose_hover {background-position: -33px 0px;}
+.-is_calendar_previous {background-position: -44px 0px;}
+.-is_calendar_next {background-position: -55px 0px;}
+.-is_select_up {background-position: -66px 0px;}
+.-is_select_down {background-position: -77px 0px;}
+.-is_invert_selection {background-position: -88px 0px;}
+.-is_pesquisar {background-position: -99px 0px;}
+.-is_menuitem_minus {background-position: -110px 0px;}
+.-is_unlock {background-position: -121px 0px;}
+.-is_lock {background-position: -132px 0px;}
+.-is_editar {background-position: -143px 0px;}
+.-is_inserir {background-position: -154px 0px;}
 
 td > .dbs_icon{
 /* 	margin-bottom: -4px !important; Comentado em 25/abr/2014 Ricardo - ocupava muito espaço para o icone da assinatura*/
@@ -717,242 +722,250 @@ td > .dbs_icon{
 	padding: 0px !important;
 	background-repeat: no-repeat;
 	background-image: url("#{request.contextPath}/images/dbs_icons.png");
+	--dbs_iconY: 0px;
 	background-position-y: 0px; 
+	background-position: var(--dbs_iconX) var(--dbs_iconY); /* Artifícil para contornar o firefox*/
 }
 
 .dbs_icon.-negative {
 	background-position-y: -16px;
+	--dbs_iconY: -16px;
 }
 
-.-i_empty {background-position-x: -0px;}
-.-i_yes {background-position-x: -16px;}
-.-i_no {background-position-x: -32px;}
-.-i_ok {background-position-x: -48px;}
-.-i_cancel {background-position-x: -64px;}
-.-i_about {background-position-x: -80px;}
-.-i_information {background-position-x: -96px;}
-.-i_warning {background-position-x: -112px;}
-.-i_important {background-position-x: -128px;}
-.-i_error {background-position-x: -144px;}
-.-i_question_confirm {background-position-x: -160px;}
-.-i_question_ignore {background-position-x: -176px;}
-.-i_forbidden {background-position-x: -192px;}
-.-i_prize_ribbon_green {background-position-x: -208px;}
-.-i_prize_ribbon_blue {background-position-x: -224px;}
-.-i_prize_ribbon_yellow {background-position-x: -240px;}
-.-i_prize_ribbon_red {background-position-x: -256px;}
-.-i_dot_green {background-position-x: -272px;}
-.-i_dot_blue {background-position-x: -288px;}
-.-i_dot_yellow {background-position-x: -304px;}
-.-i_dot_red {background-position-x: -320px;}
-.-i_on_off {background-position-x: -336px;}
-.-i_insert {background-position-x: -352px;}
-.-i_edit {background-position-x: -368px;}
-.-i_delete {background-position-x: -384px;}
-.-i_copy {background-position-x: -400px;}
-.-i_paste {background-position-x: -416px;}
-.-i_undo {background-position-x: -432px;}
-.-i_redo {background-position-x: -448px;}
-.-i_find {background-position-x: -464px;}
-.-i_refresh {background-position-x: -480px;}
-.-i_synchronize {background-position-x: -496px;}
-.-i_replace {background-position-x: -512px;}
-.-i_filter {background-position-x: -528px;}
-.-i_history {background-position-x: -544px;}
-.-i_download {background-position-x: -560px;}
-.-i_upload {background-position-x: -576px;}
-.-i_in {background-position-x: -592px;}
-.-i_out {background-position-x: -608px;}
-.-i_receive {background-position-x: -624px;}
-.-i_send {background-position-x: -640px;}
-.-i_user {background-position-x: -656px;}
-.-i_users {background-position-x: -672px;}
-.-i_user_admin {background-position-x: -688px;}
-.-i_user_hat {background-position-x: -704px;}
-.-i_user_id {background-position-x: -720px;}
-.-i_users_group {background-position-x: -736px;}
-.-i_navigate_first {background-position-x: -752px;}
-.-i_navigate_previous {background-position-x: -768px;}
-.-i_navigate_next {background-position-x: -784px;}
-.-i_navigate_last {background-position-x: -800px;}
-.-i_navigate_top {background-position-x: -816px;}
-.-i_navigate_up {background-position-x: -832px;}
-.-i_navigate_down {background-position-x: -848px;}
-.-i_navigate_bottom {background-position-x: -864px;}
-.-i_media_play {background-position-x: -880px;}
-.-i_media_stop {background-position-x: -896px;}
-.-i_media_pause {background-position-x: -912px;}
-.-i_media_rec {background-position-x: -928px;}
-.-i_media_video_play {background-position-x: -944px;}
-.-i_sun {background-position-x: -960px;}
-.-i_moon {background-position-x: -976px;}
-.-i_earth {background-position-x: -992px;}
-.-i_saturn {background-position-x: -1008px;}
-.-i_compass {background-position-x: -1024px;}
-.-i_location {background-position-x: -1040px;}
-.-i_stairs_up {background-position-x: -1056px;}
-.-i_stairs_down {background-position-x: -1072px;}
-.-i_unlock {background-position-x: -1088px;}
-.-i_lock {background-position-x: -1104px;}
-.-i_link {background-position-x: -1120px;}
-.-i_unlink {background-position-x: -1136px;}
-.-i_group {background-position-x: -1152px;}
-.-i_ungroup {background-position-x: -1168px;}
-.-i_join {background-position-x: -1184px;}
-.-i_split {background-position-x: -1200px;}
-.-i_home {background-position-x: -1216px;}
-.-i_office_building {background-position-x: -1232px;}
-.-i_factory {background-position-x: -1248px;}
-.-i_parthenon {background-position-x: -1264px;}
-.-i_church {background-position-x: -1280px;}
-.-i_newspaper {background-position-x: -1296px;}
-.-i_portofolio {background-position-x: -1312px;}
-.-i_calendar {background-position-x: -1328px;}
-.-i_todo {background-position-x: -1344px;}
-.-i_certificate {background-position-x: -1360px;}
-.-i_paper {background-position-x: -1376px;}
-.-i_papers {background-position-x: -1392px;}
-.-i_paper_text {background-position-x: -1408px;}
-.-i_papers_text {background-position-x: -1424px;}
-.-i_paper_text_edit {background-position-x: -1440px;}
-.-i_paper_text_find {background-position-x: -1456px;}
-.-i_paper_printer {background-position-x: -1472px;}
-.-i_paper_ribbon {background-position-x: -1488px;}
-.-i_paper_money {background-position-x: -1504px;}
-.-i_paper_organizer {background-position-x: -1520px;}
-.-i_file_cabinet {background-position-x: -1536px;}
-.-i_stamper {background-position-x: -1552px;}
-.-i_paper_clip {background-position-x: -1568px;}
-.-i_chat {background-position-x: -1584px;}
-.-i_message {background-position-x: -1600px;}
-.-i_mail {background-position-x: -1616px;}
-.-i_eye {background-position-x: -1632px;}
-.-i_step {background-position-x: -1648px;}
-.-i_heart {background-position-x: -1664px;}
-.-i_abacus {background-position-x: -1680px;}
-.-i_calculator {background-position-x: -1696px;}
-.-i_graph_pizza {background-position-x: -1712px;}
-.-i_graph_line {background-position-x: -1728px;}
-.-i_graph_bar_line {background-position-x: -1744px;}
-.-i_market_up {background-position-x: -1760px;}
-.-i_market_down {background-position-x: -1776px;}
-.-i_market_up_down {background-position-x: -1792px;}
-.-i_bill {background-position-x: -1808px;}
-.-i_bills {background-position-x: -1824px;}
-.-i_currency_yen {background-position-x: -1840px;}
-.-i_currency_euro {background-position-x: -1856px;}
-.-i_currency_pound {background-position-x: -1872px;}
-.-i_percent {background-position-x: -1888px;}
-.-i_safe {background-position-x: -1904px;}
-.-i_money_box {background-position-x: -1920px;}
-.-i_printer {background-position-x: -1936px;}
-.-i_monitor {background-position-x: -1952px;}
-.-i_mouse {background-position-x: -1968px;}
-.-i_folder {background-position-x: -1984px;}
-.-i_save {background-position-x: -2000px;}
-.-i_action_press {background-position-x: -2016px;}
-.-i_bug {background-position-x: -2032px;}
-.-i_wifi {background-position-x: -2048px;}
-.-i_database {background-position-x: -2064px;}
-.-i_servers {background-position-x: -2080px;}
-.-i_workstation {background-position-x: -2096px;}
-.-i_selection {background-position-x: -2112px;}
-.-i_top_menu {background-position-x: -2128px;}
-.-i_side_menu {background-position-x: -2144px;}
-.-i_backup {background-position-x: -2160px;}
-.-i_clock {background-position-x: -2176px;}
-.-i_clock_alarm {background-position-x: -2192px;}
-.-i_clock_timer {background-position-x: -2208px;}
-.-i_clock_schedule {background-position-x: -2224px;}
-.-i_runnig_timer {background-position-x: -2240px;}
-.-i_bike {background-position-x: -2256px;}
-.-i_car {background-position-x: -2272px;}
-.-i_taxi {background-position-x: -2288px;}
-.-i_train {background-position-x: -2304px;}
-.-i_bus {background-position-x: -2320px;}
-.-i_airplane {background-position-x: -2336px;}
-.-i_copter {background-position-x: -2352px;}
-.-i_ship {background-position-x: -2368px;}
-.-i_traffic_cone {background-position-x: -2384px;}
-.-i_traffic_light {background-position-x: -2400px;}
-.-i_gas_pump {background-position-x: -2416px;}
-.-i_wheel {background-position-x: -2432px;}
-.-i_steering_wheel {background-position-x: -2448px;}
-.-i_control_panel {background-position-x: -2464px;}
-.-i_meter {background-position-x: -2480px;}
-.-i_sign_prohibid {background-position-x: -2496px;}
-.-i_sign_recycle {background-position-x: -2512px;}
-.-i_sign_radioactive {background-position-x: -2528px;}
-.-i_sign_accessibility {background-position-x: -2544px;}
-.-i_sign_speed_limit {background-position-x: -2560px;}
-.-i_sign_risk {background-position-x: -2576px;}
-.-i_sign_turns {background-position-x: -2592px;}
-.-i_sign_9 {background-position-x: -2608px;}
-.-i_sign_roundabout {background-position-x: -2624px;}
-.-i_policeman {background-position-x: -2640px;}
-.-i_workman {background-position-x: -2656px;}
-.-i_front_desk {background-position-x: -2672px;}
-.-i_flashlight {background-position-x: -2688px;}
-.-i_shovel {background-position-x: -2704px;}
-.-i_hammer {background-position-x: -2720px;}
-.-i_wrench {background-position-x: -2736px;}
-.-i_magnet {background-position-x: -2752px;}
-.-i_lamp {background-position-x: -2768px;}
-.-i_scissors {background-position-x: -2784px;}
-.-i_key {background-position-x: -2800px;}
-.-i_keyhole {background-position-x: -2816px;}
-.-i_fire_extinguisher {background-position-x: -2832px;}
-.-i_fire {background-position-x: -2848px;}
-.-i_water {background-position-x: -2864px;}
-.-i_snow {background-position-x: -2880px;}
-.-i_umbrella {background-position-x: -2896px;}
-.-i_paper_plane {background-position-x: -2912px;}
-.-i_bomb {background-position-x: -2928px;}
-.-i_hourglass {background-position-x: -2944px;}
-.-i_target {background-position-x: -2960px;}
-.-i_phone {background-position-x: -2976px;}
-.-i_auction_hammer {background-position-x: -2992px;}
-.-i_balance {background-position-x: -3008px;}
-.-i_place123 {background-position-x: -3024px;}
-.-i_medal {background-position-x: -3040px;}
-.-i_dices {background-position-x: -3056px;}
-.-i_lifebelt {background-position-x: -3072px;}
-.-i_anchor {background-position-x: -3088px;}
-.-i_brief_case {background-position-x: -3104px;}
-.-i_first_aid {background-position-x: -3120px;}
-.-i_eyedropper {background-position-x: -3136px;}
-.-i_stethoscope {background-position-x: -3152px;}
-.-i_beaker {background-position-x: -3168px;}
-.-i_dna {background-position-x: -3184px;}
-.-i_atom {background-position-x: -3200px;}
-.-i_molecule {background-position-x: -3216px;}
-.-i_satellite {background-position-x: -3232px;}
-.-i_antenna {background-position-x: -3248px;}
-.-i_gear {background-position-x: -3264px;}
-.-i_gears {background-position-x: -3280px;}
-.-i_photo_camera {background-position-x: -3296px;}
-.-i_video_camera {background-position-x: -3312px;}
-.-i_director_chair {background-position-x: -3328px;}
-.-i_megaphone {background-position-x: -3344px;}
-.-i_microphone {background-position-x: -3360px;}
-.-i_picture {background-position-x: -3376px;}
-.-i_speaker {background-position-x: -3392px;}
-.-i_mixer {background-position-x: -3408px;}
-.-i_flag_finish {background-position-x: -3424px;}
-.-i_flag {background-position-x: -3440px;}
-.-i_box {background-position-x: -3456px;}
-.-i_box_paper {background-position-x: -3472px;}
-.-i_box_gift {background-position-x: -3488px;}
-.-i_box_wood {background-position-x: -3504px;}
-.-i_box_3d {background-position-x: -3520px;}
-.-i_star5 {background-position-x: -3536px;}
-.-i_star6 {background-position-x: -3552px;}
-.-i_star_xerif {background-position-x: -3568px;}
-.-i_shopping_cart {background-position-x: -3584px;}
-.-i_tag {background-position-x: -3600px;}
-.-i_barcode {background-position-x: -3616px;}
-.-i_feed {background-position-x: -3632px;}
-.-i_dbsoft {background-position-x: -3648px;}
+.-i_empty {background-position-x: -0px; --dbs_iconX: -0px;}
+.-i_yes {background-position-x: -16px; --dbs_iconX: -16px;}
+.-i_no {background-position-x: -32px; --dbs_iconX: -32px;}
+.-i_ok {background-position-x: -48px; --dbs_iconX: -48px;}
+.-i_cancel {background-position-x: -64px; --dbs_iconX: -64px;}
+.-i_about {background-position-x: -80px; --dbs_iconX: -80px;}
+.-i_information {background-position-x: -96px; --dbs_iconX: -96px;}
+.-i_warning {background-position-x: -112px; --dbs_iconX: -112px;}
+.-i_important {background-position-x: -128px; --dbs_iconX: -128px;}
+.-i_error {background-position-x: -144px; --dbs_iconX: -144px;}
+.-i_question_confirm {background-position-x: -160px; --dbs_iconX: -160px;}
+.-i_question_ignore {background-position-x: -176px; --dbs_iconX: -176px;}
+.-i_forbidden {background-position-x: -192px; --dbs_iconX: -192px;}
+.-i_prize_ribbon_green {background-position-x: -208px; --dbs_iconX: -208px;}
+.-i_prize_ribbon_blue {background-position-x: -224px; --dbs_iconX: -224px;}
+.-i_prize_ribbon_yellow {background-position-x: -240px; --dbs_iconX: -240px;}
+.-i_prize_ribbon_red {background-position-x: -256px; --dbs_iconX: -256px;}
+.-i_dot_green {background-position-x: -272px; --dbs_iconX: -272px;}
+.-i_dot_blue {background-position-x: -288px; --dbs_iconX: -288px;}
+.-i_dot_yellow {background-position-x: -304px; --dbs_iconX: -304px;}
+.-i_dot_red {background-position-x: -320px; --dbs_iconX: -320px;}
+.-i_on_off {background-position-x: -336px; --dbs_iconX: -336px;}
+.-i_insert {background-position-x: -352px; --dbs_iconX: -352px;}
+.-i_edit {background-position-x: -368px; --dbs_iconX: -368px;}
+.-i_delete {background-position-x: -384px; --dbs_iconX: -384px;}
+.-i_copy {background-position-x: -400px; --dbs_iconX: -400px;}
+.-i_paste {background-position-x: -416px; --dbs_iconX: -416px;}
+.-i_undo {background-position-x: -432px; --dbs_iconX: -432px;}
+.-i_redo {background-position-x: -448px; --dbs_iconX: -448px;}
+.-i_find {background-position-x: -464px; --dbs_iconX: -464px;}
+.-i_refresh {background-position-x: -480px; --dbs_iconX: -480px;}
+.-i_synchronize {background-position-x: -496px; --dbs_iconX: -496px;}
+.-i_replace {background-position-x: -512px; --dbs_iconX: -512px;}
+.-i_filter {background-position-x: -528px; --dbs_iconX: -528px;}
+.-i_history {background-position-x: -544px; --dbs_iconX: -544px;}
+.-i_download {background-position-x: -560px; --dbs_iconX: -560px;}
+.-i_upload {background-position-x: -576px; --dbs_iconX: -576px;}
+.-i_in {background-position-x: -592px; --dbs_iconX: -592px;}
+.-i_out {background-position-x: -608px; --dbs_iconX: -608px;}
+.-i_receive {background-position-x: -624px; --dbs_iconX: -624px;}
+.-i_send {background-position-x: -640px; --dbs_iconX: -640px;}
+.-i_user {background-position-x: -656px; --dbs_iconX: -656px;}
+.-i_users {background-position-x: -672px; --dbs_iconX: -672px;}
+.-i_user_tie {background-position-x: -688px; --dbs_iconX: -688px;}
+.-i_user_hat {background-position-x: -704px; --dbs_iconX: -704px;}
+.-i_user_id {background-position-x: -720px; --dbs_iconX: -720px;}
+.-i_users_group {background-position-x: -736px; --dbs_iconX: -736px;}
+.-i_users_speech {background-position-x: -752px; --dbs_iconX: -752px;}
+.-i_navigate_first {background-position-x: -768px; --dbs_iconX: -768px;}
+.-i_navigate_previous {background-position-x: -784px; --dbs_iconX: -784px;}
+.-i_navigate_next {background-position-x: -800px; --dbs_iconX: -800px;}
+.-i_navigate_last {background-position-x: -816px; --dbs_iconX: -816px;}
+.-i_navigate_top {background-position-x: -832px; --dbs_iconX: -832px;}
+.-i_navigate_up {background-position-x: -848px; --dbs_iconX: -848px;}
+.-i_navigate_down {background-position-x: -864px; --dbs_iconX: -864px;}
+.-i_navigate_bottom {background-position-x: -880px; --dbs_iconX: -880px;}
+.-i_media_play {background-position-x: -896px; --dbs_iconX: -896px;}
+.-i_media_stop {background-position-x: -912px; --dbs_iconX: -912px;}
+.-i_media_pause {background-position-x: -928px; --dbs_iconX: -928px;}
+.-i_media_rec {background-position-x: -944px; --dbs_iconX: -944px;}
+.-i_media_video_play {background-position-x: -960px; --dbs_iconX: -960px;}
+.-i_sun {background-position-x: -976px; --dbs_iconX: -976px;}
+.-i_moon {background-position-x: -992px; --dbs_iconX: -992px;}
+.-i_earth {background-position-x: -1008px; --dbs_iconX: -1008px;}
+.-i_saturn {background-position-x: -1024px; --dbs_iconX: -1024px;}
+.-i_compass {background-position-x: -1040px; --dbs_iconX: -1040px;}
+.-i_location {background-position-x: -1056px; --dbs_iconX: -1056px;}
+.-i_stairs_up {background-position-x: -1072px; --dbs_iconX: -1072px;}
+.-i_stairs_down {background-position-x: -1088px; --dbs_iconX: -1088px;}
+.-i_unlock {background-position-x: -1104px; --dbs_iconX: -1104px;}
+.-i_lock {background-position-x: -1120px; --dbs_iconX: -1120px;}
+.-i_link {background-position-x: -1136px; --dbs_iconX: -1136px;}
+.-i_unlink {background-position-x: -1152px; --dbs_iconX: -1152px;}
+.-i_group {background-position-x: -1168px; --dbs_iconX: -1168px;}
+.-i_ungroup {background-position-x: -1184px; --dbs_iconX: -1184px;}
+.-i_join {background-position-x: -1200px; --dbs_iconX: -1200px;}
+.-i_split {background-position-x: -1216px; --dbs_iconX: -1216px;}
+.-i_home {background-position-x: -1232px; --dbs_iconX: -1232px;}
+.-i_office_building {background-position-x: -1248px; --dbs_iconX: -1248px;}
+.-i_factory {background-position-x: -1264px; --dbs_iconX: -1264px;}
+.-i_parthenon {background-position-x: -1280px; --dbs_iconX: -1280px;}
+.-i_church {background-position-x: -1296px; --dbs_iconX: -1296px;}
+.-i_newspaper {background-position-x: -1312px; --dbs_iconX: -1312px;}
+.-i_portofolio {background-position-x: -1328px; --dbs_iconX: -1328px;}
+.-i_calendar {background-position-x: -1344px; --dbs_iconX: -1344px;}
+.-i_todo {background-position-x: -1360px; --dbs_iconX: -1360px;}
+.-i_certificate {background-position-x: -1376px; --dbs_iconX: -1376px;}
+.-i_paper {background-position-x: -1392px; --dbs_iconX: -1392px;}
+.-i_papers {background-position-x: -1408px; --dbs_iconX: -1408px;}
+.-i_paper_text {background-position-x: -1424px; --dbs_iconX: -1424px;}
+.-i_papers_text {background-position-x: -1440px; --dbs_iconX: -1440px;}
+.-i_paper_text_edit {background-position-x: -1456px; --dbs_iconX: -1456px;}
+.-i_paper_text_find {background-position-x: -1472px; --dbs_iconX: -1472px;}
+.-i_paper_printer {background-position-x: -1488px; --dbs_iconX: -1488px;}
+.-i_paper_ribbon {background-position-x: -1504px; --dbs_iconX: -1504px;}
+.-i_paper_money {background-position-x: -1520px; --dbs_iconX: -1520px;}
+.-i_paper_organizer {background-position-x: -1536px; --dbs_iconX: -1536px;}
+.-i_file_cabinet {background-position-x: -1552px; --dbs_iconX: -1552px;}
+.-i_stamper {background-position-x: -1568px; --dbs_iconX: -1568px;}
+.-i_paper_clip {background-position-x: -1584px; --dbs_iconX: -1584px;}
+.-i_stapler {background-position-x: -1600px; --dbs_iconX: -1600px;}
+.-i_pin {background-position-x: -1616px; --dbs_iconX: -1616px;}
+.-i_book {background-position-x: -1632px; --dbs_iconX: -1632px;}
+.-i_books {background-position-x: -1648px; --dbs_iconX: -1648px;}
+.-i_chat {background-position-x: -1664px; --dbs_iconX: -1664px;}
+.-i_message {background-position-x: -1680px; --dbs_iconX: -1680px;}
+.-i_mail {background-position-x: -1696px; --dbs_iconX: -1696px;}
+.-i_eye {background-position-x: -1712px; --dbs_iconX: -1712px;}
+.-i_step {background-position-x: -1728px; --dbs_iconX: -1728px;}
+.-i_heart {background-position-x: -1744px; --dbs_iconX: -1744px;}
+.-i_abacus {background-position-x: -1760px; --dbs_iconX: -1760px;}
+.-i_calculator {background-position-x: -1776px; --dbs_iconX: -1776px;}
+.-i_graph_pizza {background-position-x: -1792px; --dbs_iconX: -1792px;}
+.-i_graph_line {background-position-x: -1808px; --dbs_iconX: -1808px;}
+.-i_graph_bar_line {background-position-x: -1824px; --dbs_iconX: -1824px;}
+.-i_market_up {background-position-x: -1840px; --dbs_iconX: -1840px;}
+.-i_market_down {background-position-x: -1856px; --dbs_iconX: -1856px;}
+.-i_market_up_down {background-position-x: -1872px; --dbs_iconX: -1872px;}
+.-i_bill {background-position-x: -1888px; --dbs_iconX: -1888px;}
+.-i_bills {background-position-x: -1904px; --dbs_iconX: -1904px;}
+.-i_currency_yen {background-position-x: -1920px; --dbs_iconX: -1920px;}
+.-i_currency_euro {background-position-x: -1936px; --dbs_iconX: -1936px;}
+.-i_currency_pound {background-position-x: -1952px; --dbs_iconX: -1952px;}
+.-i_percent {background-position-x: -1968px; --dbs_iconX: -1968px;}
+.-i_safe {background-position-x: -1984px; --dbs_iconX: -1984px;}
+.-i_money_box {background-position-x: -2000px; --dbs_iconX: -2000px;}
+.-i_printer {background-position-x: -2016px; --dbs_iconX: -2016px;}
+.-i_monitor {background-position-x: -2032px; --dbs_iconX: -2032px;}
+.-i_mouse {background-position-x: -2048px; --dbs_iconX: -2048px;}
+.-i_folder {background-position-x: -2064px; --dbs_iconX: -2064px;}
+.-i_save {background-position-x: -2080px; --dbs_iconX: -2080px;}
+.-i_action_press {background-position-x: -2096px; --dbs_iconX: -2096px;}
+.-i_bug {background-position-x: -2112px; --dbs_iconX: -2112px;}
+.-i_wifi {background-position-x: -2128px; --dbs_iconX: -2128px;}
+.-i_database {background-position-x: -2144px; --dbs_iconX: -2144px;}
+.-i_servers {background-position-x: -2160px; --dbs_iconX: -2160px;}
+.-i_workstation {background-position-x: -2176px; --dbs_iconX: -2176px;}
+.-i_selection {background-position-x: -2192px; --dbs_iconX: -2192px;}
+.-i_top_menu {background-position-x: -2208px; --dbs_iconX: -2208px;}
+.-i_side_menu {background-position-x: -2224px; --dbs_iconX: -2224px;}
+.-i_backup {background-position-x: -2240px; --dbs_iconX: -2240px;}
+.-i_clock {background-position-x: -2256px; --dbs_iconX: -2256px;}
+.-i_clock_alarm {background-position-x: -2272px; --dbs_iconX: -2272px;}
+.-i_clock_timer {background-position-x: -2288px; --dbs_iconX: -2288px;}
+.-i_clock_schedule {background-position-x: -2304px; --dbs_iconX: -2304px;}
+.-i_runnig_timer {background-position-x: -2320px; --dbs_iconX: -2320px;}
+.-i_bike {background-position-x: -2336px; --dbs_iconX: -2336px;}
+.-i_car {background-position-x: -2352px; --dbs_iconX: -2352px;}
+.-i_taxi {background-position-x: -2368px; --dbs_iconX: -2368px;}
+.-i_train {background-position-x: -2384px; --dbs_iconX: -2384px;}
+.-i_bus {background-position-x: -2400px; --dbs_iconX: -2400px;}
+.-i_airplane {background-position-x: -2416px; --dbs_iconX: -2416px;}
+.-i_copter {background-position-x: -2432px; --dbs_iconX: -2432px;}
+.-i_ship {background-position-x: -2448px; --dbs_iconX: -2448px;}
+.-i_traffic_cone {background-position-x: -2464px; --dbs_iconX: -2464px;}
+.-i_traffic_light {background-position-x: -2480px; --dbs_iconX: -2480px;}
+.-i_gas_pump {background-position-x: -2496px; --dbs_iconX: -2496px;}
+.-i_wheel {background-position-x: -2512px; --dbs_iconX: -2512px;}
+.-i_steering_wheel {background-position-x: -2528px; --dbs_iconX: -2528px;}
+.-i_control_panel {background-position-x: -2544px; --dbs_iconX: -2544px;}
+.-i_meter {background-position-x: -2560px; --dbs_iconX: -2560px;}
+.-i_sign_prohibid {background-position-x: -2576px; --dbs_iconX: -2576px;}
+.-i_sign_recycle {background-position-x: -2592px; --dbs_iconX: -2592px;}
+.-i_sign_radioactive {background-position-x: -2608px; --dbs_iconX: -2608px;}
+.-i_sign_accessibility {background-position-x: -2624px; --dbs_iconX: -2624px;}
+.-i_sign_speed_limit {background-position-x: -2640px; --dbs_iconX: -2640px;}
+.-i_sign_risk {background-position-x: -2656px; --dbs_iconX: -2656px;}
+.-i_sign_turns {background-position-x: -2672px; --dbs_iconX: -2672px;}
+.-i_sign_9 {background-position-x: -2688px; --dbs_iconX: -2688px;}
+.-i_sign_roundabout {background-position-x: -2704px; --dbs_iconX: -2704px;}
+.-i_policeman {background-position-x: -2720px; --dbs_iconX: -2720px;}
+.-i_workman {background-position-x: -2736px; --dbs_iconX: -2736px;}
+.-i_front_desk {background-position-x: -2752px; --dbs_iconX: -2752px;}
+.-i_flashlight {background-position-x: -2768px; --dbs_iconX: -2768px;}
+.-i_shovel {background-position-x: -2784px; --dbs_iconX: -2784px;}
+.-i_hammer {background-position-x: -2800px; --dbs_iconX: -2800px;}
+.-i_wrench {background-position-x: -2816px; --dbs_iconX: -2816px;}
+.-i_magnet {background-position-x: -2832px; --dbs_iconX: -2832px;}
+.-i_lamp {background-position-x: -2848px; --dbs_iconX: -2848px;}
+.-i_scissors {background-position-x: -2864px; --dbs_iconX: -2864px;}
+.-i_key {background-position-x: -2880px; --dbs_iconX: -2880px;}
+.-i_keyhole {background-position-x: -2896px; --dbs_iconX: -2896px;}
+.-i_fire_extinguisher {background-position-x: -2912px; --dbs_iconX: -2912px;}
+.-i_fire {background-position-x: -2928px; --dbs_iconX: -2928px;}
+.-i_water {background-position-x: -2944px; --dbs_iconX: -2944px;}
+.-i_snow {background-position-x: -2960px; --dbs_iconX: -2960px;}
+.-i_umbrella {background-position-x: -2976px; --dbs_iconX: -2976px;}
+.-i_paper_plane {background-position-x: -2992px; --dbs_iconX: -2992px;}
+.-i_bomb {background-position-x: -3008px; --dbs_iconX: -3008px;}
+.-i_hourglass {background-position-x: -3024px; --dbs_iconX: -3024px;}
+.-i_target {background-position-x: -3040px; --dbs_iconX: -3040px;}
+.-i_phone {background-position-x: -3056px; --dbs_iconX: -3056px;}
+.-i_auction_hammer {background-position-x: -3072px; --dbs_iconX: -3072px;}
+.-i_balance {background-position-x: -3088px; --dbs_iconX: -3088px;}
+.-i_place123 {background-position-x: -3104px; --dbs_iconX: -3104px;}
+.-i_medal {background-position-x: -3120px; --dbs_iconX: -3120px;}
+.-i_dices {background-position-x: -3136px; --dbs_iconX: -3136px;}
+.-i_lifebelt {background-position-x: -3152px; --dbs_iconX: -3152px;}
+.-i_anchor {background-position-x: -3168px; --dbs_iconX: -3168px;}
+.-i_brief_case {background-position-x: -3184px; --dbs_iconX: -3184px;}
+.-i_first_aid {background-position-x: -3200px; --dbs_iconX: -3200px;}
+.-i_eyedropper {background-position-x: -3216px; --dbs_iconX: -3216px;}
+.-i_stethoscope {background-position-x: -3232px; --dbs_iconX: -3232px;}
+.-i_beaker {background-position-x: -3248px; --dbs_iconX: -3248px;}
+.-i_dna {background-position-x: -3264px; --dbs_iconX: -3264px;}
+.-i_atom {background-position-x: -3280px; --dbs_iconX: -3280px;}
+.-i_molecule {background-position-x: -3296px; --dbs_iconX: -3296px;}
+.-i_satellite {background-position-x: -3312px; --dbs_iconX: -3312px;}
+.-i_antenna {background-position-x: -3328px; --dbs_iconX: -3328px;}
+.-i_gear {background-position-x: -3344px; --dbs_iconX: -3344px;}
+.-i_gears {background-position-x: -3360px; --dbs_iconX: -3360px;}
+.-i_photo_camera {background-position-x: -3376px; --dbs_iconX: -3376px;}
+.-i_video_camera {background-position-x: -3392px; --dbs_iconX: -3392px;}
+.-i_director_chair {background-position-x: -3408px; --dbs_iconX: -3408px;}
+.-i_megaphone {background-position-x: -3424px; --dbs_iconX: -3424px;}
+.-i_microphone {background-position-x: -3440px; --dbs_iconX: -3440px;}
+.-i_picture {background-position-x: -3456px; --dbs_iconX: -3456px;}
+.-i_speaker {background-position-x: -3472px; --dbs_iconX: -3472px;}
+.-i_mixer {background-position-x: -3488px; --dbs_iconX: -3488px;}
+.-i_flag_finish {background-position-x: -3504px; --dbs_iconX: -3504px;}
+.-i_flag {background-position-x: -3520px; --dbs_iconX: -3520px;}
+.-i_box {background-position-x: -3536px; --dbs_iconX: -3536px;}
+.-i_box_paper {background-position-x: -3552px; --dbs_iconX: -3552px;}
+.-i_box_gift {background-position-x: -3568px; --dbs_iconX: -3568px;}
+.-i_box_wood {background-position-x: -3584px; --dbs_iconX: -3584px;}
+.-i_box_3d {background-position-x: -3600px; --dbs_iconX: -3600px;}
+.-i_star5 {background-position-x: -3616px; --dbs_iconX: -3616px;}
+.-i_star6 {background-position-x: -3632px; --dbs_iconX: -3632px;}
+.-i_star_xerif {background-position-x: -3648px; --dbs_iconX: -3648px;}
+.-i_shopping_cart {background-position-x: -3664px; --dbs_iconX: -3664px;}
+.-i_tag {background-position-x: -3680px; --dbs_iconX: -3680px;}
+.-i_barcode {background-position-x: -3696px; --dbs_iconX: -3696px;}
+.-i_feed {background-position-x: -3712px; --dbs_iconX: -3712px;}
+.-i_dbsoft {background-position-x: -3728px; --dbs_iconX: -3728px;}
 
 .runningGear {
 	background-image: url("#{request.contextPath}/images/gear16.gif") !important;

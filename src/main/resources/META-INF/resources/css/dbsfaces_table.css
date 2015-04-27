@@ -12,9 +12,9 @@
 .dbs_table > .-caption{
 	display:block;
 	text-align: center;
-	-webkit-border-radius:3px;  
-	-moz-border-radius: 3px;
-	border-radius:6px 6px 0px 0px;
+	-webkit-border-radius: 3px 3px 0px 0px;  
+	-moz-border-radius: 3px 3px 0px 0px;
+	border-radius:3px 3px 0px 0px;
 	
 	position:relative;
 	top:0px;

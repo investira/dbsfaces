@@ -20,9 +20,9 @@
 	background-color: rgba(13, 25, 45, 0.8);
 	color: white;
 	background-repeat: repeat;
-    border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;    
+    border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;    
     padding: 3px 5px 2px 6px;
     box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.6);
    	-webkit-box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.6);

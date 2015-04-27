@@ -18,9 +18,9 @@
 
 .dbs_report > .-content:first-child {
 	border-width: 0px;
-	-moz-border-radius: 9px 9px 0px 0px;
-  	-webkit-border-radius: 9px 9px 0px 0px;
-	border-radius:9px 9px 0px 0px;
+	-moz-border-radius: 3px 3px 0px 0px;
+  	-webkit-border-radius: 3px 3px 0px 0px;
+	border-radius:3px 3px 0px 0px;
 }
 
 .dbs_report > .-content{
