@@ -43,21 +43,22 @@ public class DBSSubmenuRenderer extends DBSRenderer {
 		String xClassMenuitem = DBSFaces.CSS.NOT_SELECTABLE;
 		
 		if (xSubmenu.getStyleClass()!=null){
-			xClass = xClass + xSubmenu.getStyleClass(); 
+			xClass += xSubmenu.getStyleClass(); 
 		}
 		
 		//Ignora o style padrão caso o pai/avô seja um DBSMenu
 		UIComponent xParent = pComponent.getParent();
 		xIsSubmenu = (xParent.getAttributes().get("class") != DBSMenu.class);
 		if (xIsSubmenu){
-			xClass = xClass + DBSFaces.CSS.SUBMENU.MAIN; 
-			xClassMenuitem = xClassMenuitem + DBSFaces.CSS.MENUITEM.MAIN; 
+			xClass += DBSFaces.CSS.SUBMENU.MAIN; 
+			xClassMenuitem += DBSFaces.CSS.MENUITEM.MAIN; 
 			xIsRoot = (xParent.getAttributes().get("class") != DBSSubmenu.class);
 		}		
 
 		if (!xIsRoot){
 			xWriter.startElement("li", xSubmenu);
 				DBSFaces.setAttribute(xWriter, "class", xClassMenuitem, null);
+				DBSFaces.setAttribute(xWriter, "style", xSubmenu.getStyle(), null);
 				xWriter.startElement("a", xSubmenu);
 	//				DBSFaces.setAttribute(xWriter, xSubmenu, "href", "javascript:void(0)", null);
 					DBSFaces.setAttribute(xWriter, "ontouchstart", "", null);
