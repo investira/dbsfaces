@@ -35,12 +35,8 @@
 }
 
 .dbs_menu > li > a > .-content{
-	display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
-	display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
-	display: -ms-flexbox;      /* TWEENER - IE 10 */
-	display: -webkit-flex;     /* NEW - Chrome */
-	display: flex;   
 	min-height: 16px; /*26-04-2015*/
+	display: inline-block; /*26-04-2015*/
 }
 
 .dbs_menu .-label {
