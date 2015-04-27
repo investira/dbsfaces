@@ -103,7 +103,7 @@ public class DBSMenuitemRenderer extends DBSRenderer {
 //				                                     true);
 					}
 				}
-				if (xIsRoot){
+				if (xIsRoot){ //Encode necessário para ficar em conformidade com o encode do Submenu
 					xWriter.startElement("span", xMenuitem);
 					xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT, "class");
 				}
@@ -124,7 +124,7 @@ public class DBSMenuitemRenderer extends DBSRenderer {
 						xWriter.endElement("span");
 					}
 				
-				if (xIsRoot){
+				if (xIsRoot){ //Encode necessário para ficar em conformidade com o encode do Submenu
 					xWriter.endElement("span");
 				}
 			if (xMenuitem.getReadOnly()){
