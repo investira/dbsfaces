@@ -10,7 +10,6 @@ import javax.faces.render.FacesRenderer;
 import com.sun.faces.renderkit.RenderKitUtils;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
-import br.com.dbsoft.ui.component.img.DBSImg;
 import br.com.dbsoft.ui.component.menu.DBSMenu;
 import br.com.dbsoft.ui.component.menuitem.DBSMenuitem;
 import br.com.dbsoft.ui.core.DBSFaces;
@@ -52,6 +51,7 @@ public class DBSMenuitemRenderer extends DBSRenderer {
 		String xClass = DBSFaces.CSS.NOT_SELECTABLE;
 		String xOnClick;
 		String xExecute = "";
+		Boolean xIsRoot = true;
 		if (xMenuitem.getExecute() == null){
 			xExecute = getFormId(pContext, pComponent); 
 		}else{
@@ -68,9 +68,11 @@ public class DBSMenuitemRenderer extends DBSRenderer {
 			xClass += DBSFaces.CSS.MODIFIER.DISABLED;
 		}
 		
+		//Verificar se é filho ou parte do menu principal
 		UIComponent xParent = pComponent.getParent();
 		if (xParent.getAttributes().get("class") != DBSMenu.class){
-			xClass += " " + DBSFaces.CSS.MENUITEM.MAIN; 
+			xClass += " " + DBSFaces.CSS.MENUITEM.MAIN;
+			xIsRoot = false;
 		}
 		if (xMenuitem.getReadOnly()){
 			xClass += " " + DBSFaces.CSS.MODIFIER.READONLY;
@@ -101,19 +103,28 @@ public class DBSMenuitemRenderer extends DBSRenderer {
 //				                                     true);
 					}
 				}
-				//encodeClientBehaviors(pContext, xMenuitem);
-				if (xMenuitem.getIconClass()!=null){
-					DBSImg xImg = new DBSImg();
-						xImg.setStyleClass(xMenuitem.getIconClass() + " " + DBSFaces.CSS.MODIFIER.ICON);
-					xImg.encodeAll(pContext);
-				}
-				//Encode Behavior
-				
-				//Encode Label
-				if (xMenuitem.getLabel()!=null){
+				if (xIsRoot){
 					xWriter.startElement("span", xMenuitem);
-						xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.LABEL + " " + DBSFaces.CSS.INPUT.LABEL, "class");
-						xWriter.write(xMenuitem.getLabel());
+					xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT, "class");
+				}
+				
+					//encodeClientBehaviors(pContext, xMenuitem);
+					if (xMenuitem.getIconClass()!=null){
+						xWriter.startElement("span", xMenuitem);
+							xWriter.writeAttribute("class", xMenuitem.getIconClass() + " " + DBSFaces.CSS.MODIFIER.ICON, "class");
+						xWriter.endElement("span");
+					}
+					//Encode Behavior
+					
+					//Encode Label
+					if (xMenuitem.getLabel()!=null){
+						xWriter.startElement("span", xMenuitem);
+							xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.LABEL + " " + DBSFaces.CSS.INPUT.LABEL, "class");
+							xWriter.write(xMenuitem.getLabel());
+						xWriter.endElement("span");
+					}
+				
+				if (xIsRoot){
 					xWriter.endElement("span");
 				}
 			if (xMenuitem.getReadOnly()){
