@@ -289,23 +289,6 @@
 }
 
 
-li.dbs_menuitem:not(.-disabled):ACTIVE {
-	background-color: rgba(255, 255, 255, 0.2) !important;
-	-webkit-box-shadow: 1px 1px 1px -1px rgba(0, 0, 0, 0.4), -1px -1px 0 0 rgba(255, 255, 255, 0.3) !important;
-	-moz-box-shadow: 1px 1px 1px -1px rgba(0, 0, 0, 0.4), -1px -1px 0 0 rgba(255, 255, 255, 0.3) !important;
-	box-shadow: 1px 1px 1px -1px rgba(0, 0, 0, 0.4), -1px -1px 0 0 rgba(255, 255, 255, 0.3) !important;
-	
-	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6), 0px 0px 1px rgba(100, 180, 255, 1) !important;
-}
-
-li.dbs_menuitem:not(.-disabled):HOVER{
-	text-decoration: none !important;
-	background-color: rgba(155, 155, 155, 0.15);
-	-webkit-box-shadow: 1px 1px 1px -1px rgba(0, 0, 0, 0.4), -1px -1px 0px 0px rgba(255, 255, 255, 0.3);
-	-moz-box-shadow: 1px 1px 1px -1px rgba(0, 0, 0, 0.4), -1px -1px 0px 0px rgba(255, 255, 255, 0.3);
-	box-shadow: 1px 1px 1px -1px rgba(0, 0, 0, 0.4), -1px -1px 0px 0px rgba(255, 255, 255, 0.3);
-}
-
 
 li.dbs_menuitem.-readOnly {
 	opacity: 0.7;
