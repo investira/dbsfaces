@@ -115,12 +115,12 @@ a:LINK {
 	color: inherit;
 }
 
-H1,H2,H3,H4,H5,H6 {
-	color: rgb(254, 254, 255);
+/* H1,H2,H3,H4,H5,H6 { */
+/* 	color: rgb(254, 254, 255); */
 	/*AZUL DBSOFT=rgb(13, 25, 45) #0d192d; BRANCO=rgb(245,245,245) #f5f5f5*/
-	font-weight: bold;
-	text-shadow: 1px 1px 1px rgb(0, 0, 0);
-}
+/* 	font-weight: bold; */
+/* 	text-shadow: 1px 1px 1px rgb(0, 0, 0); */
+/* } */
 
 H1 {
 	font-size: 21px;
