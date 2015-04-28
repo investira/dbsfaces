@@ -36,7 +36,8 @@
 
 .dbs_menu > li > a > .-content{
 	min-height: 16px; /*26-04-2015*/
-	display: inline-block; /*26-04-2015*/
+	display: block; /*28-04-2015*/
+/* 	display: inline-block; 26-04-2015 */
 }
 
 .dbs_menu .-label {
