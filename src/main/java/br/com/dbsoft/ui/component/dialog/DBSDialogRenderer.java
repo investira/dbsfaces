@@ -58,7 +58,7 @@ public class DBSDialogRenderer extends DBSRenderer {
 		xCount = pvDialogCount(pComponent.getChildren(),0);
 		
 		UIComponent xToolbar = xDialog.getFacet("toolbar");
-		UIComponent xDialogMessage = xDialog.getFacet("dialogMessage");
+		UIComponent xDialogMessage = xDialog.getFacet("dialogMessages");
 	
 		// STYLE 
 		if (xDialog.getWidth() == 0 || 
@@ -155,11 +155,11 @@ public class DBSDialogRenderer extends DBSRenderer {
 							//Botoes padrão ----------------
 							xWriter.startElement("div", xDialog);
 								xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.BUTTON, null);
-								if (!DBSObject.isEmpty(xDialog.getYesAction())){
-									pvEncodeButton(pContext,xDialog,xDialog.getYesAction(),"btyes", "Sim","-i_yes");
-								}
 								if (!DBSObject.isEmpty(xDialog.getNoAction())){
 									pvEncodeButton(pContext,xDialog,xDialog.getNoAction(),"btno", "Não","-i_no");
+								}
+								if (!DBSObject.isEmpty(xDialog.getYesAction())){
+									pvEncodeButton(pContext,xDialog,xDialog.getYesAction(),"btyes", "Sim","-i_yes");
 								}
 								if (!DBSObject.isEmpty(xDialog.getOkAction())){
 									pvEncodeButton(pContext,xDialog,xDialog.getOkAction(),"btok", "Ok","-i_yes");

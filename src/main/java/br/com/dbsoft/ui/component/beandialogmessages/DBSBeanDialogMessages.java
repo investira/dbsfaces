@@ -1,4 +1,4 @@
-package br.com.dbsoft.ui.component.beandialogmessage;
+package br.com.dbsoft.ui.component.beandialogmessages;
 
 
 import javax.faces.component.FacesComponent;
@@ -12,11 +12,11 @@ import br.com.dbsoft.ui.core.DBSFaces;
  * @author ricardovillar
  *
  */
-@FacesComponent(DBSBeanDialogMessage.COMPONENT_TYPE)
-public class DBSBeanDialogMessage extends DBSUIComponentBase { 
+@FacesComponent(DBSBeanDialogMessages.COMPONENT_TYPE)
+public class DBSBeanDialogMessages extends DBSUIComponentBase { 
 
-	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.BEANDIALOGMESSAGE;
-	public final static String RENDERER_TYPE = "/resources/component/beanDialogMessage.xhtml";
+	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.BEANDIALOGMESSAGES;
+	public final static String RENDERER_TYPE = "/resources/component/beanDialogMessages.xhtml";
 	
 	protected enum PropertyKeys {
 		userBean;
@@ -35,8 +35,8 @@ public class DBSBeanDialogMessage extends DBSUIComponentBase {
 		}
 	}
 	
-	public DBSBeanDialogMessage(){
-		setRendererType(DBSBeanDialogMessage.RENDERER_TYPE);
+	public DBSBeanDialogMessages(){
+		setRendererType(DBSBeanDialogMessages.RENDERER_TYPE);
 	}
 
     @Override

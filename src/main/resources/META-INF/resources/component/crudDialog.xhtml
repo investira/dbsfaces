@@ -8,7 +8,7 @@
 	xmlns:dbs="http://www.dbsoft.com.br/ui/dbsfaces"
 	xmlns:dbscom="http://www.dbsoft.com.br/ui/dbsfacescom">
 		
-	<cc:interface componentType="br.com.dbsoft.ui.component.crudForm">
+	<cc:interface componentType="br.com.dbsoft.ui.component.crudDialog">
 		<cc:attribute name="crudBean" preferred="true" required="true"/>
 		<cc:attribute name="id" preferred="true"/>
 		<cc:attribute name="style"/>
@@ -24,7 +24,7 @@
 	</cc:interface>
 	
 	<cc:implementation >
-		<div id="#{cc.clientId}" class="dbs_crudForm #{cc.attrs.styleClass}" style="#{cc.attrs.style}">
+		<div id="#{cc.clientId}" class="dbs_crudDialog #{cc.attrs.styleClass}" style="#{cc.attrs.style}">
 			<dbs:div id="content">
 				<dbs:dialog id="dialog"
 				            caption="#{cc.crudBean.dialogCaption}" 
@@ -112,54 +112,11 @@
 					
 					<cc:insertChildren/>
 						
-<!-- 					<c:if test="#{cc.crudBean.isApprovingOrReproving}"> -->
-<!-- 						<cc:renderFacet name="approve"/> -->
-<!-- 					</c:if> -->
-					<f:facet name="dialogMessage">
-						<dbscom:beanDialogMessages id="message"
-												   userBean="#{cc.crudBean}"
+					<f:facet name="dialogMessages">
+						<dbscom:beanCrudDialogMessages id="message"
+												   crudBean="#{cc.crudBean}"
 		 							               update=":dialog">
-		 				</dbscom:beanDialogMessages>
-	
-						
-						<c:if test="#{!cc.crudBean.hasMessage}">
-							<dbs:dialog id="confirm"
-										rendered="#{cc.crudBean.isCommitting}"
-										messageIcon="c"
-										height="150" 
-										width="200" 
-										yesAction="#{cc.crudBean.endEditing(true)}"
-										noAction="#{cc.crudBean.endEditing(false)}"
-										update=":dialog #{cc.attrs.update}" >
-										<ui:fragment rendered="#{cc.crudBean.isUpdating}">
-											#{cc.crudBean.dialogConfirmationEditMessage}
-										</ui:fragment>		
-										<ui:fragment rendered="#{cc.crudBean.isInserting}">
-											#{cc.crudBean.dialogConfirmationInsertMessage}
-										</ui:fragment>		
-										<ui:fragment rendered="#{cc.crudBean.isDeleting}">
-											#{cc.crudBean.dialogConfirmationDeleteMessage}
-										</ui:fragment>		
-							</dbs:dialog>
-							<dbs:dialog id="ignore" 
-										rendered="#{cc.crudBean.isIgnoring}"
-										messageIcon="g"
-										height="150" 
-										width="200" 
-										yesAction="#{cc.crudBean.endEditing(true)}"
-										noAction="#{cc.crudBean.endEditing(false)}"
-										update=":dialog #{cc.crudBean.isInserting ? cc.attrs.update :''}">
-								<ui:fragment rendered="#{cc.crudBean.isUpdating}">
-									#{cc.crudBean.dialogIgnoreEditMessage}
-								</ui:fragment>		
-								<ui:fragment rendered="#{cc.crudBean.isInserting}">
-									#{cc.crudBean.dialogIgnoreInsertMessage}
-								</ui:fragment>		
-								<ui:fragment rendered="#{cc.crudBean.isDeleting}">
-									#{cc.crudBean.dialogIgnoreDeleteMessage}
-								</ui:fragment>		
-							</dbs:dialog>
-						</c:if>
+		 				</dbscom:beanCrudDialogMessages>
 					</f:facet>
 				</dbs:dialog>
 			</dbs:div>

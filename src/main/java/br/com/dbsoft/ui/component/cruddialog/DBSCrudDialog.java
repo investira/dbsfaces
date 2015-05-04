@@ -1,4 +1,4 @@
-package br.com.dbsoft.ui.component.crudform;
+package br.com.dbsoft.ui.component.cruddialog;
 
 
 import javax.el.MethodExpression;
@@ -11,9 +11,7 @@ import javax.faces.component.UIInput;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
-import javax.faces.event.PhaseId;
 import javax.faces.event.PostAddToViewEvent;
-//import javax.faces.event.PreRenderViewEvent;
 import javax.faces.event.PreValidateEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
@@ -29,11 +27,11 @@ import br.com.dbsoft.ui.core.DBSFaces;
  * @author ricardovillar
  *
  */
-@FacesComponent(DBSCrudForm.COMPONENT_TYPE)
-public class DBSCrudForm extends DBSUIComponentBase implements NamingContainer, SystemEventListener { 
+@FacesComponent(DBSCrudDialog.COMPONENT_TYPE)
+public class DBSCrudDialog extends DBSUIComponentBase implements NamingContainer, SystemEventListener { 
 
-	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.CRUDFORM;
-	public final static String RENDERER_TYPE = "/resources/component/crudForm.xhtml";
+	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.CRUDDIALOG;
+	public final static String RENDERER_TYPE = "/resources/component/crudDialog.xhtml";
 	
 	protected enum PropertyKeys {
 		crudBean;
@@ -52,8 +50,8 @@ public class DBSCrudForm extends DBSUIComponentBase implements NamingContainer, 
 		}
 	}
 	
-	public DBSCrudForm(){
-		setRendererType(DBSCrudForm.RENDERER_TYPE);
+	public DBSCrudDialog(){
+		setRendererType(DBSCrudDialog.RENDERER_TYPE);
 		 FacesContext xContext = FacesContext.getCurrentInstance();
 
 		 xContext.getViewRoot().subscribeToViewEvent(PostAddToViewEvent.class, this);
@@ -98,20 +96,20 @@ public class DBSCrudForm extends DBSUIComponentBase implements NamingContainer, 
 //				 		    xContext.getCurrentPhaseId()  + "\t" +
 //				 		    xContext.isProcessingEvents()  + "\t" +
 //				 		    "UIComponentID:" + xComponent.getClientId());
-		if (pEvent instanceof PostAddToViewEvent){
-			//Informa ao crudBean qual a qual crudform ele pertence
-			if (xComponent instanceof DBSCrudForm
-			 && xContext.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE){
-				String xELString = DBSFaces.getELString(this, PropertyKeys.crudBean.toString());
-				MethodExpression xME = null;
-				Object[] xParms = null;
-				//Cria chamada ao método do crudBean para configura o campo
-				xME = DBSFaces.createMethodExpression(xContext, xELString + ".setCrudForm", null, new Class[]{UIComponent.class});
-		    	xParms = new Object[1]; 
-		    	xParms[0] = xComponent;
-				xME.invoke(xContext.getELContext(), xParms);
-			}
-		}
+//		if (pEvent instanceof PostAddToViewEvent){
+//			//Informa ao crudBean qual a qual crudform ele pertence
+//			if (xComponent instanceof DBSCrudDialog
+//			 && xContext.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE){
+//				String xELString = DBSFaces.getELString(this, PropertyKeys.crudBean.toString());
+//				MethodExpression xME = null;
+//				Object[] xParms = null;
+//				//Cria chamada ao método do crudBean para configura o campo
+//				xME = DBSFaces.createMethodExpression(xContext, xELString + ".setCrudForm", null, new Class[]{UIComponent.class});
+//		    	xParms = new Object[1]; 
+//		    	xParms[0] = xComponent;
+//				xME.invoke(xContext.getELContext(), xParms);
+//			}
+//		}
 
 		if (xComponent.getFacets().size() > 0) {
 			UIComponent xF = xComponent.getFacets().get(javax.faces.component.UIComponent.COMPOSITE_FACET_NAME);
@@ -160,7 +158,6 @@ public class DBSCrudForm extends DBSUIComponentBase implements NamingContainer, 
 
 	@Override
 	public boolean isListenerForSource(Object source) {
-//		 return (source instanceof DBSCrudForm);
 		 return (source.equals(this));
 	}
 }

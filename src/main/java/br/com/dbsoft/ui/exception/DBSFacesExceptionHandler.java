@@ -41,7 +41,8 @@ public class DBSFacesExceptionHandler  extends ExceptionHandlerWrapper {
 			ExceptionQueuedEvent xEvent = i.next();             
 			ExceptionQueuedEventContext xContext = (ExceptionQueuedEventContext) xEvent.getSource();               
 			// get the exception from context             
-			Throwable xThrowable = xContext.getException();               
+			Throwable xThrowable = xContext.getException();
+			Boolean xRemove = true;
 			final FacesContext xFC = FacesContext.getCurrentInstance();   
 			
 			final Map<String, Object> xRequestMap = xFC.getExternalContext().getRequestMap();            
@@ -59,7 +60,14 @@ public class DBSFacesExceptionHandler  extends ExceptionHandlerWrapper {
 //					xFC.renderResponse();       
 					xNav.performNavigation("/");
 				}else if (xThrowable instanceof javax.el.PropertyNotFoundException){
-					wLogger.error("Erro no encode do componente - Propriedade não encontrada", xThrowable);
+					wLogger.error("Erro no encode do componente - Propriedade não encontrada", xThrowable); 
+				}else if (xThrowable instanceof javax.faces.FacesException){ 
+					if (xThrowable.getCause() instanceof com.sun.faces.context.FacesFileNotFoundException){
+						wLogger.error("Página não encontrada. " + xThrowable.getMessage()); 
+//						FacesMessage xM = new FacesMessage("aaaaa");
+//						xFC.addMessage(clientId, message);
+						xRemove = false;
+					}
 				}else{
 					wLogger.error("Severe Exception Occured", xThrowable);
 					xRequestMap.put("exceptionMessage", xThrowable.getMessage());                 
@@ -68,9 +76,10 @@ public class DBSFacesExceptionHandler  extends ExceptionHandlerWrapper {
 					// remove the comment below if you want to report the error in a jsf error message                 
 //					JsfUtil.addErrorMessage(t.getMessage());     
 				}
-			} finally {                 
-			    //remove it from queue                 
-			    i.remove();             
+			} finally {     
+				if (xRemove){
+				    i.remove();             
+				}
 			}         
 	   }         
 	    //parent hanle         

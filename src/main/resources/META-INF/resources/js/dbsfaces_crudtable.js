@@ -1,6 +1,6 @@
 dbs_crudTable = function(pId) {
 	var xCheckbox = pId + " > .-container > .dbs_dataTable > .-container > .-content > table  > tbody > tr > .-checkbox";
-	var xEditableRows = pId + " > .-container > .dbs_dataTable.-noDialogEdit > .-container > .-content > table  > tbody > tr";
+	var xEditableRows = pId + " > .-container > .dbs_dataTable.-formStyle_Table > .-container > .-content > table  > tbody > tr";
 
 	//Foi necessário o artifício de capturar o click, pois o update na linha que tem o checkbox, quebrava o vinculo com on(event).
 	//Desta forma o vinculo é refeito a cada click.

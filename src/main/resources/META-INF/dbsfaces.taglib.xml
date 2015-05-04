@@ -2256,7 +2256,7 @@
 		</attribute>		
 		<attribute>
 			<description>
-                Indica se utilizará o iconé pequeno. Padrão é false.
+                Indica se utilizará o icone pequeno. Padrão é false.
             </description>
 			<name>ajaxLoadingSmallIcon</name>
 			<required>false</required>

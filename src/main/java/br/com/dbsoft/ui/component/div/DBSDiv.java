@@ -76,7 +76,7 @@ public class DBSDiv extends DBSUIComponentBase {
 	}
 	
 	public void setAjaxLoadingSmallIcon(Boolean pAjaxLoadingSmallIcon) {
-		getStateHelper().put(PropertyKeys.ajaxLoading, pAjaxLoadingSmallIcon);
+		getStateHelper().put(PropertyKeys.ajaxLoadingSmallIcon, pAjaxLoadingSmallIcon);
 		handleAttribute("ajaxLoadingSmallIcon", pAjaxLoadingSmallIcon);
 	}	
 }

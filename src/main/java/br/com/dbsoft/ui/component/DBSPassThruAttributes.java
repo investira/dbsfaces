@@ -156,7 +156,23 @@ public class DBSPassThruAttributes {
 	        ,attr("onselect","select")
 	        ,attr("tabindex")
         ))
-        .add("CrudForm",ar(
+        .add("CrudView",ar(
+            attr("onblur","blur")
+            ,attr("onchange","change")
+            ,attr("ondblclick","dblclick")
+            ,attr("onfocus","focus")
+            ,attr("onkeydown","keydown")
+            ,attr("onkeypress","keypress")
+            ,attr("onkeyup","keyup")
+            ,attr("onmousedown","mousedown")
+            ,attr("onmousemove","mousemove")
+            ,attr("onmouseout","mouseout")
+            ,attr("onmouseover","mouseover")
+            ,attr("onmouseup","mouseup")
+            ,attr("onselect","select")
+            ,attr("tabindex")
+        ))
+        .add("CrudDialog",ar(
             attr("onblur","blur")
             ,attr("onchange","change")
             ,attr("ondblclick","dblclick")
@@ -631,7 +647,8 @@ public class DBSPassThruAttributes {
         CHARTVALUE("ChartValue"),
         COMBOBOX("Combobox"),
         COMPONENTTREE("ComponentTree"),
-        CRUDFOM("CrudForm"),
+        CRUDVIEW("CrudView"),
+        CRUDDIALOG("CrudDialog"),
         CRUDTABLE("CrudTable"),
         DATATABLE("DataTable"),
         DIALOG("Dialog"),

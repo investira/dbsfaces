@@ -19,7 +19,7 @@
 	display:table;
 }
 
-.dbs_crudTable > .-container > .dbs_dataTable.-noDialogEdit > .-container > .-content  > table > tbody > tr > .-C1 > label {
+.dbs_crudTable > .-container > .dbs_dataTable.-formStyle_Table > .-container > .-content  > table > tbody > tr > .-C1 > label {
     position: relative;
 	left: 1px;
     top: 1px;

@@ -252,25 +252,53 @@ svg{
     z-index: 1;	
 }
 
+/* loadings --------------------------------------------------- */
+
 .-loading {
-	background-image: url("#{request.contextPath}/images/loading_small.gif");
+	position: absolute;
 	width: 12px;
 	height: 12px;
+	background-image: url("#{request.contextPath}/images/loading_small.gif");
+	background-position: 0px 0px;
 	background-repeat: no-repeat !important;
-	position: absolute;
 }
 
 .dbs_div_loading{
+	min-width: 12px;
+	min-height: 12px;
 }
 
 .dbs_div_loading > .-loading{
-	position: relative;
 	top: 50%;
 	left: 50%;
 	margin-top: -6px;
 	margin-left: -6px;
-	min-width: 18px;
-	min-height: 18px;
+}
+
+.dbs_loading,
+.dbs_loading_error {
+	background-repeat: no-repeat;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+}
+
+
+.dbs_loading {
+	height: 43px;
+	width: 44px;
+	margin: -22px 0 0 -22px;
+	background-image: url("#{request.contextPath}/images/loading.gif");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-color: rgba(235, 235, 235, 0.8);
+	-webkit-border-radius: 23px;
+	-moz-border-radius: 23px;
+	border-radius: 23px;
+	-webkit-box-shadow: 0 0 3px 0 rgba(13, 25, 45, 0.5);
+	-moz-box-shadow: 0 0 3px 0 rgba(13, 25, 45, 0.5);
+	box-shadow: 0 0 3px 0 rgba(13, 25, 45, 0.5);
+	z-index: 9999;
 }
 
 .-scrollLeft {
@@ -630,32 +658,6 @@ textarea.dbs_input-data:FOCUS,
 
 
 
-/* dbs_loading --------------------------------------------------- */
-.dbs_loading,
-.dbs_loading_error {
-	background-repeat: no-repeat;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-}
-
-
-.dbs_loading {
-	height: 43px;
-	width: 44px;
-	margin: -22px 0 0 -22px;
-	background-image: url("#{request.contextPath}/images/loading.gif");
-	background-repeat: no-repeat;
-	background-position: center;
-	background-color: rgba(235, 235, 235, 0.8);
-	-webkit-border-radius: 23px;
-	-moz-border-radius: 23px;
-	border-radius: 23px;
-	-webkit-box-shadow: 0 0 3px 0 rgba(13, 25, 45, 0.5);
-	-moz-box-shadow: 0 0 3px 0 rgba(13, 25, 45, 0.5);
-	box-shadow: 0 0 3px 0 rgba(13, 25, 45, 0.5);
-	z-index: 9999;
-}
 
 
 

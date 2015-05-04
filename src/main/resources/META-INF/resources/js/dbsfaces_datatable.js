@@ -74,7 +74,7 @@ dbs_dataTable = function(pId) {
 	/*Executa o click na linha */
 	$(wTable + " > tbody > tr").dblclick(function (e){
 		//ignora execução padrão do dblclick e marca a linha
-		if (!$(pId).hasClass(".noDialogEdit")){
+		if (!$(pId).hasClass("-formStyle_Table")){
 			var xB = $(this).find("td > .-selectOne");
 	    	if (xB.length > 0){
 	    		e.stopImmediatePropagation();

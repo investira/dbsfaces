@@ -84,7 +84,8 @@ public class  DBSFaces {
 	    public static final String BUTTON = "button";
 	    public static final String DATATABLE = "dataTable";
 	    public static final String DATATABLECOLUMN = "dataTableColumn";
-	    public static final String CRUDFORM = "crudForm";
+	    public static final String CRUDVIEW = "crudView";
+	    public static final String CRUDDIALOG = "crudDialog";
 	    public static final String CRUDTABLE = "crudTable";
 	    public static final String DIALOG = "dialog";
 	    public static final String FILEUPLOAD = "fileUpload";
@@ -122,7 +123,8 @@ public class  DBSFaces {
 	    public static final String FORM = "form";
 	    public static final String REPORT = "report"; 
 	    public static final String REPORTFORM = "reportForm"; 
-	    public static final String BEANDIALOGMESSAGE = "beanDialogMessage"; 
+	    public static final String BEANDIALOGMESSAGES = "beanDialogMessages";
+	    public static final String BEANCRUDDIALOGMESSAGES = "beanCrudDialogMessages";
 	    public static final String MESSAGES = "messages";
 	    public static final String GROUP = "group";
 	    public static final String PUSH = "push";
@@ -223,9 +225,9 @@ public class  DBSFaces {
 			public static final String VALUE = " -value ";
 		}
 
-		public static class CRUDFORM
+		public static class CRUDDIALOG
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.CRUDFORM;
+			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.CRUDDIALOG;
 		}
 
 		public static class CRUDTABLE

@@ -210,20 +210,20 @@
  	min-height: 16px;
 }
 
-.dbs_dataTable:not(.-noDialogEdit) > .-container > .-content > table > tbody > tr {
+.dbs_dataTable:not(.-formStyle_Table) > .-container > .-content > table > tbody > tr {
 /*  	border-width:0px 0px 1px 0px; */
  	border-width:1px 1px 0px 0px;
 	border-style: solid;
 	border-color: rgba(255,255,255,0.2); 
 }
 
-.dbs_dataTable.-noDialogEdit > .-container > .-content > table > tbody > tr {
+.dbs_dataTable.-formStyle_Table > .-container > .-content > table > tbody > tr {
  	border-width:1px 1px 0px 0px;
 	border-style: solid;
 	border-color: rgba(0,0,0,0.1); 
 }
 
-.dbs_dataTable:not(.-noDialogEdit) > .-container > .-content > table > tbody > tr {
+.dbs_dataTable:not(.-formStyle_Table) > .-container > .-content > table > tbody > tr {
 	cursor: pointer;
 }
 
@@ -251,14 +251,14 @@
 	text-align: left;
 }
 
-.dbs_dataTable.-noDialogEdit > .-container > .-content > table > tbody > tr > td{
+.dbs_dataTable.-formStyle_Table > .-container > .-content > table > tbody > tr > td{
 	border-width:0px 0px 0px 1px;
 	border-style: solid;
 	border-color: rgba(0,0,0,0.1);
 }
 
 .dbs_dataTable > .-container > .-content > table > thead > tr > th,
-.dbs_dataTable:not(.-noDialogEdit) > .-container > .-content > table > tbody > tr > td{
+.dbs_dataTable:not(.-formStyle_Table) > .-container > .-content > table > tbody > tr > td{
 	border-width:0px 0px 0px 1px;
 	border-style: solid;
 	border-color: rgba(255,255,255,0.2);
@@ -285,8 +285,8 @@
 }
 
 			
-/* .dbs_dataTable.-noDialogEdit > .-container > .-content > table > tbody > tr:not(.-selected) .dbs_input-data{ */
-.dbs_dataTable.-noDialogEdit > .-container > .-content > table > tbody .dbs_input-data.-readOnly{
+/* .dbs_dataTable.-formStyle_Table > .-container > .-content > table > tbody > tr:not(.-selected) .dbs_input-data{ */
+.dbs_dataTable.-formStyle_Table > .-container > .-content > table > tbody .dbs_input-data.-readOnly{
 	border: none;
 	-webkit-border-radius: 0px !important;
 	-moz-border-radius: 0px !important;
@@ -358,7 +358,7 @@
 }
 
 
-.dbs_dataTable:not(.-noDialogEdit) > .-container > .-content > table > tbody > .-selected {
+.dbs_dataTable:not(.-formStyle_Table) > .-container > .-content > table > tbody > .-selected {
 	color:white; 
 	background: rgb(19,57,99);
 	background: -moz-linear-gradient(top,  rgba(19,57,99,1) 0%, rgba(15,43,76,1) 100%);
@@ -370,7 +370,7 @@
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#133963', endColorstr='#0f2b4c',GradientType=0 );
 }
 
-.dbs_dataTable:not(.-noDialogEdit) > .-container > .-content > table > tbody > .-selected .dbs_icon{
+.dbs_dataTable:not(.-formStyle_Table) > .-container > .-content > table > tbody > .-selected .dbs_icon{
 	background-position-y: -16px; 
 	--dbs_iconY: -16px; /*artifício para contornar a o firefox*/
 }
