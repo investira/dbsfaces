@@ -60,35 +60,35 @@
 								<c:if test="#{cc.attrs.allowApproval and cc.crudBean.allowApproval and cc.crudBean.approvalUserStages!=0}">
 									<div id="approval" class="-approval" >
 										<c:if test="#{cc.crudBean.hasSelected}">
-											<dbs:button id="btReprovar" iconClass="dbs_icon -i_prize_ribbon_red" action="#{cc.crudBean.reprove()}" update="#{cc.clientId}:crudTableMessages" execute="@this" tooltip="Reprovar"/>
-											<dbs:button id="btAprovar"  iconClass="dbs_icon -i_prize_ribbon_green" action="#{cc.crudBean.approve()}" update="#{cc.clientId}:crudTableMessages" execute="@this" tooltip="Avançar etapa de aprovação"/>
+											<dbs:button id="btReprovar" iconClass="-i_prize_ribbon_red" action="#{cc.crudBean.reprove()}" update="#{cc.clientId}:crudTableMessages" execute="@this" tooltip="Reprovar"/>
+											<dbs:button id="btAprovar"  iconClass="-i_prize_ribbon_green" action="#{cc.crudBean.approve()}" update="#{cc.clientId}:crudTableMessages" execute="@this" tooltip="Avançar etapa de aprovação"/>
 										</c:if>
 									</div>
 								</c:if>
 								
 								<c:if test="#{cc.crudBean.formStyle == 'TABLE' and not cc.attrs.readOnly}">
 									<dbs:div id="icon" styleClass="-icon" rendered="#{cc.crudBean.isEditing}">
-										<dbs:img rendered="#{cc.crudBean.isUpdating}" styleClass="dbs_icon -i_edit"/>
-										<dbs:img rendered="#{cc.crudBean.isDeleting}" styleClass="dbs_icon -i_delete"/>
-										<dbs:img rendered="#{cc.crudBean.isInserting}" styleClass="dbs_icon -i_insert"/>
+										<dbs:img rendered="#{cc.crudBean.isUpdating}" styleClass="-i_edit"/>
+										<dbs:img rendered="#{cc.crudBean.isDeleting}" styleClass="-i_delete"/>
+										<dbs:img rendered="#{cc.crudBean.isInserting}" styleClass="-i_insert"/>
 									</dbs:div>
 									<!-- Controle de exclusão/edição/refresh									 -->
 									<ui:fragment rendered="#{not cc.crudBean.isEditing}">
-										<dbs:button id="btExcluir" rendered="#{cc.crudBean.hasSelected and cc.crudBean.rowCount gt 0}" iconClass="dbs_icon -i_delete" action="#{cc.crudBean.delete()}" update="#{cc.clientId} " execute="@this"/>
-										<dbs:button id="btEditar" rendered="#{not cc.crudBean.hasSelected and cc.crudBean.rowCount gt 0}" iconClass="dbs_icon -i_edit" action="#{cc.crudBean.update()}" update="#{cc.clientId} " execute="@this"/> 
-										<dbs:button id="btRefresh" rendered="#{cc.attrs.allowRefresh and cc.crudBean.allowRefresh}"  iconClass="dbs_icon -i_refresh" action="#{cc.crudBean.refreshList()}" update=":dialog :#{cc.clientId}"/> 
+										<dbs:button id="btExcluir" rendered="#{cc.crudBean.hasSelected and cc.crudBean.rowCount gt 0}" iconClass="-i_delete" action="#{cc.crudBean.delete()}" update="#{cc.clientId} " execute="@this"/>
+										<dbs:button id="btEditar" rendered="#{not cc.crudBean.hasSelected and cc.crudBean.rowCount gt 0}" iconClass="-i_edit" action="#{cc.crudBean.update()}" update="#{cc.clientId} " execute="@this"/> 
+										<dbs:button id="btRefresh" rendered="#{cc.attrs.allowRefresh and cc.crudBean.allowRefresh}"  iconClass="-i_refresh" action="#{cc.crudBean.refreshList()}" update=":dialog :#{cc.clientId}"/> 
 									</ui:fragment>
 									<!-- Confirmação									 -->
 									<ui:fragment rendered="#{cc.crudBean.isUpdating}">
-										<dbs:button id="btOk" iconClass="dbs_icon -i_ok" action="#{cc.crudBean.confirmEditing()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
-										<dbs:button id="btCancelar" iconClass="dbs_icon -i_cancel" action="#{cc.crudBean.ignoreEditing()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
-										<dbs:button id="btInserir" rendered="#{cc.attrs.allowInsert and cc.crudBean.allowInsert}"  iconClass="dbs_icon -i_insert" style="display:none;" action="#{cc.crudBean.insert()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
+										<dbs:button id="btOk" iconClass="-i_ok" action="#{cc.crudBean.confirmEditing()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
+										<dbs:button id="btCancelar" iconClass="-i_cancel" action="#{cc.crudBean.ignoreEditing()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
+										<dbs:button id="btInserir" rendered="#{cc.attrs.allowInsert and cc.crudBean.allowInsert}"  iconClass="-i_insert" style="display:none;" action="#{cc.crudBean.insert()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
 									</ui:fragment>
 								</c:if>
 								<c:if test="#{cc.crudBean.formStyle == 'DIALOG'}">
-									<dbs:button id="btView" rendered="#{cc.attrs.multipleSelection and cc.crudBean.multipleSelection}"  iconClass="dbs_icon -i_document_view" action="#{cc.crudBean.viewSelection()}" update=":dialog " execute="@this"/>
-									<dbs:button id="btInsert"  rendered="#{cc.attrs.allowInsert and cc.crudBean.allowInsert}" iconClass="dbs_icon -i_insert" action="#{cc.crudBean.insert()}" update=":dialog " execute=":dialog @this"/>
-									<dbs:button id="btRefresh" rendered="#{cc.attrs.allowRefresh and cc.crudBean.allowRefresh}" iconClass="dbs_icon -i_refresh" action="#{cc.crudBean.refreshList()}" update=":dialog :#{cc.clientId}"/>
+									<dbs:button id="btView" rendered="#{cc.attrs.multipleSelection and cc.crudBean.multipleSelection}"  iconClass="-i_document_view" action="#{cc.crudBean.viewSelection()}" update=":dialog " execute="@this"/>
+									<dbs:button id="btInsert"  rendered="#{cc.attrs.allowInsert and cc.crudBean.allowInsert}" iconClass="-i_insert" action="#{cc.crudBean.insert()}" update=":dialog " execute=":dialog @this"/>
+									<dbs:button id="btRefresh" rendered="#{cc.attrs.allowRefresh and cc.crudBean.allowRefresh}" iconClass="-i_refresh" action="#{cc.crudBean.refreshList()}" update=":dialog :#{cc.clientId}"/>
 								</c:if>							
 							</dbs:div>
 						</f:facet>
@@ -105,34 +105,34 @@
 					<c:if test="#{cc.attrs.allowApproval and cc.crudBean.allowApproval and cc.crudBean.approvalUserStages!=0}">
 						<dbs:dataTableColumn width="23px" styleClass="-center">
 							<f:facet name="header">
-								<dbs:label styleClass="dbs_icon -i_certificate_green" style="position:relative;top:1px;">
+								<dbs:label styleClass="-i_certificate_green" style="position:relative;top:1px;">
 									<!-- tooltip do assinatura	-->
 									<f:facet name="tooltip">
 										<ul>
 											<li>
-												<span class="dbs_icon -i_prize_ribbon_green" style="float:left;"/>
+												<span class="-i_prize_ribbon_green" style="float:left;"/>
 												<span>Aprovado</span>
 											</li>
 											<li>
-												<span class="dbs_icon -i_prize_ribbon_blue" style="float:left;"/>
+												<span class="-i_prize_ribbon_blue" style="float:left;"/>
 												<span>Verificado</span>
 											</li>
 											<li>
-												<span class="dbs_icon -i_prize_ribbon_yellow" style="float:left;"/>
+												<span class="-i_prize_ribbon_yellow" style="float:left;"/>
 												<span>Conferido</span>
 											</li>
 											<li>
-												<span class="dbs_icon -i_prize_ribbon_red" style="float:left;"/>
+												<span class="-i_prize_ribbon_red" style="float:left;"/>
 												<span>Registrado</span>
 											</li>
 										</ul>
 									</f:facet>
 								</dbs:label>
 							</f:facet>
-							<h:outputText styleClass="dbs_icon -i_prize_ribbon_green" rendered="#{cc.crudBean.approvalStageListValue.code == 1}"/>
-							<h:outputText styleClass="dbs_icon -i_prize_ribbon_blue" rendered="#{cc.crudBean.approvalStageListValue.code == 2}"/>
-							<h:outputText styleClass="dbs_icon -i_prize_ribbon_yellow" rendered="#{cc.crudBean.approvalStageListValue.code == 4}"/>
-							<h:outputText styleClass="dbs_icon -i_prize_ribbon_red" rendered="#{cc.crudBean.approvalStageListValue.code == 8}"/>
+							<h:outputText styleClass="-i_prize_ribbon_green" rendered="#{cc.crudBean.approvalStageListValue.code == 1}"/>
+							<h:outputText styleClass="-i_prize_ribbon_blue" rendered="#{cc.crudBean.approvalStageListValue.code == 2}"/>
+							<h:outputText styleClass="-i_prize_ribbon_yellow" rendered="#{cc.crudBean.approvalStageListValue.code == 4}"/>
+							<h:outputText styleClass="-i_prize_ribbon_red" rendered="#{cc.crudBean.approvalStageListValue.code == 8}"/>
 						</dbs:dataTableColumn>	
 					</c:if>
 					

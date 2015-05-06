@@ -223,12 +223,6 @@
 	position: relative;
 	min-width: 16px;	
 }
-.dbs_menu > li:HOVER .dbs_icon,
-.dbs_submenu .dbs_icon,
-.dbs_menuitem .dbs_icon {
-	background-position-y: -16px;  /*icones brancos*/ 
-	--dbs_iconY: -16px; /*artifício para contornar a o firefox*/
-}
 
 .dbs_menuitem.-disabled{
 	color:rgb(200,200,200);

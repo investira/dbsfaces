@@ -25,13 +25,13 @@ dbs_push = function(pId, pUrl) {
 
 dbsfaces_push = {
 	showOpen: function(pId){
-		$(pId).attr("class", "dbs_icon -i_bullet_green");
+		$(pId).attr("class", "-i_bullet_green");
 	},
 	showUpdate: function(pId){
-		$(pId).attr("class", "dbs_icon -i_bullet_blue");
+		$(pId).attr("class", "-i_bullet_blue");
 	},
 	showError: function(pId){
-		$(pId).attr("class", "dbs_icon -i_bullet_red");
+		$(pId).attr("class", "-i_bullet_red");
 	},
 	showClose: function(pId){
 		$(pId).attr("class", "");

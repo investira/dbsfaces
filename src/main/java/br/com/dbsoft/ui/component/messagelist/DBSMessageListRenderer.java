@@ -104,7 +104,7 @@ public class DBSMessageListRenderer extends DBSRenderer {
 							xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.BUTTON.trim(), null);
 							//Exibe Ícone
 							xWriter.startElement("div", xMessageList);
-								xWriter.writeAttribute("class", "dbs_icon -i_message", null);
+								xWriter.writeAttribute("class", "-i_message", null);
 							xWriter.endElement("div");
 							//Exibe contador de mensagens
 							if (xCount > 0){
@@ -188,7 +188,7 @@ public class DBSMessageListRenderer extends DBSRenderer {
 									pWriter.startElement("span", pMessageList);
 										pWriter.writeAttribute("class", "dbs_button ", null);
 										pWriter.startElement("span", pMessageList);
-											pWriter.writeAttribute("class", "dbs_icon -i_delete", null);
+											pWriter.writeAttribute("class", "-i_delete", null);
 										pWriter.endElement("span");
 									pWriter.endElement("span");
 								pWriter.endElement("div");

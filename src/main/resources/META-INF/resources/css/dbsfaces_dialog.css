@@ -162,10 +162,6 @@
     border-style: outset;
     border-width: 0 1px 0 0;
 }
-.dbs_dialog > div > .-toolbar > ul > li.-icon .dbs_icon {
-	background-position-y: -16px; 
-	--dbs_iconY: -16px; /*artifício para contornar a o firefox*/
-}
 
 .dbs_dialog-confirmation{
 	height: 100%;

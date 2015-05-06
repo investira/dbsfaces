@@ -18,16 +18,16 @@
 		<div id="#{cc.clientId}" class="dbs_reportForm dbs_reportForm_#{cc.clientId}" >
 			<dbs:div id="#{cc.id}_header" styleClass="-header">
 				<div class="-caption dbs_not_selectable">
-					<span class="-icon dbs_icon -i_document_printer"/>
+					<span class="-icon -i_document_printer"/>
 					<span class="-content">
 						#{cc.attrs.caption}
 						#{cc.attrs.width}
 					</span>
 					<dbs:div styleClass="-toolbar" rendered="#{!cc.reportBean.showFilters}">
-						<dbs:button label="#{cc.resourceBundleMap.filtros}" action="#{cc.reportBean.setShowFilters(true)}"  iconClass="dbs_icon -i_report_options" update="#{cc.id}_header #{cc.id}_dialogs" execute="@this"/>
-						<dbs:button label="#{cc.resourceBundleMap.imprimir}" rendered="#{cc.reportBean.isCreated}" onclick="document.getElementById('PDFtoPrint').contentWindow.print();" update="@none" iconClass="dbs_icon -i_printer"/>
+						<dbs:button label="#{cc.resourceBundleMap.filtros}" action="#{cc.reportBean.setShowFilters(true)}"  iconClass="-i_report_options" update="#{cc.id}_header #{cc.id}_dialogs" execute="@this"/>
+						<dbs:button label="#{cc.resourceBundleMap.imprimir}" rendered="#{cc.reportBean.isCreated}" onclick="document.getElementById('PDFtoPrint').contentWindow.print();" update="@none" iconClass="-i_printer"/>
 						<dbs:menu rendered="#{cc.reportBean.isCreated}">
-							<dbs:submenu label="#{cc.resourceBundleMap.exportar}" iconClass="dbs_icon -i_out">
+							<dbs:submenu label="#{cc.resourceBundleMap.exportar}" iconClass="-i_out">
 								<dbs:menuitem action="#{cc.reportBean.savePDF()}" label="PDF - Adobe"/>
 								<dbs:menuitem action="#{cc.reportBean.saveXLS()}" label="XLS - Excel"/>
 								<dbs:menuitem action="#{cc.reportBean.saveXML()}" label="XML"/>
@@ -74,10 +74,10 @@
 						<f:facet name="toolbar">
 							<dbs:ul>
 								<dbs:li>
-									<dbs:button iconClass="dbs_icon -i_print_preview"  action="#{cc.reportBean.create()}" update="#{cc.id}_header #{cc.id}_dialogs #{cc.id}_content" execute="#{cc.clientId}"/> 
+									<dbs:button iconClass="-i_print_preview"  action="#{cc.reportBean.create()}" update="#{cc.id}_header #{cc.id}_dialogs #{cc.id}_content" execute="#{cc.clientId}"/> 
 								</dbs:li>
 								<dbs:li rendered="#{cc.reportBean.isCreated}">
-									<dbs:button iconClass="dbs_icon -i_cancel" action="#{cc.reportBean.setShowFilters(false)}" update="#{cc.id}_header #{cc.id}_dialogs" execute="@this"/>
+									<dbs:button iconClass="-i_cancel" action="#{cc.reportBean.setShowFilters(false)}" update="#{cc.id}_header #{cc.id}_dialogs" execute="@this"/>
 								</dbs:li>
 							</dbs:ul>
 						</f:facet>
