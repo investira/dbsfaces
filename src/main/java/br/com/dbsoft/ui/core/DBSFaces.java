@@ -1701,6 +1701,7 @@ public class  DBSFaces {
 						AjaxBehavior xAjax = (AjaxBehavior) xContext.getApplication().createBehavior(AjaxBehavior.BEHAVIOR_ID);
 						xAjax.setRender(Arrays.asList("@this"));
 						xAjax.setOnevent("dbsfaces.onajax"); //Chamada para disparar evento dbsoft de monitoramento do ajax
+						xAjax.setOnerror("dbsfaces.onajaxerror");
 					try{
 						xCheckbox.addClientBehavior("change", xAjax); 
 						xC0.getChildren().add(xCheckbox);
