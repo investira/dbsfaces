@@ -69,7 +69,7 @@
 .dbs_componenttree > .-container > .-caption li > .-label.-last {
 }
 
-.dbs_componenttree > .-container > .-caption li > .-label > div > .-closable.dbs_iconsmall{
+.dbs_componenttree > .-container > .-caption li > .-label > div > .-closable.-small{
 	xdisplay: inline-block;
 	position: absolute;
 	left: -13px;
@@ -87,6 +87,7 @@
 }
 
 .dbs_componenttree > .-container > .-caption li > .-label > div > .-icon {
+	margin-right: 2px;
 }
 
 .dbs_componenttree > .-container > .-caption .-hover {

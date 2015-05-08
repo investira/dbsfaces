@@ -38,18 +38,21 @@ public class DBSMenuRenderer extends DBSRenderer {
 		String xClass = DBSFaces.CSS.MENU.MAIN + " " + DBSFaces.CSS.NOT_SELECTABLE.trim();
 
 		if (xMenu.getStyleClass()!=null){
-			xClass = xClass + xMenu.getStyleClass();
+			xClass += xMenu.getStyleClass();
 		}
-		xWriter.startElement("ul", xMenu);
+		xWriter.startElement("div", xMenu);
 			if (shouldWriteIdAttribute(xMenu)){
 				xWriter.writeAttribute("id", xClientId, "id");
 				xWriter.writeAttribute("name", xClientId, "name");
 			}
 			DBSFaces.setAttribute(xWriter, "style", xMenu.getStyle(), null);
 			DBSFaces.setAttribute(xWriter, "class", xClass, null);
-			renderChildren(pContext, xMenu);
+			xWriter.startElement("ul", xMenu);
+				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
+				renderChildren(pContext, xMenu);
+			xWriter.endElement("ul");
 			pvEncodeJS(xClientId, xWriter);
-		xWriter.endElement("ul");
+		xWriter.endElement("div");
 	}
 	
 	private void pvEncodeJS(String pClientId, ResponseWriter pWriter) throws IOException{

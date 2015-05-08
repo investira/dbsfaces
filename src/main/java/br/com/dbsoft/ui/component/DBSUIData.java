@@ -16,6 +16,7 @@ import br.com.dbsoft.ui.core.DBSFaces;
 @ResourceDependencies({
 	// Estas libraries serão carregadas junto com o projeto
 	@ResourceDependency(library = "css", name = "dbsfaces.css", target = "head"),
+	@ResourceDependency(library = "css", name = "dbsfaces_theme.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_accordion.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_button.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_calendar.css", target = "head"),

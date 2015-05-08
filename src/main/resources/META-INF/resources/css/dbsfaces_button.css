@@ -25,10 +25,6 @@
 /* 	box-shadow:0px 0px 4px 2px #68B7FF inset;  */
 }
 
-.dbs_button.-disabled {
-	cursor: default;
-	opacity: 0.9;
-}
 
 .dbs_button > table{
 	position: relative; /* Incluido em 05/06/2014*/
@@ -72,7 +68,7 @@
 }
 
 .dbs_button > table > tbody > tr > td > .-label {
-	margin: -1px 0 0;
+	/* 	margin: -1px 0 0; 07-abr-15*/
 	padding: 0 1px 1px 0;
 	line-height: normal;
 	font-size: inherit;
@@ -80,59 +76,5 @@
 .dbs_button > table > tbody > tr > td > .-icon {
 	padding: 0px !important;
 	margin: 0px !important;
-}
-
-.dbs_button:not(.-disabled),
-.dbs_menuitem:not(.-disabled){
-	opacity: .95;	
-}
-
-li.dbs_menuitem:not(.-disabled):ACTIVE,
-.dbs_button:not(.-disabled):ACTIVE, 
-button.dbs_menuitem:not(.-disabled):ACTIVE{
-	background-color: rgba(255, 255, 255, 0.2) !important;
-	opacity: 1;	
-	
-	-webkit-box-shadow: 0 0 0 1px rgba(255,255,255,.25);
-	-moz-box-shadow: 0 0 0 1px rgba(255,255,255,.25);
-	box-shadow: 0 0 0 1px rgba(255,255,255,.25);
-	
-	text-shadow: none;
-}
-
-
-li.dbs_menuitem:not(.-disabled):HOVER,
-.dbs_button:not(.-disabled):HOVER, 
-.dbs_button:not(.-disabled):FOCUS, 
-button.dbs_menuitem:not(.-disabled):HOVER, 
-button.dbs_menuitem:not(.-disabled):FOCUS{
-	text-decoration: none !important;
-
-background: -moz-linear-gradient(top,  rgba(234,234,234,0.1) 0%, rgba(71,71,71,0.1) 100%);
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(234,234,234,0.1)), color-stop(100%,rgba(71,71,71,0.1)));
-background: -webkit-linear-gradient(top,  rgba(234,234,234,0.1) 0%,rgba(71,71,71,0.1) 100%);
-background: -o-linear-gradient(top,  rgba(234,234,234,0.1) 0%,rgba(71,71,71,0.1) 100%);
-background: -ms-linear-gradient(top,  rgba(234,234,234,0.1) 0%,rgba(71,71,71,0.1) 100%);
-background: linear-gradient(to bottom,  rgba(234,234,234,0.1) 0%,rgba(71,71,71,0.1) 100%);
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1aeaeaea', endColorstr='#1a474747',GradientType=0 );
-
-
-
-	
-	opacity: 1;	
-
-	-webkit-box-shadow: 0 0 0 1px rgba(0,0,0,.1);
-	-moz-box-shadow: 0 0 0 1px rgba(0,0,0,.1);
-	box-shadow: 0 0 0 1px rgba(0,0,0,.1);
-
-}
-
-
-
-
-button.dbs_button:INACTIVE, 
-button.dbs_menuitem:INACTIVE,
-li.dbs_menuitem:INACTIVE {
-	color:#333333;
 }
 

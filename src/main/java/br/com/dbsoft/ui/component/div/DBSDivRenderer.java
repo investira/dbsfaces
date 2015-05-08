@@ -80,9 +80,9 @@ public class DBSDivRenderer extends DBSRenderer {
 			if (pvEncodeLater(pContext, xDiv)){
 	    		xWriter.startElement("div", xDiv);
 	    			if (xDiv.getAjaxLoadingSmallIcon()){
-						DBSFaces.setAttribute(xWriter, "class", "-loading", null);
+						DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.LOADING, null);
 	    			}else{
-						DBSFaces.setAttribute(xWriter, "class", "dbs_loading", null);
+						DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.LOADING + DBSFaces.CSS.MODIFIER.LARGE, null);
 	    			}
 				xWriter.endElement("div");
 				DBSFaces.encodeJavaScriptTagStart(xWriter); //dbsfaces.ui.showLoadingError

@@ -50,21 +50,22 @@
 	width: 100%;
 }
 
-.dbs_inputText > .-container > .-input > div.-loading,
-.dbs_inputText > .-container > .-input > .-is_pesquisar{
+.dbs_inputText > .-container > .-input > .-loading,
+.dbs_inputText > .-container > .-input > .-i_find{
 	position: absolute;
 	z-index: 1;
 	right: 4px;
+	opacity: 0.3;
 }
 
-.dbs_inputText > .-container > .-input > .-is_pesquisar{
-	opacity: 0.3;
-	top: 4px;
+.dbs_inputText > .-container > .-input > .-i_find{
+	top: 5px;
 	cursor: pointer;
 }
 
-.dbs_inputText > .-container > .-input > div.-loading{
-	top: 3px;
+.dbs_inputText > .-container > .-input > .-loading{
+	top: 9px;
+ 	left: initial;
 }
 
 .dbs_inputText > .-container > .-input > .-list > .dbs_dataTable > .-container{

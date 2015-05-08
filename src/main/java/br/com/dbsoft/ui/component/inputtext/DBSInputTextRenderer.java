@@ -170,7 +170,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 
 					//Icon que indica para indicar que é possível efetuar pesquisa a partir do texto digitado
 					pWriter.startElement("div", pInputText);
-						DBSFaces.setAttribute(pWriter, "class", "dbs_iconsmall -is_pesquisar", null);
+						DBSFaces.setAttribute(pWriter, "class", "-small -i_find", null);
 					pWriter.endElement("div");	
 
 					//Campo que receberá o conteúdo integral ou parcial do campo escondido ajax. 

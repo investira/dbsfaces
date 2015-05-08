@@ -167,11 +167,16 @@ public class  DBSFaces {
 		public static final String BACK_GRADIENT_WHITE = DBSFaces.CSS.CLASS_PREFIX +  "back_gradient_white ";
 		public static final String PARENT_FILL = DBSFaces.CSS.CLASS_PREFIX +  "parent_fill ";
 		public static final String ICON = DBSFaces.CSS.CLASS_PREFIX +  "icon ";
-		public static final String ICONSMALL = DBSFaces.CSS.CLASS_PREFIX +  "iconsmall ";
-		public static final String ICONLARGE = DBSFaces.CSS.CLASS_PREFIX +  "iconlarge ";
 		public static final String HORIZONTAL_LINE = DBSFaces.CSS.CLASS_PREFIX +  "horizontal_line ";
 		public static final String HORIZONTAL_LINE_WHITE = DBSFaces.CSS.CLASS_PREFIX +  "horizontal_line_white ";
 		public static final String VERTICAL_LINE = DBSFaces.CSS.CLASS_PREFIX +  "vertical_line ";
+		
+		public static class THEME
+		{
+			public static final String ACTION = " -th_action ";
+			public static final String BACKGROUND_COLOR = " -th_back_color ";
+			public static final String FONT_COLOR = " -th_font_color ";
+		}
 		
 		public static class MODIFIER
 		{
@@ -202,6 +207,7 @@ public class  DBSFaces {
 			public static final String KEY = " -key ";
 			public static final String LABEL = " -label ";
 			public static final String LAST = " -last ";
+			public static final String LARGE = " -large ";
 			public static final String LEFT = " -left ";
 			public static final String CENTER = " -center ";
 			public static final String RIGHT = " -right ";
@@ -216,6 +222,7 @@ public class  DBSFaces {
 			public static final String NOT_SELECTABLE = " -not_selectable ";
 			public static final String SELECTABLE = " -selectable ";
 			public static final String SELECTED = " -selected ";
+			public static final String SMALL = " -small ";
 			public static final String SUBMIT = " -submit ";
 			public static final String SUGGESTION = " -suggestion ";
 			public static final String TITLE = " -title ";
@@ -342,8 +349,6 @@ public class  DBSFaces {
 		public static class MENUITEM
 		{
 			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.MENUITEM;
-			public static final String STAR = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.MENUITEM + "_star";
-			public static final String PLUS = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.MENUITEM + "_plus";
 		}
 		
 		public static class MENUITEMSEPARATOR
@@ -1610,6 +1615,11 @@ public class  DBSFaces {
 		}
 	}
 
+	//=======================================================================
+	//Menu
+	//=======================================================================
+
+
 
 	//=======================================================================
 	//DataTable 															=
@@ -1676,7 +1686,7 @@ public class  DBSFaces {
 					//Botão no cabeçalho para seleção de todas as linhas----------------------------------------
 					DBSButton xBtn = (DBSButton) xContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
 						xBtn.setId("btSelect");
-						xBtn.setIconClass(DBSFaces.CSS.ICONSMALL + " -is_invert_selection");
+						xBtn.setIconClass(" -i_checkbox_invert");
 						xBtn.setActionExpression(DBSFaces.createMethodExpression(xContext, pDataTable.getSelectAllAction(), String.class, new Class[0]));
 //						xBtn.setUpdate("@all"); //Configurado como @All pois não finalizava a chamada ajax corretamente
 						xBtn.setUpdate(pDataTable.getClientId()); //09/09/2014 - Configurado como clienteId para evitar o update de toda tela causando problema nos grid que est

@@ -43,7 +43,7 @@ public class DBSDialogRenderer extends DBSRenderer {
 		String 			xClientId = xDialog.getClientId(pContext);
 		String			xIconId = xClientId + "_icon";
 		String 			xClass = DBSFaces.CSS.DIALOG.MAIN + " ";
-		String 			xMsgIcon = "";
+		String 			xMsgIcon = DBSFaces.CSS.MODIFIER.LARGE;
 		String 			xCaption = DBSFaces.getCaptionFromIcon(xDialog.getMessageIcon());
 		String 			xStyle = " width:" + xDialog.getWidth() + "px; height:" + xDialog.getHeight() + "px;";
 		//Altera título padrão caso tenha sido informado
@@ -103,23 +103,23 @@ public class DBSDialogRenderer extends DBSRenderer {
 					}else{
 						xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT + DBSFaces.CSS.MODIFIER.MESSAGE + DBSFaces.CSS.BACK_TEXTURE_BLACK_GRADIENT, null);
 						if (xDialog.getMessageIcon().equals(DIALOG_ICON.INFORMACAO.toString())){
-							xMsgIcon = "-il_information";
-						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.ATENCAO.toString())){
-							xMsgIcon = "-il_warning";
-						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.ERRO.toString())){
-							xMsgIcon = "-il_error";
-						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.CONFIRMAR.toString())){
-							xMsgIcon = "-il_question_confirm";
-						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.IGNORAR.toString())){
-							xMsgIcon = "-il_question_ignore";
-						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.PROIBIDO.toString())){
-							xMsgIcon = "-il_forbidden";
-						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.SOBRE.toString())){
-							xMsgIcon = "-il_about";
+							xMsgIcon += "-i_information";
 						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.SUCESSO.toString())){
-							xMsgIcon = "-il_yes";
+							xMsgIcon += "-i_sucess";
+						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.ATENCAO.toString())){
+							xMsgIcon += "-i_warning";
+						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.ERRO.toString())){
+							xMsgIcon += "-i_error";
+						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.CONFIRMAR.toString())){
+							xMsgIcon += "-i_question_confirm";
+						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.IGNORAR.toString())){
+							xMsgIcon += "-i_question_ignore";
+						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.PROIBIDO.toString())){
+							xMsgIcon += "-i_forbidden";
+						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.SOBRE.toString())){
+							xMsgIcon += "-i_about";
 						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.IMPORTANTE.toString())){
-							xMsgIcon = "-il_important";
+							xMsgIcon += "-i_important";
 						}
 						xWriter.startElement("div", xDialog);
 							xWriter.writeAttribute("class", DBSFaces.CSS.DIALOG.CONFIRMATION, null);
@@ -128,24 +128,16 @@ public class DBSDialogRenderer extends DBSRenderer {
 								
 								//ICONE-------------------
 								xWriter.startElement("div", xDialog);
-									xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.ICON, null);
-									xWriter.startElement("div", xDialog);
-										xWriter.writeAttribute("id", xIconId, null);
-										xWriter.writeAttribute("style", "display:none;", null);
-										xWriter.writeAttribute("class", DBSFaces.CSS.ICONLARGE + xMsgIcon, null);
-										//Encode do tooltip é em cima do icone
+									xWriter.writeAttribute("id", xIconId, null);
+									xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.ICON + xMsgIcon, null);
 										DBSFaces.encodeTooltip(pContext, xDialog, xDialog.getTooltip(), xIconId);
-									xWriter.endElement("div");
 								xWriter.endElement("div");
 
 								//TEXTO-------------------
 								xWriter.startElement("div", xDialog);
-									xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT, null);
-									xWriter.startElement("div", xDialog);
-										xWriter.writeAttribute("style", "display:none;", null);
-										//Encode dos filhos
-										renderChildren(pContext, xDialog);
-									xWriter.endElement("div");
+									xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.LABEL, null);
+									//Encode dos filhos
+									renderChildren(pContext, xDialog);
 								xWriter.endElement("div");
 							xWriter.endElement("div");
 							//Linha horizontal-------------

@@ -77,7 +77,7 @@ public class DBSButtonRenderer extends DBSRenderer {
 		DBSButton xButton = (DBSButton) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xButton.getClientId(pContext);
-		String xClass = DBSFaces.CSS.BUTTON.MAIN;
+		String xClass = DBSFaces.CSS.BUTTON.MAIN + DBSFaces.CSS.THEME.ACTION;
 		String xOnClick = null;
 		String xExecute = "";
 		if (xButton.getExecute() == null){

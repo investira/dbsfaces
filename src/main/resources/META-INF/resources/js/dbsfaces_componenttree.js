@@ -11,7 +11,7 @@ dbs_componenttree = function(pId) {
 		//dbsclick Implemenado desta forma posid o click também é disparado no dbsclick
 		//Se for duplo click exibe todos os filhos
 		if (xClicked
-		&& $(this).hasClass("-is_menuitem_plus")){
+		&& $(this).hasClass("-i_add")){
 			clearTimeout(wTimeout);
 			var xX = $(this).closest(".-label").parent();
 			xX.find('.-label').each(function(){
@@ -54,8 +54,8 @@ dbsfaces.componenttree = {
 		var xExtraInfoContent = $(xExtraInfoId).siblings(".-content").children("div");
 		var xCaptionContent = $(pLabel).siblings(".-content").children("div");
 		dbsfaces.componenttree.setExpandedIds(pLabel);
-		$(pLabel).children("div").children(".-closable").toggleClass("dbs_iconsmall -is_menuitem_plus");
-		$(pLabel).children("div").children(".-closable").toggleClass("dbs_iconsmall -is_menuitem_minus");
+		$(pLabel).children("div").children(".-closable").toggleClass("-small -i_add");
+		$(pLabel).children("div").children(".-closable").toggleClass("-small -i_subtract");
 		
 		$(xExtraInfoContent)
 		 	.animate({

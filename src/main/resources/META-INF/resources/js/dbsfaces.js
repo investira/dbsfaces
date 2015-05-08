@@ -118,19 +118,18 @@ dbsfaces.ui = {
 		
 		//Exibe loading
 	    if (pShow){
-//			console.log("showLoading:" + pId + ":" + pStatus);
-	        $('body').append("<span id='" + xId + "' class='dbs_loading'/>");
+//			console.log("showLoading:" + pId);
+	        $('body').append("<span id='" + xId + "' class='-loading -large'/>");
 //	    }else{
-//			console.log("HIDELoading:" + pId + ":" + pStatus);
+//			console.log("HIDELoading:" + pId);
 	    }
 	},
 	
 	showLoadingError : function(pId){
 		var xId = "dbs_ajaximg_" + $.trim(pId);
-		$("#" + xId).css("background-color", "rgba(255,255,180,0.8)");
 		$("#" + xId).fadeOut(2000, function(){ 
 			$("#" + xId).remove();
-			$("div .-loading").remove();
+//			$("div .-loading").remove(); Comentado em 08/abr/15 - Ricardo: Excluid código até a certeza que código não é mais necessário.
 		});
 	},
 	

@@ -6,13 +6,14 @@ dbs_dialog = function(pId) {
     $(pId + " > div ").css("padding-bottom", xH + "px");
     
     //Centraliza texto de confirmação dentro do dialog(quando existir)
-    var xI = pId + " .dbs_dialog-confirmation > .-content > .-icon > div";
-	var xC = pId + " .dbs_dialog-confirmation > .-content > .-content > div";
-    dbsfaces.ui.centerVertical(xI);
-    dbsfaces.ui.centerVertical(xC);
+//    var xI = pId + " .dbs_dialog-confirmation > .-content > .-icon > div";
+//	var xC = pId + " .dbs_dialog-confirmation > .-content > .-content > div";
+//    dbsfaces.ui.centerVertical(xI);
+//    dbsfaces.ui.centerVertical(xC);
 
-    $(xI).show();
-    $(xC).show();
+//    $(xI).show();
+//    $(xC).show();
+
     //Centraliza tela e exibe
     xH = $(pId + " > div ").outerHeight() / 2;
     xW = $(pId + " > div ").outerWidth() / 2;
@@ -27,8 +28,6 @@ dbs_dialog = function(pId) {
     
     dbsfaces.ui.focusOnFirstInput($(pId + " div > .-content").first());
     
-//    dbsfaces.dialog.focuOnFirstElement(pId);
-
     //Habilita os input caso não encontre mais dialogs
     //Asterisco necessário, pois o IE não está enviando o evento para o pId
     $(pId + " * ").on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
@@ -102,25 +101,4 @@ dbsfaces.dialog = {
 	getBackgroundComponent: function(pId){
 		return $(dbsfaces.util.jsid("#" + pId) + " > div > .-content");
 	}
-	
-//	,
-//	
-//	focuOnFirstElement: function(pId){
-//		//Seta foco no primeiro campo de input
-//		var xContent = $(pId + " div > .-content");
-//		var xEle = xContent.find("input:first");
-//		//Se não achou input, procura por combobox.
-//		if (xEle.length == 0 ){
-//			xEle = xContent.find("select:first");
-//			//Se não achou input, procura por botão.
-//			if (xEle.length == 0 ){
-//				xEle = xContent.find("button:first");
-//			}
-//		}else{
-//			
-//		}
-//		if (xEle.length != 0 ){
-//			xEle.focus();
-//		}
-//	}
 }

@@ -97,8 +97,8 @@
 					<c:if test="#{cc.crudBean.formStyle == 'TABLE' and cc.crudBean.isUpdating}">
 						<dbs:dataTableColumn width="16px" styleClass="-center ">
 							<h:inputHidden id="alterado" value="#{cc.crudBean.selected}"/>
-							<dbs:img id="imginsert" rendered="#{cc.crudBean.isListNewRow}" styleClass="dbs_iconsmall -is_inserir"/>
-							<dbs:img id="imgupdate" rendered="#{not cc.crudBean.isListNewRow and cc.crudBean.selected}" styleClass="dbs_iconsmall -is_editar"/>
+							<dbs:img id="imginsert" rendered="#{cc.crudBean.isListNewRow}" styleClass="-i_insert -small"/>
+							<dbs:img id="imgupdate" rendered="#{not cc.crudBean.isListNewRow and cc.crudBean.selected}" styleClass="-i_edit -small"/>
 						</dbs:dataTableColumn>	
 					</c:if>
 					<!-- Controle de aprovação de registro -->

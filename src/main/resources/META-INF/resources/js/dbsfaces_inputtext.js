@@ -101,7 +101,7 @@ dbs_inputText = function(pId) {
 	});
 
 	//Click o icone de pesquisar
-	$(pId + " > .-container > .-input > .-is_pesquisar").on("click", function(e){
+	$(pId + " > .-container > .-input > .-i_find").on("click", function(e){
 		if ($(pId + "-list").css("display") == "none"){
 			dbsfaces.inputText.showList(pId);
 			$(pId + "-data").focus();
@@ -116,7 +116,7 @@ dbs_inputText = function(pId) {
 		wSearching = true;
 
 		$(pId + " > .-container > .-input").append("<div class='-loading'></div>");
-		$(pId + " > .-container > .-input > .-is_pesquisar").hide();
+		$(pId + " > .-container > .-input > .-i_find").hide();
 		e.stopImmediatePropagation();
 	});
 	
@@ -129,8 +129,8 @@ dbs_inputText = function(pId) {
 			dbsfaces.inputText.triggerBlur(pId);
 		}
 
-		$(pId + " > .-container > .-input > div.-loading").remove();
-		$(pId + " > .-container > .-input > .-is_pesquisar").show();
+		$(pId + " > .-container > .-input > .-loading").remove();
+		$(pId + " > .-container > .-input > .-i_find").show();
 		dbsfaces.inputText.fixLayout(pId);
 		dbsfaces.inputText.showFirstSuggestion(pId);
 		
@@ -186,6 +186,9 @@ dbsfaces.inputText = {
 			//Aguarda um tempo para chamar a rotina de sugestão
 			dbsfaces.inputText.wTimeOut = window.setTimeout(function(){
 				$(pId + "-submit").click();
+				//Substituir o botão por uma chamada ajax. Estudar pq a chama ajax abaixo não funciona
+//				jsf.ajax.request($(pId + "-submit"), "click", {execute: $(pId).get(0).id, render: $(pId).get(0).id + "-list", onevent:dbsfaces.onajax, onerror:dbsfaces.onajaxerror}); 
+//				return false;
 			}, 550); //Time de delay para efetuar a chamada
 		}
 	},

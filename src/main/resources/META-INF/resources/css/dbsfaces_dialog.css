@@ -154,53 +154,86 @@
 }
 
 .dbs_dialog > div > .-toolbar > ul > li.-icon{
+	position: absolute;
+	height: 21px;
+	width: 24px;
 	background-color: rgba(13, 25, 45, 1);
-    left: 0;
-    padding: 3px;
-    position: absolute;
-    top: 0;
-    border-style: outset;
-    border-width: 0 1px 0 0;
+	color: white;
+	left: 0;
+	top: 0;
+	padding: 3px;
 }
 
 .dbs_dialog-confirmation{
 	height: 100%;
 	margin-bottom:-23px;
 	padding-bottom:23px;
+	display:block;
+	position:relative;
 }
 
 
 .dbs_dialog-confirmation > .-content{
 	height: 100%;
 	padding-bottom: 5px;
+	display: table;
 }
 
 .dbs_dialog-confirmation > .-content > div{
-	position: relative;
-	height: 100%;
-}
-
-.dbs_dialog-confirmation > .-content > .-icon{
-	float:left;	
-}			
-
-.dbs_dialog-confirmation > .-content > .-icon > div{
-}			
-
-.dbs_dialog-confirmation > .-content > .-content{
-	margin-left: 31px;
-}
-
-.dbs_dialog-confirmation > .-content > .-content > div{
-	width: 100%;
+	display: table-cell;
+	vertical-align: middle;
 	text-align: center;
-	overflow: auto;
 }
+	
+.dbs_dialog-confirmation > .-content > .-icon{
+	padding: 2px;
+	opacity:0.9;
+}		
+
+.dbs_dialog-confirmation > .-content > .-icon.-i_information{
+}
+.dbs_dialog-confirmation > .-content > .-icon.-i_sucess{
+	color:green;
+}
+.dbs_dialog-confirmation > .-content > .-icon.-i_warning{
+	color:yellow;
+}
+.dbs_dialog-confirmation > .-content > .-icon.-i_error{
+	color:red;
+}
+.dbs_dialog-confirmation > .-content > .-icon.-i_question_confirm{
+}
+.dbs_dialog-confirmation > .-content > .-icon.-i_question_ignore{
+	color:yellow;
+}
+.dbs_dialog-confirmation > .-content > .-icon.-i_forbidden{
+	color:red;
+}
+.dbs_dialog-confirmation > .-content > .-icon.-i_about{
+}
+.dbs_dialog-confirmation > .-content > .-icon.-i_important{
+	color:yellow;
+}
+
+.dbs_dialog-confirmation > .-content > .-label{
+	width: 100%
+}
+
 
 .dbs_dialog-confirmation > .-button{
 	padding: 2px;
 	text-align: right;
 }
+
+.dbs_dialog > div > .-toolbar  .-i_ok,
+.dbs_dialog-confirmation > .-button .-i_yes{
+	color:green;	
+}
+.dbs_dialog > div > .-toolbar  .-i_cancel,
+.dbs_dialog-confirmation > .-button .-i_no{
+	color:red;	
+}
+
 
 .dbs_dialog-confirmation > .-button > button{
 	height: 21px;

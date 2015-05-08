@@ -290,17 +290,17 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 								pWriter.startElement("span", pComponenttree);
 								if (xChild.getChildCount()>0){
 									if (pvExpand(pComponenttree, xKey)){
-										pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CLOSABLE.trim() + " dbs_iconsmall -is_menuitem_minus", null);
+										pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CLOSABLE.trim() + " -i_subtract -small ", null);
 									}else{
-										pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CLOSABLE.trim() + " dbs_iconsmall -is_menuitem_plus", null);
+										pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CLOSABLE.trim() + " -i_add -small ", null);
 									}
 								}
 								pWriter.endElement("span");
 								pWriter.startElement("span", pComponenttree);
 									pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.ICON + xIconClass, null);
-									pWriter.startElement("span", pComponenttree);
-										pWriter.writeAttribute("class", xIconClass, null);
-									pWriter.endElement("span");
+//									pWriter.startElement("span", pComponenttree);
+//										pWriter.writeAttribute("class", xIconClass, null);
+//									pWriter.endElement("span");
 								pWriter.endElement("span");
 								pWriter.startElement("span", pComponenttree);
 									pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.VALUE.trim(), null);

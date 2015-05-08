@@ -98,22 +98,19 @@
 
 .dbs_tab > .-container > ul > li > .loading_container{
 	position: absolute;
-	background-color: rgba(255,255,255,0.6);
 	display: block;
-	text-align: center;
-	left: 16px;
 	top: 0px;
+	left: 50%;
 	padding: 10px;
-	border-radius: 11px;
-	-moz-border-radius: 11px;
-	-webkit-border-radius: 11px;    
-	margin-left: -10px;
+	margin-left: -6px;
 }
 
 .dbs_tab > .-container > ul > li > .loading_container .-loading{
-	position: absolute;
-	top: 4px;
-	margin-left: -6px;	
+	-ms-filter: invert(100%);
+    -o-filter: invert(100%);
+    -moz-filter: invert(100%);
+    -webkit-filter: invert(100%);
+    filter: invert(100%);
 }
 
 .dbs_tab > .-container > ul > li > a > .-icon{

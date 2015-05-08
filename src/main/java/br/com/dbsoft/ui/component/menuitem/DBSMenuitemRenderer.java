@@ -1,6 +1,7 @@
 package br.com.dbsoft.ui.component.menuitem;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -48,10 +49,16 @@ public class DBSMenuitemRenderer extends DBSRenderer {
 		DBSMenuitem xMenuitem = (DBSMenuitem) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xMenuitem.getClientId(pContext);
-		String xClass = DBSFaces.CSS.NOT_SELECTABLE;
+		Boolean xIsSubmenu = true;
 		String xOnClick;
-		String xExecute = "";
-		Boolean xIsRoot = true;
+		String xExecute;
+		String xClass = DBSFaces.CSS.MENUITEM.MAIN + " " + DBSFaces.CSS.NOT_SELECTABLE.trim();
+
+		//Verifica se é um submenu filho de um outro submenu ou filho do menu principal
+		UIComponent xParent = pComponent.getParent();
+		xIsSubmenu = (xParent.getAttributes().get("class") != DBSMenu.class);
+		
+		//Execute--------
 		if (xMenuitem.getExecute() == null){
 			xExecute = getFormId(pContext, pComponent); 
 		}else{
@@ -60,79 +67,62 @@ public class DBSMenuitemRenderer extends DBSRenderer {
 		
 		xOnClick = DBSFaces.getSubmitString(xMenuitem, DBSFaces.HTML.EVENTS.ONCLICK, xExecute, xMenuitem.getUpdate());
 
+		//Class----------
+		if (xIsSubmenu){
+			xClass += DBSFaces.CSS.THEME.ACTION;
+		}
 		if (xMenuitem.getStyleClass()!=null){
-			xClass += xMenuitem.getStyleClass(); 
+			xClass += xMenuitem.getStyleClass();
+		}
+		if (xMenuitem.getChildCount() == 0){
+			if (xMenuitem.getActionExpression() == null){
+				xClass += DBSFaces.CSS.MODIFIER.DISABLED;
+			}
 		}
 		
-		if (xMenuitem.getActionExpression() == null){
-			xClass += DBSFaces.CSS.MODIFIER.DISABLED;
-		}
-		
-		//Verificar se é filho ou parte do menu principal
-		UIComponent xParent = pComponent.getParent();
-		if (xParent.getAttributes().get("class") != DBSMenu.class){
-			xClass += " " + DBSFaces.CSS.MENUITEM.MAIN;
-			xIsRoot = false;
-		}
-		if (xMenuitem.getReadOnly()){
-			xClass += " " + DBSFaces.CSS.MODIFIER.READONLY;
-		}
-		
+		//Encode --------
 		xWriter.startElement("li", xMenuitem);
 			DBSFaces.setAttribute(xWriter, "class", xClass, null);
-
-			if (xMenuitem.getReadOnly()){
-				xWriter.startElement("span", xMenuitem);
-			}else{
-				xWriter.startElement("a", xMenuitem);
-			}	
+			DBSFaces.setAttribute(xWriter, "style", xMenuitem.getStyle(), null);
+			xWriter.startElement("a", xMenuitem);
 				writeIdAttribute(xWriter, xMenuitem, xClientId);
-				DBSFaces.setAttribute(xWriter, "style", xMenuitem.getStyle(), null);
+				xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT, "class");
+				DBSFaces.setAttribute(xWriter, "ontouchstart", "", null);
 				if (!xMenuitem.getReadOnly()){
 					if (xMenuitem.getActionExpression() != null){
 						xWriter.writeAttribute("type", "submit", "type"); 
-//						xWriter.writeAttribute("ontouchstart", "", "ontouchstart"); //Para ipad ativar o css:ACTIVE
 						DBSFaces.setAttribute(xWriter, DBSFaces.HTML.EVENTS.ONCLICK, xOnClick, null);
-//						xWriter.writeAttribute("href", "#", "href");
-
-//				        Collection<ClientBehaviorContext.Parameter> xParams = getBehaviorParameters(xMenuitem);
-//				        RenderKitUtils.renderOnclick(pContext, 
-//				        							 xMenuitem,
-//				                                     xParams,
-//				                                     "",
-//				                                     true);
 					}
 				}
-				if (xIsRoot){ //Encode necessário para ficar em conformidade com o encode do Submenu
-					xWriter.startElement("span", xMenuitem);
-					xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT, "class");
-				}
+				encodeMenuLine(xMenuitem, xWriter, xMenuitem.getLabel(), xMenuitem.getIconClass(), xIsSubmenu & xMenuitem.getChildCount() > 0);
 				
-					//encodeClientBehaviors(pContext, xMenuitem);
-					if (xMenuitem.getIconClass()!=null){
-						xWriter.startElement("span", xMenuitem);
-							xWriter.writeAttribute("class", xMenuitem.getIconClass() + " " + DBSFaces.CSS.MODIFIER.ICON, "class");
-						xWriter.endElement("span");
-					}
-					//Encode Behavior
-					
-					//Encode Label
-					if (xMenuitem.getLabel()!=null){
-						xWriter.startElement("span", xMenuitem);
-							xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.LABEL + " " + DBSFaces.CSS.INPUT.LABEL, "class");
-							xWriter.write(xMenuitem.getLabel());
-						xWriter.endElement("span");
-					}
-				
-				if (xIsRoot){ //Encode necessário para ficar em conformidade com o encode do Submenu
-					xWriter.endElement("span");
-				}
-			if (xMenuitem.getReadOnly()){
-				xWriter.endElement("span");
-			}else{
-				xWriter.endElement("a");
+			xWriter.endElement("a");
+			if (xMenuitem.getChildCount() > 0){
+				xWriter.startElement("ul", xMenuitem);
+					renderChildren(pContext, xMenuitem);
+				xWriter.endElement("ul");
 			}
 		xWriter.endElement("li");
+	}
+	
+	public void encodeMenuLine(UIComponent pComponent, ResponseWriter pWriter, String pLabel, String pIconClass, Boolean pHasChildren) throws IOException{
+		if (pIconClass!=null){
+			pWriter.startElement("span", pComponent);
+				pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.ICON + " " + pIconClass, "class");
+			pWriter.endElement("span");
+		}
+		if (pLabel!=null){
+			pWriter.startElement("span", pComponent);
+				pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.LABEL + " " + DBSFaces.CSS.INPUT.LABEL, "class");
+				pWriter.write(pLabel);
+			pWriter.endElement("span");
+		}
+		if (pHasChildren!=null && pHasChildren){
+			pWriter.startElement("span", pComponent);
+				pWriter.writeAttribute("class",  " -i_add ", "class");
+			pWriter.endElement("span");
+		}
+		
 	}
 
 }

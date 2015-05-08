@@ -175,7 +175,7 @@ public class DBSComboboxRenderer extends DBSRenderer {
 				pWriter.endElement("span");
 				//Encode do botão
 				pWriter.startElement("span", pCombobox);
-					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.BUTTON + CSS.ICONSMALL + " -is_select_down", null);
+					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.BUTTON + CSS.MODIFIER.SMALL + " -i_navigate_down", null);
 				pWriter.endElement("span");
 				//Encode do combobox escondido
 				pWriter.startElement("select", pCombobox);

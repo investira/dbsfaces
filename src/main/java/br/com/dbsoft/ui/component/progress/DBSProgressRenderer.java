@@ -94,7 +94,7 @@ public class DBSProgressRenderer extends DBSRenderer {
 			xTextLabel  = "Ok";
 		//Iniciado
 		}else if (xF > 0){
-			xClassLoading = "-loading";
+			xClassLoading = DBSFaces.CSS.MODIFIER.LOADING;
 			xTextLabel = xF.intValue() + "%";
 		}
 		pWriter.startElement("div", pProgress);
