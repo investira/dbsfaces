@@ -190,6 +190,8 @@ svg{
 	display: -webkit-flex;     /* NEW - Chrome */
 	display: flex;   
 }
+
+/* Blur ----------------------------------- */
 .-blur_soft{
     filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='1');
 	filter: url("data:image/svg+xml;utf8,<svg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'blur\'><feGaussianBlur stdDeviation=\'1\' ></feGaussianBlur></filter></svg>#blur"); 
@@ -268,6 +270,7 @@ svg{
 	box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.3) inset;
 }
 
+/* inputs ---------------------------------------- */
 input.-foo {
 	position: absolute !important;
 	left: 0px !important;
@@ -281,12 +284,7 @@ input.-foo {
 	z-index: -9999;
 }
 
-/* classes de elementos DBSOFT */
-/*
-input[type=text] {
-  -moz-user-select: text;
-  -webkit-user-select: text;
-}*/
+
 .dbs_not_selectable {
 	-webkit-touch-callout: none !important;
 	-webkit-user-drag: none !important;
@@ -299,18 +297,6 @@ input[type=text] {
 	xcursor: inherit;
 }
 
-.dbs_child_center {
-	padding: 0px;
-	margin: 0px auto;
-	vertical-align: middle;
-	text-align: center;
-	display: inline-block;
-}
-
-.dbs_align_right {
-	position: relative;
-	float: right;
-}
 
 /*Parent precisa ter height em parcentual*/
 .dbs_parent_fill {
@@ -988,7 +974,8 @@ td > .dbs_icon{
 	font-style: normal;
 }
 
-[class^="-i_"], [class*=" -i_"] {
+[class^="-i_"], 
+[class*=" -i_"] {
 	font-family: 'dbsfaces_icons'  !important;
 	speak: none;
 	font-style: normal;
@@ -1003,31 +990,37 @@ td > .dbs_icon{
 	-moz-osx-font-smoothing: grayscale;
 }
 
-[class^="-i_"], [class*=" -i_"] {
-	font-family: 'dbsfaces_icons'  !important;
-	speak: none;
-	font-style: normal;
-	font-weight: normal;
-	font-variant: normal;
-	text-transform: none;
-	line-height: 1;
 
-	/* Better Font Rendering =========== */
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-}
-
-[class^="-i_"], [class*=" -i_"] {
+[class^="-i_"], 
+[class*=" -i_"] {
 	font-size:16px;
 }
 
-[class^="-i_"].-small, [class*=" -i_"].-small{
+[class^="-i_"].-small, 
+[class*=" -i_"].-small{
 	font-size:9px;
 }
-[class^="-i_"].-large, [class*=" -i_"].-large{
+[class^="-i_"].-large, 
+[class*=" -i_"].-large{
 	font-size:32px;
 }
 
+[class^="-i_"].-red, 
+[class*=" -i_"].-red {
+	color:red;
+}
+[class^="-i_"].-yellow, 
+[class*=" -i_"].-yellow {
+	color:yellow;
+}
+[class^="-i_"].-blue, 
+[class*=" -i_"].-blue {
+	color:blue;
+}
+[class^="-i_"].-green, 
+[class*=" -i_"].-green {
+	color:green;
+}
 
 /* Incluir novos icones a partir daqui */
 .-i_yes:before{content:"\e600"}

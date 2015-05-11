@@ -50,12 +50,12 @@
 								<div class="-toolbar">
 									<dbs:menu id="obexportar" rendered="#{cc.reportBean.isCreated}">
 	<!-- 									<dbs:menuitem label="#{cc.resourceBundleMap.imprimir}" onclick="document.getElementById('PDFtoPrint').contentWindow.print();" iconClass="-i_printer"/> -->
-										<dbs:submenu id="obformatos" label="#{cc.resourceBundleMap.exportar}" iconClass="-i_out">
+										<dbs:menuitem id="obformatos" label="#{cc.resourceBundleMap.exportar}" iconClass="-i_out">
 											<dbs:menuitem id="obPDF" action="#{cc.reportBean.savePDF()}" label="PDF - Acrobat"/>
 											<dbs:menuitem id="obXLS" action="#{cc.reportBean.saveXLS()}" label="XLSX - Excel"/>
 											<dbs:menuitem id="obXML" action="#{cc.reportBean.saveXML()}" label="XML"/>
 											<dbs:menuitem id="obHTML" action="#{cc.reportBean.saveHTML()}" label="Html"/>
-										</dbs:submenu>
+										</dbs:menuitem>
 									</dbs:menu>
 								</div>
 								<dbs:div id="report" styleClass="-content" rendered="#{cc.reportBean.isCreated}" style="width:100%; height:100%;">

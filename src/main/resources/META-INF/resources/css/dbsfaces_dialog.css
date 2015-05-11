@@ -190,31 +190,6 @@
 	opacity:0.9;
 }		
 
-.dbs_dialog-confirmation > .-content > .-icon.-i_information{
-}
-.dbs_dialog-confirmation > .-content > .-icon.-i_sucess{
-	color:green;
-}
-.dbs_dialog-confirmation > .-content > .-icon.-i_warning{
-	color:yellow;
-}
-.dbs_dialog-confirmation > .-content > .-icon.-i_error{
-	color:red;
-}
-.dbs_dialog-confirmation > .-content > .-icon.-i_question_confirm{
-}
-.dbs_dialog-confirmation > .-content > .-icon.-i_question_ignore{
-	color:yellow;
-}
-.dbs_dialog-confirmation > .-content > .-icon.-i_forbidden{
-	color:red;
-}
-.dbs_dialog-confirmation > .-content > .-icon.-i_about{
-}
-.dbs_dialog-confirmation > .-content > .-icon.-i_important{
-	color:yellow;
-}
-
 .dbs_dialog-confirmation > .-content > .-label{
 	width: 100%
 }
@@ -224,16 +199,6 @@
 	padding: 2px;
 	text-align: right;
 }
-
-.dbs_dialog > div > .-toolbar  .-i_ok,
-.dbs_dialog-confirmation > .-button .-i_yes{
-	color:green;	
-}
-.dbs_dialog > div > .-toolbar  .-i_cancel,
-.dbs_dialog-confirmation > .-button .-i_no{
-	color:red;	
-}
-
 
 .dbs_dialog-confirmation > .-button > button{
 	height: 21px;

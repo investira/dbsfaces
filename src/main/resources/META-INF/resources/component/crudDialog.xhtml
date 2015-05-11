@@ -63,7 +63,7 @@
 								<dbs:li>
 <!-- Retinado update do cc.clientId								   -->								
 <!-- 								<dbs:button id="close" iconClass="-i_cancel" action="#{cc.crudBean.close()}" update=":dialog #{cc.clientId} #{cc.attrs.update}" execute="@this"/> -->
-									<dbs:button id="btClose" iconClass="-i_cancel" action="#{cc.crudBean.close()}" update=":dialog #{cc.attrs.update}" execute="@this" tooltip="Fechar"/>
+									<dbs:button id="btClose" iconClass="-i_cancel -red" action="#{cc.crudBean.close()}" update=":dialog #{cc.attrs.update}" execute="@this" tooltip="Fechar"/>
 								</dbs:li>
 							</dbs:ul>
 						</c:if>
@@ -76,10 +76,10 @@
 									<dbs:button id="btPaste" iconClass="-i_paste" action="#{cc.crudBean.paste()}" rendered="#{cc.crudBean.isCopied}" update=":dialog " execute="@this" tooltip="Colar dados em memória"/>
 								</dbs:li>
 								<dbs:li>
-									<dbs:button id="btOk" iconClass="-i_ok" action="#{cc.crudBean.confirmEditing()}" update=":dialog #{cc.attrs.update}" execute="#{cc.clientId}" tooltip="Confirmar"/>
+									<dbs:button id="btOk" iconClass="-i_ok -green" action="#{cc.crudBean.confirmEditing()}" update=":dialog #{cc.attrs.update}" execute="#{cc.clientId}" tooltip="Confirmar"/>
 								</dbs:li>
 								<dbs:li>
-									<dbs:button id="btCancel" iconClass="-i_cancel" action="#{cc.crudBean.ignoreEditing()}" update=":dialog" execute="#{cc.clientId}" tooltip="Ignorar"/>
+									<dbs:button id="btCancel" iconClass="-i_cancel -red" action="#{cc.crudBean.ignoreEditing()}" update=":dialog" execute="#{cc.clientId}" tooltip="Ignorar"/>
 								</dbs:li>
 							</dbs:ul>
 						</c:if>
@@ -92,12 +92,12 @@
 									<dbs:button id="btPaste" iconClass="-i_paste" action="#{cc.crudBean.paste()}" rendered="#{cc.crudBean.isCopied}" update=":dialog " execute="@this" tooltip="Colar dados em memória"/>
 								</dbs:li>
 								<dbs:li>
-									<dbs:button id="btOk" iconClass="-i_ok" action="#{cc.crudBean.confirmEditing()}" update=":dialog #{cc.attrs.update}" execute="#{cc.clientId}" tooltip="Confirmar"/>
+									<dbs:button id="btOk" iconClass="-i_ok -green" action="#{cc.crudBean.confirmEditing()}" update=":dialog #{cc.attrs.update}" execute="#{cc.clientId}" tooltip="Confirmar"/>
 								</dbs:li>
 								<dbs:li>
 <!-- Retinado update do cc.clientId								   -->
 <!-- 									<dbs:button id="cancel" iconClass="-i_cancel" action="#{cc.crudBean.ignoreEditing()}" update=":dialog #{cc.clientId} #{cc.attrs.update}" execute="#{cc.clientId}"/> -->
-									<dbs:button id="btCancel" iconClass="-i_cancel" action="#{cc.crudBean.ignoreEditing()}" update=":dialog #{cc.attrs.update}" execute="#{cc.clientId}" tooltip="Ignorar"/>
+									<dbs:button id="btCancel" iconClass="-i_cancel -red" action="#{cc.crudBean.ignoreEditing()}" update=":dialog #{cc.attrs.update}" execute="#{cc.clientId}" tooltip="Ignorar"/>
 								</dbs:li>
 							</dbs:ul>
 						</c:if>

@@ -99,7 +99,6 @@ public class  DBSFaces {
 	    public static final String IMG = "img";
 	    public static final String DIV = "div";
 	    public static final String MENU = "menu";
-	    public static final String SUBMENU = "submenu";
 	    public static final String MENUITEM = "menuitem";
 	    public static final String MENUITEMSEPARATOR = "menuitemSeparator";
 	    public static final String LINK = "link";
@@ -339,11 +338,6 @@ public class  DBSFaces {
 		public static class MENU
 		{
 			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.MENU;
-		}
-
-		public static class SUBMENU
-		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.SUBMENU;
 		}
 
 		public static class MENUITEM

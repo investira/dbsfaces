@@ -27,12 +27,12 @@
 						<dbs:button label="#{cc.resourceBundleMap.filtros}" action="#{cc.reportBean.setShowFilters(true)}"  iconClass="-i_report_options" update="#{cc.id}_header #{cc.id}_dialogs" execute="@this"/>
 						<dbs:button label="#{cc.resourceBundleMap.imprimir}" rendered="#{cc.reportBean.isCreated}" onclick="document.getElementById('PDFtoPrint').contentWindow.print();" update="@none" iconClass="-i_printer"/>
 						<dbs:menu rendered="#{cc.reportBean.isCreated}">
-							<dbs:submenu label="#{cc.resourceBundleMap.exportar}" iconClass="-i_out">
+							<dbs:menuitem label="#{cc.resourceBundleMap.exportar}" iconClass="-i_out">
 								<dbs:menuitem action="#{cc.reportBean.savePDF()}" label="PDF - Adobe"/>
 								<dbs:menuitem action="#{cc.reportBean.saveXLS()}" label="XLS - Excel"/>
 								<dbs:menuitem action="#{cc.reportBean.saveXML()}" label="XML"/>
 								<dbs:menuitem action="#{cc.reportBean.saveHTML()}" label="Html"/>
-							</dbs:submenu>
+							</dbs:menuitem>
 						</dbs:menu>
 					</dbs:div>
 				</div>
@@ -77,7 +77,7 @@
 									<dbs:button iconClass="-i_print_preview"  action="#{cc.reportBean.create()}" update="#{cc.id}_header #{cc.id}_dialogs #{cc.id}_content" execute="#{cc.clientId}"/> 
 								</dbs:li>
 								<dbs:li rendered="#{cc.reportBean.isCreated}">
-									<dbs:button iconClass="-i_cancel" action="#{cc.reportBean.setShowFilters(false)}" update="#{cc.id}_header #{cc.id}_dialogs" execute="@this"/>
+									<dbs:button iconClass="-i_cancel -red" action="#{cc.reportBean.setShowFilters(false)}" update="#{cc.id}_header #{cc.id}_dialogs" execute="@this"/>
 								</dbs:li>
 							</dbs:ul>
 						</f:facet>

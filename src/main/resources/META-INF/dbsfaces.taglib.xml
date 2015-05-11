@@ -2545,61 +2545,6 @@
 		</attribute>
 	</tag>
 	<tag>
-		<tag-name>submenu</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.submenu</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
-                Identificador único do componente.
-            </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                Class CSS que será utilizado com style
-            </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                Adiciona style 
-            </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                Icon Class
-            </description>
-			<name>iconClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                label
-            </description>
-			<name>label</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                rendered
-            </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-	</tag>
-	<tag>
 		<tag-name>menuitem</tag-name>
 		<component>
 			<component-type>br.com.dbsoft.ui.component.menuitem</component-type>

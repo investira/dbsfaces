@@ -105,17 +105,17 @@ public class DBSDialogRenderer extends DBSRenderer {
 						if (xDialog.getMessageIcon().equals(DIALOG_ICON.INFORMACAO.toString())){
 							xMsgIcon += "-i_information";
 						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.SUCESSO.toString())){
-							xMsgIcon += "-i_sucess";
+							xMsgIcon += "-i_sucess -green";
 						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.ATENCAO.toString())){
-							xMsgIcon += "-i_warning";
+							xMsgIcon += "-i_warning -yellow";
 						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.ERRO.toString())){
-							xMsgIcon += "-i_error";
+							xMsgIcon += "-i_error -red";
 						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.CONFIRMAR.toString())){
 							xMsgIcon += "-i_question_confirm";
 						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.IGNORAR.toString())){
-							xMsgIcon += "-i_question_ignore";
+							xMsgIcon += "-i_question_ignore -yellow";
 						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.PROIBIDO.toString())){
-							xMsgIcon += "-i_forbidden";
+							xMsgIcon += "-i_forbidden -red";
 						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.SOBRE.toString())){
 							xMsgIcon += "-i_about";
 						}else if (xDialog.getMessageIcon().equals(DIALOG_ICON.IMPORTANTE.toString())){
@@ -148,13 +148,13 @@ public class DBSDialogRenderer extends DBSRenderer {
 							xWriter.startElement("div", xDialog);
 								xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.BUTTON, null);
 								if (!DBSObject.isEmpty(xDialog.getNoAction())){
-									pvEncodeButton(pContext,xDialog,xDialog.getNoAction(),"btno", "Não","-i_no");
+									pvEncodeButton(pContext,xDialog,xDialog.getNoAction(),"btno", "Não","-i_no -red");
 								}
 								if (!DBSObject.isEmpty(xDialog.getYesAction())){
-									pvEncodeButton(pContext,xDialog,xDialog.getYesAction(),"btyes", "Sim","-i_yes");
+									pvEncodeButton(pContext,xDialog,xDialog.getYesAction(),"btyes", "Sim","-i_yes -green");
 								}
 								if (!DBSObject.isEmpty(xDialog.getOkAction())){
-									pvEncodeButton(pContext,xDialog,xDialog.getOkAction(),"btok", "Ok","-i_yes");
+									pvEncodeButton(pContext,xDialog,xDialog.getOkAction(),"btok", "Ok","-i_yes -green");
 								}
 							xWriter.endElement("div");
 						xWriter.endElement("div");

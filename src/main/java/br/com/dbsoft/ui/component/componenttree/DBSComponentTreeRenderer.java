@@ -14,7 +14,7 @@ import br.com.dbsoft.ui.component.DBSUIInput;
 import br.com.dbsoft.ui.component.menu.DBSMenu;
 import br.com.dbsoft.ui.component.button.DBSButton;
 import br.com.dbsoft.ui.component.menuitem.DBSMenuitem;
-import br.com.dbsoft.ui.component.submenu.DBSSubmenu;
+
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSString;
@@ -263,9 +263,6 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 					}else if (xChild instanceof DBSMenuitem){
 						xValue = ((DBSMenuitem) xChild).getLabel();
 						xIconClass = ((DBSMenuitem) xChild).getIconClass();
-					}else if (xChild instanceof DBSSubmenu){
-						xValue = ((DBSSubmenu) xChild).getLabel();
-						xIconClass = ((DBSSubmenu) xChild).getIconClass();
 					}else if (xChild instanceof DBSUIInput){
 						xValue = ((DBSUIInput) xChild).getLabel();
 					}

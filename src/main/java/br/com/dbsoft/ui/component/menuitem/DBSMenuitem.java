@@ -1,12 +1,13 @@
 package br.com.dbsoft.ui.component.menuitem;
 
 import javax.faces.component.FacesComponent;
+import javax.faces.component.NamingContainer;
 
 import br.com.dbsoft.ui.component.DBSUICommand;
 import br.com.dbsoft.ui.core.DBSFaces;
 
 @FacesComponent(DBSMenuitem.COMPONENT_TYPE)
-public class DBSMenuitem extends DBSUICommand {
+public class DBSMenuitem extends DBSUICommand implements NamingContainer {
 
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.MENUITEM;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
@@ -39,7 +40,7 @@ public class DBSMenuitem extends DBSUICommand {
     @Override
 	public String getDefaultEventName()
     {
-        return "action";
+        return "click";
     }	
     
     public String getLabel() {

@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.dbsoft</groupId>
 	<artifactId>dbsfaces</artifactId>
-	<version>1.3.0</version>
+	<version>1.4.0</version>
 	<name>DBSoft - Componentes JSF</name>
 	<url>http://www.dbsoft.com.br</url>
 	<organization>
@@ -15,7 +15,7 @@
 		<jasper.version>5.5.0</jasper.version>
 		<internal.repo.path>${user.home}/Fnt/mvn-repo</internal.repo.path>
 		<github.global.server>github</github.global.server>
-		<dbssdk.version>1.3.0</dbssdk.version>
+		<dbssdk.version>1.4.0</dbssdk.version>
 		<jsf.version>2.1.20</jsf.version>
 	</properties>
 	<distributionManagement>

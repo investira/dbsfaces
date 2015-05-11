@@ -60,8 +60,8 @@
 								<c:if test="#{cc.attrs.allowApproval and cc.crudBean.allowApproval and cc.crudBean.approvalUserStages!=0}">
 									<div id="approval" class="-approval" >
 										<c:if test="#{cc.crudBean.hasSelected}">
-											<dbs:button id="btReprovar" iconClass="-i_prize_ribbon_red" action="#{cc.crudBean.reprove()}" update="#{cc.clientId}:crudTableMessages" execute="@this" tooltip="Reprovar"/>
-											<dbs:button id="btAprovar"  iconClass="-i_prize_ribbon_green" action="#{cc.crudBean.approve()}" update="#{cc.clientId}:crudTableMessages" execute="@this" tooltip="Avançar etapa de aprovação"/>
+											<dbs:button id="btReprovar" iconClass="-i_prize_ribbon -red" action="#{cc.crudBean.reprove()}" update="#{cc.clientId}:crudTableMessages" execute="@this" tooltip="Reprovar"/>
+											<dbs:button id="btAprovar"  iconClass="-i_prize_ribbon -green" action="#{cc.crudBean.approve()}" update="#{cc.clientId}:crudTableMessages" execute="@this" tooltip="Avançar etapa de aprovação"/>
 										</c:if>
 									</div>
 								</c:if>
@@ -80,8 +80,8 @@
 									</ui:fragment>
 									<!-- Confirmação									 -->
 									<ui:fragment rendered="#{cc.crudBean.isUpdating}">
-										<dbs:button id="btOk" iconClass="-i_ok" action="#{cc.crudBean.confirmEditing()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
-										<dbs:button id="btCancelar" iconClass="-i_cancel" action="#{cc.crudBean.ignoreEditing()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
+										<dbs:button id="btOk" iconClass="-i_ok -green" action="#{cc.crudBean.confirmEditing()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
+										<dbs:button id="btCancelar" iconClass="-i_cancel -red" action="#{cc.crudBean.ignoreEditing()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
 										<dbs:button id="btInserir" rendered="#{cc.attrs.allowInsert and cc.crudBean.allowInsert}"  iconClass="-i_insert" style="display:none;" action="#{cc.crudBean.insert()}" update="#{cc.clientId} " execute="#{cc.clientId} "/>
 									</ui:fragment>
 								</c:if>
@@ -110,29 +110,29 @@
 									<f:facet name="tooltip">
 										<ul>
 											<li>
-												<span class="-i_prize_ribbon_green" style="float:left;"/>
+												<span class="-i_prize_ribbon -green" style="float:left;"/>
 												<span>Aprovado</span>
 											</li>
 											<li>
-												<span class="-i_prize_ribbon_blue" style="float:left;"/>
+												<span class="-i_prize_ribbon -blue" style="float:left;"/>
 												<span>Verificado</span>
 											</li>
 											<li>
-												<span class="-i_prize_ribbon_yellow" style="float:left;"/>
+												<span class="-i_prize_ribbon -yellow" style="float:left;"/>
 												<span>Conferido</span>
 											</li>
 											<li>
-												<span class="-i_prize_ribbon_red" style="float:left;"/>
+												<span class="-i_prize_ribbon -red" style="float:left;"/>
 												<span>Registrado</span>
 											</li>
 										</ul>
 									</f:facet>
 								</dbs:label>
 							</f:facet>
-							<h:outputText styleClass="-i_prize_ribbon_green" rendered="#{cc.crudBean.approvalStageListValue.code == 1}"/>
-							<h:outputText styleClass="-i_prize_ribbon_blue" rendered="#{cc.crudBean.approvalStageListValue.code == 2}"/>
-							<h:outputText styleClass="-i_prize_ribbon_yellow" rendered="#{cc.crudBean.approvalStageListValue.code == 4}"/>
-							<h:outputText styleClass="-i_prize_ribbon_red" rendered="#{cc.crudBean.approvalStageListValue.code == 8}"/>
+							<h:outputText styleClass="-i_prize_ribbon -green" rendered="#{cc.crudBean.approvalStageListValue.code == 1}"/>
+							<h:outputText styleClass="-i_prize_ribbon -blue" rendered="#{cc.crudBean.approvalStageListValue.code == 2}"/>
+							<h:outputText styleClass="-i_prize_ribbon -yellow" rendered="#{cc.crudBean.approvalStageListValue.code == 4}"/>
+							<h:outputText styleClass="-i_prize_ribbon -red" rendered="#{cc.crudBean.approvalStageListValue.code == 8}"/>
 						</dbs:dataTableColumn>	
 					</c:if>
 					
