@@ -149,7 +149,7 @@ public class DBSFileUploadRenderer extends DBSRenderer {
 	
 	private void pvEncodeMessage(DBSFileUpload pFileUpload, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("div", pFileUpload);
-			pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.MESSAGE + " dbs_back_texture_white_gradient", null);
+			pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.MESSAGE + " " + DBSFaces.CSS.BACK_TEXTURE_WHITE_GRADIENT, null);
 			pWriter.writeAttribute("style", "display:none;", null);
 		pWriter.endElement("div");
 	}
