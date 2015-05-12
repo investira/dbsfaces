@@ -1170,6 +1170,8 @@ public class  DBSFaces {
 				xDialogIcon = DIALOG_ICON.ERRO;
 			}else if (pMessageType == MESSAGE_TYPE.INFORMATION){
 				xDialogIcon = DIALOG_ICON.INFORMACAO;
+			}else if (pMessageType == MESSAGE_TYPE.SUCESS){
+				xDialogIcon = DIALOG_ICON.SUCESSO;
 			}else if (pMessageType == MESSAGE_TYPE.IMPORTANT){
 				xDialogIcon = DIALOG_ICON.IMPORTANTE;
 			}else if (pMessageType == MESSAGE_TYPE.WARNING){
