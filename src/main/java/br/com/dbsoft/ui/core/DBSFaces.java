@@ -163,7 +163,6 @@ public class  DBSFaces {
 		public static final String BACK_TEXTURE_BLACK = DBSFaces.CSS.CLASS_PREFIX +  "back_texture_black ";
 		public static final String BACK_TEXTURE_BLACK_TRANSPARENT_GRADIENT = DBSFaces.CSS.CLASS_PREFIX +  "back_texture_black_transparent_gradient ";
 		public static final String BACK_TEXTURE_BLACK_GRADIENT = DBSFaces.CSS.CLASS_PREFIX +  "back_texture_black_gradient ";
-		
 		public static final String BACK_TEXTURE_WHITE_GRADIENT = DBSFaces.CSS.CLASS_PREFIX +  "back_texture_white_gradient ";
 		public static final String BACK_TEXTURE_WHITE_TRANSPARENT_GRADIENT = DBSFaces.CSS.CLASS_PREFIX +  "back_texture_white_transparent_gradient ";
 		public static final String BACK_GRADIENT_WHITE = DBSFaces.CSS.CLASS_PREFIX +  "back_gradient_white ";
