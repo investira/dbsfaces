@@ -51,11 +51,11 @@ public class DBSDivRenderer extends DBSRenderer {
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClass = DBSFaces.CSS.DIV.MAIN + " ";
 		if (xDiv.getStyleClass()!=null){
-			xClass = xClass + xDiv.getStyleClass() + " ";
+			xClass += xDiv.getStyleClass() + " ";
 		}
 		if (xDiv.getSelectable()!=null){
 			if (!xDiv.getSelectable()){
-				xClass = xClass + DBSFaces.CSS.NOT_SELECTABLE.trim() + " ";
+				xClass += DBSFaces.CSS.NOT_SELECTABLE.trim() + " ";
 			}
 		}
 		String xClientId = xDiv.getClientId(pContext);
