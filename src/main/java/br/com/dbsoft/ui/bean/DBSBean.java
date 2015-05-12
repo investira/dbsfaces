@@ -20,6 +20,7 @@ import br.com.dbsoft.ui.component.dialog.DBSDialog.DIALOG_ICON;
 import br.com.dbsoft.ui.component.dialog.DBSDialogMessage;
 import br.com.dbsoft.ui.component.dialog.DBSDialogMessages;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.util.DBSObject;
 
 /**
  * @author ricardo.villar
@@ -320,12 +321,12 @@ public abstract class DBSBean implements Serializable {
 	}
 
 	/**
-	 * Retorna se mensagem foi validada
+	 * Retorna se mensagem foi validada.
 	 * @param pMessageKey
 	 * @return
 	 */
-	protected boolean isMessageValidated(String pMessageKey){
-		return wDialogMessages.isValidated(pMessageKey);
+	protected Boolean isMessageValidated(String pMessageKey){
+		return DBSObject.getNotNull(wDialogMessages.isValidated(pMessageKey), false);
 	}
 	
 	/**
@@ -333,7 +334,7 @@ public abstract class DBSBean implements Serializable {
 	 * @param pMessageKey
 	 * @return
 	 */
-	protected boolean isMessageValidated(DBSMessage pMessage){
+	protected Boolean isMessageValidated(DBSMessage pMessage){
 		return isMessageValidated(pMessage.getMessageText());
 	}
 	
