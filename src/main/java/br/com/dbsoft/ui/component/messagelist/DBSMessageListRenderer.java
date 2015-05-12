@@ -86,8 +86,9 @@ public class DBSMessageListRenderer extends DBSRenderer {
 					Iterator<Entry<String, DBSMessage>> xI = xMessageList.getValue().iterator();
 					while (xI.hasNext()){
 						 xMsg = xI.next().getValue();
-						 //Se msg ainda não foi validada(vista, neste caso)
-						 if (xMsg.isValidated() == null || (xMsg.isValidated() != null && !xMsg.isValidated())){
+						 //Se msg ainda não foi validada(visualizada, neste caso)
+						 if (xMsg.isValidated() == null 
+						  || !xMsg.isValidated()){
 							 //Conta a quantidade de mensagens novas
 							 xNew++;
 							 xMsg.setValidated(true); //Marca que mensagem como vista
