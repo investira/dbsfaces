@@ -1838,6 +1838,12 @@ public abstract class DBSCrudBean extends DBSBean{
 		return DBSFaces.getCurrentView();
 	}
 
+	
+	/**
+	 * Move para o primeiro registro.
+	 * @return
+	 * @throws DBSIOException
+	 */
 	public synchronized String moveFirst() throws DBSIOException{
 		if (wEditingStage==EditingStage.NONE){
 			wDAO.moveFirstRow();
@@ -1845,6 +1851,11 @@ public abstract class DBSCrudBean extends DBSBean{
 		}
 		return DBSFaces.getCurrentView();
 	}
+	/**
+	 * Move para o registro anterior
+	 * @return
+	 * @throws DBSIOException
+	 */
 	public synchronized String movePrevious() throws DBSIOException{
 		if (wEditingStage==EditingStage.NONE){
 			wDAO.movePreviousRow();
@@ -1853,6 +1864,11 @@ public abstract class DBSCrudBean extends DBSBean{
 		return DBSFaces.getCurrentView();
 	}
 	
+	/**
+	 * MNove para o próximo registro
+	 * @return
+	 * @throws DBSIOException
+	 */
 	public synchronized String moveNext() throws DBSIOException{
 		if (wEditingStage==EditingStage.NONE){
 			wDAO.moveNextRow();
@@ -1861,6 +1877,11 @@ public abstract class DBSCrudBean extends DBSBean{
 		return DBSFaces.getCurrentView();
 	}
 	
+	/**
+	 * Move para o último registro
+	 * @return
+	 * @throws DBSIOException
+	 */
 	public synchronized String moveLast() throws DBSIOException{
 		if (wEditingStage==EditingStage.NONE){
 			wDAO.moveLastRow();
