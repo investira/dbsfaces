@@ -308,16 +308,16 @@ public abstract class DBSCrudBean extends DBSBean{
 	private int									wCopiedRowIndex = -1;
 	private boolean								wValidateComponentHasError = false;
 	private Boolean 							wDialogOpened = false;
-	private String								wDialogConfirmationEditMessage = "Confirmar a edição?";
-	private String								wDialogConfirmationInsertMessage = "Confirmar a inclusão?";
-	private String								wDialogConfirmationDeleteMessage = "Confirmar a exclusão?";
-	private String								wDialogConfirmationApproveMessage = "Confirmar a aprovação?";
-	private String								wDialogConfirmationReproveMessage = "Confirmar a reprovação?";
-	private String								wDialogIgnoreEditMessage = "Ignorar a edição?";
-	private String								wDialogIgnoreInsertMessage = "Ignorar a inclusão?";
-	private String								wDialogIgnoreDeleteMessage = "Ignorar a exclusão?";
 	private String								wDialogCaption;
 	private	Boolean								wDialogCloseAfterInsert = false;
+	private String								wMessageConfirmationEdit = "Confirmar a edição?";
+	private String								wMessageConfirmationInsert = "Confirmar a inclusão?";
+	private String								wMessageConfirmationDelete = "Confirmar a exclusão?";
+	private String								wMessageConfirmationApprove = "Confirmar a aprovação?";
+	private String								wMessageConfirmationReprove = "Confirmar a reprovação?";
+	private String								wMessageIgnoreEdit = "Ignorar a edição?";
+	private String								wMessageIgnoreInsert = "Ignorar a inclusão?";
+	private String								wMessageIgnoreDelete = "Ignorar a exclusão?";
 	private Boolean								wAllowUpdate = true;
 	private Boolean								wAllowInsert = true;
 	private Boolean								wAllowDelete = true;
@@ -640,7 +640,8 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 
 	/**
-	 * Informa o modo de edição(inclusão, alteração, etc)(Método PRIVADO)
+	 * Informa o modo de edição(inclusão, alteração, etc).<br/>
+	 * Qualquer mudança no modo de edição<b>setEditingMode</b>, setará a propriedade <b>EditingStage(NONE)</b>.
 	 * @param pRunningState
 	 */
 	private synchronized void setEditingMode(EditingMode pEditingMode) {
@@ -733,34 +734,54 @@ public abstract class DBSCrudBean extends DBSBean{
 	public FormStyle getFormStyle() {return wFormStyle;}
 
 	/**
-	 * Indica se edição será efetuado dentro de um dialog, grid ou view.<br/>
-	 * Caso positivo, deverá ser implementado o form utilizando os respectivos componentes crudTable/crudView/crudDialog  e adicioná-lo a view que onde está o crudTable.  
+	 * Indica se edição será efetuado dentro de um DIALOG, TABLE ou VIEW.<br/>
+	 * Caso positivo, deverá ser implementado o form utilizando os respectivos componentes crudTable/crudView/crudDialog.<br/>
+	 * <ul>
+	 * 		<li>
+	 * 		<b>DIALOG</b><br/>
+	 * 		A edição é efetuado dentro de uma tela modal de diálogo utilizando o compoente <b>crudDialog</b>.<br/>
+	 * 		Normalmente utilizado a partir de uma lista utilizando o <b>crudTable</b>. 
+	 * 		Nesta caso o <b>crudDialog</b> deverá ser adicionado ao final da view que onde está o <b>crudTable</b>.
+	 * 		</li>  
+	 * 		<li>
+	 * 		<b>TABLE</b><br/>
+	 * 		A edição é efetuado dentro da própria lista utilizando o componente <b>crudTable</b>.
+	 * 		Deve-se sobreescrever o método <b>getEndEditingViewOutcome</b> para definir a próxima página de navegação após as confirmações.<br/>
+	 * 		</li>  
+	 * 		<li>
+	 * 		<b>VIEW</b><br/>
+	 * 		A edição é efetuado dentro da própria página utilizando o componente <b>crudView</b>.<br/>
+	 * 		No <i>update</i> o registro a ser editado deverá ser selecionado no <b>beforeRefresh<b/>.<br/>
+	 * 		Caso não exista registro corrente, será considerado uma inclusão(<i>insert</i>).
+	 * 		Deve-se sobreescrever o método <b>getEndEditingViewOutcome</b> para definir a próxima página de navegação após as confirmações.<br/>
+	 * 		</li>  
+	 * </ul>
 	 */
 	public void setFormStyle(FormStyle pFormStyle) {wFormStyle = pFormStyle;}
 
-	public String getDialogConfirmationEditMessage() {return wDialogConfirmationEditMessage;}
-	public void setDialogConfirmationEditMessage(String pDialogConfirmationEditMessage) {wDialogConfirmationEditMessage = pDialogConfirmationEditMessage;}
+	public String getMessageConfirmationEdit() {return wMessageConfirmationEdit;}
+	public void setMessageConfirmationEdit(String pMessageConfirmationEdit) {wMessageConfirmationEdit = pMessageConfirmationEdit;}
 
-	public String getDialogConfirmationInsertMessage() {return wDialogConfirmationInsertMessage;}
-	public void setDialogConfirmationInsertMessage(String pDialogConfirmationInsertMessage) {wDialogConfirmationInsertMessage = pDialogConfirmationInsertMessage;}
+	public String getMessageConfirmationInsert() {return wMessageConfirmationInsert;}
+	public void setMessageConfirmationInsert(String pDialogConfirmationInsertMessage) {wMessageConfirmationInsert = pDialogConfirmationInsertMessage;}
 
-	public String getDialogConfirmationDeleteMessage() {return wDialogConfirmationDeleteMessage;}
-	public void setDialogConfirmationDeleteMessagem(String pDialogConfirmationDeleteMessagem) {wDialogConfirmationDeleteMessage = pDialogConfirmationDeleteMessagem;}
+	public String getMessageConfirmationDelete() {return wMessageConfirmationDelete;}
+	public void setMessageConfirmationDelete(String pMessageConfirmationDelete) {wMessageConfirmationDelete = pMessageConfirmationDelete;}
 
-	public String getDialogConfirmationApproveMessage() {return wDialogConfirmationApproveMessage;}
-	public void setDialogConfirmationApproveMessagem(String pDialogConfirmationApproveMessagem) {wDialogConfirmationApproveMessage = pDialogConfirmationApproveMessagem;}
+	public String getMessageConfirmationApprove() {return wMessageConfirmationApprove;}
+	public void setMessageConfirmationApprove(String pMessageConfirmationApprove) {wMessageConfirmationApprove = pMessageConfirmationApprove;}
 
-	public String getDialogConfirmationReproveMessage() {return wDialogConfirmationReproveMessage;}
-	public void setDialogConfirmationReproveMessagem(String pDialogConfirmationReproveMessagem) {wDialogConfirmationReproveMessage = pDialogConfirmationReproveMessagem;}
+	public String getMessageConfirmationReprove() {return wMessageConfirmationReprove;}
+	public void setMessageConfirmationReprove(String pMessageConfirmationReprove) {wMessageConfirmationReprove = pMessageConfirmationReprove;}
 
-	public String getDialogIgnoreEditMessage() {return wDialogIgnoreEditMessage;}
-	public void setDialogIgnoreEditMessage(String pDialogIgnoreEditMessage) {wDialogIgnoreEditMessage = pDialogIgnoreEditMessage;}
+	public String getMessageIgnoreEdit() {return wMessageIgnoreEdit;}
+	public void setMessageIgnoreEdit(String pMessageIgnoreEdit) {wMessageIgnoreEdit = pMessageIgnoreEdit;}
 
-	public String getDialogIgnoreInsertMessage() {return wDialogIgnoreInsertMessage;}
-	public void setDialogIgnoreInsertMessage(String pDialogIgnoreInsertMessage) {wDialogIgnoreInsertMessage = pDialogIgnoreInsertMessage;}
+	public String getMessageIgnoreInsert() {return wMessageIgnoreInsert;}
+	public void setMessageIgnoreInsert(String pMessageIgnoreInsert) {wMessageIgnoreInsert = pMessageIgnoreInsert;}
 
-	public String getDialogIgnoreDeleteMessage() {return wDialogIgnoreDeleteMessage;}
-	public void setDialogIgnoreDeleteMessage(String pDialogIgnoreDeleteMessage) {wDialogIgnoreDeleteMessage = pDialogIgnoreDeleteMessage;}
+	public String getMessageIgnoreDelete() {return wMessageIgnoreDelete;}
+	public void setMessageIgnoreDelete(String pMessageIgnoreDelete) {wMessageIgnoreDelete = pMessageIgnoreDelete;}
 
 	//==============================================================================
 	/**
@@ -1440,70 +1461,120 @@ public abstract class DBSCrudBean extends DBSBean{
 	}
 
 	/**
-		 * Confirma ou cancela o estágio atual. Podendo, por exemplo, confirmar ou cancelar o pedido de ignorar a edição. 
-		 * Está é a última etapa do CRUD
-		 * @param pConfirm true = Confirma, false = cancela
-		 * @return
+	 * Confirma ou cancela o estágio atual. Podendo, por exemplo, confirmar ou cancelar o pedido de ignorar a edição. 
+	 * Está é a última etapa do CRUD
+	 * @param pConfirm true = Confirma, false = cancela
+	 * @return
 	 * @throws DBSIOException 
-		 */
-		public synchronized String endEditing(Boolean pConfirm) throws DBSIOException{
-			try{
-				if (pConfirm){
-					//Verifica se está no estágio correto
-					if (wEditingStage!=EditingStage.NONE){
-						if (wEditingStage==EditingStage.COMMITTING){
-							//Disparado eventos
-							if (pvFireEventValidate()
-							 && pvFireEventBeforeCommit()){
-								pvFireEventAfterCommit();
-								pvSearchList();
-								pvEndEditing(true);
-							}else{
-								pvEndEditing(false);
-							}
-						}else if (wEditingStage==EditingStage.IGNORING){
-							//Disparado eventos
-							if (pvFireEventBeforeIgnore()){
-								pvFireEventAfterIgnore();
-								pvEndEditing(true);
-							}else{
-								pvEndEditing(false);
-							}
+	 */
+	public synchronized String endEditing(Boolean pConfirm) throws DBSIOException{
+		EditingMode xEditingMode = wEditingMode;
+		EditingStage xEditingStage = wEditingStage;
+		try{
+			if (pConfirm){
+				//Verifica se está no estágio correto
+				if (wEditingStage!=EditingStage.NONE){
+					if (wEditingStage==EditingStage.COMMITTING){
+						//Disparando eventos
+						if (pvFireEventValidate()
+						 && pvFireEventBeforeCommit()){
+							pvFireEventAfterCommit();
+							pvSearchList();
+							pvEndEditing(true);
+						}else{
+							pvEndEditing(false);
 						}
-					}else{
-						//exibe mensagem de erro de procedimento
+					}else if (wEditingStage==EditingStage.IGNORING){
+						//Disparando eventos
+						if (pvFireEventBeforeIgnore()){
+							pvFireEventAfterIgnore();
+							pvEndEditing(true);
+						}else{
+							pvEndEditing(false);
+						}
 					}
 				}else{
-					//Retorna ao estágio sem edição, inclusão ou deleção
-					setEditingStage(EditingStage.NONE);
-					switch(wEditingMode){
-						case UPDATING:
-							break;
-						case INSERTING:
-							break;
-						case DELETING: 
-							setEditingMode(EditingMode.NONE);
-							view();
-							break;
-						case APPROVING: 
-							setEditingMode(EditingMode.NONE);
-							close(false);
-							break;
-						case REPROVING: 
-							setEditingMode(EditingMode.NONE);
-							close(false);
-							break;
-						default:
-							//Exibe mensagem de erro de procedimento
-					}
+					//exibe mensagem de erro de procedimento
 				}
-			}catch(Exception e){
-				wLogger.error("Crud:" + getDialogCaption() + ":endEditing", e);
-				setEditingMode(EditingMode.NONE);
-				DBSIO.throwIOException(e);
+			}else{
+				//Retorna ao estágio sem edição, inclusão ou deleção
+				setEditingStage(EditingStage.NONE);
+				switch(wEditingMode){
+					case UPDATING:
+						break;
+					case INSERTING:
+						break;
+					case DELETING: 
+						setEditingMode(EditingMode.NONE);
+						view();
+						break;
+					case APPROVING: 
+						setEditingMode(EditingMode.NONE);
+						close(false);
+						break;
+					case REPROVING: 
+						setEditingMode(EditingMode.NONE);
+						close(false);
+						break;
+					default:
+						//Exibe mensagem de erro de procedimento
+				}
 			}
+		}catch(Exception e){
+			wLogger.error("Crud:" + getDialogCaption() + ":endEditing", e);
+			setEditingMode(EditingMode.NONE);
+			DBSIO.throwIOException(e);
+		}
+		if (getFormStyle() == FormStyle.VIEW){
+			return getEndEditingViewOutcome(xEditingMode, xEditingStage, pConfirm);
+		}else{
 			return DBSFaces.getCurrentView();
 		}
+	}
+	
+	/**
+	 * Retorna a página(<i>view</i>) destino.<br/>
+	 * Deve-se informar o caminho completo o o nome definido no <b>faces-config.xml</b>.<br/>
+	 * Este método somente é chamado em <b>FormStyle = VIEW</b>.
+	 * @param pEditingMode
+	 * @param pEditingStage
+	 * @param pConfirm
+	 * @return
+	 */
+	public String getEndEditingViewOutcome(EditingMode pEditingMode, EditingStage pEditingStage, Boolean pConfirm){
+		return DBSFaces.getCurrentView();
+	}
+	
+	/**
+	 * Ativa a edição automaticamente quando o formStyle é <b>VIEW</b>.<br/>
+	 * Método é chamado dentro do <b>crudView.xhtml</b>.
+	 * @param pEditingMode
+	 * @throws DBSIOException
+	 */
+	public String beginEditingView() throws DBSIOException{
+		if (getFormStyle() != FormStyle.VIEW){
+			return DBSFaces.getCurrentView();
+		}
+		if (getEditingMode() != EditingMode.NONE){
+			return DBSFaces.getCurrentView();
+		}
+		try{
+			//Abre conexão
+			openConnection();
+			//Le o registro
+			beforeRefresh(null);
+			moveFirst();
+			//Verifica se existe registro corrente
+			if (wDAO != null && wDAO.getCurrentRowIndex() > -1){
+				return update();
+			}else{
+				return insert();
+			}
+		}finally{
+			closeConnection(); 
+		}
+	}
+
 
 	// Methods ############################################################
 	
@@ -2246,8 +2317,12 @@ public abstract class DBSCrudBean extends DBSBean{
 						close();
 					}else{
 						setEditingMode(EditingMode.NONE); 
-						//Reinicia no processe de inclusão
-						insert();
+						if (getFormStyle() == FormStyle.VIEW){
+							view();
+						}else{
+							//Reinicia no processe de inclusão
+							insert();
+						}
 					}
 				}else{
 					//Continua no mesmo processo de inclusão até que o erro seja corrigido ou a inclusão ignorada
@@ -2350,10 +2425,13 @@ public abstract class DBSCrudBean extends DBSBean{
 			//Força o fechamento da conexão para evitar que fique uma conexão aberta perdida na memória
 			Connection xCn = xChildBean.getConnection();
 	
-			DBSIO.closeConnection(xCn);
-	
-			//Força para que a conexão do crud filho seja a mesma do crud 'pai'
-			xChildBean.setConnection(pBean.getConnection());
+			//Se conexão for diferente da já existente no filho, força que a do filho seja fechada e atribui a nova
+			if (!xCn.equals(pBean.getConnection())){
+				DBSIO.closeConnection(xCn);
+				
+				//Força para que a conexão do crud filho seja a mesma do crud 'pai'
+				xChildBean.setConnection(pBean.getConnection());
+			}
 			//Procura pelos netos
 			pvBroadcastConnection(xChildBean);
 		}
@@ -2924,7 +3002,7 @@ public abstract class DBSCrudBean extends DBSBean{
 		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_REFRESH, getEditingMode());
 		try{
 			pvBroadcastEvent(xE, true, true, true);
-		} catch (Exception e) {
+		} catch (Exception e) { 
 			xE.setOk(false);
 			wLogger.error("EventBeforeRefresh",e);
 		}
@@ -3356,7 +3434,12 @@ public abstract class DBSCrudBean extends DBSBean{
 				if (pEvent.getEvent() == CRUD_EVENT.BEFORE_VIEW
 				 || pEvent.getEvent() == CRUD_EVENT.BEFORE_INSERT){
 					//Atualiza conteúdo do filho
-					xBean.searchList();
+					try{
+						openConnection();
+						xBean.searchList();
+					}finally{
+						closeConnection();
+					}
 				}
 				switch (pEvent.getEvent()) {
 				case INITIALIZE:
