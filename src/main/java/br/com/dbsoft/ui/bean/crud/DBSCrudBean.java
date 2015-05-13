@@ -1585,7 +1585,20 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @throws DBSIOException 
 	 */
 	public synchronized String searchList() throws DBSIOException{
-		pvSearchList();
+		boolean xOpenConnection = false;
+		//Abre conexão se for crud filho e conexão não estiver aberta, abre. 
+		//Isso ocorre normalmente quando o botão de REFRESH do crudtable dentro do crudDialog é selecionado antes de se iniciar a edição do crud mãe.
+		if (wParentCrudBean!=null
+		 && !DBSIO.isConnectionOpened(wParentCrudBean.wConnection)){
+			xOpenConnection = true;
+			wParentCrudBean.openConnection();
+		}
+		
+		pvSearchList(); 
+		//Fecha conexão se tiver sido aberta acima
+		if (xOpenConnection){
+			wParentCrudBean.closeConnection();
+		}
 		return DBSFaces.getCurrentView();
 	}
 
@@ -1596,7 +1609,21 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @throws DBSIOException 
 	 */
 	public synchronized String refreshList() throws DBSIOException{
-		pvFireEventInitialize();
+		boolean xOpenConnection = false;
+		//Abre conexão se for crud filho e conexão não estiver aberta, abre. 
+		//Isso ocorre normalmente quando o botão de REFRESH do crudtable dentro do crudDialog é selecionado antes de se iniciar a edição do crud mãe.
+		if (wParentCrudBean!=null
+		 && !DBSIO.isConnectionOpened(wParentCrudBean.wConnection)){
+			xOpenConnection = true;
+			wParentCrudBean.openConnection();
+		}
+		
+		pvFireEventInitialize(); 
+		
+		//Fecha conexão se tiver sido aberta acima
+		if (xOpenConnection){
+			wParentCrudBean.closeConnection();
+		}
 		return searchList();
 	}
 
@@ -3434,12 +3461,7 @@ public abstract class DBSCrudBean extends DBSBean{
 				if (pEvent.getEvent() == CRUD_EVENT.BEFORE_VIEW
 				 || pEvent.getEvent() == CRUD_EVENT.BEFORE_INSERT){
 					//Atualiza conteúdo do filho
-					try{
-						openConnection();
-						xBean.searchList();
-					}finally{
-						closeConnection();
-					}
+					xBean.searchList();
 				}
 				switch (pEvent.getEvent()) {
 				case INITIALIZE:
