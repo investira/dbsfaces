@@ -32,13 +32,13 @@
 								yesAction="#{cc.crudBean.endEditing(true)}"
 								update="#{cc.attrs.update}" >
 						<ui:fragment rendered="#{cc.crudBean.isUpdating}">
-							<h:outputText value="#{cc.crudBean.dialogConfirmationEditMessage}" escape="false"/>
+							<h:outputText value="#{cc.crudBean.messageConfirmationEdit}" escape="false"/>
 						</ui:fragment>		
 						<ui:fragment rendered="#{cc.crudBean.isInserting}">
-							<h:outputText value="#{cc.crudBean.dialogConfirmationInsertMessage}" escape="false"/>
+							<h:outputText value="#{cc.crudBean.messageConfirmationInsert}" escape="false"/>
 						</ui:fragment>		
 						<ui:fragment rendered="#{cc.crudBean.isDeleting}">
-							<h:outputText value="#{cc.crudBean.dialogConfirmationDeleteMessage}" escape="false"/>
+							<h:outputText value="#{cc.crudBean.messageConfirmationDelete}" escape="false"/>
 						</ui:fragment>		
 					</dbs:dialog>
 				</c:if>
@@ -52,13 +52,13 @@
 								yesAction="#{cc.crudBean.endEditing(true)}"
 								update="#{cc.attrs.update}">
 						<ui:fragment rendered="#{cc.crudBean.isUpdating}">
-							<h:outputText value="#{cc.crudBean.dialogIgnoreEditMessage}" escape="false"/>
+							<h:outputText value="#{cc.crudBean.messageIgnoreEdit}" escape="false"/>
 						</ui:fragment>		
 						<ui:fragment rendered="#{cc.crudBean.isInserting}">
-							<h:outputText value="#{cc.crudBean.dialogIgnoreInsertMessage}" escape="false"/>
+							<h:outputText value="#{cc.crudBean.messageIgnoreInsert}" escape="false"/>
 						</ui:fragment>		
 						<ui:fragment rendered="#{cc.crudBean.isDeleting}">
-							<h:outputText value="#{cc.crudBean.dialogIgnoreDeleteMessage}" escape="false"/>
+							<h:outputText value="#{cc.crudBean.messageIgnoreDelete}" escape="false"/>
 						</ui:fragment>		
 					</dbs:dialog>
 				</c:if>

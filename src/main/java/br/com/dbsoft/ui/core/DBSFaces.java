@@ -963,7 +963,7 @@ public class  DBSFaces {
 	 * @param pUrl
 	 * @throws DBSIOException
 	 */
-	public static final void redirect(String pUrl) throws DBSIOException{
+	public static final void redirectRemote(String pUrl) throws DBSIOException{
 		if (pUrl==null
 		 || FacesContext.getCurrentInstance() == null){return;}
 		try {

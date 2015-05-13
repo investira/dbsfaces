@@ -170,7 +170,7 @@
 										yesAction="#{cc.crudBean.endEditing(true)}"
 										noAction="#{cc.crudBean.endEditing(false)}"
 										update="#{cc.clientId}" >
-										#{cc.crudBean.dialogConfirmationApproveMessage}
+										#{cc.crudBean.messageConfirmationApprove}
 							</dbs:dialog>
 						</c:if>
 						<!-- Encode de dialog customizado-->
@@ -190,7 +190,7 @@
 										yesAction="#{cc.crudBean.endEditing(true)}"
 										noAction="#{cc.crudBean.endEditing(false)}"
 										update="#{cc.clientId}" >
-										#{cc.crudBean.dialogConfirmationReproveMessage}
+										#{cc.crudBean.messageConfirmationReprove}
 							</dbs:dialog>	
 						</c:if>
 						<!-- Encode de dialog customizado-->

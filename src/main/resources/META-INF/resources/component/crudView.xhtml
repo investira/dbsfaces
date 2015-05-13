@@ -25,7 +25,7 @@
 	
 	<cc:implementation >
 		<div id="#{cc.clientId}" class="dbs_crudView #{cc.attrs.styleClass}" style="#{cc.attrs.style}">
-			<f:event listener="#{cc.crudBean.viewBeginEdit}" type="preRenderComponent"/> 
+			<f:event listener="#{cc.crudBean.beginEditingView}" type="preRenderComponent"/> 
 			
 			<dbs:div id="content" styleClass="-content">
 					

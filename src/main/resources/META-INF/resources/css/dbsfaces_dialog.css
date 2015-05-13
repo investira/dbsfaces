@@ -183,6 +183,8 @@
 	display: table-cell;
 	vertical-align: middle;
 	text-align: center;
+	max-width: 42px; /*Para limitar a largura e obrigar a exibição do scrollbar. Curiosamente este valor não impede que a largura seja maior*/
+	overflow: auto; /*Para ofrçar a exibição do scrollbar*/ 
 }
 	
 .dbs_dialog-confirmation > .-content > .-icon{
