@@ -95,7 +95,7 @@
 .dbs_dialog > div > .-toolbar > ul > li.-icon > span{
 	position: relative;
 	left:1px;
-	top:0px;	
+	top:-1px;	
 }
 
 
