@@ -22,7 +22,8 @@
 			</dbscom:beanDialogMessages>
 	
 			<c:if test="#{!cc.crudBean.hasMessage}">
-				<c:if test="#{cc.crudBean.isCommitting}">
+				<!-- Exibe mansagem de confirmação					 -->
+				<c:if test="#{cc.crudBean.messageConfirmationExists}">
 					<dbs:dialog id="#{cc.id}_confirm"
 								rendered="#{cc.crudBean.isCommitting}"
 								messageIcon="c"
@@ -42,7 +43,8 @@
 						</ui:fragment>		
 					</dbs:dialog>
 				</c:if>
-				<c:if test="#{cc.crudBean.isIgnoring}">
+				<!-- Exibe mansagem de confirmação					 -->
+				<c:if test="#{cc.crudBean.messageIgnoreExists}">
 					<dbs:dialog id="#{cc.id}_ignore" 
 								rendered="#{cc.crudBean.isIgnoring}"
 								messageIcon="g"

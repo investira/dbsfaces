@@ -1,3 +1,14 @@
+.-th_action{
+}
+
+.-th_action,
+.-th_action:HOVER,
+.-th_action:LINK {
+	text-decoration: none !important;
+	outline-style: none !important;
+	outline-width: 0px !important;
+}
+
 .-th_action.-disabled {
 	cursor: default;
 	opacity: 0.9;

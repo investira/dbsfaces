@@ -783,6 +783,60 @@ public abstract class DBSCrudBean extends DBSBean{
 	public String getMessageIgnoreDelete() {return wMessageIgnoreDelete;}
 	public void setMessageIgnoreDelete(String pMessageIgnoreDelete) {wMessageIgnoreDelete = pMessageIgnoreDelete;}
 
+	/**
+	 * Retorna se existe mensagem para confirmar.<br/>
+	 * Mensagens vázias não serão exibidas.
+	 * @return
+	 */
+	public Boolean getMessageConfirmationExists(){
+		if (getIsCommitting()){
+			if (getIsUpdating()){
+				if (DBSObject.isEmpty(getMessageConfirmationEdit())){
+					return false;
+				}
+			}else if (getIsInserting()){
+				if (DBSObject.isEmpty(getMessageConfirmationInsert())){
+					return false;
+				}
+			}else if (getIsDeleting()){
+				if (DBSObject.isEmpty(getMessageConfirmationDelete())){
+					return false;
+				}
+			}else{
+				return false;
+			}
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Retorna se existe mensagem para ignorar.<br/>
+	 * Mensagens vázias não serão exibidas.
+	 * @return
+	 */
+	public Boolean getMessageIgnoreExists(){
+		if (getIsIgnoring()){
+			if (getIsUpdating()){
+				if (DBSObject.isEmpty(getMessageIgnoreEdit())){
+					return false;
+				}
+			}else if (getIsInserting()){
+				if (DBSObject.isEmpty(getMessageIgnoreInsert())){
+					return false;
+				}
+			}else if (getIsDeleting()){
+				if (DBSObject.isEmpty(getMessageIgnoreDelete())){
+					return false;
+				}
+			}else{
+				return false;
+			}
+			return true;
+		}
+		return false;
+	}
+
 	//==============================================================================
 	/**
 	 * Use este atributo para popular páginas.<br/>
@@ -1411,6 +1465,10 @@ public abstract class DBSCrudBean extends DBSBean{
 						 && pvFireEventValidate()){
 							//Exibe tela de confirmação para efetuar o commit
 							setEditingStage(EditingStage.COMMITTING);
+							//Se não existir mensagem de confirmação a ser exibida, finaliza a edição diretamente.
+							if (!getMessageConfirmationExists()){
+								return endEditing(true);
+							}
 						}else{
 							//Ignora a exclusão em caso de erro de validação
 							//Adicionado em 12/11/13 verificação para ignorar caso haja erro na validacao de assinatura
@@ -1449,8 +1507,13 @@ public abstract class DBSCrudBean extends DBSBean{
 				//Se não houve alteração de valores, sai sem confirmação
 				if (!getIsValueChanged()){
 					//Confirma o estágio/comando de 'ignorar'
-					endEditing(true);
+					return endEditing(true);
 				}
+				//Se não existir mensagem de confirmação a ser exibida, finaliza a edição diretamente.
+				if (!getMessageIgnoreExists()){
+					return endEditing(true);
+				}
+
 			}else{
 				//exibe mensagem de erro de procedimento
 			}
@@ -1534,8 +1597,9 @@ public abstract class DBSCrudBean extends DBSBean{
 	
 	/**
 	 * Retorna a página(<i>view</i>) destino.<br/>
-	 * Deve-se informar o caminho completo o o nome definido no <b>faces-config.xml</b>.<br/>
-	 * Este método somente é chamado em <b>FormStyle = VIEW</b>.
+	 * Deve-se informar o caminho completo ou o nome definido no <b>faces-config.xml</b>.<br/>
+	 * Este método somente é chamado quando <b>FormStyle = VIEW</b>.<br/>
+	 * A página padrão é <b>CurrentView</b>.
 	 * @param pEditingMode
 	 * @param pEditingStage
 	 * @param pConfirm
