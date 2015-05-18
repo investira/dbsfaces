@@ -3,7 +3,6 @@ package br.com.dbsoft.ui.component.div;
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
-
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
@@ -39,7 +38,7 @@ public class DBSDivRenderer extends DBSRenderer {
 //		System.out.println(pContext.getPartialViewContext().isPartialRequest());
 //		System.out.println(pContext.getPartialViewContext().getRenderIds());
     	if (!pvEncodeLater(pContext, xDiv)){
-       		renderChildren(pContext, pComponent);
+    		DBSFaces.renderChildren(pContext, pComponent);
     	}
     }
 

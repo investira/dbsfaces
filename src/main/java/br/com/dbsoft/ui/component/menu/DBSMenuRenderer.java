@@ -10,6 +10,7 @@ import javax.faces.render.FacesRenderer;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
 
+
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSMenu.RENDERER_TYPE)
 public class DBSMenuRenderer extends DBSRenderer {
 
@@ -49,7 +50,7 @@ public class DBSMenuRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "class", xClass, null);
 			xWriter.startElement("ul", xMenu);
 				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
-				renderChildren(pContext, xMenu);
+				DBSFaces.renderChildren(pContext, xMenu);
 			xWriter.endElement("ul");
 			pvEncodeJS(xClientId, xWriter);
 		xWriter.endElement("div");

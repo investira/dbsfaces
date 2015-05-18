@@ -13,6 +13,7 @@ import com.sun.faces.renderkit.RenderKitUtils;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
 
+
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSLink.RENDERER_TYPE)
 public class DBSLinkRenderer extends DBSRenderer {
 	
@@ -60,7 +61,7 @@ public class DBSLinkRenderer extends DBSRenderer {
 					DBSFaces.setAttribute(xWriter, DBSFaces.HTML.EVENTS.ONCLICK, xOnClick, null); 
 				//}
 			}
-			renderChildren(pContext, xLink);
+			DBSFaces.renderChildren(pContext, xLink);
 		xWriter.endElement("a");
 	}
 

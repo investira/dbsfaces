@@ -39,7 +39,7 @@ public class DBSTabPageRenderer extends DBSRenderer {
     public void encodeChildren(FacesContext pContext, UIComponent pComponent) throws IOException {
     	if (!pComponent.isRendered()){return;}
     	DBSTabPage xTabPage = (DBSTabPage) pComponent;
-		renderChildren(pContext, xTabPage);
+    	DBSFaces.renderChildren(pContext, xTabPage);
     }
     
 

@@ -15,6 +15,7 @@ import br.com.dbsoft.ui.component.menu.DBSMenu;
 import br.com.dbsoft.ui.component.menuitem.DBSMenuitem;
 import br.com.dbsoft.ui.core.DBSFaces;
 
+
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSMenuitem.RENDERER_TYPE)
 public class DBSMenuitemRenderer extends DBSRenderer {
 
@@ -99,7 +100,7 @@ public class DBSMenuitemRenderer extends DBSRenderer {
 			xWriter.endElement("a");
 			if (xMenuitem.getChildCount() > 0){
 				xWriter.startElement("ul", xMenuitem);
-					renderChildren(pContext, xMenuitem);
+					DBSFaces.renderChildren(pContext, xMenuitem);
 				xWriter.endElement("ul");
 			}
 		xWriter.endElement("li");

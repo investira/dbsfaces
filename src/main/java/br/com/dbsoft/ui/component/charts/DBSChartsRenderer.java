@@ -108,7 +108,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 									pvEncodeLines(xCharts, xWriter);
 								xWriter.endElement("g");
 								
-								renderChildren(pContext, xCharts);
+								DBSFaces.renderChildren(pContext, xCharts);
 							xWriter.endElement("g");
 							
 							//RIGHT--------------------------

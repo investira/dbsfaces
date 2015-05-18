@@ -49,7 +49,7 @@ public class DBSLiRenderer extends DBSRenderer {
 				DBSFaces.setAttribute(xWriter, "class", xClass, null);
 			}
 			DBSFaces.setAttribute(xWriter, "style", xLi.getStyle(), null);
-			renderChildren(pContext, xLi);
+			DBSFaces.renderChildren(pContext, xLi);
 	}
 	
 	@Override

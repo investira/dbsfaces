@@ -2,6 +2,8 @@ package br.com.dbsoft.ui.core;
 
 
 import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -16,12 +18,14 @@ import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.NavigationHandler;
+import javax.faces.application.ViewHandler;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.component.UIForm;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIParameter;
+import javax.faces.component.UIViewRoot;
 import javax.faces.component.ValueHolder;
 import javax.faces.component.behavior.AjaxBehavior;
 import javax.faces.component.html.HtmlOutputText;
@@ -30,6 +34,8 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
+import javax.faces.render.RenderKit;
+import javax.faces.view.ViewDeclarationLanguage;
 import javax.faces.view.facelets.FaceletContext;
 
 import org.apache.log4j.Logger;
@@ -917,7 +923,7 @@ public class  DBSFaces {
 	 * @param pRedirect
 	 * @return
 	 */
-	public static final String getViewRedirect(String pPage, boolean pRedirect){
+	public static final String getViewRedirectString(String pPage, boolean pRedirect){
 		if (pPage != null){
 			if (pRedirect){
 				return pPage + "?faces-redirect=true";
@@ -935,8 +941,8 @@ public class  DBSFaces {
 	 * @param pPage
 	 * @return
 	 */
-	public static final String getViewRedirect(String pPage){
-		return getViewRedirect(pPage, true);
+	public static final String getViewRedirectString(String pPage){
+		return getViewRedirectString(pPage, true);
 	}
 	/**
 	 * Retorna página corrente forçando o refresh(?faces-redirect=true).<br/>
@@ -945,7 +951,7 @@ public class  DBSFaces {
 	 * @return
 	 */
 	public static final String getCurrentViewRefresh(){
-		return getViewRedirect(getViewId(), true);
+		return getViewRedirectString(getViewId(), true);
 	}
 	
 	/**
@@ -955,19 +961,21 @@ public class  DBSFaces {
 	 * @return
 	 */
 	public static final String getCurrentView(){
-		return getViewRedirect(getViewId(), false);
+		return getViewRedirectString(getViewId(), false);
 	}
 	
 	/**
 	 * Redireciona para a URL indicada em <b>pUrl</b>.
-	 * @param pUrl
+	 * @param pLocalViewPath
 	 * @throws DBSIOException
 	 */
-	public static final void redirectRemote(String pUrl) throws DBSIOException{
-		if (pUrl==null
+	public static final void redirectUsingViewPath(String pLocalViewPath) throws DBSIOException{
+		if (pLocalViewPath==null
 		 || FacesContext.getCurrentInstance() == null){return;}
 		try {
-			FacesContext.getCurrentInstance().getExternalContext().redirect(pUrl);
+//			ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+//			externalContext.redirect("http://stackoverflow.com");
+			FacesContext.getCurrentInstance().getExternalContext().redirect(pLocalViewPath);
 		} catch (IOException e) {
 			DBSIO.throwIOException(e);
 		}
@@ -976,17 +984,19 @@ public class  DBSFaces {
 	/**
 	 * Redireciona para página local, dentro da aplicação.<br/>
 	 * Pode-se utilizar os nomes definidos no faces-config da aplicação.
-	 * @param pView
+	 * @param pOutcomeName
 	 * @throws DBSIOException
 	 */
-	public static final void redirectLocal(String pView){
+	public static final void redirectLocalUsingOutcome(String pOutcomeName){
 		FacesContext xContext = FacesContext.getCurrentInstance();
 		NavigationHandler xNavigationHandler = xContext.getApplication().getNavigationHandler();
 		//Configura a página que deverá ir. Neste caso é a página(ou outcome no faces-config) de login
-		xNavigationHandler.handleNavigation(xContext, null, pView);
+		xNavigationHandler.handleNavigation(xContext, null, pOutcomeName);
 		xContext.responseComplete();
 	}
 	
+	public static final void redirectRemote(String pURL){
+	}
 	
 	
 	/**
@@ -1612,14 +1622,65 @@ public class  DBSFaces {
 			return null;
 		}
 	}
-
-	//=======================================================================
-	//Menu
-	//=======================================================================
-
-
-
-	//=======================================================================
+ 	//=====================================================================
+ 	// 
+ 	//=====================================================================
+	/**
+ 	 * Retorna string com pagina renderizada.
+ 	 * @param pContext
+ 	 * @param pViewFile
+ 	 * @return
+ 	 */
+ 	public static String getRenderedViewContent(FacesContext pContext, String pViewFile) {
+		try {
+			// store the original response writer
+			ResponseWriter	xOriginalWriter = pContext.getResponseWriter();
+ 
+			// put in a StringWriter to capture the output
+			StringWriter 	xStringWriter = new StringWriter();
+			ResponseWriter 	xWriter = pvCreateResponseWriter(pContext, xStringWriter);
+			pContext.setResponseWriter(xWriter);
+ 
+			// create a UIViewRoot instance using the template specified
+			ViewHandler xViewHandler = pContext.getApplication().getViewHandler();
+			UIViewRoot 	xView = xViewHandler.createView(pContext, pViewFile);
+ 
+			// the fun part -- do the actual rendering here
+			ViewDeclarationLanguage xVdl = xViewHandler.getViewDeclarationLanguage(pContext, pViewFile);
+			xVdl.buildView(pContext, xView);
+			renderChildren(pContext, xView);
+ 
+			// restore the response writer
+			pContext.setResponseWriter(xOriginalWriter);
+ 
+			return xStringWriter.toString();
+		} catch (IOException exception) {
+			throw new RuntimeException(exception);
+		}
+	}
+ 	
+	/**
+	 * Encode dos filhos 
+	 * @param pFacesContext
+	 * @param pComponent
+	 * @throws IOException
+	 */
+	public static void renderChildren(FacesContext pFacesContext, UIComponent pComponent) throws IOException {
+		UIComponent xLastComponent = null;
+		try{
+			for (UIComponent xChild:pComponent.getChildren()) {
+				xLastComponent = xChild;
+				xChild.encodeAll(pFacesContext);
+			}
+		}catch(Exception e){
+			if (xLastComponent!=null){
+				wLogger.error("renderChildren:" + pFacesContext.getCurrentPhaseId().toString() + ":" + xLastComponent.getClass().getSimpleName() + ":" + xLastComponent.getClientId(),e);
+			}
+			throw e;
+		}
+	} 
+ 	
+ 	//=======================================================================
 	//DataTable 															=
 	//=======================================================================
 	/**
@@ -2085,6 +2146,16 @@ public class  DBSFaces {
 //	 	return xSubmittedValue;
 //	 }
 	
+	//Private
+	private static ResponseWriter pvCreateResponseWriter(FacesContext pContext, Writer pWriter) {
+		ExternalContext 	xExtContext = pContext.getExternalContext();
+		Map<String, Object> xRequestMap = xExtContext.getRequestMap();
+		String 				xContentType = (String)xRequestMap.get("facelets.ContentType");
+		String 				xEncoding = (String)xRequestMap.get("facelets.Encoding");
+		RenderKit 			xRenderKit = pContext.getRenderKit();
+		return xRenderKit.createResponseWriter(pWriter, xContentType, xEncoding);
+	}
+
 	// PRIVATE ===============================================================
 	/**
 	 * Caso exista, remove ':' do inicio da string dos ids(que soferão update via ajax ou execute), pois os mesmo não são necessário no comando.

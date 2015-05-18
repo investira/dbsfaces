@@ -51,7 +51,7 @@ public class DBSQuickInfoRenderer extends DBSRenderer {
 				encodeClientBehaviors(pContext, xQuickInfo);
 				xWriter.startElement("div", xQuickInfo);
 					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
-					renderChildren(pContext, xQuickInfo);
+					DBSFaces.renderChildren(pContext, xQuickInfo);
 				xWriter.endElement("div");
 			xWriter.endElement("div");
 		xWriter.endElement("div");

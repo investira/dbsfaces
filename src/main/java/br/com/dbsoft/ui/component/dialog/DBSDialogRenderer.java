@@ -99,7 +99,7 @@ public class DBSDialogRenderer extends DBSRenderer {
 				xWriter.startElement("div", xDialog);
 					if (xDialog.getMessageIcon().equals(DIALOG_ICON.NENHUM.toString())){
 						xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT + DBSFaces.CSS.BACK_GRADIENT_WHITE, null);
-						renderChildren(pContext, xDialog);
+						DBSFaces.renderChildren(pContext, xDialog);
 					}else{
 						xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT + DBSFaces.CSS.MODIFIER.MESSAGE + DBSFaces.CSS.BACK_TEXTURE_BLACK_GRADIENT, null);
 						if (xDialog.getMessageIcon().equals(DIALOG_ICON.INFORMACAO.toString())){
@@ -137,7 +137,7 @@ public class DBSDialogRenderer extends DBSRenderer {
 								xWriter.startElement("div", xDialog);
 									xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.LABEL, null);
 									//Encode dos filhos
-									renderChildren(pContext, xDialog);
+									DBSFaces.renderChildren(pContext, xDialog);
 								xWriter.endElement("div");
 							xWriter.endElement("div");
 							//Linha horizontal-------------

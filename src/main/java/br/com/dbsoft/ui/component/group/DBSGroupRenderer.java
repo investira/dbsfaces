@@ -74,7 +74,7 @@ public class DBSGroupRenderer extends DBSRenderer {
 					}else{
 						DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
 					}
-					renderChildren(pContext, xGroup);
+					DBSFaces.renderChildren(pContext, xGroup);
 	}
 	
 	@Override

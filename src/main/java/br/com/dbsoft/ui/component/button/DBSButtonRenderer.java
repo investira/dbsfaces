@@ -133,7 +133,7 @@ public class DBSButtonRenderer extends DBSRenderer {
 				pvEncodeTable(xButton, xWriter);	
 			}
 			
-			renderChildren(pContext, xButton);
+			DBSFaces.renderChildren(pContext, xButton);
 			DBSFaces.encodeTooltip(pContext, xButton, xButton.getTooltip());
 			if (xButton.getReadOnly()){
 				xWriter.endElement("div");

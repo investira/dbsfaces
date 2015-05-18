@@ -44,7 +44,7 @@ public class DBSImgRenderer extends DBSRenderer {
 			if (xImg.getSrc()!=null){
 				DBSFaces.setAttribute(xWriter, "src", xImg.getSrc(), null);
 			}else{
-				renderChildren(pContext, xImg);
+				DBSFaces.renderChildren(pContext, xImg);
 			}
 			DBSFaces.encodeTooltip(pContext, xImg, xImg.getTooltip());
 		xWriter.endElement(xEle);
