@@ -127,34 +127,34 @@ public class DBSCalendarRenderer extends DBSRenderer {
 		
 		Date xInicio = pvGetPrimeiraSegundaFeira(xDate);
 		Date xFim = pvGetUltimoDomingo(xDate);
-		Integer xMes = DBSDate.getMes(xDate);
+		Integer xMes = DBSDate.getMonth(xDate);
 		while (!xInicio.equals(xFim)){
 			pWriter.startElement("span", pCalendar);
-				if (DBSDate.getMes(xInicio) != xMes){
+				if (DBSDate.getMonth(xInicio) != xMes){
 					pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.DISABLED, "class");
 				}else if(xInicio.equals(xDate)){
 					pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.SELECTED, "class");
 				}
-				pWriter.write(DBSDate.getDia(xInicio).toString());
+				pWriter.write(DBSDate.getDay(xInicio).toString());
 			pWriter.endElement("span");
-			xInicio = DBSDate.getProximaData(null, xInicio, 1, false);
+			xInicio = DBSDate.getNextDate(null, xInicio, 1, false);
 		}
 	}
 	
 	private Date pvGetPrimeiraSegundaFeira(Date pDate){
-		pDate = DBSDate.getPrimeiroDiaDoMes(null, pDate, false);
+		pDate = DBSDate.getFirstDayOfTheMonth(null, pDate, false);
 		/*Procura a primeira data que for segunda feira*/
-		while (DBSDate.getNumeroDaSemana(pDate) != 2){
-			pDate = DBSDate.getProximaData(null, pDate, -1, false);
+		while (DBSDate.getWeekdayNumber(pDate) != 2){
+			pDate = DBSDate.getNextDate(null, pDate, -1, false);
 		}
 		return pDate;
 	}
 
 	private Date pvGetUltimoDomingo(Date pDate){
-		pDate = DBSDate.getUltimoDiaDoMes(null, pDate, false);
+		pDate = DBSDate.getLastDayOfTheMonth(null, pDate, false);
 		/*última data que for segunda feira*/
-		while (DBSDate.getNumeroDaSemana(pDate) != 2){
-			pDate = DBSDate.getProximaData(null, pDate, 1, false);
+		while (DBSDate.getWeekdayNumber(pDate) != 2){
+			pDate = DBSDate.getNextDate(null, pDate, 1, false);
 		}
 		return pDate;
 	}
@@ -169,7 +169,7 @@ public class DBSCalendarRenderer extends DBSRenderer {
 			xComboMes.setSize(10);
 			
 			//Inclui nomes dos meses na lista
-			String[] xMeses = DBSDate.getNomeDosMeses();
+			String[] xMeses = DBSDate.getMonthsNames();
 			for (int xI = 0; xI < xMeses.length-1; xI++){
 				xComboMes.getList().put(xI, xMeses[xI]);
 			}

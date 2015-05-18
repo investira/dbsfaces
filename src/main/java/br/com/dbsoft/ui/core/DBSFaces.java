@@ -969,7 +969,7 @@ public class  DBSFaces {
 	 * @param pLocalViewPath
 	 * @throws DBSIOException
 	 */
-	public static final void redirectUsingViewPath(String pLocalViewPath) throws DBSIOException{
+	public static final void redirectLocalUsingViewPath(String pLocalViewPath) throws DBSIOException{
 		if (pLocalViewPath==null
 		 || FacesContext.getCurrentInstance() == null){return;}
 		try {
@@ -993,9 +993,6 @@ public class  DBSFaces {
 		//Configura a página que deverá ir. Neste caso é a página(ou outcome no faces-config) de login
 		xNavigationHandler.handleNavigation(xContext, null, pOutcomeName);
 		xContext.responseComplete();
-	}
-	
-	public static final void redirectRemote(String pURL){
 	}
 	
 	
@@ -1233,7 +1230,7 @@ public class  DBSFaces {
 			if (!DBSObject.isEmpty(pExecute)){
 				xExecute = "execute:'" + pvRemoveFirstColon(pExecute) + "',";
 			}
-			xLocalOnClick = "jsf.ajax.request(this, event, {" + xExecute + " render:'" +  xClientUpdate +  "', onevent:dbsfaces.onajax, onerror:dbsfaces.onajaxerror}); return false;";
+			xLocalOnClick = "jsf.ajax.request(this, event, {" + xExecute + " render:'" +  xClientUpdate +  "', onevent:dbsfaces.onajax, onerror:dbsfaces.onajaxerror}); return false";
 			if (xUserOnClick != null){
 				xLocalOnClick = xLocalOnClick.replaceAll("'", "\\\\'");
 				xUserOnClick = xUserOnClick.replaceAll("'", "\\\\'");
@@ -1244,7 +1241,7 @@ public class  DBSFaces {
 			if (DBSObject.isEmpty(pExecute)){
 //				System.out.println("Form/Execute não definido para o componente " + pComponent.getClientId()  + "!");
 			}else if (DBSObject.isEmpty(xLocalOnClick)){
-				xLocalOnClick = "mojarra.jsfcljs(document.getElementById('" + pExecute + "'),{'"+ pComponent.getClientId() + "':'"+ pComponent.getClientId() + "'},'');return false;";
+				xLocalOnClick = "mojarra.jsfcljs(document.getElementById('" + pExecute + "'),{'"+ pComponent.getClientId() + "':'"+ pComponent.getClientId() + "'},''); return false";
 			}
 		}
 		return xLocalOnClick;

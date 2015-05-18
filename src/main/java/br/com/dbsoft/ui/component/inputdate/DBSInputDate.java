@@ -100,37 +100,37 @@ public class DBSInputDate extends DBSUIInput {
 		if (super.getValue()==null){
 			return "";
 		}
-		return String.format("%02d",DBSDate.getDia(getDate()));
+		return String.format("%02d",DBSDate.getDay(getDate()));
 	}
 	public String getMonth(){
 		if (super.getValue()==null){
 			return "";
 		}
-		return String.format("%02d",DBSDate.getMes(getDate()));
+		return String.format("%02d",DBSDate.getMonth(getDate()));
 	}
 	public String getYear(){
 		if (super.getValue()==null){
 			return "";
 		}
-		return String.format("%02d",DBSDate.getAno(getDate()));
+		return String.format("%02d",DBSDate.getYear(getDate()));
 	}
 	public String getHour(){
 		if (super.getValue()==null){
 			return "";
 		}
-		return String.format("%02d",DBSDate.getHora(getTimestamp()));
+		return String.format("%02d",DBSDate.getHour(getTimestamp()));
 	}
 	public String getMinute(){
 		if (super.getValue()==null){
 			return "";
 		}
-		return String.format("%02d",DBSDate.getMinuto(getTimestamp()));
+		return String.format("%02d",DBSDate.getMinute(getTimestamp()));
 	}
 	public String getSecond(){
 		if (super.getValue()==null){
 			return "";
 		}
-		return String.format("%02d",DBSDate.getSegundo(getTimestamp()));
+		return String.format("%02d",DBSDate.getSecond(getTimestamp()));
 	}
 	
 	public Date getDate(){
