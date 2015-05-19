@@ -746,14 +746,16 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * 		<li>
 	 * 		<b>TABLE</b><br/>
 	 * 		A edição é efetuado dentro da própria lista utilizando o componente <b>crudTable</b>.
-	 * 		Deve-se sobreescrever o método <b>getEndEditingViewOutcome</b> para definir a próxima página de navegação após as confirmações.<br/>
 	 * 		</li>  
 	 * 		<li>
 	 * 		<b>VIEW</b><br/>
 	 * 		A edição é efetuado dentro da própria página utilizando o componente <b>crudView</b>.<br/>
-	 * 		No <i>update</i> o registro a ser editado deverá ser selecionado no <b>beforeRefresh<b/>.<br/>
-	 * 		Caso não exista registro corrente, será considerado uma inclusão(<i>insert</i>).
-	 * 		Deve-se sobreescrever o método <b>getEndEditingViewOutcome</b> para definir a próxima página de navegação após as confirmações.<br/>
+	 * 		No <i>update</i> o registro a ser editado deverá ser selecionado no <b>beforeRefresh</b>.<br/>
+	 * 		Caso não exista registro corrente, será considerado uma inclusão(<i>insert</i>).</br>
+	 * 		Para definir a próxima página de navegação, deve-se sobreescrever os métodos <b>confirmEditing, ignoreEditing</b> 
+	 * 		se não estiver habilitado as confirmações automáticas ou
+	 *  	subreescrever o método <b>endEditing(boolean)</b> se estiver habilitado as confirmações automáticas.<br/>
+	 * 		Para verificar se há algum erro, deve-se pesquisar se há alguma mensagem na lista utlizando <b>getHasMessage()</b>.
 	 * 		</li>  
 	 * </ul>
 	 */
@@ -1531,8 +1533,6 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @throws DBSIOException 
 	 */
 	public synchronized String endEditing(Boolean pConfirm) throws DBSIOException{
-		EditingMode xEditingMode = wEditingMode;
-		EditingStage xEditingStage = wEditingStage;
 		try{
 			if (pConfirm){
 				//Verifica se está no estágio correto
@@ -1588,26 +1588,9 @@ public abstract class DBSCrudBean extends DBSBean{
 			setEditingMode(EditingMode.NONE);
 			DBSIO.throwIOException(e);
 		}
-		if (getFormStyle() == FormStyle.VIEW){
-			return getEndEditingViewOutcome(xEditingMode, xEditingStage, pConfirm);
-		}else{
-			return DBSFaces.getCurrentView();
-		}
-	}
-	
-	/**
-	 * Retorna a página(<i>view</i>) destino.<br/>
-	 * Deve-se informar o caminho completo ou o nome definido no <b>faces-config.xml</b>.<br/>
-	 * Este método somente é chamado quando <b>FormStyle = VIEW</b>.<br/>
-	 * A página padrão é <b>CurrentView</b>.
-	 * @param pEditingMode
-	 * @param pEditingStage
-	 * @param pConfirm
-	 * @return
-	 */
-	public String getEndEditingViewOutcome(EditingMode pEditingMode, EditingStage pEditingStage, Boolean pConfirm){
 		return DBSFaces.getCurrentView();
 	}
+	
 	
 	/**
 	 * Ativa a edição automaticamente quando o formStyle é <b>VIEW</b>.<br/>
@@ -3296,13 +3279,16 @@ public abstract class DBSCrudBean extends DBSBean{
 					if (xDBException.isIntegrityConstraint()){
 						clearMessages(); //Limpa mensagem padrão
 //						addMessage("integridate", MESSAGE_TYPE.ERROR, xDBException.getLocalizedMessage());
-						wMessageError.setMessageText(xDBException.getLocalizedMessage());
-						wMessageError.setMessageTooltip(xErrorMsg);
-						addMessage(wMessageError);
-
 					}else{
 						wLogger.error("EventBeforeCommit", e);
 					}
+					wMessageError.setMessageText(xDBException.getLocalizedMessage());
+					wMessageError.setMessageTooltip(xErrorMsg);
+					addMessage(wMessageError);
+				}else{
+					wMessageError.setMessageText("Entre em contato com o suporte!");
+					wMessageError.setMessageTooltip(e.getLocalizedMessage());
+					addMessage(wMessageError);
 				}
 			} catch (DBSIOException e1) {
 				xErrorMsg = e1.getMessage();
