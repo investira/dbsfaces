@@ -30,6 +30,7 @@ import org.apache.log4j.Logger;
 import br.com.dbsoft.util.DBSDate;
 import br.com.dbsoft.util.DBSFile;
 import br.com.dbsoft.util.DBSFormat;
+import br.com.dbsoft.util.DBSHttp;
 import br.com.dbsoft.util.DBSNumber;
 
 /**
@@ -100,7 +101,7 @@ public class DBSReportFormUtil {
 		}
 
 		pReportParameters.put("pDATA_IMPRESSAO", DBSFormat.getFormattedDateTime(System.currentTimeMillis()));
-		pReportParameters.put("pSUBREPORT_DIR", DBSHttp.getResourcePath() + File.separator + REPORT_FOLDER);
+		pReportParameters.put("pSUBREPORT_DIR", DBSHttp.getResourcePath() + File.separator + REPORT_FOLDER); 
 		
 		// Verifica se foi passada uma conexão ou uma coleção de dados.
 		if (JRBeanCollectionDataSource.class.isInstance(pReportData)) {
