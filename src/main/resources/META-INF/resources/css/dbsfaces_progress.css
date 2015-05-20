@@ -37,8 +37,9 @@
 .dbs_progress > .-container > .-content > .-value{
 	height: 14px;
 	position: relative;
-	z-index: -1;
-	background-color: rgba(0, 120, 0, 0.9);
+	z-index: 0;
+/* 	z-index: -1; Comentado em 20/mai/2015 Ricardo */
+	background-color: rgba(0, 50,255, 0.8);
 }
 
 .dbs_progress > .-container > .-content > .-label{
