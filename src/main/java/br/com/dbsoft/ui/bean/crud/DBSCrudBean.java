@@ -1628,7 +1628,8 @@ public abstract class DBSCrudBean extends DBSBean{
 	/**
 	 * Efetua uma nova pesquisa e dispara os eventos <b>beforeRefresh</b> e <b>afterRefresh</b>.<br/>
 	 * Não dispara o evento <b>initialize</b>.<br/>
-	 * Como alternativa existe o método <b>refreshList</b> que tem o mesmo efeito, porém dispara o evento <b>initialize</b>.
+	 * Como alternativa existe o método <b>refreshList</b> que tem o mesmo efeito, porém dispara o evento <b>initialize</b>.<br/>
+	 * A conexão do banco é aberta no inicio, caso esteja fechada, e fechada ao final. 
 	 * @throws DBSIOException 
 	 */
 	public synchronized String searchList() throws DBSIOException{
@@ -1652,7 +1653,8 @@ public abstract class DBSCrudBean extends DBSBean{
 	/**
 	 * Efetua uma nova pesquisa e dispara os eventos <b>beforeRefresh</b> e <b>afterRefresh</b>.<br/>
 	 * Dispara o evento <b>initialize</b> para obrigar valores iniciais sejam refeitos, como as listas, caso existam.<br/>
-	 * Como alternativa existe o método <b>searchList</b> que tem o mesmo efeito, porém <b>não</b> dispara o evento <b>initialize</b>.
+	 * Como alternativa existe o método <b>searchList</b> que tem o mesmo efeito, porém <b>não</b> dispara o evento <b>initialize</b>.<br/>
+	 * A conexão do banco é aberta no inicio, caso esteja fechada, e fechada ao final. 
 	 * @throws DBSIOException 
 	 */
 	public synchronized String refreshList() throws DBSIOException{
