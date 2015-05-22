@@ -546,7 +546,7 @@ public abstract class DBSCrudBean extends DBSBean{
 
 	/**
 	 * Deve-se sobreescrever este método para colunas que necessitem que formatação específica.<br/>
-	 * Para recuperar os valores das colunas da linha atual deve-se utilizar o atributo <b>getListValue(pColumnName)<b/>.
+	 * Para recuperar os valores das colunas da linha atual deve-se utilizar o atributo <b>getListValue(pColumnName)</b>.
 	 * @param pColumnId Nome para ser utilizado para identificar qual a coluna será formatada.
 	 * @return Texto formadado
 	 */
@@ -1097,25 +1097,25 @@ public abstract class DBSCrudBean extends DBSBean{
 
 	/**
 	 * Nome da coluna do tabela no banco de dados que amazenará a chave do usuário que inseriu o registro.<br/>
-	 * O usuário deve ser informado no atributo <b>setUsedId</b>, normalmente no eventi <b>initialize<b/>.
+	 * O usuário deve ser informado no atributo <b>setUsedId</b>, normalmente no eventi <b>initialize</b>.
 	 * @return
 	 */
 	public String getColumnNameUserIdOnInsert() {return wColumnNameUserIdOnInsert;}
 	/**
 	 * Nome da coluna do tabela no banco de dados que amazenará a chave do usuário que inseriu o registro.<br/>
-	 * O usuário deve ser informado no atributo <b>setUsedId</b>, normalmente no eventi <b>initialize<b/>.
+	 * O usuário deve ser informado no atributo <b>setUsedId</b>, normalmente no eventi <b>initialize</b>.
 	 */
 	public void setColumnNameUserIdOnInsert(String pColumnNameUserIdOnInsert) {wColumnNameUserIdOnInsert = pColumnNameUserIdOnInsert;}
 
 	/**
 	 * Nome da coluna do tabela no banco de dados que amazenará a chave do usuário que alterou o registro.<br/>
-	 * O usuário deve ser informado no atributo <b>setUsedId</b>, normalmente no eventi <b>initialize<b/>.
+	 * O usuário deve ser informado no atributo <b>setUsedId</b>, normalmente no eventi <b>initialize</b>.
 	 * @return
 	 */
 	public String getColumnNameUserIdOnUpdate() {return wColumnNameUserIdOnUpdate;}
 	/**
 	 * Nome da coluna do tabela no banco de dados que amazenará a chave do usuário que alterou o registro.<br/>
-	 * O usuário deve ser informado no atributo <b>setUsedId</b>, normalmente no eventi <b>initialize<b/>.
+	 * O usuário deve ser informado no atributo <b>setUsedId</b>, normalmente no eventi <b>initialize</b>.
 	 */
 	public void setColumnNameUserIdOnUpdate(String pColumnNameUserIdOnUpdate) {wColumnNameUserIdOnUpdate = pColumnNameUserIdOnUpdate;}
 
@@ -2205,7 +2205,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Deverá também, neste caso, verificar a necessidade de implementação do <i>copy</i> e <i>paste</i>
 	 * atráves do <i>Override</i> dos eventos <b>afterCopy</b> e <b>beforePaste</b> ou 
 	 * desabilitar esta funcionalidade através do atributo <b>allowCopy</b>.<br/>
-	 * <b>É ACONSELHÁVEL QUE QUALQUER EDIÇÃO DE DADOS DO BANCO DEVERÁ SEJA IMPLEMENTADA NESTE EVENTO.</b><br/>
+	 * <b>É ACONSELHÁVEL QUE QUALQUER <b>EDIÇÃO</b> DE DADOS DO BANCO SEJA IMPLEMENTADA NESTE EVENTO.</b><br/>
 	 * Conexão com o banco encontra-se aberta.<br/>
 	 * @param pEvent Informações do evento
 	 * @throws DBSIOException 
@@ -2296,7 +2296,7 @@ public abstract class DBSCrudBean extends DBSBean{
 
 	/**
 	 * Disparado após indicar que deseja salvar os dados.<br/>
-	 * Caso o atributo <b>revalidateBeforeCommit</b> seja <b>true<b/> será disparado novamente após a confirmação da edição.
+	 * Caso o atributo <b>revalidateBeforeCommit</b> seja <b>true</b> será disparado novamente após a confirmação da edição.
 	 * Portanto, este evento poderá ser disparado duas vezes para diminuir o risco de ter havido
 	 * alguma alterações de dados no banco por agentes externos durante o tempo de espera da confirmação da edição.
 	 * Pode-se utilizar o <b>getEditingStage</b> para identificar após qual dos eventos o <b>validate</b> foi disparado, 
