@@ -3,6 +3,7 @@ package br.com.dbsoft.ui.component.inputdate;
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
@@ -33,14 +34,16 @@ public class DBSInputDateRenderer extends DBSRenderer {
 
     	decodeBehaviors(pContext, xInputDate);
     	
+    	ExternalContext xEC = pContext.getExternalContext();
+    	
 		String xClientIdAction = getInputDataClientId(xInputDate) ;
-		if (pContext.getExternalContext().getRequestParameterMap().containsKey(xClientIdAction + DBSFaces.CSS.INPUTDATE.DAY) ||
-			pContext.getExternalContext().getRequestParameterMap().containsKey(xClientIdAction + DBSFaces.CSS.INPUTDATE.HOUR)){
+		if (xEC.getRequestParameterMap().containsKey(xClientIdAction + DBSFaces.CSS.INPUTDATE.DAY) ||
+			xEC.getRequestParameterMap().containsKey(xClientIdAction + DBSFaces.CSS.INPUTDATE.HOUR)){
     		if (xInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.DATE) ||
     			xInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.DATETIME)){
-    			xDay = pContext.getExternalContext().getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.DAY);
-	        	xMonth = pContext.getExternalContext().getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.MONTH);
-	        	xYear = pContext.getExternalContext().getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.YEAR);
+    			xDay = xEC.getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.DAY);
+	        	xMonth = xEC.getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.MONTH);
+	        	xYear = xEC.getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.YEAR);
 	        	if (xDay.length()==0 ||
 	        		xMonth.length()==0 ||
 	        		xYear.length()==0){
@@ -52,9 +55,9 @@ public class DBSInputDateRenderer extends DBSRenderer {
     		if (xInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.TIME) ||
     			xInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.TIMES) ||
 	    		xInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.DATETIME)){
-        		xHour = DBSString.toString(pContext.getExternalContext().getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.HOUR), "");
-    			xMinute = DBSString.toString(pContext.getExternalContext().getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.MINUTE), "");
-    			xSecond = DBSString.toString(pContext.getExternalContext().getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.SECOND), "00");
+        		xHour = DBSString.toString(xEC.getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.HOUR), "");
+    			xMinute = DBSString.toString(xEC.getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.MINUTE), "");
+    			xSecond = DBSString.toString(xEC.getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.SECOND), "00");
 	        	if (xHour.length()==0 ||
 	        		xMinute.length()==0){
 		        	xTime = null;
@@ -147,10 +150,10 @@ public class DBSInputDateRenderer extends DBSRenderer {
 		String xStyleClass = "";
 		String xValue = "";
 		if (pInputDate.getDate() != null){
-			if ((pInputDate.getMinDate() != null 
-			  && pInputDate.getDate().before(pInputDate.getMinDate()))
-			 || (pInputDate.getMaxDate() != null 
-			  && pInputDate.getDate().after(pInputDate.getMaxDate()))){
+			if ((pInputDate.getDateMin() != null 
+			  && pInputDate.getDate().before(pInputDate.getDateMin()))
+			 || (pInputDate.getDateMax() != null 
+			  && pInputDate.getDate().after(pInputDate.getDateMax()))){
 				xStyleClass = DBSFaces.CSS.MODIFIER.ERROR;
 			}
 		}		

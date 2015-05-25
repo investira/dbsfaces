@@ -98,6 +98,7 @@ public class  DBSFaces {
 	    public static final String INPUTTEXT = "inputText";
 	    public static final String INPUTTEXTAREA = "inputTextArea";
 	    public static final String INPUTDATE = "inputDate";
+	    public static final String INPUTPHONE = "inputPhone";
 	    public static final String INPUTNUMBER = "inputNumber";
 	    public static final String INPUTMASK = "inputMask";
 	    public static final String LABEL = "label";
@@ -312,6 +313,14 @@ public class  DBSFaces {
 			public static final String SECOND = "-second";
 		}
 		
+		public static class INPUTPHONE
+		{
+			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.INPUTPHONE;
+			public static final String DDI = "-ddi";
+			public static final String DDD = "-ddd";
+			public static final String NUMBER = "-number";
+		}
+
 		public static class INPUTNUMBER
 		{
 			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.INPUTNUMBER;
@@ -1094,6 +1103,19 @@ public class  DBSFaces {
 	 * @param pInputSize
 	 * @return
 	 */
+	public final static String getStyleWidthFromInputSizeInternal(int pInputSize){
+		if (pInputSize == 0){
+			return "";
+		}
+		int xW = (pInputSize * 7);
+		return "width:" + xW + "px;"; //min-height:19px; 
+	}
+	
+	/**
+	 * Retorna o style com largura do campo em função da quantidade de caracteres de input
+	 * @param pInputSize
+	 * @return
+	 */
 	public final static String getStyleWidthFromInputSize(int pInputSize){
 		if (pInputSize == 0){
 			return "";
@@ -1101,7 +1123,7 @@ public class  DBSFaces {
 		int xW = (pInputSize * 7) + 5;
 		return "width:" + xW + "px;"; //min-height:19px; 
 	}
-	
+
 	/**
 	 * Retorna o style com largura do campo em função da quantidade de caracteres de input
 	 * @param pInputSize

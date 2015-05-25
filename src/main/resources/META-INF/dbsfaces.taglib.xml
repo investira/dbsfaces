@@ -1213,7 +1213,7 @@
 			<description>
                 Data máxima
             </description>
-			<name>maxDate</name>
+			<name>dateMax</name>
 			<required>false</required>
 			<type>java.sql.Date</type>
 		</attribute>
@@ -1221,7 +1221,7 @@
 			<description>
                 Data mínima
             </description>
-			<name>minDate</name>
+			<name>dateMin</name>
 			<required>false</required>
 			<type>java.sql.Date</type>
 		</attribute>		
@@ -1255,6 +1255,123 @@
 			<type>java.lang.String</type>
 		</attribute>
 	</tag>
+	<tag>
+		<tag-name>inputPhone</tag-name>
+		<component>
+			<component-type>br.com.dbsoft.ui.component.inputPhone</component-type>
+			<handler-class />
+		</component>
+		<attribute>
+			<description>
+                Identificador único do componente.
+            </description>
+			<name>id</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Título do campo
+            </description>
+			<name>label</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Largura do label em px
+            </description>
+			<name>labelWidth</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Pais. Atualmente somente "BR" está implementado.
+            </description>
+			<name>country</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Texto a ser exibido a direita do campo
+            </description>
+			<name>rightLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+            	Valor do Campo
+            </description>
+			<name>value</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                rendered
+            </description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+                Se ativa o autocomplete padrão do browser. off ou on. Default = off
+            </description>
+			<name>autocomplete</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Tooltip
+            </description>
+			<name>tooltip</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Exibe campo DDI. O padrão é false.
+            </description>
+			<name>showDDI</name>
+			<required>false</required>
+			<type>java.sql.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+                Exibe campo DDD. O padrão é true.
+            </description>
+			<name>showDDD</name>
+			<required>false</required>
+			<type>java.sql.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+                ReadOnly
+            </description>
+			<name>readOnly</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+                Class CSS que será utilizado com style
+            </description>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Adiciona style 
+            </description>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>	
 	<tag>
 		<tag-name>inputNumber</tag-name>
 		<component>
@@ -1577,7 +1694,7 @@
 			<description>
                 Data máxima
             </description>
-			<name>maxDate</name>
+			<name>dateMax</name>
 			<required>false</required>
 			<type>java.sql.Date</type>
 		</attribute>
@@ -1585,7 +1702,7 @@
 			<description>
                 Data mínima
             </description>
-			<name>minDate</name>
+			<name>dateMin</name>
 			<required>false</required>
 			<type>java.sql.Date</type>
 		</attribute>				

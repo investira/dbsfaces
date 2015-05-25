@@ -350,7 +350,17 @@ dbsfaces.number = {
 			}
 		}
 		return 0;
-	}
+	},
+	
+	getOnlyNumber: function(pValue){
+		var xValue = "";
+		for (var i = 0; i < pValue.length; i++){
+			if (dbsfaces.number.isNumber(pValue.charAt(i))){
+				xValue = xValue + pValue.charAt(i);
+			}
+		}
+		return xValue;
+ 	}
 };
 
 dbsfaces.string = {

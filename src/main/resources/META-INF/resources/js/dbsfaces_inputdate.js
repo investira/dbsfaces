@@ -153,6 +153,7 @@ dbsfaces.inputDate = {
 			e.which == 38 ||
 			e.which == 39 ||
 			e.which == 40 ||
+			e.which == 46 ||
 			e.which == 47 ||
 			e.which == 191 ||
 			(e.which >= 96 && e.which <= 105) ||

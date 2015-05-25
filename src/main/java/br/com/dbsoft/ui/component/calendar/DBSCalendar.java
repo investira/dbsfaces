@@ -17,8 +17,8 @@ public class DBSCalendar extends DBSUIInput {
 
 	protected enum PropertyKeys {
 		autocomplete,
-		maxDate,
-		minDate;
+		dateMax,
+		dateMin;
 
 		String toString;
 
@@ -46,20 +46,20 @@ public class DBSCalendar extends DBSUIInput {
 		return (String) getStateHelper().eval(PropertyKeys.autocomplete, "off");
 	}	
 
-	public Date getMinDate() {
-		return (Date) getStateHelper().eval(PropertyKeys.minDate, null);
+	public Date getDateMin() {
+		return (Date) getStateHelper().eval(PropertyKeys.dateMin, null);
 	}
-	public void setMinDate(Date pMinDate) {
-		getStateHelper().put(PropertyKeys.minDate, pMinDate);
-		handleAttribute("minDate", pMinDate);
+	public void setDateMin(Date pDateMin) {
+		getStateHelper().put(PropertyKeys.dateMin, pDateMin);
+		handleAttribute("dateMin", pDateMin);
 	}
 
-	public Date getMaxDate() {
-		return (Date) getStateHelper().eval(PropertyKeys.maxDate, null);
+	public Date getDateMax() {
+		return (Date) getStateHelper().eval(PropertyKeys.dateMax, null);
 	}
-	public void setMaxDate(Date pMaxDate) {
-		getStateHelper().put(PropertyKeys.maxDate, pMaxDate);
-		handleAttribute("maxDate", pMaxDate);
+	public void setDateMax(Date pDateMax) {
+		getStateHelper().put(PropertyKeys.dateMax, pDateMax);
+		handleAttribute("dateMax", pDateMax);
 	}
 	
 	@Override
