@@ -27,6 +27,7 @@ import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 
 import org.apache.log4j.Logger;
 
+import br.com.dbsoft.core.DBSSDK.CONTENT_TYPE;
 import br.com.dbsoft.util.DBSDate;
 import br.com.dbsoft.util.DBSFile;
 import br.com.dbsoft.util.DBSFormat;
@@ -180,7 +181,7 @@ public class DBSReportFormUtil {
             xExporterPDF.setParameter(JRPdfExporterParameter.JASPER_PRINT, pJasperPrint);
             xExporterPDF.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, xFilePDF);
             xExporterPDF.exportReport();
-			DBSHttp.sendFile(xFilePDF, DBSFile.getFileNamePDF(pReportFileName), DBSFile.CONTENT_TYPE.PDF);
+			DBSHttp.sendFile(xFilePDF, DBSFile.getFileNamePDF(pReportFileName), CONTENT_TYPE.APPLICATION_PDF);
 		} catch (JRException e) {
 			wLogger.error(e);
 		}
@@ -201,7 +202,7 @@ public class DBSReportFormUtil {
             xExporterXML.setParameter(JRXmlExporterParameter.OUTPUT_STREAM, xFileXML);
             xExporterXML.setParameter(JRXmlExporterParameter.IS_EMBEDDING_IMAGES, true);
 			xExporterXML.exportReport();
-			DBSHttp.sendFile(xFileXML, DBSFile.getFileNameXML(pReportFileName), DBSFile.CONTENT_TYPE.XML);
+			DBSHttp.sendFile(xFileXML, DBSFile.getFileNameXML(pReportFileName), CONTENT_TYPE.APPLICATION_XML);
 		} catch (JRException e) {
 			wLogger.error(e);
 		}
@@ -222,7 +223,7 @@ public class DBSReportFormUtil {
             xExporterXLSX.setParameter(JRXlsExporterParameter.JASPER_PRINT, pJasperPrint);
             xExporterXLSX.setParameter(JRXlsExporterParameter.OUTPUT_STREAM, xFileXLS);
 			xExporterXLSX.exportReport();
-			DBSHttp.sendFile(xFileXLS, DBSFile.getFileNameXLS(pReportFileName), DBSFile.CONTENT_TYPE.XLS);
+			DBSHttp.sendFile(xFileXLS, DBSFile.getFileNameXLS(pReportFileName), CONTENT_TYPE.APPLICATION_XLS);
 		} catch (JRException e) {
 			wLogger.error(e);
 		}
@@ -242,7 +243,7 @@ public class DBSReportFormUtil {
             xExporterXLSX.setParameter(JRXlsExporterParameter.JASPER_PRINT, pJasperPrint);
             xExporterXLSX.setParameter(JRXlsExporterParameter.OUTPUT_STREAM, xFileXLS);
 			xExporterXLSX.exportReport();
-			DBSHttp.sendFile(xFileXLS, DBSFile.getFileNameXLSX(pReportFileName), DBSFile.CONTENT_TYPE.XLSX);
+			DBSHttp.sendFile(xFileXLS, DBSFile.getFileNameXLSX(pReportFileName), CONTENT_TYPE.APPLICATION_XLSX);
 		} catch (JRException e) {
 			wLogger.error(e);
 		}

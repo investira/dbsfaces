@@ -7,6 +7,15 @@
 //stopPropagation()            Yes           No              No
 //stopImmediatePropagation()   Yes           No              Yes
 
+//Exemplo de load assyncrono
+//  (function(d, s, id) {
+//    var js, fjs = d.getElementsByTagName(s)[0];
+//    if (d.getElementById(id)) return;
+//    js = d.createElement(s); js.id = id;
+//    js.src = "//connect.facebook.net/en_US/sdk.js";
+//    fjs.parentNode.insertBefore(js, fjs);
+//  }(document, 'script', 'facebook-jssdk'));
+//  
 var wsAnimationTime = 200;   
 
 //var evt = (evt) ? evt : ((event) ? event : null); 
