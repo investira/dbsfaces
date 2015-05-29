@@ -44,7 +44,7 @@
 	line-height: 27px;
 	height: 27px;
 	text-shadow: 0px 1px 0px #FFFFFF;
-	background-image: url("#{request.contextPath}/images/back_texture_white.svg");
+	background-image: url("#{request.contextPath}/images/back_texture_white.png");
 	background-repeat: repeat;
 	background-color: rgba(180,180,180,0.1);
 	text-align: left;

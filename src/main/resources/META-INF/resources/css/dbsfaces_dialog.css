@@ -37,7 +37,7 @@
 
 .dbs_dialog > div > .-caption{
 /* 	background-color: rgba(255,255,255,.1); */ /*26-05-2015*/
-/* 	background-image: url("#{request.contextPath}/images/back_texture_white.svg"); *//*26-05-2015*/
+/* 	background-image: url("#{request.contextPath}/images/back_texture_white.png"); *//*26-05-2015*/
 /* 	background-repeat: repeat; *//*26-05-2015*/
 	height: 21px;
 	position: relative;
@@ -122,7 +122,7 @@
 }
 
 .dbs_dialog > div > .-toolbar{
-	background-image: url("#{request.contextPath}/images/back_texture_white.svg");
+	background-image: url("#{request.contextPath}/images/back_texture_white.png");
 	background-repeat: repeat;
 	height: 22px;
 	background-color: rgba(240,240,240,1);
