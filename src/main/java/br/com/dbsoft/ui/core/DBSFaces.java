@@ -1652,7 +1652,7 @@ public class  DBSFaces {
  	 */
  	public static String getRenderedViewContent(FacesContext pContext, String pViewFile) {
 		try {
-			// store the original response writer
+			// Salva o response writer
 			ResponseWriter	xOriginalWriter = pContext.getResponseWriter();
  
 			// put in a StringWriter to capture the output
@@ -1660,16 +1660,17 @@ public class  DBSFaces {
 			ResponseWriter 	xWriter = pvCreateResponseWriter(pContext, xStringWriter);
 			pContext.setResponseWriter(xWriter);
  
-			// create a UIViewRoot instance using the template specified
+			// Cria a UIViewRoot 
 			ViewHandler xViewHandler = pContext.getApplication().getViewHandler();
 			UIViewRoot 	xView = xViewHandler.createView(pContext, pViewFile);
  
-			// the fun part -- do the actual rendering here
+			// Encode da tela
 			ViewDeclarationLanguage xVdl = xViewHandler.getViewDeclarationLanguage(pContext, pViewFile);
 			xVdl.buildView(pContext, xView);
+			//Encode do conteúdo
 			renderChildren(pContext, xView);
  
-			// restore the response writer
+			// Restaura o response writer
 			pContext.setResponseWriter(xOriginalWriter);
  
 			return xStringWriter.toString();
