@@ -2,7 +2,6 @@
 	font-stretch: normal;
 	font-weight: normal;
 	text-shadow: none;
-	color:rgb(13,25,45);
 }
 
 .dbs_messageList:hover{
@@ -34,7 +33,7 @@
     position: absolute;
     top: 18px;
     right: 14px;
-    z-index: 2;
+    z-index: 3;
     width: 270px;
 	-webkit-border-radius: 3px;  
 	-moz-border-radius: 3px; 
@@ -125,6 +124,7 @@
 	-webkit-border-radius: 10px;  
 	-moz-border-radius: 10px; 
 	border-radius: 10px;
+	
     
     border-style: none;
     font-size: 8px;
@@ -142,7 +142,6 @@
   	
 .dbs_messageList > .-container > .-button > .-count.-information{
 	background-color: rgb(255, 255, 255);
-	color:inherit;
 }
 .dbs_messageList > .-container > .-button > .-count.-warning{ 
 	background-color: rgb(255, 236, 0); 
