@@ -45,6 +45,7 @@ import com.sun.faces.util.DebugUtil;
 
 import br.com.dbsoft.core.DBSSDK;
 import br.com.dbsoft.error.DBSIOException;
+import br.com.dbsoft.message.DBSMessage;
 import br.com.dbsoft.message.DBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.ui.bean.DBSBean;
 import br.com.dbsoft.ui.bean.crud.DBSCrudBean;
@@ -861,19 +862,52 @@ public class  DBSFaces {
 
 	
 	/**
-	 * Envia menssagem para a view
+	 * Envia mensagem para a view
 	 * @param pClientId Nome do componente ao aqual esta vinculado a mensagem
 	 * @param pSeverity Tipo de severidade da mensagem
 	 * @param pMessage texto da mensagem
 	 */
 	public static void sendMessage(String pClientId, FacesMessage.Severity pSeverity, String pMessage){
-		FacesContext.getCurrentInstance().addMessage(
-				pClientId,
-				new FacesMessage(pSeverity,
-								 pMessage,
-								 null));		
+		if (pClientId == null
+		 || pSeverity == null
+		 || pMessage == null){return;}
+		FacesContext.getCurrentInstance().addMessage( pClientId, new FacesMessage(pSeverity, pMessage, null));		
 	}	
 
+	/**
+	 * Envia mensagem para a view
+	 * @param pClientId Nome do componente ao aqual esta vinculado a mensagem
+	 * @param pSeverity Tipo de severidade da mensagem
+	 * @param pMessage texto da mensagem
+	 */
+	public static void sendMessage(String pClientId, MESSAGE_TYPE pMessageType, String pMessage){
+		if (pClientId == null
+		 || pMessageType == null
+		 || pMessage == null){return;}
+		FacesMessage.Severity xSeverity = null;
+		if (pMessageType == MESSAGE_TYPE.SUCESS
+		 || pMessageType == MESSAGE_TYPE.INFORMATION
+		 || pMessageType == MESSAGE_TYPE.IMPORTANT){
+			xSeverity = FacesMessage.SEVERITY_INFO;
+		}else if (pMessageType == MESSAGE_TYPE.WARNING){
+			xSeverity = FacesMessage.SEVERITY_WARN;
+		}else if (pMessageType == MESSAGE_TYPE.ERROR){
+			xSeverity = FacesMessage.SEVERITY_ERROR;
+		}
+		FacesContext.getCurrentInstance().addMessage( pClientId, new FacesMessage(xSeverity, pMessage, null));		
+	}	
+
+	/**
+	 * Envia mensagem para a view
+	 * @param pClientId Nome do componente ao aqual esta vinculado a mensagem
+	 * @param pSeverity Tipo de severidade da mensagem
+	 * @param pMessage texto da mensagem
+	 */
+	public static void sendMessage(String pClientId, DBSMessage pMessage){
+		if (pClientId == null
+		 || pMessage == null){return;}
+		sendMessage(pClientId, pMessage.getMessageType(), pMessage.getMessageText());
+	}	
 	/**
 	 * Exibe um dialog inserindo o arquivo informado, que deverá conter o componente DBSDialog, no componente dialog
 	 * @param pDialogFileName
