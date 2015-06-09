@@ -8,12 +8,12 @@
 	-moz-border-radius:2px; 
 	border-radius:2px;
 	margin: 0px;
-	padding: 0px 1px !important;
-	border-width: 0px !important;
-	border-style:none !important;
-	-moz-box-sizing: border-box !important;
-	-webkit-box-sizing: border-box !important; 
-	box-sizing: border-box !important;
+	padding: 0px 1px;
+	border-width: 0px;
+	border-style:none;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box; 
+	box-sizing: border-box;
 /* 	text-shadow:1px 1px 1px rgba(50, 50, 50, 0.5);  */
 	text-shadow: none;
 }

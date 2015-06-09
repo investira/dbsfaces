@@ -183,7 +183,6 @@
 	background: -o-linear-gradient(top, rgba(8,114,201,1) 1%,rgba(30,87,153,1) 100%); /* Opera 11.10+ */
 	background: -ms-linear-gradient(top, rgba(8,114,201,1) 1%,rgba(30,87,153,1) 100%); /* IE10+ */
 	background: linear-gradient(top, rgba(8,114,201,1) 1%,rgba(30,87,153,1) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0872c9', endColorstr='#1e5799',GradientType=0 ); /* IE6-8 */			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#207cca',GradientType=0 ); /* IE6-9 */
 }
 		
 .dbs_messageList > .-container > .-list > .-content > .-message:hover > .-container > .-button{
