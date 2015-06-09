@@ -231,8 +231,16 @@ dbsfaces.ui = {
 		if (e.status == "success"){
 			$(e.source).trigger("click");
 		}
-	}
+	},
 	
+	ajaxTriggerLoaded: function(e){
+		if ($(e.source).length == 0){
+			return;
+		}
+		if (e.status == "success"){
+			$(e.source).trigger("loaded");
+		}
+	}
 }
 
 

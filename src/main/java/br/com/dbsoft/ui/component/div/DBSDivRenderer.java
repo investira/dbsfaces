@@ -59,7 +59,8 @@ public class DBSDivRenderer extends DBSRenderer {
 		}
 		String xClientId = xDiv.getClientId(pContext);
 		xWriter.startElement("div", xDiv);
-			if (shouldWriteIdAttribute(xDiv)){
+			if (xDiv.getAjaxLoading() 
+			 || shouldWriteIdAttribute(xDiv)){
 				DBSFaces.setAttribute(xWriter, "id", xClientId, null);
 				DBSFaces.setAttribute(xWriter, "name", xClientId, null);
 			}
@@ -86,7 +87,7 @@ public class DBSDivRenderer extends DBSRenderer {
 				xWriter.endElement("div");
 				DBSFaces.encodeJavaScriptTagStart(xWriter); //dbsfaces.ui.showLoadingError
 				String xJS = "setTimeout(function(){" +
-										"jsf.ajax.request('" + xDiv.getClientId() + "', 'update', {render:'" + xDiv.getClientId() + "', onerror:dbsfaces.ui.showLoadingError(dbsfaces.util.jsid('" + xClientId + "'))});" +
+										"jsf.ajax.request('" + xDiv.getClientId() + "', 'update', {render:'" + xDiv.getClientId() + "', onevent:dbsfaces.ui.ajaxTriggerLoaded,  onerror:dbsfaces.ui.showLoadingError(dbsfaces.util.jsid('" + xClientId + "'))});" +
 												   "}, 0);";
 				xWriter.write(xJS);
 				DBSFaces.encodeJavaScriptTagEnd(xWriter);	

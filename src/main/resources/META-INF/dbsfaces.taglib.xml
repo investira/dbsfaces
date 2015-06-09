@@ -2365,7 +2365,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Indica se página será carregada via ajax.
+                Indica se página será carregada via ajax. Diapara evento ajax 'loaded' após finalizado a laod.
             </description>
 			<name>ajaxLoading</name>
 			<required>false</required>
