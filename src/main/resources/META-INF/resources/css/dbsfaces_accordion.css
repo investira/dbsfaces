@@ -51,7 +51,7 @@
 	background: -o-linear-gradient(top,  rgba(140, 140,140,0.1) 0%,rgba(100,100,100,0.1) 100%), url("#{request.contextPath}/images/back_texture_white.png"); /* Opera 11.10+ */
 	background: -ms-linear-gradient(top,  rgba(140, 140,140,0.1) 0%,rgba(100,100,100,0.1) 100%), url("#{request.contextPath}/images/back_texture_white.png"); /* IE10+ */
 	background: linear-gradient(to bottom,  rgba(140, 140,140,0.1) 0%,rgba(100,100,100,0.1) 100%), url("#{request.contextPath}/images/back_texture_white.png"); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1aebebeb', endColorstr='#1ae1e1e1',GradientType=0 ); /* IE6-8 */
+
 	text-align:left;
 	width: 100%;
 	float: left;
