@@ -12,7 +12,7 @@
 	</organization>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<jasper.version>6.1.0</jasper.version>
+		<jasper.version>6.0.0</jasper.version>
 		<internal.repo.path>${user.home}/Fnt/mvn-repo</internal.repo.path>
 		<github.global.server>github</github.global.server>
 		<dbssdk.version>1.4.0</dbssdk.version>
