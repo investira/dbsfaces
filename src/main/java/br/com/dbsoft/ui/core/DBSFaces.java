@@ -1,10 +1,18 @@
 package br.com.dbsoft.ui.core;
 
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.math.BigDecimal;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -41,8 +49,6 @@ import javax.faces.view.facelets.FaceletContext;
 import org.apache.log4j.Logger;
 import org.jboss.weld.context.SerializableContextualInstanceImpl;
 
-import com.sun.faces.util.DebugUtil;
-
 import br.com.dbsoft.core.DBSSDK;
 import br.com.dbsoft.error.DBSIOException;
 import br.com.dbsoft.message.DBSMessage;
@@ -53,8 +59,8 @@ import br.com.dbsoft.ui.bean.report.DBSReportBean;
 import br.com.dbsoft.ui.component.DBSUIInput;
 import br.com.dbsoft.ui.component.button.DBSButton;
 import br.com.dbsoft.ui.component.checkbox.DBSCheckbox;
-import br.com.dbsoft.ui.component.datatable.DBSDataTableColumn;
 import br.com.dbsoft.ui.component.datatable.DBSDataTable;
+import br.com.dbsoft.ui.component.datatable.DBSDataTableColumn;
 import br.com.dbsoft.ui.component.dialog.DBSDialog.DIALOG_ICON;
 import br.com.dbsoft.util.DBSBoolean;
 import br.com.dbsoft.util.DBSDate;
@@ -62,6 +68,8 @@ import br.com.dbsoft.util.DBSIO;
 import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSObject;
 import br.com.dbsoft.util.DBSString;
+
+import com.sun.faces.util.DebugUtil;
 	
 /**
  * @author ricardo.villar
@@ -127,6 +135,8 @@ public class  DBSFaces {
 	    public static final String TOOLTIP = "tooltip";
 	    public static final String UL = "ul";
 	    public static final String LI = "li";
+	    public static final String PARALLAX = "parallax";
+	    public static final String PARALLAXSECTION = "parallaxSection";
 	    public static final String FORM = "form";
 	    public static final String REPORT = "report"; 
 	    public static final String REPORTFORM = "reportForm"; 
@@ -231,6 +241,7 @@ public class  DBSFaces {
 			public static final String NOT_SELECTABLE = " -not_selectable ";
 			public static final String SELECTABLE = " -selectable ";
 			public static final String SELECTED = " -selected ";
+			public static final String SECTION = " -section ";
 			public static final String SMALL = " -small ";
 			public static final String SUBMIT = " -submit ";
 			public static final String SUGGESTION = " -suggestion ";
@@ -474,6 +485,15 @@ public class  DBSFaces {
 		public static class CHARTVALUE
 		{	
 			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.CHARTVALUE;
+		}
+
+		public static class PARALLAX
+		{
+			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.PARALLAX;
+		}
+		public static class PARALLAXSECTION
+		{
+			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.PARALLAXSECTION;
 		}
 	}
 	
@@ -1296,9 +1316,10 @@ public class  DBSFaces {
 		}else{
 			if (DBSObject.isEmpty(pExecute)){
 //				System.out.println("Form/Execute não definido para o componente " + pComponent.getClientId()  + "!");
-			}else if (DBSObject.isEmpty(xLocalOnClick)){
+			}else if (DBSObject.isEmpty(xLocalOnClick)
+			  	  && !DBSObject.isEmpty(xUserOnClick)){ 
 				xLocalOnClick = "mojarra.jsfcljs(document.getElementById('" + pExecute + "'),{'"+ pComponent.getClientId() + "':'"+ pComponent.getClientId() + "'},''); return false";
-			}
+			}//Não faz nada caso não exista action, update e onclick
 		}
 		return xLocalOnClick;
 	}
@@ -1712,6 +1733,64 @@ public class  DBSFaces {
 			throw new RuntimeException(exception);
 		}
 	}
+ 	
+	public static String getRenderedViewContent(String pURL, List<String> pListParams) throws DBSIOException {
+ 		String 				xResultado = "";
+ 		List<String>		xListProperty = pListParams;
+		HttpURLConnection 	xConnection = null;
+		BufferedReader 		xBuffer = null;
+		String 				xLineData = "";
+		
+		try {
+			URL 	xUrl = new URL(pURL);
+			xConnection = (HttpURLConnection) xUrl.openConnection();
+			xConnection.setRequestProperty("Request-Method", "POST");
+			xConnection.setDoInput(true);
+			xConnection.setDoOutput(true);
+			if (!DBSObject.isNull(xListProperty) && !xListProperty.isEmpty()) {
+				StringBuilder xParams = new StringBuilder();
+				boolean first = true;
+				for (String xProperty : xListProperty) {
+					String xKey = DBSString.getSubString(xProperty, 1, xProperty.indexOf("="));
+					String xValue = DBSString.getSubString(xProperty, xProperty.indexOf("=")+2, xProperty.length());
+
+			        if (first) {
+			            first = false;
+			        } else {
+			            xParams.append("&");
+			        }
+			        xParams.append(URLEncoder.encode(xKey, "UTF-8"));
+			        xParams.append("=");
+			        xParams.append(URLEncoder.encode(xValue, "UTF-8"));
+				}
+				OutputStream xOs = xConnection.getOutputStream();
+				BufferedWriter xWriter = new BufferedWriter(new OutputStreamWriter(xOs, "UTF-8"));
+				xWriter.write(xParams.toString());
+				xWriter.flush();
+				xWriter.close();
+				xOs.close();
+			}
+			//Conecta à URL
+			xConnection.connect();
+			//Efetua a leitura do xHTML
+			xBuffer = new BufferedReader(new InputStreamReader(xConnection.getInputStream()));
+			while (null != (xLineData = xBuffer.readLine())) {
+				xResultado += xLineData;
+			}
+		} catch (IOException e) {
+			DBSIO.throwIOException(e);
+			return "";
+		} finally {
+			try {
+				xBuffer.close();
+			} catch (IOException e) {
+				wLogger.error(e);
+				DBSIO.throwIOException(e);
+			}
+			xConnection.disconnect();
+		}
+		return xResultado;
+ 	}
  	
 	/**
 	 * Encode dos filhos 
