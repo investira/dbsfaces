@@ -72,7 +72,7 @@ public class DBSTabRenderer extends DBSRenderer {
 		xWriter.startElement("div", xTab);
 			xWriter.writeAttribute("id", xClientId, null);
 			xWriter.writeAttribute("name", xClientId, null);
-			xWriter.writeAttribute("class", xClass, null);
+			xWriter.writeAttribute("class", xClass.trim(), null);
 			if (!xTab.getShowTabPageOnClick()){
 				xWriter.writeAttribute("showTabPageOnClick", "false", null);
 			}
