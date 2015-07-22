@@ -10,6 +10,7 @@ import br.com.dbsoft.ui.core.DBSFaces;
 @ResourceDependencies({
 	// Estas libraries serão carregadas junto com o projeto
 	@ResourceDependency(library = "css", name = "dbsfaces.css", target = "head"),
+	@ResourceDependency(library = "css", name = "dbsfaces_a.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_theme.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_accordion.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_button.css", target = "head"),
@@ -22,6 +23,7 @@ import br.com.dbsoft.ui.core.DBSFaces;
 	@ResourceDependency(library = "css", name = "dbsfaces_datatable.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_group.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_dialog.css", target = "head"),
+	@ResourceDependency(library = "css", name = "dbsfaces_parallax.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_fileupload.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_inputtext.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_inputtextarea.css", target = "head"),
@@ -60,6 +62,7 @@ import br.com.dbsoft.ui.core.DBSFaces;
 	@ResourceDependency(library = "js", name = "dbsfaces_crudtable.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_datatable.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_dialog.js", target = "head"),
+	@ResourceDependency(library = "js", name = "dbsfaces_parallax.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_fileupload.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_group.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_inputtext.js", target = "head"),

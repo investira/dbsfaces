@@ -223,6 +223,47 @@ dbsfaces.ui = {
 		$(pObj).get(0).setSelectionRange(pStart, pEnd);
 	},
 
+	dropShadow: function(e, pValue){
+		var xValue = "drop-shadow(" + pValue + ")";
+		dbsfaces.ui.filter(e, xValue);
+	},
+	
+	blur: function(e, pValue){
+		var xValue = "blur(" + pValue + "px)";
+		dbsfaces.ui.filter(e, xValue);
+	},
+
+	opacity: function(e, pValue){
+		var xValue = "opacity(" + pValue + ")";
+		dbsfaces.ui.filter(e, xValue);
+	},
+	
+	filter: function(e, pValue){
+		$(e).css("-ms-filter", pValue)
+			.css("-o-filter", pValue)
+			.css("-moz-filter", pValue)
+			.css("-webkit-filter", pValue)
+			.css("filter", pValue);
+	},
+	
+	
+	transform: function(e, pCommand){
+		$(e).css("-webkit-transform", pCommand)
+			.css("-moz-transform", pCommand)
+			.css("-ms-transform", pCommand)
+			.css("-o-transform", pCommand)
+			.css("transform", pCommand);
+	},
+	
+	transition: function(e, pCommand){
+		$(e).css("-webkit-transition", pCommand)
+			.css("-moz-transition", pCommand)
+			.css("-ms-transition", pCommand)
+			.css("-o-transition", pCommand)
+			.css("transition", pCommand);
+	},
+	
+
 	//Dispara evento click
 	ajaxTriggerClick: function(e){
 		if ($(e.source).length == 0){
@@ -328,6 +369,20 @@ dbsfaces.date = {
 	}
 }
 
+dbsfaces.math = {
+	round: function(pValue, pDecimals){
+		var xP = Math.pow(10, pDecimals);
+		var xValue = Math.round(pValue * xP) / xP;
+		return xValue;
+	},
+	
+	trunc: function(pValue, pDecimals){
+		var xP = Math.pow(10, pDecimals);
+		var xValue = pValue * xP;
+		xValue = Math[xValue < 0 ? 'ceil' : 'floor'](xValue);
+		return xValue / xP;
+	}
+};
 
 dbsfaces.number = {
 	isNumber: function(pVal){
@@ -370,13 +425,14 @@ dbsfaces.number = {
 	},
 	
 	getOnlyNumber: function(pValue){
-		var xValue = "";
-		for (var i = 0; i < pValue.length; i++){
-			if (dbsfaces.number.isNumber(pValue.charAt(i))){
-				xValue = xValue + pValue.charAt(i);
-			}
-		}
-		return xValue;
+//		var xValue = "";
+//		for (var i = 0; i < pValue.length; i++){
+//			if (dbsfaces.number.isNumber(pValue.charAt(i))){
+//				xValue = xValue + pValue.charAt(i);
+//			}
+//		}
+//		return xValue;
+		return pValue.replace(/[^-\d\.]/g, '');
  	}
 };
 
@@ -385,7 +441,7 @@ dbsfaces.string = {
 		//Ajuste para os códigos numéricos retornados pelo teclado estendido.
 		return String.fromCharCode((96 <= pVal && pVal <= 105)? pVal-48 : pVal);
 	}	
-}
+};
 
 		
 //Monitora evento ajax recebido e dispara evento dbsoft

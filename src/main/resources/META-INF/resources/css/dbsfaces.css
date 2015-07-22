@@ -34,14 +34,10 @@ tbody,
 }
 
 body {
-	padding: 0px;
-	margin: 0px;
-}
-
-body {
 	font-size: 11px;
 }
 
+html,
 body,
 div,
 dl,dt,dd,
@@ -53,7 +49,7 @@ input,select,textarea,p,blockquote,th,td,figure,figcaption,time,article{
 	padding: 0;
 }
 
-div,ul,li,span,a,table,thead,tfoot,tbody,td,th,tr,caption {
+html,body,div,ul,li,span,a,table,thead,tfoot,tbody,td,th,tr,caption {
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
@@ -200,7 +196,7 @@ svg{
 }
 
 /* Blur ----------------------------------- */
-.-blur_soft{
+.-blur_softer{
     filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='1');
 	filter: url("data:image/svg+xml;utf8,<svg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'blur\'><feGaussianBlur stdDeviation=\'1\' ></feGaussianBlur></filter></svg>#blur"); 
 	filter: blur; 
@@ -209,6 +205,16 @@ svg{
     -moz-filter: blur(1px);
     -webkit-filter: blur(1px);
     filter: blur(1px);
+}
+.-blur_soft{
+    filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='4');
+	filter: url("data:image/svg+xml;utf8,<svg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'blur\'><feGaussianBlur stdDeviation=\'4\' ></feGaussianBlur></filter></svg>#blur"); 
+	filter: blur; 
+	-ms-filter: blur(4px);
+    -o-filter: blur(4px);
+    -moz-filter: blur(4px);
+    -webkit-filter: blur(4px);
+    filter: blur(4px);
 }
 .-blur{
     filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='7');
@@ -229,7 +235,18 @@ svg{
 	-moz-filter : blur(18px);
 	-webkit-filter: blur(18px); 
 	filter: blur(18px);
-	-ms-filter: progid:DXImageTransform.Microsoft.MotionBlur(strength=50), progid:DXImageTransform.Microsoft.BasicImage(mirror=1);
+	-ms-filter: progid:DXImageTransform.Microsoft.MotionBlur(strength=18), progid:DXImageTransform.Microsoft.BasicImage(mirror=1);
+}
+.-blur_harder{
+	filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='40'); 			
+	filter: url("data:image/svg+xml;utf8,<svg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'blur\'><feGaussianBlur stdDeviation=\'40\' ></feGaussianBlur></filter></svg>#blur"); 
+	filter: blur; 
+	-ms-filter : blur(40px);
+	-o-filter : blur(40px); 
+	-moz-filter : blur(40px);
+	-webkit-filter: blur(40px); 
+	filter: blur(40px);
+	-ms-filter: progid:DXImageTransform.Microsoft.MotionBlur(strength=40), progid:DXImageTransform.Microsoft.BasicImage(mirror=1);
 }
 
 /* Hack para configurar o IE com opacity já que não aceita o blur */
@@ -608,336 +625,6 @@ textarea.dbs_input-data:FOCUS,
 .dbs_div_loading{
 	min-width: 12px;
 	min-height: 12px;
-}
-
-/* Animações -------------------------------------------- */
-
-
-/* spin */
-.-a_spin {
-  -moz-animation: -kf_spin 2s infinite linear;
-  -o-animation: -kf_spin 2s infinite linear;
-  -webkit-animation: -kf_spin 2s infinite linear;
-  animation: -kf_spin 2s infinite linear;
-  display: inline-block;
-}
-
-.-a_loading {
-	-moz-animation: -kf_loading 0.5s infinite;
-	-o-animation: -kf_loading 0.5s infinite;
-	-webkit-animation: -kf_loading 0.5s infinite;
-	animation: -kf_loading 0.5s infinite;
-	display: inline-block;
-}
-
-
-
-/* Keyframes----- */
-
-/*loading*/
-@-moz-keyframes -kf_loading{
-  12% {
-    -moz-transform: rotate(0deg);
-  }
-  12.001% {
-    -moz-transform: rotate(45deg);
-  }
-  25% {
-    -moz-transform: rotate(45deg);
-  }
-  25.001% {
-    -moz-transform: rotate(90deg);
-  }
-  37% {
-    -moz-transform: rotate(90deg);
-  }
-  37.001% {
-    -moz-transform: rotate(135deg);
-  }
-  50% {
-    -moz-transform: rotate(135deg);
-  }
-  50.001% {
-    -moz-transform: rotate(180deg);
-  }
-  62% {
-    -moz-transform: rotate(180deg);
-  }
-  62.001% {
-    -moz-transform: rotate(225deg);
-  }
-  75% {
-    -moz-transform: rotate(225deg);
-  }
-  75.001% {
-    -moz-transform: rotate(270deg);
-  }
-  87% {
-    -moz-transform: rotate(270deg);
-  }
-  87.001% {
-    -moz-transform: rotate(315deg);
-  }
-  99.999% {
-    -moz-transform: rotate(315deg);
-  }
-  100% {
-    -moz-transform: rotate(359deg);
-  }
-
-}
-@-webkit-keyframes -kf_loading{
-  12% {
-    -webkit-transform: rotate(0deg);
-  }
-  12.001% {
-    -webkit-transform: rotate(45deg);
-  }
-  25% {
-    -webkit-transform: rotate(45deg);
-  }
-  25.001% {
-    -webkit-transform: rotate(90deg);
-  }
-  37% {
-    -webkit-transform: rotate(90deg);
-  }
-  37.001% {
-    -webkit-transform: rotate(135deg);
-  }
-  50% {
-    -webkit-transform: rotate(135deg);
-  }
-  50.001% {
-    -webkit-transform: rotate(180deg);
-  }
-  62% {
-    -webkit-transform: rotate(180deg);
-  }
-  62.001% {
-    -webkit-transform: rotate(225deg);
-  }
-  75% {
-    -webkit-transform: rotate(225deg);
-  }
-  75.001% {
-    -webkit-transform: rotate(270deg);
-  }
-  87% {
-    -webkit-transform: rotate(270deg);
-  }
-  87.001% {
-    -webkit-transform: rotate(315deg);
-  }
-  99.999% {
-    -webkit-transform: rotate(315deg);
-  }
-  100% {
-    -webkit-transform: rotate(359deg);
-  }
-}
-
-@-o-keyframes -kf_loading{
-  12% {
-    -o-transform: rotate(0deg);
-  }
-  12.001% {
-    -o-transform: rotate(45deg);
-  }
-  25% {
-    -o-transform: rotate(45deg);
-  }
-  25.001% {
-    -o-transform: rotate(90deg);
-  }
-  37% {
-    -o-transform: rotate(90deg);
-  }
-  37.001% {
-    -o-transform: rotate(135deg);
-  }
-  50% {
-    -o-transform: rotate(135deg);
-  }
-  50.001% {
-    -o-transform: rotate(180deg);
-  }
-  62% {
-    -o-transform: rotate(180deg);
-  }
-  62.001% {
-    -o-transform: rotate(225deg);
-  }
-  75% {
-    -o-transform: rotate(225deg);
-  }
-  75.001% {
-    -o-transform: rotate(270deg);
-  }
-  87% {
-    -o-transform: rotate(270deg);
-  }
-  87.001% {
-    -o-transform: rotate(315deg);
-  }
-  99.999% {
-    -o-transform: rotate(315deg);
-  }
-  100% {
-    -o-transform: rotate(359deg);
-  }
-
-}
-
-@-ms-keyframes -kf_loading{
-  12% {
-    transform: rotate(0deg);
-  }
-  12.001% {
-    transform: rotate(45deg);
-  }
-  25% {
-    transform: rotate(45deg);
-  }
-  25.001% {
-    transform: rotate(90deg);
-  }
-  37% {
-    transform: rotate(90deg);
-  }
-  37.001% {
-    transform: rotate(135deg);
-  }
-  50% {
-    transform: rotate(135deg);
-  }
-  50.001% {
-    transform: rotate(180deg);
-  }
-  62% {
-    transform: rotate(180deg);
-  }
-  62.001% {
-    transform: rotate(225deg);
-  }
-  75% {
-    transform: rotate(225deg);
-  }
-  75.001% {
-    transform: rotate(270deg);
-  }
-  87% {
-    transform: rotate(270deg);
-  }
-  87.001% {
-    transform: rotate(315deg);
-  }
-  99.999% {
-    transform: rotate(315deg);
-  }
-  100% {
-    transform: rotate(359deg);
-  }
-
-}
-
-@keyframes -kf_loading{
-  12% {
-    transform: rotate(0deg);
-  }
-  12.001% {
-    transform: rotate(45deg);
-  }
-  25% {
-    transform: rotate(45deg);
-  }
-  25.001% {
-    transform: rotate(90deg);
-  }
-  37% {
-    transform: rotate(90deg);
-  }
-  37.001% {
-    transform: rotate(135deg);
-  }
-  50% {
-    transform: rotate(135deg);
-  }
-  50.001% {
-    transform: rotate(180deg);
-  }
-  62% {
-    transform: rotate(180deg);
-  }
-  62.001% {
-    transform: rotate(225deg);
-  }
-  75% {
-    transform: rotate(225deg);
-  }
-  75.001% {
-    transform: rotate(270deg);
-  }
-  87% {
-    transform: rotate(270deg);
-  }
-  87.001% {
-    transform: rotate(315deg);
-  }
-  99.999% {
-    transform: rotate(315deg);
-  }
-  100% {
-    transform: rotate(359deg);
-  }
-
-}
-
-/* spin */			
-@-moz-keyframes -kf_spin {
-  0% {
-    -moz-transform: rotate(0deg);
-  }
-
-  100% {
-    -moz-transform: rotate(359deg);
-  }
-}
-@-webkit-keyframes -kf_spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-  }
-
-  100% {
-    -webkit-transform: rotate(359deg);
-  }
-}
-@-o-keyframes -kf_spin {
-  0% {
-    -o-transform: rotate(0deg);
-  }
-
-  100% {
-    -o-transform: rotate(359deg);
-  }
-}
-@-ms-keyframes -kf_spin {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(359deg);
-  }
-}
-@keyframes -kf_spin {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(359deg);
-  }
 }
 
 

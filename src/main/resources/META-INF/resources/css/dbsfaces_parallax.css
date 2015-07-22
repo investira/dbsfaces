@@ -1,0 +1,21 @@
+.dbs_parallax{
+	position: relative;
+	display: block;
+	overflow:auto;
+	height: 100%;
+}
+
+.dbs_parallax > .-container{
+	position: relative;
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.dbs_parallaxSection{
+	position: absolute;
+	display: block;
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+}

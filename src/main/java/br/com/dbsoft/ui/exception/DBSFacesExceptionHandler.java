@@ -66,8 +66,8 @@ public class DBSFacesExceptionHandler  extends ExceptionHandlerWrapper {
 						wLogger.error("Página não encontrada. " + xThrowable.getMessage()); 
 //						FacesMessage xM = new FacesMessage("aaaaa");
 //						xFC.addMessage(clientId, message);
-						xRemove = false;
 					}
+					xRemove = false;
 				}else{
 					wLogger.error("Severe Exception Occured", xThrowable);
 					xRequestMap.put("exceptionMessage", xThrowable.getMessage());                 
