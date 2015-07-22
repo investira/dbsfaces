@@ -67,7 +67,7 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 		xWriter.startElement("div", xInputNumber);
 			xWriter.writeAttribute("id", xClientId, "id");
 			xWriter.writeAttribute("name", xClientId, "name");
-			xWriter.writeAttribute("class", xClass, "class");
+			xWriter.writeAttribute("class", xClass.trim(), "class");
 			DBSFaces.setAttribute(xWriter, "style", xInputNumber.getStyle(), null);
 			//Container
 			xWriter.startElement("div", xInputNumber);
