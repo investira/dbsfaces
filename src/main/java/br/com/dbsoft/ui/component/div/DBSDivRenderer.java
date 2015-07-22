@@ -70,7 +70,7 @@ public class DBSDivRenderer extends DBSRenderer {
 			}
 
 			if (xClass!=""){
-				DBSFaces.setAttribute(xWriter, "class", xClass, null);
+				DBSFaces.setAttribute(xWriter, "class", xClass.trim(), null);
 			}
 			DBSFaces.setAttribute(xWriter, "style", xDiv.getStyle(), null);
 
