@@ -263,6 +263,7 @@ dbsfaces.ui = {
 			.css("transition", pCommand);
 	},
 	
+	
 
 	//Dispara evento click
 	ajaxTriggerClick: function(e){

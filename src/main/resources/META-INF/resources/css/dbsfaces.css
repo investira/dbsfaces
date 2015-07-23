@@ -267,18 +267,13 @@ svg{
     z-index: 1;	
 }
 
-.-transformReset{
+
+.-translate3dReset{ /* Para resolver a tremedeira quando é feito um scroll no SAFARI */
 	-webkit-transform: translate3d(0,0,0);
 	-moz-transform: translate3d(0,0,0);
 	-o-transform: translate3d(0,0,0);
 	-ms-transform: translate3d(0,0,0);
 	transform: translate3d(0,0,0);
-	
-	-webkit-transition: none 0ms;
-	-moz-transition: none 0ms;
-	-ms-transition: none 0ms;
-	-o-transition: none 0ms;
-	transition: none 0ms;
 }
 
 .-transitionReset{

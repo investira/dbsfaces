@@ -46,6 +46,10 @@ public class DBSParallaxSectionRenderer extends DBSRenderer {
 		}
 		xWriter.startElement("div", xParallaxSection);
 			DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER.trim(), null);
+			if (shouldWriteIdAttribute(xParallaxSection)){
+				DBSFaces.setAttribute(xWriter, "id", xClientId + "_container", null);
+				DBSFaces.setAttribute(xWriter, "name", xClientId + "_container", null);
+			}
 
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xParallaxSection, DBSPassThruAttributes.getAttributes(Key.PARALLAX));
 

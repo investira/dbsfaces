@@ -1,8 +1,10 @@
 .dbs_parallax{
 	position: relative;
 	display: block;
-	overflow:auto;
 	height: 100%;
+	overflow:auto;
+	-webkit-transform: translateZ(0px);
+	-webkit-transform: translate3d(0,0,0);	
 }
 
 .dbs_parallax > .-container{

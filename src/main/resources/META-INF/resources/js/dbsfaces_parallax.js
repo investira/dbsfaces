@@ -1,5 +1,6 @@
 dbs_parallax = function(pId) {
 	dbsfaces.parallax.setZIndex($(pId));
+	dbsfaces.parallax.scroll(null, $(pId));
 	$(pId).off("scroll.dbs");
 	$(pId).on("scroll.dbs", function(e) {
 		dbsfaces.parallax.scroll(e, $(pId))
@@ -17,15 +18,15 @@ dbsfaces.parallax = {
 		var xA;
 		//Armazena em xA a lista com os valores que forem diferentes para depois sortá-la		
 		pParallax.find(".-container > .dbs_parallaxSection").each(function(){
-			xA = $(this).data("a");
+			xA = dbsfaces.parallax.getA($(this));
 			if (xList.indexOf(xA) == -1){
-				xList.push($(this).data("a"));
+				xList.push(xA);
 			}
 		});
 		xList.sort();
 		//Atribui zIndex a seção conforma a posição dele na lista já sortada
 		pParallax.find(".-container > .dbs_parallaxSection").each(function(){
-			xA = $(this).data("a");
+			xA = dbsfaces.parallax.getA($(this));
 			//Busca em qual posição da lista esta o Z na lista
 			for	(i = 0; i < xList.length; i++) {
 				if (xList[i] == xA){
@@ -49,25 +50,27 @@ dbsfaces.parallax = {
 		var xSection;
 		var xVSF;
 		var xContainerTop;
-		
+		var xMarginTop;
 		pParallax.find(".-container").each(function(){
 			xContainer = $(this);
 			xSection = $(this).children(".dbs_parallaxSection");
 			//Ajusta posicão conforme scroll da tela
-			xA = xSection.data("a");
-//			xContainerTop = xContainer.position().top;
+			xA = dbsfaces.parallax.getA(xSection);
+			xMarginTop = parseFloat(xContainer.css("margin-top"));
+			xContainerTop = xContainer.position().top;
 			//Primeira seção
 			if (xNewY == 0){
 				xNewY = xST;
 			}else{
 				//Calcula scroll individual
-				xNewY = xContainer.outerHeight() - (xContainer.position().top - parseFloat(xContainer.css("margin-top")));
+				xNewY = xContainer.outerHeight() - xContainerTop + xMarginTop;
 			}
 			xNewY = -xNewY * (xA / 100);
 			//Seção que já passou
-			if ((xContainer.position().top + parseFloat(xContainer.css("margin-top")) + xContainer.outerHeight()) < 0){
+			if ((xContainerTop + xMarginTop + xContainer.outerHeight()) < 0){
+				//Não altera o margin-top
 			//Seção corrente
-			}else if (xContainer.position().top < xContainer.outerHeight()){
+			}else if (xContainerTop < xContainer.outerHeight()){
 				xContainer.css("margin-top", xNewY + "px");
 			//Seção que passará	
 			}else{
@@ -75,7 +78,7 @@ dbsfaces.parallax = {
 			}	
 			//Fator do scroll vertical relativo a seção, sendo 1 o inicio, 0 o meio e -1 o fim. 
 			xVSF = (xContainer.position().top + parseFloat(xContainer.css("margin-top")));
-			xVSF = (xVSF / parseFloat( xContainer.outerHeight()));
+			xVSF = (xVSF / xContainer.outerHeight());
 			if (xVSF > 1){
 				xVSF = 1;
 			}else if (xVSF < -1){
@@ -121,12 +124,10 @@ dbsfaces.parallax = {
 					var xDelta = pParallax.scrollTop();
 					xDelta += $(this).outerHeight() * (xVSF / 2);
 					if (Math.abs(pParallax.scrollTop() - xDelta) > 0.5){
-						console.log(pParallax.scrollTop() - xDelta);
 						pParallax.scrollTop(xDelta);
 						e.preventDefault();
 						return false;
 					}
-					
 				}
 			});
 		}, 2000); //Time de delay para efetuar a chamada
@@ -144,9 +145,24 @@ dbsfaces.parallax = {
 			xA = parseFloat(xItem.attr("a"));
 			xOriginalTop = xItem.position().top + parseFloat(xItem.css("margin-top")); 
 			xNewY = (xOriginalTop + (pSection.outerHeight()/2)) * xVSF * xA;
-			xItem.css("margin-top", xNewY + "px");
-//			console.log(xNewY + "\t"  + xOriginalTop);
+			dbsfaces.ui.transform(xItem, "translateY(" +  xNewY + "px)");
 		});
+	},
+	
+	getA: function(pSection){
+		var xA = pSection.data("a");
+		if (typeof(xA) == 'undefined'){
+			xA = 0;
+		}
+		return xA;
+	},
+	
+	getVSF: function(pSection){
+		var xVSF = pSection.attr("vsf");
+		if (typeof(xVSF) == 'undefined'){
+			xVSF = 0;
+		}
+		return xVSF;
 	}
 
 }
