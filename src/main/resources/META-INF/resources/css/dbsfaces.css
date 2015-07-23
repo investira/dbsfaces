@@ -197,7 +197,6 @@ svg{
 
 /* Blur ----------------------------------- */
 .-blur_softer{
-    filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='1');
 	filter: url("data:image/svg+xml;utf8,<svg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'blur\'><feGaussianBlur stdDeviation=\'1\' ></feGaussianBlur></filter></svg>#blur"); 
 	filter: blur; 
 	-ms-filter: blur(1px);
@@ -207,7 +206,6 @@ svg{
     filter: blur(1px);
 }
 .-blur_soft{
-    filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='4');
 	filter: url("data:image/svg+xml;utf8,<svg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'blur\'><feGaussianBlur stdDeviation=\'4\' ></feGaussianBlur></filter></svg>#blur"); 
 	filter: blur; 
 	-ms-filter: blur(4px);
@@ -217,7 +215,6 @@ svg{
     filter: blur(4px);
 }
 .-blur{
-    filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='7');
 	filter: url("data:image/svg+xml;utf8,<svg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'blur\'><feGaussianBlur stdDeviation=\'7\' ></feGaussianBlur></filter></svg>#blur"); 
 	filter: blur; 
 	-ms-filter: blur(7px);
@@ -227,7 +224,6 @@ svg{
     filter: blur(7px);
 }
 .-blur_hard{
-	filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='18'); 			
 	filter: url("data:image/svg+xml;utf8,<svg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'blur\'><feGaussianBlur stdDeviation=\'18\' ></feGaussianBlur></filter></svg>#blur"); 
 	filter: blur; 
 	-ms-filter : blur(18px);
@@ -235,10 +231,8 @@ svg{
 	-moz-filter : blur(18px);
 	-webkit-filter: blur(18px); 
 	filter: blur(18px);
-	-ms-filter: progid:DXImageTransform.Microsoft.MotionBlur(strength=18), progid:DXImageTransform.Microsoft.BasicImage(mirror=1);
 }
 .-blur_harder{
-	filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='40'); 			
 	filter: url("data:image/svg+xml;utf8,<svg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'blur\'><feGaussianBlur stdDeviation=\'40\' ></feGaussianBlur></filter></svg>#blur"); 
 	filter: blur; 
 	-ms-filter : blur(40px);
@@ -246,7 +240,6 @@ svg{
 	-moz-filter : blur(40px);
 	-webkit-filter: blur(40px); 
 	filter: blur(40px);
-	-ms-filter: progid:DXImageTransform.Microsoft.MotionBlur(strength=40), progid:DXImageTransform.Microsoft.BasicImage(mirror=1);
 }
 
 /* Hack para configurar o IE com opacity já que não aceita o blur */
@@ -274,8 +267,27 @@ svg{
     z-index: 1;	
 }
 
+.-transformReset{
+	-webkit-transform: translate3d(0,0,0);
+	-moz-transform: translate3d(0,0,0);
+	-o-transform: translate3d(0,0,0);
+	-ms-transform: translate3d(0,0,0);
+	transform: translate3d(0,0,0);
+	
+	-webkit-transition: none 0ms;
+	-moz-transition: none 0ms;
+	-ms-transition: none 0ms;
+	-o-transition: none 0ms;
+	transition: none 0ms;
+}
 
-
+.-transitionReset{
+	-webkit-transition: none 0ms;
+	-moz-transition: none 0ms;
+	-ms-transition: none 0ms;
+	-o-transition: none 0ms;
+	transition: none 0ms;
+}
 /* ----------------------------------------------- */
 .-scrollLeft {
 	-webkit-box-shadow: 3px 0 3px -1px rgba(0, 0, 0, 0.3) inset;
