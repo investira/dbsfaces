@@ -3,10 +3,10 @@ dbs_parallax = function(pId) {
 	dbsfaces.parallax.scroll(null, $(pId));
 	$(pId).off("scroll.dbs");
 	$(pId).on("scroll.dbs", function(e) {
-		dbsfaces.parallax.scroll(e, $(pId))
+		dbsfaces.parallax.scroll(e, $(pId), false)
     });
 	$(window).resize(function(e) {
-		dbsfaces.parallax.scroll(e, $(pId));
+		dbsfaces.parallax.scroll(e, $(pId), false);
 	});
 }
 
@@ -37,7 +37,7 @@ dbsfaces.parallax = {
 		});
 	},	
 	
-	scroll: function(e, pParallax){
+	scroll: function(e, pParallax, pForced){
 		var xST = pParallax.scrollTop();
 		if (xST < 0 ||
 			((pParallax.get(0).scrollHeight - pParallax.outerHeight() - xST) < 10)){
@@ -51,9 +51,9 @@ dbsfaces.parallax = {
 		var xVSF;
 		var xContainerTop;
 		var xMarginTop;
-		pParallax.find(".-container").each(function(){
+		pParallax.children(".-container").each(function(){
 			xContainer = $(this);
-			xSection = $(this).children(".dbs_parallaxSection");
+			xSection = xContainer.children(".dbs_parallaxSection");
 			//Ajusta posicão conforme scroll da tela
 			xA = dbsfaces.parallax.getA(xSection);
 			xMarginTop = parseFloat(xContainer.css("margin-top"));
@@ -66,6 +66,8 @@ dbsfaces.parallax = {
 				xNewY = xContainer.outerHeight() - xContainerTop + xMarginTop;
 			}
 			xNewY = -xNewY * (xA / 100);
+
+			
 			//Seção que já passou
 			if ((xContainerTop + xMarginTop + xContainer.outerHeight()) < 0){
 				//Não altera o margin-top
@@ -84,6 +86,21 @@ dbsfaces.parallax = {
 			}else if (xVSF < -1){
 				xVSF = -1;
 			}
+//			var xHtml;
+//			xHtml = xSection.attr("class") + "<br/>" +
+//					"Container top:\t" + xContainer.position().top + "<br/>" +
+//					"Container height:\t" + xContainer.outerHeight() + "<br/>" +
+//					"Section top:\t" + xSection.position().top + "<br/>" +
+//					"Section height:\t" + xSection.outerHeight() + "<br/>" +
+//					"Scroll Total:\t" + (xContainer.position().top + parseFloat(xContainer.css("margin-top"))) + "<br/>" +
+//					"VSF:\t" + xVSF + "<br/>" +
+//					"ST:\t" + xST + "<br/>" +
+//					"scrollTop:\t" + pParallax.scrollTop() + "<br/>" +
+//					"scrollHeight:\t" + pParallax.get(0).scrollHeight + "<br/>" +
+//					"newY:\t" + xNewY + "<br/>" +
+//					"margin_top:\t" + parseInt(xContainer.css("margin-top")) + "<br/>" +
+//					"zIndex:\t" + xA; 
+//			xSection.html(xHtml);
 			//Dispara evento informando que houve scroll vertical
 			if (xSection.attr("vsf") != xVSF){
 				xSection.attr("vsf", xVSF);
@@ -96,25 +113,14 @@ dbsfaces.parallax = {
 				//Verifica os filhos
 				dbsfaces.parallax.scrollChildren(xSection);
 				//Dispara evento 
-				xSection.trigger(xEvent);
+				if (!pForced){
+					xSection.trigger(xEvent);
+				}
 			}
-			
-//			var xHtml;
-//			xHtml = xSection.attr("class") + "<br/>" +
-//					"Container top:\t" + xContainer.position().top + "<br/>" +
-//					"Container height:\t" + xContainer.outerHeight() + "<br/>" +
-//					"Section top:\t" + xSection.position().top + "<br/>" +
-//					"Section height:\t" + xSection.outerHeight() + "<br/>" +
-//					"Scroll Total:\t" + (xContainer.position().top + parseInt(xContainer.css("margin-top"))) + "<br/>" +
-//					"VSF:\t" + xVSF + "<br/>" +
-//					"ST:\t" + xST + "<br/>" +
-//					"scrollTop:\t" + pParallax.scrollTop() + "<br/>" +
-//					"scrollHeight:\t" + pParallax.get(0).scrollHeight + "<br/>" +
-//					"newY:\t" + xNewY + "<br/>" +
-//					"margin_top:\t" + parseInt(xContainer.css("margin-top")) + "<br/>" +
-//					"zIndex:\t" + xA; 
-//			xSection.html(xHtml);
+
 		});
+		if (pForced){return;}
+		//Alinha seção verticalmente com o centro da tela
 		clearTimeout(dbsfaces.parallax.wAutoAjust);
 		dbsfaces.parallax.wAutoAjust = window.setTimeout(function(){
 			pParallax.find("[data-centerattraction]").each(function(){
@@ -163,6 +169,18 @@ dbsfaces.parallax = {
 			xVSF = 0;
 		}
 		return xVSF;
+	},
+	
+	setCurrentSection: function(pParallax, pSection){
+		var xVSF = dbsfaces.parallax.getVSF(pSection);
+		var xContainer = pSection.parent();
+		while (xVSF > .05 || xVSF < -.05){
+			var xI = (xContainer.position().top + parseFloat(xContainer.css("margin-top")));
+			pParallax.scrollTop(pParallax.scrollTop() + xI);
+			dbsfaces.parallax.scroll(null, pParallax, true);
+			xVSF = dbsfaces.parallax.getVSF(pSection);
+			pParallax.hide().show();
+		}
 	}
 
 }

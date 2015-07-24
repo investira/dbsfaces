@@ -262,8 +262,22 @@ dbsfaces.ui = {
 			.css("-o-transition", pCommand)
 			.css("transition", pCommand);
 	},
-	
-	
+
+	//	Retorna fator mínimo para ajuste de tamanho conforme largura e altura da tela atual em relação a tela desejada
+	aspectRatio: function(pWindow, pBaseWidth, pBaseHeight){
+		var xBaseRatio = pBaseWidth / pBaseHeight;
+		var xWidth = pWindow.width();
+		var xHeight = pWindow.height();
+		var xUseWidth = ((xWidth / xHeight) < xBaseRatio); 
+		var xRatio;
+		if (xUseWidth){
+			xRatio = xWidth / pBaseWidth;
+		}else{
+			xRatio = xHeight / pBaseHeight;
+		}
+//		console.log(xRatio + "\t" + xWidth + "\t" + xHeight + "\t" +  xBaseRatio + "\t" + pBaseWidth + "\t" + pBaseHeight);
+		return xRatio;
+	},
 
 	//Dispara evento click
 	ajaxTriggerClick: function(e){
