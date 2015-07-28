@@ -1316,10 +1316,17 @@ public class  DBSFaces {
 		}else{
 			if (DBSObject.isEmpty(pExecute)){
 //				System.out.println("Form/Execute não definido para o componente " + pComponent.getClientId()  + "!");
-			}else if (DBSObject.isEmpty(xLocalOnClick)
-			  	  && !DBSObject.isEmpty(xUserOnClick)){ 
+			}else if (DBSObject.isEmpty(xLocalOnClick)){
 				xLocalOnClick = "mojarra.jsfcljs(document.getElementById('" + pExecute + "'),{'"+ pComponent.getClientId() + "':'"+ pComponent.getClientId() + "'},''); return false";
-			}//Não faz nada caso não exista action, update e onclick
+			}			
+			//TODO
+// menuitem deixa de funcionar com o código abaixo 			
+//			if (DBSObject.isEmpty(pExecute)){
+////				System.out.println("Form/Execute não definido para o componente " + pComponent.getClientId()  + "!");
+//			}else if (DBSObject.isEmpty(xLocalOnClick)
+//			  	  && !DBSObject.isEmpty(xUserOnClick)){ 
+//				xLocalOnClick = "mojarra.jsfcljs(document.getElementById('" + pExecute + "'),{'"+ pComponent.getClientId() + "':'"+ pComponent.getClientId() + "'},''); return false";
+//			}//Não faz nada caso não exista action, update e onclick
 		}
 		return xLocalOnClick;
 	}
