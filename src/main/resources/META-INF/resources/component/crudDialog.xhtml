@@ -1,4 +1,3 @@
-
 <ui:component xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -115,7 +114,7 @@
 					<f:facet name="dialogMessages">
 						<dbscom:beanCrudDialogMessages id="message"
 												   crudBean="#{cc.crudBean}"
-		 							               update=":dialog #{cc.crudBean.isDeleting ? cc.attrs.update | ''} ">
+		 							               update=":dialog #{cc.crudBean.isDeleting ? cc.attrs.update : ''} ">
 		 				</dbscom:beanCrudDialogMessages>
 					</f:facet>
 				</dbs:dialog>
