@@ -128,7 +128,7 @@ dbsfaces.parallax = {
 				if ((xVSF > 0 && xVSF < 0.05)
 				 || (xVSF < 0 && xVSF > -0.05)){
 					var xDelta = pParallax.scrollTop();
-					xDelta += $(this).outerHeight() * (xVSF / 2);
+					xDelta += ($(this).outerHeight() / 2) * (xVSF / 2);
 					if (Math.abs(pParallax.scrollTop() - xDelta) > 0.5){
 						pParallax.scrollTop(xDelta);
 						e.preventDefault();
@@ -172,15 +172,17 @@ dbsfaces.parallax = {
 	},
 	
 	setCurrentSection: function(pParallax, pSection){
-		var xVSF = dbsfaces.parallax.getVSF(pSection);
-		var xContainer = pSection.parent();
-		while (xVSF > .05 || xVSF < -.05){
-			var xI = (xContainer.position().top + parseFloat(xContainer.css("margin-top")));
-			pParallax.scrollTop(pParallax.scrollTop() + xI);
-			dbsfaces.parallax.scroll(null, pParallax, true);
-			xVSF = dbsfaces.parallax.getVSF(pSection);
-			pParallax.hide().show();
-		}
+		setTimeout( function(){
+			var xVSF = dbsfaces.parallax.getVSF(pSection);
+			var xContainer = pSection.parent();
+			while (xVSF > .05 || xVSF < -.05){
+				var xI = (xContainer.position().top + parseFloat(xContainer.css("margin-top")));
+				pParallax.scrollTop(pParallax.scrollTop() + xI);
+				dbsfaces.parallax.scroll(null, pParallax, true);
+				xVSF = dbsfaces.parallax.getVSF(pSection);
+				pParallax.hide().show();
+			}
+		},0);
 	}
 
 }
