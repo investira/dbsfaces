@@ -296,6 +296,27 @@ dbsfaces.ui = {
 		if (e.status == "success"){
 			$(e.source).trigger("loaded");
 		}
+	},	
+	
+	getAllEvents: function(e) {
+	    var xResult = [];
+	    for (var xKey in e) {
+	        if (xKey.indexOf('on') === 0) {
+	        	xResult.push(xKey.slice(2));
+	        }
+	    }
+	    return xResult.join(' ');
+	},
+	
+	recreateElement: function(e){
+		var xE = e;
+		if (!(e instanceof jQuery)){
+			xE = $(e);
+		}
+	    var xNew = xE.clone(true);
+	    xE.before(xNew);       
+	    xE.remove();
+	    return xNew;
 	}
 }
 
@@ -345,7 +366,9 @@ dbsfaces.util = {
 			alert('Parametros inválidos! pId=' + pId + ' pEventName=' + pEventName + ' dbsFaces.trigger');
 			return false;
 		}
-	}
+	},
+	
+	
 }
 
 
