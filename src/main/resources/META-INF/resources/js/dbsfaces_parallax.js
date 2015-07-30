@@ -81,9 +81,9 @@ dbsfaces.parallax = {
 			//Fator do scroll vertical relativo a seção, sendo 1 o inicio, 0 o meio e -1 o fim. 
 			xVSF = (xContainer.position().top + parseFloat(xContainer.css("margin-top")));
 			xVSF = (xVSF / xContainer.outerHeight());
-			if (xVSF > 1){
+			if (xVSF > .99){
 				xVSF = 1;
-			}else if (xVSF < -1){
+			}else if (xVSF < -.99){
 				xVSF = -1;
 			}
 //			var xHtml;
