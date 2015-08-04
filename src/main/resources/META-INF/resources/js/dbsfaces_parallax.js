@@ -1,9 +1,9 @@
 dbs_parallax = function(pId) {
 	dbsfaces.parallax.setZIndex($(pId));
-	dbsfaces.parallax.scroll(null, $(pId));
+	dbsfaces.parallax.scroll(null, $(pId), false);
 	$(pId).off("scroll.dbs");
 	$(pId).on("scroll.dbs", function(e) {
-		dbsfaces.parallax.scroll(e, $(pId), false)
+		dbsfaces.parallax.scroll(e, $(pId), false);
     });
 	$(window).resize(function(e) {
 		dbsfaces.parallax.scroll(e, $(pId), false);
@@ -67,6 +67,7 @@ dbsfaces.parallax = {
 			}
 			xNewY = -xNewY * (xA / 100);
 
+				
 			
 			//Seção que já passou
 			if ((xContainerTop + xMarginTop + xContainer.outerHeight()) < 0){
@@ -117,7 +118,6 @@ dbsfaces.parallax = {
 					xSection.trigger(xEvent);
 				}
 			}
-
 		});
 		if (pForced){return;}
 		//Alinha seção verticalmente com o centro da tela
@@ -128,7 +128,7 @@ dbsfaces.parallax = {
 				if ((xVSF > 0 && xVSF < 0.05)
 				 || (xVSF < 0 && xVSF > -0.05)){
 					var xDelta = pParallax.scrollTop();
-					xDelta += ($(this).outerHeight() / 2) * (xVSF / 2);
+					xDelta += $(this).outerHeight() * (xVSF / 2);
 					if (Math.abs(pParallax.scrollTop() - xDelta) > 0.5){
 						pParallax.scrollTop(xDelta);
 						e.preventDefault();
