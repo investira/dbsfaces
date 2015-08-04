@@ -263,6 +263,78 @@ dbsfaces.ui = {
 			.css("transition", pCommand);
 	},
 
+	animation: function(e, pCommand){
+		$(e).css("-webkit-animation", pCommand)
+			.css("-moz-animation", pCommand)
+			.css("-ms-animation", pCommand)
+			.css("-o-animation", pCommand)
+			.css("animation", pCommand);
+	},
+	
+	getTransform:function(e){
+		var xSt = window.getComputedStyle(e.get(0), null);
+		var xTr = xSt.getPropertyValue("-webkit-transform") ||
+		          xSt.getPropertyValue("-moz-transform") ||
+		          xSt.getPropertyValue("-ms-transform") ||
+		          xSt.getPropertyValue("-o-transform") ||
+		          xSt.getPropertyValue("transform") ||
+		          "erro";
+		return xTr;
+	},
+	
+	getTransformZ: function(e){
+		var xTr = this.getTransformMatrix(e);
+		if (xTr == null
+		 || xTr == ""){
+			return 0;
+		}else{
+			xTr = xTr.slice(4,5);
+			if (xTr == ""){
+				xTr = 0;
+			}
+		}
+		return parseFloat(xTr);
+	},
+	getTransformX: function(e){
+		var xTr = this.getTransformMatrix(e);
+		if (xTr == null
+		 || xTr == ""){
+			return 0;
+		}else{
+			xTr = xTr.slice(2,3);
+			if (xTr == ""){
+				xTr = 0;
+			}
+		}
+		return parseFloat(xTr);
+	},
+	getTransformY: function(e){
+		var xTr = this.getTransformMatrix(e);
+		if (xTr == null
+		 || xTr == ""){
+			return 0;
+		}else{
+			xTr = xTr.slice(3,4);
+			if (xTr == ""){
+				xTr = 0;
+			}
+		}
+		return parseFloat(xTr);
+	},
+
+	getTransformMatrix3d: function(e){
+		var xTr = this.getTransformMatrix(e);
+		if (xTr == null){
+			return "";
+		}else{
+			return xTr.slice(2,5);
+		}
+	},
+	getTransformMatrix: function(e){
+		var xTr = dbsfaces.ui.getTransform(e);
+		xTr = xTr.match(/matrix(?:(3d)\(-{0,1}\d+\.?\d*(?:, -{0,1}\d+\.?\d*)*(?:, (-{0,1}\d+\.?\d*))(?:, (-{0,1}\d+\.?\d*))(?:, (-{0,1}\d+\.?\d*)), -{0,1}\d+\.?\d*\)|\(-{0,1}\d+\.?\d*(?:, -{0,1}\d+\.?\d*)*(?:, (-{0,1}\d+\.?\d*))(?:, (-{0,1}\d+\.?\d*))\))/);
+		return xTr;
+	},
 	//	Retorna fator mínimo para ajuste de tamanho conforme largura e altura da tela atual em relação a tela desejada
 	aspectRatio: function(pWindow, pBaseWidth, pBaseHeight){
 		var xBaseRatio = pBaseWidth / pBaseHeight;
@@ -368,23 +440,43 @@ dbsfaces.util = {
 		}
 	},
 	
+	isiOS: function(){
+		var xNav = navigator.userAgent.toLowerCase();
+		if(xNav.match(/iphone/i) || 
+		   xNav.match(/ipod/i)) {
+			return true;
+		};
+	    return false;
+	},
 	
+	isAndroid: function(){
+		var xNav = navigator.userAgent.toLowerCase();
+		if(xNav.match(/android/i)) {
+			return true;
+		};
+	    return false;
+	},
+
+	isBlackBerry: function(){
+		var xNav = navigator.userAgent.toLowerCase();
+		if(xNav.match(/blackberry/i)) {
+			return true;
+		};
+	    return false;
+	},
+
+	isMobile: function(){
+	    if (this.isiOS()
+	     || this.isBlackBerry()
+	     || this.isAndroid()){
+	    	return true;
+	    }
+	    return false;
+	}
 }
 
 
 
-dbsfaces.util.isiOS = function(){
-    return (
-        //Detect iPhone
-        (navigator.platform.indexOf("iPhone") != -1) ||
-        //Detect iPad
-        (navigator.platform.indexOf("iPad") != -1)
-    );
-}
-
-dbsfaces.util.isTablet = function(){
-    return dbsfaces.util.isiOS();
-}
 
 dbsfaces.util.jsid = function(pClientId){
 	return pClientId.replace(/:/g,"\\:");
