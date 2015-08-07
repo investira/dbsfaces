@@ -65,9 +65,11 @@ dbsfaces = {
 		ON_AJAX_COMPLETE: "dbs_ON_AJAX_COMPLETE",
 		ON_AJAX_SUCCESS: "dbs_ON_AJAX_SUCESS",
 		ON_AJAX_ERROR: "dbs_ON_AJAX_ERROR",
-		ON_ROW_SELECTED: "select.dataTable"
+		ON_ROW_SELECTED: "select.dataTable",
+		ON_TRANSITION_END: "webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend",
+		ON_ANIMATION_END: "webkitAnimationEnd oanimationend msAnimationEnd animationend",
+		ON_ANIMATION_INTERATION: "webkitAnimationIteration animationiteration"
 	}	
-
 }
 
 var wAjaxTimeout;
