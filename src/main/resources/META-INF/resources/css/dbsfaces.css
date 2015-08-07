@@ -150,6 +150,15 @@ svg{
 }
 
 /*MODIFIER = nomes padrão para serem utilizado em conjunto com outras classes. NÃO PODEM SER UTILIZADOS ISOLADAMENTE*/
+.-centralized{
+	position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate3d(-50%, -50%, 0);
+    -moz-transform: translate3d(-50%, -50%, 0);
+    -o-transform: translate3d(-50%, -50%, 0);
+    transform: translate3d(-50%, -50%, 0);
+}
 .-caption {}
 .-center {text-align: center !important;}
 .-centervertical {}
@@ -182,6 +191,11 @@ svg{
 .-selected {}
 .-selectable {}
 .-title {}
+.-table {display:table;}
+.-table > div{display:table-row; position:relative;}
+.-table > div.-caption{display:table-caption; position:relative;}
+.-table > div.-flex{display:flex; position:relative;}
+.-table > div > div{display:table-cell;position:relative;}
 .-toolbar {}
 .-subtitle {}
 .-readOnly {}
@@ -493,6 +507,30 @@ input.-foo {
 	height: 100%;
 }
 
+.-horizontalLineWhiteBefore:before{
+	content: " ";
+	border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.7) !important;
+	display: block;
+}
+.-horizontalLineWhiteAfter:after{
+	content: " ";
+	border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.7) !important;
+	display: block;
+}
+.-horizontalLineBefore:before{
+	content: " ";
+	border-top: 1px solid rgba(0, 0, 0, 0.4) !important;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+	display: block;
+}
+.-horizontalLineAfter:after{
+	content: " ";
+	border-top: 1px solid rgba(0, 0, 0, 0.4) !important;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+	display: block;
+}
 
 
 /* dbs_input --------------------------------------------------- */
@@ -654,6 +692,7 @@ td > .dbs_icon{
 	font-style: normal;
 }
 
+
 [class^="-i_"], 
 [class*=" -i_"] {
 	font-family: 'dbsfaces_icons'  !important;
@@ -663,7 +702,6 @@ td > .dbs_icon{
 	font-variant: normal;
 	text-transform: none;
 	line-height: 1;
-	font-size:16px;
 
 	/* Better Font Rendering =========== */
 	-webkit-font-smoothing: antialiased;
