@@ -1,4 +1,5 @@
 dbs_parallax = function(pId) {
+	var wScrollTimer;
 	dbsfaces.parallax.setZIndex($(pId));
 	dbsfaces.parallax.scroll(null, $(pId), false);
 	$(pId).off("scroll.dbs");
@@ -40,10 +41,9 @@ dbsfaces.parallax = {
 	scroll: function(e, pParallax, pForced){
 		var xST = pParallax.scrollTop();
 		if (xST < 0 ||
-			((pParallax.get(0).scrollHeight - pParallax.outerHeight() - xST) < 10)){
+			((pParallax.get(0).scrollHeight - pParallax.outerHeight() - xST) < 2)){
 			return;
 		}
-		
 		var xA;
 		var xContainer;
 		var xNewY = 0;
@@ -66,8 +66,6 @@ dbsfaces.parallax = {
 				xNewY = xContainer.outerHeight() - xContainerTop + xMarginTop;
 			}
 			xNewY = -xNewY * (xA / 100);
-
-				
 			
 			//Seção que já passou
 			if ((xContainerTop + xMarginTop + xContainer.outerHeight()) < 0){
@@ -82,6 +80,9 @@ dbsfaces.parallax = {
 			//Fator do scroll vertical relativo a seção, sendo 1 o inicio, 0 o meio e -1 o fim. 
 			xVSF = (xContainer.position().top + parseFloat(xContainer.css("margin-top")));
 			xVSF = (xVSF / xContainer.outerHeight());
+			if (xVSF > -0.003 && xVSF < 0.003){
+				xVSF = 0;
+			}
 			if (xVSF > .99){
 				xVSF = 1;
 			}else if (xVSF < -.99){
@@ -125,8 +126,8 @@ dbsfaces.parallax = {
 		dbsfaces.parallax.wAutoAjust = window.setTimeout(function(){
 			pParallax.find("[data-centerattraction]").each(function(){
 				var xVSF = parseFloat($(this).attr("vsf"));
-				if ((xVSF > 0 && xVSF < 0.05)
-				 || (xVSF < 0 && xVSF > -0.05)){
+				if ((xVSF > 0 && xVSF < 0.30)
+				 || (xVSF < 0 && xVSF > -0.30)){
 					var xDelta = pParallax.scrollTop();
 					xDelta += $(this).outerHeight() * (xVSF / 2);
 					if (Math.abs(pParallax.scrollTop() - xDelta) > 0.5){
