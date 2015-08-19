@@ -34,6 +34,7 @@ tbody,
 }
 
 body {
+	-webkit-text-size-adjust: 100%;/* Resolve ajuste automático do fonte nos tables e smartphones*/
 	font-size: 11px;
 }
 
@@ -715,8 +716,8 @@ td > .dbs_icon{
 	line-height: 1;
 
 	/* Better Font Rendering =========== */
-/* 	-webkit-font-smoothing: antialiased; */
-	-webkit-font-smoothing: auto;
+	-webkit-font-smoothing: antialiased;
+/* 	-webkit-font-smoothing: auto; */
 	-moz-osx-font-smoothing: grayscale;
 }
 
