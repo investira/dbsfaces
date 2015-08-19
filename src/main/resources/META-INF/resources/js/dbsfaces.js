@@ -474,6 +474,27 @@ dbsfaces.util = {
 	    	return true;
 	    }
 	    return false;
+	},
+	
+	supports: function(pProp){
+	   var div = document.createElement('div'),
+	      vendors = 'Khtml Ms O Moz Webkit'.split(' '),
+	      len = vendors.length;
+	 
+      if ( pProp in div.style ) return true;
+ 
+      pProp = pProp.replace(/^[a-z]/, function(val) {
+         return val.toUpperCase();
+      });
+ 
+      while(len--) {
+         if ( vendors[len] + pProp in div.style ) {
+            // browser supports box-shadow. Do what you need.
+            // Or use a bang (!) to test if the browser doesn't.
+            return true;
+         } 
+      }
+      return false;
 	}
 }
 
