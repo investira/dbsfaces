@@ -75,6 +75,10 @@ import com.sun.faces.util.DebugUtil;
  * @author ricardo.villar
  *
  */
+/**
+ * @author ricardo.villar
+ *
+ */
 public class  DBSFaces {
 	
 	protected static 	Logger	wLogger = Logger.getLogger(DBSFaces.class);
@@ -1707,7 +1711,9 @@ public class  DBSFaces {
  	// 
  	//=====================================================================
 	/**
- 	 * Retorna string com pagina renderizada.
+ 	 * Retorna String com pagina renderizada.<br/>
+ 	 * Utilizar este método quando a view precisar consultar algum bean para recuperar os valores.<br/>
+ 	 * Caso contrário, utilize o outro método <b>getRenderedViewContent</b>.
  	 * @param pContext
  	 * @param pViewFile
  	 * @return
@@ -1741,6 +1747,15 @@ public class  DBSFaces {
 		}
 	}
  	
+	/**
+	 * Retorna String com resposta ao request a URL e parametros informados.
+	 * Utilizar este método quando a view nao precisar consultar algum bean, mas receberá valores por parametro.<br/>
+	 * Caso contrário, utilize o outro método.
+	 * @param pURL
+	 * @param pListParams
+	 * @return
+	 * @throws DBSIOException
+	 */
 	public static String getRenderedViewContent(String pURL, List<String> pListParams) throws DBSIOException {
  		String 				xResultado = "";
  		List<String>		xListProperty = pListParams;
