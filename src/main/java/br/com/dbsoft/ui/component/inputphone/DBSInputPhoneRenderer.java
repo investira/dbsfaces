@@ -130,7 +130,7 @@ public class DBSInputPhoneRenderer extends DBSRenderer {
 			DBSFaces.encodeInputDataReadOnly(pInputPhone, pWriter, xClientId, xStyle, false, xValue);
 		}else{
 			pWriter.startElement("span", pInputPhone);
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.DATA + xStyleClass, null);
+				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputPhone) + xStyleClass, null);
 				//Define a largura do campo
 				pvEncodeInputPhone(pContext, pInputPhone, pWriter);
 			pWriter.endElement("span");

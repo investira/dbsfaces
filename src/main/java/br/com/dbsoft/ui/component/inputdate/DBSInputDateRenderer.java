@@ -187,7 +187,7 @@ public class DBSInputDateRenderer extends DBSRenderer {
 			DBSFaces.encodeInputDataReadOnly(pInputDate, pWriter, xClientId, xStyle, false, xValue);
 		}else{
 			pWriter.startElement("span", pInputDate);
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.DATA + xStyleClass, null);
+				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputDate) + xStyleClass, null);
 				//Define a largura do campo
 				if (pInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.DATE)){
 					pvEncodeInputDate(pContext, pInputDate, pWriter);

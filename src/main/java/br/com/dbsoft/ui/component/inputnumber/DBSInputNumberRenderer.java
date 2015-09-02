@@ -168,7 +168,7 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 				} else {
 					DBSFaces.setAttribute(pWriter, "type", "text", null);
 				}
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.DATA + xStyleClass, null);
+				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputNumber) + xStyleClass, null);
 				DBSFaces.setAttribute(pWriter, "style", xStyle, null);
 				DBSFaces.setAttribute(pWriter, "minValue", pInputNumber.getMinValue(), null); 
 				DBSFaces.setAttribute(pWriter, "maxValue", pInputNumber.getMaxValue(), null);

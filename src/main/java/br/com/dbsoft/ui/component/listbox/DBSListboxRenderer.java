@@ -82,10 +82,10 @@ public class DBSListboxRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(pWriter, "size", pListbox.getLines(), null);
 			DBSFaces.setAttribute(pWriter, "style", xStyle, null);
 			if (pListbox.getReadOnly()){
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.DATA + DBSFaces.CSS.MODIFIER.DISABLED, null);
+				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pListbox) + DBSFaces.CSS.MODIFIER.DISABLED, null);
 				DBSFaces.setAttribute(pWriter, "disabled","disabled", null);
 			}else{
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.DATA, null);
+				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pListbox), null);
 			}
 			//Encode dos itens na lista
 			if (pListbox.getList() != null){

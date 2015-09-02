@@ -105,7 +105,7 @@ public class DBSInputMaskRenderer extends DBSRenderer {
 				}else{
 					DBSFaces.setAttribute(pWriter, "type", "text", null);
 				}
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.DATA, null);
+				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputMask), null);
 				DBSFaces.setAttribute(pWriter, "style", xStyle, null);
 				//Grava a largura do campo
 				DBSFaces.setAttribute(pWriter, "size", pInputMask.getMask().length(), null);

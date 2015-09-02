@@ -103,10 +103,10 @@ public class DBSRadioRenderer extends DBSRenderer {
 						DBSFaces.setAttribute(pWriter, "type", "radio", null);
 						DBSFaces.setAttribute(pWriter, "name", xClientId, null);
 						if (pRadio.getReadOnly()){
-							DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.DATA + DBSFaces.CSS.MODIFIER.DISABLED, null);
+							DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pRadio) + DBSFaces.CSS.MODIFIER.DISABLED, null);
 							DBSFaces.setAttribute(pWriter, "disabled","disabled", null);
 						}else{
-							DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.DATA, null);
+							DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pRadio), null);
 						}			
 						DBSFaces.setAttribute(pWriter, "value", xS.getItemValue(), null);
 						if (pRadio.getValue()!=null){

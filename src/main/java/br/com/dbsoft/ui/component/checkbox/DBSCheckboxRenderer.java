@@ -95,10 +95,10 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(pWriter, "name", xClientId, null);
 			DBSFaces.setAttribute(pWriter, "type", "checkbox", null);
 			if (pCheckbox.getReadOnly()){
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.DATA + DBSFaces.CSS.MODIFIER.DISABLED, null);
+				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pCheckbox) + DBSFaces.CSS.MODIFIER.DISABLED, null);
 				DBSFaces.setAttribute(pWriter, "disabled","disabled", null);
 			}else{
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.DATA, null);
+				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pCheckbox), null);
 			}
 			if (xOnChange!=null){
 				DBSFaces.setAttribute(pWriter, DBSFaces.HTML.EVENTS.ONCHANGE, xOnChange, null); 

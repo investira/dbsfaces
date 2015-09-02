@@ -130,8 +130,8 @@ public class DBSInputTextRenderer extends DBSRenderer {
 		String xStyle = "";
 		String xValue = "";
 		String xValueKey = "";
-		String xClass = DBSFaces.CSS.INPUT.DATA + " -"+ pInputText.getLetterCase().toLowerCase();
-
+		String xClass = DBSFaces.getInputDataClass(pInputText) + " -"+ pInputText.getLetterCase().toLowerCase();
+		
 		//Seta valor que será exibido e armazena valor da respectiva chave
 		if (pInputText.getValue() != null){			
 			xValue = pInputText.getValue().toString();

@@ -953,6 +953,14 @@
 		</attribute>
 		<attribute>
 			<description>
+                Indica se valor do campo é obrigatório segundo regra de negócio
+            </description>
+			<name>required</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
                 Se ativa o autocomplete padrão do browser. off ou on. Default = on
             </description>
 			<name>autocomplete</name>

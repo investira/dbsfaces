@@ -89,7 +89,7 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 		ResponseWriter 		xWriter = pContext.getResponseWriter();
     	xComponenttree.setRowIndex(-1);
 		String 				xClientId = xComponenttree.getClientId();
-		String				xClass = DBSFaces.CSS.COMPONENTTREE.MAIN + " " + DBSFaces.CSS.INPUT.DATA;
+		String				xClass = DBSFaces.CSS.COMPONENTTREE.MAIN + " " + DBSFaces.getInputDataClass(pComponent);
 		if (xComponenttree.getStyleClass()!=null){
 			xClass += " " + xComponenttree.getStyleClass();
 		}

@@ -217,6 +217,93 @@ svg{
 	display: flex;   
 }
 
+/* simple forms */
+.-simpleForm {
+	padding: 10px;
+	position: relative;
+	display: block;
+	margin: 0 auto;
+	width: 780px;
+}
+.-simpleForm > .-caption {
+	display: block;
+	position: relative;
+	margin-bottom: 10px;
+}
+.-simpleForm > .-content {
+	display: inline-block;
+	position: relative;
+	min-width: 750px;
+	margin-right: 20px;
+	height: 100%;
+	padding: 20px;
+
+	color: rgb(85,85,85);
+
+}
+
+.-simpleForm > .-content > .-info,
+.-simpleForm > .-content > .-separator,
+.-simpleForm > .-content > .-inputs{
+	display: inline-block;
+}
+
+.-simpleForm > .-content > .-info{
+	vertical-align: top;
+	margin-right: 20px;
+	width: 300px;
+}
+
+.-simpleForm > .-content > .-info > h4{
+	margin-bottom: 5px;
+}
+
+.-simpleForm > .-content > .-separator {
+	top: 5%;
+	height: 90%;
+	margin-left: -10px;
+	position: absolute;
+}
+
+.-simpleForm > .-content > .-inputs {
+	width: 385px;
+}
+
+.-simpleForm > .-content > .-inputs > .-messages {
+    width: 100%;
+/* 			    border: 1px solid; */
+    padding: 10px;
+    margin-bottom: 10px;
+/* 			    border-color: rgb(200,200,200); */
+	-webkit-box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+	-moz-box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+	box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+	text-align: center;
+}
+.-simpleForm > .-content > .-inputs > .-messages .-error{
+	
+}
+
+.-simpleForm > .-content > .-inputs .dbs_input{
+	margin-bottom: 5px;
+}
+
+.-simpleForm > .-content > .-inputs > .-confirmation{
+	position: relative;
+	display: inline-block;
+	left: 100px;
+}
+
+.-simpleForm > .-content > .-inputs > .-confirmation .dbs_button{
+	width:285px; 
+	height: 36px; 
+	top:10px;
+	font-size:15px; 
+	font-weight:bold;
+	-webkit-box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+	-moz-box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+	box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+}
 /* Blur ----------------------------------- */
 .-blur_softer{
 	filter: url("data:image/svg+xml;utf8,<svg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'blur\'><feGaussianBlur stdDeviation=\'1\' ></feGaussianBlur></filter></svg>#blur"); 
@@ -536,11 +623,13 @@ input.-foo {
     border-left: 1px solid rgba(0, 0, 0, 0.4) !important;
     border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
     position: absolute;
+    top: 0px;
 }
 .-verticalLineAfter.-white:after,
 .-verticalLineBefore.-white:before{
 	border-left: 1px solid rgba(0, 0, 0, 0.1) !important;
 	border-right: 1px solid rgba(255, 255, 255, 0.7) !important;
+    top: 0px;
 }
 
 
@@ -641,6 +730,12 @@ textarea.dbs_input-data:FOCUS,
 
 .dbs_input .-error {
 	background-color: rgb(255, 255, 210);
+}
+.dbs_input .-invalid {
+	background-color: rgb(255, 210, 210);
+}
+.dbs_input .-required {
+	background-color: rgb(110, 210, 210);
 }
 
 .dbs_input > .-container {
