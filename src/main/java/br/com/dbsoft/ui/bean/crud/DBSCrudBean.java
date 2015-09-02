@@ -1610,15 +1610,20 @@ public abstract class DBSCrudBean extends DBSBean{
 			openConnection();
 			//Le o registro
 			beforeRefresh(null);
-			moveFirst();
-			//Verifica se existe registro corrente
-			if (wDAO != null && wDAO.getCurrentRowIndex() > -1){
-				return update();
-			}else{
-				return insert();
+			if (wConnection != null){
+				moveFirst();
+				//Verifica se existe registro corrente
+				if (wDAO != null && wDAO.getCurrentRowIndex() > -1){
+					return update();
+				}else{
+					return insert();
+				}
 			}
+			return insert();
 		}finally{
-			closeConnection(); 
+			if (wConnection != null){
+				closeConnection(); 
+			}
 		}
 	}
 
@@ -1739,10 +1744,13 @@ public abstract class DBSCrudBean extends DBSBean{
 	 */
 	public synchronized String view() throws DBSIOException{
 		if (wFormStyle == FormStyle.TABLE){return DBSFaces.getCurrentView();}
-		//Limpa todas as mensagens que estiverem na fila
-		clearMessages();
 		
-		if (wDAO.getCurrentRowIndex()!=-1){
+		if (wFormStyle == FormStyle.DIALOG){
+			//Limpa todas as mensagens que estiverem na fila
+			clearMessages();
+		}
+		
+		if (wConnection != null && wDAO.getCurrentRowIndex()!=-1){
 			//Só permite a seleção quando o dialog estiver fechado
 			if (wEditingStage==EditingStage.NONE){
 				//Chama evento
@@ -1805,7 +1813,9 @@ public abstract class DBSCrudBean extends DBSBean{
 		if (wAllowInsert 
 		 || wDialogCloseAfterInsert){
 			if (!wDialogCloseAfterInsert){
-				clearMessages();
+				if (wFormStyle == FormStyle.DIALOG){
+					clearMessages();
+				}
 			}
 			//Inclui linha em branco quando edição for diretamente no grid e edição já estiver habilitada(EditingMode.UPDATING)
 			if (wFormStyle == FormStyle.TABLE
@@ -2212,7 +2222,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 */
 	protected void beforeCommit(DBSCrudBeanEvent pEvent) throws DBSIOException {
 		//Copia dos valores pois podem ter sido alterados durante o beforecommit
-		
+		if (wConnection == null){return;}
 		//Aprovação/Reprovação
 		if (getIsApprovingOrReproving()){ 
 			pvBeforeCommitSetAutomaticColumnsValues(pEvent); 
@@ -2668,7 +2678,8 @@ public abstract class DBSCrudBean extends DBSBean{
 	private void pvBeforeCommitSetAutomaticColumnsValues(DBSCrudBeanEvent pEvent) throws DBSIOException{
 		DBSColumn 	xColumn = null;
 		//Delete
-		if(getIsDeleting()){
+		if(wConnection == null ||
+		   getIsDeleting()){
 			return;
 		}
 		//Configura os valores das assinaturas se assinatura estive habilitada. 
@@ -3016,12 +3027,14 @@ public abstract class DBSCrudBean extends DBSBean{
 	private boolean pvFireEventBeforeInsert() throws DBSIOException{
 		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_INSERT, getEditingMode());
 		
-		openConnection();
-		
-		//Seta para posição inicial onde será efetuado o insert
-		pvMoveBeforeFistRow();
-		
-		closeConnection();
+		if (wDAO != null){
+			openConnection();
+			
+			//Seta para posição inicial onde será efetuado o insert
+			pvMoveBeforeFistRow();
+			
+			closeConnection();
+		}
 
 //		pvBeforeInsertResetValues(wCrudForm);
 
@@ -3209,13 +3222,16 @@ public abstract class DBSCrudBean extends DBSBean{
 		try {
 			//Zera a quantidade de registros afetados
 			xE.setCommittedRowCount(0);
-			//Certifica-se que a conexão do wDAO é a conexão do bean
-			wDAO.setConnection(wConnection);
+			//Se não houver conexão(Pode ser for form view simples(sem crud))
+			if (wConnection != null){
+				//Certifica-se que a conexão do wDAO é a conexão do bean
+				wDAO.setConnection(wConnection);
 
-			//Se for o crud principal
-			//Inicia transação
-			if (wParentCrudBean == null){
-				DBSIO.beginTrans(wConnection);
+				//Se for o crud principal
+				//Inicia transação
+				if (wParentCrudBean == null){
+					DBSIO.beginTrans(wConnection);
+				}
 			}
 			
 //Na aprovação ou reprovação, faz oop entre todos os registros selecionados
@@ -3257,23 +3273,29 @@ public abstract class DBSCrudBean extends DBSBean{
 
 			//Exibe mensagem de erro padrão, caso nehum registro tenha sido afetado e já não houver mensagem a ser exibida.
 			if (!wDialogMessages.hasMessages()
-			 && (!xE.isOk() || xE.getCommittedRowCount().equals(0))){
+			 && (!xE.isOk() || (wConnection != null && xE.getCommittedRowCount().equals(0)))){
 				xE.setOk(false);
 				addMessage(wMessageNoRowComitted);
 			}
 			
 			//Se for o crud principal
 			//Da commit na transação
-			if (wParentCrudBean == null){
-				DBSIO.endTrans(wConnection, xE.isOk());
+			//Se não houver conexão(Pode ser for form view simples(sem crud))
+			if (wConnection != null){
+				if (wParentCrudBean == null){
+					DBSIO.endTrans(wConnection, xE.isOk());
+				}
 			}
 		} catch (Exception e) {
 			xE.setOk(false);
 			try {
 				//Se for o crud principal
 				//da rollback na transação
-				if (wParentCrudBean == null){
-					DBSIO.endTrans(wConnection, false);
+				//Se não houver conexão(Pode ser for form view simples(sem crud))
+				if (wConnection != null){
+					if (wParentCrudBean == null){
+						DBSIO.endTrans(wConnection, false);
+					}
 				}
 				if (e instanceof DBSIOException){
 					DBSIOException xDBException = (DBSIOException) e;
