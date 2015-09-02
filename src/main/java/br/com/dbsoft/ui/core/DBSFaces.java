@@ -226,6 +226,7 @@ public class  DBSFaces {
 			public static final String GRID = " -grid ";
 			public static final String ICON = " -icon ";
 			public static final String ICONCLOSE = " -iconclose ";
+			public static final String INVALID = " -invalid ";
 			public static final String INPUT = " -input ";
 			public static final String KEY = " -key ";
 			public static final String LABEL = " -label ";
@@ -241,6 +242,7 @@ public class  DBSFaces {
 			public static final String NORMAL = " -normal ";
 			public static final String PUSHDISABLED = " -pushDisabled ";
 			public static final String READONLY = " -readOnly ";
+			public static final String REQUIRED = " -required ";
 			public static final String ROW = " -row ";
 			public static final String NOT_SELECTABLE = " -not_selectable ";
 			public static final String SELECTABLE = " -selectable ";
@@ -1469,7 +1471,7 @@ public class  DBSFaces {
 		pWriter.startElement("span", pComponent);
 			DBSFaces.setAttribute(pWriter, "id", pClientId, null);
 			DBSFaces.setAttribute(pWriter, "name", pClientId, null);
-			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.DATA + DBSFaces.CSS.MODIFIER.READONLY, null);
+			DBSFaces.setAttribute(pWriter, "class", getInputDataClass(pComponent), null);
 			DBSFaces.setAttribute(pWriter, "style", pStyle, null);
 			if (pValue == null){
 				pWriter.write(" ");
@@ -1477,6 +1479,28 @@ public class  DBSFaces {
 				pWriter.write(pValue);
 			}
 		pWriter.endElement("span");
+	}
+	
+	/**
+	 * Retorna a classe utilizada nos inputs no campo na área que recebe os dados
+	 * @param pInput
+	 * @return
+	 */
+	public static String getInputDataClass(UIComponent pInput){
+		String xClass = DBSFaces.CSS.INPUT.DATA;
+		DBSUIInput xInput;
+		if (pInput instanceof DBSUIInput){
+			xInput = (DBSUIInput) pInput;
+		}else{
+			return xClass;
+		}
+		if (xInput.getReadOnly()){
+			xClass += DBSFaces.CSS.MODIFIER.READONLY;
+		}
+		if (!xInput.isValid()){
+			xClass += DBSFaces.CSS.MODIFIER.INVALID;
+		}
+		return xClass;
 	}
 
 	/**
@@ -1785,7 +1809,9 @@ public class  DBSFaces {
 			        xParams.append("=");
 			        xParams.append(URLEncoder.encode(xValue, "UTF-8"));
 				}
+//				pResponse.setCharacterEncoding(ENCODE.UTF_8);
 				OutputStream xOs = xConnection.getOutputStream();
+//				BufferedWriter xWriter = new BufferedWriter(new OutputStreamWriter(xOs));
 				BufferedWriter xWriter = new BufferedWriter(new OutputStreamWriter(xOs, "UTF-8"));
 				xWriter.write(xParams.toString());
 				xWriter.flush();
@@ -1795,7 +1821,7 @@ public class  DBSFaces {
 			//Conecta à URL
 			xConnection.connect();
 			//Efetua a leitura do xHTML
-			xBuffer = new BufferedReader(new InputStreamReader(xConnection.getInputStream()));
+			xBuffer = new BufferedReader(new InputStreamReader(xConnection.getInputStream(), "UTF-8"));
 			while (null != (xLineData = xBuffer.readLine())) {
 				xResultado += xLineData;
 			}
