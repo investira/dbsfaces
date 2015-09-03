@@ -223,7 +223,6 @@ svg{
 	position: relative;
 	display: block;
 	margin: 0 auto;
-	width: 780px;
 }
 .-simpleForm > .-caption {
 	display: block;
@@ -233,8 +232,6 @@ svg{
 .-simpleForm > .-content {
 	display: inline-block;
 	position: relative;
-	min-width: 750px;
-	margin-right: 20px;
 	height: 100%;
 	padding: 20px;
 
@@ -249,9 +246,6 @@ svg{
 }
 
 .-simpleForm > .-content > .-info{
-	vertical-align: top;
-	margin-right: 20px;
-	width: 300px;
 }
 
 .-simpleForm > .-content > .-info > h4{
@@ -259,14 +253,10 @@ svg{
 }
 
 .-simpleForm > .-content > .-separator {
-	top: 5%;
-	height: 90%;
-	margin-left: -10px;
-	position: absolute;
+    width: 100%;
 }
 
 .-simpleForm > .-content > .-inputs {
-	width: 385px;
 }
 
 .-simpleForm > .-content > .-inputs > .-messages {
@@ -295,7 +285,6 @@ svg{
 }
 
 .-simpleForm > .-content > .-inputs > .-confirmation .dbs_button{
-	width:285px; 
 	height: 36px; 
 	top:10px;
 	font-size:15px; 
