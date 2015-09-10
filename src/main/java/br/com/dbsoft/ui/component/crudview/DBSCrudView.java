@@ -28,7 +28,7 @@ import br.com.dbsoft.ui.core.DBSFaces;
  *
  */
 @FacesComponent(DBSCrudView.COMPONENT_TYPE)
-public class DBSCrudView extends DBSUIComponentBase implements NamingContainer, SystemEventListener { 
+public class DBSCrudView extends DBSUIComponentBase implements NamingContainer, SystemEventListener{ 
 
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.CRUDVIEW;
 	public final static String RENDERER_TYPE = "/resources/component/crudView.xhtml";
@@ -85,6 +85,10 @@ public class DBSCrudView extends DBSUIComponentBase implements NamingContainer, 
 		}
 	}
 
+	@Override
+	public boolean isListenerForSource(Object source) {
+		 return (source.equals(this));
+	}
 
 	private void pvInvokeCrudBeanMethods(FacesContext pContext, UIComponent pComponent, SystemEvent pEvent){
 		if (pComponent==null){return;}
@@ -124,8 +128,4 @@ public class DBSCrudView extends DBSUIComponentBase implements NamingContainer, 
 		}
 	}
 
-	@Override
-	public boolean isListenerForSource(Object source) {
-		 return (source.equals(this));
-	}
 }
