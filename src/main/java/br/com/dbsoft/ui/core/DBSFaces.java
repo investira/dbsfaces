@@ -2,11 +2,9 @@ package br.com.dbsoft.ui.core;
 
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.math.BigDecimal;
@@ -50,6 +48,7 @@ import org.apache.log4j.Logger;
 import org.jboss.weld.context.SerializableContextualInstanceImpl;
 
 import br.com.dbsoft.core.DBSSDK;
+import br.com.dbsoft.core.DBSSDK.ENCODE;
 import br.com.dbsoft.error.DBSIOException;
 import br.com.dbsoft.message.DBSMessage;
 import br.com.dbsoft.message.DBSMessage.MESSAGE_TYPE;
@@ -1781,11 +1780,10 @@ public class  DBSFaces {
 	 * @throws DBSIOException
 	 */
 	public static String getRenderedViewContent(String pURL, List<String> pListParams) throws DBSIOException {
- 		String 				xResultado = "";
+ 		StringBuilder xResultado = new StringBuilder();
  		List<String>		xListProperty = pListParams;
 		HttpURLConnection 	xConnection = null;
 		BufferedReader 		xBuffer = null;
-		String 				xLineData = "";
 		
 		try {
 			URL 	xUrl = new URL(pURL);
@@ -1793,37 +1791,36 @@ public class  DBSFaces {
 			xConnection.setRequestProperty("Request-Method", "POST");
 			xConnection.setDoInput(true);
 			xConnection.setDoOutput(true);
+			xConnection.setUseCaches(false);
+			//Adiciona parametros antes de efetuar a requisição da página
 			if (!DBSObject.isNull(xListProperty) && !xListProperty.isEmpty()) {
 				StringBuilder xParams = new StringBuilder();
 				boolean first = true;
 				for (String xProperty : xListProperty) {
 					String xKey = DBSString.getSubString(xProperty, 1, xProperty.indexOf("="));
-					String xValue = DBSString.getSubString(xProperty, xProperty.indexOf("=")+2, xProperty.length());
+					String xValue = DBSString.getSubString(xProperty, xProperty.indexOf("=") + 2, xProperty.length());
 
 			        if (first) {
 			            first = false;
 			        } else {
 			            xParams.append("&");
 			        }
-			        xParams.append(URLEncoder.encode(xKey, "UTF-8"));
+			        xParams.append(URLEncoder.encode(xKey, ENCODE.ISO_8859_1));
 			        xParams.append("=");
-			        xParams.append(URLEncoder.encode(xValue, "UTF-8"));
+			        xParams.append(URLEncoder.encode(xValue, ENCODE.ISO_8859_1));
 				}
-//				pResponse.setCharacterEncoding(ENCODE.UTF_8);
+				byte[] xParambytes = xParams.toString().getBytes();
+
+
 				OutputStream xOs = xConnection.getOutputStream();
-//				BufferedWriter xWriter = new BufferedWriter(new OutputStreamWriter(xOs));
-				BufferedWriter xWriter = new BufferedWriter(new OutputStreamWriter(xOs, "UTF-8"));
-				xWriter.write(xParams.toString());
-				xWriter.flush();
-				xWriter.close();
-				xOs.close();
+				xOs.write(xParambytes);
 			}
-			//Conecta à URL
-			xConnection.connect();
-			//Efetua a leitura do xHTML
-			xBuffer = new BufferedReader(new InputStreamReader(xConnection.getInputStream(), "UTF-8"));
-			while (null != (xLineData = xBuffer.readLine())) {
-				xResultado += xLineData;
+			//Conecta à URL - Requisição
+			xConnection.connect(); 
+			//Efetua a leitura do xHTML retornado 
+			xBuffer = new BufferedReader(new InputStreamReader(xConnection.getInputStream()));
+			for (int xChar = xBuffer.read(); xChar != -1; xChar = xBuffer.read()){
+	            xResultado.append((char)xChar);
 			}
 		} catch (IOException e) {
 			DBSIO.throwIOException(e);
@@ -1837,7 +1834,7 @@ public class  DBSFaces {
 			}
 			xConnection.disconnect();
 		}
-		return xResultado;
+		return xResultado.toString();
  	}
  	
 	/**
