@@ -1,5 +1,6 @@
 package br.com.dbsoft.ui.bean.crud;
 
+import java.lang.annotation.Annotation;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Timestamp;
@@ -8,6 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.enterprise.context.Conversation;
+import javax.enterprise.context.ConversationScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -363,9 +365,21 @@ public abstract class DBSCrudBean extends DBSBean{
 		return wConversation.getId();
 	}
 	
+	/**
+	 * Inicia conversação caso exista a anotação 'ConversationScoped' na class
+	 */
+	public void conversationBegin(){
+		for (Annotation xAnnotation:this.getClass().getDeclaredAnnotations()){
+			if (xAnnotation.annotationType() == ConversationScoped.class){
+				pvConversationBegin();
+				break;
+			}
+		}
+	}
+	
 	@Override
 	protected void initializeClass() {
-		pvConversationBegin();
+		conversationBegin();
 		pvFireEventInitialize();
 		//Finaliza os outros crudbeans antes de inicializar este.
 //		DBSFaces.finalizeDBSBeans(this, false); << Comentado pois os beans passaram a ser criados como ConversationScoped - 12/Ago/2014
@@ -2349,6 +2363,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Inicializa a conversação
 	 */
 	private void pvConversationBegin(){
+//		if (!FacesContext.getCurrentInstance().isPostback() && wConversation.isTransient()){
 		if (wConversation.isTransient()){
 			wConversation.begin();
 			wConversation.setTimeout(wConversationTimeout);
