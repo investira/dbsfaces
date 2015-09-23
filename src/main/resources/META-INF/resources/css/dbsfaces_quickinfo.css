@@ -9,6 +9,8 @@
 }
 
 .dbs_quickInfo > .-container > .-content {
+	font-size: 11px;
+	
 	position: fixed;
 	left: inherit;
 	margin-left: 16px;	
