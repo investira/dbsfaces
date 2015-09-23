@@ -41,6 +41,7 @@ public abstract class DBSBean implements Serializable {
 	protected 	boolean					wBrodcastingEvent = false;
 	private   	DBSBean					wMasterBean = null;
 	private 	List<DBSBean>			wSlavesBean = new ArrayList<DBSBean>();
+	private 	Integer					wMaxInactiveInterval = 600;
 	
 	
 	//--------------------------------------------------------------------------------------
@@ -53,6 +54,7 @@ public abstract class DBSBean implements Serializable {
 			wLogger.warn(this.getClass().getCanonicalName() + ":Não há scope ativo para este bean.");
 		}else if(FacesContext.getCurrentInstance().getExternalContext().getSession(false) == null){
 				FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+				setMaxInactiveInterval(wMaxInactiveInterval);
 		}
 		initializeClass();
 	}
@@ -94,6 +96,24 @@ public abstract class DBSBean implements Serializable {
 			pBean.getSlavesBean().add(this);
 		}
 	}
+	
+
+	/**
+	 * Define o tempo máximo sem atividade para invalidar a seção. O padrão é de 600 segundos(10 minutos).<br/> 
+	 * Tempo em segundos.
+	 * @return
+	 */
+	public Integer getMaxInactiveInterval() {
+		return FacesContext.getCurrentInstance().getExternalContext().getSessionMaxInactiveInterval();
+	}
+
+	/**
+	 * Define o tempo máximo sem atividade para invalidar a seção. O padrão é de 600 segundos(10 minutos).
+	 * @param pMaxInactiveInterval Tempo em segundos
+	 */
+	public void setMaxInactiveInterval(Integer pMaxInactiveInterval) {
+		FacesContext.getCurrentInstance().getExternalContext().setSessionMaxInactiveInterval(pMaxInactiveInterval);
+	};
 	
 	/**
 	 * Retorna texto da mensagem que está na fila
@@ -412,6 +432,7 @@ public abstract class DBSBean implements Serializable {
 	 * Método após a finalização do bean.
 	 * Ao sobre escrever este método, deve-se estar atendo em chamar o <b>super</b>.
 	 */
-	protected void finalizeClass(){};
+	protected void finalizeClass(){}
+
 	
 }
