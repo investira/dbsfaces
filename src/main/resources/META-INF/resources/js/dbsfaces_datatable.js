@@ -22,6 +22,11 @@ dbs_dataTable = function(pId) {
 
 	dbsfaces.dataTable.showOverflowShadow($(wTable));
 	dbsfaces.dataTable.positionOnSelectedRow(pId);
+
+	//	Inibir outros selects que possam ter sido disparados por componentes filhos deste.
+	$(pId + " .-container").on("select", function(e){
+		return false;
+	});
 	
 	$(wTable).scroll(function(){
 		dbsfaces.dataTable.showOverflowShadow($(this));
