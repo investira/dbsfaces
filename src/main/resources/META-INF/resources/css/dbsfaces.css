@@ -383,21 +383,32 @@ svg{
 }
 /* ----------------------------------------------- */
 .-scrollLeft {
-	-webkit-box-shadow: 3px 0 3px -1px rgba(0, 0, 0, 0.3) inset;
-	-moz-box-shadow: 3px 0 3px -1px rgba(0, 0, 0, 0.3) inset;
-	box-shadow: 3px 0 3px -1px rgba(0, 0, 0, 0.3) inset;
+	-webkit-box-shadow: 2px 1px 2px -1px rgba(0, 0, 0, 0.2) inset;
+	-moz-box-shadow: 2px 1px 2px -1px rgba(0, 0, 0, 0.2) inset;
+	box-shadow: 2px 1px 2px -1px rgba(0, 0, 0, 0.2) inset;
+	
+/* 	-webkit-box-shadow: 3px 0 3px -1px rgba(0, 0, 0, 0.3) inset; */
+/* 	-moz-box-shadow: 3px 0 3px -1px rgba(0, 0, 0, 0.3) inset; */
+/* 	box-shadow: 3px 0 3px -1px rgba(0, 0, 0, 0.3) inset; */
 }
 
 .-scrollRight {
-	-webkit-box-shadow: -3px 0 3px -1px rgba(0, 0, 0, 0.3) inset;
-	-moz-box-shadow: -3px 0 3px -1px rgba(0, 0, 0, 0.3) inset;
-	box-shadow: -3px 0 3px -1px rgba(0, 0, 0, 0.3) inset;
+	
+	box-shadow: -2px 1px 2px -1px rgba(0, 0, 0, 0.2) inset;
+	    
+	-webkit-box-shadow: -2px 1px 2px -1px rgba(0, 0, 0, 0.2) inset;
+	-moz-box-shadow: -2px 1px 2px -1px rgba(0, 0, 0, 0.2) inset;
+	box-shadow: -2px 1px 2px -1px rgba(0, 0, 0, 0.2) inset;
+	
+/* 	-webkit-box-shadow: -3px 0 3px -1px rgba(0, 0, 0, 0.3) inset; */
+/* 	-moz-box-shadow: -3px 0 3px -1px rgba(0, 0, 0, 0.3) inset; */
+/* 	box-shadow: -3px 0 3px -1px rgba(0, 0, 0, 0.3) inset; */
 }
 
 .-scrollLeftRight {
-	-webkit-box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.3) inset;
-	-moz-box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.3) inset;
-	box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.3) inset;
+	-webkit-box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.2) inset;
+	-moz-box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.2) inset;
+	box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.2) inset;
 }
 
 /* inputs ---------------------------------------- */
