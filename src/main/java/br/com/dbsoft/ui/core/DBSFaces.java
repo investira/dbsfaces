@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+
 import java.io.StringWriter;
 import java.io.Writer;
 import java.math.BigDecimal;
@@ -1789,6 +1790,8 @@ public class  DBSFaces {
 			URL 	xUrl = new URL(pURL);
 			xConnection = (HttpURLConnection) xUrl.openConnection();
 			xConnection.setRequestProperty("Request-Method", "POST");
+			xConnection.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded"); 
+			xConnection.setRequestProperty( "charset", ENCODE.ISO_8859_1);
 			xConnection.setDoInput(true);
 			xConnection.setDoOutput(true);
 			xConnection.setUseCaches(false);
@@ -1805,20 +1808,17 @@ public class  DBSFaces {
 			        } else {
 			            xParams.append("&");
 			        }
-			        xParams.append(URLEncoder.encode(xKey, ENCODE.ISO_8859_1));
+			        xParams.append(URLEncoder.encode(xKey, ENCODE.ISO_8859_1)); //Conversão para UTF-8 gera problema no servidor cloud
 			        xParams.append("=");
-			        xParams.append(URLEncoder.encode(xValue, ENCODE.ISO_8859_1));
+			        xParams.append(URLEncoder.encode(xValue, ENCODE.ISO_8859_1)); //Conversão para UTF-8 gera problema no servidor cloud
 				}
 				byte[] xParambytes = xParams.toString().getBytes();
-
-
 				OutputStream xOs = xConnection.getOutputStream();
 				xOs.write(xParambytes);
 			}
 			//Conecta à URL - Requisição
 			xConnection.connect(); 
-			//Efetua a leitura do xHTML retornado 
-			xBuffer = new BufferedReader(new InputStreamReader(xConnection.getInputStream()));
+			xBuffer = new BufferedReader(new InputStreamReader(xConnection.getInputStream(), ENCODE.UTF_8));
 			for (int xChar = xBuffer.read(); xChar != -1; xChar = xBuffer.read()){
 	            xResultado.append((char)xChar);
 			}
