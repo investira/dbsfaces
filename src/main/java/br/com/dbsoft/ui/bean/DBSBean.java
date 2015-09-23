@@ -54,7 +54,6 @@ public abstract class DBSBean implements Serializable {
 			wLogger.warn(this.getClass().getCanonicalName() + ":Não há scope ativo para este bean.");
 		}else if(FacesContext.getCurrentInstance().getExternalContext().getSession(false) == null){
 				FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-				setMaxInactiveInterval(wMaxInactiveInterval);
 		}
 		initializeClass();
 	}
