@@ -93,6 +93,12 @@
 	height: 22px;
 } 
 
+.dbs_dataTable > .-container > .-header > .-toolbar > nav{
+	float: right;
+    top: 2px;
+    position: relative;
+}
+
 .dbs_dataTable > .-container > .-header > .-toolbar > nav > div > .-icon{
     position: absolute;
 	background-color: rgb(13, 25, 45);
@@ -104,10 +110,6 @@
     line-height: 9px;
     padding: 3px 2px 2px 3px;
     top: 0;    
-}
-
-.dbs_dataTable > .-container > .-header > .-toolbar > nav{
-	float: right;
 }
 
 .dbs_dataTable > .-container > .-header > .-toolbar > nav > div > .dbs_button{
