@@ -57,6 +57,7 @@
 	position: relative;
 	float: left;
 	top: -1px;
+	margin-right: 2px;
 }
 
 .dbs_dataTable > .-container > .-header > .-filter{
@@ -94,9 +95,10 @@
 } 
 
 .dbs_dataTable > .-container > .-header > .-toolbar > nav{
-	float: right;
-    top: 2px;
+    /* float: right; */
     position: relative;
+    width: 100%;
+    text-align: right;    
 }
 .dbs_dataTable > .-container > .-header > .-toolbar > nav > div{
 	display: inline-block;

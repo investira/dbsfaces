@@ -10,10 +10,12 @@
 	height: 100%;
 }
 
-.dbs_crudTable > .-container > .dbs_dataTable > .-container > .-header  > .-toolbar > nav > div > .-approval{
+.dbs_crudTable > .-container > .dbs_dataTable > .-container > .-header > .-toolbar > nav > .-approval,
+.dbs_crudTable > .-container > .dbs_dataTable > .-container > .-header > .-toolbar > nav > .-icon{
 	position: absolute;
 	left:2px;
 }
+
 
 .dbs_crudTable > .-container > .dbs_dataTable > .-container > .-content  > table > thead > tr > .-C1 > label > span > ul > li {
 	display:table;

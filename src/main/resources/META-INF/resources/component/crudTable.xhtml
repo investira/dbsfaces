@@ -57,12 +57,12 @@
 							<cc:renderFacet name="toolbar"/>
 							<!-- Controle de assinatura -->
 							<c:if test="#{cc.attrs.allowApproval and cc.crudBean.allowApproval and cc.crudBean.approvalUserStages!=0}">
-								<div id="approval" class="-approval" >
+								<dbs:div id="approval" styleClass="-approval" >
 									<c:if test="#{cc.crudBean.hasSelected}">
 										<dbs:button id="btReprovar" iconClass="-i_prize_ribbon -red" action="#{cc.crudBean.reprove()}" update="#{cc.clientId}:crudTableMessages" execute="@this" tooltip="Reprovar"/>
 										<dbs:button id="btAprovar"  iconClass="-i_prize_ribbon -green" action="#{cc.crudBean.approve()}" update="#{cc.clientId}:crudTableMessages" execute="@this" tooltip="Avançar etapa de aprovação"/>
 									</c:if>
-								</div>
+								</dbs:div>
 							</c:if>
 							
 							<c:if test="#{cc.crudBean.formStyle == 'TABLE' and not cc.attrs.readOnly}">

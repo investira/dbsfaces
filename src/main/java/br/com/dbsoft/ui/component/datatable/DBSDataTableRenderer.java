@@ -210,15 +210,14 @@ public class DBSDataTableRenderer extends DBSRenderer {
 					}
 					pWriter.startElement("div", pDataTable);
 						DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.TOOLBAR.trim(), null); 
-						//Cria toolbar como componente para poder sofrer updates via ajax
-						DBSDiv xNav = (DBSDiv) xToolbar.findComponent("toolbar");
-						if (xNav == null){
-							xNav = (DBSDiv) pContext.getApplication().createComponent(DBSDiv.COMPONENT_TYPE);
+						//Recria toolbar como componente para poder sofrer updates via ajax
+						if (xToolbar.getId() == null || !xToolbar.getId().equals(DBSDataTable.FACET_TOOLBAR)){
+							DBSDiv xNav = (DBSDiv) pContext.getApplication().createComponent(DBSDiv.COMPONENT_TYPE);
 							xNav.setTransient(false);
 							xNav.setId("toolbar");
 							xNav.setTagName("nav");
 							//Transfere os filhos do toolbar para o nav
-							xNav.getChildren().addAll(xToolbar.getChildren());
+							xNav.getChildren().add(xToolbar);
 							//Remove facet toolbar
 							pDataTable.getFacets().remove(DBSDataTable.FACET_TOOLBAR);
 							//Recria facet toolbar com o Nav sendo filho
