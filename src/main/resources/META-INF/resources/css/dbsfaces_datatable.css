@@ -98,6 +98,9 @@
     top: 2px;
     position: relative;
 }
+.dbs_dataTable > .-container > .-header > .-toolbar > nav > div{
+	display: inline-block;
+}
 
 .dbs_dataTable > .-container > .-header > .-toolbar > nav > div > .-icon{
     position: absolute;

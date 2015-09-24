@@ -14,6 +14,7 @@ import com.sun.faces.facelets.compiler.UIInstructions;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.button.DBSButton;
+import br.com.dbsoft.ui.component.div.DBSDiv;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSObject;
@@ -208,10 +209,24 @@ public class DBSDataTableRenderer extends DBSRenderer {
 						pWriter.endElement("span");
 					}
 					pWriter.startElement("div", pDataTable);
-						DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.TOOLBAR.trim(), null);
-						pWriter.startElement("nav", pDataTable);
-							xToolbar.encodeAll(pContext);
-						pWriter.endElement("nav");
+						DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.TOOLBAR.trim(), null); 
+						//Cria toolbar como componente para poder sofrer updates via ajax
+						DBSDiv xNav = (DBSDiv) xToolbar.findComponent("toolbar");
+						if (xNav == null){
+							xNav = (DBSDiv) pContext.getApplication().createComponent(DBSDiv.COMPONENT_TYPE);
+							xNav.setTransient(false);
+							xNav.setId("toolbar");
+							xNav.setTagName("nav");
+							//Transfere os filhos do toolbar para o nav
+							xNav.getChildren().addAll(xToolbar.getChildren());
+							//Remove facet toolbar
+							pDataTable.getFacets().remove(DBSDataTable.FACET_TOOLBAR);
+							//Recria facet toolbar com o Nav sendo filho
+							pDataTable.getFacets().put(DBSDataTable.FACET_TOOLBAR, xNav);
+							//Le novamente o facet toolbar
+							xToolbar = pDataTable.getFacet(DBSDataTable.FACET_TOOLBAR);
+						}
+						xToolbar.encodeAll(pContext);
 					pWriter.endElement("div");
 				}
 			pWriter.endElement("div");
