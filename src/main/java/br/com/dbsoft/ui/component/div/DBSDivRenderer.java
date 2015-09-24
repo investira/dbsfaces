@@ -58,7 +58,7 @@ public class DBSDivRenderer extends DBSRenderer {
 			}
 		}
 		String xClientId = xDiv.getClientId(pContext);
-		xWriter.startElement("div", xDiv);
+		xWriter.startElement(xDiv.getTagName(), xDiv);
 			if (xDiv.getAjaxLoading() 
 			 || shouldWriteIdAttribute(xDiv)){
 				DBSFaces.setAttribute(xWriter, "id", xClientId, null);
@@ -98,9 +98,10 @@ public class DBSDivRenderer extends DBSRenderer {
 	@Override
 	public void encodeEnd(FacesContext pContext, UIComponent pComponent) throws IOException{
 		if (!pComponent.isRendered()){return;}
+		DBSDiv xDiv = (DBSDiv) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		//Fim do componente
-		xWriter.endElement("div");
+		xWriter.endElement(xDiv.getTagName());
 	}
 	
 	/**

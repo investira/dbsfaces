@@ -12,6 +12,7 @@ public class DBSDiv extends DBSUIComponentBase {
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 
 	protected enum PropertyKeys {
+		tagName,
 		styleClass,
 		style,
 		selectable,
@@ -35,6 +36,15 @@ public class DBSDiv extends DBSUIComponentBase {
 		setRendererType(DBSDiv.RENDERER_TYPE);
     }
 	
+	public String getTagName() {
+		return (String) getStateHelper().eval(PropertyKeys.tagName, "div");
+	}
+	
+	public void setTagName(String pTagName) {
+		getStateHelper().put(PropertyKeys.tagName, pTagName);
+		handleAttribute("tagName", pTagName);
+	}
+
 	public String getStyle() {
 		return (String) getStateHelper().eval(PropertyKeys.style, null);
 	}
