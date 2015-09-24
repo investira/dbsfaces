@@ -2387,6 +2387,14 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>		
+		<attribute>
+			<description>
+                Nome da tag que erá utilizado. O padrão é DIV, podendo ser outros como NAV, SECTION, etc.
+            </description>
+			<name>tagName</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
 	</tag>
 
 	<tag>
