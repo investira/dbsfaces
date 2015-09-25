@@ -97,6 +97,7 @@
 .dbs_dataTable > .-container > .-header > .-toolbar > nav{
     /* float: right; */
     position: relative;
+	display: inline-block;
     width: 100%;
     text-align: right;    
 }
