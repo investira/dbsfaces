@@ -23,7 +23,7 @@ dbsfaces.tooltip = {
 	showTooltip: function(e){
 		var xTooltip = $(e).find(".-tooltip");
 		/* Se o foco estiver em algum compenente filho */
-//		if ($(e).has(document.activeElement).length > 0 ||
+
 		if (xTooltip.css("display") != "none"){
 			return;
 		}
@@ -32,21 +32,25 @@ dbsfaces.tooltip = {
 		/* Se a posição do tooltip for superior ao tamanho do documento, 
 		 * ajusta a posição para exibir acima do componente a que se refere o tooltip
 		 */
-		if (xTop + $(xTooltip).outerHeight() > $(document).height()){
-			xTop = $(e).offset().top - $(xTooltip).outerHeight() - 1;
+		if (xTop + xTooltip.outerHeight() > $(document).height()){
+			xTop = $(e).offset().top - xTooltip.outerHeight() - 1;
 		}
 		
 		xTooltip.css("top", xTop);
 		xTooltip.css("left", xLeft);
 		
 		//Tempo de exibição
-		var xTime = $(xTooltip).text().length;
+		var xTime = xTooltip.text().length;
 		xTime = (xTime / 2) * 200;
 		
 		wTimer = setTimeout(function(){
-			$(xTooltip).fadeIn("fast");
+			xTooltip.show();
+			if (xTooltip.get(0).getBoundingClientRect().left + xTooltip.outerWidth() > $(document).width() ){
+				xLeft = $(document).width() - xTooltip.outerWidth() - 1;
+				xTooltip.css("left", xLeft);
+			}
 			wTimer = setTimeout(function(){
-				$(xTooltip).fadeOut("slow");
+				xTooltip.fadeOut("slow");
 			}, xTime);
 		}, 1200); //2 Segundos -Tempo para exibir
 	},
@@ -56,7 +60,7 @@ dbsfaces.tooltip = {
 			clearTimeout(wTimer);
 			var xTooltip = $(e).find(".-tooltip");
 
-			$(xTooltip).hide();
+			xTooltip.hide();
 		}
 	}
 }
