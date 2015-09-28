@@ -13,11 +13,11 @@
 
 .dbs_inputDate > .-container > .dbs_input-data > input,
 .dbs_inputDate > .-container > .dbs_input-data > label{
+	display: inline-block;
 	line-height: 100%;
 	border: 0 none;
 	margin-top: 2px;
 	font-size: inherit;
 	background-color: transparent !important;
 	height: 13px;
-	float:left;
 }	
