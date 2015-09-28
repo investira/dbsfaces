@@ -54,16 +54,19 @@ public class DBSFileUploadRenderer extends DBSRenderer {
 		String xClientId = xFileUpload.getClientId(pContext);
 		String xClass = DBSFaces.CSS.FILEUPLOAD.MAIN + " ";
 		if (xFileUpload.getStyleClass()!=null){
-			xClass = xClass + xFileUpload.getStyleClass();
+			xClass += xFileUpload.getStyleClass().trim();
 		}
 
+		if (xFileUpload.getReadOnly()){
+			xClass += " " + DBSFaces.CSS.MODIFIER.DISABLED;
+		}
 		//Configura para não save o state, pois componete não pode ser usado em chamadas ajax já que o upload é efetuado pelo browser enquanto a tela esta aberta
 		xFileUpload.setTransient(true);
 		
 		xWriter.startElement("div", xFileUpload);
 			xWriter.writeAttribute("id", xClientId, null);
 			xWriter.writeAttribute("name", xClientId, null);
-			xWriter.writeAttribute("class", xClass, null);
+			xWriter.writeAttribute("class", xClass.trim(), null);
 			DBSFaces.setAttribute(xWriter, "style", xFileUpload.getStyle(), null);
 			encodeClientBehaviors(pContext, xFileUpload);
 			//Container
@@ -89,8 +92,9 @@ public class DBSFileUploadRenderer extends DBSRenderer {
 		DBSButton xButtonStart = (DBSButton) pFileUpload.getFacet("btStart");
 		if (xButtonStart == null){
 			xButtonStart = (DBSButton) FacesContext.getCurrentInstance().getApplication().createComponent(DBSButton.COMPONENT_TYPE);
-			xButtonStart.setId("btStart");
+			xButtonStart.setId(pFileUpload.getClientId().replaceAll(":", "_") + "_btStart");
 			xButtonStart.setIconClass(DBSFaces.CSS.ICON + " -i_upload");
+			xButtonStart.setReadOnly(pFileUpload.getReadOnly());
 //			xButtonStart.setonclick("dbsfaces.fileUpload.select(this)");
 //			xButtonStart.setonclick("return false;");
 			xButtonStart.setTransient(true);
@@ -108,9 +112,10 @@ public class DBSFileUploadRenderer extends DBSRenderer {
 		DBSButton xButtonCancel = (DBSButton) pFileUpload.getFacet("btCancel");
 		if (xButtonCancel == null){
 			xButtonCancel = (DBSButton) FacesContext.getCurrentInstance().getApplication().createComponent(DBSButton.COMPONENT_TYPE);
-			xButtonCancel.setId("btCancel");
-			xButtonCancel.setIconClass(DBSFaces.CSS.ICON + " -i_bullet_blue");
+			xButtonCancel.setId(pFileUpload.getClientId().replaceAll(":", "_") + "_btCancel");
+			xButtonCancel.setIconClass(DBSFaces.CSS.ICON + " -i_media_stop");
 			xButtonCancel.setStyle("display:none;");
+			xButtonCancel.setReadOnly(pFileUpload.getReadOnly());
 	//		xButtonCancel.setonclick("dbsfaces.fileUpload.cancel()");
 //			xButtonCancel.setonclick("return false;");
 			xButtonCancel.setTransient(true);
@@ -131,7 +136,7 @@ public class DBSFileUploadRenderer extends DBSRenderer {
 
 	private void pvEncodeInput(@SuppressWarnings("unused") FacesContext pContext, DBSFileUpload pFileUpload, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("input", pFileUpload);
-		 	pWriter.writeAttribute("id", pFileUpload.getClientId() + DBSFaces.CSS.MODIFIER.INPUT.trim(), null);
+		 	pWriter.writeAttribute("id", pFileUpload.getClientId().replaceAll(":", "_") + DBSFaces.CSS.MODIFIER.INPUT.trim(), null);
 			pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.INPUT, null);
 			pWriter.writeAttribute("style", "display:none;", null);
 			pWriter.writeAttribute("type", "file", null);
