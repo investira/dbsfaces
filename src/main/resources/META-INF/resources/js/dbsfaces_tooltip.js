@@ -40,8 +40,7 @@ dbsfaces.tooltip = {
 		xTooltip.css("left", xLeft);
 		
 		//Tempo de exibição
-		var xTime = xTooltip.text().length;
-		xTime = (xTime / 2) * 200;
+		var xTime = dbsfaces.ui.getDelayFromTextLength(xTooltip.text());
 		
 		wTimer = setTimeout(function(){
 			xTooltip.show();
