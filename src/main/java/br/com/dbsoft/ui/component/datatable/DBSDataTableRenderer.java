@@ -213,7 +213,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 						//Recria toolbar como componente para poder sofrer updates via ajax
 						
 						//Busca facet que contém o nav e se não, existir cria
-						UIComponent xToolbarControl = pDataTable.getFacet("toolbarcontrol");
+						UIComponent xToolbarControl = pDataTable.getFacet(DBSDataTable.FACET_TOOLBAR_CONTROL);
 						DBSDiv xNav;
 						//Cria nav se não existir
 						if (xToolbarControl == null){
@@ -222,34 +222,12 @@ public class DBSDataTableRenderer extends DBSRenderer {
 							xNav.setId("toolbar");
 							xNav.setTagName("nav");
 							//Adiciona facet ao componente
-							pDataTable.getFacets().put("toolbarcontrol", xNav);
-							xToolbarControl = pDataTable.getFacet("toolbarcontrol");
+							pDataTable.getFacets().put(DBSDataTable.FACET_TOOLBAR_CONTROL, xNav);
+							xToolbarControl = pDataTable.getFacet(DBSDataTable.FACET_TOOLBAR_CONTROL);
 						}
 						xToolbarControl.getChildren().clear();
 						//Configura o toolbar original do usuário como filho do toolbarcontrol
 						xToolbarControl.getChildren().add(xToolbar);
-//						DBSDiv xNav = (DBSDiv) DBSFaces.findComponent("toolbar",xToolbar.getChildren());
-//						if (xNav == null){
-//							xNav = (DBSDiv) pContext.getApplication().createComponent(DBSDiv.COMPONENT_TYPE); 
-//							xNav.setTransient(false);
-//							xNav.setId("toolbar");
-//							xNav.setTagName("nav");
-//						}else{
-//							xNav.getChildren().clear();
-//							xToolbar.getChildren().remove(xNav);
-//						}
-							//Transfere os filhos do toolbar para o nav
-//							xNav.getChildren().add(xToolbar);
-//							if (!FacesContext.getCurrentInstance().isPostback()){
-							//Remove facet toolbar
-//							pDataTable.getFacets().remove(DBSDataTable.FACET_TOOLBAR);
-							//Recria facet toolbar com o Nav sendo filho
-//							pDataTable.getFacets().put(DBSDataTable.FACET_TOOLBAR, xNav);
-							//Le novamente o facet toolbar
-//							}
-//							xToolbar = pDataTable.getFacet(DBSDataTable.FACET_TOOLBAR);
-//						}
-//						}
 						xToolbarControl.encodeAll(pContext);
 					pWriter.endElement("div");
 				}

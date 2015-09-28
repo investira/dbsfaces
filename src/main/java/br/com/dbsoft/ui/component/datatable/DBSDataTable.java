@@ -25,6 +25,7 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 	public final static String FACET_PESQUISAR = "pesquisar";
 	public final static String FACET_HEADER = "header";
 	public final static String FACET_TOOLBAR = "toolbar";
+	public final static String FACET_TOOLBAR_CONTROL = "toolbarcontrol";
 	public final static String FACET_FILTER = "filter";
 	public final static String FACET_INLINETOOLBAR = "inlineEditToolbar";
 
