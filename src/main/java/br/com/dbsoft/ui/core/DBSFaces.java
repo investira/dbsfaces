@@ -5,7 +5,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-
 import java.io.StringWriter;
 import java.io.Writer;
 import java.math.BigDecimal;
@@ -2025,34 +2024,38 @@ public class  DBSFaces {
 		if (pSubmittedValue != null){
 		 	ValueExpression xVE =  pComponent.getValueExpression("value");
 		 	if (xVE != null){
-			 	Class<?> xValueClass = xVE.getType(FacesContext.getCurrentInstance().getELContext());	 	
-				//Converte valor para nulo em determinados casos
-				if(pSubmittedValue.equals("")){
-					if (xValueClass.isAssignableFrom(Integer.class) ||
-						xValueClass.isAssignableFrom(Double.class) ||
-						xValueClass.isAssignableFrom(Float.class) ||
-						xValueClass.isAssignableFrom(Date.class) ||
-						xValueClass.isAssignableFrom(Timestamp.class) ||
-						xValueClass.isAssignableFrom(BigDecimal.class)){
-						//Seta valor diretamente como nulo caso o conteúdo recebido seja 'vázio'. Isso é necessário pois setar o submittedvalue como nulo, e a mesma coisa que ignorar o valor recebido. 
-						xSubmittedValue =  null; //Seta como nulo para que o submittedvalue recebido seja ignorado, evitando o o setValue acima seja sobreposto.
-						pComponent.setValue(null); 
+		 		try{
+			 		Class<?> xValueClass = xVE.getType(FacesContext.getCurrentInstance().getELContext());	 	
+					//Converte valor para nulo em determinados casos
+					if(pSubmittedValue.equals("")){
+						if (xValueClass.isAssignableFrom(Integer.class) ||
+							xValueClass.isAssignableFrom(Double.class) ||
+							xValueClass.isAssignableFrom(Float.class) ||
+							xValueClass.isAssignableFrom(Date.class) ||
+							xValueClass.isAssignableFrom(Timestamp.class) ||
+							xValueClass.isAssignableFrom(BigDecimal.class)){
+							//Seta valor diretamente como nulo caso o conteúdo recebido seja 'vázio'. Isso é necessário pois setar o submittedvalue como nulo, e a mesma coisa que ignorar o valor recebido. 
+							xSubmittedValue =  null; //Seta como nulo para que o submittedvalue recebido seja ignorado, evitando o o setValue acima seja sobreposto.
+							pComponent.setValue(null); 
+						}
+					}else{
+						if (xValueClass.isAssignableFrom(Integer.class)){
+							xSubmittedValue =  DBSNumber.toInteger(pSubmittedValue, null);
+						}else if (xValueClass.isAssignableFrom(Double.class)){
+							xSubmittedValue = DBSNumber.toDouble(pSubmittedValue, null);
+						}else if (xValueClass.isAssignableFrom(BigDecimal.class)){
+							xSubmittedValue = DBSNumber.toBigDecimal(pSubmittedValue, null);
+						}else if (xValueClass.isAssignableFrom(Boolean.class)){
+							xSubmittedValue = DBSBoolean.toBoolean(pSubmittedValue);
+						}else if (xValueClass.isAssignableFrom(Date.class)){
+							xSubmittedValue = DBSDate.toDate(pSubmittedValue);
+						}else if (xValueClass.isAssignableFrom(Timestamp.class)){
+							xSubmittedValue = DBSDate.toTimestamp(pSubmittedValue);
+						}
 					}
-				}else{
-					if (xValueClass.isAssignableFrom(Integer.class)){
-						xSubmittedValue =  DBSNumber.toInteger(pSubmittedValue, null);
-					}else if (xValueClass.isAssignableFrom(Double.class)){
-						xSubmittedValue = DBSNumber.toDouble(pSubmittedValue, null);
-					}else if (xValueClass.isAssignableFrom(BigDecimal.class)){
-						xSubmittedValue = DBSNumber.toBigDecimal(pSubmittedValue, null);
-					}else if (xValueClass.isAssignableFrom(Boolean.class)){
-						xSubmittedValue = DBSBoolean.toBoolean(pSubmittedValue);
-					}else if (xValueClass.isAssignableFrom(Date.class)){
-						xSubmittedValue = DBSDate.toDate(pSubmittedValue);
-					}else if (xValueClass.isAssignableFrom(Timestamp.class)){
-						xSubmittedValue = DBSDate.toTimestamp(pSubmittedValue);
-					}
-				}
+		 		}catch(Exception e){
+		 			wLogger.error(e);
+		 		}
 			}
 	 	}
 	 	return xSubmittedValue;
