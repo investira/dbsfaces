@@ -2,13 +2,12 @@
 	position: relative;
 	display: inline-block;
 }
-
-.dbs_quickInfo > .-container {
+.dbs_quickInfo > .-icon {
 	position: relative;
 	display: inline-block;
 }
 
-.dbs_quickInfo > .-container > .-content {
+.dbs_quickInfo > .-icon > .-container {
 	font-size: 11px;
 	
 	position: fixed;
@@ -32,4 +31,6 @@
     z-index: 1;
 }
 
+.dbs_quickInfo > .-icon > .-container > .-content {
+}
 

@@ -868,6 +868,14 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
+		<attribute>
+			<description>
+            	Style para o espaço que contém o texto da informação
+            </description>
+			<name>infoStyle</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
 	</tag>	
 	<tag>
 		<tag-name>inputText</tag-name>

@@ -16,7 +16,8 @@ public class DBSQuickInfo extends DBSUIOutput implements ClientBehaviorHolder {
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 
 	protected enum PropertyKeys {
-		iconClass;
+		iconClass,
+		infoStyle;
 		
 		String toString;
 
@@ -55,4 +56,14 @@ public class DBSQuickInfo extends DBSUIOutput implements ClientBehaviorHolder {
 	public Collection<String> getEventNames() {
 		return Arrays.asList("click", "dblclick", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup"); 
 	}	
+	
+	public String getInfoStyle() {
+		return (String) getStateHelper().eval(PropertyKeys.infoStyle, "");
+	}
+	
+	public void setInfoStyle(String pInfoStyle) {
+		getStateHelper().put(PropertyKeys.infoStyle, pInfoStyle);
+		handleAttribute("infoStyle", pInfoStyle);
+	}
+
 }
