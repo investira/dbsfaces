@@ -13,7 +13,8 @@ dbsfaces.quickInfo = {
 	showInfo: function(pId){
 		var xInfo = $(pId + " > .-container > .-content");
 		var xLeft = $(pId).offset().left;
-		xInfo.css({left: xLeft});
+		xInfo.css({left: $(pId).offset().left})
+			 .css({top: $(pId).offset().top});
 		xInfo.show();
 	},
 	
