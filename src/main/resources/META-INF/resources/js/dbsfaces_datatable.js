@@ -9,6 +9,12 @@ dbs_dataTable = function(pId) {
 	wW = wW + $(pId + " > .-container > .-header > .-filter > .-button").outerWidth();
 	
 	$(pId).css("min-width", wW + "px");
+	
+	//Exclui campo para evitar a exibição do teclado 
+	if (dbsfaces.util.isMobile()){
+		$(pId + " > .-container > input.-foo").remove();
+//		$(pId + " > .-container > input.-foo").attr("disabled", "disabled");
+	}
 
 	wW = wRow.outerWidth() + 2;
 	wW = wW - wRow.children(".-CX").outerWidth();
