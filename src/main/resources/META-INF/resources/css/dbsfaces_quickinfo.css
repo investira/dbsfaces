@@ -9,7 +9,8 @@
 
 .dbs_quickInfo > .-icon > .-container {
 	font-size: 11px;
-	
+    line-height: 120%;
+    	
 	position: fixed;
 	left: inherit;
 	margin-left: 16px;	
