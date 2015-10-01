@@ -1,5 +1,4 @@
 dbs_dataTable = function(pId) {
-	var wH = 0;
 	var wW = 15;
 	var wTable = pId + " > .-container > .-content > table ";
     var wRow = $(wTable + " > tbody > tr:first");
@@ -12,7 +11,7 @@ dbs_dataTable = function(pId) {
 	
 	//Exclui campo para evitar a exibição do teclado 
 	if (dbsfaces.util.isMobile()){
-		$(pId + " > .-container > input.-foo").remove();
+		$(pId + " > .-container > .-header > input.-foo").remove();
 //		$(pId + " > .-container > input.-foo").attr("disabled", "disabled");
 	}
 
@@ -22,9 +21,12 @@ dbs_dataTable = function(pId) {
 //	$(wTable + " > thead").css("min-width", wW);
 //	$(wTable + " > thead > tr").css("min-width", wW);
 
-	wH = $(pId + " > .-container > .-header").outerHeight();
-	$(pId + " > .-container > .-content").css("margin-top", "-" + wH + "px")
-	                                     .css("padding-top", wH + "px");
+	setTimeout(function() {
+		var wH = $(pId + " > .-container > .-header").outerHeight();
+		$(pId + " > .-container > .-content").css("margin-top", "-" + wH + "px")
+		                                     .css("padding-top", wH + "px");
+  	}, 1);
+
 
 	dbsfaces.dataTable.showOverflowShadow($(wTable));
 	dbsfaces.dataTable.positionOnSelectedRow(pId);
