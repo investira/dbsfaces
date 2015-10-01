@@ -1,8 +1,9 @@
 .dbs_tab {}
 
 .dbs_tab > .-container{
-	padding-top: 2px;
+/* 	padding-top: 2px; */
 	display: inline-block; /*INcluido em 15/07/2013 por Ricardo, pois */
+	text-align: left;
 }
 
 .dbs_tab > .-container, 
