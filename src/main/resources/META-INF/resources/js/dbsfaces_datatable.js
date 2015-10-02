@@ -3,7 +3,6 @@ dbs_dataTable = function(pId) {
 	var wTable = pId + " > .-container > .-content > table ";
     var wRow = $(wTable + " > tbody > tr:first");
     var wSelectedRow;
-
 	wW = wW + $(pId + " > .-container > .-header > .-filter > .-input").outerWidth();
 	wW = wW + $(pId + " > .-container > .-header > .-filter > .-button").outerWidth();
 	
@@ -11,8 +10,8 @@ dbs_dataTable = function(pId) {
 	
 	//Exclui campo para evitar a exibição do teclado 
 	if (dbsfaces.util.isMobile()){
-		$(pId + " > .-container > .-header > input.-foo").remove();
-//		$(pId + " > .-container > input.-foo").attr("disabled", "disabled");
+//		$(pId + " > .-container > .-header > input.-foo").remove();
+//		$(pId + " > .-container > input.-foo").remove();
 	}
 
 	wW = wRow.outerWidth() + 2;
@@ -21,13 +20,7 @@ dbs_dataTable = function(pId) {
 //	$(wTable + " > thead").css("min-width", wW);
 //	$(wTable + " > thead > tr").css("min-width", wW);
 
-	setTimeout(function() {
-		var wH = $(pId + " > .-container > .-header").outerHeight();
-		$(pId + " > .-container > .-content").css("margin-top", "-" + wH + "px")
-		                                     .css("padding-top", wH + "px");
-  	}, 1);
-
-
+	dbsfaces.dataTable.adjustContent(pId);
 	dbsfaces.dataTable.showOverflowShadow($(wTable));
 	dbsfaces.dataTable.positionOnSelectedRow(pId);
 
@@ -116,7 +109,7 @@ dbs_dataTable = function(pId) {
 	
 	//Click no botão pesquisar
 	$(pId + " > .-container > .-header > .-filter > .-button > .dbs_button").on("click", function(e){
-		//Reste da linha selecionada anteriormente
+		//Resete da linha selecionada anteriormente
 		wSelectedRow = null;
 		dbsfaces.dataTable.rowSelect(pId, wSelectedRow);
 	});
@@ -293,6 +286,13 @@ dbsfaces.dataTable = {
 	adjustWidth: function(pId, e){
 //		Força o tamanho da conteudo da tabela para evitar problema de exibição no FF
 //		$(e).children().css("width", $(e).scrollLeft() + $(e).width());
+	},
+
+	adjustContent: function(pId){
+		var xHeader = $(pId + " > .-container > .-header");
+		var wH = xHeader.actual('outerHeight');
+		$(pId + " > .-container > .-content").css("margin-top", "-" + wH + "px")
+		                                     .css("padding-top", wH + "px");
 	}
 }
 
