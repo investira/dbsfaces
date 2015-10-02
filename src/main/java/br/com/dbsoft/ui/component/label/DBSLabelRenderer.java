@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import javax.faces.render.FacesRenderer;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
@@ -53,22 +54,26 @@ public class DBSLabelRenderer extends DBSRenderer {
 		}
 		
 		xWriter.startElement("label", xLabel);
-//			if (shouldWriteIdAttribute(xLabel)){
-				DBSFaces.setAttribute(xWriter, "id", xLabel.getClientId(pContext), null);
-//			}
+			DBSFaces.setAttribute(xWriter, "id", xLabel.getClientId(pContext), null);
 			DBSFaces.setAttribute(xWriter, "style", xLabel.getStyle(), null);
 			DBSFaces.setAttribute(xWriter, "class", xClass, null);
 			DBSFaces.setAttribute(xWriter, "for", xLabel.getLabelFor(), null);
 			if (xLabel.getLabelWidth()!=null){
 				DBSFaces.setAttribute(xWriter, "style","display:inline-block;width:" + xLabel.getLabelWidth().toString() + ";", null);
 			}
+			
 			encodeClientBehaviors(pContext, xLabel);
-			if (xLabel.getValue()!=null){
-				xWriter.write(DBSString.toString(xLabel.getValue(), ""));
+
+			String xValueToRender = DBSFaces.getStringValueToRender(pContext, xLabel);
+			if(xValueToRender != null) {
+				xWriter.write(DBSString.toString(xValueToRender, ""));
 			}
+
 			DBSFaces.renderChildren(pContext, xLabel);
 			DBSFaces.encodeTooltip(pContext, xLabel, xLabel.getTooltip());
 		xWriter.endElement("label");
 	}
 	
+
+
 }
