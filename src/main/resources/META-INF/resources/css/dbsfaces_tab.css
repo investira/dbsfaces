@@ -7,38 +7,52 @@
 }
 
 .dbs_tab > .-container, 
-.dbs_tab > .-container > div, 
-.dbs_tab > .-container > div > div, 
-.dbs_tab > .-container > div > div > div {
+.dbs_tab > .-container > .-tabPage, 
+.dbs_tab > .-container > .-tabPage > .-content{
 	width: 100%;
 	height: 100%;
 } 	
 
-.dbs_tab > .-container > div{
+.dbs_tab > .-container > .-tabPage{
 	top:0;
 	margin-top:-22px; /*Utilizar o tamanho do título da aba*/
 	padding-top:22px; /*Utilizar o tamanho do título da aba*/
 } 	
 
-.dbs_tab > .-container > div > .-content{} 	
+.dbs_tab > .-container > .-tabPage > .-content{
+	display: inline-block;
 
-.dbs_tab > .-container > ul{
-/* 	display:table-row; */
-	display:inline-block;
-	height:20px; /*Tamanho do título da aba*/
-	position: relative;
+    border-top: 0px;
+    border-left: 1px;
+    border-right: 1px;
+    border-bottom: 1px;
+    -webkit-border-radius: 0px 0px 3px 3px;
+    -moz-border-radius: 0px 0px 3px 3px;
+    border-radius: 0px 0px 3px 3px;
+    border-style: solid;
+    border-color: rgb(210,210,210);
+    overflow: hidden;
+} 	
+
+.dbs_tab > .-container > .-tabs{
+/* 	display:inline-block; */
+    display: block;
+    height: 22px;
+    position: relative;
+    text-align: left;
    	white-space: pre; /* retira spaços em branco entre o título de as páginas(Problema causado por Strict DOCTYPE */
 /*    	z-index: 1; comentado em 24/02/2015 - Ricardo. Estava sobreponto o menu*/
 }	
 
 
-.dbs_tab > .-container > ul > li{
+.dbs_tab > .-container > .-tabs > .-tab{
 	position:relative;
 /*    	z-index: 1; comentado em 24/02/2015 - Ricardo. Estabva sobreponto o menu*/
+	display:inline-block;
+	height: 100%;
 	padding-left: 8px;
     padding-right: 8px;
-	float:right;
-    height:22px; /*Utilizar o tamanho do título da aba*/
+/* 	float:right; */
     margin:0px -6px 0px 0px;
 	border-top: 1px;
 	border-left: 1px;
@@ -65,28 +79,28 @@
 }	
 
 
-.dbs_tab > .-container > ul > li.-selected{
+.dbs_tab > .-container > .-tabs > .-tab.-selected{
+	z-index: 1;
 	border-top: 1px;
 	border-left: 1px;
 	border-right:1px;
 	border-bottom:0px;
 	border-style: solid;
 	text-shadow: none;
-/* 	text-shadow:1px 1px 0px #DDDDDD;	 */
 	border-color: rgb(210,210,210);
 	color:rgb(13,25,45);
-	display:block;
+/* 	display:block; */
 	position:relative;
-	background: rgb(245,245,245); /* Old browsers */
+	background: rgb(245,245,245);
 }
-.dbs_tab > .-container > ul > li > a {
+.dbs_tab > .-container > .-tabs > .-tab > a {
 	display: block;
 	height: 100%;
 	width: 100%;	
 }
 
 
-.dbs_tab > .-container > ul > li > .loading_container{
+.dbs_tab > .-container > .-tabs > .-tab > .loading_container{
 	position: absolute;
 	display: block;
 	top: 0px;
@@ -95,7 +109,7 @@
 	margin-left: -6px;
 }
 
-.dbs_tab > .-container > ul > li > .loading_container .-loading{
+.dbs_tab > .-container > .-tabs > .-tab > .loading_container .-loading{
 	-ms-filter: invert(100%);
     -o-filter: invert(100%);
     -moz-filter: invert(100%);
@@ -103,13 +117,13 @@
     filter: invert(100%);
 }
 
-.dbs_tab > .-container > ul > li > a > .-icon{
+.dbs_tab > .-container > .-tabs > .-tab > a > .-icon{
   	float: left;
     position: relative;
     top: 2px	
 }
 
-.dbs_tab > .-container > ul > li > a > .-caption{
+.dbs_tab > .-container > .-tabs > .-tab > a > .-caption{
 	float:left;
 	color:inherit;
 	display:inline-block;
@@ -119,7 +133,7 @@
 	padding-right:2px;
 }
 
-.dbs_tab > .-container > ul > li > a.-iconclose{
+.dbs_tab > .-container > .-tabs > .-tab > a.-iconclose{
 	display:inline-block;
 	position:relative;
 	margin-left:6px;
@@ -127,7 +141,7 @@
 	top:4px;
 }
 
-.dbs_tab > .-container > ul > li > a.-iconclose:HOVER{
+.dbs_tab > .-container > .-tabs > .-tab > a.-iconclose:HOVER{
 	background-position: -33px -0px;
 }
 

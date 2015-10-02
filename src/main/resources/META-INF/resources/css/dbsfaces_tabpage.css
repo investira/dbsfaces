@@ -6,15 +6,15 @@
 	padding: 5px;
 	height: 100%;
 	color:rgb(13, 25, 45);
-	border-top: 0px;
-	border-left: 1px;
-	border-right: 1px;
-	border-bottom: 1px;
-	-webkit-border-radius:0px 0px 3px 3px;  
-	-moz-border-radius: 0px 0px 3px 3px;
-	border-radius: 0px 0px 3px 3px;
-	border-style:solid;
-	border-color: rgb(210,210,210);
+/* 	border-top: 0px; */
+/* 	border-left: 1px; */
+/* 	border-right: 1px; */
+/* 	border-bottom: 1px; */
+/* 	-webkit-border-radius:0px 0px 3px 3px;   */
+/* 	-moz-border-radius: 0px 0px 3px 3px; */
+/* 	border-radius: 0px 0px 3px 3px; */
+/* 	border-style:solid; */
+/* 	border-color: rgb(210,210,210); */
 	
 	background: rgb(245,245,245); /* Old browsers */
 	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
@@ -30,7 +30,6 @@
 .dbs_tabPage.-selected{
 /* 	display:table !important;	10/08/2013 - Comentado por não funcionar a height 100% no dbscom:report */
 	display: inline-block; 
-	xborder-top: solid 1px;
 }
 
 

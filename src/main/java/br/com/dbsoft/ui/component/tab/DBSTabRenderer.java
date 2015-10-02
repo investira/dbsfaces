@@ -81,17 +81,20 @@ public class DBSTabRenderer extends DBSRenderer {
 			xWriter.startElement("div", xTab);
 				xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER, "class");
 				//Abas com os título ========================================================================
-				xWriter.startElement("ul", xTab);
-					for (int xI=xTab.getChildren().size()-1; xI >= 0; xI--){
+				xWriter.startElement("div", xTab);
+					xWriter.writeAttribute("class", "-tabs", "class");
+//					for (int xI=xTab.getChildren().size()-1; xI >= 0; xI--){
+					for (int xI=0; xI <= xTab.getChildren().size()-1; xI++){	
 						if (xTab.getChildren().get(xI) instanceof DBSTabPage){
 							DBSTabPage xPage = (DBSTabPage) xTab.getChildren().get(xI);
 							if (xPage.isRendered()){
-								xWriter.startElement("li", xTab);  
+								xWriter.startElement("div", xTab);  
 									String xPageId = xPage.getAttributes().get("id").toString();
 									String xPageClientId = xClientId + DBSFaces.SEPARATOR + xPageId;
 
 									xWriter.writeAttribute("id", xPageClientId + "_aba", null);
 									xWriter.writeAttribute("name", xPageClientId + "_aba", null);
+									xWriter.writeAttribute("class", "-tab", "class");	
 									DBSFaces.setAttribute(xWriter, "tabPage", xPageClientId, "tabPage");
 									
 									encodeClientBehaviors(pContext, xPage);
@@ -131,14 +134,15 @@ public class DBSTabRenderer extends DBSRenderer {
 											xWriter.endElement("span");
 										xWriter.endElement("span");
 									}
-								xWriter.endElement("li");
+								xWriter.endElement("div");
 							}
 						}
 					}
-				xWriter.endElement("ul");
+				xWriter.endElement("div");
 				
 				//Conteúdo da páginas ======================================================================================
 				xWriter.startElement("div", xTab);
+					xWriter.writeAttribute("class", "-tabPage",  null);
 					xWriter.startElement("div", xTab);
 						xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT.trim(), "class");
 
@@ -153,7 +157,8 @@ public class DBSTabRenderer extends DBSRenderer {
 						xInput.encodeAll(pContext);
 
 						//Encode das páginas filhas, sem o conteúdo, pois será posteriormente chamado via atualização ajax
-						for (int xI=xTab.getChildren().size()-1; xI >= 0; xI--){
+//						for (int xI=xTab.getChildren().size()-1; xI >= 0; xI--){
+						for (int xI=0; xI <= xTab.getChildren().size()-1; xI++){	
 							if (xTab.getChildren().get(xI) instanceof DBSTabPage){
 								DBSTabPage xPage = (DBSTabPage) xTab.getChildren().get(xI);
 								if (xPage.isRendered()){

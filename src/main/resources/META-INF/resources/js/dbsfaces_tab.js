@@ -1,10 +1,9 @@
 dbs_tab = function(pId) {
-	
-	$(pId + " > .-container > ul > li").click(function(e) {
+    $(pId + " > .-container > .-tabs > .-tab").click(function(e) {
 		dbsfaces.tab.changeTab(pId, this);
    	});
 
-//	$(pId + " > .-container > ul > li > .-iconclose").click(function(e) {
+//	$(pId + " > .-container > .-tabs > .-tab > .-iconclose").click(function(e) {
 //		dbsfaces.tab.changeTab(pId, this);
 //		e.stopImmediatePropagation();
 //		return false;
@@ -14,11 +13,10 @@ dbs_tab = function(pId) {
 		e.stopPropagation();
 	});
 
-	$(pId + " > .-container > ul > li").on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
+	$(pId + " > .-container > .-tabs > .-tab").on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
 		$(this).children("a").css("opacity",1);
 		$(this).children(".loading_container").remove();
 	});
-
 }
 
 dbsfaces.tab = {
@@ -29,10 +27,10 @@ dbsfaces.tab = {
 
 		var xTabPageId = dbsfaces.util.jsid("#" + pTabPageRawId);
 		var xTabPage = $(xTabPageId);
-		var xTabAba = $(".dbs_tab > .-container > ul > li[tabpage='" + pTabPageRawId + "']");
+		var xTabAba = $(".dbs_tab > .-container > .-tabs > .-tab[tabpage='" + pTabPageRawId + "']");
 		
 		/* título */
-		$(pId + " > .-container > ul > li").removeClass("-selected");
+		$(pId + " > .-container > .-tabs > .-tab").removeClass("-selected");
 		xTabAba.addClass("-selected");
 		
 		/* conteúdo */
@@ -70,7 +68,7 @@ dbsfaces.tab = {
 	},
 
 	clickTabPage: function(pTabPageId){
-		$(".dbs_tab > .-container > ul > li[tabpage='" + pTabPageId + "']").click();
+		$(".dbs_tab > .-container > .-tabs > .-tab[tabpage='" + pTabPageId + "']").click();
 	},
 	
 	closeTab: function(pId, e){
