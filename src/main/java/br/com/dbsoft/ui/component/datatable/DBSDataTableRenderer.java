@@ -333,6 +333,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(pWriter, "type", "text", null);
 			DBSFaces.setAttribute(pWriter, "class", "-foo", null);
 			DBSFaces.setAttribute(pWriter, "autocomplete", "off", null);
+			DBSFaces.setAttribute(pWriter, "readonly", "readonly", null);
 			DBSFaces.setAttribute(pWriter, "value", pDataTable.getCurrentRowIndex(), null);
 		pWriter.endElement("input");
 	}
