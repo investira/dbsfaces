@@ -105,22 +105,23 @@
 .dbs_dataTable > .-container > .-header > .-toolbar > nav > div{
 	display: inline-block;
 }
+/* Comentado em 01/out/2015 Ricardo - Verificar necessidade */
+/* .dbs_dataTable > .-container > .-header > .-toolbar > nav > div > .-icon{ */
+/*     position: absolute; */
+/* 	background-color: rgb(13, 25, 45); */
+/*     border-style: outset; */
+/*     border-width: 1px; */
+/*     display: inline-block; */
+/*     float: left; */
+/*     left: 0; */
+/*     line-height: 9px; */
+/*     padding: 3px 2px 2px 3px; */
+/*     top: 0;     */
+/* } */
 
-.dbs_dataTable > .-container > .-header > .-toolbar > nav > div > .-icon{
-    position: absolute;
-	background-color: rgb(13, 25, 45);
-    border-style: outset;
-    border-width: 1px;
-    display: inline-block;
-    float: left;
-    left: 0;
-    line-height: 9px;
-    padding: 3px 2px 2px 3px;
-    top: 0;    
-}
-
-.dbs_dataTable > .-container > .-header > .-toolbar > nav > div > .dbs_button{
-}
+/* Comentado em 01/out/2015 Ricardo - Verificar necessidade */
+/* .dbs_dataTable > .-container > .-header > .-toolbar > nav > div > .dbs_button{ */
+/* } */
 
 
 
