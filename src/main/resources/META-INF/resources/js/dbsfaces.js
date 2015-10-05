@@ -476,7 +476,8 @@ dbsfaces.util = {
 	isiOS: function(){
 		var xNav = navigator.userAgent.toLowerCase();
 		if(xNav.match(/iphone/i) || 
-		   xNav.match(/ipod/i)) {
+		   xNav.match(/ipod/i) ||
+		   xNav.match(/ipad/i)) {
 			return true;
 		};
 	    return false;
