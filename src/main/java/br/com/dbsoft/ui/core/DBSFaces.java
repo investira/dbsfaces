@@ -2,6 +2,7 @@ package br.com.dbsoft.ui.core;
 
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -1780,6 +1781,10 @@ public class  DBSFaces {
 	 * @throws DBSIOException
 	 */
 	public static String getRenderedViewContent(String pURL, List<String> pListParams) throws DBSIOException {
+		if (pURL == null){
+			wLogger.error("URL não informada");
+			return "";
+		}
  		StringBuilder xResultado = new StringBuilder();
  		List<String>		xListProperty = pListParams;
 		HttpURLConnection 	xConnection = null;
@@ -1821,6 +1826,9 @@ public class  DBSFaces {
 			for (int xChar = xBuffer.read(); xChar != -1; xChar = xBuffer.read()){
 	            xResultado.append((char)xChar);
 			}
+		} catch (FileNotFoundException e) {
+			wLogger.error("Arquivo não achado:" + pURL);
+			return "";
 		} catch (IOException e) {
 			DBSIO.throwIOException(e);
 			return "";
@@ -1881,6 +1889,7 @@ public class  DBSFaces {
 		}
 		return xClass;
 	}
+
 	
 	/**
 	 * Cria coluna especial no DataTable contendo os respectivos controles
