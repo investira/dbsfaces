@@ -336,6 +336,9 @@ dbsfaces.inputText = {
 	},
 	
 	fixLayout: function(pId){
+		if ($(pId + "-dataTable").length == 0){
+			return;
+		}
 		$(pId + "-dataTable tbody:first").attr('tabindex', '-1');
 		$(pId + "-dataTable input:first.-foo").attr('tabindex', '-1');
 		

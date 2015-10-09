@@ -31,6 +31,9 @@ dbsfaces.tooltip = {
 		var xTime = dbsfaces.ui.getDelayFromTextLength(xTooltip.text());
 		
 		wTimer = setTimeout(function(){
+			if ($(e).length == 0){
+				return;
+			}
 			var xLeft = $(e).offset().left;
 			var xTop = $(e).offset().top + $(e).outerHeight();
 			/* Se a posição do tooltip for superior ao tamanho do documento, 

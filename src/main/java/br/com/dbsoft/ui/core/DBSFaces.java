@@ -1313,6 +1313,11 @@ public class  DBSFaces {
 				xExecute = "execute:'" + pvRemoveFirstColon(pExecute) + "',";
 			}
 			xLocalOnClick = "jsf.ajax.request(this, event, {" + xExecute + " render:'" +  xClientUpdate +  "', onevent:dbsfaces.onajax, onerror:dbsfaces.onajaxerror}); return false";
+			
+//			xExecute = "@this";
+//			xLocalOnClick = "mojarra.ab(this,event,'click',0,'" + xClientUpdate + "');return false";
+//			xLocalOnClick = "mojarra.ab(this,event,'click',0,'" + xClientUpdate + "',{'onevent':dbsfaces.onajax,'onerror':dbsfaces.onajaxerror});return false";
+
 			if (xUserOnClick != null){
 				xLocalOnClick = xLocalOnClick.replaceAll("'", "\\\\'");
 				xUserOnClick = xUserOnClick.replaceAll("'", "\\\\'");

@@ -1,8 +1,14 @@
 dbs_messageList = function(pId) {
 	var xMouseenter = function(e) {
+		if ($(pId + " > .-container > .-list").length == 0){
+			return;
+		}
 		$(pId + " > .-container > .-list").addClass("-opened");
 	}
 	var xMouseleave = function(e) {
+		if ($(pId + " > .-container > .-list").length == 0){
+			return;
+		}
 		$(pId + " > .-container > .-list").removeClass("-opened");
 	}
 	

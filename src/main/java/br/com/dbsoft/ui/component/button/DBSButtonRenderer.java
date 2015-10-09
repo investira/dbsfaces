@@ -20,7 +20,7 @@ public class DBSButtonRenderer extends DBSRenderer {
     @Override
 	public void decode(FacesContext pContext, UIComponent pComponent) {
         DBSButton 	xButton = (DBSButton) pComponent;
-		String 		xClientId = xButton.getClientId(pContext);
+		String 		xClientId = xButton.getClientId(); //xButton.getClientId(pContext);
         if(xButton.getReadOnly()) {return;}
         
 //        if(xButton.isDisabled() || xButton.isReadonly()) {
@@ -29,6 +29,8 @@ public class DBSButtonRenderer extends DBSRenderer {
         
         decodeBehaviors(pContext, xButton);
         
+//        String xSourceId = DBSString.toString(pContext.getExternalContext().getRequestParameterMap().get(DBSFaces.PARTIAL_SOURCE_PARAM),"");
+
 		if (RenderKitUtils.isPartialOrBehaviorAction(pContext, xClientId) || /*Chamada Ajax*/
 			pContext.getExternalContext().getRequestParameterMap().containsKey(xClientId)) { 	/*Chamada Sem Ajax*/
 			xButton.queueEvent(new ActionEvent(xButton));

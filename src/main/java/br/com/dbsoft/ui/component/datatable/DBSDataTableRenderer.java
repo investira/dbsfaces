@@ -210,25 +210,23 @@ public class DBSDataTableRenderer extends DBSRenderer {
 					}
 					pWriter.startElement("div", pDataTable);
 						DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.TOOLBAR.trim(), null); 
-						//Recria toolbar como componente para poder sofrer updates via ajax
-						
+						//Recria toolbar(div) padrão como componente para poder sofrer updates via ajax
 						//Busca facet que contém o nav e se não, existir cria
 						UIComponent xToolbarControl = pDataTable.getFacet(DBSDataTable.FACET_TOOLBAR_CONTROL);
-						DBSDiv xNav;
-						//Cria nav se não existir
 						if (xToolbarControl == null){
-							xNav = (DBSDiv) pContext.getApplication().createComponent(DBSDiv.COMPONENT_TYPE); 
-							xNav.setTransient(true);
+							//Cria nav se não existir
+							DBSDiv xNav = (DBSDiv) pContext.getApplication().createComponent(DBSDiv.COMPONENT_TYPE); 
+							pDataTable.getChildren().add(xNav);
+							xNav.setTransient(false);
 							xNav.setId("toolbar");
 							xNav.setTagName("nav");
+							xNav.getChildren().add(xToolbar);
 							//Adiciona facet ao componente
 							pDataTable.getFacets().put(DBSDataTable.FACET_TOOLBAR_CONTROL, xNav);
 							xToolbarControl = pDataTable.getFacet(DBSDataTable.FACET_TOOLBAR_CONTROL);
 						}
-						xToolbarControl.getChildren().clear();
-						//Configura o toolbar original do usuário como filho do toolbarcontrol
-						xToolbarControl.getChildren().add(xToolbar);
 						xToolbarControl.encodeAll(pContext);
+
 					pWriter.endElement("div");
 				}
 			pWriter.endElement("div");
