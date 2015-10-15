@@ -5,12 +5,17 @@ import java.util.Collection;
 
 import javax.faces.component.FacesComponent;
 import javax.faces.component.NamingContainer;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.PostAddToViewEvent;
+import javax.faces.event.SystemEvent;
+import javax.faces.event.SystemEventListener;
 
 import br.com.dbsoft.ui.component.DBSUIInput;
 import br.com.dbsoft.ui.core.DBSFaces;
 
 @FacesComponent(DBSFileUpload.COMPONENT_TYPE)
-public class DBSFileUpload extends DBSUIInput implements NamingContainer{
+public class DBSFileUpload extends DBSUIInput implements NamingContainer, SystemEventListener{
 
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.FILEUPLOAD;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
@@ -37,6 +42,8 @@ public class DBSFileUpload extends DBSUIInput implements NamingContainer{
 
     public DBSFileUpload(){
 		setRendererType(DBSFileUpload.RENDERER_TYPE);
+		FacesContext xContext = FacesContext.getCurrentInstance();
+		xContext.getViewRoot().subscribeToViewEvent(PostAddToViewEvent.class, this);
     }
 
 
@@ -81,4 +88,19 @@ public class DBSFileUpload extends DBSUIInput implements NamingContainer{
 	public Collection<String> getEventNames() {
 		return Arrays.asList("action","click", "blur", "load", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "abort", "error", "loadstart", "timeout", "cancel"); 
 	}
+
+
+	@Override
+	public void processEvent(SystemEvent pEvent) throws AbortProcessingException {
+		//Adiciona os botões de start e cancel
+		DBSFaces.createFileUploadButtons(this);
+	}
+
+
+	@Override
+	public boolean isListenerForSource(Object pSource) {
+		return pSource.equals(this);
+	}
+	
+	
 }

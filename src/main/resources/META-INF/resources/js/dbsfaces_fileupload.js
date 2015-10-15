@@ -1,7 +1,7 @@
 dbs_fileUpload = function(pId, pFileUploadServlet) {
 	var wFile = $(pId).find("input[type='file']");
-	var wBtCancel = $(pId).find("[id$='_btCancel']");
-	var wBtStart = $(pId).find("[id$='_btStart']");
+	var wBtCancel = $(pId).find("[id$='btCancel']");
+	var wBtStart = $(pId).find("[id$='btStart']");
 	var wMessage = $(pId).find(".-message");
 	var wFilesWithError = new Array();
 	var wXHR = 0;
