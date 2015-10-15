@@ -123,16 +123,16 @@ dbsfaces.ui = {
 		
 		var xId = "dbs_ajaximg_" + $.trim(pId);
 		//Sempre remove loading se já existir 
-		if ($("#" + xId).length > 0){
-	    	$("#" + xId).remove();
-		}
 		
 		//Exibe loading
 	    if (pShow){
-//			console.log("showLoading:" + pId);
-	        $('body').append("<span id='" + xId + "' class='-loading -large'/>");
-//	    }else{
-//			console.log("HIDELoading:" + pId);
+			if ($("#" + xId).length == 0){
+				$('body').append("<span id='" + xId + "' class='-loading -large'/>");
+			}
+	    }else{
+			if ($("#" + xId).length > 0){
+		    	$("#" + xId).remove();
+			}
 	    }
 	},
 	
