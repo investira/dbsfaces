@@ -243,8 +243,10 @@
 
 .dbs_dataTable > .-container > .-content > table > thead > tr > th{
 	font-weight: normal;
-	padding:0px 2px 0px 2px;
 	height: inherit;
+}
+.dbs_dataTable > .-container > .-content > table > thead > tr > th:not(.-checkbox){
+	padding:0px 2px 0px 2px;
 }
 
 .dbs_dataTable > .-container > .-content > table > tbody > tr > td{
