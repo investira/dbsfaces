@@ -39,11 +39,11 @@ public class DBSLabelRenderer extends DBSRenderer {
 		if (!pComponent.isRendered()){return;}
 		DBSLabel xLabel = (DBSLabel) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
-		String xClass = "";
+		String xClass = DBSFaces.CSS.LABEL.MAIN;
 		
 		if (xLabel.getSelectable()!=null){
 			if (!xLabel.getSelectable()){
-				xClass = DBSFaces.CSS.NOT_SELECTABLE.trim() + " ";
+				xClass += DBSFaces.CSS.NOT_SELECTABLE.trim() + " ";
 			}
 		}
 		if (!DBSObject.isEmpty(xLabel.getStyleClass())) {
@@ -63,6 +63,11 @@ public class DBSLabelRenderer extends DBSRenderer {
 			}
 			
 			encodeClientBehaviors(pContext, xLabel);
+			if (xLabel.getIconClass() != null){
+				xWriter.startElement("span", xLabel);
+					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.ICON + xLabel.getIconClass(), null);
+				xWriter.endElement("span");
+			}
 
 			String xValueToRender = DBSFaces.getStringValueToRender(pContext, xLabel);
 			if(xValueToRender != null) {

@@ -20,7 +20,8 @@ public class DBSLabel extends DBSUIOutput implements ClientBehaviorHolder {
 		labelFor,
 		labelWidth,
 		tooltip,
-		selectable;
+		selectable,
+		iconClass;
 
 		String toString;
 
@@ -83,6 +84,15 @@ public class DBSLabel extends DBSUIOutput implements ClientBehaviorHolder {
 	public Boolean getSelectable() {
 		return (Boolean) getStateHelper().eval(PropertyKeys.selectable, true);
 	}	
+	
+	public String getIconClass() {
+		return (String) getStateHelper().eval(PropertyKeys.iconClass, null);
+	}
+	
+	public void setIconClass(String pIconClass) {
+		getStateHelper().put(PropertyKeys.iconClass, pIconClass);
+		handleAttribute("iconClass", pIconClass);
+	}
 
 	@Override
     public String getDefaultEventName()

@@ -729,6 +729,14 @@
 		</attribute>
 		<attribute>
 			<description>
+            	iconClass
+            </description>
+			<name>iconClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
             	Componente que receberá foco quando o label for clicado 
             </description>
 			<name>labelFor</name>

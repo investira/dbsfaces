@@ -25,6 +25,7 @@ import br.com.dbsoft.ui.core.DBSFaces;
 	@ResourceDependency(library = "css", name = "dbsfaces_dialog.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_parallax.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_fileupload.css", target = "head"),
+	@ResourceDependency(library = "css", name = "dbsfaces_label.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_inputtext.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_inputtextarea.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_inputphone.css", target = "head"),
