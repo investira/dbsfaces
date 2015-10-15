@@ -35,6 +35,7 @@ import javax.faces.component.UIParameter;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.ValueHolder;
 import javax.faces.component.behavior.AjaxBehavior;
+import javax.faces.component.html.HtmlInputHidden;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.context.ExternalContext;
@@ -62,6 +63,7 @@ import br.com.dbsoft.ui.component.checkbox.DBSCheckbox;
 import br.com.dbsoft.ui.component.datatable.DBSDataTable;
 import br.com.dbsoft.ui.component.datatable.DBSDataTableColumn;
 import br.com.dbsoft.ui.component.dialog.DBSDialog.DIALOG_ICON;
+import br.com.dbsoft.ui.component.fileupload.DBSFileUpload;
 import br.com.dbsoft.util.DBSBoolean;
 import br.com.dbsoft.util.DBSDate;
 import br.com.dbsoft.util.DBSIO;
@@ -279,10 +281,16 @@ public class  DBSFaces {
 
 		}
 		
+		public static class LABEL
+		{	
+			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.LABEL;
+		}
+		
 		public static class UL
 		{	
 			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.UL;
 		}
+
 		public static class LI
 		{	
 			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.LI;
@@ -1302,7 +1310,7 @@ public class  DBSFaces {
 	 * @return
 	 */
 	public static String getSubmitString(UIComponentBase pComponent, String pSourceEvent, String pExecute, String pClientUpdate){
-		String xUserOnClick = (String) pComponent.getAttributes().get(pSourceEvent);
+		String xUserOnClick = (String) pComponent.getAttributes().get(pSourceEvent); 
 		String xLocalOnClick = xUserOnClick;
 		String xClientUpdate = pvRemoveFirstColon(pClientUpdate);
 		
@@ -1316,7 +1324,7 @@ public class  DBSFaces {
 			
 //			xExecute = "@this";
 //			xLocalOnClick = "mojarra.ab(this,event,'click',0,'" + xClientUpdate + "');return false";
-//			xLocalOnClick = "mojarra.ab(this,event,'click',0,'" + xClientUpdate + "',{'onevent':dbsfaces.onajax,'onerror':dbsfaces.onajaxerror});return false";
+//			xLocalOnClick = "mojarra.ab(this,event,'action',0,'" + xClientUpdate + "',{'onevent':dbsfaces.onajax,'onerror':dbsfaces.onajaxerror});return false";
 
 			if (xUserOnClick != null){
 				xLocalOnClick = xLocalOnClick.replaceAll("'", "\\\\'");
@@ -1869,6 +1877,8 @@ public class  DBSFaces {
 			throw e;
 		}
 	} 
+	
+	
  	
  	//=======================================================================
 	//DataTable 															=
@@ -2006,6 +2016,93 @@ public class  DBSFaces {
 		return xFacetPesquisar;
 	}
 
+	/**
+	 * Cria input somente para que possa ser posssível solicitar o update(render) ajax dele,
+	 * que, posteriormente será redireciodado para o encode do toolbar.<br/>
+	 * É um artifício para contornar a impossibilidade de solicitar o update de um facet, como
+	 * é o caso do toolbar. 
+	 * @param pDataTable
+	 */
+	public static void createDataTableToolbarFoo(DBSDataTable pDataTable){
+		UIComponent xFacetToolbar = pDataTable.getFacet(DBSDataTable.FACET_TOOLBAR);
+		if (xFacetToolbar == null || xFacetToolbar.getChildren().size() == 0){return;}
+		UIComponent xFacetToolbarControl = pDataTable.getFacet(DBSDataTable.FACET_TOOLBAR_CONTROL);
+		if (xFacetToolbarControl == null){
+			FacesContext xContext = FacesContext.getCurrentInstance();	
+	
+			HtmlInputHidden xInputHidden = (HtmlInputHidden) xContext.getApplication().createComponent(HtmlInputHidden.COMPONENT_TYPE);
+			xInputHidden.setId("toolbar");
+			//Cria o facet e inclui botão dentro dele. A inclusão do botão através do facet, evita problemas em incluir o botao na view várias vezes.
+			pDataTable.getFacets().put(DBSDataTable.FACET_TOOLBAR_CONTROL, xInputHidden); 
+		}
+	}
+
+	/**
+	 * Encode do cabeçalho contendo os filtros e botões do toolbar definidos pelo usuário.
+	 * O encode do header da tabela é efetuado em outra rotina.
+	 * @param pContext
+	 * @param pDataTable
+	 * @param pWriter
+	 * @throws IOException
+	 */
+	public static void encodeDataTableHeaderToolbar(DBSDataTable pDataTable) {
+		UIComponent xToolbar = pDataTable.getFacet(DBSDataTable.FACET_TOOLBAR);
+		FacesContext xFC = FacesContext.getCurrentInstance();
+		ResponseWriter xWriter = xFC.getResponseWriter();
+
+		// Toolbar -------------------------
+		try {
+			if (xToolbar != null) {
+				xWriter.startElement("nav", pDataTable);
+					DBSFaces.setAttribute(xWriter, "id", pDataTable.getClientId() + ":toolbar", null);
+					DBSFaces.setAttribute(xWriter, "name", pDataTable.getClientId() + ":toolbar", null);
+					xToolbar.encodeAll(xFC);
+				xWriter.endElement("nav");
+			}
+		} catch (IOException e) {
+			wLogger.error(e);
+		}
+	}
+	
+	public static void createFileUploadButtons(DBSFileUpload pFileUpload){
+		DBSButton xButtonStart = (DBSButton) pFileUpload.getFacet("btStart");
+		if (xButtonStart == null){
+			xButtonStart = (DBSButton) FacesContext.getCurrentInstance().getApplication().createComponent(DBSButton.COMPONENT_TYPE);
+			xButtonStart.setId("btStart");
+			xButtonStart.setIconClass(DBSFaces.CSS.ICON + " -i_upload");
+			xButtonStart.setReadOnly(pFileUpload.getReadOnly());
+			xButtonStart.setExecute("");
+			xButtonStart.setUpdate("");
+			if (DBSObject.isEmpty(pFileUpload.getTooltip())) {
+				xButtonStart.setTooltip("Upload de arquivo");
+			} else {
+				xButtonStart.setTooltip(pFileUpload.getTooltip());
+			}
+			if (DBSObject.isEmpty(pFileUpload.getFileUploadServletPath())){
+				xButtonStart.setReadOnly(true);
+			}
+			//Adiciona como filho para gerar o id corretamente
+			pFileUpload.getFacets().put("btStart", xButtonStart);
+		}
+
+		//cria botão CANCEL ----------------
+		DBSButton xButtonCancel = (DBSButton) pFileUpload.getFacet("btCancel");
+		if (xButtonCancel == null){ 
+			xButtonCancel = (DBSButton) FacesContext.getCurrentInstance().getApplication().createComponent(DBSButton.COMPONENT_TYPE);
+			xButtonCancel.setId("btCancel");
+			xButtonCancel.setExecute("");
+			xButtonCancel.setUpdate("");
+			xButtonCancel.setIconClass(DBSFaces.CSS.ICON + " -i_media_stop");
+			xButtonCancel.setStyle("display:none;");
+			xButtonCancel.setReadOnly(pFileUpload.getReadOnly());
+			xButtonCancel.setTooltip("Cancelar upload");
+			if (DBSObject.isEmpty(pFileUpload.getFileUploadServletPath())){
+				xButtonCancel.setReadOnly(true);
+			}
+			//Adiciona como filho para gerar o id corretamente
+			pFileUpload.getFacets().put("btCancel", xButtonCancel);
+		}
+	}
 	/**
 	 * Retorna no nome do attributo(sem o nome do bean) a partir da EL do value do campo informado
 	 * @param pInput

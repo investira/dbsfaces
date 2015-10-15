@@ -14,7 +14,6 @@ import com.sun.faces.facelets.compiler.UIInstructions;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.button.DBSButton;
-import br.com.dbsoft.ui.component.div.DBSDiv;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSObject;
@@ -202,6 +201,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 		
 				// Toolbar -------------------------
 				if (xToolbar != null) {
+//					xToolbar.setTransient(true);
 					if (!pDataTable.getCaption().equals("") || 
 						xFilter != null) {
 						pWriter.startElement("span", pDataTable);
@@ -210,30 +210,15 @@ public class DBSDataTableRenderer extends DBSRenderer {
 					}
 					pWriter.startElement("div", pDataTable);
 						DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.TOOLBAR.trim(), null); 
-						//Recria toolbar(div) padrão como componente para poder sofrer updates via ajax
-						//Busca facet que contém o nav e se não, existir cria
-						UIComponent xToolbarControl = pDataTable.getFacet(DBSDataTable.FACET_TOOLBAR_CONTROL);
-						if (xToolbarControl == null){
-							//Cria nav se não existir
-							DBSDiv xNav = (DBSDiv) pContext.getApplication().createComponent(DBSDiv.COMPONENT_TYPE); 
-							pDataTable.getChildren().add(xNav);
-							xNav.setTransient(false);
-							xNav.setId("toolbar");
-							xNav.setTagName("nav");
-							xNav.getChildren().add(xToolbar);
-							//Adiciona facet ao componente
-							pDataTable.getFacets().put(DBSDataTable.FACET_TOOLBAR_CONTROL, xNav);
-							xToolbarControl = pDataTable.getFacet(DBSDataTable.FACET_TOOLBAR_CONTROL);
-						}
-						xToolbarControl.encodeAll(pContext);
-
+							DBSFaces.encodeDataTableHeaderToolbar(pDataTable);
 					pWriter.endElement("div");
 				}
 			pWriter.endElement("div");
 		}
 		pvEncodeInput(pContext, pDataTable, pWriter);
-
 	}
+	
+
 	
 	private String pvGetInputFooId(FacesContext pContext, DBSDataTable pDataTable){
 		return pDataTable.getClientId(pContext) + ":foo";

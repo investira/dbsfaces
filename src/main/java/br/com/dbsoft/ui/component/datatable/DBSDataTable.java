@@ -6,10 +6,13 @@ import java.util.Collection;
 import java.util.Collections;
 
 import javax.faces.component.FacesComponent;
+import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
+import javax.faces.context.PartialViewContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PostAddToViewEvent;
+import javax.faces.event.PreRenderComponentEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 
@@ -131,26 +134,49 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 		if (event.getSource() instanceof DBSDataTable &&
 			event instanceof PostAddToViewEvent) {
 			DBSFaces.createDataTableBotaoPesquisar(this);
-			DBSFaces.createDataTableSpecialColumns(this); 
+			DBSFaces.createDataTableSpecialColumns(this);
+			DBSFaces.createDataTableToolbarFoo(this);
+		}else if (event instanceof PreRenderComponentEvent && !(event.getSource() instanceof DBSDataTable)){
+			//Redireciona para o encode do toolbar
+			DBSFaces.encodeDataTableHeaderToolbar(this);
 		}
 	}
 
 	@Override
-	public boolean isListenerForSource(Object source) {
-		// String xStr = "";
-		// if (source instanceof UIComponent){
-		// xStr = ((UIComponent) source).getClientId();
-		// }
-		// xStr = xStr + "\t\t:" + source.getClass().getName();
-		//
-		// System.out.println("isListenerForSource:" + xStr);
-		//
-		// return ((source instanceof UIViewRoot) || (source instanceof DBSDataTable));
-		// return DBSFaces.isDynamicSource(this, source);
-		//return (source instanceof UIViewRoot);
-//		return (source instanceof DBSDataTable) ;
-//		return true && !(source instanceof UIOutput);
-		return source.equals(this);
+	public boolean isListenerForSource(Object pSource) {
+//		 String xStr = "";
+//		 if (pSource instanceof UIComponent){
+//		 xStr = ((UIComponent) pSource).getClientId();
+//		 }
+//		 xStr += "\t:" + pSource.getClass().getName();
+//		 xStr += "\t:" + FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds();
+//
+// 		 System.out.println("isListenerForSource:" + xStr);
+
+		UIComponent xSource =  (UIComponent) pSource;
+		UIComponent xSourceParent = xSource.getParent();
+
+		 //Verifica se source é o toolbar deste dataTable e se foi solicitado o update(render) ajax dele.
+		if (xSourceParent != null
+	 	 && xSourceParent.equals(this)){
+			UIComponent xToolbarControlFacet = xSourceParent.getFacet(FACET_TOOLBAR_CONTROL);
+			if (xToolbarControlFacet !=null 
+			 && pSource.equals(xToolbarControlFacet)){
+				PartialViewContext xPVC = FacesContext.getCurrentInstance().getPartialViewContext();
+				//Se foi solicitado o update(render) ajax do toolbar
+				if (xPVC !=null && xPVC.getRenderIds().size() > 0){
+					if (xPVC.getRenderIds().contains(xToolbarControlFacet.getClientId())){
+						return true;
+					}
+				}
+			}
+		}
+		//Se é o dataTable
+		if(pSource.equals(this)){
+			return true;
+		}
+		
+		return false;
 	}
 
 	public String getStyle() {
