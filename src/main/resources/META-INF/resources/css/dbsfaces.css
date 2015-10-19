@@ -837,7 +837,7 @@ td > .dbs_icon{
 }
 [class^="-i_"].-yellow, 
 [class*=" -i_"].-yellow {
-	color:yellow;
+	color:rgb(210,210,0);
 }
 [class^="-i_"].-blue, 
 [class*=" -i_"].-blue {
