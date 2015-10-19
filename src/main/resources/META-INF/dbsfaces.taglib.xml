@@ -144,7 +144,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Atributo que estará vinculado a este componente para acesso direto.
+                Atributo que estará vinculado a este componente para acesso direto. Binding só deve ser usado em bean REQUESTSCOPED. 
             </description>
 			<name>binding</name>
 			<required>false</required>
@@ -2951,14 +2951,6 @@
 			<name>showTabPageOnClick</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
-                Lista de tabPages para criação dinamica do tab
-            </description>
-			<name>binding</name>
-			<required>false</required>
-			<type>java.lang.Object</type>
 		</attribute>
 		<attribute>
 			<description>
