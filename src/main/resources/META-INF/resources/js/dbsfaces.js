@@ -534,6 +534,9 @@ dbsfaces.util = {
 
 
 dbsfaces.util.jsid = function(pClientId){
+	//Retira dois pontos(:) do inicio
+	pClientId = pClientId.replace(/^(:)/,"");
+	//Convert os outros dois pontos(:)  em escaped caracter
 	return pClientId.replace(/:/g,"\\:");
 }
 

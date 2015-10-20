@@ -7,7 +7,11 @@ dbs_push = function(pId, pUrl) {
 		setTimeout(function(){
 			var xData = dbsfaces_push.validIds(pId, e.data);
 			if (xData.length > 0){
-				jsf.ajax.request($(pId), 'update', {render:xData, execute:'@none', onevent:dbsfaces.onajax, onerror:dbsfaces.onajaxerror});
+				if ($(pId).length == 0){
+					console.log(pId + " não existente.");
+				}else{
+					jsf.ajax.request($(pId).get(0), 'update', {render:xData, execute:'@none', onevent:dbsfaces.onajax, onerror:dbsfaces.onajaxerror});
+				}
 			}
 		}, 0);	
 		return false;
@@ -25,16 +29,16 @@ dbs_push = function(pId, pUrl) {
 
 dbsfaces_push = {
 	showOpen: function(pId){
-		$(pId).attr("class", "-i_bullet_green");
+		$(pId + " > .-content").attr("class", "-i_bullet_green");
 	},
 	showUpdate: function(pId){
-		$(pId).attr("class", "-i_bullet_blue");
+		$(pId + " > .-content").attr("class", "-i_bullet_blue");
 	},
 	showError: function(pId){
-		$(pId).attr("class", "-i_bullet_red");
+		$(pId + " > .-content").attr("class", "-i_bullet_red");
 	},
 	showClose: function(pId){
-		$(pId).attr("class", "");
+		$(pId + " > .-content").attr("class", "");
 	},									
 
 	//Retorna somente os componentes que estão momentaneamente com o push suspenso
@@ -51,7 +55,7 @@ dbsfaces_push = {
 			//Verica se componente existe na tela
 		    if ($("#" + dbsfaces.util.jsid(xIds[i])).length != 0){
 		    	//Adiciona a lista se existir
-		    	xData += xIds[i] + " "
+		    	xData += xIds[i].replace(/^(:)/,"") + " ";
 		    }
 		}
 		return xData.trim();
