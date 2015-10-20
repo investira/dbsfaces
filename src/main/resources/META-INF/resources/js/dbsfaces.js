@@ -82,6 +82,30 @@ dbsfaces.sound = {
 	}
 }
 
+dbsfaces.url = {
+	getParams : function(){
+		var xQueryString = {};
+		var xQuery = window.location.search.substring(1);
+		var xVars = xQuery.split("&");
+		for (var i=0;i<xVars.length;i++) {
+			var xPair = xVars[i].split("=");
+			var xParam = xPair[0].toLowerCase();
+		    // If first entry with this name
+			if (typeof xQueryString[xParam] === "undefined") {
+			  xQueryString[xParam] = decodeURIComponent(xPair[1]);
+			    // If second entry with this name
+			} else if (typeof xQueryString[xParam] === "string") {
+			  var xArr = [ xQueryString[xParam],decodeURIComponent(xPair[1]) ];
+			  xQueryString[xParam] = xArr;
+			    // If third or later entry with this name
+			} else {
+			  xQueryString[xParam].push(decodeURIComponent(xPair[1]));
+			}
+		}
+		return xQueryString;
+	}
+}
+
 dbsfaces.ui = {
 	centerVertical : function(pId){
 		var xH = $(pId).outerHeight() / 2;
