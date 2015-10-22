@@ -40,7 +40,7 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 		multipleSelection, 
 		searchAction, 
 		viewOneAction, 
-		selectAllAction, 
+		selectAllAction,
 		selected, 
 		update,
 		keyColumnName,
@@ -238,6 +238,20 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 	public void setMultipleSelection(Boolean pMultipleSelection) {
 		getStateHelper().put(PropertyKeys.multipleSelection, pMultipleSelection);
 		handleAttribute("multipleSelection", pMultipleSelection);
+	}
+
+	/**
+	 * Indica se item da lista pode ser selecionado.
+	 * @return
+	 */
+	public Boolean isSelectable() {
+		if (this.getHasViewOneAction() 
+		 || this.getMultipleSelection() 
+		 || !this.getKeyColumnName().equals("")){
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 	public String getSearchAction() {

@@ -169,6 +169,9 @@ dbsfaces.dataTable = {
 	},
 		
 	rowSelect: function(pId, pNew){
+		if(!$(pId).hasClass("-selectable")){
+			return;
+		}
 		dbsfaces.dataTable.rowFocusRemove(pId);
 		dbsfaces.dataTable.rowDeselect(pId);
 		if (pNew != null){

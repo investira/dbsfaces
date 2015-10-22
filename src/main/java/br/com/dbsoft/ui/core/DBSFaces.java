@@ -1939,9 +1939,7 @@ public class  DBSFaces {
 	 */
 	public static void createDataTableSpecialColumns(DBSDataTable pDataTable){
 		FacesContext xContext = FacesContext.getCurrentInstance();	
-		if (pDataTable.getHasViewOneAction() 
-		 || pDataTable.getMultipleSelection() 
-		 || !pDataTable.getKeyColumnName().equals("")){
+		if (pDataTable.isSelectable()){
 			DBSDataTableColumn xC0 = (DBSDataTableColumn) DBSFaces.findComponent("C0", pDataTable.getFacetsAndChildren());
 			if(xC0 == null){
 				xC0 = (DBSDataTableColumn) xContext.getApplication().createComponent(DBSDataTableColumn.COMPONENT_TYPE);

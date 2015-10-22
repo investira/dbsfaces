@@ -231,7 +231,7 @@
 	border-color: rgba(0,0,0,0.1); 
 }
 
-.dbs_dataTable:not(.-formStyle_Table) > .-container > .-content > table > tbody > tr {
+.dbs_dataTable.-selectable:not(.-formStyle_Table) > .-container > .-content > table > tbody > tr {
 	cursor: pointer;
 }
 
@@ -367,7 +367,7 @@
 }
 
 
-.dbs_dataTable:not(.-formStyle_Table) > .-container > .-content > table > tbody > .-selected {
+.dbs_dataTable.-selectable:not(.-formStyle_Table) > .-container > .-content > table > tbody > .-selected {
 	color:white; 
 	background: rgb(19,57,99);
 	background: -moz-linear-gradient(top,  rgba(19,57,99,1) 0%, rgba(15,43,76,1) 100%);

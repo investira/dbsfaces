@@ -56,6 +56,9 @@ public class DBSDataTableRenderer extends DBSRenderer {
 		String xClass = DBSFaces.CSS.DATATABLE.MAIN + " " + xDataTable.getStyleClass();
 		String xStyle = xDataTable.getStyle();
 		
+		if (xDataTable.isSelectable()){
+			xClass += DBSFaces.CSS.MODIFIER.SELECTABLE;
+		}
 		//Cria botões no toolbar para edição diretamente na linha
 //		DBSFaces.createDataTableInlineEditToolbar(xDataTable);
 		
