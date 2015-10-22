@@ -1,0 +1,10 @@
+.dbs_img{}
+
+.dbs_img > .-content{
+	eight: 100%;
+    width: 100%;
+    display: inline-block;
+    position: relative;
+}
+
+.dbs_img > .-tooltip{}

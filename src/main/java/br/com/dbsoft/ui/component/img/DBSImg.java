@@ -13,7 +13,7 @@ public class DBSImg extends DBSUIOutput {
 
 	protected enum PropertyKeys {
 		src,
-		tooptip,
+		tooltip,
 		alt;
 		
 		String toString;
@@ -52,11 +52,11 @@ public class DBSImg extends DBSUIOutput {
 	}
 	
 	public String getTooltip() {
-		return (String) getStateHelper().eval(PropertyKeys.tooptip, null);
+		return (String) getStateHelper().eval(PropertyKeys.tooltip, null);
 	}
 	
 	public void setTooltip(String pTooltip) {
-		getStateHelper().put(PropertyKeys.tooptip, pTooltip);
+		getStateHelper().put(PropertyKeys.tooltip, pTooltip);
 		handleAttribute("tooltip", pTooltip);
 	}
 	
