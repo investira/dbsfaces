@@ -356,6 +356,11 @@ public class  DBSFaces {
 			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.INPUTMASK;
 		}
 		
+		public static class IMG
+		{
+			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.IMG;
+		}
+
 		public static class CHECKBOX
 		{	
 			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.CHECKBOX;
