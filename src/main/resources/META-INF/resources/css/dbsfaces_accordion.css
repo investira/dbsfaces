@@ -1,5 +1,5 @@
 .dbs_accordion_section-caption{
-	z-index: 1;
+/* 	z-index: 1; */
 }
 
 .dbs_accordion {
@@ -105,5 +105,5 @@
     border-width: 0px 0px 1px 0px;
     cursor: pointer;
     overflow: hidden;
-    z-index: 1;	
+/*     z-index: 1;	 */
 }
