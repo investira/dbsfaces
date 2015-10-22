@@ -1359,7 +1359,7 @@ public class  DBSFaces {
 		    		for (UIComponent xC: pComponent.getChildren()){
 		    			if (xC instanceof UIParameter){
 		    				UIParameter xP = (UIParameter) xC;
-		    				xParam.append(",'"+ xP.getName() + "':'"+ xP.getValue() + "'");
+		    				xParam.append(",'"+ xP.getName() + "':'"+ DBSObject.getNotNull(xP.getValue(), "") + "'");
 		    			}
 		    		}
 		    	}
