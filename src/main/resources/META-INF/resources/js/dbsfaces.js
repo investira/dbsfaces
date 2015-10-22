@@ -83,6 +83,7 @@ dbsfaces.sound = {
 }
 
 dbsfaces.url = {
+	//Retorna os parametros da Url em um objeto
 	getParams : function(){
 		var xQueryString = {};
 		var xQuery = window.location.search.substring(1);
@@ -103,6 +104,19 @@ dbsfaces.url = {
 			}
 		}
 		return xQueryString;
+	},
+	
+	//Copia os valore dos parametros da URL para os campos quando o id for iqual ao nome do parametro.
+	setInputsValuesFromParams:function(){
+		var wParams = dbsfaces.url.getParams();
+		for (var xProperty in wParams) {
+		    if (wParams.hasOwnProperty(xProperty)){
+		    	var xInput = document.getElementById(xProperty);
+		    	if (xInput != null){
+		    		xInput.value = wParams[xProperty];
+		    	}
+		    }
+		}
 	}
 }
 
