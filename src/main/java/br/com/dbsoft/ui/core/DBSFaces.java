@@ -1000,13 +1000,18 @@ public class  DBSFaces {
 	 * @param pRedirect
 	 * @return
 	 */
-	public static final String getViewRedirectString(String pPage, boolean pRedirect){
-		if (pPage != null){
+	public static final String getViewRedirectString(String pPage, boolean pRedirect, boolean pIncludeParams){
+		String xString = pPage;
+		if (xString != null){
 			if (pRedirect){
-				return pPage + "?faces-redirect=true";
+				xString += "?faces-redirect=true";
 			}else{
-				return pPage + "?faces-redirect=false";
+				xString += "?faces-redirect=false";
 			}
+			if (pIncludeParams){
+				xString += "&includeViewParams=true";
+			}
+			return xString;
 		}else{
 			return getViewId();
 		}
@@ -1019,8 +1024,9 @@ public class  DBSFaces {
 	 * @return
 	 */
 	public static final String getViewRedirectString(String pPage){
-		return getViewRedirectString(pPage, true);
+		return getViewRedirectString(pPage, true, false);
 	}
+	
 	/**
 	 * Retorna página corrente forçando o refresh(?faces-redirect=true).<br/>
 	 * Isto força o carregamento integral da página corrente.
@@ -1028,7 +1034,7 @@ public class  DBSFaces {
 	 * @return
 	 */
 	public static final String getCurrentViewRefresh(){
-		return getViewRedirectString(getViewId(), true);
+		return getViewRedirectString(getViewId(), true, false);
 	}
 	
 	/**
@@ -1038,9 +1044,19 @@ public class  DBSFaces {
 	 * @return
 	 */
 	public static final String getCurrentView(){
-		return getViewRedirectString(getViewId(), false);
+		return getViewRedirectString(getViewId(), false, false);
 	}
 	
+	/**
+	 * Retorna página corrente sem forçar o refresh<b>(?faces-redirect=false)</b> mas com os parametros definidos em <f:viewParam> caso existam.<br/>
+	 * Isto inibe o carregamento integral da página corrente. Artifício importante em chamadas Ajax.
+	 * @param pPage
+	 * @return
+	 */
+	public static final String getCurrentViewWithParams(){
+		return getViewRedirectString(getViewId(), false, true);
+	}
+
 	/**
 	 * Redireciona para a URL indicada em <b>pUrl</b>.
 	 * @param pLocalViewPath
@@ -1336,7 +1352,18 @@ public class  DBSFaces {
 			if (DBSObject.isEmpty(pExecute)){
 //				System.out.println("Form/Execute não definido para o componente " + pComponent.getClientId()  + "!");
 			}else if (DBSObject.isEmpty(xLocalOnClick)){
-				xLocalOnClick = "mojarra.jsfcljs(document.getElementById('" + pExecute + "'),{'"+ pComponent.getClientId() + "':'"+ pComponent.getClientId() + "'},''); return false";
+				StringBuilder xParam = new StringBuilder();
+				xParam.append("'"+ pComponent.getClientId() + "':'"+ pComponent.getClientId() + "'");
+				//Incorpora os parametros definidos via <f:param> dentro do componente
+		    	if (pComponent.getChildCount() > 0){
+		    		for (UIComponent xC: pComponent.getChildren()){
+		    			if (xC instanceof UIParameter){
+		    				UIParameter xP = (UIParameter) xC;
+		    				xParam.append(",'"+ xP.getName() + "':'"+ xP.getValue() + "'");
+		    			}
+		    		}
+		    	}
+				xLocalOnClick = "mojarra.jsfcljs(document.getElementById('" + pExecute + "'),{"+ xParam.toString() + "},''); return false";
 			}			
 			//TODO
 // menuitem deixa de funcionar com o código abaixo 			
