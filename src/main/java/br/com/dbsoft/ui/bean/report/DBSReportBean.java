@@ -102,27 +102,25 @@ public abstract class DBSReportBean extends DBSBean {
 		wCaption = pCaption;
 	}
 
-	
 	//---------------------------------Getters And Setters---------------------------------
+	public String getPDFFilePath() {
+		return wPDFFilePath;
+	}
+	
+	public void setPDFFilePath(String pPDFFilePath) {
+		wPDFFilePath = pPDFFilePath;
+	}
 	
 	/**
 	 * Retorna a quantidade de registros lidos
 	 * @return
 	 */
-	protected Integer getRecordCount() {
+	public Integer getRecordCount() {
 		return wRecordCount;
 	}
 
-	protected void setRecordCount(Integer pRecordCount) {
+	public void setRecordCount(Integer pRecordCount) {
 		wRecordCount = pRecordCount;
-	}
-
-	protected String getPDFFilePath() {
-		return wPDFFilePath;
-	}
-	
-	protected void setPDFFilePath(String pPDFFilePath) {
-		wPDFFilePath = pPDFFilePath;
 	}
 
 	/**

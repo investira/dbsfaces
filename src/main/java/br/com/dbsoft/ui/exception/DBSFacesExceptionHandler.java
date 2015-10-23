@@ -50,8 +50,13 @@ public class DBSFacesExceptionHandler  extends ExceptionHandlerWrapper {
 			try {                   
 				//Não encontrou a conversação (CoversationScoped)
 				if (xThrowable instanceof NonexistentConversationException){
-					//Atualiza integralmente a página atual
-					xNav.performNavigation(DBSFaces.getCurrentViewRefresh());
+					//Se não finalizada a resposta
+					if (!xFC.getRenderResponse()){ 
+						//Atualiza integralmente a página atual
+						xNav.performNavigation(DBSFaces.getCurrentViewRefresh());
+//					}else{
+//						System.out.println("asdcascd");
+					}
 //					xFC.renderResponse();       
 				//View Expirada
 				}else if (xThrowable instanceof ViewExpiredException){
