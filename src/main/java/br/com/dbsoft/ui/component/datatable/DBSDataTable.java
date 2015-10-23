@@ -247,7 +247,7 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 	public Boolean isSelectable() {
 		if (this.getHasViewOneAction() 
 		 || this.getMultipleSelection() 
-		 || this .getClientBehaviors().size() > 0
+		 || this .getClientBehaviors().size() > 0 //Se houver algum <f:ajax
 		 || !this.getKeyColumnName().equals("")){
 			return true;
 		}else{
