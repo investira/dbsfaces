@@ -36,7 +36,7 @@ public class DBSImgRenderer extends DBSRenderer {
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClass = DBSFaces.CSS.IMG.MAIN;
 		if (xImg.getStyleClass() != null){
-			xClass += xImg.getStyleClass(); 
+			xClass += " " + xImg.getStyleClass(); 
 		}
 		xWriter.startElement("div", xImg);
 			DBSFaces.setAttribute(xWriter, "id", xImg.getClientId(pContext), null);
