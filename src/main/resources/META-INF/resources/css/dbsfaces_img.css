@@ -1,4 +1,6 @@
-.dbs_img{}
+.dbs_img{
+	display: inline-block;
+}
 
 .dbs_img > .-content{
 	height: 100%;
