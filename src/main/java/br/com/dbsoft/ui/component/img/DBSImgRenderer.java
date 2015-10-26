@@ -39,22 +39,40 @@ public class DBSImgRenderer extends DBSRenderer {
 			xClass += " " + xImg.getStyleClass(); 
 		}
 		xWriter.startElement("div", xImg);
-			DBSFaces.setAttribute(xWriter, "id", xImg.getClientId(pContext), null);
-			//DBSFaces.setAttribute(xWriter, xImg, "name", pComponent.getClientId(), null); // span e img não possuem 'name'
+			if (shouldWriteIdAttribute(xImg)){
+				DBSFaces.setAttribute(xWriter, "id", xImg.getClientId(pContext), null);
+			}
 			DBSFaces.setAttribute(xWriter, "style", xImg.getStyle(), null);
 			DBSFaces.setAttribute(xWriter, "class", xClass, null);
-			String xEle = (xImg.getSrc()==null) ? "span":"img";
-			xWriter.startElement(xEle, xImg);
-				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
-				DBSFaces.setAttribute(xWriter, "alt", xImg.getAlt(), null);
-				if (xImg.getSrc()!=null){
-					DBSFaces.setAttribute(xWriter, "src", xImg.getSrc(), null);
-				}else{
-					DBSFaces.renderChildren(pContext, xImg);
-				}
-			xWriter.endElement(xEle);
+			if (xImg.getSrc()!=null 
+			 || xImg.getChildren().size() > 0){
+				String xEle = (xImg.getSrc()==null) ? "span":"img";
+				xWriter.startElement(xEle, xImg);
+					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
+					DBSFaces.setAttribute(xWriter, "alt", xImg.getAlt(), null);
+					if (xImg.getSrc()!=null){
+						DBSFaces.setAttribute(xWriter, "src", xImg.getSrc(), null);
+					}else{
+						DBSFaces.renderChildren(pContext, xImg);
+					}
+				xWriter.endElement(xEle);
+			}
 			DBSFaces.encodeTooltip(pContext, xImg, xImg.getTooltip());
 		xWriter.endElement("div");
+//		String xEle = (xImg.getSrc()==null) ? "span":"img";
+//		xWriter.startElement(xEle, xImg);
+//			DBSFaces.setAttribute(xWriter, "id", xImg.getClientId(pContext), null);
+//			//DBSFaces.setAttribute(xWriter, xImg, "name", pComponent.getClientId(), null); // span e img não possuem 'name'
+//			DBSFaces.setAttribute(xWriter, "style", xImg.getStyle(), null);
+//			DBSFaces.setAttribute(xWriter, "class", xImg.getStyleClass(), null);
+//			DBSFaces.setAttribute(xWriter, "alt", xImg.getAlt(), null);
+//			if (xImg.getSrc()!=null){
+//				DBSFaces.setAttribute(xWriter, "src", xImg.getSrc(), null);
+//			}else{
+//				DBSFaces.renderChildren(pContext, xImg);
+//			}
+//			DBSFaces.encodeTooltip(pContext, xImg, xImg.getTooltip());
+//		xWriter.endElement(xEle);		
 	}
 
 	
