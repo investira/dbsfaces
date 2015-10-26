@@ -79,7 +79,7 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 //		 xContext.getViewRoot().subscribeToViewEvent(PreValidateEvent.class,this);
 //		 xContext.getViewRoot().subscribeToViewEvent(PostValidateEvent.class,this);
 //		 xContext.getViewRoot().subscribeToViewEvent(PreRenderViewEvent.class,this);
-//		 xContext.getViewRoot().subscribeToViewEvent(PreRenderComponentEvent.class,this);
+		 xContext.getViewRoot().subscribeToViewEvent(PreRenderComponentEvent.class,this);
 		// -------------------------------------------------------------------------------
 //		 xContext.getViewRoot().subscribeToViewEvent(PostConstructViewMapEvent.class,this);
 //		 xContext.getViewRoot().subscribeToViewEvent(PostRestoreStateEvent.class,this);
