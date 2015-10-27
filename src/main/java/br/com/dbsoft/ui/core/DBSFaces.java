@@ -27,10 +27,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.application.NavigationHandler;
 import javax.faces.application.ViewHandler;
 import javax.faces.component.EditableValueHolder;
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.component.UIForm;
-import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIParameter;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.ValueHolder;
@@ -66,6 +66,7 @@ import br.com.dbsoft.ui.component.dialog.DBSDialog.DIALOG_ICON;
 import br.com.dbsoft.ui.component.fileupload.DBSFileUpload;
 import br.com.dbsoft.util.DBSBoolean;
 import br.com.dbsoft.util.DBSDate;
+import br.com.dbsoft.util.DBSFile;
 import br.com.dbsoft.util.DBSIO;
 import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSObject;
@@ -98,7 +99,8 @@ public class  DBSFaces {
     public static final String JAVAX_FACES_LOCATION_HEAD = "javax_faces_location_HEAD";
     public static final String JAVAX_FACES_LOCATION_BODY = "javax_faces_location_BODY";
     public static final String JAVAX_FACES_LOCATION_FORM = "javax_faces_location_FORM";
-    public static final char SEPARATOR = UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance());
+    @SuppressWarnings("deprecation")
+	public static final char SEPARATOR = NamingContainer.SEPARATOR_CHAR; //UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance());
 	
 	public static class ID
 	{
@@ -1814,6 +1816,25 @@ public class  DBSFaces {
 		} catch (IOException exception) {
 			throw new RuntimeException(exception);
 		}
+	}
+ 	
+	public static String getRenderedViewContent(URL pURL, List<String> pListParams) throws DBSIOException {
+		return getRenderedViewContent(pURL.toString(), pListParams);
+	}
+
+	/**
+	 * Retorna String com resposta ao request ao arquivo da URL com os parametros informados.
+	 * A URL e o nome do arquivo serão ajustados com a inclusão ou exclusão das barras "/" de separação necessárias.
+	 * Utilizar este método quando a view nao precisar consultar algum bean, mas receberá valores por parametro.<br/>
+	 * Caso contrário, utilize o outro método.
+	 * @param pURL
+	 * @param pFile 
+	 * @param pListParams
+	 * @return
+	 * @throws DBSIOException
+	 */
+	public static String getRenderedViewContent(String pURL, String pFile, List<String> pListParams) throws DBSIOException {
+		return getRenderedViewContent(DBSFile.getPathNormalized(pURL, pFile), pListParams);
 	}
  	
 	/**
