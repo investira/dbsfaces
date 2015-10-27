@@ -103,7 +103,7 @@ public class DBSReportFormUtil {
 		}
 
 		pReportParameters.put("pDATA_IMPRESSAO", DBSFormat.getFormattedDateTime(System.currentTimeMillis()));
-		pReportParameters.put("pSUBREPORT_DIR", DBSHttp.getRealPathWebInfClasses(FacesContext.getCurrentInstance().getExternalContext()) + File.separator + REPORT_FOLDER); 
+		pReportParameters.put("pSUBREPORT_DIR", DBSHttp.getLocalPathWebInfClasses(FacesContext.getCurrentInstance().getExternalContext()) + File.separator + REPORT_FOLDER); 
 		
 		// Verifica se foi passada uma conexão ou uma coleção de dados.
 		if (JRBeanCollectionDataSource.class.isInstance(pReportData)) {
@@ -278,7 +278,7 @@ public class DBSReportFormUtil {
 	 * @return
 	 */
 	private static String pvGetReportFilePath(String pReportFileName){
-		return DBSHttp.getRealPathWebInfClasses(FacesContext.getCurrentInstance().getExternalContext()) + File.separator + pvGetReportRelativeFilePath(pReportFileName);
+		return DBSHttp.getLocalPathWebInfClasses(FacesContext.getCurrentInstance().getExternalContext()) + File.separator + pvGetReportRelativeFilePath(pReportFileName);
 	}
 	
 
@@ -288,7 +288,7 @@ public class DBSReportFormUtil {
 	 * @return
 	 */
 	private static String pvGetReportFilePathWeb(String pReportFileName){
-		return DBSHttp.getRealPath(FacesContext.getCurrentInstance().getExternalContext(), "") + File.separator + pvGetReportRelativeFilePath(pReportFileName);
+		return DBSHttp.getLocalPath(FacesContext.getCurrentInstance().getExternalContext(), "") + File.separator + pvGetReportRelativeFilePath(pReportFileName);
 	}
 
 	/**
