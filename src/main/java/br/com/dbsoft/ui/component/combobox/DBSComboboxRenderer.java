@@ -126,7 +126,7 @@ public class DBSComboboxRenderer extends DBSRenderer {
 				}
 			}
 			//Converte para o tipo
-			xValueKey = DBSObject.toClass(xValueKey, xValueKeyClass, null);
+			xValueKey = DBSObject.toClassValue(xValueKey, xValueKeyClass, null);
 		}
 		//Busca item na lista para recuperar o valor que será utlizado para exibir a informação
 		xValue = DBSString.toString(xList.get(xValueKey), null);
