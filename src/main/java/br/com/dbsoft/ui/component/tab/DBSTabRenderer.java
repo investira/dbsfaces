@@ -90,7 +90,7 @@ public class DBSTabRenderer extends DBSRenderer {
 							if (xPage.isRendered()){
 								xWriter.startElement("div", xTab);  
 									String xPageId = xPage.getAttributes().get("id").toString();
-									String xPageClientId = xClientId + DBSFaces.SEPARATOR + xPageId;
+									String xPageClientId = xClientId + DBSFaces.ID_SEPARATOR + xPageId;
 
 									xWriter.writeAttribute("id", xPageClientId + "_aba", null);
 									xWriter.writeAttribute("name", xPageClientId + "_aba", null);
