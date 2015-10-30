@@ -155,7 +155,7 @@ public class DBSComponentTree extends DBSUIInput implements NamingContainer, Sys
 			throw new NullPointerException();
 	    }
 	    if (getRowIndex() != -1){
-	    	return super.getClientId(context) + DBSFaces.SEPARATOR + getRowIndex();
+	    	return super.getClientId(context) + DBSFaces.ID_SEPARATOR + getRowIndex();
 	    }else{
 	    	return super.getClientId(context);
 	    }
@@ -217,7 +217,7 @@ public class DBSComponentTree extends DBSUIInput implements NamingContainer, Sys
 	
 	public String removeClientIdFromChildId(String pChildClientId){
 //		String xComponentClientId = this.getClientId().toLowerCase().trim() + DBSFaces.SEPARATOR;
-		String xComponentClientId = super.getClientId(getFacesContext()).toLowerCase().trim() + DBSFaces.SEPARATOR; 
+		String xComponentClientId = super.getClientId(getFacesContext()).toLowerCase().trim() + DBSFaces.ID_SEPARATOR; 
 		pChildClientId = pChildClientId.trim();
 		
 		if (pChildClientId.toLowerCase().startsWith(xComponentClientId)){
