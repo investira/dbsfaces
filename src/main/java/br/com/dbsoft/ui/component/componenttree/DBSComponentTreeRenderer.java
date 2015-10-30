@@ -355,15 +355,15 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 	}
 	
 	private String pvGetFxSelectedClientId(UIComponent pInputText){
-		return pInputText.getClientId() + DBSFaces.SEPARATOR + "selection" + DBSFaces.CSS.MODIFIER.INPUT.trim();
+		return pInputText.getClientId() + DBSFaces.ID_SEPARATOR + "selection" + DBSFaces.CSS.MODIFIER.INPUT.trim();
 	}
 	
 	private String pvGetFxExpandedIds(UIComponent pInputText){
-		return pInputText.getClientId() + DBSFaces.SEPARATOR + DBSComponentTree.PropertyKeys.expandedIds.toString();
+		return pInputText.getClientId() + DBSFaces.ID_SEPARATOR + DBSComponentTree.PropertyKeys.expandedIds.toString();
 	}
 
 	private int pvGetRowIndexFromSelected(String pKey){
-    	int xI = pKey.indexOf(DBSFaces.SEPARATOR);
+    	int xI = pKey.indexOf(DBSFaces.ID_SEPARATOR);
     	String xIndex = pKey.substring(0, xI);
     	if (DBSNumber.isNumber(xIndex)){
     		return DBSNumber.toInteger(xIndex);
@@ -373,7 +373,7 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 	}
 
 	private String pvGetKeyFromSelected(String pKey){
-    	int xI = pKey.indexOf(DBSFaces.SEPARATOR);
+    	int xI = pKey.indexOf(DBSFaces.ID_SEPARATOR);
     	return DBSString.getSubString(pKey, xI+2, pKey.length());
 
 	}
