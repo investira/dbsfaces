@@ -426,7 +426,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @param pValueClass Classe para a qual o valor será convertido
 	 */
 	public <T> void setValue(String pColumnName, Object pColumnValue, Class<T> pValueClass){
-		T xValue = DBSObject.<T>toClass(pColumnValue, pValueClass);
+		T xValue = DBSObject.<T>toClassValue(pColumnValue, pValueClass);
 		
 		setValue(pColumnName, xValue);
 	}
@@ -479,7 +479,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @return
 	 */
 	public <T> T getValue(String pColumnName, Class<T> pValueClass){
-		return DBSObject.<T>toClass(getValue(pColumnName), pValueClass);
+		return DBSObject.<T>toClassValue(getValue(pColumnName), pValueClass);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -501,7 +501,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @return
 	 */
 	public <T> T getValueOriginal(String pColumnName, Class<T> pValueClass){
-		return DBSObject.<T>toClass(getValueOriginal(pColumnName), pValueClass);
+		return DBSObject.<T>toClassValue(getValueOriginal(pColumnName), pValueClass);
 	}
 	
 
@@ -529,7 +529,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @return
 	 */
 	public <T> T getListValue(String pColumnName, Class<T> pValueClass){
-		return DBSObject.<T>toClass(getListValue(pColumnName), pValueClass);
+		return DBSObject.<T>toClassValue(getListValue(pColumnName), pValueClass);
 	}
 
 	/**
@@ -2594,7 +2594,7 @@ public abstract class DBSCrudBean extends DBSBean{
 			Object xOldValue =  pvGetValue(pColumnName);
 			if (pColumnValue != null){
 				//Converte o valor antigo para o mesmo tipo do valor recebido para garantir a verificação correta se houve alteração de valores
-				xOldValue = DBSObject.toClass(xOldValue, pColumnValue.getClass()); 
+				xOldValue = DBSObject.toClassValue(xOldValue, pColumnValue.getClass()); 
 			}
 			//Se valor armazenado(anterior) não for nulo e houve alteração de valores...
 			if(!DBSObject.getNotNull(xOldValue,"").toString().equals(DBSObject.getNotNull(pColumnValue,"").toString())){
