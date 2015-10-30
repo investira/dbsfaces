@@ -100,7 +100,7 @@ public class  DBSFaces {
     public static final String JAVAX_FACES_LOCATION_BODY = "javax_faces_location_BODY";
     public static final String JAVAX_FACES_LOCATION_FORM = "javax_faces_location_FORM";
     @SuppressWarnings("deprecation")
-	public static final char SEPARATOR = NamingContainer.SEPARATOR_CHAR; //UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance());
+	public static final char ID_SEPARATOR = NamingContainer.SEPARATOR_CHAR; //UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance());
 	
 	public static class ID
 	{
