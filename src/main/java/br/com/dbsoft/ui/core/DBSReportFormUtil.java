@@ -13,6 +13,14 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
+import br.com.dbsoft.core.DBSSDK.CONTENT_TYPE;
+import br.com.dbsoft.util.DBSDate;
+import br.com.dbsoft.util.DBSFile;
+import br.com.dbsoft.util.DBSFormat;
+import br.com.dbsoft.util.DBSHttp;
+import br.com.dbsoft.util.DBSNumber;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -25,15 +33,6 @@ import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 import net.sf.jasperreports.engine.export.JRXmlExporter;
 import net.sf.jasperreports.engine.export.JRXmlExporterParameter;
 import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
-
-import org.apache.log4j.Logger;
-
-import br.com.dbsoft.core.DBSSDK.CONTENT_TYPE;
-import br.com.dbsoft.util.DBSDate;
-import br.com.dbsoft.util.DBSFile;
-import br.com.dbsoft.util.DBSFormat;
-import br.com.dbsoft.util.DBSHttp;
-import br.com.dbsoft.util.DBSNumber;
 
 /**
  * @author Avila
