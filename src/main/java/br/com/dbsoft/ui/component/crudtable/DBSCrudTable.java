@@ -1,9 +1,14 @@
 package br.com.dbsoft.ui.component.crudtable;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
 import javax.el.ValueExpression;
 import javax.faces.component.FacesComponent;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UINamingContainer;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 
 import br.com.dbsoft.ui.bean.crud.DBSCrudBean;
@@ -12,7 +17,7 @@ import br.com.dbsoft.ui.component.datatable.DBSDataTable;
 import br.com.dbsoft.ui.core.DBSFaces;
 
 @FacesComponent(DBSCrudTable.COMPONENT_TYPE)
-public class DBSCrudTable extends DBSUIComponentBase implements NamingContainer { 
+public class DBSCrudTable extends DBSUIComponentBase implements NamingContainer, ClientBehaviorHolder { 
 
 
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.CRUDTABLE;
@@ -112,4 +117,15 @@ public class DBSCrudTable extends DBSUIComponentBase implements NamingContainer 
 //		wDataTable.getFacets().putAll(this.getFacets());
 	}
 	
+	private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("change", "click", "blur", "dblclick","keydown", "keypress", "keyup", "mousedown", "mousemove","mouseout", "mouseover", "mouseup", "select"));
+
+	@Override
+	public Collection<String> getEventNames() {
+		return EVENT_NAMES;
+	}
+
+	@Override
+	public String getDefaultEventName() {
+		return "select";
+	}
 }
