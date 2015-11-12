@@ -1102,7 +1102,8 @@ td > .dbs_icon{
 .-i_shopping_cart:before{content:"\e9fa"}
 .-i_tag:before{content:"\e9fb"}
 .-i_barcode:before{content:"\e9fc"}
-.-i_ifeed:before{content:"\e9fd"}
-.-i_ifeed_icon:before{content:"\e9fe"}
-.-i_dbsoft:before{content:"\e9ff"}
-.-i_dbsoft_icon:before{content:"\ea00"}
+.-i_novem:before{content:"\e9fd"}
+.-i_ifeed:before{content:"\e9fe"}
+.-i_ifeed_icon:before{content:"\e9ff"}
+.-i_dbsoft:before{content:"\ea00"}
+.-i_dbsoft_icon:before{content:"\ea01"}
