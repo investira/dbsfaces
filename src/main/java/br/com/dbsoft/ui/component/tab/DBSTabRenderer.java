@@ -66,7 +66,7 @@ public class DBSTabRenderer extends DBSRenderer {
 		xSelectedTabPage = xTab.getSelectedTabPage();
 		
 		if (xTab.getStyleClass()!=null){
-			xClass = xClass + xTab.getStyleClass();
+			xClass += " " + xTab.getStyleClass();
 		}
 		
 		xWriter.startElement("div", xTab);
