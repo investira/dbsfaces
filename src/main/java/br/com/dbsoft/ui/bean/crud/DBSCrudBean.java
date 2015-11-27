@@ -585,7 +585,7 @@ public abstract class DBSCrudBean extends DBSBean{
 
 	/**
 	 * Configura os inputs da tela
-	 * Método chamado pelo DBSCrudForm para poder configurar os atributos dos componentes na tela antes que sejam exibidos
+	 * Método chamado pelo DBSCrudView para poder configurar os atributos dos componentes na tela antes que sejam exibidos
 	 * @param pComponentInput
 	 */
 	public void crudFormBeforeShowComponent(UIComponent pComponent){
@@ -607,9 +607,9 @@ public abstract class DBSCrudBean extends DBSBean{
 	
 	
 	/**
-	 * Método padrão para validação dos campos que existentes dentro do DBSCrudForm do usuário.
+	 * Método padrão para validação dos campos que existentes dentro do DBSCrudView do usuário.
 	 * Método para validar o conteúdo do valor digitaro em função do DAO.
-	 * Este método é chamado pelo DBSCrudForm.
+	 * Este método é chamado pelo DBSCrudView.
 	 * @param pComponent
 	 */
 	public void crudFormValidateComponent(FacesContext pContext, UIComponent pComponent, Object pValue){
