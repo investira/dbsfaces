@@ -51,6 +51,7 @@ import org.jboss.weld.context.SerializableContextualInstanceImpl;
 
 import br.com.dbsoft.core.DBSSDK;
 import br.com.dbsoft.core.DBSSDK.ENCODE;
+import br.com.dbsoft.core.DBSSDK.NETWORK.METHOD;
 import br.com.dbsoft.error.DBSIOException;
 import br.com.dbsoft.message.DBSMessage;
 import br.com.dbsoft.message.DBSMessage.MESSAGE_TYPE;
@@ -1859,7 +1860,7 @@ public class  DBSFaces {
 		try {
 			URL 	xUrl = new URL(pURL);
 			xConnection = (HttpURLConnection) xUrl.openConnection();
-			xConnection.setRequestProperty("Request-Method", "POST");
+			xConnection.setRequestProperty("Request-Method", METHOD.POST.getName());
 			xConnection.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded"); 
 			xConnection.setRequestProperty( "charset", ENCODE.ISO_8859_1);
 			xConnection.setDoInput(true);
