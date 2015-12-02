@@ -183,6 +183,8 @@
 }
 
 .dbs_dataTable > .-container > .-content > table > tbody{
+	padding-bottom: 2px; /*Artifício para evitar a exibição da barra de rolagem*/
+	
 	height: 100%;
 	overflow-x: hidden; /*Verificar esta linha, pois está escondendo as colunas quando ultrapassa largura do browser. Testar suggestion*/
 	overflow-y: auto; /*Verificar esta linha, pois está escondendo as colunas quando ultrapassa largura do browser*/
