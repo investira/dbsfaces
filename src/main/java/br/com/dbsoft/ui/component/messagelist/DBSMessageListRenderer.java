@@ -172,8 +172,8 @@ public class DBSMessageListRenderer extends DBSRenderer {
 							//Hora da mensagem
 							pWriter.startElement("div", pMessageList);
 								DBSFaces.setAttribute(pWriter, "class", "-time", null);
-								if (xMsg.getTime() !=null){
-									pWriter.write(xMsg.getTime().toLocalTime().toString("HH:mm"));
+								if (xMsg.getMessageTime() !=null){
+									pWriter.write(xMsg.getMessageTime().toLocalTime().toString("HH:mm"));
 								}
 							pWriter.endElement("div");
 							//Texto da mensagem
