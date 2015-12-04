@@ -22,7 +22,7 @@ import br.com.dbsoft.io.DBSColumn;
 import br.com.dbsoft.io.DBSDAO;
 import br.com.dbsoft.io.DBSResultDataModel;
 import br.com.dbsoft.message.DBSMessage;
-import br.com.dbsoft.message.DBSMessage.MESSAGE_TYPE;
+import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.ui.bean.DBSBean;
 import br.com.dbsoft.ui.bean.crud.DBSCrudBeanEvent.CRUD_EVENT;
 import br.com.dbsoft.ui.component.DBSUIInput;

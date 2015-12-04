@@ -12,7 +12,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import br.com.dbsoft.error.DBSIOException;
-import br.com.dbsoft.message.DBSMessage.MESSAGE_TYPE;
+import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.ui.bean.DBSBean;
 import br.com.dbsoft.ui.bean.report.DBSReportBeanEvent.REPORT_EVENT;
 import br.com.dbsoft.ui.component.dialog.DBSDialog.DIALOG_ICON;

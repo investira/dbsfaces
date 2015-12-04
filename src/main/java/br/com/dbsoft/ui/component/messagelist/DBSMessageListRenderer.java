@@ -12,7 +12,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
 
 import br.com.dbsoft.message.DBSMessage;
-import br.com.dbsoft.message.DBSMessage.MESSAGE_TYPE;
+import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSObject;

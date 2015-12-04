@@ -54,7 +54,7 @@ import br.com.dbsoft.core.DBSSDK.ENCODE;
 import br.com.dbsoft.core.DBSSDK.NETWORK.METHOD;
 import br.com.dbsoft.error.DBSIOException;
 import br.com.dbsoft.message.DBSMessage;
-import br.com.dbsoft.message.DBSMessage.MESSAGE_TYPE;
+import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.ui.bean.DBSBean;
 import br.com.dbsoft.ui.bean.crud.DBSCrudBean;
 import br.com.dbsoft.ui.bean.report.DBSReportBean;

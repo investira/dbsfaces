@@ -14,8 +14,9 @@ import org.apache.log4j.Logger;
 
 import br.com.dbsoft.error.DBSIOException;
 import br.com.dbsoft.message.DBSMessage;
-import br.com.dbsoft.message.DBSMessage.MESSAGE_TYPE;
+
 import br.com.dbsoft.message.DBSMessages;
+import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.ui.component.dialog.DBSDialog.DIALOG_ICON;
 import br.com.dbsoft.ui.component.dialog.DBSDialogMessage;
 import br.com.dbsoft.ui.component.dialog.DBSDialogMessages;
