@@ -53,7 +53,7 @@ import br.com.dbsoft.core.DBSSDK;
 import br.com.dbsoft.core.DBSSDK.ENCODE;
 import br.com.dbsoft.core.DBSSDK.NETWORK.METHOD;
 import br.com.dbsoft.error.DBSIOException;
-import br.com.dbsoft.message.DBSMessage;
+import br.com.dbsoft.message.IDBSMessage;
 import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.ui.bean.DBSBean;
 import br.com.dbsoft.ui.bean.crud.DBSCrudBean;
@@ -945,7 +945,7 @@ public class  DBSFaces {
 	 * @param pSeverity Tipo de severidade da mensagem
 	 * @param pMessage texto da mensagem
 	 */
-	public static void sendMessage(String pClientId, DBSMessage pMessage){
+	public static void sendMessage(String pClientId, IDBSMessage pMessage){
 		if (pClientId == null
 		 || pMessage == null){return;}
 		sendMessage(pClientId, pMessage.getMessageType(), pMessage.getMessageText());
@@ -1168,6 +1168,7 @@ public class  DBSFaces {
 			return "";
 		}
 		//Separa as palavras
+		pMessageText = DBSString.changeStr(pMessageText, "<br/>", " ", false);
 		String xS[] = pMessageText.split("\\s+");
 		//Não quebra linha caso a quantidade de palavras seja inferior a 4 ou a quantidade de caracteres seja inferior a 30.
 		if (xS.length < 4

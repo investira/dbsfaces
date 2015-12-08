@@ -13,13 +13,14 @@ import javax.faces.context.FacesContext;
 import org.apache.log4j.Logger;
 
 import br.com.dbsoft.error.DBSIOException;
-import br.com.dbsoft.message.DBSMessage;
-
-import br.com.dbsoft.message.DBSMessages;
+import br.com.dbsoft.message.IDBSMessage;
 import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
+import br.com.dbsoft.message.IDBSMessages;
 import br.com.dbsoft.ui.component.dialog.DBSDialog.DIALOG_ICON;
 import br.com.dbsoft.ui.component.dialog.DBSDialogMessage;
 import br.com.dbsoft.ui.component.dialog.DBSDialogMessages;
+import br.com.dbsoft.ui.component.dialog.IDBSDialogMessage;
+import br.com.dbsoft.ui.component.dialog.IDBSDialogMessages;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSObject;
 
@@ -32,16 +33,14 @@ public abstract class DBSBean implements Serializable {
 
 	protected 	Logger 		wLogger =  Logger.getLogger(this.getClass());
 	
-	protected 	static DBSMessage	wMessageError = 
-									new DBSMessage(MESSAGE_TYPE.ERROR,"Erro: %s");
-
+	protected 	static IDBSDialogMessage wMessageError = new DBSDialogMessage(MESSAGE_TYPE.ERROR,"Erro: %s");
 	
 	protected 	Connection			wConnection;
 	
-	protected 	DBSDialogMessages		wDialogMessages = new DBSDialogMessages(DBSDialogMessage.class);
-	protected 	boolean					wBrodcastingEvent = false;
-	private   	DBSBean					wMasterBean = null;
-	private 	List<DBSBean>			wSlavesBean = new ArrayList<DBSBean>();
+	protected 	IDBSDialogMessages<IDBSDialogMessage> 	wDialogMessages = new DBSDialogMessages<IDBSDialogMessage>();
+	protected 	boolean								  	wBrodcastingEvent = false;
+	private   	DBSBean									wMasterBean = null;
+	private 	List<DBSBean>							wSlavesBean = new ArrayList<DBSBean>();
 	
 	
 	//--------------------------------------------------------------------------------------
@@ -140,6 +139,15 @@ public abstract class DBSBean implements Serializable {
 		return wDialogMessages.getCurrentMessageTooltip();
 	}
 	/**
+	 * Retorna se é uma mensagem de alerta.
+	 * As mensagens de alerta são as únicas que permiter a seleção SIM/NÃO
+	 * @return
+	 */
+	public MESSAGE_TYPE getMessageType(){
+		return wDialogMessages.getCurrentMessageType();
+	}
+
+	/**
 	 * Retorna icone da mensagem que está na fila
 	 * @return
 	 */
@@ -173,15 +181,6 @@ public abstract class DBSBean implements Serializable {
 	}
 	
 	/**
-	 * Retorna se é uma mensagem de alerta.
-	 * As mensagens de alerta são as únicas que permiter a seleção SIM/NÃO
-	 * @return
-	 */
-	public MESSAGE_TYPE getMessageType(){
-		return wDialogMessages.getMessageType();
-	}
-	
-	/**
 	 * Retorna se há alguma mensagem na fila
 	 * @return
 	 */
@@ -201,7 +200,7 @@ public abstract class DBSBean implements Serializable {
 	 * Retorna mensagens do dialog.
 	 * @return
 	 */
-	public DBSDialogMessages getMessages(){
+	public IDBSDialogMessages<IDBSDialogMessage> getMessages(){
 		return wDialogMessages;
 	}
 	
@@ -224,7 +223,7 @@ public abstract class DBSBean implements Serializable {
 	 */
 	public String setMessageValidated(Boolean pIsValidated) throws DBSIOException{
 		if (wDialogMessages!=null){
-			DBSMessage xMessageKey = wDialogMessages.getCurrentMessage(); //Salva a chave, pois o setValidated posiciona na próxima mensagem.
+			IDBSDialogMessage xMessageKey = wDialogMessages.getCurrentMessage(); //Salva a chave, pois o setValidated posiciona na próxima mensagem.
 			wDialogMessages.setValidated(pIsValidated);
 			if (xMessageKey.getMessageType() == MESSAGE_TYPE.WARNING){
 				//Chama método indicando que warning foi validado
@@ -272,7 +271,7 @@ public abstract class DBSBean implements Serializable {
 	 * @param pDialogIcon Icon que aparecerá na mensagem conforme constantes DIALOG_ICON 
 	 */
 	protected void addMessage(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, DIALOG_ICON pDialogIcon){
-		wDialogMessages.add(pMessageKey, pMessageType, pMessageText, pDialogIcon);
+		wDialogMessages.add(new DBSDialogMessage(pMessageKey, pMessageType, pMessageText, pDialogIcon));
 	}
 
 	/**
@@ -283,8 +282,8 @@ public abstract class DBSBean implements Serializable {
 	 * @param pDialogIcon
 	 * @param pMessageTooltip
 	 */
-	protected void addMessage(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, DIALOG_ICON pDialogIcon, String pMessageTooltip){
-		wDialogMessages.add(pMessageKey, pMessageType, pMessageText, pDialogIcon, pMessageTooltip);
+	protected void addMessage(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, String pMessageTooltip, DIALOG_ICON pDialogIcon){
+		wDialogMessages.add(new DBSDialogMessage(pMessageKey, pMessageType, pMessageText, pMessageTooltip, pDialogIcon));
 	}
 	
 	/**
@@ -310,7 +309,7 @@ public abstract class DBSBean implements Serializable {
 	 * Adiciona uma mensagem a fila
 	 * @param pMessage
 	 */
-	protected void addMessage(DBSMessage pMessage){
+	protected void addMessage(IDBSMessage pMessage){
 		addMessage(pMessage.getMessageText(), pMessage.getMessageType(), pMessage.getMessageText(), pMessage.getMessageTooltip());
 	}
 	
@@ -319,7 +318,8 @@ public abstract class DBSBean implements Serializable {
 	 * Mensagens precisão ser do tipo DBSMessages
 	 * @param pMessages
 	 */
-	protected <M extends DBSMessages<?>> void addMessages(M pMessages){
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	protected void addMessages(IDBSMessages pMessages){
 		wDialogMessages.addAll(pMessages);
 	}
 	
@@ -328,7 +328,7 @@ public abstract class DBSBean implements Serializable {
 	 * @param pMessage
 	 */
 	protected void addMessage(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, String pMessageTooltip){
-		wDialogMessages.add(pMessageKey, pMessageType, pMessageText, pMessageTooltip);
+		wDialogMessages.add(new DBSDialogMessage(pMessageKey, pMessageType, pMessageText, pMessageTooltip));
 	}
 
 	/**
@@ -353,7 +353,7 @@ public abstract class DBSBean implements Serializable {
 	 * @param pMessageKey
 	 * @return
 	 */
-	protected Boolean isMessageValidated(DBSMessage pMessage){
+	protected Boolean isMessageValidated(IDBSMessage pMessage){
 		return isMessageValidated(pMessage.getMessageText());
 	}
 	

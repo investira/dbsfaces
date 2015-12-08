@@ -11,7 +11,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
 
-import br.com.dbsoft.message.DBSMessage;
+import br.com.dbsoft.message.IDBSMessage;
 import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
@@ -82,8 +82,9 @@ public class DBSMessageListRenderer extends DBSRenderer {
 			if (xMessageList.getValue() != null){
 				xCount = xMessageList.getValue().getMessages().size();
 				if (xCount > 0){
-					DBSMessage xMsg;
-					Iterator<Entry<String, DBSMessage>> xI = xMessageList.getValue().iterator();
+					IDBSMessage xMsg;
+					@SuppressWarnings("unchecked")
+					Iterator<Entry<String, IDBSMessage>> xI = xMessageList.getValue().iterator();
 					while (xI.hasNext()){
 						 xMsg = xI.next().getValue();
 						 //Se msg ainda não foi validada(visualizada, neste caso)
@@ -159,11 +160,12 @@ public class DBSMessageListRenderer extends DBSRenderer {
 			pWriter.startElement("div", pMessageList);
 				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT.trim(), null);
 				//Exibe a lista de mensagens em ordem invertida de inclusão(PEPS/LIFO), onde o mais recente é será exibido primeiro;
+				@SuppressWarnings("unchecked")
 				Collection<String> xCollection = pMessageList.getValue().getMessages().keySet();
 				String[] 	xMsgKey = xCollection.toArray(new String[xCollection.size()]); 
-				DBSMessage 	xMsg;
+				IDBSMessage xMsg;
 				for (Integer xI=xMsgKey.length-1; xI!=-1; xI--){
-					xMsg = pMessageList.getValue().getMessages().get(xMsgKey[xI]);
+					xMsg = (IDBSMessage) pMessageList.getValue().getMessages().get(xMsgKey[xI]);
 					pWriter.startElement("div", pMessageList);
 						DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.MESSAGE.trim() + " " + xMsg.getMessageType().getName(), null);
 						DBSFaces.setAttribute(pWriter, "index",xMsgKey[xI], null);

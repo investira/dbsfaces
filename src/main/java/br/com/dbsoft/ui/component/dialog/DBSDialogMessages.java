@@ -1,104 +1,77 @@
 package br.com.dbsoft.ui.component.dialog;
 
-import org.joda.time.DateTime;
-
-import br.com.dbsoft.error.DBSIOException;
-import br.com.dbsoft.message.DBSMessage;
 import br.com.dbsoft.message.DBSMessages;
 import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.ui.component.dialog.DBSDialog.DIALOG_ICON;
-import br.com.dbsoft.ui.core.DBSFaces;
 
 /**
  * @author ricardovillar
  *
  */
-public class DBSDialogMessages extends DBSMessages<DBSDialogMessage> {
+public class DBSDialogMessages<MessageClass extends IDBSDialogMessage> extends DBSMessages<MessageClass> implements IDBSDialogMessages<MessageClass> {
 
-	public DBSDialogMessages(Class<DBSDialogMessage> pMessageClass) {
-		super(pMessageClass);
-	}
+//	public <T extends DBSDialogMessage> DBSDialogMessages(Class<MessageClass> pMessageClass) {
+//		super(pMessageClass);
+//	}
 
-	@Override
-	public void add(DBSIOException e){
-		add(MESSAGE_TYPE.ERROR, e.getLocalizedMessage(), e.getOriginalException().getLocalizedMessage());
-	}
+//	/**
+//	 * Inclui uma mensagem na fila para ser exibida.
+//	 * A exibição se derá na mesma ondem da inclusão
+//	 * @param pMessageKey Chave da mensagem que será utilizada para verificar a resposta do usuário
+//	 * @param pMessageIcon pIcone da mensagem para indicar o seu tipo
+//	 * @param pMessageText Texto da mensagem
+//	 * @param pButtons Botões que serão exibidos poelo usuario. Deve-se utilizar a constante DBSDialog.MESAGEM_BUTTONS
+//	 */
+//	@Override
+//	public MessageClass add(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, DIALOG_ICON pMessageIcon){
+//		return pvCreateMessage(pMessageKey, null, pMessageType, pMessageText, null, null, pMessageIcon);
+//	}
+//	
+//	@Override
+//	public MessageClass add(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, String pMessageTooltip, DIALOG_ICON pMessageIcon){
+//		return pvCreateMessage(pMessageKey, null, pMessageType, pMessageText, pMessageTooltip, null, pMessageIcon);
+//	}
 	
-	/* (non-Javadoc)
-	 * @see br.com.dbsoft.message.DBSMessages#add(br.com.dbsoft.message.DBSMessage.MESSAGE_TYPE, java.lang.String)
-	 */
-	@Override
-	public void add(MESSAGE_TYPE pMessageType, String pMessageText){
-		add(pMessageText, pMessageType, pMessageText, "");
-	}
+//	@Override
+//	protected MessageClass pvCreateMessage(String pMessageKey, 
+//												Integer pMessageCode, 
+//												MESSAGE_TYPE pMessageType,
+//												String pMessageText, 
+//												String pMessageTooltip, 
+//												DateTime pMessageTime) {
+//		MessageClass xM = super.pvCreateMessage(pMessageKey, pMessageCode, pMessageType, pMessageText, pMessageTooltip, pMessageTime);
+//		//Inclui quebra de linha
+//		pMessageText = DBSFaces.getHtmlStringWithLineBreak(pMessageText);
+//		pMessageTooltip = DBSFaces.getHtmlStringWithLineBreak(pMessageTooltip);
+//		
+//		Integer xWidth = DBSFaces.getDialogMessageWidth(pMessageText.length());
+//		Integer xHeight = DBSFaces.getDialogMessageHeight(xWidth);
+//
+//		xM.setIcon(DBSFaces.toDIALOG_ICON(pMessageType)); 
+//		xM.setWidth(DBSFaces.getDialogMessageWidth(xWidth));
+//		xM.setHeight(DBSFaces.getDialogMessageHeight(xHeight));
+//		
+//		return xM;
+//	}
 	
-	/* (non-Javadoc)
-	 * @see br.com.dbsoft.message.DBSMessages#add(br.com.dbsoft.message.DBSMessage.MESSAGE_TYPE, java.lang.String, java.lang.String)
-	 */
-	@Override
-	public void add(MESSAGE_TYPE pMessageType, String pMessageText, String pMessageTooltip){
-		add(pMessageText, pMessageType, pMessageText, pMessageTooltip);
-	}
-
-	/* (non-Javadoc)
-	 * @see br.com.dbsoft.message.DBSMessages#add(br.com.dbsoft.message.DBSMessage.MESSAGE_TYPE, java.lang.String, java.lang.String, org.joda.time.DateTime)
-	 */
-	@Override
-	public void add(MESSAGE_TYPE pMessageType, String pMessageText, String pMessageTooltip, DateTime pTime){
-		add(pMessageText, pMessageType, pMessageText, pMessageTooltip);
-	}
-
-	/* (non-Javadoc)
-	 * @see br.com.dbsoft.message.DBSMessages#add(java.lang.String, br.com.dbsoft.message.DBSMessage.MESSAGE_TYPE, java.lang.String, java.lang.String)
-	 */
-	@Override
-	public void add(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, String pMessageTooltip){
-		//Configura o icone do dialog confome o tipo de mensagem
-		DIALOG_ICON xDialogIcon = DBSFaces.toDIALOG_ICON(pMessageType);
-		add(pMessageKey, pMessageType, pMessageText, xDialogIcon, pMessageTooltip);
-	}
-
-	/**
-	 * Inclui uma mensagem na fila para ser exibida.
-	 * A exibição se derá na mesma ondem da inclusão
-	 * @param pMessageKey Chave da mensagem que será utilizada para verificar a resposta do usuário
-	 * @param pMessageIcon pIcone da mensagem para indicar o seu tipo
-	 * @param pMessageText Texto da mensagem
-	 * @param pButtons Botões que serão exibidos poelo usuario. Deve-se utilizar a constante DBSDialog.MESAGEM_BUTTONS
-	 */
-	public void add(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, DIALOG_ICON pMessageIcon){
-		add(pMessageKey, pMessageType, pMessageText, pMessageIcon, null);
-	}
-	
-	public void add(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, DIALOG_ICON pMessageIcon, String pMessageTooltip){
-		//Calcula largura e altura da janela
-//		Double xWidth = DBSNumber.exp((double)(pMessageText.length()*10), 0.70) + 150;
-//		xWidth = DBSNumber.inte(xWidth);
-//		Double xHeight;
-//		xHeight = xWidth * 0.70;
-//		xHeight = DBSNumber.inte(xHeight);
-		Integer xWidth = DBSFaces.getDialogMessageWidth(pMessageText.length());
-		Integer xHeight = DBSFaces.getDialogMessageHeight(xWidth);
-		
-		//Inclui quebra de linha
-		pMessageText = DBSFaces.getHtmlStringWithLineBreak(pMessageText);
-		pMessageTooltip = DBSFaces.getHtmlStringWithLineBreak(pMessageTooltip);
-
-		//Adiciona mensagem
-		super.add(pMessageKey, pMessageType, pMessageText, pMessageTooltip);
-		
-		//Configura os atributos
-		wMessages.get(pMessageKey).setIcon(pMessageIcon);
-		wMessages.get(pMessageKey).setWidth(xWidth);
-		wMessages.get(pMessageKey).setHeight(xHeight);
-	}
-	
+//	protected MessageClass pvCreateMessage(String pMessageKey, 
+//												Integer pMessageCode, 
+//												MESSAGE_TYPE pMessageType,
+//												String pMessageText, 
+//												String pMessageTooltip, 
+//												DateTime pMessageTime,
+//												DIALOG_ICON pMessageIcon) {
+//		MessageClass xM = super.pvCreateMessage(pMessageKey, pMessageCode, pMessageType, pMessageText, pMessageTooltip, pMessageTime);
+//		xM.setIcon(pMessageIcon);
+//		return xM;
+//	}
 
 	/**
 	 * Retorna se mensagem é do tipo Warning
 	 * Mensagens do tipo warning são as que precisam de validação 
 	 * @return
 	 */
+	@Override
 	public boolean getIsWarning(){
 		if (wCurrentMessageKey !=null){
 			if (getCurrentMessage().getMessageType() == MESSAGE_TYPE.WARNING){
@@ -113,6 +86,7 @@ public class DBSDialogMessages extends DBSMessages<DBSDialogMessage> {
 	 * Retorna o icone da mensagem corrente
 	 * @return
 	 */
+	@Override
 	public DIALOG_ICON getIcon(){
 		if (wCurrentMessageKey !=null){
 			return wMessages.get(wCurrentMessageKey).getIcon();
@@ -126,6 +100,7 @@ public class DBSDialogMessages extends DBSMessages<DBSDialogMessage> {
 	 * Retorna a largura da janela que será exibida a mensagem corrente
 	 * @return
 	 */
+	@Override
 	public int getWidth(){
 		if (wCurrentMessageKey !=null){
 			return wMessages.get(wCurrentMessageKey).getWidth();
@@ -138,6 +113,7 @@ public class DBSDialogMessages extends DBSMessages<DBSDialogMessage> {
 	 * Retorna a altura da janela que será exibida a mensagem corrente
 	 * @return
 	 */
+	@Override
 	public int getHeight(){
 		if (wCurrentMessageKey !=null){
 			return wMessages.get(wCurrentMessageKey).getHeight();
@@ -146,27 +122,5 @@ public class DBSDialogMessages extends DBSMessages<DBSDialogMessage> {
 		}
 	}
 	
-	/**
-	 * Retorna o tipo de mensagem
-	 * @return
-	 */
-	public MESSAGE_TYPE getMessageType(){
-		if (wCurrentMessageKey !=null){
-			return getCurrentMessage().getMessageType();
-		}
-		return null;
-	}
-
-	/**
-	 * Adiciona todas as mensagems a fila
-	 * @param pMessages
-	 */
-	@Override
-	public <M extends DBSMessages<?>> void addAll(M pMessages){
-		for (Object xM : pMessages.getMessages().values()) {
-			DBSMessage xMsg = (DBSMessage) xM;
-			add(xMsg.getMessageText(), xMsg.getMessageType(), xMsg.getMessageText(), xMsg.getMessageTooltip());
-		}
-	}
 
 }
