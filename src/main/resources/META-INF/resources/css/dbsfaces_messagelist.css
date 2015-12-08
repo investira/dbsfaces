@@ -157,19 +157,15 @@
 }
 .dbs_messageList > .-container > .-list > .-content > .-message.-information{
 	background-color: none;
-	color:inherit;
 }
 .dbs_messageList > .-container > .-list > .-content > .-message.-warning{
 	background-color: rgba(255, 236, 0, 0.27);
-	color:inherit;
 }
 .dbs_messageList > .-container > .-list > .-content > .-message.-important{
 	background-color: 	rgba(255, 180, 0, 0.60);
-	color:inherit;
 }
 .dbs_messageList > .-container > .-list > .-content > .-message.-error{
 	background-color: rgba(255, 0, 0, 0.70);
-	color:inherit;
 }
 
 .xdbs_messageList > .-list > .-content > .-message:hover {
