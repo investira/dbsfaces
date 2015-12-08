@@ -114,7 +114,8 @@
 					<f:facet name="dialogMessages">
 						<dbscom:beanCrudDialogMessages id="message"
 												   crudBean="#{cc.crudBean}"
-		 							               update=":dialog #{cc.crudBean.isDeleting ? cc.attrs.update : ''} ">
+		 							               update=":dialog #{cc.attrs.update} ">
+<!-- 		 							               update=":dialog #{cc.crudBean.isDeleting ? cc.attrs.update : ''} " -->
 		 				</dbscom:beanCrudDialogMessages>
 					</f:facet>
 				</dbs:dialog>
