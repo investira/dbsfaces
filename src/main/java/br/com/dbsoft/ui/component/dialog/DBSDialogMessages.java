@@ -8,7 +8,7 @@ import br.com.dbsoft.ui.component.dialog.DBSDialog.DIALOG_ICON;
  * @author ricardovillar
  *
  */
-public class DBSDialogMessages<MessageClass extends IDBSDialogMessage> extends DBSMessages<MessageClass> implements IDBSDialogMessages<MessageClass> {
+public class DBSDialogMessages extends DBSMessages<IDBSDialogMessage> implements IDBSDialogMessages {
 
 //	public <T extends DBSDialogMessage> DBSDialogMessages(Class<MessageClass> pMessageClass) {
 //		super(pMessageClass);

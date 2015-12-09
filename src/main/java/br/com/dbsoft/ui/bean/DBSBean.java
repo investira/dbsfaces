@@ -35,12 +35,12 @@ public abstract class DBSBean implements Serializable {
 	
 	protected 	static IDBSDialogMessage wMessageError = new DBSDialogMessage(MESSAGE_TYPE.ERROR,"Erro: %s");
 	
-	protected 	Connection			wConnection;
+	protected 	Connection				wConnection;
 	
-	protected 	IDBSDialogMessages<IDBSDialogMessage> 	wDialogMessages = new DBSDialogMessages<IDBSDialogMessage>();
-	protected 	boolean								  	wBrodcastingEvent = false;
-	private   	DBSBean									wMasterBean = null;
-	private 	List<DBSBean>							wSlavesBean = new ArrayList<DBSBean>();
+	protected 	IDBSDialogMessages 		wDialogMessages = new DBSDialogMessages();
+	protected 	boolean					wBrodcastingEvent = false;
+	private   	DBSBean					wMasterBean = null;
+	private 	List<DBSBean>			wSlavesBean = new ArrayList<DBSBean>();
 	
 	
 	//--------------------------------------------------------------------------------------
@@ -200,7 +200,7 @@ public abstract class DBSBean implements Serializable {
 	 * Retorna mensagens do dialog.
 	 * @return
 	 */
-	public IDBSDialogMessages<IDBSDialogMessage> getMessages(){
+	public IDBSDialogMessages getMessages(){
 		return wDialogMessages;
 	}
 	

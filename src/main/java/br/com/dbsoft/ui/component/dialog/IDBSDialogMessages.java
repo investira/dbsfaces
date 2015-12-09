@@ -3,7 +3,7 @@ package br.com.dbsoft.ui.component.dialog;
 import br.com.dbsoft.message.IDBSMessages;
 import br.com.dbsoft.ui.component.dialog.DBSDialog.DIALOG_ICON;
 
-public interface IDBSDialogMessages<MessageClass extends IDBSDialogMessage> extends IDBSMessages<MessageClass>{
+public interface IDBSDialogMessages extends IDBSMessages<IDBSDialogMessage>{
 
 	/**
 	 * Inclui uma mensagem na fila para ser exibida.
