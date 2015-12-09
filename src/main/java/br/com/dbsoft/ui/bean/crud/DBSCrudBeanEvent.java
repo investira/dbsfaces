@@ -8,7 +8,7 @@ import br.com.dbsoft.ui.bean.crud.DBSCrudBean.EditingStage;
  * @author ricardo.villar
  *
  */
-public class DBSCrudBeanEvent extends DBSEvent<DBSCrudBean> {
+public class DBSCrudBeanEvent extends DBSEvent<DBSCrudBean> implements IDBSCrudBeanEvent{
 
 	public static enum CRUD_EVENT{
 		INITIALIZE,
@@ -43,14 +43,17 @@ public class DBSCrudBeanEvent extends DBSEvent<DBSCrudBean> {
 		wEditingMode = pEditingMode;
 	}
 
+	@Override
 	public Integer getCommittedRowCount() {
 		return wCommittedRowCount;
 	}
 
+	@Override
 	public void setCommittedRowCount(Integer pCommittedRowCount) {
 		wCommittedRowCount = pCommittedRowCount;
 	}
 
+	@Override
 	public CRUD_EVENT getEvent() {
 		return wEvent;
 	}
@@ -59,6 +62,7 @@ public class DBSCrudBeanEvent extends DBSEvent<DBSCrudBean> {
 	 * Retorna o modo de edição corrente ou que está para ser ativado.
 	 * @return
 	 */
+	@Override
 	public EditingMode getEditingMode() {
 		return wEditingMode;
 	}
@@ -67,6 +71,7 @@ public class DBSCrudBeanEvent extends DBSEvent<DBSCrudBean> {
 	 * Informa se a edição está sendo confirmada ou ignorada ou não está em processo de confirmação.
 	 * @return
 	 */
+	@Override
 	public EditingStage getEditingStage(){
 		return getSource().getEditingStage();
 	}
