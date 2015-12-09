@@ -1,9 +1,9 @@
 package br.com.dbsoft.ui.bean.crud;
 
-import br.com.dbsoft.crud.DBSCrudEvent.CRUD_EVENT;
 import br.com.dbsoft.event.IDBSEvent;
 import br.com.dbsoft.ui.bean.crud.DBSCrudBean.EditingMode;
 import br.com.dbsoft.ui.bean.crud.DBSCrudBean.EditingStage;
+import br.com.dbsoft.ui.bean.crud.DBSCrudBeanEvent.CRUD_EVENT;
 
 /**
  * @author ricardo.villar
