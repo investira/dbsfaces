@@ -13,21 +13,21 @@ public interface IDBSCrudBeanEventsListener {
 	 * Conexão com o banco encontra-se aberta.<br/>
 	 * @param pEvent Informações do evento
 	 */	
-	public abstract void initialize(IDBSCrudBeanEvent pEvent) throws DBSIOException;
+	public void initialize(IDBSCrudBeanEvent pEvent) throws DBSIOException;
 	
 	/**
 	 * Disparado antes da class ser finalizada.<br/>
 	 * Conexão com o banco já se encontra fechada.<br/>
 	 * @param pEvent Informações do evento
 	 */
-	public abstract void finalize(IDBSCrudBeanEvent pEvent) throws DBSIOException;
+	public void finalize(IDBSCrudBeanEvent pEvent) throws DBSIOException;
 
 	/**
 	 * Disparado antes do crudform ser fechado.<br/>
 	 * Conexão com o banco já se encontra fechada.<br/>
 	 * @param pEvent Informações do evento
 	 */
-	public abstract void beforeClose(IDBSCrudBeanEvent pEvent) throws DBSIOException;
+	public void beforeClose(IDBSCrudBeanEvent pEvent) throws DBSIOException;
 
 
 	/**
@@ -40,7 +40,7 @@ public interface IDBSCrudBeanEventsListener {
 	 * @param pEvent Informações do evento
 	 * @throws DBSIOException 
 	 */
-	public abstract void beforeRefresh(IDBSCrudBeanEvent pEvent) throws DBSIOException;
+	public void beforeRefresh(IDBSCrudBeanEvent pEvent) throws DBSIOException;
 
 	/**
 	 * Disparado após efetuada uma nova pesquisa.<br/>
@@ -49,7 +49,7 @@ public interface IDBSCrudBeanEventsListener {
 	 * Conexão com o banco encontra-se aberta.<br/>
 	 * @param pEvent Informações do evento
 	 */
-	public abstract void afterRefresh(IDBSCrudBeanEvent pEvent) throws DBSIOException;
+	public void afterRefresh(IDBSCrudBeanEvent pEvent) throws DBSIOException;
 
 	/**
 	 * Disparado antes de iniciar um insert.<br/>
@@ -59,14 +59,14 @@ public interface IDBSCrudBeanEventsListener {
 	 * Conexão com o banco encontra-se aberta.<br/>
 	 * @param pEvent Informações do evento
 	 */
-	public abstract void beforeInsert(IDBSCrudBeanEvent pEvent) throws DBSIOException;
+	public void beforeInsert(IDBSCrudBeanEvent pEvent) throws DBSIOException;
 
 	/**
 	 * Disparado antes de exibir os dados em uma edição ou exclusão.<br/>
 	 * Conexão com o banco encontra-se aberta.<br/>
 	 * @param pEvent Informações do evento
 	 */
-	public abstract void beforeView(IDBSCrudBeanEvent pEvent) throws DBSIOException;
+	public void beforeView(IDBSCrudBeanEvent pEvent) throws DBSIOException;
 
 	/**
 	 * Disparado depois de exibir os dados.<br/>
@@ -74,7 +74,7 @@ public interface IDBSCrudBeanEventsListener {
 	 * Conexão com o banco encontra-se aberta.<br/>
 	 * @param pEvent Informações do evento
 	 */
-	public abstract void afterView(IDBSCrudBeanEvent pEvent) throws DBSIOException;
+	public void afterView(IDBSCrudBeanEvent pEvent) throws DBSIOException;
 
 	/**
 	 * Disparado depois do evento de validação, <b>validate</b>, e mensagem de confirmação.<br/>
@@ -96,7 +96,7 @@ public interface IDBSCrudBeanEventsListener {
 	 * @param pEvent Informações do evento
 	 * @throws DBSIOException 
 	 */
-	public abstract void beforeCommit(IDBSCrudBeanEvent pEvent) throws DBSIOException;
+	public void beforeCommit(IDBSCrudBeanEvent pEvent) throws DBSIOException;
 
 	/**
 	 * Disparado depois de efetuado o CRUD com sucesso.<br/>
@@ -104,21 +104,21 @@ public interface IDBSCrudBeanEventsListener {
 	 * Conexão com o banco encontra-se aberta.
 	 * @param pEvent Informações do evento
 	 */
-	public abstract void afterCommit(IDBSCrudBeanEvent pEvent) throws DBSIOException;
+	public void afterCommit(IDBSCrudBeanEvent pEvent) throws DBSIOException;
 
 	/**
 	 * Disparado quando houver problema de validação ou não houver a confirmação do usuário para continuar.<br/>
 	 * Conexão com o banco encontra-se aberta.
 	 * @param pEvent Informações do evento
 	 */
-	public abstract void beforeIgnore(IDBSCrudBeanEvent pEvent) throws DBSIOException;
+	public void beforeIgnore(IDBSCrudBeanEvent pEvent) throws DBSIOException;
 
 	/**
 	 * Disparado depois de ignorar o CRUD.<br/>
 	 * Conexão com o banco encontra-se aberta.
 	 * @param pEvent Informações do evento
 	 */
-	public abstract void afterIgnore(IDBSCrudBeanEvent pEvent) throws DBSIOException;
+	public void afterIgnore(IDBSCrudBeanEvent pEvent) throws DBSIOException;
 	
 	/**
 	 * Disparado antes do evento <b>validate</b>.
@@ -126,7 +126,7 @@ public interface IDBSCrudBeanEventsListener {
 	 * Conexão com o banco encontra-se aberta.
 	 * @param pEvent Informações do evento
 	 */
-	public abstract void beforeValidate(IDBSCrudBeanEvent pEvent) throws DBSIOException;
+	public void beforeValidate(IDBSCrudBeanEvent pEvent) throws DBSIOException;
 
 	/**
 	 * Disparado após indicar que deseja salvar os dados.<br/>
@@ -141,7 +141,7 @@ public interface IDBSCrudBeanEventsListener {
 	 * Conexão com o banco encontra-se aberta.
 	 * @param pEvent Informações do evento
 	 */
-	public abstract void validate(IDBSCrudBeanEvent pEvent) throws DBSIOException;
+	public void validate(IDBSCrudBeanEvent pEvent) throws DBSIOException;
 
 	/**
 	 * Disparado após o click do usuário no insert/delete/update e antes de iniciar o respectivo insert/delete/update
@@ -155,7 +155,7 @@ public interface IDBSCrudBeanEventsListener {
 	 * Conexão com o banco encontra-se aberta.<br/> 
 	 * @param pEvent Informações do evento
 	 */
-	public abstract void beforeEdit(IDBSCrudBeanEvent pEvent) throws DBSIOException;
+	public void beforeEdit(IDBSCrudBeanEvent pEvent) throws DBSIOException;
 
 	/**
 	 * Disparado logo após a finalização da edição(insert/delete/update), independentemente da edição ter sido confirmada ou ignorada.<br/>
@@ -164,7 +164,7 @@ public interface IDBSCrudBeanEventsListener {
 	 * deve-se consultar o atributo editingMode do Evento(ex:if (pEvent.getEditingMode() == EditingMode.INSERTING){}).<br/>
 	 * @param pEvent Informações do evento
 	 */
-	public abstract void afterEdit(IDBSCrudBeanEvent pEvent) throws DBSIOException;
+	public void afterEdit(IDBSCrudBeanEvent pEvent) throws DBSIOException;
 	
 	
 	/**
@@ -173,14 +173,14 @@ public interface IDBSCrudBeanEventsListener {
 	 * Conexão com o banco encontra-se aberta.
 	 * @param pEvent Informações do evento
 	 */
-	public abstract void beforeSelect(IDBSCrudBeanEvent pEvent) throws DBSIOException;
+	public void beforeSelect(IDBSCrudBeanEvent pEvent) throws DBSIOException;
 
 	/**
 	 * Disparado depois da seleção de algum item.<br/>
 	 * Conexão com o banco encontra-se aberta.
 	 * @param pEvent Informações do evento
 	 */
-	public abstract void afterSelect(IDBSCrudBeanEvent pEvent) throws DBSIOException;
+	public void afterSelect(IDBSCrudBeanEvent pEvent) throws DBSIOException;
 
 	
 	/**
@@ -192,7 +192,7 @@ public interface IDBSCrudBeanEventsListener {
 	 * Conexão com o banco encontra-se aberta.
 	 * @param pEvent Informações do evento
 	 */
-	public abstract void afterCopy(IDBSCrudBeanEvent pEvent) throws DBSIOException;
+	public void afterCopy(IDBSCrudBeanEvent pEvent) throws DBSIOException;
 
 	/**
 	 * Disparado depois de copiada a posição do registro atual.<br/>
@@ -204,5 +204,5 @@ public interface IDBSCrudBeanEventsListener {
 	 * Conexão com o banco encontra-se aberta.
 	 * @param pEvent Informações do evento
 	 */
-	public abstract void beforePaste(IDBSCrudBeanEvent pEvent) throws DBSIOException;
+	public void beforePaste(IDBSCrudBeanEvent pEvent) throws DBSIOException;
 }
