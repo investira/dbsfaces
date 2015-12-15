@@ -679,16 +679,17 @@ span.dbs_input-data,
 div.dbs_input-data,
 label.dbs_input-data,
 .dbs_input-suggestion{
-   	border-color: rgba(13, 25, 45, 0.3) rgb(220, 220, 220) rgb(220, 220, 220) rgba(13, 25, 45, 0.3);
+   	border-color: rgba(13, 25, 45, 0.1);
+/*    	border-color: rgba(13, 25, 45, 0.3) rgb(220, 220, 220) rgb(220, 220, 220) rgba(13, 25, 45, 0.3); */
     border-style: solid;
     border-width: 1px;
 	padding: 0px 1px 0px 1px !important;
-/* 	-webkit-border-radius: 3px !important; */
-/* 	-moz-border-radius: 3px !important; */
-/* 	border-radius: 3px !important; */
-	-webkit-box-shadow: 1px 1px 1px rgba(13, 25, 45, 0.1) inset;
-	-moz-box-shadow: 1px 1px 1px rgba(13, 25, 45, 0.1) inset;
-	box-shadow: 1px 1px 1px rgba(13, 25, 45, 0.1) inset;
+	-webkit-border-radius: 3px !important;
+	-moz-border-radius: 3px !important;
+	border-radius: 3px !important;
+/* 	-webkit-box-shadow: 1px 1px 1px rgba(13, 25, 45, 0.1) inset; */
+/* 	-moz-box-shadow: 1px 1px 1px rgba(13, 25, 45, 0.1) inset; */
+/* 	box-shadow: 1px 1px 1px rgba(13, 25, 45, 0.1) inset; */
 }
 
 .dbs_input-data.-readOnly {
