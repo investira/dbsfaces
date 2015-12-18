@@ -6,22 +6,52 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import br.com.dbsoft.ui.component.DBSUIData;
 import br.com.dbsoft.ui.core.DBSFaces;
 
+
 @FacesComponent(DBSChart.COMPONENT_TYPE)
 public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 	
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.CHART;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 	
-	public static class TYPE{
-		public static String BAR = "bar";
-		public static String LINE = "line";
-		public static String PIE = "pie";
+	public static enum TYPE {
+		BAR 			("bar"),
+		LINE 			("line"),	
+	    PIE 			("pie");
+		
+		private String 	wName;
+		
+		private TYPE(String pName) {
+			this.wName = pName;
+		}
+
+		public String getName() {
+			return wName;
+		}
+
+		public static TYPE get(String pCode) {
+			if (pCode == null){
+				return LINE;
+			}			
+			pCode = pCode.trim().toLowerCase();
+			switch (pCode) {
+			case "bar":
+				return BAR;
+			case "line":
+				return LINE;
+			case "pie":
+				return PIE;
+			default:
+				return LINE;
+			}
+		}	
 	}
 	
 	protected enum PropertyKeys {
 		style, 
 		styleClass, 		
-		type;
+		type,
+		size,
+		columnScale;
 
 		String toString;
 
@@ -68,4 +98,23 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 		getStateHelper().put(PropertyKeys.styleClass, pStyleClass);
 		handleAttribute("styleClass", pStyleClass);
 	}
+
+	public Integer getSize() {
+		return (Integer) getStateHelper().eval(PropertyKeys.size, 0);
+	}
+
+	public void setSize(Integer pSize) {
+		getStateHelper().put(PropertyKeys.size, pSize);
+		handleAttribute("size", pSize);
+	}
+	
+	public Double getColumnScale() {
+		return (Double) getStateHelper().eval(PropertyKeys.columnScale, 0D);
+	}
+	public void setColumnScale(Double pColumnScale) {
+		getStateHelper().put(PropertyKeys.columnScale, pColumnScale);
+		handleAttribute("columnScale", pColumnScale);
+	}
+
+
 }

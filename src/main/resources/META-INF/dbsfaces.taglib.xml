@@ -2548,7 +2548,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Mascará para formatar o valor
+                Mascará para formatar o valor.
             </description>
 			<name>valueFormatMask</name>
 			<required>false</required>
@@ -2594,13 +2594,6 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>		
-		<attribute>
-			<description>Largura da linha em pontos
-            </description>
-			<name>lineWidth</name>
-			<required>true</required>
-			<type>java.lang.Integer</type>
-		</attribute>
 		<attribute>
 			<description>Altura do gráfico em px
             </description>

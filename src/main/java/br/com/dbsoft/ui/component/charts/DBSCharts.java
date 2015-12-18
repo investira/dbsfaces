@@ -1,5 +1,7 @@
 package br.com.dbsoft.ui.component.charts;
 
+import java.math.BigDecimal;
+
 import javax.faces.component.FacesComponent;
 import javax.faces.component.NamingContainer;
 
@@ -12,7 +14,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.CHARTS;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
-	public static final Integer Padding = 2;
+//	public static final Integer Padding = 2;
 	public static final Integer FontSize = 8;
 	
 	protected enum PropertyKeys {
@@ -20,16 +22,16 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		footer,
 		width,
 		height,
-		ValueFormatMask,
-		lineWidth,
+		valueFormatMask,
 		showGrid,
 		showGridValue,
+
 		maxValue,
 		minValue,
-
-		zeroPosition,
-		whiteSpace,
-		formatMaskWidth,
+		rowScale,
+		chartWidth,
+		chartHeight,
+//		formatMaskWidth,
 		numberOfGridLines,
 		showLabel;
 
@@ -70,20 +72,13 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		handleAttribute("footer", pFooter);
 	}
 	
-	public Integer getLineWidth() {
-		return (Integer) getStateHelper().eval(PropertyKeys.lineWidth, 1L);
-	}
-	public void setLineWidth(Integer pLineWidth) {
-		getStateHelper().put(PropertyKeys.lineWidth, pLineWidth);
-		handleAttribute("lineWidth", pLineWidth);
-	}
-
 	public Boolean getShowGrid() {
 		return (Boolean) getStateHelper().eval(PropertyKeys.showGrid, true);
 	}
 	public void setShowGrid(Boolean pShowGrid) {
 		getStateHelper().put(PropertyKeys.showGrid, pShowGrid);
 		handleAttribute("showGrid", pShowGrid);
+		pvSetChartWidth(getWidth());
 	}
 
 	public Boolean getShowGridValue() {
@@ -92,6 +87,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	public void setShowGridValue(Boolean pShowGridValue) {
 		getStateHelper().put(PropertyKeys.showGridValue, pShowGridValue);
 		handleAttribute("showGridValue", pShowGridValue);
+		pvSetChartWidth(getWidth());
 	}
 
 
@@ -101,6 +97,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	public void setHeight(Integer pHeight) {
 		getStateHelper().put(PropertyKeys.height, pHeight);
 		handleAttribute("hight", pHeight);
+		pvSetChartHeight(pHeight);
 	}
 
 	public Integer getWidth() {
@@ -109,15 +106,16 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	public void setWidth(Integer pWidth) {
 		getStateHelper().put(PropertyKeys.width, pWidth);
 		handleAttribute("width", pWidth);
+		pvSetChartWidth(pWidth);
 	}
 
 	public String getValueFormatMask() {
-		return (String) getStateHelper().eval(PropertyKeys.ValueFormatMask, "");
+		return (String) getStateHelper().eval(PropertyKeys.valueFormatMask, "");
 	}
-	
 	public void setValueFormatMask(String pValueFormatMask) {
-		getStateHelper().put(PropertyKeys.ValueFormatMask, pValueFormatMask);
+		getStateHelper().put(PropertyKeys.valueFormatMask, pValueFormatMask);
 		handleAttribute("valueFormatMask", pValueFormatMask);
+		pvSetChartWidth(getWidth());
 	}
 
 	//--------------------
@@ -128,6 +126,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	public void setMaxValue(Double pMaxValue) {
 		getStateHelper().put(PropertyKeys.maxValue, pMaxValue);
 		handleAttribute("maxValue", pMaxValue);
+//		System.out.println("MAX\t" + pMaxValue);
 	}
 
 	public Double getMinValue() {
@@ -136,35 +135,24 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	public void setMinValue(Double pMinValue) {
 		getStateHelper().put(PropertyKeys.minValue, pMinValue);
 		handleAttribute("minValue", pMinValue);
+//		System.out.println("MIN\t" + pMinValue);
 	}
 
-	public Double getTotalValue() {
-		return DBSNumber.subtract(getMaxValue(), getMinValue()).doubleValue();
+	public Double getRowScale() {
+		return (Double) getStateHelper().eval(PropertyKeys.rowScale, 0D);
+	}
+	public void setRowScale(Double pRowScale) {
+		getStateHelper().put(PropertyKeys.rowScale, pRowScale);
+		handleAttribute("rowScale", pRowScale);
 	}
 
-	public Integer getZeroPosition() {
-		return (Integer) getStateHelper().eval(PropertyKeys.zeroPosition, 0);
-	}
-	public void setZeroPosition(Integer pZeroPosition) {
-		getStateHelper().put(PropertyKeys.zeroPosition, pZeroPosition);
-		handleAttribute("zeroPosition", pZeroPosition);
-	}
-	
-	public Double getWhiteSpace() {
-		return (Double) getStateHelper().eval(PropertyKeys.whiteSpace, 0D);
-	}
-	public void setWhiteSpace(Double pWhiteSpace) {
-		getStateHelper().put(PropertyKeys.whiteSpace, pWhiteSpace);
-		handleAttribute("whiteSpace", pWhiteSpace);
-	}
-
-	public Integer getFormatMaskWidth() {
-		return (Integer) getStateHelper().eval(PropertyKeys.formatMaskWidth, 0);
-	}
-	public void setFormatMaskWidth(Integer pFormatMaskWidth) {
-		getStateHelper().put(PropertyKeys.formatMaskWidth, pFormatMaskWidth);
-		handleAttribute("formatMaskWidth", pFormatMaskWidth);
-	}
+//	public Integer getFormatMaskWidth() {
+//		return (Integer) getStateHelper().eval(PropertyKeys.formatMaskWidth, 0);
+//	}
+//	public void setFormatMaskWidth(Integer pFormatMaskWidth) {
+//		getStateHelper().put(PropertyKeys.formatMaskWidth, pFormatMaskWidth);
+//		handleAttribute("formatMaskWidth", pFormatMaskWidth);
+//	}
 	
 	public Integer getNumberOfGridLines() {
 		return (Integer) getStateHelper().eval(PropertyKeys.numberOfGridLines, 6);
@@ -176,18 +164,67 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	
 	public void setShowLabel(Boolean pShowLabel) {
 		getStateHelper().put(PropertyKeys.showLabel, pShowLabel);
-		handleAttribute("readOnly", pShowLabel);
+		handleAttribute("showLabel", pShowLabel);
+		pvSetChartHeight(getHeight());
 	}
 	
 	public Boolean getShowLabel() {
 		return (Boolean) getStateHelper().eval(PropertyKeys.showLabel, false);
 	}
+
+	public Double getTotalValue() {
+		return DBSNumber.subtract(getMaxValue(), getMinValue()).doubleValue();
+	}
 	
-	public Integer getChartHeight(){
-		Integer xChartHeight = getHeight();
+	/**
+	 * Retorna posição Y do valor zero.
+	 * @return
+	 */
+	public Double getZeroPosition(){
+		BigDecimal xValue = DBSNumber.multiply(DBSNumber.divide(-getMinValue(), 
+											 					getTotalValue()),
+											   getChartHeight());
+		return xValue.doubleValue();
+	}
+
+	public Integer getChartHeight() {
+		return (Integer) getStateHelper().eval(PropertyKeys.chartHeight, 0);
+	}
+
+	public Integer getChartWidth() {
+		return (Integer) getStateHelper().eval(PropertyKeys.chartWidth, 0);
+	}
+
+	/**
+	 * Converte valor px para valor real
+	 * @param pPxValue
+	 * @return
+	 */
+	public Integer convertYPxToValue(Double pPxValue){
+		BigDecimal xValue = DBSNumber.divide(DBSNumber.multiply(pPxValue, 
+	 														    getTotalValue()),
+											 getChartHeight());
+		xValue = DBSNumber.add(xValue, getMinValue());
+		return xValue.intValue();
+	}
+
+	private void pvSetChartHeight(Integer pHeight){
 		if (getShowLabel()){
-			xChartHeight -= DBSCharts.FontSize;
+			//Subtrai da altura do a altura do texto da coluna 
+			pHeight -= DBSCharts.FontSize;
 		}
-		return xChartHeight;
+		getStateHelper().put(PropertyKeys.chartHeight, pHeight);
+		handleAttribute("chartHeight", pHeight);
+	}
+
+	private void pvSetChartWidth(Integer pWidth){
+		if (getShowGrid() 
+		 && getShowGridValue()
+		 && getValueFormatMask().length() > 0){
+			//Subtrai da largura o comprimento em pixel a partir da mascará de formatação do valor das linhas
+			pWidth -= DBSNumber.multiply(getValueFormatMask().length(), 5.5D).intValue();
+		}
+		getStateHelper().put(PropertyKeys.chartWidth, pWidth);
+		handleAttribute("chartWidth", pWidth);
 	}
 }

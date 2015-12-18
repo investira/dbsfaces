@@ -4,7 +4,9 @@ dbs_chartValue = function(pId) {
 		dbsfaces.chartValue.drawLines(pId);
 	}
 	
-	dbsfaces.chartValue.showLabel(pId);
+	setTimeout(function(){
+		dbsfaces.chartValue.showLabel(pId);
+	},0);
 	
 	$(pId).mouseenter(function (e){
 		var xContent = $(pId + " > .-extrainfo > span");
@@ -64,16 +66,17 @@ dbsfaces.chartValue = {
 		//Procura valor anterior que contenha label sendo exibido
 		var xLabelAnterior = xValue.prevAll(".dbs_chartValue").children(".-label").not("[class ~= '-hide']").first();
 		var xXAtual = 0;
-		var xLabelAtualWidth = xLabelAtual.width();
+		var xLabelAtualWidth = xLabelAtual.get(0).getComputedTextLength();
 		var xXAnterior = 0;
 		//Se não existir coluna anterior a ser exibida,
 		if (xLabelAnterior.length == 0){
 			xXAnterior = xLabelAtualWidth/2;
 			xXAtual = Number(xLabelAtual.attr("x"));
 		}else{
-			xXAnterior = Number(xLabelAnterior.attr("x")) + xLabelAnterior.width() + 4;
+			xXAnterior = Number(xLabelAnterior.attr("x")) + xLabelAnterior.get(0).getComputedTextLength() + 4;
 			xXAtual = Number(xLabelAtual.attr("x"));
 		}
+		//Exclui sobreposição de texto
 		if (xXAnterior > xXAtual){
 			xLabelAtual.get(0).classList.add("-hide");
 		}else{

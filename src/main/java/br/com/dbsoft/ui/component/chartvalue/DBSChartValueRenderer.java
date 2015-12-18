@@ -1,6 +1,7 @@
 package br.com.dbsoft.ui.component.chartvalue;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -13,6 +14,7 @@ import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.chart.DBSChart;
+import br.com.dbsoft.ui.component.chart.DBSChart.TYPE;
 import br.com.dbsoft.ui.component.charts.DBSCharts;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSFormat;
@@ -23,9 +25,6 @@ import br.com.dbsoft.util.DBSObject;
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSChartValue.RENDERER_TYPE)
 public class DBSChartValueRenderer extends DBSRenderer {
-	
-	private Integer wAbsoluteX;
-	private Integer wAbsoluteY;
 	
 	@Override
 	public void decode(FacesContext pContext, UIComponent pComponent) {
@@ -43,23 +42,25 @@ public class DBSChartValueRenderer extends DBSRenderer {
     }
 
 	@Override
-	public void encodeBegin(FacesContext pContext, UIComponent pComponent)
-			throws IOException {
+	public void encodeBegin(FacesContext pContext, UIComponent pComponent) throws IOException {
 		if (!pComponent.isRendered()){return;}
-		DBSChartValue xChartValue = (DBSChartValue) pComponent;
-		DBSChart xChart;
-		DBSCharts xCharts;
-		ResponseWriter xWriter = pContext.getResponseWriter();
-		String xClass = DBSFaces.CSS.CHARTVALUE.MAIN + " ";
-		Integer xValue = 0;
-		String xClientId;
-		
+		DBSChartValue 	xChartValue = (DBSChartValue) pComponent;
+		DBSChart 		xChart;
+		DBSCharts 		xCharts;
+		ResponseWriter 	xWriter = pContext.getResponseWriter();
+		String 			xClass = DBSFaces.CSS.CHARTVALUE.MAIN + " ";
+		String 			xClientId;
+		BigDecimal 		xX = new BigDecimal(0);
+		BigDecimal 		xXText = new BigDecimal(0);
+		BigDecimal		xY = new BigDecimal(0);		
+		TYPE			xType;
 		//Recupera DBSChart pai
 		if (xChartValue.getParent() == null
 		|| !(xChartValue.getParent() instanceof DBSChart)){
 			return;
 		}
 		xChart =  (DBSChart) xChartValue.getParent();
+		xType =	DBSChart.TYPE.get(xChart.getType());
 		//Recupera DBSCharts avô
 		if (xChart.getParent() == null
 		|| !(xChart.getParent() instanceof DBSCharts)){
@@ -83,55 +84,64 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "style", xChartValue.getStyle(), null);
 			
 			//Grafico
-			if (xChart.getType().equalsIgnoreCase(DBSChart.TYPE.BAR)
-			 || xChart.getType().equalsIgnoreCase(DBSChart.TYPE.LINE)){
+			if (xType == TYPE.BAR
+			 || xType == TYPE.LINE){
 				//Calcula valor em pixel a partir do valor real. subtrai padding para dar espaço para a margem
-				xValue = DBSNumber.multiply(xCharts.getChartHeight() - (DBSCharts.Padding * 2),
-						 					DBSNumber.divide(xChartValue.getValue(), 
-						 									 xCharts.getTotalValue())).intValue();
+//				xValue = DBSNumber.multiply(xCharts.getChartHeight() - (DBSCharts.Padding * 2),
+//						 					DBSNumber.divide(xChartValue.getValue(), 
+//						 									 xCharts.getTotalValue())).intValue();
 				
-				//Seta valor absolute dentro do gráfico
-				wAbsoluteY = (DBSNumber.subtract(xCharts.getZeroPosition(), xValue).intValue());
-				//Seta valor absolute dentro do gráfico
-				wAbsoluteX = (DBSNumber.multiply(xChartValue.getIndex() - 1,
-												 xCharts.getWhiteSpace()).intValue());
-				
+				xY = DBSNumber.subtract(xCharts.getChartHeight(),
+										DBSNumber.multiply(xCharts.getRowScale(), 
+														   DBSNumber.subtract(xChartValue.getValue(), 
+																   			  xCharts.getMinValue())));
+				xX = DBSNumber.multiply(xChart.getColumnScale(), xChartValue.getIndex() - 1);
+				xXText = xX;
+				//Encode bar ---------------------------------------------------------------------------------
+				if (xType == TYPE.BAR){
+					Double xHeight = DBSNumber.abs(DBSNumber.subtract(xCharts.getChartHeight(), xCharts.getZeroPosition(), xY).doubleValue());
+//					xX = DBSNumber.subtract(xX,
+//									   DBSNumber.divide(DBSNumber.add(xCharts.getXScale(),
+//											  						  xCharts.getLineWidth()),
+//											  			2));
+//					xX = DBSNumber.subtract(xX,
+//							   DBSNumber.divide(DBSNumber.add(xCharts.getXScale(),
+//									  						  0),
+//									  			2));
+//					xX = DBSNumber.subtract(xX,
+//											DBSNumber.multiply(xCharts.getLineWidth(), 
+//															   DBSNumber.divide(xChartValue.getIndex() - 1,
+//																	   		    xChart.getRowCount())));
+
+					//Centraliza o ponto
+					Double xLineWidth = xChart.getColumnScale() * .9;
+					xXText = DBSNumber.add(xX,xChart.getColumnScale() / 2);
+					xX = DBSNumber.add(xX,
+							   		   DBSNumber.divide(xChart.getColumnScale() - xLineWidth, 2));
+					//Valore positivos acima
+					if (xChartValue.getValue() > 0){
+						DBSFaces.encodeSVGRect(xChartValue, xWriter, null, null, xX.doubleValue(), xY.doubleValue(), xHeight, xLineWidth, xChartValue.getFillColor());
+					//Valore negativos
+					}else{
+						//inverte a posição Yx
+						Double xIY = DBSNumber.subtract(xCharts.getChartHeight(), xCharts.getZeroPosition().doubleValue()).doubleValue();
+						DBSFaces.encodeSVGRect(xChartValue, xWriter, null, null, xX.doubleValue(), xIY, xHeight, xLineWidth, xChartValue.getFillColor());
+					}
+				//Encode line - ponto. as linhas que ligam os pontos, são desenhadas no código JS.
+				}else if (xType == TYPE.LINE){
+					//Centraliza o ponto
+					DBSFaces.encodeSVGCircle(xChartValue, xWriter, DBSFaces.CSS.MODIFIER.VALUE, null, xX.doubleValue(), xY.doubleValue(), 2D, 2D, "transparent");
+				}
 				//Encode label da coluna ---------------------------------------------------------------------
 				if (!DBSObject.isEmpty(xChartValue.getLabel())){
 					DBSFaces.encodeSVGText(xChartValue, 
 										   xWriter,  
 										   DBSFaces.CSS.MODIFIER.LABEL + " -hide", "text-anchor:middle", 
-										   wAbsoluteX + DBSNumber.divide(xCharts.getWhiteSpace(),
-												   						 2).intValue(), 
-										   xCharts.getHeight().intValue(), 
+										   xXText.doubleValue(), 
+										   DBSNumber.subtract(xCharts.getHeight(),0).doubleValue(), 
 										   xChartValue.getLabel());
 				}
-
-				//Encode bar ---------------------------------------------------------------------------------
-				if (xChart.getType().equalsIgnoreCase(DBSChart.TYPE.BAR)){
-					//Centraliza o ponto
-					wAbsoluteX = (wAbsoluteX + DBSNumber.divide(xCharts.getWhiteSpace() - xCharts.getLineWidth(), 2).intValue());
-
-					//Força tamanho mínimo quando valor for zero
-					if (xValue.equals(0)){
-						xValue = 3;
-						wAbsoluteY =(xCharts.getZeroPosition() -2);		
-					}
-					//Utliza valor absolute
-					xValue = DBSNumber.abs(xValue);
-					if (wAbsoluteY < xCharts.getZeroPosition()){
-						DBSFaces.encodeSVGRect(xChartValue, xWriter, null, null, wAbsoluteX, wAbsoluteY, xValue, xCharts.getLineWidth().intValue(), xChartValue.getFillColor());
-					}else{
-						DBSFaces.encodeSVGRect(xChartValue, xWriter, null, null, wAbsoluteX, xCharts.getZeroPosition(), xValue, xCharts.getLineWidth().intValue(), xChartValue.getFillColor());
-					}
-				//Encode line - ponto. as linhas que ligam os pontos, são desenhadas no código JS.
-				}else if (xChart.getType().equalsIgnoreCase(DBSChart.TYPE.LINE)){
-					//Centraliza o ponto
-					wAbsoluteX = (wAbsoluteX + DBSNumber.divide(xCharts.getWhiteSpace() + 2, 2).intValue());
-					DBSFaces.encodeSVGCircle(xChartValue, xWriter, DBSFaces.CSS.MODIFIER.VALUE, null, wAbsoluteX, wAbsoluteY, 2, 2, xChartValue.getFillColor());
-				}
 			}
-			
 			//EXTRAINFO -------------------------------------------------------------------------
 			UIComponent xExtraInfo = xChartValue.getFacet("extrainfo");
 			String xExtraInfoStyle;
@@ -151,11 +161,11 @@ public class DBSChartValueRenderer extends DBSRenderer {
 				xExtraInfoStyle = "position:absolute;";
 				xWriter.startElement("span", xChartValue);
 					DBSFaces.setAttribute(xWriter, "class", "-y", null);
-					if (xChart.getType().equalsIgnoreCase(DBSChart.TYPE.BAR)
-					 || xChart.getType().equalsIgnoreCase(DBSChart.TYPE.LINE)){
+					if (xType == TYPE.BAR
+					 || xType == TYPE.LINE){
 						
 						xExtraInfoStyle += "right:-" + (xCharts.getWidth() + 3) + "px;";// + (wAbsoluteX + DBSNumber.divide(xCharts.getLineWidth() + xCharts.getWhiteSpace(),2).intValue()) + "px;";
-						xExtraInfoStyle += "bottom:-" + (wAbsoluteY + (DBSCharts.FontSize/2)) + "px;";
+						xExtraInfoStyle += "bottom:-" + (xY.intValue() + (DBSCharts.FontSize/2)) + "px;";
 					}
 					
 					DBSFaces.setAttribute(xWriter, "style", xExtraInfoStyle, null);

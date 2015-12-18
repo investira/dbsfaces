@@ -13,6 +13,7 @@ import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
 import br.com.dbsoft.ui.component.chartvalue.DBSChartValue;
 import br.com.dbsoft.ui.component.DBSRenderer;
+import br.com.dbsoft.ui.component.chart.DBSChart.TYPE;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSObject;
 
@@ -62,7 +63,7 @@ public class DBSChartRenderer extends DBSRenderer {
 			
 			//Divisão onde serão desenhadas as linhas que ligam os pontos no gráfico por linha.
 			//O desenho é efetuado via JS no chartValue
-			if (xChart.getType().equalsIgnoreCase(DBSChart.TYPE.LINE)){
+			if (DBSChart.TYPE.get(xChart.getType()) == TYPE.LINE){
 				xWriter.startElement("g", xChart);
 					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.LINE, null);
 				xWriter.endElement("g");
