@@ -1614,7 +1614,7 @@ public class  DBSFaces {
 	 * @param pY2
 	 * @throws IOException
 	 */
-	public static void encodeSVGLine(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, String pStyle, Integer pX1, Integer pY1, Integer pX2, Integer pY2) throws IOException{
+	public static void encodeSVGLine(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, String pStyle, Double pX1, Double pY1, Double pX2, Double pY2) throws IOException{
 		pWriter.startElement("line", pComponent);
 			DBSFaces.setAttribute(pWriter, "class", pStyleClass, null);
 			DBSFaces.setAttribute(pWriter, "style", pStyle, null);
@@ -1626,7 +1626,8 @@ public class  DBSFaces {
 	}
 
 	/**
-	 * Encode de Retangulo para grádico SVG
+	 * Encode de Retangulo para grádico SVG.<br/>
+	 * O ponto 0,0 é a esquerda, acima.
 	 * @param pComponent
 	 * @param pWriter
 	 * @param pStyleClass
@@ -1635,7 +1636,7 @@ public class  DBSFaces {
 	 * @param pY
 	 * @throws IOException
 	 */
-	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, String pStyle, Integer pX, Integer pY, Integer pHeight, Integer pWidth, String pFill) throws IOException{
+	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, String pStyle, Double pX, Double pY, Double pHeight, Double pWidth, String pFill) throws IOException{
 		pWriter.startElement("rect", pComponent);
 			DBSFaces.setAttribute(pWriter, "class", pStyleClass, null);
 			DBSFaces.setAttribute(pWriter, "style", pStyle, null);
@@ -1658,7 +1659,7 @@ public class  DBSFaces {
 	 * @param pY
 	 * @throws IOException
 	 */
-	public static void encodeSVGCircle(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, String pStyle, Integer pX, Integer pY, Integer pHeight, Integer pWidth, String pFill) throws IOException{
+	public static void encodeSVGCircle(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, String pStyle, Double pX, Double pY, Double pHeight, Double pWidth, String pFill) throws IOException{
 		pWriter.startElement("ellipse", pComponent);
 			DBSFaces.setAttribute(pWriter, "class", pStyleClass, null);
 			DBSFaces.setAttribute(pWriter, "style", pStyle, null);
@@ -1682,7 +1683,7 @@ public class  DBSFaces {
 	 * @param pY
 	 * @throws IOException
 	 */
-	public static void encodeSVGText(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, String pStyle, Integer pX, Integer pY, String pText) throws IOException{
+	public static void encodeSVGText(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, String pStyle, Double pX, Double pY, String pText) throws IOException{
 		pWriter.startElement("text", pComponent);
 			DBSFaces.setAttribute(pWriter, "class", pStyleClass, null);
 			DBSFaces.setAttribute(pWriter, "style", pStyle, null);
