@@ -92,7 +92,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 
 
 	public Integer getHeight() {
-		return (Integer) getStateHelper().eval(PropertyKeys.height, 50L);
+		return (Integer) getStateHelper().eval(PropertyKeys.height, 50);
 	}
 	public void setHeight(Integer pHeight) {
 		getStateHelper().put(PropertyKeys.height, pHeight);
@@ -101,7 +101,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	}
 
 	public Integer getWidth() {
-		return (Integer) getStateHelper().eval(PropertyKeys.width, 50L);
+		return (Integer) getStateHelper().eval(PropertyKeys.width, 50);
 	}
 	public void setWidth(Integer pWidth) {
 		getStateHelper().put(PropertyKeys.width, pWidth);
