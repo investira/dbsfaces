@@ -222,7 +222,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		 && getShowGridValue()
 		 && getValueFormatMask().length() > 0){
 			//Subtrai da largura o comprimento em pixel a partir da mascará de formatação do valor das linhas
-			pWidth -= DBSNumber.multiply(getValueFormatMask().length(), 5.5D).intValue();
+			pWidth -= DBSNumber.multiply(getValueFormatMask().length(), 6D).intValue();
 		}
 		getStateHelper().put(PropertyKeys.chartWidth, pWidth);
 		handleAttribute("chartWidth", pWidth);

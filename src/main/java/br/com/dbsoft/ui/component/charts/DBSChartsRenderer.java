@@ -286,16 +286,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 			DBSFaces.encodeSVGLine(pCharts, pWriter, DBSFaces.CSS.MODIFIER.LINE, null, 0D, xPosicaoInvertida.doubleValue(), pCharts.getChartWidth().doubleValue(), xPosicaoInvertida.doubleValue());
 			if (pCharts.getShowGridValue()){
 				xPosicaoText = xPosicao;
-				if (i==0){
-					//Logo após a linha
-					xPosicaoText += DBSCharts.FontSize.doubleValue();
-				}else if (i == pCharts.getNumberOfGridLines() - 1){
-					//Antes da linha
-				}else{
-					//Meio da linha
-					xPosicaoText += DBSCharts.FontSize.doubleValue() / 2;
-				}
-//				//Encode do texto do valor
+				//Encode do texto do valor
 				xValorTmp = DBSNumber.toDouble(DBSFormat.getFormattedNumber(pCharts.convertYPxToValue(xPosicaoInvertida), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask()));
 				xFormatedValue = DBSFormat.getFormattedNumber(xValorTmp, NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask());
 				DBSFaces.encodeSVGText(pCharts, pWriter,  DBSFaces.CSS.MODIFIER.LABEL, "text-anchor:end", pCharts.getWidth().doubleValue(), xPosicaoText.doubleValue(), xFormatedValue);
