@@ -152,8 +152,8 @@ public class DBSChartValueRenderer extends DBSRenderer {
 				}
 			}
 			//EXTRAINFO -------------------------------------------------------------------------
-			UIComponent xExtraInfo = xChartValue.getFacet("extrainfo");
-			String xExtraInfoStyle;
+//			UIComponent xExtraInfo = xChartValue.getFacet("extrainfo");
+//			String xExtraInfoStyle;
 			xWriter.startElement("foreignObject", xChartValue);
 				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.EXTRAINFO.trim(), null);
 				//Encode do label da coluna do hover (X)
