@@ -290,51 +290,26 @@ public class DBSChartsRenderer extends DBSRenderer {
 				xValorTmp = DBSNumber.toDouble(DBSFormat.getFormattedNumber(pCharts.convertYPxToValue(xPosicaoInvertida), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask()));
 				xFormatedValue = DBSFormat.getFormattedNumber(xValorTmp, NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask());
 				DBSFaces.encodeSVGText(pCharts, pWriter,  DBSFaces.CSS.MODIFIER.LABEL, "text-anchor:end", pCharts.getWidth().doubleValue(), xPosicaoText.doubleValue(), xFormatedValue);
+//				DBSFaces.encodeSVGText(pCharts, 
+//						    pWriter,  
+//						   "-ylabel -hide", 
+//						   "text-anchor:end;", 
+//						   pCharts.getWidth().doubleValue(), 
+//						   xPosicaoText.doubleValue() + (DBSCharts.FontSize / 2), 
+//						   xFormatedValue);
+
 			}
 			xPosicao += xIncremento;
 		}
-		//Encode da linha ZERO
-		xPosicaoInvertida = pCharts.getChartHeight() - pCharts.getZeroPosition();
-		xFormatedValue = DBSFormat.getFormattedNumber(0, NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask());
-		xPosicaoText = xPosicaoInvertida + DBSCharts.FontSize.doubleValue() / 2;
-		DBSFaces.encodeSVGLine(pCharts, pWriter, DBSFaces.CSS.MODIFIER.LINE, null, 0D, xPosicaoInvertida.doubleValue(), pCharts.getChartWidth().doubleValue(), xPosicaoInvertida.doubleValue());
-		DBSFaces.encodeSVGText(pCharts, pWriter,  DBSFaces.CSS.MODIFIER.LABEL, "text-anchor:end", pCharts.getWidth().doubleValue(), xPosicaoText.doubleValue(), xFormatedValue);
+		if (pCharts.getMinValue() < 0){
+			//Encode da linha ZERO
+			xPosicaoInvertida = pCharts.getChartHeight() - pCharts.getZeroPosition();
+			xFormatedValue = DBSFormat.getFormattedNumber(0, NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask());
+			xPosicaoText = xPosicaoInvertida + DBSCharts.FontSize.doubleValue() / 2;
+			DBSFaces.encodeSVGLine(pCharts, pWriter, DBSFaces.CSS.MODIFIER.LINE, "stroke-dasharray: 2,5;", 0D, xPosicaoInvertida.doubleValue(), pCharts.getChartWidth().doubleValue(), xPosicaoInvertida.doubleValue());
+//			DBSFaces.encodeSVGText(pCharts, pWriter,  DBSFaces.CSS.MODIFIER.LABEL, "text-anchor:end", pCharts.getWidth().doubleValue(), xPosicaoText.doubleValue(), xFormatedValue);
+		}
 	}
 
-//	private void pvEncodeLinhaDeValores2(DBSCharts pCharts, ResponseWriter pWriter) throws IOException{
-//		Double xIncrementoValor = DBSNumber.divide(pCharts.getTotalValue(), pCharts.getNumberOfGridLines()).doubleValue();
-//		Double xIncrementoPosicao = DBSNumber.divide(pCharts.getChartHeight() - (DBSCharts.Padding * 2), pCharts.getNumberOfGridLines()).doubleValue();
-//		Double xPosicao = DBSNumber.toBigDecimal(pCharts.getZeroPosition()).remainder(DBSNumber.toBigDecimal(xIncrementoPosicao)).doubleValue();
-//		Double xValor = 0D;
-//		if (pCharts.getMaxValue() > 0D){
-//			xValor= (DBSNumber.divide(pCharts.getMaxValue() / xIncrementoValor).intValue()) *  xIncrementoValor;
-//		}
-//		Integer xAjustePadrao = DBSCharts.FontSize / 2;
-//		Integer xAjuste = xAjustePadrao;
-//		String xFormatedValue;
-//		Double xValorTmp;
-//		if (xPosicao < xAjustePadrao){
-//			xAjuste = DBSCharts.FontSize;
-//		}
-//		for (int i=0; i < pCharts.getNumberOfGridLines(); i++){
-//			//Encode da linha do grid até o inicio do texto do valor
-//			DBSFaces.encodeSVGLine(pCharts, pWriter, DBSFaces.CSS.MODIFIER.LINE, null, 0, xPosicao.intValue(), pCharts.getWidth().intValue() - pCharts.getFormatMaskWidth(), xPosicao.intValue());
-//			if (pCharts.getShowGridValue()){
-//				//Encode do texto do valor
-//				//Artifício para excluir o sinal (-) do valor zero quando o valor for por exemplo -0.002
-//				xValorTmp = DBSNumber.toDouble(DBSFormat.getFormattedNumber(xValor, NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask()));
-//				xFormatedValue = DBSFormat.getFormattedNumber(xValorTmp, NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask());
-//				DBSFaces.encodeSVGText(pCharts, pWriter,  DBSFaces.CSS.MODIFIER.LABEL, "text-anchor:end", pCharts.getWidth().intValue(), xPosicao.intValue() + xAjuste, xFormatedValue);
-//			}
-//			xValor -= xIncrementoValor;
-//			xPosicao += xIncrementoPosicao;
-//			if (xPosicao > pCharts.getChartHeight() - (DBSCharts.Padding * 2) - xAjustePadrao){
-//				xAjuste = 0;
-//			}else{
-//				xAjuste = xAjustePadrao;
-//			}
-//		}
-//	}
-	
 	
 }

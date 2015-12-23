@@ -129,16 +129,25 @@ public class DBSChartValueRenderer extends DBSRenderer {
 					}
 				//Encode line - ponto. as linhas que ligam os pontos, são desenhadas no código JS.
 				}else if (xType == TYPE.LINE){
-					//Centraliza o ponto
+					//Centraliza texto
 					DBSFaces.encodeSVGCircle(xChartValue, xWriter, DBSFaces.CSS.MODIFIER.VALUE, null, xX.doubleValue(), xY.doubleValue(), 2D, 2D, "transparent");
 				}
+				//Encode do valor da linha ---------------------------------------------------------------------
+				DBSFaces.encodeSVGText(xChartValue, 
+									   xWriter,  
+									   "-ylabel -hide", 
+									   "text-anchor:end;" +"fill:" + xChartValue.getFillColor(), 
+									   xCharts.getWidth().doubleValue(), 
+									   xY.doubleValue() + (DBSCharts.FontSize / 2), 
+									   DBSFormat.getFormattedNumber(xChartValue.getValue(), NUMBER_SIGN.MINUS_PREFIX, xCharts.getValueFormatMask()));
 				//Encode label da coluna ---------------------------------------------------------------------
 				if (!DBSObject.isEmpty(xChartValue.getLabel())){
 					DBSFaces.encodeSVGText(xChartValue, 
 										   xWriter,  
-										   DBSFaces.CSS.MODIFIER.LABEL + " -hide", "text-anchor:middle", 
+										   "-xlabel -hide", 
+										   "text-anchor:middle;" + "fill:" + xChartValue.getFillColor(), 
 										   xXText.doubleValue(), 
-										   DBSNumber.subtract(xCharts.getHeight(),0).doubleValue(), 
+										   xCharts.getHeight().doubleValue(), 
 										   xChartValue.getLabel());
 				}
 			}
@@ -148,35 +157,37 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			xWriter.startElement("foreignObject", xChartValue);
 				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.EXTRAINFO.trim(), null);
 				//Encode do label da coluna do hover (X)
-				if (!DBSObject.isEmpty(xChartValue.getLabel())){
-					xExtraInfoStyle = "position:absolute;";
-					xWriter.startElement("span", xChartValue);
-						DBSFaces.setAttribute(xWriter, "class", "-x", null);
-						xExtraInfoStyle += "top:" + (xCharts.getHeight().intValue() - DBSCharts.FontSize) + "px;";
-						DBSFaces.setAttribute(xWriter, "style", xExtraInfoStyle, null);
-						xWriter.write(xChartValue.getLabel());
-					xWriter.endElement("span");
-				}
-				//Encode do valor da linha (Y)
-				xExtraInfoStyle = "position:absolute;";
-				xWriter.startElement("span", xChartValue);
-					DBSFaces.setAttribute(xWriter, "class", "-y", null);
-					if (xType == TYPE.BAR
-					 || xType == TYPE.LINE){
-						
-						xExtraInfoStyle += "right:-" + (xCharts.getWidth() + 3) + "px;";// + (wAbsoluteX + DBSNumber.divide(xCharts.getLineWidth() + xCharts.getWhiteSpace(),2).intValue()) + "px;";
-						xExtraInfoStyle += "bottom:-" + (xY.intValue() + (DBSCharts.FontSize/2)) + "px;";
-					}
-					
-					DBSFaces.setAttribute(xWriter, "style", xExtraInfoStyle, null);
-					//Se existir o facet Extrainfo
-					if (xExtraInfo != null){
-						xExtraInfo.encodeAll(pContext);
-					//Se não existir, encode o valor como extrainfo
-					}else{
-						xWriter.write(DBSFormat.getFormattedNumber(xChartValue.getValue(), NUMBER_SIGN.MINUS_PREFIX, xCharts.getValueFormatMask()));
-					}
-				xWriter.endElement("span");
+//				if (!DBSObject.isEmpty(xChartValue.getLabel())){
+//					xExtraInfoStyle = "position:absolute;";
+//					xWriter.startElement("span", xChartValue);
+//						DBSFaces.setAttribute(xWriter, "class", "-x", null);
+//						xExtraInfoStyle += "top:" + (xCharts.getHeight().intValue() - DBSCharts.FontSize) + "px;";
+//						DBSFaces.setAttribute(xWriter, "style", xExtraInfoStyle, null);
+//						xWriter.write(xChartValue.getLabel());
+//					xWriter.endElement("span");
+//				}
+//				//Encode do valor da linha (Y)
+//				xExtraInfoStyle = "position:absolute;";
+//				xWriter.startElement("span", xChartValue);
+//					DBSFaces.setAttribute(xWriter, "class", "-y", null);
+//					if (xType == TYPE.BAR
+//					 || xType == TYPE.LINE){
+//						
+//						xExtraInfoStyle += "right:-" + (xCharts.getWidth() + 3) + "px;";// + (wAbsoluteX + DBSNumber.divide(xCharts.getLineWidth() + xCharts.getWhiteSpace(),2).intValue()) + "px;";
+//						xExtraInfoStyle += "bottom:-" + (xY.intValue() + (DBSCharts.FontSize/2)) + "px;";
+//						xExtraInfoStyle += "color:" + xChartValue.getFillColor() + ";";
+//						
+//					}
+//					
+//					DBSFaces.setAttribute(xWriter, "style", xExtraInfoStyle, null);
+//					//Se existir o facet Extrainfo
+//					if (xExtraInfo != null){
+//						xExtraInfo.encodeAll(pContext);
+//					//Se não existir, encode o valor como extrainfo
+//					}else{
+//						xWriter.write(DBSFormat.getFormattedNumber(xChartValue.getValue(), NUMBER_SIGN.MINUS_PREFIX, xCharts.getValueFormatMask()));
+//					}
+//				xWriter.endElement("span");
 			xWriter.endElement("foreignObject");
 			
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xChartValue, DBSPassThruAttributes.getAttributes(Key.DIV));
