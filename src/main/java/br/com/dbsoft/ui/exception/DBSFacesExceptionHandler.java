@@ -12,6 +12,7 @@ import javax.faces.context.ExceptionHandlerWrapper;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.ExceptionQueuedEventContext;
+import javax.faces.view.facelets.TagAttributeException;
 
 import org.apache.log4j.Logger;
 
@@ -59,11 +60,20 @@ public class DBSFacesExceptionHandler  extends ExceptionHandlerWrapper {
 					}
 //					xFC.renderResponse();       
 				//View Expirada
-				}else if (xThrowable instanceof ViewExpiredException){
+				}else if (xThrowable instanceof TagAttributeException){
 					//Direciona para a pasta raiz do sistema(normalmente o sistema irá redirecionar para a páginal index.xhtml)
 //					xNav.performNavigation(xFC.getExternalContext().getRequestContextPath());
 //					xFC.renderResponse();       
-					xNav.performNavigation("/");
+//					xNav.performNavigation("/");
+//					xNav.handleNavigation(xFC, null, "/index.xhtml?faces-redirect=true");
+					xNav.handleNavigation(xFC, null, DBSFaces.getCurrentViewRefresh());
+//					xNav.handleNavigation(xFC, null, "?faces-redirect=true");
+					System.out.println(DBSFaces.getCurrentViewRefresh());
+				}else if (xThrowable instanceof ViewExpiredException){
+						//Direciona para a pasta raiz do sistema(normalmente o sistema irá redirecionar para a páginal index.xhtml)
+//						xNav.performNavigation(xFC.getExternalContext().getRequestContextPath());
+//						xFC.renderResponse();       
+						xNav.performNavigation("/");
 				}else if (xThrowable instanceof javax.el.PropertyNotFoundException){
 					wLogger.error("Erro no encode do componente - Propriedade não encontrada", xThrowable); 
 				}else if (xThrowable instanceof javax.faces.FacesException){ 
