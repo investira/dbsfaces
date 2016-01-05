@@ -67,8 +67,6 @@ public class DBSFacesExceptionHandler  extends ExceptionHandlerWrapper {
 //					xNav.performNavigation("/");
 //					xNav.handleNavigation(xFC, null, "/index.xhtml?faces-redirect=true");
 					xNav.handleNavigation(xFC, null, DBSFaces.getCurrentViewRefresh());
-//					xNav.handleNavigation(xFC, null, "?faces-redirect=true");
-					System.out.println(DBSFaces.getCurrentViewRefresh());
 				}else if (xThrowable instanceof ViewExpiredException){
 						//Direciona para a pasta raiz do sistema(normalmente o sistema irá redirecionar para a páginal index.xhtml)
 //						xNav.performNavigation(xFC.getExternalContext().getRequestContextPath());
