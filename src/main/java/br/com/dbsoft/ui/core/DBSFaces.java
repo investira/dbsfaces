@@ -1781,6 +1781,23 @@ public class  DBSFaces {
 			return null;
 		}
 	}
+ 	
+	/**
+	 * Seta o valor no bean a partir do valueExpression.
+	 * @param pContext
+	 * @param pELString
+	 * @param pValue
+	 */
+	public static void setValueWithValueExpression(FacesContext pContext, String pELString, Object pValue){
+		ValueExpression xVE = null;
+		
+		//Cria chamada ao método do crudBean para configura o campo
+		xVE = DBSFaces.createValueExpression(pContext, pELString, Object.class);
+    	xVE.setValue(pContext.getELContext(), pValue);
+		
+	}
+	
+
  	//=====================================================================
  	// 
  	//=====================================================================
