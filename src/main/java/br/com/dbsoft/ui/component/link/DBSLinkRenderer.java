@@ -22,6 +22,7 @@ public class DBSLinkRenderer extends DBSRenderer {
 	public void decode(FacesContext pContext, UIComponent pComponent) {
         DBSLink xLink = (DBSLink) pComponent;
 		String xClientId = xLink.getClientId(pContext);
+		if (xLink.getReadOnly()) {return;}
 		if (RenderKitUtils.isPartialOrBehaviorAction(pContext, xClientId) || /*Chamada Ajax*/
 			pContext.getExternalContext().getRequestParameterMap().containsKey(xClientId)) { 	/*Chamada Sem Ajax*/
 			xLink.queueEvent(new ActionEvent(xLink));
@@ -40,17 +41,31 @@ public class DBSLinkRenderer extends DBSRenderer {
     }
 
 	@Override
-	public void encodeEnd(FacesContext pContext, UIComponent pComponent)
-			throws IOException {
+	public void encodeEnd(FacesContext pContext, UIComponent pComponent) throws IOException {
 		if (!pComponent.isRendered()){return;}
 		DBSLink xLink = (DBSLink) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClass = DBSFaces.CSS.NOT_SELECTABLE.trim() + " " + xLink.getStyleClass();
 		String xOnClick;
+		String xExecute = "";
+		if (xLink.getExecute() == null){
+			xExecute = getFormId(pContext, pComponent); 
+		}else{
+			xExecute = xLink.getExecute();
+		}
+		
+		if (xLink.getReadOnly()){
+			xClass += " " + DBSFaces.CSS.MODIFIER.DISABLED;
+		}
 
-		xOnClick = DBSFaces.getSubmitString(xLink, DBSFaces.HTML.EVENTS.ONCLICK, getFormId(pContext, pComponent), xLink.getUpdate());
+		xOnClick = DBSFaces.getSubmitString(xLink, DBSFaces.HTML.EVENTS.ONCLICK, xExecute, xLink.getUpdate());
+
 		String xClientId = xLink.getClientId(pContext);
-		xWriter.startElement("a", xLink);
+		if (xLink.getReadOnly()){
+			xWriter.startElement("div", xLink);
+		}else{
+			xWriter.startElement("a", xLink);
+		}
 			xWriter.writeAttribute("id", xClientId, "id");
 			xWriter.writeAttribute("name", xClientId, "name");
 			xWriter.writeAttribute("class", xClass, "class"); 
@@ -64,7 +79,12 @@ public class DBSLinkRenderer extends DBSRenderer {
 			}
 			xWriter.write(DBSString.toString(xLink.getValue(), ""));
 			DBSFaces.renderChildren(pContext, xLink);
-		xWriter.endElement("a");
+			DBSFaces.encodeTooltip(pContext, xLink, xLink.getTooltip());
+		if (xLink.getReadOnly()){
+			xWriter.endElement("div");
+		}else{
+			xWriter.endElement("a");
+		}
 	}
 
 }
