@@ -31,20 +31,20 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 	public final static String FACET_TOOLBAR_CONTROL = "toolbarcontrol";
 	public final static String FACET_FILTER = "filter";
 	public final static String FACET_INLINETOOLBAR = "inlineEditToolbar";
+	public final static String BUTTON_SORT_ID = "sort";
+	public final static String INPUT_SORT_COLUMN_ID = "sortcolumn";
+	public final static String INPUT_SORT_DIRECTION_ID = "sortdirection";
+	public final static String INPUT_FOO_ID = "foo";
+	
 
 	protected enum PropertyKeys {
-		style, 
-		styleClass, 
 		rowStyleClass, 
 		caption, 
 		multipleSelection, 
 		searchAction, 
 		viewOneAction, 
 		selectAllAction,
-		selected, 
 		update,
-		keyColumnName,
-		currentRowIndex,
 		iconClass;
 
 		String toString;
@@ -179,23 +179,6 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 		return false;
 	}
 
-	public String getStyle() {
-		return (String) getStateHelper().eval(PropertyKeys.style, "");
-	}
-
-	public void setStyle(String pStyle) {
-		getStateHelper().put(PropertyKeys.style, pStyle);
-		handleAttribute("style", pStyle);
-	}
-
-	public String getStyleClass() {
-		return (String) getStateHelper().eval(PropertyKeys.styleClass, "");
-	}
-
-	public void setStyleClass(String pStyleClass) {
-		getStateHelper().put(PropertyKeys.styleClass, pStyleClass);
-		handleAttribute("styleClass", pStyleClass);
-	}
 
 	public String getRowStyleClass() {
 		return (String) getStateHelper().eval(PropertyKeys.rowStyleClass, "-odd,-even");
@@ -215,12 +198,6 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 		handleAttribute("caption", pCaption);
 	}
 
-	
-//	public void setValue(LinkedHashMap<String, Object> pValue) {
-//		List<Object> xList = new ArrayList<Object>(pValue.values());
-//		this.setValue(xList);
-//	}
-	
 	/**
 	 * Retorna se está habilitada a opção de multiplos seleções de registros
 	 * 
@@ -283,39 +260,12 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 	}
 
 
-	public String getSelected() {
-		// return (String) getStateHelper().eval(PropertyKeys.selected, false);
-		return DBSFaces.getELString(this,PropertyKeys.selected.toString());
-	}
-
-	public void setSelected(String pSelected) {
-		getStateHelper().put(PropertyKeys.selected, pSelected);
-		handleAttribute("selected", pSelected);
-	}
-
 	public String getUpdate() {
 		return (String) getStateHelper().eval(PropertyKeys.update, "");
 	}
 	public void setUpdate(String pUpdate) {
 		getStateHelper().put(PropertyKeys.update, pUpdate);
 		handleAttribute("update", pUpdate);
-	}
-
-	public String getKeyColumnName() {
-		return (String) getStateHelper().eval(PropertyKeys.keyColumnName, "");
-	}
-	public void setKeyColumnName(String pKeyColumnName) {
-		getStateHelper().put(PropertyKeys.keyColumnName, pKeyColumnName);
-		handleAttribute("keyColumnName", pKeyColumnName);
-	}
-	
-	public Integer getCurrentRowIndex() {
-		return (Integer) getStateHelper().eval(PropertyKeys.currentRowIndex, -1);
-	}
-
-	public void setCurrentRowIndex(Integer pCurrentRowIndex) {
-		getStateHelper().put(PropertyKeys.currentRowIndex, pCurrentRowIndex);
-		handleAttribute("currentRowIndex", pCurrentRowIndex);
 	}
 
 	public boolean getHasViewOneAction() {
@@ -330,7 +280,9 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
  		getStateHelper().put(PropertyKeys.iconClass, pIconClass);
  		handleAttribute("iconClass", pIconClass);
  	}
-	
+
+
+
 	private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("change", "click", "blur", "dblclick","keydown", "keypress", "keyup", "mousedown", "mousemove","mouseout", "mouseover", "mouseup", "select"));
 
 	@Override
@@ -338,10 +290,6 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 		return EVENT_NAMES;
 	}
 
-	@Override
-	public String getDefaultEventName() {
-		return "select";
-	}
 
 
 }

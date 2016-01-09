@@ -12,6 +12,7 @@ import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.util.DBSIO.SORT_DIRECTION;
 
 @ResourceDependencies({
 	// Estas libraries serão carregadas junto com o projeto
@@ -99,11 +100,129 @@ import br.com.dbsoft.ui.core.DBSFaces;
 })
 public abstract class DBSUIData extends UIData implements IDBSUIComponentBase {
 	
+	protected enum PropertyKeys {
+		style, 
+		styleClass, 
+		selected, 
+		keyColumnName,
+		currentRowIndex,
+		sortColumn,
+		sortDirection,
+		sortAction;
+
+		String toString;
+
+		PropertyKeys(String toString) {
+			this.toString = toString;
+		}
+
+		PropertyKeys() {
+		}
+
+		@Override
+		public String toString() {
+			return ((this.toString != null) ? this.toString : super.toString());
+		}
+	}
 	@Override
 	public String getFamily() {
 		return DBSFaces.FAMILY;
 	}
 	
+	public String getStyle() {
+		return (String) getStateHelper().eval(PropertyKeys.style, "");
+	}
+
+	public void setStyle(String pStyle) {
+		getStateHelper().put(PropertyKeys.style, pStyle);
+		handleAttribute("style", pStyle);
+	}
+
+	public String getStyleClass() {
+		return (String) getStateHelper().eval(PropertyKeys.styleClass, "");
+	}
+
+	public void setStyleClass(String pStyleClass) {
+		getStateHelper().put(PropertyKeys.styleClass, pStyleClass);
+		handleAttribute("styleClass", pStyleClass);
+	}
+	
+	public String getSelected() {
+		// return (String) getStateHelper().eval(PropertyKeys.selected, false);
+		return DBSFaces.getELString(this,PropertyKeys.selected.toString());
+	}
+
+	public void setSelected(String pSelected) {
+		getStateHelper().put(PropertyKeys.selected, pSelected);
+		handleAttribute("selected", pSelected);
+	}
+
+	public String getKeyColumnName() {
+		return (String) getStateHelper().eval(PropertyKeys.keyColumnName, "");
+	}
+	public void setKeyColumnName(String pKeyColumnName) {
+		getStateHelper().put(PropertyKeys.keyColumnName, pKeyColumnName);
+		handleAttribute("keyColumnName", pKeyColumnName);
+	}
+	
+	public Integer getCurrentRowIndex() {
+		return (Integer) getStateHelper().eval(PropertyKeys.currentRowIndex, -1);
+	}
+
+	public void setCurrentRowIndex(Integer pCurrentRowIndex) {
+		getStateHelper().put(PropertyKeys.currentRowIndex, pCurrentRowIndex);
+		handleAttribute("currentRowIndex", pCurrentRowIndex);
+	}
+
+	public String getSortColumn() {
+		return (String) getStateHelper().eval(PropertyKeys.sortColumn, "");
+	}
+
+	public void setSortColumn(String pSortColumn) {
+		//Ignora o set caso não tenha havido alteração da coluna selecionada
+		if (pSortColumn.equals(getSortColumn())){return;}
+		
+		String xELString = DBSFaces.getELString(this,PropertyKeys.sortColumn.toString());
+		DBSFaces.setValueWithValueExpression(this.getFacesContext(), xELString, pSortColumn);
+
+		getStateHelper().put(PropertyKeys.sortColumn, pSortColumn);
+		handleAttribute("sortColumn", pSortColumn);
+		//Seta direção inicial 
+		setSortDirection(SORT_DIRECTION.ASCENDING.getCode());
+	}
+	
+	public String getSortDirection() {
+ 		return (String) getStateHelper().eval(PropertyKeys.sortDirection, SORT_DIRECTION.NONE.getCode()); //A,D,empty
+ 	}
+
+ 	public void setSortDirection(String pSortDirection) {
+ 		//Uniformiza a partir do enum
+ 		pSortDirection = SORT_DIRECTION.get(pSortDirection).getCode();
+ 		//Ignora o set caso não tenha havido alteração da direção
+ 		if (pSortDirection.equals(getSortDirection())){return;}
+ 		
+		String xELString = DBSFaces.getELString(this,PropertyKeys.sortDirection.toString());
+		DBSFaces.setValueWithValueExpression(this.getFacesContext(), xELString, pSortDirection);
+
+		getStateHelper().put(PropertyKeys.sortDirection, pSortDirection);
+ 		handleAttribute("sortDirection", pSortDirection);
+ 	}
+
+	public String getSortAction() {
+		String xStr = DBSFaces.getELString(this, PropertyKeys.sortAction.toString());
+		return xStr;
+	}
+
+	public void setSortAction(String pSortAction) {
+    	getStateHelper().put(PropertyKeys.sortAction, pSortAction);
+		handleAttribute("sortAction", pSortAction);
+	}	
+
+	@Override
+	public String getDefaultEventName() {
+		return "select";
+	}
+
 	@Override
 	public void handleAttribute(String name, Object value) {
 		DBSFaces.handleAttribute(name, value, this);

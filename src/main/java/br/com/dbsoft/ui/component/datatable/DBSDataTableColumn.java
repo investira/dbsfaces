@@ -15,6 +15,7 @@ public class DBSDataTableColumn extends UIColumn{
 	protected enum PropertyKeys {
 		style,
 		styleClass,
+		sortable,
 		width;
 		
 		String toString;
@@ -71,8 +72,20 @@ public class DBSDataTableColumn extends UIColumn{
 	}
 	
 
+	public Boolean getSortable() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.sortable, false);
+	}
+
+	public void setSortable(Boolean pSortable) {
+		getStateHelper().put(PropertyKeys.sortable, pSortable);
+		handleAttribute("sortable", pSortable);
+	}
+
 	public void handleAttribute(String name, Object value) {
 		DBSFaces.handleAttribute(name, value, this);
 	}
+	
+	
+
 
 }

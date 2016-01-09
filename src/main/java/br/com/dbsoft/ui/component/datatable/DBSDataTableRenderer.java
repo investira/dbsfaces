@@ -2,19 +2,24 @@ package br.com.dbsoft.ui.component.datatable;
 
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
 import javax.faces.component.behavior.ClientBehaviorHolder;
+import javax.faces.component.html.HtmlInputHidden;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
 
 import com.sun.faces.facelets.compiler.UIInstructions;
+import com.sun.faces.renderkit.RenderKitUtils;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.button.DBSButton;
+import br.com.dbsoft.ui.component.link.DBSLink;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.util.DBSIO.SORT_DIRECTION;
 import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSObject;
 import br.com.dbsoft.util.DBSString;
@@ -25,8 +30,12 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	
 	@Override
 	public void decode(FacesContext pContext, UIComponent pComponent) {
-		pvSetCurrentRowIndex(pContext, pComponent, true);
+		DBSDataTable xDataTable = (DBSDataTable) pComponent;
+		pvSetSubmittedInputs(pContext, pComponent, true);
 		decodeBehaviors(pContext, pComponent); 
+		if (RenderKitUtils.isPartialOrBehaviorAction(pContext, pvGetButtonSortId(pContext, xDataTable)) || /*Chamada Ajax*/
+			pContext.getExternalContext().getRequestParameterMap().containsKey(pvGetButtonSortId(pContext, xDataTable))) { 	/*Chamada Sem Ajax*/
+		} 
 	}
 	
 	@Override
@@ -63,7 +72,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 //		DBSFaces.createDataTableInlineEditToolbar(xDataTable);
 		
 		pvSetCurrentRowIndex(pContext, pComponent, false);
-		
+
 		//Encode principal
 		xWriter.startElement("div", xDataTable);
 			xWriter.writeAttribute("id", xClientId, null);
@@ -108,6 +117,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 		pvEncodeJS(xWriter, xClientId);
 	}
 
+
 	/**
 	 * Retorna se possui cabeçalho principal
 	 * @param pDataTable
@@ -147,7 +157,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 						DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CAPTION + DBSFaces.CSS.NOT_SELECTABLE,null);
 						if (!DBSObject.isEmpty(pDataTable.getIconClass())) {
 							pWriter.startElement("span", pDataTable);
-								pWriter.writeAttribute("class", "-icon " + pDataTable.getIconClass(), null);
+								pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.ICON + pDataTable.getIconClass(), null);
 							pWriter.endElement("span");
 						}
 						if (!DBSObject.isEmpty(pDataTable.getCaption())){
@@ -218,15 +228,20 @@ public class DBSDataTableRenderer extends DBSRenderer {
 				}
 			pWriter.endElement("div");
 		}
-		pvEncodeInput(pContext, pDataTable, pWriter);
+		
+		//Encode do input de foco
+		pvEncodeFocusInput(pContext, pDataTable, pWriter);
+		
+		//Encode dos input de controle do sort
+		if (pDataTable.getSortAction() != null){
+			pvEncodeSortInput(pContext, pDataTable);
+		}
+
+
 	}
 	
 
-	
-	private String pvGetInputFooId(FacesContext pContext, DBSDataTable pDataTable){
-		return pDataTable.getClientId(pContext) + ":foo";
-	}
-		
+
 //	private String pvGetId(UIComponent pComponent, String pSufix, boolean pFullId){
 //		String xId;
 //		if (pFullId){
@@ -284,21 +299,20 @@ public class DBSDataTableRenderer extends DBSRenderer {
 		if (xTemTitulo){
 			pWriter.startElement("thead", pDataTable);
 				pWriter.startElement("tr", pDataTable);
-				//Colunas do usuário
-				pvConfigDataTableColumnsStyleClass(pContext, pDataTable);
-				for (UIComponent xC : pDataTable.getChildren()){
-					if (xC instanceof DBSDataTableColumn){
-						DBSDataTableColumn xDTC = (DBSDataTableColumn) xC;
-						if (xDTC.isRendered()){
-							UIComponent xHeader = xDTC.getFacet(DBSDataTable.FACET_HEADER);
-							pvEncodeColumn(true, xDTC.getStyleClass(), xHeader, pContext, pDataTable, pWriter);
+					//Colunas do usuário
+					pvConfigDataTableColumnsStyleClass(pContext, pDataTable);
+					for (UIComponent xC : pDataTable.getChildren()){
+						if (xC instanceof DBSDataTableColumn){
+							DBSDataTableColumn xDTC = (DBSDataTableColumn) xC;
+							if (xDTC.isRendered()){
+								pvEncodeColumnHeader(xDTC, pContext, pDataTable, pWriter);
+							}
+						}else{
+							xC.encodeAll(pContext);
 						}
-					}else{
-						xC.encodeAll(pContext);
 					}
-				}
-				//Encode da coluna auxiliar
-				pvEncodeColumn(false, DBSFaces.getDataTableDataColumnStyleClass("X", ""),null, pContext, pDataTable, pWriter);
+					//Encode da coluna auxiliar
+					pvEncodeColumnAux(pContext, pDataTable, pWriter);
 				pWriter.endElement("tr");
 			pWriter.endElement("thead");
 		}
@@ -311,7 +325,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	 * @param pWriter
 	 * @throws IOException
 	 */
-	private void pvEncodeInput(FacesContext pContext, DBSDataTable pDataTable,ResponseWriter pWriter) throws IOException {
+	private void pvEncodeFocusInput(FacesContext pContext, DBSDataTable pDataTable,ResponseWriter pWriter) throws IOException {
 		//Input para controle do focus e caracteres digitados----
 		pWriter.startElement("input", pDataTable);
 			DBSFaces.setAttribute(pWriter, "id", pvGetInputFooId(pContext, pDataTable), null);
@@ -322,6 +336,49 @@ public class DBSDataTableRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(pWriter, "readonly", "readonly", null);
 			DBSFaces.setAttribute(pWriter, "value", pDataTable.getCurrentRowIndex(), null);
 		pWriter.endElement("input");
+	}
+	
+	/**
+	 * Inputs que controtam os sort
+	 * @param pContext
+	 * @param pDataTable
+	 * @throws IOException
+	 */
+	private void pvEncodeSortInput(FacesContext pContext, DBSDataTable pDataTable) throws IOException {
+		HtmlInputHidden xInput;
+		//Columa selecionada para sort
+		xInput = (HtmlInputHidden) pDataTable.getFacet("sortColumn");
+		if (xInput == null){
+			xInput = (HtmlInputHidden) pContext.getApplication().createComponent(HtmlInputHidden.COMPONENT_TYPE);
+			xInput.setId(DBSDataTable.INPUT_SORT_COLUMN_ID);
+			xInput.setValue(pDataTable.getSortColumn());
+			pDataTable.getFacets().put("sortColumn", xInput);
+		}
+		xInput.setValue(pDataTable.getSortColumn());
+		xInput.encodeAll(pContext);
+		//Ordem da coluna
+		xInput = (HtmlInputHidden) pDataTable.getFacet("sortDirection");
+		if (xInput == null){
+			xInput = (HtmlInputHidden) pContext.getApplication().createComponent(HtmlInputHidden.COMPONENT_TYPE);
+			xInput.setId(DBSDataTable.INPUT_SORT_DIRECTION_ID);
+			xInput.setValue(pDataTable.getSortDirection());
+			pDataTable.getFacets().put("sortDirection", xInput);
+		}
+		xInput.setValue(pDataTable.getSortDirection());
+		xInput.encodeAll(pContext);
+		//Encode do botão do sort
+		String xClientIdButton = DBSDataTable.BUTTON_SORT_ID;
+		DBSLink xBtn = (DBSLink) pDataTable.getFacets().get(xClientIdButton);
+		if (xBtn == null){
+			xBtn = (DBSLink) pContext.getApplication().createComponent(DBSLink.COMPONENT_TYPE);
+			xBtn.setId(xClientIdButton);
+			xBtn.setStyleClass("-sort"); 
+			xBtn.setActionExpression(DBSFaces.createMethodExpression(pContext, pDataTable.getSortAction(), String.class, new Class[0]));
+			xBtn.setUpdate(pDataTable.getClientId());
+			pDataTable.getFacets().put(xClientIdButton, xBtn);
+		}
+		xBtn.encodeAll(pContext);
+
 	}
 
 	/**
@@ -361,12 +418,12 @@ public class DBSDataTableRenderer extends DBSRenderer {
 						if (xC instanceof DBSDataTableColumn){
 							DBSDataTableColumn xDTC = (DBSDataTableColumn) xC;
 							if (xDTC.isRendered()){
-								pvEncodeColumn(false, xDTC.getStyleClass(), xDTC, pContext, pDataTable, pWriter);
+								pvEncodeColumnBody(xDTC, pContext, pDataTable, pWriter);
 							}
 						}
 					}
 					//Encode da coluna auxiliar
-					pvEncodeColumn(false, DBSFaces.getDataTableDataColumnStyleClass("X", ""),null, pContext, pDataTable, pWriter);
+					pvEncodeColumnAux(pContext, pDataTable, pWriter);
 					xRowClassIndex++;
 					if (xRowClassIndex == xRowClasses.length){
 						xRowClassIndex = 0;
@@ -431,6 +488,40 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	}
 	
 	/**
+	 * Encode da coluna auxliar de controle.
+	 * @param pContext
+	 * @param pDataTable
+	 * @param pWriter
+	 * @throws IOException
+	 */
+	private void pvEncodeColumnHeader(DBSDataTableColumn pColumn, FacesContext pContext, DBSDataTable pDataTable, ResponseWriter pWriter) throws IOException{
+		UIComponent xHeader = pColumn.getFacet(DBSDataTable.FACET_HEADER);
+		pvEncodeColumn(pColumn, pColumn.getStyleClass(), xHeader, pContext, pDataTable, pWriter);
+	}
+
+	/**
+	 * Encode da coluna auxliar de controle.
+	 * @param pContext
+	 * @param pDataTable
+	 * @param pWriter
+	 * @throws IOException
+	 */
+	private void pvEncodeColumnBody(DBSDataTableColumn pColumn, FacesContext pContext, DBSDataTable pDataTable,ResponseWriter pWriter) throws IOException{
+		pvEncodeColumn(null, pColumn.getStyleClass(), pColumn, pContext, pDataTable, pWriter);
+	}
+	
+	/**
+	 * Encode da coluna auxliar de controle.
+	 * @param pContext
+	 * @param pDataTable
+	 * @param pWriter
+	 * @throws IOException
+	 */
+	private void pvEncodeColumnAux(FacesContext pContext, DBSDataTable pDataTable, ResponseWriter pWriter) throws IOException{
+		pvEncodeColumn(null, DBSFaces.getDataTableDataColumnStyleClass("X", ""), null, pContext, pDataTable, pWriter);
+	}
+	
+	/**
 	 * Encode padrão da coluna
 	 * @param pHead
 	 * @param pStyleClass
@@ -441,16 +532,39 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	 * @param pWriter
 	 * @throws IOException
 	 */
-	private void pvEncodeColumn(boolean pHead, String pStyleClass, UIComponent pColumnContent, FacesContext pContext, DBSDataTable pDataTable,ResponseWriter pWriter) throws IOException{
-		String xTag = (pHead ? "th" : "td");
+	private void pvEncodeColumn(DBSDataTableColumn pColumn, String pStyleClass, UIComponent pColumnContent, FacesContext pContext, DBSDataTable pDataTable, ResponseWriter pWriter) throws IOException{
+		String xTag = (pColumn == null ? "td" : "th");
 		pWriter.startElement(xTag, pDataTable);
+			//Se for cabeçalho e coluna puder ser ordenada.
+			if (pColumn != null
+			&& pColumn.getSortable()){
+				pStyleClass += " -sort ";
+				//Marca como selecionado se for a colluna que está o sort
+				if (pDataTable.getSortColumn().equals(pColumn.getId())){
+					pStyleClass += DBSFaces.CSS.MODIFIER.SELECTED;
+				}
+				DBSFaces.setAttribute(pWriter, "sortColumn", pColumn.getId(), null);
+			}
+			//Encode do conteúdo da coluna
 			DBSFaces.setAttribute(pWriter, "class", pStyleClass, null);
-//			DBSFaces.setAttribute(pWriter, pDataTable, "style", pStyle, null);
 			if (pColumnContent != null){
 				pColumnContent.encodeAll(pContext);
 				if (pColumnContent instanceof ClientBehaviorHolder){
 					encodeClientBehaviors(pContext, (ClientBehaviorHolder) pColumnContent);
 				}
+			}
+			//Icone da direção do sort
+			if (pColumn != null
+			&& pColumn.getSortable()){
+				//Indica a direção se é a coluna que que está o sort
+				if (pDataTable.getSortColumn().equals(pColumn.getId())){
+					pStyleClass = SORT_DIRECTION.get(pDataTable.getSortDirection()).getIcon();
+				}else{
+					pStyleClass = SORT_DIRECTION.NONE.getIcon();
+				}
+				pWriter.startElement("span", pDataTable);
+					DBSFaces.setAttribute(pWriter, "class", "-sort_icon " + pStyleClass, null);
+				pWriter.endElement("span");
 			}
 		pWriter.endElement(xTag);
 	}
@@ -487,6 +601,11 @@ public class DBSDataTableRenderer extends DBSRenderer {
 		return false;
 	}
 
+	
+	private void pvSetSubmittedInputs(FacesContext pContext, UIComponent pComponent, boolean pDecode){
+		pvSetCurrentRowIndex(pContext, pComponent, pDecode);
+		pvSetSortInputs(pContext, pComponent);
+	}
 	/**Seta posição do registro a apartir da seleção do usuário.
 	 * @param pContext
 	 * @param pComponent
@@ -495,7 +614,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	private void pvSetCurrentRowIndex(FacesContext pContext, UIComponent pComponent, boolean pDecode){
 		DBSDataTable 	xDataTable = (DBSDataTable) pComponent;
 		String xRowIndex = pContext.getExternalContext().getRequestParameterMap().get(pvGetInputFooId(pContext, xDataTable));
-		if (xRowIndex!=null && !xRowIndex.equals("")){
+		if (!DBSObject.isEmpty(xRowIndex)){
 			//No decode, set o rowIndex para que o valor selecionado pelo usuário, via submit, sensibilize efetivamente o valor corrente.
 			if (pDecode){
 				xDataTable.setRowIndex(DBSNumber.toInteger(xRowIndex)); 
@@ -506,6 +625,46 @@ public class DBSDataTableRenderer extends DBSRenderer {
 			xDataTable.setCurrentRowIndex(-1);
 		}
 	}
+	/**Seta posição do registro a apartir da seleção do usuário.
+	 * @param pContext
+	 * @param pComponent
+	 * @param pDecode
+	 */
+	private void pvSetSortInputs(FacesContext pContext, UIComponent pComponent){
+		DBSDataTable 		xDataTable = (DBSDataTable) pComponent;
+		Map<String, String> xRequestMap = pContext.getExternalContext().getRequestParameterMap();
+		String xStr;
+		//Seta coluna que será utilizada para o sort
+		if (xRequestMap.containsKey(pvGetInputSortColumnId(pContext, xDataTable))){
+			xStr = DBSObject.getNotEmpty(xRequestMap.get(pvGetInputSortColumnId(pContext, xDataTable)), "");
+			//Somente seta valor se for diferente do já existente
+			if (!xDataTable.getSortColumn().equals(xStr)){
+				xDataTable.setSortColumn(xStr);
+				//Ignora o set da ordem, pois já é resetado para "A" neste caso
+				return;
+			}
+		}
+		//Set direção do sort
+		if (xRequestMap.containsKey(pvGetInputSortDirectionId(pContext, xDataTable))){
+			SORT_DIRECTION xDirection = SORT_DIRECTION.get(xRequestMap.get(pvGetInputSortDirectionId(pContext, xDataTable)));
+			//Somente seta valor se for diferente do já existente
+			xDataTable.setSortDirection(xDirection.getCode());
+		}
+	}
 
+	
+	private String pvGetInputFooId(FacesContext pContext, DBSDataTable pDataTable){
+		return pDataTable.getClientId(pContext) + ":" + DBSDataTable.INPUT_FOO_ID;
+	}
+	private String pvGetInputSortColumnId(FacesContext pContext, DBSDataTable pDataTable){
+		return pDataTable.getClientId(pContext) + ":" + DBSDataTable.INPUT_SORT_COLUMN_ID;
+	}
+	private String pvGetInputSortDirectionId(FacesContext pContext, DBSDataTable pDataTable){
+		return pDataTable.getClientId(pContext) + ":" + DBSDataTable.INPUT_SORT_DIRECTION_ID;
+	}
+	private String pvGetButtonSortId(FacesContext pContext, DBSDataTable pDataTable){
+		return pDataTable.getClientId(pContext) + ":" + DBSDataTable.BUTTON_SORT_ID;
+	}
+		
 	
 }

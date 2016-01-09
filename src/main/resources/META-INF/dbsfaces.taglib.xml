@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <facelet-taglib version="2.0"
-	xmlns="http://java.sun.com/xml/ns/javaee" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd">
 	<description>
  		Componentes JSF DBSoft
@@ -120,15 +119,15 @@
 		</attribute>
 		<attribute>
 			<description>
-                update
+                Componente que será atualizado no ajax
             </description>
 			<name>update</name>
 			<required>false</required>
-			<type>java.lang.Boolean</type>
+			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
 			<description>
-				Nome do atributo do objeto será utilizado como chave para identificar a linha selecionada
+				Nome do atributo da lista de dados que utilizado como chave para identificar a linha selecionada
             </description>
 			<name>keyColumnName</name>
 			<required>false</required>
@@ -144,17 +143,41 @@
 		</attribute>
 		<attribute>
 			<description>
-                Atributo que estará vinculado a este componente para acesso direto. Binding só deve ser usado em bean REQUESTSCOPED. 
+                Atributo que estará vinculado a este componente para acesso direto. Atenção:Binding só deve ser usado em bean REQUESTSCOPED. 
             </description>
 			<name>binding</name>
 			<required>false</required>
 			<type>java.lang.Object</type>
-		</attribute>	
+		</attribute>
 		<attribute>
 			<description>
             	iconClass
             </description>
 			<name>iconClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Método que será chamado após usuário seleciona uma coluna par ser ordernada. Método receber recever uma String. O id da coluna será passado como parametro para o método.
+            </description>
+			<name>sortAction</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Id que identifica a coluna que foi selecionada
+            </description>
+			<name>sortColumn</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Direção da coluna ordenada. A, D ou empty
+            </description>
+			<name>sortDirection</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
@@ -195,6 +218,14 @@
             </description>
 			<name>width</name>
 			<required>true</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+                Se coluna pode ser ordenada
+            </description>
+			<name>sortable</name>
+			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
@@ -210,6 +241,7 @@
 		<tag-name>messageList</tag-name>
 		<component>
 			<component-type>br.com.dbsoft.ui.component.messageList</component-type>
+			<handler-class />
 		</component>
 		<attribute>
 			<description>
@@ -252,7 +284,6 @@
 			<type>java.lang.Boolean</type>
 		</attribute>
 	</tag>
-
 	<tag>
 		<tag-name>progress</tag-name>
 		<component>
@@ -283,14 +314,8 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
-<!-- 		<attribute> -->
-<!-- 			<description> -->
-<!--                 Texto do componente -->
-<!--             </description> -->
-<!-- 			<name>label</name> -->
-<!-- 			<required>false</required> -->
-<!-- 			<type>java.lang.String</type> -->
-<!-- 		</attribute> -->
+		<!-- <attribute> <description> Texto do componente </description> <name>label</name> 
+			<required>false</required> <type>java.lang.String</type> </attribute> -->
 		<attribute>
 			<description>
                 rendered
@@ -306,7 +331,7 @@
 			<name>value</name>
 			<required>false</required>
 			<type>java.lang.Double</type>
-		</attribute>		
+		</attribute>
 		<attribute>
 			<description>
                 Valor Máximo. Valor default é 100. 
@@ -330,9 +355,8 @@
 			<name>tooltip</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-		</attribute>		
+		</attribute>
 	</tag>
-
 	<tag>
 		<tag-name>fileUpload</tag-name>
 		<component>
@@ -354,7 +378,7 @@
 			<name>fileUploadServletPath</name>
 			<required>true</required>
 			<type>java.lang.String</type>
-		</attribute>			
+		</attribute>
 		<attribute>
 			<description>
                 Class CSS que será utilizado com style
@@ -386,7 +410,7 @@
 			<name>multiple</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-		</attribute>		
+		</attribute>
 		<attribute>
 			<description>
                 Arquivo que serão aceitos. ex: accept='audio/*,video/*,image/*' ou accept='text/plain' ou accept='.xls, .xlsx '. Se não informado, todos arquivos serão aceitos. 
@@ -410,7 +434,7 @@
 			<name>tooltip</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-		</attribute>	
+		</attribute>
 		<attribute>
 			<description>
                 ReadOnly
@@ -418,9 +442,8 @@
 			<name>readOnly</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-		</attribute>		
+		</attribute>
 	</tag>
-	
 	<tag>
 		<tag-name>dialog</tag-name>
 		<component>
@@ -522,7 +545,7 @@
 			<name>execute</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-		</attribute>		
+		</attribute>
 		<attribute>
 			<description>
                 yesAction
@@ -884,7 +907,7 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
-	</tag>	
+	</tag>
 	<tag>
 		<tag-name>inputText</tag-name>
 		<component>
@@ -1162,7 +1185,7 @@
 			<name>resize</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-		</attribute>	
+		</attribute>
 	</tag>
 	<tag>
 		<tag-name>inputDate</tag-name>
@@ -1255,7 +1278,7 @@
 			<name>dateMin</name>
 			<required>false</required>
 			<type>java.sql.Date</type>
-		</attribute>		
+		</attribute>
 		<attribute>
 			<name>validator</name>
 			<required>false</required>
@@ -1402,7 +1425,7 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
-	</tag>	
+	</tag>
 	<tag>
 		<tag-name>inputNumber</tag-name>
 		<component>
@@ -1712,7 +1735,7 @@
 			<name>rendered</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-		</attribute>	
+		</attribute>
 		<attribute>
 			<description>
             	Valor do Campo
@@ -1720,7 +1743,7 @@
 			<name>value</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-		</attribute>	
+		</attribute>
 		<attribute>
 			<description>
                 Data máxima
@@ -1736,9 +1759,8 @@
 			<name>dateMin</name>
 			<required>false</required>
 			<type>java.sql.Date</type>
-		</attribute>				
+		</attribute>
 	</tag>
-	
 	<tag>
 		<tag-name>combobox</tag-name>
 		<component>
@@ -2139,7 +2161,6 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
-
 		<attribute>
 			<description>
             	action
@@ -2211,7 +2232,6 @@
 			<required>true</required>
 			<type>java.lang.String</type>
 		</attribute>
-
 		<attribute>
 			<description>
             	action
@@ -2277,7 +2297,7 @@
 			<type>java.lang.Boolean</type>
 		</attribute>
 		<attribute>
-		   <description>
+			<description>
 	           	evento onclick
             </description>
 			<name>onclick</name>
@@ -2340,12 +2360,44 @@
 			<type>java.lang.Boolean</type>
 		</attribute>
 		<attribute>
-		   <description>
+			<description>
 	           	evento onclick
             </description>
 			<name>onclick</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+            	Texto do link. Texto também pode ser o conteúdo dentro da própria tag.
+            </description>
+			<name>value</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+            	Componentes que serão enviados na chamada ajax
+            </description>
+			<name>execute</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Tooltip
+       </description>
+			<name>tooltip</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                ReadOnly
+            </description>
+			<name>readOnly</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
 		</attribute>
 	</tag>
 	<tag>
@@ -2401,7 +2453,7 @@
 			<name>ajaxLoading</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-		</attribute>		
+		</attribute>
 		<attribute>
 			<description>
                 Indica se utilizará o icone pequeno. Padrão é false.
@@ -2409,7 +2461,7 @@
 			<name>ajaxLoadingSmallIcon</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-		</attribute>		
+		</attribute>
 		<attribute>
 			<description>
                 Nome da tag que erá utilizado. O padrão é DIV, podendo ser outros como NAV, SECTION, etc.
@@ -2419,7 +2471,6 @@
 			<type>java.lang.String</type>
 		</attribute>
 	</tag>
-
 	<tag>
 		<tag-name>parallax</tag-name>
 		<component>
@@ -2514,8 +2565,6 @@
 			<type>java.lang.Boolean</type>
 		</attribute>
 	</tag>
-
-
 	<tag>
 		<tag-name>charts</tag-name>
 		<component>
@@ -2553,7 +2602,7 @@
 			<name>valueFormatMask</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-		</attribute>		
+		</attribute>
 		<attribute>
 			<description>
                 Class CSS que será utilizado com style
@@ -2585,7 +2634,7 @@
 			<name>showGrid</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-		</attribute>		
+		</attribute>
 		<attribute>
 			<description>
                 Indica se valor do grid será exibido. Padrão é true.
@@ -2593,7 +2642,7 @@
 			<name>showGridValue</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-		</attribute>		
+		</attribute>
 		<attribute>
 			<description>Altura do gráfico em px
             </description>
@@ -2607,8 +2656,8 @@
 			<name>height</name>
 			<required>true</required>
 			<type>java.lang.Integer</type>
-		</attribute>				
-	</tag>		
+		</attribute>
+	</tag>
 	<tag>
 		<tag-name>chart</tag-name>
 		<component>
@@ -2670,7 +2719,7 @@
 			<required>true</required>
 			<type>javax.faces.model.DBSResultDataModel</type>
 		</attribute>
-	</tag>		
+	</tag>
 	<tag>
 		<tag-name>chartValue</tag-name>
 		<component>
@@ -2733,7 +2782,7 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
-	</tag>		
+	</tag>
 	<tag>
 		<tag-name>menu</tag-name>
 		<component>
@@ -2889,7 +2938,7 @@
 			<name>rendered</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-		</attribute>		
+		</attribute>
 	</tag>
 	<tag>
 		<tag-name>tab</tag-name>
@@ -3039,7 +3088,7 @@
 			<name>ajaxLoading</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-		</attribute>		
+		</attribute>
 	</tag>
 	<tag>
 		<tag-name>accordion</tag-name>
@@ -3155,7 +3204,7 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
-	</tag>	
+	</tag>
 	<tag>
 		<tag-name>componenttree</tag-name>
 		<component>

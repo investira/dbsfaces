@@ -146,6 +146,34 @@ dbs_dataTable = function(pId) {
 		dbsfaces.dataTable.adjustWidth(pId, this);
 	}); 
 
+	//Controle de Sort
+	$(pId + " .-container > .-content > table > thead > tr > th.-sort").on("click", function(e){
+		var xInputSortColumn = $(pId + "\\:sortcolumn");
+		var xInputSortDirection = $(pId + "\\:sortdirection");
+		var xDirection = xInputSortDirection.attr("value");
+		var xSortColumn = xInputSortColumn.attr("value");
+		//Seta qual a coluna foi selecionada e a direção
+		if (xSortColumn != $(this).attr("sortColumn")){
+			xSortColumn = $(this).attr("sortColumn");
+			xDirection = "A";
+		//Só altera a direção da ordenação, caso não tenha alterado de coluna;
+		}else{
+			//Alterna as opções de direção da ordenação
+			if (xDirection == "A"){
+				xDirection = "D";
+			}else if (xDirection == "D"){
+				xDirection = "A";
+			}else if (xDirection == ""){
+				xDirection = "A";
+			}
+		}
+		xInputSortColumn.attr("value", xSortColumn);
+		xInputSortDirection.attr("value", xDirection);
+		
+		$(pId + " > .-container > .-sort").click();
+	});
+	
+
 	//Captura evento ajax dbsoft
 	dbsfaces.ui.ajaxShowLoading(pId + ".dbs_dataTable");
 }
