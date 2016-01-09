@@ -47,8 +47,6 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 	}
 	
 	protected enum PropertyKeys {
-		style, 
-		styleClass, 		
 		type,
 		size,
 		columnScale;
@@ -81,23 +79,6 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 		handleAttribute("type", pType);
 	}
 
-	public String getStyle() {
-		return (String) getStateHelper().eval(PropertyKeys.style, "");
-	}
-
-	public void setStyle(String pStyle) {
-		getStateHelper().put(PropertyKeys.style, pStyle);
-		handleAttribute("style", pStyle);
-	}
-
-	public String getStyleClass() {
-		return (String) getStateHelper().eval(PropertyKeys.styleClass, "");
-	}
-
-	public void setStyleClass(String pStyleClass) {
-		getStateHelper().put(PropertyKeys.styleClass, pStyleClass);
-		handleAttribute("styleClass", pStyleClass);
-	}
 
 	public Integer getSize() {
 		return (Integer) getStateHelper().eval(PropertyKeys.size, 0);
