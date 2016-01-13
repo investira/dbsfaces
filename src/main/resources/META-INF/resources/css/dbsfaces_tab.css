@@ -15,8 +15,8 @@
 
 .dbs_tab > .-container > .-tabPage{
 	top:0;
-	margin-top:-22px; /*Utilizar o tamanho do título da aba*/
-	padding-top:22px; /*Utilizar o tamanho do título da aba*/
+	margin-top:-2em; /*Utilizar o tamanho do título da aba*/
+	padding-top:2em; /*Utilizar o tamanho do título da aba*/
 } 	
 
 .dbs_tab > .-container > .-tabPage > .-content{
@@ -37,7 +37,7 @@
 .dbs_tab > .-container > .-tabs{
 /* 	display:inline-block; */
     display: block;
-    height: 22px;
+    height: 2em; /*Tamanho do título da aba. Ver também .dbs_tab > .-container > .-tabPage*/
     position: relative;
     text-align: left;
    	white-space: pre; /* retira spaços em branco entre o título de as páginas(Problema causado por Strict DOCTYPE */
