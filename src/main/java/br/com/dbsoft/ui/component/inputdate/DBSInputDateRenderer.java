@@ -145,10 +145,11 @@ public class DBSInputDateRenderer extends DBSRenderer {
 	}
 	
 	private void pvEncodeInput(FacesContext pContext, DBSInputDate pInputDate, ResponseWriter pWriter) throws IOException{
-		String xClientId = getInputDataClientId(pInputDate);
-		String xStyle = "";
-		String xStyleClass = "";
-		String xValue = "";
+		String 	xClientId = getInputDataClientId(pInputDate);
+		String 	xStyle = "";
+		String 	xStyleClass = "";
+		String 	xValue = "";
+		Integer xSize = 0;
 		if (pInputDate.getDate() != null){
 			if ((pInputDate.getDateMin() != null 
 			  && pInputDate.getDate().before(pInputDate.getDateMin()))
@@ -160,12 +161,16 @@ public class DBSInputDateRenderer extends DBSRenderer {
 		if (pInputDate.getReadOnly()){
 			if (pInputDate.getDate()==null){
 				if (pInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.DATE)){
+					xSize = 10;
 					xStyle =  DBSFaces.getStyleWidthFromInputSize(10);
 				}else if (pInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.TIME)){
+					xSize = 5;
 					xStyle =  DBSFaces.getStyleWidthFromInputSize(5);
 				}else if (pInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.TIMES)){
+					xSize = 8;
 					xStyle =  DBSFaces.getStyleWidthFromInputSize(8);
 				}else if (pInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.DATETIME)){
+					xSize = 16;
 					xStyle =  DBSFaces.getStyleWidthFromInputSize(16);
 				}else{
 					wLogger.error(xClientId + ":type inválido " + pInputDate.getType());
@@ -176,18 +181,20 @@ public class DBSInputDateRenderer extends DBSRenderer {
 				}else if (pInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.TIME)){
 					xValue = DBSFormat.getFormattedTime(pInputDate.getDate());
 				}else if (pInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.TIMES)){
-					xValue = DBSFormat.getFormattedTime(pInputDate.getDate());
+					xValue = DBSFormat.getFormattedTimes(pInputDate.getDate());
 				}else if (pInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.DATETIME)){
-					xValue = DBSFormat.getFormattedDateTime(pInputDate.getDate());
+					xValue = DBSFormat.getFormattedDateTimes(pInputDate.getDate());
 				}else{
 					wLogger.error(xClientId + ":type inválido " + pInputDate.getType());
 				}
+				xSize = xValue.length();
 			}
 			
-			DBSFaces.encodeInputDataReadOnly(pInputDate, pWriter, xClientId, xStyle, false, xValue);
+			DBSFaces.encodeInputDataReadOnly(pInputDate, pWriter, xClientId, false, xValue, xSize, null, xStyle);
 		}else{
 			pWriter.startElement("span", pInputDate);
 				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputDate) + xStyleClass, null);
+				DBSFaces.setSizeAttributes(pWriter, xSize, null);
 				//Define a largura do campo
 				if (pInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.DATE)){
 					pvEncodeInputDate(pContext, pInputDate, pWriter);

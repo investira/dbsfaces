@@ -94,7 +94,7 @@ public class DBSInputMaskRenderer extends DBSRenderer {
 		}
  
 		if (pInputMask.getReadOnly()){
-			DBSFaces.encodeInputDataReadOnly(pInputMask, pWriter, xClientId, xStyle, false, xValue);
+			DBSFaces.encodeInputDataReadOnly(pInputMask, pWriter, xClientId, false, xValue, pInputMask.getMask().length(), null, xStyle);
 		}else{
 			//Se for somente leitura, gera código como <Span>
 			pWriter.startElement("input", pInputMask);
@@ -107,9 +107,9 @@ public class DBSInputMaskRenderer extends DBSRenderer {
 				}
 				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputMask), null);
 				DBSFaces.setAttribute(pWriter, "style", xStyle, null);
+				DBSFaces.setSizeAttributes(pWriter, pInputMask.getMask().length(), null);
 				//Grava a largura do campo
 				DBSFaces.setAttribute(pWriter, "size", pInputMask.getMask().length(), null);
-
 				if (pInputMask.getMaxLength()!=0){
 					if (pInputMask.getMask().length() >  pInputMask.getMaxLength()){
 						DBSFaces.setAttribute(pWriter, "maxlength", pInputMask.getMaxLength(), null);

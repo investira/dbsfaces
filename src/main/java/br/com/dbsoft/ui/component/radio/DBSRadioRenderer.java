@@ -52,7 +52,7 @@ public class DBSRadioRenderer extends DBSRenderer {
 		String xOnChange = null;
 
 		if (xRadio.getStyleClass()!=null){
-			xClass = xClass + xRadio.getStyleClass();
+			xClass += xRadio.getStyleClass();
 		}
 		
 		

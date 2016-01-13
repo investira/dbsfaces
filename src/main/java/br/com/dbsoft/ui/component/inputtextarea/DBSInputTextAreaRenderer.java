@@ -98,13 +98,14 @@ public class DBSInputTextAreaRenderer extends DBSRenderer {
 
 		//Se for somente leitura, gera código como <Span>
 		if (pInputTextArea.getReadOnly()){
-			DBSFaces.encodeInputDataReadOnly(pInputTextArea, pWriter, xClientId, xStyle, true, xValue);
+			DBSFaces.encodeInputDataReadOnly(pInputTextArea, pWriter, xClientId, true, xValue, pInputTextArea.getCols(), pInputTextArea.getRows(), xStyle);
 		}else{
 			pWriter.startElement("textarea ", pInputTextArea);
 				DBSFaces.setAttribute(pWriter, "id", xClientId, null);
 				DBSFaces.setAttribute(pWriter, "name", xClientId, null);
 				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputTextArea), null);
 				DBSFaces.setAttribute(pWriter, "style", xStyle, null);
+				DBSFaces.setSizeAttributes(pWriter, pInputTextArea.getCols(), pInputTextArea.getRows());
 				DBSFaces.setAttribute(pWriter, "cols", pInputTextArea.getCols(), null);
 				DBSFaces.setAttribute(pWriter, "rows", pInputTextArea.getRows(), null);
 				if (pInputTextArea.getResize()){

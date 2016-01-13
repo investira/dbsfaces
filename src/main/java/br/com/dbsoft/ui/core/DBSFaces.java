@@ -1452,16 +1452,16 @@ public class  DBSFaces {
 				xStyle += " width:" + pInput.getLabelWidth() + ";";
 			}
 			pWriter.startElement("label", pInput);
-//				DBSFaces.setAttribute(pWriter, pInput, "id", xClientId + DBSFaces.CSS.MODIFIER.LABEL.trim(), null);
-//				DBSFaces.setAttribute(pWriter, pInput, "name", xClientId + DBSFaces.CSS.MODIFIER.LABEL.trim(), null);
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.LABEL + " " + DBSFaces.CSS.NOT_SELECTABLE , null);
-				DBSFaces.setAttribute(pWriter, "for", xClientId + DBSFaces.CSS.MODIFIER.DATA.trim(), null);
+//				setAttribute(pWriter, pInput, "id", xClientId + DBSFaces.CSS.MODIFIER.LABEL.trim(), null);
+//				setAttribute(pWriter, pInput, "name", xClientId + DBSFaces.CSS.MODIFIER.LABEL.trim(), null);
+				setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.LABEL + " " + DBSFaces.CSS.NOT_SELECTABLE , null);
+				setAttribute(pWriter, "for", xClientId + DBSFaces.CSS.MODIFIER.DATA.trim(), null);
 				if (pRenderSeparator){
-					DBSFaces.setAttribute(pWriter, "style",xStyle, null);
+					setAttribute(pWriter, "style",xStyle, null);
 					pWriter.write(pInput.getLabel().trim() + ":");
 				}else{
 					xStyle += "padding-left:2px;";
-					DBSFaces.setAttribute(pWriter, "style",xStyle, null);
+					setAttribute(pWriter, "style",xStyle, null);
 					pWriter.write(pInput.getLabel().trim());
 				}
 			pWriter.endElement("label");
@@ -1492,9 +1492,9 @@ public class  DBSFaces {
 		if (pInput.getRightLabel()!=null){
 			String xClientId = pInput.getClientId(pContext);
 			pWriter.startElement("label", pInput);
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.LABEL + " " + DBSFaces.CSS.NOT_SELECTABLE , null);
-				DBSFaces.setAttribute(pWriter, "for", xClientId + DBSFaces.CSS.MODIFIER.DATA.trim(), null);
-				DBSFaces.setAttribute(pWriter, "style","margin:0 3px 0 3px; vertical-align: middle; display:inline-block;", null);
+				setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.LABEL + " " + DBSFaces.CSS.NOT_SELECTABLE , null);
+				setAttribute(pWriter, "for", xClientId + DBSFaces.CSS.MODIFIER.DATA.trim(), null);
+				setAttribute(pWriter, "style","margin:0 3px 0 3px; vertical-align: middle; display:inline-block;", null);
 				pWriter.write(pInput.getRightLabel().trim());
 			pWriter.endElement("label");
 		}
@@ -1504,25 +1504,46 @@ public class  DBSFaces {
 	 * @param pComponent
 	 * @param pWriter
 	 * @param pClientId
-	 * @param pStyle Style adicional
 	 * @param pNormalWhiteSpace Indica se haverá quebra de linha caso o valor do campo seja ao comprimento a linha.<br/>
 	 * true: quebra linha<br/>
 	 * false: não quebra linha
 	 * @param pValue Valor a ser exibido
+	 * @param pTW
+	 * @param pTH
+	 * @param pStyle Style adicional
 	 * @throws IOException
 	 */
-	public static void encodeInputDataReadOnly(UIComponent pComponent, ResponseWriter pWriter, String pClientId, String pStyle, boolean pNormalWhiteSpace , String pValue) throws IOException{
+	public static void encodeInputDataReadOnly(UIComponent pComponent, ResponseWriter pWriter, String pClientId, boolean pNormalWhiteSpace, String pValue, Integer pTW) throws IOException{
+		encodeInputDataReadOnly(pComponent, pWriter, pClientId,pNormalWhiteSpace, pValue, pTW, null, null);
+	}
+	/**
+	 * Gera HTML para campos input como tag <span> para evitar qualquer alteração no cliente
+	 * @param pComponent
+	 * @param pWriter
+	 * @param pClientId
+	 * @param pNormalWhiteSpace Indica se haverá quebra de linha caso o valor do campo seja ao comprimento a linha.<br/>
+	 * true: quebra linha<br/>
+	 * false: não quebra linha
+	 * @param pValue Valor a ser exibido
+	 * @param pTW
+	 * @param pTH
+	 * @param pStyle Style adicional
+	 * @throws IOException
+	 */
+	public static void encodeInputDataReadOnly(UIComponent pComponent, ResponseWriter pWriter, String pClientId, boolean pNormalWhiteSpace, String pValue, Integer pTW, Integer pTH, String pStyle) throws IOException{
+		pStyle = DBSObject.getNotEmpty(pStyle, "");
 		if (pNormalWhiteSpace){
 			pStyle += "white-space: pre-wrap; overflow:auto;";
 		}else{
 			pStyle += "white-space: pre; overflow:hidden;";
 		}
 		pWriter.startElement("span", pComponent);
-			DBSFaces.setAttribute(pWriter, "id", pClientId, null);
-			DBSFaces.setAttribute(pWriter, "name", pClientId, null);
-			DBSFaces.setAttribute(pWriter, "class", getInputDataClass(pComponent), null);
-			DBSFaces.setAttribute(pWriter, "style", pStyle, null);
-			if (pValue == null){
+			setAttribute(pWriter, "id", pClientId, null);
+			setAttribute(pWriter, "name", pClientId, null);
+			setAttribute(pWriter, "class", getInputDataClass(pComponent), null);
+			setAttribute(pWriter, "style", pStyle, null);
+			setSizeAttributes(pWriter, pTW, pTH);
+			if (DBSObject.isEmpty(pValue)){
 				pWriter.write(" ");
 			}else{
 				pWriter.write(pValue);
@@ -1530,28 +1551,6 @@ public class  DBSFaces {
 		pWriter.endElement("span");
 	}
 	
-	/**
-	 * Retorna a classe utilizada nos inputs no campo na área que recebe os dados
-	 * @param pInput
-	 * @return
-	 */
-	public static String getInputDataClass(UIComponent pInput){
-		String xClass = DBSFaces.CSS.INPUT.DATA;
-		DBSUIInput xInput;
-		if (pInput instanceof DBSUIInput){
-			xInput = (DBSUIInput) pInput;
-		}else{
-			return xClass;
-		}
-		if (xInput.getReadOnly()){
-			xClass += DBSFaces.CSS.MODIFIER.READONLY;
-		}
-		if (!xInput.isValid()){
-			xClass += DBSFaces.CSS.MODIFIER.INVALID;
-		}
-		return xClass;
-	}
-
 	/**
 	 * Cria o elemento que conterá o tooltip.
 	 * @param pWriter
@@ -1561,6 +1560,23 @@ public class  DBSFaces {
 	 */
 	public static void encodeTooltip(FacesContext pContext, UIComponent pComponent, String pTooltip) throws IOException{
 		encodeTooltip(pContext, pComponent, pTooltip, pComponent.getClientId());
+	}
+	
+	/**
+	 * Grava atributo com a quantidade de caracteres do campo.<br/>
+	 * Esta valor será utlizado em JS para determinar a largura e altura mínima do campo em px.
+	 * @param pWriter
+	 * @param pTW
+	 * @param pTH
+	 * @throws IOException
+	 */
+	public static void setSizeAttributes(ResponseWriter pWriter, Integer pTW, Integer pTH) throws IOException{
+		if (pTW != null && pTW > 0){
+			setAttribute(pWriter, "tw", pTW, null);
+		}
+		if (pTH != null && pTH > 0){
+			setAttribute(pWriter, "th", pTH, null);
+		}
 	}
 	
 	/**
@@ -1603,6 +1619,28 @@ public class  DBSFaces {
 	}
 	
 	/**
+	 * Retorna a classe utilizada nos inputs no campo na área que recebe os dados
+	 * @param pInput
+	 * @return
+	 */
+	public static String getInputDataClass(UIComponent pInput){
+		String xClass = DBSFaces.CSS.INPUT.DATA;
+		DBSUIInput xInput;
+		if (pInput instanceof DBSUIInput){
+			xInput = (DBSUIInput) pInput;
+		}else{
+			return xClass;
+		}
+		if (xInput.getReadOnly()){
+			xClass += DBSFaces.CSS.MODIFIER.READONLY;
+		}
+		if (!xInput.isValid()){
+			xClass += DBSFaces.CSS.MODIFIER.INVALID;
+		}
+		return xClass;
+	}
+
+	/**
 	 * Encore da linha para gráfico SVG
 	 * @param pComponent
 	 * @param pWriter
@@ -1616,12 +1654,12 @@ public class  DBSFaces {
 	 */
 	public static void encodeSVGLine(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, String pStyle, Double pX1, Double pY1, Double pX2, Double pY2) throws IOException{
 		pWriter.startElement("line", pComponent);
-			DBSFaces.setAttribute(pWriter, "class", pStyleClass, null);
-			DBSFaces.setAttribute(pWriter, "style", pStyle, null);
-			DBSFaces.setAttribute(pWriter, "x1", 	pX1, null);
-			DBSFaces.setAttribute(pWriter, "y1", 	pY1, null);
-			DBSFaces.setAttribute(pWriter, "x2", 	pX2, null);
-			DBSFaces.setAttribute(pWriter, "y2", 	pY2, null);
+			setAttribute(pWriter, "class", pStyleClass, null);
+			setAttribute(pWriter, "style", pStyle, null);
+			setAttribute(pWriter, "x1", 	pX1, null);
+			setAttribute(pWriter, "y1", 	pY1, null);
+			setAttribute(pWriter, "x2", 	pX2, null);
+			setAttribute(pWriter, "y2", 	pY2, null);
 		pWriter.endElement("line");
 	}
 
@@ -1638,14 +1676,14 @@ public class  DBSFaces {
 	 */
 	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, String pStyle, Double pX, Double pY, Double pHeight, Double pWidth, String pFill) throws IOException{
 		pWriter.startElement("rect", pComponent);
-			DBSFaces.setAttribute(pWriter, "class", pStyleClass, null);
-			DBSFaces.setAttribute(pWriter, "style", pStyle, null);
-			DBSFaces.setAttribute(pWriter, "x", 	pX, null);
-			DBSFaces.setAttribute(pWriter, "y", 	pY, null);
+			setAttribute(pWriter, "class", pStyleClass, null);
+			setAttribute(pWriter, "style", pStyle, null);
+			setAttribute(pWriter, "x", 	pX, null);
+			setAttribute(pWriter, "y", 	pY, null);
 			
-			DBSFaces.setAttribute(pWriter, "height", pHeight, null);
-			DBSFaces.setAttribute(pWriter, "width", pWidth, null);
-			DBSFaces.setAttribute(pWriter, "fill",	pFill, null);			
+			setAttribute(pWriter, "height", pHeight, null);
+			setAttribute(pWriter, "width", pWidth, null);
+			setAttribute(pWriter, "fill",	pFill, null);			
 		pWriter.endElement("rect");
 	}
 	
@@ -1661,14 +1699,14 @@ public class  DBSFaces {
 	 */
 	public static void encodeSVGCircle(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, String pStyle, Double pX, Double pY, Double pHeight, Double pWidth, String pFill) throws IOException{
 		pWriter.startElement("ellipse", pComponent);
-			DBSFaces.setAttribute(pWriter, "class", pStyleClass, null);
-			DBSFaces.setAttribute(pWriter, "style", pStyle, null);
-			DBSFaces.setAttribute(pWriter, "cx", 	pX, null);
-			DBSFaces.setAttribute(pWriter, "cy", 	pY, null);
+			setAttribute(pWriter, "class", pStyleClass, null);
+			setAttribute(pWriter, "style", pStyle, null);
+			setAttribute(pWriter, "cx", 	pX, null);
+			setAttribute(pWriter, "cy", 	pY, null);
 			
-			DBSFaces.setAttribute(pWriter, "rx", pWidth, null);
-			DBSFaces.setAttribute(pWriter, "ry", pHeight, null);
-			DBSFaces.setAttribute(pWriter, "fill",	pFill, null);			
+			setAttribute(pWriter, "rx", pWidth, null);
+			setAttribute(pWriter, "ry", pHeight, null);
+			setAttribute(pWriter, "fill",	pFill, null);			
 		pWriter.endElement("ellipse");
 	}
 	
@@ -1685,10 +1723,10 @@ public class  DBSFaces {
 	 */
 	public static void encodeSVGText(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, String pStyle, Double pX, Double pY, String pText) throws IOException{
 		pWriter.startElement("text", pComponent);
-			DBSFaces.setAttribute(pWriter, "class", pStyleClass, null);
-			DBSFaces.setAttribute(pWriter, "style", pStyle, null);
-			DBSFaces.setAttribute(pWriter, "x", 	pX, null);
-			DBSFaces.setAttribute(pWriter, "y", 	pY, null);
+			setAttribute(pWriter, "class", pStyleClass, null);
+			setAttribute(pWriter, "style", pStyle, null);
+			setAttribute(pWriter, "x", 	pX, null);
+			setAttribute(pWriter, "y", 	pY, null);
 			if (pText != null){
 				pWriter.write(pText);
 			}
@@ -2125,8 +2163,8 @@ public class  DBSFaces {
 		try {
 			if (xToolbar != null) {
 				xWriter.startElement("nav", pDataTable);
-					DBSFaces.setAttribute(xWriter, "id", pDataTable.getClientId() + ":toolbar", null);
-					DBSFaces.setAttribute(xWriter, "name", pDataTable.getClientId() + ":toolbar", null);
+					setAttribute(xWriter, "id", pDataTable.getClientId() + ":toolbar", null);
+					setAttribute(xWriter, "name", pDataTable.getClientId() + ":toolbar", null);
 					xToolbar.encodeAll(xFC);
 				xWriter.endElement("nav");
 			}

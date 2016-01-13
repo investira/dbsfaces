@@ -52,7 +52,7 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 		String xClientId = xCheckbox.getClientId(pContext);
 		String xClass = DBSFaces.CSS.CHECKBOX.MAIN + " " + DBSFaces.CSS.INPUT.MAIN + " ";
 		if (xCheckbox.getStyleClass()!=null){
-			xClass = xClass + xCheckbox.getStyleClass();
+			xClass += xCheckbox.getStyleClass();
 		}
 		
 		//HtmlInputText xInput = (HtmlInputText) FacesContext.getCurrentInstance().getApplication().createComponent(HtmlInputText.COMPONENT_TYPE);

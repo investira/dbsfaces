@@ -152,7 +152,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 
 		//Se for somente leitura, gera código como <Span>
 		if (pInputText.getReadOnly()){ 
-			DBSFaces.encodeInputDataReadOnly(pInputText, pWriter, xClientIdData, xStyle, false, xValue);
+			DBSFaces.encodeInputDataReadOnly(pInputText, pWriter, xClientIdData, false, xValue, pInputText.getSize(), null, xStyle);
 		}else{
 			if (pInputText.hasSuggestion()){ 
 				pWriter.startElement("div", pInputText);
@@ -224,6 +224,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 					DBSFaces.setAttribute(pWriter, "autocomplete", "off", null);
 				}
 				DBSFaces.setAttribute(pWriter, "class", xClass, null);
+				DBSFaces.setSizeAttributes(pWriter, pInputText.getSize(), null);
 				if (!xStyle.equals("")){
 					DBSFaces.setAttribute(pWriter, "style", xStyle, null);
 				}

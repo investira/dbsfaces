@@ -149,7 +149,7 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 			}
 		}
 		if (!pInputNumber.getLeadingZero()){
-			xStyle = xStyle + " text-align:right;";
+			xStyle += " text-align:right;";
 		}
 		if (pInputNumber.getValueDouble() > DBSNumber.toDouble(pInputNumber.getMaxValue()) ||
 			pInputNumber.getValueDouble() < DBSNumber.toDouble(pInputNumber.getMinValue())){
@@ -157,7 +157,7 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 		}
 
 		if (pInputNumber.getReadOnly()) {
-			DBSFaces.encodeInputDataReadOnly(pInputNumber, pWriter, xClientId, xStyle, false, xValue);
+			DBSFaces.encodeInputDataReadOnly(pInputNumber, pWriter, xClientId, false, xValue, xSize, null, xStyle);
 		} else {
 			// Se for somente leitura, gera código como <Span>
 			pWriter.startElement("input", pInputNumber);
@@ -170,6 +170,7 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 				}
 				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputNumber) + xStyleClass, null);
 				DBSFaces.setAttribute(pWriter, "style", xStyle, null);
+				DBSFaces.setSizeAttributes(pWriter, xSize, null);
 				DBSFaces.setAttribute(pWriter, "minValue", pInputNumber.getMinValue(), null); 
 				DBSFaces.setAttribute(pWriter, "maxValue", pInputNumber.getMaxValue(), null);
 				//Verifica se o sinal é negativo

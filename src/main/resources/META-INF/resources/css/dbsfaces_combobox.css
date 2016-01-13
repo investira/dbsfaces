@@ -10,10 +10,11 @@
 }
 
 .dbs_combobox > .-container > .dbs_input-data {
-	height: 19px;
+/* 	height: 19px; COMENTADO EM 2016-01-12 por Ricardo para permitir ajuste fontes de tamanhos diferentes*/ 
 	position: relative;
-	padding: 0px 14px 0 1px !important;
-	line-height: 1.4;
+	padding-right: 14px !important;
+/* 	padding: 0px 14px 0 1px !important; COMENTADO EM 2016-01-13*/
+/* 	line-height: 1.4; COMENTADO EM 2016-01-13*/
 	text-align: left;
 	overflow: hidden;
 }
@@ -26,23 +27,25 @@
 	border: medium none;
 	left:-1px;
 	top:-1px;
+	width: 100%;
 }
 
 .dbs_combobox > .-container > .dbs_input-data.-readOnly {
-	line-height: 1.5;
+/* 	line-height: 1.5; COMENTADO EM 2016-01-13*/
 }
 
 .dbs_combobox > .-container > .dbs_input-data > .-data {
 	display:block;
 	overflow: hidden;	
 	position: relative;
-    top: 1px;	
+/*     top: 1px;	COMENTADO EM 2016-01-13*/
 }
 
 .dbs_combobox > .-container > .dbs_input-data > .-button {
-	position: absolute;	
-	top: 4px;
-	right: 3px;
+    position: absolute;
+    right: 3px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 

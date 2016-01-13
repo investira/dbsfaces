@@ -16,8 +16,9 @@
 	display: inline-block;
 	line-height: 100%;
 	border: 0 none;
-	margin-top: 2px;
+/* 	margin-top: 2px; Comentado em 2016-01-13*/
 	font-size: inherit;
 	background-color: transparent !important;
-	height: 13px;
+	text-align: center; /*incluido em 2016-01-12 */
+/* 	height: 13px; COMENTADO EM 2016-01-12 por Ricardo para permitir ajuste fontes de tamanhos diferentes*/*/
 }	

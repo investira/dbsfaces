@@ -96,10 +96,11 @@ public class DBSInputPhoneRenderer extends DBSRenderer {
 	}
 	
 	private void pvEncodeInput(FacesContext pContext, DBSInputPhone pInputPhone, ResponseWriter pWriter) throws IOException{
-		String xClientId = getInputDataClientId(pInputPhone);
-		String xStyle = "";
-		String xStyleClass = "";
-		String xValue = "";
+		String 	xClientId = getInputDataClientId(pInputPhone);
+		String 	xStyle = "";
+		String 	xStyleClass = "";
+		String 	xValue = "";
+		Integer xSize = 0;
 //		if (pInputPhone.getDate() != null){
 //			if ((pInputPhone.getDateMin() != null 
 //			  && pInputPhone.getDate().before(pInputPhone.getDateMin()))
@@ -111,10 +112,13 @@ public class DBSInputPhoneRenderer extends DBSRenderer {
 		if (pInputPhone.getReadOnly()){
 			if (pInputPhone.getValue()==null){
 				if (pInputPhone.getShowDDI()){
+					xSize = 19;
 					xStyle =  DBSFaces.getStyleWidthFromInputSize(19);
 				}else if (pInputPhone.getShowDDD()){
+					xSize = 14;
 					xStyle =  DBSFaces.getStyleWidthFromInputSize(14);
 				}else{
+					xSize = 10;
 					xStyle =  DBSFaces.getStyleWidthFromInputSize(10);
 				}
 			}else{
@@ -125,12 +129,14 @@ public class DBSInputPhoneRenderer extends DBSRenderer {
 				}else{
 					xValue = DBSFormat.getPhoneNumber(null, null, pInputPhone.getNumber());
 				}
+				xSize = xValue.length();
 			}
 			
-			DBSFaces.encodeInputDataReadOnly(pInputPhone, pWriter, xClientId, xStyle, false, xValue);
+			DBSFaces.encodeInputDataReadOnly(pInputPhone, pWriter, xClientId, false, xValue, xSize, null, xStyle);
 		}else{
 			pWriter.startElement("span", pInputPhone);
 				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputPhone) + xStyleClass, null);
+				DBSFaces.setSizeAttributes(pWriter, xSize, null);
 				//Define a largura do campo
 				pvEncodeInputPhone(pContext, pInputPhone, pWriter);
 			pWriter.endElement("span");

@@ -636,7 +636,8 @@ input.-foo {
 
 /* dbs_input --------------------------------------------------- */
 .dbs_input {
-	font-size: 11px;
+	font-size: inherit;
+/* 	font-size: 11px; Comentado em 2016-01-13 */
 	display: table;
 	padding: 0px;
 	margin: 0px;
@@ -667,7 +668,8 @@ input.-foo {
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 	vertical-align: middle;
-	min-height: 19px;
+	min-height: 1.45em;
+/* 	min-height: 19px; Comentado em 2016-01-13 ricardo*/
 }
 
 
@@ -683,7 +685,8 @@ label.dbs_input-data,
 /*    	border-color: rgba(13, 25, 45, 0.3) rgb(220, 220, 220) rgb(220, 220, 220) rgba(13, 25, 45, 0.3); */
     border-style: solid;
     border-width: 1px;
-	padding: 0px 1px 0px 1px !important;
+/* 	padding: 0px 1px 0px 1px !important; comentado em 2016-01-13 */
+	padding: 2px 1px 2px 1px !important;
 	-webkit-border-radius: 3px !important;
 	-moz-border-radius: 3px !important;
 	border-radius: 3px !important;
@@ -705,12 +708,12 @@ span.dbs_input-data.-readOnly,
 div.dbs_input-data.-readOnly,
 label.dbs_input-data.-readOnly
 	{
-	padding: 1px 1px 1px 1px !important;
+/* 	padding: 1px 1px 1px 1px !important; */
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;
 	box-shadow: none;
 	border-color: rgba(0, 0, 0, 0.05);
-	line-height: 15px;
+/* 	line-height: 15px; */
 }
 
 .dbs_input-data:FOCUS,

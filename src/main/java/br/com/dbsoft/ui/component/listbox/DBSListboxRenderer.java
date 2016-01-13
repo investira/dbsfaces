@@ -11,6 +11,7 @@ import javax.faces.render.FacesRenderer;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSObject;
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSListbox.RENDERER_TYPE)
@@ -74,13 +75,14 @@ public class DBSListboxRenderer extends DBSRenderer {
 		xStyle = DBSFaces.getStyleWidthFromInputSize(pListbox.getSize());
 
 		if (pListbox.getReadOnly()){
-			DBSFaces.encodeInputDataReadOnly(pListbox, pWriter, xClientId, xStyle, false, (String)pListbox.getList().get(pListbox.getValue().toString()));
+			DBSFaces.encodeInputDataReadOnly(pListbox, pWriter, xClientId, false, (String)pListbox.getList().get(pListbox.getValue().toString()), pListbox.getSize(), DBSNumber.toInteger(pListbox.getLines()), xStyle);
 		}else{
 		pWriter.startElement("select", pListbox);
 			DBSFaces.setAttribute(pWriter, "id", xClientId, null);
 			DBSFaces.setAttribute(pWriter, "name", xClientId, null);
 			DBSFaces.setAttribute(pWriter, "size", pListbox.getLines(), null);
 			DBSFaces.setAttribute(pWriter, "style", xStyle, null);
+			DBSFaces.setSizeAttributes(pWriter, pListbox.getSize(), DBSNumber.toInteger(pListbox.getLines()));
 			if (pListbox.getReadOnly()){
 				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pListbox) + DBSFaces.CSS.MODIFIER.DISABLED, null);
 				DBSFaces.setAttribute(pWriter, "disabled","disabled", null);

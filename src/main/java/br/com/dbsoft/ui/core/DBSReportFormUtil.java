@@ -101,7 +101,7 @@ public class DBSReportFormUtil {
 			pReportParameters = new HashMap<String, Object>();
 		}
 
-		pReportParameters.put("pDATA_IMPRESSAO", DBSFormat.getFormattedDateTime(System.currentTimeMillis()));
+		pReportParameters.put("pDATA_IMPRESSAO", DBSFormat.getFormattedDateTimes(System.currentTimeMillis()));
 		pReportParameters.put("pSUBREPORT_DIR", DBSHttp.getLocalPathWebInfClasses(FacesContext.getCurrentInstance().getExternalContext()) + File.separator + REPORT_FOLDER); 
 		
 		// Verifica se foi passada uma conexão ou uma coleção de dados.
