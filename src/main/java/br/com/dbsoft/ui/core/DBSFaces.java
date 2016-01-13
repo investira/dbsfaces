@@ -1213,8 +1213,8 @@ public class  DBSFaces {
 		if (pInputSize == 0){
 			return "";
 		}
-		int xW = (pInputSize * 7) + 5;
-		return "width:" + xW + "px;"; //min-height:19px; 
+		Double xW = DBSNumber.round((pInputSize + 1) * 0.63, 3);
+		return "width:" + xW + "em;"; //min-height:19px; 
 	}
 
 	/**
@@ -1226,8 +1226,12 @@ public class  DBSFaces {
 		if (pInputSize == 0){
 			return "";
 		}
-		int xH = (pInputSize * 15) + 3;
-		return "height:" + xH + "px; height:" + xH + "px; ";
+		//Força altura somente quando for mais de uma linha
+		if (pInputSize <= 1){
+			return "";
+		}
+		Double xH = DBSNumber.trunc(pInputSize * 1.28, 4);
+		return "height:" + xH + "em;";
 	}
 	
 	
