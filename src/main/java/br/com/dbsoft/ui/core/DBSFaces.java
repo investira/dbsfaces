@@ -1196,19 +1196,6 @@ public class  DBSFaces {
 	 * @param pInputSize
 	 * @return
 	 */
-	public final static String getStyleWidthFromInputSizeInternal(int pInputSize){
-		if (pInputSize == 0){
-			return "";
-		}
-		int xW = (pInputSize * 7);
-		return "width:" + xW + "px;"; //min-height:19px; 
-	}
-	
-	/**
-	 * Retorna o style com largura do campo em função da quantidade de caracteres de input
-	 * @param pInputSize
-	 * @return
-	 */
 	public final static String getStyleWidthFromInputSize(int pInputSize){
 		if (pInputSize == 0){
 			return "";

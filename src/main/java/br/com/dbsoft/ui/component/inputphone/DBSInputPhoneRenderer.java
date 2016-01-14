@@ -16,6 +16,10 @@ import br.com.dbsoft.util.DBSFormat;
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSInputPhone.RENDERER_TYPE)
 public class DBSInputPhoneRenderer extends DBSRenderer {
 	
+	private static String wWidth2 = "width:1.3em;";
+	private static String wWidth3 = "width:2em;";
+	private static String wWidth10 = "width:6em;";
+	
     @Override
 	public void decode(FacesContext pContext, UIComponent pComponent) {
     	DBSInputPhone xInputPhone = (DBSInputPhone) pComponent;
@@ -136,8 +140,8 @@ public class DBSInputPhoneRenderer extends DBSRenderer {
 		}else{
 			pWriter.startElement("span", pInputPhone);
 				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputPhone) + xStyleClass, null);
-				DBSFaces.setSizeAttributes(pWriter, xSize, null);
 				//Define a largura do campo
+				DBSFaces.setSizeAttributes(pWriter, xSize, null);
 				pvEncodeInputPhone(pContext, pInputPhone, pWriter);
 			pWriter.endElement("span");
 		}
@@ -157,7 +161,7 @@ public class DBSInputPhoneRenderer extends DBSRenderer {
 				DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTPHONE.DDI, null);
 				DBSFaces.setAttribute(pWriter, "type", "text", null);
 				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUTPHONE.DDI, null);
-				DBSFaces.setAttribute(pWriter, "style", DBSFaces.getStyleWidthFromInputSizeInternal(3), null);
+				DBSFaces.setAttribute(pWriter, "style", wWidth3, null);
 				DBSFaces.setAttribute(pWriter, "size", "3", null);
 				DBSFaces.setAttribute(pWriter, "maxlength", "3", null);
 				DBSFaces.setAttribute(pWriter, "value", pInputPhone.getDDI(), "");
@@ -181,7 +185,7 @@ public class DBSInputPhoneRenderer extends DBSRenderer {
 				DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTPHONE.DDD, null);
 				DBSFaces.setAttribute(pWriter, "type", "text", null);
 				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUTPHONE.DDD, null);
-				DBSFaces.setAttribute(pWriter, "style", DBSFaces.getStyleWidthFromInputSizeInternal(2), null);
+				DBSFaces.setAttribute(pWriter, "style", wWidth2, null);
 				DBSFaces.setAttribute(pWriter, "size", "2", null);
 				DBSFaces.setAttribute(pWriter, "maxlength", "2", null);
 				DBSFaces.setAttribute(pWriter, "value", pInputPhone.getDDD(), "");
@@ -199,7 +203,7 @@ public class DBSInputPhoneRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTPHONE.NUMBER, null);
 			DBSFaces.setAttribute(pWriter, "type", "text", null);
 			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUTPHONE.NUMBER, null);
-			DBSFaces.setAttribute(pWriter, "style", DBSFaces.getStyleWidthFromInputSizeInternal(10), null);
+			DBSFaces.setAttribute(pWriter, "style", wWidth10, null);
 			DBSFaces.setAttribute(pWriter, "size", "9", null);
 			DBSFaces.setAttribute(pWriter, "maxlength", "9", null);
 			DBSFaces.setAttribute(pWriter, "value", pInputPhone.getNumber(), "");
