@@ -14,7 +14,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.CHARTS;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
-//	public static final Integer Padding = 2;
+	public static final Integer Padding = 2;
 	public static final Integer FontSize = 8;
 	
 	protected enum PropertyKeys {
@@ -126,7 +126,6 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	public void setMaxValue(Double pMaxValue) {
 		getStateHelper().put(PropertyKeys.maxValue, pMaxValue);
 		handleAttribute("maxValue", pMaxValue);
-//		System.out.println("MAX\t" + pMaxValue);
 	}
 
 	public Double getMinValue() {
@@ -135,7 +134,6 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	public void setMinValue(Double pMinValue) {
 		getStateHelper().put(PropertyKeys.minValue, pMinValue);
 		handleAttribute("minValue", pMinValue);
-//		System.out.println("MIN\t" + pMinValue);
 	}
 
 	public Double getRowScale() {
@@ -213,6 +211,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 			//Subtrai da altura do a altura do texto da coluna 
 			pHeight -= DBSCharts.FontSize;
 		}
+		pHeight -= (Padding * 2); //Retira o espaço para o padding do top e bottom
 		getStateHelper().put(PropertyKeys.chartHeight, pHeight);
 		handleAttribute("chartHeight", pHeight);
 	}
@@ -224,6 +223,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 			//Subtrai da largura o comprimento em pixel a partir da mascará de formatação do valor das linhas
 			pWidth -= DBSNumber.multiply(getValueFormatMask().length(), 6D).intValue();
 		}
+		pWidth -= (Padding * 2);  //Retira o espaço para o padding do left e right
 		getStateHelper().put(PropertyKeys.chartWidth, pWidth);
 		handleAttribute("chartWidth", pWidth);
 	}

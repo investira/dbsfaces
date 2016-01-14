@@ -96,23 +96,14 @@ public class DBSChartValueRenderer extends DBSRenderer {
 														   DBSNumber.subtract(xChartValue.getValue(), 
 																   			  xCharts.getMinValue())));
 				xX = DBSNumber.multiply(xChart.getColumnScale(), xChartValue.getIndex() - 1);
+				
+				xY = DBSNumber.add(xY, DBSCharts.Padding);
+				xX = DBSNumber.add(xX, DBSCharts.Padding);
+				
 				xXText = xX;
 				//Encode bar ---------------------------------------------------------------------------------
 				if (xType == TYPE.BAR){
-					Double xHeight = DBSNumber.abs(DBSNumber.subtract(xCharts.getChartHeight(), xCharts.getZeroPosition(), xY).doubleValue());
-//					xX = DBSNumber.subtract(xX,
-//									   DBSNumber.divide(DBSNumber.add(xCharts.getXScale(),
-//											  						  xCharts.getLineWidth()),
-//											  			2));
-//					xX = DBSNumber.subtract(xX,
-//							   DBSNumber.divide(DBSNumber.add(xCharts.getXScale(),
-//									  						  0),
-//									  			2));
-//					xX = DBSNumber.subtract(xX,
-//											DBSNumber.multiply(xCharts.getLineWidth(), 
-//															   DBSNumber.divide(xChartValue.getIndex() - 1,
-//																	   		    xChart.getRowCount())));
-
+					Double xHeight = DBSNumber.abs(DBSNumber.subtract(xCharts.getChartHeight(), xCharts.getZeroPosition() - DBSCharts.Padding, xY).doubleValue());
 					//Centraliza o ponto
 					Double xLineWidth = xChart.getColumnScale() * .9;
 					xXText = DBSNumber.add(xX,xChart.getColumnScale() / 2);
@@ -125,6 +116,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 					}else{
 						//inverte a posição Yx
 						Double xIY = DBSNumber.subtract(xCharts.getChartHeight(), xCharts.getZeroPosition().doubleValue()).doubleValue();
+						xIY +=  DBSCharts.Padding;
 						DBSFaces.encodeSVGRect(xChartValue, xWriter, null, null, xX.doubleValue(), xIY, xHeight, xLineWidth, xChartValue.getFillColor());
 					}
 				//Encode line - ponto. as linhas que ligam os pontos, são desenhadas no código JS.
