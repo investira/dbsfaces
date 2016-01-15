@@ -1,5 +1,6 @@
 dbs_tooltip = function(pId) {
 	var wTimer = +new Date();
+
 	$(pId).mouseenter(function(e){
 		dbsfaces.tooltip.showTooltip(pId);
 	});
@@ -19,8 +20,8 @@ dbs_tooltip = function(pId) {
 }
 
 dbsfaces.tooltip = {
-	showTooltip: function(e){
-		var xTooltip = $(e).find(".-tooltip");
+	showTooltip: function(pId){
+		var xTooltip = $(pId).find(".-tooltip");
 		/* Se o foco estiver em algum compenente filho */
 
 		if (xTooltip.css("display") != "none"){
@@ -31,25 +32,23 @@ dbsfaces.tooltip = {
 		var xTime = dbsfaces.ui.getDelayFromTextLength(xTooltip.text());
 		
 		wTimer = setTimeout(function(){
-			if ($(e).length == 0){
+			if ($(pId).length == 0){
 				return;
 			}
-			var xLeft = $(e).offset().left;
-			var xTop = $(e).offset().top + $(e).outerHeight();
-			/* Se a posição do tooltip for superior ao tamanho do documento, 
-			 * ajusta a posição para exibir próximo do componente a que se refere o tooltip
-			 */
+			var xLeft = $(pId).get(0).getBoundingClientRect().left - (xTooltip.outerWidth() / 2);
+			var xTop = $(pId).get(0).getBoundingClientRect().top - xTooltip.outerHeight() - 8; //* é o espaço para o triangulo
+			//Austa altura exibir dentro dos verticais da tela
 			if (xTop + xTooltip.outerHeight() > $(document).height()){
-				xTop = $(e).offset().top - xTooltip.outerHeight() - 1;
+				xTop = $(document).height() - xTooltip.outerHeight() - 1;
 			}
+			
 	
 			xTooltip.css("top", xTop);
 			xTooltip.css("left", xLeft);
 
 			xTooltip.show();
-			/* Ajusta para exibir dentro dos limites horizontais da tela
-			 */
-			if (xTooltip.get(0).getBoundingClientRect().left + xTooltip.outerWidth() > $(document).width() ){
+			//Ajusta para exibir dentro dos limites horizontais da tela
+			if (xLeft + xTooltip.outerWidth() > $(document).width() ){
 				xLeft = $(document).width() - xTooltip.outerWidth() - 1;
 				xTooltip.css("left", xLeft);
 			}
@@ -59,10 +58,10 @@ dbsfaces.tooltip = {
 		}, 1200); //2 Segundos -Tempo para exibir
 	},
 	
-	hideTooltip: function(e){
+	hideTooltip: function(pId){
 		if (typeof(wTimer) != "undefined"){
 			clearTimeout(wTimer);
-			var xTooltip = $(e).find(".-tooltip");
+			var xTooltip = $(pId).find(".-tooltip");
 
 			xTooltip.hide();
 		}

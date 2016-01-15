@@ -1589,14 +1589,17 @@ public class  DBSFaces {
 			xWriter.startElement("span", pComponent);
 				xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.TOOLTIP.trim() , null);
 				xWriter.writeAttribute("style", "display:none;" , null);
-				//Dá prioridade para o facet
-				if (xTooltip != null){
-					//Encode conteúdo do facet
-					xTooltip.encodeAll(pContext);
-				}else{
-					//Encode texto
-					xWriter.write(getHtmlStringWithLineBreak(xTooltipText));
-				}
+				xWriter.startElement("span", pComponent);
+					xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER.trim() , null);
+					//Dá prioridade para o facet
+					if (xTooltip != null){
+						//Encode conteúdo do facet
+						xTooltip.encodeAll(pContext);
+					}else{
+						//Encode texto
+						xWriter.write(getHtmlStringWithLineBreak(xTooltipText));
+					}
+				xWriter.endElement("span");
 			xWriter.endElement("span");
 			//Javascript 
 			DBSFaces.encodeJavaScriptTagStart(xWriter);
