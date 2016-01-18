@@ -43,11 +43,11 @@ public class DBSLabelRenderer extends DBSRenderer {
 		
 		if (xLabel.getSelectable()!=null){
 			if (!xLabel.getSelectable()){
-				xClass += DBSFaces.CSS.NOT_SELECTABLE.trim() + " ";
+				xClass += DBSFaces.CSS.NOT_SELECTABLE.trim();
 			}
 		}
 		if (!DBSObject.isEmpty(xLabel.getStyleClass())) {
-			xClass += xLabel.getStyleClass();
+			xClass +=  " " + xLabel.getStyleClass();
 		}
 		if (DBSObject.isEmpty(xClass)){
 			xClass = null;
