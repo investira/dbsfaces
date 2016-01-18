@@ -1588,7 +1588,7 @@ public class  DBSFaces {
 			xTooltip != null){
 			xWriter.startElement("span", pComponent);
 				xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.TOOLTIP.trim() , null);
-				xWriter.writeAttribute("style", "display:none;" , null);
+//				xWriter.writeAttribute("style", "display:none;" , null);
 				xWriter.startElement("span", pComponent);
 					xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER.trim() , null);
 					//Dá prioridade para o facet

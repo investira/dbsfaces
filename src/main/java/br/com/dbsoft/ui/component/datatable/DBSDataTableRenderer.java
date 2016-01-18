@@ -557,13 +557,16 @@ public class DBSDataTableRenderer extends DBSRenderer {
 			if (pColumn != null
 			&& pColumn.getSortable()){
 				//Indica a direção se é a coluna que que está o sort
-				if (pDataTable.getSortColumn().equals(pColumn.getId())){
-					pStyleClass = SORT_DIRECTION.get(pDataTable.getSortDirection()).getIcon();
-				}else{
-					pStyleClass = SORT_DIRECTION.NONE.getIcon();
-				}
 				pWriter.startElement("span", pDataTable);
-					DBSFaces.setAttribute(pWriter, "class", "-sort_icon " + pStyleClass, null);
+					DBSFaces.setAttribute(pWriter, "class", "-sort_icon", null);
+					pWriter.startElement("span", pDataTable);
+						if (pDataTable.getSortColumn().equals(pColumn.getId())){
+							pStyleClass = SORT_DIRECTION.get(pDataTable.getSortDirection()).getIcon();
+						}else{
+							pStyleClass = SORT_DIRECTION.NONE.getIcon();
+						}
+						DBSFaces.setAttribute(pWriter, "class", pStyleClass, null);
+					pWriter.endElement("span");
 				pWriter.endElement("span");
 			}
 		pWriter.endElement(xTag);

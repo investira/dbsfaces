@@ -291,7 +291,7 @@
 }
 
 .dbs_dataTable > .-container > .-content > table > thead > tr > th > label{
-	display: inline-block;
+/* 	display: inline-block; */
 }
 
 .dbs_dataTable > .-container > .-content > table > tbody > tr > td.-checkbox > div {
@@ -304,7 +304,9 @@
 .dbs_dataTable > .-container > .-content > table > thead > tr > th.-sort.-selected{
     background-color: rgba(0,0,0,0.03);
 }
-
+.dbs_dataTable > .-container > .-content > table > thead > tr > th.-sort{
+    padding-right: 8px;
+}
 .dbs_dataTable > .-container > .-content > table > thead > tr > th.-sort > label,
 .dbs_dataTable > .-container > .-content > table > thead > tr > th.-sort{
 	cursor:pointer !important;
@@ -312,19 +314,24 @@
 
     
 .dbs_dataTable > .-container > .-content > table > thead > tr > th > .-sort_icon{
-	font-size:8px;
-	margin-right: -1px;	
 	text-shadow: none;
-	
-    float: right;
-    position: relative;
-    top: 1px;
-    line-height: 11px;	
+	position: absolute;
+	right: 0px;
+	top: 50%;
+	display: inline-block;
+	padding: 0;
+	margin: 0;
+}
+
+.dbs_dataTable > .-container > .-content > table > thead > tr > th > .-sort_icon > span{
+	position: relative;
+	top: -4px;
+	font-size: 8px;
+	display: block;
 }
 
 .dbs_dataTable > .-container > .-content > table > tbody .dbs_input{
 	margin: -1px 0 -2px -1px;
-/* 	width: 100%; */
 }
 
 			

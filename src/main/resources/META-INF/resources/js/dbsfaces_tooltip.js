@@ -21,13 +21,10 @@ dbs_tooltip = function(pId) {
 
 dbsfaces.tooltip = {
 	showTooltip: function(pId){
-		var xTooltip = $(pId).find(".-tooltip");
+		var xTooltip = $(pId).find(".-tooltip > .-container");
 		/* Se o foco estiver em algum compenente filho */
 
-		if (xTooltip.css("display") != "none"){
-			return;
-		}
-		
+
 		//Tempo de exibição
 		var xTime = dbsfaces.ui.getDelayFromTextLength(xTooltip.text());
 		
@@ -61,7 +58,7 @@ dbsfaces.tooltip = {
 	hideTooltip: function(pId){
 		if (typeof(wTimer) != "undefined"){
 			clearTimeout(wTimer);
-			var xTooltip = $(pId).find(".-tooltip");
+			var xTooltip = $(pId).find(".-tooltip > .-container");;
 
 			xTooltip.hide();
 		}
