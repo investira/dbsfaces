@@ -1326,6 +1326,8 @@ public class  DBSFaces {
 	 * @return
 	 */
 	public static String getSubmitString(UIComponentBase pComponent, String pSourceEvent, String pExecute, String pClientUpdate){
+//		Collection<ClientBehaviorContext.Parameter> params = getBehaviorParameters(xLink)
+//		RenderKitUtils.renderOnclick(pContext, xLink, params, "", true);
 		String xUserOnClick = (String) pComponent.getAttributes().get(pSourceEvent); 
 		String xLocalOnClick = xUserOnClick;
 		String xClientUpdate = pvRemoveFirstColon(pClientUpdate);
