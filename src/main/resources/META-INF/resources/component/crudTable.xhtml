@@ -35,6 +35,7 @@
 				               multipleSelection="#{cc.attrs.multipleSelection or (cc.crudBean.formStyle == 'TABLE' and not cc.attrs.readOnly and not cc.crudBean.isUpdating) or (cc.attrs.allowApproval and cc.crudBean.allowApproval and cc.crudBean.approvalUserStages!=0)}"
 				               searchAction="#{cc.crudBean.searchList()}"
 				               selectAllAction="#{cc.crudBean.selectAll()}"
+							   sortAction="#{cc.crudBean.sort()}"
 				               sortDirection="#{cc.crudBean.sortDirection}"
 		  					   sortColumn="#{cc.crudBean.sortColumn}"
 				               selected="#{cc.crudBean.selected}"

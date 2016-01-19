@@ -1151,13 +1151,14 @@ public abstract class DBSCrudBean extends DBSBean{
 	public String getSortColumn(){return wSortColumn;}
 	
 	/**
-	 * Direção do sort.  
-	 * @param pSortColumn
+	 * Direção do sort.<br/>
+	 * Aconselha-se utilizar o getCode() da respectiva direção definida no enum SORT_DIRECTION. ex: SORT_DIRECTION.DESCENDING.getCode().   
+	 * @param pSortDirection A = Ascendente, B = Descendente, vázio = Sem sort. 
 	 */
 	public void setSortDirection(String pSortDirection){wSortDirection = pSortDirection;}
 	/**
 	 * Direção do sort.  
-	 * @param pSortColumn
+	 * @return A = Ascendente, B = Descendente, vázio = Sem sort 
 	 */
 	public String getSortDirection(){return wSortDirection;}
 
@@ -1845,6 +1846,14 @@ public abstract class DBSCrudBean extends DBSBean{
 		wCopiedRowIndex = -1; //Reseta registro copiado para evitar a exibição do botão Paste.
 		return DBSFaces.getCurrentView();
 	}
+	
+	/**
+	 * Método a ser sobre-escrito para implementar o sort.<br/>
+	 * Para recuperar o coluna selecionada e a respectiva direção, deve-se utilizar <b>getSortColumn</b> e <b>getSortDirection</b>.<br/>
+	 * Caso o sort seja efetuado na pesquisa principal implementada no método <b>beforeRefresh()</b>, basta incluir a chamada a ele. 
+	 * @throws DBSIOException
+	 */
+	public synchronized void sort() throws DBSIOException{}
 
 	/**
 	 * Entra no modo de inclusão 

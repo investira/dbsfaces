@@ -373,7 +373,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 			xBtn = (DBSLink) pContext.getApplication().createComponent(DBSLink.COMPONENT_TYPE);
 			xBtn.setId(xClientIdButton);
 			xBtn.setStyleClass("-sort"); 
-			xBtn.setActionExpression(DBSFaces.createMethodExpression(pContext, pDataTable.getSearchAction(), String.class, new Class[0]));
+			xBtn.setActionExpression(DBSFaces.createMethodExpression(pContext, pDataTable.getSortAction(), String.class, new Class[0]));
 			xBtn.setUpdate(pDataTable.getClientId());
 			pDataTable.getFacets().put(xClientIdButton, xBtn);
 		}

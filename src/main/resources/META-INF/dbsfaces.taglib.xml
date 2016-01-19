@@ -87,9 +87,17 @@
 		</attribute>
 		<attribute>
 			<description>
-                Método que será chamado para atualizar o conteúdo da lista inclusive no caso de seleção de coluna para sort.
+                Método que será chamado para atualizar o conteúdo da lista.
             </description>
 			<name>searchAction</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Método que será chamado para atualizar efetuar sort após o usuário ter selecionado a coluna.
+            </description>
+			<name>sortAction</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>

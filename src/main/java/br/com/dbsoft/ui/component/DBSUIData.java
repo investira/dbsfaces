@@ -107,8 +107,9 @@ public abstract class DBSUIData extends UIData implements IDBSUIComponentBase {
 		keyColumnName,
 		currentRowIndex,
 		sortColumn,
-		sortDirection;
-		
+		sortDirection,
+		sortAction;
+
 		String toString;
 
 		PropertyKeys(String toString) {
@@ -206,6 +207,16 @@ public abstract class DBSUIData extends UIData implements IDBSUIComponentBase {
 		getStateHelper().put(PropertyKeys.sortDirection, pSortDirection);
  		handleAttribute("sortDirection", pSortDirection);
  	}
+
+	public String getSortAction() {
+		String xStr = DBSFaces.getELString(this, PropertyKeys.sortAction.toString());
+		return xStr;
+	}
+
+	public void setSortAction(String pSortAction) {
+    	getStateHelper().put(PropertyKeys.sortAction, pSortAction);
+		handleAttribute("sortAction", pSortAction);
+	}	
 
 	@Override
 	public String getDefaultEventName() {
