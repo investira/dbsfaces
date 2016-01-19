@@ -43,7 +43,7 @@
 
 .dbs_combobox > .-container > .dbs_input-data > .-button {
     position: absolute;
-    right: 3px;
+    right: 2px;
     top: 50%;
     transform: translateY(-50%);
 }
