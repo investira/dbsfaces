@@ -233,9 +233,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 		pvEncodeFocusInput(pContext, pDataTable, pWriter);
 		
 		//Encode dos input de controle do sort
-		if (pDataTable.getSortAction() != null){
-			pvEncodeSortInput(pContext, pDataTable);
-		}
+		pvEncodeSortInput(pContext, pDataTable);
 
 
 	}
@@ -345,6 +343,8 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	 * @throws IOException
 	 */
 	private void pvEncodeSortInput(FacesContext pContext, DBSDataTable pDataTable) throws IOException {
+		if (!pvHasSortableColumns(pDataTable)){return;}
+		
 		HtmlInputHidden xInput;
 		//Columa selecionada para sort
 		xInput = (HtmlInputHidden) pDataTable.getFacet("sortColumn");
@@ -373,7 +373,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 			xBtn = (DBSLink) pContext.getApplication().createComponent(DBSLink.COMPONENT_TYPE);
 			xBtn.setId(xClientIdButton);
 			xBtn.setStyleClass("-sort"); 
-			xBtn.setActionExpression(DBSFaces.createMethodExpression(pContext, pDataTable.getSortAction(), String.class, new Class[0]));
+			xBtn.setActionExpression(DBSFaces.createMethodExpression(pContext, pDataTable.getSearchAction(), String.class, new Class[0]));
 			xBtn.setUpdate(pDataTable.getClientId());
 			pDataTable.getFacets().put(xClientIdButton, xBtn);
 		}
@@ -655,6 +655,22 @@ public class DBSDataTableRenderer extends DBSRenderer {
 		}
 	}
 
+	/**
+	 * Retorna se exibe alguma coluna com sort
+	 * @param pDataTable
+	 * @return
+	 */
+	private boolean pvHasSortableColumns(DBSDataTable pDataTable){
+		for (UIComponent xC : pDataTable.getChildren()){
+			if (xC instanceof DBSDataTableColumn){
+				DBSDataTableColumn xDTC = (DBSDataTableColumn) xC;
+				if (xDTC.getSortable()){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 	
 	private String pvGetInputFooId(FacesContext pContext, DBSDataTable pDataTable){
 		return pDataTable.getClientId(pContext) + ":" + DBSDataTable.INPUT_FOO_ID;
