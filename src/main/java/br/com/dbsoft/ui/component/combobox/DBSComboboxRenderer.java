@@ -167,8 +167,8 @@ public class DBSComboboxRenderer extends DBSRenderer {
 			DBSFaces.encodeInputDataReadOnly(pCombobox, pWriter, xClientId, false, xValue.toString(), pCombobox.getSize(), null, xStyle);
 		}else{
 			pWriter.startElement("span", pCombobox);
-				DBSFaces.setAttribute(pWriter, "style", xStyle, null);
 				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pCombobox), null);
+				DBSFaces.setAttribute(pWriter, "style", xStyle, null);
 				DBSFaces.setSizeAttributes(pWriter, pCombobox.getSize(), null);
 				pWriter.startElement("span", pCombobox);
 					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.DATA, null);
