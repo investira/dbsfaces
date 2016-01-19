@@ -34,6 +34,7 @@ import br.com.dbsoft.util.DBSDate;
 import br.com.dbsoft.util.DBSIO;
 import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSObject;
+import br.com.dbsoft.util.DBSIO.SORT_DIRECTION;
 
 
 /**
@@ -342,6 +343,9 @@ public abstract class DBSCrudBean extends DBSBean{
 	private String								wColumnNameDateOnUpdate = null;
 	private String								wColumnNameUserIdOnInsert = null;
 	private String								wColumnNameUserIdOnUpdate = null;
+	private String								wSortColumn = "";
+	private String								wSortDirection = SORT_DIRECTION.DESCENDING.getCode();
+
 	private Boolean								wRevalidateBeforeCommit = false;
 	private Integer								wUserId;
 	private Boolean								wMultipleSelection = false;
@@ -1136,6 +1140,28 @@ public abstract class DBSCrudBean extends DBSBean{
 	public void setColumnNameUserIdOnUpdate(String pColumnNameUserIdOnUpdate) {wColumnNameUserIdOnUpdate = pColumnNameUserIdOnUpdate;}
 
 	/**
+	 * Id(nome da coluna) da coluna que será utilizada para efetuar o sort  
+	 * @param pSortColumn
+	 */
+	public void setSortColumn(String pSortColumn){wSortColumn = pSortColumn;}
+	/**
+	 * Id(nome da coluna) da coluna que será utilizada para efetuar o sort  
+	 * @param pSortColumn
+	 */
+	public String getSortColumn(){return wSortColumn;}
+	
+	/**
+	 * Direção do sort.  
+	 * @param pSortColumn
+	 */
+	public void setSortDirection(String pSortDirection){wSortDirection = pSortDirection;}
+	/**
+	 * Direção do sort.  
+	 * @param pSortColumn
+	 */
+	public String getSortDirection(){return wSortDirection;}
+
+	/**
 	 * Indica se será disparado novamente o evento <b>validade</b> após a 
 	 * confirmação da edição e antes do <b>beforeCommit</b>.<br/>
 	 * Aconselhado para os casos que pode ter havido alguma alterações de dados no banco 
@@ -1709,7 +1735,6 @@ public abstract class DBSCrudBean extends DBSBean{
 		}
 		return DBSFaces.getCurrentView();
 	}
-
 
 
 	/**

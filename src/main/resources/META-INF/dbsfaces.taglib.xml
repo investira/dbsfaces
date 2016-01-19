@@ -87,7 +87,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Método que será chamado para atualizar o conteúdo da lista
+                Método que será chamado para atualizar o conteúdo da lista inclusive no caso de seleção de coluna para sort.
             </description>
 			<name>searchAction</name>
 			<required>false</required>
