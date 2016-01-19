@@ -1200,7 +1200,7 @@ public class  DBSFaces {
 		if (pInputSize == 0){
 			return "";
 		}
-		Double xW = DBSNumber.round((pInputSize + 1) * 0.63, 3);
+		Double xW = DBSNumber.round((pInputSize + 1) * 0.64, 3);
 		return "width:" + xW + "em;"; //min-height:19px; 
 	}
 
