@@ -798,7 +798,7 @@ td > .dbs_icon{
 /* 		url('#{request.contextPath}/images/dbsfaces_icons.woff?-95qbbc') format('woff'), */
 /* 		url('#{request.contextPath}/images/dbsfaces_icons.ttf?-95qbbc') format('truetype'), */
 /* 		url('#{request.contextPath}/images/dbsfaces_icons.svg?-95qbbc#dbsfaces_icons') format('svg');	 */
-	src:url('#{request.contextPath}/images/dbsfaces_icons.ttf?-95qbbc') format('truetype');
+	src:url('#{request.contextPath}/images/dbsfaces_icons.ttf') format('truetype');
 	font-weight: normal;
 	font-style: normal;
 }
