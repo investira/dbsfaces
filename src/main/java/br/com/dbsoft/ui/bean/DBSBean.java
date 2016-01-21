@@ -152,7 +152,7 @@ public abstract class DBSBean implements Serializable {
 	 * @return
 	 */
 	public String getMessageIcon(){
-		return wDialogMessages.getMessageIcon().toString();
+		return wDialogMessages.getCurrentMessageIcon().toString();
 	}
 
 	/**
@@ -160,7 +160,7 @@ public abstract class DBSBean implements Serializable {
 	 * @return
 	 */
 	public Integer getMessageWidth(){
-		return wDialogMessages.getMessageWidth();
+		return wDialogMessages.getCurrentMessageWidth();
 	}
 
 	/**
@@ -168,7 +168,7 @@ public abstract class DBSBean implements Serializable {
 	 * @return
 	 */
 	public Integer getMessageHeight(){
-		return wDialogMessages.getMessageHeight();
+		return wDialogMessages.getCurrentMessageHeight();
 	}
 	
 	/**
@@ -177,7 +177,7 @@ public abstract class DBSBean implements Serializable {
 	 * @return
 	 */
 	public Boolean getMessageIsWarning(){
-		return wDialogMessages.getMessageIsWarning();
+		return wDialogMessages.getCurrentMessageIsWarning();
 	}
 	
 	/**

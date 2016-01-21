@@ -16,7 +16,7 @@ public class DBSDialogMessages extends DBSMessages<IDBSDialogMessage> implements
 	 * @return
 	 */
 	@Override
-	public boolean getMessageIsWarning(){
+	public boolean getCurrentMessageIsWarning(){
 		if (wCurrentMessageKey !=null){
 			if (getCurrentMessage().getMessageType() == MESSAGE_TYPE.WARNING){
 				return true;
@@ -31,7 +31,7 @@ public class DBSDialogMessages extends DBSMessages<IDBSDialogMessage> implements
 	 * @return
 	 */
 	@Override
-	public DIALOG_ICON getMessageIcon(){
+	public DIALOG_ICON getCurrentMessageIcon(){
 		if (wCurrentMessageKey !=null){
 			return wMessages.get(wCurrentMessageKey).getMessageIcon();
 		}else{
@@ -45,7 +45,7 @@ public class DBSDialogMessages extends DBSMessages<IDBSDialogMessage> implements
 	 * @return
 	 */
 	@Override
-	public int getMessageWidth(){
+	public int getCurrentMessageWidth(){
 		if (wCurrentMessageKey !=null){
 			return wMessages.get(wCurrentMessageKey).getMessageWidth();
 		}else{
@@ -58,7 +58,7 @@ public class DBSDialogMessages extends DBSMessages<IDBSDialogMessage> implements
 	 * @return
 	 */
 	@Override
-	public int getMessageHeight(){
+	public int getCurrentMessageHeight(){
 		if (wCurrentMessageKey !=null){
 			return wMessages.get(wCurrentMessageKey).getMessageHeight();
 		}else{

@@ -22,23 +22,23 @@ public interface IDBSDialogMessages extends IDBSMessages<IDBSDialogMessage>{
 	 * Mensagens do tipo warning são as que precisam de validação 
 	 * @return
 	 */
-	public boolean getMessageIsWarning();
+	public boolean getCurrentMessageIsWarning();
 	
 	/**
 	 * Retorna o icone da mensagem corrente
 	 * @return
 	 */
-	public DIALOG_ICON getMessageIcon();
+	public DIALOG_ICON getCurrentMessageIcon();
 	
 	/**
 	 * Retorna a largura da janela que será exibida a mensagem corrente
 	 * @return
 	 */
-	public int getMessageWidth();
+	public int getCurrentMessageWidth();
 	
 	/**
 	 * Retorna a altura da janela que será exibida a mensagem corrente
 	 * @return
 	 */
-	public int getMessageHeight();
+	public int getCurrentMessageHeight();
 }
