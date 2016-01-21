@@ -1,4 +1,4 @@
-package br.com.dbsoft.ui.component.beandialgcrudmessages;
+package br.com.dbsoft.ui.component.beandialogcrudmessages;
 
 
 import javax.faces.component.FacesComponent;
