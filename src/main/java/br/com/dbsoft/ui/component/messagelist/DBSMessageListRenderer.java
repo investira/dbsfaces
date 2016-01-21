@@ -26,7 +26,7 @@ public class DBSMessageListRenderer extends DBSRenderer {
 		decodeBehaviors(pContext, pComponent); 
 		DBSMessageList 	xMessageList = (DBSMessageList) pComponent;
 		//Verifica se foi um submit de um dos botões de exclusão e exclui o item se for
-//		pComponent.getClientId(pContext) + ":btDel";
+
 		String 			xInputFooId = pvGetInputFooId(pContext, xMessageList);
 		String			xSourceId = pContext.getExternalContext().getRequestParameterMap().get(DBSFaces.PARTIAL_SOURCE_PARAM);
 		if (xSourceId !=null && xSourceId.startsWith(xInputFooId)){
@@ -36,7 +36,6 @@ public class DBSMessageListRenderer extends DBSRenderer {
 				xMessageList.setMessageKey(xMessageKey);
 				//Exclui mensagem da lista
 				xMessageList.getValue().remove(xMessageKey);
-//				xMessageList.getValue().getMessages().keySet().
 				xMessageList.setDeleting(true);
 			}else{
 				xMessageList.setMessageKey("");
@@ -228,31 +227,5 @@ public class DBSMessageListRenderer extends DBSRenderer {
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);	
 	}
 
-	
-//	/**
-//	 * Encode do cabeçalho contendo os filtros e botões do toolbar definidos pelo usuário.
-//	 * O encode do header da tabela é efetuado em outra rotina.
-//	 * @param pContext
-//	 * @param pMessageList
-//	 * @param pWriter
-//	 * @throws IOException
-//	 */
-//	private void pvEncodeHeader(FacesContext pContext, DBSMessageList pMessageList,ResponseWriter pWriter) throws IOException {
-//		//Input para controle do focus e caracteres digitados----
-//		pWriter.startElement("input", pMessageList);
-//			DBSFaces.setAttribute(pWriter, "id", pvGetInputFooId(pContext, pMessageList), null);
-//			DBSFaces.setAttribute(pWriter, "name", pvGetInputFooId(pContext, pMessageList), null);
-//			DBSFaces.setAttribute(pWriter, "type", "text", null);
-//			DBSFaces.setAttribute(pWriter, "class", "-foo", null);
-//			DBSFaces.setAttribute(pWriter, "autocomplete", "off", null);
-//			DBSFaces.setAttribute(pWriter, "value", pMessageList.getCurrentRowIndex(), null);
-//			encodeClientBehaviors(pContext, pMessageList);
-//		pWriter.endElement("input");
-//	}
-//	
-//	private String pvGetInputFooId(FacesContext pContext, DBSMessageList pMessageList){
-//		return pMessageList.getClientId(pContext) + ":foo";
-//	}
-		
-	
+
 }
