@@ -166,8 +166,10 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 				if (pInputNumber.getSecret()) {
 					DBSFaces.setAttribute(pWriter, "type", "password", null);
 				} else {
-					DBSFaces.setAttribute(pWriter, "type", "number", null);
+					DBSFaces.setAttribute(pWriter, "type", "text", null);
 				}
+				DBSFaces.setAttribute(pWriter, "pattern", "[0-9]*", null);
+				DBSFaces.setAttribute(pWriter, "inputmode", "numeric", null);
 				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputNumber) + xStyleClass, null);
 				DBSFaces.setAttribute(pWriter, "style", xStyle, null);
 				DBSFaces.setSizeAttributes(pWriter, xSize, null);

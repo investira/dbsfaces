@@ -672,9 +672,29 @@ input.-foo {
 /* 	min-height: 19px; Comentado em 2016-01-13 ricardo*/
 }
 
+.dbs_input-data[type=text],
+.dbs_input-data[type=password],
+.dbs_input-data[type=email],
+.dbs_input-data[type=tel],
+.dbs_input-data[type=number],
+.dbs_input-data[type=date],
+.dbs_input-data[type=time],
+.dbs_input-data[type=url],
+textarea.dbs_input-data{
+	-webkit-appearance: none;
+	-moz-appearance: none;
+    appearance: none;
+}
+
 
 .dbs_input-data[type=text],
 .dbs_input-data[type=password],
+.dbs_input-data[type=email],
+.dbs_input-data[type=tel],
+.dbs_input-data[type=number],
+.dbs_input-data[type=date],
+.dbs_input-data[type=time],
+.dbs_input-data[type=url],
 select.dbs_input-data, 
 textarea.dbs_input-data,
 span.dbs_input-data,
@@ -702,6 +722,12 @@ label.dbs_input-data,
 
 .dbs_input-data[type=text].-readOnly,
 .dbs_input-data[type=password].-readOnly,
+.dbs_input-data[type=email].-readOnly,
+.dbs_input-data[type=tel].-readOnly,
+.dbs_input-data[type=number].-readOnly,
+.dbs_input-data[type=date].-readOnly,
+.dbs_input-data[type=time].-readOnly,
+.dbs_input-data[type=url].-readOnly,
 select.dbs_input-data.-readOnly,
 textarea.dbs_input-data.-readOnly,
 span.dbs_input-data.-readOnly,
@@ -723,6 +749,12 @@ label.dbs_input-data.-readOnly
 
 .dbs_input-data[type=text]:FOCUS,
 .dbs_input-data[type=password]:FOCUS,
+.dbs_input-data[type=email]:FOCUS,
+.dbs_input-data[type=tel]:FOCUS,
+.dbs_input-data[type=number]:FOCUS,
+.dbs_input-data[type=date]:FOCUS,
+.dbs_input-data[type=time]:FOCUS,
+.dbs_input-data[type=url]:FOCUS,
 select.dbs_input-data:FOCUS,
 textarea.dbs_input-data:FOCUS,
 .dbs_input-data-FOCUS{
