@@ -1,4 +1,4 @@
-package br.com.dbsoft.ui.component.beancruddialogmessages;
+package br.com.dbsoft.ui.component.beandialgcrudmessages;
 
 
 import javax.faces.component.FacesComponent;
@@ -12,11 +12,11 @@ import br.com.dbsoft.ui.core.DBSFaces;
  * @author ricardovillar
  *
  */
-@FacesComponent(DBSBeanCrudDialogMessages.COMPONENT_TYPE)
-public class DBSBeanCrudDialogMessages extends DBSUIComponentBase { 
+@FacesComponent(DBSBeanDialogCrudMessages.COMPONENT_TYPE)
+public class DBSBeanDialogCrudMessages extends DBSUIComponentBase { 
 
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.BEANCRUDDIALOGMESSAGES;
-	public final static String RENDERER_TYPE = "/resources/component/beanCrudDialogMessages.xhtml";
+	public final static String RENDERER_TYPE = "/resources/component/beanDialogCrudMessages.xhtml";
 	
 	protected enum PropertyKeys {
 		crudBean;
@@ -35,8 +35,8 @@ public class DBSBeanCrudDialogMessages extends DBSUIComponentBase {
 		}
 	}
 	
-	public DBSBeanCrudDialogMessages(){
-		setRendererType(DBSBeanCrudDialogMessages.RENDERER_TYPE);
+	public DBSBeanDialogCrudMessages(){
+		setRendererType(DBSBeanDialogCrudMessages.RENDERER_TYPE);
 	}
 
     @Override

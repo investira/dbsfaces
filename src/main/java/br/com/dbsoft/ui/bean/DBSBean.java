@@ -152,7 +152,7 @@ public abstract class DBSBean implements Serializable {
 	 * @return
 	 */
 	public String getMessageIcon(){
-		return wDialogMessages.getIcon().toString();
+		return wDialogMessages.getMessageIcon().toString();
 	}
 
 	/**
@@ -160,7 +160,7 @@ public abstract class DBSBean implements Serializable {
 	 * @return
 	 */
 	public Integer getMessageWidth(){
-		return wDialogMessages.getWidth();
+		return wDialogMessages.getMessageWidth();
 	}
 
 	/**
@@ -168,7 +168,7 @@ public abstract class DBSBean implements Serializable {
 	 * @return
 	 */
 	public Integer getMessageHeight(){
-		return wDialogMessages.getHeight();
+		return wDialogMessages.getMessageHeight();
 	}
 	
 	/**
@@ -177,7 +177,7 @@ public abstract class DBSBean implements Serializable {
 	 * @return
 	 */
 	public Boolean getMessageIsWarning(){
-		return wDialogMessages.getIsWarning();
+		return wDialogMessages.getMessageIsWarning();
 	}
 	
 	/**
@@ -224,12 +224,12 @@ public abstract class DBSBean implements Serializable {
 	public String setMessageValidated(Boolean pIsValidated) throws DBSIOException{
 		if (wDialogMessages!=null){
 			IDBSDialogMessage xMessageKey = wDialogMessages.getCurrentMessage(); //Salva a chave, pois o setValidated posiciona na próxima mensagem.
-			wDialogMessages.setValidated(pIsValidated);
+			wDialogMessages.setMessageValidated(pIsValidated);
 			if (xMessageKey.getMessageType() == MESSAGE_TYPE.WARNING){
 				//Chama método indicando que warning foi validado
 				warningMessageValidated(xMessageKey.getMessageKey(), pIsValidated);
 			}
-			return messageValidated(xMessageKey.getMessageKey(), pIsValidated);
+			return onMessageValidate(xMessageKey.getMessageKey(), pIsValidated);
 		}
 		return DBSFaces.getCurrentView();
 	}
@@ -251,7 +251,7 @@ public abstract class DBSBean implements Serializable {
 	 * @return Retorna tela(xhtml) que será exibida em seguida.<br>O padrão é retornar a tela corrente.
 	 * @throws DBSIOException 
 	 */
-	protected String messageValidated(String pMessageKey, Boolean pIsValidated) throws DBSIOException{
+	protected String onMessageValidate(String pMessageKey, Boolean pIsValidated) throws DBSIOException{
 		return DBSFaces.getCurrentView();
 	}
 
@@ -345,7 +345,7 @@ public abstract class DBSBean implements Serializable {
 	 * @return
 	 */
 	protected Boolean isMessageValidated(String pMessageKey){
-		return DBSObject.getNotNull(wDialogMessages.isValidated(pMessageKey), false);
+		return DBSObject.getNotNull(wDialogMessages.isMessageValidated(pMessageKey), false);
 	}
 	
 	/**

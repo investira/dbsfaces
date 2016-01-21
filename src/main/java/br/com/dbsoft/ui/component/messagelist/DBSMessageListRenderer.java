@@ -88,11 +88,11 @@ public class DBSMessageListRenderer extends DBSRenderer {
 					while (xI.hasNext()){
 						 xMsg = xI.next().getValue();
 						 //Se msg ainda não foi validada(visualizada, neste caso)
-						 if (xMsg.isValidated() == null 
-						  || !xMsg.isValidated()){
+						 if (xMsg.isMessageValidated() == null 
+						  || !xMsg.isMessageValidated()){
 							 //Conta a quantidade de mensagens novas
 							 xNew++;
-							 xMsg.setValidated(true); //Marca que mensagem como vista
+							 xMsg.setMessageValidated(true); //Marca que mensagem como vista
 						 }
 						//Definie a cor do campo da quantidade de mensagens a partir da mensagem de maior revelância(error/warning/information). 
 						 if (xMsg.getMessageType().getCode() > xType.getCode()){

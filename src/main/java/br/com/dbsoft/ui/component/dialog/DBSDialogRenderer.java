@@ -58,7 +58,7 @@ public class DBSDialogRenderer extends DBSRenderer {
 		xCount = pvDialogCount(pComponent.getChildren(),0);
 		
 		UIComponent xToolbar = xDialog.getFacet("toolbar");
-		UIComponent xDialogMessage = xDialog.getFacet("dialogMessages");
+		UIComponent xDialogMessage = xDialog.getFacet("beanDialogMessages");
 	
 		// STYLE 
 		if (xDialog.getWidth() == 0 || 

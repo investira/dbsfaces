@@ -10,69 +10,13 @@ import br.com.dbsoft.ui.component.dialog.DBSDialog.DIALOG_ICON;
  */
 public class DBSDialogMessages extends DBSMessages<IDBSDialogMessage> implements IDBSDialogMessages {
 
-//	public <T extends DBSDialogMessage> DBSDialogMessages(Class<MessageClass> pMessageClass) {
-//		super(pMessageClass);
-//	}
-
-//	/**
-//	 * Inclui uma mensagem na fila para ser exibida.
-//	 * A exibição se derá na mesma ondem da inclusão
-//	 * @param pMessageKey Chave da mensagem que será utilizada para verificar a resposta do usuário
-//	 * @param pMessageIcon pIcone da mensagem para indicar o seu tipo
-//	 * @param pMessageText Texto da mensagem
-//	 * @param pButtons Botões que serão exibidos poelo usuario. Deve-se utilizar a constante DBSDialog.MESAGEM_BUTTONS
-//	 */
-//	@Override
-//	public MessageClass add(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, DIALOG_ICON pMessageIcon){
-//		return pvCreateMessage(pMessageKey, null, pMessageType, pMessageText, null, null, pMessageIcon);
-//	}
-//	
-//	@Override
-//	public MessageClass add(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, String pMessageTooltip, DIALOG_ICON pMessageIcon){
-//		return pvCreateMessage(pMessageKey, null, pMessageType, pMessageText, pMessageTooltip, null, pMessageIcon);
-//	}
-	
-//	@Override
-//	protected MessageClass pvCreateMessage(String pMessageKey, 
-//												Integer pMessageCode, 
-//												MESSAGE_TYPE pMessageType,
-//												String pMessageText, 
-//												String pMessageTooltip, 
-//												DateTime pMessageTime) {
-//		MessageClass xM = super.pvCreateMessage(pMessageKey, pMessageCode, pMessageType, pMessageText, pMessageTooltip, pMessageTime);
-//		//Inclui quebra de linha
-//		pMessageText = DBSFaces.getHtmlStringWithLineBreak(pMessageText);
-//		pMessageTooltip = DBSFaces.getHtmlStringWithLineBreak(pMessageTooltip);
-//		
-//		Integer xWidth = DBSFaces.getDialogMessageWidth(pMessageText.length());
-//		Integer xHeight = DBSFaces.getDialogMessageHeight(xWidth);
-//
-//		xM.setIcon(DBSFaces.toDIALOG_ICON(pMessageType)); 
-//		xM.setWidth(DBSFaces.getDialogMessageWidth(xWidth));
-//		xM.setHeight(DBSFaces.getDialogMessageHeight(xHeight));
-//		
-//		return xM;
-//	}
-	
-//	protected MessageClass pvCreateMessage(String pMessageKey, 
-//												Integer pMessageCode, 
-//												MESSAGE_TYPE pMessageType,
-//												String pMessageText, 
-//												String pMessageTooltip, 
-//												DateTime pMessageTime,
-//												DIALOG_ICON pMessageIcon) {
-//		MessageClass xM = super.pvCreateMessage(pMessageKey, pMessageCode, pMessageType, pMessageText, pMessageTooltip, pMessageTime);
-//		xM.setIcon(pMessageIcon);
-//		return xM;
-//	}
-
 	/**
 	 * Retorna se mensagem é do tipo Warning
 	 * Mensagens do tipo warning são as que precisam de validação 
 	 * @return
 	 */
 	@Override
-	public boolean getIsWarning(){
+	public boolean getMessageIsWarning(){
 		if (wCurrentMessageKey !=null){
 			if (getCurrentMessage().getMessageType() == MESSAGE_TYPE.WARNING){
 				return true;
@@ -87,9 +31,9 @@ public class DBSDialogMessages extends DBSMessages<IDBSDialogMessage> implements
 	 * @return
 	 */
 	@Override
-	public DIALOG_ICON getIcon(){
+	public DIALOG_ICON getMessageIcon(){
 		if (wCurrentMessageKey !=null){
-			return wMessages.get(wCurrentMessageKey).getIcon();
+			return wMessages.get(wCurrentMessageKey).getMessageIcon();
 		}else{
 			return DIALOG_ICON.NENHUM;
 		}
@@ -101,9 +45,9 @@ public class DBSDialogMessages extends DBSMessages<IDBSDialogMessage> implements
 	 * @return
 	 */
 	@Override
-	public int getWidth(){
+	public int getMessageWidth(){
 		if (wCurrentMessageKey !=null){
-			return wMessages.get(wCurrentMessageKey).getWidth();
+			return wMessages.get(wCurrentMessageKey).getMessageWidth();
 		}else{
 			return 100;
 		}
@@ -114,9 +58,9 @@ public class DBSDialogMessages extends DBSMessages<IDBSDialogMessage> implements
 	 * @return
 	 */
 	@Override
-	public int getHeight(){
+	public int getMessageHeight(){
 		if (wCurrentMessageKey !=null){
-			return wMessages.get(wCurrentMessageKey).getHeight();
+			return wMessages.get(wCurrentMessageKey).getMessageHeight();
 		}else{
 			return 100;
 		}

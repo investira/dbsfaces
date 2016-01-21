@@ -111,12 +111,12 @@
 					
 					<cc:insertChildren/>
 						
-					<f:facet name="dialogMessages">
-						<dbscom:beanCrudDialogMessages id="message"
+					<f:facet name="beanDialogMessages">
+						<dbscom:beanDialogCrudMessages id="message"
 												   crudBean="#{cc.crudBean}"
 		 							               update=":dialog #{cc.attrs.update} ">
 <!-- 		 							               update=":dialog #{cc.crudBean.isDeleting ? cc.attrs.update : ''} " -->
-		 				</dbscom:beanCrudDialogMessages>
+		 				</dbscom:beanDialogCrudMessages>
 					</f:facet>
 				</dbs:dialog>
 			</dbs:div>
