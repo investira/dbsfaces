@@ -8,9 +8,9 @@ import br.com.dbsoft.ui.core.DBSFaces;
 
 public class DBSDialogMessage extends DBSMessage implements IDBSDialogMessage {
 
-	private DIALOG_ICON wIcon;
-	private Integer		wWidth;
-	private Integer		wHeight;
+	private DIALOG_ICON wMessageIcon;
+	private Integer		wMessageWidth;
+	private Integer		wMessageHeight;
 	
 	public DBSDialogMessage() {}
 	
@@ -59,45 +59,45 @@ public class DBSDialogMessage extends DBSMessage implements IDBSDialogMessage {
 	}
 	
 	@Override
-	public DIALOG_ICON getIcon() {
-		if (wIcon == null){
+	public DIALOG_ICON getMessageIcon() {
+		if (wMessageIcon == null){
 			//Força configuração do icone caso não tenha sido informado
-			setIcon(DBSFaces.toDIALOG_ICON(getMessageType()));
+			setMessageIcon(DBSFaces.toDIALOG_ICON(getMessageType()));
 		}
-		return wIcon;
+		return wMessageIcon;
 	}
 	
 	@Override
-	public void setIcon(DIALOG_ICON pIcon) {
-		wIcon = pIcon;
+	public void setMessageIcon(DIALOG_ICON pIcon) {
+		wMessageIcon = pIcon;
 	}
 	
 	@Override
-	public int getWidth() {
-		if (wWidth==null){
+	public int getMessageWidth() {
+		if (wMessageWidth==null){
 			//Força o calculo da largura se for nulo
-			setWidth(DBSFaces.getDialogMessageWidth(getMessageText().length()));
+			setMessageWidth(DBSFaces.getDialogMessageWidth(getMessageText().length()));
 		}
-		return wWidth;
+		return wMessageWidth;
 	}
 	
 	@Override
-	public void setWidth(int pWidth) {
-		wWidth = pWidth;
+	public void setMessageWidth(int pMessageWidth) {
+		wMessageWidth = pMessageWidth;
 	}
 	
 	@Override
-	public int getHeight() {
-		if (wHeight==null){
+	public int getMessageHeight() {
+		if (wMessageHeight==null){
 			//Força o calculo da altura se for nulo
-			setHeight(DBSFaces.getDialogMessageHeight(getWidth()));
+			setMessageHeight(DBSFaces.getDialogMessageHeight(getMessageWidth()));
 		}
-		return wHeight;
+		return wMessageHeight;
 	}
 	
 	@Override
-	public void setHeight(int pHeight) {
-		wHeight = pHeight;
+	public void setMessageHeight(int pMessageHeight) {
+		wMessageHeight = pMessageHeight;
 	}
 	
 	@Override
@@ -114,7 +114,7 @@ public class DBSDialogMessage extends DBSMessage implements IDBSDialogMessage {
 	
 	protected void pvSetMessageDialog(String pMessageKey, Integer pMessageCode, MESSAGE_TYPE pMessageType, String pMessageText, String pMessageTooltip, DateTime pMessageTime, DIALOG_ICON pMessageIcon){
 		pvSetMessage(pMessageKey, pMessageCode, pMessageType, pMessageText, pMessageTooltip, pMessageTime);
-		setIcon(pMessageIcon);
+		setMessageIcon(pMessageIcon);
 	}
 	
 }

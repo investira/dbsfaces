@@ -150,7 +150,7 @@ public class  DBSFaces {
 	    public static final String REPORT = "report"; 
 	    public static final String REPORTFORM = "reportForm"; 
 	    public static final String BEANDIALOGMESSAGES = "beanDialogMessages";
-	    public static final String BEANCRUDDIALOGMESSAGES = "beanCrudDialogMessages";
+	    public static final String BEANCRUDDIALOGMESSAGES = "beanDialogCrudMessages";
 	    public static final String MESSAGES = "messages";
 	    public static final String GROUP = "group";
 	    public static final String PUSH = "push";

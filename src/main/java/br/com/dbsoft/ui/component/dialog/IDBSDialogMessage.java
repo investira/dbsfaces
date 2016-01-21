@@ -6,12 +6,12 @@ import br.com.dbsoft.ui.component.dialog.DBSDialog.DIALOG_ICON;
 
 public interface IDBSDialogMessage extends IDBSMessage {
 
-	public DIALOG_ICON getIcon();
-	public void setIcon(DIALOG_ICON pIcon);
+	public DIALOG_ICON getMessageIcon();
+	public void setMessageIcon(DIALOG_ICON pMessageIcon);
 
-	public int getWidth();
-	public void setWidth(int pWidth);
+	public int getMessageWidth();
+	public void setMessageWidth(int pMessageWidth);
 	
-	public int getHeight();
-	public void setHeight(int pHeight);
+	public int getMessageHeight();
+	public void setMessageHeight(int pMessageHeight);
 }
