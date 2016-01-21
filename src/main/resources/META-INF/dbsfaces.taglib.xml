@@ -978,6 +978,14 @@
 		</attribute>
 		<attribute>
 			<description>
+                Typo do campo conforme HTML5. Padrão é text. 
+            </description>
+			<name>type</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>		
+		<attribute>
+			<description>
                 Tooltip
             </description>
 			<name>tooltip</name>
