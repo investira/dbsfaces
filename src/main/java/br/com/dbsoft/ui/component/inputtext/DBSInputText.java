@@ -17,6 +17,7 @@ public class DBSInputText extends DBSUIInputText{
 		secret,
 		letterCase,
 		autocomplete,
+		type,
 		suggestionsBean,
 		suggestionKeyColumnName,
 		suggestionNullText,
@@ -72,6 +73,15 @@ public class DBSInputText extends DBSUIInputText{
 	}
 	public String getLetterCase() {
 		String xValue = (String) getStateHelper().eval(PropertyKeys.letterCase, "upperfirst");
+		return xValue.toLowerCase().trim();
+	}	
+
+	public void setType(String pType) {
+		getStateHelper().put(PropertyKeys.type, pType);
+		handleAttribute("type", pType);
+	}
+	public String getType() {
+		String xValue = (String) getStateHelper().eval(PropertyKeys.type, "text");
 		return xValue.toLowerCase().trim();
 	}	
 
