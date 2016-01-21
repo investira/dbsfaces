@@ -220,7 +220,7 @@ public class DBSInputDateRenderer extends DBSRenderer {
 		pWriter.startElement("input", pInputDate);
 			DBSFaces.setAttribute(pWriter, "id", xClientId + DBSFaces.CSS.INPUTDATE.DAY, null);
 			DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTDATE.DAY, null);
-			DBSFaces.setAttribute(pWriter, "type", "text", null);
+			DBSFaces.setAttribute(pWriter, "type", "tel", null);
 			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUTDATE.DAY, null);
 			DBSFaces.setAttribute(pWriter, "style", wWidth2, null);
 			DBSFaces.setAttribute(pWriter, "size", "2", null);
@@ -237,7 +237,7 @@ public class DBSInputDateRenderer extends DBSRenderer {
 		pWriter.startElement("input", pInputDate);
 			DBSFaces.setAttribute(pWriter, "id", xClientId + DBSFaces.CSS.INPUTDATE.MONTH, null);
 			DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTDATE.MONTH, null);
-			DBSFaces.setAttribute(pWriter, "type", "text", null);
+			DBSFaces.setAttribute(pWriter, "type", "tel", null);
 			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUTDATE.MONTH, null);
 			DBSFaces.setAttribute(pWriter, "style", wWidth2, null);
 			DBSFaces.setAttribute(pWriter, "size", "2", null);
@@ -254,7 +254,7 @@ public class DBSInputDateRenderer extends DBSRenderer {
 		pWriter.startElement("input", pInputDate);
 			DBSFaces.setAttribute(pWriter, "id", xClientId + DBSFaces.CSS.INPUTDATE.YEAR, null);
 			DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTDATE.YEAR, null);
-			DBSFaces.setAttribute(pWriter, "type", "text", null);
+			DBSFaces.setAttribute(pWriter, "type", "tel", null);
 			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUTDATE.YEAR, null);
 			DBSFaces.setAttribute(pWriter, "style", wWidth4, null);
 			DBSFaces.setAttribute(pWriter, "size", "4", null);
@@ -271,7 +271,7 @@ public class DBSInputDateRenderer extends DBSRenderer {
 		pWriter.startElement("input", pInputDate);
 			DBSFaces.setAttribute(pWriter, "id", xClientId + DBSFaces.CSS.INPUTDATE.HOUR, null);
 			DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTDATE.HOUR, null);
-			DBSFaces.setAttribute(pWriter, "type", "text", null);
+			DBSFaces.setAttribute(pWriter, "type", "tel", null);
 			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUTDATE.HOUR, null);
 			DBSFaces.setAttribute(pWriter, "style", wWidth2, null);
 			DBSFaces.setAttribute(pWriter, "size", "2", null);
@@ -290,7 +290,7 @@ public class DBSInputDateRenderer extends DBSRenderer {
 		pWriter.startElement("input", pInputDate);
 			DBSFaces.setAttribute(pWriter, "id", xClientId + DBSFaces.CSS.INPUTDATE.MINUTE, null);
 			DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTDATE.MINUTE, null);
-			DBSFaces.setAttribute(pWriter, "type", "text", null);
+			DBSFaces.setAttribute(pWriter, "type", "tel", null);
 			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUTDATE.MINUTE, null);
 			DBSFaces.setAttribute(pWriter, "style", wWidth2, null);
 			DBSFaces.setAttribute(pWriter, "size", "2", null);
@@ -314,7 +314,7 @@ public class DBSInputDateRenderer extends DBSRenderer {
 		pWriter.startElement("input", pInputDate);
 			DBSFaces.setAttribute(pWriter, "id", xClientId + DBSFaces.CSS.INPUTDATE.SECOND, null);
 			DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTDATE.SECOND, null);
-			DBSFaces.setAttribute(pWriter, "type", "text", null);
+			DBSFaces.setAttribute(pWriter, "type", "tel", null);
 			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUTDATE.SECOND, null);
 			DBSFaces.setAttribute(pWriter, "style", wWidth2, null);
 			DBSFaces.setAttribute(pWriter, "size", "2", null);

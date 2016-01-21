@@ -159,7 +159,7 @@ public class DBSInputPhoneRenderer extends DBSRenderer {
 			pWriter.startElement("input", pInputPhone);
 				DBSFaces.setAttribute(pWriter, "id", xClientId + DBSFaces.CSS.INPUTPHONE.DDI, null);
 				DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTPHONE.DDI, null);
-				DBSFaces.setAttribute(pWriter, "type", "text", null);
+				DBSFaces.setAttribute(pWriter, "type", "tel", null);
 				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUTPHONE.DDI, null);
 				DBSFaces.setAttribute(pWriter, "style", wWidth3, null);
 				DBSFaces.setAttribute(pWriter, "size", "3", null);
@@ -183,7 +183,7 @@ public class DBSInputPhoneRenderer extends DBSRenderer {
 			pWriter.startElement("input", pInputPhone);
 				DBSFaces.setAttribute(pWriter, "id", xClientId + DBSFaces.CSS.INPUTPHONE.DDD, null);
 				DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTPHONE.DDD, null);
-				DBSFaces.setAttribute(pWriter, "type", "text", null);
+				DBSFaces.setAttribute(pWriter, "type", "tel", null);
 				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUTPHONE.DDD, null);
 				DBSFaces.setAttribute(pWriter, "style", wWidth2, null);
 				DBSFaces.setAttribute(pWriter, "size", "2", null);
@@ -201,7 +201,7 @@ public class DBSInputPhoneRenderer extends DBSRenderer {
 		pWriter.startElement("input", pInputPhone);
 			DBSFaces.setAttribute(pWriter, "id", xClientId + DBSFaces.CSS.INPUTPHONE.NUMBER, null);
 			DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTPHONE.NUMBER, null);
-			DBSFaces.setAttribute(pWriter, "type", "text", null);
+			DBSFaces.setAttribute(pWriter, "type", "tel", null);
 			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUTPHONE.NUMBER, null);
 			DBSFaces.setAttribute(pWriter, "style", wWidth10, null);
 			DBSFaces.setAttribute(pWriter, "size", "9", null);
