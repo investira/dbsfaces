@@ -3,7 +3,7 @@
 
 
 .dbs_combobox > .-container{
-/* 	position: relative; */
+	position: relative;
 }
 
 .dbs_combobox > .-container > .dbs_input-label {
@@ -42,7 +42,8 @@
 }
 
 .dbs_combobox > .-container > .dbs_input-data > .-button {
-    position: absolute;
+	color: rgb(13,25,45);
+	position: absolute;
     right: 2px;
     top: 50%;
     transform: translateY(-50%);
