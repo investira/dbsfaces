@@ -2,6 +2,7 @@
 	/* position: absolute; */
 	display:block;
 	overflow: hidden;
+	position: relative;
 }
 
 .dbs_table > div, 
