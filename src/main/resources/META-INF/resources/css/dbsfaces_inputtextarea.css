@@ -2,13 +2,13 @@
 }
 
 .dbs_inputTextArea > .-container{
+	position: relative;
 }
 
 .dbs_inputTextArea > .-container > .dbs_input-label {
-	vertical-align: top !important;
-	float:left;
-	position: relative;
-	top: 3px;
+    vertical-align: top !important;
+    top: .25em;
+    position: relative;	
 }
 
 .dbs_inputTextArea > .-container > .dbs_input-data {
