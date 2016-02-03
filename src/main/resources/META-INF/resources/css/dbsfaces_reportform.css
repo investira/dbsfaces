@@ -16,9 +16,11 @@
 }
 
 .dbs_reportForm > .-content{
+	position: relative;
+	display: block;
+	
 	height: 100%;
 	width: 100%;
-	display: block;
 	color: inherit;	
 
 	overflow-y:hidden;
