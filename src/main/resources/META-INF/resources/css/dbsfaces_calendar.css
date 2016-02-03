@@ -8,6 +8,9 @@
 }
 
 .dbs_calendar > .-container{
+	position:relative;
+	top:0px;
+	left:0px;
 	border-width:0px;
 	overflow: hidden;
 	cursor: default;
