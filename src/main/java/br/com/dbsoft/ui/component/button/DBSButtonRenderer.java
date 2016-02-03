@@ -88,7 +88,7 @@ public class DBSButtonRenderer extends DBSRenderer {
 			xExecute = xButton.getExecute();
 		}
 		if (!DBSObject.isEmpty(xButton.getStyleClass())){
-			xClass += " " + DBSObject.getNotEmpty(xButton.getStyleClass(), "");
+			xClass += DBSObject.getNotEmpty(xButton.getStyleClass(), "");
 		}
 		if (xButton.getReadOnly()){
 			xClass += " " + DBSFaces.CSS.MODIFIER.DISABLED;
@@ -108,7 +108,8 @@ public class DBSButtonRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "class", xClass.trim(), null);
 			DBSFaces.setAttribute(xWriter, "style",xButton.getStyle(), null);
 			DBSFaces.setAttribute(xWriter, "value",xButton.getValue(), null);
-			if (xButton.getDisabled()){
+			if (xButton.getDisabled()
+			 || xButton.getReadOnly()){
 				DBSFaces.setAttribute(xWriter, "disabled","disabled", null);
 			}
 			
@@ -118,9 +119,9 @@ public class DBSButtonRenderer extends DBSRenderer {
 //					xButton.getonclick() != null){				
 //					xWriter.writeAttribute("ontouchstart", "", "ontouchstart"); //Para ipad ativar o css:ACTIVE
 					if (xButton.getActionExpression() != null){
-						xWriter.writeAttribute("type", "submit", "type");
+						xWriter.writeAttribute("type", "submit", null);
 					}else{
-						xWriter.writeAttribute("type", "button", "type");
+						xWriter.writeAttribute("type", "button", null);
 					}
 					if (xButton.getClientBehaviors().isEmpty()){
 						DBSFaces.setAttribute(xWriter, DBSFaces.HTML.EVENTS.ONCLICK, xOnClick, null); 
@@ -131,22 +132,30 @@ public class DBSButtonRenderer extends DBSRenderer {
 					//}
 //				}			
 			}
-			if (xButton.getIconClass()!=null || xButton.getLabel()!=null){
+			if (xButton.getIconClass()!=null 
+			 || xButton.getLabel()!=null){
 				pvEncodeTable(xButton, xWriter);	
 			}
 			
 			DBSFaces.renderChildren(pContext, xButton);
-			DBSFaces.encodeTooltip(pContext, xButton, xButton.getTooltip());
+			if (!xButton.getReadOnly()){
+				DBSFaces.encodeTooltip(pContext, xButton, xButton.getTooltip());
+			}
 			if (xButton.getReadOnly()){
 				xWriter.endElement("div");
 			}else{
 				xWriter.endElement("button");
 			}
-		pvEncodeJS(xWriter, xClientId);
+		if (!xButton.getReadOnly()){
+			pvEncodeJS(xWriter, xClientId);
+		}
 	}
 	
 	private void pvEncodeTable(DBSButton pButton, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("table", pButton);
+//			if (pButton.getReadOnly()){
+//				pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CENTRALIZED_REL, null);
+//			}
 			pWriter.writeAttribute("cellspacing", "0px", null);
 			pWriter.writeAttribute("cellpadding", "0px", null);
 			pWriter.startElement("tbody", pButton);
@@ -170,21 +179,21 @@ public class DBSButtonRenderer extends DBSRenderer {
 
 	private void pvEncodeIcon(DBSButton pButton, ResponseWriter pWriter) throws IOException{
 		String xClass = DBSFaces.CSS.NOT_SELECTABLE + " " + DBSFaces.CSS.MODIFIER.ICON + " " +  pButton.getIconClass();
-		pWriter.startElement("span", pButton);
+		pWriter.startElement("div", pButton);
 			pWriter.writeAttribute("class", xClass, null);
-		pWriter.endElement("span");
+		pWriter.endElement("div");
 	}
 
 	private void pvEncodeLabel(DBSButton pButton, ResponseWriter pWriter) throws IOException{
 		String xClass = DBSFaces.CSS.NOT_SELECTABLE +  " " + DBSFaces.CSS.MODIFIER.LABEL;
-		pWriter.startElement("span", pButton);
+		pWriter.startElement("div", pButton);
 			pWriter.writeAttribute("class", xClass, null);
 			//Adiciona espaço extra entre o icone e o texto
 			if (pButton.getIconClass()!=null){ 
 				pWriter.writeAttribute("style", "padding-left:2px;", null); 
 			}
 			pWriter.write(pButton.getLabel());
-		pWriter.endElement("span");
+		pWriter.endElement("div");
 	}	
 	
 	/**
