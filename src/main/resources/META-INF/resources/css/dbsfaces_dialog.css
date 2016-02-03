@@ -139,8 +139,8 @@
 }
 
 .dbs_dialog > .-dialog > .-container > table > thead > .-toolbar > .-container .dbs_button{
-	height: 2em;
-    width: 2em;
+	min-height: 2em;
+    min-width: 2em;
 }
 
 .dbs_dialog > .-dialog > .-container > table > thead > .-toolbar > .-container > .-line{
