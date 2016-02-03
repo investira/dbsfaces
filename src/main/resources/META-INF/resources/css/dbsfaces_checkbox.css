@@ -2,6 +2,7 @@
 }
 
 .dbs_checkbox > .-container{
+	position:relative;
 }
 
 .dbs_checkbox > .-container > .dbs_input-data {
