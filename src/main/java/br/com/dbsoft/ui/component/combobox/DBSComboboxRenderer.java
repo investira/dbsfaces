@@ -79,20 +79,22 @@ public class DBSComboboxRenderer extends DBSRenderer {
 			xWriter.endElement("div");
 		xWriter.endElement("div");
 		
-		DBSFaces.encodeJavaScriptTagStart(xWriter);
-		String xJS = "";
-		//Dispara evento change quando houver mudança de valor durante o encode.
-		//
-		if (!DBSObject.isEqual(xOldValue, xCombobox.getValue())){
-			xJS = " dbsfaces.combobox.triggerChange(xComboboxId); \n";
+		if (!xCombobox.getReadOnly()){
+			DBSFaces.encodeJavaScriptTagStart(xWriter);
+			String xJS = "";
+			//Dispara evento change quando houver mudança de valor durante o encode.
+			//
+			if (!DBSObject.isEqual(xOldValue, xCombobox.getValue())){
+				xJS = " dbsfaces.combobox.triggerChange(xComboboxId); \n";
+			}
+			xJS = "$(document).ready(function() { \n" +
+					     " var xComboboxId = '#' + dbsfaces.util.jsid('" + xClientId + "'); \n " + 
+					     " dbs_combobox(xComboboxId); \n" +
+					     xJS +
+	                     "}); \n"; 
+			xWriter.write(xJS);
+			DBSFaces.encodeJavaScriptTagEnd(xWriter);	
 		}
-		xJS = "$(document).ready(function() { \n" +
-				     " var xComboboxId = '#' + dbsfaces.util.jsid('" + xClientId + "'); \n " + 
-				     " dbs_combobox(xComboboxId); \n" +
-				     xJS +
-                     "}); \n"; 
-		xWriter.write(xJS);
-		DBSFaces.encodeJavaScriptTagEnd(xWriter);			
 	}
 
 	private void pvEncodeInput(FacesContext pContext, DBSCombobox pCombobox, ResponseWriter pWriter) throws IOException{
