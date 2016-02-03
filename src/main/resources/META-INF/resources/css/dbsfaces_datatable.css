@@ -110,6 +110,7 @@
 	display: inline-block;
     width: 100%;
     text-align: right;    
+	min-height: 2em;
 }
 
 .dbs_dataTable > .-container > .-header > .-toolbar > nav .dbs_button{
