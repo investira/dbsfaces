@@ -79,21 +79,18 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 			xWriter.endElement("div");
 		xWriter.endElement("div");
 
-		DBSFaces.encodeJavaScriptTagStart(xWriter);
-		//Comentado o JS com $(document).ready por não inicializar corretamente o campo no IE
-		String xJS = "$(document).ready(function() { \n"
-					+ " var xInputNumberId = '#' + dbsfaces.util.jsid('"
-					+ getInputDataClientId(xInputNumber) + "'); \n "
-					+ " dbs_inputNumber(xInputNumberId,"
-					+ pvGetMaskParm(xInputNumber) + "); \n" + "}); \n";
-		
-//		String xJS = " var xInputNumberId = '#' + dbsfaces.util.jsid('"
-//					 + getInputDataClientId(xInputNumber) + "'); \n "
-//					 + " dbs_inputNumber(xInputNumberId,"
-//					 + pvGetMaskParm(xInputNumber) + "); \n";	
-		xWriter.write(xJS);
-
-		DBSFaces.encodeJavaScriptTagEnd(xWriter);
+		//Não gera o JS quando for somente leitura
+		if (!xInputNumber.getReadOnly()){
+			DBSFaces.encodeJavaScriptTagStart(xWriter);
+			//Comentado o JS com $(document).ready por não inicializar corretamente o campo no IE
+			String xJS = "$(document).ready(function() { \n"
+						+ " var xInputNumberId = '#' + dbsfaces.util.jsid('"
+						+ getInputDataClientId(xInputNumber) + "'); \n "
+						+ " dbs_inputNumber(xInputNumberId,"
+						+ pvGetMaskParm(xInputNumber) + "); \n" + "}); \n";
+			xWriter.write(xJS);
+			DBSFaces.encodeJavaScriptTagEnd(xWriter);
+		}
 	}
 
 	private String pvGetMaskParm(DBSInputNumber pInputNumber) {
