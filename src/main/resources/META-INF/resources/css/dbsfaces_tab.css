@@ -4,6 +4,7 @@
 /* 	padding-top: 2px; */
 	display: inline-block; /*INcluido em 15/07/2013 por Ricardo, pois */
 	text-align: left;
+	position: relative;
 }
 
 .dbs_tab > .-container, 
