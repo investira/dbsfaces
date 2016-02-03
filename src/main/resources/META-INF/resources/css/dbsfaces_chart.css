@@ -1,4 +1,5 @@
 .dbs_chart{
+	position: relative;
 }
 
 .dbs_chart > .-line {
