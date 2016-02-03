@@ -15,7 +15,6 @@ import br.com.dbsoft.error.DBSIOException;
 import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.ui.bean.DBSBean;
 import br.com.dbsoft.ui.bean.report.DBSReportBeanEvent.REPORT_EVENT;
-import br.com.dbsoft.ui.component.dialog.DBSDialog.DIALOG_ICON;
 import br.com.dbsoft.ui.core.DBSReportFormUtil;
 import br.com.dbsoft.util.DBSFormat;
 import br.com.dbsoft.util.DBSNumber;
@@ -217,29 +216,29 @@ public abstract class DBSReportBean extends DBSBean {
 			} else {
 				wJasperPrint = DBSReportFormUtil.createJasperPrint(pvGetReportName(), getReportParameters(), xDados);
 				if (DBSObject.isEmpty(wJasperPrint)) {
-					addMessage("vazio", MESSAGE_TYPE.INFORMATION, "Relatório não encontrado.", DIALOG_ICON.INFORMACAO);
+					addMessage("vazio", MESSAGE_TYPE.INFORMATION, "Relatório não encontrado.");
 				}
 				setPDFFilePath(DBSReportFormUtil.createPDFFile(pvGetReportName(), wJasperPrint));
 				if (xDados.getRecordCount() > 0){
 					//Esconde seleção dos filtros
 					setShowFilters(false);
 				}else{
-					addMessage("vazio", MESSAGE_TYPE.INFORMATION, "Relatório sem informação.", DIALOG_ICON.INFORMACAO);
+					addMessage("vazio", MESSAGE_TYPE.INFORMATION, "Relatório sem informação.");
 				}
 			}
 			xTempo = System.currentTimeMillis() - xStartTime;
 			wLogger.info("Relatório gerado em " +  DBSFormat.getFormattedNumber(DBSNumber.divide(xTempo.doubleValue(), 1000D).doubleValue(), 3) + " segundos.");
 		} catch (DBSIOException e) {
 			wLogger.error(e);
-			addMessage("erro_escrita", MESSAGE_TYPE.ERROR, "Relatório com erro de escrita", DIALOG_ICON.ERRO);
+			addMessage("erro_escrita", MESSAGE_TYPE.ERROR, "Relatório com erro de escrita");
 		} catch (JRException e) {
 			wLogger.error(e);
-			addMessage("erro_gerar", MESSAGE_TYPE.ERROR, "Erro ao gerar relatório", DIALOG_ICON.ERRO);
+			addMessage("erro_gerar", MESSAGE_TYPE.ERROR, "Erro ao gerar relatório");
 		} catch (IOException e) {
 			wLogger.error(e);
 		} catch (Exception e) {
 			wLogger.error(e);
-			addMessage("erro_gerar", MESSAGE_TYPE.ERROR, "Erro ao gerar relatório", DIALOG_ICON.ERRO);
+			addMessage("erro_gerar", MESSAGE_TYPE.ERROR, "Erro ao gerar relatório");
 		}finally{
 			this.closeConnection();
 		}
