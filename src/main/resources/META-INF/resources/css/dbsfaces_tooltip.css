@@ -50,6 +50,7 @@
 .-tooltip > .-container > .-content{
 	position:relative;
 	display: block;
+	text-align: center;
 }
 
 .-tooltip > .-container:before{
