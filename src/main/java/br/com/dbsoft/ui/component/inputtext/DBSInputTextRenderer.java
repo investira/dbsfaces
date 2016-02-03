@@ -116,8 +116,9 @@ public class DBSInputTextRenderer extends DBSRenderer {
 					DBSFaces.encodeTooltip(pContext, xInputText, xInputText.getTooltip());
 			xWriter.endElement("div");
 		xWriter.endElement("div");
-
-		pvEncodeJS(xClientId, xWriter);
+		if (!xInputText.getReadOnly()){
+			pvEncodeJS(xClientId, xWriter);
+		}
 	}
 	
 	private void pvEncodeInput(FacesContext pContext, DBSInputText pInputText, ResponseWriter pWriter) throws IOException{
