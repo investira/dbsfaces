@@ -1,4 +1,6 @@
 .dbs_label{
+	position:relative;	
+	display: inline-block;
 }
 
 
@@ -9,6 +11,3 @@
     margin-right: 1px;
 }
 
-.dbs_label > .-tooltip{
-	text-align: left;	
-}
