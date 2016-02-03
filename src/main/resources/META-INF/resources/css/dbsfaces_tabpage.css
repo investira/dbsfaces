@@ -1,7 +1,7 @@
 .dbs_tabPage{
 	display:none;
-	overflow: visible;
 	position:relative;
+	overflow: visible;
 	width:100%;
 	padding: 5px;
 	height: 100%;
