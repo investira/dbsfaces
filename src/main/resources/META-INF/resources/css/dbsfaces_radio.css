@@ -1,6 +1,7 @@
 .dbs_radio{}
 
 .dbs_radio > table{
+	position: relative;
 	display: table;
 }
 
