@@ -2,6 +2,7 @@
 }
 
 .dbs_inputMask > .-container{
+	position: relative;
 }
 
 .dbs_inputMask > .-container > .dbs_input-label {
