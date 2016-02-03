@@ -16,13 +16,39 @@
 	box-sizing: border-box;
 /* 	text-shadow:1px 1px 1px rgba(50, 50, 50, 0.5);  */
 	text-shadow: none;
+    -webkit-appearance: none;
+}
+
+/* Ajsutes necessários quando o botão for readonly, pois o encode será de uma div ao invés de um button */
+div.dbs_button{
+    text-align: center;
+    vertical-align: baseline;
+    border-collapse: separate;
+    align-items: flex-start;
+}
+div.dbs_button > table{
+    height: inherit;
+}
+div.dbs_button > table > tbody{
+    height: inherit;
+}
+div.dbs_button > table > tbody > tr{
+    height: inherit;
+}
+div.dbs_button > table > tbody > tr > td{
+    height: inherit;
+}
+div.dbs_button > table > tbody > tr > td > .-icon{
+    height: inherit;
+	vertical-align: middle;
+    display: table-cell;
+}
+
+div.dbs_button > table{
 }
 
 .dbs_button.-on{
 	background-color: rgba(130, 220, 255,0.8) !important;
-/* 	-webkit-box-shadow:0px 0px 4px 2px #68B7FF inset;  */
-/* 	-moz-box-shadow:0px 0px 4px 2px #68B7FF inset;  */
-/* 	box-shadow:0px 0px 4px 2px #68B7FF inset;  */
 }
 .dbs_button.-disabled{
 	pointer-events: none;
@@ -30,7 +56,9 @@
 
 .dbs_button > table{
 	position: relative; /* Incluido em 05/06/2014*/
-	display:block; /*Desabilitado em 06/02/2013 para centralizar no IE9*/
+	display:table;
+	width: 100%;
+/* 	display:block; Desabilitado em 06/02/2013 para centralizar no IE9 */
 				   /*Reabilitado pois, aparentemente, problema foi resolvido 05/06/2014 */
 /* 	display:inline-block; Desabilitado em 20/11/2012 para excluir o espaço que existia na parte de baixo do botão */
 	color: inherit;
@@ -42,14 +70,14 @@
 }
 
 .dbs_button > table > tbody {
-	display: inline-block;
+/* 	display: inline-block; */
 	margin: 0px;
 	padding: 0px;
 	line-height: 0px;
 	font-size: inherit;
 }
 .dbs_button > table > tbody > tr {
-	display:inline-block;
+/* 	display:inline-block; */
 	margin: 0px !important;
 	padding: 0px !important;
 	line-height: 0px !important;
@@ -66,7 +94,8 @@
 
 .dbs_button > table > tbody > tr > td > .-label,
 .dbs_button > table > tbody > tr > td > .-icon {
-	display: block;
+	display: inline-block;
+/* 	display: block; */
 }
 
 .dbs_button > table > tbody > tr > td > .-label {
