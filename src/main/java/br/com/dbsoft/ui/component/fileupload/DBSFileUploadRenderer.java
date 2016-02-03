@@ -83,8 +83,9 @@ public class DBSFileUploadRenderer extends DBSRenderer {
 
 
 		xWriter.endElement("div");
-		
-		pvEncodeJS(xFileUpload, xWriter, xClientId);
+		if (!xFileUpload.getReadOnly()){
+			pvEncodeJS(xFileUpload, xWriter, xClientId);
+		}
 	}
 
 	private void pvEncodeToolbar(FacesContext pContext, DBSFileUpload pFileUpload, ResponseWriter pWriter) throws IOException{
