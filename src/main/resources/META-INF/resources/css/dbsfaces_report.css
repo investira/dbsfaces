@@ -27,6 +27,8 @@
 	height: 100%;
 	width: 100%;
 	display: block;
+	position: relative;
+	
 /* 	color: inherit;	 */
 
 	overflow-y:hidden;
