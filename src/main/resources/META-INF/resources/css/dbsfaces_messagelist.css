@@ -10,8 +10,8 @@
 
 .dbs_messageList > .-container {
 	position: relative;
-	top: 0;
 	display: inline-block;
+	top: 0;
 }
 
 .dbs_messageList:hover > .-container > .-list{
