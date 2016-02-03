@@ -2,8 +2,7 @@
 }
 
 .dbs_inputText > .-container {
-/* 	display: inline-block; */
-/* 	position: relative; */
+	position: relative;
 }
 
 .dbs_inputText > .-container > .-input {
