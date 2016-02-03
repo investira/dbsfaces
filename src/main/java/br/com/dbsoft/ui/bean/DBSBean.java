@@ -16,7 +16,7 @@ import br.com.dbsoft.error.DBSIOException;
 import br.com.dbsoft.message.IDBSMessage;
 import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.message.IDBSMessages;
-import br.com.dbsoft.ui.component.dialog.DBSDialog.DIALOG_ICON;
+import br.com.dbsoft.ui.component.dialog.DBSDialog.CONFIRMATION_TYPE;
 import br.com.dbsoft.ui.component.dialog.DBSDialogMessage;
 import br.com.dbsoft.ui.component.dialog.DBSDialogMessages;
 import br.com.dbsoft.ui.component.dialog.IDBSDialogMessage;
@@ -270,7 +270,7 @@ public abstract class DBSBean implements Serializable {
 	 * @param pMessageText Texto da mensagem
 	 * @param pDialogIcon Icon que aparecerá na mensagem conforme constantes DIALOG_ICON 
 	 */
-	protected void addMessage(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, DIALOG_ICON pDialogIcon){
+	protected void addMessage(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, CONFIRMATION_TYPE pDialogIcon){
 		wDialogMessages.add(new DBSDialogMessage(pMessageKey, pMessageType, pMessageText, pDialogIcon));
 	}
 
@@ -282,17 +282,8 @@ public abstract class DBSBean implements Serializable {
 	 * @param pDialogIcon
 	 * @param pMessageTooltip
 	 */
-	protected void addMessage(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, String pMessageTooltip, DIALOG_ICON pDialogIcon){
+	protected void addMessage(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, String pMessageTooltip, CONFIRMATION_TYPE pDialogIcon){
 		wDialogMessages.add(new DBSDialogMessage(pMessageKey, pMessageType, pMessageText, pMessageTooltip, pDialogIcon));
-	}
-	
-	/**
-	 * Adiciona uma mensagem a fila
-	 * @param pMessageType Tipo de mensagem. Messagem do tipo warning requerem a confirmação do usuário
-	 * @param pMessageText Texto da mensagem
-	 */
-	protected void addMessage(MESSAGE_TYPE pMessageType, String pMessageText){
-		addMessage(pMessageText, pMessageType, pMessageText, "");
 	}
 	
 	/**
@@ -302,7 +293,16 @@ public abstract class DBSBean implements Serializable {
 	 * @param pMessageText Texto da mensagem
 	 */
 	protected void addMessage(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText){
-		addMessage(pMessageKey, pMessageType, pMessageText, "");
+		addMessage(pMessageKey, pMessageType, pMessageText, DBSFaces.toCONFIRMATION_TYPE(pMessageType));
+	}
+	
+	/**
+	 * Adiciona uma mensagem a fila
+	 * @param pMessageType Tipo de mensagem. Messagem do tipo warning requerem a confirmação do usuário
+	 * @param pMessageText Texto da mensagem
+	 */
+	protected void addMessage(MESSAGE_TYPE pMessageType, String pMessageText){
+		addMessage(pMessageText, pMessageType, pMessageText, "");
 	}
 
 	/**
