@@ -138,13 +138,16 @@ public class DBSInputDateRenderer extends DBSRenderer {
 
 			xWriter.endElement("div");
 		xWriter.endElement("div");
-		DBSFaces.encodeJavaScriptTagStart(xWriter);
-		String xJS = "$(document).ready(function() { \n" +
-				     " var xInputDateId = '#' + dbsfaces.util.jsid('" + xClientId + "'); \n " + 
-				     " dbs_inputDate(xInputDateId); \n" +
-                     "}); \n"; 
-		xWriter.write(xJS);
-		DBSFaces.encodeJavaScriptTagEnd(xWriter);		
+
+		if (!xInputDate.getReadOnly()){
+			DBSFaces.encodeJavaScriptTagStart(xWriter);
+			String xJS = "$(document).ready(function() { \n" +
+					     " var xInputDateId = '#' + dbsfaces.util.jsid('" + xClientId + "'); \n " + 
+					     " dbs_inputDate(xInputDateId); \n" +
+	                     "}); \n"; 
+			xWriter.write(xJS);
+			DBSFaces.encodeJavaScriptTagEnd(xWriter);
+		}
 	}
 	
 	private void pvEncodeInput(FacesContext pContext, DBSInputDate pInputDate, ResponseWriter pWriter) throws IOException{
