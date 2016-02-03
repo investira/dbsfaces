@@ -2,6 +2,7 @@
 }
 
 .dbs_inputDate > .-container{
+	position: relative;
 }
 
 .dbs_inputDate > .-container > .dbs_input-label {
