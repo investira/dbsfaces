@@ -2,8 +2,8 @@
 }
 
 .dbs_fileUpload > .-container{
-	display: inline-block;
 	position: relative;
+	display: inline-block;
 	top: 0;
 }
 
