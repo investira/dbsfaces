@@ -21,14 +21,13 @@ import br.com.dbsoft.error.DBSIOException;
 import br.com.dbsoft.io.DBSColumn;
 import br.com.dbsoft.io.DBSDAO;
 import br.com.dbsoft.io.DBSResultDataModel;
+import br.com.dbsoft.message.DBSMessage;
 import br.com.dbsoft.message.IDBSMessage;
 import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.ui.bean.DBSBean;
 import br.com.dbsoft.ui.bean.crud.DBSCrudBeanEvent.CRUD_EVENT;
 import br.com.dbsoft.ui.component.DBSUIInput;
 import br.com.dbsoft.ui.component.DBSUIInputText;
-import br.com.dbsoft.ui.component.dialog.DBSDialogMessage;
-import br.com.dbsoft.ui.component.dialog.IDBSDialogMessage;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSDate;
 import br.com.dbsoft.util.DBSIO;
@@ -354,14 +353,14 @@ public abstract class DBSCrudBean extends DBSBean{
 
 
 	//Mensagens
-	private IDBSDialogMessage					wMessageNoRowComitted = 
-													new DBSDialogMessage(MESSAGE_TYPE.ERROR,"Erro durante a gravação.\n Nenhum registro foi afetado.\n");
-	private IDBSDialogMessage					wMessageOverSize = 
-													new DBSDialogMessage(MESSAGE_TYPE.ERROR,"Quantidade de caracteres do texto digitado no campo '%s' ultrapassou a quantidade permitida de %s caracteres. Por favor, diminua o texto digitado.");
-	private IDBSDialogMessage					wMessageNoChange = 
-													new DBSDialogMessage(MESSAGE_TYPE.INFORMATION,"Não houve alteração de informação.");
-	private IDBSDialogMessage					wMessaggeApprovalSameUserError =
-													new DBSDialogMessage(MESSAGE_TYPE.ERROR,"Não é permitida a aprovação de um registro incluido pelo próprio usuário.");
+	private IDBSMessage					wMessageNoRowComitted = 
+													new DBSMessage(MESSAGE_TYPE.ERROR,"Erro durante a gravação.\n Nenhum registro foi afetado.\n");
+	private IDBSMessage					wMessageOverSize = 
+													new DBSMessage(MESSAGE_TYPE.ERROR,"Quantidade de caracteres do texto digitado no campo '%s' ultrapassou a quantidade permitida de %s caracteres. Por favor, diminua o texto digitado.");
+	private IDBSMessage					wMessageNoChange = 
+													new DBSMessage(MESSAGE_TYPE.INFORMATION,"Não houve alteração de informação.");
+	private IDBSMessage					wMessaggeApprovalSameUserError =
+													new DBSMessage(MESSAGE_TYPE.ERROR,"Não é permitida a aprovação de um registro incluido pelo próprio usuário.");
 			
 	/**
 	 * Retorna o ID da conversação

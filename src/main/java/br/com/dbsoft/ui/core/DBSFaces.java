@@ -63,7 +63,6 @@ import br.com.dbsoft.ui.component.button.DBSButton;
 import br.com.dbsoft.ui.component.checkbox.DBSCheckbox;
 import br.com.dbsoft.ui.component.datatable.DBSDataTable;
 import br.com.dbsoft.ui.component.datatable.DBSDataTableColumn;
-import br.com.dbsoft.ui.component.dialog.DBSDialog.CONFIRMATION_TYPE;
 import br.com.dbsoft.ui.component.fileupload.DBSFileUpload;
 import br.com.dbsoft.util.DBSBoolean;
 import br.com.dbsoft.util.DBSDate;
@@ -931,13 +930,11 @@ public class  DBSFaces {
 		 || pMessageType == null
 		 || pMessage == null){return;}
 		FacesMessage.Severity xSeverity = null;
-		if (pMessageType == MESSAGE_TYPE.SUCCESS
-		 || pMessageType == MESSAGE_TYPE.INFORMATION
-		 || pMessageType == MESSAGE_TYPE.IMPORTANT){
+		if (pMessageType.getSeverity() < 9){
 			xSeverity = FacesMessage.SEVERITY_INFO;
-		}else if (pMessageType == MESSAGE_TYPE.WARNING){
+		}else if (pMessageType.getSeverity() < 29){
 			xSeverity = FacesMessage.SEVERITY_WARN;
-		}else if (pMessageType == MESSAGE_TYPE.ERROR){
+		}else if (pMessageType.getSeverity() < 49){
 			xSeverity = FacesMessage.SEVERITY_ERROR;
 		}
 		FacesContext.getCurrentInstance().addMessage( pClientId, new FacesMessage(xSeverity, pMessage, null));		
@@ -1225,43 +1222,6 @@ public class  DBSFaces {
 		return "height:" + xH + "em;";
 	}
 	
-	
-	/**
-	 * Converte de String para DIALOG_ICON
-	 * @param pMessageIcon
-	 * @return
-	 */
-	public static CONFIRMATION_TYPE toCONFIRMATION_TYPE(String pMessageIcon){
-    	for (CONFIRMATION_TYPE xDI : CONFIRMATION_TYPE.values()) {
-    		if (xDI.toString().equals(pMessageIcon)){
-    			return xDI;
-    		}
-    	}
-    	return null;
-	}
-	
-	/**
-	 * Converte de MESSAGE_TYPE to DIALOG_ICON
-	 * @param pMessageType
-	 * @return
-	 */
-	public static CONFIRMATION_TYPE toCONFIRMATION_TYPE(MESSAGE_TYPE pMessageType){
-		CONFIRMATION_TYPE xDialogIcon = CONFIRMATION_TYPE.INFORMATION;
-		if (pMessageType != null){
-			if (pMessageType == MESSAGE_TYPE.ERROR){
-				xDialogIcon = CONFIRMATION_TYPE.ERROR;
-			}else if (pMessageType == MESSAGE_TYPE.INFORMATION){
-				xDialogIcon = CONFIRMATION_TYPE.INFORMATION;
-			}else if (pMessageType == MESSAGE_TYPE.SUCCESS){
-				xDialogIcon = CONFIRMATION_TYPE.SUCCESS;
-			}else if (pMessageType == MESSAGE_TYPE.IMPORTANT){
-				xDialogIcon = CONFIRMATION_TYPE.IMPORTANT;
-			}else if (pMessageType == MESSAGE_TYPE.WARNING){
-				xDialogIcon = CONFIRMATION_TYPE.ATENTION;
-			}
-		}
-		return xDialogIcon;
-	}
 	
 	/**
 	 * Calcula e retorna a largura da tela de mensagem

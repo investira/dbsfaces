@@ -18,18 +18,16 @@ dbs_dialog = function(pId) {
  	//Desabilita inputs atrás do dialog
     dbsfaces.dialog.disableBackgroundInputs(pId);
     
-    //Exibe tela já que foi criada escondida para dar tempo de todos os componentes serem exibidos
-	//Fixa tamanho da tela
-	wDialog.css("width", wDialog.outerWidth());
-	wDialog.css("height", wDialog.outerHeight());
-    //Centraliza tela e exibe
-    var xH = wDialog.outerHeight() / 2;
-    var xW = wDialog.outerWidth() / 2;
-    wDialog.css("left","50%")
-    		   .css("top","50%")
-    		   .css("margin-left","-" + xW + "px")
-    		   .css("margin-top","-" + xH + "px")
-    		   .css("opacity","1");
+    if ($(pId).hasClass("-confirmation")){
+        //Exibe tela já que foi criada escondida para dar tempo de todos os componentes serem exibidos
+    	setTimeout(function(){
+        	dbsfaces.dialog.show(wDialog);
+    	}, 0);
+    }else{
+    	dbsfaces.dialog.show(wDialog);
+    }
+
+    
 
     //Seta foco no primeiro input disponível
     dbsfaces.ui.focusOnFirstInput($(pId + dbsfaces.dialog.getBackgroundComponentSelector()));
@@ -78,6 +76,21 @@ dbs_dialog = function(pId) {
 
 
 dbsfaces.dialog = {
+	show: function(pDialog){
+		//Fixa tamanho da tela
+		pDialog.css("width", pDialog.outerWidth());
+		pDialog.css("height", pDialog.outerHeight());
+        //Centraliza tela e exibe
+        var xH = pDialog.outerHeight() / 2;
+        var xW = pDialog.outerWidth() / 2;
+        pDialog.css("left","50%")
+        		   .css("top","50%")
+        		   .css("margin-left","-" + xW + "px")
+        		   .css("margin-top","-" + xH + "px")
+        		   .css("opacity","1");
+
+	},
+
 	disableBackgroundInputs: function(pId){
 //	    var xOP = $(pId).offsetParent();
 	    var xOP = $("body");

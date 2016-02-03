@@ -18,14 +18,14 @@
 		<div id="#{cc.clientId}">
 			<c:if test="#{cc.userBean.hasMessage}">
 				<dbs:dialog id="#{cc.id}_beanDialogMessages"
-							confirmationType="#{cc.userBean.messageIcon}"
+							messageType="#{cc.userBean.messageType.code}"
 							rendered="#{cc.userBean.hasMessage}"
 							update="#{cc.attrs.update}"
 							tooltip="#{cc.userBean.messageTooltip}">
-							<c:if test="#{!cc.userBean.messageIsWarning}">
+							<c:if test="#{!cc.userBean.messageType.requireConfirmation}">
 								<f:attribute name="okAction" value="#{cc.userBean.setMessageValidated(true)}"/>
 							</c:if>
-							<c:if test="#{cc.userBean.messageIsWarning}">
+							<c:if test="#{cc.userBean.messageType.requireConfirmation}">
 								<f:attribute name="noAction" value="#{cc.userBean.setMessageValidated(false)}"/>
 								<f:attribute name="yesAction" value="#{cc.userBean.setMessageValidated(true)}"/>
 							</c:if>

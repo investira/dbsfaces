@@ -11,59 +11,10 @@ import br.com.dbsoft.ui.core.DBSFaces;
 @FacesComponent(DBSDialog.COMPONENT_TYPE)
 public class DBSDialog extends DBSUIOutput implements NamingContainer{  
 
-	public @interface DIALOG_ICON {
-
-	}
-
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.DIALOG;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 
-	public static enum CONFIRMATION_TYPE
-	{
-	    ATENTION 	("a", "Atenção", "-i_warning -yellow"),
-	    CONFIRM		("c", "Confirmar", "-i_question_confirm"),
-	    ERROR 		("e", "Erro", "-i_error -red"),
-	    IGNORE 		("g", "Ignorar", "-i_question_ignore -yellow"),
-	    INFORMATION	("i", "Informação", "-i_information"),
-	    PROHIBID 	("p", "Proibido", "-i_forbidden -red"),
-	    ABOUT 		("b", "Sobre", "-i_about"),
-	    SUCCESS		("s", "Sucesso", "-i_success -green"),
-	    IMPORTANT	("t", "Importante", "-i_important");
 
-	    String wCode;
-	    String wName;
-	    String wIconClass;
-
-	    CONFIRMATION_TYPE (String pCode, String pName, String pIconClass){
-	    	wCode = pCode;
-	    	wName = pName;
-	    	wIconClass = pIconClass;
-	    }
-	
-	    public String getCode(){
-	    	return wCode;
-	    }
-	    
-	    public String getName(){
-	    	return wName;
-	    }
-	    
-	    public String getIconClass(){
-	    	return wIconClass;
-	    }
-
-	    public static CONFIRMATION_TYPE get(String pType){
-			if (pType == null){return null;}
-			pType = pType.trim().toLowerCase();
-	    	for (CONFIRMATION_TYPE xCT:CONFIRMATION_TYPE.values()) {
-	    		if (xCT.getCode().equals(pType)){
-	    			return xCT;
-	    		}
-	    	}
-	    	return null;
-		}
-	}
-	
 	protected enum PropertyKeys {
 		caption,
 		width,
@@ -75,7 +26,7 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 		noAction,
 		update,
 		execute,
-		confirmationType,
+		messageType,
 		tooltip;
 
 		String toString;
@@ -150,13 +101,13 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 		return (Integer) getStateHelper().eval(PropertyKeys.height, null);
 	}
 	
-	public String getConfirmationType() {
-		return (String) getStateHelper().eval(PropertyKeys.confirmationType, null);
+	public String getMessageType() {
+		return (String) getStateHelper().eval(PropertyKeys.messageType, null);
 	}
 	
-	public void setConfirmationType(String pConfirmationType) {
-		getStateHelper().put(PropertyKeys.confirmationType, pConfirmationType);
-		handleAttribute("confirmationType", pConfirmationType);
+	public void setMessageType(String pMessageType) {
+		getStateHelper().put(PropertyKeys.messageType, pMessageType);
+		handleAttribute("messageType", pMessageType);
 	}
 
 	public String getUpdate() {

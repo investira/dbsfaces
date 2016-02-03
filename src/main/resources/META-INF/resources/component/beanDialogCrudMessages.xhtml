@@ -26,7 +26,7 @@
 				<c:if test="#{cc.crudBean.messageConfirmationExists}">
 					<dbs:dialog id="#{cc.id}_confirm"
 								rendered="#{cc.crudBean.isCommitting}"
-								confirmationType="c"
+								messageType="c"
 								noAction="#{cc.crudBean.endEditing(false)}"
 								yesAction="#{cc.crudBean.endEditing(true)}"
 								update="#{cc.attrs.update}" >
@@ -45,7 +45,7 @@
 				<c:if test="#{cc.crudBean.messageIgnoreExists}">
 					<dbs:dialog id="#{cc.id}_ignore" 
 								rendered="#{cc.crudBean.isIgnoring}"
-								confirmationType="g"
+								messageType="g"
 								noAction="#{cc.crudBean.endEditing(false)}"
 								yesAction="#{cc.crudBean.endEditing(true)}"
 								update="#{cc.attrs.update}">

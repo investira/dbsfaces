@@ -13,14 +13,11 @@ import javax.faces.context.FacesContext;
 import org.apache.log4j.Logger;
 
 import br.com.dbsoft.error.DBSIOException;
+import br.com.dbsoft.message.DBSMessage;
+import br.com.dbsoft.message.DBSMessages;
 import br.com.dbsoft.message.IDBSMessage;
 import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.message.IDBSMessages;
-import br.com.dbsoft.ui.component.dialog.DBSDialog.CONFIRMATION_TYPE;
-import br.com.dbsoft.ui.component.dialog.DBSDialogMessage;
-import br.com.dbsoft.ui.component.dialog.DBSDialogMessages;
-import br.com.dbsoft.ui.component.dialog.IDBSDialogMessage;
-import br.com.dbsoft.ui.component.dialog.IDBSDialogMessages;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSObject;
 
@@ -33,14 +30,14 @@ public abstract class DBSBean implements Serializable {
 
 	protected 	Logger 		wLogger =  Logger.getLogger(this.getClass());
 	
-	protected 	static IDBSDialogMessage wMessageError = new DBSDialogMessage(MESSAGE_TYPE.ERROR,"Erro: %s");
+	protected 	static IDBSMessage wMessageError = new DBSMessage(MESSAGE_TYPE.ERROR,"Erro: %s");
 	
-	protected 	Connection				wConnection;
+	protected 	Connection					wConnection;
 	
-	protected 	IDBSDialogMessages 		wDialogMessages = new DBSDialogMessages();
-	protected 	boolean					wBrodcastingEvent = false;
-	private   	DBSBean					wMasterBean = null;
-	private 	List<DBSBean>			wSlavesBean = new ArrayList<DBSBean>();
+	protected 	IDBSMessages<IDBSMessage> 	wDialogMessages = new DBSMessages<IDBSMessage>();
+	protected 	boolean						wBrodcastingEvent = false;
+	private   	DBSBean						wMasterBean = null;
+	private 	List<DBSBean>				wSlavesBean = new ArrayList<DBSBean>();
 	
 	
 	//--------------------------------------------------------------------------------------
@@ -144,41 +141,13 @@ public abstract class DBSBean implements Serializable {
 	 * @return
 	 */
 	public MESSAGE_TYPE getMessageType(){
-		return wDialogMessages.getCurrentMessageType();
+		if (wDialogMessages.getCurrentMessage()!=null){
+			return wDialogMessages.getCurrentMessageType();
+		}
+		return null;
 	}
 
-	/**
-	 * Retorna icone da mensagem que está na fila
-	 * @return
-	 */
-	public String getMessageIcon(){
-		return wDialogMessages.getCurrentMessageIcon().toString();
-	}
 
-	/**
-	 * Retorna largura da janela da mensagem que está na fila
-	 * @return
-	 */
-	public Integer getMessageWidth(){
-		return wDialogMessages.getCurrentMessageWidth();
-	}
-
-	/**
-	 * Retorna altura da janela da mensagem que está na fila
-	 * @return
-	 */
-	public Integer getMessageHeight(){
-		return wDialogMessages.getCurrentMessageHeight();
-	}
-	
-	/**
-	 * Retorna se é uma mensagem de alerta.
-	 * As mensagens de alerta são as únicas que permiter a seleção SIM/NÃO
-	 * @return
-	 */
-	public Boolean getMessageIsWarning(){
-		return wDialogMessages.getCurrentMessageIsWarning();
-	}
 	
 	/**
 	 * Retorna se há alguma mensagem na fila
@@ -200,7 +169,7 @@ public abstract class DBSBean implements Serializable {
 	 * Retorna mensagens do dialog.
 	 * @return
 	 */
-	public IDBSDialogMessages getMessages(){
+	public IDBSMessages<IDBSMessage> getMessages(){
 		return wDialogMessages;
 	}
 	
@@ -223,9 +192,9 @@ public abstract class DBSBean implements Serializable {
 	 */
 	public String setMessageValidated(Boolean pIsValidated) throws DBSIOException{
 		if (wDialogMessages!=null){
-			IDBSDialogMessage xMessageKey = wDialogMessages.getCurrentMessage(); //Salva a chave, pois o setValidated posiciona na próxima mensagem.
+			IDBSMessage xMessageKey = wDialogMessages.getCurrentMessage(); //Salva a chave, pois o setValidated posiciona na próxima mensagem.
 			wDialogMessages.setMessageValidated(pIsValidated);
-			if (xMessageKey.getMessageType() == MESSAGE_TYPE.WARNING){
+			if (xMessageKey.getMessageType().getRequireConfirmation()){
 				//Chama método indicando que warning foi validado
 				warningMessageValidated(xMessageKey.getMessageKey(), pIsValidated);
 			}
@@ -263,29 +232,7 @@ public abstract class DBSBean implements Serializable {
 		wDialogMessages.clear();
 	}
 	
-	/**
-	 * Adiciona uma mensagem a fila
-	 * @param pMessageKey Chave da mensagem para ser utilizada quando se quer saber se a mensagem foi ou não confirmada pelo usuário
-	 * @param pMessageType Tipo de mensagem. Messagem do tipo warning requerem a confirmação do usuário
-	 * @param pMessageText Texto da mensagem
-	 * @param pDialogIcon Icon que aparecerá na mensagem conforme constantes DIALOG_ICON 
-	 */
-	protected void addMessage(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, CONFIRMATION_TYPE pDialogIcon){
-		wDialogMessages.add(new DBSDialogMessage(pMessageKey, pMessageType, pMessageText, pDialogIcon));
-	}
 
-	/**
-	 * Adiciona uma mensagem a fila
-	 * @param pMessageKey
-	 * @param pMessageType
-	 * @param pMessageText
-	 * @param pDialogIcon
-	 * @param pMessageTooltip
-	 */
-	protected void addMessage(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, String pMessageTooltip, CONFIRMATION_TYPE pDialogIcon){
-		wDialogMessages.add(new DBSDialogMessage(pMessageKey, pMessageType, pMessageText, pMessageTooltip, pDialogIcon));
-	}
-	
 	/**
 	 * Adiciona uma mensagem a fila
 	 * @param pMessageKey Chave da mensagem para ser utilizada quando se quer saber se a mensagem foi ou não confirmada pelo usuário
@@ -293,7 +240,7 @@ public abstract class DBSBean implements Serializable {
 	 * @param pMessageText Texto da mensagem
 	 */
 	protected void addMessage(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText){
-		addMessage(pMessageKey, pMessageType, pMessageText, DBSFaces.toCONFIRMATION_TYPE(pMessageType));
+		addMessage(pMessageKey, pMessageType, pMessageText, "");
 	}
 	
 	/**
@@ -303,6 +250,14 @@ public abstract class DBSBean implements Serializable {
 	 */
 	protected void addMessage(MESSAGE_TYPE pMessageType, String pMessageText){
 		addMessage(pMessageText, pMessageType, pMessageText, "");
+	}
+
+	/**
+	 * Adiciona uma mensagem a fila
+	 * @param pMessage
+	 */
+	protected void addMessage(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, String pMessageTooltip){
+		wDialogMessages.add(new DBSMessage(pMessageKey, pMessageType, pMessageText, pMessageTooltip));
 	}
 
 	/**
@@ -323,14 +278,6 @@ public abstract class DBSBean implements Serializable {
 		wDialogMessages.addAll(pMessages);
 	}
 	
-	/**
-	 * Adiciona uma mensagem a fila
-	 * @param pMessage
-	 */
-	protected void addMessage(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, String pMessageTooltip){
-		wDialogMessages.add(new DBSDialogMessage(pMessageKey, pMessageType, pMessageText, pMessageTooltip));
-	}
-
 	/**
 	 * Remove uma mensagem da fila
 	 * @param pMessageKey

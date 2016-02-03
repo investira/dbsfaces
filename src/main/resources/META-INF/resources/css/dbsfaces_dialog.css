@@ -125,6 +125,7 @@
 .dbs_dialog > .-dialog > .-container > table > thead > .-caption > .-container{
     cursor: move;
 	padding: .5em;
+	text-align: center;
 }
 .dbs_dialog > .-dialog > .-container > table > thead > .-toolbar{
 	font-size: 1em;

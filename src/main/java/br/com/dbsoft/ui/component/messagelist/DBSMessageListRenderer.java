@@ -94,7 +94,7 @@ public class DBSMessageListRenderer extends DBSRenderer {
 							 xMsg.setMessageValidated(true); //Marca que mensagem como vista
 						 }
 						//Definie a cor do campo da quantidade de mensagens a partir da mensagem de maior revelância(error/warning/information). 
-						 if (xMsg.getMessageType().getCode() > xType.getCode()){
+						 if (xMsg.getMessageType().getSeverity() > xType.getSeverity()){
 							 xType = xMsg.getMessageType();
 						 }
 					}
@@ -110,7 +110,7 @@ public class DBSMessageListRenderer extends DBSRenderer {
 							//Exibe contador de mensagens
 							if (xCount > 0){
 								xWriter.startElement("div", xMessageList);
-									xWriter.writeAttribute("class", "-count " + xType.getName(), null);
+									xWriter.writeAttribute("class", "-count " + " -severity" + xType.getSeverity(), null);
 									xWriter.write(xCount.toString());
 								xWriter.endElement("div");
 							}
@@ -166,7 +166,7 @@ public class DBSMessageListRenderer extends DBSRenderer {
 				for (Integer xI=xMsgKey.length-1; xI!=-1; xI--){
 					xMsg = (IDBSMessage) pMessageList.getValue().getMessages().get(xMsgKey[xI]);
 					pWriter.startElement("div", pMessageList);
-						DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.MESSAGE.trim() + " " + xMsg.getMessageType().getName(), null);
+						DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.MESSAGE.trim() + " -severity" + xMsg.getMessageType().getSeverity(), null);
 						DBSFaces.setAttribute(pWriter, "index",xMsgKey[xI], null);
 						pWriter.startElement("div", pMessageList);
 							DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER.trim(), null);

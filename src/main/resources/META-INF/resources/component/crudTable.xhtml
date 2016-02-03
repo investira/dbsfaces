@@ -165,7 +165,7 @@
 						<c:if test="#{empty cc.facets.approveDialog}">
 							<dbs:dialog id="approve"
 										caption="Aprovação"
-										messageIcon="c"
+										messageType="c"
 										height="160" 
 										width="210" 
 										yesAction="#{cc.crudBean.endEditing(true)}"
@@ -185,7 +185,7 @@
 							<dbs:dialog id="reprove"
 										caption="Reprovação"
 										rendered="#{cc.crudBean.isReproving}"
-										messageIcon="g"
+										messageType="g"
 										height="150" 
 										width="200" 
 										yesAction="#{cc.crudBean.endEditing(true)}"

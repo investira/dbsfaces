@@ -8,9 +8,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
 
+import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.button.DBSButton;
-import br.com.dbsoft.ui.component.dialog.DBSDialog.CONFIRMATION_TYPE;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSObject;
 
@@ -42,7 +42,7 @@ public class DBSDialogRenderer extends DBSRenderer {
 		String 				xClientId = xDialog.getClientId(pContext);
 		String 				xClass = DBSFaces.CSS.DIALOG.MAIN + " ";
 		String 				xStyle = "";
-		CONFIRMATION_TYPE 	xConfirmationType = CONFIRMATION_TYPE.get(xDialog.getConfirmationType());
+		MESSAGE_TYPE 		xMT = MESSAGE_TYPE.get(xDialog.getMessageType());
 		if (xDialog.getWidth() != null
 		 && xDialog.getWidth() != 0) {
 			xStyle += "width:" + xDialog.getWidth() + "px;";
@@ -53,7 +53,7 @@ public class DBSDialogRenderer extends DBSRenderer {
 		}
 		
 		//Altera título padrão caso tenha sido informado
-		if (xConfirmationType != null){
+		if (xMT != null){
 			xClass += " -confirmation ";
 		}
 
@@ -139,7 +139,7 @@ public class DBSDialogRenderer extends DBSRenderer {
 		if (pDialog.getCaption()!=null){
 			xCaption = pDialog.getCaption();
 		}else{
-			CONFIRMATION_TYPE xCT = CONFIRMATION_TYPE.get(pDialog.getConfirmationType());
+			MESSAGE_TYPE xCT = MESSAGE_TYPE.get(pDialog.getMessageType());
 			//Sobre escreve caption padrão a partir do tipo de confirmação
 			if (xCT != null){
 				xCaption = xCT.getName();
@@ -189,12 +189,12 @@ public class DBSDialogRenderer extends DBSRenderer {
 	 * @throws IOException
 	 */
 	private void pvEncodeMessage(FacesContext pContext, ResponseWriter pWriter, DBSDialog pDialog) throws IOException{
-		CONFIRMATION_TYPE 	xCT = CONFIRMATION_TYPE.get(pDialog.getConfirmationType());
-		String				xIconId = pDialog.getClientId() + "_icon"; //Id para ser utilizado no tooptip do icon.
+		MESSAGE_TYPE 	xMT = MESSAGE_TYPE.get(pDialog.getMessageType());
+		String			xIconId = pDialog.getClientId() + "_icon"; //Id para ser utilizado no tooptip do icon.
 
 		pWriter.startElement("tr", pDialog);
 			String xClass = DBSFaces.CSS.MODIFIER.MESSAGE;
-			if (xCT == null){
+			if (xMT == null){
 				xClass += DBSFaces.CSS.BACK_GRADIENT_WHITE;
 			}else{
 				xClass += DBSFaces.CSS.BACK_TEXTURE_BLACK_GRADIENT;
@@ -209,7 +209,7 @@ public class DBSDialogRenderer extends DBSRenderer {
 						pWriter.startElement("tr", pDialog);
 		//					pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT, null);
 							//Icone da mensagem
-							if (xCT != null){
+							if (xMT != null){
 								pWriter.startElement("td", pDialog);
 									pWriter.writeAttribute("colspan", 0, null);
 									pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.ICON, null);
@@ -217,7 +217,7 @@ public class DBSDialogRenderer extends DBSRenderer {
 		//								pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER, null);
 													pWriter.startElement("div", pDialog);
 														pWriter.writeAttribute("id", xIconId, null);
-														pWriter.writeAttribute("class", xCT.getIconClass(), null);
+														pWriter.writeAttribute("class", xMT.getIconClass(), null);
 														DBSFaces.encodeTooltip(pContext, pDialog, pDialog.getTooltip(), xIconId);
 													pWriter.endElement("div");
 		//							pWriter.endElement("div");

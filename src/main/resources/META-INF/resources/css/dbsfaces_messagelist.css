@@ -138,33 +138,43 @@
     top: -2px;
     color: rgb(13,25,45);
     text-shadow: 0px 0px 1px rgba(0,0,0,0.5);
+
 }
   	
-.dbs_messageList > .-container > .-button > .-count.-information{
+.dbs_messageList > .-container > .-button > .-count.-severity1{
 	background-color: rgb(255, 255, 255);
+	color:inherit;
 }
-.dbs_messageList > .-container > .-button > .-count.-warning{ 
+.dbs_messageList > .-container > .-button > .-count.-severity10{ 
 	background-color: rgb(255, 236, 0); 
 	color:inherit;
 }
-.dbs_messageList > .-container > .-button > .-count.-important{
+.dbs_messageList > .-container > .-button > .-count.-severity20{
 	background-color: rgb(255, 180, 0);
 	color:inherit;
 }
-.dbs_messageList > .-container > .-button > .-count.-error{
+.dbs_messageList > .-container > .-button > .-count.-severity30{
+	background-color: rgb(255, 100, 0);
+	color:inherit;
+}
+.dbs_messageList > .-container > .-button > .-count.-severity40{
 	background-color: rgb(255, 0, 0);
 	color:inherit;
 }
-.dbs_messageList > .-container > .-list > .-content > .-message.-information{
+
+.dbs_messageList > .-container > .-list > .-content > .-message.-severity1{
 	background-color: none;
 }
-.dbs_messageList > .-container > .-list > .-content > .-message.-warning{
+.dbs_messageList > .-container > .-list > .-content > .-message.-severity10{
 	background-color: rgba(255, 236, 0, 0.27);
 }
-.dbs_messageList > .-container > .-list > .-content > .-message.-important{
+.dbs_messageList > .-container > .-list > .-content > .-message.-severity20{
 	background-color: 	rgba(255, 180, 0, 0.60);
 }
-.dbs_messageList > .-container > .-list > .-content > .-message.-error{
+.dbs_messageList > .-container > .-list > .-content > .-message.-severity30{
+	background-color: rgba(255, 0, 0, 0.70);
+}
+.dbs_messageList > .-container > .-list > .-content > .-message.-severity40{
 	background-color: rgba(255, 0, 0, 0.70);
 }
 
