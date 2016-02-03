@@ -2,36 +2,157 @@
 	position: relative;
 	display: inline-block;
 }
+.dbs_quickInfo.-th_action:not(.-disabled) {
+    opacity: 1; /*Para resolver um bug que escondia o overflow dentro de um dialog*/
+}
+
 .dbs_quickInfo > .-icon {
 	position: relative;
 	display: inline-block;
+	cursor: pointer;
+	width: 100%;
+    height: 100%;
 }
-
-.dbs_quickInfo > .-icon > .-container {
-	font-size: 11px;
-    line-height: 120%;
-    	
-	position: fixed;
-	left: inherit;
-	margin-left: 16px;	
-	
-/* 	position: absolute; Comentado e substituido por código acima par permitir que tela ultrapasse os limites da borda do pai */
-/*     left: 16px; */
-	display: none; 
-	background-image: url("#{request.contextPath}/images/back_texture_black_transparent.png");
-	background-color: rgba(13, 25, 45, 0.8);
+.dbs_quickInfo.-selected > .-icon{
 	color: white;
-	background-repeat: repeat;
-    border-radius: 3px;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;    
-    padding: 3px 5px 2px 6px;
-    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.6);
-   	-webkit-box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.6);
-	-moz-box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.6);
+	background-color: transparent;
+}
+.dbs_quickInfo.-selected > .-icon:before{
+    position: relative;
+	z-index: 2;
+}
+.dbs_quickInfo.-selected > .-icon:after{
+	content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 50%;
+    top: 50%;
     z-index: 1;
+    border-style: solid;
+    border-radius: 3px;
+    background-color: rgb(13,25,45);
+    transform: translateX(-50%) translateY(-50%);
+    color: rgb(13,25,45);
+    border-width: 1px;
 }
 
-.dbs_quickInfo > .-icon > .-container > .-content {
+.dbs_quickInfo > .-icon > .-content{
+    display: inline-block;
+	position: absolute;
+    width: 0;
+    height: 0;
+}
+
+.dbs_quickInfo > .-icon > .-content > .-tooltip{
+/*     height: 100%; */
+/*     width: 100%; */
+/*     position: absolute; */
+/* 	display: inline-block; */
+/*     z-index: 3; */
+}
+.dbs_quickInfo.-selected > .-icon > .-content:after{
+    position: absolute;
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    z-index: 10;
+}
+
+
+/* top bottom */
+.dbs_quickInfo.-selected.-l1 > .-icon > .-content,
+.dbs_quickInfo.-selected.-l3 > .-icon > .-content{
+    left: 50%;
+}
+/* top */
+.dbs_quickInfo.-selected.-l1 > .-icon > .-content{
+    top: 0px;
+}
+/* bottom */
+.dbs_quickInfo.-selected.-l3 > .-icon > .-content{
+	bottom: 0px;
+}
+/* right left */
+.dbs_quickInfo.-selected.-l2 > .-icon > .-content,
+.dbs_quickInfo.-selected.-l4 > .-icon > .-content{
+    top: 50%;
+}
+/* right */
+.dbs_quickInfo.-selected.-l2 > .-icon > .-content{
+	right: 0px;
+}
+/* left */
+.dbs_quickInfo.-selected.-l4 > .-icon > .-content{
+	left: 0px;
+}
+
+    
+/* top bottom */
+.dbs_quickInfo.-selected.-l1 > .-icon > .-content:after,
+.dbs_quickInfo.-selected.-l3 > .-icon > .-content:after{
+	border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    left: 50%;
+    transform: translateX(-50%);
+}
+/* top */
+.dbs_quickInfo.-selected.-l1 > .-icon > .-content:after{
+    border-bottom: 8px solid rgb(13,25,45);
+    top: -8px;
+}
+/* bottom */
+.dbs_quickInfo.-selected.-l3 > .-icon > .-content:after{
+	border-top: 8px solid  rgb(13,25,45);
+/*     top:100%; */
+    bottom:-8px;
+}
+/* right left */
+.dbs_quickInfo.-selected.-l2 > .-icon > .-content:after,
+.dbs_quickInfo.-selected.-l4 > .-icon > .-content:after{
+	border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    top: 50%;
+    transform: translateY(-50%);
+}
+/* right */
+.dbs_quickInfo.-selected.-l2 > .-icon > .-content:after{
+    border-left: 8px solid rgb(13,25,45);
+/* 	left: 100%; */
+	right: -8px;
+}
+/* left */
+.dbs_quickInfo.-selected.-l4 > .-icon > .-content:after{
+	border-right: 8px solid rgb(13,25,45);
+    left: -8px;
+}
+
+
+
+.dbs_quickInfo > .-icon > .-content > .-tooltip > .-container{
+	font-size: 11px;
+}
+.dbs_quickInfo > .-icon > .-content > .-tooltip > .-container:before{
+    border: none;
+}
+.dbs_quickInfo.-l1 > .-icon > .-content > .-tooltip > .-container,
+.dbs_quickInfo.-l3 > .-icon > .-content > .-tooltip > .-container{
+}
+
+.dbs_quickInfo.-l1 > .-icon > .-content > .-tooltip > .-container{
+}
+
+.dbs_quickInfo.-l3 > .-icon > .-content > .-tooltip > .-container{
+}
+
+.dbs_quickInfo.-l2 > .-icon > .-content > .-tooltip > .-container,
+.dbs_quickInfo.-l4 > .-icon > .-content > .-tooltip > .-container{
+}
+
+.dbs_quickInfo.-l2 > .-icon > .-content > .-tooltip > .-container{
+}
+
+.dbs_quickInfo.-l4 > .-icon > .-content > .-tooltip > .-container{
 }
 

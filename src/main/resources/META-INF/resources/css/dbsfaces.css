@@ -28,9 +28,6 @@ tbody,
 	outline-style: none !important;
 	outline-width: 0px !important;
 	outline: none;
-/* 	x-webkit-backface-visibility: hidden; */
-/* 	x-webkit-transform: translateZ(0); */
-/* 	x-webkit-perspective: 1000; */
 }
 
 body {
@@ -151,14 +148,26 @@ svg{
 }
 
 /*MODIFIER = nomes padrão para serem utilizado em conjunto com outras classes. NÃO PODEM SER UTILIZADOS ISOLADAMENTE*/
-.-centralized{
-	position: absolute;
+.-centralized_abs,
+.-centralized_rel{
     left: 50%;
     top: 50%;
     -webkit-transform: translate3d(-50%, -50%, 0);
     -moz-transform: translate3d(-50%, -50%, 0);
     -o-transform: translate3d(-50%, -50%, 0);
     transform: translate3d(-50%, -50%, 0);
+/* 	-ms-filter: blur(0); BLUR em determinados casos limita a exibição do overflow*/
+/*     -o-filter: blur(0); */
+/*     -moz-filter: blur(0); */
+/*     -webkit-filter: blur(0); */
+/*     filter: blur(0); */
+}
+
+.-centralized_abs{
+	position: absolute;
+}
+.-centralized_rel{
+	position: relative;
 }
 .-caption {}
 .-center {text-align: center !important;}
@@ -294,6 +303,7 @@ svg{
 	box-shadow: 0 0 0 1px rgba(0,0,0,.1);
 }
 /* Blur ----------------------------------- */
+/* BLUR em determinados casos limita a exibição do overflow */
 .-blur_softer{
 	filter: url("data:image/svg+xml;utf8,<svg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'blur\'><feGaussianBlur stdDeviation=\'1\' ></feGaussianBlur></filter></svg>#blur"); 
 	filter: blur; 
@@ -487,11 +497,13 @@ input.-foo {
 .dbs_back_texture_white{
 	background-image: url("#{request.contextPath}/images/back_texture_white.png");
 	background-repeat: repeat;
+	background-color: rgba(13,25,45,0.3);
 } 
 
 .dbs_back_texture_white_transparent{
 	background-image: url("#{request.contextPath}/images/back_texture_white_transparent.svg");
 	background-repeat: repeat;
+	background-color: rgba(13,25,45,0.3);
 } 
 .dbs_back_texture_black_transparent_gradient{
 	background:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjMiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
@@ -780,6 +792,103 @@ textarea.dbs_input-data:FOCUS,
     position: relative;
     width: 100%;
 }
+
+/* sideWindows ------------------------------------------------ */
+.-sidewindow{
+	position: relative;
+	display: block;
+	z-index: 1;
+    top: 0;
+    left: 0;
+}
+.-sidewindow.-top,
+.-sidewindow.-bottom{
+    width: inherit;
+    height: 0px;
+}
+.-sidewindow.-left,
+.-sidewindow.-right{
+    width: 0px;
+    height: inherit;
+}
+
+
+.-sidewindow > .-container{
+	position: fixed;
+	
+	line-height: 120%;
+	text-shadow: none;
+	font-style: normal;
+	font-size: 10px;
+
+	margin:0px;
+	padding: 4px 4px 4px 4px;
+	
+	-moz-border-radius: 3px;
+ 	-webkit-border-radius: 3px;
+	border-radius:3px;
+	
+	border-style:none;
+
+	color:white;
+	background-repeat: repeat;
+ 	background-color: rgb(13,25,45);
+
+	-moz-box-shadow: 0px 0px 2px #222;  
+	-webkit-box-shadow: 0px 0px 2px #222;  
+	box-shadow: 0px 0px 2px #222;  
+
+	z-index: 10;
+}
+
+.-sidewindow > .-container > .-content{
+	position:relative;
+	display: block;
+}
+
+.-sidewindow > .-container:before{
+    position:absolute;
+	content:'';
+    display:block;
+    width:0;
+    height:0;
+	z-index: 10;
+}
+
+
+.-sidewindow.-bottom > .-container:before,
+.-sidewindow.-top > .-container:before{
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.-sidewindow.-top > .-container:before{
+    border-top: 8px solid  rgb(13,25,45);
+    top:100%;
+}
+.-sidewindow.-bottom > .-container:before{
+    border-bottom: 8px solid rgb(13,25,45);
+    top: -8px;
+}
+
+.-sidewindow.-right > .-container:before,
+.-sidewindow.-left > .-container:before{
+	border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    top: 2px;
+}
+.-sidewindow.-left > .-container:before{
+    border-left: 8px solid rgb(13,25,45);
+	left: 100%;
+}
+.-sidewindow.-right > .-container:before{
+    border-right: 8px solid rgb(13,25,45);
+    left: -8px;
+}
+
+
 /* loadings --------------------------------------------------- */
 
 .-loading {
@@ -818,7 +927,7 @@ textarea.dbs_input-data:FOCUS,
 
 /* Icones -------------------------------- */
 
-td > .dbs_icon{
+td > .-icon{
 /* 	margin-bottom: -4px !important; Comentado em 25/abr/2014 Ricardo - ocupava muito espaço para o icone da assinatura*/
 	margin: -4px 0 -4px 0 !important;
 }
@@ -904,7 +1013,7 @@ td > .dbs_icon{
 .-i_history:before{content:"\e90e"}
 .-i_undo:before{content:"\e90f"}
 .-i_redo:before{content:"\e910"}
-.-i_sucess:before{content:"\e911"}
+.-i_success:before{content:"\e911"}
 .-i_error:before{content:"\e912"}
 .-i_information:before{content:"\e913"}
 .-i_important:before{content:"\e914"}

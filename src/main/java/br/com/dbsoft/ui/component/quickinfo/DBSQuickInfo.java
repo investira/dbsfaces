@@ -17,7 +17,9 @@ public class DBSQuickInfo extends DBSUIOutput implements ClientBehaviorHolder {
 
 	protected enum PropertyKeys {
 		iconClass,
-		infoStyle;
+		showOnHover,
+		tooltip,
+		defaultLocation;
 		
 		String toString;
 
@@ -45,7 +47,39 @@ public class DBSQuickInfo extends DBSUIOutput implements ClientBehaviorHolder {
 		getStateHelper().put(PropertyKeys.iconClass, pIconClass);
 		handleAttribute("iconClass", pIconClass);
 	}	
+	
+	public void setShowOnHover(Boolean pShowOnHover) {
+		getStateHelper().put(PropertyKeys.showOnHover, pShowOnHover);
+		handleAttribute("showOnHover", pShowOnHover);
+	}
+	
+	public Boolean getShowOnHover() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.showOnHover, true);
+	}
 
+	public String getTooltip() {
+		return (String) getStateHelper().eval(PropertyKeys.tooltip, null);
+	}
+	
+	public void setTooltip(String pTooltip) {
+		getStateHelper().put(PropertyKeys.tooltip, pTooltip);
+		handleAttribute("tooltip", pTooltip);
+	}	
+
+	public Integer getDefaultLocation() {
+		return (Integer) getStateHelper().eval(PropertyKeys.defaultLocation, 2);
+	}
+	
+	public void setDefaultLocation(Integer pDefaultLocation) {
+		if (pDefaultLocation == null
+		 || pDefaultLocation < 1
+		 || pDefaultLocation > 4){
+			pDefaultLocation = 2;
+		}
+		getStateHelper().put(PropertyKeys.defaultLocation, pDefaultLocation);
+		handleAttribute("defaultLocation", pDefaultLocation);
+	}	
+	
 	@Override
     public String getDefaultEventName()
     {
@@ -57,13 +91,6 @@ public class DBSQuickInfo extends DBSUIOutput implements ClientBehaviorHolder {
 		return Arrays.asList("click", "dblclick", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup"); 
 	}	
 	
-	public String getInfoStyle() {
-		return (String) getStateHelper().eval(PropertyKeys.infoStyle, "");
-	}
-	
-	public void setInfoStyle(String pInfoStyle) {
-		getStateHelper().put(PropertyKeys.infoStyle, pInfoStyle);
-		handleAttribute("infoStyle", pInfoStyle);
-	}
+
 
 }
