@@ -133,6 +133,9 @@
 .dbs_quickInfo > .-icon > .-content > .-tooltip > .-container{
 	font-size: 11px;
 }
+.dbs_quickInfo > .-icon > .-content > .-tooltip > .-container > .-content{
+	text-align: left;
+}
 .dbs_quickInfo > .-icon > .-content > .-tooltip > .-container:before{
     border: none;
 }
@@ -155,4 +158,3 @@
 
 .dbs_quickInfo.-l4 > .-icon > .-content > .-tooltip > .-container{
 }
-
