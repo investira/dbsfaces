@@ -3,12 +3,12 @@
 }
 
 .dbs_group > .-container{
-    border-style: none groove groove;
-    border-width: 0 2px 2px;
-    border-color: rgba(255, 255, 255, 0.5);
-    margin-top: 12px;
-    display: table;
     position: relative;
+    display: table;
+	border-style: none solid solid;
+    border-width: 0 1px 1px;
+    border-color: rgba(13, 25, 45, 0.1);
+    margin-top: 12px;
     width: inherit;
 }
 
@@ -24,9 +24,9 @@
 
 .dbs_group > .-container > .-header > .-line{
 	width: 100%;
-	border-style: groove none none none;
-    border-width: 2px 0px 0px 0px;
-    border-color: rgba(255, 255, 255, 0.5);
+	border-style: solid none none none;
+    border-width: 1px 0px 0px 0px;
+    border-color: rgba(13, 25, 45, 0.1);
 }
 
 .dbs_group > .-container > .-header > div > .dbs_input-label{
