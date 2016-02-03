@@ -63,7 +63,7 @@ import br.com.dbsoft.ui.component.button.DBSButton;
 import br.com.dbsoft.ui.component.checkbox.DBSCheckbox;
 import br.com.dbsoft.ui.component.datatable.DBSDataTable;
 import br.com.dbsoft.ui.component.datatable.DBSDataTableColumn;
-import br.com.dbsoft.ui.component.dialog.DBSDialog.DIALOG_ICON;
+import br.com.dbsoft.ui.component.dialog.DBSDialog.CONFIRMATION_TYPE;
 import br.com.dbsoft.ui.component.fileupload.DBSFileUpload;
 import br.com.dbsoft.util.DBSBoolean;
 import br.com.dbsoft.util.DBSDate;
@@ -184,17 +184,17 @@ public class  DBSFaces {
 	public static class CSS
 	{
 		public static final String CLASS_PREFIX = "dbs_";
-		public static final String WINDOW_CENTER = DBSFaces.CSS.CLASS_PREFIX +  "window_center ";
+		public static final String WINDOW_CENTER = DBSFaces.CSS.CLASS_PREFIX +  "window_center "; 
 		public static final String CHILD_CENTER = DBSFaces.CSS.CLASS_PREFIX +  "child_center ";
 		public static final String NOT_SELECTABLE = DBSFaces.CSS.CLASS_PREFIX +  "not_selectable ";
-		public static final String BACK_TEXTURE_BLACK = DBSFaces.CSS.CLASS_PREFIX +  "back_texture_black ";
+		public static final String BACK_TEXTURE_BLACK = DBSFaces.CSS.CLASS_PREFIX +  "back_texture_black "; 
 		public static final String BACK_TEXTURE_BLACK_TRANSPARENT_GRADIENT = DBSFaces.CSS.CLASS_PREFIX +  "back_texture_black_transparent_gradient ";
 		public static final String BACK_TEXTURE_BLACK_GRADIENT = DBSFaces.CSS.CLASS_PREFIX +  "back_texture_black_gradient ";
-		public static final String BACK_TEXTURE_WHITE_GRADIENT = DBSFaces.CSS.CLASS_PREFIX +  "back_texture_white_gradient ";
+		public static final String BACK_TEXTURE_WHITE_GRADIENT = DBSFaces.CSS.CLASS_PREFIX +  "back_texture_white_gradient "; 
+		public static final String BACK_TEXTURE_WHITE_TRANSPARENT = DBSFaces.CSS.CLASS_PREFIX +  "back_texture_white_transparent";
 		public static final String BACK_TEXTURE_WHITE_TRANSPARENT_GRADIENT = DBSFaces.CSS.CLASS_PREFIX +  "back_texture_white_transparent_gradient ";
 		public static final String BACK_GRADIENT_WHITE = DBSFaces.CSS.CLASS_PREFIX +  "back_gradient_white ";
 		public static final String PARENT_FILL = DBSFaces.CSS.CLASS_PREFIX +  "parent_fill ";
-		public static final String ICON = DBSFaces.CSS.CLASS_PREFIX +  "icon ";
 		public static final String HORIZONTAL_LINE = DBSFaces.CSS.CLASS_PREFIX +  "horizontal_line ";
 		public static final String HORIZONTAL_LINE_WHITE = DBSFaces.CSS.CLASS_PREFIX +  "horizontal_line_white ";
 		public static final String VERTICAL_LINE = DBSFaces.CSS.CLASS_PREFIX +  "vertical_line ";
@@ -239,6 +239,10 @@ public class  DBSFaces {
 			public static final String LARGE = " -large ";
 			public static final String LEFT = " -left ";
 			public static final String CENTER = " -center ";
+			public static final String CENTRALIZED_ABS = " -centralized_abs ";
+			public static final String CENTRALIZED_REL = " -centralized_rel ";
+			public static final String ABS = " -abs ";
+			public static final String REL = " -rel ";
 			public static final String RIGHT = " -right ";
 			public static final String LINE = " -line ";
 			public static final String LOADING = " -loading ";
@@ -927,7 +931,7 @@ public class  DBSFaces {
 		 || pMessageType == null
 		 || pMessage == null){return;}
 		FacesMessage.Severity xSeverity = null;
-		if (pMessageType == MESSAGE_TYPE.SUCESS
+		if (pMessageType == MESSAGE_TYPE.SUCCESS
 		 || pMessageType == MESSAGE_TYPE.INFORMATION
 		 || pMessageType == MESSAGE_TYPE.IMPORTANT){
 			xSeverity = FacesMessage.SEVERITY_INFO;
@@ -1201,7 +1205,7 @@ public class  DBSFaces {
 			return "";
 		}
 		Double xW = DBSNumber.round((pInputSize + 1) * 0.64, 3);
-		return "width:" + xW + "em;"; //min-height:19px; 
+		return "width:" + xW + "em;"; 
 	}
 
 	/**
@@ -1223,54 +1227,17 @@ public class  DBSFaces {
 	
 	
 	/**
-	 * Retorna o título padrão do cabeçalho em função do tipo do icone
-	 * @param pMessageIcon
-	 * @return
-	 */
-	public static String getCaptionFromIcon(DIALOG_ICON pMessageIcon){
-		if (pMessageIcon.equals(DIALOG_ICON.ATENCAO)){
-			return "Atenção";
-		}else if (pMessageIcon.equals(DIALOG_ICON.CONFIRMAR)){
-			return "Confirmar";
-		}else if (pMessageIcon.equals(DIALOG_ICON.ERRO)){
-			return "Erro";
-		}else if (pMessageIcon.equals(DIALOG_ICON.IGNORAR)){
-			return "Ignorar";
-		}else if (pMessageIcon.equals(DIALOG_ICON.INFORMACAO)){
-			return "Informação";
-		}else if (pMessageIcon.equals(DIALOG_ICON.IMPORTANTE)){
-			return "Importante";
-		}else if (pMessageIcon.equals(DIALOG_ICON.PROIBIDO)){
-			return "Atenção";
-		}else if (pMessageIcon.equals(DIALOG_ICON.SOBRE)){
-			return "Sobre";
-		}else if (pMessageIcon.equals(DIALOG_ICON.SUCESSO)){
-			return "Informação";
-		}
-		return null;
-	}
-	
-	/**
-	 * Retorna o título padrão do cabeçalho em função do tipo do icone
-	 * @param pMessageIcon
-	 * @return
-	 */
-	public static String getCaptionFromIcon(String pMessageIcon){
-		return getCaptionFromIcon(toDIALOG_ICON(pMessageIcon));
-	}
-	
-	/**
 	 * Converte de String para DIALOG_ICON
 	 * @param pMessageIcon
 	 * @return
 	 */
-	public static DIALOG_ICON toDIALOG_ICON(String pMessageIcon){
-    	for (DIALOG_ICON xDI : DIALOG_ICON.values()) {
+	public static CONFIRMATION_TYPE toCONFIRMATION_TYPE(String pMessageIcon){
+    	for (CONFIRMATION_TYPE xDI : CONFIRMATION_TYPE.values()) {
     		if (xDI.toString().equals(pMessageIcon)){
     			return xDI;
     		}
     	}
-    	return DIALOG_ICON.NENHUM;
+    	return null;
 	}
 	
 	/**
@@ -1278,19 +1245,19 @@ public class  DBSFaces {
 	 * @param pMessageType
 	 * @return
 	 */
-	public static DIALOG_ICON toDIALOG_ICON(MESSAGE_TYPE pMessageType){
-		DIALOG_ICON xDialogIcon = DIALOG_ICON.INFORMACAO;
+	public static CONFIRMATION_TYPE toCONFIRMATION_TYPE(MESSAGE_TYPE pMessageType){
+		CONFIRMATION_TYPE xDialogIcon = CONFIRMATION_TYPE.INFORMATION;
 		if (pMessageType != null){
 			if (pMessageType == MESSAGE_TYPE.ERROR){
-				xDialogIcon = DIALOG_ICON.ERRO;
+				xDialogIcon = CONFIRMATION_TYPE.ERROR;
 			}else if (pMessageType == MESSAGE_TYPE.INFORMATION){
-				xDialogIcon = DIALOG_ICON.INFORMACAO;
-			}else if (pMessageType == MESSAGE_TYPE.SUCESS){
-				xDialogIcon = DIALOG_ICON.SUCESSO;
+				xDialogIcon = CONFIRMATION_TYPE.INFORMATION;
+			}else if (pMessageType == MESSAGE_TYPE.SUCCESS){
+				xDialogIcon = CONFIRMATION_TYPE.SUCCESS;
 			}else if (pMessageType == MESSAGE_TYPE.IMPORTANT){
-				xDialogIcon = DIALOG_ICON.IMPORTANTE;
+				xDialogIcon = CONFIRMATION_TYPE.IMPORTANT;
 			}else if (pMessageType == MESSAGE_TYPE.WARNING){
-				xDialogIcon = DIALOG_ICON.ATENCAO;
+				xDialogIcon = CONFIRMATION_TYPE.ATENTION;
 			}
 		}
 		return xDialogIcon;
@@ -1543,17 +1510,7 @@ public class  DBSFaces {
 			}
 		pWriter.endElement("span");
 	}
-	
-	/**
-	 * Cria o elemento que conterá o tooltip.
-	 * @param pWriter
-	 * @param pComponent
-	 * @param pTooltip
-	 * @throws IOException
-	 */
-	public static void encodeTooltip(FacesContext pContext, UIComponent pComponent, String pTooltip) throws IOException{
-		encodeTooltip(pContext, pComponent, pTooltip, pComponent.getClientId());
-	}
+
 	
 	/**
 	 * Grava atributo com a quantidade de caracteres do campo.<br/>
@@ -1580,38 +1537,98 @@ public class  DBSFaces {
 	 * @param pClienteId 
 	 * @throws IOException
 	 */
-	public static void encodeTooltip(FacesContext pContext, UIComponent pComponent, String pTooltip, String pClientId) throws IOException{
-		String 			xTooltipText = pTooltip;
-		ResponseWriter 	xWriter = pContext.getResponseWriter();		
-		UIComponent 	xTooltip = pComponent.getFacet("tooltip");
+	private static void pvEncodeTooltip(boolean pBasicTooltip, FacesContext pContext, UIComponent pComponent, String pTooltipText) throws IOException{
+		ResponseWriter 	xWriter = pContext.getResponseWriter();	
+		UIComponent 	xTooltip;
+		
+		if (pBasicTooltip){
+			xTooltip = pComponent.getFacet("tooltip");
+		}else{
+			xTooltip = pComponent;
+		}
 		
 		//Encode do tooltip se houver um texto para o tooltip ou foi defindo via facet(name="tooltip") dentro do componente...
-		if (!DBSObject.isEmpty(xTooltipText) ||
+		if (!DBSObject.isEmpty(pTooltipText) ||
 			xTooltip != null){
-			xWriter.startElement("span", pComponent);
-				xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.TOOLTIP.trim() , null);
-//				xWriter.writeAttribute("style", "display:none;" , null);
-				xWriter.startElement("span", pComponent);
-					xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER.trim() , null);
-					//Dá prioridade para o facet
-					if (xTooltip != null){
-						//Encode conteúdo do facet
-						xTooltip.encodeAll(pContext);
-					}else{
-						//Encode texto
-						xWriter.write(getHtmlStringWithLineBreak(xTooltipText));
+			xWriter.startElement("div", pComponent);
+				String xClass = DBSFaces.CSS.MODIFIER.TOOLTIP;
+				if (pBasicTooltip){
+					xClass += "-tt";
+				}else{
+					xClass += "-qi";
+				}
+				xWriter.writeAttribute("class", xClass, null);
+				xWriter.startElement("div", pComponent);
+					xClass = DBSFaces.CSS.MODIFIER.CONTAINER;
+					if (!pBasicTooltip){
+						xClass += CSS.BACK_TEXTURE_BLACK_GRADIENT;
 					}
-				xWriter.endElement("span");
-			xWriter.endElement("span");
-			//Javascript 
-			DBSFaces.encodeJavaScriptTagStart(xWriter);
-			String xJS = "$(document).ready(function() { \n" +
-					     " var xTooltip = '#' + dbsfaces.util.jsid('" + pClientId + "'); \n " + 
-					     " dbs_tooltip(xTooltip); \n" +
-	                     "}); \n"; 
-			xWriter.write(xJS);
-			DBSFaces.encodeJavaScriptTagEnd(xWriter);		
+					xWriter.writeAttribute("class", xClass.trim(), null);
+					xWriter.writeAttribute("style", "display: none;", null);
+					xWriter.startElement("div", pComponent);
+						xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT.trim() , null);
+						//Dá prioridade para o facet
+						if (xTooltip != null){
+							if (pBasicTooltip){
+								//Encode conteúdo do facet
+								xTooltip.encodeAll(pContext);
+							}else{
+								//Encode dos filhos do componente
+								renderChildren(pContext, xTooltip);
+							}
+						}else{
+							//Encode texto
+							xWriter.write(getHtmlStringWithLineBreak(pTooltipText));
+						}
+					xWriter.endElement("div");
+				xWriter.endElement("div");
+			xWriter.endElement("div");
 		}
+	}
+	/**
+	 * Cria o elemento que conterá o tooltip.
+	 * @param pWriter
+	 * @param pComponent
+	 * @param pTooltip
+	 * @param pClienteId 
+	 * @throws IOException
+	 */
+	public static void encodeTooltipQuickInfo(FacesContext pContext, UIComponent pComponent) throws IOException{
+		pvEncodeTooltip(false, pContext, pComponent, null);
+	}
+	
+	
+	/**
+	 * Cria o elemento que conterá o tooltip.
+	 * @param pWriter
+	 * @param pComponent
+	 * @param pTooltipText
+	 * @throws IOException
+	 */
+	public static void encodeTooltip(FacesContext pContext, UIComponent pComponent, String pTooltipText) throws IOException{
+		encodeTooltip(pContext, pComponent, pTooltipText, pComponent.getClientId());
+	}
+	
+	/**
+	 * Cria o elemento que conterá o tooltip.<br/>
+	 * <b>Somente utilize este método caso seja um tooltip para um componente filho do componente principal.</b>
+	 * @param pWriter
+	 * @param pComponent
+	 * @param pTooltipText
+	 * @param pClienteId 
+	 * @throws IOException
+	 */
+	public static void encodeTooltip(FacesContext pContext, UIComponent pComponent, String pTooltipText, String pSourceClientId) throws IOException{
+		ResponseWriter 	xWriter = pContext.getResponseWriter();		
+		pvEncodeTooltip(true, pContext, pComponent, pTooltipText);
+		//Javascript 
+		DBSFaces.encodeJavaScriptTagStart(xWriter);
+		String xJS = "$(document).ready(function() { \n" +
+				     " var xTooltip = '#' + dbsfaces.util.jsid('" + pSourceClientId + "'); \n " + 
+				     " dbs_tooltip(xTooltip); \n" +
+                     "}); \n"; 
+		xWriter.write(xJS);
+		DBSFaces.encodeJavaScriptTagEnd(xWriter);		
 	}
 	
 	/**
@@ -2100,7 +2117,7 @@ public class  DBSFaces {
 				DBSButton xBtPesquisar = (DBSButton) xContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
 				xBtPesquisar.setId("btPesquisar");
 				xBtPesquisar.setLabel("Pesquisar");
-				xBtPesquisar.setIconClass(DBSFaces.CSS.ICON.trim() + " -i_find");
+				xBtPesquisar.setIconClass(DBSFaces.CSS.MODIFIER.ICON + " -i_find");
 				if (pDataTable.getSearchAction() == null){
 					wLogger.error(pDataTable.getClientId() +  ": searchAction não informado");
 				}else{
@@ -2174,7 +2191,7 @@ public class  DBSFaces {
 		if (xButtonStart == null){
 			xButtonStart = (DBSButton) FacesContext.getCurrentInstance().getApplication().createComponent(DBSButton.COMPONENT_TYPE);
 			xButtonStart.setId("btStart");
-			xButtonStart.setIconClass(DBSFaces.CSS.ICON + " -i_upload");
+			xButtonStart.setIconClass(DBSFaces.CSS.MODIFIER.ICON + " -i_upload");
 			xButtonStart.setReadOnly(pFileUpload.getReadOnly());
 			xButtonStart.setExecute("");
 			xButtonStart.setUpdate("");
@@ -2197,7 +2214,7 @@ public class  DBSFaces {
 			xButtonCancel.setId("btCancel");
 			xButtonCancel.setExecute("");
 			xButtonCancel.setUpdate("");
-			xButtonCancel.setIconClass(DBSFaces.CSS.ICON + " -i_media_stop");
+			xButtonCancel.setIconClass(DBSFaces.CSS.MODIFIER.ICON + " -i_media_stop");
 			xButtonCancel.setStyle("display:none;");
 			xButtonCancel.setReadOnly(pFileUpload.getReadOnly());
 			xButtonCancel.setTooltip("Cancelar upload");

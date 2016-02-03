@@ -1,13 +1,13 @@
 package br.com.dbsoft.ui.component.dialog;
 
 import br.com.dbsoft.message.IDBSMessage;
-import br.com.dbsoft.ui.component.dialog.DBSDialog.DIALOG_ICON;
+import br.com.dbsoft.ui.component.dialog.DBSDialog.CONFIRMATION_TYPE;
 
 
 public interface IDBSDialogMessage extends IDBSMessage {
 
-	public DIALOG_ICON getMessageIcon();
-	public void setMessageIcon(DIALOG_ICON pMessageIcon);
+	public CONFIRMATION_TYPE getMessageIcon();
+	public void setMessageIcon(CONFIRMATION_TYPE pMessageIcon);
 
 	public int getMessageWidth();
 	public void setMessageWidth(int pMessageWidth);

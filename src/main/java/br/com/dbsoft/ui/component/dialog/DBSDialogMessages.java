@@ -2,7 +2,7 @@ package br.com.dbsoft.ui.component.dialog;
 
 import br.com.dbsoft.message.DBSMessages;
 import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
-import br.com.dbsoft.ui.component.dialog.DBSDialog.DIALOG_ICON;
+import br.com.dbsoft.ui.component.dialog.DBSDialog.CONFIRMATION_TYPE;
 
 /**
  * @author ricardovillar
@@ -31,11 +31,11 @@ public class DBSDialogMessages extends DBSMessages<IDBSDialogMessage> implements
 	 * @return
 	 */
 	@Override
-	public DIALOG_ICON getCurrentMessageIcon(){
+	public CONFIRMATION_TYPE getCurrentMessageIcon(){
 		if (wCurrentMessageKey !=null){
 			return wMessages.get(wCurrentMessageKey).getMessageIcon();
 		}else{
-			return DIALOG_ICON.NENHUM;
+			return null;
 		}
 	}
 	

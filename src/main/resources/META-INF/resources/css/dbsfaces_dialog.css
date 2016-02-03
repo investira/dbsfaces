@@ -1,210 +1,231 @@
 .dbs_dialog{}
 
-.dbs_dialog {
+
+.dbs_dialog{
+	position: fixed;
+	display: block;
 	background-color: rgba(0, 0, 0, 0.05);
 	background-image: url("#{request.contextPath}/images/vidro.png");
 	background-repeat: repeat;
-/* 	xposition:absolute; Comentado em 12/3/2013 pois dialog dentro de dialog era limitado pelo tamanho do anterior  */
-/* 	xposition: fixed; 24/03/2013 - comentado pois considerava o offsetparent como body, desabilitando todos os inputs. Quando deveria desabilitar somente os dentro do mask. */
-	position: absolute;
-	display: block;
 	top:0;
 	left:0;
 	width:100%;
 	height:100%;
 	margin:0px;
 	padding:0px;
+	z-index: 3;
 	font-weight: normal;
 	font-size: 11px;
-	z-index: 3;
 }
 
-.dbs_dialog > div {
+.dbs_dialog > .-dialog{
+	position: absolute;
+	display: inline-block;
 	opacity:0;
-   	-webkit-box-shadow: 0 0 6px 0px rgba(0, 0, 0, 0.6);
-	-moz-box-shadow: 0 0 6px 0px rgba(0, 0, 0, 0.6);
-	box-shadow: 0 0 6px 0px rgba(0, 0, 0, 0.6);
+	
+	padding: 0;
+    margin: 0;
+
+/*     -webkit-transform-origin: 0 0; */
+/*     -moz-transform-origin: 0 0; */
+/*     -ms-transform-origin: 0 0; */
+/*     -o-transform-origin: 0 0; */
+/*     transform-origin: 0 0; */
+    
+/* 	-ms-filter: blur(0);  BLUR em determinados casos limita a exibição do overflow 
+/*     -o-filter: blur(0); */
+/*     -moz-filter: blur(0); */
+/*     -webkit-filter: blur(0); */
+/*     filter: blur(0); */
+
+/*     -webkit-perspective-origin-x: 0; */
+/*     -webkit-perspective-origin-y: 0; */
+/* 	-webkit-perspective-origin: 0 0; */
+/* 	-moz-perspective-origin: 0 0; */
+/* 	-ms-perspective-origin: 0 0; */
+/* 	-o-perspective-origin: 0 0; */
+/* 	perspective-origin: 0 0; */
+
+/*     -webkit-perspective: 0; */
+/*     -moz-perspective: 0; */
+/*     -ms-perspective: 0; */
+/*     -o-perspective: 0; */
+/*     perspective: 0; */
+	
+/* 	left: 50%; */
+/* 	top: 50%; */
+
+/* 	-webkit-transform: translate3d(-50%, -50%, 0); */
+/* 	-moz-transform: translate3d(-50%, -50%, 0); */
+/* 	-o-transform: translate3d(-50%, -50%, 0); */
+/* 	-ms-transform: translate3d(-50%, -50%, 0); */
+/* 	transform: translate3d(-50%, -50%, 0); */
+
+
+	
+}
+
+
+.dbs_dialog > .-dialog > .-container{
+	position: relative;
+	display: table;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+    height: 100%;
+
+	overflow: hidden;
+
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
 	border-radius:3px;
-	position: absolute;
-/* 	xoverflow: hidden; 24/04/2013 - desabilitado por cortava o dialog quando fosse superior ao dialog anterior */
-	overflow: visible;
-/* 	xposition: fixed; 24/04/2013 - desabilitado por cortava o dialog quando fosse superior ao dialog anterior */
-/* 	border-width: 1px; 28/04/2014 - desabilitado por Ricardo */ 
-/* 	border-color: rgb(130,130,130); 28/04/2014 - desabilitado por Ricardo */
-/* 	border-style: solid; 28/04/2014 - desabilitado por Ricardo */
- }
-
-.dbs_dialog > div > .-caption{
-/* 	background-color: rgba(255,255,255,.1); */ /*26-05-2015*/
-/* 	background-image: url("#{request.contextPath}/images/back_texture_white.png"); *//*26-05-2015*/
-/* 	background-repeat: repeat; *//*26-05-2015*/
-	height: 21px;
-	position: relative;
-	top:0;
-	width: 100%;
-	overflow: hidden;
-	border-width: 0px;
-	-moz-border-radius: 3px 3px 0px 0px;
-	-webkit-border-radius: 3px 3px 0px 0px;
-	border-radius:3px 3px 0px 0px;
-/* 	z-index: 1; Comentado em 2016-01-20 Ricardo. Estava sobreponto o tooltip dos componente dentro do dialog */
-	cursor: move;
-}
-
-.dbs_dialog > div > .-caption > .-label{
-	position: relative;
-	height: 100%;
-	padding-left: 5px;
-	color:white;
-/* 	text-shadow: 1px 1px 0px #000000; */ /*26-05-2015*/
-	text-align: center;
-}
-
-.dbs_dialog > div > .-caption > .-label > span {
-	vertical-align: middle;
-}
-
-.dbs_dialog > div > .-caption > .-iconclose{
-	position: absolute;
-	top:0;
-	right:0;
-	width: 20px;
-	height: 100%;
-	float:right;
-}
-
-
-.dbs_dialog > div > .-caption > .-iconclose > div{
-	border-width: 1px;
-	border-style: solid;
-	border-color: rgba(100,100,100,0.5);
-    left: 50%;
-    margin-left: -6px;
-    margin-top: -6px;
-    position: absolute;
-    top: 50%;
-}
-
-.dbs_dialog > div > .-caption > .-iconclose > span > div:HOVER{
-    background-position: -33px -0px;
-}
-
-.dbs_dialog > div > .-content.-message{}
-
-.dbs_dialog > div > .-toolbar > ul > li.-icon > .dbs_img{
-	position: relative;
-	left:1px;
-	top:-1px;	
-}
-
-
-
-.dbs_dialog > div > .-content{
-	display: block;
-	height: 100%;
-/* 	overflow: auto; comentado em 24/07/2013 por inibir a exibição de componentes maiores comos os inputAtivos*/
-	overflow: visible;
-	padding: 5px 6px 6px 6px;
-	-moz-border-radius: 0px 0px 3px 3px;
-	-webkit-border-radius: 0px 0px 3px 3px;
-	border-radius:0px 0px 3px 3px;
-}
-
-/* Incluido em 05/fev/14 para padronizar as telas dialog simples */
-.dbs_dialog > div > .-content.dbs_back_gradient_white{ 
-	color:rgb(13,25,45);
-}
-
-.dbs_dialog > div > .-content .dbs_input:not(td),
-.dbs_dialog > div > .-content .dbs_group{ /* exblui td para evitar a margem nos input type=radio */
-	margin-bottom: 2px;	
-}
-
-.dbs_dialog > div > .-toolbar{
-	background-image: url("#{request.contextPath}/images/back_texture_white.png");
-	background-repeat: repeat;
-	height: 22px;
-	background-color: rgba(240,240,240,1);
-	position: relative;
-	width: 100%;
-	overflow: hidden;
-	text-align: right;
-	border-color: rgba(20,20,20,0.1);
-	border-style: solid;
-	border-width: 0 0 1px;
-	line-height: 0px;
-}
-
-.dbs_dialog > div > .-toolbar > ul{
-	text-align: left;
-	display: block;
-	margin:0px;
-    padding: 2px 4px 1px 2px;
-	border-width: 0px;
-/* 	-moz-border-radius: 0px 0px 3px 3px; */ /*Todo Excluir */
-/*   	-webkit-border-radius: 0px 0px 3px 3px; */ /*Todo Excluir */
-/* 	border-radius:0px 0px 3px 3px; */ /*Todo Excluir */
-	display: inline-block;
-    height: 22px;	
-}
-
-.dbs_dialog > div > .-toolbar > ul > li{
-	display:inline-block;
-}
-
-.dbs_dialog > div > .-toolbar > ul > li.-icon{
-	position: absolute;
-	height: 21px;
-	width: 24px;
-	background-color: rgba(13, 25, 45, 1);
-	color: white;
-	left: 0;
-	top: 0;
-	padding: 3px;
-}
-
-.dbs_dialog-confirmation{
-	height: 100%;
-	margin-bottom:-23px;
-	padding-bottom:23px;
-	display:block;
-	position:relative;
-}
-
-
-.dbs_dialog-confirmation > .-content{
-	height: 100%;
-	padding-bottom: 5px;
-	display: table;
-}
-
-.dbs_dialog-confirmation > .-content > div{
-	display: table-cell;
-	vertical-align: middle;
-	text-align: center;
-	max-width: 42px; /*Para limitar a largura e obrigar a exibição do scrollbar. Curiosamente este valor não impede que a largura seja maior*/
-	overflow: auto; /*Para ofrçar a exibição do scrollbar*/ 
-}
 	
-.dbs_dialog-confirmation > .-content > .-icon{
-	padding: 2px;
-	opacity:0.9;
-}		
+	min-height: 100px;
+	min-width: 100px;
 
-.dbs_dialog-confirmation > .-content > .-label{
-	width: 100%
+   	-webkit-box-shadow: 0 0 6px 0px rgba(0, 0, 0, 0.6);
+	-moz-box-shadow: 0 0 6px 0px rgba(0, 0, 0, 0.6);
+	box-shadow: 0 0 6px 0px rgba(0, 0, 0, 0.6);
+}
+
+.dbs_dialog > .-dialog > .-container > table{
+	display: table;
+	position: relative;
+	width: 100%;
+	height: 100%;
+
+}
+
+.dbs_dialog > .-dialog > .-container > table > thead,
+.dbs_dialog > .-dialog > .-container > table > tbody,
+.dbs_dialog > .-dialog > .-container > table > tfoot{
+}
+
+.dbs_dialog > .-dialog > .-container > table > thead > .-caption,
+.dbs_dialog > .-dialog > .-container > table > thead > .-toolbar,
+.dbs_dialog > .-dialog > .-container > table > tbody > .-message,
+.dbs_dialog > .-dialog > .-container > table > tfoot > .-footer{
+	position: relative;
+    top: 0;
+    left: 0;
+}
+
+.dbs_dialog > .-dialog > .-container > table > thead > .-caption > .-container,
+.dbs_dialog > .-dialog > .-container > table > thead > .-toolbar > .-container,
+.dbs_dialog > .-dialog > .-container > table > tbody > .-message > .-container,
+.dbs_dialog > .-dialog > .-container > table > tfoot > .-footer > .-container{
+	position: relative;
+}
+
+.dbs_dialog > .-dialog > .-container > table > thead {
+}
+.dbs_dialog > .-dialog > .-container > table > thead > .-caption{
+    font-size: 1em;
+}
+.dbs_dialog > .-dialog > .-container > table > thead > .-caption > .-container{
+    cursor: move;
+	padding: .5em;
+}
+.dbs_dialog > .-dialog > .-container > table > thead > .-toolbar{
+	font-size: 1em;
+    background-color: rgba(240,240,240,1);
+    text-align: right;
+}
+.dbs_dialog > .-dialog > .-container > table > thead > .-toolbar > .-container{
+/* 	display: table-cell; */
+	display: block;
+	overflow: hidden;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.dbs_dialog > .-dialog > .-container > table > thead > .-toolbar > .-container .dbs_button{
+	height: 2em;
+    width: 2em;
+}
+
+.dbs_dialog > .-dialog > .-container > table > thead > .-toolbar > .-container > .-line{
+    position: absolute;
+    width: 100%;
+    left: 0px;
+    top: 100%;
+}
+.dbs_dialog > .-dialog > .-container > table > thead > .-toolbar > .-container > .-line:after{
+	top: -1px;
+	position: relative;
+}
+
+.dbs_dialog > .-dialog > .-container > table > thead > .-toolbar > .-container > .-icon{
+	position: absolute;
+    background-color: rgba(13, 25, 45, 1);
+    color: white;
+    left: 0;
+    top: 0;
+    padding: .25em;
+    display: block;
+    
+}
+
+.dbs_dialog > .-dialog > .-container > table > tbody {
+}
+.dbs_dialog > .-dialog > .-container > table > tbody > tr{
+}
+.dbs_dialog > .-dialog > .-container > table > tbody > tr > td{
+	padding: 1em;
+}
+.dbs_dialog > .-dialog > .-container > table > tbody > tr > td > table{
+    display: table;
+    width: 100%;
+    height: 100%;
+}
+.dbs_dialog > .-dialog > .-container > table > tbody > tr > td > table > tbody{
+}
+.dbs_dialog > .-dialog > .-container > table > tbody > tr > td > table > tbody > tr{
+}
+.dbs_dialog > .-dialog > .-container > table > tbody > tr > td > table > tbody > tr > .-icon{
+	font-size: 2.5em;
+	width: 2em;
+}
+.dbs_dialog > .-dialog > .-container > table > tbody > tr > td > table > tbody > tr > .-container{
+}
+.dbs_dialog > .-dialog > .-container > table > tbody > tr > td > table > tbody > tr > .-container > .-content{
+}
+
+.dbs_dialog > .-dialog > .-container > table > tbody > tr > td > table > tbody > tr > .-container > .-content .dbs_input:not(td), 
+.dbs_dialog > .-dialog > .-container > table > tbody > tr > td > table > tbody > tr > .-container > .-content .dbs_group {
+    margin-bottom: 2px;
+}
+
+.dbs_dialog.-confirmation > .-dialog > .-container > table > tbody > tr > td > table > tbody > tr > .-container > .-content{
+	text-align: center;
 }
 
 
-.dbs_dialog-confirmation > .-button{
-	padding: 2px;
-	text-align: right;
+.dbs_dialog > .-dialog > .-container > table > tfoot{
+}
+.dbs_dialog > .-dialog > .-container > table > tfoot > .-footer{
+}
+.dbs_dialog > .-dialog > .-container > table > tfoot > .-footer > .-container{
+}
+.dbs_dialog > .-dialog > .-container > table > tfoot > .-footer > .-container > .-button{
+	display: inline-block;
+	float: right;
+}
+.dbs_dialog > .-dialog > .-container > table > tfoot > .-footer > .-container .dbs_button{
+	margin-left: 1em;
+    height: 3em;
+    width: 5em;
+/*     float: right; */
+}
+.dbs_dialog > .-dialog > .-container > table > tfoot > .-footer > .-container > .-content{
+	display: inline-block;
+	float: right;
+} 
+
+.dbs_dialog > .-dialog > .-container > table > tfoot > .-footer > .-container > .-line{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    left: 0px;
 }
 
-.dbs_dialog-confirmation > .-button > button{
-	height: 21px;
-	margin-left: 21px;
-}
 			

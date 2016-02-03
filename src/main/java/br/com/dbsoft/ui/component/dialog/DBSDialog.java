@@ -11,32 +11,57 @@ import br.com.dbsoft.ui.core.DBSFaces;
 @FacesComponent(DBSDialog.COMPONENT_TYPE)
 public class DBSDialog extends DBSUIOutput implements NamingContainer{  
 
+	public @interface DIALOG_ICON {
+
+	}
+
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.DIALOG;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 
-	public static enum DIALOG_ICON
+	public static enum CONFIRMATION_TYPE
 	{
-		NENHUM 		("n"),
-	    ATENCAO 	("a"),
-	    CONFIRMAR	("c"),
-	    ERRO 		("e"),
-	    IGNORAR 	("g"),
-	    INFORMACAO	("i"),
-	    PROIBIDO 	("p"),
-	    SOBRE 		("b"),
-	    SUCESSO		("s"),
-	    IMPORTANTE	("t");
+	    ATENTION 	("a", "Atenção", "-i_warning -yellow"),
+	    CONFIRM		("c", "Confirmar", "-i_question_confirm"),
+	    ERROR 		("e", "Erro", "-i_error -red"),
+	    IGNORE 		("g", "Ignorar", "-i_question_ignore -yellow"),
+	    INFORMATION	("i", "Informação", "-i_information"),
+	    PROHIBID 	("p", "Proibido", "-i_forbidden -red"),
+	    ABOUT 		("b", "Sobre", "-i_about"),
+	    SUCCESS		("s", "Sucesso", "-i_success -green"),
+	    IMPORTANT	("t", "Importante", "-i_important");
 
-	    String wString;
+	    String wCode;
+	    String wName;
+	    String wIconClass;
 
-	    DIALOG_ICON (String pString){
-	    	wString = pString;
+	    CONFIRMATION_TYPE (String pCode, String pName, String pIconClass){
+	    	wCode = pCode;
+	    	wName = pName;
+	    	wIconClass = pIconClass;
 	    }
 	
-	    @Override
-		public String toString() {
-	    	return wString;
+	    public String getCode(){
+	    	return wCode;
 	    }
+	    
+	    public String getName(){
+	    	return wName;
+	    }
+	    
+	    public String getIconClass(){
+	    	return wIconClass;
+	    }
+
+	    public static CONFIRMATION_TYPE get(String pType){
+			if (pType == null){return null;}
+			pType = pType.trim().toLowerCase();
+	    	for (CONFIRMATION_TYPE xCT:CONFIRMATION_TYPE.values()) {
+	    		if (xCT.getCode().equals(pType)){
+	    			return xCT;
+	    		}
+	    	}
+	    	return null;
+		}
 	}
 	
 	protected enum PropertyKeys {
@@ -50,9 +75,8 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 		noAction,
 		update,
 		execute,
-		messageIcon,
-		tooltip,
-		index;
+		confirmationType,
+		tooltip;
 
 		String toString;
 
@@ -72,18 +96,6 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 	
     public DBSDialog(){
 		setRendererType(DBSDialog.RENDERER_TYPE);
-
-//		 FacesContext xContext = FacesContext.getCurrentInstance();
-//		 xContext.getViewRoot().subscribeToViewEvent(PostAddToViewEvent.class, this);
-//		 xContext.getViewRoot().subscribeToViewEvent(PreValidateEvent.class,this);
-//		 xContext.getViewRoot().subscribeToViewEvent(PostValidateEvent.class,this);
-//		 xContext.getViewRoot().subscribeToViewEvent(PreRenderViewEvent.class,this);
-//		 xContext.getViewRoot().subscribeToViewEvent(PreRenderComponentEvent.class,this);
-//		 //-------------------------------------------------------------------------------
-//		 xContext.getViewRoot().subscribeToViewEvent(PostConstructViewMapEvent.class,this);
-//		 xContext.getViewRoot().subscribeToViewEvent(PostRestoreStateEvent.class,this);
-//		 xContext.getViewRoot().subscribeToViewEvent(PreDestroyViewMapEvent.class,this);
-//		 xContext.getViewRoot().subscribeToViewEvent(PreRemoveFromViewEvent.class,this);		
     }
 	
     @Override
@@ -126,7 +138,7 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 	}
 	
 	public Integer getWidth() {
-		return (Integer) getStateHelper().eval(PropertyKeys.width, 100);
+		return (Integer) getStateHelper().eval(PropertyKeys.width, null);
 	}
 
 	public void setHeight(Integer pHeight) {
@@ -135,25 +147,16 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 	}
 	
 	public Integer getHeight() {
-		return (Integer) getStateHelper().eval(PropertyKeys.height, 100);
+		return (Integer) getStateHelper().eval(PropertyKeys.height, null);
 	}
 	
-	public void setIndex(Integer pIndex) {
-		getStateHelper().put(PropertyKeys.index, pIndex);
-		handleAttribute("index", pIndex);
+	public String getConfirmationType() {
+		return (String) getStateHelper().eval(PropertyKeys.confirmationType, null);
 	}
 	
-	public Integer getIndex() {
-		return (Integer) getStateHelper().eval(PropertyKeys.index, 0);
-	}
-	
-	public String getMessageIcon() {
-		return (String) getStateHelper().eval(PropertyKeys.messageIcon, DBSDialog.DIALOG_ICON.NENHUM.toString());
-	}
-	
-	public void setMessageIcon(String pMessageIcon) {
-		getStateHelper().put(PropertyKeys.messageIcon, pMessageIcon);
-		handleAttribute("messageIcon", pMessageIcon);
+	public void setConfirmationType(String pConfirmationType) {
+		getStateHelper().put(PropertyKeys.confirmationType, pConfirmationType);
+		handleAttribute("confirmationType", pConfirmationType);
 	}
 
 	public String getUpdate() {
@@ -227,35 +230,5 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 		handleAttribute("tooltip", pTooltip);
 	}
 
-//	@Override
-//	public void processEvent(SystemEvent event) throws AbortProcessingException {
-//		FacesContext xContext = FacesContext.getCurrentInstance();
-//		UIComponent xComponent = (UIComponent) event.getSource();
-//		System.out.println("=============================================================================");
-//		System.out.println("| processEvent :" + event.getClass().getName() + ":" + xComponent.getClass().getName());
-//		System.out.println("| UIComponentID:" + xComponent.getClientId());
-//		System.out.println("| Children     :" + xComponent.getChildren().size());
-////		if (xComponent.getParent().getChildren().size() > 0) {
-////			DBSFaces.showComponentChildren(xContext, xComponent, 0);
-////		}
-//		System.out.println("=============================================================================");
-//	}
-
-	
-//	@Override
-//	public boolean isListenerForSource(Object source) {
-////		 String xStr = "";
-////		 if (source instanceof UIComponent){
-////		 xStr = ((UIComponent) source).getClientId();
-////		 }
-////		 xStr = xStr + "\t\t:" + source.getClass().getName();
-////		
-////		 System.out.println("isListenerForSource:" + xStr);
-//				
-////		return (source instanceof UIViewRoot);
-////		 return ((source instanceof UIViewRoot) || (source instanceof DBSCrudForm));
-////		 return (source instanceof DBSCrudForm);
-//		return false;
-//	}
 
 }

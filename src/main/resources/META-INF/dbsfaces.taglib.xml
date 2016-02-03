@@ -6,6 +6,145 @@
  		Componentes JSF DBSoft
  	</description>
 	<namespace>http://www.dbsoft.com.br/ui/dbsfaces</namespace>
+	
+	<tag>
+		<tag-name>dialog</tag-name>
+		<component>
+			<component-type>br.com.dbsoft.ui.component.dialog</component-type>
+			<handler-class />
+		</component>
+		<attribute>
+			<description>
+                Identificador único do componente.
+            </description>
+			<name>id</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Título da tela
+            </description>
+			<name>caption</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+            	Se pode redimencionar
+            </description>
+			<name>resizable</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Class CSS que será utilizado com style
+            </description>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+            	style
+            </description>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+            	Largura
+            </description>
+			<name>width</name>
+			<required>true</required>
+			<type>java.lang.Integer</type>
+		</attribute>
+		<attribute>
+			<description>
+            	Altura
+            </description>
+			<name>height</name>
+			<required>true</required>
+			<type>java.lang.Integer</type>
+		</attribute>
+		<attribute>
+			<description>
+            	Se exibe botão de fechar
+            </description>
+			<name>closeable</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                rendered
+            </description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+                Sendo: null=normal, a=Atenção, e=Error, i=informação, c=confirmar, g=ignorar, s=sucesso, b=sobre, p=proibido, t=importante
+            </description>
+			<name>confirmationType</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                update
+            </description>
+			<name>update</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Componentes que serão enviados na chamada ajax
+            </description>
+			<name>execute</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                yesAction
+            </description>
+			<name>yesAction</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                noAction
+            </description>
+			<name>noAction</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                okAction
+            </description>
+			<name>okAction</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Tooltip
+            </description>
+			<name>tooltip</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
+	
+	
+	
 	<tag>
 		<tag-name>dataTable</tag-name>
 		<component>
@@ -453,141 +592,6 @@
 		</attribute>
 	</tag>
 	<tag>
-		<tag-name>dialog</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.dialog</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
-                Identificador único do componente.
-            </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                Título da tela
-            </description>
-			<name>caption</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-            	Se pode redimencionar
-            </description>
-			<name>resizable</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                Class CSS que será utilizado com style
-            </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-            	style
-            </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-            	Largura
-            </description>
-			<name>width</name>
-			<required>true</required>
-			<type>java.lang.Integer</type>
-		</attribute>
-		<attribute>
-			<description>
-            	Altura
-            </description>
-			<name>height</name>
-			<required>true</required>
-			<type>java.lang.Integer</type>
-		</attribute>
-		<attribute>
-			<description>
-            	Se exibe botão de fechar
-            </description>
-			<name>closeable</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                rendered
-            </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
-                imagem do icone, sendo: n=normal, e=error, a=alerta, i=informação, c=confirmar, g=ignorar, s=sucess, b=sobre, p=proibido
-            </description>
-			<name>messageIcon</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                update
-            </description>
-			<name>update</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                Componentes que serão enviados na chamada ajax
-            </description>
-			<name>execute</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                yesAction
-            </description>
-			<name>yesAction</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                noAction
-            </description>
-			<name>noAction</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                okAction
-            </description>
-			<name>okAction</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                Tooltip
-            </description>
-			<name>tooltip</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-	</tag>
-	<tag>
 		<tag-name>group</tag-name>
 		<component>
 			<component-type>br.com.dbsoft.ui.component.group</component-type>
@@ -880,7 +884,7 @@
             	iconClass
             </description>
 			<name>iconClass</name>
-			<required>false</required>
+			<required>true</required>
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
@@ -909,11 +913,27 @@
 		</attribute>
 		<attribute>
 			<description>
-            	Style para o espaço que contém o texto da informação
+                Se informação será exibida quando o mouse passar por cima do icone, se não somente com click. Default true.
             </description>
-			<name>infoStyle</name>
+			<name>showOnHover</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+                Tooltip
+            </description>
+			<name>tooltip</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+            	Localização padrão, sendo 1-top, 2-right, 3-bottom, 4-left. O padrão é 2-right;
+            </description>
+			<name>defaultLocation</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
 		</attribute>
 	</tag>
 	<tag>

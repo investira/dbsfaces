@@ -1,7 +1,7 @@
 package br.com.dbsoft.ui.component.dialog;
 
 import br.com.dbsoft.message.IDBSMessages;
-import br.com.dbsoft.ui.component.dialog.DBSDialog.DIALOG_ICON;
+import br.com.dbsoft.ui.component.dialog.DBSDialog.CONFIRMATION_TYPE;
 
 public interface IDBSDialogMessages extends IDBSMessages<IDBSDialogMessage>{
 
@@ -28,7 +28,7 @@ public interface IDBSDialogMessages extends IDBSMessages<IDBSDialogMessage>{
 	 * Retorna o icone da mensagem corrente
 	 * @return
 	 */
-	public DIALOG_ICON getCurrentMessageIcon();
+	public CONFIRMATION_TYPE getCurrentMessageIcon();
 	
 	/**
 	 * Retorna a largura da janela que será exibida a mensagem corrente

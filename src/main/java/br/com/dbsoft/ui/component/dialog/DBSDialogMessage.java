@@ -3,12 +3,12 @@ package br.com.dbsoft.ui.component.dialog;
 import org.joda.time.DateTime;
 
 import br.com.dbsoft.message.DBSMessage;
-import br.com.dbsoft.ui.component.dialog.DBSDialog.DIALOG_ICON;
+import br.com.dbsoft.ui.component.dialog.DBSDialog.CONFIRMATION_TYPE;
 import br.com.dbsoft.ui.core.DBSFaces;
 
 public class DBSDialogMessage extends DBSMessage implements IDBSDialogMessage {
 
-	private DIALOG_ICON wMessageIcon;
+	private CONFIRMATION_TYPE wMessageIcon;
 	private Integer		wMessageWidth;
 	private Integer		wMessageHeight;
 	
@@ -50,25 +50,25 @@ public class DBSDialogMessage extends DBSMessage implements IDBSDialogMessage {
 		pvSetMessage(pMessageKey,0, pMessageType, pMessageText, pMessageTooltip,  pMessageTime);
 	}
 	
-	public DBSDialogMessage(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, DIALOG_ICON pMessageIcon){
+	public DBSDialogMessage(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, CONFIRMATION_TYPE pMessageIcon){
 		pvSetMessageDialog(pMessageKey, null, pMessageType, pMessageText, null, null, pMessageIcon);
 	}
 	
-	public DBSDialogMessage(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, String pMessageTooltip, DIALOG_ICON pMessageIcon){
+	public DBSDialogMessage(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, String pMessageTooltip, CONFIRMATION_TYPE pMessageIcon){
 		pvSetMessageDialog(pMessageKey, null, pMessageType, pMessageText, pMessageTooltip, null, pMessageIcon);
 	}
 	
 	@Override
-	public DIALOG_ICON getMessageIcon() {
+	public CONFIRMATION_TYPE getMessageIcon() {
 		if (wMessageIcon == null){
 			//Força configuração do icone caso não tenha sido informado
-			setMessageIcon(DBSFaces.toDIALOG_ICON(getMessageType()));
+			setMessageIcon(DBSFaces.toCONFIRMATION_TYPE(getMessageType()));
 		}
 		return wMessageIcon;
 	}
 	
 	@Override
-	public void setMessageIcon(DIALOG_ICON pIcon) {
+	public void setMessageIcon(CONFIRMATION_TYPE pIcon) {
 		wMessageIcon = pIcon;
 	}
 	
@@ -112,7 +112,7 @@ public class DBSDialogMessage extends DBSMessage implements IDBSDialogMessage {
 		super.setMessageTooltip(pMessageTooltip);
 	}
 	
-	protected void pvSetMessageDialog(String pMessageKey, Integer pMessageCode, MESSAGE_TYPE pMessageType, String pMessageText, String pMessageTooltip, DateTime pMessageTime, DIALOG_ICON pMessageIcon){
+	protected void pvSetMessageDialog(String pMessageKey, Integer pMessageCode, MESSAGE_TYPE pMessageType, String pMessageText, String pMessageTooltip, DateTime pMessageTime, CONFIRMATION_TYPE pMessageIcon){
 		pvSetMessage(pMessageKey, pMessageCode, pMessageType, pMessageText, pMessageTooltip, pMessageTime);
 		setMessageIcon(pMessageIcon);
 	}

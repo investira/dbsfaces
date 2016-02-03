@@ -121,41 +121,6 @@ dbsfaces.url = {
 }
 
 dbsfaces.ui = {
-	centerVertical : function(pId){
-		var xH = $(pId).outerHeight() / 2;
-		$(pId).css("margin-top",  -xH + "px")
-		      .css("top", "50%")
-		      .css("position", "absolute");
-	},
-
-	/*Centraliza via código. Procure utilizar o centralização por CSS*/
-	centerWindow : function (pMinWidth, pMinHeight, pElement){
-			var xParentWidth;
-			var xParentHeight;
-			if (window.innerWidth<pMinWidth){
-				xParentWidth = pMinWidth;
-			}else{
-				xParentWidth = window.innerWidth;
-			}
-			if (window.innerHeight<pMinHeight){
-				xParentHeight = pMinHeight;
-			}else{
-				xParentHeight = window.innerHeight;
-			}
-		    xHCenter = (xParentWidth - $(pElement).outerWidth()) / 2;
-		    xVCenter = (xParentHeight - $(pElement).outerHeight()) / 2;
-			$(pElement).css("left", xHCenter + "px")
-					   .css("top", xVCenter + "px")
-					   .css("position", "fixed");
-	},
-	
-	/*Centaliza todos os elementos que possuem a classe dbsAlignCenterThis*/
-	centerWindows : function(pMinWidth, pMinHeight, pSelector){
-		$(pSelector).each(function(index, value) {
-			dbsfaces.util.centerWindow(pMinWidth, pMinHeight, this);
-		});
-	},
-	
 	/*Exibe a imagem de que indica que está aguardando o recebimento dos dados*/
 	showLoading : function(pId, pShow){
 		
@@ -183,13 +148,17 @@ dbsfaces.ui = {
 	},
 	
 	getRectangle : function(obj) {
-	   var off = obj.offset();
+		var xE = obj;
+		if (!(obj instanceof jQuery)){
+			xE = $(obj);
+		}
+	   var off = xE.offset();
 
 	   return {
 	          top: off.top,
 	          left: off.left,
-	          height: obj.outerHeight(),
-	          width: obj.outerWidth()
+	          height: xE.outerHeight(),
+	          width: xE.outerWidth()
 	   };
 	},
 
@@ -288,7 +257,7 @@ dbsfaces.ui = {
 			.css("-o-animation", pCommand)
 			.css("animation", pCommand);
 	},
-	
+	//Retorna valores do transform
 	getTransform:function(e){
 		var xSt = window.getComputedStyle(e.get(0), null);
 		var xTr = xSt.getPropertyValue("-webkit-transform") ||
@@ -299,7 +268,7 @@ dbsfaces.ui = {
 		          "erro";
 		return xTr;
 	},
-	
+	//Retorna valores do Z definido no transform
 	getTransformZ: function(e){
 		var xTr = this.getTransformMatrix(e);
 		if (xTr == null
@@ -313,6 +282,7 @@ dbsfaces.ui = {
 		}
 		return parseFloat(xTr);
 	},
+	//Retorna valores do X definido no transform
 	getTransformX: function(e){
 		var xTr = this.getTransformMatrix(e);
 		if (xTr == null
@@ -326,6 +296,7 @@ dbsfaces.ui = {
 		}
 		return parseFloat(xTr);
 	},
+	//Retorna valores do Y definido no transform
 	getTransformY: function(e){
 		var xTr = this.getTransformMatrix(e);
 		if (xTr == null
@@ -436,32 +407,11 @@ dbsfaces.ui = {
 		var xTime = pText.length;
 		xTime = (xTime / 2) * 200;
 		return xTime;
-	},
-	
-	setLeftInside: function(e){
-		var xE = e;
-		if (!(e instanceof jQuery)){
-			xE = $(e);
-		}
-		var xLeft = xE.offset().left;
-		if (xE.get(0).getBoundingClientRect().left + xE.outerWidth() > $(document).width() ){
-			xLeft = $(document).width() - xE.outerWidth() - 1;
-		}
-		e.css("left", xLeft);
-	},
-
-	setTopInside: function(e){
-		var xE = e;
-		if (!(e instanceof jQuery)){
-			xE = $(e);
-		}
-		var xTop = xE.offset().top + $(e).outerHeight();
-		if (xE.get(0).getBoundingClientRect().top + xE.outerHeight() > $(document).height() ){
-			xTop = $(document).height() - xE.outerHeight() - 1;
-		}
-		e.css("top", xTop);
 	}
+
 }
+
+//Exibe janela ajustando a localização de form a não ultrapassar os limites da janela principal
 
 
 dbsfaces.util = {
@@ -567,8 +517,6 @@ dbsfaces.util = {
       return false;
 	}
 }
-
-
 
 
 dbsfaces.util.jsid = function(pClientId){

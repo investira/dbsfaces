@@ -18,10 +18,8 @@
 		<div id="#{cc.clientId}">
 			<c:if test="#{cc.userBean.hasMessage}">
 				<dbs:dialog id="#{cc.id}_beanDialogMessages"
-							messageIcon="#{cc.userBean.messageIcon}"
+							confirmationType="#{cc.userBean.messageIcon}"
 							rendered="#{cc.userBean.hasMessage}"
-							height="#{cc.userBean.messageHeight}"
-							width="#{cc.userBean.messageWidth}"
 							update="#{cc.attrs.update}"
 							tooltip="#{cc.userBean.messageTooltip}">
 							<c:if test="#{!cc.userBean.messageIsWarning}">

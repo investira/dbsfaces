@@ -26,86 +26,47 @@
 		<div id="#{cc.clientId}" class="dbs_crudDialog #{cc.attrs.styleClass}" style="#{cc.attrs.style}">
 			<dbs:div id="content">
 				<dbs:dialog id="dialog"
-				            caption="#{cc.crudBean.dialogCaption}" 
-							width="#{cc.attrs.width}" 
-							height="#{cc.attrs.height}">
+				            caption="#{cc.crudBean.dialogCaption}">
 					<f:facet name="toolbar">
 						<c:if test="#{cc.crudBean.isViewing}">
-							<dbs:ul style="float:left;">
-								<dbs:li>
-									<dbs:button id="btFirstx" iconClass="-i_navigate_first" rendered="#{cc.crudBean.isFirst}" styleClass="dbs_button -disabled" style="opacity:0.3;" readOnly="true"/>
-									<dbs:button id="btFirst" iconClass="-i_navigate_first" rendered="#{!cc.crudBean.isFirst}" action="#{cc.crudBean.moveFirst()}" update=":dialog " execute="@this"/>
-								</dbs:li>
-								<dbs:li>
-									<dbs:button id="btPreviousx" iconClass="-i_navigate_previous" rendered="#{cc.crudBean.isFirst}" styleClass="dbs_button -disabled" style="opacity:0.3;" readOnly="true"/>
-									<dbs:button id="btPrevious" iconClass="-i_navigate_previous" rendered="#{!cc.crudBean.isFirst}" action="#{cc.crudBean.movePrevious()}" update=":dialog " execute="@this"/>
-								</dbs:li>
-								<dbs:li>
-									<dbs:button id="btNextx" iconClass="-i_navigate_next" rendered="#{cc.crudBean.isLast}" styleClass="dbs_button -disabled" style="opacity:0.3;" readOnly="true"/>
-									<dbs:button id="btNext" iconClass="-i_navigate_next" rendered="#{!cc.crudBean.isLast}" action="#{cc.crudBean.moveNext()}" update=":dialog " execute="@this"/>
-								</dbs:li>
-								<dbs:li>
-									<dbs:button id="btLastx" iconClass="-i_navigate_last" rendered="#{cc.crudBean.isLast}" styleClass="dbs_button -disabled" style="opacity:0.3;" readOnly="true"/>
-									<dbs:button id="btLast" iconClass="-i_navigate_last" rendered="#{!cc.crudBean.isLast}" action="#{cc.crudBean.moveLast()}" update=":dialog " execute="@this"/>
-								</dbs:li>
-							</dbs:ul>						
-							<dbs:ul >
-								<dbs:li rendered="#{cc.crudBean.allowCopy or cc.crudBean.allowCopyOnUpdate}">
-									<dbs:button id="btCopy" iconClass="-i_copy" action="#{cc.crudBean.copy()}" update=":dialog " execute="@this" tooltip="Copiar dados para memória"/>
-								</dbs:li>
-								<dbs:li rendered="#{cc.attrs.allowDelete and cc.crudBean.allowDelete}">
-									<dbs:button id="btDelete" iconClass="-i_delete" action="#{cc.crudBean.delete()}" update=":dialog " execute="@this" tooltip="Excluir"/>
-								</dbs:li>
-								<dbs:li rendered="#{cc.attrs.allowUpdate and cc.crudBean.allowUpdate}">
-									<dbs:button id="btEdit" iconClass="-i_edit" action="#{cc.crudBean.update()}" update=":dialog" execute="@this" tooltip="Editar"/> 
-								</dbs:li>
-								<dbs:li>
-<!-- Retinado update do cc.clientId								   -->								
-<!-- 								<dbs:button id="close" iconClass="-i_cancel" action="#{cc.crudBean.close()}" update=":dialog #{cc.clientId} #{cc.attrs.update}" execute="@this"/> -->
-									<dbs:button id="btClose" iconClass="-i_cancel -red" action="#{cc.crudBean.close()}" update=":dialog #{cc.attrs.update}" execute="@this" tooltip="Fechar"/>
-								</dbs:li>
-							</dbs:ul>
+							<dbs:div class="-flex" style="float:left;">
+								<dbs:button id="btFirst" iconClass="-i_navigate_first" readOnly="#{cc.crudBean.isFirst}"  style="#{cc.crudBean.isFirst ? 'opacity:0.3;': ''}" action="#{cc.crudBean.moveFirst()}" update=":dialog " execute="@this" tooltip="Ir para o primeiro item da lista"/>
+								<dbs:button id="btPrevious" iconClass="-i_navigate_previous" readOnly="#{cc.crudBean.isFirst}" style="#{cc.crudBean.isFirst ? 'opacity:0.3;': ''}" action="#{cc.crudBean.movePrevious()}" update=":dialog " execute="@this" tooltip="Ir para o item anterior da lista"/>
+								<dbs:button id="btNext" iconClass="-i_navigate_next" readOnly="#{cc.crudBean.isLast}" style="#{cc.crudBean.isLast ? 'opacity:0.3;': ''}" action="#{cc.crudBean.moveNext()}" update=":dialog " execute="@this" tooltip="Ir para o próximo item da lista"/>
+								<dbs:button id="btLast" iconClass="-i_navigate_last" readOnly="#{cc.crudBean.isLast}" style="#{cc.crudBean.isLast ? 'opacity:0.3;': ''}" action="#{cc.crudBean.moveLast()}" update=":dialog " execute="@this" tooltip="Ir para o último item da lista"/>
+							</dbs:div>						
+							<dbs:div style="display: inline-flex;">
+								<dbs:button id="btCopy" iconClass="-i_copy" rendered="#{cc.crudBean.allowCopy or cc.crudBean.allowCopyOnUpdate}" action="#{cc.crudBean.copy()}" update=":dialog " execute="@this" tooltip="Copiar dados para memória"/>
+								<dbs:button id="btDelete" iconClass="-i_delete" rendered="#{cc.attrs.allowDelete and cc.crudBean.allowDelete}" action="#{cc.crudBean.delete()}" update=":dialog " execute="@this" tooltip="Excluir"/>
+								<dbs:button id="btEdit" iconClass="-i_edit" rendered="#{cc.attrs.allowUpdate and cc.crudBean.allowUpdate}" action="#{cc.crudBean.update()}" update=":dialog" execute="@this" tooltip="Editar"/> 
+								<dbs:button id="btClose" iconClass="-i_cancel -red" action="#{cc.crudBean.close()}" update=":dialog #{cc.attrs.update}" execute="@this" tooltip="Fechar"/>
+							</dbs:div>
 						</c:if>
 						<c:if test="#{cc.crudBean.isUpdating}">
-							<dbs:ul>
-								<dbs:li styleClass="-icon">
-									<dbs:img styleClass="-i_edit"/>
-								</dbs:li>
-								<dbs:li rendered="#{cc.crudBean.allowCopyOnUpdate}">
-									<dbs:button id="btPaste" iconClass="-i_paste" action="#{cc.crudBean.paste()}" rendered="#{cc.crudBean.isCopied}" update=":dialog " execute="@this" tooltip="Colar dados em memória"/>
-								</dbs:li>
-								<dbs:li>
-									<dbs:button id="btOk" iconClass="-i_ok -green" action="#{cc.crudBean.confirmEditing()}" update=":dialog #{cc.attrs.update}" execute="#{cc.clientId}" tooltip="Confirmar"/>
-								</dbs:li>
-								<dbs:li>
-									<dbs:button id="btCancel" iconClass="-i_cancel -red" action="#{cc.crudBean.ignoreEditing()}" update=":dialog" execute="#{cc.clientId}" tooltip="Ignorar"/>
-								</dbs:li>
-							</dbs:ul>
+							<dbs:div styleClass="-icon">
+								<dbs:img styleClass="-i_edit"/>
+							</dbs:div>
+							<dbs:div style="display: inline-flex;">
+								<dbs:button id="btPaste" iconClass="-i_paste" action="#{cc.crudBean.paste()}" rendered="#{cc.crudBean.allowCopyOnUpdate and cc.crudBean.isCopied}" update=":dialog " execute="@this" tooltip="Colar dados em memória"/>
+								<dbs:button id="btOk" iconClass="-i_ok -green" action="#{cc.crudBean.confirmEditing()}" update=":dialog #{cc.attrs.update}" execute="#{cc.clientId}" tooltip="Confirmar"/>
+								<dbs:button id="btCancel" iconClass="-i_cancel -red" action="#{cc.crudBean.ignoreEditing()}" update=":dialog" execute="#{cc.clientId}" tooltip="Ignorar"/>
+							</dbs:div>
 						</c:if>
 						<c:if test="#{cc.crudBean.isInserting}">
-							<dbs:ul>
-								<dbs:li styleClass="-icon">
-									<dbs:img styleClass="-i_insert"/>
-								</dbs:li>
-								<dbs:li rendered="#{cc.crudBean.allowCopy}">
-									<dbs:button id="btPaste" iconClass="-i_paste" action="#{cc.crudBean.paste()}" rendered="#{cc.crudBean.isCopied}" update=":dialog " execute="@this" tooltip="Colar dados em memória"/>
-								</dbs:li>
-								<dbs:li>
-									<dbs:button id="btOk" iconClass="-i_ok -green" action="#{cc.crudBean.confirmEditing()}" update=":dialog #{cc.attrs.update}" execute="#{cc.clientId}" tooltip="Confirmar"/>
-								</dbs:li>
-								<dbs:li>
-<!-- Retinado update do cc.clientId								   -->
-<!-- 									<dbs:button id="cancel" iconClass="-i_cancel" action="#{cc.crudBean.ignoreEditing()}" update=":dialog #{cc.clientId} #{cc.attrs.update}" execute="#{cc.clientId}"/> -->
-									<dbs:button id="btCancel" iconClass="-i_cancel -red" action="#{cc.crudBean.ignoreEditing()}" update=":dialog #{cc.attrs.update}" execute="#{cc.clientId}" tooltip="Ignorar"/>
-								</dbs:li>
-							</dbs:ul>
+							<dbs:div styleClass="-icon">
+								<dbs:img styleClass="-i_insert"/>
+							</dbs:div>
+							<dbs:div style="display: inline-flex;">
+								<dbs:button id="btPaste" iconClass="-i_paste" action="#{cc.crudBean.paste()}" rendered="#{cc.crudBean.isCopied and cc.crudBean.allowCopy}" update=":dialog " execute="@this" tooltip="Colar dados em memória"/>
+								<dbs:button id="btOk" iconClass="-i_ok -green" action="#{cc.crudBean.confirmEditing()}" update=":dialog #{cc.attrs.update}" execute="#{cc.clientId}" tooltip="Confirmar"/>
+								<dbs:button id="btCancel" iconClass="-i_cancel -red" action="#{cc.crudBean.ignoreEditing()}" update=":dialog #{cc.attrs.update}" execute="#{cc.clientId}" tooltip="Ignorar"/>
+							</dbs:div>
 						</c:if>
 						<c:if test="#{cc.crudBean.isDeleting}">
-							<dbs:ul>
-								<dbs:li styleClass="-icon">
-									<dbs:img styleClass="-i_delete"/>
-								</dbs:li>
-							</dbs:ul>
+							<dbs:div styleClass="-icon">
+								<dbs:img styleClass="-i_delete"/>
+							</dbs:div>
+							<dbs:div style="height: 1.89em; display: inline-block;"/>
 						</c:if>
 					</f:facet>
 					
