@@ -49,7 +49,7 @@ public class DBSProgressRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "style", xProgress.getStyle(), null);
 //				DBSFaces.encodeLabel(pContext, xProgress, xWriter);
 				pvEncodeProgress(xProgress, xWriter);
-				DBSFaces.encodeTooltip(pContext, xProgress, xProgress.getTooltip().toString());
+			DBSFaces.encodeTooltip(pContext, xProgress, xProgress.getTooltip().toString());
 		xWriter.endElement("div");
 	}
 	

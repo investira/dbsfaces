@@ -65,16 +65,18 @@ public class DBSInputMaskRenderer extends DBSRenderer {
 					DBSFaces.encodeLabel(pContext, xInputMask, xWriter);
 					pvEncodeInput(pContext, xInputMask, xWriter);
 					DBSFaces.encodeRightLabel(pContext, xInputMask, xWriter);
-					DBSFaces.encodeTooltip(pContext, xInputMask, xInputMask.getTooltip());
 			xWriter.endElement("div");
+			DBSFaces.encodeTooltip(pContext, xInputMask, xInputMask.getTooltip());
 		xWriter.endElement("div");
-		DBSFaces.encodeJavaScriptTagStart(xWriter);
-		String xJS = "$(document).ready(function() { \n" +
-				     " var xInputMaskId = '#' + dbsfaces.util.jsid('" + getInputDataClientId(xInputMask) + "'); \n " + 
-				     " dbs_inputMask(xInputMaskId," + pvGetMaskParm(xInputMask) + "); \n" +
-                     "}); \n"; 
-		xWriter.write(xJS);
-		DBSFaces.encodeJavaScriptTagEnd(xWriter);		
+		if (!xInputMask.getReadOnly()){
+			DBSFaces.encodeJavaScriptTagStart(xWriter);
+			String xJS = "$(document).ready(function() { \n" +
+					     " var xInputMaskId = '#' + dbsfaces.util.jsid('" + getInputDataClientId(xInputMask) + "'); \n " + 
+					     " dbs_inputMask(xInputMaskId," + pvGetMaskParm(xInputMask) + "); \n" +
+	                     "}); \n"; 
+			xWriter.write(xJS);
+			DBSFaces.encodeJavaScriptTagEnd(xWriter);		
+		}
 	}
 	
 	private String pvGetMaskParm(DBSInputMask pInputMask){

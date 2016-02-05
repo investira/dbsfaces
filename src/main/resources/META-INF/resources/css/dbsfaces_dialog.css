@@ -19,12 +19,21 @@
 }
 
 .dbs_dialog > .-dialog{
-	position: absolute;
+	position: fixed;
 	display: inline-block;
 	opacity:0;
 	
 	padding: 0;
     margin: 0;
+
+	/* reset transform translate     */
+    transform-style: flat;
+    -webkit-transform: translateX(0) translateY(0);
+    -moz-transform: translateX(0) translateY(0);
+    -o-transform: translateX(0) translateY(0);
+    transform: translateX(0) translateY(0);
+	/* ================ */
+
 
 /*     -webkit-transform-origin: 0 0; */
 /*     -moz-transform-origin: 0 0; */

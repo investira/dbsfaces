@@ -63,8 +63,8 @@ public class DBSListboxRenderer extends DBSRenderer {
 					DBSFaces.encodeLabel(pContext, xListbox, xWriter);
 					pvEncodeInput(pContext, xListbox, xWriter);
 					DBSFaces.encodeRightLabel(pContext, xListbox, xWriter);
-					DBSFaces.encodeTooltip(pContext, xListbox, xListbox.getTooltip());
 			xWriter.endElement("div");
+			DBSFaces.encodeTooltip(pContext, xListbox, xListbox.getTooltip());
 		xWriter.endElement("div");
 	}
 

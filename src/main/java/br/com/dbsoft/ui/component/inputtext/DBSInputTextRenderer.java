@@ -113,8 +113,8 @@ public class DBSInputTextRenderer extends DBSRenderer {
 					DBSFaces.encodeLabel(pContext, xInputText, xWriter);
 					pvEncodeInput(pContext, xInputText, xWriter);
 					DBSFaces.encodeRightLabel(pContext, xInputText, xWriter);
-					DBSFaces.encodeTooltip(pContext, xInputText, xInputText.getTooltip());
 			xWriter.endElement("div");
+			DBSFaces.encodeTooltip(pContext, xInputText, xInputText.getTooltip());
 		xWriter.endElement("div");
 		if (!xInputText.getReadOnly()){
 			pvEncodeJS(xClientId, xWriter);

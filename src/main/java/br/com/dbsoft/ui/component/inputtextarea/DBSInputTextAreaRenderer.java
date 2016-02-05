@@ -65,8 +65,8 @@ public class DBSInputTextAreaRenderer extends DBSRenderer {
 	
 					DBSFaces.encodeLabel(pContext, xInputTextArea, xWriter);
 					pvEncodeInput(pContext, xInputTextArea, xWriter);
-					DBSFaces.encodeTooltip(pContext, xInputTextArea, xInputTextArea.getTooltip());
 			xWriter.endElement("div");
+			DBSFaces.encodeTooltip(pContext, xInputTextArea, xInputTextArea.getTooltip());
 		xWriter.endElement("div");
 	}
 

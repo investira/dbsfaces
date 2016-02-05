@@ -75,8 +75,8 @@ public class DBSComboboxRenderer extends DBSRenderer {
 					DBSFaces.encodeLabel(pContext, xCombobox, xWriter);
 					pvEncodeInput(pContext, xCombobox, xWriter);
 					DBSFaces.encodeRightLabel(pContext, xCombobox, xWriter);
-					DBSFaces.encodeTooltip(pContext, xCombobox, xCombobox.getTooltip());
 			xWriter.endElement("div");
+			DBSFaces.encodeTooltip(pContext, xCombobox, xCombobox.getTooltip());
 		xWriter.endElement("div");
 		
 		if (!xCombobox.getReadOnly()){

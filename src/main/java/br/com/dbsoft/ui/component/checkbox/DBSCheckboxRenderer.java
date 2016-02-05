@@ -75,8 +75,8 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 					DBSFaces.encodeLabel(pContext, xCheckbox, xWriter, false);
 				}
 				DBSFaces.encodeRightLabel(pContext, xCheckbox, xWriter);
-				DBSFaces.encodeTooltip(pContext, xCheckbox, xCheckbox.getTooltip());
 			xWriter.endElement("div");
+			DBSFaces.encodeTooltip(pContext, xCheckbox, xCheckbox.getTooltip());
 		xWriter.endElement("div");
 		//Javascript
 		if (!xCheckbox.getReadOnly()){

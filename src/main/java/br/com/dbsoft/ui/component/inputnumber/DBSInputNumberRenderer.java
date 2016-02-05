@@ -75,8 +75,8 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 					DBSFaces.encodeLabel(pContext, xInputNumber, xWriter);
 					pvEncodeInput(pContext, xInputNumber, xWriter);
 					DBSFaces.encodeRightLabel(pContext, xInputNumber, xWriter);
-					DBSFaces.encodeTooltip(pContext, xInputNumber, xInputNumber.getTooltip());
 			xWriter.endElement("div");
+			DBSFaces.encodeTooltip(pContext, xInputNumber, xInputNumber.getTooltip());
 		xWriter.endElement("div");
 
 		//Não gera o JS quando for somente leitura

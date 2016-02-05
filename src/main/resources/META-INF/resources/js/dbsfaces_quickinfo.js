@@ -23,6 +23,7 @@ dbs_quickInfo = function(pId) {
 dbsfaces.quickInfo = {
 		
 	showQuickInfo: function(pId){
+//		var xTooltip = $(pId + " > .-icon > .-content > .-tooltip");
 		//Exibe tooltip
 		if (!dbsfaces.tooltip.show(pId + " > .-icon > .-content", "qi", $(pId).attr("dl"))){return;}
 		//Esconde tooltip caso exista para não poluir a exibição do quickinfo

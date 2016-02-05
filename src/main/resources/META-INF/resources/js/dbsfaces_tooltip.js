@@ -20,21 +20,24 @@ dbs_tooltip = function(pId) {
 dbsfaces.tooltip = {
 	wTimerShow: +new Date(),
 	wTimerHide: +new Date(),
-	wRightLeft: 10,//2 + 8;
-	wTomBottom: 5, //1 + 4;
+	wRightLeft: 10,//2 + 8(Right + Left)
+	wTomBottom: 5, //1 + 4(Top + Bottom);
 	
 	showTooltip: function(pId){
 		dbsfaces.tooltip.wTimerShow = setTimeout(function(){
+			//Hide all
+			dbsfaces.tooltip.hide(null, "tt");
 			//Exibe tooltip
 			if (!dbsfaces.tooltip.show(pId, "tt", 1)){return;}
 			//Tempo de exibição
-			var xContainer = $(pId).find(".-tooltip.-tt:first").children(".-container");
+			var xTooltip = $(pId).children(".-tooltip.-tt");
+			var xContainer = xTooltip.children(".-mask").children(".-container");
 			var xContent = xContainer.children(".-content");
 			var xTime = dbsfaces.ui.getDelayFromTextLength(xContent.text());
 			dbsfaces.tooltip.wTimerHide = setTimeout(function(){
 				//Esconde tooltip gradativamente e depois apaga
-				xContainer.fadeOut( "slow", function(){
-					xContainer.css("opacity",0);
+				xTooltip.fadeOut( "slow", function(){
+					xTooltip.css("opacity",0);
 				});
 			}, xTime);
 		}, 1200); //2 Segundos -Tempo para exibir
@@ -44,19 +47,26 @@ dbsfaces.tooltip = {
 		dbsfaces.tooltip.hide(pId, "tt");
 	},
 	disableTooltip: function(pId){
-		$(pId).find(".-tooltip.-tt:first").addClass("-disabled");
+		$(pId).children(".-tooltip.-tt:first").addClass("-disabled");
 	},
 	enableTooltip: function(pId){
-		$(pId).find(".-tooltip.-tt:first").removeClass("-disabled");
+		$(pId).children(".-tooltip.-tt:first").removeClass("-disabled");
 	},
 
 	hide: function(pId, pTooltipType){
 		if (typeof(dbsfaces.tooltip.wTimerShow) != "undefined"){
 			clearTimeout(dbsfaces.tooltip.wTimerShow);
-			clearTimeout(dbsfaces.tooltip.wTimerHide);
-			var xContainer = $(pId).find(".-tooltip.-" + pTooltipType + ":first > .-container");
-			xContainer.hide().css("opacity",0);
 		}
+		if (typeof(dbsfaces.tooltip.wTimerHide) != "undefined"){
+			clearTimeout(dbsfaces.tooltip.wTimerHide);
+		}
+		var xTooltip;
+		if (pId == null){
+			xTooltip = $(".-tooltip.-" + pTooltipType);
+		}else{
+			xTooltip = $(pId).children(".-tooltip.-" + pTooltipType);
+		}
+		xTooltip.hide().css("opacity",0);
 	},
 
 	show: function(pId, pTooltipType, pDefaultLocation){
@@ -67,46 +77,97 @@ dbsfaces.tooltip = {
 		if (xComponent.length == 0){
 			return false;
 		}
-		var xTooltip = xComponent.find(".-tooltip.-" + pTooltipType + ":first");
+		var xTooltip = xComponent.children(".-tooltip.-" + pTooltipType);
 		//Não exibi se tooltip estiver desabilitado
 		if (xTooltip.hasClass("-disabled")){
 			return false;
 		}
-		var xContainer = xTooltip.children(".-container");
+		var xMask = xTooltip.children(".-mask");
+		var xContainer = xMask.children(".-container");
 		var xContent = xContainer.children(".-content");
 		/* Se o foco estiver em algum compenente filho */
 
 		//Exibe internamente, mas esconde exibição de fato para poder saber as dimensões do tooltip
-        xContainer.css("opacity",0);
-        xContainer.show();
-
+		xTooltip.css("opacity",0);
+		xTooltip.show();
+        
         //Remove localização anterior se houver
         xTooltip.removeClass("-l1 -l2 -l3 -l4");
 
         //Configura como localização default e depois verifica se ficou dentro dos limites da janela principal
-        var xBestLocationCode = dbsfaces.tooltip.setBestLocation(pDefaultLocation, xComponent, xContainer);
+        var xBestLocationCode = dbsfaces.tooltip.setBestLocation(pDefaultLocation, xComponent, xTooltip, xContainer);
 
         //Adiciona class da localização ao componente
         xTooltip.addClass(dbsfaces.tooltip.getLocationClass(xBestLocationCode));
         
-        //Exibe tooltip
+        //Exibe tooltip  
 		setTimeout(function(){
-	        xContainer.css("opacity",1);
+			xTooltip.css("opacity",1);
 		}, 0);
         return true;
 	},
 	
-	preShow: function(pLocationCode, pComponent, pContainer){
+	preShow: function(pLocationCode, pComponent, pTooltip, pContainer){
 		var xArrowSize = 8;
 		var xLeft;
 		var xTop;
 		
 		
+//		var xTop = $(pId).get(0).getBoundingClientRect().top - xTooltip.outerHeight() - 8
 		//Ajuste do scroll
-		xTop = (pComponent.get(0).getBoundingClientRect().top - pComponent.offset().top);
+
+//		xTop = (pComponent.get(0).getBoundingClientRect().top - pComponent.offset().top); //OK
+//		xLeft = (pComponent.get(0).getBoundingClientRect().left - pComponent.offset().left);
+
+//		xTop = (pComponent.get(0).getBoundingClientRect().top - pComponent.offset().top); //OK
 //		xLeft = (pComponent.get(0).getBoundingClientRect().left - pComponent.offset().left);
 		xLeft = 0;
+		xTop = 0;
+
 		
+//		xTop = (pComponent.get(0).getBoundingClientRect().top); //OK
+//		xLeft = (pComponent.get(0).getBoundingClientRect().left);
+//		var xContent = pContainer.children(".-content");
+
+//		console.log(pComponent.offsetParent().scrollTop());
+//		console.log(pComponent.scrollParent().scrollTop());
+		
+//		console.log(pComponent.get(0).getBoundingClientRect().top 
+//			    + "\t" + pComponent.offset().top
+//			    + "\t" + pComponent.scrollTop()
+//			    + "\t" + pComponent.offsetParent().offset().top);
+//		console.log(pTooltip.get(0).getBoundingClientRect().top 
+//			    + "\t" + pTooltip.offset().top
+//			    + "\t" + pTooltip.scrollTop()
+//			    + "\t" + pTooltip.offsetParent().offset().top);
+//		console.log(xContent.get(0).getBoundingClientRect().top 
+//			    + "\t" + xContent.offset().top
+//			    + "\t" + xContent.scrollTop()
+//			    + "\t" + xContent.offsetParent().offset().top);
+//		console.log(pContainer.get(0).getBoundingClientRect().top 
+//			    + "\t" + pContainer.offset().top
+//			    + "\t" + pContainer.scrollTop()
+//			    + "\t" + pContainer.offsetParent().offset().top);
+		
+//		console.log(pComponent.get(0).getBoundingClientRect().top 
+//		    + "\t" + pComponent.offset().top
+//		    + "\t" + pComponent.position().top
+//		    + "\t" + pComponent.parent().get(0).getBoundingClientRect().top
+//		    + "\t" + pComponent.parent().offset().top
+//		    + "\t" + pComponent.parent().position().top);
+//		console.log(pTooltip.get(0).getBoundingClientRect().top 
+//			    + "\t" + pTooltip.offset().top
+//			    + "\t" + pTooltip.position().top
+//			    + "\t" + pTooltip.parent().get(0).getBoundingClientRect().top
+//			    + "\t" + pTooltip.parent().offset().top
+//			    + "\t" + pTooltip.parent().position().top);
+//		console.log(pContainer.get(0).getBoundingClientRect().top 
+//			    + "\t" + pContainer.offset().top
+//			    + "\t" + pContainer.position().top
+//			    + "\t" + pContainer.parent().get(0).getBoundingClientRect().top
+//			    + "\t" + pContainer.parent().offset().top
+//			    + "\t" + pContainer.parent().position().top);
+		console.log(xTop + "\n");
 		//Top e Bottom
 		if (pLocationCode == 1
 		 || pLocationCode == 3){
@@ -132,8 +193,10 @@ dbsfaces.tooltip = {
 				xLeft -= (pContainer.outerWidth() + xArrowSize);
 			}
 		}
-		
-		dbsfaces.ui.transform(pContainer, "translateX(" + xLeft + "px) translateY(" + xTop + "px)");
+//		pContainer.css("left", xLeft);
+//		pContainer.css("top", xTop); 
+//		
+		dbsfaces.ui.transform(pContainer, "translateX(" + parseInt(xLeft) + "px) translateY(" + parseInt(xTop) + "px)");
 
 	},
 
@@ -173,13 +236,13 @@ dbsfaces.tooltip = {
 	},
 	
 	//Encontra a melhor localização, considerando a localização desejada/default
-	setBestLocation: function(pDefaultLocation, pComponent, pContainer){
+	setBestLocation: function(pDefaultLocation, pComponent, pTooltip, pContainer){
 		var xBestLocationCode = pDefaultLocation;
 		var xLocationTested = Math.pow(2, (pDefaultLocation - 1)); //Converte para binário
 		//Loop pelas 4 posições posíveis(top,right,bottom,left)
 		for (var xI=1; xI<=4; xI++){
 			//Cria tooltip, mas não exibe. É necessário para verificação abaixo se esta dentro dos limites
-			dbsfaces.tooltip.preShow(xBestLocationCode, pComponent, pContainer);
+			dbsfaces.tooltip.preShow(xBestLocationCode, pComponent, pTooltip, pContainer);
 	        //Verifica se localização default esta dentro dos limites 
 	        xBestLocationCode = dbsfaces.tooltip.getBestLocationCode(xBestLocationCode, pContainer);
 	        //Localização OK
@@ -254,19 +317,3 @@ dbsfaces.tooltip = {
 		return (Math.log(xDefaultLocation) / Math.log(2)) + 1;
 	}	
 }
-
-
-//console.log(parseInt(pComponent.get(0).getBoundingClientRect().left) + "\t" + parseInt(pComponent.get(0).getBoundingClientRect().top) + "\t" + 
-//		parseInt(pComponent.offset().left) + "\t" + parseInt(pComponent.offset().top) + "\t" + 
-//		parseInt(pComponent.parent().offset().left) + "\t" + parseInt(pComponent.parent().offset().top) + "\t" +
-//		parseInt(pComponent.position().left) + "\t" + parseInt(pComponent.position().top) + "\t" +
-////		parseInt(pContainer.position().left) + "\t" + parseInt(pContainer.position().top) + "\t" +
-////		xDialogPositionOld.left + "\t" + xDialogPositionOld.top + "\t" +
-////		xDialogPositionOld.top + "\t" + xDialogPositionOld.width + "\t" +
-////		parseInt(pContainer.get(0).getBoundingClientRect().left) + "\t" + parseInt(pContainer.get(0).getBoundingClientRect().top) + "\t" + 
-//		parseInt(pContainer.offset().left) + "\t" + parseInt(pContainer.offset().top) + "\t" + 
-//		parseInt(pComponent.outerHeight()) + "\t" + parseInt(pComponent.outerWidth()) + "\t" +
-//		parseInt(pComponent.height()) + "\t" + parseInt(pComponent.width()) + "\t" +
-////		parseInt(pComponent.get(0).height) + "\t" + parseInt(pComponent.get(0).width) + "\t" +
-//		parseInt(pComponent.get(0).getBoundingClientRect().width) + "\t" + parseInt(pComponent.get(0).getBoundingClientRect().height) + "\t" + 
-//		parseInt(pContainer.outerHeight()) + "\t" + parseInt(pContainer.outerWidth()) + '\n');

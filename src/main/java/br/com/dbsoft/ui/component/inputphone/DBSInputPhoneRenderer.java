@@ -85,10 +85,10 @@ public class DBSInputPhoneRenderer extends DBSRenderer {
 				DBSFaces.encodeLabel(pContext, xInputPhone, xWriter);
 				pvEncodeInput(pContext, xInputPhone, xWriter);
 				DBSFaces.encodeRightLabel(pContext, xInputPhone, xWriter);
-				DBSFaces.encodeTooltip(pContext, xInputPhone, xInputPhone.getTooltip());
 //				encodeClientBehaviors(pContext, xInputPhone);
 
 			xWriter.endElement("div");
+			DBSFaces.encodeTooltip(pContext, xInputPhone, xInputPhone.getTooltip());
 		xWriter.endElement("div");
 
 		if (!xInputPhone.getReadOnly()){

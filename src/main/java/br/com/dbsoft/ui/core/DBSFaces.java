@@ -1513,33 +1513,37 @@ public class  DBSFaces {
 			xWriter.startElement("div", pComponent);
 				String xClass = DBSFaces.CSS.MODIFIER.TOOLTIP;
 				if (pBasicTooltip){
-					xClass += "-tt";
+					xClass += "-tt"; //Tooltip padrão
 				}else{
-					xClass += "-qi";
+					xClass += "-qi"; //Tooltip para o quickinfo
 				}
 				xWriter.writeAttribute("class", xClass, null);
+				xWriter.writeAttribute("style", "display: none;", null);
 				xWriter.startElement("div", pComponent);
-					xClass = DBSFaces.CSS.MODIFIER.CONTAINER;
-					if (!pBasicTooltip){
-						xClass += CSS.BACK_TEXTURE_BLACK_GRADIENT;
-					}
-					xWriter.writeAttribute("class", xClass.trim(), null);
-					xWriter.writeAttribute("style", "display: none;", null);
+					xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.MASK, null);
 					xWriter.startElement("div", pComponent);
-						xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT.trim() , null);
-						//Dá prioridade para o facet
-						if (xTooltip != null){
-							if (pBasicTooltip){
-								//Encode conteúdo do facet
-								xTooltip.encodeAll(pContext);
-							}else{
-								//Encode dos filhos do componente
-								renderChildren(pContext, xTooltip);
-							}
-						}else{
-							//Encode texto
-							xWriter.write(getHtmlStringWithLineBreak(pTooltipText));
+						xClass = DBSFaces.CSS.MODIFIER.CONTAINER;
+						if (!pBasicTooltip){
+							xClass += CSS.BACK_TEXTURE_BLACK_GRADIENT;
 						}
+						xWriter.writeAttribute("class", xClass.trim(), null);
+						xWriter.startElement("div", pComponent);
+							xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT.trim() , null);
+							//Dá prioridade para o facet
+							if (xTooltip != null){
+								if (pBasicTooltip){
+									//Encode conteúdo do facet
+									xTooltip.encodeAll(pContext);
+								}else{
+									//Encode dos filhos do componente
+									renderChildren(pContext, xTooltip);
+								}
+							}else{
+								//Encode texto
+//								xWriter.write(getHtmlStringWithLineBreak(pTooltipText));
+								xWriter.write(pTooltipText);
+							}
+						xWriter.endElement("div");
 					xWriter.endElement("div");
 				xWriter.endElement("div");
 			xWriter.endElement("div");

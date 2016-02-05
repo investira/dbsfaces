@@ -40,6 +40,33 @@ String.prototype.replaceAll = function(target, replacement) {
   return this.split(target).join(replacement);
 };
 
+//JQUERY PLUGINS===================================================================
+
+(function($) {
+    $.fn.hasScrollBar = function() {
+        return this.get(0).scrollHeight > this.height();
+    }
+})(jQuery);
+
+
+//Encontra o parente mais próximo que possuir barra de rolagem
+var scrollParent = $.fn.scrollParent = function( includeHidden ) {
+	var position = this.css( "position" ),
+		excludeStaticParent = position === "absolute",
+		overflowRegex = includeHidden ? /(auto|scroll|hidden)/ : /(auto|scroll)/,
+		scrollParent = this.parents().filter( function() {
+			var parent = $( this );
+			if ( excludeStaticParent && parent.css( "position" ) === "static" ) {
+				return false;
+			}
+			return overflowRegex.test( parent.css( "overflow" ) + parent.css( "overflow-y" ) + parent.css( "overflow-x" ) );
+		} ).eq( 0 );
+
+	return position === "fixed" || !scrollParent.length ? $( this[ 0 ].ownerDocument || document ) : scrollParent;
+};
+
+//DBSFACES===========================================================
+
 dbsfaces = {
 	CSS : {
 		MODIFIER : {
@@ -226,7 +253,11 @@ dbsfaces.ui = {
 	},
 	
 	filter: function(e, pValue){
-		$(e).css("-ms-filter", pValue)
+		var xE = e;
+		if (!(xE instanceof jQuery)){
+			xE = $(e);
+		}
+		xE.css("-ms-filter", pValue)
 			.css("-o-filter", pValue)
 			.css("-moz-filter", pValue)
 			.css("-webkit-filter", pValue)
@@ -235,15 +266,23 @@ dbsfaces.ui = {
 	
 	
 	transform: function(e, pCommand){
-		$(e).css("-webkit-transform", pCommand)
-			.css("-moz-transform", pCommand)
-			.css("-ms-transform", pCommand)
-			.css("-o-transform", pCommand)
-			.css("transform", pCommand);
+		var xE = e;
+		if (!(xE instanceof jQuery)){
+			xE = $(e);
+		}
+		xE.css("-webkit-transform", pCommand)
+		  .css("-moz-transform", pCommand)
+		  .css("-ms-transform", pCommand)
+		  .css("-o-transform", pCommand)
+		  .css("transform", pCommand);
 	},
 	
 	transition: function(e, pCommand){
-		$(e).css("-webkit-transition", pCommand)
+		var xE = e;
+		if (!(obj instanceof jQuery)){
+			xE = $(e);
+		}
+		xE.css("-webkit-transition", pCommand)
 			.css("-moz-transition", pCommand)
 			.css("-ms-transition", pCommand)
 			.css("-o-transition", pCommand)
@@ -251,7 +290,11 @@ dbsfaces.ui = {
 	},
 
 	animation: function(e, pCommand){
-		$(e).css("-webkit-animation", pCommand)
+		var xE = e;
+		if (!(xE instanceof jQuery)){
+			xE = $(e);
+		}
+		xE.css("-webkit-animation", pCommand)
 			.css("-moz-animation", pCommand)
 			.css("-ms-animation", pCommand)
 			.css("-o-animation", pCommand)
@@ -259,7 +302,11 @@ dbsfaces.ui = {
 	},
 	//Retorna valores do transform
 	getTransform:function(e){
-		var xSt = window.getComputedStyle(e.get(0), null);
+		var xE = e;
+		if (!(xE instanceof jQuery)){
+			xE = $(e);
+		}
+		var xSt = window.getComputedStyle(xE.get(0), null);
 		var xTr = xSt.getPropertyValue("-webkit-transform") ||
 		          xSt.getPropertyValue("-moz-transform") ||
 		          xSt.getPropertyValue("-ms-transform") ||
