@@ -66,7 +66,8 @@ dbsfaces.tooltip = {
 		}else{
 			xTooltip = $(pId).children(".-tooltip.-" + pTooltipType);
 		}
-		xTooltip.hide().css("opacity",0);
+		xTooltip.hide().css("opacity",0).css("overflow","hidden");
+
 	},
 
 	show: function(pId, pTooltipType, pDefaultLocation){
@@ -102,7 +103,7 @@ dbsfaces.tooltip = {
         
         //Exibe tooltip  
 		setTimeout(function(){
-			xTooltip.css("opacity",1);
+			xTooltip.css("opacity",1).css("overflow", "");
 		}, 0);
         return true;
 	},
@@ -125,17 +126,16 @@ dbsfaces.tooltip = {
 		xTop = 0;
 
 		
-//		xTop = (pComponent.get(0).getBoundingClientRect().top); //OK
-//		xLeft = (pComponent.get(0).getBoundingClientRect().left);
+
 //		var xContent = pContainer.children(".-content");
 
-//		console.log(pComponent.offsetParent().scrollTop());
-//		console.log(pComponent.scrollParent().scrollTop());
+//		console.log(pComponent.scrollParent(false).scrollTop());
 		
 //		console.log(pComponent.get(0).getBoundingClientRect().top 
 //			    + "\t" + pComponent.offset().top
 //			    + "\t" + pComponent.scrollTop()
-//			    + "\t" + pComponent.offsetParent().offset().top);
+//			    + "\t" + pComponent.offsetParent().offset().top
+//			    + "\t" + pComponent.parent().offset().top);
 //		console.log(pTooltip.get(0).getBoundingClientRect().top 
 //			    + "\t" + pTooltip.offset().top
 //			    + "\t" + pTooltip.scrollTop()
@@ -148,7 +148,11 @@ dbsfaces.tooltip = {
 //			    + "\t" + pContainer.offset().top
 //			    + "\t" + pContainer.scrollTop()
 //			    + "\t" + pContainer.offsetParent().offset().top);
-		
+////		xTop = (pContainer.get(0).getBoundingClientRect().top + pComponent.scrollParent(false).scrollTop()) - pContainer.offset().top;
+
+		xLeft = (pComponent.get(0).getBoundingClientRect().left - pComponent.offset().left);
+		xTop = (pComponent.get(0).getBoundingClientRect().top - pComponent.offset().top);
+
 //		console.log(pComponent.get(0).getBoundingClientRect().top 
 //		    + "\t" + pComponent.offset().top
 //		    + "\t" + pComponent.position().top
@@ -167,7 +171,8 @@ dbsfaces.tooltip = {
 //			    + "\t" + pContainer.parent().get(0).getBoundingClientRect().top
 //			    + "\t" + pContainer.parent().offset().top
 //			    + "\t" + pContainer.parent().position().top);
-		console.log(xTop + "\n");
+//		console.log(xTop + "\n");
+		
 		//Top e Bottom
 		if (pLocationCode == 1
 		 || pLocationCode == 3){
@@ -197,6 +202,7 @@ dbsfaces.tooltip = {
 //		pContainer.css("top", xTop); 
 //		
 		dbsfaces.ui.transform(pContainer, "translateX(" + parseInt(xLeft) + "px) translateY(" + parseInt(xTop) + "px)");
+		
 
 	},
 
