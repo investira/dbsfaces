@@ -154,15 +154,15 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			xWriter.startElement("foreignObject", xChartValue);
 				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.EXTRAINFO.trim(), null);
 				xWriter.startElement("span", xChartValue);
-					DBSFaces.setAttribute(xWriter, "id", xClientId + "_tooltip", null);
+					xWriter.writeAttribute("id", xClientId + "_tooltip", null);
+					xWriter.writeAttribute("tooltipdelay", "200", null);
 					if (xType == TYPE.BAR
 					 || xType == TYPE.LINE){
 						xExtraInfoStyle += "left:" + xXText.intValue() + "px;";
 						xExtraInfoStyle += "bottom:-" + (xYText.intValue() - 5) + "px;";
 						xExtraInfoStyle += "color:" + xChartValue.getFillColor() + ";";
 					}
-					
-					DBSFaces.setAttribute(xWriter, "style", xExtraInfoStyle, null);
+					xWriter.writeAttribute("style", xExtraInfoStyle, null);
 					DBSFaces.encodeTooltip(pContext, xChartValue, xChartValue.getTooltip(), xClientId + "_tooltip");
 				xWriter.endElement("span");
 			xWriter.endElement("foreignObject");

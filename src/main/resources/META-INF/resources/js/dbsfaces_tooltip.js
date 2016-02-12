@@ -24,6 +24,10 @@ dbsfaces.tooltip = {
 	wTomBottom: 5, //1 + 4(Top + Bottom);
 	
 	showTooltip: function(pId){
+		var xTooltipDelay = $(pId).attr("tooltipdelay");
+		if (typeof(xTooltipDelay) == "undefined"){
+			xTooltipDelay = 1200;
+		}
 		dbsfaces.tooltip.wTimerShow = setTimeout(function(){
 			//Hide all
 			dbsfaces.tooltip.hide(null, "tt");
@@ -40,7 +44,7 @@ dbsfaces.tooltip = {
 					xTooltip.css("opacity",0);
 				});
 			}, xTime);
-		}, 1200); //2 Segundos -Tempo para exibir
+		}, xTooltipDelay); //2 Segundos -Tempo para exibir
 	},
 
 	hideTooltip: function(pId){
