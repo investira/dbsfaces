@@ -48,15 +48,23 @@ dbsfaces.quickInfo = {
 		xContainer.css("height", xContainer.outerHeight());
 		//Infica que item foi selecionado
 		$(pId).addClass("-selected");
+
+		//Trava scroll
+		var xScrollParent = $(pId).scrollParent();
+		var xSt = window.getComputedStyle(xScrollParent.get(0), null);
+		var xOf = xSt.getPropertyValue("overflow");
+		xScrollParent.attr("of",xOf).css("overflow","hidden"); //Salva overflow original e altera para hidden
 	},
 
-	
-	
 	hideQuickInfo: function(pId){
 		dbsfaces.tooltip.hide(pId + " > .-icon > .-content", "qi");
 		//Reabilita tooltip 
 		dbsfaces.tooltip.enableTooltip(pId);
 		$(pId).removeClass("-selected");
+		//Restaura scroll original
+		var xScrollParent = $(pId).closest("[of]");
+		var xOf = xScrollParent.attr("of");
+		xScrollParent.attr("of", "").css("overflow", xOf);
 	}
 }
 

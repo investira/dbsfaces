@@ -128,7 +128,7 @@ dbsfaces.tooltip = {
 		
 
 //		var xContent = pContainer.children(".-content");
-
+		var xLixo =  pComponent.scrollParent();
 //		console.log(pComponent.scrollParent(false).scrollTop());
 		
 //		console.log(pComponent.get(0).getBoundingClientRect().top 
