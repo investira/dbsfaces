@@ -26,14 +26,22 @@
 	opacity: 1;
 }
 
+.dbs_chartValue > .-extrainfo{
+}
+
 .dbs_chartValue > .-extrainfo > span{
-	opacity: 0; 
+	display: inline-block;
 	position: absolute;
 }
 
-.dbs_chartValue > .-extrainfo > span.-selected{
-	opacity: 1;
-}	
+/* .dbs_chartValue > .-extrainfo > span{ */
+/* 	opacity: 0;  */
+/* 	position: absolute; */
+/* } */
+
+/* .dbs_chartValue > .-extrainfo > span.-selected{ */
+/* 	opacity: 1; */
+/* }	 */
 
 /* .dbs_chartValue > .-extrainfo > span.-selected, */
 /* .dbs_chartValue > .-xlabel.-selected{ */

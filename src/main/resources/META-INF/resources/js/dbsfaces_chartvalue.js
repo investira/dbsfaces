@@ -9,13 +9,15 @@ dbs_chartValue = function(pId) {
 	},0);
 	
 	$(pId).mouseenter(function (e){
-		 $(pId + " > .-extrainfo > span").addClass("-selected");
-		 $(pId + " > .-xlabel").get(0).classList.add("-selected");
-		 $(pId + " > .-ylabel").get(0).classList.add("-selected");
-		 dbsfaces.chartValue.selectValue(pId, true);
+		dbsfaces.tooltip.showTooltip(pId + '_tooltip');
+		$(pId + '_tooltip').addClass("-selected");
+		$(pId + " > .-xlabel").get(0).classList.add("-selected");
+		$(pId + " > .-ylabel").get(0).classList.add("-selected");
+		dbsfaces.chartValue.selectValue(pId, true);
 	});
 	$(pId).mouseleave(function (e){
-		$(pId + " > .-extrainfo > span").removeClass("-selected");
+		dbsfaces.tooltip.hideTooltip(pId + '_tooltip');
+		$(pId + '_tooltip').removeClass("-selected");
 		$(pId + " > .-xlabel").get(0).classList.remove("-selected");
 		$(pId + " > .-ylabel").get(0).classList.remove("-selected");
 		dbsfaces.chartValue.selectValue(pId, false);
@@ -84,8 +86,8 @@ dbsfaces.chartValue = {
 		}
 
 		//Centraliza o texto do extrainfo
-		var xXLabel = $(pId + " > .-extrainfo > .-x");
-		xXLabel.offset({left: xXAtual})
+//		var xXLabel = $(pId + " > .-extrainfo > .-x");
+//		xXLabel.offset({left: xXAtual})
 	},
 
 	selectValue: function(pId, pSelect){
