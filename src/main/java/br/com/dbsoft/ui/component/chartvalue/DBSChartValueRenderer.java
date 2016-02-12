@@ -149,8 +149,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 										   xChartValue.getLabel());
 				}
 			}
-			//EXTRAINFO -------------------------------------------------------------------------
-			UIComponent xExtraInfo = xChartValue.getFacet("extrainfo");
+			//Tooltip -------------------------------------------------------------------------
 			String xExtraInfoStyle = "";
 			xWriter.startElement("foreignObject", xChartValue);
 				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.EXTRAINFO.trim(), null);
@@ -165,13 +164,6 @@ public class DBSChartValueRenderer extends DBSRenderer {
 					
 					DBSFaces.setAttribute(xWriter, "style", xExtraInfoStyle, null);
 					DBSFaces.encodeTooltip(pContext, xChartValue, xChartValue.getTooltip(), xClientId + "_tooltip");
-//					//Se existir o facet Extrainfo
-//					if (xExtraInfo != null){
-//						xExtraInfo.encodeAll(pContext);
-//					//Se não existir, encode o valor como extrainfo
-//					}else{
-//						xWriter.write(DBSFormat.getFormattedNumber(xChartValue.getValue(), NUMBER_SIGN.MINUS_PREFIX, xCharts.getValueFormatMask()));
-//					}
 				xWriter.endElement("span");
 			xWriter.endElement("foreignObject");
 			
