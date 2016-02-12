@@ -11,15 +11,23 @@ dbs_chartValue = function(pId) {
 	$(pId).mouseenter(function (e){
 		dbsfaces.tooltip.showTooltip(pId + '_tooltip');
 		$(pId + '_tooltip').addClass("-selected");
-		$(pId + " > .-xlabel").get(0).classList.add("-selected");
-		$(pId + " > .-ylabel").get(0).classList.add("-selected");
+		if ($(pId + " > .-xlabel").length > 0){
+			$(pId + " > .-xlabel").get(0).classList.add("-selected");
+		}
+		if ($(pId + " > .-ylabel").length > 0){
+			$(pId + " > .-ylabel").get(0).classList.add("-selected");
+		}
 		dbsfaces.chartValue.selectValue(pId, true);
 	});
 	$(pId).mouseleave(function (e){
 		dbsfaces.tooltip.hideTooltip(pId + '_tooltip');
 		$(pId + '_tooltip').removeClass("-selected");
-		$(pId + " > .-xlabel").get(0).classList.remove("-selected");
-		$(pId + " > .-ylabel").get(0).classList.remove("-selected");
+		if ($(pId + " > .-xlabel").length > 0){
+			$(pId + " > .-xlabel").get(0).classList.remove("-selected");
+		}
+		if ($(pId + " > .-ylabel").length > 0){
+			$(pId + " > .-ylabel").get(0).classList.remove("-selected");
+		}
 		dbsfaces.chartValue.selectValue(pId, false);
 	});
 };
