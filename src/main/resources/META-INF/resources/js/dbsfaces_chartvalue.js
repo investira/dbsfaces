@@ -18,6 +18,8 @@ dbs_chartValue = function(pId) {
 			$(pId + " > .-ylabel").get(0).classList.add("-selected");
 		}
 		dbsfaces.chartValue.selectValue(pId, true);
+		//Coloca item como primeiro elemento para aparecer acima dos demais
+		this.parentElement.appendChild(this);
 	});
 	$(pId).mouseleave(function (e){
 		dbsfaces.tooltip.hideTooltip(pId + '_tooltip');
