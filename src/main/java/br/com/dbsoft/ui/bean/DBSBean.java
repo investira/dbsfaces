@@ -112,6 +112,14 @@ public abstract class DBSBean implements Serializable, IDBSBeanDialogMessages {
 	};
 	
 	/**
+	 * Retorna mensagens do dialog.
+	 * @return
+	 */
+	public IDBSMessages<IDBSMessage> getMessages(){
+		return wDialogMessages;
+	}
+
+	/**
 	 * Retorna texto da mensagem que está na fila
 	 * @return
 	 */
@@ -171,22 +179,6 @@ public abstract class DBSBean implements Serializable, IDBSBeanDialogMessages {
 	}
 
 	/**
-	 * Retorna mensagens do dialog.
-	 * @return
-	 */
-	public IDBSMessages<IDBSMessage> getMessages(){
-		return wDialogMessages;
-	}
-	
-	public Connection getConnection() {
-		return wConnection;
-	}
-
-	public void setConnection(Connection pConnection) {
-		wConnection = pConnection;
-	}
-
-	/**
 	 * Valida mensagem corrente. <br/>
 	 * Se for <i>Warning</i> chama o método warningMessageValidated passando o opção que o usuário escolheu.<br/>
 	 * Para implementar algum código após a confirmação, este método(warningMessageValidated) deverá ser sobreescrito.<br>
@@ -207,6 +199,14 @@ public abstract class DBSBean implements Serializable, IDBSBeanDialogMessages {
 			return onMessageValidate(xMessageKey.getMessageKey(), pIsValidated);
 		}
 		return DBSFaces.getCurrentView();
+	}
+
+	public Connection getConnection() {
+		return wConnection;
+	}
+
+	public void setConnection(Connection pConnection) {
+		wConnection = pConnection;
 	}
 
 	/**
