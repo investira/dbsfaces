@@ -4,7 +4,6 @@ package br.com.dbsoft.ui.component.beandialogmessages;
 import javax.faces.component.FacesComponent;
 import javax.faces.component.UINamingContainer;
 
-import br.com.dbsoft.ui.bean.DBSBean;
 import br.com.dbsoft.ui.component.DBSUIComponentBase;
 import br.com.dbsoft.ui.core.DBSFaces;
 
@@ -50,15 +49,15 @@ public class DBSBeanDialogMessages extends DBSUIComponentBase {
 	 * Bean que contém as mensagens
 	 * @return
 	 */
-	public DBSBean getUserBean() {
-		return (DBSBean) getStateHelper().eval(PropertyKeys.userBean, null);
+	public IDBSBeanDialogMessages getUserBean() {
+		return (IDBSBeanDialogMessages) getStateHelper().eval(PropertyKeys.userBean, null);
 	}
 
 	/**
 	 * Bean que contém as mensagens
 	 * @param pColumnsWidth
 	 */
-	public void setUserBean(DBSBean pUserBean) {
+	public void setUserBean(IDBSBeanDialogMessages pUserBean) {
 		getStateHelper().put(PropertyKeys.userBean, pUserBean);
 	}
 

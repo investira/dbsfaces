@@ -18,13 +18,14 @@ import br.com.dbsoft.message.DBSMessages;
 import br.com.dbsoft.message.IDBSMessage;
 import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.message.IDBSMessages;
+import br.com.dbsoft.ui.component.beandialogmessages.IDBSBeanDialogMessages;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSObject;
 
 /**
  * @author ricardo.villar
  */
-public abstract class DBSBean implements Serializable {
+public abstract class DBSBean implements Serializable, IDBSBeanDialogMessages {
  
 	private static final long serialVersionUID = -5273728796912868413L;
 
@@ -122,6 +123,7 @@ public abstract class DBSBean implements Serializable {
 	 * Retorna texto da mensagem que está na fila
 	 * @return
 	 */
+	@Override
 	public String getMessageText(){
 		return wDialogMessages.getCurrentMessageText();
 	}
@@ -132,6 +134,7 @@ public abstract class DBSBean implements Serializable {
 	 * Retorna texto da mensagem que está na fila
 	 * @return
 	 */
+	@Override
 	public String getMessageTooltip(){
 		return wDialogMessages.getCurrentMessageTooltip();
 	}
@@ -140,6 +143,7 @@ public abstract class DBSBean implements Serializable {
 	 * As mensagens de alerta são as únicas que permiter a seleção SIM/NÃO
 	 * @return
 	 */
+	@Override
 	public MESSAGE_TYPE getMessageType(){
 		if (wDialogMessages.getCurrentMessage()!=null){
 			return wDialogMessages.getCurrentMessageType();
@@ -156,6 +160,7 @@ public abstract class DBSBean implements Serializable {
 	/**
 	 * @return
 	 */
+	@Override
 	public Boolean getHasMessage(){
 //		return wDialogMessages.hasMessages();
 		if (wDialogMessages.getCurrentMessageKey()!=null){
@@ -190,6 +195,7 @@ public abstract class DBSBean implements Serializable {
 	 * a partir do overwrite do método <b>warningMessageValidated</b>.
 	 * @throws DBSIOException 
 	 */
+	@Override
 	public String setMessageValidated(Boolean pIsValidated) throws DBSIOException{
 		if (wDialogMessages!=null){
 			IDBSMessage xMessageKey = wDialogMessages.getCurrentMessage(); //Salva a chave, pois o setValidated posiciona na próxima mensagem.

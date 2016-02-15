@@ -28,6 +28,7 @@ import br.com.dbsoft.ui.bean.DBSBean;
 import br.com.dbsoft.ui.bean.crud.DBSCrudBeanEvent.CRUD_EVENT;
 import br.com.dbsoft.ui.component.DBSUIInput;
 import br.com.dbsoft.ui.component.DBSUIInputText;
+import br.com.dbsoft.ui.component.beandialogcrudmessages.IDBSBeanDialogCrudMessages;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSDate;
 import br.com.dbsoft.util.DBSIO;
@@ -182,7 +183,7 @@ import br.com.dbsoft.util.DBSIO.SORT_DIRECTION;
  * 	AFTER_EDIT
  * 
  */
-public abstract class DBSCrudBean extends DBSBean{
+public abstract class DBSCrudBean extends DBSBean implements IDBSBeanDialogCrudMessages{
 
 	private static final long serialVersionUID = -8550893738791483527L;
 
@@ -780,28 +781,44 @@ public abstract class DBSCrudBean extends DBSBean{
 	 */
 	public void setFormStyle(FormStyle pFormStyle) {wFormStyle = pFormStyle;}
 
+	@Override
 	public String getMessageConfirmationEdit() {return wMessageConfirmationEdit;}
+	@Override
 	public void setMessageConfirmationEdit(String pMessageConfirmationEdit) {wMessageConfirmationEdit = pMessageConfirmationEdit;}
 
+	@Override
 	public String getMessageConfirmationInsert() {return wMessageConfirmationInsert;}
+	@Override
 	public void setMessageConfirmationInsert(String pDialogConfirmationInsertMessage) {wMessageConfirmationInsert = pDialogConfirmationInsertMessage;}
 
+	@Override
 	public String getMessageConfirmationDelete() {return wMessageConfirmationDelete;}
+	@Override
 	public void setMessageConfirmationDelete(String pMessageConfirmationDelete) {wMessageConfirmationDelete = pMessageConfirmationDelete;}
 
+	@Override
 	public String getMessageConfirmationApprove() {return wMessageConfirmationApprove;}
+	@Override
 	public void setMessageConfirmationApprove(String pMessageConfirmationApprove) {wMessageConfirmationApprove = pMessageConfirmationApprove;}
 
+	@Override
 	public String getMessageConfirmationReprove() {return wMessageConfirmationReprove;}
+	@Override
 	public void setMessageConfirmationReprove(String pMessageConfirmationReprove) {wMessageConfirmationReprove = pMessageConfirmationReprove;}
 
+	@Override
 	public String getMessageIgnoreEdit() {return wMessageIgnoreEdit;}
+	@Override
 	public void setMessageIgnoreEdit(String pMessageIgnoreEdit) {wMessageIgnoreEdit = pMessageIgnoreEdit;}
 
+	@Override
 	public String getMessageIgnoreInsert() {return wMessageIgnoreInsert;}
+	@Override
 	public void setMessageIgnoreInsert(String pMessageIgnoreInsert) {wMessageIgnoreInsert = pMessageIgnoreInsert;}
 
+	@Override
 	public String getMessageIgnoreDelete() {return wMessageIgnoreDelete;}
+	@Override
 	public void setMessageIgnoreDelete(String pMessageIgnoreDelete) {wMessageIgnoreDelete = pMessageIgnoreDelete;}
 
 	/**
@@ -809,6 +826,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Mensagens vázias não serão exibidas.
 	 * @return
 	 */
+	@Override
 	public Boolean getMessageConfirmationExists(){
 		if (getIsCommitting()){
 			if (getIsUpdating()){
@@ -836,6 +854,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Mensagens vázias não serão exibidas.
 	 * @return
 	 */
+	@Override
 	public Boolean getMessageIgnoreExists(){
 		if (getIsIgnoring()){
 			if (getIsUpdating()){
@@ -1240,6 +1259,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Informa se está em validação
 	 * @return
 	 */
+	@Override
 	public Boolean getIsCommitting(){
 		return (wEditingStage == EditingStage.COMMITTING);
 	}
@@ -1248,6 +1268,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Informa se está em modo UPDATE. Modo de edição
 	 * @return
 	 */
+	@Override
 	public Boolean getIsUpdating(){
 		return (wEditingMode == EditingMode.UPDATING);
 	}
@@ -1265,6 +1286,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Informa se está em modo DELETING. Modo de exclusão
 	 * @return
 	 */
+	@Override
 	public Boolean getIsDeleting(){
 		return (wEditingMode == EditingMode.DELETING);
 	}
@@ -1311,6 +1333,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Informa se está em cancelamento
 	 * @return
 	 */
+	@Override
 	public Boolean getIsIgnoring(){
 		return (wEditingStage == EditingStage.IGNORING);
 	}
@@ -1351,6 +1374,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * Informa se está em modo INSERTING. Modo de inclusão
 	 * @return
 	 */
+	@Override
 	public Boolean getIsInserting(){
 		return (wEditingMode == EditingMode.INSERTING);
 	}
@@ -1574,6 +1598,7 @@ public abstract class DBSCrudBean extends DBSBean{
 	 * @return
 	 * @throws DBSIOException 
 	 */
+	@Override
 	public synchronized String endEditing(Boolean pConfirm) throws DBSIOException{
 		try{
 			if (pConfirm){

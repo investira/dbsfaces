@@ -4,7 +4,6 @@ package br.com.dbsoft.ui.component.beandialogcrudmessages;
 import javax.faces.component.FacesComponent;
 import javax.faces.component.UINamingContainer;
 
-import br.com.dbsoft.ui.bean.DBSBean;
 import br.com.dbsoft.ui.component.DBSUIComponentBase;
 import br.com.dbsoft.ui.core.DBSFaces;
 
@@ -50,15 +49,15 @@ public class DBSBeanDialogCrudMessages extends DBSUIComponentBase {
 	 * Bean que contém as mensagens
 	 * @return
 	 */
-	public DBSBean getCrudBean() {
-		return (DBSBean) getStateHelper().eval(PropertyKeys.crudBean, null);
+	public IDBSBeanDialogCrudMessages getCrudBean() {
+		return (IDBSBeanDialogCrudMessages) getStateHelper().eval(PropertyKeys.crudBean, null);
 	}
 
 	/**
 	 * Bean que contém as mensagens
 	 * @param pColumnsWidth
 	 */
-	public void setCrudBean(DBSBean pCrudBean) {
+	public void setCrudBean(IDBSBeanDialogCrudMessages pCrudBean) {
 		getStateHelper().put(PropertyKeys.crudBean, pCrudBean);
 	}
 
