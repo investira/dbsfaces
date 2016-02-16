@@ -153,7 +153,15 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			String xExtraInfoStyle = "";
 			xWriter.startElement("foreignObject", xChartValue);
 				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.EXTRAINFO.trim(), null);
+//				xWriter.writeAttribute("requiredExtensions", "http://www.w3.org/1999/xhtml", null);
+				xWriter.writeAttribute("xmlns","http://www.w3.org/1999/xhtml", null);
+//				xmlns="http://www.w3.org/1999/xhtml"
+				xWriter.writeAttribute("height", "1px", null);
+				xWriter.writeAttribute("width", "1px", null);
+				xWriter.writeAttribute("x", "0px", null);
+				xWriter.writeAttribute("y", "0px", null);
 				xWriter.startElement("span", xChartValue);
+//					xWriter.writeAttribute("xmlns","http://www.w3.org/1999/xhtml", null);
 					xWriter.writeAttribute("id", xClientId + "_tooltip", null);
 					xWriter.writeAttribute("tooltipdelay", "200", null);
 					if (xType == TYPE.BAR
