@@ -27,6 +27,7 @@
 	position: relative;
 	display: inline-block;
 	shape-rendering: geometricPrecision;
+	overflow: visible;
 }
 
 .dbs_charts > .-container > .-data > .-container > .-content{

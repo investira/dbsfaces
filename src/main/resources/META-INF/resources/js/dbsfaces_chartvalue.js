@@ -9,6 +9,7 @@ dbs_chartValue = function(pId) {
 	},0);
 	
 	$(pId).mouseenter(function (e){
+		this.parentElement.appendChild(this);
 		dbsfaces.tooltip.showTooltip(pId + '_tooltip');
 		$(pId + '_tooltip').addClass("-selected");
 		if ($(pId + " > .-xlabel").length > 0){
@@ -19,7 +20,6 @@ dbs_chartValue = function(pId) {
 		}
 		dbsfaces.chartValue.selectValue(pId, true);
 		//Coloca item como primeiro elemento para aparecer acima dos demais
-		this.parentElement.appendChild(this);
 	});
 	$(pId).mouseleave(function (e){
 		dbsfaces.tooltip.hideTooltip(pId + '_tooltip');
@@ -111,9 +111,11 @@ dbsfaces.chartValue = {
 		if (pSelect){
 			xXLabels.hide();
 			xYLabels.hide();
+			xValue.get(0).classList.add("-selected");
 		}else{
 			xXLabels.show();
 			xYLabels.show();
+			xValue.get(0).classList.remove("-selected");
 		}
 	}
 

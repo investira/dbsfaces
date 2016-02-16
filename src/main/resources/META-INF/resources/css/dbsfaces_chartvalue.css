@@ -27,6 +27,7 @@
 }
 
 .dbs_chartValue > .-extrainfo{
+	overflow:visible;
 }
 
 .dbs_chartValue > .-extrainfo > span{
@@ -60,12 +61,12 @@
 /*     color: rgb(13,25,45); */
 /* }	 */
 
-.dbs_chartValue:hover{
+.dbs_chartValue.-selected{
 	stroke: rgb(13,25,45);
 	stroke-width: 1px;
 }
 
-.dbs_chartValue:hover > ellipse{
+.dbs_chartValue.-selected > ellipse{
 	fill:white;	
 }
 
