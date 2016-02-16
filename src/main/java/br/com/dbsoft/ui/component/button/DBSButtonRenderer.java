@@ -146,9 +146,9 @@ public class DBSButtonRenderer extends DBSRenderer {
 			}else{
 				xWriter.endElement("button");
 			}
-		if (!xButton.getReadOnly()){
+//		if (!xButton.getReadOnly()){
 			pvEncodeJS(xWriter, xClientId);
-		}
+//		}
 	}
 	
 	private void pvEncodeTable(DBSButton pButton, ResponseWriter pWriter) throws IOException{
