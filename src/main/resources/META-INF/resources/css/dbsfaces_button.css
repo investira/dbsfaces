@@ -20,38 +20,34 @@
 }
 
 /* Ajsutes necessários quando o botão for readonly, pois o encode será de uma div ao invés de um button */
-div.dbs_button{
+.dbs_button.-disabled{
+	pointer-events: none;
     text-align: center;
     vertical-align: baseline;
     border-collapse: separate;
     align-items: flex-start;
 }
-div.dbs_button > table{
+
+.dbs_button.-disabled > table{
     height: inherit;
 }
-div.dbs_button > table > tbody{
+.dbs_button.-disabled > table > tbody{
     height: inherit;
 }
-div.dbs_button > table > tbody > tr{
+.dbs_button.-disabled > table > tbody > tr{
     height: inherit;
 }
-div.dbs_button > table > tbody > tr > td{
+.dbs_button.-disabled > table > tbody > tr > td{
     height: inherit;
 }
-div.dbs_button > table > tbody > tr > td > .-icon{
+.dbs_button.-disabled > table > tbody > tr > td > .-icon{
     height: inherit;
 	vertical-align: middle;
     display: table-cell;
 }
 
-div.dbs_button > table{
-}
-
 .dbs_button.-on{
 	background-color: rgba(130, 220, 255,0.8) !important;
-}
-.dbs_button.-disabled{
-	pointer-events: none;
 }
 
 .dbs_button > table{
