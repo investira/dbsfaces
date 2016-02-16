@@ -43,9 +43,12 @@ dbsfaces.quickInfo = {
 		}else if (xTooltip.hasClass("-l4")){
 			$(pId).addClass("-l4");
 		} 
-		var xContainer = $(pId + " > .-icon > .-content > .-tooltip > .-container");
+		var xContainer = $(pId + " > .-icon > .-content > .-tooltip > .-mask > .-container");
+
 		xContainer.css("width", xContainer.outerWidth());
 		xContainer.css("height", xContainer.outerHeight());
+
+
 		//Infica que item foi selecionado
 		$(pId).addClass("-selected");
 
