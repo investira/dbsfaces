@@ -23,7 +23,8 @@ public class DBSInputNumber extends DBSUIInputText {
 		separateThousand,
 		maxValue,
 		minValue,
-		autocomplete;
+		autocomplete,
+		currencySymbol;
 
 		String toString;
 
@@ -107,6 +108,14 @@ public class DBSInputNumber extends DBSUIInputText {
 	public String getAutocomplete() {
 		return (String) getStateHelper().eval(PropertyKeys.autocomplete, "off");
 	}	
+	
+	public void setCurrencySymbol(String pCurrencySymbol) {
+		getStateHelper().put(PropertyKeys.currencySymbol, pCurrencySymbol);
+		handleAttribute("currencySymbol", pCurrencySymbol);
+	}
+	public String getCurrencySymbol() {
+		return (String) getStateHelper().eval(PropertyKeys.currencySymbol, null);
+	}
 
 	/**
 	 * Retorna o valor convertido para o tipo Double

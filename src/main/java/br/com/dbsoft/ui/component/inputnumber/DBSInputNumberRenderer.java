@@ -192,7 +192,7 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 
 		}
 	}
-
+	
 	private String pvGetNumberMask(DBSInputNumber pInputNumber) {
 		Integer xLeadingZeroSize;
 		Boolean xShowSeparator;

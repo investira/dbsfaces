@@ -1500,6 +1500,14 @@
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
+			<description>
+                Simbolo da moeda/valor. ex:R$
+            </description>
+			<name>currencySymbol</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
 			<description>Tamanho do campo em caracteres
             </description>
 			<name>size</name>

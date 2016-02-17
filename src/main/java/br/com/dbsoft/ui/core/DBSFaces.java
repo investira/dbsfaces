@@ -64,6 +64,7 @@ import br.com.dbsoft.ui.component.checkbox.DBSCheckbox;
 import br.com.dbsoft.ui.component.datatable.DBSDataTable;
 import br.com.dbsoft.ui.component.datatable.DBSDataTableColumn;
 import br.com.dbsoft.ui.component.fileupload.DBSFileUpload;
+import br.com.dbsoft.ui.component.inputnumber.DBSInputNumber;
 import br.com.dbsoft.util.DBSBoolean;
 import br.com.dbsoft.util.DBSDate;
 import br.com.dbsoft.util.DBSFile;
@@ -1140,7 +1141,7 @@ public class  DBSFaces {
 		if (pAttributeName == null){
 			return null;
 		}
-		return "#" + "{" + pAttributeName + "}";
+		return "#" + "{" + pAttributeName + "}"; //Artifícil de separar tralha de colchete é necessário para evitar alrte no código
 	}
 	
 	/**
@@ -1364,7 +1365,7 @@ public class  DBSFaces {
 	 * @param pWriter
 	 * @throws IOException
 	 */
-	public static void encodeLabel(FacesContext pContext, DBSUIInput pInput, ResponseWriter pWriter, Boolean pRenderSeparator) throws IOException{
+	public static <InputComponent extends DBSUIInput> void encodeLabel(FacesContext pContext, InputComponent pInput, ResponseWriter pWriter, Boolean pRenderSeparator) throws IOException{
 		if (pInput.getLabel()!=null){
 			String xClientId = pInput.getClientId(pContext);
 			String xStyle = "vertical-align:middle; display:inline-block;";
@@ -1372,17 +1373,25 @@ public class  DBSFaces {
 				xStyle += " width:" + pInput.getLabelWidth() + ";";
 			}
 			pWriter.startElement("label", pInput);
-//				setAttribute(pWriter, pInput, "id", xClientId + DBSFaces.CSS.MODIFIER.LABEL.trim(), null);
-//				setAttribute(pWriter, pInput, "name", xClientId + DBSFaces.CSS.MODIFIER.LABEL.trim(), null);
-				setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.LABEL + " " + DBSFaces.CSS.NOT_SELECTABLE , null);
-				setAttribute(pWriter, "for", xClientId + DBSFaces.CSS.MODIFIER.DATA.trim(), null);
+				pWriter.writeAttribute("class", DBSFaces.CSS.INPUT.LABEL + " " + DBSFaces.CSS.NOT_SELECTABLE , null);
+				pWriter.writeAttribute("for", xClientId + DBSFaces.CSS.MODIFIER.DATA.trim(), null);
 				if (pRenderSeparator){
-					setAttribute(pWriter, "style",xStyle, null);
+					pWriter.writeAttribute("style", xStyle, null);
 					pWriter.write(pInput.getLabel().trim() + ":");
 				}else{
 					xStyle += "padding-left:2px;";
-					setAttribute(pWriter, "style",xStyle, null);
+					pWriter.writeAttribute("style", xStyle, null);
 					pWriter.write(pInput.getLabel().trim());
+				}
+				//Encode simbolo da moeda se componente for do tipo inputnumber
+				if(pInput instanceof DBSInputNumber){
+					DBSInputNumber xIN = (DBSInputNumber) pInput;
+					if (xIN.getCurrencySymbol()!=null){
+						pWriter.startElement("span", pInput);
+							pWriter.writeAttribute("style","float: right;", null);
+							pWriter.write(xIN.getCurrencySymbol().trim());
+						pWriter.endElement("span");
+					}
 				}
 			pWriter.endElement("label");
 		}
@@ -1407,18 +1416,17 @@ public class  DBSFaces {
 	 * @throws IOException
 	 */
 	public static void encodeRightLabel(FacesContext pContext, DBSUIInput pInput, ResponseWriter pWriter) throws IOException{
-//		DBSFaces.pvEncodeLabel(pInput, xClientId, pInput.getLabel(), pInput.getLabelWidth(), pWriter);
-		
 		if (pInput.getRightLabel()!=null){
 			String xClientId = pInput.getClientId(pContext);
 			pWriter.startElement("label", pInput);
-				setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.LABEL + " " + DBSFaces.CSS.NOT_SELECTABLE , null);
-				setAttribute(pWriter, "for", xClientId + DBSFaces.CSS.MODIFIER.DATA.trim(), null);
-				setAttribute(pWriter, "style","margin:0 3px 0 3px; vertical-align: middle; display:inline-block;", null);
+				pWriter.writeAttribute("class", DBSFaces.CSS.INPUT.LABEL + " " + DBSFaces.CSS.NOT_SELECTABLE , null);
+				pWriter.writeAttribute("for", xClientId + DBSFaces.CSS.MODIFIER.DATA.trim(), null);
+				pWriter.writeAttribute("style", "margin:0 3px 0 3px; vertical-align: middle; display:inline-block;", null);
 				pWriter.write(pInput.getRightLabel().trim());
 			pWriter.endElement("label");
 		}
 	}
+
 	/**
 	 * Gera HTML para campos input como tag <span> para evitar qualquer alteração no cliente
 	 * @param pComponent
@@ -1461,7 +1469,7 @@ public class  DBSFaces {
 			setAttribute(pWriter, "id", pClientId, null);
 			setAttribute(pWriter, "name", pClientId, null);
 			setAttribute(pWriter, "class", getInputDataClass(pComponent), null);
-			setAttribute(pWriter, "style", pStyle, null);
+			pWriter.writeAttribute("style", pStyle, null);
 			setSizeAttributes(pWriter, pTW, pTH);
 			if (DBSObject.isEmpty(pValue)){
 				pWriter.write(" ");
@@ -1489,66 +1497,6 @@ public class  DBSFaces {
 		}
 	}
 	
-	/**
-	 * Cria o elemento que conterá o tooltip.
-	 * @param pWriter
-	 * @param pComponent
-	 * @param pTooltip
-	 * @param pClienteId 
-	 * @throws IOException
-	 */
-	private static void pvEncodeTooltip(boolean pBasicTooltip, FacesContext pContext, UIComponent pComponent, String pTooltipText) throws IOException{
-		ResponseWriter 	xWriter = pContext.getResponseWriter();	
-		UIComponent 	xTooltip;
-		
-		if (pBasicTooltip){
-			xTooltip = pComponent.getFacet("tooltip");
-		}else{
-			xTooltip = pComponent;
-		}
-		
-		//Encode do tooltip se houver um texto para o tooltip ou foi defindo via facet(name="tooltip") dentro do componente...
-		if (!DBSObject.isEmpty(pTooltipText) ||
-			xTooltip != null){
-			xWriter.startElement("div", pComponent);
-				String xClass = DBSFaces.CSS.MODIFIER.TOOLTIP;
-				if (pBasicTooltip){
-					xClass += "-tt"; //Tooltip padrão
-				}else{
-					xClass += "-qi"; //Tooltip para o quickinfo
-				}
-				xWriter.writeAttribute("class", xClass, null);
-				xWriter.writeAttribute("style", "display: none;", null);
-				xWriter.startElement("div", pComponent);
-					xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.MASK, null);
-					xWriter.startElement("div", pComponent);
-						xClass = DBSFaces.CSS.MODIFIER.CONTAINER;
-						if (!pBasicTooltip){
-							xClass += CSS.BACK_TEXTURE_BLACK_GRADIENT;
-						}
-						xWriter.writeAttribute("class", xClass.trim(), null);
-						xWriter.startElement("div", pComponent);
-							xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT.trim() , null);
-							//Dá prioridade para o facet
-							if (xTooltip != null){
-								if (pBasicTooltip){
-									//Encode conteúdo do facet
-									xTooltip.encodeAll(pContext);
-								}else{
-									//Encode dos filhos do componente
-									renderChildren(pContext, xTooltip);
-								}
-							}else{
-								//Encode texto
-//								xWriter.write(getHtmlStringWithLineBreak(pTooltipText));
-								xWriter.write(pTooltipText);
-							}
-						xWriter.endElement("div");
-					xWriter.endElement("div");
-				xWriter.endElement("div");
-			xWriter.endElement("div");
-		}
-	}
 	/**
 	 * Cria o elemento que conterá o tooltip.
 	 * @param pWriter
@@ -1796,6 +1744,20 @@ public class  DBSFaces {
 			return null;
 		}
 	}
+ 	
+ 	/**
+ 	 * Retorna valor da propriedade contida no resource-bundle informado.
+ 	 * @param pResourceBundle
+ 	 * @param pPropertyName
+ 	 * @return
+ 	 */
+ 	public static String getBundlePropertyValue(String pResourceBundle, String pPropertyName){
+ 		FacesContext xContext = FacesContext.getCurrentInstance();
+ 		if (xContext != null){
+ 			return xContext.getApplication().evaluateExpressionGet(xContext, addELSignals(pResourceBundle + "['" + pPropertyName + "']"), String.class);
+ 		}
+ 		return null;
+ 	}
  	
 	/**
 	 * Seta o valor no bean a partir do valueExpression.
@@ -2080,7 +2042,7 @@ public class  DBSFaces {
 			if (xFacetPesquisar == null){
 				DBSButton xBtPesquisar = (DBSButton) xContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
 				xBtPesquisar.setId("btPesquisar");
-				xBtPesquisar.setLabel("Pesquisar");
+				xBtPesquisar.setLabel(getBundlePropertyValue("dbsfaces", "pesquisar"));
 				xBtPesquisar.setIconClass(DBSFaces.CSS.MODIFIER.ICON + " -i_find");
 				if (pDataTable.getSearchAction() == null){
 					wLogger.error(pDataTable.getClientId() +  ": searchAction não informado");
@@ -2160,7 +2122,7 @@ public class  DBSFaces {
 			xButtonStart.setExecute("");
 			xButtonStart.setUpdate("");
 			if (DBSObject.isEmpty(pFileUpload.getTooltip())) {
-				xButtonStart.setTooltip("Upload de arquivo");
+				xButtonStart.setTooltip(getBundlePropertyValue("dbsfaces", "fileupload.btStart"));
 			} else {
 				xButtonStart.setTooltip(pFileUpload.getTooltip());
 			}
@@ -2181,7 +2143,7 @@ public class  DBSFaces {
 			xButtonCancel.setIconClass(DBSFaces.CSS.MODIFIER.ICON + " -i_media_stop");
 			xButtonCancel.setStyle("display:none;");
 			xButtonCancel.setReadOnly(pFileUpload.getReadOnly());
-			xButtonCancel.setTooltip("Cancelar upload");
+			xButtonCancel.setTooltip(getBundlePropertyValue("dbsfaces", "fileupload.btCancel"));
 			if (DBSObject.isEmpty(pFileUpload.getFileUploadServletPath())){
 				xButtonCancel.setReadOnly(true);
 			}
@@ -2524,6 +2486,67 @@ public class  DBSFaces {
 //	 	return xSubmittedValue;
 //	 }
 	
+	/**
+		 * Cria o elemento que conterá o tooltip.
+		 * @param pWriter
+		 * @param pComponent
+		 * @param pTooltip
+		 * @param pClienteId 
+		 * @throws IOException
+		 */
+		private static void pvEncodeTooltip(boolean pBasicTooltip, FacesContext pContext, UIComponent pComponent, String pTooltipText) throws IOException{
+			ResponseWriter 	xWriter = pContext.getResponseWriter();	
+			UIComponent 	xTooltip;
+			
+			if (pBasicTooltip){
+				xTooltip = pComponent.getFacet("tooltip");
+			}else{
+				xTooltip = pComponent;
+			}
+			
+			//Encode do tooltip se houver um texto para o tooltip ou foi defindo via facet(name="tooltip") dentro do componente...
+			if (!DBSObject.isEmpty(pTooltipText) ||
+				xTooltip != null){
+				xWriter.startElement("div", pComponent);
+					String xClass = DBSFaces.CSS.MODIFIER.TOOLTIP;
+					if (pBasicTooltip){
+						xClass += "-tt"; //Tooltip padrão
+					}else{
+						xClass += "-qi"; //Tooltip para o quickinfo
+					}
+					xWriter.writeAttribute("class", xClass, null);
+					xWriter.writeAttribute("style", "display: none;", null);
+					xWriter.startElement("div", pComponent);
+						xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.MASK, null);
+						xWriter.startElement("div", pComponent);
+							xClass = DBSFaces.CSS.MODIFIER.CONTAINER;
+							if (!pBasicTooltip){
+								xClass += CSS.BACK_TEXTURE_BLACK_GRADIENT;
+							}
+							xWriter.writeAttribute("class", xClass.trim(), null);
+							xWriter.startElement("div", pComponent);
+								xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT.trim() , null);
+								//Dá prioridade para o facet
+								if (xTooltip != null){
+									if (pBasicTooltip){
+										//Encode conteúdo do facet
+										xTooltip.encodeAll(pContext);
+									}else{
+										//Encode dos filhos do componente
+										renderChildren(pContext, xTooltip);
+									}
+								}else{
+									//Encode texto
+	//								xWriter.write(getHtmlStringWithLineBreak(pTooltipText));
+									xWriter.write(pTooltipText);
+								}
+							xWriter.endElement("div");
+						xWriter.endElement("div");
+					xWriter.endElement("div");
+				xWriter.endElement("div");
+			}
+		}
+
 	//Private
 	private static ResponseWriter pvCreateResponseWriter(FacesContext pContext, Writer pWriter) {
 		ExternalContext 	xExtContext = pContext.getExternalContext();
