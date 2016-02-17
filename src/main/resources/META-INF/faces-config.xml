@@ -10,7 +10,17 @@
 	<application>
 
 		<!-- <message-bundle> resourcebundles.jsfmessages </message-bundle> -->
+		<locale-config>
+			<default-locale>pt_BR</default-locale>
+			<supported-locale>pt_BR</supported-locale>
+			<supported-locale>pt_PT</supported-locale>
+<!-- 			<supported-locale>en_US</supported-locale> -->
+		</locale-config>
 
+		<resource-bundle>
+			<base-name>dbsfaces</base-name>
+			<var>dbsfaces</var>
+		</resource-bundle>
 	</application> 
 	
 	<factory>

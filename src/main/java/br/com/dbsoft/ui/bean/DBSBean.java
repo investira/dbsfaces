@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -39,6 +40,7 @@ public abstract class DBSBean implements Serializable, IDBSBeanDialogMessages {
 	protected 	boolean						wBrodcastingEvent = false;
 	private   	DBSBean						wMasterBean = null;
 	private 	List<DBSBean>				wSlavesBean = new ArrayList<DBSBean>();
+	private 	Locale						wLocale;
 	
 	
 	//--------------------------------------------------------------------------------------
@@ -49,8 +51,11 @@ public abstract class DBSBean implements Serializable, IDBSBeanDialogMessages {
 	void pvInitializeClass() {
 		if (FacesContext.getCurrentInstance() == null){
 			wLogger.warn(this.getClass().getCanonicalName() + ":Não há scope ativo para este bean.");
-		}else if(FacesContext.getCurrentInstance().getExternalContext().getSession(false) == null){
+		}else{ 
+			if(FacesContext.getCurrentInstance().getExternalContext().getSession(false) == null){
 				FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+			}
+//			setLocale(FacesContext.getCurrentInstance().getApplication().getDefaultLocale());
 		}
 		initializeClass();
 	}
@@ -73,6 +78,20 @@ public abstract class DBSBean implements Serializable, IDBSBeanDialogMessages {
 		return wMasterBean;
 	}
 	
+	public void setLocaleCode(String pLocale){
+		wLocale = new Locale(pLocale);
+		setLocale(wLocale);
+	}
+	public String getLocaleCode(){
+		return wLocale.toString();
+	}	
+	public void setLocale(Locale pLocale){
+//		FacesContext.getCurrentInstance().getViewRoot().setLocale(pLocale);
+	}
+	
+	public Locale getLocale(){
+		return wLocale;
+	}
 	/**
 	 * Lista de CrudBean escravos dentro deste crud.
 	 * Os crudbean escravos serão retirados da memória quando o master for

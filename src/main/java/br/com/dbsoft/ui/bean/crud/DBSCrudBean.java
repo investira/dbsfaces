@@ -355,14 +355,15 @@ public abstract class DBSCrudBean extends DBSBean implements IDBSBeanDialogCrudM
 
 	//Mensagens
 	private IDBSMessage					wMessageNoRowComitted = 
-													new DBSMessage(MESSAGE_TYPE.ERROR,"Erro durante a gravação.\n Nenhum registro foi afetado.\n");
+													new DBSMessage(MESSAGE_TYPE.ERROR, DBSFaces.getBundlePropertyValue("dbsfaces", "crudbean.msg.noRowComitted"));
 	private IDBSMessage					wMessageOverSize = 
-													new DBSMessage(MESSAGE_TYPE.ERROR,"Quantidade de caracteres do texto digitado no campo '%s' ultrapassou a quantidade permitida de %s caracteres. Por favor, diminua o texto digitado.");
+													new DBSMessage(MESSAGE_TYPE.ERROR, DBSFaces.getBundlePropertyValue("dbsfaces", "crudbean.msg.overSize"));
 	private IDBSMessage					wMessageNoChange = 
-													new DBSMessage(MESSAGE_TYPE.INFORMATION,"Não houve alteração de informação.");
-	private IDBSMessage					wMessaggeApprovalSameUserError =
-													new DBSMessage(MESSAGE_TYPE.ERROR,"Não é permitida a aprovação de um registro incluido pelo próprio usuário.");
-			
+													new DBSMessage(MESSAGE_TYPE.INFORMATION, DBSFaces.getBundlePropertyValue("dbsfaces", "crudbean.msg.noChange"));
+	private IDBSMessage					wMessaggeApprovalSameUser =
+													new DBSMessage(MESSAGE_TYPE.ERROR, DBSFaces.getBundlePropertyValue("dbsfaces", "crudbean.msg.approvalSameUser"));
+	
+	
 	/**
 	 * Retorna o ID da conversação
 	 * @return
@@ -2844,7 +2845,7 @@ public abstract class DBSCrudBean extends DBSBean implements IDBSBeanDialogCrudM
 				xColumn = wDAO.getCommandColumn(getColumnNameApprovalUserIdRegistered());
 				if (xColumn!=null){
 					if (DBSNumber.toInteger(xColumn.getValue()).equals(xUserId)){
-						addMessage(wMessaggeApprovalSameUserError);
+						addMessage(wMessaggeApprovalSameUser);
 						pEvent.setOk(false);
 						return;
 					}
@@ -3234,7 +3235,7 @@ public abstract class DBSCrudBean extends DBSBean implements IDBSBeanDialogCrudM
 					}
 				}else{
 					xE.setOk(false);
-					addMessage("erroselecao", MESSAGE_TYPE.ERROR,"Não há registro selecionado.");
+					addMessage("erroselecao", MESSAGE_TYPE.ERROR,  DBSFaces.getBundlePropertyValue("dbsfaces", "crudbean.msg.notSelected"));
 				}
 			}else{
 				pvBroadcastEvent(xE, false, false, false);
@@ -3267,17 +3268,17 @@ public abstract class DBSCrudBean extends DBSBean implements IDBSBeanDialogCrudM
 						pvBroadcastEvent(xE, false, false, false);
 						if (!xE.isOk()){
 							if (getIsApprovingOrReproving()){
-								addMessage("erroassinatura", MESSAGE_TYPE.ERROR,"Não foi possível efetuar a edição de todos os itens selecionados. Procure efetuar a edição individualmente para identificar o registro com problema.");
+								addMessage("erroassinatura", MESSAGE_TYPE.ERROR, DBSFaces.getBundlePropertyValue("dbsfaces", "crudbean.msg.approvalAll"));
 								break;
 							}else{
-								addMessage("erroselecao", MESSAGE_TYPE.ERROR,"Não foi possível efetuar a edição de todos os itens selecionados. Procure efetuar a edição individualmente para identificar o registro com problema.");
+								addMessage("erroselecao", MESSAGE_TYPE.ERROR, DBSFaces.getBundlePropertyValue("dbsfaces", "crudbean.msg.editAll"));
 								break;
 							}
 						}
 					}
 				}else{
 					xE.setOk(false);
-					addMessage("erroselecao", MESSAGE_TYPE.ERROR,"Não há registro selecionado.");
+					addMessage("erroselecao", MESSAGE_TYPE.ERROR, DBSFaces.getBundlePropertyValue("dbsfaces", "crudbean.msg.notSelected"));
 				}
 			}else{
 				pvBroadcastEvent(xE, false, false, false);
@@ -3336,7 +3337,7 @@ public abstract class DBSCrudBean extends DBSBean implements IDBSBeanDialogCrudM
 					if (xCount < wSelectedRowsIndexes.size()){
 						xE.setCommittedRowCount(0);
 						xE.setOk(false);
-						addMessage("erroassinatura", MESSAGE_TYPE.ERROR,"Não foi possível efetuar a assinatura de todos os itens selecionados. Procure efetuar a assinatura individualmente para identificar o registro com problema.");
+						addMessage("erroassinatura", MESSAGE_TYPE.ERROR, DBSFaces.getBundlePropertyValue("dbsfaces", "crudbean.msg.approvelAll"));
 					}else{
 						xE.setCommittedRowCount(xCount);
 					}
@@ -3385,7 +3386,7 @@ public abstract class DBSCrudBean extends DBSBean implements IDBSBeanDialogCrudM
 					wMessageError.setMessageTooltip(xErrorMsg);
 					addMessage(wMessageError);
 				}else{
-					wMessageError.setMessageText("Entre em contato com o suporte!");
+					wMessageError.setMessageText(DBSFaces.getBundlePropertyValue("dbsfaces", "crudbean.msg.support"));
 					wMessageError.setMessageTooltip(e.getLocalizedMessage());
 					addMessage(wMessageError);
 				}

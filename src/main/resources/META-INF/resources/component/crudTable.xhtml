@@ -62,8 +62,8 @@
 							<c:if test="#{cc.attrs.allowApproval and cc.crudBean.allowApproval and cc.crudBean.approvalUserStages!=0}">
 								<dbs:div id="approval" styleClass="-approval" >
 									<c:if test="#{cc.crudBean.hasSelected}">
-										<dbs:button id="btReprovar" iconClass="-i_prize_ribbon -red" action="#{cc.crudBean.reprove()}" update="#{cc.clientId}:crudTableMessages" execute="@this" tooltip="Reprovar"/>
-										<dbs:button id="btAprovar"  iconClass="-i_prize_ribbon -green" action="#{cc.crudBean.approve()}" update="#{cc.clientId}:crudTableMessages" execute="@this" tooltip="Avançar etapa de aprovação"/>
+										<dbs:button id="btReprovar" iconClass="-i_prize_ribbon -red" action="#{cc.crudBean.reprove()}" update="#{cc.clientId}:crudTableMessages" execute="@this" tooltip="#{dbsfaces['crudtable.btReprovar']}"/>
+										<dbs:button id="btAprovar"  iconClass="-i_prize_ribbon -green" action="#{cc.crudBean.approve()}" update="#{cc.clientId}:crudTableMessages" execute="@this" tooltip="#{dbsfaces['crudtable.btAprovar']}"/>
 									</c:if>
 								</dbs:div>
 							</c:if>
@@ -78,7 +78,7 @@
 								<ui:fragment rendered="#{not cc.crudBean.isEditing}">
 									<dbs:button id="btExcluir" rendered="#{cc.crudBean.hasSelected and cc.crudBean.rowCount gt 0}" iconClass="-i_delete" action="#{cc.crudBean.delete()}" update="#{cc.clientId} " execute="@this"/>
 									<dbs:button id="btEditar" rendered="#{not cc.crudBean.hasSelected and cc.crudBean.rowCount gt 0}" iconClass="-i_edit" action="#{cc.crudBean.update()}" update="#{cc.clientId} " execute="@this"/> 
-									<dbs:button id="btRefresh" rendered="#{cc.attrs.allowRefresh and cc.crudBean.allowRefresh}"  iconClass="-i_refresh" action="#{cc.crudBean.refreshList()}" update=":dialog :#{cc.clientId}" tooltip="Atualizar conteúdo da lista"/> 
+									<dbs:button id="btRefresh" rendered="#{cc.attrs.allowRefresh and cc.crudBean.allowRefresh}"  iconClass="-i_refresh" action="#{cc.crudBean.refreshList()}" update=":dialog :#{cc.clientId}" tooltip="#{dbsfaces['crudtable.btRefresh']}"/> 
 								</ui:fragment>
 								<!-- Confirmação									 -->
 								<ui:fragment rendered="#{cc.crudBean.isUpdating}">
@@ -89,8 +89,8 @@
 							</c:if>
 							<c:if test="#{cc.crudBean.formStyle == 'DIALOG'}">
 								<dbs:button id="btView" rendered="#{cc.attrs.multipleSelection and cc.crudBean.multipleSelection}"  iconClass="-i_document_view" action="#{cc.crudBean.viewSelection()}" update=":dialog " execute="@this"/>
-								<dbs:button id="btInsert"  rendered="#{cc.attrs.allowInsert and cc.crudBean.allowInsert}" iconClass="-i_insert" action="#{cc.crudBean.insert()}" update=":dialog " execute=":dialog @this" tooltip="Incluir item"/>
-								<dbs:button id="btRefresh" rendered="#{cc.attrs.allowRefresh and cc.crudBean.allowRefresh}" iconClass="-i_refresh" action="#{cc.crudBean.refreshList()}" update=":dialog :#{cc.clientId}" tooltip="Atualizar conteúdo da lista"/>
+								<dbs:button id="btInsert"  rendered="#{cc.attrs.allowInsert and cc.crudBean.allowInsert}" iconClass="-i_insert" action="#{cc.crudBean.insert()}" update=":dialog " execute=":dialog @this" tooltip="#{dbsfaces['crudtable.btInsert']}"/>
+								<dbs:button id="btRefresh" rendered="#{cc.attrs.allowRefresh and cc.crudBean.allowRefresh}" iconClass="-i_refresh" action="#{cc.crudBean.refreshList()}" update=":dialog :#{cc.clientId}" tooltip="#{dbsfaces['crudtable.btRefresh']}"/>
 							</c:if>							
 						</f:facet>
 					</c:if>
