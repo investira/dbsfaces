@@ -26,11 +26,12 @@ import br.com.dbsoft.util.DBSObject;
 /**
  * @author ricardo.villar
  */
-public abstract class DBSBean implements Serializable, IDBSBeanDialogMessages {
+public abstract class DBSBean implements Serializable, IDBSBeanDialogMessages{
  
 	private static final long serialVersionUID = -5273728796912868413L;
 
 	protected 	Logger 		wLogger =  Logger.getLogger(this.getClass());
+	
 	
 	protected 	static IDBSMessage wMessageError = new DBSMessage(MESSAGE_TYPE.ERROR,"Erro: %s");
 	
@@ -41,24 +42,46 @@ public abstract class DBSBean implements Serializable, IDBSBeanDialogMessages {
 	private   	DBSBean						wMasterBean = null;
 	private 	List<DBSBean>				wSlavesBean = new ArrayList<DBSBean>();
 	private 	Locale						wLocale;
-	
-	
+ 
+	public DBSBean() {
+		if (FacesContext.getCurrentInstance() == null){
+			wLogger.warn(this.getClass().getCanonicalName() + ":Não há scope ativo para este bean.");
+		}else{ 
+			FacesContext xFC = FacesContext.getCurrentInstance();
+			if(xFC.getExternalContext().getSession(false) == null){
+				xFC.getExternalContext().getSession(true);
+			}
+			pvGetUserLocate();
+		}
+	}
 	//--------------------------------------------------------------------------------------
 	//Código para impedir o erro de 'Cannot create a session after the response has been committed'
 	//que ocorre em algumas situações que a página(como resultado da quantidade de registros do ResultDataModel) por conter muitos dados
 	//o que faz que por algum motivo o JSF envie algum resposta no momento que não deveria, principalmente com @ResquestScoped
 	@PostConstruct
 	void pvInitializeClass() {
-		if (FacesContext.getCurrentInstance() == null){
-			wLogger.warn(this.getClass().getCanonicalName() + ":Não há scope ativo para este bean.");
-		}else{ 
-			if(FacesContext.getCurrentInstance().getExternalContext().getSession(false) == null){
-				FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-			}
-//			setLocale(FacesContext.getCurrentInstance().getApplication().getDefaultLocale());
-		}
 		initializeClass();
 	}
+	
+	private void pvGetUserLocate(){
+//		for( Cookie cookie : FacesContext.getCurrentInstance().getExternalContext( httpServletRequest.getCookies() ) {
+//		    System.out.println( cookie.getName() + " - " + cookie.getValue() );
+//		}
+//		String cookieValue_Language = new Locale( "tr", "TR" ).getLanguage();
+//		Cookie localeCookie_lang = new Cookie( "locale", cookieValue_Language );
+//		response.addCookie( localeCookie_lang );
+//		Iterator xLocales = (Iterator) FacesContext.getCurrentInstance().getExternalContext().getRequestLocales();
+//		while (xLocales.){e
+//			Locale xLocale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocales().next();
+//			System.out.println(xLocale);
+//		}
+//		System.out.println(FacesContext.getCurrentInstance().getApplication().getDefaultLocale());
+//		System.out.println(FacesContext.getCurrentInstance().getViewRoot().getLocale());
+//		System.out.println(FacesContext.getCurrentInstance().getExternalContext().getRequestLocale());
+//		setLocale(FacesContext.getCurrentInstance().getExternalContext().getRequestLocale());
+		setLocale(FacesContext.getCurrentInstance().getApplication().getDefaultLocale());
+	}
+	
 	
 	@PreDestroy
 	void pvFinalizeClass(){
@@ -85,8 +108,20 @@ public abstract class DBSBean implements Serializable, IDBSBeanDialogMessages {
 	public String getLocaleCode(){
 		return wLocale.toString();
 	}	
+	
+    public String getLanguage() {
+        return wLocale.getLanguage();
+    }
+
+    public void setLanguage(String pLanguage) {
+    	setLocale(new Locale(pLanguage));
+    }
+    
 	public void setLocale(Locale pLocale){
-//		FacesContext.getCurrentInstance().getViewRoot().setLocale(pLocale);
+//		HttpServletResponse xR = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+//		xR.setLocale(pLocale);
+//		xR.addHeader("Content-Language", "pt-BR");
+		FacesContext.getCurrentInstance().getViewRoot().setLocale(pLocale);
 	}
 	
 	public Locale getLocale(){
@@ -189,12 +224,7 @@ public abstract class DBSBean implements Serializable, IDBSBeanDialogMessages {
 	 */
 	@Override
 	public Boolean getHasMessage(){
-//		return wDialogMessages.hasMessages();
-		if (wDialogMessages.getCurrentMessageKey()!=null){
-			return true;
-		}else{
-			return false;
-		}
+		return wDialogMessages.hasMessages();
 	}
 
 	/**
