@@ -14,7 +14,7 @@
 			<default-locale>pt_BR</default-locale>
 			<supported-locale>pt_BR</supported-locale>
 			<supported-locale>pt_PT</supported-locale>
-<!-- 			<supported-locale>en_US</supported-locale> -->
+			<supported-locale>en_US</supported-locale>
 		</locale-config>
 
 		<resource-bundle>
