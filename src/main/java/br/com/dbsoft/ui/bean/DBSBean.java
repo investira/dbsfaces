@@ -75,7 +75,7 @@ public abstract class DBSBean implements Serializable, IDBSBeanDialogMessages{
 //			Locale xLocale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocales().next();
 //			System.out.println(xLocale);
 //		}
-		System.out.println(FacesContext.getCurrentInstance().getApplication().getDefaultLocale());
+//		System.out.println(FacesContext.getCurrentInstance().getApplication().getDefaultLocale());
 //		System.out.println(FacesContext.getCurrentInstance().getViewRoot().getLocale());
 //		System.out.println(FacesContext.getCurrentInstance().getExternalContext().getRequestLocale());
 //		setLocale(FacesContext.getCurrentInstance().getExternalContext().getRequestLocale());
