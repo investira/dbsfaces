@@ -61,13 +61,16 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			return;
 		}
 		xChart =  (DBSChart) xChartValue.getParent();
+		//Le tipo do chart pai
 		xType =	DBSChart.TYPE.get(xChart.getType());
+
 		//Recupera DBSCharts avô
 		if (xChart.getParent() == null
 		|| !(xChart.getParent() instanceof DBSCharts)){
 			return;
 		}
 		xCharts =  (DBSCharts) xChart.getParent();
+
 
 		//Configura id a partir do index
 		xChartValue.setId("i" + xChartValue.getIndex());
@@ -108,8 +111,8 @@ public class DBSChartValueRenderer extends DBSRenderer {
 					Double xHeight = DBSNumber.abs(DBSNumber.subtract(xCharts.getChartHeight(), xCharts.getZeroPosition() - DBSCharts.Padding, xY).doubleValue());
 					//Centraliza o ponto
 					Double xLineWidth = xChart.getColumnScale() * .9;
-					if (xLineWidth < 1){
-						xLineWidth = 1D;
+					if (xLineWidth < 2){
+						xLineWidth = 2D;
 					}
 					xXText = DBSNumber.add(xX,xChart.getColumnScale() / 2);
 					xX = DBSNumber.add(xX,

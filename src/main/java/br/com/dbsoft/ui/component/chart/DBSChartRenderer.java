@@ -42,7 +42,6 @@ public class DBSChartRenderer extends DBSRenderer {
 		if (!pComponent.isRendered()){return;}
 		DBSChart xChart = (DBSChart) pComponent;
 		if (xChart.getType()==null){return;}
-		
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClass = DBSFaces.CSS.CHART.MAIN + " ";
 

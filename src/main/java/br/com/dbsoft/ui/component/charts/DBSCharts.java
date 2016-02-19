@@ -78,7 +78,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	public void setShowGrid(Boolean pShowGrid) {
 		getStateHelper().put(PropertyKeys.showGrid, pShowGrid);
 		handleAttribute("showGrid", pShowGrid);
-		pvSetChartWidth(getWidth());
+//		pvSetChartWidth(getWidth());
 	}
 
 	public Boolean getShowGridValue() {
@@ -87,9 +87,8 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	public void setShowGridValue(Boolean pShowGridValue) {
 		getStateHelper().put(PropertyKeys.showGridValue, pShowGridValue);
 		handleAttribute("showGridValue", pShowGridValue);
-		pvSetChartWidth(getWidth());
+//		pvSetChartWidth(getWidth());
 	}
-
 
 	public Integer getHeight() {
 		return (Integer) getStateHelper().eval(PropertyKeys.height, 50);
@@ -97,7 +96,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	public void setHeight(Integer pHeight) {
 		getStateHelper().put(PropertyKeys.height, pHeight);
 		handleAttribute("hight", pHeight);
-		pvSetChartHeight(pHeight);
+//		pvSetChartHeight(pHeight);
 	}
 
 	public Integer getWidth() {
@@ -106,7 +105,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	public void setWidth(Integer pWidth) {
 		getStateHelper().put(PropertyKeys.width, pWidth);
 		handleAttribute("width", pWidth);
-		pvSetChartWidth(pWidth);
+//		pvSetChartWidth(pWidth);
 	}
 
 	public String getValueFormatMask() {
@@ -115,7 +114,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	public void setValueFormatMask(String pValueFormatMask) {
 		getStateHelper().put(PropertyKeys.valueFormatMask, pValueFormatMask);
 		handleAttribute("valueFormatMask", pValueFormatMask);
-		pvSetChartWidth(getWidth());
+//		pvSetChartWidth(getWidth());
 	}
 
 	//--------------------
@@ -163,7 +162,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	public void setShowLabel(Boolean pShowLabel) {
 		getStateHelper().put(PropertyKeys.showLabel, pShowLabel);
 		handleAttribute("showLabel", pShowLabel);
-		pvSetChartHeight(getHeight());
+//		pvSetChartHeight(getHeight());
 	}
 	
 	public Boolean getShowLabel() {
@@ -205,6 +204,13 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		xValue = DBSNumber.add(xValue, getMinValue());
 		return xValue.intValue();
 	}
+
+	public void setChartWidthHeight(){
+		// TODO Auto-generated method stub
+		pvSetChartWidth(getWidth());
+		pvSetChartHeight(getHeight());
+	}
+
 
 	private void pvSetChartHeight(Integer pHeight){
 		if (getShowLabel()){

@@ -48,8 +48,13 @@ public class DBSChartsRenderer extends DBSRenderer {
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent)
 			throws IOException {
 		if (!pComponent.isRendered()){return;}
+		
+
 		DBSCharts xCharts = (DBSCharts) pComponent;
 
+		//		xCharts.setWidth(xCharts.getWidth());
+//		xCharts.setHeight(xCharts.getHeight());
+		xCharts.setChartWidthHeight();
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClass = DBSFaces.CSS.CHARTS.MAIN + " ";
 		String xChartsStyle = "width:" + xCharts.getWidth() + "px; height:" + xCharts.getHeight() + "px;";
@@ -99,15 +104,15 @@ public class DBSChartsRenderer extends DBSRenderer {
 								DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.LEFT, null);
 							xWriter.endElement("g");
 							
-							//DATA--------------------------
+							//VALUE--------------------------
 							xWriter.startElement("g", xCharts);
 								DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.VALUE, null);
+								//Linhas do grid
 								xWriter.startElement("g", xCharts);
 									DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.GRID, null);
-									//Linhas do grid
 									pvEncodeLines(xCharts, xWriter);
 								xWriter.endElement("g");
-								
+								//Gráficos--------------------------
 								DBSFaces.renderChildren(pContext, xCharts);
 							xWriter.endElement("g");
 							
