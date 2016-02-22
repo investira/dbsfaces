@@ -43,7 +43,12 @@ public abstract class DBSBean implements Serializable, IDBSBeanDialogMessages{
 	private 	List<DBSBean>				wSlavesBean = new ArrayList<DBSBean>();
 	private 	Locale						wLocale;
  
-	public DBSBean() {
+	//--------------------------------------------------------------------------------------
+	//Código para impedir o erro de 'Cannot create a session after the response has been committed'
+	//que ocorre em algumas situações que a página(como resultado da quantidade de registros do ResultDataModel) por conter muitos dados
+	//o que faz que por algum motivo o JSF envie algum resposta no momento que não deveria, principalmente com @ResquestScoped
+	@PostConstruct
+	void pvInitializeClass() {
 		if (FacesContext.getCurrentInstance() == null){
 			wLogger.warn(this.getClass().getCanonicalName() + ":Não há scope ativo para este bean.");
 		}else{ 
@@ -53,13 +58,6 @@ public abstract class DBSBean implements Serializable, IDBSBeanDialogMessages{
 			}
 			pvGetUserLocate();
 		}
-	}
-	//--------------------------------------------------------------------------------------
-	//Código para impedir o erro de 'Cannot create a session after the response has been committed'
-	//que ocorre em algumas situações que a página(como resultado da quantidade de registros do ResultDataModel) por conter muitos dados
-	//o que faz que por algum motivo o JSF envie algum resposta no momento que não deveria, principalmente com @ResquestScoped
-	@PostConstruct
-	void pvInitializeClass() {
 		initializeClass();
 	}
 	
