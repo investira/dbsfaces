@@ -81,7 +81,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 				//CAPTION--------------------------
 				if (xCharts.getCaption() !=null){
 					xWriter.startElement("span", xCharts);
-						DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CAPTION, null);
+						DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CAPTION + DBSFaces.CSS.THEME.CAPTION, null);
 						xWriter.write(xCharts.getCaption());
 					xWriter.endElement("span");
 				}

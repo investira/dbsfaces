@@ -71,7 +71,7 @@ img {
 	border: 0 none;
 }
 
-address,caption,cite,code,dfn,em,th,var {
+address,caption,cite,code,dfn,em,var {
 	font-style: normal;
 	font-weight: normal;
 }
