@@ -204,6 +204,7 @@ public class  DBSFaces {
 			public static final String ACTION = " -th_action ";
 			public static final String BACKGROUND_COLOR = " -th_back_color ";
 			public static final String FONT_COLOR = " -th_font_color ";
+			public static final String CAPTION = " -th_caption ";
 		}
 		
 		public static class MODIFIER
