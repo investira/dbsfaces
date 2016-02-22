@@ -54,7 +54,6 @@ public class DBSChartsRenderer extends DBSRenderer {
 
 		//		xCharts.setWidth(xCharts.getWidth());
 //		xCharts.setHeight(xCharts.getHeight());
-		xCharts.setChartWidthHeight();
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClass = DBSFaces.CSS.CHARTS.MAIN + " ";
 		String xChartsStyle = "width:" + xCharts.getWidth() + "px; height:" + xCharts.getHeight() + "px;";
@@ -64,7 +63,8 @@ public class DBSChartsRenderer extends DBSRenderer {
 		}
 
 		pvCalcularValores(xCharts);
-		
+
+
 		String xClientId = xCharts.getClientId(pContext);
 		xWriter.startElement("div", xCharts);
 			DBSFaces.setAttribute(xWriter, "id", xClientId, null);
@@ -195,6 +195,8 @@ public class DBSChartsRenderer extends DBSRenderer {
 			        }
 			        xChart.setRowIndex(-1);
 				}
+				pCharts.setChartWidthHeight();
+
 				//ColumnScale
 				xX = BigDecimal.ONE;
 				if (xSize > 1){
