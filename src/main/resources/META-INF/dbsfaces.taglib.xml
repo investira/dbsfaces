@@ -2796,14 +2796,6 @@
 		</attribute>
 		<attribute>
 			<description>
-				Número do item 
-            </description>
-			<name>index</name>
-			<required>true</required>
-			<type>java.lang.Integer</type>
-		</attribute>
-		<attribute>
-			<description>
                 Tooltip
             </description>
 			<name>tooltip</name>
