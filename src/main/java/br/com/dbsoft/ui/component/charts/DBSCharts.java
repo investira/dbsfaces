@@ -31,7 +31,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		rowScale,
 		chartWidth,
 		chartHeight,
-//		formatMaskWidth,
+		itensCount,
 		numberOfGridLines,
 		showLabel;
 
@@ -143,13 +143,25 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		handleAttribute("rowScale", pRowScale);
 	}
 
-//	public Integer getFormatMaskWidth() {
-//		return (Integer) getStateHelper().eval(PropertyKeys.formatMaskWidth, 0);
-//	}
-//	public void setFormatMaskWidth(Integer pFormatMaskWidth) {
-//		getStateHelper().put(PropertyKeys.formatMaskWidth, pFormatMaskWidth);
-//		handleAttribute("formatMaskWidth", pFormatMaskWidth);
-//	}
+	/**
+	 * Quantidade de valores dentro deste gráfico.
+	 * Indice é gerado automaticamente no DBSCharts
+	 * @return
+	 */
+	public Integer getItensCount() {
+		return (Integer) getStateHelper().eval(PropertyKeys.itensCount, 0);
+	}
+
+	/**
+	 * Quantidade de valores dentro deste gráfico.
+	 * Indice é gerado automaticamente no DBSCharts
+	 * @return
+	 */
+	public void setItensCount(Integer pItensCount) {
+		getStateHelper().put(PropertyKeys.itensCount, pItensCount);
+		handleAttribute("itensCount", pItensCount);
+	}
+
 	
 	public Integer getNumberOfGridLines() {
 		return (Integer) getStateHelper().eval(PropertyKeys.numberOfGridLines, 6);

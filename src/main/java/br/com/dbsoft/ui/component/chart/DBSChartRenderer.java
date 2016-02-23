@@ -70,7 +70,7 @@ public class DBSChartRenderer extends DBSRenderer {
 			//Se não foi informado DBSResultSet
 			if (DBSObject.isEmpty(xChart.getVar())
 			 || DBSObject.isEmpty(xChart.getValueExpression("value"))){
-				DBSFaces.renderChildren(pContext, xChart);
+				pvEncodeChartValue(pContext, xChart);
 			}else{
 				pvEncodeResultSetChartValue(pContext, xChart, xWriter);
 			}
@@ -102,6 +102,9 @@ public class DBSChartRenderer extends DBSRenderer {
 		pChart.setRowIndex(-1);
 		pChart.getFirst();
 		pChart.getRows(); 
+		Double xTotalValue  = 0D;
+		Integer xIndex = 0;
+		Double xPreviousValue = 0D;
 		//Loop por todos os registros lidos
         for (int xRowIndex = 0; xRowIndex < xRowCount; xRowIndex++) {
         	pChart.setRowIndex(xRowIndex);
@@ -109,15 +112,46 @@ public class DBSChartRenderer extends DBSRenderer {
 			for (UIComponent xC : pChart.getChildren()){
 				if (xC instanceof DBSChartValue){
 					DBSChartValue xChartValue = (DBSChartValue) xC;
-					xChartValue.setIndex(xRowIndex + 1);
 					if (xChartValue.isRendered()){
+						xIndex++;
+						xChartValue.setIndex(xIndex);
+						xChartValue.setPreviousValue(xPreviousValue);
+						xPreviousValue = xChartValue.getValue();
+						if (xPreviousValue !=null){
+							xTotalValue += xPreviousValue;
+						}
 						xChartValue.encodeAll(pContext);
 					}
 				}
 			}
         }
+        pChart.setTotalValue(xTotalValue);
         pChart.setRowIndex(-1);
 	}
+	
+	private void pvEncodeChartValue(FacesContext pContext, DBSChart pChart) throws IOException {
+		Double 	xPreviousValue = 0D;
+		Integer xIndex = 0;
+		Double xTotalValue  = 0D;
+		//Loop por todos os filhos
+		for (UIComponent xC : pChart.getChildren()){
+			if (xC instanceof DBSChartValue){
+				DBSChartValue xChartValue = (DBSChartValue) xC;
+				if (xChartValue.isRendered()){
+					xIndex++;
+					xChartValue.setIndex(xIndex);
+					xChartValue.setPreviousValue(xPreviousValue);
+					xPreviousValue = xChartValue.getValue();
+					if (xPreviousValue !=null){
+						xTotalValue += xPreviousValue;
+					}
+				}
+			}
+		}
+		pChart.setTotalValue(xTotalValue);
+		DBSFaces.renderChildren(pContext, pChart);
+	}
+
 
 
 

@@ -15,7 +15,8 @@ public class DBSChartValue extends DBSUIInput implements NamingContainer {
 
 	protected enum PropertyKeys {
 		index,
-		fillColor;
+		fillColor,
+		previousValue;
 
 		String toString;
 
@@ -35,10 +36,19 @@ public class DBSChartValue extends DBSUIInput implements NamingContainer {
 		setRendererType(DBSChartValue.RENDERER_TYPE);
     }
 	
-
+	/**
+	 * Indice que identifica este gráfico.
+	 * Indice é gerado automaticamente no DBSCharts
+	 * @return
+	 */
 	public Integer getIndex() {
 		return (Integer) getStateHelper().eval(PropertyKeys.index, 1);
 	}
+	/**
+	 * Indice que identifica este gráfico.
+	 * Indice é gerado automaticamente no DBSCharts
+	 * @return
+	 */
 	public void setIndex(Integer pIndex) {
 		getStateHelper().put(PropertyKeys.index, pIndex);
 		handleAttribute("index", pIndex);
@@ -51,7 +61,14 @@ public class DBSChartValue extends DBSUIInput implements NamingContainer {
 		getStateHelper().put(PropertyKeys.fillColor, pFillColor);
 		handleAttribute("fillColor", pFillColor);
 	}
-
+	
+	public Double getPreviousValue() {
+		return DBSNumber.toDouble(getStateHelper().eval(PropertyKeys.previousValue, 0D));
+	}
+	public void setPreviousValue(Double pPreviousValue) {
+		getStateHelper().put(PropertyKeys.previousValue, pPreviousValue);
+		handleAttribute("previousValue", pPreviousValue);
+	}
 
 	@Override
 	public Double getValue() {

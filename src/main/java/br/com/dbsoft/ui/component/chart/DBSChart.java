@@ -5,6 +5,7 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import br.com.dbsoft.ui.component.DBSUIData;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.util.DBSNumber;
 
 
 @FacesComponent(DBSChart.COMPONENT_TYPE)
@@ -48,8 +49,10 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 	
 	protected enum PropertyKeys {
 		type,
-		size,
-		columnScale;
+		itensCount,
+		index,
+		columnScale,
+		totalValue;
 
 		String toString;
 
@@ -79,14 +82,49 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 		handleAttribute("type", pType);
 	}
 
-
-	public Integer getSize() {
-		return (Integer) getStateHelper().eval(PropertyKeys.size, 0);
+	public Double getTotalValue() {
+		return DBSNumber.toDouble(getStateHelper().eval(PropertyKeys.totalValue, 0D));
+	}
+	public void setTotalValue(Double pTotalValue) {
+		getStateHelper().put(PropertyKeys.totalValue, pTotalValue);
+		handleAttribute("totalValue", pTotalValue);
 	}
 
-	public void setSize(Integer pSize) {
-		getStateHelper().put(PropertyKeys.size, pSize);
-		handleAttribute("size", pSize);
+	/**
+	 * Indice que identifica este gráfico.
+	 * Indice é gerado automaticamente no DBSCharts
+	 * @return
+	 */
+	public Integer getIndex() {
+		return (Integer) getStateHelper().eval(PropertyKeys.index, 1);
+	}
+	/**
+	 * Indice que identifica este gráfico.
+	 * Indice é gerado automaticamente no DBSCharts
+	 * @return
+	 */
+	public void setIndex(Integer pIndex) {
+		getStateHelper().put(PropertyKeys.index, pIndex);
+		handleAttribute("index", pIndex);
+	}
+	
+	/**
+	 * Quantidade de valores dentro deste gráfico.
+	 * Indice é gerado automaticamente no DBSCharts
+	 * @return
+	 */
+	public Integer getItensCount() {
+		return (Integer) getStateHelper().eval(PropertyKeys.itensCount, 0);
+	}
+
+	/**
+	 * Quantidade de valores dentro deste gráfico.
+	 * Indice é gerado automaticamente no DBSCharts
+	 * @return
+	 */
+	public void setItensCount(Integer pItensCount) {
+		getStateHelper().put(PropertyKeys.itensCount, pItensCount);
+		handleAttribute("itensCount", pItensCount);
 	}
 	
 	public Double getColumnScale() {

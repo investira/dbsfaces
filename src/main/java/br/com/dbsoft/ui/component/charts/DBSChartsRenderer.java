@@ -153,65 +153,83 @@ public class DBSChartsRenderer extends DBSRenderer {
 	 * @param pCharts
 	 */
 	private void pvCalcularValores(DBSCharts pCharts){
-		BigDecimal xX;
-		boolean	   xFound = false;
+		BigDecimal 	xX;
+		boolean	   	xFound = false;
+		Integer 	xChartIndex = 0;
 		wMinValue = null;
 		wMaxValue = null;
 		
 		//Loop nos componentes Chart
 		for (UIComponent xObject:pCharts.getChildren()){
-			Integer xSize = 0;
+			Integer xChartItensCount = 0;
 			if (xObject instanceof DBSChart){
 				DBSChart xChart = (DBSChart) xObject;
-				//Se não foi informado DBSResultSet
-				if (DBSObject.isEmpty(xChart.getVar())
-				 || DBSObject.isEmpty(xChart.getValueExpression("value"))){
-					//Loop nos componentes ChartValues filhos do chart
-					for (UIComponent xChild:xChart.getChildren()){
-						if (xChild instanceof DBSChartValue){
-							DBSChartValue xChartValue = (DBSChartValue) xChild;
-							pvCalculaValoresSet(pCharts, xChartValue);
-							xSize++;
-							xFound = true;
-						}
+				//Verifica se será exibido
+				if (xChart.isRendered()){
+					 xChartIndex++;
+					 xChart.setIndex(xChartIndex);
+					if (DBSChart.TYPE.get(xChart.getType()) == TYPE.PIE){
+						//Não exibe linhas do grid quando por PIE
+						pCharts.setShowGrid(false);
 					}
-				}else{
-			        int xRowCount = xChart.getRowCount();
-			        xChart.setRowIndex(-1);
-			        xChart.getFirst();
-			        xChart.getRows(); 
-					//Loop por todos os registros lidos
-			        for (int xRowIndex = 0; xRowIndex < xRowCount; xRowIndex++) {
-			        	xChart.setRowIndex(xRowIndex);
-			        	//Loop no componente filho contendo as definições dos valores
-						for (UIComponent xChild : xChart.getChildren()){
+					//Se não foi informado DBSResultSet
+					if (DBSObject.isEmpty(xChart.getVar())
+					 || DBSObject.isEmpty(xChart.getValueExpression("value"))){
+						//Loop nos componentes ChartValues filhos do chart
+						for (UIComponent xChild:xChart.getChildren()){
 							if (xChild instanceof DBSChartValue){
 								DBSChartValue xChartValue = (DBSChartValue) xChild;
-								pvCalculaValoresSet(pCharts, xChartValue);
-								xSize++;
-								xFound = true;
+								if (xChartValue.isRendered()){
+									pvCalculaValoresSet(pCharts, xChartValue);
+									xChartItensCount++;
+									xFound = true;
+								}
 							}
 						}
-			        }
-			        xChart.setRowIndex(-1);
-				}
-				pCharts.setChartWidthHeight();
-
-				//ColumnScale
-				xX = BigDecimal.ONE;
-				if (xSize > 1){
-					if (DBSChart.TYPE.get(xChart.getType()) == TYPE.LINE){
-						xX = DBSNumber.divide(pCharts.getChartWidth(), //0,98 para dat espaço nas laterais
-								  			  xSize - 1); //Para ir até a borda
 					}else{
-						xX = DBSNumber.divide(pCharts.getChartWidth(),
-								  			  xSize);
+				        int xRowCount = xChart.getRowCount();
+				        xChart.setRowIndex(-1);
+				        xChart.getFirst();
+				        xChart.getRows(); 
+						//Loop por todos os registros lidos
+				        for (int xRowIndex = 0; xRowIndex < xRowCount; xRowIndex++) {
+				        	xChart.setRowIndex(xRowIndex);
+				        	//Loop no componente filho contendo as definições dos valores
+							for (UIComponent xChild : xChart.getChildren()){
+								if (xChild instanceof DBSChartValue){
+									DBSChartValue xChartValue = (DBSChartValue) xChild;
+									if (xChartValue.isRendered()){
+										pvCalculaValoresSet(pCharts, xChartValue);
+										xChartItensCount++;
+										xFound = true;
+									}
+								}
+							}
+				        }
+				        xChart.setRowIndex(-1);
 					}
+					//Calcula Largura e Altura Geral
+					pCharts.setChartWidthHeight();
+	
+					//ColumnScale
+					xX = BigDecimal.ONE;
+					if (xChartItensCount > 1){
+						if (DBSChart.TYPE.get(xChart.getType()) == TYPE.LINE){
+							xX = DBSNumber.divide(pCharts.getChartWidth(), //0,98 para dat espaço nas laterais
+									  			  xChartItensCount - 1); //Para ir até a borda
+						}else{
+							xX = DBSNumber.divide(pCharts.getChartWidth(),
+									  			  xChartItensCount);
+						}
+					}
+					xChart.setItensCount(xChartItensCount); //Quantidade de valores do gráfico
+					xChart.setColumnScale(xX.doubleValue());
+				}else{
+					 xChart.setIndex(-1);
 				}
-				xChart.setSize(xSize);
-				xChart.setColumnScale(xX.doubleValue());
 			}
 		}
+		pCharts.setItensCount(xChartIndex); //Aproveita xCharIndex para setar quantidade de gráficos
 		if (!xFound){
 			pCharts.setMinValue(0D);
 			pCharts.setMaxValue(0D);

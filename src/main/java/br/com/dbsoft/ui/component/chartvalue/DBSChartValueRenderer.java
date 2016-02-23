@@ -88,8 +88,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "style", xChartValue.getStyle(), null);
 			
 			//Grafico
-			if (xType == TYPE.BAR
-			 || xType == TYPE.LINE){
+			if (xType != null){
 				//Calcula valor em pixel a partir do valor real. subtrai padding para dar espaço para a margem
 //				xValue = DBSNumber.multiply(xCharts.getChartHeight() - (DBSCharts.Padding * 2),
 //						 					DBSNumber.divide(xChartValue.getValue(), 
@@ -132,6 +131,109 @@ public class DBSChartValueRenderer extends DBSRenderer {
 				//Encode line - ponto. as linhas que ligam os pontos, são desenhadas no código JS.
 				}else if (xType == TYPE.LINE){
 					DBSFaces.encodeSVGCircle(xChartValue, xWriter, DBSFaces.CSS.MODIFIER.VALUE, null, xX.doubleValue(), xY.doubleValue(), 2D, 2D, "transparent");
+				}else if (xType == TYPE.PIE){
+					StringBuilder xPath = new StringBuilder();
+					Double xValue = DBSNumber.divide(xChartValue.getValue(), xChart.getTotalValue()).doubleValue() * 100;
+					Double xPreviousValue = DBSNumber.divide(xChartValue.getPreviousValue(), xChart.getTotalValue()).doubleValue() * 100;
+//					Double xValue = xChartValue.getValue();
+//					Double xPreviousValue = xChartValue.getPreviousValue();
+					
+					//Diametro do circulo. Utiliza o menor tamanho entre a alrgura a a altura escolhada para não ultrapasar as bordas
+					Double xSize;
+					if (xCharts.getChartWidth().doubleValue() < xCharts.getChartHeight().doubleValue()){
+						xSize = xCharts.getChartWidth().doubleValue();
+					}else{
+						xSize = xCharts.getChartHeight().doubleValue();
+						
+					}
+					xSize += (DBSCharts.Padding * 2);
+					//
+					Double xPneuLargura = xSize / ((xCharts.getItensCount() * 2D) + 1); //Quantidades de graficos largura do Pneu
+					Double xRodaRaio = xPneuLargura / 2;
+					Double xCentro = xSize / 2; //xCharts.getChartWidth() / 2;
+					Double xUnit = (Math.PI *2) / 100;    
+					Double xStartangle = (xPreviousValue * xUnit) - 0.001;
+					Double xEndangle =  xStartangle + ((xValue * xUnit) - 0.001);
+					Double xPneuRaioInterno = (xPneuLargura * (xChart.getIndex() - 1)) + xRodaRaio;
+					Double xPneuRaioExterno = xPneuRaioInterno + xPneuLargura;
+					Double x1 = xCentro + (xPneuRaioExterno * Math.sin(xStartangle));
+					Double y1 = xCentro - (xPneuRaioExterno * Math.cos(xStartangle));
+					Double x2 = xCentro + (xPneuRaioExterno * Math.sin(xEndangle));
+					Double y2 = xCentro - (xPneuRaioExterno * Math.cos(xEndangle));
+					
+					Double x3 = xCentro + (xPneuRaioInterno * Math.sin(xEndangle));
+					Double y3 = xCentro - (xPneuRaioInterno * Math.cos(xEndangle));
+					Double x4 = xCentro + (xPneuRaioInterno * Math.sin(xStartangle));
+					Double y4 = xCentro - (xPneuRaioInterno * Math.cos(xStartangle)); 
+
+//					DBSFaces.encodeSVGCircle(xChartValue, xWriter, null, "stroke:#333333; stroke-width: 1px;", xCentro.doubleValue(), xCentro.doubleValue(), xSize / 2, xSize / 2, "transparent");
+//					DBSFaces.encodeSVGCircle(xChartValue, xWriter, null, "stroke:#333333; stroke-width: 1px;", xCentro.doubleValue(), xCentro.doubleValue(), xSize / 6, xSize / 6, "transparent");
+					
+//					Double x2 = (xSize / 2) + (xSize / 2) * Math.sin(xEndangle);
+//					Double y2 = (xSize / 2) - (xSize / 2) * Math.cos(xEndangle);
+					//Se curva por mais de 180º
+					Integer xBig = 0;
+				    if (xEndangle - xStartangle > Math.PI) {
+				        xBig = 1;
+				    }
+					x1 = DBSNumber.round(x1, 2);
+					x2 = DBSNumber.round(x2, 2);
+					x3 = DBSNumber.round(x3, 2);
+					x4 = DBSNumber.round(x4, 2);
+					y1 = DBSNumber.round(y1, 2);
+					y2 = DBSNumber.round(y2, 2);
+					y3 = DBSNumber.round(y3, 2);
+					y4 = DBSNumber.round(y4, 2);
+
+				    xPath.append("<path d=");
+					xPath.append("'M " + x1 + "," + y1 + //Ponto inicial do arco 
+			        " A " + xPneuRaioExterno + "," + xPneuRaioExterno + " 0 " + xBig + " 1 " + x2 + "," + y2 + //Arco externo até o ponto final 
+			        " L " + x3 + "," + y3 + //Linha do arco externo até o início do arco interno
+			        " A " + xPneuRaioInterno + "," + xPneuRaioInterno + " 0 " + xBig + " 0 " + x4 + "," + y4 + //Arco interno até o ponto incial interno
+			        " Z' "); //Fecha o path ligando o arco interno ao arco externo  
+					xPath.append("fill='" + xChartValue.getFillColor() + "' ");
+//					xPath.append("stroke='#333333' style='stroke-width: 0px;'");
+					xPath.append("></path>");
+					
+//					xPath = new StringBuilder();
+//
+//					//					StringBuilder xPath = new StringBuilder();
+//					Integer xPerc = 50;
+//					Integer xSize = xCharts.getChartHeight();
+//					Double xLargura = xSize / (xChart.getSize() * 2) - (xSize * 0.2);
+//					Integer xCX = 134; //xCharts.getChartWidth() / 2;
+//					Integer xCY = 134; //xCharts.getChartHeight() / 2;
+//					Double xUnit = (Math.PI *2) / 100;    
+//					Double xStartangle = (10 * xUnit) - 0.001;
+//					Double xEndangle =  xStartangle + ((xPerc * xUnit) - 0.001);
+//					Double x1 = (xSize / 2) + (xSize / 2) * Math.sin(xStartangle);
+//					Double y1 = (xSize / 2) - (xSize / 2) * Math.cos(xStartangle);
+//					Double x2 = (xSize / 2) + (xSize / 2) * Math.sin(xEndangle);
+//					Double y2 = (xSize / 2) - (xSize / 2) * Math.cos(xEndangle);
+//					Integer xBig = 0;
+//				    if (xEndangle - xStartangle > Math.PI) {
+//				        xBig = 1;
+//				    }
+//					xPath.append("<path ");
+//					xPath.append("d='M " + (xSize / 2) + "," + (xSize / 2) +  // Start at circle center
+//					        " L " + x1 + "," + y1 +     // Draw line to (x1,y1)
+//					        " A " + (xSize / 2) + "," + (xSize / 2) +       // Draw an arc of radius r
+//					        " 0 " + xBig + " 1 " +       // Arc details...
+//					        x2 + "," + y2 +             // Arc goes to to (x2,y2)
+//					        " Z' ");   
+//					xPath.append("fill='#4d00ff' stroke='#333333' data-id='s0' transform='matrix(1,0,0,1,0,0)' style='stroke-width: 1px;'>");
+//					xPath.append("</path>");
+
+
+					//<path data-cx="134" data-cy="134" d="M134,20.10000000000001 A113.89999999999999,113.89999999999999,0,0,1,228.27377689006983,197.91920674477535 L171.70951075602795,159.56768269791013 A45.56,45.56,0,0,0,134,88.44 z" fill="#4d00ff" stroke="#333333" data-id="s0" transform="matrix(1,0,0,1,0,0)" style="stroke-width: 0px;"></path>
+
+//					xPath.append("<path ");
+//					xPath.append("data-cx='" + xCX + "' data-cy='" + xCY + "' ");
+//					xPath.append("d='M" + xCY + ",20.10000000000001 A113.89999999999999,113.89999999999999,0,0,1,228.27377689006983,197.91920674477535 L171.70951075602795,159.56768269791013 A45.56,45.56,0,0,0," + xCY + ",88.44 z' ");
+//					xPath.append("fill='#4d00ff' stroke='#333333' data-id='s0' transform='matrix(1,0,0,1,0,0)' style='stroke-width: 0px;'>");
+//					xPath.append("</path>");
+					xWriter.write(xPath.toString());
+					
 				}
 				//Encode do valor da linha ---------------------------------------------------------------------
 				DBSFaces.encodeSVGText(xChartValue, 
@@ -195,3 +297,4 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);		
 	}
 }
+
