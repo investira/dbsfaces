@@ -12,11 +12,11 @@ dbs_chartValue = function(pId) {
 		this.parentElement.appendChild(this);
 		dbsfaces.tooltip.showTooltip(pId + '_tooltip');
 		$(pId + '_tooltip').addClass("-selected");
-		if ($(pId + " > .-xlabel").length > 0){
-			$(pId + " > .-xlabel").get(0).classList.add("-selected");
+		if ($(pId + " > .-label").length > 0){
+			$(pId + " > .-label").get(0).classList.add("-selected");
 		}
-		if ($(pId + " > .-ylabel").length > 0){
-			$(pId + " > .-ylabel").get(0).classList.add("-selected");
+		if ($(pId + " > .-value").length > 0){
+			$(pId + " > .-value").get(0).classList.add("-selected");
 		}
 		dbsfaces.chartValue.selectValue(pId, true);
 		//Coloca item como primeiro elemento para aparecer acima dos demais
@@ -24,11 +24,11 @@ dbs_chartValue = function(pId) {
 	$(pId).mouseleave(function (e){
 		dbsfaces.tooltip.hideTooltip(pId + '_tooltip');
 		$(pId + '_tooltip').removeClass("-selected");
-		if ($(pId + " > .-xlabel").length > 0){
-			$(pId + " > .-xlabel").get(0).classList.remove("-selected");
+		if ($(pId + " > .-label").length > 0){
+			$(pId + " > .-label").get(0).classList.remove("-selected");
 		}
-		if ($(pId + " > .-ylabel").length > 0){
-			$(pId + " > .-ylabel").get(0).classList.remove("-selected");
+		if ($(pId + " > .-value").length > 0){
+			$(pId + " > .-value").get(0).classList.remove("-selected");
 		}
 		dbsfaces.chartValue.selectValue(pId, false);
 	});
@@ -51,9 +51,9 @@ dbsfaces.chartValue = {
 	
 	drawLine: function(pLineGroup, pValue){
 		if (pValue.length == 0){return;}
-		var xValuePosterior = pValue.nextAll(".dbs_chartValue").first().children("ellipse");
+		var xValuePosterior = pValue.nextAll(".dbs_chartValue").first().children("-point");
 		if (xValuePosterior.length == 0){return;}
-		var xValue = pValue.children("ellipse");
+		var xValue = pValue.children("-point");
 		var xId = pValue.attr("id");
 		var xX1 = xValue.attr("cx");
 		var xY1 = xValue.attr("cy");
@@ -75,11 +75,11 @@ dbsfaces.chartValue = {
 		var xValue = $(pId);
 		if (xValue.length == 0){return;}
 
-		var xLabelAtual = xValue.children(".-xlabel");
+		var xLabelAtual = xValue.children(".-label");
 		if (xLabelAtual.length == 0){return;}
 
 		//Procura valor anterior que contenha label sendo exibido
-		var xLabelAnterior = xValue.prevAll(".dbs_chartValue").children(".-xlabel").not("[class ~= '-hide']").first();
+		var xLabelAnterior = xValue.prevAll(".dbs_chartValue").children(".-label").not("[class ~= '-hide']").first();
 		var xXAtual = 0;
 		var xXAnterior = 0;
 		//Calcula posição final da label anterior
@@ -104,10 +104,10 @@ dbsfaces.chartValue = {
 		var xValue = $(pId);
 		if (xValue.length == 0){return;}
 		
-		var xXLabelAtual = xValue.children(".-xlabel");
+		var xXLabelAtual = xValue.children(".-label");
 
 		var xYLabels = xValue.closest(".dbs_charts").find(".-container > .-data > .-container > .-content > .-value > .-grid > .-label");
-		var xXLabels = xValue.siblings(".dbs_chartValue").children(".-xlabel").not("[class ~= '-hide']").not(xXLabelAtual);
+		var xXLabels = xValue.siblings(".dbs_chartValue").children(".-label").not("[class ~= '-hide']").not(xXLabelAtual);
 		if (pSelect){
 			xXLabels.hide();
 			xYLabels.hide();

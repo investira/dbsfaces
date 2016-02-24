@@ -90,10 +90,6 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			//Grafico
 			if (xType != null){
 				//Calcula valor em pixel a partir do valor real. subtrai padding para dar espaço para a margem
-//				xValue = DBSNumber.multiply(xCharts.getChartHeight() - (DBSCharts.Padding * 2),
-//						 					DBSNumber.divide(xChartValue.getValue(), 
-//						 									 xCharts.getTotalValue())).intValue();
-				
 				xY = DBSNumber.subtract(xCharts.getChartHeight(),
 										DBSNumber.multiply(xCharts.getRowScale(), 
 														   DBSNumber.subtract(xChartValue.getValue(), 
@@ -130,155 +126,20 @@ public class DBSChartValueRenderer extends DBSRenderer {
 					}
 				//Encode line - ponto. as linhas que ligam os pontos, são desenhadas no código JS.
 				}else if (xType == TYPE.LINE){
-					DBSFaces.encodeSVGCircle(xChartValue, xWriter, DBSFaces.CSS.MODIFIER.VALUE, null, xX.doubleValue(), xY.doubleValue(), 2D, 2D, "transparent");
+					DBSFaces.encodeSVGCircle(xChartValue, xWriter, DBSFaces.CSS.MODIFIER.POINT, null, xX.doubleValue(), xY.doubleValue(), 2D, 2D, null);
 				}else if (xType == TYPE.PIE){
-					StringBuilder xPath = new StringBuilder();
-					Double xValue = DBSNumber.divide(xChartValue.getValue(), xChart.getTotalValue()).doubleValue() * 100;
-					Double xPreviousValue = DBSNumber.divide(xChartValue.getPreviousValue(), xChart.getTotalValue()).doubleValue() * 100;
-//					Double xValue = xChartValue.getValue();
-//					Double xPreviousValue = xChartValue.getPreviousValue();
-					
-					//Diametro do circulo. Utiliza o menor tamanho entre a alrgura a a altura escolhada para não ultrapasar as bordas
-					Double xSize;
-					if (xCharts.getChartWidth().doubleValue() < xCharts.getChartHeight().doubleValue()){
-						xSize = xCharts.getChartWidth().doubleValue();
-					}else{
-						xSize = xCharts.getChartHeight().doubleValue();
-						
-					}
-					xSize += (DBSCharts.Padding * 2);
-					//
-					Double xPneuLargura = xSize / ((xCharts.getItensCount() * 2D) + 1); //Quantidades de graficos largura do Pneu
-					Double xRodaRaio = xPneuLargura / 2;
-					Double xCentro = xSize / 2; //xCharts.getChartWidth() / 2;
-					Double xUnit = (Math.PI *2) / 100;    
-					Double xStartangle = (xPreviousValue * xUnit) - 0.001;
-					Double xEndangle =  xStartangle + ((xValue * xUnit) - 0.001);
-					Double xPneuRaioInterno = (xPneuLargura * (xChart.getIndex() - 1)) + xRodaRaio;
-					Double xPneuRaioExterno = xPneuRaioInterno + xPneuLargura;
-					Double x1 = xCentro + (xPneuRaioExterno * Math.sin(xStartangle));
-					Double y1 = xCentro - (xPneuRaioExterno * Math.cos(xStartangle));
-					Double x2 = xCentro + (xPneuRaioExterno * Math.sin(xEndangle));
-					Double y2 = xCentro - (xPneuRaioExterno * Math.cos(xEndangle));
-					
-					Double x3 = xCentro + (xPneuRaioInterno * Math.sin(xEndangle));
-					Double y3 = xCentro - (xPneuRaioInterno * Math.cos(xEndangle));
-					Double x4 = xCentro + (xPneuRaioInterno * Math.sin(xStartangle));
-					Double y4 = xCentro - (xPneuRaioInterno * Math.cos(xStartangle)); 
-
-//					DBSFaces.encodeSVGCircle(xChartValue, xWriter, null, "stroke:#333333; stroke-width: 1px;", xCentro.doubleValue(), xCentro.doubleValue(), xSize / 2, xSize / 2, "transparent");
-//					DBSFaces.encodeSVGCircle(xChartValue, xWriter, null, "stroke:#333333; stroke-width: 1px;", xCentro.doubleValue(), xCentro.doubleValue(), xSize / 6, xSize / 6, "transparent");
-					
-//					Double x2 = (xSize / 2) + (xSize / 2) * Math.sin(xEndangle);
-//					Double y2 = (xSize / 2) - (xSize / 2) * Math.cos(xEndangle);
-					//Se curva por mais de 180º
-					Integer xBig = 0;
-				    if (xEndangle - xStartangle > Math.PI) {
-				        xBig = 1;
-				    }
-					x1 = DBSNumber.round(x1, 2);
-					x2 = DBSNumber.round(x2, 2);
-					x3 = DBSNumber.round(x3, 2);
-					x4 = DBSNumber.round(x4, 2);
-					y1 = DBSNumber.round(y1, 2);
-					y2 = DBSNumber.round(y2, 2);
-					y3 = DBSNumber.round(y3, 2);
-					y4 = DBSNumber.round(y4, 2);
-
-				    xPath.append("<path d=");
-					xPath.append("'M " + x1 + "," + y1 + //Ponto inicial do arco 
-			        " A " + xPneuRaioExterno + "," + xPneuRaioExterno + " 0 " + xBig + " 1 " + x2 + "," + y2 + //Arco externo até o ponto final 
-			        " L " + x3 + "," + y3 + //Linha do arco externo até o início do arco interno
-			        " A " + xPneuRaioInterno + "," + xPneuRaioInterno + " 0 " + xBig + " 0 " + x4 + "," + y4 + //Arco interno até o ponto incial interno
-			        " Z' "); //Fecha o path ligando o arco interno ao arco externo  
-					xPath.append("fill='" + xChartValue.getFillColor() + "' ");
-//					xPath.append("stroke='#333333' style='stroke-width: 0px;'");
-					xPath.append("></path>");
-					
-//					xPath = new StringBuilder();
-//
-//					//					StringBuilder xPath = new StringBuilder();
-//					Integer xPerc = 50;
-//					Integer xSize = xCharts.getChartHeight();
-//					Double xLargura = xSize / (xChart.getSize() * 2) - (xSize * 0.2);
-//					Integer xCX = 134; //xCharts.getChartWidth() / 2;
-//					Integer xCY = 134; //xCharts.getChartHeight() / 2;
-//					Double xUnit = (Math.PI *2) / 100;    
-//					Double xStartangle = (10 * xUnit) - 0.001;
-//					Double xEndangle =  xStartangle + ((xPerc * xUnit) - 0.001);
-//					Double x1 = (xSize / 2) + (xSize / 2) * Math.sin(xStartangle);
-//					Double y1 = (xSize / 2) - (xSize / 2) * Math.cos(xStartangle);
-//					Double x2 = (xSize / 2) + (xSize / 2) * Math.sin(xEndangle);
-//					Double y2 = (xSize / 2) - (xSize / 2) * Math.cos(xEndangle);
-//					Integer xBig = 0;
-//				    if (xEndangle - xStartangle > Math.PI) {
-//				        xBig = 1;
-//				    }
-//					xPath.append("<path ");
-//					xPath.append("d='M " + (xSize / 2) + "," + (xSize / 2) +  // Start at circle center
-//					        " L " + x1 + "," + y1 +     // Draw line to (x1,y1)
-//					        " A " + (xSize / 2) + "," + (xSize / 2) +       // Draw an arc of radius r
-//					        " 0 " + xBig + " 1 " +       // Arc details...
-//					        x2 + "," + y2 +             // Arc goes to to (x2,y2)
-//					        " Z' ");   
-//					xPath.append("fill='#4d00ff' stroke='#333333' data-id='s0' transform='matrix(1,0,0,1,0,0)' style='stroke-width: 1px;'>");
-//					xPath.append("</path>");
-
-
-					//<path data-cx="134" data-cy="134" d="M134,20.10000000000001 A113.89999999999999,113.89999999999999,0,0,1,228.27377689006983,197.91920674477535 L171.70951075602795,159.56768269791013 A45.56,45.56,0,0,0,134,88.44 z" fill="#4d00ff" stroke="#333333" data-id="s0" transform="matrix(1,0,0,1,0,0)" style="stroke-width: 0px;"></path>
-
-//					xPath.append("<path ");
-//					xPath.append("data-cx='" + xCX + "' data-cy='" + xCY + "' ");
-//					xPath.append("d='M" + xCY + ",20.10000000000001 A113.89999999999999,113.89999999999999,0,0,1,228.27377689006983,197.91920674477535 L171.70951075602795,159.56768269791013 A45.56,45.56,0,0,0," + xCY + ",88.44 z' ");
-//					xPath.append("fill='#4d00ff' stroke='#333333' data-id='s0' transform='matrix(1,0,0,1,0,0)' style='stroke-width: 0px;'>");
-//					xPath.append("</path>");
-					xWriter.write(xPath.toString());
-					
+					pvEncodePie(xCharts, xChart, xChartValue, xWriter);
 				}
-				//Encode do valor da linha ---------------------------------------------------------------------
-				DBSFaces.encodeSVGText(xChartValue, 
-									   xWriter,  
-									   "-ylabel -hide", 
-									   "text-anchor:end;" +"fill:" + xChartValue.getFillColor(), 
-									   xCharts.getWidth().doubleValue(), 
-									   xYText.doubleValue(), 
-									   DBSFormat.getFormattedNumber(xChartValue.getValue(), NUMBER_SIGN.MINUS_PREFIX, xCharts.getValueFormatMask()));
-				//Encode label da coluna ---------------------------------------------------------------------
-				if (!DBSObject.isEmpty(xChartValue.getLabel())){
-					DBSFaces.encodeSVGText(xChartValue, 
-										   xWriter,  
-										   "-xlabel -hide", 
-										   "text-anchor:middle;" + "fill:" + xChartValue.getFillColor(), 
-										   xXText.doubleValue(), 
-										   xCharts.getHeight().doubleValue(), 
-										   xChartValue.getLabel());
+				if (xType == TYPE.LINE
+				 || xType == TYPE.BAR){
+					//Encode do valor da linha ---------------------------------------------------------------------
+					pvEncodeValor(xCharts, xChartValue, xCharts.getWidth().doubleValue(), xYText.doubleValue(), "-hide", "text-anchor:end;", xWriter);
+					//Encode label da coluna ---------------------------------------------------------------------
+					pvEncodeLabel(xChartValue, xXText.doubleValue(), xCharts.getHeight().doubleValue(), "-hide", "text-anchor:middle;", xWriter);
 				}
 			}
 			//Tooltip -------------------------------------------------------------------------
-			String xExtraInfoStyle = "";
-			xWriter.startElement("foreignObject", xChartValue);
-				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.EXTRAINFO.trim(), null);
-//				xWriter.writeAttribute("requiredExtensions", "http://www.w3.org/1999/xhtml", null);
-				xWriter.writeAttribute("xmlns","http://www.w3.org/1999/xhtml", null);
-//				xmlns="http://www.w3.org/1999/xhtml"
-				xWriter.writeAttribute("height", "1px", null);
-				xWriter.writeAttribute("width", "1px", null);
-				xWriter.writeAttribute("x", "0px", null);
-				xWriter.writeAttribute("y", "0px", null);
-				xWriter.startElement("span", xChartValue);
-//					xWriter.writeAttribute("xmlns","http://www.w3.org/1999/xhtml", null);
-					xWriter.writeAttribute("id", xClientId + "_tooltip", null);
-					xWriter.writeAttribute("tooltipdelay", "200", null);
-					if (xType == TYPE.BAR
-					 || xType == TYPE.LINE){
-						xExtraInfoStyle += "left:" + xXText.intValue() + "px;";
-						xExtraInfoStyle += "bottom:-" + (xYText.intValue() - 5) + "px;";
-						xExtraInfoStyle += "color:" + xChartValue.getFillColor() + ";";
-					}
-					xWriter.writeAttribute("style", xExtraInfoStyle, null);
-					DBSFaces.encodeTooltip(pContext, xChartValue, xChartValue.getTooltip(), xClientId + "_tooltip");
-				xWriter.endElement("span");
-			xWriter.endElement("foreignObject");
+			pvEncodeTooptip(xChartValue, xXText.doubleValue(), xYText.doubleValue(), xType, xClientId, pContext, xWriter);
 			
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xChartValue, DBSPassThruAttributes.getAttributes(Key.DIV));
 			encodeClientBehaviors(pContext, xChartValue);
@@ -287,6 +148,148 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		xWriter.endElement("g");
 	}
 
+	private void pvEncodeValor(DBSCharts pCharts, DBSChartValue pChartValue, Double pX, Double pY, String pStyleClass, String pStyle, ResponseWriter pWriter) throws IOException{
+		//Encode do valor da linha ---------------------------------------------------------------------
+		DBSFaces.encodeSVGText(pChartValue, 
+							   pWriter,  
+							   DBSFaces.CSS.MODIFIER.VALUE + pStyleClass, 
+							   pStyle + "fill:" + pChartValue.getFillColor(), 
+							   pX, 
+							   pY, 
+							   DBSFormat.getFormattedNumber(pChartValue.getValue(), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask()));
+	}
+	
+	private void pvEncodeLabel(DBSChartValue pChartValue, Double pX, Double pY, String pStyleClass, String pStyle, ResponseWriter pWriter) throws IOException{
+		//Encode label da coluna ---------------------------------------------------------------------
+		if (!DBSObject.isEmpty(pChartValue.getLabel())){
+			DBSFaces.encodeSVGText(pChartValue, 
+								   pWriter,  
+								   DBSFaces.CSS.MODIFIER.LABEL + pStyleClass, 
+								   pStyle + "fill:" + pChartValue.getFillColor(), 
+								   pX, 
+								   pY, 
+								   pChartValue.getLabel());
+		}
+	}
+	
+	private void pvEncodeTooptip(DBSChartValue pChartValue, Double pX, Double pY, TYPE pType, String pClienteId, FacesContext pContext, ResponseWriter pWriter) throws IOException{
+		String xExtraInfoStyle = "";
+		pWriter.startElement("foreignObject", pChartValue);
+			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.EXTRAINFO.trim(), null);
+//			xWriter.writeAttribute("requiredExtensions", "http://www.w3.org/1999/xhtml", null);
+			pWriter.writeAttribute("xmlns","http://www.w3.org/1999/xhtml", null);
+			pWriter.writeAttribute("height", "1px", null);
+			pWriter.writeAttribute("width", "1px", null);
+			pWriter.writeAttribute("x", "0px", null);
+			pWriter.writeAttribute("y", "0px", null);
+			pWriter.startElement("span", pChartValue);
+				pWriter.writeAttribute("id", pClienteId + "_tooltip", null);
+				pWriter.writeAttribute("tooltipdelay", "200", null);
+				if (pType == TYPE.BAR
+				 || pType == TYPE.LINE){
+					xExtraInfoStyle += "left:" + pX.intValue() + "px;";
+					xExtraInfoStyle += "bottom:-" + (pY.intValue() - 5) + "px;";
+					xExtraInfoStyle += "color:" + pChartValue.getFillColor() + ";";
+				}
+				pWriter.writeAttribute("style", xExtraInfoStyle, null);
+				DBSFaces.encodeTooltip(pContext, pChartValue, pChartValue.getTooltip(), pClienteId + "_tooltip");
+			pWriter.endElement("span");
+		pWriter.endElement("foreignObject");
+	}
+	
+	private void pvEncodePie(DBSCharts pCharts, DBSChart pChart, DBSChartValue pChartValue, ResponseWriter pWriter) throws IOException{
+		StringBuilder xPath = new StringBuilder();
+		Double xValue = DBSNumber.divide(pChartValue.getValue(), pChart.getTotalValue()).doubleValue() * 100;
+		Double xPreviousValue = DBSNumber.divide(pChartValue.getPreviousValue(), pChart.getTotalValue()).doubleValue() * 100;
+//		Double xValue = xChartValue.getValue();
+//		Double xPreviousValue = xChartValue.getPreviousValue();
+		
+		//Diametro do circulo. Utiliza o menor tamanho entre a alrgura a a altura escolhada para não ultrapasar as bordas
+		Double xSize;
+		if (pCharts.getChartWidth().doubleValue() < pCharts.getChartHeight().doubleValue()){
+			xSize = pCharts.getChartWidth().doubleValue();
+		}else{
+			xSize = pCharts.getChartHeight().doubleValue();
+			
+		}
+		xSize += (DBSCharts.Padding * 2);
+		//
+		Double xPneuLargura = xSize / ((pCharts.getItensCount() * 2D) + 3); //Quantidades de graficos largura do Pneu
+		Double xRodaRaio = xPneuLargura / 2;
+		Double xArcoExterno = (xSize / 2) - xRodaRaio;
+		Double xCentro = xSize / 2; //xCharts.getChartWidth() / 2;
+		Double xUnit = (Math.PI *2) / 100;    
+		Double xStartangle = (xPreviousValue * xUnit) - 0.001;
+		Double xEndangle =  xStartangle + ((xValue * xUnit) - 0.001);
+		Double xPneuRaioInterno = (xPneuLargura * (pCharts.getItensCount() - pChart.getIndex())) + xRodaRaio;
+		Double xPneuRaioExterno = xPneuRaioInterno + xPneuLargura;
+		Double x1 = xCentro + (xPneuRaioExterno * Math.sin(xStartangle));
+		Double y1 = xCentro - (xPneuRaioExterno * Math.cos(xStartangle));
+		Double x2 = xCentro + (xPneuRaioExterno * Math.sin(xEndangle));
+		Double y2 = xCentro - (xPneuRaioExterno * Math.cos(xEndangle));
+		
+		Double x3 = xCentro + (xPneuRaioInterno * Math.sin(xEndangle));
+		Double y3 = xCentro - (xPneuRaioInterno * Math.cos(xEndangle));
+		Double x4 = xCentro + (xPneuRaioInterno * Math.sin(xStartangle));
+		Double y4 = xCentro - (xPneuRaioInterno * Math.cos(xStartangle)); 
+
+		//Ponto de apoi no centro do arco para servir de referencia para o label
+		Double xPointCenter = xStartangle + ((xEndangle - xStartangle) / 2);
+		Double xPoint = xCentro + ((xPneuRaioExterno + 1) * Math.sin(xPointCenter));
+		Double yPoint = xCentro - ((xPneuRaioExterno + 1) * Math.cos(xPointCenter));
+		DBSFaces.encodeSVGCircle(pChartValue, pWriter, DBSFaces.CSS.MODIFIER.POINT, "fill:" + pChartValue.getFillColor(), xPoint, yPoint, 2D, 2D, null);
+
+		//Ponto de apoi no centro e acima do arco  para servir de referencia para o label
+		Double xLabel = xCentro + (xArcoExterno * Math.sin(xPointCenter));
+		Double yLabel = xCentro - (xArcoExterno * Math.cos(xPointCenter));
+		DBSFaces.encodeSVGCircle(pChartValue, pWriter, DBSFaces.CSS.MODIFIER.POINT, null, xLabel, yLabel, 2D, 2D, null);
+
+		
+		DBSFaces.encodeSVGLine(pChartValue, pWriter, DBSFaces.CSS.MODIFIER.LINE, "stroke:" + pChartValue.getFillColor() + "; stroke-width:1px;", xPoint, yPoint, xLabel, yLabel);
+		
+		String xStyle =  "text-anchor:";
+		if (xLabel >= xCentro){
+			xStyle += "start;";
+		}else{
+			xStyle += "end;";
+		}
+		xStyle += "dominant-baseline:";
+		xStyle += "middle;";
+//		if (yLabel >= xCentro){
+//			xStyle += "text-before-edge;";
+//		}else{
+//			xStyle += "text-after-edge;";
+//		}
+		//Encode do valor da linha ---------------------------------------------------------------------
+		pvEncodeValor(pCharts, pChartValue, xLabel, yLabel, "", xStyle, pWriter);
+		//Encode label da coluna ---------------------------------------------------------------------
+//		pvEncodeLabel(pChartValue, xLabel, yLabel, xStyle, pWriter);
+
+		//Se curva por mais de 180º
+		Integer xBig = 0;
+	    if (xEndangle - xStartangle > Math.PI) {
+	        xBig = 1;
+	    }
+		x1 = DBSNumber.round(x1, 2);
+		x2 = DBSNumber.round(x2, 2);
+		x3 = DBSNumber.round(x3, 2);
+		x4 = DBSNumber.round(x4, 2);
+		y1 = DBSNumber.round(y1, 2);
+		y2 = DBSNumber.round(y2, 2);
+		y3 = DBSNumber.round(y3, 2);
+		y4 = DBSNumber.round(y4, 2);
+
+	    xPath.append("<path d=");
+		xPath.append("'M " + x1 + "," + y1 + //Ponto inicial do arco 
+        " A " + xPneuRaioExterno + "," + xPneuRaioExterno + " 0 " + xBig + " 1 " + x2 + "," + y2 + //Arco externo até o ponto final 
+        " L " + x3 + "," + y3 + //Linha do arco externo até o início do arco interno
+        " A " + xPneuRaioInterno + "," + xPneuRaioInterno + " 0 " + xBig + " 0 " + x4 + "," + y4 + //Arco interno até o ponto incial interno
+        " Z' "); //Fecha o path ligando o arco interno ao arco externo  
+		xPath.append("fill='" + pChartValue.getFillColor() + "' ");
+//		xPath.append("stroke='#333333' style='stroke-width: 0px;'");
+		xPath.append("></path>");
+		pWriter.write(xPath.toString());
+	}
 	private void pvEncodeJS(String pClientId, ResponseWriter pWriter) throws IOException{
 		DBSFaces.encodeJavaScriptTagStart(pWriter);
 		String xJS = "$(document).ready(function() { \n" +

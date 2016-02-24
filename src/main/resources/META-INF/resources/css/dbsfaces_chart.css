@@ -6,3 +6,16 @@
 	stroke: rgb(120,120,120);
 	stroke-width: 1px;
 }
+
+
+.dbs_chart[type='bar'] > .dbs_chartValue.-selected > :not(.-point),
+.dbs_chart[type='pie'] > .dbs_chartValue.-selected > :not(.-point){
+	stroke: rgb(13,25,45);
+	stroke-width: 1px;
+}
+
+.dbs_chart[type='line'] > .dbs_chartValue.-selected > .-point{
+	fill:white;	
+}
+
+

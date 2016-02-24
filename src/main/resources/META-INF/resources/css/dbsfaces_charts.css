@@ -24,6 +24,7 @@
 }
 
 .dbs_charts > .-container > .-data{
+	font-size: .7em;
 }
 
 .dbs_charts > .-container > .-data > .-container{
@@ -49,7 +50,6 @@
 }
 
 .dbs_charts > .-container > .-data > .-container > .-content > .-value > .-grid > .-label{
-	font-size: 8px;
 	fill: rgb(180, 180, 180);
 	stroke-width: 0px;
 }

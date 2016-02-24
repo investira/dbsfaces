@@ -43,19 +43,20 @@ public class DBSChartRenderer extends DBSRenderer {
 		DBSChart xChart = (DBSChart) pComponent;
 		if (xChart.getType()==null){return;}
 		ResponseWriter xWriter = pContext.getResponseWriter();
-		String xClass = DBSFaces.CSS.CHART.MAIN + " ";
+		String xClass = DBSFaces.CSS.CHART.MAIN;
 
 		if (xChart.getStyleClass()!=null){
-			xClass = xClass + xChart.getStyleClass() + " ";
+			xClass += xChart.getStyleClass() + " ";
 		}
 
 		String xClientId = xChart.getClientId(pContext);
 		xWriter.startElement("g", xChart);
 			DBSFaces.setAttribute(xWriter, "id", xClientId, null);
 			DBSFaces.setAttribute(xWriter, "name", xClientId, null);
-			DBSFaces.setAttribute(xWriter, "class", xClass, null);
+			DBSFaces.setAttribute(xWriter, "class", xClass.trim(), null);
 			DBSFaces.setAttribute(xWriter, "style", xChart.getStyle(), null);
 			DBSFaces.setAttribute(xWriter, "type", xChart.getType(), null);
+			DBSFaces.setAttribute(xWriter, "index", xChart.getIndex(), null);
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xChart, DBSPassThruAttributes.getAttributes(Key.CHART));
 			
 			encodeClientBehaviors(pContext, xChart);

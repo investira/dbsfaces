@@ -1,10 +1,12 @@
 .dbs_chartValue{
 	cursor:pointer;
 	stroke-width: 0px;
-	font-size: 8px;
+/* 	font-size: 8px; */
 	fill: rgb(180,180,180);
 }
-.dbs_chartValue > ellipse{
+
+.dbs_chartValue > .-point{
+	fill:transparent;	
 }
 
 
@@ -12,17 +14,17 @@
 	shape-rendering: crispEdges;
 }
 
-.dbs_chartValue > .-xlabel,
-.dbs_chartValue > .-ylabel{
+.dbs_chartValue > .-label,
+.dbs_chartValue > .-value{
 	stroke-width: 0px !important;
 }
 
-.dbs_chartValue > .-xlabel.-hide,
-.dbs_chartValue > .-ylabel.-hide{
+.dbs_chartValue > .-label.-hide,
+.dbs_chartValue > .-value.-hide{
 	opacity: 0;
 }
-.dbs_chartValue > .-xlabel.-selected,
-.dbs_chartValue > .-ylabel.-selected{
+.dbs_chartValue > .-label.-selected,
+.dbs_chartValue > .-value.-selected{
 	opacity: 1;
 }
 
@@ -35,44 +37,8 @@
 	position: absolute;
 }
 
-/* .dbs_chartValue > .-extrainfo > span{ */
-/* 	opacity: 0;  */
-/* 	position: absolute; */
-/* } */
-
-/* .dbs_chartValue > .-extrainfo > span.-selected{ */
-/* 	opacity: 1; */
-/* }	 */
-
-/* .dbs_chartValue > .-extrainfo > span.-selected, */
-/* .dbs_chartValue > .-xlabel.-selected{ */
-/* 	background-image: url("#{request.contextPath}/images/back_texture_white.png"); */
-/* 	background-color: white; */
-/* 	background-repeat: repeat; */
-/*     border-radius: 3px; */
-/* 	-moz-border-radius: 3px; */
-/* 	-webkit-border-radius: 3px;     */
-/*     padding: 0px 3px 0px 3px; */
-/*     font-size: 8px; */
-/*     box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.6); */
-/*    	-webkit-box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.6); */
-/* 	-moz-box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.6); */
-/*     z-index: 1;	 */
-/*     color: rgb(13,25,45); */
-/* }	 */
-
-.dbs_chartValue.-selected{
-	stroke: rgb(13,25,45);
-	stroke-width: 1px;
-}
-
-.dbs_chartValue.-selected > ellipse{
-	fill:white;	
-}
-
-
 .dbs_chartValue .dbs_input {
-	font-size: 8px;
+/* 	font-size: 8px; */
 }
 
 .dbs_chartValue .dbs_input-data{

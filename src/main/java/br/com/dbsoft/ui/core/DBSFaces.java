@@ -250,6 +250,7 @@ public class  DBSFaces {
 			public static final String MASK = " -mask ";
 			public static final String MESSAGE = " -message ";
 			public static final String NORMAL = " -normal ";
+			public static final String POINT = " -point ";
 			public static final String PUSHDISABLED = " -pushDisabled ";
 			public static final String READONLY = " -readOnly ";
 			public static final String REQUIRED = " -required ";
