@@ -1599,20 +1599,44 @@ public class  DBSFaces {
 	 * @param pStyle
 	 * @param pX
 	 * @param pY
+	 * @param pHeight
+	 * @param pWidth
 	 * @throws IOException
 	 */
 	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, String pStyle, Double pX, Double pY, Double pHeight, Double pWidth, String pFill) throws IOException{
+		encodeSVGRect(pComponent, pWriter, pStyleClass, pStyle, pX, pY, pHeight, pWidth, null,null, pFill);
+	}
+	
+	/**
+	 * Encode de Retangulo para grádico SVG.<br/>
+	 * O ponto 0,0 é a esquerda, acima.
+	 * @param pComponent
+	 * @param pWriter
+	 * @param pStyleClass
+	 * @param pStyle
+	 * @param pX
+	 * @param pY
+	 * @param pHeight
+	 * @param pWidth
+	 * @param pRX Raio da corner
+	 * @param pRY Raio da corner
+	 * @throws IOException
+	 */
+	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, String pStyle, Double pX, Double pY, Double pHeight, Double pWidth, Integer pRX, Integer pRY, String pFill) throws IOException{
 		pWriter.startElement("rect", pComponent);
 			setAttribute(pWriter, "class", pStyleClass, null);
 			setAttribute(pWriter, "style", pStyle, null);
 			setAttribute(pWriter, "x", 	pX, null);
 			setAttribute(pWriter, "y", 	pY, null);
+			setAttribute(pWriter, "rx", 	pRX, null);
+			setAttribute(pWriter, "ry", 	pRY, null);
 			
 			setAttribute(pWriter, "height", pHeight, null);
 			setAttribute(pWriter, "width", pWidth, null);
 			setAttribute(pWriter, "fill",	pFill, null);			
 		pWriter.endElement("rect");
 	}
+	
 	
 	/**
 	 * Encode de Circulo/Elipse para grádico SVG

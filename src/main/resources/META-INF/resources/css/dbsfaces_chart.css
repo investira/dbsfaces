@@ -7,14 +7,33 @@
 	stroke-width: 1px;
 }
 
-
-.dbs_chart[type='bar'] > .dbs_chartValue.-selected > :not(.-point),
-.dbs_chart[type='pie'] > .dbs_chartValue.-selected > :not(.-point){
+.dbs_chart[type='line'] > .dbs_chartValue.-selected,
+.dbs_chart[type='bar'] > .dbs_chartValue.-selected{
 	stroke: rgb(13,25,45);
 	stroke-width: 1px;
 }
 
+.dbs_chart[type='pie'] > .dbs_chartValue.-selected{
+	stroke-width: .2em;
+}
+
+.dbs_chart[type='bar'] > .dbs_chartValue > rect {
+    shape-rendering: crispEdges;
+}
+.dbs_chart[type='line'] > .dbs_chartValue > .-point{
+	fill:transparent;	
+}
 .dbs_chart[type='line'] > .dbs_chartValue.-selected > .-point{
+	fill:white;	
+}
+
+.dbs_chart[type='pie'] > .dbs_chartValue > .-data > .-point{
+    height: 1.2em;
+    width: 4em;
+	stroke-width: .05em;
+}
+
+.dbs_chart[type='line'] > .dbs_chartValue.-selected > .-data > .-point{
 	fill:white;	
 }
 

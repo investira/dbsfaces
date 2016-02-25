@@ -9,26 +9,26 @@ dbs_chartValue = function(pId) {
 	},0);
 	
 	$(pId).mouseenter(function (e){
+		//Coloca item como primeiro elemento para aparecer acima dos demais
 		this.parentElement.appendChild(this);
 		dbsfaces.tooltip.showTooltip(pId + '_tooltip');
 		$(pId + '_tooltip').addClass("-selected");
-		if ($(pId + " > .-label").length > 0){
-			$(pId + " > .-label").get(0).classList.add("-selected");
+		if ($(pId + " > .-data > .-label").length > 0){
+			$(pId + " > .-data > .-label").get(0).classList.add("-selected");
 		}
-		if ($(pId + " > .-value").length > 0){
-			$(pId + " > .-value").get(0).classList.add("-selected");
+		if ($(pId + " > .-data > .-value").length > 0){
+			$(pId + " > .-data > .-value").get(0).classList.add("-selected");
 		}
 		dbsfaces.chartValue.selectValue(pId, true);
-		//Coloca item como primeiro elemento para aparecer acima dos demais
 	});
 	$(pId).mouseleave(function (e){
 		dbsfaces.tooltip.hideTooltip(pId + '_tooltip');
 		$(pId + '_tooltip').removeClass("-selected");
-		if ($(pId + " > .-label").length > 0){
-			$(pId + " > .-label").get(0).classList.remove("-selected");
+		if ($(pId + " > .-data > .-label").length > 0){
+			$(pId + " > .-data > .-label").get(0).classList.remove("-selected");
 		}
-		if ($(pId + " > .-value").length > 0){
-			$(pId + " > .-value").get(0).classList.remove("-selected");
+		if ($(pId + " > .-data > .-value").length > 0){
+			$(pId + " > .-data > .-value").get(0).classList.remove("-selected");
 		}
 		dbsfaces.chartValue.selectValue(pId, false);
 	});
@@ -51,9 +51,9 @@ dbsfaces.chartValue = {
 	
 	drawLine: function(pLineGroup, pValue){
 		if (pValue.length == 0){return;}
-		var xValuePosterior = pValue.nextAll(".dbs_chartValue").first().children("-point");
+		var xValuePosterior = pValue.nextAll(".dbs_chartValue").first().children(".-point");
 		if (xValuePosterior.length == 0){return;}
-		var xValue = pValue.children("-point");
+		var xValue = pValue.children(".-point");
 		var xId = pValue.attr("id");
 		var xX1 = xValue.attr("cx");
 		var xY1 = xValue.attr("cy");
@@ -63,23 +63,32 @@ dbsfaces.chartValue = {
 		if (xLine.length == 0){
 			xLine = $(document.createElementNS('http://www.w3.org/2000/svg','line'));
 		}
-		xLine.attr("index", xId);
-		xLine.attr("x1", xX1);
-		xLine.attr("y1", xY1);
-		xLine.attr("x2", xX2);
-		xLine.attr("y2", xY2);
+		xLine.attr("index", xId)
+			 .attr("x1", xX1)
+			 .attr("y1", xY1)
+			 .attr("x2", xX2)
+			 .attr("y2", xY2);
 		pLineGroup.append(xLine);
 	},
 	
 	showLabel: function(pId){
+		var xChart = $(pId).closest(".dbs_chart");
+		if (xChart.attr("type") == "bar"
+		 || xChart.attr("type") == "line"){
+			dbsfaces.chartValue.showLabelBarAndLine(pId);
+		}
+	},
+	
+	//Verifica sopreposição dos labels
+	showLabelBarAndLine: function(pId){
 		var xValue = $(pId);
 		if (xValue.length == 0){return;}
 
-		var xLabelAtual = xValue.children(".-label");
+		var xLabelAtual = xValue.children(".-data").children(".-label");
 		if (xLabelAtual.length == 0){return;}
 
 		//Procura valor anterior que contenha label sendo exibido
-		var xLabelAnterior = xValue.prevAll(".dbs_chartValue").children(".-label").not("[class ~= '-hide']").first();
+		var xLabelAnterior = xValue.prevAll(".dbs_chartValue").children(".-data").children(".-label").not("[class ~= '-hide']").first();
 		var xXAtual = 0;
 		var xXAnterior = 0;
 		//Calcula posição final da label anterior
@@ -94,27 +103,25 @@ dbsfaces.chartValue = {
 		}else{
 			xLabelAtual.get(0).classList.remove("-hide");
 		}
-
-		//Centraliza o texto do extrainfo
-//		var xXLabel = $(pId + " > .-extrainfo > .-x");
-//		xXLabel.offset({left: xXAtual})
 	},
 
 	selectValue: function(pId, pSelect){
 		var xValue = $(pId);
 		if (xValue.length == 0){return;}
 		
-		var xXLabelAtual = xValue.children(".-label");
+		var xCharts = xValue.closest(".dbs_charts");
+		var xLabelAtual = xValue.children(".-data");
 
-		var xYLabels = xValue.closest(".dbs_charts").find(".-container > .-data > .-container > .-content > .-value > .-grid > .-label");
-		var xXLabels = xValue.siblings(".dbs_chartValue").children(".-label").not("[class ~= '-hide']").not(xXLabelAtual);
+		var xGridLabels = xCharts.find(".-container > .-data > .-container > .-content > .-value > .-grid > .-label");
+//		var xDataLabels = xValue.siblings(".dbs_chartValue").children(".-data").children(".-label").not("[class ~= '-hide']").not(xLabelAtual);
+		var xDataLabels = xCharts.find(".dbs_chartValue").children(".-data").not(xLabelAtual);
 		if (pSelect){
-			xXLabels.hide();
-			xYLabels.hide();
+			xDataLabels.hide();
+			xGridLabels.hide();
 			xValue.get(0).classList.add("-selected");
 		}else{
-			xXLabels.show();
-			xYLabels.show();
+			xDataLabels.show();
+			xGridLabels.show();
 			xValue.get(0).classList.remove("-selected");
 		}
 	}
