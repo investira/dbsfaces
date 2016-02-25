@@ -335,8 +335,8 @@ public class DBSChartValueRenderer extends DBSRenderer {
 	//					xExtraInfoStyle += "color:" + pChartValue.getFillColor() + ";";
 	//				}
 					pWriter.writeAttribute("style", xExtraInfoStyle, null);
-					DBSFaces.encodeTooltip(pContext, pChartValue, pChartValue.getValue().toString(), pClienteId + "_tooltip");
-//					DBSFaces.encodeTooltip(pContext, pChartValue, pChartValue.getTooltip(), pClienteId + "_tooltip");
+//					DBSFaces.encodeTooltip(pContext, pChartValue, pChartValue.getValue().toString(), pClienteId + "_tooltip");
+					DBSFaces.encodeTooltip(pContext, pChartValue, pChartValue.getTooltip(), pClienteId + "_tooltip");
 				pWriter.endElement("span");
 			pWriter.endElement("foreignObject");
 		}
