@@ -234,6 +234,7 @@ public class  DBSFaces {
 			public static final String ICONCLOSE = " -iconclose ";
 			public static final String INVALID = " -invalid ";
 			public static final String INPUT = " -input ";
+			public static final String INFO = " -info ";
 			public static final String KEY = " -key ";
 			public static final String LABEL = " -label ";
 			public static final String LAST = " -last ";

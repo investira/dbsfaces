@@ -12,32 +12,32 @@
 	
 }   
 
-.dbs_chartValue > .-data{
+.dbs_chartValue > .-info{
 }
 
-.dbs_chartValue > .-data > .-point{
+.dbs_chartValue > .-info > .-point{
 }
 
 
-.dbs_chartValue > .-data > .-label,
-.dbs_chartValue > .-data > .-value{
+.dbs_chartValue > .-info > .-label,
+.dbs_chartValue > .-info > .-value{
 	stroke-width: 0px !important;
 }
 
-.dbs_chartValue > .-data > .-label.-hide,
-.dbs_chartValue > .-data > .-value.-hide{
+.dbs_chartValue > .-info > .-label.-hide,
+.dbs_chartValue > .-info > .-value.-hide{
 	opacity: 0;
 }
-.dbs_chartValue > .-data > .-label.-selected,
-.dbs_chartValue > .-data > .-value.-selected{
+.dbs_chartValue > .-info > .-label.-selected,
+.dbs_chartValue > .-info > .-value.-selected{
 	opacity: 1;
 }
 
-.dbs_chartValue > .-extrainfo{
+.dbs_chartValue > foreignobject{
 	overflow:visible;
 }
 
-.dbs_chartValue > .-extrainfo > span{
+.dbs_chartValue > foreignobject > span{
 	display: inline-block;
 	position: absolute;
 }

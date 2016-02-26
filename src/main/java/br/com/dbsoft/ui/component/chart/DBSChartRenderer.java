@@ -116,11 +116,9 @@ public class DBSChartRenderer extends DBSRenderer {
 					if (xChartValue.isRendered()){
 						xIndex++;
 						xChartValue.setIndex(xIndex);
-						xChartValue.setPreviousValue(xPreviousValue);
-						xPreviousValue = xChartValue.getValue();
-						if (xPreviousValue !=null){
-							xTotalValue += xPreviousValue;
-						}
+						xChartValue.setPreviousValue(xTotalValue);
+						xPreviousValue = DBSObject.getNotNull(xChartValue.getValue(),0D);
+						xTotalValue += xPreviousValue;
 						xChartValue.encodeAll(pContext);
 					}
 				}
@@ -141,11 +139,9 @@ public class DBSChartRenderer extends DBSRenderer {
 				if (xChartValue.isRendered()){
 					xIndex++;
 					xChartValue.setIndex(xIndex);
-					xChartValue.setPreviousValue(xPreviousValue);
-					xPreviousValue = xChartValue.getValue();
-					if (xPreviousValue !=null){
-						xTotalValue += xPreviousValue;
-					}
+					xChartValue.setPreviousValue(xTotalValue);
+					xPreviousValue = DBSObject.getNotNull(xChartValue.getValue(),0D);
+					xTotalValue += xPreviousValue;
 				}
 			}
 		}

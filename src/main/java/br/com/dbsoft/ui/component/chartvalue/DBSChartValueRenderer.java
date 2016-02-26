@@ -147,7 +147,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		}
 		//Encode Dados
 		pWriter.startElement("g", pChartValue);
-			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.DATA, null);
+			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.INFO, null);
 			//Encode do valor da linha ---------------------------------------------------------------------
 			pvEncodeText(pChartValue, 
 						 DBSFormat.getFormattedNumber(pChartValue.getValue(), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask()), 
@@ -173,7 +173,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		StringBuilder 	xPath;
 		String 			xClientId = pChartValue.getClientId(pContext);
 		Double 			xPercValue = DBSNumber.divide(pChartValue.getValue(), pChart.getTotalValue()).doubleValue() * 100;
-		Double 			xPreviousValue = DBSNumber.divide(pChartValue.getPreviousValue(), pChart.getTotalValue()).doubleValue() * 100;
+		Double 			xPreviousPercValue = DBSNumber.divide(pChartValue.getPreviousValue(), pChart.getTotalValue()).doubleValue() * 100;
 		Point2D 		xCentro = new Point2D.Double();
 		Point2D 		x1 = new Point2D.Double();
 		Point2D 		x2 = new Point2D.Double();
@@ -188,7 +188,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 
 		Integer 		xPneuInternalPadding = 2;
 		Integer 		xLabelPadding = DBSNumber.toInteger(DBSCharts.FontSize * 1.5);
-		Double			xUnit = (Math.PI *2) / 100;
+		Double			xUnit = (Math.PI * 2) / 100;
 
 		Double 			xPneuLargura;
 		Double 			xRodaRaio;
@@ -196,6 +196,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		Double			xStartAngle;
 		Double			xEndAngle;
 		Double			xPointAngle;
+		Double			xPointAngleBkp;
 		Double			xPneuRaioInterno;
 		Double			xPneuRaioExterno;
 		Double 			xDiametro;
@@ -223,7 +224,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		//Arco mais externos onde serão exibido dos dados
 		xArcoExterno = xDiametro - (xLabelPadding / 2);
 		//Angulo inicial e final do arco
-		xStartAngle = (xPreviousValue * xUnit);
+		xStartAngle = (xPreviousPercValue * xUnit);
 		xEndAngle =  xStartAngle + ((xPercValue * xUnit));
 		//Angulo do ponto de apoi no centro do arco para servir de referencia para o label
 		xPointAngle = xStartAngle + ((xEndAngle - xStartAngle) / 2);
@@ -250,14 +251,24 @@ public class DBSChartValueRenderer extends DBSRenderer {
 
 		boolean xOk = false;
 		pChartValue.setPoint(null);
+		xPointAngleBkp = xPointAngle;
 		while (!xOk){
 			//Ponto de apoi no centro e acima do arco  para servir de referencia para o label
 			xLabel.setLocation(DBSNumber.round(xCentro.getX() + (xArcoExterno * Math.sin(xPointAngle)),2),
 							   DBSNumber.round(xCentro.getY() - (xArcoExterno * Math.cos(xPointAngle)),2));
 			xOk = pvValidateLabelPoint(pCharts, xLabel, xCentro.getX());
 			if (!xOk){
-				xPointAngle += .2;
+				xPointAngle += .1;
+				if (xPointAngle > (Math.PI * 2)){
+					xPointAngle = 0D;
+				}else if(xPointAngle < 0){
+					xPointAngle = (Math.PI * 2);
+				}
+				if (xPointAngleBkp == xPointAngle){
+					break;
+				}
 			}
+			//Deu a volta e não encontro nenhuma posicão livre
 		}
 		//Salva pointo do label
 		pChartValue.setPoint(xLabel);
@@ -297,7 +308,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		if (pCharts.getShowLabel()){
 			//Encode Dados
 			pWriter.startElement("g", pChartValue);
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.DATA, null);
+				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.INFO, null);
 				
 				//ENCODE LINHA
 				xPath = new StringBuilder();
@@ -318,9 +329,9 @@ public class DBSChartValueRenderer extends DBSRenderer {
 				
 				//Borda do percentual
 				DBSFaces.encodeSVGRect(pChartValue, pWriter, DBSFaces.CSS.MODIFIER.POINT, xPerBoxStyle, (xLabel.getX() + xPercLineSize), xLabel.getY(), null, null,3,3, "white");
-	
+				pvEncodeText(pChartValue, DBSFormat.getFormattedNumber(xPointAngle, 2), xLabel.getX() + (xPercLineSize * 1.6), xLabel.getY(), DBSFaces.CSS.MODIFIER.VALUE, xPercLabelStyle, pWriter);
 				//Valor do percentual ---------------------------------------------------------------------
-				pvEncodeText(pChartValue, DBSFormat.getFormattedNumber(xPercValue, 1) + "%", xLabel.getX() + (xPercLineSize * 1.6), xLabel.getY(), DBSFaces.CSS.MODIFIER.VALUE, xPercLabelStyle, pWriter);
+//				pvEncodeText(pChartValue, DBSFormat.getFormattedNumber(xPercValue, 1) + "%", xLabel.getX() + (xPercLineSize * 1.6), xLabel.getY(), DBSFaces.CSS.MODIFIER.VALUE, xPercLabelStyle, pWriter);
 	
 			pWriter.endElement("g");
 		}
@@ -387,7 +398,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		  && pPoint.getX() > pMiddle)
 		 || (pChartValuePoint.getX() <= pMiddle
 	      && pPoint.getX() <= pMiddle)){
-			return pPoint.distance(pChartValuePoint) > 14D;
+			return pPoint.distance(pChartValuePoint) > 20D;
 		}
 		return true;
 	}
@@ -405,10 +416,8 @@ public class DBSChartValueRenderer extends DBSRenderer {
 	}
 
 	private void pvEncodeTooptip(TYPE pType, DBSChartValue pChartValue, Double pX, Double pY, String pClienteId, FacesContext pContext, ResponseWriter pWriter) throws IOException{
-			String xExtraInfoStyle = "";
+			String xStyle = "";
 			pWriter.startElement("foreignObject", pChartValue);
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.EXTRAINFO.trim(), null);
-	//			xWriter.writeAttribute("requiredExtensions", "http://www.w3.org/1999/xhtml", null);
 				pWriter.writeAttribute("xmlns","http://www.w3.org/1999/xhtml", null);
 				pWriter.writeAttribute("height", "1px", null);
 				pWriter.writeAttribute("width", "1px", null);
@@ -421,13 +430,9 @@ public class DBSChartValueRenderer extends DBSRenderer {
 					}else{
 						pWriter.writeAttribute("tooltipdelay", "300", null);
 					}
-	//				if (pType == TYPE.BAR
-	//				 || pType == TYPE.LINE){
-						xExtraInfoStyle += "left:" + pX.intValue() + "px;";
-						xExtraInfoStyle += "bottom:-" + (pY.intValue() - 5) + "px;";
-	//					xExtraInfoStyle += "color:" + pChartValue.getFillColor() + ";";
-	//				}
-					pWriter.writeAttribute("style", xExtraInfoStyle, null);
+					xStyle += "left:" + pX.intValue() + "px;";
+					xStyle += "bottom:-" + (pY.intValue() - 5) + "px;";
+					pWriter.writeAttribute("style", xStyle, null);
 //					DBSFaces.encodeTooltip(pContext, pChartValue, pChartValue.getValue().toString(), pClienteId + "_tooltip");
 					DBSFaces.encodeTooltip(pContext, pChartValue, pChartValue.getTooltip(), pClienteId + "_tooltip");
 				pWriter.endElement("span");

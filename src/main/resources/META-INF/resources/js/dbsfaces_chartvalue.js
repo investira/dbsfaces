@@ -13,22 +13,22 @@ dbs_chartValue = function(pId) {
 		this.parentElement.appendChild(this);
 		dbsfaces.tooltip.showTooltip(pId + '_tooltip');
 		$(pId + '_tooltip').addClass("-selected");
-		if ($(pId + " > .-data > .-label").length > 0){
-			$(pId + " > .-data > .-label").get(0).classList.add("-selected");
+		if ($(pId + " > .-info > .-label").length > 0){
+			$(pId + " > .-info > .-label").get(0).classList.add("-selected");
 		}
-		if ($(pId + " > .-data > .-value").length > 0){
-			$(pId + " > .-data > .-value").get(0).classList.add("-selected");
+		if ($(pId + " > .-info > .-value").length > 0){
+			$(pId + " > .-info > .-value").get(0).classList.add("-selected");
 		}
 		dbsfaces.chartValue.selectValue(pId, true);
 	});
 	$(pId).mouseleave(function (e){
 		dbsfaces.tooltip.hideTooltip(pId + '_tooltip');
 		$(pId + '_tooltip').removeClass("-selected");
-		if ($(pId + " > .-data > .-label").length > 0){
-			$(pId + " > .-data > .-label").get(0).classList.remove("-selected");
+		if ($(pId + " > .-info > .-label").length > 0){
+			$(pId + " > .-info > .-label").get(0).classList.remove("-selected");
 		}
-		if ($(pId + " > .-data > .-value").length > 0){
-			$(pId + " > .-data > .-value").get(0).classList.remove("-selected");
+		if ($(pId + " > .-info > .-value").length > 0){
+			$(pId + " > .-info > .-value").get(0).classList.remove("-selected");
 		}
 		dbsfaces.chartValue.selectValue(pId, false);
 	});
@@ -84,11 +84,11 @@ dbsfaces.chartValue = {
 		var xValue = $(pId);
 		if (xValue.length == 0){return;}
 
-		var xLabelAtual = xValue.children(".-data").children(".-label");
+		var xLabelAtual = xValue.children(".-info").children(".-label");
 		if (xLabelAtual.length == 0){return;}
 
 		//Procura valor anterior que contenha label sendo exibido
-		var xLabelAnterior = xValue.prevAll(".dbs_chartValue").children(".-data").children(".-label").not("[class ~= '-hide']").first();
+		var xLabelAnterior = xValue.prevAll(".dbs_chartValue").children(".-info").children(".-label").not("[class ~= '-hide']").first();
 		var xXAtual = 0;
 		var xXAnterior = 0;
 		//Calcula posição final da label anterior
@@ -110,11 +110,11 @@ dbsfaces.chartValue = {
 		if (xValue.length == 0){return;}
 		
 		var xCharts = xValue.closest(".dbs_charts");
-		var xLabelAtual = xValue.children(".-data");
+		var xLabelAtual = xValue.children(".-info");
 
 		var xGridLabels = xCharts.find(".-container > .-data > .-container > .-content > .-value > .-grid > .-label");
-//		var xDataLabels = xValue.siblings(".dbs_chartValue").children(".-data").children(".-label").not("[class ~= '-hide']").not(xLabelAtual);
-		var xDataLabels = xCharts.find(".dbs_chartValue").children(".-data").not(xLabelAtual);
+//		var xDataLabels = xValue.siblings(".dbs_chartValue").children(".-info").children(".-label").not("[class ~= '-hide']").not(xLabelAtual);
+		var xDataLabels = xCharts.find(".dbs_chartValue").children(".-info").not(xLabelAtual);
 		if (pSelect){
 			xDataLabels.hide();
 			xGridLabels.hide();
