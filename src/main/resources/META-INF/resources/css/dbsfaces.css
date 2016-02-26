@@ -45,7 +45,7 @@ pre,code,form,fieldset,legend,
 input,select,textarea,p,blockquote,th,td,figure,figcaption,time,article{
 	margin: 0;
 	padding: 0;
-	-webkit-overflow-scrolling: touch;
+/* 	-webkit-overflow-scrolling: touch; */
 }
 
 html,body,div,ul,li,span,a,table,thead,tfoot,tbody,td,th,tr,caption {
