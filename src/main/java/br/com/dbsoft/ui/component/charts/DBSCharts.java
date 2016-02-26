@@ -6,6 +6,7 @@ import javax.faces.component.FacesComponent;
 import javax.faces.component.NamingContainer;
 
 import br.com.dbsoft.ui.component.DBSUIInput;
+import br.com.dbsoft.ui.component.chart.DBSChart.TYPE;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSNumber;
 
@@ -14,7 +15,6 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.CHARTS;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
-	public static final Integer Padding = 2;
 	public static final Integer FontSize = 8;
 	
 	protected enum PropertyKeys {
@@ -22,10 +22,12 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		footer,
 		width,
 		height,
+		padding,
 		valueFormatMask,
 		showGrid,
 		showGridValue,
 
+		//Variáveis de trabalho
 		maxValue,
 		minValue,
 		rowScale,
@@ -78,7 +80,6 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	public void setShowGrid(Boolean pShowGrid) {
 		getStateHelper().put(PropertyKeys.showGrid, pShowGrid);
 		handleAttribute("showGrid", pShowGrid);
-//		pvSetChartWidth(getWidth());
 	}
 
 	public Boolean getShowGridValue() {
@@ -87,7 +88,6 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	public void setShowGridValue(Boolean pShowGridValue) {
 		getStateHelper().put(PropertyKeys.showGridValue, pShowGridValue);
 		handleAttribute("showGridValue", pShowGridValue);
-//		pvSetChartWidth(getWidth());
 	}
 
 	public Integer getHeight() {
@@ -96,7 +96,6 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	public void setHeight(Integer pHeight) {
 		getStateHelper().put(PropertyKeys.height, pHeight);
 		handleAttribute("hight", pHeight);
-//		pvSetChartHeight(pHeight);
 	}
 
 	public Integer getWidth() {
@@ -105,7 +104,14 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	public void setWidth(Integer pWidth) {
 		getStateHelper().put(PropertyKeys.width, pWidth);
 		handleAttribute("width", pWidth);
-//		pvSetChartWidth(pWidth);
+	}
+
+	public Integer getPadding() {
+		return (Integer) getStateHelper().eval(PropertyKeys.padding, 2);
+	}
+	public void setPadding(Integer pPadding) {
+		getStateHelper().put(PropertyKeys.padding, pPadding);
+		handleAttribute("padding", pPadding);
 	}
 
 	public String getValueFormatMask() {
@@ -114,7 +120,6 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	public void setValueFormatMask(String pValueFormatMask) {
 		getStateHelper().put(PropertyKeys.valueFormatMask, pValueFormatMask);
 		handleAttribute("valueFormatMask", pValueFormatMask);
-//		pvSetChartWidth(getWidth());
 	}
 
 	//--------------------
@@ -217,31 +222,35 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		return xValue.intValue();
 	}
 
-	public void setChartWidthHeight(){
+	public void setChartWidthHeight(TYPE pType){
 		// TODO Auto-generated method stub
-		pvSetChartWidth(getWidth());
-		pvSetChartHeight(getHeight());
+		pvSetChartWidth(pType, getWidth());
+		pvSetChartHeight(pType, getHeight());
 	}
 
 
-	private void pvSetChartHeight(Integer pHeight){
-		if (getShowLabel()){
-			//Subtrai da altura do a altura do texto da coluna 
-			pHeight -= DBSCharts.FontSize;
+	private void pvSetChartHeight(TYPE pType, Integer pHeight){
+		if (pType.isMatrix()){
+			if (getShowLabel()){
+				//Subtrai da altura do a altura do texto da coluna 
+				pHeight -= DBSCharts.FontSize;
+			}
 		}
-		pHeight -= (Padding * 2); //Retira o espaço para o padding do top e bottom
+		pHeight -= (getPadding() * 2); //Retira o espaço para o padding do top e bottom
 		getStateHelper().put(PropertyKeys.chartHeight, pHeight);
 		handleAttribute("chartHeight", pHeight);
 	}
 
-	private void pvSetChartWidth(Integer pWidth){
-		if (getShowGrid() 
-		 && getShowGridValue()
-		 && getValueFormatMask().length() > 0){
-			//Subtrai da largura o comprimento em pixel a partir da mascará de formatação do valor das linhas
-			pWidth -= DBSNumber.multiply(getValueFormatMask().length(), 6D).intValue();
+	private void pvSetChartWidth(TYPE pType, Integer pWidth){
+		if (pType.isMatrix()){
+			if (getShowGrid() 
+			 && getShowGridValue()
+			 && getValueFormatMask().length() > 0){
+				//Subtrai da largura o comprimento em pixel a partir da mascará de formatação do valor das linhas
+				pWidth -= DBSNumber.multiply(getValueFormatMask().length(), 6D).intValue();
+			}
 		}
-		pWidth -= (Padding * 2);  //Retira o espaço para o padding do left e right
+		pWidth -= (getPadding() * 2);  //Retira o espaço para o padding do left e right
 		getStateHelper().put(PropertyKeys.chartWidth, pWidth);
 		handleAttribute("chartWidth", pWidth);
 	}

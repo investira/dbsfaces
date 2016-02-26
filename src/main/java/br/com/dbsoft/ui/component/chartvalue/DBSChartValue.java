@@ -1,5 +1,7 @@
 package br.com.dbsoft.ui.component.chartvalue;
 
+import java.awt.geom.Point2D;
+
 import javax.faces.component.FacesComponent;
 import javax.faces.component.NamingContainer;
 
@@ -16,7 +18,9 @@ public class DBSChartValue extends DBSUIInput implements NamingContainer {
 	protected enum PropertyKeys {
 		index,
 		fillColor,
-		previousValue;
+		//Variáveis de trabalho
+		previousValue,
+		point;
 
 		String toString;
 
@@ -68,6 +72,14 @@ public class DBSChartValue extends DBSUIInput implements NamingContainer {
 	public void setPreviousValue(Double pPreviousValue) {
 		getStateHelper().put(PropertyKeys.previousValue, pPreviousValue);
 		handleAttribute("previousValue", pPreviousValue);
+	}
+
+	public Point2D getPoint() {
+		return (Point2D) getStateHelper().eval(PropertyKeys.point, null);
+	}
+	public void setPoint(Point2D pPoint) {
+		getStateHelper().put(PropertyKeys.point, pPoint);
+		handleAttribute("point", pPoint);
 	}
 
 	@Override

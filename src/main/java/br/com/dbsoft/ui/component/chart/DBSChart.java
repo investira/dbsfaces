@@ -15,18 +15,23 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 	
 	public static enum TYPE {
-		BAR 			("bar"),
-		LINE 			("line"),	
-	    PIE 			("pie");
+		BAR 			("bar", true),
+		LINE 			("line", true),	
+	    PIE 			("pie", false);
 		
 		private String 	wName;
+		private Boolean	wMatrix;
 		
-		private TYPE(String pName) {
+		private TYPE(String pName, Boolean pMatrix) {
 			this.wName = pName;
+			this.wMatrix = pMatrix;
 		}
 
 		public String getName() {
 			return wName;
+		}
+		public Boolean isMatrix(){
+			return wMatrix;
 		}
 
 		public static TYPE get(String pCode) {
@@ -49,6 +54,7 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 	
 	protected enum PropertyKeys {
 		type,
+		//Variáveis de trabalho
 		itensCount,
 		index,
 		columnScale,
