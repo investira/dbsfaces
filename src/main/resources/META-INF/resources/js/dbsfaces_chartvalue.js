@@ -10,7 +10,7 @@ dbs_chartValue = function(pId) {
 	
 	$(pId).mouseenter(function (e){
 		//Coloca item como primeiro elemento para aparecer acima dos demais
-		this.parentElement.appendChild(this);
+//		this.parentElement.appendChild(this);
 		dbsfaces.tooltip.showTooltip(pId + '_tooltip');
 		$(pId + '_tooltip').addClass("-selected");
 		if ($(pId + " > .-info > .-label").length > 0){
@@ -114,14 +114,22 @@ dbsfaces.chartValue = {
 
 		var xGridLabels = xCharts.find(".-container > .-data > .-container > .-content > .-value > .-grid > .-label");
 //		var xDataLabels = xValue.siblings(".dbs_chartValue").children(".-info").children(".-label").not("[class ~= '-hide']").not(xLabelAtual);
-		var xDataLabels = xCharts.find(".dbs_chartValue").children(".-info").not(xLabelAtual);
+		var xChartValues = xCharts.find(".dbs_chartValue").not(xValue);
+		var xDataLabels = xChartValues.children(".-info");
 		if (pSelect){
 			xDataLabels.hide();
 			xGridLabels.hide();
+			xChartValues.each(function(){
+				  this.classList.add("-dim");
+			});
 			xValue.get(0).classList.add("-selected");
+			
 		}else{
 			xDataLabels.show();
 			xGridLabels.show();
+			xChartValues.each(function(){
+				  this.classList.remove("-dim");
+			});
 			xValue.get(0).classList.remove("-selected");
 		}
 	}

@@ -59,7 +59,7 @@ public class DBSChartValue extends DBSUIInput implements NamingContainer {
 	}
 
 	public String getFillColor() {
-		return (String) getStateHelper().eval(PropertyKeys.fillColor, "gray");
+		return (String) getStateHelper().eval(PropertyKeys.fillColor, null);
 	}
 	public void setFillColor(String pFillColor) {
 		getStateHelper().put(PropertyKeys.fillColor, pFillColor);

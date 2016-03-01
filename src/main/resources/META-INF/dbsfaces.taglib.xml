@@ -3,6 +3,13 @@
 	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd">
 	<description>
+		<![CDATA[
+			<style type="text/css">
+				description{
+					font-size:small;
+				}
+			</style>
+		]]>
  		Componentes JSF DBSoft
  	</description>
 	<namespace>http://www.dbsoft.com.br/ui/dbsfaces</namespace>
@@ -2770,6 +2777,30 @@
 			<required>true</required>
 			<type>javax.faces.model.DBSResultDataModel</type>
 		</attribute>
+		<attribute>
+			<description>
+			<![CDATA[
+				<span style="font-size:small">
+				Hue que indicará a cor base que será utilizado calcular as cores de cada um dos valores do gráfico.<br/>
+				Caso não seja informado, as cores serão gerada automaticamente.
+				O valor do Hue varia de 0 a 1. Abaixo, valores aproximados<br/>
+				<ul>
+					<li>Vermelho = 0</li>
+					<li>Laranja = 0.1</li>
+					<li>Amarelo = 0.17</li>
+					<li>Verde = 0.3</li>
+					<li>Aniz = 0.5</li>
+					<li>Azul = 0.65</li>
+					<li>Rosa = 0.85</li>
+					<li>Vermelho = 1</li>
+				<ul>
+				</span>
+			]]>
+            </description>
+			<name>hue</name>
+			<required>false</required>
+			<type>java.lang.Float</type>
+		</attribute>		
 	</tag>
 	<tag>
 		<tag-name>chartValue</tag-name>

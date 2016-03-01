@@ -54,6 +54,7 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 	
 	protected enum PropertyKeys {
 		type,
+		hue,
 		//Variáveis de trabalho
 		itensCount,
 		index,
@@ -141,5 +142,18 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 		handleAttribute("columnScale", pColumnScale);
 	}
 
+	public Float getHue() {
+		return (Float) getStateHelper().eval(PropertyKeys.hue, null);
+	}
+	public void setHue(Float pHue) {
+		if (pHue != null){
+//			if (pHue > 1
+//			 || pHue < 0){
+//				pHue = 1D;
+//			}
+		}
+		getStateHelper().put(PropertyKeys.hue, pHue);
+		handleAttribute("hue", pHue);
+	}
 
 }

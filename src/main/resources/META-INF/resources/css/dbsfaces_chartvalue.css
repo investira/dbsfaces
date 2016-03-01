@@ -9,7 +9,10 @@
 /* 	stroke-width: 1px; */
 /* } */
 .dbs_chartValue.-selected{
-	
+	opacity: 1;
+}   
+.dbs_chartValue.-dim{
+	opacity: .8;
 }   
 
 .dbs_chartValue > .-info{

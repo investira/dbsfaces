@@ -155,18 +155,19 @@ public class DBSChartsRenderer extends DBSRenderer {
 	 * @param pCharts
 	 */
 	private void pvCalcularValores(DBSCharts pCharts){
-		BigDecimal 	xX;
+		BigDecimal 	xX = BigDecimal.ZERO;
 		boolean	   	xFound = false;
+		TYPE 		xType = null;
 		Integer 	xChartIndex = 0;
-		TYPE 		xType;
+		
 		wMinValue = null;
 		wMaxValue = null;
 		
 		//Loop nos componentes Chart
 		for (UIComponent xObject:pCharts.getChildren()){
-			Integer xChartItensCount = 0;
 			if (xObject instanceof DBSChart){
 				DBSChart xChart = (DBSChart) xObject;
+		        xChart.setTotalValue(0D);
 				xType = DBSChart.TYPE.get(xChart.getType());
 				//Verifica se será exibido
 				if (xChart.isRendered()){
@@ -185,8 +186,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 							if (xChild instanceof DBSChartValue){
 								DBSChartValue xChartValue = (DBSChartValue) xChild;
 								if (xChartValue.isRendered()){
-									pvCalculaMaxMinAndShowLabel(pCharts, xChartValue);
-									xChartItensCount++;
+									pvCalculaMaxMinAndShowLabel(pCharts, xChart, xChartValue);
 									xFound = true;
 								}
 							}
@@ -204,8 +204,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 								if (xChild instanceof DBSChartValue){
 									DBSChartValue xChartValue = (DBSChartValue) xChild;
 									if (xChartValue.isRendered()){
-										pvCalculaMaxMinAndShowLabel(pCharts, xChartValue);
-										xChartItensCount++;
+										pvCalculaMaxMinAndShowLabel(pCharts, xChart, xChartValue);
 										xFound = true;
 									}
 								}
@@ -218,19 +217,18 @@ public class DBSChartsRenderer extends DBSRenderer {
 	
 					//ColumnScale
 					xX = BigDecimal.ONE;
-					if (xChartItensCount > 1){
+					if (xChart.getItensCount() > 1){
 						if (xType == TYPE.LINE){
 							xX = DBSNumber.divide(pCharts.getChartWidth(), //0,98 para dat espaço nas laterais
-									  			  xChartItensCount - 1); //Para ir até a borda
-						}else{
+												  xChart.getItensCount() - 1); //Para ir até a borda
+						}else if (xType == TYPE.BAR){
 							xX = DBSNumber.divide(pCharts.getChartWidth(),
-									  			  xChartItensCount);
+												  xChart.getItensCount());
 						}
 					}
-					xChart.setItensCount(xChartItensCount); //Quantidade de valores do gráfico
 					xChart.setColumnScale(xX.doubleValue());
 				}else{
-					 xChart.setIndex(-1);
+					xChart.setIndex(-1);
 				}
 			}
 		}
@@ -254,10 +252,23 @@ public class DBSChartsRenderer extends DBSRenderer {
 			pCharts.setMaxValue(wMaxValue);
 			
 			//RowScale
-			xX = DBSNumber.subtract(wMaxValue, wMinValue);
-			if (xX.doubleValue() != 0D){
-				xX = DBSNumber.divide(pCharts.getChartHeight(), 
-									  xX);
+			if (xType !=null){
+				if (xType == TYPE.BAR
+				|| xType == TYPE.LINE){
+					xX = DBSNumber.subtract(wMaxValue, wMinValue);
+					if (xX.doubleValue() != 0D){
+						xX = DBSNumber.divide(pCharts.getChartHeight(), 
+											  xX);
+					}
+				}else if (xType == TYPE.PIE){
+					if (pCharts.getChartWidth() < pCharts.getChartHeight()){
+						xX = DBSNumber.divide(pCharts.getChartWidth(),
+								  			  14.5);
+					}else{
+						xX = DBSNumber.divide(pCharts.getChartHeight(),
+					  			  			  14.5);
+					}
+				}
 			}
 			pCharts.setRowScale(xX.doubleValue());
 			
@@ -271,7 +282,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 	 * @param pCharts
 	 * @param pChartValue
 	 */
-	private void pvCalculaMaxMinAndShowLabel(DBSCharts pCharts, DBSChartValue pChartValue){
+	private void pvCalculaMaxMinAndShowLabel(DBSCharts pCharts,DBSChart pChart, DBSChartValue pChartValue){
 		Double xValue = pChartValue.getValue();
 		if (wMinValue == null 
 		 || xValue < wMinValue){
@@ -288,7 +299,12 @@ public class DBSChartsRenderer extends DBSRenderer {
 			}
 		}
 		
+		pChart.setItensCount(pChart.getItensCount()+1);
+		pChartValue.setIndex(pChart.getItensCount());
+		pChartValue.setPreviousValue(pChart.getTotalValue());
+		pChart.setTotalValue(pChart.getTotalValue() + DBSObject.getNotNull(pChartValue.getValue(),0D));
 	}
+	
 
 	private void pvEncodeLines(DBSCharts pCharts, ResponseWriter pWriter) throws IOException{
 		if (pCharts.getCaption()!=null){
