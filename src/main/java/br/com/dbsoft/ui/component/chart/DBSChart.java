@@ -147,10 +147,10 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 	}
 	public void setHue(Float pHue) {
 		if (pHue != null){
-//			if (pHue > 1
-//			 || pHue < 0){
-//				pHue = 1D;
-//			}
+			if (pHue > 1
+			 || pHue < 0){
+				pHue = null;
+			}
 		}
 		getStateHelper().put(PropertyKeys.hue, pHue);
 		handleAttribute("hue", pHue);
