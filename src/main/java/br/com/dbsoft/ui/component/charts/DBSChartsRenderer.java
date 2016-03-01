@@ -254,7 +254,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 			//RowScale
 			if (xType !=null){
 				if (xType == TYPE.BAR
-				|| xType == TYPE.LINE){
+				 || xType == TYPE.LINE){
 					xX = DBSNumber.subtract(wMaxValue, wMinValue);
 					if (xX.doubleValue() != 0D){
 						xX = DBSNumber.divide(pCharts.getChartHeight(), 
