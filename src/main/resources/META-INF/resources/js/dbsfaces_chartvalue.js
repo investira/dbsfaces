@@ -10,7 +10,8 @@ dbs_chartValue = function(pId) {
 	
 	$(pId).mouseenter(function (e){
 		//Coloca item como primeiro elemento para aparecer acima dos demais
-//		this.parentElement.appendChild(this);
+		dbsfaces.chartValue.moveToFront(this);
+
 		dbsfaces.tooltip.showTooltip(pId + '_tooltip');
 		$(pId + '_tooltip').addClass("-selected");
 		if ($(pId + " > .-info > .-label").length > 0){
@@ -70,7 +71,6 @@ dbsfaces.chartValue = {
 			 .attr("y2", xY2);
 		pLineGroup.append(xLine);
 	},
-	
 	showLabel: function(pId){
 		var xChart = $(pId).closest(".dbs_chart");
 		if (xChart.attr("type") == "bar"
@@ -105,6 +105,15 @@ dbsfaces.chartValue = {
 		}
 	},
 
+	//Coloca item como primeiro elemento para aparecer acima dos demais
+	moveToFront: function(pItem){
+		var xChart = $(pItem).closest(".dbs_chart");
+		if (xChart.attr("type") == "bar"
+		 || xChart.attr("type") == "line"){
+			pItem.parentElement.appendChild(pItem);
+		}
+	},
+	
 	selectValue: function(pId, pSelect){
 		var xValue = $(pId);
 		if (xValue.length == 0){return;}
