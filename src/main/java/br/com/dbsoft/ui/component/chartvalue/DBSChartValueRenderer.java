@@ -183,13 +183,14 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		Point2D 		x2 = new Point2D.Double();
 		Point2D 		x3 = new Point2D.Double();
 		Point2D 		x4 = new Point2D.Double();
-		Point2D 		xLabel = new Point2D.Double();
+
 		Point2D 		xPoint = new Point2D.Double();
 
 		String 			xPercLabelStyle =  "text-anchor:";
-		Integer 		xPercLineSize =  4;
+		Integer 		xPercLineWidth =  4;
 		String 			xPerBoxStyle = "stroke:" + pChartValue.getFillColor() + "; transform: translateY(-54%) ";
-
+		Integer			xPositionInverter = 1;
+		
 		Integer 		xPneuInternalPadding = 2;
 		Integer 		xLabelPadding = DBSNumber.toInteger(DBSCharts.FontSize * 1.5);
 		Double			xUnit = w2PI / 100;
@@ -200,7 +201,6 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		Double			xStartAngle;
 		Double			xEndAngle;
 		Double			xPointAngle;
-		Double			xPointAngleBkp;
 		Double			xPneuRaioInterno;
 		Double			xPneuRaioExterno;
 		Double 			xDiametro;
@@ -254,121 +254,17 @@ public class DBSChartValueRenderer extends DBSRenderer {
 						   DBSNumber.round(xCentro.getY() - ((xPneuRaioExterno + 0) * Math.cos(xPointAngle)),2));
 
 		//Verifica sobreposição dos valores
-		pChartValue.setPoint(null);
-		xPointAngleBkp = xPointAngle;
-		Integer xLoop = 0;
-		boolean xOk = false;
-		Double 	xIncrement = 0D;
-		boolean xDireita = xPointAngle < Math.PI;//xPoint.getX() >= xCentro.getX();
-		//Determina a direção do incremento para buscar a nova posição em caso de sob reposição
-		if (xDireita){
-			xIncrement = .05;
-		}else{
-			xIncrement = -.05;
-		}
-		while (!xOk){
-			//Ponto de apoi no centro e acima do arco  para servir de referencia para o label
-			xLabel.setLocation(DBSNumber.round(xCentro.getX() + (xArcoExterno * Math.sin(xPointAngle)),2),
-							   DBSNumber.round(xCentro.getY() - (xArcoExterno * Math.cos(xPointAngle)),2));
-			xOk = pvValidateLabelPoint(pCharts, pChart, pChartValue, xLabel, xCentro.getX());
-			if (!xOk){
-				xPointAngle += xIncrement;
-				if (xDireita){
-					//Ultrapassou o meio
-					if (xPointAngle >= Math.PI){
-						//Inicia a partir do meio
-						xPointAngle = Math.PI;
-						//Procura espaço de tras para frente
-						xIncrement *= -1;
-					//Ultrapassou o inicio
-					}else if (xPointAngle < 0){
-						//Procura espaço de tras para frente
-						xIncrement *= -1;
-						xPointAngle = 0D;
-						if (pCharts.getRowScale() > 12){
-							pCharts.setRowScale(pCharts.getRowScale() - 1);
-						}else{
-							break;
-						}
-					}
-				}else{
-					//Ultrapassou o meio
-					if (xPointAngle <= Math.PI){
-						//Inicia a partir do meio
-						xPointAngle = Math.PI;
-						//Procura espaço de tras para frente
-						xIncrement *= -1;
-					//Ultrapassou o fim
-					}else if (xPointAngle > w2PI){
-						//Inicia a partir do fim
-						xPointAngle = w2PI;
-						//Procura espaço de tras para frente
-						xIncrement *= -1;
-						if (pCharts.getRowScale() > 12){
-							pCharts.setRowScale(pCharts.getRowScale() - 1);
-						}else{
-							break;
-						}
-					}
-				}
-				
-//				if ((xDireita
-//				 && xPointAngle >= Math.PI)
-//				|| (!xDireita
-//				 && xPointAngle < Math.PI)){
-//					xLoop++;
-//					xIncrement *= -1;
-//					if (xDireita){
-//						xPointAngle = 0D;
-//					}else{
-//						xPointAngle = w2PI;
-//					}
-//				}
-//				if (xDireita
-//				 && xPointAngle >= Math.PI){
-//					xPointAngle -= Math.PI;
-//					xIncrement *= -1;
-//				}
-//				if (!xDireita
-//				 && xPointAngle < 0){
-//					xPointAngle += Math.PI;
-//					xIncrement *= -1;
-//				}
-				//Tesde de deu volta completa
-//				if (xLoop > 0){
-//					
-//				}
-//				if (xPointAngle > w2PI
-//				 || xPointAngle < 0){
-//					xLoop++;
-//					if (xDireita){
-//						xPointAngle = 0D;
-////						xIncrement = .05;
-//					}else{
-//						xPointAngle = w2PI;
-////						xIncrement = -.05;
-//					}
-//					break;
-//				}
-//			}
-				//Sai caso já tenha dado um volta completa sem encontrar uma localização válida
-//				if (xLoop > 1
-//				&& xPointAngle < xPointAngleBkp){
-//					break;
-//				}
-			}
-		}
-		//Salva pointo do label
-		pChartValue.setPoint(xLabel);
-
+		pvSetLabelPoint(pCharts, pChart, pChartValue, xCentro, xPointAngle, xArcoExterno);
+		
 		//Determina orientação horizontal
-		if (xLabel.getX() >= xCentro.getX()){
+		if (pChartValue.getPoint().getX() >= xCentro.getX()){
 			xPercLabelStyle += "start;";
 		}else{
 			xPercLabelStyle += "end;";
-			xPercLineSize *= -1;
+			xPositionInverter = -1;
 			xPerBoxStyle += " translateX(-100%);";
 		}
+		xPercLineWidth *= xPositionInverter;
 		xPercLabelStyle += "dominant-baseline:";
 		xPercLabelStyle += "middle;";
 
@@ -393,8 +289,8 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		pWriter.write(xPath.toString());
 
 
+		//Encode Dados
 		if (pCharts.getShowLabel()){
-			//Encode Dados
 			pWriter.startElement("g", pChartValue);
 				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.INFO, null);
 				
@@ -405,8 +301,8 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			    xPath.append("style='stroke:" + pChartValue.getFillColor() + "; stroke-width:1px;' ");
 			    xPath.append("d=");
 				xPath.append("'M " + xPoint.getX() + "," + xPoint.getY());  
-				xPath.append(" L " + xLabel.getX() + "," + xLabel.getY()); 
-				xPath.append(" L " + (xLabel.getX() + xPercLineSize) + "," + xLabel.getY());
+				xPath.append(" L " + pChartValue.getPoint().getX() + "," + pChartValue.getPoint().getY()); 
+				xPath.append(" L " + (pChartValue.getPoint().getX() + xPercLineWidth) + "," + pChartValue.getPoint().getY());
 				xPath.append("' ");  
 				xPath.append("fill='none'");
 				xPath.append("></path>");
@@ -416,19 +312,118 @@ public class DBSChartValueRenderer extends DBSRenderer {
 				DBSFaces.encodeSVGCircle(pChartValue, pWriter, DBSFaces.CSS.MODIFIER.POINT, null, xPoint.getX(), xPoint.getY(), 2D, 2D, pChartValue.getFillColor());
 				
 				//Borda do percentual
-				DBSFaces.encodeSVGRect(pChartValue, pWriter, DBSFaces.CSS.MODIFIER.POINT, xPerBoxStyle, (xLabel.getX() + xPercLineSize), xLabel.getY(), null, null,3,3, "white");
-//				pvEncodeText(pChartValue, DBSFormat.getFormattedNumber(xPointAngle, 2), xLabel.getX() + (xPercLineSize * 1.6), xLabel.getY(), DBSFaces.CSS.MODIFIER.VALUE, xPercLabelStyle, pWriter);
+				DBSFaces.encodeSVGRect(pChartValue, pWriter, DBSFaces.CSS.MODIFIER.POINT, xPerBoxStyle, (pChartValue.getPoint().getX() + xPercLineWidth), pChartValue.getPoint().getY(), null, null,3,3, "white");
 				//Valor do percentual ---------------------------------------------------------------------
-				pvEncodeText(pChartValue, DBSFormat.getFormattedNumber(xPercValue, 1) + "%", xLabel.getX() + (xPercLineSize * 1.6), xLabel.getY(), DBSFaces.CSS.MODIFIER.VALUE, xPercLabelStyle, pWriter);
+				pvEncodeText(pChartValue, 
+							 DBSFormat.getFormattedNumber(xPercValue, 1) + "%", 
+							 pChartValue.getPoint().getX() + (xPercLineWidth * 1.6), 
+							 pChartValue.getPoint().getY(), 
+							 DBSFaces.CSS.MODIFIER.VALUE, 
+							 xPercLabelStyle, 
+							 pWriter);
+//				if (pChartValue.getLabel() != null){
+//							 pvEncodeText(pChartValue, 					 
+//							 pChartValue.getLabel(), 
+//							 pChartValue.getPoint().getX() + (pChartValue.getLabel().length() * xPositionInverter * 15) + (xPercLineWidth * 1.6), 
+//							 pChartValue.getPoint().getY(), 
+//							 DBSFaces.CSS.MODIFIER.LABEL, 
+//							 xPercLabelStyle, 
+//							 pWriter);
+//				}
+//				String xString =  DBSFormat.getFormattedNumber(pChartValue.getValue(), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask());
+//				pvEncodeText(pChartValue, 					 
+//							 DBSFormat.getFormattedNumber(pChartValue.getValue(), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask()), 
+//							 pChartValue.getPoint().getX() + (xString.length() * xPositionInverter) + (xPercLineWidth * 1.6), 
+//							 pChartValue.getPoint().getY(), 
+//							 DBSFaces.CSS.MODIFIER.VALUE, 
+//							 xPercLabelStyle, 
+//							 pWriter);
+//				pvEncodeText(pChartValue, 
+//						 DBSFormat.getFormattedNumber(pChartValue.getValue(), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask()), 
+//						 pCharts.getWidth().doubleValue(), 
+//						 xYText.doubleValue(), 
+//						 DBSFaces.CSS.MODIFIER.VALUE + "-hide", 
+//						 "text-anchor:end;", 
+//						 pWriter);
+//			//Encode label da coluna ---------------------------------------------------------------------
+//			pvEncodeText(pChartValue, 
+//						 pChartValue.getLabel(), 
+//						 xXText.doubleValue(), 
+//						 pCharts.getHeight().doubleValue(), 
+//						 DBSFaces.CSS.MODIFIER.LABEL + "-hide", 
+//						 "text-anchor:middle;", 
+//						 pWriter);
 	
 			pWriter.endElement("g");
 		}
 		
 		//Tooltip -------------------------------------------------------------------------
-		pvEncodeTooptip(TYPE.PIE, pChartValue, xLabel.getX(), xLabel.getY(), xClientId, pContext, pWriter);
+		pvEncodeTooptip(TYPE.PIE, pChartValue, pChartValue.getPoint().getX(), pChartValue.getPoint().getY(), xClientId, pContext, pWriter);
 
 	}
 
+	private void pvSetLabelPoint(DBSCharts pCharts, DBSChart pChart, DBSChartValue pChartValue, Point2D pCentro, Double pPointAngle, Double pArcoExterno){
+		Point2D xLabel = new Point2D.Double();
+		Double 	xIncrement = 0D;
+		boolean xOk = false;
+		boolean xDireita = pPointAngle < Math.PI;//xPoint.getX() >= xCentro.getX();
+		//Determina a direção do incremento para buscar a nova posição em caso de sob reposição
+		if (xDireita){
+			xIncrement = .05;
+		}else{
+			xIncrement = -.05;
+		}
+		pChartValue.setPoint(null);
+		while (!xOk){
+			//Ponto de apoi no centro e acima do arco  para servir de referencia para o label
+			xLabel.setLocation(DBSNumber.round(pCentro.getX() + (pArcoExterno * Math.sin(pPointAngle)),2),
+							   DBSNumber.round(pCentro.getY() - (pArcoExterno * Math.cos(pPointAngle)),2));
+			xOk = pvValidateLabelPoint(pCharts, pChart, pChartValue, xLabel, pCentro.getX());
+			if (!xOk){
+				pPointAngle += xIncrement;
+				if (xDireita){
+					//Ultrapassou o meio
+					if (pPointAngle >= Math.PI){
+						//Inicia a partir do meio
+						pPointAngle = Math.PI;
+						//Procura espaço de tras para frente
+						xIncrement *= -1;
+					//Ultrapassou o inicio
+					}else if (pPointAngle < 0){
+						//Procura espaço de tras para frente
+						xIncrement *= -1;
+						pPointAngle = 0D;
+						if (pCharts.getRowScale() > 12){
+							pCharts.setRowScale(pCharts.getRowScale() - 1);
+						}else{
+							break;
+						}
+					}
+				}else{
+					//Ultrapassou o meio
+					if (pPointAngle <= Math.PI){
+						//Inicia a partir do meio
+						pPointAngle = Math.PI;
+						//Procura espaço de tras para frente
+						xIncrement *= -1;
+					//Ultrapassou o fim
+					}else if (pPointAngle > w2PI){
+						//Inicia a partir do fim
+						pPointAngle = w2PI;
+						//Procura espaço de tras para frente
+						xIncrement *= -1;
+						if (pCharts.getRowScale() > 12){
+							pCharts.setRowScale(pCharts.getRowScale() - 1);
+						}else{
+							break;
+						}
+					}
+				}
+			}
+		}
+		//Salva pointo do label
+		pChartValue.setPoint(xLabel);
+	}
 	/**
 	 * Verifica a ha sobreposição em outros pontos
 	 * @param pCharts
