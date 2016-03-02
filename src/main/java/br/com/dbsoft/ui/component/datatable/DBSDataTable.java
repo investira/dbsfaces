@@ -172,11 +172,7 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 			}
 		}
 		//Se é o dataTable
-		if(pSource.equals(this)){
-			return true;
-		}
-		
-		return false;
+		return pSource.equals(this);
 	}
 
 
