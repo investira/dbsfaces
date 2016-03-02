@@ -1,7 +1,6 @@
 package br.com.dbsoft.ui.component.charts;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -12,23 +11,16 @@ import com.sun.faces.renderkit.RenderKitUtils;
 
 import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
-import br.com.dbsoft.ui.component.chart.DBSChart;
-import br.com.dbsoft.ui.component.chart.DBSChart.TYPE;
-import br.com.dbsoft.ui.component.chartvalue.DBSChartValue;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSFormat;
 import br.com.dbsoft.util.DBSFormat.NUMBER_SIGN;
 import br.com.dbsoft.util.DBSNumber;
-import br.com.dbsoft.util.DBSObject;
 
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSCharts.RENDERER_TYPE)
 public class DBSChartsRenderer extends DBSRenderer {
 
-	private Double 	wMinValue = null;
-	private Double 	wMaxValue = null;
-	
 	@Override
 	public void decode(FacesContext pContext, UIComponent pComponent) {
 	}
@@ -62,7 +54,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 			xClass = xClass + xCharts.getStyleClass() + " ";
 		}
 
-		pvCalcularValores(xCharts);
+		DBSFaces.initializeChartsValues(xCharts);
 
 
 		String xClientId = xCharts.getClientId(pContext);
@@ -148,161 +140,6 @@ public class DBSChartsRenderer extends DBSRenderer {
                      "}); \n"; 
 		pWriter.write(xJS);
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);		
-	}
-	
-	/**
-	 * Calcula valor máximo, mínimo, posição 0 e largura das colunas
-	 * @param pCharts
-	 */
-	private void pvCalcularValores(DBSCharts pCharts){
-		BigDecimal 	xX = BigDecimal.ZERO;
-		boolean	   	xFound = false;
-		TYPE 		xType = null;
-		Integer 	xChartIndex = 0;
-		
-		wMinValue = null;
-		wMaxValue = null;
-		
-		//Loop nos componentes Chart
-		for (UIComponent xObject:pCharts.getChildren()){
-			if (xObject instanceof DBSChart){
-				DBSChart xChart = (DBSChart) xObject;
-		        xChart.setTotalValue(0D);
-				xType = DBSChart.TYPE.get(xChart.getType());
-				//Verifica se será exibido
-				if (xChart.isRendered()){
-					xChartIndex++;
-					xChart.setIndex(xChartIndex);
-					// quando por PIE
-					if (xType == TYPE.PIE){
-						//Não exibe linhas do grid
-						pCharts.setShowGrid(false);
-					}
-					//Se não foi informado DBSResultSet
-					if (DBSObject.isEmpty(xChart.getVar())
-					 || DBSObject.isEmpty(xChart.getValueExpression("value"))){
-						//Loop nos componentes ChartValues filhos do chart
-						for (UIComponent xChild:xChart.getChildren()){
-							if (xChild instanceof DBSChartValue){
-								DBSChartValue xChartValue = (DBSChartValue) xChild;
-								if (xChartValue.isRendered()){
-									pvCalculaMaxMinAndShowLabel(pCharts, xChart, xChartValue);
-									xFound = true;
-								}
-							}
-						}
-					}else{
-				        int xRowCount = xChart.getRowCount();
-				        xChart.setRowIndex(-1);
-				        xChart.getFirst();
-				        xChart.getRows(); 
-						//Loop por todos os registros lidos
-				        for (int xRowIndex = 0; xRowIndex < xRowCount; xRowIndex++) {
-				        	xChart.setRowIndex(xRowIndex);
-				        	//Loop no componente filho contendo as definições dos valores
-							for (UIComponent xChild : xChart.getChildren()){
-								if (xChild instanceof DBSChartValue){
-									DBSChartValue xChartValue = (DBSChartValue) xChild;
-									if (xChartValue.isRendered()){
-										pvCalculaMaxMinAndShowLabel(pCharts, xChart, xChartValue);
-										xFound = true;
-									}
-								}
-							}
-				        }
-				        xChart.setRowIndex(-1);
-					}
-					//Calcula Largura e Altura Geral
-					pCharts.setChartWidthHeight(xType);
-	
-					//ColumnScale
-					xX = BigDecimal.ONE;
-					if (xChart.getItensCount() > 1){
-						if (xType == TYPE.LINE){
-							xX = DBSNumber.divide(pCharts.getChartWidth(), //0,98 para dat espaço nas laterais
-												  xChart.getItensCount() - 1); //Para ir até a borda
-						}else if (xType == TYPE.BAR){
-							xX = DBSNumber.divide(pCharts.getChartWidth(),
-												  xChart.getItensCount());
-						}
-					}
-					xChart.setColumnScale(xX.doubleValue());
-				}else{
-					xChart.setIndex(-1);
-				}
-			}
-		}
-		pCharts.setItensCount(xChartIndex); //Aproveita xCharIndex para setar quantidade de gráficos
-		if (!xFound){
-			pCharts.setMinValue(0D);
-			pCharts.setMaxValue(0D);
-			pCharts.setRowScale(0D);
-			pCharts.setNumberOfGridLines(1);
-		}else{
-			//Largura da coluna dos valores caso seja para exibi-la
-//			if (pCharts.getShowGrid() 
-//			 && pCharts.getShowGridValue()){
-//				pCharts.setFormatMaskWidth(DBSNumber.multiply(pCharts.getValueFormatMask().length(), 5.5D).intValue());
-//			}else{
-//				pCharts.setFormatMaskWidth(0);
-//			}
-			//Valor Mínimo
-			pCharts.setMinValue(wMinValue);
-			//Valor Máximo
-			pCharts.setMaxValue(wMaxValue);
-			
-			//RowScale
-			if (xType !=null){
-				if (xType == TYPE.BAR
-				 || xType == TYPE.LINE){
-					xX = DBSNumber.subtract(wMaxValue, wMinValue);
-					if (xX.doubleValue() != 0D){
-						xX = DBSNumber.divide(pCharts.getChartHeight(), 
-											  xX);
-					}
-				}else if (xType == TYPE.PIE){
-					if (pCharts.getChartWidth() < pCharts.getChartHeight()){
-						xX = DBSNumber.divide(pCharts.getChartWidth(),
-								  			  14.5);
-					}else{
-						xX = DBSNumber.divide(pCharts.getChartHeight(),
-					  			  			  14.5);
-					}
-				}
-			}
-			pCharts.setRowScale(xX.doubleValue());
-			
-			//Quantidade de linhas. 3 é a quantidade mínima de linhas
-			pCharts.setNumberOfGridLines(3 + DBSNumber.divide(pCharts.getChartHeight(), 60).intValue());
-		}
-	}
-	
-	/**
-	 * Setvalor mínimo e valor máximo
-	 * @param pCharts
-	 * @param pChartValue
-	 */
-	private void pvCalculaMaxMinAndShowLabel(DBSCharts pCharts,DBSChart pChart, DBSChartValue pChartValue){
-		Double xValue = pChartValue.getValue();
-		if (wMinValue == null 
-		 || xValue < wMinValue){
-			wMinValue = xValue; 
-		}
-		if (wMaxValue == null
-		 || xValue > wMaxValue){
-			wMaxValue = xValue; 
-		}
-		//Verifica se label foi definida e seta indicador que há label a ser exibida
-		if (!pCharts.getShowLabel()){
-			if (!DBSObject.isEmpty(pChartValue.getLabel())){
-				pCharts.setShowLabel(true);
-			}
-		}
-		
-		pChart.setItensCount(pChart.getItensCount()+1);
-		pChartValue.setIndex(pChart.getItensCount());
-		pChartValue.setPreviousValue(pChart.getTotalValue());
-		pChart.setTotalValue(pChart.getTotalValue() + DBSObject.getNotNull(pChartValue.getValue(),0D));
 	}
 	
 

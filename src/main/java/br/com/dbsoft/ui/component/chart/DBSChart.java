@@ -79,7 +79,6 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 		setRendererType(DBSChart.RENDERER_TYPE);
     }
 	
-
 	public String getType() {
 		return (String) getStateHelper().eval(PropertyKeys.type, null);
 	}
@@ -141,7 +140,7 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 		getStateHelper().put(PropertyKeys.columnScale, pColumnScale);
 		handleAttribute("columnScale", pColumnScale);
 	}
-
+	
 	public Float getHue() {
 		return (Float) getStateHelper().eval(PropertyKeys.hue, null);
 	}

@@ -60,6 +60,10 @@ import br.com.dbsoft.ui.bean.crud.DBSCrudBean;
 import br.com.dbsoft.ui.bean.report.DBSReportBean;
 import br.com.dbsoft.ui.component.DBSUIInput;
 import br.com.dbsoft.ui.component.button.DBSButton;
+import br.com.dbsoft.ui.component.chart.DBSChart;
+import br.com.dbsoft.ui.component.chart.DBSChart.TYPE;
+import br.com.dbsoft.ui.component.charts.DBSCharts;
+import br.com.dbsoft.ui.component.chartvalue.DBSChartValue;
 import br.com.dbsoft.ui.component.checkbox.DBSCheckbox;
 import br.com.dbsoft.ui.component.datatable.DBSDataTable;
 import br.com.dbsoft.ui.component.datatable.DBSDataTableColumn;
@@ -2178,6 +2182,161 @@ public class  DBSFaces {
 			pFileUpload.getFacets().put("btCancel", xButtonCancel);
 		}
 	}
+	
+	/**
+	 * Calcula valor máximo, mínimo, posição 0 e largura das colunas
+	 * @param pCharts
+	 */
+	public static void initializeChartsValues(DBSCharts pCharts){
+		BigDecimal 	xX = BigDecimal.ZERO;
+		boolean	   	xFound = false;
+		TYPE 		xType = null;
+		Integer 	xChartIndex = 0;
+		
+		pCharts.setMinValue(null);
+		pCharts.setMaxValue(null);
+		
+		//Loop nos componentes Chart
+		for (UIComponent xObject:pCharts.getChildren()){
+			if (xObject instanceof DBSChart){
+				DBSChart xChart = (DBSChart) xObject;
+		        xChart.setTotalValue(0D);
+				xType = DBSChart.TYPE.get(xChart.getType());
+				//Verifica se será exibido
+				if (xChart.isRendered()){
+					xChartIndex++;
+					xChart.setIndex(xChartIndex);
+					// quando por PIE
+					if (xType == TYPE.PIE){
+						//Não exibe linhas do grid
+						pCharts.setShowGrid(false);
+					}
+					//Se não foi informado DBSResultSet
+					if (DBSObject.isEmpty(xChart.getVar())
+					 || DBSObject.isEmpty(xChart.getValueExpression("value"))){
+						//Loop nos componentes ChartValues filhos do chart
+						for (UIComponent xChild:xChart.getChildren()){
+							if (xChild instanceof DBSChartValue){
+								DBSChartValue xChartValue = (DBSChartValue) xChild;
+								if (xChartValue.isRendered()){
+									pvInitializeChartsValues(pCharts, xChart, xChartValue);
+									xFound = true;
+								}
+							}
+						}
+					}else{
+				        int xRowCount = xChart.getRowCount();
+				        xChart.setRowIndex(-1);
+//				        System.out.println(xChart.isTransient());
+				        xChart.getFirst();
+				        xChart.getRows();
+						//Loop por todos os registros lidos
+				        for (int xRowIndex = 0; xRowIndex < xRowCount; xRowIndex++) {
+//				        for (int xRowIndex = xRowCount - 1; xRowIndex >= 0; xRowIndex--) {
+				        	xChart.setRowIndex(xRowIndex);
+				        	//Loop no componente filho contendo as definições dos valores
+							for (UIComponent xChild : xChart.getChildren()){
+								if (xChild instanceof DBSChartValue){
+									DBSChartValue xChartValue = (DBSChartValue) xChild;
+									if (xChartValue.isRendered()){
+										pvInitializeChartsValues(pCharts, xChart, xChartValue);
+										xFound = true;
+									}
+								}
+							}
+				        }
+				        xChart.setRowIndex(-1);
+					}
+					//Calcula Largura e Altura Geral
+					pCharts.setChartWidthHeight(xType);
+	
+					//ColumnScale
+					xX = BigDecimal.ONE;
+					if (xChart.getItensCount() > 1){
+						if (xType == TYPE.LINE){
+							xX = DBSNumber.divide(pCharts.getChartWidth(), //0,98 para dat espaço nas laterais
+												  xChart.getItensCount() - 1); //Para ir até a borda
+						}else if (xType == TYPE.BAR){
+							xX = DBSNumber.divide(pCharts.getChartWidth(),
+												  xChart.getItensCount());
+						}
+					}
+					xChart.setColumnScale(xX.doubleValue());
+				}else{
+					xChart.setIndex(-1);
+				}
+			}
+		}
+		pCharts.setItensCount(xChartIndex); //Aproveita xCharIndex para setar quantidade de gráficos
+		if (!xFound){
+			pCharts.setMinValue(0D);
+			pCharts.setMaxValue(0D);
+			pCharts.setRowScale(0D);
+			pCharts.setNumberOfGridLines(1);
+		}else{
+			//Largura da coluna dos valores caso seja para exibi-la
+//			if (pCharts.getShowGrid() 
+//			 && pCharts.getShowGridValue()){
+//				pCharts.setFormatMaskWidth(DBSNumber.multiply(pCharts.getValueFormatMask().length(), 5.5D).intValue());
+//			}else{
+//				pCharts.setFormatMaskWidth(0);
+//			}
+			//RowScale
+			if (xType !=null){
+				if (xType == TYPE.BAR
+				 || xType == TYPE.LINE){
+					xX = DBSNumber.subtract(pCharts.getMaxValue(), pCharts.getMinValue());
+					if (xX.doubleValue() != 0D){
+						xX = DBSNumber.divide(pCharts.getChartHeight(), 
+											  xX);
+					}
+				}else if (xType == TYPE.PIE){
+					if (pCharts.getChartWidth() < pCharts.getChartHeight()){
+						xX = DBSNumber.divide(pCharts.getChartWidth(),
+								  			  14.5);
+					}else{
+						xX = DBSNumber.divide(pCharts.getChartHeight(),
+					  			  			  14.5);
+					}
+				}
+			}
+			pCharts.setRowScale(xX.doubleValue());
+			
+			//Quantidade de linhas. 3 é a quantidade mínima de linhas
+			pCharts.setNumberOfGridLines(3 + DBSNumber.divide(pCharts.getChartHeight(), 60).intValue());
+		}
+	}
+	
+	/**
+	 * Setvalor mínimo e valor máximo
+	 * @param pCharts
+	 * @param pChartValue
+	 */
+	private static void pvInitializeChartsValues(DBSCharts pCharts,DBSChart pChart, DBSChartValue pChartValue){
+		Double xValue = pChartValue.getValue();
+		if (pCharts.getMinValue() == null 
+		 || xValue < pCharts.getMinValue()){
+			pCharts.setMinValue(xValue);
+		}
+		if (pCharts.getMaxValue() == null
+		 || xValue > pCharts.getMaxValue()){
+			pCharts.setMaxValue(xValue);
+		}
+		//Verifica se label foi definida e seta indicador que há label a ser exibida
+		if (!pCharts.getShowLabel()){
+			if (!DBSObject.isEmpty(pChartValue.getLabel())){
+				pCharts.setShowLabel(true);
+			}
+		}
+		
+		pChart.setItensCount(pChart.getItensCount()+1);
+		pChartValue.setIndex(pChart.getItensCount());
+		pChartValue.setPreviousValue(pChart.getTotalValue());
+		pChart.setTotalValue(pChart.getTotalValue() + DBSObject.getNotNull(pChartValue.getValue(),0D));
+		
+		pChartValue.setSavedState(pChartValue.saveState(FacesContext.getCurrentInstance()));
+	}
+	
 	/**
 	 * Retorna no nome do attributo(sem o nome do bean) a partir da EL do value do campo informado
 	 * @param pInput
@@ -2388,7 +2547,6 @@ public class  DBSFaces {
     	            	}
 		    		}
 	            	xEC.getSessionMap().remove(xEntry.getKey());
-	            	System.out.println("OK");
 	            }
 	        }
 	    }

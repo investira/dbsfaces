@@ -71,7 +71,6 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		}
 		xCharts =  (DBSCharts) xChart.getParent();
 
-
 		//Configura id a partir do index
 		xChartValue.setId("i" + xChartValue.getIndex());
 		xClientId = xChartValue.getClientId(pContext);

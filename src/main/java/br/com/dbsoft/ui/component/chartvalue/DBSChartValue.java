@@ -10,8 +10,11 @@ import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSNumber;
 
 @FacesComponent(DBSChartValue.COMPONENT_TYPE)
-public class DBSChartValue extends DBSUIInput implements NamingContainer {
+public class DBSChartValue extends DBSUIInput implements NamingContainer{
 	
+	/**
+	 * 
+	 */
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.CHARTVALUE;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 
@@ -19,6 +22,7 @@ public class DBSChartValue extends DBSUIInput implements NamingContainer {
 		index,
 		fillColor,
 		//Variáveis de trabalho
+		savedState,
 		previousValue,
 		point;
 
@@ -40,6 +44,16 @@ public class DBSChartValue extends DBSUIInput implements NamingContainer {
 		setRendererType(DBSChartValue.RENDERER_TYPE);
     }
 	
+	public Object getSavedState() {
+		return getStateHelper().eval(PropertyKeys.savedState, null);
+	}
+
+	public void setSavedState(Object pSavedState) {
+		getStateHelper().put(PropertyKeys.savedState, pSavedState);
+		handleAttribute("savedState", pSavedState);
+	}
+
+
 	/**
 	 * Indice que identifica este gráfico.
 	 * Indice é gerado automaticamente no DBSCharts
