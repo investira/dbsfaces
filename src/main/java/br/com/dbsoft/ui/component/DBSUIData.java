@@ -165,10 +165,20 @@ public abstract class DBSUIData extends UIData implements IDBSUIComponentBase {
 		handleAttribute("keyColumnName", pKeyColumnName);
 	}
 	
+	/**
+	 * Linha corrente controlada pelo usuário.</br>
+	 * <b>getRowIndex</b> é a linha correnta controlada pelo JSF.
+	 * @param pCurrentRowIndex
+	 */
 	public Integer getCurrentRowIndex() {
 		return (Integer) getStateHelper().eval(PropertyKeys.currentRowIndex, -1);
 	}
 
+	/**
+	 * Linha corrente controlada pelo usuário
+	 * <b>getRowIndex</b> é a linha correnta controlada pelo JSF.
+	 * @param pCurrentRowIndex
+	 */
 	public void setCurrentRowIndex(Integer pCurrentRowIndex) {
 		getStateHelper().put(PropertyKeys.currentRowIndex, pCurrentRowIndex);
 		handleAttribute("currentRowIndex", pCurrentRowIndex);
