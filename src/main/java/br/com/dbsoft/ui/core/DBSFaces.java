@@ -2228,8 +2228,8 @@ public class  DBSFaces {
 				        int xRowCount = xChart.getRowCount();
 				        xChart.setRowIndex(-1);
 //				        System.out.println(xChart.isTransient());
-				        xChart.getFirst();
-				        xChart.getRows();
+//				        xChart.getFirst();
+//				        xChart.getRows();
 						//Loop por todos os registros lidos
 				        for (int xRowIndex = 0; xRowIndex < xRowCount; xRowIndex++) {
 //				        for (int xRowIndex = xRowCount - 1; xRowIndex >= 0; xRowIndex--) {
@@ -2262,12 +2262,15 @@ public class  DBSFaces {
 						}
 					}
 					xChart.setColumnScale(xX.doubleValue());
+//					xChart.setSavedState(xChart.saveState(FacesContext.getCurrentInstance()));
 				}else{
 					xChart.setIndex(-1);
 				}
 			}
 		}
-		pCharts.setItensCount(xChartIndex); //Aproveita xCharIndex para setar quantidade de gráficos
+		//Aproveita xCharIndex para setar quantidade de gráficos
+		pCharts.setItensCount(xChartIndex); 
+		//Zera valores caso não existam valores nos gráficos
 		if (!xFound){
 			pCharts.setMinValue(0D);
 			pCharts.setMaxValue(0D);

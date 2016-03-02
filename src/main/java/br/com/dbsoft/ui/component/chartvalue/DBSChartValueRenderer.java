@@ -29,6 +29,7 @@ import br.com.dbsoft.util.DBSObject;
 public class DBSChartValueRenderer extends DBSRenderer {
 	
 	private static double w2PI = Math.PI * 2;
+	private String wFillColor;
 	
 	@Override
 	public void decode(FacesContext pContext, UIComponent pComponent) {
@@ -79,14 +80,15 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		if (xChartValue.getStyleClass()!=null){
 			xClass = xClass + xChartValue.getStyleClass() + " ";
 		}
-	
+
+		pvSetFillcolor(xCharts, xChart, xChartValue);
+
 		xWriter.startElement("g", xChartValue);
 			DBSFaces.setAttribute(xWriter, "id", xClientId, null);
 			DBSFaces.setAttribute(xWriter, "index", xChartValue.getIndex(), null);
 			DBSFaces.setAttribute(xWriter, "class", xClass, null);
 			DBSFaces.setAttribute(xWriter, "style", xChartValue.getStyle(), null);
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xChartValue, DBSPassThruAttributes.getAttributes(Key.DIV));
-			pvSetFillcolor(xCharts, xChart, xChartValue);
 			//Grafico
 			if (xType != null){
 				if (xType == TYPE.LINE
@@ -100,6 +102,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			encodeClientBehaviors(pContext, xChartValue);
 			pvEncodeJS(xClientId, xWriter);
 		xWriter.endElement("g");
+//		xChartValue.setSavedState(xChartValue.saveState(pContext));
 	}
 
 	private void pvEncodeBarAndLine(TYPE pType, DBSCharts pCharts, DBSChart pChart, DBSChartValue pChartValue, FacesContext pContext, ResponseWriter pWriter) throws IOException{
@@ -134,19 +137,20 @@ public class DBSChartValueRenderer extends DBSRenderer {
 					   		   DBSNumber.divide(pChart.getColumnScale() - xLineWidth, 2));
 			//Valore positivos acima
 			if (pChartValue.getValue() > 0){
-				DBSFaces.encodeSVGRect(pChartValue, pWriter, null, null, xX.doubleValue(), xY.doubleValue(), xHeight, xLineWidth, pChartValue.getFillColor());
+				DBSFaces.encodeSVGRect(pChartValue, pWriter, null, null, xX.doubleValue(), xY.doubleValue(), xHeight, xLineWidth, wFillColor);
 			//Valore negativos
 			}else{
 				//inverte a posição Yx
 				Double xIY = DBSNumber.subtract(pCharts.getChartHeight(), pCharts.getZeroPosition().doubleValue()).doubleValue();
 				xIY +=  pCharts.getPadding();
-				DBSFaces.encodeSVGRect(pChartValue, pWriter, null, null, xX.doubleValue(), xIY, xHeight, xLineWidth, pChartValue.getFillColor());
+				DBSFaces.encodeSVGRect(pChartValue, pWriter, null, null, xX.doubleValue(), xIY, xHeight, xLineWidth, wFillColor);
 				//Configura posição do texto para a linha do zero
 				xYText = DBSNumber.add(xIY, (DBSCharts.FontSize / 2));
 			}
 		//Encode LINE - ponto. as linhas que ligam os pontos, são desenhadas no código JS.
 		}else if (pType == TYPE.LINE){
-			DBSFaces.encodeSVGCircle(pChartValue, pWriter, DBSFaces.CSS.MODIFIER.POINT, null, xX.doubleValue(), xY.doubleValue(), 2D, 2D, null);
+			pChartValue.setPoint(new Point2D.Double(xX.doubleValue(), xY.doubleValue()));
+			DBSFaces.encodeSVGCircle(pChartValue, pWriter, DBSFaces.CSS.MODIFIER.POINT, null, xX.doubleValue(), xY.doubleValue(), 2D, 2D, wFillColor);
 		}
 		//Encode Dados
 		pWriter.startElement("g", pChartValue);
@@ -187,7 +191,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 
 		String 			xPercLabelStyle =  "text-anchor:";
 		Integer 		xPercLineWidth =  4;
-		String 			xPerBoxStyle = "stroke:" + pChartValue.getFillColor() + "; transform: translateY(-54%) ";
+		String 			xPerBoxStyle = "stroke:" + wFillColor + "; transform: translateY(-54%) ";
 		Integer			xPositionInverter = 1;
 		
 		Integer 		xPneuInternalPadding = 2;
@@ -276,14 +280,14 @@ public class DBSChartValueRenderer extends DBSRenderer {
 
 		xPath = new StringBuilder();
 	    xPath.append("<path ");
-	    xPath.append("style='stroke:" + pChartValue.getFillColor() + ";' ");
+	    xPath.append("style='stroke:" + wFillColor + ";' ");
 	    xPath.append("d=");
 	    xPath.append("'M " + x1.getX() + "," + x1.getY()); //Ponto inicial do arco 
 		xPath.append(" A " + xPneuRaioExterno + "," + xPneuRaioExterno + " 0 " + xBig + " 1 " + x2.getX() + "," + x2.getY()); //Arco externo até o ponto final 
 		xPath.append(" L " + x3.getX() + "," + x3.getY()); //Linha do arco externo até o início do arco interno
 		xPath.append(" A " + xPneuRaioInterno + "," + xPneuRaioInterno + " 0 " + xBig + " 0 " + x4.getX() + "," + x4.getY()); //Arco interno até o ponto incial interno
 		xPath.append(" Z' "); //Fecha o path ligando o arco interno ao arco externo  
-		xPath.append("fill='" + pChartValue.getFillColor() + "' ");
+		xPath.append("fill='" + wFillColor + "' ");
 		xPath.append("></path>");
 		pWriter.write(xPath.toString());
 
@@ -297,7 +301,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 				xPath = new StringBuilder();
 			    xPath.append("<path ");
 			    xPath.append("class='" + DBSFaces.CSS.MODIFIER.LINE + "' ");
-			    xPath.append("style='stroke:" + pChartValue.getFillColor() + "; stroke-width:1px;' ");
+			    xPath.append("style='stroke:" + wFillColor + "; stroke-width:1px;' ");
 			    xPath.append("d=");
 				xPath.append("'M " + xPoint.getX() + "," + xPoint.getY());  
 				xPath.append(" L " + pChartValue.getPoint().getX() + "," + pChartValue.getPoint().getY()); 
@@ -308,7 +312,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 				pWriter.write(xPath.toString());
 	
 				//Ponto pequeno no centro e na tangente do arco	
-				DBSFaces.encodeSVGCircle(pChartValue, pWriter, DBSFaces.CSS.MODIFIER.POINT, null, xPoint.getX(), xPoint.getY(), 2D, 2D, pChartValue.getFillColor());
+				DBSFaces.encodeSVGCircle(pChartValue, pWriter, DBSFaces.CSS.MODIFIER.POINT, null, xPoint.getX(), xPoint.getY(), 2D, 2D, wFillColor);
 				
 				//Borda do percentual
 				DBSFaces.encodeSVGRect(pChartValue, pWriter, DBSFaces.CSS.MODIFIER.POINT, xPerBoxStyle, (pChartValue.getPoint().getX() + xPercLineWidth), pChartValue.getPoint().getY(), null, null,3,3, "white");
@@ -361,6 +365,15 @@ public class DBSChartValueRenderer extends DBSRenderer {
 
 	}
 
+	/**
+	 * Procura pointo do label que não tenha sobreposição
+	 * @param pCharts
+	 * @param pChart
+	 * @param pChartValue
+	 * @param pCentro
+	 * @param pPointAngle
+	 * @param pArcoExterno
+	 */
 	private void pvSetLabelPoint(DBSCharts pCharts, DBSChart pChart, DBSChartValue pChartValue, Point2D pCentro, Double pPointAngle, Double pArcoExterno){
 		Point2D xLabel = new Point2D.Double();
 		Double 	xIncrement = 0D;
@@ -523,7 +536,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		DBSFaces.encodeSVGText(pChartValue, 
 							   pWriter,  
 							   pStyleClass, 
-							   DBSObject.getNotNull(pStyle, "") + " fill:" + pChartValue.getFillColor(), 
+							   DBSObject.getNotNull(pStyle, "") + " fill:" + wFillColor, 
 							   pX, 
 							   pY, 
 							   pText);
@@ -565,7 +578,10 @@ public class DBSChartValueRenderer extends DBSRenderer {
 	
 	private void pvSetFillcolor(DBSCharts pCharts, DBSChart pChart, DBSChartValue pChartValue){
 		//Usa cor informada pelo usuário
-		if (pChartValue.getFillColor() != null){return;}
+		if (pChartValue.getFillColor() != null){
+			wFillColor = pChartValue.getFillColor(); 
+			return;
+		}
 
 		Float xChartFator = DBSNumber.divide(pChart.getIndex(), pCharts.getItensCount()).floatValue();
 		Float xChartValueFator = DBSNumber.divide(pChartValue.getIndex(), pChart.getItensCount()).floatValue();
@@ -575,7 +591,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		if (pChart.getHue() != null){
 			xColorH = pChart.getHue();
 		}else{
-			xColorH = DBSNumber.multiply(pChart.getHue(), xChartFator).floatValue();
+			xColorH = DBSNumber.multiply(1, xChartFator).floatValue();
 		}
 		xColorH += 0F;
 		xColorS = 1F;
@@ -589,8 +605,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		xSB.append(",");
 		xSB.append(xColor.getBlue());
 		xSB.append(")");
-		pChartValue.setFillColor(xSB.toString());
-//		Color.HSBtoRGB(0, xColor.3Increment, .9F))
+		wFillColor = xSB.toString();
 	}
 }
 

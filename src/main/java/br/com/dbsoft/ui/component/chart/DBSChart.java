@@ -56,6 +56,7 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 		type,
 		hue,
 		//Variáveis de trabalho
+		savedState,
 		itensCount,
 		index,
 		columnScale,
@@ -86,6 +87,15 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 	public void setType(String pType) {
 		getStateHelper().put(PropertyKeys.type, pType);
 		handleAttribute("type", pType);
+	}
+
+	public Object getSavedState() {
+		return getStateHelper().eval(PropertyKeys.savedState, null);
+	}
+
+	public void setSavedState(Object pSavedState) {
+		getStateHelper().put(PropertyKeys.savedState, pSavedState);
+		handleAttribute("savedState", pSavedState);
 	}
 
 	public Double getTotalValue() {

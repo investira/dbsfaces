@@ -50,6 +50,8 @@ public class DBSChartRenderer extends DBSRenderer {
 		}
 
 		String xClientId = xChart.getClientId(pContext);
+//		xChart.restoreState(pContext, xChart.getSavedState());
+
 		xWriter.startElement("g", xChart);
 			DBSFaces.setAttribute(xWriter, "id", xClientId, null);
 			DBSFaces.setAttribute(xWriter, "name", xClientId, null);
@@ -101,8 +103,8 @@ public class DBSChartRenderer extends DBSRenderer {
 	private void pvEncodeResultSetChartValue(FacesContext pContext, DBSChart pChart, ResponseWriter pWriter) throws IOException {
         int xRowCount = pChart.getRowCount(); 
 		pChart.setRowIndex(-1);
-		pChart.getFirst();
-		pChart.getRows(); 
+//		pChart.getFirst();
+//		pChart.getRows(); 
 		//Loop por todos os registros lidos
 		//Lido de forma decrescentes por o saveState e restoreState invertou
 		//a ordem da consulta

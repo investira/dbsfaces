@@ -1,6 +1,7 @@
 package br.com.dbsoft.ui.component.chartvalue;
 
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 
 import javax.faces.component.FacesComponent;
 import javax.faces.component.NamingContainer;
@@ -10,8 +11,12 @@ import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSNumber;
 
 @FacesComponent(DBSChartValue.COMPONENT_TYPE)
-public class DBSChartValue extends DBSUIInput implements NamingContainer{
+public class DBSChartValue extends DBSUIInput implements NamingContainer, Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2431823370810712385L;
 	/**
 	 * 
 	 */

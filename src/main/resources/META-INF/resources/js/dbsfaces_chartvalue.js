@@ -55,6 +55,7 @@ dbsfaces.chartValue = {
 		var xValuePosterior = pValue.nextAll(".dbs_chartValue").first().children(".-point");
 		if (xValuePosterior.length == 0){return;}
 		var xValue = pValue.children(".-point");
+		var xStroke = xValue.attr("fill");
 		var xId = pValue.attr("id");
 		var xX1 = xValue.attr("cx");
 		var xY1 = xValue.attr("cy");
@@ -68,7 +69,8 @@ dbsfaces.chartValue = {
 			 .attr("x1", xX1)
 			 .attr("y1", xY1)
 			 .attr("x2", xX2)
-			 .attr("y2", xY2);
+			 .attr("y2", xY2)
+			 .attr("stroke", xStroke);
 		pLineGroup.append(xLine);
 	},
 	showLabel: function(pId){

@@ -21,10 +21,13 @@
     shape-rendering: crispEdges;
 }
 .dbs_chart[type='line'] > .dbs_chartValue > .-point{
-	fill:transparent;	
+/* 	fill:transparent;	 */
+}
+.dbs_chart[type='line'] > .dbs_chartValue:not(.-selected) > .-point{
+	fill: transparent; 
 }
 .dbs_chart[type='line'] > .dbs_chartValue.-selected > .-point{
-	fill:white;	
+/* 	fill:white;	 */
 }
 
 .dbs_chart[type='pie'] > .dbs_chartValue > .-info > .-point{
