@@ -394,8 +394,8 @@ public class DBSDataTableRenderer extends DBSRenderer {
 			String[]	xRowClasses;
 	        int 		xRowCount = pDataTable.getRowCount(); 
 			pDataTable.setRowIndex(-1);
-			pDataTable.getFirst();
-			pDataTable.getRows(); 
+//			pDataTable.getFirst();
+//			pDataTable.getRows(); 
 	        xRowClasses = DBSString.changeStr(pDataTable.getRowStyleClass(), ",", " ").split("\\s+");
 	        for (int xRowIndex = 0; xRowIndex < xRowCount; xRowIndex++) {
 	        	pDataTable.setRowIndex(xRowIndex);
