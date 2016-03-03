@@ -67,7 +67,10 @@ public class DBSChartRenderer extends DBSRenderer {
 			//O desenho é efetuado via JS no chartValue
 			if (DBSChart.TYPE.get(xChart.getType()) == TYPE.LINE){
 				xWriter.startElement("g", xChart);
-					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.LINE, null);
+					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.LINE.trim(), null);
+				xWriter.endElement("g");
+				xWriter.startElement("g", xChart);
+					DBSFaces.setAttribute(xWriter, "class", "-delta", null);
 				xWriter.endElement("g");
 			}
 			//Se não foi informado DBSResultSet

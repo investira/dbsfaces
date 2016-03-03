@@ -2850,6 +2850,14 @@
 		</attribute>
 		<attribute>
 			<description>
+				Valor ajustado para a ser utilizado no calculo do delta. Caso não seja informadoserá utilizado  o valor contido no atributo 'Valor'.
+            </description>
+			<name>ajustedValue</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+		</attribute>
+		<attribute>
+			<description>
 				Label que será exibido no rodapé. 
             </description>
 			<name>label</name>

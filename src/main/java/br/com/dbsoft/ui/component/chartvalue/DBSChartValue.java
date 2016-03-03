@@ -26,6 +26,7 @@ public class DBSChartValue extends DBSUIInput implements NamingContainer, Serial
 	protected enum PropertyKeys {
 		index,
 		fillColor,
+		ajustedValue,
 		//Variáveis de trabalho
 		savedState,
 		previousValue,
@@ -105,4 +106,13 @@ public class DBSChartValue extends DBSUIInput implements NamingContainer, Serial
 	public Double getValue() {
 		return DBSNumber.toDouble(super.getValue());
 	}
+	
+	public Double getAjustedValue() {
+		return (Double) getStateHelper().eval(PropertyKeys.ajustedValue, null);
+	}
+	public void setAjustedValue(Double pAjustedValue) {
+		getStateHelper().put(PropertyKeys.ajustedValue, pAjustedValue);
+		handleAttribute("ajustedValue", pAjustedValue);
+	}
+
 }

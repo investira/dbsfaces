@@ -110,6 +110,64 @@ dbsfaces.sound = {
 	}
 }
 
+dbsfaces.svg = {
+	line: function(pComponent, pX1, pY1, pX2, pY2, pStyleClass, pStyle){
+		var xLine = $(document.createElementNS('http://www.w3.org/2000/svg','line'));
+		dbsfaces.svg.setDefaultAttr(xLine, pStyleClass, pStyle, null);
+		xLine.attr("x1", pX1)
+			 .attr("y1", pY1)
+			 .attr("x2", pX2)
+			 .attr("y2", pY2);
+		pComponent.append(xLine);
+		return xLine;
+	},
+	
+	rect: function(pComponent, pX, pY, pHeight, pWidth, pStyleClass, pStyle, pFill){
+		return dbsfaces.svg.rect(pComponent, pX, pY, pHeight, pWidth, null, null, pStyleClass, pStyle, pFill);
+	},
+	
+	rect: function(pComponent, pX, pY, pHeight, pWidth, pRX, pRY, pStyleClass, pStyle, pFill){
+		var xRect = $(document.createElementNS('http://www.w3.org/2000/svg','rect'));
+		dbsfaces.svg.setDefaultAttr(xRect, pStyleClass, pStyle, pFill);
+		if (pRX != null){
+			xRect.attr("rx", pRX);
+		}
+		if (pRY != null){
+			xRect.attr("ry", pRY);
+		}
+		xRect.attr("x", pX)
+			 .attr("y", pY)
+			 .attr("height", pHeight)
+			 .attr("width", pWidth);
+		pComponent.append(xRect);
+		return xRect;
+	},
+	
+	ellipse: function(pComponent, pCX, pCY, pRX, pRY, pStyleClass, pStyle, pFill){
+		var xEllipse = $(document.createElementNS('http://www.w3.org/2000/svg','ellipse'));
+		dbsfaces.svg.setDefaultAttr(xEllipse, pStyleClass, pStyle, pFill);
+		xEllipse.attr("cx", pX)
+			   .attr("cy", pY)
+			   .attr("ry", pHeight)
+			   .attr("rx", pWidth);
+		pComponent.append(xEllipse);
+		return xEllipse;
+	},
+	
+	setDefaultAttr: function(pComponent, pStyleClass, pStyle, pFill){
+		if (pStyleClass != null){
+			pComponent.attr("class", pStyleClass);
+		}
+		if (pStyle != null){
+			pComponent.attr("style", pStyle);
+		}
+		if (pFill != null){
+			pComponent.attr("fill", pFill);
+		}
+	}
+
+}
+
 dbsfaces.url = {
 	//Retorna os parametros da Url em um objeto
 	getParams : function(){

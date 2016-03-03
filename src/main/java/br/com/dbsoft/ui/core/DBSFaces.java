@@ -1584,7 +1584,7 @@ public class  DBSFaces {
 	 * @param pY2
 	 * @throws IOException
 	 */
-	public static void encodeSVGLine(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, String pStyle, Double pX1, Double pY1, Double pX2, Double pY2) throws IOException{
+	public static void encodeSVGLine(UIComponent pComponent, ResponseWriter pWriter, Double pX1, Double pY1, Double pX2, Double pY2, String pStyleClass, String pStyle) throws IOException{
 		pWriter.startElement("line", pComponent);
 			setAttribute(pWriter, "class", pStyleClass, null);
 			setAttribute(pWriter, "style", pStyle, null);
@@ -1608,8 +1608,8 @@ public class  DBSFaces {
 	 * @param pWidth
 	 * @throws IOException
 	 */
-	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, String pStyle, Double pX, Double pY, Double pHeight, Double pWidth, String pFill) throws IOException{
-		encodeSVGRect(pComponent, pWriter, pStyleClass, pStyle, pX, pY, pHeight, pWidth, null,null, pFill);
+	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, Double pX, Double pY, Double pHeight, Double pWidth, String pStyleClass, String pStyle, String pFill) throws IOException{
+		encodeSVGRect(pComponent, pWriter, pX, pY, pHeight, pWidth, null, null, pStyleClass, pStyle, pFill);
 	}
 	
 	/**
@@ -1627,7 +1627,7 @@ public class  DBSFaces {
 	 * @param pRY Raio da corner
 	 * @throws IOException
 	 */
-	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, String pStyle, Double pX, Double pY, Double pHeight, Double pWidth, Integer pRX, Integer pRY, String pFill) throws IOException{
+	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, Double pX, Double pY, Double pHeight, Double pWidth, Integer pRX, Integer pRY, String pStyleClass, String pStyle, String pFill) throws IOException{
 		pWriter.startElement("rect", pComponent);
 			setAttribute(pWriter, "class", pStyleClass, null);
 			setAttribute(pWriter, "style", pStyle, null);
@@ -1644,24 +1644,26 @@ public class  DBSFaces {
 	
 	
 	/**
-	 * Encode de Circulo/Elipse para grádico SVG
 	 * @param pComponent
 	 * @param pWriter
+	 * @param pCX
+	 * @param pCY
+	 * @param pRX
+	 * @param pRY
 	 * @param pStyleClass
 	 * @param pStyle
-	 * @param pX
-	 * @param pY
+	 * @param pFill
 	 * @throws IOException
 	 */
-	public static void encodeSVGCircle(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, String pStyle, Double pX, Double pY, Double pHeight, Double pWidth, String pFill) throws IOException{
+	public static void encodeSVGEllipse(UIComponent pComponent, ResponseWriter pWriter, Double pCX, Double pCY, Double pRX, Double pRY, String pStyleClass, String pStyle, String pFill) throws IOException{
 		pWriter.startElement("ellipse", pComponent);
 			setAttribute(pWriter, "class", pStyleClass, null);
 			setAttribute(pWriter, "style", pStyle, null);
-			setAttribute(pWriter, "cx", 	pX, null);
-			setAttribute(pWriter, "cy", 	pY, null);
+			setAttribute(pWriter, "cx", 	pCX, null);
+			setAttribute(pWriter, "cy", 	pCY, null);
 			
-			setAttribute(pWriter, "rx", pWidth, null);
-			setAttribute(pWriter, "ry", pHeight, null);
+			setAttribute(pWriter, "rx", pRY, null);
+			setAttribute(pWriter, "ry", pRX, null);
 			setAttribute(pWriter, "fill",	pFill, null);			
 		pWriter.endElement("ellipse");
 	}

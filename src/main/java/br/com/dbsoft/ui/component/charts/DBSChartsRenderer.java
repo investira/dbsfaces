@@ -146,9 +146,9 @@ public class DBSChartsRenderer extends DBSRenderer {
 	private void pvEncodeLines(DBSCharts pCharts, ResponseWriter pWriter) throws IOException{
 		if (pCharts.getCaption()!=null){
 			//Linha top
-			DBSFaces.encodeSVGLine(pCharts, pWriter, DBSFaces.CSS.MODIFIER.LINE, null, 0D, 0D, pCharts.getWidth().doubleValue(), 0D);
+			DBSFaces.encodeSVGLine(pCharts, pWriter, 0D, 0D, pCharts.getWidth().doubleValue(), 0D, DBSFaces.CSS.MODIFIER.LINE, null);
 			//Linha bottom
-			DBSFaces.encodeSVGLine(pCharts, pWriter, DBSFaces.CSS.MODIFIER.LINE, null, 0D, pCharts.getChartHeight().doubleValue() + (pCharts.getPadding() * 2), pCharts.getWidth().doubleValue(), pCharts.getChartHeight().doubleValue() + (pCharts.getPadding() * 2));
+			DBSFaces.encodeSVGLine(pCharts, pWriter, 0D, pCharts.getChartHeight().doubleValue() + (pCharts.getPadding() * 2), pCharts.getWidth().doubleValue(), pCharts.getChartHeight().doubleValue() + (pCharts.getPadding() * 2), DBSFaces.CSS.MODIFIER.LINE, null);
 		}
 		//Linha base
 		if (pCharts.getShowGrid()){
@@ -166,7 +166,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 		for (int i=0; i < pCharts.getNumberOfGridLines(); i++){
 			xPosicaoInvertida = pCharts.getChartHeight() - xPosicao + pCharts.getPadding();
 			//Encode da linha do grid até o inicio do texto do valor
-			DBSFaces.encodeSVGLine(pCharts, pWriter, DBSFaces.CSS.MODIFIER.LINE, null, 0D, xPosicaoInvertida.doubleValue(), pCharts.getChartWidth().doubleValue() + (pCharts.getPadding() * 2), xPosicaoInvertida.doubleValue());
+			DBSFaces.encodeSVGLine(pCharts, pWriter, 0D, xPosicaoInvertida.doubleValue(), pCharts.getChartWidth().doubleValue() + (pCharts.getPadding() * 2), xPosicaoInvertida.doubleValue(), DBSFaces.CSS.MODIFIER.LINE, null);
 			if (pCharts.getShowGridValue()){
 				xPosicaoText = xPosicao;
 				//Encode do texto do valor
@@ -181,7 +181,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 			xPosicaoInvertida = pCharts.getChartHeight() - pCharts.getZeroPosition() + pCharts.getPadding();
 			xFormatedValue = DBSFormat.getFormattedNumber(0, NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask());
 			xPosicaoText = xPosicaoInvertida + DBSCharts.FontSize.doubleValue() / 2;
-			DBSFaces.encodeSVGLine(pCharts, pWriter, DBSFaces.CSS.MODIFIER.LINE, "stroke-dasharray: 2,5; stroke-width: 0.5px;", 0D, xPosicaoInvertida.doubleValue(), pCharts.getChartWidth().doubleValue() + (pCharts.getPadding() * 2), xPosicaoInvertida.doubleValue());
+			DBSFaces.encodeSVGLine(pCharts, pWriter, 0D, xPosicaoInvertida.doubleValue(), pCharts.getChartWidth().doubleValue() + (pCharts.getPadding() * 2), xPosicaoInvertida.doubleValue(), DBSFaces.CSS.MODIFIER.LINE, "stroke-dasharray: 2,5; stroke-width: 0.5px;");
 //			DBSFaces.encodeSVGText(pCharts, pWriter,  DBSFaces.CSS.MODIFIER.LABEL, "text-anchor:end", pCharts.getWidth().doubleValue(), xPosicaoText.doubleValue(), xFormatedValue);
 		}
 	}

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Locale;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -88,6 +89,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "index", xChartValue.getIndex(), null);
 			DBSFaces.setAttribute(xWriter, "class", xClass, null);
 			DBSFaces.setAttribute(xWriter, "style", xChartValue.getStyle(), null);
+			DBSFaces.setAttribute(xWriter, "av", DBSNumber.toDouble(xChartValue.getAjustedValue(), xChartValue.getValue(), Locale.US), null);
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xChartValue, DBSPassThruAttributes.getAttributes(Key.DIV));
 			//Grafico
 			if (xType != null){
@@ -137,20 +139,20 @@ public class DBSChartValueRenderer extends DBSRenderer {
 					   		   DBSNumber.divide(pChart.getColumnScale() - xLineWidth, 2));
 			//Valore positivos acima
 			if (pChartValue.getValue() > 0){
-				DBSFaces.encodeSVGRect(pChartValue, pWriter, null, null, xX.doubleValue(), xY.doubleValue(), xHeight, xLineWidth, wFillColor);
+				DBSFaces.encodeSVGRect(pChartValue, pWriter, xX.doubleValue(), xY.doubleValue(), xHeight, xLineWidth, null, null, wFillColor);
 			//Valore negativos
 			}else{
 				//inverte a posição Yx
 				Double xIY = DBSNumber.subtract(pCharts.getChartHeight(), pCharts.getZeroPosition().doubleValue()).doubleValue();
 				xIY +=  pCharts.getPadding();
-				DBSFaces.encodeSVGRect(pChartValue, pWriter, null, null, xX.doubleValue(), xIY, xHeight, xLineWidth, wFillColor);
+				DBSFaces.encodeSVGRect(pChartValue, pWriter, xX.doubleValue(), xIY, xHeight, xLineWidth, null, null, wFillColor);
 				//Configura posição do texto para a linha do zero
 				xYText = DBSNumber.add(xIY, (DBSCharts.FontSize / 2));
 			}
 		//Encode LINE - ponto. as linhas que ligam os pontos, são desenhadas no código JS.
 		}else if (pType == TYPE.LINE){
 			pChartValue.setPoint(new Point2D.Double(xX.doubleValue(), xY.doubleValue()));
-			DBSFaces.encodeSVGCircle(pChartValue, pWriter, DBSFaces.CSS.MODIFIER.POINT, null, xX.doubleValue(), xY.doubleValue(), 2D, 2D, wFillColor);
+			DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xX.doubleValue(), xY.doubleValue(), 2D, 2D, DBSFaces.CSS.MODIFIER.POINT, null, wFillColor);
 		}
 		//Encode Dados
 		pWriter.startElement("g", pChartValue);
@@ -312,10 +314,10 @@ public class DBSChartValueRenderer extends DBSRenderer {
 				pWriter.write(xPath.toString());
 	
 				//Ponto pequeno no centro e na tangente do arco	
-				DBSFaces.encodeSVGCircle(pChartValue, pWriter, DBSFaces.CSS.MODIFIER.POINT, null, xPoint.getX(), xPoint.getY(), 2D, 2D, wFillColor);
+				DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xPoint.getX(), xPoint.getY(), 2D, 2D, DBSFaces.CSS.MODIFIER.POINT, null, wFillColor);
 				
 				//Borda do percentual
-				DBSFaces.encodeSVGRect(pChartValue, pWriter, DBSFaces.CSS.MODIFIER.POINT, xPerBoxStyle, (pChartValue.getPoint().getX() + xPercLineWidth), pChartValue.getPoint().getY(), null, null,3,3, "white");
+				DBSFaces.encodeSVGRect(pChartValue, pWriter, (pChartValue.getPoint().getX() + xPercLineWidth), pChartValue.getPoint().getY(), null, null,3,3, DBSFaces.CSS.MODIFIER.POINT, xPerBoxStyle, "white");
 				//Valor do percentual ---------------------------------------------------------------------
 				pvEncodeText(pChartValue, 
 							 DBSFormat.getFormattedNumber(xPercValue, 1) + "%", 
@@ -466,9 +468,6 @@ public class DBSChartValueRenderer extends DBSRenderer {
 									return true;
 								}
 								if (xChartValue.isRendered()){
-//									if (pChartValue.getLabel().equals("a10")){
-//										System.out.println(pChartValue.getLabel() + "\t" + xChartValue.getLabel());
-//									}
 									boolean xOk = pvVerifyLabelPoint(xChartValue.getPoint(), pPoint, pMiddle, pCharts.getRowScale());
 									if (!xOk){
 										return xOk;

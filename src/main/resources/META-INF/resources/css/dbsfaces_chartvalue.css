@@ -1,12 +1,8 @@
 .dbs_chartValue{
 	cursor:pointer;
 	stroke-width: 0px;
-/* 	font-size: 8px; */
 }
-/* .dbs_chartValue.-selected{ */
-/* 	stroke: rgb(13,25,45); */
-/* 	stroke-width: 1px; */
-/* } */
+
 .dbs_chartValue.-selected{
 	opacity: 1;
 }   
