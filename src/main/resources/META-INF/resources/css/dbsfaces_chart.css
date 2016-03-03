@@ -4,13 +4,13 @@
 
 .dbs_chart > .-line {
 	stroke: rgb(120,120,120);
-	stroke-width: 1px;
+	stroke-width: .2em;
 }
 
 .dbs_chart[type='line'] > .dbs_chartValue.-selected,
 .dbs_chart[type='bar'] > .dbs_chartValue.-selected{
 	stroke: rgb(13,25,45);
-	stroke-width: .2em;
+	stroke-width: .1em;
 }
 
 .dbs_chart[type='pie'] > .dbs_chartValue.-selected{
