@@ -229,12 +229,12 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	 * @param pPxValue
 	 * @return
 	 */
-	public Integer convertYPxToValue(Double pPxValue){
+	public Double convertYPxToValue(Double pPxValue){
 		BigDecimal xValue = DBSNumber.divide(DBSNumber.multiply(pPxValue, 
 	 														    getTotalValue()),
 											 getChartHeight());
 		xValue = DBSNumber.add(xValue, getMinValue());
-		return xValue.intValue();
+		return xValue.doubleValue();
 	}
 
 	public void setChartWidthHeight(TYPE pType){
