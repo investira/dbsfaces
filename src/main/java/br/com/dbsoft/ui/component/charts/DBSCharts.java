@@ -26,6 +26,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		valueFormatMask,
 		showGrid,
 		showGridValue,
+		showLabel,
 
 		//Variáveis de trabalho
 		maxValue,
@@ -34,8 +35,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		chartWidth,
 		chartHeight,
 		itensCount,
-		numberOfGridLines,
-		showLabel;
+		numberOfGridLines;
 
 		String toString;
 
@@ -198,7 +198,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	}
 	
 	public Boolean getShowLabel() {
-		return (Boolean) getStateHelper().eval(PropertyKeys.showLabel, false);
+		return (Boolean) getStateHelper().eval(PropertyKeys.showLabel, true);
 	}
 
 	public Double getTotalValue() {

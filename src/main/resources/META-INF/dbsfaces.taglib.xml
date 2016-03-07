@@ -2695,6 +2695,14 @@
 			<type>java.lang.Boolean</type>
 		</attribute>
 		<attribute>
+			<description>
+                Indica se label será exibido. Padrão é true.
+            </description>
+			<name>showLabel</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
 			<description>Altura do gráfico em px
             </description>
 			<name>width</name>
@@ -2850,9 +2858,9 @@
 		</attribute>
 		<attribute>
 			<description>
-				Valor ajustado para a ser utilizado no calculo do delta. Caso não seja informadoserá utilizado  o valor contido no atributo 'Valor'.
+				Valor norminal a ser exibido quando este for diferente do 'valeu' que é utilizado para os cálculo do sistema. Caso não seja informado será utilizado  o valor contido no atributo 'Value'.
             </description>
-			<name>ajustedValue</name>
+			<name>displayValue</name>
 			<required>false</required>
 			<type>java.lang.Double</type>
 		</attribute>

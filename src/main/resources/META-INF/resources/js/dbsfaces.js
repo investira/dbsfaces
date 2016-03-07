@@ -111,6 +111,48 @@ dbsfaces.sound = {
 }
 
 dbsfaces.svg = {
+	gsvg: function(pComponent, pX, pY, pWidth, pHeight, pStyleClass, pStyle){
+		var xG = dbsfaces.svg.g(pComponent, pX, pY, pWidth, pHeight, pStyleClass, pStyle);
+		return dbsfaces.svg.svg(xG, null, null, null, null, null, null);
+	},
+	g: function(pComponent, pX, pY, pWidth, pHeight, pStyleClass, pStyle){
+		var xG = $(document.createElementNS('http://www.w3.org/2000/svg','g'));
+		dbsfaces.svg.setDefaultAttr(xG, pStyleClass, pStyle, null);
+		if (pX != null){
+			xG.attr("x", pX);
+		}
+		if (pY != null){
+			xG.attr("y", pY);
+		}
+		if (pWidth != null){
+			xG.attr("width", pWidth);
+		}
+		if (pHeight != null){
+			xG.attr("height", pHeight);
+		}
+		pComponent.append(xG);
+		return xG;
+	},
+
+	svg: function(pComponent, pX, pY, pWidth, pHeight, pStyleClass, pStyle){
+		var xSVG = $(document.createElementNS('http://www.w3.org/2000/svg','svg'));
+		dbsfaces.svg.setDefaultAttr(xSVG, pStyleClass, pStyle, null);
+		if (pX != null){
+			xSVG.attr("x", pX);
+		}
+		if (pY != null){
+			xSVG.attr("y", pY);
+		}
+		if (pWidth != null){
+			xSVG.attr("width", pWidth);
+		}
+		if (pHeight != null){
+			xSVG.attr("height", pHeight);
+		}
+		pComponent.append(xSVG);
+		return xSVG;
+	},
+
 	line: function(pComponent, pX1, pY1, pX2, pY2, pStyleClass, pStyle){
 		var xLine = $(document.createElementNS('http://www.w3.org/2000/svg','line'));
 		dbsfaces.svg.setDefaultAttr(xLine, pStyleClass, pStyle, null);
@@ -122,22 +164,26 @@ dbsfaces.svg = {
 		return xLine;
 	},
 	
-	rect: function(pComponent, pX, pY, pHeight, pWidth, pStyleClass, pStyle, pFill){
+	rect: function(pComponent, pX, pY, pWidth, pHeight, pStyleClass, pStyle, pFill){
 		return dbsfaces.svg.rect(pComponent, pX, pY, pHeight, pWidth, null, null, pStyleClass, pStyle, pFill);
 	},
 	
-	rect: function(pComponent, pX, pY, pHeight, pWidth, pRX, pRY, pStyleClass, pStyle, pFill){
+	rect: function(pComponent, pX, pY, pWidth, pHeight, pRX, pRY, pStyleClass, pStyle, pFill){
 		var xRect = $(document.createElementNS('http://www.w3.org/2000/svg','rect'));
 		dbsfaces.svg.setDefaultAttr(xRect, pStyleClass, pStyle, pFill);
+		if (pX != null){
+			xRect.attr("x", pX);
+		}
+		if (pY != null){
+			xRect.attr("y", pY);
+		}
 		if (pRX != null){
 			xRect.attr("rx", pRX);
 		}
 		if (pRY != null){
 			xRect.attr("ry", pRY);
 		}
-		xRect.attr("x", pX)
-			 .attr("y", pY)
-			 .attr("height", pHeight)
+		xRect.attr("height", pHeight)
 			 .attr("width", pWidth);
 		pComponent.append(xRect);
 		return xRect;
@@ -146,14 +192,28 @@ dbsfaces.svg = {
 	ellipse: function(pComponent, pCX, pCY, pRX, pRY, pStyleClass, pStyle, pFill){
 		var xEllipse = $(document.createElementNS('http://www.w3.org/2000/svg','ellipse'));
 		dbsfaces.svg.setDefaultAttr(xEllipse, pStyleClass, pStyle, pFill);
-		xEllipse.attr("cx", pX)
-			   .attr("cy", pY)
-			   .attr("ry", pHeight)
-			   .attr("rx", pWidth);
+		xEllipse.attr("cx", pCX)
+			    .attr("cy", pCY)
+			    .attr("ry", pRX)
+			    .attr("rx", pRY);
 		pComponent.append(xEllipse);
 		return xEllipse;
 	},
 	
+	text: function(pComponent, pX, pY, pText, pStyleClass, pStyle, pFill){
+		var xText = $(document.createElementNS('http://www.w3.org/2000/svg','text'));
+		dbsfaces.svg.setDefaultAttr(xText, pStyleClass, pStyle, pFill);
+		if (pX != null){
+			xText.attr("x", pX);
+		}
+		if (pY != null){
+			xText.attr("y", pY);
+		}
+		xText.text(pText);
+		pComponent.append(xText);
+		return xText;
+	},
+
 	setDefaultAttr: function(pComponent, pStyleClass, pStyle, pFill){
 		if (pStyleClass != null){
 			pComponent.attr("class", pStyleClass);
@@ -716,6 +776,23 @@ dbsfaces.number = {
  	}
 };
 
+dbsfaces.format = {
+	number: function(pValue, pDecimals){
+		pValue = dbsfaces.math.round(pValue, pDecimals);
+	    if ((1.1).toLocaleString().indexOf(".") >= 0) {
+	    	
+//	        return pValue.toString().split("/(?=(?:\d{3})+(?:\.\d{2}))/g").join( "," );
+	    	return pValue.toString().split("/(?=(?:\d{3})+(?:\.|$))/g").join( "," );
+	    }
+	    else {
+	        return pValue.toString().split("/(?=(?:\d{3})+(?:,|$))/g").join( "." );
+//	        return pValue.toString().split("/(?=(?:\d{3})+(?:,\d{2}))/g").join( "." );
+	    }
+//	   return pValue.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+	}
+};
+
+	
 dbsfaces.string = {
 	fromCharCode: function(pVal){
 		//Ajuste para os códigos numéricos retornados pelo teclado estendido.

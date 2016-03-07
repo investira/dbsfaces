@@ -106,8 +106,6 @@ public class DBSChartRenderer extends DBSRenderer {
 	private void pvEncodeResultSetChartValue(FacesContext pContext, DBSChart pChart, ResponseWriter pWriter) throws IOException {
         int xRowCount = pChart.getRowCount(); 
 		pChart.setRowIndex(-1);
-//		pChart.getFirst();
-//		pChart.getRows(); 
 		//Loop por todos os registros lidos
 		//Lido de forma decrescentes por o saveState e restoreState invertou
 		//a ordem da consulta

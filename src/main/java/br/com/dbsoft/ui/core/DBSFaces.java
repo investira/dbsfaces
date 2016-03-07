@@ -1608,8 +1608,8 @@ public class  DBSFaces {
 	 * @param pWidth
 	 * @throws IOException
 	 */
-	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, Double pX, Double pY, Double pHeight, Double pWidth, String pStyleClass, String pStyle, String pFill) throws IOException{
-		encodeSVGRect(pComponent, pWriter, pX, pY, pHeight, pWidth, null, null, pStyleClass, pStyle, pFill);
+	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, Double pX, Double pY, Double pWidth, Double pHeight, String pStyleClass, String pStyle, String pFill) throws IOException{
+		encodeSVGRect(pComponent, pWriter, pX, pY, pWidth, pHeight, null, null, pStyleClass, pStyle, pFill);
 	}
 	
 	/**
@@ -1627,7 +1627,7 @@ public class  DBSFaces {
 	 * @param pRY Raio da corner
 	 * @throws IOException
 	 */
-	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, Double pX, Double pY, Double pHeight, Double pWidth, Integer pRX, Integer pRY, String pStyleClass, String pStyle, String pFill) throws IOException{
+	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, Double pX, Double pY, Double pWidth, Double pHeight, Integer pRX, Integer pRY, String pStyleClass, String pStyle, String pFill) throws IOException{
 		pWriter.startElement("rect", pComponent);
 			setAttribute(pWriter, "class", pStyleClass, null);
 			setAttribute(pWriter, "style", pStyle, null);
@@ -1679,12 +1679,13 @@ public class  DBSFaces {
 	 * @param pY
 	 * @throws IOException
 	 */
-	public static void encodeSVGText(UIComponent pComponent, ResponseWriter pWriter, String pStyleClass, String pStyle, Double pX, Double pY, String pText) throws IOException{
+	public static void encodeSVGText(UIComponent pComponent, ResponseWriter pWriter, Double pX, Double pY, String pText, String pStyleClass, String pStyle, String pFill) throws IOException{
 		pWriter.startElement("text", pComponent);
 			setAttribute(pWriter, "class", pStyleClass, null);
 			setAttribute(pWriter, "style", pStyle, null);
 			setAttribute(pWriter, "x", 	pX, null);
 			setAttribute(pWriter, "y", 	pY, null);
+			setAttribute(pWriter, "fill",	pFill, null);			
 			if (pText != null){
 				pWriter.write(pText);
 			}
@@ -2202,7 +2203,10 @@ public class  DBSFaces {
 		for (UIComponent xObject:pCharts.getChildren()){
 			if (xObject instanceof DBSChart){
 				DBSChart xChart = (DBSChart) xObject;
+				//Zera totalizadores
 		        xChart.setTotalValue(0D);
+		        xChart.setItensCount(0);
+		        //--
 				xType = DBSChart.TYPE.get(xChart.getType());
 				//Verifica se será exibido
 				if (xChart.isRendered()){
@@ -2230,8 +2234,6 @@ public class  DBSFaces {
 				        int xRowCount = xChart.getRowCount();
 				        xChart.setRowIndex(-1);
 //				        System.out.println(xChart.isTransient());
-//				        xChart.getFirst();
-//				        xChart.getRows();
 						//Loop por todos os registros lidos
 				        for (int xRowIndex = 0; xRowIndex < xRowCount; xRowIndex++) {
 //				        for (int xRowIndex = xRowCount - 1; xRowIndex >= 0; xRowIndex--) {
@@ -2327,13 +2329,8 @@ public class  DBSFaces {
 		 || xValue > pCharts.getMaxValue()){
 			pCharts.setMaxValue(xValue);
 		}
-		//Verifica se label foi definida e seta indicador que há label a ser exibida
-		if (!pCharts.getShowLabel()){
-			if (!DBSObject.isEmpty(pChartValue.getLabel())){
-				pCharts.setShowLabel(true);
-			}
-		}
-		
+
+		//Consifura valores iniciais
 		pChart.setItensCount(pChart.getItensCount()+1);
 		pChartValue.setIndex(pChart.getItensCount());
 		pChartValue.setPreviousValue(pChart.getTotalValue());
