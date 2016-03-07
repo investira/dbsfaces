@@ -213,6 +213,7 @@ dbsfaces.chartValue = {
 		}else{
 			xDeltaValue.text(dbsfaces.chartValue.calcDelta(pChart, pChartValue));
 		}
+		xWidth = dbsfaces.chartValue.getMaxWidth(xWidth, xDeltaValue, null);
 		
 		//Info label1=======================
 		var xDeltaLabel1 = xDeltaInfoGroup.children("text.-label1");
@@ -269,7 +270,13 @@ dbsfaces.chartValue = {
 	},
 	
 	getMaxWidth: function(pMax, pLabel, pValue){
-		var xWidth = pLabel.get(0).getComputedTextLength() + pValue.get(0).getComputedTextLength();
+		var xWidth = 0;
+		if (pLabel != null){
+			xWidth += pLabel.get(0).getComputedTextLength();
+		}
+		if (pValue != null){
+			xWidth += pValue.get(0).getComputedTextLength();
+		}
 		if (xWidth > pMax){
 			return xWidth;
 		}
