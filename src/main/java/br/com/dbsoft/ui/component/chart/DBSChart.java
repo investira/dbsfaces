@@ -55,6 +55,7 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 	protected enum PropertyKeys {
 		type,
 		hue,
+		showDelta,
 		//Variáveis de trabalho
 		savedState,
 		itensCount,
@@ -150,6 +151,16 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 		getStateHelper().put(PropertyKeys.columnScale, pColumnScale);
 		handleAttribute("columnScale", pColumnScale);
 	}
+
+	public void setShowDelta(Boolean pShowDelta) {
+		getStateHelper().put(PropertyKeys.showDelta, pShowDelta);
+		handleAttribute("showDelta", pShowDelta);
+	}
+	
+	public Boolean getShowDelta() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.showDelta, true);
+	}
+
 	
 	public Float getHue() {
 		return (Float) getStateHelper().eval(PropertyKeys.hue, null);

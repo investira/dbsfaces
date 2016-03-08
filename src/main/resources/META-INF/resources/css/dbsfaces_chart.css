@@ -35,7 +35,7 @@
     stroke: black;
     font-size: 1.5em;
     fill: white;
-    stroke-width: .02em;
+    stroke-width: .01em;
 }
 
 .dbs_chart > .-delta > .-info > .-label1,

@@ -2771,6 +2771,14 @@
 		</attribute>
 		<attribute>
 			<description>
+                Indica se será exibido a variação percentual entre dois pontos quando o gráfico for do tipo 'line'. O default é true.
+            </description>
+			<name>showDelta</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>		
+		<attribute>
+			<description>
                 var
             </description>
 			<name>var</name>

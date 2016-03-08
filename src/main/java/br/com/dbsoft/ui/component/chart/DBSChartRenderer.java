@@ -59,6 +59,9 @@ public class DBSChartRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "style", xChart.getStyle(), null);
 			DBSFaces.setAttribute(xWriter, "type", xChart.getType(), null);
 			DBSFaces.setAttribute(xWriter, "index", xChart.getIndex(), null);
+			if (xChart.getShowDelta()){ //Artificio para padronizar o false como não existindo o atributo(comportamento do chrome)
+				DBSFaces.setAttribute(xWriter, "showdelta", xChart.getShowDelta(), null);
+			}
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xChart, DBSPassThruAttributes.getAttributes(Key.CHART));
 			
 			encodeClientBehaviors(pContext, xChart);
