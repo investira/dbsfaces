@@ -90,6 +90,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "class", xClass, null);
 			DBSFaces.setAttribute(xWriter, "style", xChartValue.getStyle(), null);
 			DBSFaces.setAttribute(xWriter, "value", DBSNumber.toDouble(xChartValue.getValue(), 0D, Locale.US), null);
+			DBSFaces.setAttribute(xWriter, "label", xChartValue.getLabel(), null);
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xChartValue, DBSPassThruAttributes.getAttributes(Key.DIV));
 			//Grafico
 			if (xType != null){
@@ -560,10 +561,11 @@ public class DBSChartValueRenderer extends DBSRenderer {
 				pWriter.writeAttribute("y", "0px", null);
 				pWriter.startElement("span", pChartValue);
 					pWriter.writeAttribute("id", pClienteId + "_tooltip", null);
-					if (pType == TYPE.PIE){
+					if (pType == TYPE.PIE
+					 || pType == TYPE.BAR){
 						pWriter.writeAttribute("tooltipdelay", "300", null);
-					}else{
-						pWriter.writeAttribute("tooltipdelay", "300", null);
+					}else if (pType == TYPE.LINE){
+						pWriter.writeAttribute("tooltipdelay", "2000", null);
 					}
 					xStyle += "left:" + pX.intValue() + "px;";
 					xStyle += "bottom:-" + (pY.intValue() - 5) + "px;";

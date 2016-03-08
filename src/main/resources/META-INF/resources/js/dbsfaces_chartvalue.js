@@ -239,8 +239,9 @@ dbsfaces.chartValue = {
 			xDeltaLabel2 = dbsfaces.svg.text(xDeltaInfoGroup, "0", "-.5em", "", "-label2", null, null);
 		}
 		xDeltaLabel2.text("y:");
-		xLabel = pChartValue.children(".-info").children(".-label").text();
-		if (xLabel != ""){
+		xLabel = pChartValue.attr("label");
+		if (typeof(xLabel) != "undefined" && 
+			xLabel != ""){
 			xDeltaLabel2.text(xDeltaLabel2.text() + xLabel + ":");
 		}
 
