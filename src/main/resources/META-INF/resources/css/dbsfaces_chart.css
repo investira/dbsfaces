@@ -61,7 +61,7 @@
 .dbs_chart > .-delta > .-info > .-box,
 .dbs_chart > .-delta > .-info > .-box2{
 	stroke-dasharray: .3em;
-    fill-opacity: .8;
+    fill-opacity: .85;
 	stroke-width: 0.1em;
 }
 .dbs_chart > .-delta > .-info > .-box2{
@@ -91,11 +91,6 @@
     transition: transform .3s;
 }
 
-.dbs_chart[type='line'] > .dbs_chartValue.-selected,
-.dbs_chart[type='line'] > .dbs_chartValue.-selectedDelta,
-.dbs_chart[type='bar'] > .dbs_chartValue.-selected{
-	stroke: rgb(13,25,45);
-}
 
 .dbs_chart[type='line'] > .dbs_chartValue.-selected,
 .dbs_chart[type='bar'] > .dbs_chartValue.-selected{
@@ -112,11 +107,19 @@
 .dbs_chart[type='line'] > .dbs_chartValue > .-point{
 /* 	fill:transparent;	 */
 }
-.dbs_chart[type='line'] > .dbs_chartValue:not(.-selected):not(.-delta) > .-point{
+.dbs_chart[type='line'] > .dbs_chartValue:not(.-selected):not(.-selectedDelta) > .-point{
 	fill: transparent; 
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -o-transform: scale(1);
+    transform: scale(1);
 }
+
 .dbs_chart[type='line'] > .dbs_chartValue.-selected > .-point{
-/* 	fill:white;	 */
+	fill:white;	
+}
+.dbs_chart[type='line'] > .dbs_chartValue.-selectedDelta > .-point{
+
 }
 
 .dbs_chart[type='pie'] > .dbs_chartValue > .-info > .-point{

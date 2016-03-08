@@ -2813,7 +2813,19 @@
 				</span>
 			]]>
             </description>
-			<name>hue</name>
+			<name>colorHue</name>
+			<required>false</required>
+			<type>java.lang.Float</type>
+		</attribute>		
+		<attribute>
+			<description>
+			<![CDATA[
+				<span style="font-size:small">
+				Brilho da cor que varia de 0, sem brilho a 1, brilho integral.
+				</span>
+			]]>
+            </description>
+			<name>colorBrightness</name>
 			<required>false</required>
 			<type>java.lang.Float</type>
 		</attribute>		

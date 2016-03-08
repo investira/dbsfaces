@@ -557,6 +557,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 				pWriter.writeAttribute("xmlns","http://www.w3.org/1999/xhtml", null);
 				pWriter.writeAttribute("height", "1px", null);
 				pWriter.writeAttribute("width", "1px", null);
+				pWriter.writeAttribute("class", "-foreignobject", null);
 				pWriter.writeAttribute("x", "0px", null);
 				pWriter.writeAttribute("y", "0px", null);
 				pWriter.startElement("span", pChartValue);
@@ -596,16 +597,21 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		Float xChartFator = DBSNumber.divide(pChart.getIndex(), pCharts.getItensCount()).floatValue();
 		Float xChartValueFator = DBSNumber.divide(pChartValue.getIndex(), pChart.getItensCount()).floatValue();
 		Float xColorH;
+		Float xColorB;
 		Float xColorS = DBSNumber.multiply(1, xChartValueFator).floatValue();
-		Float xColorB = DBSNumber.multiply(.8, xChartValueFator).floatValue();
-		if (pChart.getHue() != null){
-			xColorH = pChart.getHue();
+		if (pChart.getColorHue() != null){
+			xColorH = pChart.getColorHue();
 		}else{
 			xColorH = DBSNumber.multiply(1, xChartFator).floatValue();
 		}
+		if (pChart.getColorBrightness() != null){
+			xColorB = DBSNumber.multiply(pChart.getColorBrightness(), xChartValueFator).floatValue();
+		}else{
+			xColorB = DBSNumber.multiply(.8, xChartValueFator).floatValue();
+			xColorB += .2F;
+		}
 		xColorH += 0F;
 		xColorS = 1F;
-		xColorB += .2F;
 		Color xColor = Color.getHSBColor(xColorH, xColorS, xColorB);
 		StringBuilder xSB = new StringBuilder();
 		xSB.append("rgb(");

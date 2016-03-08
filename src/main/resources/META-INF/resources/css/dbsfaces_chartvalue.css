@@ -31,11 +31,11 @@
 	opacity: 1;
 }
 
-.dbs_chartValue > foreignobject{
+.dbs_chartValue > .-foreignobject{
 	overflow:visible;
 }
 
-.dbs_chartValue > foreignobject > span{
+.dbs_chartValue > .-foreignobject > span{
 	display: inline-block;
 	position: absolute;
 }

@@ -110,14 +110,7 @@ dbsfaces.chartValue = {
 		//Desmaca pontos
 		if (typeof(xChart.attr("dx1")) != 'undefined'
 		 && typeof(xChart.attr("dx2")) != 'undefined'){
-			xChart.get(0).removeAttribute("dx1");
-			xChart.get(0).removeAttribute("dy1");
-			xChart.get(0).removeAttribute("dx2");
-			xChart.get(0).removeAttribute("dy2");
-			var xChartValues = xChart.find(".dbs_chartValue.-selectedDelta");
-			xChartValues.each(function(){
-				this.classList.remove("-selectedDelta");
-			});
+			dbsfaces.chartValue.removeDelta(xChart);
 		}
 		//Marca ponto origem
 		if (typeof(xChart.attr("dx1")) == 'undefined'){
@@ -141,29 +134,36 @@ dbsfaces.chartValue = {
 	},
 	
 	
-	showDelta: function(pChart, pChartValue, pX, pY){
+	showDelta: function(pChart, pChartValue, pXTmp, pYTmp){
 		if (pChart.length == 0
 		|| typeof(pChart.attr("showdelta")) == 'undefined'){return;}
 		var xDeltaGroup = pChart.children("g.-delta");
+		if (xDeltaGroup.length == 0){
+			return;
+		}
 		//Sai se ponto incial não foi selecionado
 		var xX1 = pChart.attr("dx1");
 		var xY1 = pChart.attr("dy1");
 		if (typeof(xX1) == 'undefined'
-		 && pX == -1){
-			dbsfaces.chartValue.removeDelta(xDeltaGroup);
+		 && pXTmp == -1){
+			dbsfaces.chartValue.removeDeltaGroup(xDeltaGroup);
 			return;
 		}
 
-		//Sai se pointo final não foi selecionado nem ponto temporário informado
 		var xX2 = pChart.attr("dx2");
 		var xY2 = pChart.attr("dy2");
-		if (typeof(xX2) == 'undefined'
-		 && pX == -1){
-			dbsfaces.chartValue.removeDelta(xDeltaGroup);
-			return;
-		}
-		//Sai se ponto final foi selecionado
-		if (typeof(xX2) != 'undefined'){
+		//Se ponto final não foi informado, força ponto final como o temporário ou iqual ao ponto inicial
+		if (typeof(xX2) == 'undefined'){
+			//Se ponto temporário não foi informado
+			if (pXTmp == -1){
+				xX2 = xX1;
+				xY2 = xY1;
+			}else{
+				xX2 = pXTmp;
+				xY2 = pYTmp;
+			}
+		//Sai se pointo final foi selecionado
+		}else{
 			return;
 		}
 
@@ -177,7 +177,7 @@ dbsfaces.chartValue = {
 			return;
 		}
 
-
+		//
 		var xDeltaLabel1 = pChart.attr("dl1");
 		var xDeltaValue1 = pChart.attr("dd1");
 		var xDeltaLabel2 = pChartValue.attr("label");
@@ -187,20 +187,16 @@ dbsfaces.chartValue = {
 		var xChartValuePoint = pChartValue.find(".-point");
 		var xStroke = "stroke:" + xChartValuePoint.attr("fill") + ";";
 
-		//Sai se ponto final foi selecionado
+		//Sai se ponto inicial foi selecionado
 		if (typeof(xX1) == 'undefined'){
-			xX1 = pX;
-			xY1 = pY;
+			xX1 = pXTmp;
+			xY1 = pYTmp;
 			xDeltaLabel1 = xDeltaLabel2;
 			xDeltaValue1 = xDeltaValue2;
 			xDeltaLabel2 = "";
 			xDeltaValue2 = "";
 			xDeltaValue = "-";
 		}
-
-		//Define ponto final como o ponto temporário informado
-		xX2 = pX;
-		xY2 = pY;
 
 		//Line
 		var xSvgLine = xDeltaGroup.children("line.-deltaline");
@@ -339,9 +335,33 @@ dbsfaces.chartValue = {
 		return dbsfaces.format.number(xValue, 2) + "%";
 	},
 
-	removeDelta: function(pDeltaGroup){
+	removeDelta: function(pChart){
+		var xDeltaGroup = pChart.children("g.-delta");
+		if (xDeltaGroup.length != 0){
+			dbsfaces.chartValue.removeDeltaGroup(xDeltaGroup);
+		}
+		dbsfaces.chartValue.removeDeltaAttrs(pChart);
+	},
+	
+	removeDeltaAttrs: function(pChart){
+		pChart.get(0).removeAttribute("dx1");
+		pChart.get(0).removeAttribute("dy1");
+		pChart.get(0).removeAttribute("dx2");
+		pChart.get(0).removeAttribute("dy2");
+		pChart.get(0).removeAttribute("dv1");
+		pChart.get(0).removeAttribute("dl1");
+		pChart.get(0).removeAttribute("dd1");
+//		pChart.get(0).removeAttribute("stylddeeeeeeeeeeeeexde");
+		var xChartValues = pChart.find(".dbs_chartValue.-selectedDelta");
+		xChartValues.each(function(){
+			this.classList.remove("-selectedDelta");
+		});
+	},
+
+	removeDeltaGroup: function(pDeltaGroup){
 		if (pDeltaGroup.length == 0){return;}
 		pDeltaGroup.empty();
+		pDeltaGroup.show();
 	},
 
 

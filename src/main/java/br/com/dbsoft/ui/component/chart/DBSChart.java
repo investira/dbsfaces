@@ -54,7 +54,8 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 	
 	protected enum PropertyKeys {
 		type,
-		hue,
+		colorHue,
+		colorBrightness,
 		showDelta,
 		//Variáveis de trabalho
 		savedState,
@@ -162,18 +163,31 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 	}
 
 	
-	public Float getHue() {
-		return (Float) getStateHelper().eval(PropertyKeys.hue, null);
+	public Float getColorHue() {
+		return (Float) getStateHelper().eval(PropertyKeys.colorHue, null);
 	}
-	public void setHue(Float pHue) {
-		if (pHue != null){
-			if (pHue > 1
-			 || pHue < 0){
-				pHue = null;
+	public void setColorHue(Float pColorHue) {
+		if (pColorHue != null){
+			if (pColorHue > 1
+			 || pColorHue < 0){
+				pColorHue = null;
 			}
 		}
-		getStateHelper().put(PropertyKeys.hue, pHue);
-		handleAttribute("hue", pHue);
+		getStateHelper().put(PropertyKeys.colorHue, pColorHue);
+		handleAttribute("colorHue", pColorHue);
+	}
+	public Float getColorBrightness() {
+		return (Float) getStateHelper().eval(PropertyKeys.colorBrightness, null);
+	}
+	public void setColorBrightness(Float pColorBrightness) {
+		if (pColorBrightness != null){
+			if (pColorBrightness > 1
+			 || pColorBrightness < 0){
+				pColorBrightness = null;
+			}
+		}
+		getStateHelper().put(PropertyKeys.colorBrightness, pColorBrightness);
+		handleAttribute("colorBrightness", pColorBrightness);
 	}
 
 }
