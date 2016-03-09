@@ -140,7 +140,7 @@
 
 .dbs_chart[type='pie'] > .dbs_chartValue > .-info > .-point{
     height: 1.2em;
-    width: 4em;
+/*     width: 4em; */
 	stroke-width: .05em;
 }
 

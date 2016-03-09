@@ -1,36 +1,46 @@
 dbs_chartValue = function(pId) {
-	var xChart = $(pId).closest(".dbs_chart");
-	if (xChart.attr("type") == "line"){
-		dbsfaces.chartValue.drawLines(pId);
-	}
+	var xChartValue = $(pId);
+	
+	dbsfaces.chartValue.initialize(xChartValue);
 	
 	$(pId).click(function(e){
-		dbsfaces.chartValue.selectDelta(pId);
+		dbsfaces.chartValue.selectDelta(xChartValue);
 	});
 	
 	$(pId).mouseenter(function (e){
-		dbsfaces.chartValue.selectValue(pId, true);
+		dbsfaces.chartValue.selectValue(xChartValue, true);
 	});
 	$(pId).mouseleave(function (e){
-		dbsfaces.chartValue.selectValue(pId, false);
+		dbsfaces.chartValue.selectValue(xChartValue, false);
 	});
 	
 };
 
 dbsfaces.chartValue = {
-	drawLines: function(pId){
-		var xChartValue = $(pId);
-		if (xChartValue.length == 0){
-			return;
+	initialize: function(pChartValue){
+		var xChart = pChartValue.closest(".dbs_chart");
+		if (xChart.attr("type") == "line"){
+			dbsfaces.chartValue.initializeLine(xChart, pChartValue);
+		}else if (xChart.attr("type") == "pie"){
+			dbsfaces.chartValue.initializePie(pChartValue);
 		}
-		var xChart = xChartValue.closest(".dbs_chart");
-		var xLineGroup = xChart.children("g.-line");
-		var xChartValueAnterior = xChartValue.prevAll(".dbs_chartValue").first();
+	},
+	
+	initializeLine: function(pChart, pChartValue){
+		var xLineGroup = pChart.children("g.-line");
+		var xChartValueAnterior = pChartValue.prevAll(".dbs_chartValue").first();
 		
 		dbsfaces.chartValue.drawLine(xLineGroup, xChartValueAnterior);
-		dbsfaces.chartValue.drawLine(xLineGroup, xChartValue);
-		
-		return;
+		dbsfaces.chartValue.drawLine(xLineGroup, pChartValue);
+	},
+
+	initializePie: function(pChartValue){
+		var xChartValueInfo = pChartValue.children(".-info");
+		var xChartValueValue = xChartValueInfo.children(".-value");
+		var xChartValuePoint = xChartValueInfo.children("rect.-point");
+		if (xChartValueValue.length != 0){
+			xChartValuePoint.attr("width", xChartValueValue.get(0).getComputedTextLength() + 4);
+		}
 	},
 	
 	drawLine: function(pLineGroup, pChartValue){
@@ -59,20 +69,16 @@ dbsfaces.chartValue = {
 		}
 	},
 	
-	selectDelta: function(pId){
-		var xChartValue = $(pId);
-		var xChart = xChartValue.closest(".dbs_chart");
-		if (typeof(xChart.attr("showdelta")) == 'undefined'){
-			return;
-		}
+	selectDelta: function(pChartValue){
+		var xChart = pChartValue.closest(".dbs_chart");
 		//Não permite seleção para gráficos diferente de line ou 
 		//quando valor do ponto selecionado for zero
 		if (xChart.attr("type") != "line"
 		 ||	typeof(xChart.attr("showdelta")) == 'undefined'
-		 || xChartValue.attr("value") == "0.0"){
+		 || pChartValue.attr("value") == "0.0"){
 			return;
 		}
-		var xChartValuePoint = xChartValue.children(".-point");
+		var xChartValuePoint = pChartValue.children(".-point");
 		//Desmaca pontos
 		if (typeof(xChart.attr("dx1")) != 'undefined'
 		 && typeof(xChart.attr("dx2")) != 'undefined'){
@@ -80,23 +86,23 @@ dbsfaces.chartValue = {
 		}
 		//Marca ponto origem
 		if (typeof(xChart.attr("dx1")) == 'undefined'){
-			var xChartValueInfo = xChartValue.children(".-info");
+			var xChartValueInfo = pChartValue.children(".-info");
 			xValue = xChartValueInfo.children(".-value").text();
 			if (xValue != 0){
 				xChart.get(0).setAttribute("dx1", xChartValuePoint.attr("cx"));
 				xChart.get(0).setAttribute("dy1", xChartValuePoint.attr("cy"));
-				xChart.get(0).setAttribute("dv1", xChartValue.attr("value"));
-				xChart.get(0).setAttribute("dl1", xChartValue.attr("label"));
+				xChart.get(0).setAttribute("dv1", pChartValue.attr("value"));
+				xChart.get(0).setAttribute("dl1", pChartValue.attr("label"));
 				xChart.get(0).setAttribute("dd1", xChartValueInfo.children(".-value").text());
-				xChartValue.get(0).classList.add("-selectedDelta");
+				pChartValue.get(0).classList.add("-selectedDelta");
 			}
 		//Marca ponto destino
 		}else if (typeof(xChart.attr("dx2")) == 'undefined'){
-//			xValue = xChartValue.children(".-info").children(".-value").text();
+//			xValue = pChartValue.children(".-info").children(".-value").text();
 			xChart.get(0).setAttribute("dx2", xChartValuePoint.attr("cx"));
 			xChart.get(0).setAttribute("dy2", xChartValuePoint.attr("cy"));
 		}
-		dbsfaces.chartValue.showDelta(xChart, xChartValue, -1, -1);
+		dbsfaces.chartValue.showDelta(xChart, pChartValue, -1, -1);
 	},
 	
 	
@@ -179,7 +185,7 @@ dbsfaces.chartValue = {
 		}
 		
 		//Group info----------------------
-		var xDeltaInfoGroup = xDeltaGroup.children(".-info")
+		var xDeltaInfoGroup = xDeltaGroup.children(".-info");
 
 		var xStyle = "transform: translate3d(" + xX2 + "px ," + xY2 + "px,0);"
 		//Cria Group info
@@ -359,7 +365,7 @@ dbsfaces.chartValue = {
 			//Posiciona item como primeiro elemento para aparecer acima dos demais
 			if (xChart.attr("type") == "bar"
 			 || xChart.attr("type") == "line"){
-//				pChartValue.get(0).parentElement.appendChild(pChartValue.get(0));
+				pChartValue.get(0).parentElement.appendChild(pChartValue.get(0));
 //				pChartValue.get(0).parentElement.insertBefore(pChartValue.get(0), xChart.children(".-delta").get(0));
 			}
 			
@@ -424,16 +430,14 @@ dbsfaces.chartValue = {
 		}
 	},
 	
-	selectValue: function(pId, pSelect){
-		var xChartValue = $(pId);
-		if (xChartValue.length == 0){return;}
-		var xCharts = xChartValue.closest(".dbs_charts");
+	selectValue: function(pChartValue, pSelect){
+		var xCharts = pChartValue.closest(".dbs_charts");
 		
-		dbsfaces.chartValue.selectChartValue(xCharts, xChartValue, pSelect, false);
+		dbsfaces.chartValue.selectChartValue(xCharts, pChartValue, pSelect, false);
 
 		var xGroupId = xCharts.attr("groupid");
 		if (typeof(xGroupId) != 'undefined'){
-			var xLabel = xChartValue.attr("label");
+			var xLabel = pChartValue.attr("label");
 			var xFamily = $("div.dbs_charts[groupid='" + xGroupId + "']").not(xCharts);
 			xFamily.each(function(){
 				xCharts = $(this);

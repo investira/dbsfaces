@@ -24,7 +24,6 @@ import br.com.dbsoft.util.DBSFormat;
 import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSFormat.NUMBER_SIGN;
 import br.com.dbsoft.util.DBSObject;
-import br.com.dbsoft.util.DBSString;
 
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSChartValue.RENDERER_TYPE)
@@ -326,31 +325,33 @@ public class DBSChartValueRenderer extends DBSRenderer {
 				//Ponto pequeno no centro e na tangente do arco	
 				DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xPoint.getX(), xPoint.getY(), 2D, 2D, DBSFaces.CSS.MODIFIER.POINT, null, wFillColor);
 				
-				//Borda do percentual
+				//Borda do texto-Largura será cofigurada via JS
 				DBSFaces.encodeSVGRect(pChartValue, pWriter, (pChartValue.getPoint().getX() + xPercLineWidth), pChartValue.getPoint().getY(), null, null, 3, 3, DBSFaces.CSS.MODIFIER.POINT, xPerBoxStyle, "white");
 				//Valor do percentual, label e valor ---------------------------------------------------------------------
 				StringBuilder xText = new StringBuilder();
 				String xLabelPerc = DBSFormat.getFormattedNumber(xPercValue, 1) + "%";
-				String xLabelValue = "(" + DBSFormat.getFormattedNumber(DBSObject.getNotNull(pChartValue.getDisplayValue(), pChartValue.getValue()), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask()) + ")";
-				String xLabelSpacesX = DBSString.repeat("&#160;",7 - xLabelPerc.length());
+				String xLabelValue = DBSFormat.getFormattedNumber(DBSObject.getNotNull(pChartValue.getDisplayValue(), pChartValue.getValue()), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask());
+				String xLabelSpacesX = "&#124;"; //DBSString.repeat("&#160;",7 - xLabelPerc.length());
 				String xLabelSpaces1 = "";
 				String xLabelText = "";
 				if (!DBSObject.isEmpty(pChartValue.getLabel())){
-					xLabelSpaces1 = "&#160";
+					xLabelSpaces1 = "&#124;";
 					xLabelText = pChartValue.getLabel();
 				}
+				//Textos a esquerda: Investe ordem do texto
 				if (xPositionInverter == -1){
-					xText.append(xLabelValue);
-					xText.append(xLabelSpaces1);
 					xText.append(xLabelText);
+					xText.append(xLabelSpaces1);
+					xText.append(xLabelValue);
 					xText.append(xLabelSpacesX);
 					xText.append(xLabelPerc);
+				//Textos a direita
 				}else{
 					xText.append(xLabelPerc);
 					xText.append(xLabelSpacesX);
-					xText.append(xLabelText);
-					xText.append(xLabelSpaces1);
 					xText.append(xLabelValue);
+					xText.append(xLabelSpaces1);
+					xText.append(xLabelText);
 				}
 				//Valor do percentual ---------------------------------------------------------------------
 				pvEncodeText(pChartValue, 
