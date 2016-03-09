@@ -4,10 +4,6 @@ dbs_chartValue = function(pId) {
 		dbsfaces.chartValue.drawLines(pId);
 	}
 	
-	setTimeout(function(){
-		dbsfaces.chartValue.showLabel(pId);
-	},0);
-	
 	$(pId).click(function(e){
 		dbsfaces.chartValue.selectDelta(pId);
 	});
@@ -60,15 +56,6 @@ dbsfaces.chartValue = {
 		}else{
 			xSvgLine = dbsfaces.svg.line(pLineGroup, xX1, xY1, xX2, xY2, null, "stroke:" + xStroke);
 			xSvgLine.attr("index", xId);
-		}
-	},
-	
-	
-	showLabel: function(pId){
-		var xChart = $(pId).closest(".dbs_chart");
-		if (xChart.attr("type") == "bar"
-		 || xChart.attr("type") == "line"){
-			dbsfaces.chartValue.showLabelBarAndLine(pId);
 		}
 	},
 	
@@ -352,32 +339,6 @@ dbsfaces.chartValue = {
 	},
 
 
-	//Verifica sopreposição dos labels
-	showLabelBarAndLine: function(pId){
-		var xValue = $(pId);
-		if (xValue.length == 0){return;}
-
-		var xLabelAtual = xValue.children(".-info").children(".-label");
-		if (xLabelAtual.length == 0){return;}
-
-		//Procura valor anterior que contenha label sendo exibido
-		var xLabelAnterior = xValue.prevAll(".dbs_chartValue").children(".-info").children(".-label").not("[class ~= '-hide']").first();
-		var xXAtual = 0;
-		var xXAnterior = 0;
-		//Calcula posição final da label anterior
-		if (xLabelAnterior.length != 0){
-			xXAnterior = Number(xLabelAnterior.attr("x")) + (xLabelAnterior.get(0).getComputedTextLength() / 2) + 4;
-		}
-		//Calcula posição inicial da label atual
-		xXAtual = Number(xLabelAtual.attr("x")) - (xLabelAtual.get(0).getComputedTextLength() / 2);
-		//Exclui sobreposição de texto
-		if (xXAnterior > xXAtual){
-			xLabelAtual.get(0).classList.add("-hide");
-		}else{
-			xLabelAtual.get(0).classList.remove("-hide");
-		}
-	},
-
 	//Coloca item como primeiro elemento para aparecer acima dos demais
 	moveToFront: function(pItem){
 		var xChart = $(pItem).closest(".dbs_chart");
@@ -397,7 +358,8 @@ dbsfaces.chartValue = {
 			//Posiciona item como primeiro elemento para aparecer acima dos demais
 			if (xChart.attr("type") == "bar"
 			 || xChart.attr("type") == "line"){
-				pChartValue.get(0).parentElement.appendChild(pChartValue.get(0));
+//				pChartValue.get(0).parentElement.appendChild(pChartValue.get(0));
+//				pChartValue.get(0).parentElement.insertBefore(pChartValue.get(0), xChart.children(".-delta").get(0));
 			}
 			
 			dbsfaces.tooltip.showTooltip(xTooltipId);

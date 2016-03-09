@@ -72,23 +72,17 @@ public class DBSChartRenderer extends DBSRenderer {
 				xWriter.startElement("g", xChart);
 					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.LINE.trim(), null);
 				xWriter.endElement("g");
-//				xWriter.startElement("g", xChart);
-//					DBSFaces.setAttribute(xWriter, "class", "-delta", null);
-//				xWriter.endElement("g");
+				xWriter.startElement("g", xChart);
+					DBSFaces.setAttribute(xWriter, "class", "-delta", null);
+				xWriter.endElement("g");
 			}
+			//Valores-------------------------
 			//Se não foi informado DBSResultSet
 			if (DBSObject.isEmpty(xChart.getVar())
 			 || DBSObject.isEmpty(xChart.getValueExpression("value"))){
 				pvEncodeChartValue(pContext, xChart);
 			}else{
 				pvEncodeResultSetChartValue(pContext, xChart, xWriter);
-			}
-			//Divisão onde serão desenhadas as linhas que ligam os pontos no gráfico por linha.
-			//O desenho é efetuado via JS no chartValue
-			if (DBSChart.TYPE.get(xChart.getType()) == TYPE.LINE){
-				xWriter.startElement("g", xChart);
-					DBSFaces.setAttribute(xWriter, "class", "-delta", null);
-				xWriter.endElement("g");
 			}
 
 			pvEncodeJS(xClientId, xWriter);

@@ -64,6 +64,9 @@ public class DBSChartsRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "class", xClass, null);
 			DBSFaces.setAttribute(xWriter, "style", xCharts.getStyle(), null);
 			DBSFaces.setAttribute(xWriter, "groupid", xCharts.getGroupId(), null);
+			if (xCharts.getShowLabel()){
+				DBSFaces.setAttribute(xWriter, "showlabel", xCharts.getShowLabel(), null);
+			}
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xCharts, DBSPassThruAttributes.getAttributes(Key.CHARTS));
 			
 			encodeClientBehaviors(pContext, xCharts);
