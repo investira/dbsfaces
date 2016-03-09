@@ -1,7 +1,5 @@
 dbs_chartValue = function(pId) {
 	var xChart = $(pId).closest(".dbs_chart");
-	var xLabel = $(pId + " > .-info > .-label");
-	var xValue = $(pId + " > .-info > .-value");
 	if (xChart.attr("type") == "line"){
 		dbsfaces.chartValue.drawLines(pId);
 	}
@@ -15,28 +13,9 @@ dbs_chartValue = function(pId) {
 	});
 	
 	$(pId).mouseenter(function (e){
-		//Coloca item como primeiro elemento para aparecer acima dos demais
-		dbsfaces.chartValue.moveToFront(this);
-
-		dbsfaces.tooltip.showTooltip(pId + '_tooltip');
-		$(pId + '_tooltip').addClass("-selected");
-		if (xLabel.length > 0){
-			xLabel.get(0).classList.add("-selected");
-		}
-		if (xValue.length > 0){
-			xValue.get(0).classList.add("-selected");
-		}
 		dbsfaces.chartValue.selectValue(pId, true);
 	});
 	$(pId).mouseleave(function (e){
-		dbsfaces.tooltip.hideTooltip(pId + '_tooltip');
-		$(pId + '_tooltip').removeClass("-selected");
-		if (xLabel.length > 0){
-			xLabel.get(0).classList.remove("-selected");
-		}
-		if (xValue.length > 0){
-			xValue.get(0).classList.remove("-selected");
-		}
 		dbsfaces.chartValue.selectValue(pId, false);
 	});
 	
@@ -335,6 +314,14 @@ dbsfaces.chartValue = {
 		return dbsfaces.format.number(xValue, 2) + "%";
 	},
 
+	hideDelta: function(pChart){
+		if (typeof(pChart.attr("dx2")) == 'undefined'){
+			pChart.children("g.-delta").fadeOut("slow", function(){
+				dbsfaces.chartValue.removeDelta(pChart);
+			});
+		}
+	},
+
 	removeDelta: function(pChart){
 		var xDeltaGroup = pChart.children("g.-delta");
 		if (xDeltaGroup.length != 0){
@@ -400,38 +387,87 @@ dbsfaces.chartValue = {
 		}
 	},
 	
-	selectValue: function(pId, pSelect){
-		var xChartValue = $(pId);
-		if (xChartValue.length == 0){return;}
-		
-		var xChart = xChartValue.closest(".dbs_chart");
-		var xCharts = xChart.closest(".dbs_charts");
-		var xChartValuePoint = xChartValue.children(".-point");
-		var xLabelAtual = xChartValue.children(".-info");
-
-		var xGridLabels = xCharts.find(".-container > .-data > .-container > .-content > .-value > .-grid > .-label");
-//		var xDataLabels = xValue.siblings(".dbs_chartValue").children(".-info").children(".-label").not("[class ~= '-hide']").not(xLabelAtual);
-		var xChartValues = xCharts.find(".dbs_chartValue").not(xChartValue);
+	selectChartValue: function(pCharts, pChartValue, pSelect){
+		var xChartValueInfo = pChartValue.children(".-info");
+		var xChart = pChartValue.closest(".dbs_chart");
+		var xLabel = xChartValueInfo.children(".-label");
+		var xValue = xChartValueInfo.children(".-value");
+		var xTooltipId = "#" + dbsfaces.util.jsid(pChartValue.get(0).id) + '_tooltip';
+		if (pSelect){
+			//Posiciona item como primeiro elemento para aparecer acima dos demais
+			if (xChart.attr("type") == "bar"
+			 || xChart.attr("type") == "line"){
+				pChartValue.get(0).parentElement.appendChild(pChartValue.get(0));
+			}
+			
+			dbsfaces.tooltip.showTooltip(xTooltipId);
+			$(xTooltipId).addClass("-selected");
+			if (xLabel.length > 0){
+				xLabel.get(0).classList.add("-selected");
+			}
+			if (xValue.length > 0){
+				xValue.get(0).classList.add("-selected");
+			}
+		}else{
+			dbsfaces.tooltip.hideTooltip(xTooltipId);
+			$(xTooltipId).removeClass("-selected");
+			if (xLabel.length > 0){
+				xLabel.get(0).classList.remove("-selected");
+			}
+			if (xValue.length > 0){
+				xValue.get(0).classList.remove("-selected");
+			}
+		}
+		var xChartValuePoint = pChartValue.children(".-point");
+		var xGridLabels = pCharts.find(".-container > .-data > .-container > .-content > .-value > .-grid > .-label");
+		var xChartValues = pCharts.find(".dbs_chartValue").not(pChartValue);
 		var xDataLabels = xChartValues.children(".-info");
+//		var xDataLabels = xValue.siblings(".dbs_chartValue").children(".-info").children(".-label").not("[class ~= '-hide']").not(xChartValueInfo);
+		//Exibe valor selecionado
 		if (pSelect){
 			xDataLabels.hide();
 			xGridLabels.hide();
+			//Aumenta transparencia para dos outros para enfatizar o item selecionado
 			xChartValues.each(function(){
 				this.classList.add("-dim");
 			});
-			xChartValue.get(0).classList.add("-selected");
-			
+			pChartValue.get(0).classList.add("-selected");
+		//Esconde valor 	
 		}else{
 			xDataLabels.show();
 			xGridLabels.show();
+			//Retira transparencia
 			xChartValues.each(function(){
 				this.classList.remove("-dim");
 			});
-			xChartValue.get(0).classList.remove("-selected");
+			pChartValue.get(0).classList.remove("-selected");
 		}
+		//Exibe informação do delta
 		if (xChart.attr("type") == "line"){
-			dbsfaces.chartValue.showDelta(xChart, xChartValue, xChartValuePoint.attr("cx"), xChartValuePoint.attr("cy"));
+			dbsfaces.chartValue.showDelta(xChart, pChartValue, xChartValuePoint.attr("cx"), xChartValuePoint.attr("cy"));
 		}
+	},
+	
+	selectValue: function(pId, pSelect){
+		var xChartValue = $(pId);
+		if (xChartValue.length == 0){return;}
+		var xCharts = xChartValue.closest(".dbs_charts");
+		
+		dbsfaces.chartValue.selectChartValue(xCharts, xChartValue, pSelect);
+
+		var xGroupId = xCharts.attr("groupid");
+		if (typeof(xGroupId) != 'undefined'){
+			var xLabel = xChartValue.attr("label");
+			var xFamily = $("div.dbs_charts[groupid='" + xGroupId + "']").not(xCharts);
+			xFamily.each(function(){
+				xCharts = $(this);
+				var xChartValues = $(this).find(".dbs_chartValue[label='" + xLabel + "']");
+				xChartValues.each(function(){
+					dbsfaces.chartValue.selectChartValue(xCharts, $(this), pSelect);
+				});
+			});
+		}
+		
 	}
 
 };

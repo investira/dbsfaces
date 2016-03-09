@@ -27,6 +27,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		showGrid,
 		showGridValue,
 		showLabel,
+		groupId,
 
 		//Variáveis de trabalho
 		maxValue,
@@ -138,6 +139,14 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	}
 
 	//--------------------
+	public String getGroupId() {
+		return (String) getStateHelper().eval(PropertyKeys.groupId, null);
+	}
+	public void setGroupId(String pGroupId) {
+		getStateHelper().put(PropertyKeys.groupId, pGroupId);
+		handleAttribute("groupId", pGroupId);
+	}
+
 
 	public Double getMaxValue() {
 		return (Double) getStateHelper().eval(PropertyKeys.maxValue, null);

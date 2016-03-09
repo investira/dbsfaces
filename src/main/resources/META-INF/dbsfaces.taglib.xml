@@ -2680,7 +2680,15 @@
 		</attribute>
 		<attribute>
 			<description>
-                Indica se grid será exibido. Padrão é true.
+                id que identificará grupos de gráficos que terão seus valores selecionados simultaneamente quando possurem os mesmos labels.
+            </description>
+			<name>groupId</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Indica se grid será exibido(somente para gráficos Line e Bar). Padrão é true.
             </description>
 			<name>showGrid</name>
 			<required>false</required>
@@ -2688,7 +2696,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Indica se valor do grid será exibido. Padrão é true.
+                Indica se valor do grid será exibido(somente para gráficos Line e Bar). Padrão é true.
             </description>
 			<name>showGridValue</name>
 			<required>false</required>
