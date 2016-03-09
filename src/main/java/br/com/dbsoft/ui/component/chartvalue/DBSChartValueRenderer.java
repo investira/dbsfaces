@@ -126,7 +126,8 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		xX = DBSNumber.add(xX, pCharts.getPadding());
 		
 		xXText = xX;
-		xYText = DBSNumber.add(xY, (DBSCharts.FontSize / 2));
+		xYText = xY;
+//		xYText = DBSNumber.add(xY, (DBSCharts.FontSize / 2));
 		//Encode BAR ---------------------------------------------------------------------------------
 		if (pType == TYPE.BAR){
 			Double xHeight = DBSNumber.abs(DBSNumber.subtract(pCharts.getChartHeight(), pCharts.getZeroPosition() - pCharts.getPadding(), xY).doubleValue());
@@ -169,7 +170,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 						 pCharts.getWidth().doubleValue(), 
 						 xYText.doubleValue(), 
 						 DBSFaces.CSS.MODIFIER.VALUE + "-hide", 
-						 "text-anchor:end;", 
+						 null, 
 						 pWriter);
 			//Encode label da coluna ---------------------------------------------------------------------
 			if (pCharts.getShowLabel()){
@@ -178,7 +179,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 							 xXText.doubleValue(), 
 							 pCharts.getHeight().doubleValue(), 
 							 DBSFaces.CSS.MODIFIER.LABEL + "-hide", 
-							 "text-anchor:middle;", 
+							 null, 
 							 pWriter);
 			}
 		pWriter.endElement("g");
@@ -279,8 +280,8 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			xPerBoxStyle += " translateX(-100%);";
 		}
 		xPercLineWidth *= xPositionInverter;
-		xPercLabelStyle += "dominant-baseline:";
-		xPercLabelStyle += "middle;";
+//		xPercLabelStyle += "dominant-baseline:";
+//		xPercLabelStyle += "middle;";
 
 		//Encode PIE
 		//Se curva por mais de 180º

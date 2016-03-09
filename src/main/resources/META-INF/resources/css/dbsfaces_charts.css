@@ -52,6 +52,8 @@
 .dbs_charts > .-container > .-data > .-container > .-content > .-value > .-grid > .-label{
 	fill: rgb(180, 180, 180);
 	stroke-width: 0px;
+	text-anchor: end;
+	dominant-baseline: middle;
 }
 
 .dbs_charts > .-container > .-data > .-container > .-content > .-value > .-grid > .-line{

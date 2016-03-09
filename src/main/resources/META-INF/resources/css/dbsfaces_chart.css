@@ -4,6 +4,7 @@
 
 .dbs_chart > .-line {
 	stroke-width: .2em;
+	stroke-linecap: round;
 }
 .dbs_chart > .-delta{
     -webkit-transform: translate3d(0,0,0);
@@ -91,6 +92,17 @@
     transition: transform .3s;
 }
 
+.dbs_chart[type='line'] > .dbs_chartValue > .-info > .-label,
+.dbs_chart[type='bar'] > .dbs_chartValue > .-info > .-label{
+	text-anchor: middle;
+/* 	writing-mode: tb; */
+/* 	glyph-orientation-vertical: 270; */
+} 
+
+.dbs_chart[type='line'] > .dbs_chartValue > .-info > .-value,
+.dbs_chart[type='bar'] > .dbs_chartValue > .-info > .-value{
+	text-anchor: end;
+} 
 
 .dbs_chart[type='line'] > .dbs_chartValue.-selected,
 .dbs_chart[type='bar'] > .dbs_chartValue.-selected{

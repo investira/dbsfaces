@@ -16,6 +16,11 @@
 .dbs_chartValue > .-info > .-point{
 }
 
+.dbs_chartValue > .-info > .-label{
+}
+.dbs_chartValue > .-info > .-value{
+	dominant-baseline: middle;
+}
 
 .dbs_chartValue > .-info > .-label,
 .dbs_chartValue > .-info > .-value{
