@@ -6,6 +6,11 @@
 	stroke-width: .2em;
 	stroke-linecap: round;
 }
+
+.dbs_chart > .-line.-dim{
+	opacity: .4;
+}   
+
 .dbs_chart > .-delta{
     -webkit-transform: translate3d(0,0,0);
     -moz-transform: translate3d(0,0,0);
@@ -70,7 +75,6 @@
 .dbs_chart > .-delta > .-info > .-box{
 	fill: white;
 }
-
 
 .dbs_chart[type='line'][dx1] > .dbs_chartValue.-selected  > .-point,
 .dbs_chart[type='line'] > .dbs_chartValue.-selectedDelta  > .-point{

@@ -89,10 +89,10 @@ dbsfaces.chart = {
 	     && typeof(pChart.attr("showdelta")) != 'undefined'
 		 && typeof(pChart.attr("dx2")) == 'undefined'){
 			//Cancela setTimeout anterior caso exista
-			window.clearTimeout(pChart.data("fto"));
+			window.clearTimeout(pChart.data("dto"));
 			//Cria setTimeou para esconder delta em 5s e armazena o timeout do próprio componente
 			//para poder ser recuperado posterioemente em caso de cancelamento
-			pChart.data("fto", setTimeout(function(){
+			pChart.data("dto", setTimeout(function(){
 				dbsfaces.chartValue.hideDelta(pChart);
 			},5000));
 		}

@@ -24,6 +24,7 @@ import br.com.dbsoft.util.DBSFormat;
 import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSFormat.NUMBER_SIGN;
 import br.com.dbsoft.util.DBSObject;
+import br.com.dbsoft.util.DBSString;
 
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSChartValue.RENDERER_TYPE)
@@ -101,7 +102,6 @@ public class DBSChartValueRenderer extends DBSRenderer {
 					pvEncodePie(xCharts, xChart, xChartValue, pContext, xWriter);
 				}
 			}
-			
 			encodeClientBehaviors(pContext, xChartValue);
 			pvEncodeJS(xClientId, xWriter);
 		xWriter.endElement("g");
@@ -328,47 +328,38 @@ public class DBSChartValueRenderer extends DBSRenderer {
 				
 				//Borda do percentual
 				DBSFaces.encodeSVGRect(pChartValue, pWriter, (pChartValue.getPoint().getX() + xPercLineWidth), pChartValue.getPoint().getY(), null, null, 3, 3, DBSFaces.CSS.MODIFIER.POINT, xPerBoxStyle, "white");
+				//Valor do percentual, label e valor ---------------------------------------------------------------------
+				StringBuilder xText = new StringBuilder();
+				String xLabelPerc = DBSFormat.getFormattedNumber(xPercValue, 1) + "%";
+				String xLabelValue = "(" + DBSFormat.getFormattedNumber(DBSObject.getNotNull(pChartValue.getDisplayValue(), pChartValue.getValue()), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask()) + ")";
+				String xLabelSpacesX = DBSString.repeat("&#160;",7 - xLabelPerc.length());
+				String xLabelSpaces1 = "";
+				String xLabelText = "";
+				if (!DBSObject.isEmpty(pChartValue.getLabel())){
+					xLabelSpaces1 = "&#160";
+					xLabelText = pChartValue.getLabel();
+				}
+				if (xPositionInverter == -1){
+					xText.append(xLabelValue);
+					xText.append(xLabelSpaces1);
+					xText.append(xLabelText);
+					xText.append(xLabelSpacesX);
+					xText.append(xLabelPerc);
+				}else{
+					xText.append(xLabelPerc);
+					xText.append(xLabelSpacesX);
+					xText.append(xLabelText);
+					xText.append(xLabelSpaces1);
+					xText.append(xLabelValue);
+				}
 				//Valor do percentual ---------------------------------------------------------------------
 				pvEncodeText(pChartValue, 
-							 DBSFormat.getFormattedNumber(xPercValue, 1) + "%", 
+							 xText.toString(), 
 							 pChartValue.getPoint().getX() + (xPercLineWidth * 1.6), 
 							 pChartValue.getPoint().getY(), 
 							 DBSFaces.CSS.MODIFIER.VALUE, 
 							 xPercLabelStyle, 
 							 pWriter);
-//				if (pChartValue.getLabel() != null){
-//							 pvEncodeText(pChartValue, 					 
-//							 pChartValue.getLabel(), 
-//							 pChartValue.getPoint().getX() + (pChartValue.getLabel().length() * xPositionInverter * 15) + (xPercLineWidth * 1.6), 
-//							 pChartValue.getPoint().getY(), 
-//							 DBSFaces.CSS.MODIFIER.LABEL, 
-//							 xPercLabelStyle, 
-//							 pWriter);
-//				}
-//				String xString =  DBSFormat.getFormattedNumber(pChartValue.getValue(), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask());
-//				pvEncodeText(pChartValue, 					 
-//							 DBSFormat.getFormattedNumber(pChartValue.getValue(), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask()), 
-//							 pChartValue.getPoint().getX() + (xString.length() * xPositionInverter) + (xPercLineWidth * 1.6), 
-//							 pChartValue.getPoint().getY(), 
-//							 DBSFaces.CSS.MODIFIER.VALUE, 
-//							 xPercLabelStyle, 
-//							 pWriter);
-//				pvEncodeText(pChartValue, 
-//						 DBSFormat.getFormattedNumber(pChartValue.getValue(), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask()), 
-//						 pCharts.getWidth().doubleValue(), 
-//						 xYText.doubleValue(), 
-//						 DBSFaces.CSS.MODIFIER.VALUE + "-hide", 
-//						 "text-anchor:end;", 
-//						 pWriter);
-//			//Encode label da coluna ---------------------------------------------------------------------
-//			pvEncodeText(pChartValue, 
-//						 pChartValue.getLabel(), 
-//						 xXText.doubleValue(), 
-//						 pCharts.getHeight().doubleValue(), 
-//						 DBSFaces.CSS.MODIFIER.LABEL + "-hide", 
-//						 "text-anchor:middle;", 
-//						 pWriter);
-	
 			pWriter.endElement("g");
 		}
 		

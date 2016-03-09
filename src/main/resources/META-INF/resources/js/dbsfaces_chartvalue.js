@@ -348,11 +348,12 @@ dbsfaces.chartValue = {
 		}
 	},
 	
-	selectChartValue: function(pCharts, pChartValue, pSelect){
+	selectChartValue: function(pCharts, pChartValue, pSelect, pIsGroup){
 		var xChartValueInfo = pChartValue.children(".-info");
 		var xChart = pChartValue.closest(".dbs_chart");
 		var xLabel = xChartValueInfo.children(".-label");
 		var xValue = xChartValueInfo.children(".-value");
+		var xChartLine = xChart.children(".-line");
 		var xTooltipId = "#" + dbsfaces.util.jsid(pChartValue.get(0).id) + '_tooltip';
 		if (pSelect){
 			//Posiciona item como primeiro elemento para aparecer acima dos demais
@@ -390,6 +391,9 @@ dbsfaces.chartValue = {
 			xDataLabels.hide();
 			xGridLabels.hide();
 			//Aumenta transparencia para dos outros para enfatizar o item selecionado
+			if (xChartLine.length > 0){
+				xChartLine.get(0).classList.add("-dim");
+			}
 			xChartValues.each(function(){
 				this.classList.add("-dim");
 			});
@@ -398,6 +402,9 @@ dbsfaces.chartValue = {
 		}else{
 			xDataLabels.show();
 			xGridLabels.show();
+			if (xChartLine.length > 0){
+				xChartLine.get(0).classList.remove("-dim");
+			}
 			//Retira transparencia
 			xChartValues.each(function(){
 				this.classList.remove("-dim");
@@ -406,7 +413,14 @@ dbsfaces.chartValue = {
 		}
 		//Exibe informação do delta
 		if (xChart.attr("type") == "line"){
-			dbsfaces.chartValue.showDelta(xChart, pChartValue, xChartValuePoint.attr("cx"), xChartValuePoint.attr("cy"));
+			//Exibe delta quando seleção for no componente principal
+			if (pIsGroup
+			&& typeof(xChart.attr("dx2")) == 'undefined'){
+				//Remove delta dos outros componentes do mesmo grupo
+				dbsfaces.chartValue.removeDelta(xChart);
+			}else{
+				dbsfaces.chartValue.showDelta(xChart, pChartValue, xChartValuePoint.attr("cx"), xChartValuePoint.attr("cy"));
+			}
 		}
 	},
 	
@@ -415,7 +429,7 @@ dbsfaces.chartValue = {
 		if (xChartValue.length == 0){return;}
 		var xCharts = xChartValue.closest(".dbs_charts");
 		
-		dbsfaces.chartValue.selectChartValue(xCharts, xChartValue, pSelect);
+		dbsfaces.chartValue.selectChartValue(xCharts, xChartValue, pSelect, false);
 
 		var xGroupId = xCharts.attr("groupid");
 		if (typeof(xGroupId) != 'undefined'){
@@ -425,7 +439,7 @@ dbsfaces.chartValue = {
 				xCharts = $(this);
 				var xChartValues = $(this).find(".dbs_chartValue[label='" + xLabel + "']");
 				xChartValues.each(function(){
-					dbsfaces.chartValue.selectChartValue(xCharts, $(this), pSelect);
+					dbsfaces.chartValue.selectChartValue(xCharts, $(this), pSelect, true);
 				});
 			});
 		}
