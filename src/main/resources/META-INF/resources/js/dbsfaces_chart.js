@@ -40,29 +40,6 @@ dbsfaces.chart = {
 				xPosAnt = Number(xChartValueLabel.attr("x")) + (xChartValueLabel.get(0).getComputedTextLength() / 2) + 4;
 			}
 		}
-//		var xChartValues = pChart.children(".dbs_chartValue").children(".-info").children(".-label");
-//		var xChartValue = $(pId);
-//		if (xChartValue.length == 0){return;}
-//
-//		var xLabelAtual = xChartValue.children(".-info").children(".-label");
-//		if (xLabelAtual.length == 0){return;}
-//
-//		//Procura valor anterior que contenha label sendo exibido
-//		var xLabelAnterior = xChartValue.prevAll(".dbs_chartValue").children(".-info").children(".-label").not("[class~='-hide']").first();
-//		var xXAtual = 0;
-//		var xXAnterior = 0;
-//		//Calcula posição final da label anterior
-//		if (xLabelAnterior.length != 0){
-//			xXAnterior = Number(xLabelAnterior.attr("x")) + (xLabelAnterior.get(0).getComputedTextLength() / 2) + 4;
-//		}
-//		//Calcula posição inicial da label atual
-//		xXAtual = Number(xLabelAtual.attr("x")) - (xLabelAtual.get(0).getComputedTextLength() / 2);
-//		//Exclui sobreposição de texto
-//		if (xXAnterior > xXAtual){
-//			xLabelAtual.get(0).classList.add("-hide");
-//		}else{
-//			xLabelAtual.get(0).classList.remove("-hide");
-//		}
 	},
 
 
