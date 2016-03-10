@@ -72,7 +72,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 			encodeClientBehaviors(pContext, xCharts);
 			//CONTAINER--------------------------
 			xWriter.startElement("span", xCharts);
-				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER + DBSFaces.CSS.MODIFIER.CONTAINER, null);
+				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER + DBSFaces.CSS.MODIFIER.NOT_SELECTABLE, null);
 
 				//CAPTION--------------------------
 				if (xCharts.getCaption() !=null){
