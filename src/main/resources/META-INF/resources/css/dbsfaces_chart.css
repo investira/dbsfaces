@@ -76,6 +76,45 @@
 	fill: white;
 }
 
+.dbs_chart[type='line'] > .dbs_chartValue > .-info > .-label,
+.dbs_chart[type='bar'] > .dbs_chartValue > .-info > .-label{
+	text-anchor: middle;
+/* 	writing-mode: tb; */
+/* 	glyph-orientation-vertical: 270; */
+} 
+
+.dbs_chart[type='line'] > .dbs_chartValue > .-info > .-value,
+.dbs_chart[type='bar'] > .dbs_chartValue > .-info > .-value{
+	text-anchor: end;
+} 
+
+.dbs_chart[type='line'] > .dbs_chartValue.-selected,
+.dbs_chart[type='bar'] > .dbs_chartValue.-selected{
+	stroke-width: .1em;
+}
+
+.dbs_chart[type='bar'] > .dbs_chartValue > rect {
+    shape-rendering: crispEdges;
+}
+
+.dbs_chart[type='line'] > .dbs_chartValue > .-point{
+    stroke-width: 0;
+}
+.dbs_chart[type='line'] > .dbs_chartValue.-selected > .-point{
+	fill:white;	
+}
+.dbs_chart[type='line'] > .dbs_chartValue.-selectedDelta > .-point{
+}
+.dbs_chart[type='line'] > .dbs_chartValue.-selected > .-info > .-point{
+	fill:white;	
+}
+.dbs_chart[type='line'] > .dbs_chartValue:not(.-selected):not(.-selectedDelta) > .-point{
+	fill: transparent; 
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -o-transform: scale(1);
+    transform: scale(1);
+}
 .dbs_chart[type='line'][dx1] > .dbs_chartValue.-selected  > .-point,
 .dbs_chart[type='line'] > .dbs_chartValue.-selectedDelta  > .-point{
 	fill: transparent;
@@ -96,46 +135,8 @@
     transition: transform .3s;
 }
 
-.dbs_chart[type='line'] > .dbs_chartValue > .-info > .-label,
-.dbs_chart[type='bar'] > .dbs_chartValue > .-info > .-label{
-	text-anchor: middle;
-/* 	writing-mode: tb; */
-/* 	glyph-orientation-vertical: 270; */
-} 
-
-.dbs_chart[type='line'] > .dbs_chartValue > .-info > .-value,
-.dbs_chart[type='bar'] > .dbs_chartValue > .-info > .-value{
-	text-anchor: end;
-} 
-
-.dbs_chart[type='line'] > .dbs_chartValue.-selected,
-.dbs_chart[type='bar'] > .dbs_chartValue.-selected{
-	stroke-width: .1em;
-}
-
 .dbs_chart[type='pie'] > .dbs_chartValue.-selected{
 	stroke-width: .2em;
-}
-
-.dbs_chart[type='bar'] > .dbs_chartValue > rect {
-    shape-rendering: crispEdges;
-}
-.dbs_chart[type='line'] > .dbs_chartValue > .-point{
-/* 	fill:transparent;	 */
-}
-.dbs_chart[type='line'] > .dbs_chartValue:not(.-selected):not(.-selectedDelta) > .-point{
-	fill: transparent; 
-    -webkit-transform: scale(1);
-    -moz-transform: scale(1);
-    -o-transform: scale(1);
-    transform: scale(1);
-}
-
-.dbs_chart[type='line'] > .dbs_chartValue.-selected > .-point{
-	fill:white;	
-}
-.dbs_chart[type='line'] > .dbs_chartValue.-selectedDelta > .-point{
-
 }
 
 .dbs_chart[type='pie'] > .dbs_chartValue > .-info > .-point{
@@ -144,8 +145,6 @@
 	stroke-width: .05em;
 }
 
-.dbs_chart[type='line'] > .dbs_chartValue.-selected > .-info > .-point{
-	fill:white;	
-}
+
 
 
