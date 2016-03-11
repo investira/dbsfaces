@@ -6,7 +6,6 @@ dbs_chartValue = function(pId) {
 	
 	//Inicia seleção para cálculo do delta (computer e mobile)
 	$(pId).on("mousedown touchstart", function(e){
-		console.log("mousedown touchstart");
 		dbsfaces.chartValue.selectDelta(xChart, xChartValue, 1);
 		dbsfaces.chartValue.selectValue(xChartValue, true);
 		e.preventDefault();
