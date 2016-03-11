@@ -164,10 +164,6 @@ dbsfaces.svg = {
 		return xLine;
 	},
 	
-	rect: function(pComponent, pX, pY, pWidth, pHeight, pStyleClass, pStyle, pFill){
-		return dbsfaces.svg.rect(pComponent, pX, pY, pHeight, pWidth, null, null, pStyleClass, pStyle, pFill);
-	},
-	
 	rect: function(pComponent, pX, pY, pWidth, pHeight, pRX, pRY, pStyleClass, pStyle, pFill){
 		var xRect = $(document.createElementNS('http://www.w3.org/2000/svg','rect'));
 		dbsfaces.svg.setDefaultAttr(xRect, pStyleClass, pStyle, pFill);

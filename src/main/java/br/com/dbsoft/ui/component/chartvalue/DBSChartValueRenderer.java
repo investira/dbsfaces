@@ -113,7 +113,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		BigDecimal	xY = new BigDecimal(0);		
 		BigDecimal	xX = new BigDecimal(0);
 		String 		xClientId = pChartValue.getClientId(pContext);
-
+		String 		xStroke; 
 		//Calcula valor em pixel a partir do valor real. subtrai padding para dar espaço para a margem
 		xY = DBSNumber.subtract(pCharts.getChartHeight(),
 								DBSNumber.multiply(pCharts.getRowScale(), 
@@ -126,6 +126,9 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		
 		xXText = xX;
 		xYText = xY;
+		
+		xStroke = "stroke:" + wFillColor + ";";
+
 //		xYText = DBSNumber.add(xY, (DBSCharts.FontSize / 2));
 		//Encode BAR ---------------------------------------------------------------------------------
 		if (pType == TYPE.BAR){
@@ -140,13 +143,13 @@ public class DBSChartValueRenderer extends DBSRenderer {
 					   		   DBSNumber.divide(pChart.getColumnScale() - xLineWidth, 2));
 			//Valore positivos acima
 			if (pChartValue.getValue() > 0){
-				DBSFaces.encodeSVGRect(pChartValue, pWriter, xX.doubleValue(), xY.doubleValue(), xLineWidth, xHeight, null, null, wFillColor);
+				DBSFaces.encodeSVGRect(pChartValue, pWriter, xX.doubleValue(), xY.doubleValue(), xLineWidth.toString(), xHeight.toString(), null, xStroke, wFillColor);
 			//Valore negativos
 			}else{
 				//inverte a posição Yx
 				Double xIY = DBSNumber.subtract(pCharts.getChartHeight(), pCharts.getZeroPosition().doubleValue()).doubleValue();
 				xIY +=  pCharts.getPadding();
-				DBSFaces.encodeSVGRect(pChartValue, pWriter, xX.doubleValue(), xIY, xLineWidth, xHeight, null, null, wFillColor);
+				DBSFaces.encodeSVGRect(pChartValue, pWriter, xX.doubleValue(), xIY, xLineWidth.toString(), xHeight.toString(), null, xStroke, wFillColor);
 				//Configura posição do texto para a linha do zero
 				xYText = DBSNumber.add(xIY, (DBSCharts.FontSize / 2));
 			}
@@ -155,10 +158,10 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			//Salva posição do pointo
 			pChartValue.setPoint(new Point2D.Double(xX.doubleValue(), xY.doubleValue()));
 			//Encode do circulo
-			String xStyle = "stroke:" + wFillColor + ";";
+			String xStyle = xStroke;
 			//Artifício pois o fcirefox só funciona com valores fixos no transform-origin
 			xStyle += "-moz-transform-origin:" + xX.doubleValue() + "px " + xY.doubleValue() + "px;";
-			DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xX.doubleValue(), xY.doubleValue(), 2D, 2D, DBSFaces.CSS.MODIFIER.POINT, xStyle, wFillColor);
+			DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xX.doubleValue(), xY.doubleValue(), "0.3em", "0.3em", DBSFaces.CSS.MODIFIER.POINT, xStyle, wFillColor);
 		}
 		//Encode Dados
 		pWriter.startElement("g", pChartValue);
@@ -202,8 +205,9 @@ public class DBSChartValueRenderer extends DBSRenderer {
 
 		String 			xPercLabelStyle =  "text-anchor:";
 		Integer 		xPercLineWidth =  4;
-		String 			xPerBoxStyle = "stroke:" + wFillColor + "; transform: translateY(-54%) ";
+		String 			xPerBoxStyle = "stroke:" + wFillColor + ";";
 		Integer			xPositionInverter = 1;
+		Point2D			xPointLabel = new Point2D.Double();
 		
 		Integer 		xPneuInternalPadding = 2;
 		Integer 		xLabelPadding = DBSNumber.toInteger(DBSCharts.FontSize * 1.5);
@@ -269,6 +273,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 
 		//Verifica sobreposição dos valores
 		pvSetLabelPoint(pCharts, pChart, pChartValue, xCentro, xPointAngle, xArcoExterno);
+
 		
 		//Determina orientação horizontal
 		if (pChartValue.getPoint().getX() >= xCentro.getX()){
@@ -276,11 +281,14 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		}else{
 			xPercLabelStyle += "end;";
 			xPositionInverter = -1;
-			xPerBoxStyle += " translateX(-100%);";
+//			xPerBoxStyle += "transform: translateX(-100%);";
+//			xPerBoxStyle += "-moz-transform-origin:" + xPointLabel.getX() + "px " + xPointLabel.getY() + "px;";
 		}
+		//Direção da linha auxiliar do label
 		xPercLineWidth *= xPositionInverter;
-//		xPercLabelStyle += "dominant-baseline:";
-//		xPercLabelStyle += "middle;";
+
+		//Define ponto de exibição do label;
+		xPointLabel.setLocation(pChartValue.getPoint().getX() + xPercLineWidth, pChartValue.getPoint().getY());
 
 		//Encode PIE
 		//Se curva por mais de 180º
@@ -316,17 +324,17 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			    xPath.append("d=");
 				xPath.append("'M " + xPoint.getX() + "," + xPoint.getY());  
 				xPath.append(" L " + pChartValue.getPoint().getX() + "," + pChartValue.getPoint().getY()); 
-				xPath.append(" L " + (pChartValue.getPoint().getX() + xPercLineWidth) + "," + pChartValue.getPoint().getY());
+				xPath.append(" L " + xPointLabel.getX() + "," + xPointLabel.getY());
 				xPath.append("' ");  
 				xPath.append("fill='none'");
 				xPath.append("></path>");
 				pWriter.write(xPath.toString());
 	
 				//Ponto pequeno no centro e na tangente do arco	
-				DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xPoint.getX(), xPoint.getY(), 2D, 2D, DBSFaces.CSS.MODIFIER.POINT, null, wFillColor);
+				DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xPoint.getX(), xPoint.getY(), "0.3em", "0.3em", DBSFaces.CSS.MODIFIER.POINT, null, wFillColor);
 				
 				//Borda do texto-Largura será cofigurada via JS
-				DBSFaces.encodeSVGRect(pChartValue, pWriter, (pChartValue.getPoint().getX() + xPercLineWidth), pChartValue.getPoint().getY(), null, null, 3, 3, DBSFaces.CSS.MODIFIER.POINT, xPerBoxStyle, "white");
+				DBSFaces.encodeSVGRect(pChartValue, pWriter, xPointLabel.getX(), xPointLabel.getY(), null, "1.3em", 3, 3, "-box", xPerBoxStyle, null);
 				//Valor do percentual, label e valor ---------------------------------------------------------------------
 				StringBuilder xText = new StringBuilder();
 				String xLabelPerc = DBSFormat.getFormattedNumber(xPercValue, 1) + "%";
@@ -356,8 +364,8 @@ public class DBSChartValueRenderer extends DBSRenderer {
 				//Valor do percentual ---------------------------------------------------------------------
 				pvEncodeText(pChartValue, 
 							 xText.toString(), 
-							 pChartValue.getPoint().getX() + (xPercLineWidth * 1.6), 
-							 pChartValue.getPoint().getY(), 
+							 xPointLabel.getX() + (3 * xPositionInverter), 
+							 xPointLabel.getY(), 
 							 DBSFaces.CSS.MODIFIER.VALUE, 
 							 xPercLabelStyle, 
 							 pWriter);

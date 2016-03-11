@@ -5,13 +5,22 @@ dbs_chart = function(pId) {
 		dbsfaces.chart.showLabel(xChart);
 	},0);
 
-	
-	$(pId).mouseenter(function (e){
-		dbsfaces.chart.hideDelta(xChart);
+	$(pId).on("mouseup touchend", function(e){
+		e.preventDefault();
+		dbsfaces.chart.setMouseDown(xChart, 0);
 	});
+	
 };
 
 dbsfaces.chart = {
+	setMouseDown: function(pChart, pDown){
+		pChart.data("m", pDown);
+	},
+
+	getMouseDown: function(pChart){
+		return pChart.data("m");
+	},
+
 	showLabel: function(pChart){
 		var xCharts = pChart.closest(".dbs_charts");
 		if (typeof(xCharts.attr("showlabel")) != "undefined"){
@@ -42,7 +51,6 @@ dbsfaces.chart = {
 		}
 	},
 
-
 	hideDelta: function(pChart){
 		dbsfaces.chart.hideChartValueDelta(pChart);
 		var xCharts = pChart.closest(".dbs_charts");
@@ -63,15 +71,8 @@ dbsfaces.chart = {
 	hideChartValueDelta: function(pChart){
 		//Esconde delta após 5 segundos caso não tenha sido selecionado o intervalo definitivo
 		if (pChart.attr("type") == "line"
-	     && typeof(pChart.attr("showdelta")) != 'undefined'
-		 && typeof(pChart.attr("dx2")) == 'undefined'){
-			//Cancela setTimeout anterior caso exista
-			window.clearTimeout(pChart.data("dto"));
-			//Cria setTimeou para esconder delta em 5s e armazena o timeout do próprio componente
-			//para poder ser recuperado posterioemente em caso de cancelamento
-			pChart.data("dto", setTimeout(function(){
-				dbsfaces.chartValue.hideDelta(pChart);
-			},5000));
+	     && typeof(pChart.attr("showdelta")) != 'undefined'){
+			dbsfaces.chartValue.hideDelta(pChart);
 		}
 	}
 

@@ -5,10 +5,19 @@
 .dbs_chart > .-line {
 	stroke-width: .2em;
 	stroke-linecap: round;
+	 /*altere também .dbs_chartvalue*/
+    -webkit-transition: opacity .5s; 
+    -moz-transition: opacity .5s;
+    -o-transition: opacity .5s;
+    transition: opacity .5s;
+    -webkit-transition-delay: .5s;
+    -moz-transition-delay: .5s;
+    -o-transition-delay: .5s;
+    transition-delay: .5s;
 }
 
 .dbs_chart > .-line.-dim{
-	opacity: .4;
+	opacity: .4;/*altere também .dbs_chartvalue.-dim*/
 }   
 
 .dbs_chart > .-delta{
@@ -19,9 +28,12 @@
     transform-style: flat;
 }
 
-.dbs_chart > .-delta > .-deltaline{
-	stroke-linecap: round;
-	stroke-dasharray: .3em;
+.dbs_chart > .-delta > .-deltaarea{
+	/* stroke-linecap: round; */
+    /* stroke-dasharray: .3em; */
+/*     stroke-width: .2em; */
+	opacity: 0.3;
+    stroke-width: 2px;
 }
 .dbs_chart > .-delta > .-info{
     overflow: visible;
@@ -58,23 +70,6 @@
     text-anchor: end;
 }
 
-.dbs_chart[dx2] > .-delta > .-info > .-box,
-.dbs_chart[dx2] > .-delta > .-info > .-box2{
-	stroke-dasharray: none;
-	stroke-width: 0.2em;
-}
-
-.dbs_chart > .-delta > .-info > .-box,
-.dbs_chart > .-delta > .-info > .-box2{
-	stroke-dasharray: .1em;
-    fill-opacity: .85;
-	stroke-width: 0.1em;
-}
-.dbs_chart > .-delta > .-info > .-box2{
-}
-.dbs_chart > .-delta > .-info > .-box{
-	fill: white;
-}
 
 .dbs_chart[type='line'] > .dbs_chartValue > .-info > .-label,
 .dbs_chart[type='bar'] > .dbs_chartValue > .-info > .-label{
@@ -98,15 +93,12 @@
 }
 
 .dbs_chart[type='line'] > .dbs_chartValue > .-point{
-    stroke-width: 0;
 }
+
 .dbs_chart[type='line'] > .dbs_chartValue.-selected > .-point{
-	fill:white;	
+/* 	fill:white;	 */
 }
 .dbs_chart[type='line'] > .dbs_chartValue.-selectedDelta > .-point{
-}
-.dbs_chart[type='line'] > .dbs_chartValue.-selected > .-info > .-point{
-	fill:white;	
 }
 .dbs_chart[type='line'] > .dbs_chartValue:not(.-selected):not(.-selectedDelta) > .-point{
 	fill: transparent; 
@@ -115,24 +107,29 @@
     -o-transform: scale(1);
     transform: scale(1);
 }
+
 .dbs_chart[type='line'][dx1] > .dbs_chartValue.-selected  > .-point,
 .dbs_chart[type='line'] > .dbs_chartValue.-selectedDelta  > .-point{
-	fill: transparent;
-    stroke-width: 0.03em; 
-    -moz-transform-origin: center center;
-    -webkit-transform-origin: center center;
-    -o-transform-origin: center center;
-    transform-origin: center center;
+/* 	fill: transparent; */
+/*     stroke-width: 0.03em;  */
+/*     -moz-transform-origin: center center; */
+/*     -webkit-transform-origin: center center; */
+/*     -o-transform-origin: center center; */
+/*     transform-origin: center center; */
     
-    -webkit-transform: scale(4);
-    -moz-transform: scale(4);
-    -o-transform: scale(4);
-    transform: scale(4);
+/*     -webkit-transform: scale(4); */
+/*     -moz-transform: scale(4); */
+/*     -o-transform: scale(4); */
+/*     transform: scale(4); */
     
-    -webkit-transition: transform .3s;
-    -moz-transition: transform .3s;
-    -o-transition: transform .3s;
-    transition: transform .3s;
+/*     -webkit-transition: transform .3s; */
+/*     -moz-transition: transform .3s; */
+/*     -o-transition: transform .3s; */
+/*     transition: transform .3s; */
+}
+
+.dbs_chart[type='line'] > .dbs_chartValue.-selected > .-info > .-point{
+	fill:white;	
 }
 
 .dbs_chart[type='pie'] > .dbs_chartValue.-selected{
@@ -140,11 +137,32 @@
 }
 
 .dbs_chart[type='pie'] > .dbs_chartValue > .-info > .-point{
-    height: 1.2em;
+/*     height: 1.2em; */
 /*     width: 4em; */
+	stroke-width: .05em;
+}
+.dbs_chart[type='pie'] > .dbs_chartValue > .-info > .-box{
+	fill: white;
 	stroke-width: .05em;
 }
 
 
+.dbs_chart[dx1][type='line'] > .-delta > .-info > .-box,
+.dbs_chart[dx1][type='line'] > .-delta > .-info > .-box2{
+	stroke-dasharray: none;
+	stroke-width: 0.2em;
+}
+
+.dbs_chart[type='line'] > .-delta > .-info > .-box,
+.dbs_chart[type='line'] > .-delta > .-info > .-box2{
+	stroke-dasharray: .1em;
+    fill-opacity: .85;
+	stroke-width: 0.1em;
+}
+.dbs_chart[type='line'] > .-delta > .-info > .-box2{
+}
+.dbs_chart[type='line'] > .-delta > .-info > .-box{
+	fill: white;
+}
 
 

@@ -1608,7 +1608,7 @@ public class  DBSFaces {
 	 * @param pWidth
 	 * @throws IOException
 	 */
-	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, Double pX, Double pY, Double pWidth, Double pHeight, String pStyleClass, String pStyle, String pFill) throws IOException{
+	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, Double pX, Double pY, String pWidth, String pHeight, String pStyleClass, String pStyle, String pFill) throws IOException{
 		encodeSVGRect(pComponent, pWriter, pX, pY, pWidth, pHeight, null, null, pStyleClass, pStyle, pFill);
 	}
 	
@@ -1627,7 +1627,7 @@ public class  DBSFaces {
 	 * @param pRY Raio da corner
 	 * @throws IOException
 	 */
-	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, Double pX, Double pY, Double pWidth, Double pHeight, Integer pRX, Integer pRY, String pStyleClass, String pStyle, String pFill) throws IOException{
+	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, Double pX, Double pY, String pWidth, String pHeight, Integer pRX, Integer pRY, String pStyleClass, String pStyle, String pFill) throws IOException{
 		pWriter.startElement("rect", pComponent);
 			setAttribute(pWriter, "class", pStyleClass, null);
 			setAttribute(pWriter, "style", pStyle, null);
@@ -1655,7 +1655,7 @@ public class  DBSFaces {
 	 * @param pFill
 	 * @throws IOException
 	 */
-	public static void encodeSVGEllipse(UIComponent pComponent, ResponseWriter pWriter, Double pCX, Double pCY, Double pRX, Double pRY, String pStyleClass, String pStyle, String pFill) throws IOException{
+	public static void encodeSVGEllipse(UIComponent pComponent, ResponseWriter pWriter, Double pCX, Double pCY, String pRX, String pRY, String pStyleClass, String pStyle, String pFill) throws IOException{
 		pWriter.startElement("ellipse", pComponent);
 			setAttribute(pWriter, "class", pStyleClass, null);
 			setAttribute(pWriter, "style", pStyle, null);
