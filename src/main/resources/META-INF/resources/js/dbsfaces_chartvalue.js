@@ -1,26 +1,27 @@
 dbs_chartValue = function(pId) {
 	var xChartValue = $(pId);
 	var xChart = xChartValue.closest(".dbs_chart");
+	var xCharts = xChart.closest(".dbs_charts");
 
 	dbsfaces.chartValue.initialize(xChart, xChartValue);
 	
 	//Inicia seleção para cálculo do delta (computer e mobile)
 	$(pId).on("mousedown touchstart", function(e){
 		dbsfaces.chartValue.selectDelta(xChart, xChartValue, 1);
-		dbsfaces.chartValue.selectValue(xChartValue, true);
+		dbsfaces.chartValue.selectValue(xCharts, xChart, xChartValue, true);
 		e.preventDefault();
 		return false;
 	});
 
 	//Desmaca item selecionado
 	$(pId).mouseleave(function (e){
-		dbsfaces.chartValue.selectValue(xChartValue, false);
+		dbsfaces.chartValue.selectValue(xCharts, xChart, xChartValue, false);
 	});
 	
 	//Seleciona nova posição do delta e do item selecionado
 	$(pId).mousemove(function (e){
 		dbsfaces.chartValue.selectDelta(xChart, xChartValue, null);
-		dbsfaces.chartValue.selectValue(xChartValue, true);
+		dbsfaces.chartValue.selectValue(xCharts, xChart, xChartValue, true);
 	});
 
 	//Seleciona nova posição do delta e do item selecionado (Mobile)
@@ -41,13 +42,29 @@ dbs_chartValue = function(pId) {
 					}
 				}
 			}
+			
 		}
 	});
+	
 
 
 };
 
+//dbsfaces.chartValue.chartValueData = function(){
+//	this.X = null;
+//	this.Y = null;
+//	this.DV = null;
+//	this.DeltaLabel = null;
+//	this.DeltaValue = null;
+//}
+
 dbsfaces.chartValue = {
+	chartValueData: function(){
+	    this.legs = 4;
+	    this.temperament = 'Apathetic';
+	    this.sound = 'Meow';
+	},
+	
 	initialize: function(pChart, pChartValue){
 		if (pChart.attr("type") == "line"){
 			dbsfaces.chartValue.initializeLine(pChart, pChartValue);
@@ -175,22 +192,25 @@ dbsfaces.chartValue = {
 		}
 
 		var xTmpDV1 = pChart.attr("dv1");
-		if (typeof(xTmpDV1) == 'undefined'){
+		if (typeof(xTmpDV1) != 'undefined'){
 			xTmpDV1 = Number(xTmpDV1);
 		}
 		var xTmpDV2 = pChartValue.attr("value");
+		if (typeof(xTmpDV1) != 'undefined'){
+			xTmpDV2 = Number(xTmpDV2);
+		}
 		//Sai de valor selecionado for zero ou sinal entre os dois valores não for o mesmo.
-		if (xTmpDV2 == "0.0" 
-		|| Math.sign(xTmpDV2) != Math.sign(xTmpDV1)){
+		if (xTmpDV2 == 0 
+		 || Math.sign(xTmpDV2) != Math.sign(xTmpDV1)){
 			return;
 		}
-		xTmpDV2 = Number(xTmpDV2);
 		//
 		var xTmpLabel1 = pChart.attr("dl1");
 		var xTmpValue1 = pChart.attr("dd1");
 		var xTmpLabel2 = pChartValue.attr("label");
 		var xTmpValue2 = pChartValue.children(".-info").children(".-value").text();
 		
+
 		var xX1;
 		var xY1;
 		var xDV1;
@@ -268,7 +288,7 @@ dbsfaces.chartValue = {
 		}
 		var xPoint = xDeltaInfoGroup.children("ellipse");
 		if (xPoint.length == 0){
-			xPoint = dbsfaces.svg.ellipse(xDeltaInfoGroup, "0", "0", "0.3em", "0.3em", null, null, xChartValuePoint.attr("fill"));
+			xPoint = dbsfaces.svg.ellipse(xDeltaInfoGroup, "0", "0", "0.3em", "0.3em", null, xStroke, null);
 		}
 
 		//Info Delta=======================
@@ -398,17 +418,12 @@ dbsfaces.chartValue = {
 
 
 	//Coloca item como primeiro elemento para aparecer acima dos demais
-	moveToFront: function(pItem){
-		var xChart = $(pItem).closest(".dbs_chart");
-		if (xChart.attr("type") == "bar"
-		 || xChart.attr("type") == "line"){
-//			pItem.parentElement.appendChild(pItem);
-		}
+	moveToFront: function(pChartValue){
+		pChartValue.parentElement.appendChild(pChartValue);
 	},
 	
-	selectChartValue: function(pCharts, pChartValue, pSelect, pIsGroup){
-		var xChart = pChartValue.closest(".dbs_chart");
-		var xChartLine = xChart.children(".-line");
+	selectChartValue: function(pCharts, pChart, pChartValue, pSelect, pIsGroup){
+		var xChartLine = pChart.children(".-line");
 		var xChartValuePoint = pChartValue.children(".-point");
 		var xGridLabels = pCharts.find(".-container > .-data > .-container > .-content > .-value > .-grid > .-label");
 		var xChartValues = pCharts.find(".dbs_chartValue").not(pChartValue);
@@ -419,9 +434,9 @@ dbsfaces.chartValue = {
 		//Selecion demais itens
 		if (pSelect){
 			//Posiciona item como primeiro elemento para aparecer acima dos demais
-			if (xChart.attr("type") == "bar"
-			 || xChart.attr("type") == "line"){
-				pChartValue.get(0).parentElement.appendChild(pChartValue.get(0));
+			if (pChart.attr("type") == "bar"
+			 || pChart.attr("type") == "line"){
+				dbsfaces.chartValue.moveToFront(pChartValue.get(0));
 			}
 			xGridLabels.hide();
 			//Aumenta transparencia para dos outros para enfatizar o item selecionado
@@ -447,17 +462,6 @@ dbsfaces.chartValue = {
 				this.classList.remove("-dim");
 				dbsfaces.chartValue.setSelected($(this), pSelect);
 			});
-		}
-		//Exibe informação do delta
-		if (xChart.attr("type") == "line"){
-			//Exibe delta quando seleção for no componente principal
-//			if (pIsGroup
-//			&& typeof(xChart.attr("dx2")) == 'undefined'){
-//				//Remove delta dos outros componentes do mesmo grupo
-//				dbsfaces.chartValue.removeDelta(xChart);
-//			}else{
-//				dbsfaces.chartValue.showDelta(xChart, pChartValue, xChartValuePoint.attr("cx"), xChartValuePoint.attr("cy"));
-//			}
 		}
 	},
 	
@@ -490,22 +494,20 @@ dbsfaces.chartValue = {
 		}
 	},
 	
-	selectValue: function(pChartValue, pSelect){
-		var xCharts = pChartValue.closest(".dbs_charts");
-		
+	selectValue: function(pCharts, pChart, pChartValue, pSelect){
 		//Seleciona o próprio item
-		dbsfaces.chartValue.selectChartValue(xCharts, pChartValue, pSelect, false);
+		dbsfaces.chartValue.selectChartValue(pCharts, pChart, pChartValue, pSelect, false);
 
 		//Seleciona itens com mesmo label em outros gráficos do mesmo grupoid
-		var xGroupId = xCharts.attr("groupid");
+		var xGroupId = pCharts.attr("groupid");
 		if (typeof(xGroupId) != 'undefined'){
 			var xLabel = pChartValue.attr("label");
-			var xFamily = $("div.dbs_charts[groupid='" + xGroupId + "']").not(xCharts);
+			var xFamily = $("div.dbs_charts[groupid='" + xGroupId + "']").not(pCharts);
 			xFamily.each(function(){
 				xCharts = $(this);
-				var xChartValues = xCharts.find(".dbs_chartValue[label='" + xLabel + "']");
+				var xChartValues = xCharts.find(".dbs_chart > g.dbs_chartValue[label='" + xLabel + "']");
 				xChartValues.each(function(){
-					dbsfaces.chartValue.selectChartValue(xCharts, $(this), pSelect, true);
+					dbsfaces.chartValue.selectChartValue(xCharts, pChart, $(this), pSelect, true);
 				});
 			});
 		}

@@ -108,44 +108,17 @@
     transform: scale(1);
 }
 
-.dbs_chart[type='line'][dx1] > .dbs_chartValue.-selected  > .-point,
+.dbs_chart[type='line'] > .-delta > .-info > ellipse,
+.dbs_chart[type='line'] > .dbs_chartValue.-selected  > .-point,
 .dbs_chart[type='line'] > .dbs_chartValue.-selectedDelta  > .-point{
-/* 	fill: transparent; */
-/*     stroke-width: 0.03em;  */
-/*     -moz-transform-origin: center center; */
-/*     -webkit-transform-origin: center center; */
-/*     -o-transform-origin: center center; */
-/*     transform-origin: center center; */
-    
-/*     -webkit-transform: scale(4); */
-/*     -moz-transform: scale(4); */
-/*     -o-transform: scale(4); */
-/*     transform: scale(4); */
-    
-/*     -webkit-transition: transform .3s; */
-/*     -moz-transition: transform .3s; */
-/*     -o-transition: transform .3s; */
-/*     transition: transform .3s; */
+	fill: white;	
+    stroke-width: 1px; 
 }
+
 
 .dbs_chart[type='line'] > .dbs_chartValue.-selected > .-info > .-point{
 	fill:white;	
 }
-
-.dbs_chart[type='pie'] > .dbs_chartValue.-selected{
-	stroke-width: .2em;
-}
-
-.dbs_chart[type='pie'] > .dbs_chartValue > .-info > .-point{
-/*     height: 1.2em; */
-/*     width: 4em; */
-	stroke-width: .05em;
-}
-.dbs_chart[type='pie'] > .dbs_chartValue > .-info > .-box{
-	fill: white;
-	stroke-width: .05em;
-}
-
 
 .dbs_chart[dx1][type='line'] > .-delta > .-info > .-box,
 .dbs_chart[dx1][type='line'] > .-delta > .-info > .-box2{
@@ -164,5 +137,21 @@
 .dbs_chart[type='line'] > .-delta > .-info > .-box{
 	fill: white;
 }
+    
+.dbs_chart[type='pie'] > .dbs_chartValue.-selected{
+	stroke-width: .2em;
+}
+
+.dbs_chart[type='pie'] > .dbs_chartValue > .-info > .-point{
+/*     height: 1.2em; */
+/*     width: 4em; */
+	stroke-width: .05em;
+}
+.dbs_chart[type='pie'] > .dbs_chartValue > .-info > .-box{
+	fill: white;
+	stroke-width: .05em;
+}
+
+
 
 
