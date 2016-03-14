@@ -79,15 +79,16 @@ public class DBSChartValueRenderer extends DBSRenderer {
 
 		//Configura class
 		if (xChartValue.getStyleClass()!=null){
-			xClass = xClass + xChartValue.getStyleClass() + " ";
+			xClass = xClass.trim()  + " " + xChartValue.getStyleClass().trim();
 		}
+		
 
 		pvSetFillcolor(xCharts, xChart, xChartValue);
 
 		xWriter.startElement("g", xChartValue);
 			DBSFaces.setAttribute(xWriter, "id", xClientId, null);
 			DBSFaces.setAttribute(xWriter, "index", xChartValue.getIndex(), null);
-			DBSFaces.setAttribute(xWriter, "class", xClass, null);
+			DBSFaces.setAttribute(xWriter, "class", xClass.trim(), null);
 			DBSFaces.setAttribute(xWriter, "style", xChartValue.getStyle(), null);
 			DBSFaces.setAttribute(xWriter, "value", DBSNumber.toDouble(xChartValue.getValue(), 0D, Locale.US), null);
 			DBSFaces.setAttribute(xWriter, "label", xChartValue.getLabel(), "");

@@ -8,17 +8,6 @@
 	opacity: 1;
 }   
 
-.dbs_chartValue.-dim{
-    -webkit-transition: opacity .5s; 
-    -moz-transition: opacity .5s;
-    -o-transition: opacity .5s;
-    transition: opacity .5s;
-    -webkit-transition-delay: .5s;
-    -moz-transition-delay: .5s;
-    -o-transition-delay: .5s;
-    transition-delay: .5s;
-	opacity: .4; /*altere também .dbs_chart > .-line.-dim*/
-}   
 
 .dbs_chartValue > .-info{
 }
@@ -37,17 +26,25 @@
 	stroke-width: 0px !important;
 }
 
+/* .dbs_chartValue.-hide > .-info > .-label, */
+/* .dbs_chartValue.-hide > .-info > .-value{ */
+/* 	opacity: 0; */
+/* } */
 .dbs_chartValue > .-info > .-label.-hide,
 .dbs_chartValue > .-info > .-value.-hide{
 	opacity: 0;
 }
-.dbs_chartValue > .-info > .-label.-selected,
-.dbs_chartValue > .-info > .-value.-selected{
+
+
+	
+.dbs_chartValue.-selected > .-info > .-label,
+.dbs_chartValue.-selected > .-info > .-value{
 	opacity: 1;
 }
 
 .dbs_chartValue > .-foreignobject{
 	overflow:visible;
+	opacity: 1;
 }
 
 .dbs_chartValue > .-foreignobject > span{

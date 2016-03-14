@@ -2,6 +2,7 @@ dbs_chart = function(pId) {
 	var xChart = $(pId);
 	var xCharts = xChart.closest(".dbs_charts");
 	var xChartValues = xChart.children(".dbs_chartValue");
+	xChart.data("chartvalue", xChartValues);
 	
 	setTimeout(function(){
 		dbsfaces.chart.showLabel(xCharts, xChart, xChartValues);
@@ -11,6 +12,8 @@ dbs_chart = function(pId) {
 		e.preventDefault();
 		dbsfaces.chart.setMouseDown(xChart, 0);
 	});
+	
+	
 	
 //	$(pId).on("mousedown touchstart", function(e){
 //		var xChartValue = $(e.target);
@@ -85,12 +88,13 @@ dbsfaces.chart = {
 		}
 	},
 	
-	//Verifica sopreposição dos labels
+	//Verifica sopreposição dos labels 
 	showLabelBarAndLine: function(pChart, pChartValues){
 		var xChartValue;
 		var xChartValueLabel;
 		var xPos;
 		var xPosAnt = 1;
+		//Loop nos valores por ordem do index para garantir o loop na ordem em que foram criados
 		for (i=1; i <= pChartValues.length; i++){
 			xChartValue = pChartValues.filter("[index='" + i + "']");
 			xChartValueLabel = xChartValue.children(".-info").children(".-label");
@@ -104,6 +108,8 @@ dbsfaces.chart = {
 		}
 	},
 
+	//Escoder todos os deltas
+	//Chamado pelo dbsfaces_charts
 	hideDelta: function(pCharts, pChart){
 		dbsfaces.chart.hideChartValueDelta(pChart);
 		
@@ -113,19 +119,19 @@ dbsfaces.chart = {
 			var xFamily = $("div.dbs_charts[groupid='" + xGroupId + "']");
 			xFamily.each(function(){
 				xCharts = $(this);
-				var xChart = $(this).find("g.dbs_chart").not(pChart);
+				var xChart = $(this).data("chart").not(pChart);
 				xChart.each(function(){
-					dbsfaces.chart.hideChartValueDelta(xCharts, $(this));
+					dbsfaces.chart.hideChartValueDelta($(this));
 				});
 			});
 		}
 	},
 	
-	hideChartValueDelta: function(pCharts, pChart){
+	hideChartValueDelta: function(pChart){
 		//Esconde delta após 5 segundos caso não tenha sido selecionado o intervalo definitivo
 		if (pChart.attr("type") == "line"
 	     && typeof(pChart.attr("showdelta")) != 'undefined'){
-			dbsfaces.chartValue.hideDelta(pCharts, pChart);
+			dbsfaces.chartValue.hideDelta(pChart);
 		}
 	}
 

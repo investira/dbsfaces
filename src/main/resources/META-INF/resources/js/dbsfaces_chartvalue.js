@@ -42,7 +42,6 @@ dbs_chartValue = function(pId) {
 					}
 				}
 			}
-			
 		}
 	});
 	
@@ -154,13 +153,13 @@ dbsfaces.chartValue = {
 				pChart.get(0).setAttribute("dv1", pChartValue.attr("value"));
 				pChart.get(0).setAttribute("dl1", pChartValue.attr("label"));
 				pChart.get(0).setAttribute("dd1", xChartValueInfo.children(".-value").text());
-				pChartValue.get(0).classList.add("-selectedDelta");
 			}
-		//Marca ponto destino
-//		}else if (typeof(pChart.attr("dx2")) == 'undefined'){
 		}
 		pChart.get(0).setAttribute("dx2", xChartValuePoint.attr("cx"));
 		pChart.get(0).setAttribute("dy2", xChartValuePoint.attr("cy"));
+		if (pMouseDown == 0){
+			pChartValue.get(0).classList.add("-selectedDelta");
+		}
 
 		dbsfaces.chartValue.showDelta(pChart, pChartValue, -1, -1);
 	},
@@ -253,7 +252,7 @@ dbsfaces.chartValue = {
 		}
 
 		var xDeltaValue = dbsfaces.chartValue.calcDelta(xDV1, xDV2);
-		var xChartValuePoint = pChartValue.find(".-point");
+		var xChartValuePoint = pChartValue.children(".-point");
 		var xStroke = "stroke:" + xChartValuePoint.attr("fill") + ";";
 
 		var xSvgDeltaArea = xDeltaGroup.children(".-deltaarea");
@@ -409,88 +408,51 @@ dbsfaces.chartValue = {
 		pChart.get(0).removeAttribute("dv1");
 		pChart.get(0).removeAttribute("dl1");
 		pChart.get(0).removeAttribute("dd1");
-		var xChartValues = pChart.find(".dbs_chartValue.-selectedDelta");
-		xChartValues.each(function(){
-			this.classList.remove("-selectedDelta");
-		});
+		pChart.data("chartvalue").filter(".-selectedDelta").svgRemoveClass("-selectedDelta");
 	},
 
 
 
 	//Coloca item como primeiro elemento para aparecer acima dos demais
 	moveToFront: function(pChartValue){
-		pChartValue.parentElement.appendChild(pChartValue);
+//		pChartValue.parentElement.appendChild(pChartValue);
 	},
 	
 	selectChartValue: function(pCharts, pChart, pChartValue, pSelect, pIsGroup){
+		var xChartValues = pChart.data("chartvalue").not(pChartValue);
 		var xChartLine = pChart.children(".-line");
-		var xChartValuePoint = pChartValue.children(".-point");
 		var xGridLabels = pCharts.find(".-container > .-data > .-container > .-content > .-value > .-grid > .-label");
-		var xChartValues = pCharts.find(".dbs_chartValue").not(pChartValue);
 
 		//Seleciona o próprio item
-		dbsfaces.chartValue.setSelected(pChartValue, pSelect);
+		dbsfaces.chartValue.setSelected(xChartValues, pChartValue, pSelect);
+
+		if (pChart.attr("type") == "bar"
+		 || pChart.attr("type") == "line"){
+			if (pSelect){
+				//Posiciona item como primeiro elemento para aparecer acima dos demais
+				dbsfaces.chartValue.moveToFront(pChartValue.get(0));
+			}
+		}
 		
 		//Selecion demais itens
 		if (pSelect){
-			//Posiciona item como primeiro elemento para aparecer acima dos demais
-			if (pChart.attr("type") == "bar"
-			 || pChart.attr("type") == "line"){
-				dbsfaces.chartValue.moveToFront(pChartValue.get(0));
-			}
-			xGridLabels.hide();
 			//Aumenta transparencia para dos outros para enfatizar o item selecionado
-			if (xChartLine.length > 0){
-				xChartLine.get(0).classList.add("-dim");
-			}
-			//Retira dim do selecionado e incluir nos restantes
-			pChartValue.get(0).classList.remove("-dim");
-			xChartValues.each(function(){
-				xChartValueInfo = $(this).children(".-info");
-				xChartValueInfo.hide();
-				this.classList.add("-dim");
-				dbsfaces.chartValue.setSelected($(this), false);
-			});
+			pCharts.get(0).classList.add("-dim");
 		//Esconde valor 	
 		}else{
-			xGridLabels.show();
-			if (xChartLine.length > 0){
-				xChartLine.get(0).classList.remove("-dim");
-			}
-			//Retira dim do restante
-			xChartValues.each(function(){
-				this.classList.remove("-dim");
-				dbsfaces.chartValue.setSelected($(this), pSelect);
-			});
+			pCharts.get(0).classList.remove("-dim");
 		}
 	},
 	
-	setSelected: function(pChartValue, pSelect){
+	setSelected: function(pChartValues, pChartValue, pSelect){
 		var xTooltipId = "#" + dbsfaces.util.jsid(pChartValue.get(0).id) + '_tooltip';
-		var xChartValueInfo = pChartValue.children(".-info");
-		var xLabel = xChartValueInfo.children(".-label");
-		var xValue = xChartValueInfo.children(".-value");
+		pChartValues.svgRemoveClass("-selected");
+		pChartValue.svgRemoveClass("-selected");
 		if (pSelect){
+			pChartValue.svgAddClass("-selected");
 			dbsfaces.tooltip.showTooltip(xTooltipId);
-			$(xTooltipId).addClass("-selected");
-			if (xLabel.length > 0){
-				xLabel.get(0).classList.add("-selected");
-			}
-			if (xValue.length > 0){
-				xValue.get(0).classList.add("-selected");
-			}
-			pChartValue.get(0).classList.add("-selected");
-			xChartValueInfo.show();
 		}else{
 			dbsfaces.tooltip.hideTooltip(xTooltipId);
-			$(xTooltipId).removeClass("-selected");
-			if (xLabel.length > 0){
-				xLabel.get(0).classList.remove("-selected");
-			}
-			if (xValue.length > 0){
-				xValue.get(0).classList.remove("-selected");
-			}
-			pChartValue.get(0).classList.remove("-selected");
 		}
 	},
 	
@@ -498,6 +460,7 @@ dbsfaces.chartValue = {
 		//Seleciona o próprio item
 		dbsfaces.chartValue.selectChartValue(pCharts, pChart, pChartValue, pSelect, false);
 
+		setTimeout(function(){
 		//Seleciona itens com mesmo label em outros gráficos do mesmo grupoid
 		var xGroupId = pCharts.attr("groupid");
 		if (typeof(xGroupId) != 'undefined'){
@@ -505,12 +468,14 @@ dbsfaces.chartValue = {
 			var xFamily = $("div.dbs_charts[groupid='" + xGroupId + "']").not(pCharts);
 			xFamily.each(function(){
 				xCharts = $(this);
-				var xChartValues = xCharts.find(".dbs_chart > g.dbs_chartValue[label='" + xLabel + "']");
+				var xChart = xCharts.data("chart");
+				var xChartValues = xChart.data("chartvalue").filter("[label='" + xLabel + "']");
 				xChartValues.each(function(){
-					dbsfaces.chartValue.selectChartValue(xCharts, pChart, $(this), pSelect, true);
+					dbsfaces.chartValue.selectChartValue(xCharts, xChart, $(this), pSelect, true);
 				});
 			});
 		}
+		},0);
 		
 	}
 

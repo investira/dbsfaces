@@ -5,20 +5,8 @@
 .dbs_chart > .-line {
 	stroke-width: .2em;
 	stroke-linecap: round;
-	 /*altere também .dbs_chartvalue*/
-    -webkit-transition: opacity .5s; 
-    -moz-transition: opacity .5s;
-    -o-transition: opacity .5s;
-    transition: opacity .5s;
-    -webkit-transition-delay: .5s;
-    -moz-transition-delay: .5s;
-    -o-transition-delay: .5s;
-    transition-delay: .5s;
 }
 
-.dbs_chart > .-line.-dim{
-	opacity: .4;/*altere também .dbs_chartvalue.-dim*/
-}   
 
 .dbs_chart > .-delta{
     -webkit-transform: translate3d(0,0,0);

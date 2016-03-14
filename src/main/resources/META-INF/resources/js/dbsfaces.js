@@ -45,6 +45,26 @@ String.prototype.replaceAll = function(target, replacement) {
 (function($) {
     $.fn.hasScrollBar = function() {
         return this.get(0).scrollHeight > this.height();
+    },
+    $.fn.svgHasClass = function (pClassName) {
+  	  return new RegExp('(\\s|^)' + pClassName + '(\\s|$)').test(this.get(0).getAttribute('class'));
+    },
+    $.fn.svgRemoveClass = function (pClassName) {
+		this.each(function(){
+	    	var xObject = this;
+	    	if ($(this).svgHasClass(pClassName)) {
+		    	var xRemovedClass = xObject.getAttribute('class').replace(new RegExp('(\\s|^)' + pClassName + '(\\s|$)', 'g'), '$2');
+	    		xObject.setAttribute('class', xRemovedClass);
+	    	}
+		});
+    },
+    $.fn.svgAddClass = function (pClassName) {
+		this.each(function(){
+	    	var xObject = this;
+	    	if (!$(this).svgHasClass(pClassName)) {
+	    		xObject.setAttribute('class', xObject.getAttribute('class') + ' ' + pClassName);
+	    	}
+		});
     }
 })(jQuery);
 

@@ -48,16 +48,33 @@
 	stroke-width: 1px;
 	shape-rendering: crispEdges;
 }
-
 .dbs_charts > .-container > .-data > .-container > .-content > .-value > .-grid > .-label{
 	fill: rgb(180, 180, 180);
 	stroke-width: 0px;
 	text-anchor: end;
 	dominant-baseline: middle;
 }
-
-.dbs_charts > .-container > .-data > .-container > .-content > .-value > .-grid > .-line{
+.dbs_charts.-dim > .-container > .-data > .-container > .-content > .-value > .-grid > .-label{
+	opacity: 0;
 }
+.dbs_charts.-dim > .-container > .-data > .-container > .-content > .-value > .dbs_chart > .-line,
+.dbs_charts.-dim > .-container > .-data > .-container > .-content > .-value > .dbs_chart > .dbs_chartValue:not(.-selected):not(.-selectedDelta){
+    -webkit-transition: opacity .5s; 
+    -moz-transition: opacity .5s;
+    -o-transition: opacity .5s;
+    transition: opacity .5s;
+    -webkit-transition-delay: .5s;
+    -moz-transition-delay: .5s;
+    -o-transition-delay: .5s;
+    transition-delay: .5s;
+	opacity: .4;
+}
+.dbs_charts.-dim > .-container > .-data > .-container > .-content > .-value > .dbs_chart > .dbs_chartValue:not(.-selected):not(.-selectedDelta) > .-info{
+	opacity: 0;
+}
+.dbs_charts.-dim > .-container > .-data > .-container > .-content > .-value > .dbs_chart > .dbs_chartValue:not(.-selected):not(.-selectedDelta)  > .-info > .-label{
+	opacity: 0;
+}	
 
 
 

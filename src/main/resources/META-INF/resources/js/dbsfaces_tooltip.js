@@ -18,8 +18,6 @@ dbs_tooltip = function(pId) {
 }
 
 dbsfaces.tooltip = {
-	wTimerShow: +new Date(),
-	wTimerHide: +new Date(),
 	wRightLeft: 10,//2 + 8(Right + Left)
 	wTomBottom: 5, //1 + 4(Top + Bottom);
 	
@@ -28,7 +26,9 @@ dbsfaces.tooltip = {
 		if (typeof(xTooltipDelay) == "undefined"){
 			xTooltipDelay = 1200;
 		}
-		dbsfaces.tooltip.wTimerShow = setTimeout(function(){
+		clearTimeout($(pId).data("timershow"));
+		//Cria timer para exibição e armazena no próprio componente
+		$(pId).data("timershow", setTimeout(function(){
 			//Hide all
 			dbsfaces.tooltip.hide(null, "tt");
 			//Exibe tooltip
@@ -38,13 +38,17 @@ dbsfaces.tooltip = {
 			var xContainer = xTooltip.children(".-mask").children(".-container");
 			var xContent = xContainer.children(".-content");
 			var xTime = dbsfaces.ui.getDelayFromTextLength(xContent.text());
-			dbsfaces.tooltip.wTimerHide = setTimeout(function(){
-				//Esconde tooltip gradativamente e depois apaga
-				xTooltip.fadeOut( "slow", function(){
-					xTooltip.css("opacity",0);
-				});
-			}, xTime);
-		}, xTooltipDelay); //2 Segundos -Tempo para exibir
+			clearTimeout($(pId).data("timerhide"));
+			//Cria timer para escoder e armazena no próprio componente
+			$(pId).data("timerhide", setTimeout(function(){
+					//Esconde tooltip gradativamente e depois apaga
+					xTooltip.fadeOut( "slow", function(){
+						xTooltip.css("opacity",0);
+					});
+				}, xTime)
+			);
+		}, xTooltipDelay) //2 Segundos -Tempo para exibir
+		);
 	},
 
 	hideTooltip: function(pId){
@@ -58,17 +62,20 @@ dbsfaces.tooltip = {
 	},
 
 	hide: function(pId, pTooltipType){
-		if (typeof(dbsfaces.tooltip.wTimerShow) != "undefined"){
-			clearTimeout(dbsfaces.tooltip.wTimerShow);
-		}
-		if (typeof(dbsfaces.tooltip.wTimerHide) != "undefined"){
-			clearTimeout(dbsfaces.tooltip.wTimerHide);
-		}
 		var xTooltip;
 		if (pId == null){
 			xTooltip = $(".-tooltip.-" + pTooltipType);
 		}else{
-			xTooltip = $(pId).children(".-tooltip.-" + pTooltipType);
+			if (!(pId instanceof jQuery)){
+				pId = $(pId);
+			}
+			xTooltip = pId.children(".-tooltip.-" + pTooltipType);
+			if (typeof(pId.data("timershow")) != "undefined"){
+				clearTimeout(pId.data("timershow"));
+			}
+			if (typeof(pId.data("timerhide")) != "undefined"){
+				clearTimeout(pId.data("timerhide"));
+			}
 		}
 		xTooltip.hide().css("opacity",0).css("overflow","hidden");
 
@@ -129,10 +136,7 @@ dbsfaces.tooltip = {
 		xLeft = 0;
 		xTop = 0;
 
-		
-
 //		var xContent = pContainer.children(".-content");
-		var xLixo =  pComponent.scrollParent();
 //		console.log(pComponent.scrollParent(false).scrollTop());
 		
 //		console.log(pComponent.get(0).getBoundingClientRect().top 
