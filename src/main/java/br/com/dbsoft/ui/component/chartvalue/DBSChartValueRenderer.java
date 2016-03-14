@@ -1,6 +1,5 @@
 package br.com.dbsoft.ui.component.chartvalue;
 
-import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -162,7 +161,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			String xStyle = xStroke;
 			//Artifício pois o fcirefox só funciona com valores fixos no transform-origin
 			xStyle += "-moz-transform-origin:" + xX.doubleValue() + "px " + xY.doubleValue() + "px;";
-			DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xX.doubleValue(), xY.doubleValue(), "0.3em", "0.3em", DBSFaces.CSS.MODIFIER.POINT, xStyle, wFillColor);
+			DBSFaces.encodeSVGEllipse(pChartValue, pWriter, DBSNumber.round(xX.doubleValue(),2), DBSNumber.round(xY.doubleValue(), 2), "0.3em", "0.3em", DBSFaces.CSS.MODIFIER.POINT, xStyle, wFillColor);
 		}
 		//Encode Dados
 		pWriter.startElement("g", pChartValue);
@@ -299,17 +298,12 @@ public class DBSChartValueRenderer extends DBSRenderer {
 	    }
 
 		xPath = new StringBuilder();
-	    xPath.append("<path ");
-	    xPath.append("style='" + xStroke + "'");
-	    xPath.append("d=");
-	    xPath.append("'M " + x1.getX() + "," + x1.getY()); //Ponto inicial do arco 
-		xPath.append(" A " + xPneuRaioExterno + "," + xPneuRaioExterno + " 0 " + xBig + " 1 " + x2.getX() + "," + x2.getY()); //Arco externo até o ponto final 
-		xPath.append(" L " + x3.getX() + "," + x3.getY()); //Linha do arco externo até o início do arco interno
-		xPath.append(" A " + xPneuRaioInterno + "," + xPneuRaioInterno + " 0 " + xBig + " 0 " + x4.getX() + "," + x4.getY()); //Arco interno até o ponto incial interno
-		xPath.append(" Z' "); //Fecha o path ligando o arco interno ao arco externo  
-		xPath.append("fill='" + wFillColor + "' ");
-		xPath.append("></path>");
-		pWriter.write(xPath.toString());
+	    xPath.append("M" + x1.getX() + "," + x1.getY()); //Ponto inicial do arco 
+		xPath.append("A" + xPneuRaioExterno + "," + xPneuRaioExterno + " 0 " + xBig + " 1 " + x2.getX() + "," + x2.getY()); //Arco externo até o ponto final 
+		xPath.append("L" + x3.getX() + "," + x3.getY()); //Linha do arco externo até o início do arco interno
+		xPath.append("A" + xPneuRaioInterno + "," + xPneuRaioInterno + " 0 " + xBig + " 0 " + x4.getX() + "," + x4.getY()); //Arco interno até o ponto incial interno
+		xPath.append("Z"); //Fecha o path ligando o arco interno ao arco externo  
+		DBSFaces.encodeSVGPath(pChartValue, pWriter, xPath.toString(), null, xStroke, wFillColor);
 
 
 		//Encode Dados
@@ -319,17 +313,10 @@ public class DBSChartValueRenderer extends DBSRenderer {
 				
 				//ENCODE LINHA
 				xPath = new StringBuilder();
-			    xPath.append("<path ");
-			    xPath.append("class='" + DBSFaces.CSS.MODIFIER.LINE + "' ");
-			    xPath.append("style='"  + xStroke + " stroke-width:1px;' ");
-			    xPath.append("d=");
-				xPath.append("'M " + xPoint.getX() + "," + xPoint.getY());  
-				xPath.append(" L " + pChartValue.getPoint().getX() + "," + pChartValue.getPoint().getY()); 
-				xPath.append(" L " + xPointLabel.getX() + "," + xPointLabel.getY());
-				xPath.append("' ");  
-				xPath.append("fill='none'");
-				xPath.append("></path>");
-				pWriter.write(xPath.toString());
+				xPath.append("M" + xPoint.getX() + "," + xPoint.getY());  
+				xPath.append("L" + pChartValue.getPoint().getX() + "," + pChartValue.getPoint().getY()); 
+				xPath.append("L" + xPointLabel.getX() + "," + xPointLabel.getY());
+				DBSFaces.encodeSVGPath(pChartValue, pWriter, xPath.toString(),DBSFaces.CSS.MODIFIER.LINE, xStroke + " stroke-width:1px; ", "none");
 	
 				//Ponto pequeno no centro e na tangente do arco	
 				DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xPoint.getX(), xPoint.getY(), "0.3em", "0.3em", DBSFaces.CSS.MODIFIER.POINT, null, wFillColor);
@@ -595,35 +582,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			wFillColor = pChartValue.getFillColor(); 
 			return;
 		}
-
-		Float xChartFator = DBSNumber.divide(pChart.getIndex(), pCharts.getItensCount()).floatValue();
-		Float xChartValueFator = DBSNumber.divide(pChartValue.getIndex(), pChart.getItensCount()).floatValue();
-		Float xColorH;
-		Float xColorB;
-		Float xColorS = DBSNumber.multiply(1, xChartValueFator).floatValue();
-		if (pChart.getColorHue() != null){
-			xColorH = pChart.getColorHue();
-		}else{
-			xColorH = DBSNumber.multiply(1, xChartFator).floatValue();
-		}
-		if (pChart.getColorBrightness() != null){
-			xColorB = DBSNumber.multiply(pChart.getColorBrightness(), xChartValueFator).floatValue();
-		}else{
-			xColorB = DBSNumber.multiply(.8, xChartValueFator).floatValue();
-			xColorB += .2F;
-		}
-		xColorH += 0F;
-		xColorS = 1F;
-		Color xColor = Color.getHSBColor(xColorH, xColorS, xColorB);
-		StringBuilder xSB = new StringBuilder();
-		xSB.append("rgb(");
-		xSB.append(xColor.getRed());
-		xSB.append(",");
-		xSB.append(xColor.getGreen());
-		xSB.append(",");
-		xSB.append(xColor.getBlue());
-		xSB.append(")");
-		wFillColor = xSB.toString();
+		wFillColor = DBSFaces.calcChartFillcolor(pChart.getColorHue(), pChart.getColorBrightness(), pCharts.getItensCount(), pChart.getItensCount(), pChart.getIndex(), pChartValue.getIndex());
 	}
 }
 

@@ -4,16 +4,12 @@ dbs_chart = function(pId) {
 	var xChartValues = xChart.children(".dbs_chartValue");
 	xChart.data("chartvalue", xChartValues);
 	
-	setTimeout(function(){
-		dbsfaces.chart.showLabel(xCharts, xChart, xChartValues);
-	},0);
+	dbsfaces.chart.initialize(xCharts, xChart, xChartValues);
 
 	$(pId).on("mouseup touchend", function(e){
 		e.preventDefault();
 		dbsfaces.chart.setMouseDown(xChart, 0);
 	});
-	
-	
 	
 //	$(pId).on("mousedown touchstart", function(e){
 //		var xChartValue = $(e.target);
@@ -79,32 +75,64 @@ dbsfaces.chart = {
 		return pChart.data("m");
 	},
 
-	showLabel: function(pCharts, pChart, pChartValues){
-		if (typeof(pCharts.attr("showlabel")) != "undefined"){
-			if (pChart.attr("type") == "bar"
-			 || pChart.attr("type") == "line"){
-				dbsfaces.chart.showLabelBarAndLine(pChart, pChartValues);
-			}
+	initialize: function(pCharts, pChart, pChartValues){
+		var xShowLabel = (typeof(pCharts.attr("showlabel")) != "undefined");
+		var xDrawLine = (pChart.attr("type") == "line");
+		if (pChart.attr("type") == "bar"
+		 || pChart.attr("type") == "line"){
+			dbsfaces.chart.showLabelBarAndLine(pCharts, pChart, pChartValues, xShowLabel, xDrawLine);
 		}
 	},
 	
 	//Verifica sopreposição dos labels 
-	showLabelBarAndLine: function(pChart, pChartValues){
+	showLabelBarAndLine: function(pCharts, pChart, pChartValues, pShowLabel, pDrawLine){
 		var xChartValue;
 		var xChartValueLabel;
+		var xChartValuePoint;
 		var xPos;
 		var xPosAnt = 1;
+		var xPath = "";
+		var xStarColor;
+		var xEndColor;
 		//Loop nos valores por ordem do index para garantir o loop na ordem em que foram criados
 		for (i=1; i <= pChartValues.length; i++){
 			xChartValue = pChartValues.filter("[index='" + i + "']");
-			xChartValueLabel = xChartValue.children(".-info").children(".-label");
-			xPos = Number(xChartValueLabel.attr("x")) - (xChartValueLabel.get(0).getComputedTextLength() / 2);
-			if (xPos < xPosAnt){
-				xChartValueLabel.get(0).classList.add("-hide");
-			}else{
-				xChartValueLabel.get(0).classList.remove("-hide");
-				xPosAnt = Number(xChartValueLabel.attr("x")) + (xChartValueLabel.get(0).getComputedTextLength() / 2) + 4;
+			//Verifica se há sobreposição
+			if (pShowLabel){
+				xChartValueLabel = xChartValue.children(".-info").children(".-label");
+				xPos = Number(xChartValueLabel.attr("x")) - (xChartValueLabel.get(0).getComputedTextLength() / 2);
+				if (xPos < xPosAnt){
+					xChartValueLabel.get(0).classList.add("-hide");
+				}else{
+					xChartValueLabel.get(0).classList.remove("-hide");
+					xPosAnt = Number(xChartValueLabel.attr("x")) + (xChartValueLabel.get(0).getComputedTextLength() / 2) + 4;
+				}
 			}
+			//Configura a linha conectando os pontos
+			if (pDrawLine){
+				xChartValuePoint = xChartValue.children(".-point");
+				if (i==1){
+					xPath = "M";
+					//Salva cor do primeiro ponto
+					xStarColor = xChartValuePoint.css("stroke");
+				}else {
+					xPath += "L";
+				}
+				if (i == pChartValues.length){
+					//Salva cor do último ponto
+					xStopColor = xChartValuePoint.css("stroke");
+				}
+				xPath += xChartValuePoint.attr("cx") + "," + xChartValuePoint.attr("cy"); 
+			}
+		}
+		//Cria a linha que conecta os pontos
+		if (xPath != ""){
+			var xSvg = pCharts.find(".-container > .-data > svg.-container > defs");
+			var xLG = dbsfaces.svg.linearGradient(xSvg);
+			xLG.attr("id", "linestroke");
+			dbsfaces.svg.stop(xLG, 0, xStarColor);
+			dbsfaces.svg.stop(xLG, "100%", xStopColor);
+			dbsfaces.svg.path(pChart.children("g.-line"), xPath, null, null, null);
 		}
 	},
 

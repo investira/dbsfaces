@@ -5,6 +5,10 @@
 .dbs_chart > .-line {
 	stroke-width: .2em;
 	stroke-linecap: round;
+	stroke-linejoin: round;
+	fill: none;
+	stroke:url(#linestroke);
+	stroke-width:2px;
 }
 
 

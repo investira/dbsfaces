@@ -73,11 +73,11 @@ dbsfaces.chartValue = {
 	},
 	
 	initializeLine: function(pChart, pChartValue){
-		var xLineGroup = pChart.children("g.-line");
-		var xChartValueAnterior = pChartValue.prevAll(".dbs_chartValue").first();
-		
-		dbsfaces.chartValue.drawLine(xLineGroup, xChartValueAnterior);
-		dbsfaces.chartValue.drawLine(xLineGroup, pChartValue);
+//		var xLineGroup = pChart.children("g.-line");
+//		var xChartValueAnterior = pChartValue.prevAll(".dbs_chartValue").first();
+//		
+//		dbsfaces.chartValue.drawLine(xLineGroup, xChartValueAnterior);
+//		dbsfaces.chartValue.drawLine(xLineGroup, pChartValue);
 	},
 
 	initializePie: function(pChartValue){

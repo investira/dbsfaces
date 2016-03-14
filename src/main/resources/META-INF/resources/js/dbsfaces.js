@@ -136,7 +136,7 @@ dbsfaces.svg = {
 		return dbsfaces.svg.svg(xG, null, null, null, null, null, null);
 	},
 	g: function(pComponent, pX, pY, pWidth, pHeight, pStyleClass, pStyle){
-		var xG = $(document.createElementNS('http://www.w3.org/2000/svg','g'));
+		var xG = dbsfaces.svg.createElement('g');
 		dbsfaces.svg.setDefaultAttr(xG, pStyleClass, pStyle, null);
 		if (pX != null){
 			xG.attr("x", pX);
@@ -155,7 +155,7 @@ dbsfaces.svg = {
 	},
 
 	svg: function(pComponent, pX, pY, pWidth, pHeight, pStyleClass, pStyle){
-		var xSVG = $(document.createElementNS('http://www.w3.org/2000/svg','svg'));
+		var xSVG = dbsfaces.svg.createElement('svg');
 		dbsfaces.svg.setDefaultAttr(xSVG, pStyleClass, pStyle, null);
 		if (pX != null){
 			xSVG.attr("x", pX);
@@ -172,9 +172,17 @@ dbsfaces.svg = {
 		pComponent.append(xSVG);
 		return xSVG;
 	},
+	
+	path: function(pComponent, pData, pStyleClass, pStyle, pFill){
+		var xPath = dbsfaces.svg.createElement('path');
+		dbsfaces.svg.setDefaultAttr(xPath, pStyleClass, pStyle, pFill);
+		xPath.attr("d", pData);
+		pComponent.append(xPath);
+		return xPath;
+	},
 
 	line: function(pComponent, pX1, pY1, pX2, pY2, pStyleClass, pStyle){
-		var xLine = $(document.createElementNS('http://www.w3.org/2000/svg','line'));
+		var xLine = dbsfaces.svg.createElement('line');
 		dbsfaces.svg.setDefaultAttr(xLine, pStyleClass, pStyle, null);
 		xLine.attr("x1", pX1)
 			 .attr("y1", pY1)
@@ -185,7 +193,7 @@ dbsfaces.svg = {
 	},
 	
 	rect: function(pComponent, pX, pY, pWidth, pHeight, pRX, pRY, pStyleClass, pStyle, pFill){
-		var xRect = $(document.createElementNS('http://www.w3.org/2000/svg','rect'));
+		var xRect = dbsfaces.svg.createElement('rect');
 		dbsfaces.svg.setDefaultAttr(xRect, pStyleClass, pStyle, pFill);
 		if (pX != null){
 			xRect.attr("x", pX);
@@ -206,7 +214,7 @@ dbsfaces.svg = {
 	},
 	
 	ellipse: function(pComponent, pCX, pCY, pRX, pRY, pStyleClass, pStyle, pFill){
-		var xEllipse = $(document.createElementNS('http://www.w3.org/2000/svg','ellipse'));
+		var xEllipse = dbsfaces.svg.createElement('ellipse');
 		dbsfaces.svg.setDefaultAttr(xEllipse, pStyleClass, pStyle, pFill);
 		xEllipse.attr("cx", pCX)
 			    .attr("cy", pCY)
@@ -217,7 +225,7 @@ dbsfaces.svg = {
 	},
 	
 	text: function(pComponent, pX, pY, pText, pStyleClass, pStyle, pFill){
-		var xText = $(document.createElementNS('http://www.w3.org/2000/svg','text'));
+		var xText = dbsfaces.svg.createElement('text');
 		dbsfaces.svg.setDefaultAttr(xText, pStyleClass, pStyle, pFill);
 		if (pX != null){
 			xText.attr("x", pX);
@@ -228,6 +236,29 @@ dbsfaces.svg = {
 		xText.text(pText);
 		pComponent.append(xText);
 		return xText;
+	},
+	
+	linearGradient: function(pComponent){
+		var xElement = dbsfaces.svg.createElement('linearGradient');
+		pComponent.append(xElement);
+		return xElement;
+	},
+
+	stop: function(pComponent, pOffset, pStopColor){
+		var xElement = dbsfaces.svg.createElement('stop');
+		if (pOffset != null){
+			xElement.attr("offset", pOffset);
+		}
+		if (pStopColor != null){
+			xElement.attr("stop-color", pStopColor);
+		}
+		pComponent.append(xElement);
+		return xElement;
+	},
+	
+	createElement: function(pTag){
+		var xElement = $(document.createElementNS('http://www.w3.org/2000/svg', pTag));
+		return xElement;
 	},
 
 	setDefaultAttr: function(pComponent, pStyleClass, pStyle, pFill){

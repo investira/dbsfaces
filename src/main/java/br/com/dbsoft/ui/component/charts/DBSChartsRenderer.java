@@ -91,8 +91,8 @@ public class DBSChartsRenderer extends DBSRenderer {
 						DBSFaces.setAttribute(xWriter, "xmlns:xlink", "http://www.w3.org/1999/xlink", null);
 						DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER, null);
 						DBSFaces.setAttribute(xWriter, "style", xChartsStyle, null);
-						//Filters
-						pvEncodeFilters(xWriter);
+						//Defs
+						pvEncodeDefs(xCharts, xWriter);
 						
 						//CONTENT--------------------------
 						xWriter.startElement("g", xCharts);
@@ -190,11 +190,17 @@ public class DBSChartsRenderer extends DBSRenderer {
 		}
 	}
 
-	private void pvEncodeFilters(ResponseWriter pWriter) throws IOException{
-	    StringBuilder xSB = new StringBuilder();
-	    xSB.append("<filter id='blur-filter' x='-1' y='-1'>");
-	    xSB.append("<feGaussianBlur in='SourceGraphic' stdDeviation='1' />");
-	    xSB.append("</filter>");
-	    pWriter.write(xSB.toString());
+	private void pvEncodeDefs(DBSCharts pCharts, ResponseWriter pWriter) throws IOException{
+		pWriter.startElement("defs", pCharts);
+//			pvEncodeFilters(pWriter);
+		pWriter.endElement("defs");
 	}
+	
+//	private void pvEncodeFilters(ResponseWriter pWriter) throws IOException{
+//	    StringBuilder xSB = new StringBuilder();
+//	    xSB.append("<filter id='blur-filter' x='-1' y='-1'>");
+//	    xSB.append("<feGaussianBlur in='SourceGraphic' stdDeviation='1' />");
+//	    xSB.append("</filter>");
+//	    pWriter.write(xSB.toString());
+//	}
 }

@@ -1,6 +1,7 @@
 package br.com.dbsoft.ui.core;
 
 
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -1668,6 +1669,24 @@ public class  DBSFaces {
 		pWriter.endElement("ellipse");
 	}
 	
+	/**
+	 * @param pComponent
+	 * @param pWriter
+	 * @param pData
+	 * @param pStyleClass
+	 * @param pStyle
+	 * @param pFill
+	 * @throws IOException
+	 */
+	public static void encodeSVGPath(UIComponent pComponent, ResponseWriter pWriter, String pData, String pStyleClass, String pStyle, String pFill) throws IOException{
+		pWriter.startElement("path", pComponent);
+			setAttribute(pWriter, "class", pStyleClass, null);
+			setAttribute(pWriter, "style", pStyle, null);
+			setAttribute(pWriter, "fill",	pFill, null);			
+			setAttribute(pWriter, "d", 	pData, null);
+		pWriter.endElement("path");
+	}
+	
 	
 	/**
 	 * Encode de Retangulo para grádico SVG
@@ -1692,6 +1711,37 @@ public class  DBSFaces {
 		pWriter.endElement("text");
 	}
 	
+	//================================================================================
+	public static String calcChartFillcolor(Float pHue, Float pColorBrightness, Integer pChartsItensCount, Integer pChartItensCount, Integer pChartIndex, Integer pChartValueIndex){
+		Float xChartFator = DBSNumber.divide(pChartIndex, pChartsItensCount).floatValue();
+		Float xChartValueFator = DBSNumber.divide(pChartValueIndex, pChartItensCount).floatValue();
+		Float xColorH;
+		Float xColorB;
+		Float xColorS = DBSNumber.multiply(1, xChartValueFator).floatValue();
+		if (pHue != null){
+			xColorH = pHue;
+		}else{
+			xColorH = DBSNumber.multiply(1, xChartFator).floatValue();
+		}
+		if (pColorBrightness != null){
+			xColorB = DBSNumber.multiply(pColorBrightness, xChartValueFator).floatValue();
+		}else{
+			xColorB = DBSNumber.multiply(.8, xChartValueFator).floatValue();
+			xColorB += .2F;
+		}
+		xColorH += 0F;
+		xColorS = 1F;
+		Color xColor = Color.getHSBColor(xColorH, xColorS, xColorB);
+		StringBuilder xSB = new StringBuilder();
+		xSB.append("rgb(");
+		xSB.append(xColor.getRed());
+		xSB.append(",");
+		xSB.append(xColor.getGreen());
+		xSB.append(",");
+		xSB.append(xColor.getBlue());
+		xSB.append(")");
+		return xSB.toString();
+	}
 	
 
 	//UIComponent =========================================================================
