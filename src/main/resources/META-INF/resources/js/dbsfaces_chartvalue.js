@@ -228,7 +228,7 @@ dbsfaces.chartValue = {
 		//Group info----------------------
 		var xDeltaInfoGroup = xDeltaGroup.children(".-info");
 
-		var xStyle = "transform: translate3d(" + dbsfaces.math.round(xX2,0) + "px ," + dbsfaces.math.round(xY2,0) + "px,0);"
+		var xStyle = "transform: translate3d(" + xX2 + "px ," + xY2 + "px,0);"
 		//Cria Group info
 		if (xDeltaInfoGroup.length == 0){
 			xDeltaInfoGroup = dbsfaces.svg.g(xDeltaGroup, null, null, "4em","4em", "-info", xStyle);
