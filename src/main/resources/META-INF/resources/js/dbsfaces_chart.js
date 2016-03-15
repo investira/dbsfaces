@@ -2,80 +2,39 @@ dbs_chart = function(pId) {
 	var xChart = $(pId);
 	var xCharts = xChart.closest(".dbs_charts");
 	var xChartValues = xChart.children(".dbs_chartValue");
+	//Salva chartvalues vinculados a este chart
 	xChart.data("chartvalue", xChartValues);
 	
 	dbsfaces.chart.initialize(xCharts, xChart, xChartValues);
 
 	$(pId).on("mouseup touchend", function(e){
+//		console.log("mouseup touchend");
+		dbsfaces.chart.stopDeltaDrag(xChart);
 		e.preventDefault();
-		dbsfaces.chart.setMouseDown(xChart, 0);
+		return false;
 	});
-	
-//	$(pId).on("mousedown touchstart", function(e){
-//		var xChartValue = $(e.target);
-//		if (xChartValue.hasClass("dbs_chartValue")){
-//			dbsfaces.chartValue.selectDelta(xChart, xChartValue, 1);
-//			dbsfaces.chartValue.selectValue(xChartValue, true);
-//			e.preventDefault();
-//			return false;
-//		}
-//	});
-//
-//	//Desmaca item selecionado
-//	$(pId).mouseleave(function (e){
-//		var xChartValue = $(e.target);
-//		if (xChartValue.hasClass("dbs_chartValue")){
-//			dbsfaces.chartValue.selectValue(xChartValue, false);
-//		}
-//	});
-//	
-//	//Seleciona nova posição do delta e do item selecionado
-//	$(pId).mousemove(function (e){
-//		console.log(e.target);
-//		var xChartValue = $(e.target);
-//		if (xChartValue.hasClass("dbs_chartValue")){
-////			dbsfaces.chartValue.selectDelta(xChart, xChartValue, null);
-////			dbsfaces.chartValue.selectValue(xChartValue, true);
-//		}
-//	});
-//
-//	//Seleciona nova posição do delta e do item selecionado (Mobile)
-//	$(pId).on("touchmove", function(e){
-//		var xChartValue = $(e.target);
-//		if (xChartValue.hasClass("dbs_chartValue")){
-//			//Verifica se elemento é um dbs_chartValue
-//			var xTarget = document.elementFromPoint(e.originalEvent.touches[0].clientX, e.originalEvent.touches[0].clientY);
-//			if (typeof(xTarget) != "undefined"){
-//				var xTargetChartValue = $(xTarget).parent();
-//				if (typeof(xTargetChartValue) != "undefined"){
-//					var xClass = xTargetChartValue.attr("class");
-//					if (typeof(xClass) != "undefined" 
-//					 && xClass.indexOf('dbs_chartValue') != -1){
-//						var xTargetChart = xTargetChartValue.closest(".dbs_chart");
-//						if (xTargetChart.get(0) == xChart.get(0)){
-//							dbsfaces.chartValue.selectDelta(xChart, xTargetChartValue, null);
-//							e.preventDefault();
-//							return false;
-//						}
-//					}
-//				}
-//			}
-//		}
-//	});
-
 	
 };
 
 dbsfaces.chart = {
-	setMouseDown: function(pChart, pDown){
-		pChart.data("m", pDown);
+	startDeltaDrag: function(pChart){
+		dbsfaces.chartValue.removeDelta(pChart);
+		pChart.data("drag", true);
 	},
 
-	getMouseDown: function(pChart){
-		return pChart.data("m");
+	stopDeltaDrag: function(pChart){
+		pChart.data("drag", false);
+	},
+
+	isDeltaDragging: function(pChart){
+		return pChart.data("drag");
 	},
 
 	initialize: function(pCharts, pChart, pChartValues){
+		//Reseta ponto para calculo do delta
+		dbsfaces.chartValue.removeDelta(pChart);
+		
+		//Verifica sopreposição dos labels e cor da linhas
 		var xShowLabel = (typeof(pCharts.attr("showlabel")) != "undefined");
 		var xDrawLine = (pChart.attr("type") == "line");
 		if (pChart.attr("type") == "bar"
@@ -83,6 +42,8 @@ dbsfaces.chart = {
 			dbsfaces.chart.showLabelBarAndLine(pCharts, pChart, pChartValues, xShowLabel, xDrawLine);
 		}
 	},
+	
+	
 	
 	//Verifica sopreposição dos labels 
 	showLabelBarAndLine: function(pCharts, pChart, pChartValues, pShowLabel, pDrawLine){

@@ -314,6 +314,20 @@ dbsfaces.url = {
 }
 
 dbsfaces.ui = {
+	moveToFront: function(pElement){
+		var xE = pElement;
+		if (xE instanceof jQuery){
+			xE = pElement.get(0);
+		}
+		xE.parentElement.appendChild(xE);
+	},
+	moveToBack: function(pElement){
+		var xE = pElement;
+		if (xE instanceof jQuery){
+			xE = pElement.get(0);
+		}
+		xE.parentElement.insertBefore(xE, xE.parentElement.childNodes[0]);
+	},
 	/*Exibe a imagem de que indica que está aguardando o recebimento dos dados*/
 	showLoading : function(pId, pShow){
 		

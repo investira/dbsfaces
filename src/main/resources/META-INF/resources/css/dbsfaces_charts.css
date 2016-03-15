@@ -58,7 +58,7 @@
 	opacity: 0;
 }
 .dbs_charts.-dim > .-container > .-data > .-container > .-content > .-value > .dbs_chart > .-line,
-.dbs_charts.-dim > .-container > .-data > .-container > .-content > .-value > .dbs_chart > .dbs_chartValue:not(.-selected):not(.-selectedDelta){
+.dbs_charts.-dim > .-container > .-data > .-container > .-content > .-value > .dbs_chart > .dbs_chartValue:not(.-selected){
     -webkit-transition: opacity .5s; 
     -moz-transition: opacity .5s;
     -o-transition: opacity .5s;
@@ -69,10 +69,10 @@
     transition-delay: .2s;
 	opacity: .4;
 }
-.dbs_charts.-dim > .-container > .-data > .-container > .-content > .-value > .dbs_chart > .dbs_chartValue:not(.-selected):not(.-selectedDelta) > .-info{
+.dbs_charts.-dim > .-container > .-data > .-container > .-content > .-value > .dbs_chart > .dbs_chartValue:not(.-selected) > .-info{
 	opacity: 0;
 }
-.dbs_charts.-dim > .-container > .-data > .-container > .-content > .-value > .dbs_chart > .dbs_chartValue:not(.-selected):not(.-selectedDelta)  > .-info > .-label{
+.dbs_charts.-dim > .-container > .-data > .-container > .-content > .-value > .dbs_chart > .dbs_chartValue:not(.-selected) > .-info > .-label{
 	opacity: 0;
 }	
 

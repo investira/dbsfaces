@@ -2,12 +2,13 @@ dbs_chartValue = function(pId) {
 	var xChartValue = $(pId);
 	var xChart = xChartValue.closest(".dbs_chart");
 	var xCharts = xChart.closest(".dbs_charts");
-
+	
 	dbsfaces.chartValue.initialize(xChart, xChartValue);
 	
 	//Inicia seleção para cálculo do delta (computer e mobile)
 	$(pId).on("mousedown touchstart", function(e){
-		dbsfaces.chartValue.selectDelta(xChart, xChartValue, 1);
+//		console.log("mousedown touchstart");
+		dbsfaces.chart.startDeltaDrag(xChart);
 		dbsfaces.chartValue.selectValue(xCharts, xChart, xChartValue, true);
 		e.preventDefault();
 		return false;
@@ -15,12 +16,13 @@ dbs_chartValue = function(pId) {
 
 	//Desmaca item selecionado
 	$(pId).mouseleave(function (e){
+//		console.log("mouseleave");
 		dbsfaces.chartValue.selectValue(xCharts, xChart, xChartValue, false);
 	});
 	
 	//Seleciona nova posição do delta e do item selecionado
 	$(pId).mousemove(function (e){
-		dbsfaces.chartValue.selectDelta(xChart, xChartValue, null);
+//		console.log("mousemove");
 		dbsfaces.chartValue.selectValue(xCharts, xChart, xChartValue, true);
 	});
 
@@ -36,7 +38,7 @@ dbs_chartValue = function(pId) {
 				 && xClass.indexOf('dbs_chartValue') != -1){
 					var xTargetChart = xTargetChartValue.closest(".dbs_chart");
 					if (xTargetChart.get(0) == xChart.get(0)){
-						dbsfaces.chartValue.selectDelta(xChart, xTargetChartValue, null);
+						dbsfaces.chartValue.selectValue(xTargetChartValue.closest(".dbs_charts"), xTargetChart, xTargetChartValue, true);
 						e.preventDefault();
 						return false;
 					}
@@ -44,29 +46,23 @@ dbs_chartValue = function(pId) {
 			}
 		}
 	});
-	
-
-
 };
 
 
 dbsfaces.chartValue = {
-
-		initialize: function(pChart, pChartValue){
-		if (pChart.attr("type") == "line"){
-//			dbsfaces.chartValue.initializeLine(pChart, pChartValue);
-		}else if (pChart.attr("type") == "pie"){
+	initialize: function(pChart, pChartValue){
+		//Indicar que nunca foi utilizado para cálculo do delta
+		pChartValue.data("dx", null);
+		///Inicializa conforme tipo de gráfico
+		if (pChart.attr("type") == "pie"){
 			dbsfaces.chartValue.initializePie(pChartValue);
-		}
+		}else if (pChart.attr("type") == "line"){
+			dbsfaces.chartValue.initializeLine(pChart, pChartValue);
+		}	
 	},
 	
-//	initializeLine: function(pChart, pChartValue){
-//		var xLineGroup = pChart.children("g.-line");
-//		var xChartValueAnterior = pChartValue.prevAll(".dbs_chartValue").first();
-//		
-//		dbsfaces.chartValue.drawLine(xLineGroup, xChartValueAnterior);
-//		dbsfaces.chartValue.drawLine(xLineGroup, pChartValue);
-//	},
+	initializeLine: function(pChart, pChartValue){
+	},
 
 	initializePie: function(pChartValue){
 		var xChartValueInfo = pChartValue.children(".-info");
@@ -84,7 +80,7 @@ dbsfaces.chartValue = {
 		}
 	},
 	
-	selectDelta: function(pChart, pChartValue, pMouseDown){
+	selectDelta: function(pChart, pChartValue){
 		//Não permite seleção para gráficos diferente de line ou 
 		//quando valor do ponto selecionado for zero
 		if (pChart.attr("type") != "line"
@@ -92,37 +88,27 @@ dbsfaces.chartValue = {
 		 || pChartValue.attr("value") == "0.0"){
 			return;
 		}
-		//Se for move
-		if (pMouseDown == null){
-			//Sai se não estiver com mousedown
-			if(dbsfaces.chart.getMouseDown(pChart) != 1){
-				return;
-			}
-		}else if (pMouseDown == 1){
-			dbsfaces.chartValue.removeDelta(pChart);
-			dbsfaces.chart.setMouseDown(pChart, pMouseDown);
-		} 
-		
-		var xChartValuePoint = pChartValue.children(".-point");
-		//Marca ponto origem
-		if (pMouseDown == 1){
-			var xChartValueInfo = pChartValue.children(".-info");
-			xValue = xChartValueInfo.children(".-value").text();
-			if (xValue != 0){
-				pChart.get(0).setAttribute("dx1", xChartValuePoint.attr("cx"));
-				pChart.get(0).setAttribute("dy1", xChartValuePoint.attr("cy"));
-				pChart.get(0).setAttribute("dv1", pChartValue.attr("value"));
-				pChart.get(0).setAttribute("dl1", pChartValue.attr("label"));
-				pChart.get(0).setAttribute("dd1", xChartValueInfo.children(".-value").text());
-			}
-		}
-		pChart.get(0).setAttribute("dx2", xChartValuePoint.attr("cx"));
-		pChart.get(0).setAttribute("dy2", xChartValuePoint.attr("cy"));
-		if (pMouseDown == 0){
-			pChartValue.get(0).classList.add("-selectedDelta");
-		}
 
-		dbsfaces.chartValue.showDelta(pChart, pChartValue, -1, -1);
+		var xChartValuePoint = pChartValue.children(".-point");
+		var xChartValueInfo = pChartValue.children(".-info");
+		xValue = xChartValueInfo.children(".-value").text();
+		if (xValue != 0){
+			//Salva valores dentro do próprio componente para facilar o uso no momento do encode do delta
+			if (pChartValue.data("dx") == null){
+				pChartValue.data("dx", xChartValuePoint.attr("cx"));
+				pChartValue.data("dy", xChartValuePoint.attr("cy"));
+				pChartValue.data("df", xChartValuePoint.attr("fill"));
+				pChartValue.data("dv", pChartValue.attr("value"));
+				pChartValue.data("dl", pChartValue.attr("label"));
+				pChartValue.data("dd", xChartValueInfo.children(".-value").text());
+			}
+			//Marca ponto origem
+			if (pChart.data("cv1") == null){
+				pChart.data("cv1", pChartValue);
+			}
+			pChart.data("cv2", pChartValue);
+			dbsfaces.chartValue.showDelta(pChart, pChartValue, -1, -1);
+		}
 	},
 	
 	
@@ -133,29 +119,26 @@ dbsfaces.chartValue = {
 		if (xDeltaGroup.length == 0){
 			return;
 		}
+		var xCV1 = pChart.data("cv1");
+		var xCV2 = pChart.data("cv2");
 		
 		//Sai se ponto incial não foi selecionado
-		var xTmpX1 = pChart.attr("dx1");
-		var xTmpY1 = pChart.attr("dy1");
-		if (typeof(xTmpX1) == 'undefined'){
+		if (xCV1 == null
+		 || xCV2 == null){
 			dbsfaces.chartValue.removeDeltaGroup(xDeltaGroup);
 			return;
 		}
 
-		var xTmpX2 = pChart.attr("dx2");
-		var xTmpY2 = pChart.attr("dy2");
-		//Força ponto final como o temporário ou iqual ao ponto inicial, se ponto final não foi informado, 
-		if (typeof(xTmpX2) == 'undefined'){
-			//Se ponto temporário não foi informado
-			xTmpX2 = xTmpX1;
-			xTmpY2 = xTmpY1;
-		}
+		var xTmpX1 = xCV1.data("dx");
+		var xTmpY1 = xCV1.data("dy");
+		var xTmpX2 = xCV2.data("dx");
+		var xTmpY2 = xCV2.data("dy");
 
-		var xTmpDV1 = pChart.attr("dv1");
+		var xTmpDV1 = xCV1.data("dv");
 		if (typeof(xTmpDV1) != 'undefined'){
 			xTmpDV1 = Number(xTmpDV1);
 		}
-		var xTmpDV2 = pChartValue.attr("value");
+		var xTmpDV2 = xCV2.data("dv");
 		if (typeof(xTmpDV1) != 'undefined'){
 			xTmpDV2 = Number(xTmpDV2);
 		}
@@ -165,12 +148,13 @@ dbsfaces.chartValue = {
 			return;
 		}
 		//
-		var xTmpLabel1 = pChart.attr("dl1");
-		var xTmpValue1 = pChart.attr("dd1");
-		var xTmpLabel2 = pChartValue.attr("label");
-		var xTmpValue2 = pChartValue.children(".-info").children(".-value").text();
+		var xTmpLabel1 = xCV1.data("dl");
+		var xTmpValue1 = xCV1.data("dd");
+		var xTmpLabel2 = xCV2.data("dl");
+		var xTmpValue2 = xCV2.data("dd");
+		var xTmpFill1 = xCV1.data("df");
+		var xTmpFill2 = xCV2.data("df");
 		
-
 		var xX1;
 		var xY1;
 		var xDV1;
@@ -181,12 +165,14 @@ dbsfaces.chartValue = {
 		var xDV2;
 		var xDeltaLabel2;
 		var xDeltaValue2;
+		var xFill;
 		var xDeltaAreaWidth = xTmpX2 - xTmpX1;
 		if (xDeltaAreaWidth == 0){
 			xDeltaAreaWidth = 1;
 		}
 		if(xDeltaAreaWidth < 0){
 			xDeltaAreaWidth = Math.abs(xDeltaAreaWidth);
+			xFill = xTmpFill2;
 			xX1 = xTmpX2;
 			xY1 = xTmpY2;
 			xDeltaLabel1 = xTmpLabel2;
@@ -199,6 +185,7 @@ dbsfaces.chartValue = {
 			xDeltaValue2 = xTmpValue1;
 			xDV2 = xTmpDV1;
 		}else{
+			xFill = xTmpFill1;
 			xX1 = xTmpX1;
 			xY1 = xTmpY1;
 			xDeltaLabel1 = xTmpLabel1;
@@ -213,13 +200,12 @@ dbsfaces.chartValue = {
 		}
 
 		var xDeltaValue = dbsfaces.chartValue.calcDelta(xDV1, xDV2);
-		var xChartValuePoint = pChartValue.children(".-point");
-		var xStroke = "stroke:" + xChartValuePoint.attr("fill") + ";";
+		var xStroke = "stroke:" + xFill + ";";
 
 		var xSvgDeltaArea = xDeltaGroup.children(".-deltaarea");
 		//Cria linha
 		if (xSvgDeltaArea.length == 0){
-			xSvgDeltaArea = dbsfaces.svg.rect(xDeltaGroup, xX1, 1, xDeltaAreaWidth, "100%", null, null, "-deltaarea", xStroke, xChartValuePoint.attr("fill"));
+			xSvgDeltaArea = dbsfaces.svg.rect(xDeltaGroup, xX1, 1, xDeltaAreaWidth, "100%", null, null, "-deltaarea", xStroke, xFill);
 		//Altera linha se já existir
 		}else{
 			xSvgDeltaArea.attr("x", xX1)
@@ -236,25 +222,35 @@ dbsfaces.chartValue = {
 			xDeltaInfoGroup.attr("style", xStyle);
 		}
 		
+		//CV1=======================
+		var xPoint1 = xDeltaGroup.children(".-point.-p1");
+		if (xPoint1.length == 0){
+			xPoint1 = dbsfaces.chartValue.createPoint(xDeltaGroup, xStroke, "-point -p1");
+		}
+		xPoint1.attr("style", "transform: translate3d(" + xX1 + "px ," + xY1 + "px,0);");
+
+		//CV2=======================
+		var xPoint2 = xDeltaGroup.children(".-point.-p2");
+		if (xPoint2.length == 0){
+			xPoint2 = dbsfaces.chartValue.createPoint(xDeltaGroup, xStroke, "-point -p2");
+		}
+		xPoint2.attr("style", "transform: translate3d(" + xX2 + "px ," + xY2 + "px,0);");
+
 		//Box=======================
 		var xWidth = 0;
 		var xSvgDeltaBox = xDeltaInfoGroup.children("rect.-box");
 		if (xSvgDeltaBox.length == 0){
-			xSvgDeltaBox = dbsfaces.svg.rect(xDeltaInfoGroup, "0", "-4em", "0em", "4em", 3, 3, "-box", xStroke, null);
+			xSvgDeltaBox = dbsfaces.svg.rect(xDeltaInfoGroup, "0", "-5.5em", "0em", "4em", 3, 3, "-box", xStroke, null);
 		}
 		var xSvgDeltaBox2 = xDeltaInfoGroup.children("rect.-box2");
 		if (xSvgDeltaBox2.length == 0){
-			xSvgDeltaBox2 = dbsfaces.svg.rect(xDeltaInfoGroup, "0", "-4em", "0em", "1.5em", 3, 3, "-box2", null, xChartValuePoint.attr("fill"));
-		}
-		var xPoint = xDeltaInfoGroup.children("ellipse");
-		if (xPoint.length == 0){
-			xPoint = dbsfaces.svg.ellipse(xDeltaInfoGroup, "0", "0", "0.3em", "0.3em", null, xStroke, null);
+			xSvgDeltaBox2 = dbsfaces.svg.rect(xDeltaInfoGroup, "0", "-5.5em", "0em", "1.5em", 3, 3, "-box2", null, xFill);
 		}
 
 		//Info Delta=======================
 		var xSvgDeltaValue = xDeltaInfoGroup.children("text.-value");
 		if (xSvgDeltaValue.length == 0){
-			xSvgDeltaValue = dbsfaces.svg.text(xDeltaInfoGroup, "0", "-1.8em", xDeltaValue, "-value", null, null);
+			xSvgDeltaValue = dbsfaces.svg.text(xDeltaInfoGroup, "0", "-2.8em", xDeltaValue, "-value", null, null);
 		}else{
 			xSvgDeltaValue.text(xDeltaValue);
 		}
@@ -263,7 +259,7 @@ dbsfaces.chartValue = {
 		//Info label1=======================
 		var xSvgDeltaLabel1 = xDeltaInfoGroup.children("text.-label1");
 		if (xSvgDeltaLabel1.length == 0){
-			xSvgDeltaLabel1 = dbsfaces.svg.text(xDeltaInfoGroup, "0", "-1.5em", "", "-label1", null, null);
+			xSvgDeltaLabel1 = dbsfaces.svg.text(xDeltaInfoGroup, "0", "-3em", "", "-label1", null, null);
 		}
 		xSvgDeltaLabel1.text("x:");
 		if (xDeltaLabel1 != ""){
@@ -272,7 +268,7 @@ dbsfaces.chartValue = {
 
 		var xSvgDeltaValue1 = xDeltaInfoGroup.children("text.-value1");
 		if (xSvgDeltaValue1.length == 0){
-			xSvgDeltaValue1 = dbsfaces.svg.text(xDeltaInfoGroup, "0", "-1.5em", "", "-value1", null, null);
+			xSvgDeltaValue1 = dbsfaces.svg.text(xDeltaInfoGroup, "0", "-3em", "", "-value1", null, null);
 		}
 		xSvgDeltaValue1.text(xDeltaValue1);
 		xWidth = dbsfaces.chartValue.getMaxWidth(xWidth, xSvgDeltaLabel1, xSvgDeltaValue1);
@@ -280,7 +276,7 @@ dbsfaces.chartValue = {
 		//Info label2=======================
 		var xSvgDeltaLabel2 = xDeltaInfoGroup.children("text.-label2");
 		if (xSvgDeltaLabel2.length == 0){
-			xSvgDeltaLabel2 = dbsfaces.svg.text(xDeltaInfoGroup, "0", "-.5em", "", "-label2", null, null);
+			xSvgDeltaLabel2 = dbsfaces.svg.text(xDeltaInfoGroup, "0", "-2em", "", "-label2", null, null);
 		}
 		xSvgDeltaLabel2.text("y:");
 		if (typeof(xDeltaLabel2) != "undefined" 
@@ -290,7 +286,7 @@ dbsfaces.chartValue = {
 
 		var xSvgDeltaValue2 = xDeltaInfoGroup.children("text.-value2");
 		if (xSvgDeltaValue2.length == 0){
-			xSvgDeltaValue2 = dbsfaces.svg.text(xDeltaInfoGroup, "0", "-.5em", "", "-value2", null, null);
+			xSvgDeltaValue2 = dbsfaces.svg.text(xDeltaInfoGroup, "0", "-2em", "", "-value2", null, null);
 		}
 		xSvgDeltaValue2.text(xDeltaValue2);
 		xWidth = dbsfaces.chartValue.getMaxWidth(xWidth, xSvgDeltaLabel2, xSvgDeltaValue2);
@@ -322,6 +318,14 @@ dbsfaces.chartValue = {
 			return xWidth;
 		}
 		return pMax;
+	},
+	
+	createPoint: function(pDeltaGroup, pStroke, pStyleClass){
+		var xPoint = dbsfaces.svg.g(pDeltaGroup, null, null, null,null, pStyleClass, null);
+		dbsfaces.ui.moveToBack(xPoint);
+		dbsfaces.svg.ellipse(xPoint, "0", "0", "1em", "1em", null, pStroke, null);
+		dbsfaces.svg.ellipse(xPoint, "0", "0", ".2em", ".2em", null, pStroke, null);
+		return xPoint;
 	},
 	
 	//Coloca item como primeiro elemento para aparecer acima dos demais
@@ -359,26 +363,16 @@ dbsfaces.chartValue = {
 			dbsfaces.chartValue.removeDeltaGroup(xDeltaGroup);
 		}
 		dbsfaces.chartValue.removeDeltaAttrs(pChart);
+
 	},
 	
 	removeDeltaAttrs: function(pChart){
-		pChart.get(0).removeAttribute("dx1");
-		pChart.get(0).removeAttribute("dy1");
-		pChart.get(0).removeAttribute("dx2");
-		pChart.get(0).removeAttribute("dy2");
-		pChart.get(0).removeAttribute("dv1");
-		pChart.get(0).removeAttribute("dl1");
-		pChart.get(0).removeAttribute("dd1");
-		pChart.data("chartvalue").filter(".-selectedDelta").svgRemoveClass("-selectedDelta");
+		pChart.data("cv1", null);
+		pChart.data("cv2", null);
 	},
 
 
 
-	//Coloca item como primeiro elemento para aparecer acima dos demais
-	moveToFront: function(pChartValue){
-//		pChartValue.parentElement.appendChild(pChartValue);
-	},
-	
 	selectChartValue: function(pCharts, pChart, pChartValue, pSelect, pIsGroup){
 		var xChartValues = pChart.data("chartvalue").not(pChartValue);
 		var xChartLine = pChart.children(".-line");
@@ -391,7 +385,7 @@ dbsfaces.chartValue = {
 		 || pChart.attr("type") == "line"){
 			if (pSelect){
 				//Posiciona item como primeiro elemento para aparecer acima dos demais
-				dbsfaces.chartValue.moveToFront(pChartValue.get(0));
+				dbsfaces.ui.moveToFront(pChartValue.get(0));
 			}
 		}
 		
@@ -418,6 +412,11 @@ dbsfaces.chartValue = {
 	},
 	
 	selectValue: function(pCharts, pChart, pChartValue, pSelect){
+		if (dbsfaces.chart.isDeltaDragging(pChart)){
+			dbsfaces.chartValue.selectDelta(pChart, pChartValue);
+			return;
+		}
+
 		//Seleciona o próprio item
 		dbsfaces.chartValue.selectChartValue(pCharts, pChart, pChartValue, pSelect, false);
 

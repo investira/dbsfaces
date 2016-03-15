@@ -26,28 +26,31 @@
     transform-style: flat;
 }
 
+.dbs_chart > .-delta > .-point,
+.dbs_chart > .-delta > .-info > .-point{
+	fill: rgba(255,255,255,0.4);
+    stroke-width: 0.1em;
+}
+
 .dbs_chart > .-delta > .-deltaarea{
-	/* stroke-linecap: round; */
-    /* stroke-dasharray: .3em; */
-/*     stroke-width: .2em; */
-	opacity: 0.3;
+	opacity: 0.2;
     stroke-width: 2px;
 }
 .dbs_chart > .-delta > .-info{
     overflow: visible;
     font-size: 1em;
-     -webkit-transition: transform .3s;
-    -moz-transition: transform .3s;
-    -o-transition: transform .3s;
-    transition: transform .3s;
-	-webkit-filter: blur(0);
-    -moz-filter: blur(0);
-    -o-filter: blur(0);
-    filter: blur(0);
-    -webkit-transform: translate3d(0,0,0);
-    -moz-transform: translate3d(0,0,0);
-    -o-transform: translate3d(0,0,0);
-    transform: translate3d(0,0,0);
+/*      -webkit-transition: transform .3s; */
+/*     -moz-transition: transform .3s; */
+/*     -o-transition: transform .3s; */
+/*     transition: transform .3s; */
+/* 	-webkit-filter: blur(0); */
+/*     -moz-filter: blur(0); */
+/*     -o-filter: blur(0); */
+/*     filter: blur(0); */
+/*     -webkit-transform: translate3d(0,0,0); */
+/*     -moz-transform: translate3d(0,0,0); */
+/*     -o-transform: translate3d(0,0,0); */
+/*     transform: translate3d(0,0,0); */
     transform-style: flat;
 }
 
@@ -101,12 +104,10 @@
 .dbs_chart[type='line'] > .dbs_chartValue > .-point{
 }
 
-.dbs_chart[type='line'] > .dbs_chartValue.-selected > .-point{
-/* 	fill:white;	 */
-}
-.dbs_chart[type='line'] > .dbs_chartValue.-selectedDelta > .-point{
-}
-.dbs_chart[type='line'] > .dbs_chartValue:not(.-selected):not(.-selectedDelta) > .-point{
+/* .dbs_chart[type='line'] > .dbs_chartValue.-selectedDelta > .-point{ */
+/* } */
+
+.dbs_chart[type='line'] > .dbs_chartValue:not(.-selected) > .-point{
 	fill: transparent; 
     -webkit-transform: scale(1);
     -moz-transform: scale(1);
@@ -114,29 +115,16 @@
     transform: scale(1);
 }
 
-.dbs_chart[type='line'] > .-delta > .-info > ellipse,
-.dbs_chart[type='line'] > .dbs_chartValue.-selected  > .-point,
-.dbs_chart[type='line'] > .dbs_chartValue.-selectedDelta  > .-point{
+.dbs_chart[type='line'] > .dbs_chartValue.-selected  > .-point{
 	fill: white;	
     stroke-width: 1px; 
 }
 
-
-.dbs_chart[type='line'] > .dbs_chartValue.-selected > .-info > .-point{
-	fill:white;	
-}
-
-.dbs_chart[dx1][type='line'] > .-delta > .-info > .-box,
-.dbs_chart[dx1][type='line'] > .-delta > .-info > .-box2{
-	stroke-dasharray: none;
-	stroke-width: 0.2em;
-}
-
 .dbs_chart[type='line'] > .-delta > .-info > .-box,
 .dbs_chart[type='line'] > .-delta > .-info > .-box2{
-	stroke-dasharray: .1em;
+	stroke-dasharray: none;
     fill-opacity: .85;
-	stroke-width: 0.1em;
+	stroke-width: 0.2em;
 }
 .dbs_chart[type='line'] > .-delta > .-info > .-box2{
 }
