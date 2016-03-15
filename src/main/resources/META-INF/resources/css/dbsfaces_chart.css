@@ -1,13 +1,20 @@
 .dbs_chart{
 	position: relative;
+	-webkit-filter: blur(0);
+    -moz-filter: blur(0);
+    -o-filter: blur(0);
+    filter: blur(0);
 }
 
 .dbs_chart > .-line {
+}
+
+
+.dbs_chart > .-line > path{
 	stroke-width: .2em;
 	stroke-linecap: round;
 	stroke-linejoin: round;
 	fill: none;
-	stroke:url(#linestroke);
 	stroke-width:2px;
 }
 
@@ -30,16 +37,24 @@
 .dbs_chart > .-delta > .-info{
     overflow: visible;
     font-size: 1em;
-    -webkit-transition: transform .3s;
+     -webkit-transition: transform .3s;
     -moz-transition: transform .3s;
     -o-transition: transform .3s;
     transition: transform .3s;
+	-webkit-filter: blur(0);
+    -moz-filter: blur(0);
+    -o-filter: blur(0);
+    filter: blur(0);
+    -webkit-transform: translate3d(0,0,0);
+    -moz-transform: translate3d(0,0,0);
+    -o-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+    transform-style: flat;
 }
 
 .dbs_chart > .-delta > .-info > .-value{
     text-anchor: middle;
-/* 	font-weight: bold; */
-/* 	font-size: 1.1em; */
+
 	
     font-weight: bolder;
     stroke: black;

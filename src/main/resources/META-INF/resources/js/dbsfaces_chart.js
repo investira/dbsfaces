@@ -91,7 +91,7 @@ dbsfaces.chart = {
 		var xChartValuePoint;
 		var xPos;
 		var xPosAnt = 1;
-		var xPath = "";
+		var xStringPath = "";
 		var xStarColor;
 		var xEndColor;
 		//Loop nos valores por ordem do index para garantir o loop na ordem em que foram criados
@@ -112,27 +112,28 @@ dbsfaces.chart = {
 			if (pDrawLine){
 				xChartValuePoint = xChartValue.children(".-point");
 				if (i==1){
-					xPath = "M";
+					xStringPath = "M";
 					//Salva cor do primeiro ponto
 					xStarColor = xChartValuePoint.css("stroke");
 				}else {
-					xPath += "L";
+					xStringPath += "L";
 				}
 				if (i == pChartValues.length){
 					//Salva cor do último ponto
 					xStopColor = xChartValuePoint.css("stroke");
 				}
-				xPath += xChartValuePoint.attr("cx") + "," + xChartValuePoint.attr("cy"); 
+				xStringPath += xChartValuePoint.attr("cx") + "," + xChartValuePoint.attr("cy"); 
 			}
 		}
 		//Cria a linha que conecta os pontos
-		if (xPath != ""){
+		if (xStringPath != ""){
 			var xSvg = pCharts.find(".-container > .-data > svg.-container > defs");
 			var xLG = dbsfaces.svg.linearGradient(xSvg);
 			xLG.attr("id", "linestroke");
 			dbsfaces.svg.stop(xLG, 0, xStarColor);
 			dbsfaces.svg.stop(xLG, "100%", xStopColor);
-			dbsfaces.svg.path(pChart.children("g.-line"), xPath, null, null, null);
+			var xPath = dbsfaces.svg.path(pChart.children("g.-line"), xStringPath, null, null, null);
+			xPath.attr("stroke", "url(#linestroke)");
 		}
 	},
 

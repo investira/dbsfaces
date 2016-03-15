@@ -49,36 +49,24 @@ dbs_chartValue = function(pId) {
 
 };
 
-//dbsfaces.chartValue.chartValueData = function(){
-//	this.X = null;
-//	this.Y = null;
-//	this.DV = null;
-//	this.DeltaLabel = null;
-//	this.DeltaValue = null;
-//}
 
 dbsfaces.chartValue = {
-	chartValueData: function(){
-	    this.legs = 4;
-	    this.temperament = 'Apathetic';
-	    this.sound = 'Meow';
-	},
-	
-	initialize: function(pChart, pChartValue){
+
+		initialize: function(pChart, pChartValue){
 		if (pChart.attr("type") == "line"){
-			dbsfaces.chartValue.initializeLine(pChart, pChartValue);
+//			dbsfaces.chartValue.initializeLine(pChart, pChartValue);
 		}else if (pChart.attr("type") == "pie"){
 			dbsfaces.chartValue.initializePie(pChartValue);
 		}
 	},
 	
-	initializeLine: function(pChart, pChartValue){
+//	initializeLine: function(pChart, pChartValue){
 //		var xLineGroup = pChart.children("g.-line");
 //		var xChartValueAnterior = pChartValue.prevAll(".dbs_chartValue").first();
 //		
 //		dbsfaces.chartValue.drawLine(xLineGroup, xChartValueAnterior);
 //		dbsfaces.chartValue.drawLine(xLineGroup, pChartValue);
-	},
+//	},
 
 	initializePie: function(pChartValue){
 		var xChartValueInfo = pChartValue.children(".-info");
@@ -93,33 +81,6 @@ dbsfaces.chartValue = {
 				xTransform += "translateX(-" + xWidth + "px)";
 			}
 			dbsfaces.ui.transform(xChartValueBox, xTransform);
-		}
-	},
-	
-	//Encode de linha que liga os pontos
-	drawLine: function(pLineGroup, pChartValue){
-		if (pChartValue.length == 0){return;}
-		var xChartValuePosterior = pChartValue.nextAll(".dbs_chartValue").first().children(".-point");
-		if (xChartValuePosterior.length == 0){return;}
-		var xChartValuePoint = pChartValue.children(".-point");
-		var xId = pChartValue.attr("id");
-		var xStyle = "stroke:" + xChartValuePoint.attr("fill");
-		var xX1 = xChartValuePoint.attr("cx");
-		var xY1 = xChartValuePoint.attr("cy");
-		var xX2 = xChartValuePosterior.attr("cx");
-		var xY2 = xChartValuePosterior.attr("cy");
-		var xSvgLine = pLineGroup.children("line[index='" + xId + "']");
-		//Altera linha caso já exista
-		if (xSvgLine.length != 0){
-			xSvgLine.attr("x1", xX1)
-				 	.attr("y1", xY1)
-				 	.attr("x2", xX2)
-				 	.attr("y2", xY2)
-				 	.attr("style", xStyle);
-		//Cria linha
-		}else{
-			xSvgLine = dbsfaces.svg.line(pLineGroup, xX1, xY1, xX2, xY2, null, xStyle);
-			xSvgLine.attr("index", xId);
 		}
 	},
 	
@@ -267,7 +228,7 @@ dbsfaces.chartValue = {
 		//Group info----------------------
 		var xDeltaInfoGroup = xDeltaGroup.children(".-info");
 
-		var xStyle = "transform: translate3d(" + xX2 + "px ," + xY2 + "px,0);"
+		var xStyle = "transform: translate3d(" + dbsfaces.math.round(xX2,0) + "px ," + dbsfaces.math.round(xY2,0) + "px,0);"
 		//Cria Group info
 		if (xDeltaInfoGroup.length == 0){
 			xDeltaInfoGroup = dbsfaces.svg.g(xDeltaGroup, null, null, "4em","4em", "-info", xStyle);
