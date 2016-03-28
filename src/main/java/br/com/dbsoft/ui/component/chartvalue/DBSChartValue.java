@@ -11,7 +11,7 @@ import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSNumber;
 
 @FacesComponent(DBSChartValue.COMPONENT_TYPE)
-public class DBSChartValue extends DBSUIInput implements NamingContainer, Serializable{
+public class DBSChartValue extends DBSUIInput implements NamingContainer, Serializable{ //, Serializable
 	
 	/**
 	 * 
@@ -114,5 +114,29 @@ public class DBSChartValue extends DBSUIInput implements NamingContainer, Serial
 		getStateHelper().put(PropertyKeys.displayValue, pDisplayValue);
 		handleAttribute("displayValue", pDisplayValue);
 	}
+
+//	@Override
+//	public void restoreState(FacesContext context) {
+//	    Object[] rtrn = new Object[2];
+//	    rtrn[0] = super.saveState(context);
+//	    rtrn[1] = "dummy";
+//	}
+
+//	@Override
+//	public void restoreState(FacesContext pContext, Object pState) {
+//	    Object rtrn[] = (Object[])pState;
+//	    super.restoreState(pContext, rtrn[0]);
+////	    rtrn[0] = super.saveState(context);
+////	    rtrn[1] = "dummy";
+//		
+//	}
+//	
+//	@Override
+//	public Object saveState(FacesContext context) {
+//	    Object[] rtrn = new Object[2];
+//	    rtrn[0] = super.saveState(context);
+//	    rtrn[1] = "dummy";
+//	    return rtrn;
+//	}
 
 }

@@ -57,7 +57,7 @@
 .dbs_charts.-dim > .-container > .-data > .-container > .-content > .-value > .-grid > .-label{
 	opacity: 0;
 }
-.dbs_charts.-dim > .-container > .-data > .-container > .-content > .-value > .dbs_chart > .-line,
+.dbs_charts.-dim > .-container > .-data > .-container > .-content > .-value > .dbs_chart > .-path > path,
 .dbs_charts.-dim > .-container > .-data > .-container > .-content > .-value > .dbs_chart > .dbs_chartValue:not(.-selected){
     -webkit-transition: opacity .5s; 
     -moz-transition: opacity .5s;
@@ -76,10 +76,19 @@
 	opacity: 0;
 }	
 
-
-
 .dbs_charts > .-container > .-data > .-container > .-content > .-right{
 }	
 
+.dbs_charts > .-container > .-data > .-container > defs{
+}
+
+.dbs_charts > .-container > .-data > .-container > defs > .-guide {
+}
+.dbs_charts > .-container > .-data > .-container > defs > .-guide > ellipse{
+}
+
 .dbs_charts > .-container > .-footer{
 }
+
+
+

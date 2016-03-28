@@ -163,7 +163,7 @@ public class DBSComboboxRenderer extends DBSRenderer {
 			xValueKey = "";
 		}
 		
-		xStyle = DBSFaces.getStyleWidthFromInputSize(pCombobox.getSize());
+		xStyle = DBSFaces.getCSSStyleWidthFromInputSize(pCombobox.getSize());
 
 		if (pCombobox.getReadOnly()){
 			DBSFaces.encodeInputDataReadOnly(pCombobox, pWriter, xClientId, false, xValue.toString(), pCombobox.getSize(), null, xStyle);

@@ -209,7 +209,7 @@ dbsfaces.tooltip = {
 //		pContainer.css("left", xLeft);
 //		pContainer.css("top", xTop); 
 //		
-		dbsfaces.ui.transform(pContainer, "translateX(" + parseInt(xLeft) + "px) translateY(" + parseInt(xTop) + "px)");
+		dbsfaces.ui.cssTransform(pContainer, "translateX(" + parseInt(xLeft) + "px) translateY(" + parseInt(xTop) + "px)");
 		
 
 	},

@@ -1,67 +1,124 @@
 dbs_chartValue = function(pId) {
 	var xChartValue = $(pId);
-	var xChart = xChartValue.closest(".dbs_chart");
-	var xCharts = xChart.closest(".dbs_charts");
 	
-	dbsfaces.chartValue.initialize(xChart, xChartValue);
+	dbsfaces.chartValue.initialize(xChartValue);
 	
-	//Inicia seleção para cálculo do delta (computer e mobile)
-	$(pId).on("mousedown touchstart", function(e){
-//		console.log("mousedown touchstart");
-		dbsfaces.chart.startDeltaDrag(xChart);
-		dbsfaces.chartValue.selectValue(xCharts, xChart, xChartValue, true);
-		e.preventDefault();
-		return false;
-	});
-
-	//Desmaca item selecionado
-	$(pId).mouseleave(function (e){
-//		console.log("mouseleave");
-		dbsfaces.chartValue.selectValue(xCharts, xChart, xChartValue, false);
-	});
-	
+//	dbsfaces.chartValue.selectDelta(xChart, xChartValue);
 	//Seleciona nova posição do delta e do item selecionado
-	$(pId).mousemove(function (e){
+	$(pId).on("mouseenter", function(e){
 //		console.log("mousemove");
-		dbsfaces.chartValue.selectValue(xCharts, xChart, xChartValue, true);
+		dbsfaces.chartValue.select(xChartValue, true);
 	});
 
-	//Seleciona nova posição do delta e do item selecionado (Mobile)
-	$(pId).on("touchmove", function(e){
-		//Verifica se elemento é um dbs_chartValue
-		var xTarget = document.elementFromPoint(e.originalEvent.touches[0].clientX, e.originalEvent.touches[0].clientY);
-		if (typeof(xTarget) != "undefined"){
-			var xTargetChartValue = $(xTarget).parent();
-			if (typeof(xTargetChartValue) != "undefined"){
-				var xClass = xTargetChartValue.attr("class");
-				if (typeof(xClass) != "undefined" 
-				 && xClass.indexOf('dbs_chartValue') != -1){
-					var xTargetChart = xTargetChartValue.closest(".dbs_chart");
-					if (xTargetChart.get(0) == xChart.get(0)){
-						dbsfaces.chartValue.selectValue(xTargetChartValue.closest(".dbs_charts"), xTargetChart, xTargetChartValue, true);
-						e.preventDefault();
-						return false;
-					}
-				}
-			}
-		}
+	$(pId).on("mouseleave", function(e){
+//		console.log("mousemove");
+		dbsfaces.chartValue.select(xChartValue, false);
 	});
+	
+//	//Inicia seleção para cálculo do delta (computer e mobile)
+//	$(pId).on("mousedown touchstart", function(e){
+//		console.log("mousedown touchstart");
+//		dbsfaces.chart.startDeltaDrag(xChart);
+//		dbsfaces.chartValue.selectValue(xCharts, xChart, xChartValue, true);
+//		e.preventDefault();
+//		return false;
+//	});
+//
+//	//Desmaca item selecionado
+//	$(pId).mouseleave(function (e){
+////		console.log("mouseleave");
+//		dbsfaces.chartValue.selectValue(xCharts, xChart, xChartValue, false);
+//	});
+//	
+//	//Seleciona nova posição do delta e do item selecionado
+//	$(pId).mousemove(function (e){
+////		console.log("mousemove");
+//		dbsfaces.chartValue.selectValue(xCharts, xChart, xChartValue, true);
+//	});
+//
+//	//Seleciona nova posição do delta e do item selecionado (Mobile)
+//	$(pId).on("touchmove", function(e){
+//		console.log("touchmove");
+//		//Verifica se elemento é um dbs_chartValue
+//		var xTarget = document.elementFromPoint(e.originalEvent.touches[0].clientX, e.originalEvent.touches[0].clientY);
+//		if (typeof(xTarget) != "undefined"){
+//			var xTargetChartValue = $(xTarget).parent();
+//			if (typeof(xTargetChartValue) != "undefined"){
+//				var xClass = xTargetChartValue.attr("class");
+//				if (typeof(xClass) != "undefined" 
+//				 && xClass.indexOf('dbs_chartValue') != -1){
+//					var xTargetChart = xTargetChartValue.closest(".dbs_chart");
+//					if (xTargetChart.get(0) == xChart.get(0)){
+//						dbsfaces.chartValue.selectValue(xTargetChartValue.closest(".dbs_charts"), xTargetChart, xTargetChartValue, true);
+//						e.preventDefault();
+//						return false;
+//					}
+//				}
+//			}
+//		}
+//	});
 };
 
 
+//function Point(x, y) {
+//	  this.x = x;
+//	  this.y = y;
+//	}
+//	Now you can create Point objects using the new keyword:
+//
+//	var p = new Point(4.5, 19.0);
+//	To create an array of Point objects you simply create an array, and put Point objects in it:
+//
+//	var a = [ new Point(1,2), new Point(5,6), new Point(-1,14) ];
+//	Or:
+//
+//	var a = [];
+//	a.push(new Point(1,2));
+//	a.push(new Point(5,6));
+//	a.push(new Point(-1,14));
+//	You use the . operator to access the properties in the Point object. Example:
+//
+//	alert(a[2].x);
+//	Or:
+//
+//	var p = a[2];
+//	alert(p.x + ',' + p.y);
+
 dbsfaces.chartValue = {
-	initialize: function(pChart, pChartValue){
+	initialize: function(pChartValue){
+		var xChart = pChartValue.closest(".dbs_chart");
+		var xCharts = xChart.closest(".dbs_charts");
+		pChartValue.data("parent", xChart);
+		xChart.data("parent", xCharts);
+
 		//Indicar que nunca foi utilizado para cálculo do delta
-		pChartValue.data("dx", null);
+		dbsfaces.chartValue.initializeData(pChartValue);
 		///Inicializa conforme tipo de gráfico
-		if (pChart.attr("type") == "pie"){
+		if (xChart.attr("type") == "pie"){
 			dbsfaces.chartValue.initializePie(pChartValue);
-		}else if (pChart.attr("type") == "line"){
-			dbsfaces.chartValue.initializeLine(pChart, pChartValue);
+		}else if (xChart.attr("type") == "line"){
+			dbsfaces.chartValue.initializeLine(pChartValue);
 		}	
 	},
-	
-	initializeLine: function(pChart, pChartValue){
+
+	initializeData: function(pChartValue){
+		var xChartValuePoint = pChartValue.children(".-point");
+		var xChartValueInfo = pChartValue.children(".-info");
+		xValue = xChartValueInfo.children(".-value").text();
+		if (xValue != 0){
+			//Salva valores dentro do próprio componente para facilar o uso no momento do encode do delta
+			pChartValue.data("dx", xChartValuePoint.attr("cx"));
+			pChartValue.data("dy", xChartValuePoint.attr("cy"));
+			pChartValue.data("df", xChartValuePoint.attr("fill"));
+			pChartValue.data("dv", pChartValue.attr("value"));
+			pChartValue.data("dl", pChartValue.attr("label"));
+			pChartValue.data("dd", xChartValueInfo.children(".-value").text());
+		}else{
+			pChartValue.data("dx", null);
+		}
+	},
+
+	initializeLine: function(pChartValue){
 	},
 
 	initializePie: function(pChartValue){
@@ -76,45 +133,36 @@ dbsfaces.chartValue = {
 			if (xChartValueValue.attr("style").indexOf("text-anchor:end") != -1){
 				xTransform += "translateX(-" + xWidth + "px)";
 			}
-			dbsfaces.ui.transform(xChartValueBox, xTransform);
+			dbsfaces.ui.cssTransform(xChartValueBox, xTransform);
 		}
 	},
 	
 	selectDelta: function(pChart, pChartValue){
 		//Não permite seleção para gráficos diferente de line ou 
 		//quando valor do ponto selecionado for zero
-		if (pChart.attr("type") != "line"
+		if (pChart.length == 0
+		 || pChart.attr("type") != "line"
 		 ||	typeof(pChart.attr("showdelta")) == 'undefined'
-		 || pChartValue.attr("value") == "0.0"){
+		 || pChartValue.data("dx") == null
+		 || pChartValue.data("dv") == "0.0"){
 			return;
 		}
 
-		var xChartValuePoint = pChartValue.children(".-point");
-		var xChartValueInfo = pChartValue.children(".-info");
-		xValue = xChartValueInfo.children(".-value").text();
-		if (xValue != 0){
-			//Salva valores dentro do próprio componente para facilar o uso no momento do encode do delta
-			if (pChartValue.data("dx") == null){
-				pChartValue.data("dx", xChartValuePoint.attr("cx"));
-				pChartValue.data("dy", xChartValuePoint.attr("cy"));
-				pChartValue.data("df", xChartValuePoint.attr("fill"));
-				pChartValue.data("dv", pChartValue.attr("value"));
-				pChartValue.data("dl", pChartValue.attr("label"));
-				pChartValue.data("dd", xChartValueInfo.children(".-value").text());
-			}
-			//Marca ponto origem
-			if (pChart.data("cv1") == null){
-				pChart.data("cv1", pChartValue);
-			}
+		if (pChart.data("cv1") == null){
+			pChart.data("cv1", pChartValue);
 			pChart.data("cv2", pChartValue);
-			dbsfaces.chartValue.showDelta(pChart, pChartValue, -1, -1);
 		}
+		//Marca ponto origem
+		if (pChart.data("guide") == 1){
+			pChart.data("cv1", pChartValue);
+		}else{
+			pChart.data("cv2", pChartValue);
+		}
+		dbsfaces.chartValue.showDelta(pChart, pChartValue, -1, -1);
 	},
 	
 	
 	showDelta: function(pChart, pChartValue){
-		if (pChart.length == 0
-		|| typeof(pChart.attr("showdelta")) == 'undefined'){return;}
 		var xDeltaGroup = pChart.children("g.-delta");
 		if (xDeltaGroup.length == 0){
 			return;
@@ -199,42 +247,33 @@ dbsfaces.chartValue = {
 			xDV2 = xTmpDV2;
 		}
 
-		var xDeltaValue = dbsfaces.chartValue.calcDelta(xDV1, xDV2);
 		var xStroke = "stroke:" + xFill + ";";
+		var xDeltaValue = dbsfaces.chartValue.calcDelta(xDV1, xDV2);
 
-		var xSvgDeltaArea = xDeltaGroup.children(".-deltaarea");
-		//Cria linha
-		if (xSvgDeltaArea.length == 0){
-			xSvgDeltaArea = dbsfaces.svg.rect(xDeltaGroup, xX1, 1, xDeltaAreaWidth, "100%", null, null, "-deltaarea", xStroke, xFill);
-		//Altera linha se já existir
-		}else{
-			xSvgDeltaArea.attr("x", xX1)
-					 	 .attr("width", xDeltaAreaWidth);
-		}		
 		//Group info----------------------
 		var xDeltaInfoGroup = xDeltaGroup.children(".-info");
 
 		var xStyle = "transform: translate3d(" + xX2 + "px ," + xY2 + "px,0);"
 		//Cria Group info
 		if (xDeltaInfoGroup.length == 0){
+													//!!!!!!!! retirar os 4m?
 			xDeltaInfoGroup = dbsfaces.svg.g(xDeltaGroup, null, null, "4em","4em", "-info", xStyle);
 		}else{
-			xDeltaInfoGroup.attr("style", xStyle);
+			xDeltaInfoGroup.svgAttr("style", xStyle);
 		}
-		
-		//CV1=======================
-		var xPoint1 = xDeltaGroup.children(".-point.-p1");
-		if (xPoint1.length == 0){
-			xPoint1 = dbsfaces.chartValue.createPoint(xDeltaGroup, xStroke, "-point -p1");
-		}
-		xPoint1.attr("style", "transform: translate3d(" + xX1 + "px ," + xY1 + "px,0);");
 
-		//CV2=======================
-		var xPoint2 = xDeltaGroup.children(".-point.-p2");
-		if (xPoint2.length == 0){
-			xPoint2 = dbsfaces.chartValue.createPoint(xDeltaGroup, xStroke, "-point -p2");
-		}
-		xPoint2.attr("style", "transform: translate3d(" + xX2 + "px ," + xY2 + "px,0);");
+
+		//Area selecionada----------------------------
+		var xSvgDeltaArea = xDeltaGroup.children(".-deltaarea");
+		//Cria linha
+		if (xSvgDeltaArea.length == 0){
+			xSvgDeltaArea = dbsfaces.svg.rect(xDeltaGroup, xX1, 1, xDeltaAreaWidth, "100%", null, null, "-deltaarea", xStroke, xFill);
+			dbsfaces.ui.moveToBack(xSvgDeltaArea);
+		}else{
+			xSvgDeltaArea.svgAttr("x", xX1)
+					 	 .svgAttr("width", xDeltaAreaWidth);
+		}		
+
 
 		//Box=======================
 		var xWidth = 0;
@@ -294,16 +333,16 @@ dbsfaces.chartValue = {
 
 		//Box=======================
 		xWidthLeft = xWidth / 2 + 2;
-		xSvgDeltaLabel1.attr("x", -xWidthLeft);
-		xSvgDeltaLabel2.attr("x", -xWidthLeft);
-		xSvgDeltaValue1.attr("x", xWidthLeft);
-		xSvgDeltaValue2.attr("x", xWidthLeft);
+		xSvgDeltaLabel1.svgAttr("x", -xWidthLeft);
+		xSvgDeltaLabel2.svgAttr("x", -xWidthLeft);
+		xSvgDeltaValue1.svgAttr("x", xWidthLeft);
+		xSvgDeltaValue2.svgAttr("x", xWidthLeft);
 
 		xWidth *= 1.15;
-		xSvgDeltaBox.attr("x",xWidth/-2)
-					.attr("width", xWidth);
-		xSvgDeltaBox2.attr("x",xWidth/-2)
-			 		.attr("width", xWidth);
+		xSvgDeltaBox.svgAttr("x",xWidth/-2)
+					.svgAttr("width", xWidth);
+		xSvgDeltaBox2.svgAttr("x",xWidth/-2)
+			 		.svgAttr("width", xWidth);
 	},
 	
 	getMaxWidth: function(pMax, pLabel, pValue){
@@ -319,15 +358,7 @@ dbsfaces.chartValue = {
 		}
 		return pMax;
 	},
-	
-	createPoint: function(pDeltaGroup, pStroke, pStyleClass){
-		var xPoint = dbsfaces.svg.g(pDeltaGroup, null, null, null,null, pStyleClass, null);
-		dbsfaces.ui.moveToBack(xPoint);
-		dbsfaces.svg.ellipse(xPoint, "0", "0", "1em", "1em", null, pStroke, null);
-		dbsfaces.svg.ellipse(xPoint, "0", "0", ".2em", ".2em", null, pStroke, null);
-		return xPoint;
-	},
-	
+
 	//Coloca item como primeiro elemento para aparecer acima dos demais
 	calcDelta: function(pDV1, pDV2){
 		if (pDV1 == 0
@@ -369,74 +400,117 @@ dbsfaces.chartValue = {
 	removeDeltaAttrs: function(pChart){
 		pChart.data("cv1", null);
 		pChart.data("cv2", null);
+		pChart.data("guide", null);
+	},
+
+	select: function(pChartValue, pSelect){
+		var xChart = pChartValue.data("parent");
+		var xCharts = xChart.data("parent");
+
+//		if (dbsfaces.chart.isDeltaDragging(pChart)){
+//			dbsfaces.chartValue.selectDelta(pChart, pChartValue);
+//			return;
+//		}
+		
+//		if (pChart.data("cv" + pChart.data("guide")) == pChartValue){
+//			return;
+//		}
+		
+		dbsfaces.charts.unSelect(xCharts);
+		
+//		//Remove dim do grupo de gráficos
+//		xCharts.removeClass("-dim");
+//		//Desmarca todos itens que possam estar selecionados no gráfico
+//		xChart.data("chartvalue").svgRemoveClass("-selected");
+//
+		if (pSelect){
+			dbsfaces.charts.select(xCharts);
+		}
+
+		//Seleciona o próprio item
+		dbsfaces.chartValue.selectChartValue(xCharts, xChart, pChartValue, pSelect);
+		//Seta o guide
+
+		//Seleciona itens com mesmo label em outros gráficos do mesmo grupoid
+//		clearTimeout(pCharts.data("labeltimeout"));
+//		pCharts.data("labeltimeout", setTimeout(function(){
+//			var xMembers = pCharts.data("groupMembers");
+//			if (xMembers != null) {
+//				var xLabel = pChartValue.attr("label");
+//				xMembers.each(function(){
+//					xCharts = $(this);
+//					//Aumenta transparencia para dos outros para enfatizar o item selecionado
+//					//Remove seleção anterior se houver;
+//					var xChart = xCharts.data("chart");
+//					var xChartValues = xChart.data("chartvalue").not(pChartValue);
+//					xChart.data("chartvalue").svgRemoveClass("-selected");
+//					xChart.data("chartvalue").svgRemoveClass("-selected");
+//
+//					//Seta o guide
+//					dbsfaces.chartValue.setGuide(pChart, pChartValue, pSelect);
+//					
+//					//Seleciona o item
+//					if (pSelect){
+//						xCharts.addClass("-dim");
+//						//Selecion demais itens
+//						var xChartValues = xChart.data("chartvalue").filter("[label='" + xLabel + "']");
+//						xChartValues.each(function(){
+//							dbsfaces.chartValue.selectChartValue(xCharts, xChart, $(this), pSelect);
+//						});
+//					}else{
+//						xCharts.removeClass("-dim");
+//					}
+//				});
+//			}
+//		},0)
+//		)
 	},
 
 
+	selectChartValue: function(pCharts,  pChart, pChartValue, pSelect){
+//		if (typeof(pChart.data("cv" + pChart.data("guide"))) == "undefined"){
+//			return;
+//		}
+//		if (pChart.data("cv" + pChart.data("guide")) == pChartValue){
+//			return;
+//		}
+//		console.log(pChart.data("guide") + "\t" + pChartValue.attr("index"));
 
-	selectChartValue: function(pCharts, pChart, pChartValue, pSelect, pIsGroup){
-		var xChartValues = pChart.data("chartvalue").not(pChartValue);
-		var xChartLine = pChart.children(".-line");
-		var xGridLabels = pCharts.find(".-container > .-data > .-container > .-content > .-value > .-grid > .-label");
-
-		//Seleciona o próprio item
-		dbsfaces.chartValue.setSelected(xChartValues, pChartValue, pSelect);
-
-		if (pChart.attr("type") == "bar"
-		 || pChart.attr("type") == "line"){
-			if (pSelect){
-				//Posiciona item como primeiro elemento para aparecer acima dos demais
+		if (pSelect){
+			if (pChart.attr("type") == "bar"
+			 || pChart.attr("type") == "line"){
 				dbsfaces.ui.moveToFront(pChartValue.get(0));
 			}
-		}
-		
-		//Selecion demais itens
-		if (pSelect){
-			//Aumenta transparencia para dos outros para enfatizar o item selecionado
-			pCharts.get(0).classList.add("-dim");
-		//Esconde valor 	
-		}else{
-			pCharts.get(0).classList.remove("-dim");
-		}
-	},
-	
-	setSelected: function(pChartValues, pChartValue, pSelect){
-		var xTooltipId = "#" + dbsfaces.util.jsid(pChartValue.get(0).id) + '_tooltip';
-		pChartValues.svgRemoveClass("-selected");
-		pChartValue.svgRemoveClass("-selected");
-		if (pSelect){
+			//Salva selecionado
+			pChart.data("cv" + pChart.data("guide"), pChartValue);
+			//Marca selecionado
 			pChartValue.svgAddClass("-selected");
+
+			//Tooltip
+			var xTooltipId = "#" + dbsfaces.util.jsid(pChartValue.get(0).id) + '_tooltip';
 			dbsfaces.tooltip.showTooltip(xTooltipId);
-		}else{
-			dbsfaces.tooltip.hideTooltip(xTooltipId);
 		}
+
+		dbsfaces.chartValue.setGuide(pChart, pChartValue, pSelect);
 	},
 	
-	selectValue: function(pCharts, pChart, pChartValue, pSelect){
-		if (dbsfaces.chart.isDeltaDragging(pChart)){
-			dbsfaces.chartValue.selectDelta(pChart, pChartValue);
-			return;
-		}
 
-		//Seleciona o próprio item
-		dbsfaces.chartValue.selectChartValue(pCharts, pChart, pChartValue, pSelect, false);
-
-		setTimeout(function(){
-		//Seleciona itens com mesmo label em outros gráficos do mesmo grupoid
-		var xGroupId = pCharts.attr("groupid");
-		if (typeof(xGroupId) != 'undefined'){
-			var xLabel = pChartValue.attr("label");
-			var xFamily = $("div.dbs_charts[groupid='" + xGroupId + "']").not(pCharts);
-			xFamily.each(function(){
-				xCharts = $(this);
-				var xChart = xCharts.data("chart");
-				var xChartValues = xChart.data("chartvalue").filter("[label='" + xLabel + "']");
-				xChartValues.each(function(){
-					dbsfaces.chartValue.selectChartValue(xCharts, xChart, $(this), pSelect, true);
-				});
-			});
+	setGuide: function(pChart, pChartValue, pSelect){
+		var xChartPathGroup = pChart.children(".-path");
+		var xChartPathGuide = xChartPathGroup.children(".-guide[guide='" + pChart.data("guide") + "']");
+		if (pSelect){
+			xChartPathGuide.show();
+			var xX = pChartValue.data("dx");
+			var xY = pChartValue.data("dy");
+			xChartPathGuide.css("stroke", pChartValue.children(".-point").css("stroke"));
+			//Reposiciona guia nas coordenadas do chartvalue
+	        dbsfaces.ui.cssTransform(xChartPathGuide, "translate3d(" + xX + "px ," + xY + "px,0)");
+			dbsfaces.ui.cssAllBrowser(xChartPathGuide, "transform-origin", xX + "px " + xY + "px 0");
+			//Força que chartvalue seja esteja a frente
+			dbsfaces.ui.moveToFront(pChartValue.get(0));
+		}else{
+			xChartPathGuide.hide();
 		}
-		},0);
-		
 	}
 
 };

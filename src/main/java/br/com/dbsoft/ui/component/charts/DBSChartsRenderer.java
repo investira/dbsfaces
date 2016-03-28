@@ -54,6 +54,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 			xClass = xClass + xCharts.getStyleClass() + " ";
 		}
 
+		//Inicializa valores de controle 
 		DBSFaces.initializeChartsValues(xCharts);
 
 
@@ -190,11 +191,21 @@ public class DBSChartsRenderer extends DBSRenderer {
 		}
 	}
 
+	//Tag padrão onde serão inseridos as definições para posterior reutilização
 	private void pvEncodeDefs(DBSCharts pCharts, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("defs", pCharts);
-//			pvEncodeFilters(pWriter);
+//			pvEncodeDefsMarker(pCharts, pWriter);
 		pWriter.endElement("defs");
 	}
+	private void pvEncodeDefsMarker(DBSCharts pCharts, ResponseWriter pWriter) throws IOException{
+		pWriter.startElement("g", pCharts);
+			DBSFaces.setAttribute(pWriter, "id", "svgchartmarker" , null);
+			DBSFaces.encodeSVGRect(pCharts, pWriter, 10D, 10D, "2em", "2em", null, null, "black");
+			DBSFaces.encodeSVGRect(pCharts, pWriter, 10D, 10D, "1em", "1em", null, null, "blue");
+		pWriter.endElement("g");
+	}
+	
+
 	
 //	private void pvEncodeFilters(ResponseWriter pWriter) throws IOException{
 //	    StringBuilder xSB = new StringBuilder();

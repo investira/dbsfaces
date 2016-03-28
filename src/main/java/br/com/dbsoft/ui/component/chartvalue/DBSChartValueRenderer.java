@@ -156,12 +156,15 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		//Encode LINE - ponto. as linhas que ligam os pontos, são desenhadas no código JS.
 		}else if (pType == TYPE.LINE){
 			//Salva posição do pointo
+			xX = DBSNumber.trunc(xX, 4);
+			xY = DBSNumber.trunc(xY, 4);
 			pChartValue.setPoint(new Point2D.Double(xX.doubleValue(), xY.doubleValue()));
 			//Encode do circulo
-			String xStyle = xStroke;
 			//Artifício pois o fcirefox só funciona com valores fixos no transform-origin
-			xStyle += "-moz-transform-origin:" + xX.doubleValue() + "px " + xY.doubleValue() + "px;";
-			DBSFaces.encodeSVGEllipse(pChartValue, pWriter, DBSNumber.round(xX.doubleValue(),2), DBSNumber.round(xY.doubleValue(), 2), "0.3em", "0.3em", DBSFaces.CSS.MODIFIER.POINT, xStyle, wFillColor);
+//			StringBuilder xStyle = new StringBuilder(xStroke);
+//			xStyle.append(DBSFaces.getCSSAllBrowser("transform-origin", xX.doubleValue() + "px " + xY.doubleValue() + "px"));
+			DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xX.doubleValue(), xY.doubleValue(), "0", "0", DBSFaces.CSS.MODIFIER.POINT, xStroke, wFillColor);
+//			DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xX.doubleValue(), xY.doubleValue(), "0.3em", "0.3em", DBSFaces.CSS.MODIFIER.POINT, xStroke, wFillColor);
 		}
 		//Encode Dados
 		pWriter.startElement("g", pChartValue);
@@ -188,6 +191,8 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		//Tooltip -------------------------------------------------------------------------
 		pvEncodeTooptip(pType, pChartValue, xXText.doubleValue(), xYText.doubleValue(), xClientId, pContext, pWriter);
 	}
+	
+
 	
 	private void pvEncodePie(DBSCharts pCharts, DBSChart pChart, DBSChartValue pChartValue, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 		StringBuilder 	xPath;

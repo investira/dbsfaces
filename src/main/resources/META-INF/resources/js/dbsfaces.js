@@ -57,6 +57,7 @@ String.prototype.replaceAll = function(target, replacement) {
 	    		xObject.setAttribute('class', xRemovedClass);
 	    	}
 		});
+		return this;
     },
     $.fn.svgAddClass = function (pClassName) {
 		this.each(function(){
@@ -65,7 +66,26 @@ String.prototype.replaceAll = function(target, replacement) {
 	    		xObject.setAttribute('class', xObject.getAttribute('class') + ' ' + pClassName);
 	    	}
 		});
-    }
+		return this;
+    },
+    $.fn.svgAttr = function (pAttribute, pValue) {
+    	if (typeof pValue == "undefined"){
+    		return this.get(0).getAttributeNS(null, pAttribute);
+    	}else{
+    		this.get(0).setAttributeNS(null, pAttribute, pValue);
+    		return this;
+    	}
+	},
+	//Retorna o total de segmentos de um path
+	$.fn.svgGetPathTotalSegs = function () {
+    	if (typeof this == "undefined"){
+    		return 0;
+    	}
+   		return this.get(0).getPathSegAtLength(this.get(0).getTotalLength() + 10) + 1;
+	}
+
+    
+
 })(jQuery);
 
 
@@ -139,16 +159,16 @@ dbsfaces.svg = {
 		var xG = dbsfaces.svg.createElement('g');
 		dbsfaces.svg.setDefaultAttr(xG, pStyleClass, pStyle, null);
 		if (pX != null){
-			xG.attr("x", pX);
+			xG.svgAttr("x", pX);
 		}
 		if (pY != null){
-			xG.attr("y", pY);
+			xG.svgAttr("y", pY);
 		}
 		if (pWidth != null){
-			xG.attr("width", pWidth);
+			xG.svgAttr("width", pWidth);
 		}
 		if (pHeight != null){
-			xG.attr("height", pHeight);
+			xG.svgAttr("height", pHeight);
 		}
 		pComponent.append(xG);
 		return xG;
@@ -158,16 +178,16 @@ dbsfaces.svg = {
 		var xSVG = dbsfaces.svg.createElement('svg');
 		dbsfaces.svg.setDefaultAttr(xSVG, pStyleClass, pStyle, null);
 		if (pX != null){
-			xSVG.attr("x", pX);
+			xSVG.svgAttr("x", pX);
 		}
 		if (pY != null){
-			xSVG.attr("y", pY);
+			xSVG.svgAttr("y", pY);
 		}
 		if (pWidth != null){
-			xSVG.attr("width", pWidth);
+			xSVG.svgAttr("width", pWidth);
 		}
 		if (pHeight != null){
-			xSVG.attr("height", pHeight);
+			xSVG.svgAttr("height", pHeight);
 		}
 		pComponent.append(xSVG);
 		return xSVG;
@@ -176,18 +196,27 @@ dbsfaces.svg = {
 	path: function(pComponent, pData, pStyleClass, pStyle, pFill){
 		var xPath = dbsfaces.svg.createElement('path');
 		dbsfaces.svg.setDefaultAttr(xPath, pStyleClass, pStyle, pFill);
-		xPath.attr("d", pData);
+		xPath.svgAttr("d", pData);
 		pComponent.append(xPath);
 		return xPath;
+	},
+	
+	use: function(pComponent, pHRef, pStyleClass, pStyle){
+		var xUse = dbsfaces.svg.createElement('use');
+		dbsfaces.svg.setDefaultAttr(xUse, pStyleClass, pStyle, null);
+		xUse.get(0).setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", "#" + pHRef);
+//		xUse.svgAttr("xlink:href", "#" + pHRef);
+		pComponent.append(xUse);
+		return xUse;
 	},
 
 	line: function(pComponent, pX1, pY1, pX2, pY2, pStyleClass, pStyle){
 		var xLine = dbsfaces.svg.createElement('line');
 		dbsfaces.svg.setDefaultAttr(xLine, pStyleClass, pStyle, null);
-		xLine.attr("x1", pX1)
-			 .attr("y1", pY1)
-			 .attr("x2", pX2)
-			 .attr("y2", pY2);
+		xLine.svgAttr("x1", pX1)
+			 .svgAttr("y1", pY1)
+			 .svgAttr("x2", pX2)
+			 .svgAttr("y2", pY2);
 		pComponent.append(xLine);
 		return xLine;
 	},
@@ -196,19 +225,19 @@ dbsfaces.svg = {
 		var xRect = dbsfaces.svg.createElement('rect');
 		dbsfaces.svg.setDefaultAttr(xRect, pStyleClass, pStyle, pFill);
 		if (pX != null){
-			xRect.attr("x", pX);
+			xRect.svgAttr("x", pX);
 		}
 		if (pY != null){
-			xRect.attr("y", pY);
+			xRect.svgAttr("y", pY);
 		}
 		if (pRX != null){
-			xRect.attr("rx", pRX);
+			xRect.svgAttr("rx", pRX);
 		}
 		if (pRY != null){
-			xRect.attr("ry", pRY);
+			xRect.svgAttr("ry", pRY);
 		}
-		xRect.attr("height", pHeight)
-			 .attr("width", pWidth);
+		xRect.svgAttr("height", pHeight)
+			 .svgAttr("width", pWidth);
 		pComponent.append(xRect);
 		return xRect;
 	},
@@ -216,10 +245,10 @@ dbsfaces.svg = {
 	ellipse: function(pComponent, pCX, pCY, pRX, pRY, pStyleClass, pStyle, pFill){
 		var xEllipse = dbsfaces.svg.createElement('ellipse');
 		dbsfaces.svg.setDefaultAttr(xEllipse, pStyleClass, pStyle, pFill);
-		xEllipse.attr("cx", pCX)
-			    .attr("cy", pCY)
-			    .attr("ry", pRX)
-			    .attr("rx", pRY);
+		xEllipse.svgAttr("cx", pCX)
+			    .svgAttr("cy", pCY)
+			    .svgAttr("ry", pRX)
+			    .svgAttr("rx", pRY);
 		pComponent.append(xEllipse);
 		return xEllipse;
 	},
@@ -228,29 +257,47 @@ dbsfaces.svg = {
 		var xText = dbsfaces.svg.createElement('text');
 		dbsfaces.svg.setDefaultAttr(xText, pStyleClass, pStyle, pFill);
 		if (pX != null){
-			xText.attr("x", pX);
+			xText.svgAttr("x", pX);
 		}
 		if (pY != null){
-			xText.attr("y", pY);
+			xText.svgAttr("y", pY);
 		}
 		xText.text(pText);
 		pComponent.append(xText);
 		return xText;
 	},
 	
-	linearGradient: function(pComponent){
+	linearGradient: function(pComponent, pId){
 		var xElement = dbsfaces.svg.createElement('linearGradient');
 		pComponent.append(xElement);
+		if (pId != null){
+			xElement.svgAttr("id", pId);
+		}
+		return xElement;
+	},
+	
+	marker: function(pComponent, pId, pRefX, pRefY){
+		var xElement = dbsfaces.svg.createElement('marker');
+		pComponent.append(xElement);
+		if (pId != null){
+			xElement.svgAttr("id", pid);
+		}
+		if (pRefX != null){
+			xElement.svgAttr("refx", pRefX);
+		}
+		if (pRefY != null){
+			xElement.svgAttr("refy", pRefY);
+		}
 		return xElement;
 	},
 
 	stop: function(pComponent, pOffset, pStopColor){
 		var xElement = dbsfaces.svg.createElement('stop');
 		if (pOffset != null){
-			xElement.attr("offset", pOffset);
+			xElement.svgAttr("offset", pOffset);
 		}
 		if (pStopColor != null){
-			xElement.attr("stop-color", pStopColor);
+			xElement.svgAttr("stop-color", pStopColor);
 		}
 		pComponent.append(xElement);
 		return xElement;
@@ -263,16 +310,16 @@ dbsfaces.svg = {
 
 	setDefaultAttr: function(pComponent, pStyleClass, pStyle, pFill){
 		if (pStyleClass != null){
-			pComponent.attr("class", pStyleClass);
+			pComponent.svgAttr("class", pStyleClass);
 		}
 		if (pStyle != null){
-			pComponent.attr("style", pStyle);
+			pComponent.svgAttr("style", pStyle);
 		}
 		if (pFill != null){
-			pComponent.attr("fill", pFill);
+			pComponent.svgAttr("fill", pFill);
 		}
 	}
-
+	
 }
 
 dbsfaces.url = {
@@ -417,75 +464,53 @@ dbsfaces.ui = {
 		$(pObj).get(0).setSelectionRange(pStart, pEnd);
 	},
 
-	dropShadow: function(e, pValue){
+	cssAllBrowser: function(e, pAtribute, pValue){
+		var xE = e;
+		if (!(xE instanceof jQuery)){
+			xE = $(e);
+		}
+		pAtribute = pAtribute.trim();
+		pValue = pValue.trim();
+		xE.css("-webkit-" + pAtribute, pValue)
+		  .css("-moz-" + pAtribute, pValue)
+		  .css("-ms-" + pAtribute, pValue)
+		  .css("-o-" + pAtribute, pValue)
+		  .css(pAtribute, pValue);
+	},
+
+	cssFilterDropShadow: function(e, pValue){
 		var xValue = "drop-shadow(" + pValue + ")";
-		dbsfaces.ui.filter(e, xValue);
+		dbsfaces.ui.cssFilter(e, xValue);
 	},
 	
-	blur: function(e, pValue){
+	cssFilterBlur: function(e, pValue){
 		var xValue = "blur(" + pValue + "px)";
-		dbsfaces.ui.filter(e, xValue);
+		dbsfaces.ui.cssFilter(e, xValue);
 	},
 
-	opacity: function(e, pValue){
+	cssFilterOpacity: function(e, pValue){
 		var xValue = "opacity(" + pValue + ")";
-		dbsfaces.ui.filter(e, xValue);
-	},
-	
-	filter: function(e, pValue){
-		var xE = e;
-		if (!(xE instanceof jQuery)){
-			xE = $(e);
-		}
-		xE.css("-ms-filter", pValue)
-			.css("-o-filter", pValue)
-			.css("-moz-filter", pValue)
-			.css("-webkit-filter", pValue)
-			.css("filter", pValue);
-	},
-	
-	
-	transform: function(e, pCommand){
-		var xE = e;
-		if (!(xE instanceof jQuery)){
-			xE = $(e);
-		}
-		xE.css("-webkit-transform", pCommand)
-		  .css("-moz-transform", pCommand)
-		  .css("-ms-transform", pCommand)
-		  .css("-o-transform", pCommand)
-		  .css("transform", pCommand);
-	},
-	
-	transition: function(e, pCommand){
-		var xE = e;
-		if (!(obj instanceof jQuery)){
-			xE = $(e);
-		}
-		xE.css("-webkit-transition", pCommand)
-			.css("-moz-transition", pCommand)
-			.css("-ms-transition", pCommand)
-			.css("-o-transition", pCommand)
-			.css("transition", pCommand);
+		dbsfaces.ui.cssFilter(e, xValue);
 	},
 
-	animation: function(e, pCommand){
-		var xE = e;
-		if (!(xE instanceof jQuery)){
-			xE = $(e);
-		}
-		xE.css("-webkit-animation", pCommand)
-			.css("-moz-animation", pCommand)
-			.css("-ms-animation", pCommand)
-			.css("-o-animation", pCommand)
-			.css("animation", pCommand);
+	cssFilter: function(e, pValue){
+		dbsfaces.ui.cssAllBrowser(e, "filter", pValue);
 	},
+	
+	cssTransform: function(e, pValue){
+		dbsfaces.ui.cssAllBrowser(e, "transform", pValue);
+	},
+	
+	cssTransition: function(e, pValue){
+		dbsfaces.ui.cssAllBrowser(e, "transition", pValue);
+	},
+
+	cssAnimation: function(e, pValue){
+		dbsfaces.ui.cssAllBrowser(e, "animation", pValue);
+	},
+
 	//Retorna valores do transform
 	getTransform:function(e){
-		var xE = e;
-		if (!(xE instanceof jQuery)){
-			xE = $(e);
-		}
 		var xSt = window.getComputedStyle(xE.get(0), null);
 		var xTr = xSt.getPropertyValue("-webkit-transform") ||
 		          xSt.getPropertyValue("-moz-transform") ||
@@ -773,8 +798,9 @@ dbsfaces.date = {
 dbsfaces.math = {
 	round: function(pValue, pDecimals){
 		var xP = Math.pow(10, pDecimals);
-		var xValue = Math.round(pValue * xP) / xP;
-		return xValue;
+		var xValue = pValue * xP;
+		xValue = Math.round(pValue * xP);
+		return dbsfaces.math.trunc(xValue / xP, pDecimals);
 	},
 	
 	trunc: function(pValue, pDecimals){

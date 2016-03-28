@@ -1,6 +1,7 @@
 .dbs_chartValue{
 	cursor:pointer;
 	stroke-width: 0px;
+/* 	pointer-events: none; */
 	 /*altere também .dbs_chart > .-line*/
 }
 
@@ -8,6 +9,9 @@
 	opacity: 1;
 }   
 
+
+.dbs_chartValue > .-point{
+}
 
 .dbs_chartValue > .-info{
 }

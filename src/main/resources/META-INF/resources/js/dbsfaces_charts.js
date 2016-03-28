@@ -1,20 +1,86 @@
 dbs_charts = function(pId) {
-	var xCharts = $(pId).find("g.dbs_chart");
+	var xCharts = $(pId);
+//	var xChart = $(pId).find("g.dbs_chart");
 	//Salva chart's vinculados a este charts
-	$(pId).data("chart", xCharts);
-	$(pId).on("mousedown", function(e){
-		xCharts.each(function(){
-			dbsfaces.chart.hideDelta($(pId), $(this));
-		});
-	});
+//	xCharts.data("chart", xChart);
+	dbsfaces.charts.initialize(xCharts);
+
+//	$(pId).on("mousedown", function(e){
+//		xCharts.each(function(){
+//			dbsfaces.chart.hideDelta($(pId), $(this));
+//		});
+//	});
 	$(pId).on("mouseleave mouseup", function(e){
-		xCharts.each(function(){
+		$(this).data("chart").each(function(){
 			dbsfaces.chart.stopDeltaDrag($(this));
 		});
+//		dbsfaces.charts.unSelect(xCharts);
 	});
 
 };
 
 dbsfaces.charts = {
+	initialize: function(pCharts){
+		//Salva chart's vinculados a este charts
+		var xChart = pCharts.find("g.dbs_chart");
+		pCharts.data("chart", xChart);
+
+		dbsfaces.charts.createDefGuide(pCharts);
+		dbsfaces.charts.updateGroupMember(pCharts);
+	},
+
+	//Cria guia padrão para indicar a posição no gráfico tipo line
+	createDefGuide: function(pCharts){
+		var xDefs = pCharts.find("svg > defs");
+		var xMarker = xDefs.children(".-guide");
+		if (xMarker.length == 0){
+			xMarker = dbsfaces.svg.g(xDefs, null, null, null,null, null, null);
+			xMarker.svgAttr("id", pCharts.get(0).id + "_guide");
+			xMarker.svgAttr("class", "-guide");
+			var xEllipse;
+			xEllipse = dbsfaces.svg.ellipse(xMarker, "0", "0", "1em", "1em", null, null, null);
+			xEllipse.attr("stroke-width", ".1em");
+			xEllipse.attr("fill", "none");
+			xEllipse = dbsfaces.svg.ellipse(xMarker, "0", "0", ".2em", ".2em", null, null, null);
+			xEllipse.attr("stroke-width", ".1em");
+			xEllipse.attr("fill", "none");
+		}
+	},
+	
+	updateGroupMember: function(pCharts){
+		var xGroupId = pCharts.attr("groupid");
+		if (typeof(xGroupId) != 'undefined'){
+			var xMembers = $("div.dbs_charts[groupid='" + xGroupId + "']");
+			xMembers.each(function(){
+				$(this).data("groupMembers", xMembers);
+			});
+		}else{
+			pCharts.data("groupMembers", null);
+		}
+
+	},
+
+	select: function(pCharts){
+		var xCharts = pCharts.data("groupMembers");
+		if (xCharts == null){
+			xCharts = pCharts;
+		}
+		xCharts.addClass("-dim");
+	},
+	
+	unSelect: function(pCharts){
+		var xCharts = pCharts.data("groupMembers");
+		if (xCharts == null){
+			xCharts = pCharts;
+		}
+		xCharts.removeClass("-dim");
+		xCharts.each(function(){
+			var xChart = $(this).data("chart"); 
+			xChart.each(function(){
+				$(this).data("chartvalue").filter(".-selected").svgRemoveClass("-selected");
+			});
+		});
+	}
+	
 };
 

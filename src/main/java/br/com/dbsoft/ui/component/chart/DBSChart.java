@@ -11,6 +11,11 @@ import br.com.dbsoft.util.DBSNumber;
 @FacesComponent(DBSChart.COMPONENT_TYPE)
 public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 	
+	/**
+	 * 
+	 */
+//	private static final long serialVersionUID = -8364183453449728463L;
+	
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.CHART;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 	
@@ -79,6 +84,7 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 	}
 
 	public DBSChart(){
+//		setRowStatePreserved(true);
 		setRendererType(DBSChart.RENDERER_TYPE);
     }
 	

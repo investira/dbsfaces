@@ -72,7 +72,7 @@ public class DBSListboxRenderer extends DBSRenderer {
 	private void pvEncodeInput(FacesContext pContext, DBSListbox pListbox, ResponseWriter pWriter) throws IOException{
 		String xClientId = getInputDataClientId(pListbox);
 		String xStyle = "";
-		xStyle = DBSFaces.getStyleWidthFromInputSize(pListbox.getSize());
+		xStyle = DBSFaces.getCSSStyleWidthFromInputSize(pListbox.getSize());
 
 		if (pListbox.getReadOnly()){
 			DBSFaces.encodeInputDataReadOnly(pListbox, pWriter, xClientId, false, (String)pListbox.getList().get(pListbox.getValue().toString()), pListbox.getSize(), DBSNumber.toInteger(pListbox.getLines()), xStyle);

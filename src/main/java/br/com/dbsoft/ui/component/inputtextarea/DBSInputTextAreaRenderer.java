@@ -90,10 +90,10 @@ public class DBSInputTextAreaRenderer extends DBSRenderer {
 		
 		//Define a largura do campo
 		if (pInputTextArea.getCols()!=null){
-			xStyle += DBSFaces.getStyleWidthFromInputSize(pInputTextArea.getCols());
+			xStyle += DBSFaces.getCSSStyleWidthFromInputSize(pInputTextArea.getCols());
 		}
 		if (pInputTextArea.getRows()!=null){
-			xStyle += DBSFaces.getStyleHeightFromInputSize(pInputTextArea.getRows());
+			xStyle += DBSFaces.getCSSStyleHeightFromInputSize(pInputTextArea.getRows());
 		}
 
 		//Se for somente leitura, gera código como <Span>

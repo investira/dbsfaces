@@ -168,16 +168,16 @@ public class DBSInputDateRenderer extends DBSRenderer {
 			if (pInputDate.getDate()==null){
 				if (pInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.DATE)){
 					xSize = 10;
-					xStyle =  DBSFaces.getStyleWidthFromInputSize(10);
+					xStyle =  DBSFaces.getCSSStyleWidthFromInputSize(10);
 				}else if (pInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.TIME)){
 					xSize = 5;
-					xStyle =  DBSFaces.getStyleWidthFromInputSize(5);
+					xStyle =  DBSFaces.getCSSStyleWidthFromInputSize(5);
 				}else if (pInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.TIMES)){
 					xSize = 8;
-					xStyle =  DBSFaces.getStyleWidthFromInputSize(8);
+					xStyle =  DBSFaces.getCSSStyleWidthFromInputSize(8);
 				}else if (pInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.DATETIME)){
 					xSize = 16;
-					xStyle =  DBSFaces.getStyleWidthFromInputSize(16);
+					xStyle =  DBSFaces.getCSSStyleWidthFromInputSize(16);
 				}else{
 					wLogger.error(xClientId + ":type inválido " + pInputDate.getType());
 				}

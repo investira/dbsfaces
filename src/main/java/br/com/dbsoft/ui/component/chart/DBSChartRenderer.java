@@ -14,6 +14,7 @@ import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
 import br.com.dbsoft.ui.component.chartvalue.DBSChartValue;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.chart.DBSChart.TYPE;
+import br.com.dbsoft.ui.component.charts.DBSCharts;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSObject;
 
@@ -43,8 +44,18 @@ public class DBSChartRenderer extends DBSRenderer {
 		DBSChart xChart = (DBSChart) pComponent;
 		if (xChart.getType()==null){return;}
 		ResponseWriter xWriter = pContext.getResponseWriter();
-		String xClass = DBSFaces.CSS.CHART.MAIN;
-
+		String 		xClass = DBSFaces.CSS.CHART.MAIN;
+		TYPE 		xType = DBSChart.TYPE.get(xChart.getType());
+		DBSCharts	xCharts;
+		Integer		xChartsWidth;
+		Integer 	xChartsHeight;
+		if (!(xChart.getParent() instanceof DBSCharts)){
+			return;
+		}
+		xCharts =  (DBSCharts) xChart.getParent();
+		xChartsWidth = xCharts.getChartWidth() + xCharts.getPadding();
+		xChartsHeight = xCharts.getChartHeight() + xCharts.getPadding();
+		
 		if (xChart.getStyleClass()!=null){
 			xClass += xChart.getStyleClass() + " ";
 		}
@@ -59,8 +70,10 @@ public class DBSChartRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "style", xChart.getStyle(), null);
 			DBSFaces.setAttribute(xWriter, "type", xChart.getType(), null);
 			DBSFaces.setAttribute(xWriter, "index", xChart.getIndex(), null);
-			if (xChart.getShowDelta()){ //Artificio para padronizar o false como não existindo o atributo(comportamento do chrome)
-				DBSFaces.setAttribute(xWriter, "showdelta", xChart.getShowDelta(), null);
+			if (xType == TYPE.LINE){
+				if (xChart.getShowDelta()){ //Artificio para padronizar o false como não existindo o atributo(comportamento do chrome)
+					DBSFaces.setAttribute(xWriter, "showdelta", xChart.getShowDelta(), null);
+				}
 			}
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xChart, DBSPassThruAttributes.getAttributes(Key.CHART));
 			
@@ -68,9 +81,11 @@ public class DBSChartRenderer extends DBSRenderer {
 			
 			//Divisão onde serão desenhadas as linhas que ligam os pontos no gráfico por linha.
 			//O desenho é efetuado via JS no chartValue
-			if (DBSChart.TYPE.get(xChart.getType()) == TYPE.LINE){
+			if (xType == TYPE.LINE){
 				xWriter.startElement("g", xChart);
-					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.LINE.trim(), null);
+					DBSFaces.setAttribute(xWriter, "class", "-path", null);
+					//Area que ira captura o mousemove
+					DBSFaces.encodeSVGRect(xChart, xWriter, 0D, 0D, xChartsWidth.toString(), xChartsHeight.toString(), DBSFaces.CSS.MODIFIER.MASK.trim(), null, null);
 				xWriter.endElement("g");
 				xWriter.startElement("g", xChart);
 					DBSFaces.setAttribute(xWriter, "class", "-delta", null);
@@ -113,15 +128,23 @@ public class DBSChartRenderer extends DBSRenderer {
 		//Loop por todos os registros lidos
 		//Lido de forma decrescentes por o saveState e restoreState invertou
 		//a ordem da consulta
-//		for (int xRowIndex = 0; xRowIndex < xRowCount; xRowIndex++) {
-        for (int xRowIndex = xRowCount - 1; xRowIndex >= 0; xRowIndex--) {
+//		xChart.restoreState(FacesContext.getCurrentInstance(), xChartValue.getSavedState());
+//		pChart.restoreState(FacesContext.getCurrentInstance(), pChart.getSavedState());
+//    	System.out.println("restore pvEncodeResultSetChartValue");
+		for (int xRowIndex = 0; xRowIndex < xRowCount; xRowIndex++) {
+//        for (int xRowIndex = xRowCount - 1; xRowIndex >= 0; xRowIndex--) {
         	pChart.setRowIndex(xRowIndex);
         	//Loop no componente filho contendo as definições dos valores
 			for (UIComponent xC : pChart.getChildren()){
 				if (xC instanceof DBSChartValue){
 					DBSChartValue xChartValue = (DBSChartValue) xC;
+//					xChartValue.processUpdates(pContext);
 					if (xChartValue.isRendered()){
+//						xChartValue.restoreState(FacesContext.getCurrentInstance(), pChart.getSavedState());
 						xChartValue.restoreState(FacesContext.getCurrentInstance(), xChartValue.getSavedState());
+//						xChartValue.restoreTransientState(pContext, xChartValue.getSavedState());
+//						xChartValue.restoreAttachedState(pContext, xChartValue.get);
+//						System.out.println("restore:\t" + xChartValue.getIndex() + "\t" + xChartValue.getLabel() + "\t" + xChartValue.getValue() + "\t" + xChartValue.getPreviousValue());
 						xChartValue.encodeAll(pContext);
 					}
 				}

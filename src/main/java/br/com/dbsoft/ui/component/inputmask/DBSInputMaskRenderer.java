@@ -89,7 +89,7 @@ public class DBSInputMaskRenderer extends DBSRenderer {
 	
 	private void pvEncodeInput(FacesContext pContext, DBSInputMask pInputMask, ResponseWriter pWriter) throws IOException{
 		String xClientId = getInputDataClientId(pInputMask);
-		String xStyle = DBSFaces.getStyleWidthFromInputSize(pInputMask.getMask().length());
+		String xStyle = DBSFaces.getCSSStyleWidthFromInputSize(pInputMask.getMask().length());
 		String xValue = "";
 		if (pInputMask.getValue() != null){
 			xValue = DBSFormat.getFormattedMask(pInputMask.getValueString(), pInputMask.getMask(), pInputMask.getMaskEmptyChr());

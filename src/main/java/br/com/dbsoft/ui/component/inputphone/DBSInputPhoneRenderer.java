@@ -120,13 +120,13 @@ public class DBSInputPhoneRenderer extends DBSRenderer {
 			if (pInputPhone.getValue()==null){
 				if (pInputPhone.getShowDDI()){
 					xSize = 19;
-					xStyle =  DBSFaces.getStyleWidthFromInputSize(19);
+					xStyle =  DBSFaces.getCSSStyleWidthFromInputSize(19);
 				}else if (pInputPhone.getShowDDD()){
 					xSize = 14;
-					xStyle =  DBSFaces.getStyleWidthFromInputSize(14);
+					xStyle =  DBSFaces.getCSSStyleWidthFromInputSize(14);
 				}else{
 					xSize = 10;
-					xStyle =  DBSFaces.getStyleWidthFromInputSize(10);
+					xStyle =  DBSFaces.getCSSStyleWidthFromInputSize(10);
 				}
 			}else{
 				if (pInputPhone.getShowDDI()){

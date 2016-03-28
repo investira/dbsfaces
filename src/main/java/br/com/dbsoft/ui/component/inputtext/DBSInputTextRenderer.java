@@ -149,7 +149,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 			}
 		}
 		//Define a largura do campo
-		xStyle = DBSFaces.getStyleWidthFromInputSize(pInputText.getSize());
+		xStyle = DBSFaces.getCSSStyleWidthFromInputSize(pInputText.getSize());
 
 		//Se for somente leitura, gera código como <Span>
 		if (pInputText.getReadOnly()){ 

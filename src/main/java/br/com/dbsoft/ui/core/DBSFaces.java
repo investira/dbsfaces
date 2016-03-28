@@ -53,6 +53,7 @@ import org.jboss.weld.context.SerializableContextualInstanceImpl;
 import br.com.dbsoft.core.DBSSDK;
 import br.com.dbsoft.core.DBSSDK.ENCODE;
 import br.com.dbsoft.core.DBSSDK.NETWORK.METHOD;
+import br.com.dbsoft.core.DBSSDK.SYS.WEB_CLIENT;
 import br.com.dbsoft.error.DBSIOException;
 import br.com.dbsoft.message.IDBSMessage;
 import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
@@ -535,10 +536,10 @@ public class  DBSFaces {
 	
     public static void setAttribute(ResponseWriter pWriter, String pAttribute, Object pValue, String pValueDefault) throws IOException{
 	   	if (pValue != null){	
-			pWriter.writeAttribute(pAttribute, pValue, null);
+			pWriter.writeAttribute(pAttribute, pValue, pAttribute);
 		}else{
 			if (pValueDefault != null ){	
-				pWriter.writeAttribute(pAttribute, pValueDefault, null);
+				pWriter.writeAttribute(pAttribute, pValueDefault, pAttribute);
 			}
 		}
      }
@@ -1202,11 +1203,31 @@ public class  DBSFaces {
 	}
 	
 	/**
+	 * Retorna comando CSS com todos os prefixos dos browsers
+	 * @param pAtribute
+	 * @param pValue
+	 * @return
+	 */
+	public static String getCSSAllBrowser(String pAtribute, String pValue){
+		if (pAtribute==null
+		 || pValue==null){return "";}
+		StringBuilder xSB = new StringBuilder();
+		for (WEB_CLIENT xClient: WEB_CLIENT.values()){
+			xSB.append(xClient.getCSSPrefix());
+			xSB.append(pAtribute.trim());
+			xSB.append(": ");
+			xSB.append(pValue.trim());
+			xSB.append(";");
+		}
+		return xSB.toString();
+	}
+	
+	/**
 	 * Retorna o style com largura do campo em função da quantidade de caracteres de input
 	 * @param pInputSize
 	 * @return
 	 */
-	public final static String getStyleWidthFromInputSize(int pInputSize){
+	public final static String getCSSStyleWidthFromInputSize(int pInputSize){
 		if (pInputSize == 0){
 			return "";
 		}
@@ -1219,7 +1240,7 @@ public class  DBSFaces {
 	 * @param pInputSize
 	 * @return
 	 */
-	public final static String getStyleHeightFromInputSize(int pInputSize){
+	public final static String getCSSStyleHeightFromInputSize(int pInputSize){
 		if (pInputSize == 0){
 			return "";
 		}
@@ -1587,8 +1608,7 @@ public class  DBSFaces {
 	 */
 	public static void encodeSVGLine(UIComponent pComponent, ResponseWriter pWriter, Double pX1, Double pY1, Double pX2, Double pY2, String pStyleClass, String pStyle) throws IOException{
 		pWriter.startElement("line", pComponent);
-			setAttribute(pWriter, "class", pStyleClass, null);
-			setAttribute(pWriter, "style", pStyle, null);
+			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, null);
 			setAttribute(pWriter, "x1", 	pX1, null);
 			setAttribute(pWriter, "y1", 	pY1, null);
 			setAttribute(pWriter, "x2", 	pX2, null);
@@ -1618,28 +1638,28 @@ public class  DBSFaces {
 	 * O ponto 0,0 é a esquerda, acima.
 	 * @param pComponent
 	 * @param pWriter
-	 * @param pStyleClass
-	 * @param pStyle
 	 * @param pX
 	 * @param pY
 	 * @param pHeight
 	 * @param pWidth
 	 * @param pRX Raio da corner
 	 * @param pRY Raio da corner
+	 * @param pStyleClass
+	 * @param pStyle
+	 * @param pFill
 	 * @throws IOException
 	 */
 	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, Double pX, Double pY, String pWidth, String pHeight, Integer pRX, Integer pRY, String pStyleClass, String pStyle, String pFill) throws IOException{
 		pWriter.startElement("rect", pComponent);
-			setAttribute(pWriter, "class", pStyleClass, null);
-			setAttribute(pWriter, "style", pStyle, null);
+			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pFill);
 			setAttribute(pWriter, "x", 	pX, null);
 			setAttribute(pWriter, "y", 	pY, null);
 			setAttribute(pWriter, "rx", 	pRX, null);
 			setAttribute(pWriter, "ry", 	pRY, null);
+			DBSFaces.setAttribute(pWriter, "pointer-events", "all", null);
 			
 			setAttribute(pWriter, "height", pHeight, null);
 			setAttribute(pWriter, "width", pWidth, null);
-			setAttribute(pWriter, "fill",	pFill, null);			
 		pWriter.endElement("rect");
 	}
 	
@@ -1658,14 +1678,12 @@ public class  DBSFaces {
 	 */
 	public static void encodeSVGEllipse(UIComponent pComponent, ResponseWriter pWriter, Double pCX, Double pCY, String pRX, String pRY, String pStyleClass, String pStyle, String pFill) throws IOException{
 		pWriter.startElement("ellipse", pComponent);
-			setAttribute(pWriter, "class", pStyleClass, null);
-			setAttribute(pWriter, "style", pStyle, null);
+			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pFill);
 			setAttribute(pWriter, "cx", 	pCX, null);
 			setAttribute(pWriter, "cy", 	pCY, null);
 			
 			setAttribute(pWriter, "rx", pRY, null);
 			setAttribute(pWriter, "ry", pRX, null);
-			setAttribute(pWriter, "fill",	pFill, null);			
 		pWriter.endElement("ellipse");
 	}
 	
@@ -1680,9 +1698,7 @@ public class  DBSFaces {
 	 */
 	public static void encodeSVGPath(UIComponent pComponent, ResponseWriter pWriter, String pData, String pStyleClass, String pStyle, String pFill) throws IOException{
 		pWriter.startElement("path", pComponent);
-			setAttribute(pWriter, "class", pStyleClass, null);
-			setAttribute(pWriter, "style", pStyle, null);
-			setAttribute(pWriter, "fill",	pFill, null);			
+			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pFill);
 			setAttribute(pWriter, "d", 	pData, null);
 		pWriter.endElement("path");
 	}
@@ -1700,15 +1716,18 @@ public class  DBSFaces {
 	 */
 	public static void encodeSVGText(UIComponent pComponent, ResponseWriter pWriter, Double pX, Double pY, String pText, String pStyleClass, String pStyle, String pFill) throws IOException{
 		pWriter.startElement("text", pComponent);
-			setAttribute(pWriter, "class", pStyleClass, null);
-			setAttribute(pWriter, "style", pStyle, null);
+			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pFill);
 			setAttribute(pWriter, "x", 	pX, null);
 			setAttribute(pWriter, "y", 	pY, null);
-			setAttribute(pWriter, "fill",	pFill, null);			
 			if (pText != null){
 				pWriter.write(pText);
 			}
 		pWriter.endElement("text");
+	}
+	public static void encodeSVGSetDefaultAttr(ResponseWriter pWriter, String pStyleClass, String pStyle, String pFill) throws IOException{
+		setAttribute(pWriter, "class", pStyleClass, null);
+		setAttribute(pWriter, "style", pStyle, null);
+		setAttribute(pWriter, "fill",	pFill, null);			
 	}
 	
 	//================================================================================
@@ -2255,7 +2274,7 @@ public class  DBSFaces {
 				DBSChart xChart = (DBSChart) xObject;
 				//Zera totalizadores
 		        xChart.setTotalValue(0D);
-		        xChart.setItensCount(0);
+		        Integer xChartItensCount = 0;
 		        //--
 				xType = DBSChart.TYPE.get(xChart.getType());
 				//Verifica se será exibido
@@ -2271,39 +2290,25 @@ public class  DBSFaces {
 					if (DBSObject.isEmpty(xChart.getVar())
 					 || DBSObject.isEmpty(xChart.getValueExpression("value"))){
 						//Loop nos componentes ChartValues filhos do chart
-						for (UIComponent xChild:xChart.getChildren()){
-							if (xChild instanceof DBSChartValue){
-								DBSChartValue xChartValue = (DBSChartValue) xChild;
-								if (xChartValue.isRendered()){
-									pvInitializeChartsValues(pCharts, xChart, xChartValue);
-									xFound = true;
-								}
-							}
-						}
+						xChartItensCount = pvInitializeChartsValues(pCharts, xChart, 1);
 					}else{
 				        int xRowCount = xChart.getRowCount();
 				        xChart.setRowIndex(-1);
-//				        System.out.println(xChart.isTransient());
-						//Loop por todos os registros lidos
-				        for (int xRowIndex = 0; xRowIndex < xRowCount; xRowIndex++) {
-//				        for (int xRowIndex = xRowCount - 1; xRowIndex >= 0; xRowIndex--) {
+				        xChartItensCount = xRowCount;
+						//Loop por todos os registros em ordem descrecente pois o saveState e restoreState é: o último que entra é o primeiro qua sai.
+				        //Desta forma, quando for efetuado o restoreState no encode, o primeiro será realmente o primeiro
+				        for (int xRowIndex = xRowCount - 1; xRowIndex >= 0; xRowIndex--) {
 				        	xChart.setRowIndex(xRowIndex);
-				        	//Loop no componente filho contendo as definições dos valores
-							for (UIComponent xChild : xChart.getChildren()){
-								if (xChild instanceof DBSChartValue){
-									DBSChartValue xChartValue = (DBSChartValue) xChild;
-									if (xChartValue.isRendered()){
-										pvInitializeChartsValues(pCharts, xChart, xChartValue);
-										xFound = true;
-									}
-								}
-							}
+				        	pvInitializeChartsValues(pCharts, xChart, xRowIndex + 1);
 				        }
 				        xChart.setRowIndex(-1);
 					}
-					//Calcula Largura e Altura Geral
-					pCharts.setChartWidthHeight(xType);
-	
+					//Calcula Largura e Altura Geral 
+			        xChart.setItensCount(xChartItensCount);
+					pCharts.setChartWidthHeight(xType); 
+					if (xChartItensCount > 0){
+						xFound = true;
+					}
 					//ColumnScale
 					xX = BigDecimal.ONE;
 					if (xChart.getItensCount() > 1){
@@ -2316,7 +2321,6 @@ public class  DBSFaces {
 						}
 					}
 					xChart.setColumnScale(xX.doubleValue());
-//					xChart.setSavedState(xChart.saveState(FacesContext.getCurrentInstance()));
 				}else{
 					xChart.setIndex(-1);
 				}
@@ -2363,32 +2367,39 @@ public class  DBSFaces {
 			pCharts.setNumberOfGridLines(3 + DBSNumber.divide(pCharts.getChartHeight(), 60).intValue());
 		}
 	}
-	
-	/**
-	 * Setvalor mínimo e valor máximo
-	 * @param pCharts
-	 * @param pChartValue
-	 */
-	private static void pvInitializeChartsValues(DBSCharts pCharts,DBSChart pChart, DBSChartValue pChartValue){
-		Double xValue = pChartValue.getValue();
-		if (pCharts.getMinValue() == null 
-		 || xValue < pCharts.getMinValue()){
-			pCharts.setMinValue(xValue);
-		}
-		if (pCharts.getMaxValue() == null
-		 || xValue > pCharts.getMaxValue()){
-			pCharts.setMaxValue(xValue);
-		}
 
-		//Consifura valores iniciais
-		pChart.setItensCount(pChart.getItensCount()+1);
-		pChartValue.setIndex(pChart.getItensCount());
-		pChartValue.setPreviousValue(pChart.getTotalValue());
-		pChart.setTotalValue(pChart.getTotalValue() + DBSObject.getNotNull(pChartValue.getValue(),0D));
-		
-		pChartValue.setSavedState(pChartValue.saveState(FacesContext.getCurrentInstance()));
+
+	private static Integer pvInitializeChartsValues(DBSCharts pCharts, DBSChart pChart, Integer pIndex){
+		Integer xIndex = pIndex - 1;
+		for (UIComponent xChild : pChart.getChildren()){
+			if (xChild instanceof DBSChartValue){
+				DBSChartValue xChartValue = (DBSChartValue) xChild;
+				if (xChartValue.isRendered()){
+					xIndex++;
+					//Salva valor mínimo
+					Double xValue = xChartValue.getValue();
+					if (pCharts.getMinValue() == null 
+					 || xValue < pCharts.getMinValue()){
+						pCharts.setMinValue(xValue);
+					}
+					//Salva valor máximo
+					if (pCharts.getMaxValue() == null
+					 || xValue > pCharts.getMaxValue()){
+						pCharts.setMaxValue(xValue);
+					}
+					//Configura valores iniciais
+					xChartValue.setIndex(xIndex);
+					xChartValue.setPreviousValue(pChart.getTotalValue());
+					pChart.setTotalValue(pChart.getTotalValue() + DBSObject.getNotNull(xChartValue.getValue(),0D));
+//					System.out.println("save:\t" + xChartValue.getIndex() + "\t" + xChartValue.getLabel() + "\t" + xChartValue.getValue() + "\t" + xChartValue.getPreviousValue());
+					//Salva valores alterados
+					xChartValue.setSavedState(xChartValue.saveState(FacesContext.getCurrentInstance()));
+				}
+			}
+		}
+		return xIndex;
 	}
-	
+
 	/**
 	 * Retorna no nome do attributo(sem o nome do bean) a partir da EL do value do campo informado
 	 * @param pInput

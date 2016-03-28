@@ -152,7 +152,7 @@ dbsfaces.parallax = {
 			xA = parseFloat(xItem.attr("a"));
 			xOriginalTop = xItem.position().top + parseFloat(xItem.css("margin-top")); 
 			xNewY = (xOriginalTop + (pSection.outerHeight()/2)) * xVSF * xA;
-			dbsfaces.ui.transform(xItem, "translateY(" +  xNewY + "px)");
+			dbsfaces.ui.cssTransform(xItem, "translateY(" +  xNewY + "px)");
 		});
 	},
 	

@@ -54,23 +54,8 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 
 	public DBSCharts(){
 		setRendererType(DBSCharts.RENDERER_TYPE);
-//		FacesContext xContext = FacesContext.getCurrentInstance();
-//		xContext.getViewRoot().subscribeToViewEvent(PostAddToViewEvent.class, this);
-//		 xContext.getViewRoot().subscribeToViewEvent(PreValidateEvent.class,this);
-//		 xContext.getViewRoot().subscribeToViewEvent(PostValidateEvent.class,this);
-//		 xContext.getViewRoot().subscribeToViewEvent(PreRenderViewEvent.class,this);
-//		xContext.getViewRoot().subscribeToViewEvent(PreRenderComponentEvent.class,this);
     }
 	
-//	@Override
-//	public void processEvent(SystemEvent event) throws AbortProcessingException {
-//		DBSFaces.initializeChartsValues(this);
-//	}
-//	
-//	@Override
-//	public boolean isListenerForSource(Object pSource) {
-//		return pSource.equals(this);
-//	}
 
 	public String getCaption() {
 		return (String) getStateHelper().eval(PropertyKeys.caption, null);

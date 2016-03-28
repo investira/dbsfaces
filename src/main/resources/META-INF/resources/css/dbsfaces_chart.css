@@ -1,24 +1,37 @@
 .dbs_chart{
 	position: relative;
-	-webkit-filter: blur(0);
-    -moz-filter: blur(0);
-    -o-filter: blur(0);
-    filter: blur(0);
+/* 	-webkit-filter: blur(0); */
+/*     -moz-filter: blur(0); */
+/*     -o-filter: blur(0); */
+/*     filter: blur(0); */
 }
 
-.dbs_chart > .-line {
+.dbs_chart > .-path {
+	pointer-events: none;
+	position: relative;
+    display: inline-block;
 }
 
-
-.dbs_chart > .-line > path{
+/* Area que irá captura o mouse mouse */
+.dbs_chart > .-path > .-mask{
+	pointer-events: all;
+	fill:none;
+	position: relative;
+    display: inline-block;
+}
+/* Gráfico de linha */
+.dbs_chart > .-path > path{
 	stroke-linecap: round;
 	stroke-linejoin: round;
 	fill: none;
 	stroke-width: 0.2em;
 }
+.dbs_chart > .-path > .-guide{
+}
 
 
 .dbs_chart > .-delta{
+	pointer-events: none;
     -webkit-transform: translate3d(0,0,0);
     -moz-transform: translate3d(0,0,0);
     -o-transform: translate3d(0,0,0);
@@ -26,7 +39,16 @@
     transform-style: flat;
 }
 
-.dbs_chart > .-delta > .-point,
+/* .dbs_chart > .-delta > .-point:hover{ */
+/*     stroke-width: 0.5em; */
+/* } */
+.dbs_chart > .-delta > .-guide[guide='1']{
+	fill: rgba(255,0,0,0.5);
+}
+.dbs_chart > .-delta > .-guide[guide='2']{
+	fill: rgba(0,255,0,0.5);
+}
+.dbs_chart > .-delta > .-guide,
 .dbs_chart > .-delta > .-info > .-point{
 	fill: rgba(255,255,255,0.4);
     stroke-width: 0.1em;
@@ -102,22 +124,20 @@
 }
 
 .dbs_chart[type='line'] > .dbs_chartValue > .-point{
+	display: none;
 }
 
-/* .dbs_chart[type='line'] > .dbs_chartValue.-selectedDelta > .-point{ */
-/* } */
-
 .dbs_chart[type='line'] > .dbs_chartValue:not(.-selected) > .-point{
-	fill: transparent; 
-    -webkit-transform: scale(1);
-    -moz-transform: scale(1);
-    -o-transform: scale(1);
-    transform: scale(1);
+/* 	fill: transparent;  */
+/*     -webkit-transform: scale(1); */
+/*     -moz-transform: scale(1); */
+/*     -o-transform: scale(1); */
+/*     transform: scale(1); */
 }
 
 .dbs_chart[type='line'] > .dbs_chartValue.-selected  > .-point{
-	fill: white;	
-    stroke-width: 1px; 
+/* 	fill: white;	 */
+/*     stroke-width: 1px;  */
 }
 
 .dbs_chart[type='line'] > .-delta > .-info > .-box,

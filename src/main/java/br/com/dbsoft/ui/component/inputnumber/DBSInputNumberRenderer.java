@@ -133,7 +133,7 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 	private void pvEncodeInput(FacesContext pContext, DBSInputNumber pInputNumber, ResponseWriter pWriter) throws IOException {
 		Integer xSize = pvGetSize(pInputNumber); //Ajusta tamanho considerando os pontos e virgulas.
 		String xClientId = getInputDataClientId(pInputNumber);
-		String xStyle = DBSFaces.getStyleWidthFromInputSize(xSize);
+		String xStyle = DBSFaces.getCSSStyleWidthFromInputSize(xSize);
 		String xStyleClass = "";
 		String xValue = "";
 		if (pInputNumber.getValueDouble() != null){
