@@ -59,6 +59,7 @@ String.prototype.replaceAll = function(target, replacement) {
 		});
 		return this;
     },
+
     $.fn.svgAddClass = function (pClassName) {
 		this.each(function(){
 	    	var xObject = this;
@@ -685,9 +686,25 @@ dbsfaces.util = {
 		if(pValue == null){
 			return pDefaultValue;
 		}
+		return pValue;
 	},
 
-	//Verifica se � nulo ou vazio
+	//Retorna vazio se for nulo
+	isUndefined: function(pValue){
+		if(typeof(pValue) == "undefined"){
+			return true;
+		}
+		return false;
+	},
+
+	//Retorna vazio se for nulo
+	getNotUndefined: function(pValue, pDefaultValue){
+		if(dbsfaces.util.isUndefined(pValue)){
+			return pDefaultValue;
+		}
+		return pValue;
+	},
+	//Verifica se é nulo ou vazio
 	isEmpty: function(pValue){
 		if(pValue == null){
 			return true;

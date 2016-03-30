@@ -101,6 +101,30 @@
     text-anchor: end;
 }
 
+.dbs_chart.-dim > .-path > path,
+.dbs_chart.-dim > .dbs_chartValue:not(.-selected){
+    -webkit-transition: fill-opacity .5s, stroke-opacity .5s; 
+    -moz-transition: fill-opacity .5s, stroke-opacity .5s;
+    -o-transition: fill-opacity .5s, stroke-opacity .5s;
+    transition: fill-opacity .5s, stroke-opacity .5s;
+    -webkit-transition-delay: .2s;
+    -moz-transition-delay: .2s;
+    -o-transition-delay: .2s;
+    transition-delay: .2s;
+    fill-opacity: .4;
+    stroke-opacity: .4;
+}
+.dbs_chart.-dim > .dbs_chartValue:not(.-selected) > .-info{
+/* 	opacity: 0; */
+    fill-opacity: 0;
+    stroke-opacity: 0;
+}
+.dbs_chart.-dim > .dbs_chartValue:not(.-selected) > .-info > .-label{
+/* 	opacity: 0; */
+    fill-opacity: 0;
+    stroke-opacity: 0;
+}	
+
 
 .dbs_chart[type='line'] > .dbs_chartValue > .-info > .-label,
 .dbs_chart[type='bar'] > .dbs_chartValue > .-info > .-label{

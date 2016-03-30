@@ -2,12 +2,38 @@ dbs_chart = function(pId) {
 	var xChart = $(pId);
 	
 	dbsfaces.chart.initialize(xChart);
-
+//	$(pId + "[type='line'] > g.-path > .-mask").on("mousedown", function(e){
+////		$(pId + "[type='line'] > g.-path > .-mask").on("mousemove touchmove", function(e){
+//		console.log(e.originalEvent.type);
+//		dbsfaces.chart.findPoint(e, xChart);
+//		e.preventDefault();
+//		return false;
+//	});
 	//Procura por chartvalue a partir da linha do gráfico
-	$(pId + "[type='line'][showdelta] > g.-path").on("mousemove", function(e){
-//		console.log("chart g-path");
+	$(pId + "[type='line'] > g.-path > .-mask").on("mousemove touchstart touchmove", function(e){
+//		$(pId + "[type='line'] > g.-path > .-mask").on("mousemove touchmove", function(e){
+//		console.log("chart\t" + e.originalEvent.type);
 		dbsfaces.chart.findPoint(e, xChart);
+		e.preventDefault();
+		return false;
 	});
+
+
+//	$(pId + "[type='line'][showdelta] > g.-path").on("mousemove touchmove", function(e){
+//		dbsfaces.chart.findPoint(e, xChart);
+//		e.preventDefault();
+//		return false;
+//	});
+	
+//	$(pId).on("touchstart", function(e){
+//	});
+
+	
+//	var events = $._data(xChart[0], "events");
+//	console.log(events);
+//	$(pId).on("*", function(e){
+//		console.log(e);
+//	});
 
 //	$(pId).on("mousemove", function(e){
 //		console.log("chart");
@@ -58,29 +84,40 @@ dbsfaces.chart = {
 	initialize: function(pChart){
 		//Reseta ponto para calculo do delta
 //		dbsfaces.chartValue.removeDelta(pChart);
-		//Salva chartvalues vinculados a este chart
-		var xChartValues = pChart.children(".dbs_chartValue");
-		pChart.data("chartvalue", xChartValues);
 
+		dbsfaces.chart.pvInitializeData(pChart, xChartValues);
+
+		var xChartValues = pChart.data("chartvalue");
 		var xCharts = pChart.data("parent");
-
-		//Define guia 1 como guia inicial 
-		pChart.data("guide", 1);
-
 		var xShowLabel = (typeof(xCharts.attr("showlabel")) != "undefined");
 		var xDrawLine = (pChart.attr("type") == "line");
 		if (pChart.attr("type") == "bar"
 		 || pChart.attr("type") == "line"){
 			//Verifica sopreposição dos labels e cor da linhas
-			dbsfaces.chart.initializeLineAndLabels(xCharts, pChart, xChartValues, xShowLabel, xDrawLine);
+			dbsfaces.chart.pvInitializeLineAndLabels(xCharts, pChart, xChartValues, xShowLabel, xDrawLine);
 			//Cria guia principal
-			dbsfaces.chart.initializeGuides(xCharts, pChart);
+			dbsfaces.chart.pvInitializeGuides(xCharts, pChart);
 		}
 	},
 
-
+	pvInitializeData: function(pChart){
+		//Salva chartvalues vinculados a este chart
+		var xChartValues = pChart.children(".dbs_chartValue");
+		pChart.data("chartvalue", xChartValues);
+		pChart.data("pathgroup", dbsfaces.util.getNotUndefined(pChart.children(".-path"), null));
+		if (pChart.data("pathgroup") == null){
+			pChart.data("mask", null);
+		}else{
+			pChart.data("mask", dbsfaces.util.getNotUndefined(pChart.data("pathgroup").children(".-mask"), null));
+		}
+		//Define guia 1 como guia inicial 
+		pChart.data("guide", 1);
+		pChart.data("cv1", null);
+		pChart.data("cv2", null);
+	},
+	
 	//Verifica sopreposição dos labels 
-	initializeLineAndLabels: function(pCharts, pChart, pChartValues, pShowLabel, pDrawLine){
+	pvInitializeLineAndLabels: function(pCharts, pChart, pChartValues, pShowLabel, pDrawLine){
 		var xChartValue;
 		var xChartValueLabel;
 		var xChartValuePoint;
@@ -139,7 +176,7 @@ dbsfaces.chart = {
 			dbsfaces.svg.stop(xLG, 0, xStarColor);
 			dbsfaces.svg.stop(xLG, "100%", xStopColor);
 			//Path do gráfico
-			var xPath = dbsfaces.svg.path(pChart.children("g.-path"), xStringPath, null, null, null);
+			var xPath = dbsfaces.svg.path(pChart.data("pathgroup"), xStringPath, null, null, null);
 			xPath.svgAttr("stroke", "url(#" + pChart.get(0).id + "_linestroke)");
 			//Salva path no próprio componente para agilizar o findPoint
 			pChart.data("path", xPath.get(0));
@@ -148,9 +185,9 @@ dbsfaces.chart = {
 	},
 	
 	//Verifica sopreposição dos labels 
-	initializeGuides: function(pCharts, pChart){
+	pvInitializeGuides: function(pCharts, pChart){
 		if (pChart.attr("type") == "line"){
-			var xChartPathGroup = pChart.children("g.-path");
+			var xChartPathGroup = pChart.data("pathgroup");
 			var xGuide1 = xChartPathGroup.children(".-guide[guide='1']");
 			if (xGuide1.length == 0){
 				xGuide1 = dbsfaces.svg.use(xChartPathGroup, pCharts.get(0).id + "_guide", "-guide", null);
@@ -166,20 +203,27 @@ dbsfaces.chart = {
 	
 	
 	findPoint: function(e, pChart){
-		var xChartPathGroup = pChart.children(".-path");
+//		console.log("findpoint");
+		var xChartPathGroup = pChart.data("pathgroup");
 		var xChartPath = pChart.data("path");
 		var xChartPathGuide1 = xChartPathGroup.children(".-guide[guide='" + pChart.data("guide") + "']");
-        var xCurrentX = dbsfaces.math.round(e.pageX - xChartPath.getBoundingClientRect().left + 2, 1);
+		var xChartMask = pChart.data("mask");
+		var xDecimals = 1;
+//        var xCurrentX = dbsfaces.math.round(e.originalEvent.pageX - xChartPath.getBoundingClientRect().left - e.originalEvent.offsetX, 1);
+//        var xCurrentX = dbsfaces.math.round(e.originalEvent.offsetX, 1);
+		var xPosition = $(e.currentTarget).offset();
+		var xCurrentX = dbsfaces.math.round(e.originalEvent.pageX - xPosition.left, xDecimals);
+		if (xCurrentX < 0){return;}
 	    var xBeginning = xCurrentX;
-        var xEnd =  dbsfaces.math.round(xChartPath.getTotalLength(), 1);
+        var xEnd =  dbsfaces.math.round(xChartPath.getTotalLength(), xDecimals);
         var xTargetLenght;
         var xTargetPos;
         var xTargetPosX;
         //Procura ponto da caminho(path) que o X é iqual a posição X selecionada
         while (Math.abs(xBeginning - xEnd) > 1) {
-			xTargetLenght = xBeginning +  dbsfaces.math.round((xEnd - xBeginning) / 2, 1); //Meio do caminho
+			xTargetLenght = xBeginning +  dbsfaces.math.round((xEnd - xBeginning) / 2, xDecimals); //Meio do caminho
 			xTargetPos = xChartPath.getPointAtLength(xTargetLenght); //Ponto do path 
-			xTargetPosX = dbsfaces.math.round(xTargetPos.x, 1);
+			xTargetPosX = dbsfaces.math.round(xTargetPos.x, xDecimals);
 			if (xTargetPosX < xCurrentX){
 				xBeginning = xTargetLenght;
 			}else if (xTargetPosX > xCurrentX){
@@ -213,69 +257,17 @@ dbsfaces.chart = {
 			if (xCurrentX < xXMiddle){
 				xChartValue = $(pChart.data("chartvalue").get(xIndex - 1));
 			}
+//			console.log(xChartValue[0].id);
 			dbsfaces.chartValue.select(xChartValue, true);
 		}
 	},
 	
-	findPoint2: function(e, pChart){
-//		pChart.data("path").getPathSegList();
-//        var xCurrentX = Math.floor(e.pageX - pChart.get(0).getBoundingClientRect().left);
-//		console.log(e.pageX + "\t" + pChart.get(0).getBoundingClientRect().left);
-		var xChartPathGroup = pChart.children(".-path");
-		var xChartPath = pChart.data("path");
-		var xChartPathGuide1 = xChartPathGroup.children(".-guide[guide='" + pChart.data("guide") + "']");
-        var xCurrentX = Math.floor(e.pageX - xChartPath.getBoundingClientRect().left + 2);
-//        var xCurrentX = Math.floor((e.pageX - xChartPathGroup.get(0).getBoundingClientRect().left));
-        var xBeginning = xCurrentX;
-        var xEnd = Math.floor(xChartPath.getTotalLength());
-        var xTargetLenght;
-        var xTargetPos;
-        var xTargetPosX;
-        //Procura ponto da caminho(path) que o X é iqual a posição X selecionada
-        while (Math.abs(xBeginning - xEnd) > 1) {
-			xTargetLenght = xBeginning + Math.floor((xEnd - xBeginning) / 2); //Meio do caminho
-			xTargetPos = xChartPath.getPointAtLength(xTargetLenght); //Ponto do path 
-			xTargetPosX = Math.floor(xTargetPos.x);
-			if (xTargetPosX < xCurrentX){
-				xBeginning = xTargetLenght;
-			}else if (xTargetPosX > xCurrentX){
-				xEnd = xTargetLenght;
-			}else{
-				break; //Encontrou posição
-			}
-        }
-        //Posiciona o Guide 
-		if (typeof(xTargetPos) != "undefined"){
-			//Procura qual dos chartsValues está mais próximo
-			var xIndex = xChartPath.getPathSegAtLength(xTargetLenght);
-			var xTotalSegs = $(xChartPath).svgGetPathTotalSegs();
-			var xXClosest = xCurrentX;
-			var xChartValue = $(pChart.data("chartvalue").get(xIndex));
-			var xX = Number(xChartValue.data("dx"));
-			var xY = Number(xChartValue.data("dy"));
-			console.log(xTotalSegs + "\t" + xIndex + "\t" + xTargetLenght + "\t" + e.pageX + "\t" + xChartPath.getBoundingClientRect().left + "\t" + xChartPathGroup.get(0).getBoundingClientRect().left);
-			if (xCurrentX < xX){
-				if (xIndex > 0){
-					xXClosest = $(pChart.data("chartvalue").get(xIndex - 1)).data("dx");
-//					console.log("Anterior\t" + xIndex);
-				}
-			}else{
-				if (xIndex < xTotalSegs){
-					xXClosest = $(pChart.data("chartvalue").get(xIndex + 1)).data("dx");
-//					console.log("Anterior\t" + xIndex);
-				}
-			}
-			var xXMiddle = (Number(xXClosest) + xX) / 2;
-			//Escolhe o item anterior se estiver antes do meio do caminho entre o próximo item
-			if (xCurrentX < xXMiddle){
-				xChartValue = $(pChart.data("chartvalue").get(xIndex - 1));
-				console.log("Anterior\t" + xIndex);
-			}
-			dbsfaces.chartValue.select(pChart.closest(".dbs_charts"), pChart, xChartValue, true);
-//			dbsfaces.chart.selectChartValue(xChartValue, xChartPathGuide1);
-		}
+	unSelect: function(pChart){
+		pChart.each(function(){
+			$(this).data("chartvalue").filter(".-selected").svgRemoveClass("-selected");
+			$(this).data("cv" + $(this).data("guide"), null);
+		});
 	},
-
 
 	//Escoder todos os deltas
 	//Chamado pelo dbsfaces_charts

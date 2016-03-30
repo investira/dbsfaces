@@ -199,7 +199,9 @@ svg{
 	-ms-user-select: none !important;
 	-o-user-select: none !important;
 	user-select: none !important;
-	xcursor: inherit;
+	
+	-webkit-tap-highlight-color: transparent;
+
 }
 .-odd {}
 .-opened {}

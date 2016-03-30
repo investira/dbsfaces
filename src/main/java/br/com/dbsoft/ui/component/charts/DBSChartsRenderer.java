@@ -108,7 +108,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 								DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.VALUE, null);
 								//Linhas do grid
 								xWriter.startElement("g", xCharts);
-									DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.GRID, null);
+									DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.CHARTS.MAIN.trim() + DBSFaces.CSS.MODIFIER.GRID.trim(), null);
 									pvEncodeLines(xCharts, xWriter);
 								xWriter.endElement("g");
 								//Gráficos--------------------------
@@ -197,15 +197,14 @@ public class DBSChartsRenderer extends DBSRenderer {
 //			pvEncodeDefsMarker(pCharts, pWriter);
 		pWriter.endElement("defs");
 	}
-	private void pvEncodeDefsMarker(DBSCharts pCharts, ResponseWriter pWriter) throws IOException{
-		pWriter.startElement("g", pCharts);
-			DBSFaces.setAttribute(pWriter, "id", "svgchartmarker" , null);
-			DBSFaces.encodeSVGRect(pCharts, pWriter, 10D, 10D, "2em", "2em", null, null, "black");
-			DBSFaces.encodeSVGRect(pCharts, pWriter, 10D, 10D, "1em", "1em", null, null, "blue");
-		pWriter.endElement("g");
-	}
+//	private void pvEncodeDefsMarker(DBSCharts pCharts, ResponseWriter pWriter) throws IOException{
+//		pWriter.startElement("g", pCharts);
+//			DBSFaces.setAttribute(pWriter, "id", "svgchartmarker" , null);
+//			DBSFaces.encodeSVGRect(pCharts, pWriter, 10D, 10D, "2em", "2em", null, null, "black");
+//			DBSFaces.encodeSVGRect(pCharts, pWriter, 10D, 10D, "1em", "1em", null, null, "blue");
+//		pWriter.endElement("g");
+//	}
 	
-
 	
 //	private void pvEncodeFilters(ResponseWriter pWriter) throws IOException{
 //	    StringBuilder xSB = new StringBuilder();

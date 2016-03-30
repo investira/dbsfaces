@@ -135,8 +135,8 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			Double xHeight = DBSNumber.abs(DBSNumber.subtract(pCharts.getChartHeight(), pCharts.getZeroPosition() - pCharts.getPadding(), xY).doubleValue());
 			//Centraliza o ponto
 			Double xLineWidth = pChart.getColumnScale() * .9;
-			if (xLineWidth < 2){
-				xLineWidth = 2D;
+			if (xLineWidth < 1){
+				xLineWidth = 1D;
 			}
 			xXText = DBSNumber.add(xX,pChart.getColumnScale() / 2);
 			xX = DBSNumber.add(xX,
@@ -156,8 +156,8 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		//Encode LINE - ponto. as linhas que ligam os pontos, são desenhadas no código JS.
 		}else if (pType == TYPE.LINE){
 			//Salva posição do pointo
-			xX = DBSNumber.trunc(xX, 4);
-			xY = DBSNumber.trunc(xY, 4);
+			xX = DBSNumber.trunc(xX, 0);
+			xY = DBSNumber.trunc(xY, 0);
 			pChartValue.setPoint(new Point2D.Double(xX.doubleValue(), xY.doubleValue()));
 			//Encode do circulo
 			//Artifício pois o fcirefox só funciona com valores fixos no transform-origin

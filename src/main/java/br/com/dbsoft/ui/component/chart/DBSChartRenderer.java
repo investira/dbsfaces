@@ -85,7 +85,7 @@ public class DBSChartRenderer extends DBSRenderer {
 				xWriter.startElement("g", xChart);
 					DBSFaces.setAttribute(xWriter, "class", "-path", null);
 					//Area que ira captura o mousemove
-					DBSFaces.encodeSVGRect(xChart, xWriter, 0D, 0D, xChartsWidth.toString(), xChartsHeight.toString(), DBSFaces.CSS.MODIFIER.MASK.trim(), null, null);
+					DBSFaces.encodeSVGRect(xChart, xWriter, xCharts.getPadding() / 2D, xCharts.getPadding() / 2D, xChartsWidth.toString(), xChartsHeight.toString(), DBSFaces.CSS.MODIFIER.MASK.trim(), null, null);
 				xWriter.endElement("g");
 				xWriter.startElement("g", xChart);
 					DBSFaces.setAttribute(xWriter, "class", "-delta", null);
