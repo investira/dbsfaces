@@ -3,17 +3,16 @@
 	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd">
 	<description>
-		<![CDATA[
-			<style type="text/css">
+		
+			&lt;style type="text/css"&gt;
 				description{
 					font-size:small;
 				}
-			</style>
-		]]>
+			&lt;/style&gt;
+		
  		Componentes JSF DBSoft
  	</description>
 	<namespace>http://www.dbsoft.com.br/ui/dbsfaces</namespace>
-	
 	<tag>
 		<tag-name>dialog</tag-name>
 		<component>
@@ -149,9 +148,6 @@
 			<type>java.lang.String</type>
 		</attribute>
 	</tag>
-	
-	
-	
 	<tag>
 		<tag-name>dataTable</tag-name>
 		<component>
@@ -1010,7 +1006,7 @@
 			<name>type</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-		</attribute>		
+		</attribute>
 		<attribute>
 			<description>
                 Tooltip
@@ -2357,6 +2353,88 @@
 		</attribute>
 	</tag>
 	<tag>
+		<description>Botão de menu flutuante. 
+Os botões do menu devem ser do tipo dbs:menuitem como filhos do floatButton.</description>
+		<tag-name>floatButton</tag-name>
+		<component>
+			<component-type>br.com.dbsoft.ui.component.floatbutton</component-type>
+			<handler-class />
+		</component>
+		<attribute>
+			<description>
+                Identificador único do componente.
+            </description>
+			<name>id</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Class CSS que será utilizado com style
+            </description>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Adiciona style 
+            </description>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+            	icon Class
+            </description>
+			<name>iconClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                rendered
+            </description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+                rendered
+            </description>
+			<name>disabled</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+                Tooltip
+            </description>
+			<name>tooltip</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Define a orientação do menu.
+true: Horizontal;
+false: Vertical;
+Default: false;</description>
+			<name>horizontal</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+            	Localização padrão do componente nos 4 cantos da tela, sendo 1=top-left, 2=top-right, 3=bottom-right, 4= bottom-left. O padrão é 3=bottom-right;
+            </description>
+			<name>defaultLocation</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+		</attribute>
+	</tag>
+	<tag>
 		<tag-name>link</tag-name>
 		<component>
 			<component-type>br.com.dbsoft.ui.component.link</component-type>
@@ -2784,7 +2862,7 @@
 			<name>showDelta</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-		</attribute>		
+		</attribute>
 		<attribute>
 			<description>
                 var
@@ -2803,40 +2881,36 @@
 		</attribute>
 		<attribute>
 			<description>
-			<![CDATA[
-				<span style="font-size:small">
-				Hue que indicará a cor base que será utilizado calcular as cores de cada um dos valores do gráfico.<br/>
+			
+				&lt;span style="font-size:small"&gt;
+				Hue que indicará a cor base que será utilizado calcular as cores de cada um dos valores do gráfico.&lt;br/&gt;
 				Caso não seja informado, as cores serão gerada automaticamente.
-				O valor do Hue varia de 0 a 1. Abaixo, valores aproximados<br/>
-				<ul>
-					<li>Vermelho = 0</li>
-					<li>Laranja = 0.1</li>
-					<li>Amarelo = 0.17</li>
-					<li>Verde = 0.3</li>
-					<li>Aniz = 0.5</li>
-					<li>Azul = 0.65</li>
-					<li>Rosa = 0.85</li>
-					<li>Vermelho = 1</li>
-				<ul>
-				</span>
-			]]>
-            </description>
+				O valor do Hue varia de 0 a 1. Abaixo, valores aproximados&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;Vermelho = 0&lt;/li&gt;
+					&lt;li&gt;Laranja = 0.1&lt;/li&gt;
+					&lt;li&gt;Amarelo = 0.17&lt;/li&gt;
+					&lt;li&gt;Verde = 0.3&lt;/li&gt;
+					&lt;li&gt;Aniz = 0.5&lt;/li&gt;
+					&lt;li&gt;Azul = 0.65&lt;/li&gt;
+					&lt;li&gt;Rosa = 0.85&lt;/li&gt;
+					&lt;li&gt;Vermelho = 1&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
 			<name>colorHue</name>
 			<required>false</required>
 			<type>java.lang.Float</type>
-		</attribute>		
+		</attribute>
 		<attribute>
 			<description>
-			<![CDATA[
-				<span style="font-size:small">
+			
+				&lt;span style="font-size:small"&gt;
 				Brilho da cor que varia de 0, sem brilho a 1, brilho integral.
-				</span>
-			]]>
-            </description>
+				&lt;/span&gt; </description>
 			<name>colorBrightness</name>
 			<required>false</required>
 			<type>java.lang.Float</type>
-		</attribute>		
+		</attribute>
 	</tag>
 	<tag>
 		<tag-name>chartValue</tag-name>

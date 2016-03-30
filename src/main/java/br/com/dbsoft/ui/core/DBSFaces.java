@@ -50,6 +50,8 @@ import javax.faces.view.facelets.FaceletContext;
 import org.apache.log4j.Logger;
 import org.jboss.weld.context.SerializableContextualInstanceImpl;
 
+import com.sun.faces.util.DebugUtil;
+
 import br.com.dbsoft.core.DBSSDK;
 import br.com.dbsoft.core.DBSSDK.ENCODE;
 import br.com.dbsoft.core.DBSSDK.NETWORK.METHOD;
@@ -78,8 +80,6 @@ import br.com.dbsoft.util.DBSIO;
 import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSObject;
 import br.com.dbsoft.util.DBSString;
-
-import com.sun.faces.util.DebugUtil;
 	
 /**
  * @author ricardo.villar
@@ -119,6 +119,8 @@ public class  DBSFaces {
 	    public static final String CRUDTABLE = "crudTable";
 	    public static final String DIALOG = "dialog";
 	    public static final String FILEUPLOAD = "fileUpload";
+	    public static final String FLOATACTONBUTTON = "floatactionbutton";
+	    public static final String FLOATBUTTON = "floatbutton";
 	    public static final String INPUTTEXT = "inputText";
 	    public static final String INPUTTEXTAREA = "inputTextArea";
 	    public static final String INPUTDATE = "inputDate";
@@ -529,6 +531,11 @@ public class  DBSFaces {
 		public static class PARALLAXSECTION
 		{
 			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.PARALLAXSECTION;
+		}
+		
+		public static class FLOATBUTTON
+		{
+			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.FLOATBUTTON;
 		}
 	}
 	
