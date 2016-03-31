@@ -1,0 +1,49 @@
+.dbs_sidemenu {
+	height: 100vh;
+	width: 0;
+	position: fixed;
+	z-index: 3;
+	top: 0;
+	left: 0;
+	overflow-x: hidden;
+	padding-top: 60px;
+	transition: 0.5s;
+	color: white;
+    font-size: 0.7em;
+}
+
+.dbs_sidemenu > .dbs_button {
+	position: absolute;
+	top: 8px;
+	right: 15px;
+	font-size: 1.5em;
+	margin-left: 50px;
+}
+.dbs_sidemenu > .-iconCentral{
+	position: absolute;
+	top: 8px;
+	right: 50%;
+	font-size: 2.5em;
+}
+
+.dbs_sidemenu > .dbs_menu > .-content > .dbs_menuitem{
+	width: 100%;
+	padding-top: 5px;
+	transition: 0.3s;
+    opacity: 0;
+}
+
+.dbs_hiddennav {
+	height: 100vh;
+	width: 0px;
+	position: fixed;
+	z-index: 3;
+	top: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.9);
+	overflow-y: auto;
+	overflow-x: hidden;
+	text-align: center;
+	opacity: 0;
+	transition: opacity 1s;
+}

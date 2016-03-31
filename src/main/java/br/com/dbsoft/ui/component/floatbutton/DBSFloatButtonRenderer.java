@@ -73,7 +73,7 @@ public class DBSFloatButtonRenderer extends DBSRenderer {
 		DBSButton xBotaoPrincipal = new DBSButton();
 		xBotaoPrincipal.setIconClass(xFloatButton.getIconClass());
 		xBotaoPrincipal.setTooltip(xFloatButton.getTooltip());
-		xBotaoPrincipal.setonclick("openCloseFloatMenu()");
+		xBotaoPrincipal.setonclick("dbsOpenCloseFloatMenu()");
 		xBotaoPrincipal.encodeAll(pContext);
 		
 		//MENU FLUTUANTE
@@ -111,23 +111,24 @@ public class DBSFloatButtonRenderer extends DBSRenderer {
 	 */
 	private void pvEncodeJS(ResponseWriter pWriter, String pClientId) throws IOException {
 		DBSFaces.encodeJavaScriptTagStart(pWriter);
-		String xJS = "function openCloseFloatMenu() {\n"+
-						" var xButtons = document.getElementsByClassName(\"dbs_floatmenuitem\");\n"+
-						" if (document.getElementById(\"floatMenu\").style.visibility == \"hidden\" \n"+
-						 " || document.getElementById(\"floatMenu\").style.visibility == \"\") {\n"+
-						 	" document.getElementById(\"floatMenu\").style.visibility = \"visible\";\n"+
-						 	" for(var i = 0; i < xButtons.length; ++i){\n"+
-						 		" xButtons[i].style.opacity = \"1\";\n"+
-						 		" xButtons[i].style.transform = \"scale(1,1)\";\n"+
-						 	" }\n"+
-						 " } else {\n"+
-						 	" document.getElementById(\"floatMenu\").style.visibility = \"hidden\";\n"+
-						 	" for(var i = 0; i < xButtons.length; ++i){\n"+
-						 		" xButtons[i].style.opacity = \"0\";\n"+
-						 		" xButtons[i].style.transform = \"scale(0,0)\";\n"+
-						 	" }\n"+
-						 " }\n"+
-					  " }\n";
+		String xJS = 
+		" function dbsOpenCloseFloatMenu() { "+
+			" var xButtons = document.getElementsByClassName('dbs_floatmenuitem'); "+
+			" if (document.getElementById('floatMenu').style.visibility == 'hidden' "+
+			 " || document.getElementById('floatMenu').style.visibility == '') { "+
+			 	" document.getElementById('floatMenu').style.visibility = 'visible'; "+
+				" for(var i = 0; i < xButtons.length; ++i){ "+
+					" xButtons[i].style.opacity = '1'; "+
+					" xButtons[i].style.transform = 'scale(1,1)'; "+
+				" } "+
+			" } else { "+
+				" document.getElementById('floatMenu').style.visibility = 'hidden'; "+
+				" for(var i = 0; i < xButtons.length; ++i){ "+
+					" xButtons[i].style.opacity = '0'; "+
+					" xButtons[i].style.transform = 'scale(0,0)'; "+
+				" } "+
+			" } "+
+		" }";
 		pWriter.write(xJS);
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);	
 	}

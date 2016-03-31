@@ -119,7 +119,6 @@ public class  DBSFaces {
 	    public static final String CRUDTABLE = "crudTable";
 	    public static final String DIALOG = "dialog";
 	    public static final String FILEUPLOAD = "fileUpload";
-	    public static final String FLOATACTONBUTTON = "floatactionbutton";
 	    public static final String FLOATBUTTON = "floatbutton";
 	    public static final String INPUTTEXT = "inputText";
 	    public static final String INPUTTEXTAREA = "inputTextArea";
@@ -132,6 +131,7 @@ public class  DBSFaces {
 	    public static final String IMG = "img";
 	    public static final String DIV = "div";
 	    public static final String MENU = "menu";
+	    public static final String SIDEMENU = "sidemenu";
 	    public static final String MENUITEM = "menuitem";
 	    public static final String MENUITEMSEPARATOR = "menuitemSeparator";
 	    public static final String LINK = "link";
@@ -536,6 +536,11 @@ public class  DBSFaces {
 		public static class FLOATBUTTON
 		{
 			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.FLOATBUTTON;
+		}
+		
+		public static class SIDEMENU
+		{
+			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.SIDEMENU;
 		}
 	}
 	
