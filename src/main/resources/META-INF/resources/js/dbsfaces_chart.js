@@ -9,8 +9,16 @@ dbs_chart = function(pId) {
 //		e.preventDefault();
 //		return false;
 //	});
+	$(pId + "[type='line'] > .-path > .-guide").on("mousedown touchstart", function(e){
+//		console.log("chart guide\t" + e.originalEvent.type);
+	});
+
+//	$(pId + "[type='line'] > .-path > .-guide").on("mousemove touchstart", function(e){
+//		console.log("chart guide\t" + e.originalEvent.type);
+//		dbsfaces.chart.findPoint(e, xChart);
+//	});
 	//Procura por chartvalue a partir da linha do gráfico
-	$(pId + "[type='line'] > g.-path > .-mask").on("mousemove touchstart touchmove", function(e){
+	$(pId + "[type='line'] > .-path > .-mask").on("mousemove touchstart touchmove", function(e){
 //		$(pId + "[type='line'] > g.-path > .-mask").on("mousemove touchmove", function(e){
 //		console.log("chart\t" + e.originalEvent.type);
 		dbsfaces.chart.findPoint(e, xChart);
@@ -18,6 +26,15 @@ dbs_chart = function(pId) {
 		return false;
 	});
 
+	xChart.on("mouseleave", function(e){
+//		dbsfaces.chartValue.unSelect(xChart.data("parent").data("selected"));
+//		console.log("charts\t" + e.originalEvent.type);
+
+//		$(this).data("chart").each(function(){
+//			dbsfaces.chart.stopDeltaDrag($(this));
+//		});
+		dbsfaces.charts.unSelect($(this));
+	});
 
 //	$(pId + "[type='line'][showdelta] > g.-path").on("mousemove touchmove", function(e){
 //		dbsfaces.chart.findPoint(e, xChart);
@@ -85,25 +102,30 @@ dbsfaces.chart = {
 		//Reseta ponto para calculo do delta
 //		dbsfaces.chartValue.removeDelta(pChart);
 
-		dbsfaces.chart.pvInitializeData(pChart, xChartValues);
+		dbsfaces.chart.pvInitializeData(pChart);
 
-		var xChartValues = pChart.data("chartvalue");
 		var xCharts = pChart.data("parent");
+		var xChartChildren = pChart.data("children");
 		var xShowLabel = (typeof(xCharts.attr("showlabel")) != "undefined");
 		var xDrawLine = (pChart.attr("type") == "line");
 		if (pChart.attr("type") == "bar"
 		 || pChart.attr("type") == "line"){
 			//Verifica sopreposição dos labels e cor da linhas
-			dbsfaces.chart.pvInitializeLineAndLabels(xCharts, pChart, xChartValues, xShowLabel, xDrawLine);
+			dbsfaces.chart.pvInitializeLineAndLabels(xCharts, pChart, xChartChildren, xShowLabel, xDrawLine);
 			//Cria guia principal
 			dbsfaces.chart.pvInitializeGuides(xCharts, pChart);
 		}
 	},
 
 	pvInitializeData: function(pChart){
+		var xCharts = pChart.closest(".dbs_charts");
+		pChart.data("parent", xCharts);
 		//Salva chartvalues vinculados a este chart
-		var xChartValues = pChart.children(".dbs_chartValue");
-		pChart.data("chartvalue", xChartValues);
+		var xChartChildren = pChart.children(".dbs_chartValue");
+		pChart.data("children", xChartChildren);
+		var xDeltaGroup = dbsfaces.util.getNotUndefined(pChart.children("g.-delta"), null);
+		pChart.data("deltagroup", xDeltaGroup);
+		
 		pChart.data("pathgroup", dbsfaces.util.getNotUndefined(pChart.children(".-path"), null));
 		if (pChart.data("pathgroup") == null){
 			pChart.data("mask", null);
@@ -112,7 +134,9 @@ dbsfaces.chart = {
 		}
 		//Define guia 1 como guia inicial 
 		pChart.data("guide", 1);
+		//Ponto #1
 		pChart.data("cv1", null);
+		//Ponto #2
 		pChart.data("cv2", null);
 	},
 	
@@ -180,7 +204,6 @@ dbsfaces.chart = {
 			xPath.svgAttr("stroke", "url(#" + pChart.get(0).id + "_linestroke)");
 			//Salva path no próprio componente para agilizar o findPoint
 			pChart.data("path", xPath.get(0));
-//			xSvg.append("<marker id='mm' viewBox='0 0 20 20' refX='0' refY='10' markerUnits='strokeWidth' markerWidth='10' markerHeight='10' orient='auto'><rect width='10' height='10' fill='grey'/></marker>");
 		}
 	},
 	
@@ -192,11 +215,13 @@ dbsfaces.chart = {
 			if (xGuide1.length == 0){
 				xGuide1 = dbsfaces.svg.use(xChartPathGroup, pCharts.get(0).id + "_guide", "-guide", null);
 				xGuide1.svgAttr("guide", 1);
+				pChart.data("guide1", xGuide1);
 			}
 			var xGuide2 = xChartPathGroup.children(".-guide[guide='2']");
 			if (xGuide2.length == 0){
 				xGuide2 = dbsfaces.svg.use(xChartPathGroup, pCharts.get(0).id + "_guide", "-guide", null);
 				xGuide2.svgAttr("guide", 2);
+				pChart.data("guide2", xGuide2);
 			}
 		}
 	},
@@ -206,7 +231,8 @@ dbsfaces.chart = {
 //		console.log("findpoint");
 		var xChartPathGroup = pChart.data("pathgroup");
 		var xChartPath = pChart.data("path");
-		var xChartPathGuide1 = xChartPathGroup.children(".-guide[guide='" + pChart.data("guide") + "']");
+//		var xChartPathGuide1 = xChartPathGroup.children(".-guide[guide='" + pChart.data("guide") + "']");
+		var xChartPathGuide1 = pChart.data("guide" + pChart.data("guide"));
 		var xChartMask = pChart.data("mask");
 		var xDecimals = 1;
 //        var xCurrentX = dbsfaces.math.round(e.originalEvent.pageX - xChartPath.getBoundingClientRect().left - e.originalEvent.offsetX, 1);
@@ -235,39 +261,88 @@ dbsfaces.chart = {
         //Posiciona o Guide 
 		if (typeof(xTargetPos) != "undefined"){
 			//Procura qual dos chartsValues está mais próximo a posição do cursor
+			var xChartChildren = pChart.data("children");
 			var xIndex = xChartPath.getPathSegAtLength(xTargetLenght);
 			var xTotalSegs = $(xChartPath).svgGetPathTotalSegs();
 			var xXClosest = xCurrentX;
-			var xChartValue = $(pChart.data("chartvalue").get(xIndex));
+			var xChartValue = $(xChartChildren.get(xIndex));
 			var xX = Number(xChartValue.data("dx"));
 			var xY = Number(xChartValue.data("dy"));
 			//Se cursos estiver antes do ponto, seleciona o chartvalue anterior
 			if (xCurrentX < xX){
 				if (xIndex > 0){
-					xXClosest = $(pChart.data("chartvalue").get(xIndex - 1)).data("dx");
+					xXClosest = $(xChartChildren.get(xIndex - 1)).data("dx");
 				}
 			//Se cursos não estiver após do ponto, seleciona o chartvalue posterior
 			}else if(xCurrentX > xX){
 				if (xIndex < xTotalSegs){
-					xXClosest = $(pChart.data("chartvalue").get(xIndex + 1)).data("dx");
+					xXClosest = $(xChartChildren.get(xIndex + 1)).data("dx");
 				}
 			}
 			var xXMiddle = (Number(xXClosest) + xX) / 2;
 			//Escolhe o item anterior se estiver antes do meio do caminho entre o próximo item
 			if (xCurrentX < xXMiddle){
-				xChartValue = $(pChart.data("chartvalue").get(xIndex - 1));
+				xChartValue = $(xChartChildren.get(xIndex - 1));
 			}
 //			console.log(xChartValue[0].id);
-			dbsfaces.chartValue.select(xChartValue, true);
+			dbsfaces.chartValue.select(xChartValue, null);
+		}
+	},
+
+	select: function(pChartValue, pSelect){
+		if (pChartValue == null){return;}
+		var xChart = pChartValue.data("parent");
+		var xCharts = xChart.data("parent");
+		//Marca item selecionado
+		dbsfaces.chart.pvSelectChart(xCharts, xChart, pChartValue, pSelect);
+		var xSelected = xCharts.data("selected");
+		//Ignora se for para selecionar item já selecionado
+		if (xSelected != null){
+			var xSelectedChart = xSelected.data("parent");
+			if (xSelectedChart[0].id == xChart[0].id){
+				return;
+			}
+		}
+		//Desmarca item selecionado anteriormente
+		dbsfaces.charts.select(pChartValue, pSelect);
+	},
+
+	unSelect: function(pChartValue){
+		if (pChartValue == null){return;}
+		var xChart = pChartValue.data("parent");
+		var xCharts = xChart.data("parent");
+
+		//Apaga ponto selecionado
+		dbsfaces.chart.pvSelectChart(xCharts, xChart, pChartValue, false);
+		//Desmarca item selecionado anteriormente
+		dbsfaces.charts.unSelect(pChartValue);
+	},
+	
+	pvSelectChart: function(pCharts, pChart, pChartValue, pSelect){
+		if (pChartValue == null){return;}
+		var xChartsChildren = pCharts.data("children");
+		var xSelect = pSelect;
+		//Reseta posição dos guias
+		dbsfaces.chart.pvSetGuide(pChart, pChartValue, pSelect);
+	},
+		
+	
+	pvSetGuide: function(pChart, pChartValue, pSelect){
+		if (pChart.attr("type") != "line"){return;}
+		var xChartPathGuide =  $(pChart.data("guide" + pChart.data("guide")));
+		if (pSelect == null || pSelect){
+			xChartPathGuide.show();
+			var xX = pChartValue.data("dx");
+			var xY = pChartValue.data("dy");
+			xChartPathGuide.css("stroke", pChartValue.children(".-point").css("stroke"));
+			//Reposiciona guia nas coordenadas do chartvalue
+	        dbsfaces.ui.cssTransform(xChartPathGuide, "translate3d(" + xX + "px ," + xY + "px,0)");
+			dbsfaces.ui.cssAllBrowser(xChartPathGuide, "transform-origin", xX + "px " + xY + "px 0");
+		}else{
+			xChartPathGuide.hide();
 		}
 	},
 	
-	unSelect: function(pChart){
-		pChart.each(function(){
-			$(this).data("chartvalue").filter(".-selected").svgRemoveClass("-selected");
-			$(this).data("cv" + $(this).data("guide"), null);
-		});
-	},
 
 	//Escoder todos os deltas
 	//Chamado pelo dbsfaces_charts
@@ -279,7 +354,7 @@ dbsfaces.chart = {
 		if (xMembers != null) {
 			xMembers.each(function(){
 				xCharts = $(this);
-				var xChart = $(this).data("chart").not(pChart);
+				var xChart = $(this).data("children").not(pChart);
 				xChart.each(function(){
 					dbsfaces.chart.hideChartValueDelta($(this));
 				});

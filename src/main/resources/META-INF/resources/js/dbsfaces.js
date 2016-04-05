@@ -70,7 +70,7 @@ String.prototype.replaceAll = function(target, replacement) {
 		return this;
     },
     $.fn.svgAttr = function (pAttribute, pValue) {
-    	if (typeof pValue == "undefined"){
+    	if (typeof(pValue) == "undefined"){
     		return this.get(0).getAttributeNS(null, pAttribute);
     	}else{
     		this.get(0).setAttributeNS(null, pAttribute, pValue);
@@ -79,7 +79,7 @@ String.prototype.replaceAll = function(target, replacement) {
 	},
 	//Retorna o total de segmentos de um path
 	$.fn.svgGetPathTotalSegs = function () {
-    	if (typeof this == "undefined"){
+    	if (typeof(this) == "undefined"){
     		return 0;
     	}
    		return this.get(0).getPathSegAtLength(this.get(0).getTotalLength() + 10) + 1;

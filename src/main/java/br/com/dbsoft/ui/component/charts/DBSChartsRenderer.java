@@ -47,7 +47,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 		//		xCharts.setWidth(xCharts.getWidth());
 //		xCharts.setHeight(xCharts.getHeight());
 		ResponseWriter xWriter = pContext.getResponseWriter();
-		String xClass = DBSFaces.CSS.CHARTS.MAIN + " ";
+		String xClass = DBSFaces.CSS.CHARTS.MAIN + DBSFaces.CSS.MODIFIER.NOT_SELECTABLE;
 		String xChartsStyle = "width:" + xCharts.getWidth() + "px; height:" + xCharts.getHeight() + "px;";
 
 		if (xCharts.getStyleClass()!=null){
@@ -73,7 +73,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 			encodeClientBehaviors(pContext, xCharts);
 			//CONTAINER--------------------------
 			xWriter.startElement("span", xCharts);
-				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER + DBSFaces.CSS.MODIFIER.NOT_SELECTABLE, null);
+				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER, null);
 
 				//CAPTION--------------------------
 				if (xCharts.getCaption() !=null){

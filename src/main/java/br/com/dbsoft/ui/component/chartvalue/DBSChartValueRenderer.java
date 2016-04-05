@@ -175,7 +175,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 						 pCharts.getWidth().doubleValue(), 
 						 xYText.doubleValue(), 
 						 DBSFaces.CSS.MODIFIER.VALUE + "-hide", 
-						 null, 
+						 " fill:" + wFillColor, 
 						 pWriter);
 			//Encode label da coluna ---------------------------------------------------------------------
 			if (pCharts.getShowLabel()){
@@ -184,7 +184,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 							 xXText.doubleValue(), 
 							 pCharts.getHeight().doubleValue(), 
 							 DBSFaces.CSS.MODIFIER.LABEL + "-hide", 
-							 null, 
+							 " fill:" + wFillColor, 
 							 pWriter);
 			}
 		pWriter.endElement("g");
@@ -208,9 +208,9 @@ public class DBSChartValueRenderer extends DBSRenderer {
 
 		Point2D 		xPoint = new Point2D.Double();
 
-		String 			xPercLabelStyle =  "text-anchor:";
+		String 			xPercLabelStyle =  "fill:white; text-anchor:";
 		Integer 		xPercLineWidth =  4;
-		String 			xPerBoxStyle = "stroke:" + wFillColor + ";";
+		String 			xPerBoxStyle = "fill:" + wFillColor + ";";
 		Integer			xPositionInverter = 1;
 		Point2D			xPointLabel = new Point2D.Double();
 		
@@ -541,7 +541,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 							   pY,
 							   pText,
 							   pStyleClass, 
-							   DBSObject.getNotNull(pStyle, "") + " fill:" + wFillColor,
+							   DBSObject.getNotNull(pStyle, ""),
 							   null);
 	}
 
