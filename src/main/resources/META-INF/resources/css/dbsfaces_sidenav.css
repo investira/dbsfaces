@@ -1,0 +1,90 @@
+.dbs_sidenav {
+	float: left;
+}
+	
+.dbs_sidenav > .dbs_hiddennav {
+	height: 100vh;
+	width: 0px;
+	position: fixed;
+	z-index: 3;
+	top: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.9);
+	overflow-y: auto;
+	overflow-x: hidden;
+	text-align: center;
+	opacity: 0;
+	transition: opacity 1s;
+}
+.dbs_sidenav > .dbs_sidebar {
+	position: fixed;
+	z-index: 3;
+	overflow-x: hidden;
+	padding-top: 60px;
+	transition: 0.5s;
+	color: white;
+	text-align: left;
+    font-size: 0.7em;
+    opacity: 0;
+}
+
+.dbs_sidenav > .dbs_sidebar > .-th_action {
+	position: absolute;
+	top: 5px;
+	left: 6px;
+	font-size: 2.1em;
+}
+.dbs_sidenav > .dbs_sidebar > .-captionCentral{
+	position: absolute;
+	transition: 0.3s;
+    opacity: 0;
+	top: 15px;
+	right: 45px;
+	font-size: 1em;
+	width: 160px;
+}
+.dbs_sidenav > .dbs_sidebar > .-iconCaption{
+	position: absolute;
+	top: 8px;
+    right: 6px;
+    font-size: 1.5em;
+    transition: 0.3s;
+    opacity: 0;
+}
+.dbs_sidenav > .dbs_sidebar > .-content{
+	width: inherit;
+	padding-top: 5px;
+	transition: 0.3s;
+    opacity: 0;
+}
+
+/*DEFAULT LOCATION*/
+.dbs_sidenav_location1{
+	top: 0px;
+	left: 0px;
+	height: 100vh;
+	width: 0px;
+}
+.dbs_sidenav_location2{
+	top: -65px;
+    left: 0px;
+    height: 0px;
+	width: 100vw;
+}
+.dbs_sidenav_location3{
+	top: 0px;
+    right: 0px;
+    height: 100vh;
+	width: 0px;
+}
+.dbs_sidenav_location4{
+	bottom: 0px;
+    left: 0px;
+    height: 0px;
+	width: 100vw;
+}
+
+/*ESPECIFICO PARA DBSMENU*/
+.dbs_sidenav > .dbs_sidebar > .-content > .dbs_menu > .-content > .dbs_menuitem{
+	width: 100%;
+}

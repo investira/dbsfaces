@@ -3515,9 +3515,9 @@ Default: false;</description>
  </tag>
  <tag>
   <description>Menu lateral deslizante. Os botões do menu devem ser do tipo dbs:menuitem como filhos do sideMenu.</description>
-  <tag-name>sideMenu</tag-name>
+  <tag-name>sideNav</tag-name>
   <component>
-   <component-type>br.com.dbsoft.ui.component.sidemenu</component-type>
+   <component-type>br.com.dbsoft.ui.component.sidenav</component-type>
    <handler-class/>
   </component>
   <attribute>
@@ -3525,7 +3525,7 @@ Default: false;</description>
                 Identificador único do componente.
             </description>
    <name>id</name>
-   <required>true</required>
+   <required>false</required>
    <type>java.lang.String</type>
   </attribute>
   <attribute>
@@ -3557,16 +3557,40 @@ Default: false;</description>
                 Icon Class
             </description>
    <name>iconClass</name>
-   <required>false</required>
+   <required>true</required>
    <type>java.lang.String</type>
   </attribute>
   <attribute>
    <description>
                 Icon Class
             </description>
-   <name>iconCentral</name>
+   <name>iconCaption</name>
    <required>false</required>
    <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
+                Tooltip
+            </description>
+   <name>tooltip</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
+                Título
+            </description>
+   <name>caption</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
+            	Localização padrão do componente nos 4 cantos da tela, sendo 1=top-left, 2=top-right, 3=bottom-right, 4= bottom-left. O padrão é 3=bottom-right;
+            </description>
+   <name>defaultLocation</name>
+   <required>false</required>
+   <type>java.lang.Integer</type>
   </attribute>
  </tag>
 </facelet-taglib>

@@ -131,7 +131,6 @@ public class  DBSFaces {
 	    public static final String IMG = "img";
 	    public static final String DIV = "div";
 	    public static final String MENU = "menu";
-	    public static final String SIDEMENU = "sidemenu";
 	    public static final String MENUITEM = "menuitem";
 	    public static final String MENUITEMSEPARATOR = "menuitemSeparator";
 	    public static final String LINK = "link";
@@ -167,6 +166,7 @@ public class  DBSFaces {
 	    public static final String CHARTS = "charts";
 	    public static final String CHART = "chart";
 	    public static final String CHARTVALUE = "chartValue";
+	    public static final String SIDENAV = "sidenav";
 	}
 
 	public static class HTML
@@ -526,21 +526,27 @@ public class  DBSFaces {
 
 		public static class PARALLAX
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.PARALLAX;
+			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.PARALLAX;
 		}
 		public static class PARALLAXSECTION
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.PARALLAXSECTION;
+			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.PARALLAXSECTION;
 		}
 		
 		public static class FLOATBUTTON
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.FLOATBUTTON;
+			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.FLOATBUTTON;
 		}
 		
-		public static class SIDEMENU
+		public static class SIDENAV
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.SIDEMENU;
+			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.SIDENAV;
+			public static final String HIDDENNAV = DBSFaces.CSS.CLASS_PREFIX + "hiddennav";
+			public static final String SIDEBAR = DBSFaces.CSS.CLASS_PREFIX + "sidebar";
+			public static final String SIDEBARITEM = DBSFaces.CSS.CLASS_PREFIX + "sidebaritem";
+			public static final String CAPTIONCENTRAL = " -captionCentral ";
+			public static final String ICONCAPTION = " -iconCaption ";
+			public static final String DEFAULTLOCATION = " dbs_sidenav_location";
 		}
 	}
 	
