@@ -15,7 +15,7 @@ dbs_charts = function(pId) {
 	
 	$(pId + " > .-container").on("mouseleave", function(e){
 		dbsfaces.chartValue.unSelect(xCharts.data("selected"));
-//		console.log("charts\t" + e.originalEvent.type);
+		console.log("charts\t" + e.originalEvent.type);
 
 //		$(this).data("chart").each(function(){
 //			dbsfaces.chart.stopDeltaDrag($(this));
@@ -57,11 +57,11 @@ dbsfaces.charts = {
 			xMarker.svgAttr("class", "-guide");
 			var xEllipse;
 			xEllipse = dbsfaces.svg.ellipse(xMarker, "0", "0", "1em", "1em", null, null, null);
-			xEllipse.attr("stroke-width", ".1em");
-			xEllipse.attr("fill", "none");
+//			xEllipse.attr("stroke-width", ".1em");
+//			xEllipse.attr("fill", "none");
 			xEllipse = dbsfaces.svg.ellipse(xMarker, "0", "0", ".2em", ".2em", null, null, null);
-			xEllipse.attr("stroke-width", ".1em");
-			xEllipse.attr("fill", "none");
+//			xEllipse.attr("stroke-width", ".1em");
+//			xEllipse.attr("fill", "none");
 		}
 	},
 	

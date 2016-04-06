@@ -159,36 +159,34 @@ dbsfaces.chartValue = {
 
 	select: function(pChartValue, pSelect){
 		if (pChartValue == null){return;}
-		console.log("select click");
 		var xChart = pChartValue.data("parent");
+		console.log("guide number\t" + xChart.data("guide"));
+		if (xChart.data("guide") == 0){return;}
 		var xCharts = xChart.data("parent");
 		var xSelected;
 		var xSelectedChart;
 		var xSelectedCharts;
-		var xByPass = false;
+		var xSelectCV = null;
 		//Se for marcação fixa
 		if (pSelect != null){
+			xSelectCV = false;
 			xSelected = xChart.data("cv" + xChart.data("guide"));
 			xSelectedChart = xChart;
 			xSelectedCharts = xCharts;
-			//Animação no click
-			if (xSelected != null){
-				//Exclui animação no item selecionado anteriormente
-				xSelected.svgRemoveClass("-a_single_pulse");
-			}
-			//Re-executa animação
-			pChartValue.svgRemoveClass("-a_single_pulse");
-			pChartValue[0].offsetWidth = pChartValue[0].offsetWidth; //Artificil para formar a re-execução da animação
-			pChartValue.svgAddClass("-a_single_pulse");
 			//Alterna marcação marcado/desmarcado
 			if (dbsfaces.chartValue.pvIsEqual(xSelected, pChartValue)){
 				//Demarca se já estiver selecionado
 				xChart.data("cv" + xChart.data("guide"), null);
-				xByPass = true;
 			}else{
+				xSelectCV = true;
 				//Marcar
 				xChart.data("cv" + xChart.data("guide"), pChartValue);
 			}
+//			//Re-executa animação
+//			pChartValue.svgRemoveClass("-a_single_pulse");
+//			pChartValue[0].offsetWidth = pChartValue[0].offsetWidth; //Artificil para formar a re-execução da animação
+//			pChartValue.svgAddClass("-a_single_pulse");
+			
 		//Se for marcação temporária(hover)
 		}else{
 			xSelected = xCharts.data("selected");
@@ -206,9 +204,46 @@ dbsfaces.chartValue = {
 		dbsfaces.chart.select(pChartValue, pSelect);
 		//Desmarca item selecionado anteriormente
 		dbsfaces.chartValue.pvSelectChartValue(xSelectedCharts, xSelectedChart, xSelected, false);
-		if (!xByPass){
+		if (xSelectCV == null || xSelectCV){
 			//Marca item selecionado
 			dbsfaces.chartValue.pvSelectChartValue(xCharts, xChart, pChartValue, pSelect);
+		}
+		
+		//Animação da seleção a ativação de guia
+		if (xSelectCV != null){
+			//Animação no click
+			var xAnimationClass = "dbs_charts-selectedGuide";
+			if (xChart.attr("type") == "line"){
+				if (xSelected != null){
+					//Exclui animação no item selecionado anteriormente
+					xSelected.svgRemoveClass(xAnimationClass);
+				}
+				var xChartPathGuide =  $(xChart.data("guide" + xChart.data("guide")));
+				dbsfaces.chartValue.pvAddAnimation(xSelectCV, xChartPathGuide, xAnimationClass);
+			}else{
+				dbsfaces.chartValue.pvAddAnimation(xSelectCV, pChartValue, xAnimationClass);
+			}
+			//Ativa outro guia
+			if (xSelectCV){
+//				 ||	typeof(xChart.attr("showdelta")) == 'undefined'){
+				if (xChart.attr("type") == "line"){
+					if (xChart.data("guide") == 1){
+						xChart.data("guide", 2);
+					}else{
+						xChart.data("guide", 0);
+					}
+				}
+			}
+		}
+	},
+	
+	pvAddAnimation: function(pSelectCV, pElement, pAnimationClass){
+		pElement.svgRemoveClass(pAnimationClass);
+		if (pSelectCV){
+			//Artificil para formar a re-execução da animação
+			setTimeout(function(){
+				pElement.svgAddClass(pAnimationClass);
+			},0)
 		}
 	},
 

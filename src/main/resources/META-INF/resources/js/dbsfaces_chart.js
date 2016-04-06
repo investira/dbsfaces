@@ -10,7 +10,12 @@ dbs_chart = function(pId) {
 //		return false;
 //	});
 	$(pId + "[type='line'] > .-path > .-guide").on("mousedown touchstart", function(e){
-//		console.log("chart guide\t" + e.originalEvent.type);
+		console.log("chart guide\t" + e.originalEvent.type + "\t" + $(this).attr("guide"));
+		//Seta o guia ativo
+		xChart.data("guide", $(this).attr("guide"));
+		dbsfaces.chartValue.select(xChart.data("parent").data("selected"), true);
+		e.preventDefault();
+		return false;
 	});
 
 //	$(pId + "[type='line'] > .-path > .-guide").on("mousemove touchstart", function(e){
@@ -28,12 +33,14 @@ dbs_chart = function(pId) {
 
 	xChart.on("mouseleave", function(e){
 //		dbsfaces.chartValue.unSelect(xChart.data("parent").data("selected"));
-//		console.log("charts\t" + e.originalEvent.type);
+		console.log("chart\t" + e.originalEvent.type);
 
 //		$(this).data("chart").each(function(){
 //			dbsfaces.chart.stopDeltaDrag($(this));
 //		});
 		dbsfaces.charts.unSelect($(this));
+		e.preventDefault();
+		return false;
 	});
 
 //	$(pId + "[type='line'][showdelta] > g.-path").on("mousemove touchmove", function(e){
@@ -207,25 +214,27 @@ dbsfaces.chart = {
 		}
 	},
 	
-	//Verifica sopreposição dos labels 
+	//Inicializa guias 
 	pvInitializeGuides: function(pCharts, pChart){
 		if (pChart.attr("type") == "line"){
-			var xChartPathGroup = pChart.data("pathgroup");
-			var xGuide1 = xChartPathGroup.children(".-guide[guide='1']");
-			if (xGuide1.length == 0){
-				xGuide1 = dbsfaces.svg.use(xChartPathGroup, pCharts.get(0).id + "_guide", "-guide", null);
-				xGuide1.svgAttr("guide", 1);
-				pChart.data("guide1", xGuide1);
-			}
-			var xGuide2 = xChartPathGroup.children(".-guide[guide='2']");
-			if (xGuide2.length == 0){
-				xGuide2 = dbsfaces.svg.use(xChartPathGroup, pCharts.get(0).id + "_guide", "-guide", null);
-				xGuide2.svgAttr("guide", 2);
-				pChart.data("guide2", xGuide2);
-			}
+			dbsfaces.chart.pvInitializeGuidesCreate(pCharts, pChart, 1);
+			dbsfaces.chart.pvInitializeGuidesCreate(pCharts, pChart, 2);
 		}
 	},
 	
+	//Cria guias 
+	pvInitializeGuidesCreate: function(pCharts, pChart, pGuideNumber){
+		var xChartPathGroup = pChart.data("pathgroup");
+		var xGuide = xChartPathGroup.children(".-guide[guide='" + pGuideNumber + "']");
+		if (xGuide.length == 0){
+			xGuide = dbsfaces.svg.use(xChartPathGroup, pCharts.get(0).id + "_guide", "-guide", null);
+			xGuide.svgAttr("guide", pGuideNumber);
+			xGuide.css("stroke-width", ".1em");
+			xGuide.css("fill", "none");
+			xGuide.css("fill-opacity", "0");
+			pChart.data("guide" + pGuideNumber, xGuide);
+		}
+	},
 	
 	findPoint: function(e, pChart){
 //		console.log("findpoint");
@@ -334,10 +343,13 @@ dbsfaces.chart = {
 			xChartPathGuide.show();
 			var xX = pChartValue.data("dx");
 			var xY = pChartValue.data("dy");
-			xChartPathGuide.css("stroke", pChartValue.children(".-point").css("stroke"));
+			var xColor = pChartValue.children(".-point").css("stroke");
+			xChartPathGuide.css("stroke", xColor);
+			xChartPathGuide.css("fill", xColor);
 			//Reposiciona guia nas coordenadas do chartvalue
 	        dbsfaces.ui.cssTransform(xChartPathGuide, "translate3d(" + xX + "px ," + xY + "px,0)");
-			dbsfaces.ui.cssAllBrowser(xChartPathGuide, "transform-origin", xX + "px " + xY + "px 0");
+//			xChartPathGuide.css("-moz-transform-origin", xX + "px " + xY + "px 0");
+//			dbsfaces.ui.cssAllBrowser(xChartPathGuide, "transform-origin", xX + "px " + xY + "px 0");
 		}else{
 			xChartPathGuide.hide();
 		}
