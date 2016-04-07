@@ -4,15 +4,19 @@ dbs_sideNav = function(pId, pDefaultLocation, pWidth, pHeight) {
 	//ABRIR
 	$(pId +" > .-th_action").on("click", function(e){
 		dbsfaces.sideNav.open(xSideNav, pDefaultLocation, pWidth, pHeight);
+		//Desabilita inputs atrás do dialog
+	    dbsfaces.dialog.disableBackgroundInputs(pId);
 	});
 	
 	//FECHAR
 	$(pId +" > .dbs_sidebar > .-th_action").on("click", function(e){
 		dbsfaces.sideNav.close(xSideNav, pDefaultLocation);
+		dbsfaces.dialog.enableForegroundInputs($("body"));
 	});
 	//FECHAR
 	$(pId +" > .dbs_hiddennav").on("click", function(e){
 		dbsfaces.sideNav.close(xSideNav, pDefaultLocation);
+		dbsfaces.dialog.enableForegroundInputs($("body"));
 	});
 }
 

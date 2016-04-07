@@ -41,10 +41,14 @@ public class DBSSideNavRenderer extends DBSRenderer {
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xSidenav.getClientId(pContext);
 		String xClass = DBSFaces.CSS.SIDENAV.MAIN;
+		String xIcon = xSidenav.getIconClass();
 		List<UIComponent> xChildren = new ArrayList<UIComponent>();
 		
 		if (xSidenav.getStyleClass()!=null){
 			xClass += DBSObject.getNotEmpty(xSidenav.getStyleClass(), "");
+		}
+		if (DBSObject.isEmpty(xSidenav.getIconClass())) {
+			xIcon = "-i_equal"; //ÍCONE PADRÃO
 		}
 		
 		//DIV PRINCIPAL
@@ -53,13 +57,13 @@ public class DBSSideNavRenderer extends DBSRenderer {
 		DBSFaces.setAttribute(xWriter, "class", xClass, null);
 			//BOTAO PRINCIPAL
 			DBSDiv xBotaoPrincipal = new DBSDiv();
-			xBotaoPrincipal.setStyleClass(DBSFaces.CSS.MODIFIER.ICON +" "+ xSidenav.getIconClass() +" "+ DBSFaces.CSS.THEME.ACTION);
+			xBotaoPrincipal.setStyleClass(DBSFaces.CSS.MODIFIER.ICON +" "+ xIcon +" "+ DBSFaces.CSS.THEME.ACTION);
 //			xBotaoPrincipal.setTooltip(xSidenav.getTooltip());
 			xChildren.add(xBotaoPrincipal);
 			
 			//HIDDEN NAV
 			DBSDiv xHiddenDiv = new DBSDiv();
-			xHiddenDiv.setStyleClass(DBSFaces.CSS.SIDENAV.HIDDENNAV);
+			xHiddenDiv.setStyleClass(DBSFaces.CSS.SIDENAV.HIDDENNAV +" "+ DBSFaces.CSS.DIALOG.MAIN);
 			xChildren.add(xHiddenDiv);
 			
 			//SIDEBAR
@@ -80,7 +84,7 @@ public class DBSSideNavRenderer extends DBSRenderer {
 				
 				//BOTAO FECHAR
 				DBSDiv xBotaoFechar = new DBSDiv();
-				xBotaoFechar.setStyleClass(DBSFaces.CSS.MODIFIER.ICON +" "+ xSidenav.getIconClass() +" "+ DBSFaces.CSS.THEME.ACTION);
+				xBotaoFechar.setStyleClass(DBSFaces.CSS.MODIFIER.ICON +" "+ xIcon +" "+ DBSFaces.CSS.THEME.ACTION);
 				xSideBar.getChildren().add(xBotaoFechar);
 				
 				//CONTENT DOS FILHOS

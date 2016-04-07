@@ -3557,7 +3557,7 @@ Default: false;</description>
                 Icon Class
             </description>
    <name>iconClass</name>
-   <required>true</required>
+   <required>false</required>
    <type>java.lang.String</type>
   </attribute>
   <attribute>
