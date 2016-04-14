@@ -38,8 +38,8 @@
 	position: absolute;
 	transition: 0.3s;
     opacity: 0;
-	top: 15px;
-	right: 45px;
+	top: 12px;
+    left: 50px;
 	font-size: 1em;
 	width: 160px;
 }
