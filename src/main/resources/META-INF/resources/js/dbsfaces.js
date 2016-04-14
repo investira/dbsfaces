@@ -246,10 +246,23 @@ dbsfaces.svg = {
 	ellipse: function(pComponent, pCX, pCY, pRX, pRY, pStyleClass, pStyle, pFill){
 		var xEllipse = dbsfaces.svg.createElement('ellipse');
 		dbsfaces.svg.setDefaultAttr(xEllipse, pStyleClass, pStyle, pFill);
-		xEllipse.svgAttr("cx", pCX)
-			    .svgAttr("cy", pCY)
-			    .svgAttr("ry", pRX)
-			    .svgAttr("rx", pRY);
+		if (pCX != null){
+			xEllipse.svgAttr("cx", pCX);
+		}
+		if (pCY != null){
+			xEllipse.svgAttr("cy", pCY);
+		}
+		if (pRX != null){
+			xEllipse.svgAttr("rx", pRX);
+		}
+		if (pRY != null){
+			xEllipse.svgAttr("ry", pRY);
+		}
+//
+//		xEllipse.svgAttr("cx", pCX)
+//			    .svgAttr("cy", pCY)
+//			    .svgAttr("ry", pRX)
+//			    .svgAttr("rx", pRY);
 		pComponent.append(xEllipse);
 		return xEllipse;
 	},
@@ -367,7 +380,14 @@ dbsfaces.ui = {
 		if (xE instanceof jQuery){
 			xE = pElement.get(0);
 		}
-		xE.parentElement.appendChild(xE);
+//		$(xE).css("animation-play-state", "paused");
+//		setTimeout(function(e){
+//		xE.parentNode.appendChild(xE);
+			xE.parentElement.appendChild(xE);
+//			setTimeout(function(e){
+//				$(xE).css("animation-play-state", "initial");
+//			},0);
+//		},0);
 	},
 	moveToBack: function(pElement){
 		var xE = pElement;

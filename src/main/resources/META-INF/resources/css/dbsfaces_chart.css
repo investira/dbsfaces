@@ -1,4 +1,5 @@
 .dbs_chart{
+	pointer-events: none;
 	position: relative;
 /* 	-webkit-filter: blur(0); */
 /*     -moz-filter: blur(0); */
@@ -19,19 +20,23 @@
 	position: relative;
     display: inline-block;
 }
+
+
 /* Gráfico de linha */
 .dbs_chart > .-path > path{
 	stroke-linecap: round;
-	stroke-linejoin: round;
+	stroke-linejoin: bevel;
 	fill: none;
 	stroke-width: 0.2em;
+	shape-rendering: geometricprecision;
 }
 .dbs_chart > .-path > .-guide{
 	pointer-events: all;
 	cursor:pointer;
 }
-.dbs_chart > .-path > .-guide.dbs_charts-selectedGuide {
-	fill-opacity: 0.2 !important;
+
+.dbs_chart > .-path > .-guide.-selected{
+	fill-opacity: 0.2 !important;	
 }
 
 .dbs_chart > .-delta{
@@ -43,9 +48,6 @@
     transform-style: flat;
 }
 
-/* .dbs_chart > .-delta > .-point:hover{ */
-/*     stroke-width: 0.5em; */
-/* } */
 .dbs_chart > .-delta > .-guide[guide='1']{
 	fill: rgba(255,0,0,0.5);
 }
@@ -106,24 +108,25 @@
 }
 
 .dbs_chart.-dim > .-path > path,
-.dbs_chart.-dim > .dbs_chartValue:not(.-selected){
-    -webkit-transition: fill-opacity .5s, stroke-opacity .5s; 
-    -moz-transition: fill-opacity .5s, stroke-opacity .5s;
-    -o-transition: fill-opacity .5s, stroke-opacity .5s;
-    transition: fill-opacity .5s, stroke-opacity .5s;
-/*     -webkit-transition-delay: .2s; */
-/*     -moz-transition-delay: .2s; */
-/*     -o-transition-delay: .2s; */
-/*     transition-delay: .2s; */
+.dbs_chart.-dim > .dbs_chartValue{
+    -webkit-transition: fill-opacity .5s ease-out, stroke-opacity .5s ease-out; 
+    -moz-transition: fill-opacity .5s ease-out, stroke-opacity .5s ease-out;
+    -o-transition: fill-opacity .5s ease-out, stroke-opacity .5s ease-out;
+    transition: fill-opacity .5s ease-out, stroke-opacity .5s ease-out;
+}
+.dbs_chart.-dim > .-path > path,
+.dbs_chart.-dim > .dbs_chartValue:not(.-selected):not(.-hover){
     fill-opacity: .4;
     stroke-opacity: .4;
 }
-.dbs_chart.-dim > .dbs_chartValue:not(.-selected) > .-info{
+
+
+.dbs_chart.-dim > .dbs_chartValue:not(.-selected):not(.-hover) > .-info{
 /* 	opacity: 0; */
     fill-opacity: 0;
     stroke-opacity: 0;
 }
-.dbs_chart.-dim > .dbs_chartValue:not(.-selected) > .-info > .-label{
+.dbs_chart.-dim > .dbs_chartValue:not(.-selected):not(.-hover) > .-info > .-label{
 /* 	opacity: 0; */
     fill-opacity: 0;
     stroke-opacity: 0;
@@ -143,19 +146,24 @@
 } 
 
 .dbs_chart[type='line'] > .dbs_chartValue.-selected,
-.dbs_chart[type='bar'] > .dbs_chartValue.-selected{
-	stroke-width: .1em;
+.dbs_chart[type='bar'] > .dbs_chartValue.-selected,
+.dbs_chart[type='line'] > .dbs_chartValue.-hover,
+.dbs_chart[type='bar'] > .dbs_chartValue.-hover{
 }
 
-.dbs_chart[type='bar'] > .dbs_chartValue > rect {
+.dbs_chart[type='bar'] > .dbs_chartValue > .-point {
     shape-rendering: crispEdges;
 }
 
 .dbs_chart[type='line'] > .dbs_chartValue > .-point{
 	display: none;
+	fill: none;
+	stroke-width: .2em;
+	pointer-events: none;
 }
 
-.dbs_chart[type='line'] > .dbs_chartValue:not(.-selected) > .-point{
+.dbs_chart[type='line'] > .dbs_chartValue:not(.-selected) > .-point,
+.dbs_chart[type='line'] > .dbs_chartValue:not(.-hover) > .-point{
 /* 	fill: transparent;  */
 /*     -webkit-transform: scale(1); */
 /*     -moz-transform: scale(1); */
@@ -163,9 +171,9 @@
 /*     transform: scale(1); */
 }
 
-.dbs_chart[type='line'] > .dbs_chartValue.-selected  > .-point{
-/* 	fill: white;	 */
-/*     stroke-width: 1px;  */
+.dbs_chart[type='line'] > .dbs_chartValue.-selected  > .-point,
+.dbs_chart[type='line'] > .dbs_chartValue.-hover  > .-point{
+	display: inline-block;
 }
 
 .dbs_chart[type='line'] > .-delta > .-info > .-box,
@@ -180,8 +188,13 @@
 	fill: white;
 }
     
-.dbs_chart[type='pie'] > .dbs_chartValue.-selected{
+.dbs_chart[type='pie'] > .dbs_chartValue.-selected,
+.dbs_chart[type='pie'] > .dbs_chartValue.-hover{
 /* 	stroke-width: .2em; */
+}
+
+.dbs_chart[type='pie'] > .dbs_chartValue > .-info{
+	font-size: 1.15em;
 }
 
 .dbs_chart[type='pie'] > .dbs_chartValue > .-info > .-point{
@@ -196,4 +209,37 @@
 /* .dbs_chart[type='pie'] > .dbs_chartValue > .-info > .-box */
 
 
+.-a_dbs_chart_selected{
+	-moz-animation: -kf_dbs_chart_selected .1s linear;
+	-o-animation: -kf_dbs_chart_selected .1s linear;
+	-webkit-animation: -kf_dbs_chart_selected .1s linear;
+	animation: -kf_dbs_chart_selected .1s linear;
+}
+
+/* single pulse */			
+@-moz-keyframes -kf_dbs_chart_selected {
+  0% {stroke-width: 0px;}
+  1% {stroke-width: 1em;}
+  100% {stroke-width: 0px;}
+}
+@-webkit-keyframes -kf_dbs_chart_selected {
+  0% {stroke-width: 0px;}
+  1% {stroke-width: 1em;}
+  100% {stroke-width: 0px;}
+}
+@-o-keyframes -kf_dbs_chart_selected {
+  0% {stroke-width: 0px;}
+  1% {stroke-width: 1em;}
+  100% {stroke-width: 0px;}
+}
+@-ms-keyframes -kf_dbs_chart_selected {
+  0% {stroke-width: 0px;}
+  1% {stroke-width: 1em;}
+  100% {stroke-width: 0px;}
+}
+@keyframes -kf_dbs_chart_selected {
+  0% {stroke-width: 0px;}
+  1% {stroke-width: 1em;}
+  100% {stroke-width: 2px;}
+}
 

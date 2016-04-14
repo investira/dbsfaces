@@ -13,14 +13,9 @@ dbs_charts = function(pId) {
 	
 	
 	
-	$(pId + " > .-container").on("mouseleave", function(e){
-		dbsfaces.chartValue.unSelect(xCharts.data("selected"));
-		console.log("charts\t" + e.originalEvent.type);
-
-//		$(this).data("chart").each(function(){
-//			dbsfaces.chart.stopDeltaDrag($(this));
-//		});
-//		dbsfaces.charts.unSelect($(this));
+	$(pId).on("mouseleave", function(e){
+		dbsfaces.charts.lostFocus(xCharts);
+//		console.log("charts\t" + e.originalEvent.type);
 	});
 
 //	$(pId).on("mouseleave mousedown", function(e){
@@ -44,7 +39,7 @@ dbsfaces.charts = {
 		pCharts.data("children", pCharts.find("g.dbs_chart"));
 		pCharts.data("grid", pCharts.find(".dbs_charts-grid").first());
 		//Item selecionado temporariamente(Hover)
-		pCharts.data("selected", null);
+		pCharts.data("hover", null);
 	},
 
 	//Cria guia padrão para indicar a posição no gráfico tipo line
@@ -56,12 +51,8 @@ dbsfaces.charts = {
 			xMarker.svgAttr("id", pCharts.get(0).id + "_guide");
 			xMarker.svgAttr("class", "-guide");
 			var xEllipse;
-			xEllipse = dbsfaces.svg.ellipse(xMarker, "0", "0", "1em", "1em", null, null, null);
-//			xEllipse.attr("stroke-width", ".1em");
-//			xEllipse.attr("fill", "none");
-			xEllipse = dbsfaces.svg.ellipse(xMarker, "0", "0", ".2em", ".2em", null, null, null);
-//			xEllipse.attr("stroke-width", ".1em");
-//			xEllipse.attr("fill", "none");
+			xEllipse = dbsfaces.svg.ellipse(xMarker,  null, null, "1em", "1em", null, null, null);
+			xEllipse = dbsfaces.svg.ellipse(xMarker, null, null, ".2em", ".2em", null, null, null);
 		}
 	},
 	
@@ -78,19 +69,47 @@ dbsfaces.charts = {
 
 	},
 
-	select: function(pChartValue, pSelect){
-		if (pChartValue == null){return;}
-		var xCharts = pChartValue.data("parent").data("parent");
-		var xSelected = xCharts.data("selected");
-		if (xSelected != null){
-			var xSelectedCharts = xSelected.data("parent").data("parent");
-			//Ignora se for para selecionar item já selecionado
-			if (xSelectedCharts[0].id == xCharts[0].id){
+	lostFocus: function(pCharts){
+		var xHover = pCharts.data("hover");
+		if (xHover != null
+		 && xHover.svgHasClass("-selected")){
+			return;
+		}
+		var xDoUnSelect = true;
+		var xChartsChildren = pCharts.data("children");
+		xChartsChildren.each(function(){
+			xChart = $(this);
+			if (xChart.data("selection").length > 0){
+				xDoUnSelect = false;
 				return;
 			}
-			//Desmarca item selecionado anteriormente, caso exista
-			dbsfaces.charts.pvSelectCharts(xCharts, false);
+		});
+		if (xDoUnSelect){
+			dbsfaces.chartValue.unSelect(xHover);
 		}
+//		if (pChart.data("selection") == 0){
+//			dbsfaces.chartValue.unSelect(xCharts.data("hover"));
+//			var xHoverCharts = xHover.data("parent").data("parent");
+//			//Ignora se for para selecionar item já selecionado
+//			if (xHoverCharts[0].id == xCharts[0].id){
+//				return;
+//			}
+//		}
+	},
+	
+	select: function(pChartValue, pSelect){
+//		if (pChartValue == null){return;}
+		var xCharts = pChartValue.data("parent").data("parent");
+		var xHover = xCharts.data("hover");
+		if (xHover != null){
+			var xHoverCharts = xHover.data("parent").data("parent");
+			//Ignora se for para selecionar item já selecionado
+			if (xHoverCharts[0].id == xCharts[0].id){
+				return;
+			}
+		}
+		//Desmarca item selecionado anteriormente, caso exista
+		dbsfaces.charts.pvSelectCharts(xCharts, false);
 		//Marca item selecionado
 		dbsfaces.charts.pvSelectCharts(xCharts, pSelect);
 	},
@@ -107,38 +126,7 @@ dbsfaces.charts = {
 		var xChartsChildren = pCharts.data("children");
 		var xSelect = pSelect;
 		var xDim = true;
-		//Procupra se algum gráfico tem algum item marcado 
-		if (pSelect != null){
-			xDim = false;
-			xChartsChildren.each(function(){
-				xChart = $(this);
-				//Se algum guia estiver selecionado,
-				if (xChart.data("cv1") != null
-				 || xChart.data("cv2") != null){
-					xDim = true;
-					return;
-				}
-			});
-		}
-		if (xDim){
-			pCharts.data("grid").svgAddClass("-dim");
-		}else{
-			pCharts.data("grid").svgRemoveClass("-dim");
-		}
-		xChartsChildren.each(function(){
-			xChart = $(this);
-//			console.log(xDim + "\t" + $(this).attr("class") + "\t" + xChart.svgHasClass("-dim"));
-			if (xDim){
-				if (!xChart.svgHasClass("-dim")){
-					xChart.svgAddClass("-dim");
-				}
-			}else{
-				if (xChart.svgHasClass("-dim")){
-					xChart.svgRemoveClass("-dim");
-				}
-			}
-		});
-	},
+	}
 	
 };
 

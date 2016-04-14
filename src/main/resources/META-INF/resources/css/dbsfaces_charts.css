@@ -75,39 +75,6 @@
 .dbs_charts > .-container > .-footer{
 }
 
-.dbs_charts-selectedGuide {
-	-moz-animation: -kf_single_pulse .1s linear;
-	-o-animation: -kf_single_pulse .1s linear;
-	-webkit-animation: -kf_single_pulse .1s linear;
-	animation: -kf_single_pulse .1s linear;
-}
-
-/* spin */			
-@-moz-keyframes -kf_single_pulse {
-  0% {stroke-width: 0px;}
-  1% {stroke-width: 1em;}
-  100% {stroke-width: 0px;}
-}
-@-webkit-keyframes -kf_single_pulse {
-  0% {stroke-width: 0px;}
-  1% {stroke-width: 1em;}
-  100% {stroke-width: 0px;}
-}
-@-o-keyframes -kf_single_pulse {
-  0% {stroke-width: 0px;}
-  1% {stroke-width: 1em;}
-  100% {stroke-width: 0px;}
-}
-@-ms-keyframes -kf_single_pulse {
-  0% {stroke-width: 0px;}
-  1% {stroke-width: 1em;}
-  100% {stroke-width: 0px;}
-}
-@keyframes -kf_single_pulse {
-  0% {stroke-width: 0px;}
-  1% {stroke-width: 1em;}
-  100% {stroke-width: 0px;}
-}
 
 
 

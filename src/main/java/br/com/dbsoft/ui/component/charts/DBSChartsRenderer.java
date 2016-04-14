@@ -68,23 +68,24 @@ public class DBSChartsRenderer extends DBSRenderer {
 			if (xCharts.getShowLabel()){
 				DBSFaces.setAttribute(xWriter, "showlabel", xCharts.getShowLabel(), null);
 			}
+			DBSFaces.setAttribute(xWriter, "diameter", xCharts.getDiameter(), null);
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xCharts, DBSPassThruAttributes.getAttributes(Key.CHARTS));
 			
 			encodeClientBehaviors(pContext, xCharts);
 			//CONTAINER--------------------------
-			xWriter.startElement("span", xCharts);
+			xWriter.startElement("div", xCharts);
 				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER, null);
 
 				//CAPTION--------------------------
 				if (xCharts.getCaption() !=null){
-					xWriter.startElement("span", xCharts);
+					xWriter.startElement("div", xCharts);
 						DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CAPTION + DBSFaces.CSS.THEME.CAPTION, null);
 						xWriter.write(xCharts.getCaption());
-					xWriter.endElement("span");
+					xWriter.endElement("div");
 				}
 	
 				//DATA--------------------------
-				xWriter.startElement("span", xCharts);
+				xWriter.startElement("div", xCharts);
 					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.DATA, null);
 					//CONTAINER--------------------------
 					xWriter.startElement("svg", xCharts);
@@ -121,16 +122,16 @@ public class DBSChartsRenderer extends DBSRenderer {
 							xWriter.endElement("g");
 						xWriter.endElement("g");
 					xWriter.endElement("svg");
-				xWriter.endElement("span");
+				xWriter.endElement("div");
 
 				//FOOTER--------------------------
 				if (xCharts.getFooter() !=null){
-					xWriter.startElement("span", xCharts);
+					xWriter.startElement("div", xCharts);
 						DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.FOOTER, null);
 						xWriter.write(xCharts.getFooter());
-					xWriter.endElement("span");
+					xWriter.endElement("div");
 				}
-			xWriter.endElement("span");
+			xWriter.endElement("div");
 
 			pvEncodeJS(xClientId, xWriter);
 			
@@ -183,10 +184,10 @@ public class DBSChartsRenderer extends DBSRenderer {
 		}
 		if (pCharts.getMinValue() < 0){
 			//Encode da linha ZERO
-			xPosicaoInvertida = pCharts.getChartHeight() - pCharts.getZeroPosition() + pCharts.getPadding();
+			xPosicaoInvertida = pCharts.getChartHeight() - pCharts.getZeroPosition().doubleValue() + pCharts.getPadding();
 			xFormatedValue = DBSFormat.getFormattedNumber(0, NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask());
 			xPosicaoText = xPosicaoInvertida + DBSCharts.FontSize.doubleValue() / 2;
-			DBSFaces.encodeSVGLine(pCharts, pWriter, 0D, xPosicaoInvertida.doubleValue(), pCharts.getChartWidth().doubleValue() + (pCharts.getPadding() * 2), xPosicaoInvertida.doubleValue(), DBSFaces.CSS.MODIFIER.LINE, "stroke-dasharray: 2,5; stroke-width: 0.5px;");
+			DBSFaces.encodeSVGLine(pCharts, pWriter, 0D, xPosicaoInvertida.doubleValue(), pCharts.getChartWidth().doubleValue() + (pCharts.getPadding() * 2), xPosicaoInvertida.doubleValue(), DBSFaces.CSS.MODIFIER.LINE, "stroke-dasharray: 2,5; stroke-width: 1px;");
 //			DBSFaces.encodeSVGText(pCharts, pWriter,  DBSFaces.CSS.MODIFIER.LABEL, "text-anchor:end", pCharts.getWidth().doubleValue(), xPosicaoText.doubleValue(), xFormatedValue);
 		}
 	}

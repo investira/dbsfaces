@@ -133,6 +133,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		//Encode BAR ---------------------------------------------------------------------------------
 		if (pType == TYPE.BAR){
 			Double xHeight = DBSNumber.abs(DBSNumber.subtract(pCharts.getChartHeight(), pCharts.getZeroPosition() - pCharts.getPadding(), xY).doubleValue());
+			xHeight = DBSNumber.round(xHeight, 4);
 			//Centraliza o ponto
 			Double xLineWidth = pChart.getColumnScale() * .9;
 			if (xLineWidth < 1){
@@ -143,15 +144,15 @@ public class DBSChartValueRenderer extends DBSRenderer {
 					   		   DBSNumber.divide(pChart.getColumnScale() - xLineWidth, 2));
 			//Valore positivos acima
 			if (pChartValue.getValue() > 0){
-				DBSFaces.encodeSVGRect(pChartValue, pWriter, xX.doubleValue(), xY.doubleValue(), xLineWidth.toString(), xHeight.toString(), null, xStroke, wFillColor);
+				DBSFaces.encodeSVGRect(pChartValue, pWriter, xX.intValue(), xY.doubleValue(), xLineWidth.toString(), xHeight.toString(), DBSFaces.CSS.MODIFIER.POINT, xStroke, wFillColor);
 			//Valore negativos
 			}else{
 				//inverte a posição Yx
 				Double xIY = DBSNumber.subtract(pCharts.getChartHeight(), pCharts.getZeroPosition().doubleValue()).doubleValue();
 				xIY +=  pCharts.getPadding();
-				DBSFaces.encodeSVGRect(pChartValue, pWriter, xX.doubleValue(), xIY, xLineWidth.toString(), xHeight.toString(), null, xStroke, wFillColor);
+				DBSFaces.encodeSVGRect(pChartValue, pWriter, xX.intValue(), xIY.doubleValue(), xLineWidth.toString(), xHeight.toString(), DBSFaces.CSS.MODIFIER.POINT, xStroke, wFillColor);
 				//Configura posição do texto para a linha do zero
-				xYText = DBSNumber.add(xIY, (DBSCharts.FontSize / 2));
+//				xYText = DBSNumber.add(xIY, (DBSCharts.FontSize / 2));
 			}
 		//Encode LINE - ponto. as linhas que ligam os pontos, são desenhadas no código JS.
 		}else if (pType == TYPE.LINE){
@@ -161,10 +162,16 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			pChartValue.setPoint(new Point2D.Double(xX.doubleValue(), xY.doubleValue()));
 			//Encode do circulo
 			//Artifício pois o fcirefox só funciona com valores fixos no transform-origin
-//			StringBuilder xStyle = new StringBuilder(xStroke);
 //			xStyle.append(DBSFaces.getCSSAllBrowser("transform-origin", xX.doubleValue() + "px " + xY.doubleValue() + "px"));
-			DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xX.doubleValue(), xY.doubleValue(), "0", "0", DBSFaces.CSS.MODIFIER.POINT, xStroke, wFillColor);
-//			DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xX.doubleValue(), xY.doubleValue(), "0.3em", "0.3em", DBSFaces.CSS.MODIFIER.POINT, xStroke, wFillColor);
+//			DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xX.doubleValue(), xY.doubleValue(), "0", "0", DBSFaces.CSS.MODIFIER.POINT, xStroke, wFillColor);
+			pWriter.startElement("use", pChartValue);
+				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.POINT, null);
+				DBSFaces.setAttribute(pWriter, "style", xStroke + "transform: translateX(" + xX.doubleValue() + "px) translateY(" + xY.doubleValue() + "px);", null);
+//				DBSFaces.setAttribute(pWriter, "fill", wFillColor, null);
+				DBSFaces.setAttribute(pWriter, "xlink:href", "#" + pCharts.getClientId() + "_guide", null);
+				DBSFaces.setAttribute(pWriter, "cx", xX.doubleValue(), null);
+				DBSFaces.setAttribute(pWriter, "cy", xY.doubleValue(), null);
+			pWriter.endElement("use");
 		}
 		//Encode Dados
 		pWriter.startElement("g", pChartValue);
@@ -229,12 +236,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		Double 			xDiametro;
 		
 		//Diametro do circulo. Utiliza o menor tamanho entre a alrgura a a altura escolhada para não ultrapasar as bordas
-		if (pCharts.getChartWidth().doubleValue() < pCharts.getChartHeight().doubleValue()){
-			xDiametro = pCharts.getChartWidth().doubleValue();
-		}else{
-			xDiametro = pCharts.getChartHeight().doubleValue();
-		}
-		xDiametro = (xDiametro / 2) - pCharts.getPadding();
+		xDiametro = (pCharts.getDiameter() / 2) - pCharts.getPadding();
 		
 		//Centro do círculo
 		xCentro.setLocation((pCharts.getChartWidth().doubleValue() / 2) + pCharts.getPadding(),
@@ -308,7 +310,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		xPath.append("L" + x3.getX() + "," + x3.getY()); //Linha do arco externo até o início do arco interno
 		xPath.append("A" + xPneuRaioInterno + "," + xPneuRaioInterno + " 0 " + xBig + " 0 " + x4.getX() + "," + x4.getY()); //Arco interno até o ponto incial interno
 		xPath.append("Z"); //Fecha o path ligando o arco interno ao arco externo  
-		DBSFaces.encodeSVGPath(pChartValue, pWriter, xPath.toString(), null, xStroke, wFillColor);
+		DBSFaces.encodeSVGPath(pChartValue, pWriter, xPath.toString(), DBSFaces.CSS.MODIFIER.POINT, xStroke, wFillColor);
 
 
 		//Encode Dados
@@ -324,7 +326,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 				DBSFaces.encodeSVGPath(pChartValue, pWriter, xPath.toString(),DBSFaces.CSS.MODIFIER.LINE, xStroke + " stroke-width:1px; ", "none");
 	
 				//Ponto pequeno no centro e na tangente do arco	
-				DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xPoint.getX(), xPoint.getY(), "0.3em", "0.3em", DBSFaces.CSS.MODIFIER.POINT, null, wFillColor);
+				DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xPoint.getX(), xPoint.getY(), "2px", "2px", DBSFaces.CSS.MODIFIER.POINT, null, wFillColor);
 				
 				//Borda do texto-Largura será cofigurada via JS
 				DBSFaces.encodeSVGRect(pChartValue, pWriter, xPointLabel.getX(), xPointLabel.getY(), null, "1.3em", 3, 3, "-box", xPerBoxStyle, null);
@@ -554,7 +556,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 				pWriter.writeAttribute("class", "-foreignobject", null);
 				pWriter.writeAttribute("x", "0px", null);
 				pWriter.writeAttribute("y", "0px", null);
-				pWriter.startElement("span", pChartValue);
+				pWriter.startElement("div", pChartValue);
 					pWriter.writeAttribute("id", pClienteId + "_tooltip", null);
 					if (pType == TYPE.PIE
 					 || pType == TYPE.BAR){
@@ -567,7 +569,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 					pWriter.writeAttribute("style", xStyle, null);
 //					DBSFaces.encodeTooltip(pContext, pChartValue, pChartValue.getValue().toString(), pClienteId + "_tooltip");
 					DBSFaces.encodeTooltip(pContext, pChartValue, pChartValue.getTooltip(), pClienteId + "_tooltip");
-				pWriter.endElement("span");
+				pWriter.endElement("div");
 			pWriter.endElement("foreignObject");
 		}
 

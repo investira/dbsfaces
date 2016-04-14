@@ -203,11 +203,11 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	 * Retorna posição Y do valor zero.
 	 * @return
 	 */
-	public Double getZeroPosition(){
+	public Integer getZeroPosition(){
 		BigDecimal xValue = DBSNumber.multiply(DBSNumber.divide(-getMinValue(), 
 											 					getTotalValue()),
 											   getChartHeight());
-		return xValue.doubleValue();
+		return xValue.intValue();
 	}
 
 	public Integer getChartHeight() {
@@ -237,6 +237,13 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		pvSetChartHeight(pType, getHeight());
 	}
 
+	public Double getDiameter(){
+		if (this.getChartWidth().doubleValue() < this.getChartHeight().doubleValue()){
+			return this.getChartWidth().doubleValue();
+		}else{
+			return this.getChartHeight().doubleValue();
+		}
+	}
 
 	private void pvSetChartHeight(TYPE pType, Integer pHeight){
 		if (pType.isMatrix()){

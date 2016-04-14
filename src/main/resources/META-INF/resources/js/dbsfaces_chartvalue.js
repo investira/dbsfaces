@@ -5,20 +5,48 @@ dbs_chartValue = function(pId) {
 	
 //	dbsfaces.chartValue.selectDelta(xChart, xChartValue);
 	//Seleciona nova posição do delta e do item selecionado
-	$(pId).on("mouseenter", function(e){
-//		console.log("chartvalue\t" + e.originalEvent.type);
-		dbsfaces.chartValue.select(xChartValue, null);
-		e.preventDefault();
-		return false;
-	});
+	if (xChartValue.data("parent").attr("type") != "line"){
+		$(pId).on("mouseenter", function(e){
+//			console.log("chartvalue\t" + e.originalEvent.type + "\t" + $(e.target).attr("class"));
+			dbsfaces.chartValue.select(xChartValue, null);
+//			e.preventDefault();
+			e.stopImmediatePropagation();
+			return false;
+		});
+//		$(pId).on("mouseleave", function(e){
+////			console.log("chartvalue\t" + e.originalEvent.type);
+//			dbsfaces.chartValue.select(null, null);
+////			e.preventDefault();
+//			e.stopImmediatePropagation();
+//			return false;
+//		});
+	
+		$(pId).on("mousedown touchstart", function(e){
+//			console.log("chartvalueX\t" + e.originalEvent.type);
+			//Artifício para desconsiderar mousedown em mobile
+			if (e.originalEvent.type != "mousedown"
+			 || !dbsfaces.util.isMobile()){
+				dbsfaces.chartValue.select(xChartValue, true);
+			}
+//			e.preventDefault();
+			e.stopImmediatePropagation();
+			return false;
+		});
+	}else{
+		$(pId + " > .-point").on("mouseenter", function(e){
+			dbsfaces.chartValue.select(xChartValue, null);
+//			e.preventDefault();
+			e.stopImmediatePropagation();
+			return false;
+		});
+	}
 
-	$(pId).on("mousedown touchstart", function(e){
-//		console.log("chartvalue\t" + e.originalEvent.type);
-		dbsfaces.chartValue.select(xChartValue, true);
-		e.preventDefault();
-		return false;
-	});
-
+	
+	
+	
+	
+	
+	
 //	$(pId).on("mouseleave", function(e){
 //		console.log("chartvalue\t" + e.originalEvent.type);
 //		dbsfaces.chartValue.unSelect(xChartValue);
@@ -158,95 +186,111 @@ dbsfaces.chartValue = {
 	},
 
 	select: function(pChartValue, pSelect){
-		if (pChartValue == null){return;}
+//		if (pChartValue == null){return;}
 		var xChart = pChartValue.data("parent");
-		console.log("guide number\t" + xChart.data("guide"));
-		if (xChart.data("guide") == 0){return;}
+//		console.log("guide number\t" + xChart.data("guide"));
+//		var xGuideIndex = xChart.data("guide");
 		var xCharts = xChart.data("parent");
-		var xSelected;
-		var xSelectedChart;
-		var xSelectedCharts;
-		var xSelectCV = null;
-		//Se for marcação fixa
-		if (pSelect != null){
-			xSelectCV = false;
-			xSelected = xChart.data("cv" + xChart.data("guide"));
-			xSelectedChart = xChart;
-			xSelectedCharts = xCharts;
-			//Alterna marcação marcado/desmarcado
-			if (dbsfaces.chartValue.pvIsEqual(xSelected, pChartValue)){
-				//Demarca se já estiver selecionado
-				xChart.data("cv" + xChart.data("guide"), null);
-			}else{
-				xSelectCV = true;
-				//Marcar
-				xChart.data("cv" + xChart.data("guide"), pChartValue);
-			}
-//			//Re-executa animação
-//			pChartValue.svgRemoveClass("-a_single_pulse");
-//			pChartValue[0].offsetWidth = pChartValue[0].offsetWidth; //Artificil para formar a re-execução da animação
-//			pChartValue.svgAddClass("-a_single_pulse");
-			
-		//Se for marcação temporária(hover)
-		}else{
-			xSelected = xCharts.data("selected");
+		var xHover = null;
+		var xHoverChart;
+		var xHoverCharts;
+
+		//Desmarca item selecionado anteriormente
+		
+		if (pSelect == null){
+			xHover = xCharts.data("hover");
 			//Se houver item selectionado
-			if (xSelected != null){
+			if (xHover != null){
 				//Ignora se for para selecionar item já selecionado
-				if (dbsfaces.chartValue.pvIsEqual(pChartValue, xSelected)){
+				if (dbsfaces.chartValue.pvIsEqual(pChartValue, xHover)){
 					return;
 				}
-				xSelectedChart = xSelected.data("parent");
-				xSelectedCharts = xSelectedChart.data("parent");
+				xHoverChart = xHover.data("parent");
+				xHoverCharts = xHoverChart.data("parent");
 			}
 		}
-		//Configura seleção do chart pai
-		dbsfaces.chart.select(pChartValue, pSelect);
-		//Desmarca item selecionado anteriormente
-		dbsfaces.chartValue.pvSelectChartValue(xSelectedCharts, xSelectedChart, xSelected, false);
-		if (xSelectCV == null || xSelectCV){
+			//Configura seleção do chart pai. obs:Esta chamada previsa ser anterior ao unselect para verificar se item selecionado atual 
+			dbsfaces.chart.select(pChartValue, null);
+
+			//Desmarca item selecionado anteriormente
+			dbsfaces.chartValue.pvHoverChartValue(xHoverCharts, xHoverChart, xHover, false);
+
 			//Marca item selecionado
-			dbsfaces.chartValue.pvSelectChartValue(xCharts, xChart, pChartValue, pSelect);
-		}
-		
-		//Animação da seleção a ativação de guia
-		if (xSelectCV != null){
-			//Animação no click
-			var xAnimationClass = "dbs_charts-selectedGuide";
-			if (xChart.attr("type") == "line"){
-				if (xSelected != null){
-					//Exclui animação no item selecionado anteriormente
-					xSelected.svgRemoveClass(xAnimationClass);
-				}
-				var xChartPathGuide =  $(xChart.data("guide" + xChart.data("guide")));
-				dbsfaces.chartValue.pvAddAnimation(xSelectCV, xChartPathGuide, xAnimationClass);
+			dbsfaces.chartValue.pvHoverChartValue(xCharts, xChart, pChartValue, null);
+//		}else{
+			
+		if (pSelect != null){	
+			pSelect = !pChartValue.svgHasClass("-selected");
+			if (pSelect){
+				dbsfaces.chart.select(pChartValue, pSelect);
+				dbsfaces.chartValue.pvSelectChartValue(xCharts, xChart, pChartValue, pSelect);
 			}else{
-				dbsfaces.chartValue.pvAddAnimation(xSelectCV, pChartValue, xAnimationClass);
-			}
-			//Ativa outro guia
-			if (xSelectCV){
-//				 ||	typeof(xChart.attr("showdelta")) == 'undefined'){
-				if (xChart.attr("type") == "line"){
-					if (xChart.data("guide") == 1){
-						xChart.data("guide", 2);
-					}else{
-						xChart.data("guide", 0);
-					}
-				}
+				dbsfaces.chartValue.unSelect(pChartValue);
 			}
 		}
+//
+//		//Configura seleção do chart pai
+//		dbsfaces.chart.select(pChartValue, pSelect);
+//
+//		//Desmarca item selecionado anteriormente
+//		dbsfaces.chartValue.pvHoverChartValue(xHoverCharts, xHoverChart, xHover, false);
+//		dbsfaces.chartValue.pvSelectChartValue(xHoverCharts, xHoverChart, xHover, pSelect);
+//
+//
+//		//Marca item selecionado
+//		dbsfaces.chartValue.pvSelectChartValue(xCharts, xChart, pChartValue, pSelect);
+
+
+//		if (pSelect){
+//			if (xChart.attr("type") == "line"){
+//				if (xSelected != null){
+//					//Exclui animação no item selecionado anteriormente
+//					xSelected.svgRemoveClass(xAnimationClass);
+//				}
+//				var xChartPathGuide =  $(xChart.data("guide" + xGuideIndex));
+//				dbsfaces.chartValue.pvAddAnimation(xSelectCV, xChartPathGuide, xAnimationClass);
+//			}else{
+//				dbsfaces.chartValue.pvAddAnimation(xSelectCV, pChartValue, xAnimationClass);
+//			}
+//		}
+		//Animação da seleção a ativação de guia
+//		if (xSelectCV != null){
+//			//Animação no click
+//			var xAnimationClass = "dbs_charts-selectedGuide";
+//			if (xChart.attr("type") == "line"){
+//				if (xSelected != null){
+//					//Exclui animação no item selecionado anteriormente
+//					xSelected.svgRemoveClass(xAnimationClass);
+//				}
+//				var xChartPathGuide =  $(xChart.data("guide" + xGuideIndex));
+//				dbsfaces.chartValue.pvAddAnimation(xSelectCV, xChartPathGuide, xAnimationClass);
+//			}else{
+//				dbsfaces.chartValue.pvAddAnimation(xSelectCV, pChartValue, xAnimationClass);
+//			}
+//			//Ativa outro guia
+//			if (xSelectCV){
+////				 ||	typeof(xChart.attr("showdelta")) == 'undefined'){
+//				if (xChart.attr("type") == "line"){
+//					if (xGuideIndex == 1){
+//						xChart.data("guide", 2);
+//					}else{
+//						xChart.data("guide", 0); //Desabilita guias
+//					}
+//				}
+//			}
+//		}
 	},
 	
-	pvAddAnimation: function(pSelectCV, pElement, pAnimationClass){
-		pElement.svgRemoveClass(pAnimationClass);
-		if (pSelectCV){
-			//Artificil para formar a re-execução da animação
-			setTimeout(function(){
-				pElement.svgAddClass(pAnimationClass);
-			},0)
-		}
-	},
-
+//	pvAddAnimation: function(pElement){
+//		pElement.svgAddClass("-a_dbs_chart-select");
+////		if (pSelectCV){
+//			//Artificil para formar a re-execução da animação
+//			setTimeout(function(){
+//				pElement.svgRemoveClass("-a_dbs_chart-select");
+//			},0);
+////		}
+//	},
+//
 	unSelect: function(pChartValue){
 		if (pChartValue == null){return;}
 		var	xChart = pChartValue.data("parent");
@@ -254,6 +298,7 @@ dbsfaces.chartValue = {
 
 		//Desmarca chartValue valor informado
 		dbsfaces.chartValue.pvSelectChartValue(xCharts, xChart, pChartValue, false);
+		dbsfaces.chartValue.pvHoverChartValue(xCharts, xChart, pChartValue, false);
 		//Configura seleção do chart pai
 		dbsfaces.chart.unSelect(pChartValue);
 
@@ -276,7 +321,7 @@ dbsfaces.chartValue = {
 //				if (xChartValue != null){
 //					console.log("before\t" + $("#" + dbsfaces.util.jsid(xChartValue.get(0).id)).attr("class"));
 //				}
-//				dbsfaces.chartValue.pvSelectChartValue(xCharts, xChart, xChartValue, false);
+//				dbsfaces.chartValue.pvHoverChartValue(xCharts, xChart, xChartValue, false);
 //				if (xChartValue != null){
 //					console.log("after \t" + $("#" + dbsfaces.util.jsid(xChartValue.get(0).id)).attr("class"));
 //				}
@@ -287,7 +332,7 @@ dbsfaces.chartValue = {
 ////				xChartValueSelected.each(function(){
 ////					console.log($(this).attr("class"));
 ////					console.log($("#" + dbsfaces.util.jsid($(this).get(0).id)).attr("class"));
-////					dbsfaces.chartValue.pvSelectChartValue(xChart, $(this), false);
+////					dbsfaces.chartValue.pvHoverChartValue(xChart, $(this), false);
 ////				});
 //			});
 //		});
@@ -295,37 +340,80 @@ dbsfaces.chartValue = {
 //		var xCharts = xChart.data("parent");
 	},
 
-	pvSelectChartValue: function(pCharts, pChart, pChartValue, pSelect){
+	pvHoverChartValue: function(pCharts, pChart, pChartValue, pSelect){
 		if (pChartValue == null){return;}
 
-		//Seleciona item
+		//Hover do item
 		if (pSelect == null || pSelect){
-//			dbsfaces.chart.select(pChartValue, pSelect);
 			//Força que chartvalue seja esteja a frente
-			if (pChart.attr("type") == "bar"
-			 || pChart.attr("type") == "line"){
-				dbsfaces.ui.moveToFront(pChartValue.get(0));
-			}
+//			if (pChart.attr("type") == "bar"
+//			 || pChart.attr("type") == "line"){
+//				dbsfaces.ui.moveToFront(pChartValue.get(0));
+//			}
 			//Marca selecionado
-			pChartValue.svgAddClass("-selected");
-//			console.log("set\t" + pChartValue.attr("class"));
-			pCharts.data("selected", pChartValue);
+			pChartValue.svgAddClass("-hover");
+			pCharts.data("hover", pChartValue);
 		}else{
-			var xGuide;
-			//Verifica se item pode ser dermarcado
-			xGuide = pChart.data("cv1");
-			if (dbsfaces.chartValue.pvIsEqual(pChartValue, xGuide)){
-				return;
-			}
-			xGuide = pChart.data("cv2");
-			if (dbsfaces.chartValue.pvIsEqual(pChartValue, xGuide)){
-				return;
-			}
-//			dbsfaces.chart.unSelect(pChartValue);
-			pChartValue.svgRemoveClass("-selected");
-			pCharts.data("selected", null);
+			pChartValue.svgRemoveClass("-hover");
+			pCharts.data("hover", null);
 		}
-		return true;
+	},
+	
+	pvSelectChartValue: function(pCharts, pChart, pChartValue, pSelect){
+		if (pChartValue == null){return;}
+		//Verifica se gráfico possui guia
+		var xGuideIndex = pChart.data("guideIndex");
+		var xHasGuide = (typeof(xGuideIndex) != "undefined" && xGuideIndex != null && xGuideIndex != 0);
+		var xGuide = null;
+		//Seleção do item
+		if (pSelect !=null){
+			var xChartValuePoint = pChartValue.children(".-point");
+			var xAnimationClass = "-a_dbs_chart_selected";
+			if (pSelect){
+				dbsfaces.ui.moveToFront(pChartValue);
+				pChartValue.svgAddClass("-selected");
+				//Se possuir guia, seleciona 
+				if (xHasGuide){
+					console.log("guideindexx select:\t" + xGuideIndex);
+					xGuide = pChart.data("guide" + xGuideIndex);
+					xGuide.svgAddClass("-selected");
+					xGuide.svgAddClass(xAnimationClass);
+					dbsfaces.ui.moveToFront(xGuide);
+					if (pChart.attr("type") == "line"
+				     && typeof(pChart.attr("showdelta")) != 'undefined'
+					 && xGuideIndex == 1
+					 && pChart.data("guide2").data("cv") == null){
+						pChart.data("guideIndex", 2);
+					}else{
+						pChart.data("guideIndex", 0);
+					}
+				}
+				//Animação
+				if (xChartValuePoint !=null){
+					xChartValuePoint.svgAddClass(xAnimationClass);
+					xChartValuePoint.off(dbsfaces.EVENT.ON_ANIMATION_END);
+					xChartValuePoint.on(dbsfaces.EVENT.ON_ANIMATION_END, function(e){
+						$(this).svgRemoveClass(xAnimationClass);
+					});
+				}
+			}else{
+//				dbsfaces.ui.moveToBack(pChartValue);
+				pChartValue.svgRemoveClass("-selected");
+				//Se possuir guia, desmarca seleção
+				if (xHasGuide){
+					console.log("guideindexx unselect:\t" + xGuideIndex);
+					xGuide = pChart.data("guide" + xGuideIndex);
+					xGuide.svgRemoveClass("-selected");
+					xGuide.svgRemoveClass(xAnimationClass);
+					dbsfaces.ui.moveToBack(xGuide);
+				}
+				//Animação
+				if (xChartValuePoint !=null){
+					xChartValuePoint.svgRemoveClass(xAnimationClass);
+				}
+			}
+			dbsfaces.chart.dataRefreshSelection(pChart);
+		}
 	},
 	
 

@@ -1,23 +1,22 @@
 
 
 .dbs_chartValue{
-	cursor: pointer;
+	pointer-events: none;
 	stroke-width: 0px;
-/* 	pointer-events: none; */
-	 /*altere também .dbs_chart > .-line*/
-/*   animation-direction: normal; */
-/*   animation-play-state: paused; */
 }
 
-.dbs_chartValue.-selected{
+.dbs_chartValue.-selected,
+.dbs_chartValue.-hover{
 	opacity: 1;
 }   
 
-
 .dbs_chartValue > .-point{
+	pointer-events: all;
+	cursor: pointer;
 }
 
 .dbs_chartValue > .-info{
+	pointer-events: none; 
 }
 
 .dbs_chartValue > .-info > .-point{
@@ -27,6 +26,13 @@
 }
 .dbs_chartValue > .-info > .-value{
 	dominant-baseline: middle;
+}
+
+.dbs_chartValue > .-info > .-label,
+.dbs_chartValue > .-info > .-box,
+.dbs_chartValue > .-info > .-value{
+	cursor: pointer;
+	pointer-events: all; 
 }
 
 .dbs_chartValue > .-info > .-label,
@@ -42,7 +48,9 @@
 
 	
 .dbs_chartValue.-selected > .-info > .-label,
-.dbs_chartValue.-selected > .-info > .-value{
+.dbs_chartValue.-selected > .-info > .-value,
+.dbs_chartValue.-hover > .-info > .-label,
+.dbs_chartValue.-hover > .-info > .-value{
 	opacity: 1;
 }
 

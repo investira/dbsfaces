@@ -35,6 +35,11 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 		public String getName() {
 			return wName;
 		}
+		
+		/**
+		 * Se é um gráfico de linhas e colunas
+		 * @return
+		 */
 		public Boolean isMatrix(){
 			return wMatrix;
 		}
