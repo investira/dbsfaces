@@ -147,7 +147,7 @@ dbsfaces.chartValue = {
 			//Salva valores dentro do próprio componente para facilar o uso no momento do encode do delta
 			pChartValue.data("dx", xChartValuePoint.attr("cx"));
 			pChartValue.data("dy", xChartValuePoint.attr("cy"));
-			pChartValue.data("df", xChartValuePoint.attr("fill"));
+			pChartValue.data("df", xChartValuePoint.css("stroke"));
 			pChartValue.data("dv", pChartValue.attr("value"));
 			pChartValue.data("dl", pChartValue.attr("label"));
 			pChartValue.data("dd", xChartValueInfo.children(".-value").text());
