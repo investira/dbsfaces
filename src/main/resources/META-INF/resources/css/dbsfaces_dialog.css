@@ -153,6 +153,11 @@
     min-width: 2em;
 }
 
+.dbs_dialog > .-dialog > .-container > table > thead > .-toolbar > .-container .-right{
+	display: inline-flex;	
+	float: right;
+}
+
 .dbs_dialog > .-dialog > .-container > table > thead > .-toolbar > .-container > .-line{
     position: absolute;
     width: 100%;
