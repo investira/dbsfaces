@@ -30,38 +30,49 @@
 	stroke-width: 0.2em;
 	shape-rendering: geometricprecision;
 }
-.dbs_chart > .-path > .-guide{
-	pointer-events: all;
-	cursor:pointer;
-}
+/* .dbs_chart > .-path > .-guide{ */
+/* 	pointer-events: all; */
+/* 	cursor:pointer; */
+/* } */
 
-.dbs_chart > .-path > .-guide.-selected{
-	fill-opacity: 0.2 !important;	
-}
+/* .dbs_chart > .-path > .-guide.-selected{ */
+/* 	fill-opacity: 0.2 !important;	 */
+/* } */
 
 .dbs_chart > .-delta{
 	pointer-events: none;
-    -webkit-transform: translate3d(0,0,0);
-    -moz-transform: translate3d(0,0,0);
-    -o-transform: translate3d(0,0,0);
-    transform: translate3d(0,0,0);
-    transform-style: flat;
+/*     -webkit-transform: translate3d(0,0,0); */
+/*     -moz-transform: translate3d(0,0,0); */
+/*     -o-transform: translate3d(0,0,0); */
+/*     transform: translate3d(0,0,0); */
+/*     transform-style: flat; */
 }
 
-.dbs_chart > .-delta > .-guide[guide='1']{
-	fill: rgba(255,0,0,0.5);
+
+.dbs_chart > .-delta > .-guide{
+	pointer-events: all;
+	cursor: col-resize;
+	stroke-opacity: 0.4;
+    fill-opacity: 1;
 }
-.dbs_chart > .-delta > .-guide[guide='2']{
-	fill: rgba(0,255,0,0.5);
+/* .dbs_chart > .-delta > .-guide:hover, */
+.dbs_chart > .-delta > .-guide:focus,
+.dbs_chart > .-delta > .-guide:active{
+	stroke-opacity: 1;
+    fill-opacity: 1;
+	-moz-animation: -kf_dbs_chart_selected .1s linear;
+	-o-animation: -kf_dbs_chart_selected .1s linear;
+	-webkit-animation: -kf_dbs_chart_selected .1s linear;
+	animation: -kf_dbs_chart_selected .1s linear;    
 }
-.dbs_chart > .-delta > .-guide,
+
 .dbs_chart > .-delta > .-info > .-point{
 	fill: rgba(255,255,255,0.4);
     stroke-width: 0.1em;
 }
 
 .dbs_chart > .-delta > .-deltaarea{
-	opacity: 0.2;
+	fill-opacity: 0.15;
     stroke-width: 2px;
 }
 .dbs_chart > .-delta > .-info{
@@ -109,10 +120,10 @@
 
 .dbs_chart.-dim > .-path > path,
 .dbs_chart.-dim > .dbs_chartValue{
-    -webkit-transition: fill-opacity .5s ease-out, stroke-opacity .5s ease-out; 
-    -moz-transition: fill-opacity .5s ease-out, stroke-opacity .5s ease-out;
-    -o-transition: fill-opacity .5s ease-out, stroke-opacity .5s ease-out;
-    transition: fill-opacity .5s ease-out, stroke-opacity .5s ease-out;
+    -webkit-transition: fill-opacity .2s, stroke-opacity .2s; 
+    -moz-transition: fill-opacity .2s, stroke-opacity .2s;
+    -o-transition: fill-opacity .2s, stroke-opacity .2s;
+    transition: fill-opacity .2s, stroke-opacity .2s;
 }
 .dbs_chart.-dim > .-path > path,
 .dbs_chart.-dim > .dbs_chartValue:not(.-selected):not(.-hover){

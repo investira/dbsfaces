@@ -163,15 +163,24 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			//Encode do circulo
 			//Artifício pois o fcirefox só funciona com valores fixos no transform-origin
 //			xStyle.append(DBSFaces.getCSSAllBrowser("transform-origin", xX.doubleValue() + "px " + xY.doubleValue() + "px"));
-//			DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xX.doubleValue(), xY.doubleValue(), "0", "0", DBSFaces.CSS.MODIFIER.POINT, xStroke, wFillColor);
-			pWriter.startElement("use", pChartValue);
+			String xStyle = "stroke:currentColor; color:" + wFillColor + ";";
+			if (pChart.getShowDelta()){
+				DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xX.doubleValue(), xY.doubleValue(), ".2em", ".2em", DBSFaces.CSS.MODIFIER.POINT, xStyle, wFillColor);
+//				xHRef += "_guide";
+//				xStyle += "color:" + wFillColor; 
+			}else{
+				String xHRef = "#" + pCharts.getClientId();
+				xStyle += "transform: translateX(" + xX.doubleValue() + "px) translateY(" + xY.doubleValue() + "px);";
+				xHRef += "_point";
+				pWriter.startElement("use", pChartValue);
 				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.POINT, null);
-				DBSFaces.setAttribute(pWriter, "style", xStroke + "transform: translateX(" + xX.doubleValue() + "px) translateY(" + xY.doubleValue() + "px);", null);
+				DBSFaces.setAttribute(pWriter, "style", xStyle, null);
 //				DBSFaces.setAttribute(pWriter, "fill", wFillColor, null);
-				DBSFaces.setAttribute(pWriter, "xlink:href", "#" + pCharts.getClientId() + "_guide", null);
+				DBSFaces.setAttribute(pWriter, "xlink:href", xHRef, null);
 				DBSFaces.setAttribute(pWriter, "cx", xX.doubleValue(), null);
 				DBSFaces.setAttribute(pWriter, "cy", xY.doubleValue(), null);
 			pWriter.endElement("use");
+			}
 		}
 		//Encode Dados
 		pWriter.startElement("g", pChartValue);

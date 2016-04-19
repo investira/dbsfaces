@@ -1,35 +1,20 @@
 dbs_charts = function(pId) {
 	var xCharts = $(pId);
-//	var xChart = $(pId).find("g.dbs_chart");
-	//Salva chart's vinculados a este charts
-//	xCharts.data("chart", xChart);
+
 	dbsfaces.charts.initialize(xCharts);
 
-//	$(pId).on("mousedown", function(e){
-//		xCharts.each(function(){
-//			dbsfaces.chart.hideDelta($(pId), $(this));
-//		});
-//	});
-	
-	
-	
-	$(pId).on("mouseleave", function(e){
+	//TODO resolver lostfocus no firefox
+	$(pId + "> .-container" ).on("mouseleave", function(e){
 		dbsfaces.charts.lostFocus(xCharts);
 //		console.log("charts\t" + e.originalEvent.type);
 	});
 
-//	$(pId).on("mouseleave mousedown", function(e){
-//		console.log("charts\t" + e.originalEvent.type);
-////		$(this).data("chart").each(function(){
-////			dbsfaces.chart.stopDeltaDrag($(this));
-////		});
-//	});
 };
 
 dbsfaces.charts = {
 	initialize: function(pCharts){
 		dbsfaces.charts.pvInitializeData(pCharts);
-		dbsfaces.charts.pvCreateDefGuide(pCharts);
+		dbsfaces.charts.pvCreateDefGuides(pCharts);
 		dbsfaces.charts.pvUpdateGroupMember(pCharts);
 		pCharts.children(".-container").css("opacity",1);
 	},
@@ -43,16 +28,32 @@ dbsfaces.charts = {
 	},
 
 	//Cria guia padrão para indicar a posição no gráfico tipo line
-	pvCreateDefGuide: function(pCharts){
+	pvCreateDefGuides: function(pCharts){
 		var xDefs = pCharts.find("svg > defs");
+		var xMarker = xDefs.children(".-point");
+		var xElement;
+		if (xMarker.length == 0){
+			xMarker = dbsfaces.svg.g(xDefs, null, null, null,null, null, null);
+			xMarker.svgAttr("id", pCharts.get(0).id + "_point");
+			xMarker.svgAttr("class", "-point");
+			xElement = dbsfaces.svg.ellipse(xMarker,  null, null, "1em", "1em", null, null, null);
+			xElement.svgAttr("stroke", "currentColor");
+			xElement = dbsfaces.svg.ellipse(xMarker, null, null, ".2em", ".2em", null, null, "none");
+			xElement.svgAttr("stroke", "currentColor");
+		}
 		var xMarker = xDefs.children(".-guide");
 		if (xMarker.length == 0){
 			xMarker = dbsfaces.svg.g(xDefs, null, null, null,null, null, null);
 			xMarker.svgAttr("id", pCharts.get(0).id + "_guide");
 			xMarker.svgAttr("class", "-guide");
-			var xEllipse;
-			xEllipse = dbsfaces.svg.ellipse(xMarker,  null, null, "1em", "1em", null, null, null);
-			xEllipse = dbsfaces.svg.ellipse(xMarker, null, null, ".2em", ".2em", null, null, null);
+			xElement = dbsfaces.svg.ellipse(xMarker, null, null, "20px", "20px", null, null, "none"); //"rx:inherit; ry:inherit;"
+//			xElement.svgAttr("stroke", "currentColor");
+//			xElement.svgAttr("stroke-width", "1px");
+			xElement = dbsfaces.svg.rect(xMarker, "-3.5", "-8.5", "6px", "16px", "2", "2", null, null, "white");
+			xElement.svgAttr("stroke", "currentColor");
+//			xElement.svgAttr("stroke-width", "1px");
+			xElement = dbsfaces.svg.rect(xMarker, "-2", "-5", "1px", "9px", null, null, null, null, "currentColor");
+			xElement = dbsfaces.svg.rect(xMarker, "0", "-5", "1px", "9px", null, null, null, null, "currentColor");
 		}
 	},
 	
@@ -75,26 +76,22 @@ dbsfaces.charts = {
 		 && xHover.svgHasClass("-selected")){
 			return;
 		}
+		//Verifica se não há registro marca antes de desmarcar
 		var xDoUnSelect = true;
 		var xChartsChildren = pCharts.data("children");
 		xChartsChildren.each(function(){
+			//Verifica se não há registro marca antes de desmarcar
 			xChart = $(this);
 			if (xChart.data("selection").length > 0){
 				xDoUnSelect = false;
-				return;
 			}
+			//Desmarcar qualquer guia 
+			xChart.data("guideIndex", 0);
 		});
+		
 		if (xDoUnSelect){
 			dbsfaces.chartValue.unSelect(xHover);
 		}
-//		if (pChart.data("selection") == 0){
-//			dbsfaces.chartValue.unSelect(xCharts.data("hover"));
-//			var xHoverCharts = xHover.data("parent").data("parent");
-//			//Ignora se for para selecionar item já selecionado
-//			if (xHoverCharts[0].id == xCharts[0].id){
-//				return;
-//			}
-//		}
 	},
 	
 	select: function(pChartValue, pSelect){

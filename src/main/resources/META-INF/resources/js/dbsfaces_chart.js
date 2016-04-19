@@ -2,154 +2,68 @@ dbs_chart = function(pId) {
 	var xChart = $(pId);
 	
 	dbsfaces.chart.initialize(xChart);
-//	$(pId + "[type='line'] > g.-path > .-mask").on("mousedown", function(e){
-////		$(pId + "[type='line'] > g.-path > .-mask").on("mousemove touchmove", function(e){
-//		console.log(e.originalEvent.type);
-//		dbsfaces.chart.findPoint(e, xChart);
-//		e.preventDefault();
-//		return false;
-//	});
-	//		if ($(this).data("cv") == null){
-	//			dbsfaces.chartValue.select($("#" + dbsfaces.util.jsid(xChart.data("parent").data("hover")[0].id)), true);
-	//		}else{
-	//			dbsfaces.chartValue.select($(this).data("cv"), true);
-	//		}
-	//		dbsfaces.chartValue.select(xChart.data("parent").data("hover"), true);
-	//		dbsfaces.chartValue.select($("#" + dbsfaces.util.jsid(xChart.data("parent").data("hover")[0].id)), true);
-	//		$(pId + "[type='line'] > g.-path > .-mask").on("mousemove touchmove", function(e){
+
 	if (xChart.attr("type") == "line"){
-		$(pId + " > .-path > .-guide").on("mousedown touchstart", function(e){
-//			console.log("chart guide\t" + e.originalEvent.type + "\t" + $(this).attr("guide"));
-			//Seta o guia ativo
-			xChart.data("guideIndex", Number($(this).attr("guide")));
-			
-			dbsfaces.chartValue.select($(this).data("cv"), true);
-			e.stopImmediatePropagation();
-//			e.preventDefault();
-			return false;
-		});
-	
+		//Não existe cálculo delta
+		if (xChart.data("deltagroup") != null){
+			$(pId + " > .-delta > .-guide").on("mousedown touchstart", function(e){
+				xChart.data("guideIndex", Number($(this).attr("guide")));
+//				$(this).svgAddClass("-a_dbs_chart_selected");
+				e.stopImmediatePropagation();
+				return false;
+			});
+			$(pId + " > .-delta > .-guide").on("mouseup touchend", function(e){
+//				$(this).svgRemoveClass("-a_dbs_chart_selected");
+				xChart.data("guideIndex", 0);
+//				$(this).svgRemoveClass("-a_dbs_chart_selected");
+				e.stopImmediatePropagation();
+				return false;
+			});
+			$(pId + " > .-delta > .-guide").on("mousemove touchmove", function(e){
+//				$(this).svgRemoveClass("-a_dbs_chart_selected");
+				dbsfaces.chart.findPoint(e, xChart);
+				e.stopImmediatePropagation();
+				return false;
+			});		
+		}
 		//Procura por chartvalue a partir da linha do gráfico
 		$(pId + " > .-path > .-mask").on("mousemove touchmove touchstart", function(e){
-//			console.log("XXchart\t" + e.originalEvent.type + "\t" + document.elementFromPoint(e.originalEvent.pageX, e.originalEvent.pageY).id);
+//				console.log("XXchart\t" + e.originalEvent.type + "\t" + document.elementFromPoint(e.originalEvent.pageX, e.originalEvent.pageY).id);
 			//Ignora findpoint se não houver guide ativo.
 			dbsfaces.chart.findPoint(e, xChart);
 			e.stopImmediatePropagation();
-//			e.preventDefault();
 			return false;
 		});
-	
-		$(pId + " > .-path > .-mask").on("mousedown ", function(e){
-//			$(pId + "[type='line'] > g.-path > .-mask").on("mousemove touchmove", function(e){
-//			console.log("XXchart\t" + e.originalEvent.type + "\t" + document.elementFromPoint(e.originalEvent.pageX, e.originalEvent.pageY).id);
-			if (xChart.data("guideIndex") != 0){
-//				dbsfaces.chartValue.select(xChart.data("parent").data("hover"), true);
-			}
-//			e.preventDefault();
+		
+		$(pId + " > .-path > .-mask").on("mouseleave", function(e){
+			$(this).data("guideIndex", 0);
 			e.stopImmediatePropagation();
 			return false;
 		});
-	}
 
-//	$(pId + "[type='line'] > .-path > .-guide").on("mousedown touchstart", function(e){
-//		console.log("chart guide\t" + e.originalEvent.type);
-//		dbsfaces.chartValue.select($(this).data("cv"), true);
-//		e.preventDefault();
-//		return false;
-//	});
-
-
-//	xChart.on("mouseleave", function(e){
-//		dbsfaces.chartValue.unSelect(xChart.data("parent").data("hover"));
-//		console.log("chart\t" + e.originalEvent.type);
-
-//		$(this).data("chart").each(function(){
-//			dbsfaces.chart.stopDeltaDrag($(this));
-//		});
-//		dbsfaces.charts.unSelect($(this));
-//		e.preventDefault();
-//		return false;
-//	});
-
-//	$(pId + "[type='line'][showdelta] > g.-path").on("mousemove touchmove", function(e){
-//		dbsfaces.chart.findPoint(e, xChart);
-//		e.preventDefault();
-//		return false;
-//	});
-	
-//	$(pId).on("touchstart", function(e){
-//	});
-
-	
-//	var events = $._data(xChart[0], "events");
-//	console.log(events);
-//	$(pId).on("*", function(e){
-//		console.log(e);
-//	});
-
-//	$(pId).on("mousemove", function(e){
-//		console.log("chart");
-//		if (e.target == $(pId + " > g.-path")){
-//			console.log("chart find");
-//			dbsfaces.chart.findPoint(e, xChart);
-//		}
-//	});
-////	.dbs_chart > .-delta > .-guide, .dbs_chart > .-delta > .-info > .-point
-////	$(pId + " > .-delta > .-guide").on("mousedown touchstart", function(e){
-//	$(pId + " > .-delta").on("mousedown touchstart", function(e){
-//		var xGuide = $(e.target).parent();
-////		console.log($(e.target).parent().attr("class"));
-////		console.log(xGuide.attr("class"));
-//		if (xGuide.attr("class").indexOf('-guide') != -1){
-//			xChart.data("guide", xGuide.attr("guide"));
-//			console.log(xGuide.attr("guide"));
-//			dbsfaces.chart.startDeltaDrag(xChart);
-////			e.preventDefault();
-////			return false;
-//		}
-////		console.log($(e.target).parent().attr("class"));
-//	});
-//
-//	$(pId).on("mouseup touchend", function(e){
-////		console.log("mouseup touchend");
-//		dbsfaces.chart.stopDeltaDrag(xChart);
-//		e.preventDefault();
-//		return false;
-//	});
+	} 
 	
 };
 
+
+
 dbsfaces.chart = {
-	startDeltaDrag: function(pChart){
-//		dbsfaces.chartValue.removeDelta(pChart);
-		pChart.data("drag", true);
-	},
-
-	stopDeltaDrag: function(pChart){
-		pChart.data("drag", false);
-	},
-
-	isDeltaDragging: function(pChart){
-		return pChart.data("drag");
-	},
 	
 	initialize: function(pChart){
-		//Reseta ponto para calculo do delta
-//		dbsfaces.chartValue.removeDelta(pChart);
-
 		dbsfaces.chart.pvInitializeData(pChart);
 
 		var xCharts = pChart.data("parent");
 		var xChartChildren = pChart.data("children");
 		var xShowLabel = (typeof(xCharts.attr("showlabel")) != "undefined");
+		var xShowDelta = (typeof(xChart.attr("showDelta")) != "undefined");
 		var xDrawLine = (pChart.attr("type") == "line");
 		if (pChart.attr("type") == "bar"
 		 || xDrawLine){
 			//Verifica sopreposição dos labels e cor da linhas
 			dbsfaces.chart.pvInitializeLineAndLabels(xCharts, pChart, xChartChildren, xShowLabel, xDrawLine);
 			//Cria guia principal
-			if (xDrawLine){
-				dbsfaces.chart.pvInitializeGuides(xCharts, pChart);
+			if (xDrawLine && xShowDelta){
+				dbsfaces.chart.pvInitializeDelta(xCharts, pChart);
 			}
 		}
 		if (pChart.attr("type") == "pie"){
@@ -169,15 +83,21 @@ dbsfaces.chart = {
 		//Salva chartvalues vinculados a este chart
 		var xChartChildren = pChart.children(".dbs_chartValue");
 		pChart.data("children", xChartChildren);
-		var xDeltaGroup = dbsfaces.util.getNotUndefined(pChart.children("g.-delta"), null);
-		pChart.data("deltagroup", xDeltaGroup);
-		
+		if (typeof(pChart.attr("showDelta")) != "undefined"){
+			var xDeltaGroup = dbsfaces.util.getNotUndefined(pChart.children("g.-delta"), null);
+			pChart.data("deltagroup", xDeltaGroup);
+		}else{
+			pChart.data("deltagroup", null);
+
+		}
 		pChart.data("pathgroup", dbsfaces.util.getNotUndefined(pChart.children(".-path"), null));
 		if (pChart.data("pathgroup") == null){
 			pChart.data("mask", null);
 		}else{
 			pChart.data("mask", dbsfaces.util.getNotUndefined(pChart.data("pathgroup").children(".-mask"), null));
 		}
+		//Reseta guia 
+		pChart.data("guideIndex", 0);
 		dbsfaces.chart.dataRefreshSelection(pChart);
 	},
 	
@@ -248,43 +168,64 @@ dbsfaces.chart = {
 		}
 	},
 	
-	//Inicializa guias 
-	pvInitializeGuides: function(pCharts, pChart){
-		dbsfaces.chart.pvInitializeGuidesCreate(pCharts, pChart, 1);
-		dbsfaces.chart.pvInitializeGuidesCreate(pCharts, pChart, 2);
-		//Define guia #1 como guia inicial 
+	//Inicializa delta 
+	pvInitializeDelta: function(pCharts, pChart){
+		var xChartChildren = pChart.data("children");
+		var xCV1 = null;
+		var xCV2 = null;
+		if (xChartChildren.length > 0){
+			xCV1 = $(xChartChildren.get(0));
+			xCV2 = $(xChartChildren.get(xChartChildren.length - 1));
+		}
+		dbsfaces.chart.pvInitializeDeltaArea(pChart);
+		dbsfaces.chart.pvInitializeGuide(pCharts, pChart, xCV1, 1);
+		dbsfaces.chart.pvInitializeGuide(pCharts, pChart, xCV2, 2);
+
 		pChart.data("guideIndex", 0);
 		dbsfaces.ui.moveToFront(pChart.data("mask"));
 	},
 	
 	//Cria guias 
-	pvInitializeGuidesCreate: function(pCharts, pChart, pGuideIndex){
-		var xChartPathGroup = pChart.data("pathgroup");
-		var xGuide = xChartPathGroup.children(".-guide[guide='" + pGuideIndex + "']");
+	pvInitializeGuide: function(pCharts, pChart, pChartValue, pGuideIndex){
+		var xChartDeltaGroup = pChart.data("deltagroup");
+		var xGuide = xChartDeltaGroup.children(".-guide[guide='" + pGuideIndex + "']");
 		if (xGuide.length == 0){
-			xGuide = dbsfaces.svg.use(xChartPathGroup, pCharts.get(0).id + "_guide", "-guide", null);
+			xGuide = dbsfaces.svg.use(xChartDeltaGroup, pCharts.get(0).id + "_guide", "-guide", null);
 			xGuide.svgAttr("guide", pGuideIndex);
-			xGuide.css("stroke-width", ".1em");
-			xGuide.css("fill", "none");
-			xGuide.css("fill-opacity", "0");
+//			xGuide.svgAttr("rx", pChart.attr("cs") + "px");
+//			xGuide.svgAttr("ry", pChart.attr("cs") + "px");
+//			xGuide.svgAttr("width", pChart.attr("cs") + "px");
+//			xGuide.svgAttr("height", pChart.attr("cs") + "px");
+//			xGuide.css("fill", "none");
+//			xGuide.css("fill-opacity", "0");
 			//Salva o guia do gráfico
 			pChart.data("guide" + pGuideIndex, xGuide);
 			//Inicializa chartValue do guia como nulo
-			pChart.data("guide" + pGuideIndex).data("cv", null);
+			pChart.data("guide" + pGuideIndex).data("cv", pChartValue);
 		}
+		pChart.data("guideIndex", pGuideIndex);
+		dbsfaces.chart.pvSetGuide(pChart, pChartValue, true);
 		return xGuide;
 	},
-	
-	findPoint: function(e, pChart){
-//		if (pChart.data("guideIndex") == 0){
-//			return;
-//		}
 
+	//Cria area entre as guias para indicar seleção 
+	pvInitializeDeltaArea: function(pChart){
+		var xChartDeltaGroup = pChart.data("deltagroup");
+		var xDeltaArea = xChartDeltaGroup.children(".-deltaarea");
+		var xChartMask = pChart.data("mask");
+		if (xDeltaArea.length == 0){
+			xDeltaArea = dbsfaces.svg.rect(xChartDeltaGroup, 0, xChartMask.attr("y"), 0, xChartMask.attr("height"), null, null, "-deltaarea", null, null);
+			xDeltaArea.svgAttr("fill", "url(#" + pChart.get(0).id + "_linestroke)");
+			pChart.data("deltaarea", xDeltaArea);
+		}
+	},
+	//Enconta o ponto(cv) a partir da posição do cursor
+	findPoint: function(e, pChart){
 		var xChartPathGroup = pChart.data("pathgroup");
 		var xChartPath = pChart.data("path");
 		var xChartMask = pChart.data("mask");
 		var xDecimals = 1;
-		var xPosition = $(e.currentTarget).offset();
+		var xPosition = xChartMask.offset();
 		var xCurrentX = dbsfaces.math.round(e.originalEvent.pageX - xPosition.left, xDecimals);
 		if (xCurrentX < 0){return;}
 	    var xBeginning = xCurrentX;
@@ -456,47 +397,85 @@ dbsfaces.chart = {
 			var xX = pChartValue.data("dx");
 			var xY = pChartValue.data("dy");
 			var xColor = pChartValue.children(".-point").css("stroke");
-			xChartPathGuide.css("stroke", xColor)
-						   .css("fill", xColor);
+			xChartPathGuide.css("color", xColor);
+//			xChartPathGuide.css("stroke", xColor);
+//						   .css("fill", xColor);
 			//Reposiciona guia nas coordenadas do chartvalue
-	        dbsfaces.ui.cssTransform(xChartPathGuide, "translate3d(" + xX + "px ," + xY + "px,0)");
+			var xCenterY = Number(pChart.data("mask").attr("height")) / 2;
+//			console.log(Number(pChart.data("mask").attr("height")) / 2);
+	        dbsfaces.ui.cssTransform(xChartPathGuide, "translate3d(" + xX + "px ," + xCenterY + "px,0)");
 //			xChartPathGuide.css("-moz-transform-origin", xX + "px " + xY + "px 0");
 //			dbsfaces.ui.cssAllBrowser(xChartPathGuide, "transform-origin", xX + "px " + xY + "px 0");
-	        if (pSelect){
+//	        if (pSelect){
 		        xChartPathGuide.data("cv", pChartValue);
-	        }
+//	        }
 		}else{
 	        xChartPathGuide.data("cv", null);
 			xChartPathGuide.hide();
 		}
-	},
-	
-
-	//Escoder todos os deltas
-	//Chamado pelo dbsfaces_charts
-	hideDelta: function(pCharts, pChart){
-		dbsfaces.chart.hideChartValueDelta(pChart);
 		
-		//Procura por todos os charts da mesma familia para esconder o delta, se existir.
-		var xMembers = pCharts.data("groupMembers");
-		if (xMembers != null) {
-			xMembers.each(function(){
-				xCharts = $(this);
-				var xChart = $(this).data("children").not(pChart);
-				xChart.each(function(){
-					dbsfaces.chart.hideChartValueDelta($(this));
-				});
-			});
-		}
+		setTimeout(function(){
+			dbsfaces.chart.pvShowDelta(pChart);
+		},0);
 	},
 	
-	hideChartValueDelta: function(pChart){
-		//Esconde delta após 5 segundos caso não tenha sido selecionado o intervalo definitivo
-		if (pChart.attr("type") == "line"
-	     && typeof(pChart.attr("showdelta")) != 'undefined'){
-			dbsfaces.chartValue.hideDelta(pChart);
+	pvShowDelta: function(pChart){
+		if (pChart.attr("type") != "line"){return;}
+		var xChartDeltaGroup = pChart.data("deltagroup");
+		if (xChartDeltaGroup.lenght == 0){return;}
+		var xDeltaArea = pChart.data("deltaarea");
+		var xCV1 = pChart.data("guide1").data("cv");
+		var xCV2 = pChart.data("guide2").data("cv");
+		dbsfaces.chart.pvShowDeltaArea(pChart, xDeltaArea, xCV1, xCV2);
+	},
+	
+	pvShowDeltaArea: function(pChart, pDeltaArea, pCV1, pCV2){
+//		var xChartMask = pChart.data("mask");
+		var xCV1 = pCV1;
+		var xCV2 = pCV2;
+		if (xCV1.data("dx") > xCV2.data("dx")){
+			xCV1 = pCV2; 
+			xCV2 = pCV1;
 		}
+		var xX = xCV1.data("dx");
+		var xWidth = (xCV2.data("dx") - xX);
+		if (xWidth == 0){
+			xWidth = 0.5;
+			xX -= 0.5;
+		}
+		pDeltaArea.svgAttr("x", xX);
+		pDeltaArea.svgAttr("width", xWidth);
+
+//		xDeltaArea = dbsfaces.svg.rect(xChartDeltaGroup, null, null, 0, 0, null, null, "-deltaarea", null, null);
+//		if (xDeltaArea.length == 0){
 	}
+
+//	
+//	//Escoder todos os deltas
+//	//Chamado pelo dbsfaces_charts
+//	hideDelta: function(pCharts, pChart){
+//		dbsfaces.chart.hideChartValueDelta(pChart);
+//		
+//		//Procura por todos os charts da mesma familia para esconder o delta, se existir.
+//		var xMembers = pCharts.data("groupMembers");
+//		if (xMembers != null) {
+//			xMembers.each(function(){
+//				xCharts = $(this);
+//				var xChart = $(this).data("children").not(pChart);
+//				xChart.each(function(){
+//					dbsfaces.chart.hideChartValueDelta($(this));
+//				});
+//			});
+//		}
+//	},
+//	
+//	hideChartValueDelta: function(pChart){
+//		//Esconde delta após 5 segundos caso não tenha sido selecionado o intervalo definitivo
+//		if (pChart.attr("type") == "line"
+//	     && typeof(pChart.attr("showdelta")) != 'undefined'){
+//			dbsfaces.chartValue.hideDelta(pChart);
+//		}
+//	}
 
 };
 

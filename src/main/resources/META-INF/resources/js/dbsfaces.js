@@ -376,6 +376,7 @@ dbsfaces.url = {
 
 dbsfaces.ui = {
 	moveToFront: function(pElement){
+		if (xE == null || xE == "undefined"){return;}
 		var xE = pElement;
 		if (xE instanceof jQuery){
 			xE = pElement.get(0);

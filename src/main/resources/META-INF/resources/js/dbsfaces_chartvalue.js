@@ -33,20 +33,14 @@ dbs_chartValue = function(pId) {
 			return false;
 		});
 	}else{
-		$(pId + " > .-point").on("mouseenter", function(e){
-			dbsfaces.chartValue.select(xChartValue, null);
-//			e.preventDefault();
-			e.stopImmediatePropagation();
-			return false;
-		});
+//		$(pId + " > .-point").on("mouseenter", function(e){
+//			dbsfaces.chartValue.select(xChartValue, null);
+////			e.preventDefault();
+//			e.stopImmediatePropagation();
+//			return false;
+//		});
 	}
 
-	
-	
-	
-	
-	
-	
 //	$(pId).on("mouseleave", function(e){
 //		console.log("chartvalue\t" + e.originalEvent.type);
 //		dbsfaces.chartValue.unSelect(xChartValue);
@@ -145,9 +139,9 @@ dbsfaces.chartValue = {
 		xValue = xChartValueInfo.children(".-value").text();
 		if (xValue != 0){
 			//Salva valores dentro do próprio componente para facilar o uso no momento do encode do delta
-			pChartValue.data("dx", xChartValuePoint.attr("cx"));
-			pChartValue.data("dy", xChartValuePoint.attr("cy"));
-			pChartValue.data("df", xChartValuePoint.css("stroke"));
+			pChartValue.data("dx", Number(xChartValuePoint.attr("cx")));
+			pChartValue.data("dy", Number(xChartValuePoint.attr("cy")));
+			pChartValue.data("df", xChartValuePoint.css("color"));
 			pChartValue.data("dv", pChartValue.attr("value"));
 			pChartValue.data("dl", pChartValue.attr("label"));
 			pChartValue.data("dd", xChartValueInfo.children(".-value").text());
@@ -424,7 +418,7 @@ dbsfaces.chartValue = {
 		 || pChart.attr("type") != "line"
 		 ||	typeof(pChart.attr("showdelta")) == 'undefined'
 		 || pChartValue.data("dx") == null
-		 || pChartValue.data("dv") == "0.0"){
+		 || pChartValue.data("dv") == 0){
 			return;
 		}
 
