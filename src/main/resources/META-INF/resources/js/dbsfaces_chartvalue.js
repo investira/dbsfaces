@@ -198,7 +198,6 @@ dbsfaces.chartValue = {
 		var xHoverCharts;
 
 		//Desmarca item selecionado anteriormente
-		
 		if (pSelect == null){
 			xHover = xCharts.data("hover");
 			//Se houver item selectionado
@@ -211,15 +210,15 @@ dbsfaces.chartValue = {
 				xHoverCharts = xHoverChart.data("parent");
 			}
 		}
-			//Configura seleção do chart pai. obs:Esta chamada previsa ser anterior ao unselect para verificar se item selecionado atual 
-			dbsfaces.chart.select(pChartValue, null);
 
-			//Desmarca item selecionado anteriormente
-			dbsfaces.chartValue.pvHoverChartValue(xHoverCharts, xHoverChart, xHover, false);
+		//Configura seleção do chart pai. obs:Esta chamada previsa ser anterior ao unselect para verificar se item selecionado atual 
+		dbsfaces.chart.select(pChartValue, null);
 
-			//Marca item selecionado
-			dbsfaces.chartValue.pvHoverChartValue(xCharts, xChart, pChartValue, null);
-//		}else{
+		//Desmarca item selecionado anteriormente
+		dbsfaces.chartValue.pvHoverChartValue(xHoverCharts, xHoverChart, xHover, false);
+
+		//Marca item selecionado
+		dbsfaces.chartValue.pvHoverChartValue(xCharts, xChart, pChartValue, null);
 			
 		if (pSelect != null){	
 			pSelect = !pChartValue.svgHasClass("-selected");
@@ -230,69 +229,8 @@ dbsfaces.chartValue = {
 				dbsfaces.chartValue.unSelect(pChartValue);
 			}
 		}
-//
-//		//Configura seleção do chart pai
-//		dbsfaces.chart.select(pChartValue, pSelect);
-//
-//		//Desmarca item selecionado anteriormente
-//		dbsfaces.chartValue.pvHoverChartValue(xHoverCharts, xHoverChart, xHover, false);
-//		dbsfaces.chartValue.pvSelectChartValue(xHoverCharts, xHoverChart, xHover, pSelect);
-//
-//
-//		//Marca item selecionado
-//		dbsfaces.chartValue.pvSelectChartValue(xCharts, xChart, pChartValue, pSelect);
-
-
-//		if (pSelect){
-//			if (xChart.attr("type") == "line"){
-//				if (xSelected != null){
-//					//Exclui animação no item selecionado anteriormente
-//					xSelected.svgRemoveClass(xAnimationClass);
-//				}
-//				var xChartPathGuide =  $(xChart.data("guide" + xGuideIndex));
-//				dbsfaces.chartValue.pvAddAnimation(xSelectCV, xChartPathGuide, xAnimationClass);
-//			}else{
-//				dbsfaces.chartValue.pvAddAnimation(xSelectCV, pChartValue, xAnimationClass);
-//			}
-//		}
-		//Animação da seleção a ativação de guia
-//		if (xSelectCV != null){
-//			//Animação no click
-//			var xAnimationClass = "dbs_charts-selectedGuide";
-//			if (xChart.attr("type") == "line"){
-//				if (xSelected != null){
-//					//Exclui animação no item selecionado anteriormente
-//					xSelected.svgRemoveClass(xAnimationClass);
-//				}
-//				var xChartPathGuide =  $(xChart.data("guide" + xGuideIndex));
-//				dbsfaces.chartValue.pvAddAnimation(xSelectCV, xChartPathGuide, xAnimationClass);
-//			}else{
-//				dbsfaces.chartValue.pvAddAnimation(xSelectCV, pChartValue, xAnimationClass);
-//			}
-//			//Ativa outro guia
-//			if (xSelectCV){
-////				 ||	typeof(xChart.attr("showdelta")) == 'undefined'){
-//				if (xChart.attr("type") == "line"){
-//					if (xGuideIndex == 1){
-//						xChart.data("guide", 2);
-//					}else{
-//						xChart.data("guide", 0); //Desabilita guias
-//					}
-//				}
-//			}
-//		}
 	},
 	
-//	pvAddAnimation: function(pElement){
-//		pElement.svgAddClass("-a_dbs_chart-select");
-////		if (pSelectCV){
-//			//Artificil para formar a re-execução da animação
-//			setTimeout(function(){
-//				pElement.svgRemoveClass("-a_dbs_chart-select");
-//			},0);
-////		}
-//	},
-//
 	unSelect: function(pChartValue){
 		if (pChartValue == null){return;}
 		var	xChart = pChartValue.data("parent");
@@ -347,15 +285,11 @@ dbsfaces.chartValue = {
 
 		//Hover do item
 		if (pSelect == null || pSelect){
-			//Força que chartvalue seja esteja a frente
-//			if (pChart.attr("type") == "bar"
-//			 || pChart.attr("type") == "line"){
-//				dbsfaces.ui.moveToFront(pChartValue.get(0));
-//			}
 			//Marca selecionado
 			pChartValue.svgAddClass("-hover");
 			pCharts.data("hover", pChartValue);
 		}else{
+			//Desmarca selecionado
 			pChartValue.svgRemoveClass("-hover");
 			pCharts.data("hover", null);
 		}
@@ -419,31 +353,6 @@ dbsfaces.chartValue = {
 	},
 	
 
-	selectDelta: function(pChart, pChartValue){
-		//Não permite seleção para gráficos diferente de line ou 
-		//quando valor do ponto selecionado for zero
-		if (pChart.length == 0
-		 || pChart.attr("type") != "line"
-		 ||	typeof(pChart.attr("showdelta")) == 'undefined'
-		 || pChartValue.data("dx") == null
-		 || pChartValue.data("dv") == 0){
-			return;
-		}
-
-		if (pChart.data("cv1") == null){
-			pChart.data("cv1", pChartValue);
-			pChart.data("cv2", pChartValue);
-		}
-		//Marca ponto origem
-		if (pChart.data("guide") == 1){
-			pChart.data("cv1", pChartValue);
-		}else{
-			pChart.data("cv2", pChartValue);
-		}
-		dbsfaces.chartValue.showDelta(pChart, pChartValue, -1, -1);
-	},
-	
-	
 	showDelta: function(pChart, pChartValue){
 		var xDeltaGroup = pChart.data("deltagroup");
 		if (xDeltaGroup == null){
@@ -539,7 +448,7 @@ dbsfaces.chartValue = {
 		//Cria Group info
 		if (xDeltaInfoGroup.length == 0){
 													//!!!!!!!! retirar os 4m?
-			xDeltaInfoGroup = dbsfaces.svg.g(xDeltaGroup, null, null, "4em","4em", "-info", xStyle);
+			xDeltaInfoGroup = dbsfaces.svg.g(xDeltaGroup, "4em","4em", "-info", xStyle);
 		}else{
 			xDeltaInfoGroup.svgAttr("style", xStyle);
 		}

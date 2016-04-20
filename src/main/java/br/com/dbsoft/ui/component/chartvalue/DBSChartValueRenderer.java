@@ -563,7 +563,8 @@ public class DBSChartValueRenderer extends DBSRenderer {
 	private void pvEncodeTooptip(TYPE pType, DBSChartValue pChartValue, Double pX, Double pY, String pClienteId, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 			String xStyle = "";
 			pWriter.startElement("foreignObject", pChartValue);
-				pWriter.writeAttribute("xmlns","http://www.w3.org/1999/xhtml", null);
+//				pWriter.writeAttribute("xmlns","http://www.w3.org/1999/xhtml", null);
+				pWriter.writeAttribute("requiredExtensions","http://www.w3.org/1999/xhtml", null);
 				pWriter.writeAttribute("height", "1px", null);
 				pWriter.writeAttribute("width", "1px", null);
 				pWriter.writeAttribute("class", "-foreignobject", null);

@@ -33,7 +33,7 @@ dbsfaces.charts = {
 		var xMarker = xDefs.children(".-point");
 		var xElement;
 		if (xMarker.length == 0){
-			xMarker = dbsfaces.svg.g(xDefs, null, null, null,null, null, null);
+			xMarker = dbsfaces.svg.g(xDefs, null, null, null, null);
 			xMarker.svgAttr("id", pCharts.get(0).id + "_point");
 			xMarker.svgAttr("class", "-point");
 			xElement = dbsfaces.svg.ellipse(xMarker,  null, null, "1em", "1em", null, null, null);
@@ -43,7 +43,7 @@ dbsfaces.charts = {
 		}
 		var xMarker = xDefs.children(".-guide");
 		if (xMarker.length == 0){
-			xMarker = dbsfaces.svg.g(xDefs, null, null, null,null, null, null);
+			xMarker = dbsfaces.svg.g(xDefs, null, null, null, null);
 			xMarker.svgAttr("id", pCharts.get(0).id + "_guide");
 			xMarker.svgAttr("class", "-guide");
 			xElement = dbsfaces.svg.ellipse(xMarker, null, null, "20px", "20px", null, null, "none"); //"rx:inherit; ry:inherit;"
@@ -90,11 +90,10 @@ dbsfaces.charts = {
 		if (xDoUnSelect){
 			dbsfaces.chartValue.unSelect(xHover);
 		}
+//		//Desmarcar qualquer guia 
 		xChartsChildren.each(function(){
 			xChart = $(this);
 			xChart.data("guideIndex", 0);
-//			//Desmarcar qualquer guia 
-//			dbsfaces.chart.lostFocus($(this));
 		});
 	},
 	

@@ -66,41 +66,28 @@
 	animation: -kf_dbs_chart_selected .1s linear;    
 }
 
-.dbs_chart > .-delta > .-info > .-point{
-	fill: rgba(255,255,255,0.4);
-    stroke-width: 0.1em;
-}
-
 .dbs_chart > .-delta > .-deltaarea{
 	fill-opacity: 0.15;
     stroke-width: 2px;
 }
+
 .dbs_chart > .-delta > .-info{
-    overflow: visible;
-    font-size: 1em;
-/*      -webkit-transition: transform .3s; */
-/*     -moz-transition: transform .3s; */
-/*     -o-transition: transform .3s; */
-/*     transition: transform .3s; */
-/* 	-webkit-filter: blur(0); */
-/*     -moz-filter: blur(0); */
-/*     -o-filter: blur(0); */
-/*     filter: blur(0); */
-/*     -webkit-transform: translate3d(0,0,0); */
-/*     -moz-transform: translate3d(0,0,0); */
-/*     -o-transform: translate3d(0,0,0); */
-/*     transform: translate3d(0,0,0); */
-    transform-style: flat;
+    font-size: 3em;
+    /* stroke-opacity: 0.4; */
+    fill-opacity: 0.8;
+    stroke-opacity: 0.8;
+}
+.dbs_chart > .-delta:actice > .-info,
+.dbs_chart > .-delta:focus > .-info{
+    fill-opacity: 0.2;
+    stroke-opacity: 0.4;
 }
 
 .dbs_chart > .-delta > .-info > .-value{
+	dominant-baseline: hanging;
     text-anchor: middle;
-
-	
     font-weight: bolder;
-    stroke: black;
     font-size: 1.5em;
-    fill: white;
     stroke-width: .01em;
 }
 

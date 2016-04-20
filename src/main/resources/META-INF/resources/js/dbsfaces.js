@@ -153,18 +153,12 @@ dbsfaces.sound = {
 
 dbsfaces.svg = {
 	gsvg: function(pComponent, pX, pY, pWidth, pHeight, pStyleClass, pStyle){
-		var xG = dbsfaces.svg.g(pComponent, pX, pY, pWidth, pHeight, pStyleClass, pStyle);
+		var xG = dbsfaces.svg.g(pComponent, pWidth, pHeight, pStyleClass, pStyle);
 		return dbsfaces.svg.svg(xG, null, null, null, null, null, null);
 	},
-	g: function(pComponent, pX, pY, pWidth, pHeight, pStyleClass, pStyle){
+	g: function(pComponent, pWidth, pHeight, pStyleClass, pStyle){
 		var xG = dbsfaces.svg.createElement('g');
 		dbsfaces.svg.setDefaultAttr(xG, pStyleClass, pStyle, null);
-		if (pX != null){
-			xG.svgAttr("x", pX);
-		}
-		if (pY != null){
-			xG.svgAttr("y", pY);
-		}
 		if (pWidth != null){
 			xG.svgAttr("width", pWidth);
 		}

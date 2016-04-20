@@ -8,19 +8,21 @@ dbs_chart = function(pId) {
 		if (xChart.data("deltagroup") != null){
 			$(pId + " > .-delta > .-guide").on("mousedown touchstart", function(e){
 				xChart.data("guideIndex", Number($(this).attr("guide")));
-//				$(this).svgAddClass("-a_dbs_chart_selected");
 				e.stopImmediatePropagation();
 				return false;
 			});
 			$(pId + " > .-delta > .-guide").on("mouseup touchend", function(e){
-//				$(this).svgRemoveClass("-a_dbs_chart_selected");
 				xChart.data("guideIndex", 0);
-//				$(this).svgRemoveClass("-a_dbs_chart_selected");
 				e.stopImmediatePropagation();
 				return false;
 			});
 			$(pId + " > .-delta > .-guide").on("mousemove touchmove", function(e){
-//				$(this).svgRemoveClass("-a_dbs_chart_selected");
+//				console.log(e.originalEvent.type + "\t" + e.buttons + "\t" + e.button  + "\t" + e.which);
+				if (e.originalEvent.type == "mousemove" 
+				 && e.which == 0){
+					xChart.data("guideIndex", 0);
+					return;
+				}
 				dbsfaces.chart.findPoint(e, xChart);
 				e.stopImmediatePropagation();
 				return false;
@@ -30,6 +32,10 @@ dbs_chart = function(pId) {
 		$(pId + " > .-path > .-mask").on("mousemove touchmove touchstart", function(e){
 //				console.log("XXchart\t" + e.originalEvent.type + "\t" + document.elementFromPoint(e.originalEvent.pageX, e.originalEvent.pageY).id);
 			//Ignora findpoint se não houver guide ativo.
+//			if (e.originalEvent.type == "mousemove" 
+//			 && e.which == 0){
+//				return;
+//			}
 			dbsfaces.chart.findPoint(e, xChart);
 			e.stopImmediatePropagation();
 			return false;
@@ -119,9 +125,9 @@ dbsfaces.chart = {
 				xChartValueLabel = xChartValue.children("g.-info").children(".-label");
 				xPos = Number(xChartValueLabel.attr("x")) - (xChartValueLabel.get(0).getComputedTextLength() / 2);
 				if (xPos < xPosAnt){
-					xChartValueLabel.get(0).classList.add("-hide");
+					xChartValueLabel.svgAddClass("-hide");
 				}else{
-					xChartValueLabel.get(0).classList.remove("-hide");
+					xChartValueLabel.svgRemoveClass("-hide");
 					xPosAnt = Number(xChartValueLabel.attr("x")) + (xChartValueLabel.get(0).getComputedTextLength() / 2) + 4;
 				}
 			}
@@ -178,6 +184,7 @@ dbsfaces.chart = {
 			xCV2 = $(xChartChildren.get(xChartChildren.length - 1));
 		}
 		dbsfaces.chart.pvInitializeDeltaArea(pChart);
+		dbsfaces.chart.pvInitializeDeltaInfo(pChart);
 		dbsfaces.chart.pvInitializeGuide(pCharts, pChart, xCV1, 1);
 		dbsfaces.chart.pvInitializeGuide(pCharts, pChart, xCV2, 2);
 
@@ -217,6 +224,23 @@ dbsfaces.chart = {
 			xDeltaArea = dbsfaces.svg.rect(xChartDeltaGroup, 0, xChartMask.attr("y"), 0, xChartMask.attr("height"), null, null, "-deltaarea", null, null);
 			xDeltaArea.svgAttr("fill", "url(#" + pChart.get(0).id + "_linestroke)");
 			pChart.data("deltaarea", xDeltaArea);
+		}
+	},
+	pvInitializeDeltaInfo: function(pChart){
+		var xChartDeltaGroup = pChart.data("deltagroup");
+		var xDeltaInfoGroup = xChartDeltaGroup.children(".-info");
+		var xCenterX = Number(pChart.data("mask").attr("width")) / 2;
+//		var xCenterY = Number(pChart.data("mask").attr("height")) / 2;
+		if (xDeltaInfoGroup.length == 0){
+			xDeltaInfoGroup = dbsfaces.svg.g(xChartDeltaGroup, null, null, "-info", "transform: translate(" + xCenterX + "px,0px);", null);
+			pChart.data("deltainfogroup", xDeltaInfoGroup);
+		}
+		var xDeltaValue = xDeltaInfoGroup.children(".-value");
+		if (xDeltaValue.length == 0){
+			xDeltaValue = dbsfaces.svg.text(xDeltaInfoGroup, null, null, null, "-value", null, null);
+			xDeltaValue.svgAttr("fill", "url(#" + pChart.get(0).id + "_linestroke)");
+			xDeltaValue.svgAttr("stroke", "url(#" + pChart.get(0).id + "_linestroke)");
+			pChart.data("deltavalue", xDeltaValue);
 		}
 	},
 	//Enconta o ponto(cv) a partir da posição do cursor
@@ -422,14 +446,14 @@ dbsfaces.chart = {
 		if (pChart.attr("type") != "line"){return;}
 		var xChartDeltaGroup = pChart.data("deltagroup");
 		if (xChartDeltaGroup.lenght == 0){return;}
-		var xDeltaArea = pChart.data("deltaarea");
 		var xCV1 = pChart.data("guide1").data("cv");
 		var xCV2 = pChart.data("guide2").data("cv");
-		dbsfaces.chart.pvShowDeltaArea(pChart, xDeltaArea, xCV1, xCV2);
+		dbsfaces.chart.pvShowDeltaArea(pChart, xCV1, xCV2);
+		dbsfaces.chart.pvShowDeltaValue(pChart, xCV1, xCV2);
 	},
 	
-	pvShowDeltaArea: function(pChart, pDeltaArea, pCV1, pCV2){
-//		var xChartMask = pChart.data("mask");
+	pvShowDeltaArea: function(pChart, pCV1, pCV2){
+		var xDeltaArea = pChart.data("deltaarea");
 		var xCV1 = pCV1;
 		var xCV2 = pCV2;
 		if (xCV1.data("dx") > xCV2.data("dx")){
@@ -442,12 +466,33 @@ dbsfaces.chart = {
 			xWidth = 0.5;
 			xX -= 0.5;
 		}
-		pDeltaArea.svgAttr("x", xX);
-		pDeltaArea.svgAttr("width", xWidth);
+		xDeltaArea.svgAttr("x", xX);
+		xDeltaArea.svgAttr("width", xWidth);
+	},
+	
+	pvShowDeltaValue: function(pChart, pCV1, pCV2){
+		var xDeltaValue = pChart.data("deltavalue");
+		var xValue = dbsfaces.chart.pvCalcDelta(pCV1.data("dv"), pCV2.data("dv"));	
+		xDeltaValue.text(xValue);
+	},
+	
+	//Coloca item como primeiro elemento para aparecer acima dos demais
+	pvCalcDelta: function(pDV1, pDV2){
+		if (pDV1 == 0
+		 || pDV2 == 0){
+			return "-";
+		}
+		var xValue;
+		if (pDV1 < 0){
+			xValue = (pDV1 / pDV2);
+		}else{
+			xValue = (pDV2 / pDV1);
+		}
+		xValue = dbsfaces.math.round(xValue, 4);
+		xValue = (xValue - 1) * 100;
+		return dbsfaces.format.number(xValue, 2) + "%";
+	},
 
-//		xDeltaArea = dbsfaces.svg.rect(xChartDeltaGroup, null, null, 0, 0, null, null, "-deltaarea", null, null);
-//		if (xDeltaArea.length == 0){
-	}
 
 //	
 //	//Escoder todos os deltas
