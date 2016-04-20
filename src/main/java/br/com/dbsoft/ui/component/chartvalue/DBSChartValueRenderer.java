@@ -244,6 +244,9 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		Double			xPneuRaioExterno;
 		Double 			xDiametro;
 		
+		if (xPercValue == 100){
+			xPercValue = 99.99;
+		}
 		//Diametro do circulo. Utiliza o menor tamanho entre a alrgura a a altura escolhada para não ultrapasar as bordas
 		xDiametro = (pCharts.getDiameter() / 2) - pCharts.getPadding();
 		
@@ -264,6 +267,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		//Angulo inicial e final do arco
 		xStartAngle = (xPreviousPercValue * xUnit);
 		xEndAngle =  xStartAngle + ((xPercValue * xUnit));
+
 		//Angulo do ponto de apoi no centro do arco para servir de referencia para o label
 		xPointAngle = xStartAngle + ((xEndAngle - xStartAngle) / 2);
 

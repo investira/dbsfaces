@@ -178,6 +178,14 @@ dbsfaces.chartValue = {
 		}
 		return false;
 	},
+	
+//	lostFocus: function(pChartValue){
+//		var xChart = pChartValue.data("parent");
+//		xHover = xCharts.data("hover");
+//		xHoverChart = xHover.data("parent");
+//		xHoverCharts = xHoverChart.data("parent");
+//		dbsfaces.chartValue.pvHoverChartValue(xHoverCharts, xHoverChart, xHover, false);
+//	},
 
 	select: function(pChartValue, pSelect){
 //		if (pChartValue == null){return;}

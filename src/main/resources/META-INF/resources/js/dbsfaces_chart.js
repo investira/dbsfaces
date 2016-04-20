@@ -36,7 +36,7 @@ dbs_chart = function(pId) {
 		});
 		
 		$(pId + " > .-path > .-mask").on("mouseleave", function(e){
-			$(this).data("guideIndex", 0);
+			dbsfaces.charts.lostFocus(xChart.data("parent"));
 			e.stopImmediatePropagation();
 			return false;
 		});
@@ -391,6 +391,7 @@ dbsfaces.chart = {
 	pvSetGuide: function(pChart, pChartValue, pSelect){
 		if (pChart.attr("type") != "line"){return;}
 		if (pChart.data("guideIndex") == 0){return;}
+		if (typeof(pChart.attr("showdelta")) == 'undefined'){return;}
 		var xChartPathGuide =  $(pChart.data("guide" + pChart.data("guideIndex")));
 		if (pSelect == null || pSelect){
 			xChartPathGuide.show();
@@ -398,16 +399,14 @@ dbsfaces.chart = {
 			var xY = pChartValue.data("dy");
 			var xColor = pChartValue.children(".-point").css("stroke");
 			xChartPathGuide.css("color", xColor);
-//			xChartPathGuide.css("stroke", xColor);
-//						   .css("fill", xColor);
 			//Reposiciona guia nas coordenadas do chartvalue
 			var xCenterY = Number(pChart.data("mask").attr("height")) / 2;
 //			console.log(Number(pChart.data("mask").attr("height")) / 2);
 	        dbsfaces.ui.cssTransform(xChartPathGuide, "translate3d(" + xX + "px ," + xCenterY + "px,0)");
-//			xChartPathGuide.css("-moz-transform-origin", xX + "px " + xY + "px 0");
-//			dbsfaces.ui.cssAllBrowser(xChartPathGuide, "transform-origin", xX + "px " + xY + "px 0");
 //	        if (pSelect){
+	        	xChartPathGuide.data("cv").svgRemoveClass("-selected");
 		        xChartPathGuide.data("cv", pChartValue);
+		        xChartPathGuide.data("cv").svgAddClass("-selected");
 //	        }
 		}else{
 	        xChartPathGuide.data("cv", null);

@@ -84,14 +84,18 @@ dbsfaces.charts = {
 			xChart = $(this);
 			if (xChart.data("selection").length > 0){
 				xDoUnSelect = false;
+				return;
 			}
-			//Desmarcar qualquer guia 
-			xChart.data("guideIndex", 0);
 		});
-		
 		if (xDoUnSelect){
 			dbsfaces.chartValue.unSelect(xHover);
 		}
+		xChartsChildren.each(function(){
+			xChart = $(this);
+			xChart.data("guideIndex", 0);
+//			//Desmarcar qualquer guia 
+//			dbsfaces.chart.lostFocus($(this));
+		});
 	},
 	
 	select: function(pChartValue, pSelect){
