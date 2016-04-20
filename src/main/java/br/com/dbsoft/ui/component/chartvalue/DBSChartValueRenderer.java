@@ -165,7 +165,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 //			xStyle.append(DBSFaces.getCSSAllBrowser("transform-origin", xX.doubleValue() + "px " + xY.doubleValue() + "px"));
 			String xStyle = "stroke:currentColor; color:" + wFillColor + ";";
 			if (pChart.getShowDelta()){
-				DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xX.doubleValue(), xY.doubleValue(), ".2em", ".2em", DBSFaces.CSS.MODIFIER.POINT, xStyle, wFillColor);
+				DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xX.doubleValue(), xY.doubleValue(), ".2em", ".2em", DBSFaces.CSS.MODIFIER.POINT, xStyle, "white");
 //				xHRef += "_guide";
 //				xStyle += "color:" + wFillColor; 
 			}else{

@@ -52,14 +52,17 @@
 .dbs_chart > .-delta > .-guide{
 	pointer-events: all;
 	cursor: col-resize;
-	stroke-opacity: 0.4;
-    fill-opacity: 1;
+	opacity: .5;
+/* 	stroke-opacity: 0.4; */
+/*     fill-opacity: 1; */
 }
+
 /* .dbs_chart > .-delta > .-guide:hover, */
 .dbs_chart > .-delta > .-guide:focus,
 .dbs_chart > .-delta > .-guide:active{
-	stroke-opacity: 1;
-    fill-opacity: 1;
+	opacity: 1;
+/* 	stroke-opacity: 1; */
+/*     fill-opacity: 1; */
 	-moz-animation: -kf_dbs_chart_selected .1s linear;
 	-o-animation: -kf_dbs_chart_selected .1s linear;
 	-webkit-animation: -kf_dbs_chart_selected .1s linear;
@@ -72,38 +75,37 @@
 }
 
 .dbs_chart > .-delta > .-info{
-    font-size: 3em;
+/*     font-size: 3em; */
     /* stroke-opacity: 0.4; */
     fill-opacity: 0.8;
     stroke-opacity: 0.8;
+/*         dominant-baseline: text-after-edge; */
+/* 	dominant-baseline: central; */
 }
-.dbs_chart > .-delta:actice > .-info,
-.dbs_chart > .-delta:focus > .-info{
-    fill-opacity: 0.2;
-    stroke-opacity: 0.4;
-}
+/* .dbs_chart > .-delta:actice > .-info, */
+/* .dbs_chart > .-delta:focus > .-info{ */
+/*     fill-opacity: 0.2; */
+/*     stroke-opacity: 0.4; */
+/*     -webkit-transition: fill-opacity .2s, stroke-opacity .2s;  */
+/*     -moz-transition: fill-opacity .2s, stroke-opacity .2s; */
+/*     -o-transition: fill-opacity .2s, stroke-opacity .2s; */
+/*     transition: fill-opacity .2s, stroke-opacity .2s; */
+/* } */
 
 .dbs_chart > .-delta > .-info > .-value{
-	dominant-baseline: hanging;
+/*     dominant-baseline: central; */
+	text-rendering: geometricPrecision;
     text-anchor: middle;
     font-weight: bolder;
-    font-size: 1.5em;
-    stroke-width: .01em;
+    stroke-width: .01em;    
+/*     dominant-baseline: middle; */
 }
 
-.dbs_chart > .-delta > .-info > .-label1,
-.dbs_chart > .-delta > .-info > .-label2,
-.dbs_chart > .-delta > .-info > .-value1,
-.dbs_chart > .-delta > .-info > .-value2{
+.dbs_chart > .-delta > .-info > .-value > .-label{
+/*     dominant-baseline: middle; */
+    font-size: .5em;
 }
-.dbs_chart > .-delta > .-info > .-label1,
-.dbs_chart > .-delta > .-info > .-label2{
-    text-anchor: start;
-}
-.dbs_chart > .-delta > .-info > .-value1,
-.dbs_chart > .-delta > .-info > .-value2{
-    text-anchor: end;
-}
+
 
 .dbs_chart.-dim > .-path > path,
 .dbs_chart.-dim > .dbs_chartValue{
@@ -112,7 +114,8 @@
     -o-transition: fill-opacity .2s, stroke-opacity .2s;
     transition: fill-opacity .2s, stroke-opacity .2s;
 }
-.dbs_chart.-dim > .-path > path,
+    
+.dbs_chart[!showdelta].-dim > .-path > path,
 .dbs_chart.-dim > .dbs_chartValue:not(.-selected):not(.-hover){
     fill-opacity: .4;
     stroke-opacity: .4;
@@ -155,56 +158,25 @@
 
 .dbs_chart[type='line'] > .dbs_chartValue > .-point{
 	display: none;
-	fill: none;
-	stroke-width: .2em;
+	stroke-width: 1px;
 	pointer-events: none;
 }
 
-.dbs_chart[type='line'] > .dbs_chartValue:not(.-selected) > .-point,
-.dbs_chart[type='line'] > .dbs_chartValue:not(.-hover) > .-point{
-/* 	fill: transparent;  */
-/*     -webkit-transform: scale(1); */
-/*     -moz-transform: scale(1); */
-/*     -o-transform: scale(1); */
-/*     transform: scale(1); */
-}
 
 .dbs_chart[type='line'] > .dbs_chartValue.-selected  > .-point,
 .dbs_chart[type='line'] > .dbs_chartValue.-hover  > .-point{
 	display: inline-block;
 }
 
-.dbs_chart[type='line'] > .-delta > .-info > .-box,
-.dbs_chart[type='line'] > .-delta > .-info > .-box2{
-	stroke-dasharray: none;
-    fill-opacity: .85;
-	stroke-width: 0.2em;
-}
-.dbs_chart[type='line'] > .-delta > .-info > .-box2{
-}
-.dbs_chart[type='line'] > .-delta > .-info > .-box{
-	fill: white;
-}
-    
-.dbs_chart[type='pie'] > .dbs_chartValue.-selected,
-.dbs_chart[type='pie'] > .dbs_chartValue.-hover{
-/* 	stroke-width: .2em; */
-}
 
 .dbs_chart[type='pie'] > .dbs_chartValue > .-info{
 	font-size: 1.15em;
 }
 
-.dbs_chart[type='pie'] > .dbs_chartValue > .-info > .-point{
-/*     height: 1.2em; */
-/*     width: 4em; */
-	stroke-width: .05em;
-}
 .dbs_chart[type='pie'] > .dbs_chartValue > .-info > .-box{
 /* 	stroke: white; */
 	stroke-width: .05em;
 }
-/* .dbs_chart[type='pie'] > .dbs_chartValue > .-info > .-box */
 
 
 .-a_dbs_chart_selected{

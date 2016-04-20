@@ -72,15 +72,32 @@ dbsfaces.chart = {
 				dbsfaces.chart.pvInitializeDelta(xCharts, pChart);
 			}
 		}
-		if (pChart.attr("type") == "pie"){
-			dbsfaces.chart.pvSetFontSize(xCharts, pChart);
-		}
+		dbsfaces.chart.pvSetFontSize(xCharts, pChart);
 	},
 
 	//Definir a tamanho do fonte a partir do tamanho do gráfico
 	pvSetFontSize: function(pCharts, pChart){
+		if (pChart.attr("type") == "pie"){
+			dbsfaces.chart.pvChartPieSetFontSize(pCharts, pChart);
+		}else if (pChart.attr("type") == "line"){
+			dbsfaces.chart.pvChartLineSetFontSize(pCharts, pChart);
+		}
+	},
+
+	//Definir a tamanho do fonte a partir do tamanho do gráfico
+	pvChartPieSetFontSize: function(pCharts, pChart){
 		var xSize = pCharts.attr("diameter") / 45;
 		pChart.css("font-size", xSize + "px");	
+	},
+
+	//Definir a tamanho do fonte a partir do tamanho do gráfico
+	pvChartLineSetFontSize: function(pCharts, pChart){
+		var xSize = Number(pChart.data("mask").attr("width")) / 4;
+		var xDiameter = pCharts.attr("diameter");
+		if (xSize > xDiameter){
+			xSize = xDiameter;
+		}
+		pChart.data("deltainfogroup").svgAttr("font-size", xSize + "px");	
 	},
 
 	pvInitializeData: function(pChart){
@@ -221,7 +238,8 @@ dbsfaces.chart = {
 		var xDeltaArea = xChartDeltaGroup.children(".-deltaarea");
 		var xChartMask = pChart.data("mask");
 		if (xDeltaArea.length == 0){
-			xDeltaArea = dbsfaces.svg.rect(xChartDeltaGroup, 0, xChartMask.attr("y"), 0, xChartMask.attr("height"), null, null, "-deltaarea", null, null);
+			var xHeight = xChartMask.attr("height");
+			xDeltaArea = dbsfaces.svg.rect(xChartDeltaGroup, 0, xChartMask.attr("y"), 0, xHeight, null, null, "-deltaarea", null, null);
 			xDeltaArea.svgAttr("fill", "url(#" + pChart.get(0).id + "_linestroke)");
 			pChart.data("deltaarea", xDeltaArea);
 		}
@@ -229,15 +247,20 @@ dbsfaces.chart = {
 	pvInitializeDeltaInfo: function(pChart){
 		var xChartDeltaGroup = pChart.data("deltagroup");
 		var xDeltaInfoGroup = xChartDeltaGroup.children(".-info");
-		var xCenterX = Number(pChart.data("mask").attr("width")) / 2;
+//		var xCenterX = Number(pChart.data("mask").attr("width")) / 2;
 //		var xCenterY = Number(pChart.data("mask").attr("height")) / 2;
+		var xFontSize = Number(pChart.data("parent").attr("diameter")) / 40;
+//		xFontSize = dbsfaces.math.round(xFontSize,0) * 10;
 		if (xDeltaInfoGroup.length == 0){
-			xDeltaInfoGroup = dbsfaces.svg.g(xChartDeltaGroup, null, null, "-info", "transform: translate(" + xCenterX + "px,0px);", null);
+//			xDeltaInfoGroup = dbsfaces.svg.g(xChartDeltaGroup, null, null, "-info", "transform: translate(" + xCenterX + "px, " + xCenterY + "px);", null);
+			xDeltaInfoGroup = dbsfaces.svg.g(xChartDeltaGroup, null, null, "-info", null, null);
+//			xDeltaInfoGroup.svgAttr("font-size", xFontSize);
 			pChart.data("deltainfogroup", xDeltaInfoGroup);
 		}
 		var xDeltaValue = xDeltaInfoGroup.children(".-value");
 		if (xDeltaValue.length == 0){
 			xDeltaValue = dbsfaces.svg.text(xDeltaInfoGroup, null, null, null, "-value", null, null);
+//			xDeltaValue.svgAttr("font-siez", );
 			xDeltaValue.svgAttr("fill", "url(#" + pChart.get(0).id + "_linestroke)");
 			xDeltaValue.svgAttr("stroke", "url(#" + pChart.get(0).id + "_linestroke)");
 			pChart.data("deltavalue", xDeltaValue);
@@ -472,8 +495,29 @@ dbsfaces.chart = {
 	
 	pvShowDeltaValue: function(pChart, pCV1, pCV2){
 		var xDeltaValue = pChart.data("deltavalue");
-		var xValue = dbsfaces.chart.pvCalcDelta(pCV1.data("dv"), pCV2.data("dv"));	
-		xDeltaValue.text(xValue);
+		var xValue = dbsfaces.chart.pvCalcDelta(pCV1.data("dv"), pCV2.data("dv"));
+		xDeltaValue.svgAttr("dy", ".38em");
+		xDeltaValue.text("");
+		var xSpanValue =  dbsfaces.svg.createElement("tspan");
+		xSpanValue.text(xValue);
+		xDeltaValue.append(xSpanValue);
+		var xSpanPerc =  dbsfaces.svg.createElement("tspan");
+		xSpanPerc.svgAttr("class", "-label");
+//	    dominant-baseline: text-before-edge;
+//		xSpanPerc.svgAttr("font-size", ".5em");
+//		xSpanPerc.svgAttr("dy", ".5em");
+		xSpanPerc.text("%");
+		xDeltaValue.append(xSpanPerc);
+		console.log(xDeltaValue[0].getBoundingClientRect().height);
+
+		var xDeltaInfoGroup = pChart.data("deltainfogroup");
+		var xCenterX = Number(pChart.data("mask").attr("width")) / 2;
+		var xCenterY = Number(pChart.data("mask").attr("height")) / 2;
+//		var xCenterY = (Number(pChart.data("mask").attr("height")) + xDeltaValue[0].getBoundingClientRect().height) / 2;
+//		var xCenterY = Number(dbsfaces.number.getOnlyNumber(xDeltaInfoGroup.attr("font-size")));
+//		var xCenterY = (Number(pChart.data("mask").attr("height")) + Number(dbsfaces.number.getOnlyNumber(xDeltaInfoGroup.attr("font-size")))) / 2;
+//		 = dbsfaces.svg.g(xChartDeltaGroup, null, null, "-info", "transform: translate(" + xCenterX + "px, " + xCenterY + "px);", null);
+		xDeltaInfoGroup.svgAttr("style", "transform:translate(" + xCenterX + "px, " + xCenterY + "px);");
 	},
 	
 	//Coloca item como primeiro elemento para aparecer acima dos demais
@@ -490,7 +534,7 @@ dbsfaces.chart = {
 		}
 		xValue = dbsfaces.math.round(xValue, 4);
 		xValue = (xValue - 1) * 100;
-		return dbsfaces.format.number(xValue, 2) + "%";
+		return dbsfaces.format.number(xValue, 2);
 	},
 
 
