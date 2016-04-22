@@ -538,12 +538,12 @@ public class  DBSFaces {
 			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.FLOATBUTTON;
 		}
 		
-		public static class SIDENAV
-		{
+		public static class SIDENAV {
 			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.SIDENAV;
 			public static final String HIDDENNAV = DBSFaces.CSS.CLASS_PREFIX + "hiddennav";
 			public static final String SIDEBAR = DBSFaces.CSS.CLASS_PREFIX + "sidebar";
 			public static final String SIDEBARITEM = DBSFaces.CSS.CLASS_PREFIX + "sidebaritem";
+			public static final String SIDEBARHEADER = "-sidebarHeader";
 			public static final String CAPTIONCENTRAL = " -captionCentral ";
 			public static final String ICONCAPTION = " -iconCaption ";
 			public static final String DEFAULTLOCATION = " dbs_sidenav_location";

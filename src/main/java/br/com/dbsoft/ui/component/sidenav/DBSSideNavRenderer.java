@@ -70,22 +70,25 @@ public class DBSSideNavRenderer extends DBSRenderer {
 			DBSDiv xSideBar = new DBSDiv();
 			xSideBar.setStyleClass(DBSFaces.CSS.SIDENAV.SIDEBAR +" "+ DBSFaces.CSS.BACK_TEXTURE_BLACK_GRADIENT + 
 								   DBSFaces.CSS.SIDENAV.DEFAULTLOCATION + xSidenav.getDefaultLocation());
-				//ICONE CENTRAL
-				DBSLabel xIconeCentral = new DBSLabel();
-				xIconeCentral.setIconClass(xSidenav.getIconCaption());
-				xIconeCentral.setStyleClass(DBSFaces.CSS.SIDENAV.ICONCAPTION);
-				xSideBar.getChildren().add(xIconeCentral);
-				
-				//CAPTION CENTRAL
-				DBSLabel xCaptionCentral = new DBSLabel();
-				xCaptionCentral.setValue(xSidenav.getCaption());
-				xCaptionCentral.setStyleClass(DBSFaces.CSS.SIDENAV.CAPTIONCENTRAL);
-				xSideBar.getChildren().add(xCaptionCentral);
-				
-				//BOTAO FECHAR
-				DBSDiv xBotaoFechar = new DBSDiv();
-				xBotaoFechar.setStyleClass(DBSFaces.CSS.MODIFIER.ICON +" "+ xIcon +" "+ DBSFaces.CSS.THEME.ACTION);
-				xSideBar.getChildren().add(xBotaoFechar);
+				DBSDiv xxSideBarHeader = new DBSDiv();
+				xxSideBarHeader.setStyleClass(DBSFaces.CSS.SIDENAV.SIDEBARHEADER);
+					//BOTAO FECHAR
+					DBSDiv xBotaoFechar = new DBSDiv();
+					xBotaoFechar.setStyleClass(DBSFaces.CSS.MODIFIER.ICON +" "+ xIcon +" "+ DBSFaces.CSS.THEME.ACTION);
+					xxSideBarHeader.getChildren().add(xBotaoFechar);
+
+					//ICONE CENTRAL
+					DBSLabel xIconeCentral = new DBSLabel();
+					xIconeCentral.setIconClass(xSidenav.getIconCaption());
+					xIconeCentral.setStyleClass(DBSFaces.CSS.SIDENAV.ICONCAPTION);
+					xxSideBarHeader.getChildren().add(xIconeCentral);
+					
+					//CAPTION CENTRAL
+					DBSLabel xCaptionCentral = new DBSLabel();
+					xCaptionCentral.setValue(xSidenav.getCaption());
+					xCaptionCentral.setStyleClass(DBSFaces.CSS.SIDENAV.CAPTIONCENTRAL);
+					xxSideBarHeader.getChildren().add(xCaptionCentral);
+				xSideBar.getChildren().add(xxSideBarHeader);
 				
 				//CONTENT DOS FILHOS
 				DBSDiv xSideBarContent = new DBSDiv();

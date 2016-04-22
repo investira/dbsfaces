@@ -1258,3 +1258,8 @@ td > .-icon{
 .-i_ifeed_icon:before{content:"\ea01"}
 .-i_dbsoft:before{content:"\ea02"}
 .-i_dbsoft_icon:before{content:"\ea03"}
+
+/* PREVINE A CRIACAO DA DIV UI-LOADING DO jquery.mobile-1.4.5.js */
+.ui-loader { 
+	display: none; 
+}
