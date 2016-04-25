@@ -99,6 +99,10 @@ public class DBSChartsRenderer extends DBSRenderer {
 						//CONTENT--------------------------
 						xWriter.startElement("g", xCharts);
 							DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
+							//TOP--------------------------
+//							xWriter.startElement("g", xCharts);
+//								DBSFaces.setAttribute(xWriter, "class", "-top", null);
+//							xWriter.endElement("g");
 							//LEFT--------------------------
 							xWriter.startElement("g", xCharts);
 								DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.LEFT, null);

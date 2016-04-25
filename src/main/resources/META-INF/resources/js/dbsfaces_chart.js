@@ -7,12 +7,12 @@ dbs_chart = function(pId) {
 		//Não existe cálculo delta
 		if (xChart.data("deltagroup") != null){
 			$(pId + " > .-delta > .-guide").on("mousedown touchstart", function(e){
-				xChart.data("guideIndex", Number($(this).attr("guide")));
+				dbsfaces.chart.setGuideIndex(xChart, Number($(this).attr("guide")));
 				e.stopImmediatePropagation();
 				return false;
 			});
 			$(pId + " > .-delta > .-guide").on("mouseup touchend", function(e){
-				xChart.data("guideIndex", 0);
+				dbsfaces.chart.setGuideIndex(xChart, 0);
 				e.stopImmediatePropagation();
 				return false;
 			});
@@ -20,7 +20,7 @@ dbs_chart = function(pId) {
 //				console.log(e.originalEvent.type + "\t" + e.buttons + "\t" + e.button  + "\t" + e.which);
 				if (e.originalEvent.type == "mousemove" 
 				 && e.which == 0){
-					xChart.data("guideIndex", 0);
+					dbsfaces.chart.setGuideIndex(xChart, 0);
 					return;
 				}
 				dbsfaces.chart.findPoint(e, xChart);
@@ -41,6 +41,9 @@ dbs_chart = function(pId) {
 			return false;
 		});
 		
+		$(pId + " > .-path > path").on("mousedown touchstart", function(e){
+			console.log("chart path\t" + e.originalEvent.type);
+		})
 		$(pId + " > .-path > .-mask").on("mouseleave", function(e){
 			dbsfaces.charts.lostFocus(xChart.data("parent"));
 			e.stopImmediatePropagation();
@@ -61,7 +64,7 @@ dbsfaces.chart = {
 		var xCharts = pChart.data("parent");
 		var xChartChildren = pChart.data("children");
 		var xShowLabel = (typeof(xCharts.attr("showlabel")) != "undefined");
-		var xShowDelta = (typeof(xChart.attr("showDelta")) != "undefined");
+		var xShowDelta = (typeof(xChart.attr("showdelta")) != "undefined");
 		var xDrawLine = (pChart.attr("type") == "line");
 		if (pChart.attr("type") == "bar"
 		 || xDrawLine){
@@ -92,12 +95,14 @@ dbsfaces.chart = {
 
 	//Definir a tamanho do fonte a partir do tamanho do gráfico
 	pvChartLineSetFontSize: function(pCharts, pChart){
-		var xSize = Number(pChart.data("mask").attr("width")) / 4;
-		var xDiameter = pCharts.attr("diameter");
-		if (xSize > xDiameter){
-			xSize = xDiameter;
+		if (typeof(pChart.attr("showdelta")) != "undefined"){
+			var xSize = Number(pChart.data("mask").attr("width")) / 5;
+			var xDiameter = pCharts.attr("diameter");
+			if (xSize > xDiameter){
+				xSize = xDiameter;
+			}
+			pChart.data("deltainfogroup").svgAttr("font-size", xSize + "px");	
 		}
-		pChart.data("deltainfogroup").svgAttr("font-size", xSize + "px");	
 	},
 
 	pvInitializeData: function(pChart){
@@ -106,7 +111,7 @@ dbsfaces.chart = {
 		//Salva chartvalues vinculados a este chart
 		var xChartChildren = pChart.children(".dbs_chartValue");
 		pChart.data("children", xChartChildren);
-		if (typeof(pChart.attr("showDelta")) != "undefined"){
+		if (typeof(pChart.attr("showdelta")) != "undefined"){
 			var xDeltaGroup = dbsfaces.util.getNotUndefined(pChart.children("g.-delta"), null);
 			pChart.data("deltagroup", xDeltaGroup);
 		}else{
@@ -120,7 +125,7 @@ dbsfaces.chart = {
 			pChart.data("mask", dbsfaces.util.getNotUndefined(pChart.data("pathgroup").children(".-mask"), null));
 		}
 		//Reseta guia 
-		pChart.data("guideIndex", 0);
+		dbsfaces.chart.setGuideIndex(pChart, 0);
 		dbsfaces.chart.dataRefreshSelection(pChart);
 	},
 	
@@ -200,12 +205,16 @@ dbsfaces.chart = {
 			xCV1 = $(xChartChildren.get(0));
 			xCV2 = $(xChartChildren.get(xChartChildren.length - 1));
 		}
+		//Cria area marcada
 		dbsfaces.chart.pvInitializeDeltaArea(pChart);
+		//Cria texto com o delta
 		dbsfaces.chart.pvInitializeDeltaInfo(pChart);
+		//Inicializa guia para o primeiro ponto
 		dbsfaces.chart.pvInitializeGuide(pCharts, pChart, xCV1, 1);
+		//Inicializa guia para o último
 		dbsfaces.chart.pvInitializeGuide(pCharts, pChart, xCV2, 2);
 
-		pChart.data("guideIndex", 0);
+		dbsfaces.chart.setGuideIndex(pChart, 0);
 		dbsfaces.ui.moveToFront(pChart.data("mask"));
 	},
 	
@@ -216,6 +225,7 @@ dbsfaces.chart = {
 		if (xGuide.length == 0){
 			xGuide = dbsfaces.svg.use(xChartDeltaGroup, pCharts.get(0).id + "_guide", "-guide", null);
 			xGuide.svgAttr("guide", pGuideIndex);
+			xGuide.svgAttr("style", "");
 //			xGuide.svgAttr("rx", pChart.attr("cs") + "px");
 //			xGuide.svgAttr("ry", pChart.attr("cs") + "px");
 //			xGuide.svgAttr("width", pChart.attr("cs") + "px");
@@ -227,8 +237,12 @@ dbsfaces.chart = {
 			//Inicializa chartValue do guia como nulo
 			pChart.data("guide" + pGuideIndex).data("cv", pChartValue);
 		}
-		pChart.data("guideIndex", pGuideIndex);
-		dbsfaces.chart.pvSetGuide(pChart, pChartValue, true);
+
+//		dbsfaces.chart.setGuideIndex(pChart, pGuideIndex);
+////			dbsfaces.chartValue.select(pChartValue, true);
+//		dbsfaces.chart.pvSetGuide(pChart, pChartValue, true);
+
+
 		return xGuide;
 	},
 
@@ -302,31 +316,40 @@ dbsfaces.chart = {
 			var xChartChildren = pChart.data("children");
 			var xIndex = xChartPath.getPathSegAtLength(xTargetLenght);
 			var xTotalSegs = $(xChartPath).svgGetPathTotalSegs();
-			var xXClosest = xCurrentX;
+			var xClosestX = xCurrentX;
 			var xChartValue = $(xChartChildren.get(xIndex));
 			var xX = Number(xChartValue.data("dx"));
 			var xY = Number(xChartValue.data("dy"));
 			//Se cursos estiver antes do ponto, seleciona o chartvalue anterior
 			if (xCurrentX < xX){
 				if (xIndex > 0){
-					xXClosest = $(xChartChildren.get(xIndex - 1)).data("dx");
+					xClosestX = $(xChartChildren.get(xIndex - 1)).data("dx");
 				}
 			//Se cursos não estiver após do ponto, seleciona o chartvalue posterior
 			}else if(xCurrentX > xX){
 				if (xIndex < xTotalSegs){
-					xXClosest = $(xChartChildren.get(xIndex + 1)).data("dx");
+					xClosestX = $(xChartChildren.get(xIndex + 1)).data("dx");
 				}
 			}
-			var xXMiddle = (Number(xXClosest) + xX) / 2;
+			var xXMiddle = (Number(xClosestX) + xX) / 2;
 			//Escolhe o item anterior se estiver antes do meio do caminho entre o próximo item
 			if (xCurrentX < xXMiddle){
 				xChartValue = $(xChartChildren.get(xIndex - 1));
 			}
-//			console.log(xChartValue[0].id);
+			//Seleciona chartvalue encontrado
 			dbsfaces.chartValue.select(xChartValue, null);
 		}
 	},
 
+	lostFocus: function(pChart){
+		dbsfaces.chart.setGuideIndex(pChart, 0);
+	},
+	
+	setGuideIndex: function(pChart, pGuideIndex){
+		pChart.data("guideIndex", pGuideIndex);
+	},
+	
+	
 	dataRefreshSelection: function(pChart){
 		pChart.data("selection", pChart.children(".-selected"));
 	},
@@ -374,64 +397,65 @@ dbsfaces.chart = {
 	
 	pvSelectChart: function(pCharts, pChart, pChartValue, pSelect){
 		if (pChartValue == null){return;}
-		var xDim = null;
-		var xChartsChildren = pCharts.data("children");
-		if (pSelect == null || pSelect){
-			//Ativa o DIM em todos os chart que não estiverem já setados
-			xChartsChildren.each(function(){
-				xChart = $(this);
-				if (!xChart.svgHasClass("-dim")){
-					xChart.svgAddClass("-dim");
-					xDim = true; //Indica que houve alteração
-				}
-			});
-		}else{
-			if (pCharts.data("hover") == null){
-				xDim = false;
-				//Desativa o DIM somente se não houver algum item selecionado
-				xChartsChildren.each(function(){
-					xChart = $(this);
-					//Se for o próprio chart, verifica se o item a ser deselecionado é o mesmo que está selecionado na lista 
-					if (pChart[0].id == xChart[0].id){
-						if ((xChart.data("selection").length > 1)
-						 || (xChart.data("selection").length > 0
-						  && xChart.data("selection")[0].id != pChartValue[0].id)){
-							xDim = null; //Cancela desativação do DIM
-							return;
-						}
-					}else if(xChart.data("selection").length > 0){
-						xDim = null;  //Cancela desativação do DIM
-						return;
-					}
-				});
-				//Desativa DIM de todos os chart
-				if (xDim != null){
-					xDim = null;
-					xChartsChildren.each(function(){
-						xChart = $(this);
-						if (xChart.svgHasClass("-dim")){
-							xChart.svgRemoveClass("-dim");
-							xDim = false;
-						}
-					});			
-				}
-			}
-		}
-		//DIM dos valores da linha no grid(Bar e Line)
-		if (pChart.attr("type") == "line"
-		 || pChart.attr("type") == "bar"){
-			if (xDim != null){
-				if (xDim){
-					if (!pCharts.data("grid").svgHasClass("-dim")){
-			 			pCharts.data("grid").svgAddClass("-dim");
-					}
-				}else{
-					if (pCharts.data("grid").svgHasClass("-dim")){
-						pCharts.data("grid").svgRemoveClass("-dim");
-					}
-				}
-			}
-		}
+		dbsfaces.charts.select(pChartValue, pSelect);
+//		var xDim = null;
+//		var xChartsChildren = pCharts.data("children");
+//		if (pSelect == null || pSelect){
+//			//Ativa o DIM em todos os chart que não estiverem já setados
+//			xChartsChildren.each(function(){
+//				xChart = $(this);
+//				if (!xChart.svgHasClass("-dim")){
+//					xChart.svgAddClass("-dim");
+//					xDim = true; //Indica que houve alteração
+//				}
+//			});
+//		}else{
+//			if (pCharts.data("hover") == null){
+//				xDim = false;
+//				//Desativa o DIM somente se não houver algum item selecionado
+//				xChartsChildren.each(function(){
+//					xChart = $(this);
+//					//Se for o próprio chart, verifica se o item a ser deselecionado é o mesmo que está selecionado na lista 
+//					if (pChart[0].id == xChart[0].id){
+//						if ((xChart.data("selection").length > 1)
+//						 || (xChart.data("selection").length > 0
+//						  && xChart.data("selection")[0].id != pChartValue[0].id)){
+//							xDim = null; //Cancela desativação do DIM
+//							return;
+//						}
+//					}else if(xChart.data("selection").length > 0){
+//						xDim = null;  //Cancela desativação do DIM
+//						return;
+//					}
+//				});
+//				//Desativa DIM de todos os chart
+//				if (xDim != null){
+//					xDim = null;
+//					xChartsChildren.each(function(){
+//						xChart = $(this);
+//						if (xChart.svgHasClass("-dim")){
+//							xChart.svgRemoveClass("-dim");
+//							xDim = false;
+//						}
+//					});			
+//				}
+//			}
+//		}
+//		//DIM dos valores da linha no grid(Bar e Line)
+//		if (pChart.attr("type") == "line"
+//		 || pChart.attr("type") == "bar"){
+//			if (xDim != null){
+//				if (xDim){
+//					if (!pCharts.data("grid").svgHasClass("-dim")){
+//			 			pCharts.data("grid").svgAddClass("-dim");
+//					}
+//				}else{
+//					if (pCharts.data("grid").svgHasClass("-dim")){
+//						pCharts.data("grid").svgRemoveClass("-dim");
+//					}
+//				}
+//			}
+//		}
 	},
 		
 	
@@ -439,7 +463,9 @@ dbsfaces.chart = {
 		if (pChart.attr("type") != "line"){return;}
 		if (pChart.data("guideIndex") == 0){return;}
 		if (typeof(pChart.attr("showdelta")) == 'undefined'){return;}
-		var xChartPathGuide =  $(pChart.data("guide" + pChart.data("guideIndex")));
+		var xChartPathGuide =  pChart.data("guide" + pChart.data("guideIndex"));
+		var xChartPathGuideOther =  pChart.data("guide" + (pChart.data("guideIndex") == 1 ? 2 : 1));
+		pChart.data("guide" + pChart.data("guideIndex"));
 		if (pSelect == null || pSelect){
 			xChartPathGuide.show();
 			var xX = pChartValue.data("dx");
@@ -451,8 +477,14 @@ dbsfaces.chart = {
 //			console.log(Number(pChart.data("mask").attr("height")) / 2);
 	        dbsfaces.ui.cssTransform(xChartPathGuide, "translate3d(" + xX + "px ," + xCenterY + "px,0)");
 //	        if (pSelect){
-	        	xChartPathGuide.data("cv").svgRemoveClass("-selected");
-		        xChartPathGuide.data("cv", pChartValue);
+	        	//Retira marcação do item anterior se for diferente da marcação do outro guide
+	        	if (xChartPathGuide.data("cv")[0].id != xChartPathGuideOther.data("cv")[0].id
+	        	|| !xChartPathGuideOther.data("cv").svgHasClass("-selected")){
+		        	xChartPathGuide.data("cv").svgRemoveClass("-selected");
+	        	} 
+		        //Seta novo item
+	        	xChartPathGuide.data("cv", pChartValue);
+	        	//Marca novo item
 		        xChartPathGuide.data("cv").svgAddClass("-selected");
 //	        }
 		}else{
@@ -460,9 +492,9 @@ dbsfaces.chart = {
 			xChartPathGuide.hide();
 		}
 		
-		setTimeout(function(){
+//		setTimeout(function(){
 			dbsfaces.chart.pvShowDelta(pChart);
-		},0);
+//		},0);
 	},
 	
 	pvShowDelta: function(pChart){
@@ -508,7 +540,6 @@ dbsfaces.chart = {
 //		xSpanPerc.svgAttr("dy", ".5em");
 		xSpanPerc.text("%");
 		xDeltaValue.append(xSpanPerc);
-		console.log(xDeltaValue[0].getBoundingClientRect().height);
 
 		var xDeltaInfoGroup = pChart.data("deltainfogroup");
 		var xCenterX = Number(pChart.data("mask").attr("width")) / 2;

@@ -53,8 +53,6 @@
 	pointer-events: all;
 	cursor: col-resize;
 	opacity: .5;
-/* 	stroke-opacity: 0.4; */
-/*     fill-opacity: 1; */
 }
 
 /* .dbs_chart > .-delta > .-guide:hover, */
@@ -114,8 +112,9 @@
     -o-transition: fill-opacity .2s, stroke-opacity .2s;
     transition: fill-opacity .2s, stroke-opacity .2s;
 }
-    
-.dbs_chart[!showdelta].-dim > .-path > path,
+
+/* .dbs_chart[!showdelta].-dim > .-path > path,     */
+.dbs_chart.-dim > .-path > path,
 .dbs_chart.-dim > .dbs_chartValue:not(.-selected):not(.-hover){
     fill-opacity: .4;
     stroke-opacity: .4;
@@ -166,6 +165,7 @@
 .dbs_chart[type='line'] > .dbs_chartValue.-selected  > .-point,
 .dbs_chart[type='line'] > .dbs_chartValue.-hover  > .-point{
 	display: inline-block;
+	fill: none;
 }
 
 
