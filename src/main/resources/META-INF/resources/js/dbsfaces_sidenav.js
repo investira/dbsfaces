@@ -9,7 +9,7 @@ dbs_sideNav = function(pId, pDefaultLocation, pWidth, pHeight) {
 	});
 	
 	//FECHAR
-	$(pId +" > .dbs_sidebar > .-th_action").on("click", function(e){
+	$(pId +" > .dbs_sidebar > .-sidebarHeader > .-th_action").on("click", function(e){
 		dbsfaces.sideNav.close(xSideNav, pDefaultLocation);
 		dbsfaces.dialog.enableForegroundInputs($("body"));
 	});
@@ -18,6 +18,23 @@ dbs_sideNav = function(pId, pDefaultLocation, pWidth, pHeight) {
 		dbsfaces.sideNav.close(xSideNav, pDefaultLocation);
 		dbsfaces.dialog.enableForegroundInputs($("body"));
 	});
+	
+	//SWIPE - Comentado pois o Javascrip para Mobile está quebrando o CSS de alguns componentes e telas
+//	$(pId +" > .dbs_hiddennav").on("swipeleft", function(){
+//		//Fechar
+//    	dbsfaces.sideNav.close(xSideNav, pDefaultLocation);
+//    	dbsfaces.dialog.enableForegroundInputs($("body"));
+//	});
+//	$(pId +" > .dbs_sidebar").on("swipeleft", function(){
+//		//Fechar
+//		dbsfaces.sideNav.close(xSideNav, pDefaultLocation);
+//    	dbsfaces.dialog.enableForegroundInputs($("body"));
+//	});
+//	$(pId +" > .dbs_hiddennav").on("swiperight", function(){
+//		//Abrir
+//		dbsfaces.sideNav.open(xSideNav, pDefaultLocation, pWidth, pHeight);
+//	    dbsfaces.dialog.disableBackgroundInputs(pId);
+//	});
 }
 
 dbsfaces.sideNav = {
@@ -61,7 +78,7 @@ dbsfaces.sideNav = {
 			}
 		}
 		document.getElementById(xSideNav.attr("id")).getElementsByClassName('dbs_sidebar')[0].style.opacity = '0';
-		document.getElementById(xSideNav.attr("id")).getElementsByClassName('dbs_hiddennav')[0].style.width = '0';
+		document.getElementById(xSideNav.attr("id")).getElementsByClassName('dbs_hiddennav')[0].style.width = '10px';
 		document.getElementById(xSideNav.attr("id")).getElementsByClassName('dbs_hiddennav')[0].style.opacity = '0';
 	    var xSideBarItens = document.getElementById(xSideNav.attr("id")).getElementsByClassName('dbs_sidebar')[0].getElementsByClassName('dbs_div -content');
 	    for(var i = 0; i < xSideBarItens.length; ++i){

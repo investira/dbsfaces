@@ -4,7 +4,7 @@
 	
 .dbs_sidenav > .dbs_hiddennav {
 	height: 100vh;
-	width: 0px;
+	width: 10px;
 	position: fixed;
 	z-index: 3;
 	top: 0;
@@ -20,7 +20,6 @@
 	position: fixed;
 	z-index: 3;
 	overflow-x: hidden;
-	padding-top: 60px;
 	transition: 0.5s;
 	color: white;
 	text-align: left;
@@ -28,13 +27,21 @@
     opacity: 0;
 }
 
-.dbs_sidenav > .dbs_sidebar > .-th_action {
+.dbs_sidenav > .dbs_sidebar > .-sidebarHeader{
+    position: absolute;
+    display: inline-flex;
+    width: 100%;
+    height: 46px;
+    padding: 8px;
+    top: 0;
+}
+.dbs_sidenav > .dbs_sidebar > .-sidebarHeader > .-th_action {
 	position: absolute;
 	top: 5px;
 	left: 6px;
 	font-size: 2.1em;
 }
-.dbs_sidenav > .dbs_sidebar > .-captionCentral{
+.dbs_sidenav > .dbs_sidebar > .-sidebarHeader > .-captionCentral{
 	position: absolute;
 	transition: 0.3s;
     opacity: 0;
@@ -43,7 +50,7 @@
 	font-size: 1em;
 	width: 160px;
 }
-.dbs_sidenav > .dbs_sidebar > .-iconCaption{
+.dbs_sidenav > .dbs_sidebar > .-sidebarHeader > .-iconCaption{
 	position: absolute;
 	top: 8px;
     right: 6px;
@@ -51,9 +58,10 @@
     transition: 0.3s;
     opacity: 0;
 }
+
 .dbs_sidenav > .dbs_sidebar > .-content{
 	width: inherit;
-	padding-top: 5px;
+    margin-top: 47px;
 	transition: 0.3s;
     opacity: 0;
 }
@@ -85,6 +93,16 @@
 }
 
 /*ESPECIFICO PARA DBSMENU*/
+.dbs_sidenav > .dbs_sidebar > .-content > .dbs_menu > .-content{
+    width: 100%;
+}
 .dbs_sidenav > .dbs_sidebar > .-content > .dbs_menu > .-content > .dbs_menuitem{
 	width: 100%;
+}
+/*ESPECIFICO PARA DBSMENUITEMSEPARATOR*/
+.dbs_sidenav > .dbs_sidebar > .-content > .dbs_menu > .-content > .dbs_menuitemSeparator{
+    position: relative;
+    float: left;
+    width: 100%;
+	margin-bottom: 2px;
 }
