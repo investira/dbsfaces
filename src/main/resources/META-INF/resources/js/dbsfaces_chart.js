@@ -7,19 +7,21 @@ dbs_chart = function(pId) {
 		//Não existe cálculo delta
 		if (xChart.data("deltagroup") != null){
 			$(pId + " > .-delta > .-guide").on("mousedown touchstart", function(e){
+//				console.log(".-delta > .-guide mousedown\t" + e.originalEvent.type);
 				dbsfaces.chart.setGuideIndex(xChart, Number($(this).attr("guide")));
 				e.stopImmediatePropagation();
 				return false;
 			});
 			$(pId + " > .-delta > .-guide").on("mouseup touchend", function(e){
+//				console.log(".-delta > .-guide mouseup\t" + e.originalEvent.type);
 				dbsfaces.chart.setGuideIndex(xChart, 0);
 				e.stopImmediatePropagation();
 				return false;
 			});
 			$(pId + " > .-delta > .-guide").on("mousemove touchmove", function(e){
-//				console.log(e.originalEvent.type + "\t" + e.buttons + "\t" + e.button  + "\t" + e.which);
 				if (e.originalEvent.type == "mousemove" 
 				 && e.which == 0){
+//					console.log(".-delta > .-guide mousemove\t" + e.originalEvent.type);
 					dbsfaces.chart.setGuideIndex(xChart, 0);
 					return;
 				}
@@ -112,7 +114,7 @@ dbsfaces.chart = {
 		var xChartChildren = pChart.children(".dbs_chartValue");
 		pChart.data("children", xChartChildren);
 		if (typeof(pChart.attr("showdelta")) != "undefined"){
-			var xDeltaGroup = dbsfaces.util.getNotUndefined(pChart.children("g.-delta"), null);
+			var xDeltaGroup = dbsfaces.util.getNotUndefined(pChart.children(".-delta"), null);
 			pChart.data("deltagroup", xDeltaGroup);
 		}else{
 			pChart.data("deltagroup", null);
@@ -144,7 +146,7 @@ dbsfaces.chart = {
 			xChartValue = pChartValues.filter("[index='" + i + "']");
 			//Verifica se há sobreposição
 			if (pShowLabel){
-				xChartValueLabel = xChartValue.children("g.-info").children(".-label");
+				xChartValueLabel = xChartValue.children(".-info").children(".-label");
 				xPos = Number(xChartValueLabel.attr("x")) - (xChartValueLabel.get(0).getComputedTextLength() / 2);
 				if (xPos < xPosAnt){
 					xChartValueLabel.svgAddClass("-hide");
@@ -184,7 +186,7 @@ dbsfaces.chart = {
 		//Cria a linha e cor que conecta os pontos
 		if (xStringPath != ""){
 			//Cria cor
-			var xSvg = pCharts.find(".-container > .-data > svg.-container > defs");
+			var xSvg = pCharts.find(".-container > .-data > .-container > defs");
 			var xLG = dbsfaces.svg.linearGradient(xSvg, pChart.get(0).id + "_linestroke");
 			dbsfaces.svg.stop(xLG, 0, xStarColor);
 			dbsfaces.svg.stop(xLG, "100%", xStopColor);
@@ -344,7 +346,7 @@ dbsfaces.chart = {
 	lostFocus: function(pChart){
 		dbsfaces.chart.setGuideIndex(pChart, 0);
 	},
-	
+
 	setGuideIndex: function(pChart, pGuideIndex){
 		pChart.data("guideIndex", pGuideIndex);
 	},
@@ -463,6 +465,7 @@ dbsfaces.chart = {
 		if (pChart.attr("type") != "line"){return;}
 		if (pChart.data("guideIndex") == 0){return;}
 		if (typeof(pChart.attr("showdelta")) == 'undefined'){return;}
+
 		var xChartPathGuide =  pChart.data("guide" + pChart.data("guideIndex"));
 		var xChartPathGuideOther =  pChart.data("guide" + (pChart.data("guideIndex") == 1 ? 2 : 1));
 		pChart.data("guide" + pChart.data("guideIndex"));

@@ -3,12 +3,14 @@ dbs_charts = function(pId) {
 
 	dbsfaces.charts.initialize(xCharts);
 
-	//TODO resolver lostfocus no firefox
-	$(pId + "> .-container" ).on("mouseleave", function(e){
-		dbsfaces.charts.lostFocus(xCharts);
-//		console.log("charts\t" + e.originalEvent.type);
-	});
-
+	$(pId).mouseleave(function(e){
+		//Verificar se componente que disparou esta fora deste chart. Artifício necessário pois o Firefox dispara este evento diversas vezes 
+		var xE = $(e.originalEvent.toElement || e.relatedTarget).closest(".dbs_charts");
+        if (xE == "undefined"
+        || xE[0] != this ){
+    		dbsfaces.charts.lostFocus(xCharts);
+        }
+ 	});
 };
 
 dbsfaces.charts = {
@@ -21,7 +23,7 @@ dbsfaces.charts = {
 	
 	pvInitializeData: function(pCharts){
 		//Salva chart's vinculados a este charts
-		pCharts.data("children", pCharts.find("g.dbs_chart"));
+		pCharts.data("children", pCharts.find(".dbs_chart"));
 		pCharts.data("grid", pCharts.find(".dbs_charts-grid").first());
 		//Item selecionado temporariamente(Hover)
 		pCharts.data("hover", null);

@@ -2826,9 +2826,9 @@ Default: false;</description>
 		</attribute>
 		<attribute>
 			<description>
-                Título
+                Label
             </description>
-			<name>caption</name>
+			<name>label</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>

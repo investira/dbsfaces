@@ -11,11 +11,14 @@ import com.sun.faces.renderkit.RenderKitUtils;
 
 import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
+import br.com.dbsoft.ui.component.chart.DBSChart;
+import br.com.dbsoft.ui.component.chart.DBSChart.TYPE;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSFormat;
 import br.com.dbsoft.util.DBSFormat.NUMBER_SIGN;
 import br.com.dbsoft.util.DBSNumber;
+import br.com.dbsoft.util.DBSObject;
 
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSCharts.RENDERER_TYPE)
@@ -48,7 +51,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 //		xCharts.setHeight(xCharts.getHeight());
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClass = DBSFaces.CSS.CHARTS.MAIN + DBSFaces.CSS.MODIFIER.NOT_SELECTABLE;
-		String xChartsStyle = "width:" + xCharts.getWidth() + "px; height:" + xCharts.getHeight() + "px;";
+//		String xChartsStyle =  "width:" + xCharts.getWidth() + "px; height:" + xCharts.getHeight() + "px;";
 
 		if (xCharts.getStyleClass()!=null){
 			xClass = xClass + xCharts.getStyleClass() + " ";
@@ -92,17 +95,17 @@ public class DBSChartsRenderer extends DBSRenderer {
 						DBSFaces.setAttribute(xWriter, "xmlns", "http://www.w3.org/2000/svg", null);
 						DBSFaces.setAttribute(xWriter, "xmlns:xlink", "http://www.w3.org/1999/xlink", null);
 						DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER, null);
-						DBSFaces.setAttribute(xWriter, "style", xChartsStyle, null);
+//						DBSFaces.setAttribute(xWriter, "style", xChartsStyle, null);
+						DBSFaces.setAttribute(xWriter, "width", xCharts.getWidth(), null);
+						DBSFaces.setAttribute(xWriter, "height", xCharts.getHeight(), null);
 						//Defs
 						pvEncodeDefs(xCharts, xWriter);
 						
 						//CONTENT--------------------------
 						xWriter.startElement("g", xCharts);
 							DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
-							//TOP--------------------------
-//							xWriter.startElement("g", xCharts);
-//								DBSFaces.setAttribute(xWriter, "class", "-top", null);
-//							xWriter.endElement("g");
+							//LABEL--------------------------
+							pvEncodeLabels(xCharts, xWriter);
 							//LEFT--------------------------
 							xWriter.startElement("g", xCharts);
 								DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.LEFT, null);
@@ -152,6 +155,32 @@ public class DBSChartsRenderer extends DBSRenderer {
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);		
 	}
 	
+	private void pvEncodeLabels(DBSCharts pCharts, ResponseWriter pWriter) throws IOException{
+		if (pCharts.getItensCount() > 1){
+			pWriter.startElement("g", pCharts);
+//			DBSFaces.setAttribute(pWriter, "id", "svgchartmarker" , null);
+			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.LABEL, "class");
+			for (UIComponent xObject:pCharts.getChildren()){
+				if (xObject instanceof DBSChart){
+					DBSChart xChart = (DBSChart) xObject;
+					if (TYPE.get(xChart.getType()) == TYPE.LINE){
+						pvEncodeLabel(pCharts, xChart, pWriter);
+					}
+				}
+			}
+			pWriter.endElement("g");
+		}
+	}
+	
+	private void pvEncodeLabel(DBSCharts pCharts, DBSChart pChart, ResponseWriter pWriter) throws IOException{
+		String xLabel = DBSObject.getNotEmpty(pChart.getLabel(), pChart.getId());
+		Double xWidth = DBSNumber.divide(pCharts.getWidth(), pCharts.getChildCount()).doubleValue();
+		Double xX = (pCharts.getPadding() / 2) +  xWidth * (pChart.getIndex() - 1);
+//		Double xY = "-1em";
+		DBSFaces.encodeSVGRect(pCharts, pWriter, xX.toString(), "-1em", xWidth.toString(), "1em", null, null, "url(#" + pChart.getClientId() + "_linestroke)");
+		DBSFaces.encodeSVGText(pCharts, pWriter, xX.toString(), "0", xLabel, null, null, null);
+
+	}
 
 	private void pvEncodeLines(DBSCharts pCharts, ResponseWriter pWriter) throws IOException{
 		if (pCharts.getCaption()!=null){
@@ -165,7 +194,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 			pvEncodeLinhaDeValores(pCharts, pWriter);
 		}
 	}
-
+	
 	private void pvEncodeLinhaDeValores(DBSCharts pCharts, ResponseWriter pWriter) throws IOException{
 		Double xIncremento = DBSNumber.divide(pCharts.getChartHeight(), pCharts.getNumberOfGridLines()).doubleValue();
 		Double xPosicao = (xIncremento / 2);

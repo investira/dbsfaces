@@ -1647,10 +1647,44 @@ public class  DBSFaces {
 	 * @param pWidth
 	 * @throws IOException
 	 */
+	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, String pX, String pY, String pWidth, String pHeight, String pStyleClass, String pStyle, String pFill) throws IOException{
+		encodeSVGRect(pComponent, pWriter, pX, pY, pWidth, pHeight, null, null, pStyleClass, pStyle, pFill);
+	}
+	
+	/**
+	 * Encode de Retangulo para grádico SVG.<br/>
+	 * O ponto 0,0 é a esquerda, acima.
+	 * @param pComponent
+	 * @param pWriter
+	 * @param pStyleClass
+	 * @param pStyle
+	 * @param pX
+	 * @param pY
+	 * @param pHeight
+	 * @param pWidth
+	 * @throws IOException
+	 */
 	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, Number pX, Number pY, String pWidth, String pHeight, String pStyleClass, String pStyle, String pFill) throws IOException{
 		encodeSVGRect(pComponent, pWriter, pX, pY, pWidth, pHeight, null, null, pStyleClass, pStyle, pFill);
 	}
 	
+	/**
+	 * Encode de Retangulo para grádico SVG.<br/>
+	 * O ponto 0,0 é a esquerda, acima.
+	 * @param pComponent
+	 * @param pWriter
+	 * @param pStyleClass
+	 * @param pStyle
+	 * @param pX
+	 * @param pY
+	 * @param pHeight
+	 * @param pWidth
+	 * @throws IOException
+	 */
+	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, Number pX, Number pY, String pWidth, String pHeight, Integer pRX, Integer pRY, String pStyleClass, String pStyle, String pFill) throws IOException{
+		encodeSVGRect(pComponent, pWriter, DBSNumber.round(pX, 4).toString(), DBSNumber.round(pY, 4).toString(), pWidth, pHeight, pRX, pRY, pStyleClass, pStyle, pFill);
+	}
+
 	/**
 	 * Encode de Retangulo para grádico SVG.<br/>
 	 * O ponto 0,0 é a esquerda, acima.
@@ -1667,13 +1701,13 @@ public class  DBSFaces {
 	 * @param pFill
 	 * @throws IOException
 	 */
-	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, Number pX, Number pY, String pWidth, String pHeight, Integer pRX, Integer pRY, String pStyleClass, String pStyle, String pFill) throws IOException{
+	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, String pX, String pY, String pWidth, String pHeight, Integer pRX, Integer pRY, String pStyleClass, String pStyle, String pFill) throws IOException{
 		pWriter.startElement("rect", pComponent);
 			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pFill);
-			setAttribute(pWriter, "x", 	DBSNumber.round(pX, 4), null);
-			setAttribute(pWriter, "y", 	DBSNumber.round(pY, 4), null);
-			setAttribute(pWriter, "rx", 	pRX, null);
-			setAttribute(pWriter, "ry", 	pRY, null);
+			setAttribute(pWriter, "x", 	pX, null);
+			setAttribute(pWriter, "y", 	pY, null);
+			setAttribute(pWriter, "rx", pRX, null);
+			setAttribute(pWriter, "ry", pRY, null);
 //			DBSFaces.setAttribute(pWriter, "pointer-events", "all", null);
 			
 			setAttribute(pWriter, "height", pHeight, null);
@@ -1753,10 +1787,23 @@ public class  DBSFaces {
 	 * @throws IOException
 	 */
 	public static void encodeSVGText(UIComponent pComponent, ResponseWriter pWriter, Number pX, Number pY, String pText, String pStyleClass, String pStyle, String pFill) throws IOException{
+		encodeSVGText(pComponent, pWriter, DBSNumber.round(pX, 4).toString(), DBSNumber.round(pY, 4).toString(), pText, pStyleClass, pStyle, pFill);
+	}
+	/**
+	 * Encode de Retangulo para grádico SVG
+	 * @param pComponent
+	 * @param pWriter
+	 * @param pStyleClass
+	 * @param pStyle
+	 * @param pX
+	 * @param pY
+	 * @throws IOException
+	 */
+	public static void encodeSVGText(UIComponent pComponent, ResponseWriter pWriter, String pX, String pY, String pText, String pStyleClass, String pStyle, String pFill) throws IOException{
 		pWriter.startElement("text", pComponent);
 			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pFill);
-			setAttribute(pWriter, "x", 	DBSNumber.round(pX, 4), null);
-			setAttribute(pWriter, "y", 	DBSNumber.round(pY, 4), null);
+			setAttribute(pWriter, "x", 	pX, null);
+			setAttribute(pWriter, "y", 	pY, null);
 			if (pText != null){
 				pWriter.write(pText);
 			}

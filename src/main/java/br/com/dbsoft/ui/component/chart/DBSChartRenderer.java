@@ -63,7 +63,7 @@ public class DBSChartRenderer extends DBSRenderer {
 		String xClientId = xChart.getClientId(pContext);
 //		xChart.restoreState(pContext, xChart.getSavedState());
 
-		xWriter.startElement("g", xChart);
+		xWriter.startElement("svg", xChart);
 			DBSFaces.setAttribute(xWriter, "id", xClientId, null);
 			DBSFaces.setAttribute(xWriter, "name", xClientId, null);
 			DBSFaces.setAttribute(xWriter, "class", xClass.trim(), null);
@@ -103,7 +103,7 @@ public class DBSChartRenderer extends DBSRenderer {
 
 			pvEncodeJS(xClientId, xWriter);
 			
-		xWriter.endElement("g");
+		xWriter.endElement("svg");
 	}
 	
 	private void pvEncodeJS(String pClientId, ResponseWriter pWriter) throws IOException{

@@ -1,6 +1,7 @@
 .dbs_charts{
 	display: inline-block;
 }
+
 .dbs_charts > .-container{
 	position: relative;
 	display: inline-block;
@@ -42,8 +43,22 @@
 .dbs_charts > .-container > .-data > .-container > .-content > .-left{
 }
 	
-.dbs_charts > .-container > .-data > .-container > .-content > .-value{
+.dbs_charts > .-container > .-data > .-container > .-content > .-label{
+	height: 1em;
 }	
+
+.dbs_charts > .-container > .-data > .-container > .-content > .-label > text{
+	height: 1em;
+	fill: white;
+}	
+
+.dbs_charts > .-container > .-data > .-container > .-content > .-label > rect{
+	height: 1em;
+/* 	y: -1em; */
+}	
+
+.dbs_charts > .-container > .-data > .-container > .-content > .-value{
+}
 
 .dbs_charts-grid {
 	stroke: rgb(220,220,220);
