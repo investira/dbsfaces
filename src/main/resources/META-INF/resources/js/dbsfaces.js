@@ -370,7 +370,7 @@ dbsfaces.url = {
 
 dbsfaces.ui = {
 	moveToFront: function(pElement){
-		if (xE == null || xE == "undefined"){return;}
+		if (pElement == null || pElement == "undefined"){return;}
 		var xE = pElement;
 		if (xE instanceof jQuery){
 			xE = pElement.get(0);
@@ -804,6 +804,9 @@ dbsfaces.util = {
 
 
 dbsfaces.util.jsid = function(pClientId){
+	if (typeof(pClientId) == "undefined"){
+		console.log("asdc");
+	}
 	//Retira dois pontos(:) do inicio
 	pClientId = pClientId.replace(/^(:)/,"");
 	//Convert os outros dois pontos(:)  em escaped caracter

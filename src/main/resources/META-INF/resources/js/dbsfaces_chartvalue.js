@@ -33,12 +33,16 @@ dbs_chartValue = function(pId) {
 			return false;
 		});
 	}else{
-//		$(pId + " > .-point").on("mouseenter", function(e){
-//			dbsfaces.chartValue.select(xChartValue, null);
-////			e.preventDefault();
-//			e.stopImmediatePropagation();
-//			return false;
-//		});
+		$(pId).on("mouseenter", function(e){
+			var xChart = $(this).data("parent");
+			if (!xChart.svgHasClass("-activated")){
+				return;
+			}
+			dbsfaces.chart.setGuideIndex(xChart, 0);
+			dbsfaces.chartValue.select(xChartValue, null);
+			e.stopImmediatePropagation();
+			return false;
+		});
 	}
 
 //	$(pId).on("mouseleave", function(e){

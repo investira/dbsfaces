@@ -24,6 +24,7 @@
 	-moz-border-radius: 3px 3px 0px 0px;
 	border-radius: 3px 3px 0px 0px;
     font-weight: bold;
+    cursor: default;
 }
 
 .dbs_charts > .-container > .-data{
@@ -44,17 +45,25 @@
 }
 	
 .dbs_charts > .-container > .-data > .-container > .-content > .-label{
-	height: 1em;
+	font-size: 1.8em;
 }	
 
-.dbs_charts > .-container > .-data > .-container > .-content > .-label > text{
-	height: 1em;
+.dbs_charts > .-container > .-data > .-container > .-content > .-label > .-content{
+	font-size: 0.6em;
+	cursor: pointer;
+	fill-opacity: 0.7;
+}
+.dbs_charts > .-container > .-data > .-container > .-content > .-label > .-content.-activated{
+	fill-opacity: 1;
+}
+
+.dbs_charts > .-container > .-data > .-container > .-content > .-label > .-content > text{
 	fill: white;
+	dominant-baseline: auto;
+	transform: translate(.5em, 1.2em);
 }	
 
-.dbs_charts > .-container > .-data > .-container > .-content > .-label > rect{
-	height: 1em;
-/* 	y: -1em; */
+.dbs_charts > .-container > .-data > .-container > .-content > .-label > .-content > rect{
 }	
 
 .dbs_charts > .-container > .-data > .-container > .-content > .-value{
@@ -70,6 +79,7 @@
 	stroke-width: 0px;
 	text-anchor: end;
 	dominant-baseline: middle;
+    cursor: default;
 }
 
 .dbs_charts-grid.-dim > text.-label{

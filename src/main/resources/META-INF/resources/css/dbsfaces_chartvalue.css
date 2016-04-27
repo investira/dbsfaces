@@ -31,8 +31,8 @@
 .dbs_chartValue > .-info > .-label,
 .dbs_chartValue > .-info > .-box,
 .dbs_chartValue > .-info > .-value{
-	cursor: pointer;
-	pointer-events: all; 
+/* 	cursor: pointer; */
+/* 	pointer-events: all;  */
 }
 
 .dbs_chartValue > .-info > .-label,
@@ -46,7 +46,7 @@
 }
 
 
-	
+
 .dbs_chartValue.-selected > .-info > .-label,
 .dbs_chartValue.-selected > .-info > .-value,
 .dbs_chartValue.-hover > .-info > .-label,

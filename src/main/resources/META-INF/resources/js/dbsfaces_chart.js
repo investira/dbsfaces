@@ -43,9 +43,9 @@ dbs_chart = function(pId) {
 			return false;
 		});
 		
-		$(pId + " > .-path > path").on("mousedown touchstart", function(e){
-			console.log("chart path\t" + e.originalEvent.type);
-		})
+//		$(pId + " > .-path > path").on("mousedown touchstart", function(e){
+//			console.log("chart path\t" + e.originalEvent.type);
+//		})
 		$(pId + " > .-path > .-mask").on("mouseleave", function(e){
 			dbsfaces.charts.lostFocus(xChart.data("parent"));
 			e.stopImmediatePropagation();
@@ -490,14 +490,12 @@ dbsfaces.chart = {
 	        	//Marca novo item
 		        xChartPathGuide.data("cv").svgAddClass("-selected");
 //	        }
-		}else{
-	        xChartPathGuide.data("cv", null);
-			xChartPathGuide.hide();
+//		}else{
+//	        xChartPathGuide.data("cv", null);
+//			xChartPathGuide.hide();
 		}
 		
-//		setTimeout(function(){
-			dbsfaces.chart.pvShowDelta(pChart);
-//		},0);
+		dbsfaces.chart.pvShowDelta(pChart);
 	},
 	
 	pvShowDelta: function(pChart){
@@ -530,19 +528,29 @@ dbsfaces.chart = {
 	
 	pvShowDeltaValue: function(pChart, pCV1, pCV2){
 		var xDeltaValue = pChart.data("deltavalue");
-		var xValue = dbsfaces.chart.pvCalcDelta(pCV1.data("dv"), pCV2.data("dv"));
-		xDeltaValue.svgAttr("dy", ".38em");
-		xDeltaValue.text("");
-		var xSpanValue =  dbsfaces.svg.createElement("tspan");
-		xSpanValue.text(xValue);
-		xDeltaValue.append(xSpanValue);
-		var xSpanPerc =  dbsfaces.svg.createElement("tspan");
-		xSpanPerc.svgAttr("class", "-label");
-//	    dominant-baseline: text-before-edge;
-//		xSpanPerc.svgAttr("font-size", ".5em");
-//		xSpanPerc.svgAttr("dy", ".5em");
-		xSpanPerc.text("%");
-		xDeltaValue.append(xSpanPerc);
+		var xValue;
+		if (pCV1.attr("index") == 1
+		 && pCV2.attr("index") == 1){
+			xDeltaValue.text("");
+		}else{
+			if (pCV1.attr("index") < pCV2.attr("index")){
+				xValue = dbsfaces.chart.pvCalcDelta(pCV1.data("dv"), pCV2.data("dv"));
+			}else{
+				xValue = dbsfaces.chart.pvCalcDelta(pCV2.data("dv"), pCV1.data("dv"));
+			}
+			xDeltaValue.svgAttr("dy", ".38em");
+			xDeltaValue.text("");
+			var xSpanValue =  dbsfaces.svg.createElement("tspan");
+			xSpanValue.text(xValue);
+			xDeltaValue.append(xSpanValue);
+			var xSpanPerc =  dbsfaces.svg.createElement("tspan");
+			xSpanPerc.svgAttr("class", "-label");
+	//	    dominant-baseline: text-before-edge;
+	//		xSpanPerc.svgAttr("font-size", ".5em");
+	//		xSpanPerc.svgAttr("dy", ".5em");
+			xSpanPerc.text("%");
+			xDeltaValue.append(xSpanPerc);
+		}		
 
 		var xDeltaInfoGroup = pChart.data("deltainfogroup");
 		var xCenterX = Number(pChart.data("mask").attr("width")) / 2;

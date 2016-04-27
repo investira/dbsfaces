@@ -11,6 +11,10 @@ dbs_charts = function(pId) {
     		dbsfaces.charts.lostFocus(xCharts);
         }
  	});
+	
+	$(pId + " > .-container > .-data > .-container > .-content > .-label > .-content").on("mousedown", function(e){
+		dbsfaces.charts.activateChart(xCharts, $(this));
+	});
 };
 
 dbsfaces.charts = {
@@ -18,9 +22,11 @@ dbsfaces.charts = {
 		dbsfaces.charts.pvInitializeData(pCharts);
 		dbsfaces.charts.pvUpdateGroupMember(pCharts);
 		dbsfaces.charts.pvInitializeGuides(pCharts);
+		dbsfaces.charts.pvInitializeChartActivate(pCharts);
+		//Exibe gráfico
 		pCharts.children(".-container").css("opacity",1);
 	},
-	
+
 	pvInitializeData: function(pCharts){
 		//Salva chart's vinculados a este charts
 		pCharts.data("children", pCharts.find(".dbs_chart"));
@@ -77,6 +83,29 @@ dbsfaces.charts = {
 			xElement.svgAttr("stroke", "currentColor");
 			xElement = dbsfaces.svg.rect(xMarker, "-2", "-5", "1px", "9px", null, null, null, null, "currentColor");
 			xElement = dbsfaces.svg.rect(xMarker, "0", "-5", "1px", "9px", null, null, null, null, "currentColor");
+		}
+	},
+
+	pvInitializeChartActivate: function(pCharts){
+		var xContent = pCharts.find(".-container > .-data > .-container > .-content");
+		var xContentLabel = xContent.children(".-label");
+		//Verifica se existe labels definidas
+		if (xContentLabel.length != 0
+		 && xContentLabel.children().length > 0){
+			//Ativa todos os labels
+			xContentLabel.children(".-content").svgAddClass("-activated");
+			var xHeight = xContentLabel.css("font-size");
+			//Ajusta altura conforme tamanho do fonte definido no css. Artíficio pois height do css não funciona em todos os browsers
+			xContentLabel.find("rect").attr("height", xHeight);
+			//Reposiciona gráfico
+			dbsfaces.ui.cssTransform(xContent.children(".-value"), "translateY(" + xHeight + ")");
+			//Ativa o primeiro gráfico que possuir delta
+			dbsfaces.charts.activateChart(pCharts, xContentLabel.children(".-content:first"));
+		}else{
+			//Ativa o primeiro gráfico que possuir delta
+			var xFirstChart = pCharts.data("children").filter("[showdelta]:first");
+			dbsfaces.charts.pvActivateChartOne(xChart, null, true);
+			dbsfaces.charts.pvActivateDelta(pCharts, xFirstChart, true);
 		}
 	},
 
@@ -208,7 +237,55 @@ dbsfaces.charts = {
 			}
 		}
 
-	}
+	},
 	
+	activateChart: function(pCharts, pLabel){
+		var xSiblings = pLabel.siblings();
+		var xSiblingsActivated = xSiblings.filter(".-activated");
+		var xChart= $("#" + dbsfaces.util.jsid(pLabel.attr("chartid")));
+		//Desmarca todos
+		xSiblingsActivated.each(function(){
+			var xSibilingLabel = $(this);
+			var xSibilingChart = $("#" + dbsfaces.util.jsid(xSibilingLabel.attr("chartid")));
+			dbsfaces.charts.pvActivateDelta(pCharts, xSibilingChart, false);
+			dbsfaces.charts.pvActivateChartOne(xSibilingChart, xSibilingLabel, false);
+		});
+		//Ativa delta
+		dbsfaces.charts.pvActivateDelta(pCharts, xChart, true);
+		//Marca selecionado
+		dbsfaces.charts.pvActivateChartOne(xChart, pLabel, true);
+		dbsfaces.ui.moveToFront(xChart);
+	},
+
+	pvActivateChartOne: function(pChart, pLabel, pActivate){
+		if (pActivate){
+			pChart.svgAddClass("-activated");
+			if (pLabel != null){
+				pLabel.svgAddClass("-activated");
+			}
+		}else{
+			pChart.svgRemoveClass("-activated");
+			if (pLabel != null){
+				pLabel.svgRemoveClass("-activated");
+			}
+		}
+	},
+
+	pvActivateDelta: function(pCharts, pChart, pActivate){
+		var xChartsChildren = pCharts.data("children");
+		xChartsChildren.each(function(){
+			if ($(this).data("deltagroup") != null){
+				$(this).data("deltagroup").svgRemoveClass("-activated");
+			}
+		});
+		if (pActivate){
+			if (pChart != null
+			 && pChart.data("deltagroup") != null
+			 && pChart.data("children").length > 1){
+				pChart.data("deltagroup").svgAddClass("-activated");
+			}
+		}
+	}
+		
 };
 
