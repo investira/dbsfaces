@@ -668,6 +668,9 @@ dbsfaces.chart = {
 		return dbsfaces.format.number(xValue, 2);
 	},
 
+	pvSimplifyLabel: function(pPreviuosLabel, pCurrentLabel){
+		
+	}
 
 //	
 //	//Escoder todos os deltas

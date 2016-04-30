@@ -1616,17 +1616,18 @@ public class  DBSFaces {
 	 * Encore da linha para gráfico SVG
 	 * @param pComponent
 	 * @param pWriter
-	 * @param pStyleClass
-	 * @param pStyle
 	 * @param pX1
 	 * @param pY1
 	 * @param pX2
 	 * @param pY2
+	 * @param pStyleClass
+	 * @param pStyle
+	 * @param pAttrs Atributos nos formato atributo1=valor2; atributo2=valor2
 	 * @throws IOException
 	 */
-	public static void encodeSVGLine(UIComponent pComponent, ResponseWriter pWriter, Number pX1, Number pY1, Number pX2, Number pY2, String pStyleClass, String pStyle) throws IOException{
+	public static void encodeSVGLine(UIComponent pComponent, ResponseWriter pWriter, Number pX1, Number pY1, Number pX2, Number pY2, String pStyleClass, String pStyle, String pAttrs) throws IOException{
 		pWriter.startElement("line", pComponent);
-			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, null, null);
+			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pAttrs);
 			setAttribute(pWriter, "x1", 	pX1, null);
 			setAttribute(pWriter, "y1", 	pY1, null);
 			setAttribute(pWriter, "x2", 	pX2, null);
@@ -1639,76 +1640,75 @@ public class  DBSFaces {
 	 * O ponto 0,0 é a esquerda, acima.
 	 * @param pComponent
 	 * @param pWriter
-	 * @param pStyleClass
-	 * @param pStyle
 	 * @param pX
 	 * @param pY
-	 * @param pHeight
 	 * @param pWidth
+	 * @param pHeight
+	 * @param pStyleClass
+	 * @param pStyle
+	 * @param pAttrs Atributos nos formato atributo1=valor2; atributo2=valor2
 	 * @throws IOException
 	 */
-	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, String pX, String pY, String pWidth, String pHeight, String pStyleClass, String pStyle, String pFill) throws IOException{
-		encodeSVGRect(pComponent, pWriter, pX, pY, pWidth, pHeight, null, null, pStyleClass, pStyle, pFill);
+	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, String pX, String pY, String pWidth, String pHeight, String pStyleClass, String pStyle, String pAttrs) throws IOException{
+		encodeSVGRect(pComponent, pWriter, pX, pY, pWidth, pHeight, null, null, pStyleClass, pStyle, pAttrs);
 	}
 	
 	/**
 	 * Encode de Retangulo para grádico SVG.<br/>
-	 * O ponto 0,0 é a esquerda, acima.
 	 * @param pComponent
 	 * @param pWriter
-	 * @param pStyleClass
-	 * @param pStyle
 	 * @param pX
 	 * @param pY
-	 * @param pHeight
 	 * @param pWidth
+	 * @param pHeight
+	 * @param pStyleClass
+	 * @param pStyle
+	 * @param pAttrs Atributos nos formato atributo1=valor2; atributo2=valor2
 	 * @throws IOException
 	 */
-	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, Number pX, Number pY, String pWidth, String pHeight, String pStyleClass, String pStyle, String pFill) throws IOException{
-		encodeSVGRect(pComponent, pWriter, pX, pY, pWidth, pHeight, null, null, pStyleClass, pStyle, pFill);
+	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, Number pX, Number pY, String pWidth, String pHeight, String pStyleClass, String pStyle, String pAttrs) throws IOException{
+		encodeSVGRect(pComponent, pWriter, pX, pY, pWidth, pHeight, null, null, pStyleClass, pStyle, pAttrs);
 	}
 	
 	/**
-	 * Encode de Retangulo para grádico SVG.<br/>
-	 * O ponto 0,0 é a esquerda, acima.
 	 * @param pComponent
 	 * @param pWriter
-	 * @param pStyleClass
-	 * @param pStyle
 	 * @param pX
 	 * @param pY
-	 * @param pHeight
 	 * @param pWidth
+	 * @param pHeight
+	 * @param pRX
+	 * @param pRY
+	 * @param pStyleClass
+	 * @param pStyle
+	 * @param pAttrs Atributos nos formato atributo1=valor2; atributo2=valor2
 	 * @throws IOException
 	 */
-	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, Number pX, Number pY, String pWidth, String pHeight, Integer pRX, Integer pRY, String pStyleClass, String pStyle, String pFill) throws IOException{
-		encodeSVGRect(pComponent, pWriter, DBSNumber.round(pX, 4).toString(), DBSNumber.round(pY, 4).toString(), pWidth, pHeight, pRX, pRY, pStyleClass, pStyle, pFill);
+	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, Number pX, Number pY, String pWidth, String pHeight, Integer pRX, Integer pRY, String pStyleClass, String pStyle, String pAttrs) throws IOException{
+		encodeSVGRect(pComponent, pWriter, DBSNumber.round(pX, 4).toString(), DBSNumber.round(pY, 4).toString(), pWidth, pHeight, pRX, pRY, pStyleClass, pStyle, pAttrs);
 	}
 
 	/**
-	 * Encode de Retangulo para grádico SVG.<br/>
-	 * O ponto 0,0 é a esquerda, acima.
 	 * @param pComponent
 	 * @param pWriter
 	 * @param pX
 	 * @param pY
-	 * @param pHeight
 	 * @param pWidth
-	 * @param pRX Raio da corner
-	 * @param pRY Raio da corner
+	 * @param pHeight
+	 * @param pRX
+	 * @param pRY
 	 * @param pStyleClass
 	 * @param pStyle
-	 * @param pFill
+	 * @param pAttrs Atributos nos formato atributo1=valor2; atributo2=valor2
 	 * @throws IOException
 	 */
-	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, String pX, String pY, String pWidth, String pHeight, Integer pRX, Integer pRY, String pStyleClass, String pStyle, String pFill) throws IOException{
+	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, String pX, String pY, String pWidth, String pHeight, Integer pRX, Integer pRY, String pStyleClass, String pStyle, String pAttrs) throws IOException{
 		pWriter.startElement("rect", pComponent);
-			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pFill, null);
+			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pAttrs);
 			setAttribute(pWriter, "x", 	pX, null);
 			setAttribute(pWriter, "y", 	pY, null);
 			setAttribute(pWriter, "rx", pRX, null);
 			setAttribute(pWriter, "ry", pRY, null);
-//			DBSFaces.setAttribute(pWriter, "pointer-events", "all", null);
 			
 			setAttribute(pWriter, "height", pHeight, null);
 			setAttribute(pWriter, "width", pWidth, null);
@@ -1725,14 +1725,14 @@ public class  DBSFaces {
 	 * @param pRY
 	 * @param pStyleClass
 	 * @param pStyle
-	 * @param pFill
+	 * @param pAttrs Atributos nos formato atributo1=valor2; atributo2=valor2
 	 * @throws IOException
 	 */
-	public static void encodeSVGEllipse(UIComponent pComponent, ResponseWriter pWriter, Number pCX, Number pCY, String pRX, String pRY, String pStyleClass, String pStyle, String pFill) throws IOException{
+	public static void encodeSVGEllipse(UIComponent pComponent, ResponseWriter pWriter, Number pCX, Number pCY, String pRX, String pRY, String pStyleClass, String pStyle, String pAttrs) throws IOException{
 		pWriter.startElement("ellipse", pComponent);
-			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pFill, null);
-			setAttribute(pWriter, "cx", 	pCX, null);
-			setAttribute(pWriter, "cy", 	pCY, null);
+			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pAttrs);
+			setAttribute(pWriter, "cx", pCX, null);
+			setAttribute(pWriter, "cy", pCY, null);
 			
 			setAttribute(pWriter, "rx", pRY, null);
 			setAttribute(pWriter, "ry", pRX, null);
@@ -1742,20 +1742,17 @@ public class  DBSFaces {
 	/**
 	 * @param pComponent
 	 * @param pWriter
-	 * @param pCX
-	 * @param pCY
-	 * @param pRX
-	 * @param pRY
+	 * @param pHRef
 	 * @param pStyleClass
 	 * @param pStyle
-	 * @param pFill
+	 * @param pAttrs Atributos nos formato atributo1=valor2; atributo2=valor2
 	 * @throws IOException
 	 */
-	public static void encodeSVGUse(UIComponent pComponent, ResponseWriter pWriter, String pHRef, String pStyleClass, String pStyle) throws IOException{
+	public static void encodeSVGUse(UIComponent pComponent, ResponseWriter pWriter, String pHRef, String pStyleClass, String pStyle, String pAttrs) throws IOException{
 		if (pHRef == null){return;}
 		pWriter.startElement("use", pComponent);
-			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, null, null);
-			setAttribute(pWriter, "xlink:hdef", "#" + pHRef, null);
+			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pAttrs);
+			setAttribute(pWriter, "xlink:href", "#" + pHRef, null);
 		pWriter.endElement("use");
 	}
 	
@@ -1765,43 +1762,47 @@ public class  DBSFaces {
 	 * @param pData
 	 * @param pStyleClass
 	 * @param pStyle
-	 * @param pFill
+	 * @param pAttrs Atributos nos formato atributo1=valor2; atributo2=valor2
 	 * @throws IOException
 	 */
-	public static void encodeSVGPath(UIComponent pComponent, ResponseWriter pWriter, String pData, String pStyleClass, String pStyle, String pFill) throws IOException{
+	public static void encodeSVGPath(UIComponent pComponent, ResponseWriter pWriter, String pData, String pStyleClass, String pStyle, String pAttrs) throws IOException{
 		pWriter.startElement("path", pComponent);
-			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pFill, null);
+			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pAttrs);
 			setAttribute(pWriter, "d", 	pData, null);
 		pWriter.endElement("path");
 	}
 	
 	
 	/**
-	 * Encode de Retangulo para grádico SVG
+	 * Encode de Texto para grádico SVG
 	 * @param pComponent
 	 * @param pWriter
-	 * @param pStyleClass
-	 * @param pStyle
 	 * @param pX
 	 * @param pY
+	 * @param pText
+	 * @param pStyleClass
+	 * @param pStyle
+	 * @param pAttrs Atributos nos formato atributo1=valor2; atributo2=valor2
 	 * @throws IOException
 	 */
-	public static void encodeSVGText(UIComponent pComponent, ResponseWriter pWriter, Number pX, Number pY, String pText, String pStyleClass, String pStyle, String pFill, String pAttrs) throws IOException{
-		encodeSVGText(pComponent, pWriter, DBSNumber.round(pX, 4).toString(), DBSNumber.round(pY, 4).toString(), pText, pStyleClass, pStyle, pFill, pAttrs);
+	public static void encodeSVGText(UIComponent pComponent, ResponseWriter pWriter, Number pX, Number pY, String pText, String pStyleClass, String pStyle, String pAttrs) throws IOException{
+		encodeSVGText(pComponent, pWriter, DBSNumber.round(pX, 4).toString(), DBSNumber.round(pY, 4).toString(), pText, pStyleClass, pStyle, pAttrs);
 	}
 	/**
-	 * Encode de Retangulo para grádico SVG
+	 * Encode de Texto para grádico SVG
 	 * @param pComponent
 	 * @param pWriter
-	 * @param pStyleClass
-	 * @param pStyle
 	 * @param pX
 	 * @param pY
+	 * @param pText
+	 * @param pStyleClass
+	 * @param pStyle
+	 * @param pAttrs Atributos nos formato atributo1=valor2; atributo2=valor2
 	 * @throws IOException
 	 */
-	public static void encodeSVGText(UIComponent pComponent, ResponseWriter pWriter, String pX, String pY, String pText, String pStyleClass, String pStyle, String pFill, String pAttrs) throws IOException{
+	public static void encodeSVGText(UIComponent pComponent, ResponseWriter pWriter, String pX, String pY, String pText, String pStyleClass, String pStyle, String pAttrs) throws IOException{
 		pWriter.startElement("text", pComponent);
-			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pFill, pAttrs);
+			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pAttrs);
 			setAttribute(pWriter, "x", 	pX, null);
 			setAttribute(pWriter, "y", 	pY, null);
 			if (pText != null){
@@ -1809,7 +1810,7 @@ public class  DBSFaces {
 			}
 		pWriter.endElement("text");
 	}
-	public static void encodeSVGSetDefaultAttr(ResponseWriter pWriter, String pStyleClass, String pStyle, String pFill, String pAttrs) throws IOException{
+	public static void encodeSVGSetDefaultAttr(ResponseWriter pWriter, String pStyleClass, String pStyle, String pAttrs) throws IOException{
 		if (pAttrs!=null){
 			String[] xAttrs = pAttrs.split("[;]");
 			for (String xAttr: xAttrs){
@@ -1825,7 +1826,6 @@ public class  DBSFaces {
 		}
 		setAttribute(pWriter, "class", pStyleClass, null);
 		setAttribute(pWriter, "style", pStyle, null);
-		setAttribute(pWriter, "fill",	pFill, null);			
 	}
 	
 	//================================================================================

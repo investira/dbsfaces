@@ -46,6 +46,7 @@
 	
 .dbs_charts > .-container > .-data > .-container > .-content > .-label{
 	font-size: 1.8em;
+	stroke-width: 0;
 }	
 
 .dbs_charts > .-container > .-data > .-container > .-content > .-label > .-content{
@@ -55,6 +56,10 @@
 }
 .dbs_charts > .-container > .-data > .-container > .-content > .-label > .-content.-activated{
 	fill-opacity: 1;
+	-moz-animation: -kf_dbs_chart_selected .1s linear;
+	-o-animation: -kf_dbs_chart_selected .1s linear;
+	-webkit-animation: -kf_dbs_chart_selected .1s linear;
+	animation: -kf_dbs_chart_selected .1s linear;
 }
 
 .dbs_charts > .-container > .-data > .-container > .-content > .-label > .-content > text{

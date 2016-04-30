@@ -144,13 +144,13 @@ public class DBSChartValueRenderer extends DBSRenderer {
 					   		   DBSNumber.divide(pChart.getColumnScale() - xLineWidth, 2));
 			//Valore positivos acima
 			if (pChartValue.getValue() > 0){
-				DBSFaces.encodeSVGRect(pChartValue, pWriter, xX.intValue(), xY.doubleValue(), xLineWidth.toString(), xHeight.toString(), DBSFaces.CSS.MODIFIER.POINT, xStroke, wFillColor);
+				DBSFaces.encodeSVGRect(pChartValue, pWriter, xX.intValue(), xY.doubleValue(), xLineWidth.toString(), xHeight.toString(), DBSFaces.CSS.MODIFIER.POINT, xStroke, "fill=" + wFillColor);
 			//Valore negativos
 			}else{
 				//inverte a posição Yx
 				Double xIY = DBSNumber.subtract(pCharts.getChartHeight(), pCharts.getZeroPosition().doubleValue()).doubleValue();
 				xIY +=  pCharts.getPadding();
-				DBSFaces.encodeSVGRect(pChartValue, pWriter, xX.intValue(), xIY.doubleValue(), xLineWidth.toString(), xHeight.toString(), DBSFaces.CSS.MODIFIER.POINT, xStroke, wFillColor);
+				DBSFaces.encodeSVGRect(pChartValue, pWriter, xX.intValue(), xIY.doubleValue(), xLineWidth.toString(), xHeight.toString(), DBSFaces.CSS.MODIFIER.POINT, xStroke, "fill=" + wFillColor);
 				//Configura posição do texto para a linha do zero
 //				xYText = DBSNumber.add(xIY, (DBSCharts.FontSize / 2));
 			}
@@ -165,21 +165,10 @@ public class DBSChartValueRenderer extends DBSRenderer {
 //			xStyle.append(DBSFaces.getCSSAllBrowser("transform-origin", xX.doubleValue() + "px " + xY.doubleValue() + "px"));
 			String xStyle = "stroke:currentColor; color:" + wFillColor + ";";
 			if (pChart.getShowDelta()){
-				DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xX.doubleValue(), xY.doubleValue(), ".2em", ".2em", DBSFaces.CSS.MODIFIER.POINT, xStyle, "white");
-//				xHRef += "_guide";
-//				xStyle += "color:" + wFillColor; 
+				DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xX.doubleValue(), xY.doubleValue(), ".2em", ".2em", DBSFaces.CSS.MODIFIER.POINT, xStyle, "fill=white");
 			}else{
-				String xHRef = "#" + pCharts.getClientId();
 				xStyle += "transform: translateX(" + xX.doubleValue() + "px) translateY(" + xY.doubleValue() + "px);";
-				xHRef += "_point";
-				pWriter.startElement("use", pChartValue);
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.POINT, null);
-				DBSFaces.setAttribute(pWriter, "style", xStyle, null);
-//				DBSFaces.setAttribute(pWriter, "fill", wFillColor, null);
-				DBSFaces.setAttribute(pWriter, "xlink:href", xHRef, null);
-				DBSFaces.setAttribute(pWriter, "cx", xX.doubleValue(), null);
-				DBSFaces.setAttribute(pWriter, "cy", xY.doubleValue(), null);
-			pWriter.endElement("use");
+				DBSFaces.encodeSVGUse(pChartValue, pWriter, pCharts.getClientId() + "_point", DBSFaces.CSS.MODIFIER.POINT, xStyle, "cx=" + xX.doubleValue() + "; cy=" + xY.doubleValue());
 			}
 		}
 		//Encode Dados
@@ -329,7 +318,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		xPath.append("L" + x3.getX() + "," + x3.getY()); //Linha do arco externo até o início do arco interno
 		xPath.append("A" + xPneuRaioInterno + "," + xPneuRaioInterno + " 0 " + xBig + " 0 " + x4.getX() + "," + x4.getY()); //Arco interno até o ponto incial interno
 		xPath.append("Z"); //Fecha o path ligando o arco interno ao arco externo  
-		DBSFaces.encodeSVGPath(pChartValue, pWriter, xPath.toString(), DBSFaces.CSS.MODIFIER.POINT, xStroke, wFillColor);
+		DBSFaces.encodeSVGPath(pChartValue, pWriter, xPath.toString(), DBSFaces.CSS.MODIFIER.POINT, xStroke, "fill=" + wFillColor);
 
 
 		//Encode Dados
@@ -342,10 +331,10 @@ public class DBSChartValueRenderer extends DBSRenderer {
 				xPath.append("M" + xPoint.getX() + "," + xPoint.getY());  
 				xPath.append("L" + pChartValue.getPoint().getX() + "," + pChartValue.getPoint().getY()); 
 				xPath.append("L" + xPointLabel.getX() + "," + xPointLabel.getY());
-				DBSFaces.encodeSVGPath(pChartValue, pWriter, xPath.toString(),DBSFaces.CSS.MODIFIER.LINE, xStroke + " stroke-width:1px; ", "none");
+				DBSFaces.encodeSVGPath(pChartValue, pWriter, xPath.toString(),DBSFaces.CSS.MODIFIER.LINE, xStroke + " stroke-width:1px; ", "fill=none");
 	
 				//Ponto pequeno no centro e na tangente do arco	
-				DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xPoint.getX(), xPoint.getY(), "2px", "2px", DBSFaces.CSS.MODIFIER.POINT, null, wFillColor);
+				DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xPoint.getX(), xPoint.getY(), "2px", "2px", DBSFaces.CSS.MODIFIER.POINT, null, "fill=" + wFillColor);
 				
 				//Borda do texto-Largura será cofigurada via JS
 				DBSFaces.encodeSVGRect(pChartValue, pWriter, xPointLabel.getX(), xPointLabel.getY(), null, "1.3em", 3, 3, "-box", xPerBoxStyle, null);
@@ -564,7 +553,6 @@ public class DBSChartValueRenderer extends DBSRenderer {
 							   pText,
 							   pStyleClass, 
 							   DBSObject.getNotNull(pStyle, ""),
-							   null,
 							   pAttrs);
 	}
 
