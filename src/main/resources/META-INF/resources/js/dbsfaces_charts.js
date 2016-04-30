@@ -20,7 +20,7 @@ dbs_charts = function(pId) {
 dbsfaces.charts = {
 	initialize: function(pCharts){
 		dbsfaces.charts.pvInitializeData(pCharts);
-		dbsfaces.charts.pvUpdateGroupMember(pCharts);
+		dbsfaces.charts.pvInitializeGroupMember(pCharts);
 		dbsfaces.charts.pvInitializeGuides(pCharts);
 		dbsfaces.charts.pvInitializeChartActivate(pCharts);
 		//Exibe gráfico
@@ -87,7 +87,8 @@ dbsfaces.charts = {
 	},
 
 	pvInitializeChartActivate: function(pCharts){
-		var xContent = pCharts.find(".-container > .-data > .-container > .-content");
+		var xContainerData = pCharts.find(".-container > .-data");
+		var xContent = xContainerData.find(".-container > .-content");
 		var xContentLabel = xContent.children(".-label");
 		//Verifica se existe labels definidas
 		if (xContentLabel.length != 0
@@ -107,21 +108,34 @@ dbsfaces.charts = {
 			dbsfaces.charts.pvActivateChartOne(xChart, null, true);
 			dbsfaces.charts.pvActivateDelta(pCharts, xFirstChart, true);
 		}
+		var xHeight = xContent[0].getBoundingClientRect().height;
+		xContainerData.css("height", xHeight);
+		
 	},
 
-	pvUpdateGroupMember: function(pCharts){
+	pvInitializeGroupMember: function(pCharts){
 		var xGroupId = pCharts.attr("groupid");
 		if (typeof(xGroupId) != 'undefined'){
 			var xMembers = $("div.dbs_charts[groupid='" + xGroupId + "']");
 			xMembers.each(function(){
-				$(this).data("groupMembers", xMembers);
+				$(this).data("groupmembers", xMembers);
 			});
 		}else{
-			pCharts.data("groupMembers", null);
+			pCharts.data("groupmembers", null);
 		}
-
 	},
 	
+	pvInitializeDimentions: function(pCharts){
+		var xGroupId = pCharts.attr("groupid");
+		if (typeof(xGroupId) != 'undefined'){
+			var xMembers = $("div.dbs_charts[groupid='" + xGroupId + "']");
+			xMembers.each(function(){
+				$(this).data("groupmembers", xMembers);
+			});
+		}else{
+			pCharts.data("groupmembers", null);
+		}
+	},
 
 	lostFocus: function(pCharts){
 		var xHover = pCharts.data("hover");

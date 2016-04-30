@@ -120,6 +120,7 @@
 }
 
 /* .dbs_chart[!showdelta].-dim > .-path > path,     */
+/* :not(.-activated) */
 .dbs_chart.-dim > .-path > path,
 .dbs_chart.-dim > .dbs_chartValue:not(.-selected):not(.-hover){
     fill-opacity: .4;
@@ -128,12 +129,10 @@
 
 
 .dbs_chart.-dim > .dbs_chartValue:not(.-selected):not(.-hover) > .-info{
-/* 	opacity: 0; */
     fill-opacity: 0;
     stroke-opacity: 0;
 }
 .dbs_chart.-dim > .dbs_chartValue:not(.-selected):not(.-hover) > .-info > .-label{
-/* 	opacity: 0; */
     fill-opacity: 0;
     stroke-opacity: 0;
 }	
@@ -141,11 +140,15 @@
 
 .dbs_chart[type='line'] > .dbs_chartValue > .-info > .-label,
 .dbs_chart[type='bar'] > .dbs_chartValue > .-info > .-label{
-	text-anchor: middle;
-/* 	writing-mode: tb; */
-/* 	glyph-orientation-vertical: 270; */
-} 
+	text-anchor: start;
+	transform: rotate(45deg);
+	-moz-transform: rotate(0);
 
+} 
+.dbs_chart[type='line'] > .dbs_chartValue > .-info > .-label > text,
+.dbs_chart[type='bar'] > .dbs_chartValue > .-info > .-label > text{
+	-moz-transform: rotate(45deg);
+}
 .dbs_chart[type='line'] > .dbs_chartValue > .-info > .-value,
 .dbs_chart[type='bar'] > .dbs_chartValue > .-info > .-value{
 	text-anchor: end;
@@ -178,16 +181,18 @@
 }
 
 .dbs_chart[type='line'] > .dbs_chartValue > .-point{
-	display: none;
+/* 	display: none; */
+	stroke-opacity:0;
 	stroke-width: 1px;
 	pointer-events: none;
+	fill: none;
 }
 
 
 .dbs_chart[type='line'] > .dbs_chartValue.-selected  > .-point,
 .dbs_chart[type='line'] > .dbs_chartValue.-hover  > .-point{
-	display: inline-block;
-	fill: none;
+/* 	display: inline-block; */
+	stroke-opacity:1;
 }
 
 

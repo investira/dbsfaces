@@ -1626,7 +1626,7 @@ public class  DBSFaces {
 	 */
 	public static void encodeSVGLine(UIComponent pComponent, ResponseWriter pWriter, Number pX1, Number pY1, Number pX2, Number pY2, String pStyleClass, String pStyle) throws IOException{
 		pWriter.startElement("line", pComponent);
-			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, null);
+			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, null, null);
 			setAttribute(pWriter, "x1", 	pX1, null);
 			setAttribute(pWriter, "y1", 	pY1, null);
 			setAttribute(pWriter, "x2", 	pX2, null);
@@ -1703,7 +1703,7 @@ public class  DBSFaces {
 	 */
 	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, String pX, String pY, String pWidth, String pHeight, Integer pRX, Integer pRY, String pStyleClass, String pStyle, String pFill) throws IOException{
 		pWriter.startElement("rect", pComponent);
-			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pFill);
+			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pFill, null);
 			setAttribute(pWriter, "x", 	pX, null);
 			setAttribute(pWriter, "y", 	pY, null);
 			setAttribute(pWriter, "rx", pRX, null);
@@ -1730,7 +1730,7 @@ public class  DBSFaces {
 	 */
 	public static void encodeSVGEllipse(UIComponent pComponent, ResponseWriter pWriter, Number pCX, Number pCY, String pRX, String pRY, String pStyleClass, String pStyle, String pFill) throws IOException{
 		pWriter.startElement("ellipse", pComponent);
-			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pFill);
+			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pFill, null);
 			setAttribute(pWriter, "cx", 	pCX, null);
 			setAttribute(pWriter, "cy", 	pCY, null);
 			
@@ -1754,7 +1754,7 @@ public class  DBSFaces {
 	public static void encodeSVGUse(UIComponent pComponent, ResponseWriter pWriter, String pHRef, String pStyleClass, String pStyle) throws IOException{
 		if (pHRef == null){return;}
 		pWriter.startElement("use", pComponent);
-			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, null);
+			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, null, null);
 			setAttribute(pWriter, "xlink:hdef", "#" + pHRef, null);
 		pWriter.endElement("use");
 	}
@@ -1770,7 +1770,7 @@ public class  DBSFaces {
 	 */
 	public static void encodeSVGPath(UIComponent pComponent, ResponseWriter pWriter, String pData, String pStyleClass, String pStyle, String pFill) throws IOException{
 		pWriter.startElement("path", pComponent);
-			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pFill);
+			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pFill, null);
 			setAttribute(pWriter, "d", 	pData, null);
 		pWriter.endElement("path");
 	}
@@ -1786,8 +1786,8 @@ public class  DBSFaces {
 	 * @param pY
 	 * @throws IOException
 	 */
-	public static void encodeSVGText(UIComponent pComponent, ResponseWriter pWriter, Number pX, Number pY, String pText, String pStyleClass, String pStyle, String pFill) throws IOException{
-		encodeSVGText(pComponent, pWriter, DBSNumber.round(pX, 4).toString(), DBSNumber.round(pY, 4).toString(), pText, pStyleClass, pStyle, pFill);
+	public static void encodeSVGText(UIComponent pComponent, ResponseWriter pWriter, Number pX, Number pY, String pText, String pStyleClass, String pStyle, String pFill, String pAttrs) throws IOException{
+		encodeSVGText(pComponent, pWriter, DBSNumber.round(pX, 4).toString(), DBSNumber.round(pY, 4).toString(), pText, pStyleClass, pStyle, pFill, pAttrs);
 	}
 	/**
 	 * Encode de Retangulo para grádico SVG
@@ -1799,9 +1799,9 @@ public class  DBSFaces {
 	 * @param pY
 	 * @throws IOException
 	 */
-	public static void encodeSVGText(UIComponent pComponent, ResponseWriter pWriter, String pX, String pY, String pText, String pStyleClass, String pStyle, String pFill) throws IOException{
+	public static void encodeSVGText(UIComponent pComponent, ResponseWriter pWriter, String pX, String pY, String pText, String pStyleClass, String pStyle, String pFill, String pAttrs) throws IOException{
 		pWriter.startElement("text", pComponent);
-			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pFill);
+			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pFill, pAttrs);
 			setAttribute(pWriter, "x", 	pX, null);
 			setAttribute(pWriter, "y", 	pY, null);
 			if (pText != null){
@@ -1809,7 +1809,20 @@ public class  DBSFaces {
 			}
 		pWriter.endElement("text");
 	}
-	public static void encodeSVGSetDefaultAttr(ResponseWriter pWriter, String pStyleClass, String pStyle, String pFill) throws IOException{
+	public static void encodeSVGSetDefaultAttr(ResponseWriter pWriter, String pStyleClass, String pStyle, String pFill, String pAttrs) throws IOException{
+		if (pAttrs!=null){
+			String[] xAttrs = pAttrs.split("[;]");
+			for (String xAttr: xAttrs){
+				Integer xI = xAttr.indexOf("=");
+				String xAttrName;
+				String xAttrValue;
+				if (xI != -1){
+					xAttrName = xAttr.substring(0, xI).trim().toLowerCase();
+					xAttrValue = xAttr.substring(xI+1).trim();
+					setAttribute(pWriter, xAttrName, xAttrValue, xAttrName);
+				}
+			}
+		}
 		setAttribute(pWriter, "class", pStyleClass, null);
 		setAttribute(pWriter, "style", pStyle, null);
 		setAttribute(pWriter, "fill",	pFill, null);			

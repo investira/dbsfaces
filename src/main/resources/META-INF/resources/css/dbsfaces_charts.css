@@ -14,6 +14,7 @@
 	position: relative;
 	display: block;
 	text-align: center;
+    cursor: default;
 }
 
 .dbs_charts > .-container > .-caption{
@@ -24,7 +25,6 @@
 	-moz-border-radius: 3px 3px 0px 0px;
 	border-radius: 3px 3px 0px 0px;
     font-weight: bold;
-    cursor: default;
 }
 
 .dbs_charts > .-container > .-data{
@@ -59,8 +59,9 @@
 
 .dbs_charts > .-container > .-data > .-container > .-content > .-label > .-content > text{
 	fill: white;
-	dominant-baseline: auto;
-	transform: translate(.5em, 1.2em);
+/* 	dominant-baseline: auto; */
+	transform: translate(.5em);
+/* 	transform: translate(.5em, 1.2em); */
 }	
 
 .dbs_charts > .-container > .-data > .-container > .-content > .-label > .-content > rect{

@@ -192,16 +192,22 @@ public class DBSChartValueRenderer extends DBSRenderer {
 						 xYText.doubleValue(), 
 						 DBSFaces.CSS.MODIFIER.VALUE + "-hide", 
 						 " fill:" + wFillColor, 
+						 null,
 						 pWriter);
 			//Encode label da coluna ---------------------------------------------------------------------
 			if (pCharts.getShowLabel()){
+				pWriter.startElement("g", pChartValue);
+				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.LABEL + "-hide", null);
+				DBSFaces.setAttribute(pWriter, "transform-origin", xXText.doubleValue() + "px " + pCharts.getHeight().doubleValue() + "px 0px", null);
 				pvEncodeText(pChartValue, 
 							 pChartValue.getLabel(), 
 							 xXText.doubleValue(), 
 							 pCharts.getHeight().doubleValue(), 
-							 DBSFaces.CSS.MODIFIER.LABEL + "-hide", 
-							 " fill:" + wFillColor, 
+							 null, 
+							 " fill:" + wFillColor +  "; -moz-transform-origin:" +  xXText.doubleValue() + "px " + pCharts.getHeight().doubleValue() + "px 0px;", 
+							 null,
 							 pWriter);
+				pWriter.endElement("g");
 			}
 		pWriter.endElement("g");
 		//Tooltip -------------------------------------------------------------------------
@@ -376,6 +382,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 							 xPointLabel.getY(), 
 							 DBSFaces.CSS.MODIFIER.VALUE, 
 							 xPercLabelStyle, 
+							 null,
 							 pWriter);
 			pWriter.endElement("g");
 		}
@@ -547,7 +554,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		return (Math.abs(xDif) > pRowScale);
 	}
 
-	private void pvEncodeText(DBSChartValue pChartValue, String pText, Double pX, Double pY, String pStyleClass, String pStyle, ResponseWriter pWriter) throws IOException{
+	private void pvEncodeText(DBSChartValue pChartValue, String pText, Double pX, Double pY, String pStyleClass, String pStyle, String pAttrs, ResponseWriter pWriter) throws IOException{
 		//Encode label da coluna ---------------------------------------------------------------------
 		if (DBSObject.isEmpty(pText)){return;}
 		DBSFaces.encodeSVGText(pChartValue, 
@@ -557,7 +564,8 @@ public class DBSChartValueRenderer extends DBSRenderer {
 							   pText,
 							   pStyleClass, 
 							   DBSObject.getNotNull(pStyle, ""),
-							   null);
+							   null,
+							   pAttrs);
 	}
 
 	private void pvEncodeTooptip(TYPE pType, DBSChartValue pChartValue, Double pX, Double pY, String pClienteId, FacesContext pContext, ResponseWriter pWriter) throws IOException{

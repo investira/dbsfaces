@@ -82,15 +82,18 @@ public class DBSChartRenderer extends DBSRenderer {
 			
 			//Divisão onde serão desenhadas as linhas que ligam os pontos no gráfico por linha.
 			//O desenho é efetuado via JS no chartValue
-			if (xType == TYPE.LINE){
+			if (xType == TYPE.LINE
+			 || xType == TYPE.BAR){
 				xWriter.startElement("g", xChart);
 					DBSFaces.setAttribute(xWriter, "class", "-path", null);
 					//Area que ira captura o mousemove
 					DBSFaces.encodeSVGRect(xChart, xWriter, xCharts.getPadding() / 2D, xCharts.getPadding() / 2D, xChartsWidth.toString(), xChartsHeight.toString(), DBSFaces.CSS.MODIFIER.MASK.trim(), null, null);
 				xWriter.endElement("g");
-				xWriter.startElement("g", xChart);
-					DBSFaces.setAttribute(xWriter, "class", "-delta", null);
-				xWriter.endElement("g");
+				if (xType == TYPE.LINE){
+					xWriter.startElement("g", xChart);
+						DBSFaces.setAttribute(xWriter, "class", "-delta", null);
+					xWriter.endElement("g");
+				}
 			}
 			//Valores-------------------------
 			//Se não foi informado DBSResultSet

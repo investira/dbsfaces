@@ -65,7 +65,7 @@ dbsfaces.chart = {
 
 		var xCharts = pChart.data("parent");
 		var xChartChildren = pChart.data("children");
-		var xShowLabel = (typeof(xCharts.attr("showlabel")) != "undefined");
+		var xShowLabel = (typeof(xCharts.attr("showlabel")) != "undefined" && pChart.data("mask").length > 0) ;
 		var xShowDelta = (typeof(xChart.attr("showdelta")) != "undefined");
 		var xDrawLine = (pChart.attr("type") == "line");
 		if (pChart.attr("type") == "bar"
@@ -137,22 +137,113 @@ dbsfaces.chart = {
 		var xChartValueLabel;
 		var xChartValuePoint;
 		var xPos;
-		var xPosAnt = 1;
+		var xPosAnt = 0;
 		var xStringPath = "";
 		var xStarColor;
 		var xEndColor;
+		var xLabelInterval;
+		var xLabelIndex = 1;
+		var xLabelPadding = 0;
 		//Loop nos valores por ordem do index para garantir o loop na ordem em que foram criados
 		for (i=1; i <= pChartValues.length; i++){
 			xChartValue = pChartValues.filter("[index='" + i + "']");
 			//Verifica se há sobreposição
 			if (pShowLabel){
 				xChartValueLabel = xChartValue.children(".-info").children(".-label");
-				xPos = Number(xChartValueLabel.attr("x")) - (xChartValueLabel.get(0).getComputedTextLength() / 2);
+				xChartValueLabelText = xChartValueLabel.children("text"); //xChartValueLabelText
+//				xPos = Number(xChartValueLabel.attr("x")) - (xChartValueLabel.get(0).getComputedTextLength() / 2);
+				xPos = Number(xChartValueLabelText.attr("x"));
+//				xPos = Number(xChartValueLabelText.attr("x")) - (xChartValueLabelText.get(0).getBoundingClientRect().width / 2) + 4;
+//				xPos = Number(xChartValueLabelText.attr("x")) - (xChartValueLabelText.width() / 2) + 4;
+				if (i == 1){
+					xChartValueLabel.svgRemoveClass("-hide");
+					xLabelPadding = xPos;
+					var xLabelTotalWidth = (pChart.data("mask").get(0).getBoundingClientRect().width) - xLabelPadding;
+					var xLabelMaxItens = Math.round(xLabelTotalWidth / (Number(dbsfaces.number.getOnlyNumber(pChartValues.css("font-size"))) * 2));
+					xLabelScale = xLabelTotalWidth / (xLabelMaxItens + 1);
+				}else{
+					if (xPos < ((xLabelIndex * xLabelScale) + xLabelPadding)){
+						xChartValueLabel.svgAddClass("-hide");
+					}else{
+						xChartValueLabel.svgRemoveClass("-hide");
+						xLabelIndex++;
+					}
+				}
+			}
+			var xAntX;
+			var xAntY;
+			var xY;
+			var xX;
+			//Configura a linha conectando os pontos
+			if (pDrawLine){
+				if (i==1){
+					xStringPath = "M";
+					//Salva cor do primeiro ponto
+					xStarColor = xChartValue.data("df");
+				}else {
+					xStringPath += "L";
+				}
+				if (i == pChartValues.length){
+					//Salva cor do último ponto
+					xStopColor = xChartValue.data("df");
+				}
+				xX = Number(xChartValue.data("dx"));
+				xY = Number(xChartValue.data("dy"));
+				//Artificio para corrigir o problema em que a linha com gradient não é exibida quando é uma reta perfeita.
+				if (xX==xAntX){xX+=0.0001}
+				if (xY==xAntY){xY+=0.0001}
+				xStringPath += xX + "," + xY;
+
+				xAntX = xChartValue.data("dx");
+				xAntY = xChartValue.data("dy");
+			}
+		}
+		//Cria a linha e cor que conecta os pontos
+		if (xStringPath != ""){
+			//Cria cor
+			var xSvg = pCharts.find(".-container > .-data > .-container > defs");
+			var xLG = dbsfaces.svg.linearGradient(xSvg, pChart.get(0).id + "_linestroke");
+			dbsfaces.svg.stop(xLG, 0, xStarColor);
+			dbsfaces.svg.stop(xLG, "100%", xStopColor);
+			//Path do gráfico
+			var xPath = dbsfaces.svg.path(pChart.data("pathgroup"), xStringPath, null, null, null);
+			xPath.svgAttr("stroke", "url(#" + pChart.get(0).id + "_linestroke)");
+			//Salva path no próprio componente para agilizar o findPoint
+			pChart.data("path", xPath.get(0));
+		}
+	},
+	
+	//Verifica sopreposição dos labels 
+	pvInitializeLineAndLabels2: function(pCharts, pChart, pChartValues, pShowLabel, pDrawLine){
+		var xChartValue;
+		var xChartValueLabel;
+		var xChartValuePoint;
+		var xPos;
+		var xPosAnt = 0;
+		var xStringPath = "";
+		var xStarColor;
+		var xEndColor;
+		var xFontSize = dbsfaces.number.getOnlyNumber(pChartValues.css("font-size"));
+		//Loop nos valores por ordem do index para garantir o loop na ordem em que foram criados
+		for (i=1; i <= pChartValues.length; i++){
+			xChartValue = pChartValues.filter("[index='" + i + "']");
+			//Verifica se há sobreposição
+			if (pShowLabel){
+				xChartValueLabel = xChartValue.children(".-info").children(".-label");
+				xChartValueLabelText = xChartValueLabel.children("text"); //xChartValueLabelText
+//				xPos = Number(xChartValueLabel.attr("x")) - (xChartValueLabel.get(0).getComputedTextLength() / 2);
+				xPos = Number(xChartValueLabelText.attr("x")) - (xFontSize / 2) + 4;
+//				xPos = Number(xChartValueLabelText.attr("x")) - (xChartValueLabelText.get(0).getBoundingClientRect().width / 2) + 4;
+//				xPos = Number(xChartValueLabelText.attr("x")) - (xChartValueLabelText.width() / 2) + 4;
 				if (xPos < xPosAnt){
 					xChartValueLabel.svgAddClass("-hide");
 				}else{
 					xChartValueLabel.svgRemoveClass("-hide");
-					xPosAnt = Number(xChartValueLabel.attr("x")) + (xChartValueLabel.get(0).getComputedTextLength() / 2) + 4;
+//					xPosAnt = Number(xChartValueLabel.attr("x")) + (xChartValueLabel.get(0).getComputedTextLength() / 2) + 4;
+//					xPosAnt = Number(xChartValueLabel.attr("x")) + (xChartValueLabel.getBoundingClientRect().height / 2) + 4;
+					xPosAnt = Number(xChartValueLabelText.attr("x")) + (xFontSize / 2) + 8;
+//					xPosAnt = Number(xChartValueLabelText.attr("x")) + (xChartValueLabelText.get(0).getBoundingClientRect().width / 2) + 8;
+//					xPosAnt = Number(xChartValueLabelText.attr("x")) + (xChartValueLabelText.width() / 2) + 8;
 				}
 			}
 			var xAntX;
@@ -363,7 +454,6 @@ dbsfaces.chart = {
 		var xCharts = xChart.data("parent");
 		//Reseta posição dos guias
 		dbsfaces.chart.pvSetGuide(xChart, pChartValue, pSelect);
-
 //		if (pSelect == null){
 			var xHover = xCharts.data("hover");
 			//Ignora se for para selecionar item já selecionado
@@ -374,7 +464,6 @@ dbsfaces.chart = {
 				}
 			}
 //		}
-		
 		//Desmarca item selecionado anteriormente
 		dbsfaces.charts.select(pChartValue, pSelect);
 		//Desmarca item selecionado anteriormente
