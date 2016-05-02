@@ -1625,6 +1625,25 @@ public class  DBSFaces {
 	 * @param pAttrs Atributos nos formato atributo1=valor2; atributo2=valor2
 	 * @throws IOException
 	 */
+	public static void encodeSVGTag(UIComponent pComponent, ResponseWriter pWriter, String pTagName, String pStyleClass, String pStyle, String pAttrs) throws IOException{
+		pWriter.startElement(pTagName, pComponent);
+			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pAttrs);
+		pWriter.endElement(pTagName);
+	}
+
+	/**
+	 * Encore da linha para gráfico SVG
+	 * @param pComponent
+	 * @param pWriter
+	 * @param pX1
+	 * @param pY1
+	 * @param pX2
+	 * @param pY2
+	 * @param pStyleClass
+	 * @param pStyle
+	 * @param pAttrs Atributos nos formato atributo1=valor2; atributo2=valor2
+	 * @throws IOException
+	 */
 	public static void encodeSVGLine(UIComponent pComponent, ResponseWriter pWriter, Number pX1, Number pY1, Number pX2, Number pY2, String pStyleClass, String pStyle, String pAttrs) throws IOException{
 		pWriter.startElement("line", pComponent);
 			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pAttrs);

@@ -186,16 +186,24 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			//Encode label da coluna ---------------------------------------------------------------------
 			if (pCharts.getShowLabel()){
 				pWriter.startElement("g", pChartValue);
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.LABEL + "-hide", null);
-				DBSFaces.setAttribute(pWriter, "transform-origin", xXText.doubleValue() + "px " + pCharts.getHeight().doubleValue() + "px 0px", null);
-				pvEncodeText(pChartValue, 
-							 pChartValue.getLabel(), 
-							 xXText.doubleValue(), 
-							 pCharts.getHeight().doubleValue(), 
-							 null, 
-							 " fill:" + wFillColor +  "; -moz-transform-origin:" +  xXText.doubleValue() + "px " + pCharts.getHeight().doubleValue() + "px 0px;", 
-							 null,
-							 pWriter);
+					DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.LABEL + "-hide", null);
+					Double xHeight = (pCharts.getHeight().doubleValue() -5);
+					DBSFaces.setAttribute(pWriter, "transform-origin", xXText.doubleValue() + "px " + xHeight + "px 0px", null);
+					pvEncodeText(pChartValue, 
+								 "<tspan class='-small'>" + pChartValue.getLabel() + "</tspan>" +
+								 "<tspan class='-normal'>" + pChartValue.getLabel() + "</tspan>", 
+								 xXText.doubleValue(), 
+								 xHeight, 
+								 null, 
+								 "-moz-transform-origin:" +  xXText.doubleValue() + "px " + xHeight + "px 0px;", 
+								 "fill=" + wFillColor,
+								 pWriter);
+					//Artifícil para forçar que a altura do label seja corrigida em função do tspan.
+					//Em js a altura deste svg é configurado
+//					pWriter.startElement("svg", pChartValue);
+//						DBSFaces.setAttribute(pWriter, "width", "1", null);
+//						DBSFaces.setAttribute(pWriter, "y", pCharts.getHeight().doubleValue() + "px", null);
+//					pWriter.endElement("svg");
 				pWriter.endElement("g");
 			}
 		pWriter.endElement("g");

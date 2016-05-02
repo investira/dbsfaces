@@ -86,18 +86,8 @@
 /*         dominant-baseline: text-after-edge; */
 /* 	dominant-baseline: central; */
 }
-/* .dbs_chart > .-delta:actice > .-info, */
-/* .dbs_chart > .-delta:focus > .-info{ */
-/*     fill-opacity: 0.2; */
-/*     stroke-opacity: 0.4; */
-/*     -webkit-transition: fill-opacity .2s, stroke-opacity .2s;  */
-/*     -moz-transition: fill-opacity .2s, stroke-opacity .2s; */
-/*     -o-transition: fill-opacity .2s, stroke-opacity .2s; */
-/*     transition: fill-opacity .2s, stroke-opacity .2s; */
-/* } */
 
 .dbs_chart > .-delta > .-info > .-value{
-/*     dominant-baseline: central; */
 	text-rendering: geometricPrecision;
     text-anchor: middle;
     font-weight: bolder;
@@ -141,14 +131,23 @@
 .dbs_chart[type='line'] > .dbs_chartValue > .-info > .-label,
 .dbs_chart[type='bar'] > .dbs_chartValue > .-info > .-label{
 	text-anchor: start;
-	transform: rotate(45deg);
+	transform: rotate(60deg);
 	-moz-transform: rotate(0);
-
+	dominant-baseline: middle;
+/* 	dominant-baseline: text-before-edge; */
 } 
 .dbs_chart[type='line'] > .dbs_chartValue > .-info > .-label > text,
 .dbs_chart[type='bar'] > .dbs_chartValue > .-info > .-label > text{
-	-moz-transform: rotate(45deg);
+	-moz-transform: rotate(60deg);
 }
+/* .dbs_chart[type='line'] > .dbs_chartValue > .-info > .-label > text > .-normal, */
+/* .dbs_chart[type='bar'] > .dbs_chartValue > .-info > .-label > text > .-normal{ */
+/* 	display:none; */
+/* } */
+/* .dbs_chart[type='line'] > .dbs_chartValue > .-info > .-label > text > .-small, */
+/* .dbs_chart[type='bar'] > .dbs_chartValue > .-info > .-label > text > .-small{ */
+/* /* 	display:none; */ */
+/* } */
 .dbs_chart[type='line'] > .dbs_chartValue > .-info > .-value,
 .dbs_chart[type='bar'] > .dbs_chartValue > .-info > .-value{
 	text-anchor: end;
@@ -170,7 +169,7 @@
 }
 
 .dbs_chart[type='line'].-activated > .dbs_chartValue > .-info{
-	fill-opacity:1;
+	fill-opacity:.7;
 }
 
 .dbs_chart[type='line'].-activated > .dbs_chartValue > .-info > .-label,

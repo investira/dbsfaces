@@ -87,7 +87,8 @@ dbsfaces.charts = {
 	},
 
 	pvInitializeChartActivate: function(pCharts){
-		var xContainerData = pCharts.find(".-container > .-data");
+		var xContainer = pCharts.children(".-container");
+		var xContainerData = xContainer.children(".-data");
 		var xContent = xContainerData.find(".-container > .-content");
 		var xContentLabel = xContent.children(".-label");
 		//Verifica se existe labels definidas
@@ -150,7 +151,8 @@ dbsfaces.charts = {
 		xChartsChildren.each(function(){
 			//Verifica se não há registro marca antes de desmarcar
 			var xChart = $(this);
-			if (xChart.data("selection").length > 0){
+			if (xChart.data("deltagroup") != null
+			 || xChart.data("selection").length > 0){
 				xDoUnSelect = false;
 				return;
 			}
@@ -173,7 +175,7 @@ dbsfaces.charts = {
 			var xHoverCharts = xHover.data("parent").data("parent");
 			//Ignora se for para selecionar item já selecionado
 			if (xHoverCharts[0].id == xCharts[0].id){
-//				return;
+				return;
 			}
 		}
 		//Desmarca item selecionado anteriormente, caso exista

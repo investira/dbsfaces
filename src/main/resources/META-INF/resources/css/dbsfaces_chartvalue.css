@@ -26,6 +26,7 @@
 }
 .dbs_chartValue > .-info > .-value{
 	dominant-baseline: middle;
+	text-anchor: end;
 }
 
 .dbs_chartValue > .-info > .-label,
@@ -45,14 +46,36 @@
 	fill-opacity: 0;
 }
 
+.dbs_chartValue.-hover > .-info > .-label,
+.dbs_chartValue.-hover > .-info > .-value,
 .dbs_chartValue.-selected > .-info > .-label,
 .dbs_chartValue.-selected > .-info > .-value{
 	fill-opacity: 1;
 }
 
-.dbs_chartValue.-hover > .-info > .-label,
-.dbs_chartValue.-hover > .-info > .-value{
+.dbs_chartValue > .-info > .-label > text > .-normal,
+.dbs_chartValue > .-info > .-value > text > .-normal{
+	display:none;
+}
+.dbs_chartValue > .-info > .-label > text > .-small,
+.dbs_chartValue > .-info > .-value > text > .-small{
+	display:inline-block;
+}
+
+
+.dbs_chartValue.-selected > .-info > .-label > text > .-normal,
+.dbs_chartValue.-selected > .-info > .-value > text > .-normal,
+.dbs_chartValue.-hover > .-info > .-label > text > .-normal,
+.dbs_chartValue.-hover > .-info > .-value > text > .-normal{
+	display:inline-block;
 	fill-opacity: 1;
+}
+.dbs_chartValue.-selected > .-info > .-label > text > .-small,
+.dbs_chartValue.-selected > .-info > .-value > text > .-small,
+.dbs_chartValue.-hover > .-info > .-label > text > .-small,
+.dbs_chartValue.-hover > .-info > .-value > text > .-small{
+	display:none;
+	fill-opacity: 0;
 }
 
 .dbs_chartValue > .-foreignobject{

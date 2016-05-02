@@ -144,31 +144,50 @@ dbsfaces.chart = {
 		var xLabelInterval;
 		var xLabelIndex = 1;
 		var xLabelPadding = 0;
+		var xPreviousLabel = "";
+//		var xContainerData = pCharts.find(".-container > .-data");
+//		var xContainerDataHeight = xContainerData.attr("height");
 		//Loop nos valores por ordem do index para garantir o loop na ordem em que foram criados
-		for (i=1; i <= pChartValues.length; i++){
+		for (var i=1; i <= pChartValues.length; i++){
 			xChartValue = pChartValues.filter("[index='" + i + "']");
-			//Verifica se há sobreposição
+			//Esconde as labels sobrepostas
 			if (pShowLabel){
 				xChartValueLabel = xChartValue.children(".-info").children(".-label");
 				xChartValueLabelText = xChartValueLabel.children("text"); //xChartValueLabelText
-//				xPos = Number(xChartValueLabel.attr("x")) - (xChartValueLabel.get(0).getComputedTextLength() / 2);
+				xChartValueLabelSmall = xChartValueLabelText.children(".-small");
+				xChartValueLabelNormal = xChartValueLabelText.children(".-normal");//xChartValueLabelText
 				xPos = Number(xChartValueLabelText.attr("x"));
-//				xPos = Number(xChartValueLabelText.attr("x")) - (xChartValueLabelText.get(0).getBoundingClientRect().width / 2) + 4;
-//				xPos = Number(xChartValueLabelText.attr("x")) - (xChartValueLabelText.width() / 2) + 4;
+//				console.log(xChartValueLabelSmall.get(0).getBoundingClientRect().height + "\t" + 
+//							xChartValueLabelText.get(0).getBoundingClientRect().height);
+				//Armazena maior altura para posretirmente configurar a altura efetiva do gráfico. Artifício necessário pois o firefox precisa de a dimensão seja explicita.
+//				if (xContainerDataHeight < xChartValueLabelSmall.get(0).getBoundingClientRect().height){
+//					xContainerDataHeight = xChartValueLabelSmall.get(0).getBoundingClientRect().height;
+//					xContainerData.svgAttr("height", xContainerDataHeight);
+//				}
+				//Exibe primeira label obrigatóriamente
 				if (i == 1){
 					xChartValueLabel.svgRemoveClass("-hide");
 					xLabelPadding = xPos;
 					var xLabelTotalWidth = (pChart.data("mask").get(0).getBoundingClientRect().width) - xLabelPadding;
 					var xLabelMaxItens = Math.round(xLabelTotalWidth / (Number(dbsfaces.number.getOnlyNumber(pChartValues.css("font-size"))) * 2));
 					xLabelScale = xLabelTotalWidth / (xLabelMaxItens + 1);
+					xPreviousLabel = xChartValue.attr("label");
 				}else{
-					if (xPos < ((xLabelIndex * xLabelScale) + xLabelPadding)){
+					//Esconde label se não for a última e estiver sobreposta
+					if (i < (pChartValues.length) 
+					&& xPos < ((xLabelIndex * xLabelScale) + xLabelPadding)){
 						xChartValueLabel.svgAddClass("-hide");
 					}else{
+						//Simplifica o texto do label para evitar repetição de informação
+						if (i < pChartValues.length){
+							xChartValueLabelSmall.text(dbsfaces.chart.pvSimplifyLabel(xPreviousLabel, xChartValueLabelNormal.text()));
+							xPreviousLabel = xChartValueLabelNormal.text();
+						}
 						xChartValueLabel.svgRemoveClass("-hide");
 						xLabelIndex++;
 					}
 				}
+//				xChartValueLabel.children("svg").svgAttr("height", xChartValueLabelSmall.get(0).getBoundingClientRect().height);
 			}
 			var xAntX;
 			var xAntY;
@@ -214,7 +233,7 @@ dbsfaces.chart = {
 	},
 	
 	//Verifica sopreposição dos labels 
-	pvInitializeLineAndLabels2: function(pCharts, pChart, pChartValues, pShowLabel, pDrawLine){
+	pvInitializeLineAndLabelsX: function(pCharts, pChart, pChartValues, pShowLabel, pDrawLine){
 		var xChartValue;
 		var xChartValueLabel;
 		var xChartValuePoint;
@@ -224,8 +243,9 @@ dbsfaces.chart = {
 		var xStarColor;
 		var xEndColor;
 		var xFontSize = dbsfaces.number.getOnlyNumber(pChartValues.css("font-size"));
+		var xPreviousLabel = "";
 		//Loop nos valores por ordem do index para garantir o loop na ordem em que foram criados
-		for (i=1; i <= pChartValues.length; i++){
+		for (var i=1; i <= pChartValues.length; i++){
 			xChartValue = pChartValues.filter("[index='" + i + "']");
 			//Verifica se há sobreposição
 			if (pShowLabel){
@@ -236,14 +256,20 @@ dbsfaces.chart = {
 //				xPos = Number(xChartValueLabelText.attr("x")) - (xChartValueLabelText.get(0).getBoundingClientRect().width / 2) + 4;
 //				xPos = Number(xChartValueLabelText.attr("x")) - (xChartValueLabelText.width() / 2) + 4;
 				if (xPos < xPosAnt){
+//					console.log("A:\t" + i + "\t" + pChartValues.length);
 					xChartValueLabel.svgAddClass("-hide");
 				}else{
 					xChartValueLabel.svgRemoveClass("-hide");
+//					console.log("B:\t" + i + "\t" + pChartValues.length);
+					if (i < pChartValues.length-3){
+						xChartValueLabelText.text(dbsfaces.chart.pvSimplifyLabel(xPreviousLabel, xChartValue.attr("label")));
+					}
 //					xPosAnt = Number(xChartValueLabel.attr("x")) + (xChartValueLabel.get(0).getComputedTextLength() / 2) + 4;
 //					xPosAnt = Number(xChartValueLabel.attr("x")) + (xChartValueLabel.getBoundingClientRect().height / 2) + 4;
 					xPosAnt = Number(xChartValueLabelText.attr("x")) + (xFontSize / 2) + 8;
 //					xPosAnt = Number(xChartValueLabelText.attr("x")) + (xChartValueLabelText.get(0).getBoundingClientRect().width / 2) + 8;
 //					xPosAnt = Number(xChartValueLabelText.attr("x")) + (xChartValueLabelText.width() / 2) + 8;
+					xPreviousLabel = xChartValue.attr("label");
 				}
 			}
 			var xAntX;
@@ -319,23 +345,11 @@ dbsfaces.chart = {
 			xGuide = dbsfaces.svg.use(xChartDeltaGroup, pCharts.get(0).id + "_guide", "-guide", null);
 			xGuide.svgAttr("guide", pGuideIndex);
 			xGuide.svgAttr("style", "");
-//			xGuide.svgAttr("rx", pChart.attr("cs") + "px");
-//			xGuide.svgAttr("ry", pChart.attr("cs") + "px");
-//			xGuide.svgAttr("width", pChart.attr("cs") + "px");
-//			xGuide.svgAttr("height", pChart.attr("cs") + "px");
-//			xGuide.css("fill", "none");
-//			xGuide.css("fill-opacity", "0");
 			//Salva o guia do gráfico
 			pChart.data("guide" + pGuideIndex, xGuide);
 			//Inicializa chartValue do guia como nulo
 			pChart.data("guide" + pGuideIndex).data("cv", pChartValue);
 		}
-
-//		dbsfaces.chart.setGuideIndex(pChart, pGuideIndex);
-////			dbsfaces.chartValue.select(pChartValue, true);
-//		dbsfaces.chart.pvSetGuide(pChart, pChartValue, true);
-
-
 		return xGuide;
 	},
 
@@ -489,64 +503,6 @@ dbsfaces.chart = {
 	pvSelectChart: function(pCharts, pChart, pChartValue, pSelect){
 		if (pChartValue == null){return;}
 		dbsfaces.charts.select(pChartValue, pSelect);
-//		var xDim = null;
-//		var xChartsChildren = pCharts.data("children");
-//		if (pSelect == null || pSelect){
-//			//Ativa o DIM em todos os chart que não estiverem já setados
-//			xChartsChildren.each(function(){
-//				xChart = $(this);
-//				if (!xChart.svgHasClass("-dim")){
-//					xChart.svgAddClass("-dim");
-//					xDim = true; //Indica que houve alteração
-//				}
-//			});
-//		}else{
-//			if (pCharts.data("hover") == null){
-//				xDim = false;
-//				//Desativa o DIM somente se não houver algum item selecionado
-//				xChartsChildren.each(function(){
-//					xChart = $(this);
-//					//Se for o próprio chart, verifica se o item a ser deselecionado é o mesmo que está selecionado na lista 
-//					if (pChart[0].id == xChart[0].id){
-//						if ((xChart.data("selection").length > 1)
-//						 || (xChart.data("selection").length > 0
-//						  && xChart.data("selection")[0].id != pChartValue[0].id)){
-//							xDim = null; //Cancela desativação do DIM
-//							return;
-//						}
-//					}else if(xChart.data("selection").length > 0){
-//						xDim = null;  //Cancela desativação do DIM
-//						return;
-//					}
-//				});
-//				//Desativa DIM de todos os chart
-//				if (xDim != null){
-//					xDim = null;
-//					xChartsChildren.each(function(){
-//						xChart = $(this);
-//						if (xChart.svgHasClass("-dim")){
-//							xChart.svgRemoveClass("-dim");
-//							xDim = false;
-//						}
-//					});			
-//				}
-//			}
-//		}
-//		//DIM dos valores da linha no grid(Bar e Line)
-//		if (pChart.attr("type") == "line"
-//		 || pChart.attr("type") == "bar"){
-//			if (xDim != null){
-//				if (xDim){
-//					if (!pCharts.data("grid").svgHasClass("-dim")){
-//			 			pCharts.data("grid").svgAddClass("-dim");
-//					}
-//				}else{
-//					if (pCharts.data("grid").svgHasClass("-dim")){
-//						pCharts.data("grid").svgRemoveClass("-dim");
-//					}
-//				}
-//			}
-//		}
 	},
 		
 	
@@ -669,7 +625,27 @@ dbsfaces.chart = {
 	},
 
 	pvSimplifyLabel: function(pPreviuosLabel, pCurrentLabel){
-		
+		//Delimitador no final
+//		var xRE = new RegExp(/[^ \-.:\r\n/\\]+[ \-.:\r\n/\\]*/g);
+//		var xP = pPreviuosLabel.match(xRE);
+//		var xC = pCurrentLabel.match(xRE);
+		//Delimitador no inicio
+		var xRE = new RegExp(/(?=[ \-.:\r\n/\\]+)/);
+//		var xRE = new RegExp(/([ \-.:\r\n/\\]+)/);
+		var xP = pPreviuosLabel.split(xRE);
+		var xC = pCurrentLabel.split(xRE);
+		var xS = "";
+		for (var i=0; i < xC.length; i++){
+			if (xP.length >= i){
+				if (xP[i] != xC[i]){
+					for (k=i; k < xC.length; k++){
+						xS += xC[k];
+					}
+					break;
+				}
+			}
+		}
+		return xS;
 	}
 
 //	
