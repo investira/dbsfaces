@@ -2402,6 +2402,14 @@ public class  DBSFaces {
 					if (xType == TYPE.PIE){
 						//Não exibe linhas do grid
 						pCharts.setShowGrid(false);
+//						pCharts.setShowDelta(false);
+//					}else{
+//						if (xChart.getShowDelta()){
+//							pCharts.setShowDelta(true);
+//						}
+					}
+					if (xChart.getShowDelta()){
+						pCharts.setShowDelta(true);
 					}
 					//Se não foi informado DBSResultSet
 					if (DBSObject.isEmpty(xChart.getVar())

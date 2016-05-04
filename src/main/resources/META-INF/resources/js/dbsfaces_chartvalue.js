@@ -140,6 +140,7 @@ dbsfaces.chartValue = {
 
 		var xChartValuePoint = pChartValue.children(".-point");
 		var xChartValueInfo = pChartValue.children(".-info");
+		pChartValue.data("infogroup", xChartValueInfo);
 		xValue = xChartValueInfo.children(".-value").text();
 		if (xValue != 0){
 			//Salva valores dentro do próprio componente para facilar o uso no momento do encode do delta
@@ -158,7 +159,7 @@ dbsfaces.chartValue = {
 	},
 
 	pvInitializePie: function(pChartValue){
-		var xChartValueInfo = pChartValue.children(".-info");
+		var xChartValueInfo = pChartValue.data("infogroup");
 		var xChartValueValue = xChartValueInfo.children(".-value");
 		var xChartValueBox = xChartValueInfo.children(".-box");
 		var xTransform = "translateY(-0.70em) ";
@@ -183,13 +184,14 @@ dbsfaces.chartValue = {
 		return false;
 	},
 	
-//	lostFocus: function(pChartValue){
-//		if (pChartValue == null){return;}
-//		var xHoverChart = pChartValue.data("parent");
-//		var xHoverCharts = xHoverChart.data("parent");
-//		var xHover = xHoverCharts.data("hover");
-//		dbsfaces.chartValue.pvHoverChartValue(xHoverCharts, xHoverChart, xHover, false);
-//	},
+	lostFocus: function(pChartValue){
+		if (pChartValue == null){return;}
+		var xHoverChart = pChartValue.data("parent");
+		var xHoverCharts = xHoverChart.data("parent");
+		var xHover = xHoverCharts.data("hover");
+		dbsfaces.chartValue.pvHoverChartValue(xHoverCharts, xHoverChart, xHover, false);
+		dbsfaces.chart.unSelect(xHover);
+	},
 
 	select: function(pChartValue, pSelect){
 //		if (pChartValue == null){return;}
@@ -286,7 +288,6 @@ dbsfaces.chartValue = {
 
 	pvHoverChartValue: function(pCharts, pChart, pChartValue, pSelect){
 		if (pChartValue == null){return;}
-
 		//Hover do item
 		if (pSelect == null || pSelect){
 			//Marca selecionado
@@ -298,7 +299,7 @@ dbsfaces.chartValue = {
 			pCharts.data("hover", null);
 		}
 	},
-	
+
 	pvSelectChartValue: function(pCharts, pChart, pChartValue, pSelect){
 		if (pChartValue == null){return;}
 		//Verifica se gráfico possui guia

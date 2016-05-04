@@ -152,7 +152,7 @@ dbsfaces.chart = {
 			xChartValue = pChartValues.filter("[index='" + i + "']");
 			//Esconde as labels sobrepostas
 			if (pShowLabel){
-				xChartValueLabel = xChartValue.children(".-info").children(".-label");
+				xChartValueLabel = xChartValue.data("infogroup").children(".-label");
 				xChartValueLabelText = xChartValueLabel.children("text"); //xChartValueLabelText
 				xChartValueLabelSmall = xChartValueLabelText.children(".-small");
 				xChartValueLabelNormal = xChartValueLabelText.children(".-normal");//xChartValueLabelText
@@ -249,7 +249,7 @@ dbsfaces.chart = {
 			xChartValue = pChartValues.filter("[index='" + i + "']");
 			//Verifica se há sobreposição
 			if (pShowLabel){
-				xChartValueLabel = xChartValue.children(".-info").children(".-label");
+				xChartValueLabel = xChartValue.data("infogroup").children(".-label");
 				xChartValueLabelText = xChartValueLabel.children("text"); //xChartValueLabelText
 //				xPos = Number(xChartValueLabel.attr("x")) - (xChartValueLabel.get(0).getComputedTextLength() / 2);
 				xPos = Number(xChartValueLabelText.attr("x")) - (xFontSize / 2) + 4;
@@ -508,11 +508,11 @@ dbsfaces.chart = {
 	
 	pvSetGuide: function(pChart, pChartValue, pSelect){
 		if (pChart.attr("type") != "line"){return;}
-		if (pChart.data("guideIndex") == 0){return;}
+		var xChartGuideIndex = pChart.data("guideIndex");
+		if (xChartGuideIndex == 0){return;}
 		if (typeof(pChart.attr("showdelta")) == 'undefined'){return;}
-
-		var xChartPathGuide =  pChart.data("guide" + pChart.data("guideIndex"));
-		var xChartPathGuideOther =  pChart.data("guide" + (pChart.data("guideIndex") == 1 ? 2 : 1));
+		var xChartPathGuide =  pChart.data("guide" + xChartGuideIndex);
+		var xChartPathGuideOther =  pChart.data("guide" + (xChartGuideIndex == 1 ? 2 : 1));
 		pChart.data("guide" + pChart.data("guideIndex"));
 		if (pSelect == null || pSelect){
 			xChartPathGuide.show();
@@ -541,7 +541,39 @@ dbsfaces.chart = {
 		}
 		
 		dbsfaces.chart.pvShowDelta(pChart);
+		dbsfaces.chart.pvSetGuideAround(pChart, pChartValue, xChartGuideIndex, pSelect);
 	},
+
+	pvSetGuideAround: function(pChart, pChartValue, pChartGuideIndex, pSelect){
+		var xClass = "-around" + pChartGuideIndex;
+		pChartValue.svgRemoveClass(xClass);
+		pChartValue.siblings(".dbs_chartValue." + xClass).svgRemoveClass(xClass);
+		var xFontSize = pChart.data("parent").data("fontsize");
+		var xXLeft = pChartValue.data("dx") - xFontSize;
+		var xXRight = pChartValue.data("dx") + xFontSize;
+		var xLoop = true;
+		var xElement;
+		xElement = pChartValue;
+		while (true){
+			xElement = xElement.prev(".dbs_chartValue");
+			if (xElement.length == 0
+			 || xElement.data("dx") < xXLeft){
+				break;
+			}
+			xElement.svgAddClass(xClass);
+		}
+		xElement = pChartValue;
+		while (true){
+			xElement = xElement.next(".dbs_chartValue");
+			if (xElement.length == 0
+			 || xElement.data("dx") > xXRight){
+				break;
+			}
+			xElement.svgAddClass(xClass);
+		}
+	},
+	
+
 	
 	pvShowDelta: function(pChart){
 		if (pChart.attr("type") != "line"){return;}

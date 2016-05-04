@@ -24,8 +24,6 @@ import br.com.dbsoft.util.DBSObject;
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSCharts.RENDERER_TYPE)
 public class DBSChartsRenderer extends DBSRenderer {
 
-	static String wChartlabelHeight = "1.8em";
-	
 	@Override
 	public void decode(FacesContext pContext, UIComponent pComponent) {
 	}
@@ -103,7 +101,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 						xWriter.startElement("g", xCharts);
 							DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
 							//LABEL--------------------------
-							pvEncodeLabels(xCharts, xWriter);
+							boolean xHasLabel= pvEncodeLabels(xCharts, xWriter);
 							//LEFT--------------------------
 							xWriter.startElement("g", xCharts);
 								DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.LEFT, null);
@@ -115,7 +113,10 @@ public class DBSChartsRenderer extends DBSRenderer {
 								//Linhas do grid
 								xWriter.startElement("g", xCharts);
 									DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.CHARTS.MAIN.trim() + DBSFaces.CSS.MODIFIER.GRID.trim(), null);
-									pvEncodeLines(xCharts, xWriter);
+									if (xCharts.getShowDelta()){ 
+										DBSFaces.setAttribute(xWriter, "showdelta", xCharts.getShowDelta(), null);
+									}
+									pvEncodeLines(xCharts, xWriter, !xHasLabel);
 								xWriter.endElement("g");
 								//Gráficos--------------------------
 								DBSFaces.renderChildren(pContext, xCharts);
@@ -184,10 +185,12 @@ public class DBSChartsRenderer extends DBSRenderer {
 		pWriter.endElement("g");
 	}
 
-	private void pvEncodeLines(DBSCharts pCharts, ResponseWriter pWriter) throws IOException{
+	private void pvEncodeLines(DBSCharts pCharts, ResponseWriter pWriter, boolean pEncodeTopLine) throws IOException{
 		if (pCharts.getCaption()!=null){
 			//Linha top
-			DBSFaces.encodeSVGLine(pCharts, pWriter, 0D, 0D, pCharts.getWidth().doubleValue(), 0D, DBSFaces.CSS.MODIFIER.LINE, null, null);
+			if (pEncodeTopLine){
+				DBSFaces.encodeSVGLine(pCharts, pWriter, 0D, 0D, pCharts.getWidth().doubleValue(), 0D, DBSFaces.CSS.MODIFIER.LINE, null, null);
+			}
 			//Linha bottom
 			DBSFaces.encodeSVGLine(pCharts, pWriter, 0D, pCharts.getChartHeight().doubleValue() + (pCharts.getPadding() * 2), pCharts.getWidth().doubleValue(), pCharts.getChartHeight().doubleValue() + (pCharts.getPadding() * 2), DBSFaces.CSS.MODIFIER.LINE, null, null);
 		}
@@ -208,7 +211,9 @@ public class DBSChartsRenderer extends DBSRenderer {
 			xPosicaoInvertida = pCharts.getChartHeight() - xPosicao + pCharts.getPadding();
 			//Encode da linha do grid até o inicio do texto do valor
 			DBSFaces.encodeSVGLine(pCharts, pWriter, pCharts.getPadding(), xPosicaoInvertida.doubleValue(), pCharts.getChartWidth().doubleValue() + (pCharts.getPadding() * 1), xPosicaoInvertida.doubleValue(), DBSFaces.CSS.MODIFIER.LINE, null, null);
-			if (pCharts.getShowGridValue()){
+//			if (pCharts.getShowGridValue()
+//			&& !pCharts.getShowDelta()){ 
+			if (pCharts.getShowGridValue()){ 
 				xPosicaoText = xPosicao;
 				//Encode do texto do valor
 				xValorTmp = DBSNumber.toDouble(DBSFormat.getFormattedNumber(pCharts.convertYPxToValue(xPosicaoInvertida), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask()));
@@ -223,7 +228,6 @@ public class DBSChartsRenderer extends DBSRenderer {
 			xFormatedValue = DBSFormat.getFormattedNumber(0, NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask());
 			xPosicaoText = xPosicaoInvertida + DBSCharts.FontSize.doubleValue() / 2;
 			DBSFaces.encodeSVGLine(pCharts, pWriter, pCharts.getPadding(), xPosicaoInvertida.doubleValue(), pCharts.getChartWidth().doubleValue() + (pCharts.getPadding() * 1), xPosicaoInvertida.doubleValue(), DBSFaces.CSS.MODIFIER.LINE, "stroke-dasharray: 2,5; stroke-width: 1px;", null);
-//			DBSFaces.encodeSVGText(pCharts, pWriter,  DBSFaces.CSS.MODIFIER.LABEL, "text-anchor:end", pCharts.getWidth().doubleValue(), xPosicaoText.doubleValue(), xFormatedValue);
 		}
 	}
 

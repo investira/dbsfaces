@@ -4,11 +4,10 @@
 	pointer-events: none;
 	stroke-width: 0px;
 }
-
-.dbs_chartValue.-selected,
-.dbs_chartValue.-hover{
-	fill-opacity: 1;
-}   
+.dbs_chartValue.-around1,
+.dbs_chartValue.-around2{
+	opacity: 0.1;
+}
 
 .dbs_chartValue > .-point{
 	pointer-events: all;
@@ -39,48 +38,42 @@
 .dbs_chartValue > .-info > .-label,
 .dbs_chartValue > .-info > .-value{
 	stroke-width: 0px !important;
+/* 	opacity: 1; */
 }
 
-.dbs_chartValue > .-info > .-label.-hide,
-.dbs_chartValue > .-info > .-value.-hide{
-	fill-opacity: 0;
-}
+/* .dbs_chartValue > .-info > .-label.-hide, */
+/* .dbs_chartValue > .-info > .-value.-hide{ */
+/* 	opacity: 0; */
+/* } */
 
-.dbs_chartValue.-hover > .-info > .-label,
-.dbs_chartValue.-hover > .-info > .-value,
-.dbs_chartValue.-selected > .-info > .-label,
-.dbs_chartValue.-selected > .-info > .-value{
-	fill-opacity: 1;
-}
+/* .dbs_chartValue.-hover > .-info > .-label, */
+/* .dbs_chartValue.-hover > .-info > .-value{ */
+/* 	opacity: 1; */
+/* } */
+/* .dbs_chartValue.-selected > .-info > .-label, */
+/* .dbs_chartValue.-selected > .-info > .-value{ */
+/* 	opacity: 1; */
+/* } */
 
-.dbs_chartValue > .-info > .-label > text > .-normal,
-.dbs_chartValue > .-info > .-value > text > .-normal{
+.dbs_chartValue > .-info > .-label > text > .-normal{
 	display:none;
 }
-.dbs_chartValue > .-info > .-label > text > .-small,
-.dbs_chartValue > .-info > .-value > text > .-small{
+.dbs_chartValue > .-info > .-label > text > .-small{
 	display:inline-block;
 }
-
 
 .dbs_chartValue.-selected > .-info > .-label > text > .-normal,
-.dbs_chartValue.-selected > .-info > .-value > text > .-normal,
-.dbs_chartValue.-hover > .-info > .-label > text > .-normal,
-.dbs_chartValue.-hover > .-info > .-value > text > .-normal{
+.dbs_chartValue.-hover > .-info > .-label > text > .-normal{
 	display:inline-block;
-	fill-opacity: 1;
 }
 .dbs_chartValue.-selected > .-info > .-label > text > .-small,
-.dbs_chartValue.-selected > .-info > .-value > text > .-small,
-.dbs_chartValue.-hover > .-info > .-label > text > .-small,
-.dbs_chartValue.-hover > .-info > .-value > text > .-small{
+.dbs_chartValue.-hover > .-info > .-label > text > .-small{
 	display:none;
-	fill-opacity: 0;
 }
 
 .dbs_chartValue > .-foreignobject{
 	overflow:visible;
-	fill-opacity: 1;
+/* 	fill-opacity: 1; */
 }
 
 .dbs_chartValue > .-foreignobject > span{

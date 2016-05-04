@@ -36,7 +36,8 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		chartWidth,
 		chartHeight,
 		itensCount,
-		numberOfGridLines;
+		numberOfGridLines,
+		showDelta;
 
 		String toString;
 
@@ -91,6 +92,14 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		handleAttribute("showGridValue", pShowGridValue);
 	}
 
+	public Boolean getShowDelta() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.showDelta, false);
+	}
+	public void setShowDelta(Boolean pShowDelta) {
+		getStateHelper().put(PropertyKeys.showDelta, pShowDelta);
+		handleAttribute("showDelta", pShowDelta);
+	} 
+	
 	public Integer getHeight() {
 		return (Integer) getStateHelper().eval(PropertyKeys.height, 50);
 	}

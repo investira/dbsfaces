@@ -31,6 +31,7 @@ dbsfaces.charts = {
 		//Salva chart's vinculados a este charts
 		pCharts.data("children", pCharts.find(".dbs_chart"));
 		pCharts.data("grid", pCharts.find(".dbs_charts-grid").first());
+		pCharts.data("fontsize", Number(dbsfaces.number.getOnlyNumber(pCharts.css("font-size"))));
 		//Item selecionado temporariamente(Hover)
 		pCharts.data("hover", null);
 	},
@@ -50,6 +51,7 @@ dbsfaces.charts = {
 				dbsfaces.chart.setGuideIndex(xChart, 2);
 				dbsfaces.chartValue.select(xChart.data("guide2").data("cv"), null);
 				dbsfaces.chart.setGuideIndex(xChart, 0);
+				dbsfaces.charts.lostFocus(pCharts);
 			}
 
 //			dbsfaces.chart.setGuideIndex(pChart, pGuideIndex);
@@ -67,9 +69,11 @@ dbsfaces.charts = {
 			xMarker = dbsfaces.svg.g(xDefs, null, null, null, null);
 			xMarker.svgAttr("id", pCharts.get(0).id + "_point");
 			xMarker.svgAttr("class", "-point");
-			xElement = dbsfaces.svg.ellipse(xMarker,  null, null, "1em", "1em", null, null, null);
+			//Circulo externo
+			xElement = dbsfaces.svg.ellipse(xMarker,  null, null, "1em", "1em", null, null, "none");
 			xElement.svgAttr("stroke", "currentColor");
-			xElement = dbsfaces.svg.ellipse(xMarker, null, null, ".2em", ".2em", null, null, "none");
+			//Circulo interno
+			xElement = dbsfaces.svg.ellipse(xMarker, null, null, ".2em", ".2em", null, null, "white");
 			xElement.svgAttr("stroke", "currentColor");
 		}
 		//Cria cria de calculo do delta
@@ -151,14 +155,18 @@ dbsfaces.charts = {
 		xChartsChildren.each(function(){
 			//Verifica se não há registro marca antes de desmarcar
 			var xChart = $(this);
-			if (xChart.data("deltagroup") != null
-			 || xChart.data("selection").length > 0){
+//			if (typeof(xChart.attr("showdelta")) != "undefined"
+//			 || xChart.data("selection").length > 0){
+//				xDoUnSelect = false;
+//				return;
+//			}
+			if (xChart.data("selection").length > 0){
 				xDoUnSelect = false;
 				return;
 			}
 		});
 		if (xDoUnSelect){
-			dbsfaces.chartValue.unSelect(xHover);
+			dbsfaces.chartValue.lostFocus(xHover);
 		}
 //		//Desmarcar qualquer guia 
 		xChartsChildren.each(function(){
@@ -259,6 +267,8 @@ dbsfaces.charts = {
 		var xSiblings = pLabel.siblings();
 		var xSiblingsActivated = xSiblings.filter(".-activated");
 		var xChart= $("#" + dbsfaces.util.jsid(pLabel.attr("chartid")));
+		//Move label para primeiro plano
+		dbsfaces.ui.moveToFront(pLabel);
 		//Desmarca todos
 		xSiblingsActivated.each(function(){
 			var xSibilingLabel = $(this);

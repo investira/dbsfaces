@@ -52,10 +52,10 @@
 .dbs_charts > .-container > .-data > .-container > .-content > .-label > .-content{
 	font-size: 0.6em;
 	cursor: pointer;
-	fill-opacity: 0.7;
+	opacity: 0.7;
 }
 .dbs_charts > .-container > .-data > .-container > .-content > .-label > .-content.-activated{
-	fill-opacity: 1;
+	opacity: 1;
 	-moz-animation: -kf_dbs_chart_selected .1s linear;
 	-o-animation: -kf_dbs_chart_selected .1s linear;
 	-webkit-animation: -kf_dbs_chart_selected .1s linear;
@@ -64,9 +64,11 @@
 
 .dbs_charts > .-container > .-data > .-container > .-content > .-label > .-content > text{
 	fill: white;
-/* 	dominant-baseline: auto; */
 	transform: translate(.5em);
-/* 	transform: translate(.5em, 1.2em); */
+	fill-opacity:0.8;
+}	
+.dbs_charts > .-container > .-data > .-container > .-content > .-label > .-content.-activated > text{
+	fill-opacity:1;
 }	
 
 .dbs_charts > .-container > .-data > .-container > .-content > .-label > .-content > rect{
@@ -81,16 +83,15 @@
 	shape-rendering: crispEdges;
 }
 .dbs_charts-grid > .-label{
-	fill: rgb(180, 180, 180);
 	stroke-width: 0px;
 	text-anchor: end;
 	dominant-baseline: middle;
     cursor: default;
+    opacity: 0.8;
 }
 
 .dbs_charts-grid.-dim > text.-label{
-/* 	opacity: 0; */
-	fill-opacity: 0;
+	opacity: 0;
 }
 
 .dbs_charts > .-container > .-data > .-container > .-content > .-right{
