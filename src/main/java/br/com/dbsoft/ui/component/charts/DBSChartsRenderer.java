@@ -211,9 +211,9 @@ public class DBSChartsRenderer extends DBSRenderer {
 			xPosicaoInvertida = pCharts.getChartHeight() - xPosicao + pCharts.getPadding();
 			//Encode da linha do grid até o inicio do texto do valor
 			DBSFaces.encodeSVGLine(pCharts, pWriter, pCharts.getPadding(), xPosicaoInvertida.doubleValue(), pCharts.getChartWidth().doubleValue() + (pCharts.getPadding() * 1), xPosicaoInvertida.doubleValue(), DBSFaces.CSS.MODIFIER.LINE, null, null);
-//			if (pCharts.getShowGridValue()
-//			&& !pCharts.getShowDelta()){ 
-			if (pCharts.getShowGridValue()){ 
+			if (pCharts.getShowGridValue()
+			&& !pCharts.getShowDelta()){ 
+//			if (pCharts.getShowGridValue()){ 
 				xPosicaoText = xPosicao;
 				//Encode do texto do valor
 				xValorTmp = DBSNumber.toDouble(DBSFormat.getFormattedNumber(pCharts.convertYPxToValue(xPosicaoInvertida), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask()));

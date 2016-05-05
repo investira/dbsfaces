@@ -70,7 +70,7 @@
 	opacity: 0.5;
 }
 .dbs_chart[type='line'][showdelta].-activated > .-delta > .-info{
-	opacity: 0.8;
+	opacity: 0.7;
 }
 .dbs_chart[type='line'][showdelta].-activated > .dbs_chartValue:not(.-selected):not(.-hover) > .-info > .-label:not(.-hide){
 	opacity: 0.5;
@@ -186,9 +186,10 @@
 	animation: -kf_dbs_chart_selected .1s linear;    
 }
 
-.dbs_chart > .-delta > .-deltaarea{
-	fill-opacity: 0.12;
-    stroke-width: 2px;
+.dbs_chart > .-delta > .-deltaarea_r,
+.dbs_chart > .-delta > .-deltaarea_l{
+	fill-opacity: 0.2;
+    stroke-width: 0px;
 }
 
 .dbs_chart > .-delta > .-info > .-value{
@@ -196,7 +197,7 @@
     text-anchor: middle;
     font-weight: bolder;
     stroke-width: .01em;    
-/*     dominant-baseline: middle; */
+	fill-opacity: 0.8;
 }
 
 .dbs_chart > .-delta > .-info > .-value > .-label{

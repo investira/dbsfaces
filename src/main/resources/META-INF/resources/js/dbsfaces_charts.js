@@ -39,24 +39,27 @@ dbsfaces.charts = {
 	//Cria guia padrão para indicar a posição no gráfico tipo line
 	pvInitializeGuides: function(pCharts){
 		dbsfaces.charts.pvCreateDefGuides(pCharts);
+//		dbsfaces.charts.lostFocus(pCharts);
 
-		//Seta posição dos guides do delta
+//		//Seta posição dos guides do delta
 		var xChartsChildren = pCharts.data("children");
 		xChartsChildren.each(function(){
 			//Verifica se não há registro marca antes de desmarcar
 			var xChart = $(this);
 			if (typeof(xChart.attr("showdelta")) != 'undefined'){
-				dbsfaces.chart.setGuideIndex(xChart, 1);
-				dbsfaces.chartValue.select(xChart.data("guide1").data("cv"), null);
-				dbsfaces.chart.setGuideIndex(xChart, 2);
-				dbsfaces.chartValue.select(xChart.data("guide2").data("cv"), null);
-				dbsfaces.chart.setGuideIndex(xChart, 0);
-				dbsfaces.charts.lostFocus(pCharts);
+				if (xChart.attr("type") == "line"){
+					dbsfaces.chart.setGuideIndex(xChart, 1);
+					dbsfaces.chartValue.select(xChart.data("guide1").data("cv"), null);
+					dbsfaces.chart.setGuideIndex(xChart, 2);
+					dbsfaces.chartValue.select(xChart.data("guide2").data("cv"), null);
+					dbsfaces.chart.setGuideIndex(xChart, 0);
+				}
 			}
 
 //			dbsfaces.chart.setGuideIndex(pChart, pGuideIndex);
 //			dbsfaces.chartValue.select(pChartValue, true);
 		});
+		dbsfaces.charts.lostFocus(pCharts);
 	},
 	
 	//Cria guia padrão para indicar a posição no gráfico tipo line
@@ -113,6 +116,7 @@ dbsfaces.charts = {
 			dbsfaces.charts.pvActivateChartOne(xChart, null, true);
 			dbsfaces.charts.pvActivateDelta(pCharts, xFirstChart, true);
 		}
+		//Artifício para corrigir altura do firefox
 		var xHeight = xContent[0].getBoundingClientRect().height;
 		xContainerData.css("height", xHeight);
 		
@@ -130,7 +134,7 @@ dbsfaces.charts = {
 		}
 	},
 	
-	pvInitializeDimentions: function(pCharts){
+	pvInitializeDimensions: function(pCharts){
 		var xGroupId = pCharts.attr("groupid");
 		if (typeof(xGroupId) != 'undefined'){
 			var xMembers = $("div.dbs_charts[groupid='" + xGroupId + "']");

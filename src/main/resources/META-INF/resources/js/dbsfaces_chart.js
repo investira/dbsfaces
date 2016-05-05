@@ -72,10 +72,10 @@ dbsfaces.chart = {
 		 || xDrawLine){
 			//Verifica sopreposição dos labels e cor da linhas
 			dbsfaces.chart.pvInitializeLineAndLabels(xCharts, pChart, xChartChildren, xShowLabel, xDrawLine);
-			//Cria guia principal
-			if (xDrawLine && xShowDelta){
-				dbsfaces.chart.pvInitializeDelta(xCharts, pChart);
-			}
+		}
+		//Cria guia principal
+		if (xShowDelta){
+			dbsfaces.chart.pvInitializeDelta(xCharts, pChart);
 		}
 		dbsfaces.chart.pvSetFontSize(xCharts, pChart);
 	},
@@ -232,139 +232,69 @@ dbsfaces.chart = {
 		}
 	},
 	
-	//Verifica sopreposição dos labels 
-	pvInitializeLineAndLabelsX: function(pCharts, pChart, pChartValues, pShowLabel, pDrawLine){
-		var xChartValue;
-		var xChartValueLabel;
-		var xChartValuePoint;
-		var xPos;
-		var xPosAnt = 0;
-		var xStringPath = "";
-		var xStarColor;
-		var xEndColor;
-		var xFontSize = dbsfaces.number.getOnlyNumber(pChartValues.css("font-size"));
-		var xPreviousLabel = "";
-		//Loop nos valores por ordem do index para garantir o loop na ordem em que foram criados
-		for (var i=1; i <= pChartValues.length; i++){
-			xChartValue = pChartValues.filter("[index='" + i + "']");
-			//Verifica se há sobreposição
-			if (pShowLabel){
-				xChartValueLabel = xChartValue.data("infogroup").children(".-label");
-				xChartValueLabelText = xChartValueLabel.children("text"); //xChartValueLabelText
-//				xPos = Number(xChartValueLabel.attr("x")) - (xChartValueLabel.get(0).getComputedTextLength() / 2);
-				xPos = Number(xChartValueLabelText.attr("x")) - (xFontSize / 2) + 4;
-//				xPos = Number(xChartValueLabelText.attr("x")) - (xChartValueLabelText.get(0).getBoundingClientRect().width / 2) + 4;
-//				xPos = Number(xChartValueLabelText.attr("x")) - (xChartValueLabelText.width() / 2) + 4;
-				if (xPos < xPosAnt){
-//					console.log("A:\t" + i + "\t" + pChartValues.length);
-					xChartValueLabel.svgAddClass("-hide");
-				}else{
-					xChartValueLabel.svgRemoveClass("-hide");
-//					console.log("B:\t" + i + "\t" + pChartValues.length);
-					if (i < pChartValues.length-3){
-						xChartValueLabelText.text(dbsfaces.chart.pvSimplifyLabel(xPreviousLabel, xChartValue.attr("label")));
-					}
-//					xPosAnt = Number(xChartValueLabel.attr("x")) + (xChartValueLabel.get(0).getComputedTextLength() / 2) + 4;
-//					xPosAnt = Number(xChartValueLabel.attr("x")) + (xChartValueLabel.getBoundingClientRect().height / 2) + 4;
-					xPosAnt = Number(xChartValueLabelText.attr("x")) + (xFontSize / 2) + 8;
-//					xPosAnt = Number(xChartValueLabelText.attr("x")) + (xChartValueLabelText.get(0).getBoundingClientRect().width / 2) + 8;
-//					xPosAnt = Number(xChartValueLabelText.attr("x")) + (xChartValueLabelText.width() / 2) + 8;
-					xPreviousLabel = xChartValue.attr("label");
-				}
-			}
-			var xAntX;
-			var xAntY;
-			var xY;
-			var xX;
-			//Configura a linha conectando os pontos
-			if (pDrawLine){
-				if (i==1){
-					xStringPath = "M";
-					//Salva cor do primeiro ponto
-					xStarColor = xChartValue.data("df");
-				}else {
-					xStringPath += "L";
-				}
-				if (i == pChartValues.length){
-					//Salva cor do último ponto
-					xStopColor = xChartValue.data("df");
-				}
-				xX = Number(xChartValue.data("dx"));
-				xY = Number(xChartValue.data("dy"));
-				//Artificio para corrigir o problema em que a linha com gradient não é exibida quando é uma reta perfeita.
-				if (xX==xAntX){xX+=0.0001}
-				if (xY==xAntY){xY+=0.0001}
-				xStringPath += xX + "," + xY;
-
-				xAntX = xChartValue.data("dx");
-				xAntY = xChartValue.data("dy");
-			}
-		}
-		//Cria a linha e cor que conecta os pontos
-		if (xStringPath != ""){
-			//Cria cor
-			var xSvg = pCharts.find(".-container > .-data > .-container > defs");
-			var xLG = dbsfaces.svg.linearGradient(xSvg, pChart.get(0).id + "_linestroke");
-			dbsfaces.svg.stop(xLG, 0, xStarColor);
-			dbsfaces.svg.stop(xLG, "100%", xStopColor);
-			//Path do gráfico
-			var xPath = dbsfaces.svg.path(pChart.data("pathgroup"), xStringPath, null, null, null);
-			xPath.svgAttr("stroke", "url(#" + pChart.get(0).id + "_linestroke)");
-			//Salva path no próprio componente para agilizar o findPoint
-			pChart.data("path", xPath.get(0));
-		}
-	},
-	
 	//Inicializa delta 
 	pvInitializeDelta: function(pCharts, pChart){
-		var xChartChildren = pChart.data("children");
-		var xCV1 = null;
-		var xCV2 = null;
-		if (xChartChildren.length > 0){
-			xCV1 = $(xChartChildren.get(0));
-			xCV2 = $(xChartChildren.get(xChartChildren.length - 1));
-		}
 		//Cria area marcada
-		dbsfaces.chart.pvInitializeDeltaArea(pChart);
-		//Cria texto com o delta
-		dbsfaces.chart.pvInitializeDeltaInfo(pChart);
-		//Inicializa guia para o primeiro ponto
-		dbsfaces.chart.pvInitializeGuide(pCharts, pChart, xCV1, 1);
-		//Inicializa guia para o último
-		dbsfaces.chart.pvInitializeGuide(pCharts, pChart, xCV2, 2);
+		dbsfaces.chart.pvInitializeDeltaAreas(pCharts, pChart);
 
 		dbsfaces.chart.setGuideIndex(pChart, 0);
-		dbsfaces.ui.moveToFront(pChart.data("mask"));
-	},
-	
-	//Cria guias 
-	pvInitializeGuide: function(pCharts, pChart, pChartValue, pGuideIndex){
-		var xChartDeltaGroup = pChart.data("deltagroup");
-		var xGuide = xChartDeltaGroup.children(".-guide[guide='" + pGuideIndex + "']");
-		if (xGuide.length == 0){
-			xGuide = dbsfaces.svg.use(xChartDeltaGroup, pCharts.get(0).id + "_guide", "-guide", null);
-			xGuide.svgAttr("guide", pGuideIndex);
-			xGuide.svgAttr("style", "");
-			//Salva o guia do gráfico
-			pChart.data("guide" + pGuideIndex, xGuide);
-			//Inicializa chartValue do guia como nulo
-			pChart.data("guide" + pGuideIndex).data("cv", pChartValue);
+		if (pChart.data("mask").lenght > 0){
+			dbsfaces.ui.moveToFront(pChart.data("mask"));
 		}
-		return xGuide;
 	},
 
 	//Cria area entre as guias para indicar seleção 
-	pvInitializeDeltaArea: function(pChart){
+	pvInitializeDeltaAreas: function(pCharts, pChart){
+		//Cria texto com o delta
+		dbsfaces.chart.pvInitializeDeltaInfo(pChart);
+
+		if (pChart.attr("type") == "line"){
+			var xChartChildren = pChart.data("children");
+			var xCV1 = null;
+			var xCV2 = null;
+			if (xChartChildren.length > 0){
+				xCV1 = $(xChartChildren.get(0));
+				xCV2 = $(xChartChildren.get(xChartChildren.length - 1));
+			}
+			dbsfaces.chart.pvInitializeDeltaAreaChartLine(pCharts, pChart, xCV1, 1);
+			dbsfaces.chart.pvInitializeDeltaAreaChartLine(pCharts, pChart, xCV2, 2);
+		}else{
+			dbsfaces.chart.pvInitializeDeltaAreaChartPie(pChart);
+		}
+	},
+
+	pvInitializeDeltaAreaChartLine: function(pCharts, pChart, pChartValue, pGuideIndex){
+		var xItem = (pGuideIndex == 1 ? "l": "r");
+		var xChartDeltaGroup = pChart.data("deltagroup");
+		var xDeltaArea = xChartDeltaGroup.children(".-deltaarea_" + xItem);
+		var xChartMask = pChart.data("mask");
+		var xHeight = xChartMask.attr("height");
+		var xX = (pGuideIndex == 1 ? xChartMask.attr("x") : -(Number(xChartMask.attr("width")) + 1));
+		if (xDeltaArea.length == 0){
+			xDeltaArea = dbsfaces.svg.rect(xChartDeltaGroup, xX, xChartMask.attr("y"), 0, xHeight, null, null, "-deltaarea_" + xItem, null, null);
+			xDeltaArea.svgAttr("fill", "url(#" + pChart.get(0).id + "_linestroke)");
+			if (pGuideIndex == 2){
+				dbsfaces.ui.cssTransform(xDeltaArea, "scale(-1,1)");
+			}
+			pChart.data("deltaarea_" + xItem, xDeltaArea);
+		}
+		//Inicializa guia para o primeiro ponto
+		dbsfaces.chart.pvInitializeGuide(pCharts, pChart, pChartValue, pGuideIndex);
+	},
+	
+	pvInitializeDeltaAreaChartPie: function(pChart){
 		var xChartDeltaGroup = pChart.data("deltagroup");
 		var xDeltaArea = xChartDeltaGroup.children(".-deltaarea");
-		var xChartMask = pChart.data("mask");
+//		var xChartMask = pChart.data("mask");
+//		var xHeight = xChartMask.attr("height");
+//		var xX = (pItem == "l" ? xChartMask.attr("x") : -(Number(xChartMask.attr("width")) + 1));
 		if (xDeltaArea.length == 0){
-			var xHeight = xChartMask.attr("height");
-			xDeltaArea = dbsfaces.svg.rect(xChartDeltaGroup, 0, xChartMask.attr("y"), 0, xHeight, null, null, "-deltaarea", null, null);
+			xDeltaArea = dbsfaces.svg.ellipse(xChartDeltaGroup,  null, null, "1em", "1em", null, null, "none");
 			xDeltaArea.svgAttr("fill", "url(#" + pChart.get(0).id + "_linestroke)");
 			pChart.data("deltaarea", xDeltaArea);
 		}
 	},
+	
 	pvInitializeDeltaInfo: function(pChart){
 		var xChartDeltaGroup = pChart.data("deltagroup");
 		var xDeltaInfoGroup = xChartDeltaGroup.children(".-info");
@@ -387,6 +317,24 @@ dbsfaces.chart = {
 			pChart.data("deltavalue", xDeltaValue);
 		}
 	},
+	
+	//Cria guias 
+	pvInitializeGuide: function(pCharts, pChart, pChartValue, pGuideIndex){
+		var xChartDeltaGroup = pChart.data("deltagroup");
+		var xGuide = xChartDeltaGroup.children(".-guide[guide='" + pGuideIndex + "']");
+		if (xGuide.length == 0){
+			xGuide = dbsfaces.svg.use(xChartDeltaGroup, pCharts.get(0).id + "_guide", "-guide", null);
+			xGuide.svgAttr("guide", pGuideIndex);
+			xGuide.svgAttr("style", "");
+			//Salva o guia do gráfico
+			pChart.data("guide" + pGuideIndex, xGuide);
+			//Inicializa chartValue do guia como nulo
+			pChart.data("guide" + pGuideIndex).data("cv", pChartValue);
+		}
+		dbsfaces.chart.setGuideIndex(pChart, pGuideIndex);
+		return xGuide;
+	},
+
 	//Enconta o ponto(cv) a partir da posição do cursor
 	findPoint: function(e, pChart){
 		var xChartPathGroup = pChart.data("pathgroup");
@@ -515,9 +463,9 @@ dbsfaces.chart = {
 		var xChartPathGuideOther =  pChart.data("guide" + (xChartGuideIndex == 1 ? 2 : 1));
 		pChart.data("guide" + pChart.data("guideIndex"));
 		if (pSelect == null || pSelect){
-			xChartPathGuide.show();
 			var xX = pChartValue.data("dx");
 			var xY = pChartValue.data("dy");
+			//Copia cor do ponto para a cor da guia
 			var xColor = pChartValue.children(".-point").css("stroke");
 			xChartPathGuide.css("color", xColor);
 			//Reposiciona guia nas coordenadas do chartvalue
@@ -526,10 +474,12 @@ dbsfaces.chart = {
 	        dbsfaces.ui.cssTransform(xChartPathGuide, "translate3d(" + xX + "px ," + xCenterY + "px,0)");
 //	        if (pSelect){
 	        	//Retira marcação do item anterior se for diferente da marcação do outro guide
-	        	if (xChartPathGuide.data("cv")[0].id != xChartPathGuideOther.data("cv")[0].id
-	        	|| !xChartPathGuideOther.data("cv").svgHasClass("-selected")){
-		        	xChartPathGuide.data("cv").svgRemoveClass("-selected");
-	        	} 
+		        if (typeof(xChartPathGuideOther) != "undefined"){
+		        	if (xChartPathGuide.data("cv")[0].id != xChartPathGuideOther.data("cv")[0].id
+    	        	|| !xChartPathGuideOther.data("cv").svgHasClass("-selected")){
+    		        	xChartPathGuide.data("cv").svgRemoveClass("-selected");
+    	        	} 
+		        }
 		        //Seta novo item
 	        	xChartPathGuide.data("cv", pChartValue);
 	        	//Marca novo item
@@ -538,6 +488,7 @@ dbsfaces.chart = {
 //		}else{
 //	        xChartPathGuide.data("cv", null);
 //			xChartPathGuide.hide();
+			xChartPathGuide.show();
 		}
 		
 		dbsfaces.chart.pvShowDelta(pChart);
@@ -573,37 +524,35 @@ dbsfaces.chart = {
 		}
 	},
 	
-
-	
 	pvShowDelta: function(pChart){
-		if (pChart.attr("type") != "line"){return;}
 		var xChartDeltaGroup = pChart.data("deltagroup");
 		if (xChartDeltaGroup.lenght == 0){return;}
+		if (pChart.attr("type") == "line"){
+			dbsfaces.chart.pvShowDeltaChartLine(pChart);
+		}
+	},
+
+	pvShowDeltaChartLine: function(pChart){
 		var xCV1 = pChart.data("guide1").data("cv");
 		var xCV2 = pChart.data("guide2").data("cv");
-		dbsfaces.chart.pvShowDeltaArea(pChart, xCV1, xCV2);
-		dbsfaces.chart.pvShowDeltaValue(pChart, xCV1, xCV2);
+		dbsfaces.chart.pvShowDeltaChartLineArea(pChart, xCV1, xCV2);
+		dbsfaces.chart.pvShowDeltaChartLineValue(pChart, xCV1, xCV2);
 	},
 	
-	pvShowDeltaArea: function(pChart, pCV1, pCV2){
-		var xDeltaArea = pChart.data("deltaarea");
+	pvShowDeltaChartLineArea: function(pChart, pCV1, pCV2){
+		var xDeltaAreaR = pChart.data("deltaarea_r");
+		var xDeltaAreaL = pChart.data("deltaarea_l");
 		var xCV1 = pCV1;
 		var xCV2 = pCV2;
 		if (xCV1.data("dx") > xCV2.data("dx")){
 			xCV1 = pCV2; 
 			xCV2 = pCV1;
 		}
-		var xX = xCV1.data("dx");
-		var xWidth = (xCV2.data("dx") - xX);
-		if (xWidth == 0){
-			xWidth = 0.5;
-			xX -= 0.5;
-		}
-		xDeltaArea.svgAttr("x", xX);
-		xDeltaArea.svgAttr("width", xWidth);
+		xDeltaAreaL.svgAttr("width", xCV1.data("dx") - Number(xDeltaAreaL.attr("x")));
+		xDeltaAreaR.svgAttr("width", -(xCV2.data("dx") + Number(xDeltaAreaR.attr("x"))));
 	},
-	
-	pvShowDeltaValue: function(pChart, pCV1, pCV2){
+
+	pvShowDeltaChartLineValue: function(pChart, pCV1, pCV2){
 		var xDeltaValue = pChart.data("deltavalue");
 		var xValue;
 		if (pCV1.attr("index") == 1
@@ -622,9 +571,6 @@ dbsfaces.chart = {
 			xDeltaValue.append(xSpanValue);
 			var xSpanPerc =  dbsfaces.svg.createElement("tspan");
 			xSpanPerc.svgAttr("class", "-label");
-	//	    dominant-baseline: text-before-edge;
-	//		xSpanPerc.svgAttr("font-size", ".5em");
-	//		xSpanPerc.svgAttr("dy", ".5em");
 			xSpanPerc.text("%");
 			xDeltaValue.append(xSpanPerc);
 		}		
@@ -632,10 +578,6 @@ dbsfaces.chart = {
 		var xDeltaInfoGroup = pChart.data("deltainfogroup");
 		var xCenterX = Number(pChart.data("mask").attr("width")) / 2;
 		var xCenterY = Number(pChart.data("mask").attr("height")) / 2;
-//		var xCenterY = (Number(pChart.data("mask").attr("height")) + xDeltaValue[0].getBoundingClientRect().height) / 2;
-//		var xCenterY = Number(dbsfaces.number.getOnlyNumber(xDeltaInfoGroup.attr("font-size")));
-//		var xCenterY = (Number(pChart.data("mask").attr("height")) + Number(dbsfaces.number.getOnlyNumber(xDeltaInfoGroup.attr("font-size")))) / 2;
-//		 = dbsfaces.svg.g(xChartDeltaGroup, null, null, "-info", "transform: translate(" + xCenterX + "px, " + xCenterY + "px);", null);
 		xDeltaInfoGroup.svgAttr("style", "transform:translate(" + xCenterX + "px, " + xCenterY + "px);");
 	},
 	

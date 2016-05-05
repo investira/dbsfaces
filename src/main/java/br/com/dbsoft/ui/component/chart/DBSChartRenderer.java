@@ -71,7 +71,8 @@ public class DBSChartRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "type", xChart.getType(), null);
 			DBSFaces.setAttribute(xWriter, "index", xChart.getIndex(), null);
 			DBSFaces.setAttribute(xWriter, "cs", xChart.getColumnScale(), null);
-			if (xType == TYPE.LINE){
+			if (xType == TYPE.LINE
+			 || xType == TYPE.PIE){
 				if (xChart.getShowDelta()){ //Artificio para padronizar o false como não existindo o atributo(comportamento do chrome)
 					DBSFaces.setAttribute(xWriter, "showdelta", xChart.getShowDelta(), null);
 				}
@@ -89,11 +90,11 @@ public class DBSChartRenderer extends DBSRenderer {
 					//Area que ira captura o mousemove
 					DBSFaces.encodeSVGRect(xChart, xWriter, xCharts.getPadding() / 2D, xCharts.getPadding() / 2D, xChartsWidth.toString(), xChartsHeight.toString(), DBSFaces.CSS.MODIFIER.MASK.trim(), null, null);
 				xWriter.endElement("g");
-				if (xType == TYPE.LINE){
-					xWriter.startElement("g", xChart);
-						DBSFaces.setAttribute(xWriter, "class", "-delta", null);
-					xWriter.endElement("g");
-				}
+			}
+			if (xChart.getShowDelta()){
+				xWriter.startElement("g", xChart);
+					DBSFaces.setAttribute(xWriter, "class", "-delta", null);
+				xWriter.endElement("g");
 			}
 			//Valores-------------------------
 			//Se não foi informado DBSResultSet

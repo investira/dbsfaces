@@ -2403,14 +2403,20 @@ public class  DBSFaces {
 						//Não exibe linhas do grid
 						pCharts.setShowGrid(false);
 //						pCharts.setShowDelta(false);
-//					}else{
+//					}else if (xType == TYPE.LINE){
 //						if (xChart.getShowDelta()){
 //							pCharts.setShowDelta(true);
 //						}
 					}
-					if (xChart.getShowDelta()){
-						pCharts.setShowDelta(true);
+					if (xType == TYPE.LINE
+					 || xType == TYPE.PIE){
+						if (xChart.getShowDelta()){
+							pCharts.setShowDelta(true);
+						}
 					}
+//					if (xChart.getShowDelta()){
+//						pCharts.setShowDelta(true);
+//					}
 					//Se não foi informado DBSResultSet
 					if (DBSObject.isEmpty(xChart.getVar())
 					 || DBSObject.isEmpty(xChart.getValueExpression("value"))){
