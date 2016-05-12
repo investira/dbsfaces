@@ -274,14 +274,25 @@ dbsfaces.chart = {
 		if (xDeltaValue.length == 0){
 			xDeltaValue = dbsfaces.svg.text(xDeltaInfoGroup, null, null, null, "-value", null, null);
 			if (pChart.attr("type") == "pie"){
-				var xDeltaPathId = pChart.get(0).id + "_deltapath";
-				xDeltaValue = dbsfaces.svg.textPath(xDeltaValue, xDeltaPathId, "", null, null, {"startOffset": "50%"});
+				var xDeltaPathId;
+				var xDeltaValuePath;
+				var xClass;
+				//Path a direita - Percentual
+				xClass = "deltapath_r";
+				xDeltaPathId = pChart.get(0).id + "_" + xClass;
+				xDeltaValuePath = dbsfaces.svg.textPath(xDeltaValue, xDeltaPathId, "", "-" + xClass, null, {"startOffset": "0%"});
+				pChart.data("deltavalue_r", xDeltaValuePath);
+				//Path a esquerda - Valor
+				xClass = "deltapath_l";
+				xDeltaPathId = pChart.get(0).id + "_" + xClass;
+				xDeltaValuePath = dbsfaces.svg.textPath(xDeltaValue, xDeltaPathId, "", "-" + xClass, null, {"startOffset": "100%"});
+				pChart.data("deltavalue_l", xDeltaValuePath);
 			}else{
 				var xLineStrokeId = pChart.get(0).id + "_linestroke";
 				xDeltaValue.svgAttr("fill", "url(#" + xLineStrokeId + ")");
 				xDeltaValue.svgAttr("stroke", "url(#" + xLineStrokeId + ")");
+				pChart.data("deltavalue", xDeltaValue);
 			}
-			pChart.data("deltavalue", xDeltaValue);
 		}
 	},
 	
@@ -550,12 +561,21 @@ dbsfaces.chart = {
 	},
 
 	pvShowDeltaChartPie: function(pChart){
-		var xDeltaValue = pChart.data("deltavalue");
+		var xDeltaValue;
+		//Percentual
+		xDeltaValue = pChart.data("deltavalue_r");
+		if (pChart.data("totper") == 0){
+			xDeltaValue.text("");
+		}else{
+			xDeltaValue.text(pChart.data("totper") + "%");
+		}
+		//Valor
+		xDeltaValue = pChart.data("deltavalue_l");
 		if (pChart.data("totval") == 0){
 			xDeltaValue.text("");
-			return;
+		}else{
+			xDeltaValue.text(pChart.data("totval"));
 		}
-		xDeltaValue.text(pChart.data("totval") + "\t" + pChart.data("totper") + "%");
 	},
 
 	

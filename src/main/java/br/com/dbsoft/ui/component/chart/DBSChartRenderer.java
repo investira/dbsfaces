@@ -97,7 +97,7 @@ public class DBSChartRenderer extends DBSRenderer {
 				xWriter.startElement("g", xChart);
 					DBSFaces.setAttribute(xWriter, "class", "-delta", null);
 					if (xType == TYPE.PIE){
-						pvEncodePieDeltaTextPath(xCharts, xChart, xWriter);
+						pvEncodePieDeltaTextPaths(xCharts, xChart, xWriter);
 					}
 				xWriter.endElement("g");
 			}
@@ -121,16 +121,23 @@ public class DBSChartRenderer extends DBSRenderer {
 	 * @param pWriter
 	 * @throws IOException
 	 */
-	private void pvEncodePieDeltaTextPath(DBSCharts pCharts, DBSChart pChart, ResponseWriter pWriter) throws IOException{
+	private void pvEncodePieDeltaTextPaths(DBSCharts pCharts, DBSChart pChart, ResponseWriter pWriter) throws IOException{
 		Double xMiddleRadius = (pCharts.getPieChartWidth() / 2) + pChart.getPieChartRelativeRadius(pCharts, pCharts.getPieChartWidth());
 		Point2D xPathPoint1 = new Point2D.Double();
 		Point2D xPathPoint2 = new Point2D.Double();
-		xPathPoint1 = DBSNumber.circlePoint(pCharts.getCenter(), xMiddleRadius, 76 * DBSNumber.PIDiameterFactor);
-		xPathPoint2 = DBSNumber.circlePoint(pCharts.getCenter(), xMiddleRadius, 24 * DBSNumber.PIDiameterFactor);
+		xPathPoint1 = DBSNumber.circlePoint(pCharts.getCenter(), xMiddleRadius, 51 * DBSNumber.PIDiameterFactor);
+		xPathPoint2 = DBSNumber.circlePoint(pCharts.getCenter(), xMiddleRadius, 99 * DBSNumber.PIDiameterFactor);
+		pvEncodePieDeltaTextPath(pChart, pWriter, "_l",  xMiddleRadius, xPathPoint1, xPathPoint2);
+		xPathPoint1 = DBSNumber.circlePoint(pCharts.getCenter(), xMiddleRadius, 1 * DBSNumber.PIDiameterFactor);
+		xPathPoint2 = DBSNumber.circlePoint(pCharts.getCenter(), xMiddleRadius, 49 * DBSNumber.PIDiameterFactor);
+		pvEncodePieDeltaTextPath(pChart, pWriter, "_r", xMiddleRadius, xPathPoint1, xPathPoint2);
+	}
+
+	private void pvEncodePieDeltaTextPath(DBSChart pChart, ResponseWriter pWriter, String pSide, Double pMiddleRadius, Point2D pPathPoint1, Point2D pPathPoint2) throws IOException{
 		StringBuilder xPath = new StringBuilder();
-	    xPath.append("M" + xPathPoint1.getX() + "," + xPathPoint1.getY()); //Ponto inicial do arco 
-		xPath.append("A" + xMiddleRadius + "," + xMiddleRadius + " 0 0 1 " + xPathPoint2.getX() + "," + xPathPoint2.getY()); //Arco externo até o ponto final  
-		DBSFaces.encodeSVGPath(pChart, pWriter, xPath.toString(), "-path", "stroke:black; stroke-width:1px;", "id=" + pvGetDeltaPathId(pChart) + "; fill=none;");
+	    xPath.append("M" + pPathPoint1.getX() + "," + pPathPoint1.getY()); //Ponto inicial do arco 
+		xPath.append("A" + pMiddleRadius + "," + pMiddleRadius + " 0 0 1 " + pPathPoint2.getX() + "," + pPathPoint2.getY()); //Arco externo até o ponto final  
+		DBSFaces.encodeSVGPath(pChart, pWriter, xPath.toString(), "-path" + pSide, null, "id=" + pvGetDeltaPathId(pChart, pSide) + "; fill=none;");
 	}
 	
 	private void pvEncodeJS(String pClientId, ResponseWriter pWriter) throws IOException{
@@ -185,8 +192,8 @@ public class DBSChartRenderer extends DBSRenderer {
 		DBSFaces.renderChildren(pContext, pChart);
 	}
 	
-	private String pvGetDeltaPathId(DBSChart pChart){
-		return pChart.getClientId() + "_deltapath";
+	private String pvGetDeltaPathId(DBSChart pChart,String pSide){
+		return pChart.getClientId() + "_deltapath" + pSide;
 	}
 
 }

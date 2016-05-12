@@ -42,12 +42,11 @@
 	font-size: 0.3em;
 }
 
-.dbs_chart > .-delta > .-path{
+.dbs_chart > .-delta > path{
 	fill-opacity: 0;
 	stroke-opacity: 0;
 }
 
-/* .dbs_chart > .-delta > .-guide:hover, */
 .dbs_chart > .-delta > .-guide:focus,
 .dbs_chart > .-delta > .-guide:active{
 	-moz-animation: -kf_dbs_chart_selected .1s linear;
@@ -62,17 +61,20 @@
 }
 
 .dbs_chart > .-delta > .-info > .-value{
-	text-rendering: geometricPrecision;
-    text-anchor: middle;
+/* 	text-rendering: geometricPrecision; */
+    text-rendering: auto;
     font-weight: bolder;
-    stroke-width: .01em;    
+    text-anchor: middle;
+	stroke-width: .03em;
+/*     stroke-width: .01em;     */
+/*     stroke: white; */
 }
-
-.dbs_chart > .-delta > .-info > .-value > .-label{
-/*     dominant-baseline: middle; */
-    font-size: .5em;
+.dbs_chart > .-delta > .-info > .-value > .-deltapath_r{
+	text-anchor: start;
 }
-
+.dbs_chart > .-delta > .-info > .-value > .-deltapath_l{
+	text-anchor: end;
+}
 
 
 /* OPACITY -------------------------------------- */
@@ -119,24 +121,6 @@
 }
 
 /*--------------------- */
-.dbs_chart[type='line'] > .dbs_chartValue > .-info{
-/*  -webkit-transform: translate3d(0,0,0);  */
-/*  -webkit-backface-visibility: hidden;  */
-/*  -webkit-perspective: 0; */
-/*  filter:blur(0); */
-}
-.dbs_chart[type='line'] > .dbs_chartValue > .-info > .-label{
-/*  -webkit-transform: translate3d(0,0,0);  */
-/*  -webkit-backface-visibility: hidden;  */
-/*  -webkit-perspective: 0; */
-/*  filter:blur(0); */
-}
-.dbs_chart[type='line'] > .dbs_chartValue > .-info > .-value{
-/*  -webkit-transform: translate3d(0,0,0);  */
-/*  -webkit-backface-visibility: hidden;  */
-/*  -webkit-perspective: 0; */
-/*  filter:blur(0); */
-}
 
 /* opacity=firefox ok */
 /* fill-opacity=safari ok */
@@ -252,17 +236,29 @@
 
 /* ----------------------------------------------------------------------------------- */
 
-.dbs_chart[type='pie'][showdelta] > .-delta > .-info{
+.dbs_chart[type='pie'] > .-delta > .-info{
     font-weight: bold;
 /*     stroke: white; */
 /*     fill: white; */
     font-size: 2.5em;
 /*     text-anchor: middle; */
     dominant-baseline: middle;
-    stroke-width: .02em;
-    stroke: black;
     fill: black;
+	stroke-width: .03em;
+    stroke: white;
+    text-rendering: auto;
 }
+
+.dbs_chart[type='pie'] > .-delta > .-info > .-value > textPath{
+	dominant-baseline: middle;
+}
+
+/*sinal de percentual */
+.dbs_chart[type='line'] > .-delta > .-info > .-value > .-label{
+    font-size: .5em;
+}
+
+
 
 .dbs_chart.-dim > .-path > path,
 .dbs_chart[type='bar'].-dim > .dbs_chartValue > .-point,
@@ -303,7 +299,7 @@
 .dbs_chart[type='bar'] > .dbs_chartValue > .-point {
 /*     shape-rendering: crispEdges; */
 }
-
+	
 .dbs_chart[type='line'] > .dbs_chartValue > .-point{
 	pointer-events: none;
 	stroke-width: 1px;
