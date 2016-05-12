@@ -1,5 +1,6 @@
 package br.com.dbsoft.ui.component.charts;
 
+import java.awt.geom.Point2D;
 import java.math.BigDecimal;
 
 import javax.faces.component.FacesComponent;
@@ -15,7 +16,11 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.CHARTS;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
-	public static final Integer FontSize = 8;
+	public static Integer 	FontSize = 8;
+	public static Integer 	PieInternalPadding = 2;
+	public static Integer 	PieLabelPadding = DBSNumber.toInteger(FontSize * 1.5);
+
+
 	
 	protected enum PropertyKeys {
 		caption,
@@ -246,14 +251,54 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		pvSetChartHeight(pType, getHeight());
 	}
 
+	/**
+	 * Diametro: Considera o menor valor entre a altura e a largura.
+	 * @return
+	 */
 	public Double getDiameter(){
-		if (this.getChartWidth().doubleValue() < this.getChartHeight().doubleValue()){
-			return this.getChartWidth().doubleValue();
+		if (getChartWidth().doubleValue() < getChartHeight().doubleValue()){
+			return getChartWidth().doubleValue();
 		}else{
-			return this.getChartHeight().doubleValue();
+			return getChartHeight().doubleValue();
 		}
 	}
 
+	/**
+	 * Centro do gráfico
+	 * @return
+	 */
+	public Point2D getCenter(){
+		Double xPadding = 0D;
+		if (getPadding() != 0){
+			xPadding = getPadding().doubleValue() / 2;
+		}
+
+		return DBSNumber.centerPoint(getChartWidth() + xPadding, getChartHeight() + xPadding);
+	}
+
+	/**
+	 * Largura de cada gráfico
+	 * @return
+	 */
+	public Double getPieChartWidth(){
+		Double xPneuLargura = getPieChartRadius() - DBSCharts.PieLabelPadding; //Retirna padding principal
+		xPneuLargura -= (DBSCharts.PieInternalPadding * (getItensCount() - 1)); //Retina padding de cada pneu
+		xPneuLargura /= (getItensCount() + 0.5); // 0.5 = metade da roda
+		return xPneuLargura;
+	}
+	
+//	xPneuLargura = xDiametro - xLabelPadding; //Retirna padding principal
+//	xPneuLargura -= (xPneuInternalPadding * (pCharts.getItensCount() - 1)); //Retina padding de cada pneu
+//	xPneuLargura /= (pCharts.getItensCount() + 0.5); // 0.5 = metado da roda
+	
+	/**
+	 * Raio do círculo
+	 * @return
+	 */
+	public Double getPieChartRadius(){
+		return (getDiameter() / 2) - getPadding();
+	}
+	
 	private void pvSetChartHeight(TYPE pType, Integer pHeight){
 		if (pType.isMatrix()){
 			if (getShowLabel()){

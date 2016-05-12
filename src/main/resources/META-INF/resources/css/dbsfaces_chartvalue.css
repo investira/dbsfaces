@@ -1,16 +1,7 @@
-
-
 .dbs_chartValue{
 	pointer-events: none;
 	stroke-width: 0px;
 }
-.dbs_chartValue:not(.-selected).-around1,
-.dbs_chartValue:not(.-selected).-around2{
-	opacity: 0.1;
-}
-/* .dbs_chartValue.-around1.-around2{ */
-/* 	opacity: initial; */
-/* } */
 
 .dbs_chartValue > .-point{
 	pointer-events: all;
@@ -26,9 +17,8 @@
 
 .dbs_chartValue > .-info > .-label{
 }
+
 .dbs_chartValue > .-info > .-value{
-	dominant-baseline: middle;
-	text-anchor: end;
 }
 
 .dbs_chartValue > .-info > .-label,
@@ -40,23 +30,9 @@
 
 .dbs_chartValue > .-info > .-label,
 .dbs_chartValue > .-info > .-value{
-	stroke-width: 0px !important;
-/* 	opacity: 1; */
+/* 	stroke-width: 0px !important; */
 }
 
-/* .dbs_chartValue > .-info > .-label.-hide, */
-/* .dbs_chartValue > .-info > .-value.-hide{ */
-/* 	opacity: 0; */
-/* } */
-
-/* .dbs_chartValue.-hover > .-info > .-label, */
-/* .dbs_chartValue.-hover > .-info > .-value{ */
-/* 	opacity: 1; */
-/* } */
-/* .dbs_chartValue.-selected > .-info > .-label, */
-/* .dbs_chartValue.-selected > .-info > .-value{ */
-/* 	opacity: 1; */
-/* } */
 
 .dbs_chartValue > .-info > .-label > text > .-normal{
 	display:none;
@@ -76,7 +52,6 @@
 
 .dbs_chartValue > .-foreignobject{
 	overflow:visible;
-/* 	fill-opacity: 1; */
 }
 
 .dbs_chartValue > .-foreignobject > span{

@@ -73,7 +73,9 @@ String.prototype.replaceAll = function(target, replacement) {
     	if (typeof(pValue) == "undefined"){
     		return this.get(0).getAttributeNS(null, pAttribute);
     	}else{
-    		this.get(0).setAttributeNS(null, pAttribute, pValue);
+    		if (pValue != null){
+        		this.get(0).setAttributeNS(null, pAttribute, pValue);
+    		}
     		return this;
     	}
 	},
@@ -152,62 +154,48 @@ dbsfaces.sound = {
 }
 
 dbsfaces.svg = {
-	gsvg: function(pComponent, pX, pY, pWidth, pHeight, pStyleClass, pStyle){
-		var xG = dbsfaces.svg.g(pComponent, pWidth, pHeight, pStyleClass, pStyle);
-		return dbsfaces.svg.svg(xG, null, null, null, null, null, null);
+	gsvg: function(pComponent, pX, pY, pWidth, pHeight, pStyleClass, pStyle, pAttrs){
+		var xG = dbsfaces.svg.g(pComponent, pWidth, pHeight, pStyleClass, pStyle, pAttrs);
+		return dbsfaces.svg.svg(xG, null, null, null, null, null, null, null);
 	},
-	g: function(pComponent, pWidth, pHeight, pStyleClass, pStyle){
-		var xG = dbsfaces.svg.createElement('g');
-		dbsfaces.svg.setDefaultAttr(xG, pStyleClass, pStyle, null);
-		if (pWidth != null){
-			xG.svgAttr("width", pWidth);
-		}
-		if (pHeight != null){
-			xG.svgAttr("height", pHeight);
-		}
+	 
+	g: function(pComponent, pWidth, pHeight, pStyleClass, pStyle, pAttrs){
+		var xG = dbsfaces.svg.createElement('g', pAttrs);
+		dbsfaces.svg.setDefaultAttrs(xG, pStyleClass, pStyle);
+
+		xG.svgAttr("width", pWidth)
+		  .svgAttr("height", pHeight);
+
 		pComponent.append(xG);
 		return xG;
 	},
 
-	svg: function(pComponent, pX, pY, pWidth, pHeight, pStyleClass, pStyle){
-		var xSVG = dbsfaces.svg.createElement('svg');
-		dbsfaces.svg.setDefaultAttr(xSVG, pStyleClass, pStyle, null);
-		if (pX != null){
-			xSVG.svgAttr("x", pX);
-		}
-		if (pY != null){
-			xSVG.svgAttr("y", pY);
-		}
-		if (pWidth != null){
-			xSVG.svgAttr("width", pWidth);
-		}
-		if (pHeight != null){
-			xSVG.svgAttr("height", pHeight);
-		}
+	svg: function(pComponent, pX, pY, pWidth, pHeight, pStyleClass, pStyle, pAttrs){
+		var xSVG = dbsfaces.svg.createElement('svg', pAttrs);
+		dbsfaces.svg.setDefaultAttrs(xSVG, pStyleClass, pStyle);
+
+		xSVG.svgAttr("x", pX)
+			.svgAttr("y", pY)
+			.svgAttr("width", pWidth)
+			.svgAttr("height", pHeight);
+
 		pComponent.append(xSVG);
 		return xSVG;
 	},
 	
-	path: function(pComponent, pData, pStyleClass, pStyle, pFill){
-		var xPath = dbsfaces.svg.createElement('path');
-		dbsfaces.svg.setDefaultAttr(xPath, pStyleClass, pStyle, pFill);
-		xPath.svgAttr("d", pData);
-		pComponent.append(xPath);
-		return xPath;
-	},
-	
-	use: function(pComponent, pHRef, pStyleClass, pStyle){
-		var xUse = dbsfaces.svg.createElement('use');
-		dbsfaces.svg.setDefaultAttr(xUse, pStyleClass, pStyle, null);
-		xUse.get(0).setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", "#" + pHRef);
+	use: function(pComponent, pHRef, pStyleClass, pStyle, pAttrs){
+		var xUse = dbsfaces.svg.createElement('use', pAttrs);
+		dbsfaces.svg.setDefaultAttrs(xUse, pStyleClass, pStyle);
+		dbsfaces.svg.setAttributeHRef(xUse, pHRef);
+//		xUse.get(0).setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", "#" + pHRef);
 //		xUse.svgAttr("xlink:href", "#" + pHRef);
 		pComponent.append(xUse);
 		return xUse;
 	},
 
-	line: function(pComponent, pX1, pY1, pX2, pY2, pStyleClass, pStyle){
-		var xLine = dbsfaces.svg.createElement('line');
-		dbsfaces.svg.setDefaultAttr(xLine, pStyleClass, pStyle, null);
+	line: function(pComponent, pX1, pY1, pX2, pY2, pStyleClass, pStyle, pAttrs){
+		var xLine = dbsfaces.svg.createElement('line', pAttrs);
+		dbsfaces.svg.setDefaultAttrs(xLine, pStyleClass, pStyle);
 		xLine.svgAttr("x1", pX1)
 			 .svgAttr("y1", pY1)
 			 .svgAttr("x2", pX2)
@@ -216,117 +204,135 @@ dbsfaces.svg = {
 		return xLine;
 	},
 	
-	rect: function(pComponent, pX, pY, pWidth, pHeight, pRX, pRY, pStyleClass, pStyle, pFill){
-		var xRect = dbsfaces.svg.createElement('rect');
-		dbsfaces.svg.setDefaultAttr(xRect, pStyleClass, pStyle, pFill);
-		if (pX != null){
-			xRect.svgAttr("x", pX);
-		}
-		if (pY != null){
-			xRect.svgAttr("y", pY);
-		}
-		if (pRX != null){
-			xRect.svgAttr("rx", pRX);
-		}
-		if (pRY != null){
-			xRect.svgAttr("ry", pRY);
-		}
-		xRect.svgAttr("height", pHeight)
+	circle: function(pComponent, pCX, pCY, pR, pStyleClass, pStyle, pAttrs){
+		var xCircle = dbsfaces.svg.createElement('circle', pAttrs);
+		dbsfaces.svg.setDefaultAttrs(xCircle, pStyleClass, pStyle);
+
+		xCircle.svgAttr("cx", pCX)
+			   .svgAttr("cy", pCY)
+			   .svgAttr("r", pR);
+
+		pComponent.append(xCircle);
+		return xCircle;
+	},
+
+	rect: function(pComponent, pX, pY, pWidth, pHeight, pRX, pRY, pStyleClass, pStyle, pAttrs){
+		var xRect = dbsfaces.svg.createElement('rect', pAttrs);
+		dbsfaces.svg.setDefaultAttrs(xRect, pStyleClass, pStyle);
+
+		xRect.svgAttr("x", pX)
+			 .svgAttr("y", pY)
+			 .svgAttr("rx", pRX)
+			 .svgAttr("ry", pRY)
+			 .svgAttr("height", pHeight)
 			 .svgAttr("width", pWidth);
+		
 		pComponent.append(xRect);
 		return xRect;
 	},
 	
-	ellipse: function(pComponent, pCX, pCY, pRX, pRY, pStyleClass, pStyle, pFill){
-		var xEllipse = dbsfaces.svg.createElement('ellipse');
-		dbsfaces.svg.setDefaultAttr(xEllipse, pStyleClass, pStyle, pFill);
-		if (pCX != null){
-			xEllipse.svgAttr("cx", pCX);
-		}
-		if (pCY != null){
-			xEllipse.svgAttr("cy", pCY);
-		}
-		if (pRX != null){
-			xEllipse.svgAttr("rx", pRX);
-		}
-		if (pRY != null){
-			xEllipse.svgAttr("ry", pRY);
-		}
-//
-//		xEllipse.svgAttr("cx", pCX)
-//			    .svgAttr("cy", pCY)
-//			    .svgAttr("ry", pRX)
-//			    .svgAttr("rx", pRY);
+	ellipse: function(pComponent, pCX, pCY, pRX, pRY, pStyleClass, pStyle, pAttrs){
+		var xEllipse = dbsfaces.svg.createElement('ellipse', pAttrs);
+		dbsfaces.svg.setDefaultAttrs(xEllipse, pStyleClass, pStyle);
+
+		xEllipse.svgAttr("cx", pCX)
+			    .svgAttr("cy", pCY)
+			    .svgAttr("rx", pRX)
+			    .svgAttr("ry", pRY);
+
 		pComponent.append(xEllipse);
 		return xEllipse;
 	},
 	
-	text: function(pComponent, pX, pY, pText, pStyleClass, pStyle, pFill){
-		var xText = dbsfaces.svg.createElement('text');
-		dbsfaces.svg.setDefaultAttr(xText, pStyleClass, pStyle, pFill);
-		if (pX != null){
-			xText.svgAttr("x", pX);
-		}
-		if (pY != null){
-			xText.svgAttr("y", pY);
-		}
+	path: function(pComponent, pData, pStyleClass, pStyle, pAttrs){
+		var xPath = dbsfaces.svg.createElement('path', pAttrs);
+		dbsfaces.svg.setDefaultAttrs(xPath, pStyleClass, pStyle);
+		
+		xPath.svgAttr("d", pData);
+		
+		pComponent.append(xPath);
+		return xPath;
+	},
+
+	text: function(pComponent, pX, pY, pText, pStyleClass, pStyle, pAttrs){
+		var xText = dbsfaces.svg.createElement('text', pAttrs);
+		dbsfaces.svg.setDefaultAttrs(xText, pStyleClass, pStyle);
+
+		xText.svgAttr("x", pX)
+			 .svgAttr("y", pY);
+
 		xText.text(pText);
 		pComponent.append(xText);
 		return xText;
 	},
-	
+
+	textpath: function(pComponent, pHRef, pText, pStyleClass, pStyle, pAttrs){
+		var xTextPath = dbsfaces.svg.createElement('textpath', pAttrs);
+		dbsfaces.svg.setDefaultAttrs(xTextPath, pStyleClass, pStyle);
+		dbsfaces.svg.setAttributeHRef(xTextPath, pHRef);
+
+		xTextPath.text(pText);
+		
+		pComponent.append(xTextPath);
+		return xTextPath;
+	},
 	linearGradient: function(pComponent, pId){
-		var xElement = dbsfaces.svg.createElement('linearGradient');
+		var xElement = dbsfaces.svg.createElement('linearGradient', null);
 		pComponent.append(xElement);
-		if (pId != null){
-			xElement.svgAttr("id", pId);
-		}
+
+		xElement.svgAttr("id", pId);
+		
 		return xElement;
 	},
 	
 	marker: function(pComponent, pId, pRefX, pRefY){
-		var xElement = dbsfaces.svg.createElement('marker');
+		var xElement = dbsfaces.svg.createElement('marker', null);
 		pComponent.append(xElement);
-		if (pId != null){
-			xElement.svgAttr("id", pid);
-		}
-		if (pRefX != null){
-			xElement.svgAttr("refx", pRefX);
-		}
-		if (pRefY != null){
-			xElement.svgAttr("refy", pRefY);
-		}
+
+		xElement.svgAttr("id", pid)
+				.svgAttr("refx", pRefX)
+				.svgAttr("refy", pRefY);
+
 		return xElement;
 	},
 
 	stop: function(pComponent, pOffset, pStopColor){
-		var xElement = dbsfaces.svg.createElement('stop');
-		if (pOffset != null){
-			xElement.svgAttr("offset", pOffset);
-		}
-		if (pStopColor != null){
-			xElement.svgAttr("stop-color", pStopColor);
-		}
+		var xElement = dbsfaces.svg.createElement('stop', null);
+
+		xElement.svgAttr("offset", pOffset)
+			    .svgAttr("stop-color", pStopColor);
+
 		pComponent.append(xElement);
 		return xElement;
 	},
 	
-	createElement: function(pTag){
+	createElement: function(pTag, pAttrs){
 		var xElement = $(document.createElementNS('http://www.w3.org/2000/svg', pTag));
+		if (pAttrs != null){
+			for (var xAttr in pAttrs){
+				xElement.svgAttr(xAttr, pAttrs[xAttr]);
+			}
+		}
 		return xElement;
 	},
 
-	setDefaultAttr: function(pComponent, pStyleClass, pStyle, pFill){
-		if (pStyleClass != null){
-			pComponent.svgAttr("class", pStyleClass);
-		}
-		if (pStyle != null){
-			pComponent.svgAttr("style", pStyle);
-		}
-		if (pFill != null){
-			pComponent.svgAttr("fill", pFill);
-		}
+	setDefaultAttrs: function(pComponent, pStyleClass, pStyle){
+		pComponent.svgAttr("class", pStyleClass)
+				  .svgAttr("style", pStyle);
+	},
+	
+	
+	setAttributeHRef: function(pComponent, pHRef){
+		var xNS = "http://www.w3.org/1999/xlink";
+		pComponent.get(0).setAttributeNS(xNS, "xlink:href", "#" + pHRef);
+//		pComponent.get(0).setAttributeNS(null, "xmlns:xlink", "");
+//		pComponent.get(0).setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", "#" + pHRef);
+//		setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', attrs[k]);
+//		pComponent.attr("xlink:href", "#" + pHRef);
+//		pComponent.attr("xmlns:xlink", "http://www.w3.org/1999/xlink");
 	}
+	
+
 	
 }
 

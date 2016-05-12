@@ -97,29 +97,6 @@ dbs_chartValue = function(pId) {
 };
 
 
-//function Point(x, y) {
-//	  this.x = x;
-//	  this.y = y;
-//	}
-//	Now you can create Point objects using the new keyword:
-//
-//	var p = new Point(4.5, 19.0);
-//	To create an array of Point objects you simply create an array, and put Point objects in it:
-//
-//	var a = [ new Point(1,2), new Point(5,6), new Point(-1,14) ];
-//	Or:
-//
-//	var a = [];
-//	a.push(new Point(1,2));
-//	a.push(new Point(5,6));
-//	a.push(new Point(-1,14));
-//	You use the . operator to access the properties in the Point object. Example:
-//
-//	alert(a[2].x);
-//	Or:
-//
-//	var p = a[2];
-//	alert(p.x + ',' + p.y);
 
 dbsfaces.chartValue = {
 	initialize: function(pChartValue){
@@ -304,16 +281,22 @@ dbsfaces.chartValue = {
 		if (pChartValue == null){return;}
 		//Verifica se gráfico possui guia
 		var xGuideIndex = pChart.data("guideIndex");
-		var xHasGuide = (typeof(xGuideIndex) != "undefined" && xGuideIndex != null && xGuideIndex != 0);
 		var xGuide = null;
+		var xType = pChart.attr("type");
 		//Seleção do item
 		if (pSelect !=null){
 			var xChartValuePoint = pChartValue.children(".-point");
 			var xAnimationClass = "-a_dbs_chart_selected";
 			if (pSelect){
 				dbsfaces.ui.moveToFront(pChartValue);
-				if (!xHasGuide){
+				if (xType == "pie"
+			     || xType == "bar"){
+					//Seleciona
 					pChartValue.svgAddClass("-selected");
+					//Move delta para frente do gráfico
+					if (xType == "pie"){
+						dbsfaces.ui.moveToFront(pChart.data("deltagroup"));
+					}
 				}
 				//Animação
 				if (xChartValuePoint !=null){
@@ -324,8 +307,9 @@ dbsfaces.chartValue = {
 					});
 				}
 			}else{
-//				dbsfaces.ui.moveToBack(pChartValue);
-				if (!xHasGuide){
+				if (xType == "pie"
+				 || xType == "bar"){
+					//Remove seleção
 					pChartValue.svgRemoveClass("-selected");
 				}
 				//Se possuir guia, desmarca seleção

@@ -1,5 +1,6 @@
 package br.com.dbsoft.ui.component.chart;
 
+import java.awt.geom.Point2D;
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
@@ -16,6 +17,7 @@ import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.chart.DBSChart.TYPE;
 import br.com.dbsoft.ui.component.charts.DBSCharts;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSObject;
 
 
@@ -94,6 +96,9 @@ public class DBSChartRenderer extends DBSRenderer {
 			if (xChart.getShowDelta()){
 				xWriter.startElement("g", xChart);
 					DBSFaces.setAttribute(xWriter, "class", "-delta", null);
+					if (xType == TYPE.PIE){
+						pvEncodePieDeltaTextPath(xCharts, xChart, xWriter);
+					}
 				xWriter.endElement("g");
 			}
 			//Valores-------------------------
@@ -108,6 +113,24 @@ public class DBSChartRenderer extends DBSRenderer {
 			pvEncodeJS(xClientId, xWriter);
 			
 		xWriter.endElement("g");
+	}
+	/**
+	 * Path que será utilizado para posicionar o valor do delta
+	 * @param pCharts
+	 * @param pChart
+	 * @param pWriter
+	 * @throws IOException
+	 */
+	private void pvEncodePieDeltaTextPath(DBSCharts pCharts, DBSChart pChart, ResponseWriter pWriter) throws IOException{
+		Double xMiddleRadius = (pCharts.getPieChartWidth() / 2) + pChart.getPieChartRelativeRadius(pCharts, pCharts.getPieChartWidth());
+		Point2D xPathPoint1 = new Point2D.Double();
+		Point2D xPathPoint2 = new Point2D.Double();
+		xPathPoint1 = DBSNumber.circlePoint(pCharts.getCenter(), xMiddleRadius, 76 * DBSNumber.PIDiameterFactor);
+		xPathPoint2 = DBSNumber.circlePoint(pCharts.getCenter(), xMiddleRadius, 24 * DBSNumber.PIDiameterFactor);
+		StringBuilder xPath = new StringBuilder();
+	    xPath.append("M" + xPathPoint1.getX() + "," + xPathPoint1.getY()); //Ponto inicial do arco 
+		xPath.append("A" + xMiddleRadius + "," + xMiddleRadius + " 0 0 1 " + xPathPoint2.getX() + "," + xPathPoint2.getY()); //Arco externo até o ponto final  
+		DBSFaces.encodeSVGPath(pChart, pWriter, xPath.toString(), "-path", "stroke:black; stroke-width:1px;", "id=" + pvGetDeltaPathId(pChart) + "; fill=none;");
 	}
 	
 	private void pvEncodeJS(String pClientId, ResponseWriter pWriter) throws IOException{
@@ -162,5 +185,8 @@ public class DBSChartRenderer extends DBSRenderer {
 		DBSFaces.renderChildren(pContext, pChart);
 	}
 	
+	private String pvGetDeltaPathId(DBSChart pChart){
+		return pChart.getClientId() + "_deltapath";
+	}
 
 }

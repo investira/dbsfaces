@@ -28,7 +28,7 @@ import br.com.dbsoft.util.DBSObject;
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSChartValue.RENDERER_TYPE)
 public class DBSChartValueRenderer extends DBSRenderer {
 	
-	private static double w2PI = Math.PI * 2;
+//	private static double w2PI = Math.PI * 2;
 	private String wFillColor;
 	
 	@Override
@@ -174,13 +174,14 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		//Encode Dados
 		pWriter.startElement("g", pChartValue);
 			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.INFO, null);
+			DBSFaces.setAttribute(pWriter, "fill", wFillColor, null);
 			//Encode do valor da linha ---------------------------------------------------------------------
 			pvEncodeText(pChartValue, 
 						 DBSFormat.getFormattedNumber(DBSObject.getNotNull(pChartValue.getDisplayValue(), pChartValue.getValue()), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask()), 
 						 pCharts.getWidth().doubleValue(), 
 						 xYText.doubleValue(), 
 						 DBSFaces.CSS.MODIFIER.VALUE + "-hide", 
-						 " fill:" + wFillColor, 
+						 null, 
 						 null,
 						 pWriter);
 			//Encode label da coluna ---------------------------------------------------------------------
@@ -196,14 +197,8 @@ public class DBSChartValueRenderer extends DBSRenderer {
 								 xHeight, 
 								 null, 
 								 "-moz-transform-origin:" +  xXText.doubleValue() + "px " + xHeight + "px 0px;", 
-								 "fill=" + wFillColor,
+								 null,
 								 pWriter);
-					//Artifícil para forçar que a altura do label seja corrigida em função do tspan.
-					//Em js a altura deste svg é configurado
-//					pWriter.startElement("svg", pChartValue);
-//						DBSFaces.setAttribute(pWriter, "width", "1", null);
-//						DBSFaces.setAttribute(pWriter, "y", pCharts.getHeight().doubleValue() + "px", null);
-//					pWriter.endElement("svg");
 				pWriter.endElement("g");
 			}
 		pWriter.endElement("g");
@@ -218,7 +213,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		String 			xClientId = pChartValue.getClientId(pContext);
 		Double 			xPercValue = DBSNumber.divide(pChartValue.getValue(), pChart.getTotalValue()).doubleValue() * 100;
 		Double 			xPreviousPercValue = DBSNumber.divide(pChartValue.getPreviousValue(), pChart.getTotalValue()).doubleValue() * 100;
-		Point2D 		xCentro = new Point2D.Double();
+		Point2D 		xCentro = pCharts.getCenter();
 		Point2D 		x1 = new Point2D.Double();
 		Point2D 		x2 = new Point2D.Double();
 		Point2D 		x3 = new Point2D.Double();
@@ -233,70 +228,46 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		Integer			xPositionInverter = 1;
 		Point2D			xPointLabel = new Point2D.Double();
 		
-		Integer 		xPneuInternalPadding = 2;
-		Integer 		xLabelPadding = DBSNumber.toInteger(DBSCharts.FontSize * 1.5);
-		Double			xUnit = w2PI / 100;
-
-		Double 			xPneuLargura;
-		Double 			xRodaRaio;
 		Double			xArcoExterno;
 		Double			xStartAngle;
 		Double			xEndAngle;
 		Double			xPointAngle;
 		Double			xPneuRaioInterno;
 		Double			xPneuRaioExterno;
-		Double 			xDiametro;
+		Double 			xRaio;
 		
 		if (xPercValue == 100){
 			xPercValue = 99.99;
 		}
-		//Diametro do circulo. Utiliza o menor tamanho entre a alrgura a a altura escolhada para não ultrapasar as bordas
-		xDiametro = (pCharts.getDiameter() / 2) - pCharts.getPadding();
-		
-		//Centro do círculo
-		xCentro.setLocation((pCharts.getChartWidth().doubleValue() / 2) + pCharts.getPadding(),
-						    (pCharts.getChartHeight().doubleValue() / 2) + pCharts.getPadding());
-		
-		//Largura de cada gráfico
-		xPneuLargura = xDiametro - xLabelPadding; //Retirna padding principal
-		xPneuLargura -= (xPneuInternalPadding * (pCharts.getItensCount() - 1)); //Retina padding de cada pneu
-		xPneuLargura /= (pCharts.getItensCount() + 0.5); // 0.5 = metado da roda
-
-		//Raio da roda central
-		xRodaRaio = xPneuLargura / 2;
+		//Diametro do circulo. Utiliza o menor tamanho entre a alrgura e a altura escolhada para não ultrapasar as bordas
+		xRaio = pCharts.getPieChartRadius();
 		
 		//Arco mais externos onde serão exibido dos dados
-		xArcoExterno = xDiametro - (xLabelPadding / 2);
-		//Angulo inicial e final do arco
-		xStartAngle = (xPreviousPercValue * xUnit);
-		xEndAngle =  xStartAngle + ((xPercValue * xUnit));
+		xArcoExterno = xRaio - (DBSCharts.PieLabelPadding / 2);
 
+		//Angulo inicial e final do arco
+		xStartAngle = xPreviousPercValue * DBSNumber.PIDiameterFactor;
+		xEndAngle =  xStartAngle + (xPercValue * DBSNumber.PIDiameterFactor);
+		
 		//Angulo do ponto de apoi no centro do arco para servir de referencia para o label
 		xPointAngle = xStartAngle + ((xEndAngle - xStartAngle) / 2);
 
-		xPneuRaioInterno = xRodaRaio + ((xPneuLargura + xPneuInternalPadding) * (pCharts.getItensCount() - pChart.getIndex()));
-		xPneuRaioExterno = xPneuRaioInterno + xPneuLargura;
+		xPneuRaioInterno = pChart.getPieChartRelativeRadius(pCharts, pCharts.getPieChartWidth());
+		xPneuRaioExterno = xPneuRaioInterno + pCharts.getPieChartWidth();
 
 		//Calcula as coordenadas do arco 
-		x1.setLocation(DBSNumber.round(xCentro.getX() + (xPneuRaioExterno * Math.sin(xStartAngle)), 2), 
-					   DBSNumber.round(xCentro.getY() - (xPneuRaioExterno * Math.cos(xStartAngle)), 2));
-
-		x2.setLocation(DBSNumber.round(xCentro.getX() + (xPneuRaioExterno * Math.sin(xEndAngle)), 2), 
-					   DBSNumber.round(xCentro.getY() - (xPneuRaioExterno * Math.cos(xEndAngle)), 2));
-		
-		x3.setLocation(DBSNumber.round(xCentro.getX() + (xPneuRaioInterno * Math.sin(xEndAngle)), 2), 
-					   DBSNumber.round(xCentro.getY() - (xPneuRaioInterno * Math.cos(xEndAngle)), 2));
-
-		x4.setLocation(DBSNumber.round( xCentro.getX() + (xPneuRaioInterno * Math.sin(xStartAngle)), 2), 
-					   DBSNumber.round(xCentro.getY() - (xPneuRaioInterno * Math.cos(xStartAngle)), 2));
+		//Ponto externo
+		x1 = DBSNumber.circlePoint(xCentro, xPneuRaioExterno, xStartAngle);
+		x2 = DBSNumber.circlePoint(xCentro, xPneuRaioExterno, xEndAngle);
+		x3 = DBSNumber.circlePoint(xCentro, xPneuRaioInterno, xEndAngle);
+		x4 = DBSNumber.circlePoint(xCentro, xPneuRaioInterno, xStartAngle);
 
 		//Ponto de apoi no centro e na tangente do arco para servir de referencia para o label
-		xPoint.setLocation(DBSNumber.round(xCentro.getX() + ((xPneuRaioExterno + 0) * Math.sin(xPointAngle)),2),
-						   DBSNumber.round(xCentro.getY() - ((xPneuRaioExterno + 0) * Math.cos(xPointAngle)),2));
+		xPoint = DBSNumber.circlePoint(xCentro, xPneuRaioExterno, xPointAngle);
+
 
 		//Verifica sobreposição dos valores
 		pvSetLabelPoint(pCharts, pChart, pChartValue, xCentro, xPointAngle, xArcoExterno);
-
 		
 		//Determina orientação horizontal
 		if (pChartValue.getPoint().getX() >= xCentro.getX()){
@@ -412,8 +383,9 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		pChartValue.setPoint(null);
 		while (!xOk){
 			//Ponto de apoi no centro e acima do arco  para servir de referencia para o label
-			xLabel.setLocation(DBSNumber.round(pCentro.getX() + (pArcoExterno * Math.sin(pPointAngle)),2),
-							   DBSNumber.round(pCentro.getY() - (pArcoExterno * Math.cos(pPointAngle)),2));
+			xLabel = DBSNumber.circlePoint(pCentro, pArcoExterno, pPointAngle);
+//			xLabel.setLocation(DBSNumber.round(pCentro.getX() + (pArcoExterno * Math.sin(pPointAngle)),2),
+//							   DBSNumber.round(pCentro.getY() - (pArcoExterno * Math.cos(pPointAngle)),2));
 			xOk = pvValidateLabelPoint(pCharts, pChart, pChartValue, xLabel, pCentro.getX());
 			if (!xOk){
 				pPointAngle += xIncrement;
@@ -443,9 +415,9 @@ public class DBSChartValueRenderer extends DBSRenderer {
 						//Procura espaço de tras para frente
 						xIncrement *= -1;
 					//Ultrapassou o fim
-					}else if (pPointAngle > w2PI){
+					}else if (pPointAngle > DBSNumber.PIDiameter){
 						//Inicia a partir do fim
-						pPointAngle = w2PI;
+						pPointAngle = DBSNumber.PIDiameter;
 						//Procura espaço de tras para frente
 						xIncrement *= -1;
 						if (pCharts.getRowScale() > 12){

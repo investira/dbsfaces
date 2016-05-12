@@ -6,6 +6,8 @@ dbs_dataTable = function(pId) {
 	wW = wW + $(pId + " > .-container > .-header > .-filter > .-input").outerWidth();
 	wW = wW + $(pId + " > .-container > .-header > .-filter > .-button").outerWidth();
 	
+	dbsfaces.dataTable.initialize($(pId));
+	
 	$(pId).css("min-width", wW + "px");
 	
 	//Exclui campo para evitar a exibição do teclado 
@@ -180,6 +182,12 @@ dbs_dataTable = function(pId) {
 
 
 dbsfaces.dataTable = {
+	initialize: function(pDataTable){
+//		pDataTable.data("input", pDataTable.find(".-container > input.-foo"));
+//		pDataTable.data("body", pDataTable.find(".-container > .-content > table > tbody"));
+//		pDataTable.data("tr", pDataTable.children("tr"));
+	},
+
 	focus: function(e){
 		var xTBody = $('#' + dbsfaces.util.jsid(e.source.id) + " > .-container > .-content > table > tbody");
 		//Monitora evento ajax recebido e dispara evento dbsoft

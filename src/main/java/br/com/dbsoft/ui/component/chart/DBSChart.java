@@ -4,6 +4,7 @@ import javax.faces.component.FacesComponent;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import br.com.dbsoft.ui.component.DBSUIData;
+import br.com.dbsoft.ui.component.charts.DBSCharts;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSNumber;
 
@@ -183,7 +184,11 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 		return (Boolean) getStateHelper().eval(PropertyKeys.showDelta, true);
 	}
 
-	
+	public Double getPieChartRelativeRadius(DBSCharts pCharts, Double pRelativeWidth){
+		Double xRodaRaio = pRelativeWidth / 2;
+		return xRodaRaio + ((pRelativeWidth + DBSCharts.PieInternalPadding) * (pCharts.getItensCount() - getIndex()));
+	}
+
 	public Float getColorHue() {
 		return (Float) getStateHelper().eval(PropertyKeys.colorHue, null);
 	}

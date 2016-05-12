@@ -30,156 +30,26 @@
 	fill: none;
 	stroke-width: 0.2em;
 	shape-rendering: geometricprecision;
-	fill-opacity: 1;
-}
-
-/* OPACITY -------------------------------------- */
-/* LINE -------------------- */
-/* NORMAL */
-.dbs_chart[type='line'] > .-path > path{
-	opacity: 0.8;
-}
-.dbs_chart[type='line'] > .dbs_chartValue > .-info > .-label,
-.dbs_chart[type='line'] > .dbs_chartValue > .-info > .-value{
-	opacity: 0;
-}
-
-
-/* ACTIVATED */
-.dbs_chart[type='line'].-activated > .-path > path{
-	opacity: 1;
-}
-
-.dbs_chart[type='line'].-activated > .dbs_chartValue > .-info > .-label,
-.dbs_chart[type='line'].-activated > .dbs_chartValue > .-info > .-value{
-	opacity: 0.8;
-}
-
-.dbs_chart[type='line'].-activated > .dbs_chartValue > .-info > .-label.-hide,
-.dbs_chart[type='line'].-activated > .dbs_chartValue > .-info > .-value.-hide{
-	opacity: 0;
-}
-
-.dbs_chart[type='line'].-activated > .dbs_chartValue.-selected > .-info > .-label,
-.dbs_chart[type='line'].-activated > .dbs_chartValue.-selected > .-info > .-value,
-.dbs_chart[type='line'].-activated > .dbs_chartValue.-hover > .-info > .-label,
-.dbs_chart[type='line'].-activated > .dbs_chartValue.-hover > .-info > .-value{
-	opacity: 1;
-}
-.dbs_chart[type='line'][showdelta].-activated > .-path > path{
-	opacity: 0.5;
-}
-.dbs_chart[type='line'][showdelta].-activated > .-delta > .-info{
-	opacity: 0.7;
-}
-.dbs_chart[type='line'][showdelta].-activated > .dbs_chartValue:not(.-selected):not(.-hover) > .-info > .-label:not(.-hide){
-	opacity: 0.5;
-}
-
-/* ACTIVATED DIM */
-.dbs_chart[type='line'].-activated.-dim > .dbs_chartValue:not(.-selected):not(.-hover) > .-info > .-label:not(.-hide),
-.dbs_chart[type='line'].-activated.-dim > .dbs_chartValue:not(.-selected):not(.-hover) > .-info > .-value:not(.-hide){
-	opacity: 0.15;
-}
-
-.dbs_chart[type='line'].-activated.-dim > .-path > path{
-	opacity: 1;
-}
-.dbs_chart[type='line'][showdelta].-activated.-dim > .-path > path{
-	opacity: 1;
-}
-.dbs_chart[type='line'][showdelta].-activated.-dim > .-delta > .-info{
-	opacity: 0.3;
-}
-
-
-/* BAR -------------------- */
-/* NORMAL */
-.dbs_chart[type='bar'] > .dbs_chartValue > .-info > .-label,
-.dbs_chart[type='bar'] > .dbs_chartValue > .-info > .-value{
-	opacity: 0;
-}
-
-
-/* ACTIVATED */
-.dbs_chart[type='bar'].-activated > .dbs_chartValue > .-info > .-label,
-.dbs_chart[type='bar'].-activated > .dbs_chartValue > .-info > .-value{
-	opacity: 1;
-}
-
-.dbs_chart[type='bar'].-activated > .dbs_chartValue > .-info > .-label.-hide,
-.dbs_chart[type='bar'].-activated > .dbs_chartValue > .-info > .-value.-hide{
-	opacity: 0;
-}
-
-.dbs_chart[type='bar'].-activated > .dbs_chartValue.-selected > .-point,
-.dbs_chart[type='bar'].-activated > .dbs_chartValue.-selected > .-info > .-label,
-.dbs_chart[type='bar'].-activated > .dbs_chartValue.-selected > .-info > .-value,
-.dbs_chart[type='bar'].-activated > .dbs_chartValue.-hover > .-point,
-.dbs_chart[type='bar'].-activated > .dbs_chartValue.-hover > .-info > .-label,
-.dbs_chart[type='bar'].-activated > .dbs_chartValue.-hover > .-info > .-value{
-	opacity: 1;
-}
-
-
-/* ACTIVATED DIM */
-.dbs_chart[type='bar'].-activated.-dim > .dbs_chartValue:not(.-selected):not(.-hover) > .-point{
-	opacity: 0.4;
-}
-
-.dbs_chart[type='bar'].-activated.-dim > .dbs_chartValue:not(.-selected):not(.-hover) > .-info > .-label:not(.-hide),
-.dbs_chart[type='bar'].-activated.-dim > .dbs_chartValue:not(.-selected):not(.-hover) > .-info > .-value:not(.-hide){
-	opacity: 0.1;
-}
-
-
-
-/* PIE -------------------- */
-
-/* NORMAL */
-
-/* ACTIVATED */
-
-/* ACTIVATED DIM */
-.dbs_chart[type='pie'].-dim > .dbs_chartValue > .-point {
-	opacity:.5;
-}
-
-.dbs_chart[type='pie'].-dim > .dbs_chartValue > .-info {
-	opacity: 0;
-}
-
-.dbs_chart[type='pie'].-dim > .dbs_chartValue.-selected > .-point,
-.dbs_chart[type='pie'].-dim > .dbs_chartValue.-hover > .-point,
-.dbs_chart[type='pie'].-dim > .dbs_chartValue.-hover > .-info,
-.dbs_chart[type='pie'].-dim > .dbs_chartValue.-selected > .-info{
-	opacity: 1;
-}   
-
-
-
-.dbs_chart > .-delta.-activated{
-	display:inline-block;
 }
 
 .dbs_chart > .-delta{
-	display:none;
 	pointer-events: none;
 }
-
 
 .dbs_chart > .-delta > .-guide{
 	cursor: ew-resize;
 	pointer-events: all;
-	opacity: .45;
+	font-size: 0.3em;
+}
+
+.dbs_chart > .-delta > .-path{
+	fill-opacity: 0;
+	stroke-opacity: 0;
 }
 
 /* .dbs_chart > .-delta > .-guide:hover, */
 .dbs_chart > .-delta > .-guide:focus,
 .dbs_chart > .-delta > .-guide:active{
-	opacity: 1;
-/* 	stroke-opacity: 1; */
-/*     fill-opacity: 1; */
 	-moz-animation: -kf_dbs_chart_selected .1s linear;
 	-o-animation: -kf_dbs_chart_selected .1s linear;
 	-webkit-animation: -kf_dbs_chart_selected .1s linear;
@@ -188,7 +58,6 @@
 
 .dbs_chart > .-delta > .-deltaarea_r,
 .dbs_chart > .-delta > .-deltaarea_l{
-	fill-opacity: 0.2;
     stroke-width: 0px;
 }
 
@@ -197,7 +66,6 @@
     text-anchor: middle;
     font-weight: bolder;
     stroke-width: .01em;    
-	fill-opacity: 0.8;
 }
 
 .dbs_chart > .-delta > .-info > .-value > .-label{
@@ -206,6 +74,196 @@
 }
 
 
+
+/* OPACITY -------------------------------------- */
+/* LINE -------------------- */
+
+/*--------------------- */
+.dbs_chart[type='line'] > .-path > path{
+	stroke-opacity: 0.8;
+}
+.dbs_chart[type='line'].-activated > .-path > path{
+	stroke-opacity: 1;
+}
+.dbs_chart[type='line'][showdelta].-activated > .-path > path{
+	stroke-opacity: 0.8;
+}
+
+/*--------------------- */
+.dbs_chart[type='line'] > .-delta{
+	display: none;
+}
+.dbs_chart[type='line'].-activated > .-delta{
+	display: inline-block;
+}
+.dbs_chart[type='line'] > .-delta > .-info{
+	fill-opacity: 0.7;
+	stroke-opacity: 0.8;
+}
+.dbs_chart[type='line'].-dim > .-delta > .-info{
+	fill-opacity: 0.3;
+	stroke-opacity: 0.4;
+}
+
+.dbs_chart[type='line'] > .-delta > .-guide{
+	opacity: .45;
+}
+.dbs_chart[type='line'] > .-delta > .-guide:focus,
+.dbs_chart[type='line'] > .-delta > .-guide:active{
+	opacity: 1;
+}
+
+.dbs_chart[type='line'] > .-delta > .-deltaarea_r,
+.dbs_chart[type='line'] > .-delta > .-deltaarea_l{
+	fill-opacity: 0.2;
+}
+
+/*--------------------- */
+.dbs_chart[type='line'] > .dbs_chartValue > .-info{
+/*  -webkit-transform: translate3d(0,0,0);  */
+/*  -webkit-backface-visibility: hidden;  */
+/*  -webkit-perspective: 0; */
+/*  filter:blur(0); */
+}
+.dbs_chart[type='line'] > .dbs_chartValue > .-info > .-label{
+/*  -webkit-transform: translate3d(0,0,0);  */
+/*  -webkit-backface-visibility: hidden;  */
+/*  -webkit-perspective: 0; */
+/*  filter:blur(0); */
+}
+.dbs_chart[type='line'] > .dbs_chartValue > .-info > .-value{
+/*  -webkit-transform: translate3d(0,0,0);  */
+/*  -webkit-backface-visibility: hidden;  */
+/*  -webkit-perspective: 0; */
+/*  filter:blur(0); */
+}
+
+/* opacity=firefox ok */
+/* fill-opacity=safari ok */
+
+.dbs_chart[type='line'] > .dbs_chartValue > .-info > .-label,
+.dbs_chart[type='line'] > .dbs_chartValue > .-info > .-value{
+/* 	opacity: 0; */
+	fill-opacity: 0;
+}
+
+.dbs_chart[type='line'].-activated > .dbs_chartValue > .-info > .-label,
+.dbs_chart[type='line'].-activated > .dbs_chartValue > .-info > .-value{
+/* 	opacity: 0.8; */
+	fill-opacity: 0.8;
+}
+
+.dbs_chart[type='line'].-activated > .dbs_chartValue.-selected > .-info > .-label,
+.dbs_chart[type='line'].-activated > .dbs_chartValue.-selected > .-info > .-value,
+.dbs_chart[type='line'].-activated > .dbs_chartValue.-hover > .-info > .-label,
+.dbs_chart[type='line'].-activated > .dbs_chartValue.-hover > .-info > .-value{
+/* 	opacity: 1; */
+	fill-opacity: 1;
+}
+
+.dbs_chart[type='line'] > .dbs_chartValue > .-info > .-label.-hide,
+.dbs_chart[type='line'] > .dbs_chartValue > .-info > .-value.-hide{
+/* 	opacity: 0; */
+	fill-opacity: 0;
+}
+
+.dbs_chart[type='line'] > .dbs_chartValue.-around1 > .-info > .-label,
+.dbs_chart[type='line'] > .dbs_chartValue.-around2 > .-info > .-label{
+/* 	opacity: 0 !important; */
+	fill-opacity: 0 !important;
+}
+.dbs_chart[type='line'][showdelta].-activated > .dbs_chartValue:not(.-selected):not(.-hover) > .-info > .-label:not(.-hide){
+/* 	opacity: 0.5; */
+	fill-opacity: 0.5;
+}
+
+.dbs_chart[type='line'].-activated.-dim > .dbs_chartValue:not(.-selected):not(.-hover) > .-info > .-label:not(.-hide),
+.dbs_chart[type='line'].-activated.-dim > .dbs_chartValue:not(.-selected):not(.-hover) > .-info > .-value:not(.-hide){
+/* 	opacity: 0.15; */
+	fill-opacity: 0.15;
+}
+
+
+/* BAR -------------------- */
+/* NORMAL */
+.dbs_chart[type='bar'] > .dbs_chartValue > .-info > .-label,
+.dbs_chart[type='bar'] > .dbs_chartValue > .-info > .-value{
+	fill-opacity: 0;
+}
+
+
+/* ACTIVATED */
+.dbs_chart[type='bar'].-activated > .dbs_chartValue > .-info > .-label,
+.dbs_chart[type='bar'].-activated > .dbs_chartValue > .-info > .-value{
+	fill-opacity: 1;
+}
+
+.dbs_chart[type='bar'].-activated > .dbs_chartValue > .-info > .-label.-hide,
+.dbs_chart[type='bar'].-activated > .dbs_chartValue > .-info > .-value.-hide{
+	fill-opacity: 0;
+}
+
+.dbs_chart[type='bar'].-activated > .dbs_chartValue.-selected > .-point,
+.dbs_chart[type='bar'].-activated > .dbs_chartValue.-selected > .-info > .-label,
+.dbs_chart[type='bar'].-activated > .dbs_chartValue.-selected > .-info > .-value,
+.dbs_chart[type='bar'].-activated > .dbs_chartValue.-hover > .-point,
+.dbs_chart[type='bar'].-activated > .dbs_chartValue.-hover > .-info > .-label,
+.dbs_chart[type='bar'].-activated > .dbs_chartValue.-hover > .-info > .-value{
+	fill-opacity: 1;
+}
+
+
+/* ACTIVATED DIM */
+.dbs_chart[type='bar'].-activated.-dim > .dbs_chartValue:not(.-selected):not(.-hover) > .-point{
+	fill-opacity: 0.4;
+}
+
+.dbs_chart[type='bar'].-activated.-dim > .dbs_chartValue:not(.-selected):not(.-hover) > .-info > .-label:not(.-hide),
+.dbs_chart[type='bar'].-activated.-dim > .dbs_chartValue:not(.-selected):not(.-hover) > .-info > .-value:not(.-hide){
+	fill-opacity: 0.1;
+}
+
+
+
+/* PIE -------------------- */
+.dbs_chart[type='pie'].-dim > .dbs_chartValue > .-point {
+	fill-opacity:0.5;
+}
+.dbs_chart[type='pie'] > .-delta{
+	display: inline-block;
+}
+
+.dbs_chart[type='pie'].-dim > .dbs_chartValue > .-info{
+	fill-opacity: 0;
+	stroke-opacity: 0;
+}
+.dbs_chart[type='pie'].-dim > .dbs_chartValue.-selected > .-point,
+.dbs_chart[type='pie'].-dim > .dbs_chartValue.-hover > .-point,
+.dbs_chart[type='pie'].-dim > .dbs_chartValue.-hover > .-info,
+.dbs_chart[type='pie'].-dim > .dbs_chartValue.-selected > .-info{
+	fill-opacity: 1;
+	stroke-opacity: 1;
+}   
+.dbs_chart[type='pie'][showdelta].-activated > .-delta > .-info{
+	fill-opacity: 0.3;
+	stroke-opacity: 0.3;
+/* 	opacity: 0.3; */
+}
+
+/* ----------------------------------------------------------------------------------- */
+
+.dbs_chart[type='pie'][showdelta] > .-delta > .-info{
+    font-weight: bold;
+/*     stroke: white; */
+/*     fill: white; */
+    font-size: 2.5em;
+/*     text-anchor: middle; */
+    dominant-baseline: middle;
+    stroke-width: .02em;
+    stroke: black;
+    fill: black;
+}
+
 .dbs_chart.-dim > .-path > path,
 .dbs_chart[type='bar'].-dim > .dbs_chartValue > .-point,
 .dbs_chart[type='pie'].-dim > .dbs_chartValue > .-point{
@@ -213,10 +271,10 @@
 /*     -moz-transition: fill-opacity .2s, stroke-opacity .2s; */
 /*     -o-transition: fill-opacity .2s, stroke-opacity .2s; */
 /*     transition: fill-opacity .2s, stroke-opacity .2s; */
-	-webkit-transition: opacity .2s; 
-    -moz-transition: opacity .2s;
-    -o-transition: opacity .2s;
-    transition: opacity .2s;
+	-webkit-transition: fill-opacity .2s; 
+    -moz-transition: fill-opacity .2s;
+    -o-transition: fill-opacity .2s;
+    transition: fill-opacity .2s;
 }
 
 
@@ -240,39 +298,36 @@
 	text-anchor: end;
 	cursor: pointer;
 	pointer-events: all; 
+	dominant-baseline: middle;
 } 
-
 .dbs_chart[type='bar'] > .dbs_chartValue > .-point {
 /*     shape-rendering: crispEdges; */
 }
 
-/* .dbs_chart[type='line'].-activated > .dbs_chartValue > .-info > .-label, */
-/* .dbs_chart[type='line'].-activated > .dbs_chartValue > .-info > .-value{ */
-/* 	cursor: pointer; */
-/* 	pointer-events: all;  */
-/* } */
 .dbs_chart[type='line'] > .dbs_chartValue > .-point{
 	pointer-events: none;
 	stroke-width: 1px;
 	display:none;
 }
 
-
 .dbs_chart[type='line'] > .dbs_chartValue.-selected  > .-point,
 .dbs_chart[type='line'] > .dbs_chartValue.-hover  > .-point{
 	display:inline-block;
 }
 
-
 .dbs_chart[type='pie'] > .dbs_chartValue > .-info{
 	font-size: 1.15em;
 }
 
+.dbs_chart[type='pie'] > .dbs_chartValue > .-info > .-value{
+	dominant-baseline: middle;
+	text-anchor: end;
+}
+	
 .dbs_chart[type='pie'] > .dbs_chartValue > .-info > .-box{
 /* 	stroke: white; */
 	stroke-width: .05em;
 }
-
 
 .-a_dbs_chart_selected{
 	-moz-animation: -kf_dbs_chart_selected .1s linear;
