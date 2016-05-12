@@ -4,7 +4,8 @@ dbs_charts = function(pId) {
 	dbsfaces.charts.initialize(xCharts);
 
 	$(pId).mouseleave(function(e){
-		//Verificar se componente que disparou esta fora deste chart. Artifício necessário pois o Firefox dispara este evento diversas vezes 
+		//Verificar se componente que disparou esta fora deste chart. 
+		//Artifício necessário pois o Firefox dispara este evento diversas vezes 
 		var xE = $(e.originalEvent.toElement || e.relatedTarget).closest(".dbs_charts");
         if (xE == "undefined"
         || xE[0] != this ){

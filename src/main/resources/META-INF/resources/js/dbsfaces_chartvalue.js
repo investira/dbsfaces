@@ -125,6 +125,7 @@ dbsfaces.chartValue = {
 			pChartValue.data("dy", Number(xChartValuePoint.attr("cy")));
 			pChartValue.data("df", xChartValuePoint.css("color"));
 			pChartValue.data("dv", pChartValue.attr("value"));
+			pChartValue.data("dp", pChartValue.attr("perc"));
 			pChartValue.data("dl", pChartValue.attr("label"));
 			pChartValue.data("dd", xChartValueInfo.children(".-value").text());
 		}else{
@@ -171,10 +172,8 @@ dbsfaces.chartValue = {
 	},
 
 	select: function(pChartValue, pSelect){
-//		if (pChartValue == null){return;}
 		var xChart = pChartValue.data("parent");
 //		console.log("guide number\t" + xChart.data("guide"));
-//		var xGuideIndex = xChart.data("guide");
 		var xCharts = xChart.data("parent");
 		var xHover = null;
 		var xHoverChart;
@@ -226,41 +225,6 @@ dbsfaces.chartValue = {
 		dbsfaces.chart.unSelect(pChartValue);
 
 		return;
-//		//Desmarca outros chartvalues
-//		if (xCurrentCharts.data("groupMembers") != null){
-//			xCurrentCharts = xCurrentCharts.data("groupMembers");
-//		}
-//		xCurrentCharts = xCurrentCharts.filter(".-selected");
-////		xCurrentCharts = xCurrentCharts;
-//		//Charts
-//		xCurrentCharts.each(function(){
-//			var xCharts = $(this);
-//			var xChartsChildren = xCharts.data("children").not(xCurrentChart); //Ignora chart corrente, já que será matido o -selected
-////			var xChartsChildren = xCharts.data("children"); //Ignora chart corrente, já que será matido o -selected
-//			//Chart
-//			xChartsChildren.each(function(){
-//				var xChart = $(this);
-//				var xChartValue = xChart.data("cv" + xChart.data("guide"));
-//				if (xChartValue != null){
-//					console.log("before\t" + $("#" + dbsfaces.util.jsid(xChartValue.get(0).id)).attr("class"));
-//				}
-//				dbsfaces.chartValue.pvHoverChartValue(xCharts, xChart, xChartValue, false);
-//				if (xChartValue != null){
-//					console.log("after \t" + $("#" + dbsfaces.util.jsid(xChartValue.get(0).id)).attr("class"));
-//				}
-////				var xChartChildren = xChart.data("children");
-////				var xChartValueSelected = xChartChildren.filter(".-selected");
-////				var xChartValueSelected = xChartChildren;
-////				console.log(xChartValueSelected.length);
-////				xChartValueSelected.each(function(){
-////					console.log($(this).attr("class"));
-////					console.log($("#" + dbsfaces.util.jsid($(this).get(0).id)).attr("class"));
-////					dbsfaces.chartValue.pvHoverChartValue(xChart, $(this), false);
-////				});
-//			});
-//		});
-//		var xChart = pChartValue.data("parent");
-//		var xCharts = xChart.data("parent");
 	},
 
 	pvHoverChartValue: function(pCharts, pChart, pChartValue, pSelect){
@@ -318,6 +282,7 @@ dbsfaces.chartValue = {
 					xChartValuePoint.svgRemoveClass(xAnimationClass);
 				}
 			}
+			//Atualiza controle de itens selecionados 
 			dbsfaces.chart.dataRefreshSelection(pChart);
 		}
 	}

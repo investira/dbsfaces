@@ -266,16 +266,18 @@ dbsfaces.svg = {
 		return xText;
 	},
 
-	textpath: function(pComponent, pHRef, pText, pStyleClass, pStyle, pAttrs){
-		var xTextPath = dbsfaces.svg.createElement('textpath', pAttrs);
+	textPath: function(pComponent, pHRef, pText, pStyleClass, pStyle, pAttrs){
+		var xTextPath = dbsfaces.svg.createElement('textPath', pAttrs);
 		dbsfaces.svg.setDefaultAttrs(xTextPath, pStyleClass, pStyle);
-		dbsfaces.svg.setAttributeHRef(xTextPath, pHRef);
 
 		xTextPath.text(pText);
+		dbsfaces.svg.setAttributeHRef(xTextPath, pHRef);
 		
 		pComponent.append(xTextPath);
+		
 		return xTextPath;
 	},
+	
 	linearGradient: function(pComponent, pId){
 		var xElement = dbsfaces.svg.createElement('linearGradient', null);
 		pComponent.append(xElement);
@@ -308,6 +310,7 @@ dbsfaces.svg = {
 	
 	createElement: function(pTag, pAttrs){
 		var xElement = $(document.createElementNS('http://www.w3.org/2000/svg', pTag));
+		//Seta atributos do componente.
 		if (pAttrs != null){
 			for (var xAttr in pAttrs){
 				xElement.svgAttr(xAttr, pAttrs[xAttr]);
@@ -321,18 +324,10 @@ dbsfaces.svg = {
 				  .svgAttr("style", pStyle);
 	},
 	
-	
 	setAttributeHRef: function(pComponent, pHRef){
 		var xNS = "http://www.w3.org/1999/xlink";
 		pComponent.get(0).setAttributeNS(xNS, "xlink:href", "#" + pHRef);
-//		pComponent.get(0).setAttributeNS(null, "xmlns:xlink", "");
-//		pComponent.get(0).setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", "#" + pHRef);
-//		setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', attrs[k]);
-//		pComponent.attr("xlink:href", "#" + pHRef);
-//		pComponent.attr("xmlns:xlink", "http://www.w3.org/1999/xlink");
 	}
-	
-
 	
 }
 

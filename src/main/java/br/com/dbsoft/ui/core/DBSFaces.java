@@ -1839,7 +1839,7 @@ public class  DBSFaces {
 				if (xI != -1){
 					xAttrName = xAttr.substring(0, xI).trim().toLowerCase();
 					xAttrValue = xAttr.substring(xI+1).trim();
-					setAttribute(pWriter, xAttrName, xAttrValue, xAttrName);
+					setAttribute(pWriter, xAttrName, xAttrValue, null);
 				}
 			}
 		}

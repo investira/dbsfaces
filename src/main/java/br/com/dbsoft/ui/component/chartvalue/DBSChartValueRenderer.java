@@ -55,6 +55,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		ResponseWriter 	xWriter = pContext.getResponseWriter();
 		String 			xClass = DBSFaces.CSS.CHARTVALUE.MAIN + " ";
 		String 			xClientId;
+		Double 			xPercValue = 0D;
 		TYPE			xType;
 		//Recupera DBSChart pai
 		if (xChartValue.getParent() == null
@@ -81,8 +82,9 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			xClass = xClass.trim()  + " " + xChartValue.getStyleClass().trim();
 		}
 		
-
 		pvSetFillcolor(xCharts, xChart, xChartValue);
+		
+		xPercValue = pvCalcPercValue(xChart, xChartValue);
 
 		xWriter.startElement("g", xChartValue);
 			DBSFaces.setAttribute(xWriter, "id", xClientId, null);
@@ -90,6 +92,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "class", xClass.trim(), null);
 			DBSFaces.setAttribute(xWriter, "style", xChartValue.getStyle(), null);
 			DBSFaces.setAttribute(xWriter, "value", DBSNumber.toDouble(xChartValue.getValue(), 0D, Locale.US), null);
+			DBSFaces.setAttribute(xWriter, "perc", DBSNumber.toDouble(xPercValue, 0D, Locale.US), null);
 			DBSFaces.setAttribute(xWriter, "label", xChartValue.getLabel(), "");
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xChartValue, DBSPassThruAttributes.getAttributes(Key.DIV));
 			//Grafico
@@ -98,7 +101,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 				 || xType == TYPE.BAR){
 					pvEncodeBarAndLine(xType, xCharts, xChart, xChartValue, pContext, xWriter);
 				}else if (xType == TYPE.PIE){
-					pvEncodePie(xCharts, xChart, xChartValue, pContext, xWriter);
+					pvEncodePie(xCharts, xChart, xChartValue, xPercValue, pContext, xWriter);
 				}
 			}
 			encodeClientBehaviors(pContext, xChartValue);
@@ -107,6 +110,22 @@ public class DBSChartValueRenderer extends DBSRenderer {
 //		xChartValue.setSavedState(xChartValue.saveState(pContext));
 	}
 
+	/**
+	 * Calcula valor percentual do valor em relação ao total
+	 * @param pChart
+	 * @param pChartValue
+	 * @return
+	 */
+	private Double pvCalcPercValue(DBSChart pChart, DBSChartValue pChartValue){
+		if (pChartValue.getValue() != null
+		 || pChartValue.getValue() != 0D
+		 || pChart.getTotalValue() != null
+		 || pChart.getTotalValue() != 0D){
+			return DBSNumber.divide(pChartValue.getValue(), pChart.getTotalValue()).doubleValue() * 100;
+		}
+		return null;
+	}
+	
 	private void pvEncodeBarAndLine(TYPE pType, DBSCharts pCharts, DBSChart pChart, DBSChartValue pChartValue, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 		BigDecimal	xXText = new BigDecimal(0);
 		BigDecimal	xYText = new BigDecimal(0);
@@ -208,10 +227,10 @@ public class DBSChartValueRenderer extends DBSRenderer {
 	
 
 	
-	private void pvEncodePie(DBSCharts pCharts, DBSChart pChart, DBSChartValue pChartValue, FacesContext pContext, ResponseWriter pWriter) throws IOException{
+	private void pvEncodePie(DBSCharts pCharts, DBSChart pChart, DBSChartValue pChartValue, Double pPercValue, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 		StringBuilder 	xPath;
 		String 			xClientId = pChartValue.getClientId(pContext);
-		Double 			xPercValue = DBSNumber.divide(pChartValue.getValue(), pChart.getTotalValue()).doubleValue() * 100;
+		Double 			xPercValue = pPercValue;
 		Double 			xPreviousPercValue = DBSNumber.divide(pChartValue.getPreviousValue(), pChart.getTotalValue()).doubleValue() * 100;
 		Point2D 		xCentro = pCharts.getCenter();
 		Point2D 		x1 = new Point2D.Double();
@@ -319,7 +338,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 				DBSFaces.encodeSVGRect(pChartValue, pWriter, xPointLabel.getX(), xPointLabel.getY(), null, "1.3em", 3, 3, "-box", xPerBoxStyle, null);
 				//Valor do percentual, label e valor ---------------------------------------------------------------------
 				StringBuilder xText = new StringBuilder();
-				String xLabelPerc = DBSFormat.getFormattedNumber(xPercValue, 1) + "%";
+				String xLabelPerc = DBSFormat.getFormattedNumber(pPercValue, 1) + "%";
 				String xLabelValue = DBSFormat.getFormattedNumber(DBSObject.getNotNull(pChartValue.getDisplayValue(), pChartValue.getValue()), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask());
 				String xLabelSpacesX = "&#124;"; //DBSString.repeat("&#160;",7 - xLabelPerc.length());
 				String xLabelSpaces1 = "";
@@ -573,12 +592,19 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);		
 	}
 	
+	/**
+	 * Determina a cor que será utilizada
+	 * @param pCharts
+	 * @param pChart
+	 * @param pChartValue
+	 */
 	private void pvSetFillcolor(DBSCharts pCharts, DBSChart pChart, DBSChartValue pChartValue){
 		//Usa cor informada pelo usuário
 		if (pChartValue.getFillColor() != null){
 			wFillColor = pChartValue.getFillColor(); 
 			return;
 		}
+		//Calcula próxima cor
 		wFillColor = DBSFaces.calcChartFillcolor(pChart.getColorHue(), pChart.getColorBrightness(), pCharts.getItensCount(), pChart.getItensCount(), pChart.getIndex(), pChartValue.getIndex());
 	}
 }

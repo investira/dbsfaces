@@ -73,11 +73,12 @@ dbsfaces.chart = {
 			//Verifica sopreposição dos labels e cor da linhas
 			dbsfaces.chart.pvInitializeLineAndLabels(xCharts, pChart, xChartChildren, xShowLabel, xDrawLine);
 		}
-		//Cria guia principal
+		//Cria espaço exibir o resultado das seleções
 		if (xShowDelta){
 			dbsfaces.chart.pvInitializeDelta(xCharts, pChart);
 		}
 		dbsfaces.chart.pvSetFontSize(xCharts, pChart);
+		dbsfaces.chart.dataRefreshSelection(pChart);
 	},
 
 	//Definir a tamanho do fonte a partir do tamanho do gráfico
@@ -128,7 +129,6 @@ dbsfaces.chart = {
 		}
 		//Reseta guia 
 		dbsfaces.chart.setGuideIndex(pChart, 0);
-		dbsfaces.chart.dataRefreshSelection(pChart);
 	},
 	
 	//Verifica sopreposição dos labels 
@@ -217,16 +217,15 @@ dbsfaces.chart = {
 				xAntY = xChartValue.data("dy");
 			}
 		}
-		//Cria a linha e cor que conecta os pontos
+		//Cria a linha e cor que conectam os pontos
 		if (xStringPath != ""){
 			//Cria cor
 			var xSvg = pCharts.find(".-container > .-data > .-container > defs");
 			var xLG = dbsfaces.svg.linearGradient(xSvg, pChart.get(0).id + "_linestroke");
 			dbsfaces.svg.stop(xLG, 0, xStarColor);
 			dbsfaces.svg.stop(xLG, "100%", xStopColor);
-			//Path do gráfico
+			//Cria Linha
 			var xPath = dbsfaces.svg.path(pChart.data("pathgroup"), xStringPath, null, null, {"stroke": "url(#" + pChart.get(0).id + "_linestroke)"});
-//			xPath.svgAttr("stroke", "url(#" + pChart.get(0).id + "_linestroke)");
 			//Salva path no próprio componente para agilizar o findPoint
 			pChart.data("path", xPath.get(0));
 		}
@@ -258,45 +257,43 @@ dbsfaces.chart = {
 			}
 			dbsfaces.chart.pvInitializeDeltaAreaChartLine(pCharts, pChart, xCV1, 1);
 			dbsfaces.chart.pvInitializeDeltaAreaChartLine(pCharts, pChart, xCV2, 2);
-		}else{
+		}else if (pChart.attr("type") == "pie"){
 			dbsfaces.chart.pvInitializeDeltaAreaChartPie(pChart);
 		}
 	},
 	
 	pvInitializeDeltaInfo: function(pChart){
-		var xChartDeltaGroup = pChart.data("deltagroup");
-		var xDeltaInfoGroup = xChartDeltaGroup.children(".-info");
+		var xDeltaGroup = pChart.data("deltagroup");
+		var xDeltaInfoGroup = xDeltaGroup.children(".-info");
 		var xFontSize = Number(pChart.data("parent").attr("diameter")) / 40;
 		if (xDeltaInfoGroup.length == 0){
-			xDeltaInfoGroup = dbsfaces.svg.g(xChartDeltaGroup, null, null, "-info", null, null);
+			xDeltaInfoGroup = dbsfaces.svg.g(xDeltaGroup, null, null, "-info", null, null);
 			pChart.data("deltainfogroup", xDeltaInfoGroup);
 		}
 		var xDeltaValue = xDeltaInfoGroup.children(".-value");
 		if (xDeltaValue.length == 0){
-//			setTimeout(function(){
 			xDeltaValue = dbsfaces.svg.text(xDeltaInfoGroup, null, null, null, "-value", null, null);
 			if (pChart.attr("type") == "pie"){
 				var xDeltaPathId = pChart.get(0).id + "_deltapath";
-				xDeltaValue = dbsfaces.svg.textpath(xDeltaValue, xDeltaPathId, "abc", null, null, {"startOffset": "50%"});
-				xDeltaValue.text("123");
+				xDeltaValue = dbsfaces.svg.textPath(xDeltaValue, xDeltaPathId, "", null, null, {"startOffset": "50%"});
 			}else{
 				var xLineStrokeId = pChart.get(0).id + "_linestroke";
 				xDeltaValue.svgAttr("fill", "url(#" + xLineStrokeId + ")");
 				xDeltaValue.svgAttr("stroke", "url(#" + xLineStrokeId + ")");
 			}
 			pChart.data("deltavalue", xDeltaValue);
-//			},15000);
 		}
 	},
+	
 	pvInitializeDeltaAreaChartLine: function(pCharts, pChart, pChartValue, pGuideIndex){
 		var xItem = (pGuideIndex == 1 ? "l": "r");
-		var xChartDeltaGroup = pChart.data("deltagroup");
-		var xDeltaArea = xChartDeltaGroup.children(".-deltaarea_" + xItem);
+		var xDeltaGroup = pChart.data("deltagroup");
+		var xDeltaArea = xDeltaGroup.children(".-deltaarea_" + xItem);
 		var xChartMask = pChart.data("mask");
 		var xHeight = xChartMask.attr("height");
 		var xX = (pGuideIndex == 1 ? xChartMask.attr("x") : -(Number(xChartMask.attr("width")) + 1));
 		if (xDeltaArea.length == 0){
-			xDeltaArea = dbsfaces.svg.rect(xChartDeltaGroup, xX, xChartMask.attr("y"), 0, xHeight, null, null, "-deltaarea_" + xItem, null, null);
+			xDeltaArea = dbsfaces.svg.rect(xDeltaGroup, xX, xChartMask.attr("y"), 0, xHeight, null, null, "-deltaarea_" + xItem, null, null);
 			xDeltaArea.svgAttr("fill", "url(#" + pChart.get(0).id + "_linestroke)");
 			if (pGuideIndex == 2){
 				//Inverte relação das coordernadas
@@ -309,20 +306,15 @@ dbsfaces.chart = {
 	},
 	
 	pvInitializeDeltaAreaChartPie: function(pChart){
-//		var xChartDeltaGroup = pChart.data("deltagroup");
-//		var xDeltaInfoGroup = pChart.data("deltainfogroup");
-//		var xX = xChartDeltaGroup.attr("x");
-//		var xY = xChartDeltaGroup.attr("y");
-//		xDeltaInfoGroup.svgAttr("style", "transform:translate(" + xX + "px, " + xY + "px);");
 	},
 
 	
 	//Cria guias 
 	pvInitializeGuide: function(pCharts, pChart, pChartValue, pGuideIndex){
-		var xChartDeltaGroup = pChart.data("deltagroup");
-		var xGuide = xChartDeltaGroup.children(".-guide[guide='" + pGuideIndex + "']");
+		var xDeltaGroup = pChart.data("deltagroup");
+		var xGuide = xDeltaGroup.children(".-guide[guide='" + pGuideIndex + "']");
 		if (xGuide.length == 0){
-			xGuide = dbsfaces.svg.use(xChartDeltaGroup, pCharts.get(0).id + "_guide", "-guide", null, {"guide" : pGuideIndex});
+			xGuide = dbsfaces.svg.use(xDeltaGroup, pCharts.get(0).id + "_guide", "-guide", null, {"guide" : pGuideIndex});
 			//Salva o guia do gráfico
 			pChart.data("guide" + pGuideIndex, xGuide);
 			//Inicializa chartValue do guia como nulo
@@ -404,11 +396,25 @@ dbsfaces.chart = {
 	
 	dataRefreshSelection: function(pChart){
 		pChart.data("selection", pChart.children(".-selected"));
+		pChart.data("totval", null);
+		pChart.data("totper", null);
+		if (pChart.attr("type") != "line"){
+			var xTotVal = 0;
+			var xTotPer = 0;
+			pChart.data("selection").each(function(){
+				xTotVal += Number($(this).data("dv"));
+				xTotPer += Number($(this).data("dp"));
+			});
+			pChart.data("totval", dbsfaces.math.round(xTotVal,2));
+			pChart.data("totper", dbsfaces.math.round(xTotPer, 2));
+			if (pChart.attr("type") == "pie"){
+				dbsfaces.chart.pvShowDeltaChartPie(pChart);
+			}
+		}
 	},
 	
 
 	select: function(pChartValue, pSelect){
-//		if (pChartValue == null){return;}
 		var xChart = pChartValue.data("parent");
 		var xCharts = xChart.data("parent");
 
@@ -438,10 +444,7 @@ dbsfaces.chart = {
 		var xChart = pChartValue.data("parent");
 		var xCharts = xChart.data("parent");
 
-		//Reseta posição dos guias
-//		dbsfaces.chart.pvSetGuide(xChart, pChartValue, false);
-
-//		//Exibe delta
+		//Exibe delta
 		dbsfaces.chart.pvShowDelta(xChart, pChartValue, false);
 		
 		//Desmarca item selecionado anteriormente
@@ -455,19 +458,15 @@ dbsfaces.chart = {
 		dbsfaces.charts.select(pChartValue, pSelect);
 	},
 		
-	
 	pvShowDelta: function(pChart, pChartValue, pSelect){
-		var xChartDeltaGroup = pChart.data("deltagroup");
-		if (xChartDeltaGroup == null 
-		 || xChartDeltaGroup.length == 0){return;}
+		var xDeltaGroup = pChart.data("deltagroup");
+		if (xDeltaGroup == null 
+		 || xDeltaGroup.length == 0){return;}
 		if (pChart.attr("type") == "line"){
 			//Reseta posição dos guias
 			dbsfaces.chart.pvSetGuide(pChart, pChartValue, pSelect);
-		}else if(pChart.attr("type") == "pie"){
-			dbsfaces.chart.pvShowDeltaChartPie(pChart);
 		}
 	},
-
 	
 	pvSetGuide: function(pChart, pChartValue, pSelect){
 		if (pChart.attr("type") != "line"){return;}
@@ -552,12 +551,11 @@ dbsfaces.chart = {
 
 	pvShowDeltaChartPie: function(pChart){
 		var xDeltaValue = pChart.data("deltavalue");
-		xDeltaValue.text("xyz");
-		dbsfaces.ui.moveToFront(xDeltaValue);
-//		var xCV1 = pChart.data("guide1").data("cv");
-//		var xCV2 = pChart.data("guide2").data("cv");
-//		dbsfaces.chart.pvShowDeltaChartLineArea(pChart, xCV1, xCV2);
-//		dbsfaces.chart.pvShowDeltaChartLineValue(pChart, xCV1, xCV2);
+		if (pChart.data("totval") == 0){
+			xDeltaValue.text("");
+			return;
+		}
+		xDeltaValue.text(pChart.data("totval") + "\t" + pChart.data("totper") + "%");
 	},
 
 	
@@ -618,19 +616,15 @@ dbsfaces.chart = {
 			xValue = (pDV2 / pDV1);
 //			console.log("b:\t" + pDV2 + "\t" + pDV1 + "\t" + xValue);
 		}
-		xValue = dbsfaces.math.round(xValue, 4);
+		xValue = dbsfaces.math.round(xValue, 6);
 		xValue = (xValue - 1) * 100;
 		return dbsfaces.format.number(xValue, 2);
 	},
 
 	pvSimplifyLabel: function(pPreviuosLabel, pCurrentLabel){
 		//Delimitador no final
-//		var xRE = new RegExp(/[^ \-.:\r\n/\\]+[ \-.:\r\n/\\]*/g);
-//		var xP = pPreviuosLabel.match(xRE);
-//		var xC = pCurrentLabel.match(xRE);
 		//Delimitador no inicio
 		var xRE = new RegExp(/(?=[ \-.:\r\n/\\]+)/);
-//		var xRE = new RegExp(/([ \-.:\r\n/\\]+)/);
 		var xP = pPreviuosLabel.split(xRE);
 		var xC = pCurrentLabel.split(xRE);
 		var xS = "";
@@ -646,33 +640,6 @@ dbsfaces.chart = {
 		}
 		return xS;
 	}
-
-//	
-//	//Escoder todos os deltas
-//	//Chamado pelo dbsfaces_charts
-//	hideDelta: function(pCharts, pChart){
-//		dbsfaces.chart.hideChartValueDelta(pChart);
-//		
-//		//Procura por todos os charts da mesma familia para esconder o delta, se existir.
-//		var xMembers = pCharts.data("groupMembers");
-//		if (xMembers != null) {
-//			xMembers.each(function(){
-//				xCharts = $(this);
-//				var xChart = $(this).data("children").not(pChart);
-//				xChart.each(function(){
-//					dbsfaces.chart.hideChartValueDelta($(this));
-//				});
-//			});
-//		}
-//	},
-//	
-//	hideChartValueDelta: function(pChart){
-//		//Esconde delta após 5 segundos caso não tenha sido selecionado o intervalo definitivo
-//		if (pChart.attr("type") == "line"
-//	     && typeof(pChart.attr("showdelta")) != 'undefined'){
-//			dbsfaces.chartValue.hideDelta(pChart);
-//		}
-//	}
 
 };
 
