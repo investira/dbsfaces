@@ -17,18 +17,19 @@
 .dbs_charts > .-container > .-footer{
 	position: relative;
 	display: block;
-	text-align: center;
     cursor: default;
 }
 
 .dbs_charts > .-container > .-caption{
     width: 100%;	
+	text-align: left;
+	padding-left: .25em;
+    font-weight: bold;
 	background-image: url("#{request.contextPath}/images/back_texture_white.png");
     background-color: rgba(13,25,45,.02);
 	-webkit-border-radius: 3px 3px 0px 0px;
 	-moz-border-radius: 3px 3px 0px 0px;
 	border-radius: 3px 3px 0px 0px;
-    font-weight: bold;
 }
 
 .dbs_charts > .-container > .-data{

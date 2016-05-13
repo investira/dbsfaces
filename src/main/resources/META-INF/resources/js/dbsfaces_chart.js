@@ -574,7 +574,7 @@ dbsfaces.chart = {
 		if (pChart.data("totval") == 0){
 			xDeltaValue.text("");
 		}else{
-			xDeltaValue.text(pChart.data("totval"));
+			xDeltaValue.text(dbsfaces.format.numberSimplify(pChart.data("totval")));
 		}
 	},
 

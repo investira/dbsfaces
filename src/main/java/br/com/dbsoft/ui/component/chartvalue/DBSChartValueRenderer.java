@@ -339,7 +339,9 @@ public class DBSChartValueRenderer extends DBSRenderer {
 				//Valor do percentual, label e valor ---------------------------------------------------------------------
 				StringBuilder xText = new StringBuilder();
 				String xLabelPerc = DBSFormat.getFormattedNumber(pPercValue, 1) + "%";
-				String xLabelValue = DBSFormat.getFormattedNumber(DBSObject.getNotNull(pChartValue.getDisplayValue(), pChartValue.getValue()), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask());
+				
+				String xLabelValue = DBSFormat.numberSimplify(DBSObject.getNotNull(pChartValue.getDisplayValue(), pChartValue.getValue())).toString();
+//				String xLabelValue = DBSFormat.getFormattedNumber(DBSObject.getNotNull(pChartValue.getDisplayValue(), pChartValue.getValue()), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask());
 				String xLabelSpacesX = "&#124;"; //DBSString.repeat("&#160;",7 - xLabelPerc.length());
 				String xLabelSpaces1 = "";
 				String xLabelText = "";

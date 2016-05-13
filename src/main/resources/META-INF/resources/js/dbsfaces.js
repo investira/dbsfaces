@@ -888,31 +888,53 @@ dbsfaces.number = {
 	},
 	
 	getOnlyNumber: function(pValue){
-//		var xValue = "";
-//		for (var i = 0; i < pValue.length; i++){
-//			if (dbsfaces.number.isNumber(pValue.charAt(i))){
-//				xValue = xValue + pValue.charAt(i);
-//			}
-//		}
-//		return xValue;
 		return pValue.replace(/[^-\d\.]/g, '');
  	}
 };
 
 dbsfaces.format = {
 	number: function(pValue, pDecimals){
+//		var xLanguage = window.navigator.userLanguage || window.navigator.language;
 		pValue = dbsfaces.math.round(pValue, pDecimals);
-	    if ((1.1).toLocaleString().indexOf(".") >= 0) {
-	    	
-//	        return pValue.toString().split("/(?=(?:\d{3})+(?:\.\d{2}))/g").join( "," );
+		var xDS = dbsfaces.format.getDecimalSeparator();
+	    if (xDS == ".") { //Ingles
 	    	return pValue.toString().split("/(?=(?:\d{3})+(?:\.|$))/g").join( "," );
-	    }
-	    else {
+	    }else{ //Portugues
 	        return pValue.toString().split("/(?=(?:\d{3})+(?:,|$))/g").join( "." );
-//	        return pValue.toString().split("/(?=(?:\d{3})+(?:,\d{2}))/g").join( "." );
 	    }
-//	   return pValue.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+	},
+	
+	numberSimplify: function(pVal){
+		var xVal = Number(pVal);
+		var xLength = dbsfaces.math.round(xVal, 0).toString().length;
+		if (xLength == 0){return;}
+		var xSimple = (xVal / Math.pow(10, ((xLength -1) - ((xLength -1) % 3))));
+		var xSuf = "";
+		var xFormated = "";
+		if (xLength > 15){
+			xSuf = "quatri";
+		}else if (xLength > 12){
+			xSuf = "tri";
+		}else if (xLength > 9){
+			xSuf = "bi";
+		}else if (xLength > 6){
+			xSuf = "mi";
+		}else if (xLength > 3){
+			xSuf = "mil";
+		}else{
+			xSimple = xVal;
+		}
+		xFormated = dbsfaces.format.number(xSimple, 2) + xSuf;
+		return xFormated;
+	},
+	
+	getDecimalSeparator: function(){
+		if ((1.1).toLocaleString().indexOf(".") >= 0){
+			return ".";
+		}
+		return ",";
 	}
+
 };
 
 	

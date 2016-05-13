@@ -115,7 +115,7 @@ public class DBSChartRenderer extends DBSRenderer {
 		xWriter.endElement("g");
 	}
 	/**
-	 * Path que será utilizado para posicionar o valor do delta
+	 * Paths que serão utilizados para posicionar os valores do delta/somatório
 	 * @param pCharts
 	 * @param pChart
 	 * @param pWriter
@@ -125,14 +125,26 @@ public class DBSChartRenderer extends DBSRenderer {
 		Double xMiddleRadius = (pCharts.getPieChartWidth() / 2) + pChart.getPieChartRelativeRadius(pCharts, pCharts.getPieChartWidth());
 		Point2D xPathPoint1 = new Point2D.Double();
 		Point2D xPathPoint2 = new Point2D.Double();
+		//Arco a esquerda
 		xPathPoint1 = DBSNumber.circlePoint(pCharts.getCenter(), xMiddleRadius, 51 * DBSNumber.PIDiameterFactor);
 		xPathPoint2 = DBSNumber.circlePoint(pCharts.getCenter(), xMiddleRadius, 99 * DBSNumber.PIDiameterFactor);
 		pvEncodePieDeltaTextPath(pChart, pWriter, "_l",  xMiddleRadius, xPathPoint1, xPathPoint2);
+		//Arco a direita
 		xPathPoint1 = DBSNumber.circlePoint(pCharts.getCenter(), xMiddleRadius, 1 * DBSNumber.PIDiameterFactor);
 		xPathPoint2 = DBSNumber.circlePoint(pCharts.getCenter(), xMiddleRadius, 49 * DBSNumber.PIDiameterFactor);
 		pvEncodePieDeltaTextPath(pChart, pWriter, "_r", xMiddleRadius, xPathPoint1, xPathPoint2);
 	}
 
+	/**
+	 * Encode do path
+	 * @param pChart
+	 * @param pWriter
+	 * @param pSide
+	 * @param pMiddleRadius
+	 * @param pPathPoint1
+	 * @param pPathPoint2
+	 * @throws IOException
+	 */
 	private void pvEncodePieDeltaTextPath(DBSChart pChart, ResponseWriter pWriter, String pSide, Double pMiddleRadius, Point2D pPathPoint1, Point2D pPathPoint2) throws IOException{
 		StringBuilder xPath = new StringBuilder();
 	    xPath.append("M" + pPathPoint1.getX() + "," + pPathPoint1.getY()); //Ponto inicial do arco 
@@ -163,23 +175,14 @@ public class DBSChartRenderer extends DBSRenderer {
 		//Loop por todos os registros lidos
 		//Lido de forma decrescentes por o saveState e restoreState invertou
 		//a ordem da consulta
-//		xChart.restoreState(FacesContext.getCurrentInstance(), xChartValue.getSavedState());
-//		pChart.restoreState(FacesContext.getCurrentInstance(), pChart.getSavedState());
-//    	System.out.println("restore pvEncodeResultSetChartValue");
 		for (int xRowIndex = 0; xRowIndex < xRowCount; xRowIndex++) {
-//        for (int xRowIndex = xRowCount - 1; xRowIndex >= 0; xRowIndex--) {
         	pChart.setRowIndex(xRowIndex);
         	//Loop no componente filho contendo as definições dos valores
 			for (UIComponent xC : pChart.getChildren()){
 				if (xC instanceof DBSChartValue){
 					DBSChartValue xChartValue = (DBSChartValue) xC;
-//					xChartValue.processUpdates(pContext);
 					if (xChartValue.isRendered()){
-//						xChartValue.restoreState(FacesContext.getCurrentInstance(), pChart.getSavedState());
 						xChartValue.restoreState(FacesContext.getCurrentInstance(), xChartValue.getSavedState());
-//						xChartValue.restoreTransientState(pContext, xChartValue.getSavedState());
-//						xChartValue.restoreAttachedState(pContext, xChartValue.get);
-//						System.out.println("restore:\t" + xChartValue.getIndex() + "\t" + xChartValue.getLabel() + "\t" + xChartValue.getValue() + "\t" + xChartValue.getPreviousValue());
 						xChartValue.encodeAll(pContext);
 					}
 				}
