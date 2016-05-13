@@ -61,13 +61,9 @@
 }
 
 .dbs_chart > .-delta > .-info > .-value{
-/* 	text-rendering: geometricPrecision; */
     text-rendering: auto;
     font-weight: bolder;
     text-anchor: middle;
-	stroke-width: .03em;
-/*     stroke-width: .01em;     */
-/*     stroke: white; */
 }
 .dbs_chart > .-delta > .-info > .-value > .-deltapath_r{
 	text-anchor: start;
@@ -78,6 +74,10 @@
 	fill: rgba(0,0,0,.82);
 }
 
+/*--------------------- */
+
+/* opacity=firefox ok */
+/* fill-opacity=safari ok */
 
 /* OPACITY -------------------------------------- */
 /* LINE -------------------- */
@@ -92,8 +92,6 @@
 .dbs_chart[type='line'][showdelta].-activated > .-path > path{
 	stroke-opacity: 0.8;
 }
-
-/*--------------------- */
 .dbs_chart[type='line'] > .-delta{
 	display: none;
 }
@@ -104,11 +102,11 @@
 	fill-opacity: 0.7;
 	stroke-opacity: 0.8;
 }
-.dbs_chart[type='line'].-dim > .-delta > .-info{
+.dbs_chart[type='line']:focus > .-delta > .-info,
+.dbs_chart[type='line']:active > .-delta > .-info{
 	fill-opacity: 0.3;
 	stroke-opacity: 0.4;
 }
-
 .dbs_chart[type='line'] > .-delta > .-guide{
 	opacity: .45;
 }
@@ -122,10 +120,6 @@
 	fill-opacity: 0.2;
 }
 
-/*--------------------- */
-
-/* opacity=firefox ok */
-/* fill-opacity=safari ok */
 
 .dbs_chart[type='line'] > .dbs_chartValue > .-info > .-label,
 .dbs_chart[type='line'] > .dbs_chartValue > .-info > .-value{
@@ -245,11 +239,16 @@
 	dominant-baseline: middle;
 }
 
+.dbs_chart[type='line'] > .-delta > .-info{
+	stroke-width: 0;
+}
 /*sinal de percentual */
 .dbs_chart[type='line'] > .-delta > .-info > .-value > .-label{
     font-size: .5em;
 }
 
+.dbs_chart[type='bar'] > .-delta > .-info{
+}
 
 
 .dbs_chart.-dim > .-path > path,
