@@ -93,7 +93,8 @@ dbsfaces.chart = {
 	//Definir a tamanho do fonte a partir do tamanho do gráfico
 	pvChartPieSetFontSize: function(pCharts, pChart){
 		var xSize = pCharts.attr("diameter") / 45;
-		pChart.css("font-size", xSize + "px");	
+//		pChart.css("font-size", xSize + "em");
+//		pChart.css("font-size", "1em");
 	},
 
 	//Definir a tamanho do fonte a partir do tamanho do gráfico
@@ -104,7 +105,7 @@ dbsfaces.chart = {
 			if (xSize > xDiameter){
 				xSize = xDiameter;
 			}
-			pChart.data("deltainfogroup").svgAttr("font-size", xSize + "px");	
+			pChart.data("deltainfogroup").svgAttr("font-size", xSize + "px");
 		}
 	},
 

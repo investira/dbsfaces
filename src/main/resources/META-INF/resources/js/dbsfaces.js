@@ -904,6 +904,7 @@ dbsfaces.format = {
 	    }
 	},
 	
+	//Retorna o número simplificado com mil, mi, bi, tri, quatri.
 	numberSimplify: function(pVal){
 		var xVal = Number(pVal);
 		var xLength = dbsfaces.math.round(xVal, 0).toString().length;

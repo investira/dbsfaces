@@ -222,7 +222,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			}
 		pWriter.endElement("g");
 		//Tooltip -------------------------------------------------------------------------
-		pvEncodeTooptip(pType, pChartValue, xXText.doubleValue(), xYText.doubleValue(), xClientId, pContext, pWriter);
+//		pvEncodeTooptip(pType, pChartValue, xXText.doubleValue(), xYText.doubleValue(), xClientId, pContext, pWriter);
 	}
 	
 
@@ -334,8 +334,6 @@ public class DBSChartValueRenderer extends DBSRenderer {
 				//Ponto pequeno no centro e na tangente do arco	
 				DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xPoint.getX(), xPoint.getY(), "2px", "2px", DBSFaces.CSS.MODIFIER.POINT, null, "fill=" + wFillColor);
 				
-				//Borda do texto-Largura será cofigurada via JS
-				DBSFaces.encodeSVGRect(pChartValue, pWriter, xPointLabel.getX(), xPointLabel.getY(), null, "1.3em", 3, 3, "-box", xPerBoxStyle, null);
 				//Valor do percentual, label e valor ---------------------------------------------------------------------
 				StringBuilder xText = new StringBuilder();
 				String xLabelPerc = DBSFormat.getFormattedNumber(pPercValue, 1) + "%";
@@ -364,9 +362,14 @@ public class DBSChartValueRenderer extends DBSRenderer {
 					xText.append(xLabelSpaces1);
 					xText.append(xLabelText);
 				}
+
+				//Borda do texto:  largura será cofigurada via JS
+//				DBSFaces.encodeSVGRect(pChartValue, pWriter, xPointLabel.getX(), xPointLabel.getY(), ((xText.toString().trim().length() - 10) * .7) + "em", "1.3em", 3, 3, "-box", xPerBoxStyle, null);
+				DBSFaces.encodeSVGRect(pChartValue, pWriter, xPointLabel.getX(), xPointLabel.getY(), null, "1.3em", 3, 3, "-box", xPerBoxStyle, null);
+				
 				//Valor do percentual ---------------------------------------------------------------------
 				pvEncodeText(pChartValue, 
-							 xText.toString(), 
+							 xText.toString().trim(), 
 							 xPointLabel.getX() + (3 * xPositionInverter), 
 							 xPointLabel.getY(), 
 							 DBSFaces.CSS.MODIFIER.VALUE, 
@@ -377,7 +380,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		}
 		
 		//Tooltip -------------------------------------------------------------------------
-		pvEncodeTooptip(TYPE.PIE, pChartValue, pChartValue.getPoint().getX(), pChartValue.getPoint().getY(), xClientId, pContext, pWriter);
+//		pvEncodeTooptip(TYPE.PIE, pChartValue, pChartValue.getPoint().getX(), pChartValue.getPoint().getY(), xClientId, pContext, pWriter);
 
 	}
 
@@ -560,13 +563,15 @@ public class DBSChartValueRenderer extends DBSRenderer {
 	private void pvEncodeTooptip(TYPE pType, DBSChartValue pChartValue, Double pX, Double pY, String pClienteId, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 			String xStyle = "";
 			pWriter.startElement("foreignObject", pChartValue);
-//				pWriter.writeAttribute("xmlns","http://www.w3.org/1999/xhtml", null);
-				pWriter.writeAttribute("requiredExtensions","http://www.w3.org/1999/xhtml", null);
-				pWriter.writeAttribute("height", "1px", null);
-				pWriter.writeAttribute("width", "1px", null);
-				pWriter.writeAttribute("class", "-foreignobject", null);
-				pWriter.writeAttribute("x", "0px", null);
-				pWriter.writeAttribute("y", "0px", null);
+				pWriter.writeAttribute("xmlns","http://www.w3.org/1999/xhtml", null);
+//				pWriter.writeAttribute("requiredExtensions","http://www.w3.org/1999/xhtml", null);
+//				pWriter.writeAttribute("height", "1px", null);
+//				pWriter.writeAttribute("width", "1px", null);
+				DBSFaces.setAttribute(pWriter, "height", "1", null);
+				DBSFaces.setAttribute(pWriter, "width", "1", null);
+				DBSFaces.setAttribute(pWriter, "class", "-foreignobject", null);
+				DBSFaces.setAttribute(pWriter, "x", pX + "px", null);
+				DBSFaces.setAttribute(pWriter, "y", pY + "px", null);
 				pWriter.startElement("div", pChartValue);
 					pWriter.writeAttribute("id", pClienteId + "_tooltip", null);
 					if (pType == TYPE.PIE
@@ -578,8 +583,8 @@ public class DBSChartValueRenderer extends DBSRenderer {
 					xStyle += "left:" + pX.intValue() + "px;";
 					xStyle += "bottom:-" + (pY.intValue() - 5) + "px;";
 					pWriter.writeAttribute("style", xStyle, null);
-//					DBSFaces.encodeTooltip(pContext, pChartValue, pChartValue.getValue().toString(), pClienteId + "_tooltip");
-					DBSFaces.encodeTooltip(pContext, pChartValue, pChartValue.getTooltip(), pClienteId + "_tooltip");
+					DBSFaces.encodeTooltip(pContext, pChartValue, pChartValue.getValue().toString(), pClienteId + "_tooltip");
+//					DBSFaces.encodeTooltip(pContext, pChartValue, pChartValue.getTooltip(), pClienteId + "_tooltip");
 				pWriter.endElement("div");
 			pWriter.endElement("foreignObject");
 		}

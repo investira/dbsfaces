@@ -49,14 +49,10 @@ public class DBSChartRenderer extends DBSRenderer {
 		String 		xClass = DBSFaces.CSS.CHART.MAIN;
 		TYPE 		xType = DBSChart.TYPE.get(xChart.getType());
 		DBSCharts	xCharts;
-		Integer		xChartsWidth;
-		Integer 	xChartsHeight;
 		if (!(xChart.getParent() instanceof DBSCharts)){
 			return;
 		}
 		xCharts =  (DBSCharts) xChart.getParent();
-		xChartsWidth = xCharts.getChartWidth() + xCharts.getPadding();
-		xChartsHeight = xCharts.getChartHeight() + xCharts.getPadding();
 		
 		if (xChart.getStyleClass()!=null){
 			xClass += xChart.getStyleClass() + " ";
@@ -83,21 +79,20 @@ public class DBSChartRenderer extends DBSRenderer {
 			
 			encodeClientBehaviors(pContext, xChart);
 			
-			//Divisão onde serão desenhadas as linhas que ligam os pontos no gráfico por linha.
-			//O desenho é efetuado via JS no chartValue
 			if (xType == TYPE.LINE
 			 || xType == TYPE.BAR){
-				xWriter.startElement("g", xChart);
-					DBSFaces.setAttribute(xWriter, "class", "-path", null);
-					//Area que ira captura o mousemove
-					DBSFaces.encodeSVGRect(xChart, xWriter, xCharts.getPadding() / 2D, xCharts.getPadding() / 2D, xChartsWidth.toString(), xChartsHeight.toString(), DBSFaces.CSS.MODIFIER.MASK.trim(), null, null);
-				xWriter.endElement("g");
+				//Divisão onde serão desenhadas as linhas que ligam os pontos no gráfico por linha.
+				pvEncodePathGroup(xCharts, xChart, xWriter);
 			}
+			//Divisão para exibição do delta   
 			if (xChart.getShowDelta()){
 				xWriter.startElement("g", xChart);
 					DBSFaces.setAttribute(xWriter, "class", "-delta", null);
 					if (xType == TYPE.PIE){
 						pvEncodePieDeltaTextPaths(xCharts, xChart, xWriter);
+					}else if (xType == TYPE.LINE){
+					//Divisão onde serão desenhadas as linhas que ligam os pontos no gráfico por linha.
+//						pvEncodeLineDeltaAutoSelection(xCharts, xChart, xWriter);
 					}
 				xWriter.endElement("g");
 			}
@@ -114,6 +109,57 @@ public class DBSChartRenderer extends DBSRenderer {
 			
 		xWriter.endElement("g");
 	}
+	
+	/**
+	 * Divisão onde serão desenhadas as linhas que ligam os pontos no gráfico por linha.
+	 * O desenho é efetuado via JS no chartValue
+	 * @param pCharts
+	 * @param pChart
+	 * @param pWriter
+	 * @throws IOException
+	 */
+	private void pvEncodePathGroup(DBSCharts pCharts, DBSChart pChart, ResponseWriter pWriter) throws IOException{
+		Integer		xChartsWidth;
+		Integer 	xChartsHeight;
+		xChartsWidth = pCharts.getChartWidth() + pCharts.getPadding();
+		xChartsHeight = pCharts.getChartHeight() + pCharts.getPadding();
+		pWriter.startElement("g", pChart);
+			DBSFaces.setAttribute(pWriter, "class", "-path", null);
+			//Area que irá captura o mousemove
+			DBSFaces.encodeSVGRect(pChart, pWriter, pCharts.getPadding() / 2D, pCharts.getPadding() / 2D, xChartsWidth.toString(), xChartsHeight.toString(), DBSFaces.CSS.MODIFIER.MASK.trim(), null, null);
+		pWriter.endElement("g");
+	}
+
+	private void pvEncodeLineDeltaAutoSelection(DBSCharts pCharts, DBSChart pChart, ResponseWriter pWriter) throws IOException{
+		pWriter.startElement("foreignObject", pChart);
+//			DBSFaces.setAttribute(pWriter, "requiredExtensions", "http://www.w3.org/1999/xhtml", null);
+//			pWriter.writeAttribute("xmlns","http://www.w3.org/1999/xhtml", null);
+			DBSFaces.setAttribute(pWriter, "xmlns","http://www.w3.org/1999/xhtml", null);
+			DBSFaces.setAttribute(pWriter, "class", "-autoSelection", null);
+			DBSFaces.setAttribute(pWriter, "height", "1", null);
+			DBSFaces.setAttribute(pWriter, "width", "1", null);
+			DBSFaces.setAttribute(pWriter, "x", "0px", null);
+			DBSFaces.setAttribute(pWriter, "y", "0px", null);
+			DBSFaces.setAttribute(pWriter, "style", "overflow:visible;", null);
+//			DBSFaces.setAttribute(pWriter, "style", "overflow:visible; background-color:black; height:500px; width:500px; display:block; top:0px; left: 0px; position: absolute;", null);
+//			pWriter.writeAttribute("x", "0px", null);
+//			pWriter.writeAttribute("y", "0px", null);
+			pWriter.startElement("body", pChart);
+			pWriter.writeAttribute("xmlns","http://www.w3.org/1999/xhtml", "");
+
+			pWriter.startElement("div", pChart);
+			DBSFaces.setAttribute(pWriter, "xmlns", "http://www.w3.org/1999/xhtml", null);
+//				DBSFaces.setAttribute(pWriter, "height", "50px", null);
+//				DBSFaces.setAttribute(pWriter, "width", "50px", null);
+//				DBSFaces.setAttribute(pWriter, "x", "0px", null);
+//				DBSFaces.setAttribute(pWriter, "y", "0px", null);
+				DBSFaces.setAttribute(pWriter, "style", "background-color:black; height:500px; width:500px; display:block; top:0px; left: 0px; position: absolute;", null);
+				pWriter.write("abc");
+			pWriter.endElement("div");
+			pWriter.endElement("body");
+		pWriter.endElement("foreignObject");
+	}
+	
 	/**
 	 * Paths que serão utilizados para posicionar os valores do delta/somatório
 	 * @param pCharts
