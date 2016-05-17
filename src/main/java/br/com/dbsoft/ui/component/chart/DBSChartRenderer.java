@@ -92,7 +92,7 @@ public class DBSChartRenderer extends DBSRenderer {
 						pvEncodePieDeltaTextPaths(xCharts, xChart, xWriter);
 					}else if (xType == TYPE.LINE){
 					//Divisão onde serão desenhadas as linhas que ligam os pontos no gráfico por linha.
-//						pvEncodeLineDeltaAutoSelection(xCharts, xChart, xWriter);
+						pvEncodeLineDeltaAutoSelection(xCharts, xChart, xWriter);
 					}
 				xWriter.endElement("g");
 			}
@@ -152,9 +152,10 @@ public class DBSChartRenderer extends DBSRenderer {
 //				DBSFaces.setAttribute(pWriter, "height", "50px", null);
 //				DBSFaces.setAttribute(pWriter, "width", "50px", null);
 //				DBSFaces.setAttribute(pWriter, "x", "0px", null);
-//				DBSFaces.setAttribute(pWriter, "y", "0px", null);
-				DBSFaces.setAttribute(pWriter, "style", "background-color:black; height:500px; width:500px; display:block; top:0px; left: 0px; position: absolute;", null);
-				pWriter.write("abc");
+//				DBSFaces.setAttribute(pWriter, "y", "0px", null);    
+		    	
+				DBSFaces.setAttribute(pWriter, "style", "border-color: black; border-style: solid; border-radius: 3px;border-width: .3em; background-color:rgba(250,250,250,.8); display:block; top:90px; left: 212px; position: absolute;", null);
+				pWriter.write("1D  7D  30D  90D  180D  320D  720D");
 			pWriter.endElement("div");
 			pWriter.endElement("body");
 		pWriter.endElement("foreignObject");

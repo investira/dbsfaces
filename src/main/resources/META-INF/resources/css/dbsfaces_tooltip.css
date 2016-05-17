@@ -1,56 +1,45 @@
 .-tooltip{
-/* 	position: relative; */
 	position: fixed;
-
-	display: block;
+	opacity: 0;
+	pointer-events: none;
+	display: inline-block;
+    overflow: visible;
 	z-index: 1;
-/*     top: 0; */
-/*     left: 0; */
-    top: auto;
-    left: auto;
-
-/* 	background-color: red; */
 	cursor:default;
 
-/* 	força para não ocupar espaço; */
-    width: 0px;
-    height: 0px;
+/* 	line-height: 120%; */
+	text-shadow: none;
+	font-style: normal;
+
+    width: .5px;
+    height: .5px;
     
 }
 
-.-tooltip > .-mask{
-	position: fixed;
-	display: block;
-	pointer-events: none;
-
-	/*Definir um tamanho para não inibir a distribuição normal do browser. Este tamanho não é fixo */
-    width: 100px; 
-    height: 100px;
-
-	/* reset transform translate     */
-    transform-style: flat;
-    -webkit-transform: translateX(0) translateY(0);
-    -moz-transform: translateX(0) translateY(0);
-    -o-transform: translateX(0) translateY(0);
-    transform: translateX(0) translateY(0);
-	/* ================ */
-	
-}
-.-tooltip > .-mask > .-container{
-	
-	position: fixed;
-	display: block;
-	pointer-events: initial;
-	
-	top:0;
-	left:0;
-	line-height: 120%;
-	text-shadow: none;
-	font-style: normal;
+.-tooltip.-tt{
+	text-align: center;
 	font-size: 10px;
+    -webkit-transition: opacity .3s; 
+    -moz-transition: opacity .3s;
+    -o-transition: opacity .3s;
+    transition: opacity .3s;
+}
+
+.-tooltip.-show{
+	pointer-events: initial;
+	opacity: 1;
+    -webkit-transition: none; 
+    -moz-transition: none;
+    -o-transition: none;
+    transition: none;
+}
+
+.-tooltip > .-container{
+	position: fixed;
+	display: inline-block;
 
 	margin:0px;
-	padding: 4px 4px 4px 4px;
+	padding:0px;
 	
 	-moz-border-radius: 3px;
  	-webkit-border-radius: 3px;
@@ -67,22 +56,29 @@
 	box-shadow: 0px 0px 2px #222;  
 
 	z-index: 10;
+	
+	-webkit-transform-origin: 0 0 0;
+	-moz-transform-origin: 0 0 0;
+	-o-transform-origin: 0 0 0;
+	transform-origin: 0 0 0;
 
-    -webkit-transform: translateX(0) translateY(0);
-    -moz-transform: translateX(0) translateY(0);
-    -o-transform: translateX(0) translateY(0);
-    transform: translateX(0) translateY(0);
+/*     -webkit-transform: translateX(0) translateY(0); */
+/*     -moz-transform: translateX(0) translateY(0); */
+/*     -o-transform: translateX(0) translateY(0); */
+/*     transform: translateX(0) translateY(0); */
 }
 
-.-tooltip > .-mask > .-container > .-content{
-	position:relative;
-	display: block;
-	text-align: center;
-	top: 0;
-    left: 0;
+.-tooltip > .-container > .-content{
+	margin:0px;
+	padding: 4px;
+/* 	position:relative; */
+/* 	display: block; */
+/* 	text-align: center; */
+/* 	top: 0; */
+/*     left: 0; */
 }
 
-.-tooltip > .-mask > .-container:before{
+.-tooltip > .-container:before{
     position:absolute;
 	content:'';
     display:block;
@@ -94,8 +90,8 @@
 
 
 
-.-tooltip.-l3 > .-mask > .-container:before,
-.-tooltip.-l1 > .-mask > .-container:before{
+.-tooltip.-l3 > .-container:before,
+.-tooltip.-l1 > .-container:before{
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
     left: 50%;
@@ -105,17 +101,17 @@
     transform: translateX(-50%);
 }
 
-.-tooltip.-l1 > .-mask > .-container:before{
+.-tooltip.-l1 > .-container:before{
     border-top: 8px solid  rgb(13,25,45);
     top:100%;
 }
-.-tooltip.-l3 > .-mask > .-container:before{
+.-tooltip.-l3 > .-container:before{
     border-bottom: 8px solid rgb(13,25,45);
     top: -7px;
 }
 
-.-tooltip.-l2 > .-mask > .-container:before,
-.-tooltip.-l4 > .-mask > .-container:before{
+.-tooltip.-l2 > .-container:before,
+.-tooltip.-l4 > .-container:before{
 	border-top: 8px solid transparent;
     border-bottom: 8px solid transparent;
     top: 50%;
@@ -124,11 +120,11 @@
     -o-transform: translateY(-50%);
     transform: translateY(-50%);
 }
-.-tooltip.-l4 > .-mask > .-container:before{
+.-tooltip.-l4 > .-container:before{
     border-left: 8px solid rgb(13,25,45);
 	left: 100%;
 }
-.-tooltip.-l2 > .-mask > .-container:before{
+.-tooltip.-l2 > .-container:before{
     border-right: 8px solid rgb(13,25,45);
     left: -7px;
 }

@@ -1552,8 +1552,8 @@ public class  DBSFaces {
 	 * @param pClienteId 
 	 * @throws IOException
 	 */
-	public static void encodeTooltipQuickInfo(FacesContext pContext, UIComponent pComponent) throws IOException{
-		pvEncodeTooltip(false, pContext, pComponent, null);
+	public static void encodeTooltipQuickInfo(FacesContext pContext, UIComponent pComponent, Integer pDefaultLocation) throws IOException{
+		pvEncodeTooltip(false, pContext, pComponent, pDefaultLocation, null, 0);
 	}
 	
 	
@@ -1565,7 +1565,7 @@ public class  DBSFaces {
 	 * @throws IOException
 	 */
 	public static void encodeTooltip(FacesContext pContext, UIComponent pComponent, String pTooltipText) throws IOException{
-		encodeTooltip(pContext, pComponent, pTooltipText, pComponent.getClientId());
+		encodeTooltip(pContext, pComponent, null, pTooltipText, pComponent.getClientId(), null);
 	}
 	
 	/**
@@ -1578,16 +1578,42 @@ public class  DBSFaces {
 	 * @throws IOException
 	 */
 	public static void encodeTooltip(FacesContext pContext, UIComponent pComponent, String pTooltipText, String pSourceClientId) throws IOException{
+		encodeTooltip(pContext, pComponent, null, pTooltipText, pSourceClientId, null);
+	}
+
+	/**
+	 * Cria o elemento que conterá o tooltip.<br/>
+	 * <b>Somente utilize este método caso seja um tooltip para um componente filho do componente principal.</b>
+	 * @param pWriter
+	 * @param pComponent
+	 * @param pTooltipText
+	 * @param pClienteId 
+	 * @throws IOException
+	 */
+	public static void encodeTooltip(FacesContext pContext, UIComponent pComponent, Integer pDefaultLocation, String pTooltipText, String pSourceClientId) throws IOException{
+		encodeTooltip(pContext, pComponent, pDefaultLocation, pTooltipText, pSourceClientId, null);
+	}
+	/**
+	 * Cria o elemento que conterá o tooltip.<br/>
+	 * <b>Somente utilize este método caso seja um tooltip para um componente filho do componente principal.</b>
+	 * @param pWriter
+	 * @param pComponent
+	 * @param pTooltipText
+	 * @param pClienteId 
+	 * @throws IOException
+	 */
+	public static void encodeTooltip(FacesContext pContext, UIComponent pComponent, Integer pDefaultLocation, String pTooltipText, String pSourceClientId, Integer pDelay) throws IOException{
 		ResponseWriter 	xWriter = pContext.getResponseWriter();		
-		pvEncodeTooltip(true, pContext, pComponent, pTooltipText);
-		//Javascript 
-		DBSFaces.encodeJavaScriptTagStart(xWriter);
-		String xJS = "$(document).ready(function() { \n" +
-				     " var xTooltip = '#' + dbsfaces.util.jsid('" + pSourceClientId + "'); \n " + 
-				     " dbs_tooltip(xTooltip); \n" +
-                     "}); \n"; 
-		xWriter.write(xJS);
-		DBSFaces.encodeJavaScriptTagEnd(xWriter);		
+		if (pvEncodeTooltip(true, pContext, pComponent, pDefaultLocation, pTooltipText, pDelay)){
+			//Javascript 
+			DBSFaces.encodeJavaScriptTagStart(xWriter);
+			String xJS = "$(document).ready(function() { \n" +
+					     " var xTooltip = '#' + dbsfaces.util.jsid('" + pSourceClientId + "'); \n " + 
+					     " dbs_tooltip(xTooltip); \n" +
+	                     "}); \n"; 
+			xWriter.write(xJS);
+			DBSFaces.encodeJavaScriptTagEnd(xWriter);		
+		};
 	}
 	
 	/**
@@ -2828,104 +2854,130 @@ public class  DBSFaces {
 	        }
 	    }
 	}
-	 
-//	  /**
-//	  * Converte o valor recebido para o mesmo tipo do 'value' definido no bean onde será atulizado o valor
-//	  * @param pComponent
-//	  * @param pSubmittedValue
-//	  * @return
-//	  */
-//	 public static Object castSubmittedValue(DBSUIInput pComponent, Object pSubmittedValue){
-//	 	Object xSubmittedValue = pSubmittedValue;
-////		Object xKeyValueSaved = pComponent.getValue();
-////	 	pComponent.getValueExpression("value").getType(FacesContext.getCurrentInstance().getELContext())	 	
-//		Object xValue = pComponent.getValue();
-//		if (xValue == null){ 
-//			pComponent.setValue("0");
-//			xValue = pComponent.getValue(); 
-//		}
-//		if (pSubmittedValue != null){
-//			if(pSubmittedValue.equals("")){
-//				if (xValue instanceof Integer){
-//					//Seta valor diretamente como nulo caso o conteúdo recebido seja 'vázio'. Isso é necessário pois setar o submittedvalue como nulo, e a mesma coisa que ignorar o valor recebido. 
-//					pComponent.setValue(null); 
-//					xSubmittedValue =  null; //Seta como nulo para que o submittedvalue recebido seja ignorado, evitando o o setValue acima seja sobreposto.
-//				}
-//			}else{
-//				if (xValue instanceof Integer){
-//					xSubmittedValue =  DBSNumber.toInteger(pSubmittedValue);
-//				}else if (xValue instanceof Boolean){
-//					xSubmittedValue = DBSBoolean.toBoolean(pSubmittedValue);
-//				}else if (xValue instanceof BigDecimal){
-//					xSubmittedValue = DBSNumber.toBigDecimal(pSubmittedValue);
-//				}
-//			}
-//		}
-////		pComponent.setValue(xKeyValueSaved);
-//	 	return xSubmittedValue;
-//	 }
-	
 	/**
-		 * Cria o elemento que conterá o tooltip.
-		 * @param pWriter
-		 * @param pComponent
-		 * @param pTooltip
-		 * @param pClienteId 
-		 * @throws IOException
-		 */
-		private static void pvEncodeTooltip(boolean pBasicTooltip, FacesContext pContext, UIComponent pComponent, String pTooltipText) throws IOException{
-			ResponseWriter 	xWriter = pContext.getResponseWriter();	
-			UIComponent 	xTooltip;
-			
-			if (pBasicTooltip){
-				xTooltip = pComponent.getFacet("tooltip");
-			}else{
-				xTooltip = pComponent;
-			}
-			
-			//Encode do tooltip se houver um texto para o tooltip ou foi defindo via facet(name="tooltip") dentro do componente...
-			if (!DBSObject.isEmpty(pTooltipText) ||
-				xTooltip != null){
+	 * Cria o elemento que conterá o tooltip.
+	 * @param pWriter
+	 * @param pComponent
+	 * @param pTooltip
+	 * @param pClienteId 
+	 * @throws IOException
+	 */
+	private static boolean pvEncodeTooltip(boolean pBasicTooltip, FacesContext pContext, UIComponent pComponent, Integer pDefaultLocation, String pTooltipText, Integer pDelay) throws IOException{
+		ResponseWriter 	xWriter = pContext.getResponseWriter();	
+		UIComponent 	xTooltip;
+		
+		if (pBasicTooltip){
+			xTooltip = pComponent.getFacet("tooltip");
+		}else{
+			xTooltip = pComponent;
+		}
+		
+		//Encode do tooltip se houver um texto para o tooltip ou foi defindo via facet(name="tooltip") dentro do componente...
+		if (!DBSObject.isEmpty(pTooltipText) ||
+			xTooltip != null){
+			xWriter.startElement("div", pComponent);
+				String xClass = DBSFaces.CSS.MODIFIER.TOOLTIP;
+				
+				if (pBasicTooltip){
+					xClass += "-tt"; //Tooltip padrão
+				}else{
+					xClass += "-qi"; //Tooltip para o quickinfo
+				}
+				setAttribute(xWriter, "class", xClass, null);
+				setAttribute(xWriter, "delay", pDelay, "300");
+				setAttribute(xWriter, "dl", pDefaultLocation, "1");
 				xWriter.startElement("div", pComponent);
-					String xClass = DBSFaces.CSS.MODIFIER.TOOLTIP;
-					if (pBasicTooltip){
-						xClass += "-tt"; //Tooltip padrão
-					}else{
-						xClass += "-qi"; //Tooltip para o quickinfo
+					xClass = DBSFaces.CSS.MODIFIER.CONTAINER;
+					if (!pBasicTooltip){
+						xClass += CSS.BACK_TEXTURE_BLACK_GRADIENT;
 					}
-					xWriter.writeAttribute("class", xClass, null);
-					xWriter.writeAttribute("style", "display: none;", null);
+					xWriter.writeAttribute("class", xClass.trim(), null);
 					xWriter.startElement("div", pComponent);
-						xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.MASK, null);
-						xWriter.startElement("div", pComponent);
-							xClass = DBSFaces.CSS.MODIFIER.CONTAINER;
-							if (!pBasicTooltip){
-								xClass += CSS.BACK_TEXTURE_BLACK_GRADIENT;
+						xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT.trim() , null);
+						//Dá prioridade para o facet
+						if (xTooltip != null){
+							if (pBasicTooltip){
+								//Encode conteúdo do facet
+								xTooltip.encodeAll(pContext);
+							}else{
+								//Encode dos filhos do componente
+								renderChildren(pContext, xTooltip);
 							}
-							xWriter.writeAttribute("class", xClass.trim(), null);
-							xWriter.startElement("div", pComponent);
-								xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT.trim() , null);
-								//Dá prioridade para o facet
-								if (xTooltip != null){
-									if (pBasicTooltip){
-										//Encode conteúdo do facet
-										xTooltip.encodeAll(pContext);
-									}else{
-										//Encode dos filhos do componente
-										renderChildren(pContext, xTooltip);
-									}
-								}else{
-									//Encode texto
-	//								xWriter.write(getHtmlStringWithLineBreak(pTooltipText));
-									xWriter.write(pTooltipText);
-								}
-							xWriter.endElement("div");
-						xWriter.endElement("div");
+						}else{
+							//Encode texto
+//								xWriter.write(getHtmlStringWithLineBreak(pTooltipText));
+							xWriter.write(pTooltipText);
+						}
 					xWriter.endElement("div");
 				xWriter.endElement("div");
-			}
+			xWriter.endElement("div");
+			return true;
 		}
+		return false;
+	}
 
+	 
+//	/**
+//	 * Cria o elemento que conterá o tooltip.
+//	 * @param pWriter
+//	 * @param pComponent
+//	 * @param pTooltip
+//	 * @param pClienteId 
+//	 * @throws IOException
+//	 */
+//	private static void pvEncodeTooltip(boolean pBasicTooltip, FacesContext pContext, UIComponent pComponent, String pTooltipText) throws IOException{
+//		ResponseWriter 	xWriter = pContext.getResponseWriter();	
+//		UIComponent 	xTooltip;
+//		
+//		if (pBasicTooltip){
+//			xTooltip = pComponent.getFacet("tooltip");
+//		}else{
+//			xTooltip = pComponent;
+//		}
+//		
+//		//Encode do tooltip se houver um texto para o tooltip ou foi defindo via facet(name="tooltip") dentro do componente...
+//		if (!DBSObject.isEmpty(pTooltipText) ||
+//			xTooltip != null){
+//			xWriter.startElement("div", pComponent);
+//				String xClass = DBSFaces.CSS.MODIFIER.TOOLTIP;
+//				if (pBasicTooltip){
+//					xClass += "-tt"; //Tooltip padrão
+//				}else{
+//					xClass += "-qi"; //Tooltip para o quickinfo
+//				}
+//				xWriter.writeAttribute("class", xClass, null);
+//				xWriter.writeAttribute("style", "display: none;", null);
+//				xWriter.startElement("div", pComponent);
+//					xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.MASK, null);
+//					xWriter.startElement("div", pComponent);
+//						xClass = DBSFaces.CSS.MODIFIER.CONTAINER;
+//						if (!pBasicTooltip){
+//							xClass += CSS.BACK_TEXTURE_BLACK_GRADIENT;
+//						}
+//						xWriter.writeAttribute("class", xClass.trim(), null);
+//						xWriter.startElement("div", pComponent);
+//							xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT.trim() , null);
+//							//Dá prioridade para o facet
+//							if (xTooltip != null){
+//								if (pBasicTooltip){
+//									//Encode conteúdo do facet
+//									xTooltip.encodeAll(pContext);
+//								}else{
+//									//Encode dos filhos do componente
+//									renderChildren(pContext, xTooltip);
+//								}
+//							}else{
+//								//Encode texto
+////								xWriter.write(getHtmlStringWithLineBreak(pTooltipText));
+//								xWriter.write(pTooltipText);
+//							}
+//						xWriter.endElement("div");
+//					xWriter.endElement("div");
+//				xWriter.endElement("div");
+//			xWriter.endElement("div");
+//		}
+//	}
+//
 	//Private
 	private static ResponseWriter pvCreateResponseWriter(FacesContext pContext, Writer pWriter) {
 		ExternalContext 	xExtContext = pContext.getExternalContext();

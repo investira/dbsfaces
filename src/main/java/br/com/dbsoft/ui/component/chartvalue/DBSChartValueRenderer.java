@@ -562,6 +562,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 
 	private void pvEncodeTooptip(TYPE pType, DBSChartValue pChartValue, Double pX, Double pY, String pClienteId, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 			String xStyle = "";
+			Integer xDelay = 300;
 			pWriter.startElement("foreignObject", pChartValue);
 				pWriter.writeAttribute("xmlns","http://www.w3.org/1999/xhtml", null);
 //				pWriter.writeAttribute("requiredExtensions","http://www.w3.org/1999/xhtml", null);
@@ -574,16 +575,13 @@ public class DBSChartValueRenderer extends DBSRenderer {
 				DBSFaces.setAttribute(pWriter, "y", pY + "px", null);
 				pWriter.startElement("div", pChartValue);
 					pWriter.writeAttribute("id", pClienteId + "_tooltip", null);
-					if (pType == TYPE.PIE
-					 || pType == TYPE.BAR){
-						pWriter.writeAttribute("tooltipdelay", "300", null);
-					}else if (pType == TYPE.LINE){
-						pWriter.writeAttribute("tooltipdelay", "2000", null);
+					if (pType == TYPE.LINE){
+						xDelay = 2000;
 					}
 					xStyle += "left:" + pX.intValue() + "px;";
 					xStyle += "bottom:-" + (pY.intValue() - 5) + "px;";
 					pWriter.writeAttribute("style", xStyle, null);
-					DBSFaces.encodeTooltip(pContext, pChartValue, pChartValue.getValue().toString(), pClienteId + "_tooltip");
+					DBSFaces.encodeTooltip(pContext, pChartValue, 2, pChartValue.getValue().toString(), pClienteId + "_tooltip", xDelay);
 //					DBSFaces.encodeTooltip(pContext, pChartValue, pChartValue.getTooltip(), pClienteId + "_tooltip");
 				pWriter.endElement("div");
 			pWriter.endElement("foreignObject");

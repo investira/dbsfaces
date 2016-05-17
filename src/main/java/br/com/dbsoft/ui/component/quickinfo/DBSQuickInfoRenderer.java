@@ -50,7 +50,7 @@ public class DBSQuickInfoRenderer extends DBSRenderer {
 		xWriter.startElement("div", xQuickInfo);
 			DBSFaces.setAttribute(xWriter, "id", xQuickInfo.getClientId(pContext), null);
 			DBSFaces.setAttribute(xWriter, "style", xQuickInfo.getStyle(), null);
-			DBSFaces.setAttribute(xWriter, "dl", xQuickInfo.getDefaultLocation(), null);
+//			DBSFaces.setAttribute(xWriter, "dl", xQuickInfo.getDefaultLocation(), null);
 			DBSFaces.setAttribute(xWriter, "class", xClass, null);
 			xWriter.startElement("div", xQuickInfo);
 				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.ICON +  xQuickInfo.getIconClass(), null);
@@ -58,7 +58,7 @@ public class DBSQuickInfoRenderer extends DBSRenderer {
 				xWriter.startElement("div", xQuickInfo);
 					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT.trim(), null);
 					//Conteúdo do quickinfo
-					DBSFaces.encodeTooltipQuickInfo(pContext, xQuickInfo);
+					DBSFaces.encodeTooltipQuickInfo(pContext, xQuickInfo, xQuickInfo.getDefaultLocation());
 				xWriter.endElement("div");
 			xWriter.endElement("div");
 			//Tooltip

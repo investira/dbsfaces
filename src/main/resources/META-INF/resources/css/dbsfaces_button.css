@@ -17,6 +17,7 @@
 /* 	text-shadow:1px 1px 1px rgba(50, 50, 50, 0.5);  */
 	text-shadow: none;
     -webkit-appearance: none;
+    -webkit-user-select: none;
 }
 
 /* Ajsutes necessários quando o botão for readonly, pois o encode será de uma div ao invés de um button */
