@@ -13,6 +13,7 @@ import com.sun.faces.renderkit.RenderKitUtils;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
 import br.com.dbsoft.ui.component.chartvalue.DBSChartValue;
+import br.com.dbsoft.ui.component.quickinfo.DBSQuickInfo;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.chart.DBSChart.TYPE;
 import br.com.dbsoft.ui.component.charts.DBSCharts;
@@ -92,7 +93,7 @@ public class DBSChartRenderer extends DBSRenderer {
 						pvEncodePieDeltaTextPaths(xCharts, xChart, xWriter);
 					}else if (xType == TYPE.LINE){
 					//Divisão onde serão desenhadas as linhas que ligam os pontos no gráfico por linha.
-//						pvEncodeLineDeltaAutoSelection(xCharts, xChart, xWriter);
+						pvEncodeLineDeltaQuickSelection(xChart, pContext, xWriter);
 					}
 				xWriter.endElement("g");
 			}
@@ -130,23 +131,24 @@ public class DBSChartRenderer extends DBSRenderer {
 		pWriter.endElement("g");
 	}
 
-	private void pvEncodeLineDeltaAutoSelection(DBSCharts pCharts, DBSChart pChart, ResponseWriter pWriter) throws IOException{
+	private void pvEncodeLineDeltaQuickSelection(DBSChart pChart, FacesContext pContext, ResponseWriter pWriter) throws IOException{
+		DBSQuickInfo xQuick = (DBSQuickInfo) pChart.getFacet("quick");
+		if (xQuick == null){
+			xQuick = (DBSQuickInfo) pContext.getApplication().createComponent(DBSQuickInfo.COMPONENT_TYPE);
+			xQuick.setId("quick");
+			pChart.getFacets().put("quick", xQuick);
+		}
 		pWriter.startElement("foreignObject", pChart);
-//			DBSFaces.setAttribute(pWriter, "requiredExtensions", "http://www.w3.org/1999/xhtml", null);
-//			pWriter.writeAttribute("xmlns","http://www.w3.org/1999/xhtml", null);
-			DBSFaces.setAttribute(pWriter, "xmlns","http://www.w3.org/1999/xhtml", null);
-			DBSFaces.setAttribute(pWriter, "class", "-autoSelection", null);
-			DBSFaces.setAttribute(pWriter, "height", "1", null);
-			DBSFaces.setAttribute(pWriter, "width", "1", null);
+			pWriter.writeAttribute("xmlns","http://www.w3.org/1999/xhtml", null);
+			pWriter.writeAttribute("id", pChart.getClientId() + "_quickselection", null);
+			DBSFaces.setAttribute(pWriter, "class", "-quickeSelection", null);
 			DBSFaces.setAttribute(pWriter, "x", "0px", null);
 			DBSFaces.setAttribute(pWriter, "y", "0px", null);
-			DBSFaces.setAttribute(pWriter, "style", "overflow:visible;", null);
-			pWriter.startElement("div", pChart);
-			DBSFaces.setAttribute(pWriter, "xmlns", "http://www.w3.org/1999/xhtml", null);
-				DBSFaces.setAttribute(pWriter, "style", "border-color: black; border-style: solid; border-radius: 3px;border-width: .3em; background-color:rgba(250,250,250,.8); display:block; top:90px; left: 212px; position: absolute;", null);
-				pWriter.write("1D  7D  30D  90D  180D  320D  720D");
-			pWriter.endElement("div");
 		pWriter.endElement("foreignObject");
+//			DBSFaces.setAttribute(pWriter, "xmlns", "http://www.w3.org/1999/xhtml", null);
+//				DBSFaces.setAttribute(pWriter, "style", "border-color: black; border-style: solid; border-radius: 3px;border-width: .3em; background-color:rgba(250,250,250,.8); display:block; top:90px; left: 212px; position: absolute;", null);
+//				pWriter.write("1D  7D  30D  90D  180D  320D  720D");
+//			pWriter.endElement("div");
 	}
 	
 	/**

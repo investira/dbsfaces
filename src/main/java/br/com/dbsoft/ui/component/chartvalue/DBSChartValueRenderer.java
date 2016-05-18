@@ -559,15 +559,16 @@ public class DBSChartValueRenderer extends DBSRenderer {
 	}
 
 	private void pvEncodeTooptip(DBSChartValue pChartValue, Double pX, Double pY, String pClienteId, FacesContext pContext, ResponseWriter pWriter) throws IOException{
-			pWriter.startElement("foreignObject", pChartValue);
-				pWriter.writeAttribute("xmlns","http://www.w3.org/1999/xhtml", null);
-				pWriter.writeAttribute("id", pClienteId + "_tooltip", null);
-				DBSFaces.setAttribute(pWriter, "class", "-foreignobject", null);
-				DBSFaces.setAttribute(pWriter, "x", pX + "px", null);
-				DBSFaces.setAttribute(pWriter, "y", pY + "px", null);
-				DBSFaces.encodeTooltip(pContext, pChartValue, 1, pChartValue.getValue().toString(), pClienteId + "_tooltip", null);
-			pWriter.endElement("foreignObject");
-		}
+		if (DBSObject.isEmpty(pChartValue.getTooltip())){return;}
+		pWriter.startElement("foreignObject", pChartValue);
+			pWriter.writeAttribute("xmlns","http://www.w3.org/1999/xhtml", null);
+			pWriter.writeAttribute("id", pClienteId + "_tooltip", null);
+			DBSFaces.setAttribute(pWriter, "class", "-foreignobject", null);
+			DBSFaces.setAttribute(pWriter, "x", pX + "px", null);
+			DBSFaces.setAttribute(pWriter, "y", pY + "px", null);
+			DBSFaces.encodeTooltip(pContext, pChartValue, 1, pChartValue.getTooltip(), pClienteId + "_tooltip", null);
+		pWriter.endElement("foreignObject");
+	}
 
 	private void pvEncodeJS(String pClientId, ResponseWriter pWriter) throws IOException{
 		DBSFaces.encodeJavaScriptTagStart(pWriter);
