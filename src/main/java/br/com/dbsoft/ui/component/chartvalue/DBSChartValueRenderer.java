@@ -129,6 +129,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 	private void pvEncodeBarAndLine(TYPE pType, DBSCharts pCharts, DBSChart pChart, DBSChartValue pChartValue, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 		BigDecimal	xXText = new BigDecimal(0);
 		BigDecimal	xYText = new BigDecimal(0);
+		BigDecimal	xYTextTooltip = new BigDecimal(0);
 		BigDecimal	xY = new BigDecimal(0);		
 		BigDecimal	xX = new BigDecimal(0);
 		String 		xClientId = pChartValue.getClientId(pContext);
@@ -145,10 +146,10 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		
 		xXText = xX;
 		xYText = xY;
+		xYTextTooltip = xY;
 		
 		xStroke = "stroke:" + wFillColor + ";";
 
-//		xYText = DBSNumber.add(xY, (DBSCharts.FontSize / 2));
 		//Encode BAR ---------------------------------------------------------------------------------
 		if (pType == TYPE.BAR){
 			Double xHeight = DBSNumber.abs(DBSNumber.subtract(pCharts.getChartHeight(), pCharts.getZeroPosition() - pCharts.getPadding(), xY).doubleValue());
@@ -167,11 +168,9 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			//Valore negativos
 			}else{
 				//inverte a posição Yx
-				Double xIY = DBSNumber.subtract(pCharts.getChartHeight(), pCharts.getZeroPosition().doubleValue()).doubleValue();
-				xIY +=  pCharts.getPadding();
-				DBSFaces.encodeSVGRect(pChartValue, pWriter, xX.intValue(), xIY.doubleValue(), xLineWidth.toString(), xHeight.toString(), DBSFaces.CSS.MODIFIER.POINT, xStroke, "fill=" + wFillColor);
-				//Configura posição do texto para a linha do zero
-//				xYText = DBSNumber.add(xIY, (DBSCharts.FontSize / 2));
+				xYTextTooltip = DBSNumber.subtract(pCharts.getChartHeight(), pCharts.getZeroPosition().doubleValue());
+				xYTextTooltip =  DBSNumber.add(pCharts.getPadding(), xYTextTooltip);
+				DBSFaces.encodeSVGRect(pChartValue, pWriter, xX.intValue(), xYTextTooltip.doubleValue(), xLineWidth.toString(), xHeight.toString(), DBSFaces.CSS.MODIFIER.POINT, xStroke, "fill=" + wFillColor);
 			}
 		//Encode LINE - ponto. as linhas que ligam os pontos, são desenhadas no código JS.
 		}else if (pType == TYPE.LINE){
@@ -181,7 +180,6 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			pChartValue.setPoint(new Point2D.Double(xX.doubleValue(), xY.doubleValue()));
 			//Encode do circulo
 			//Artifício pois o fcirefox só funciona com valores fixos no transform-origin
-//			xStyle.append(DBSFaces.getCSSAllBrowser("transform-origin", xX.doubleValue() + "px " + xY.doubleValue() + "px"));
 			String xStyle = "stroke:currentColor; color:" + wFillColor + ";";
 			if (pChart.getShowDelta()){
 				DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xX.doubleValue(), xY.doubleValue(), ".2em", ".2em", DBSFaces.CSS.MODIFIER.POINT, xStyle, "fill=white");
@@ -215,14 +213,14 @@ public class DBSChartValueRenderer extends DBSRenderer {
 								 xXText.doubleValue(), 
 								 xHeight, 
 								 null, 
-								 "-moz-transform-origin:" +  xXText.doubleValue() + "px " + xHeight + "px 0px;", 
+								 "-moz-transform-origin:" +  xXText.doubleValue() + "px " + xHeight + "px 0px;", //Artificio para resolver problema no firefox
 								 null,
 								 pWriter);
 				pWriter.endElement("g");
 			}
 		pWriter.endElement("g");
 		//Tooltip -------------------------------------------------------------------------
-//		pvEncodeTooptip(pType, pChartValue, xXText.doubleValue(), xYText.doubleValue(), xClientId, pContext, pWriter);
+		pvEncodeTooptip(pCharts, pType, pChartValue, xXText.doubleValue(), xYTextTooltip.doubleValue(), xClientId, pContext, pWriter);
 	}
 	
 
@@ -380,7 +378,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		}
 		
 		//Tooltip -------------------------------------------------------------------------
-//		pvEncodeTooptip(TYPE.PIE, pChartValue, pChartValue.getPoint().getX(), pChartValue.getPoint().getY(), xClientId, pContext, pWriter);
+		pvEncodeTooptip(pCharts, TYPE.PIE, pChartValue, pChartValue.getPoint().getX(), pChartValue.getPoint().getY(), xClientId, pContext, pWriter);
 
 	}
 
@@ -560,30 +558,14 @@ public class DBSChartValueRenderer extends DBSRenderer {
 							   pAttrs);
 	}
 
-	private void pvEncodeTooptip(TYPE pType, DBSChartValue pChartValue, Double pX, Double pY, String pClienteId, FacesContext pContext, ResponseWriter pWriter) throws IOException{
-			String xStyle = "";
-			Integer xDelay = 300;
+	private void pvEncodeTooptip(DBSCharts pCharts, TYPE pType, DBSChartValue pChartValue, Double pX, Double pY, String pClienteId, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 			pWriter.startElement("foreignObject", pChartValue);
 				pWriter.writeAttribute("xmlns","http://www.w3.org/1999/xhtml", null);
-//				pWriter.writeAttribute("requiredExtensions","http://www.w3.org/1999/xhtml", null);
-//				pWriter.writeAttribute("height", "1px", null);
-//				pWriter.writeAttribute("width", "1px", null);
-				DBSFaces.setAttribute(pWriter, "height", "1", null);
-				DBSFaces.setAttribute(pWriter, "width", "1", null);
+				pWriter.writeAttribute("id", pClienteId + "_tooltip", null);
 				DBSFaces.setAttribute(pWriter, "class", "-foreignobject", null);
 				DBSFaces.setAttribute(pWriter, "x", pX + "px", null);
 				DBSFaces.setAttribute(pWriter, "y", pY + "px", null);
-				pWriter.startElement("div", pChartValue);
-					pWriter.writeAttribute("id", pClienteId + "_tooltip", null);
-					if (pType == TYPE.LINE){
-						xDelay = 2000;
-					}
-					xStyle += "left:" + pX.intValue() + "px;";
-					xStyle += "bottom:-" + (pY.intValue() - 5) + "px;";
-					pWriter.writeAttribute("style", xStyle, null);
-					DBSFaces.encodeTooltip(pContext, pChartValue, 2, pChartValue.getValue().toString(), pClienteId + "_tooltip", xDelay);
-//					DBSFaces.encodeTooltip(pContext, pChartValue, pChartValue.getTooltip(), pClienteId + "_tooltip");
-				pWriter.endElement("div");
+				DBSFaces.encodeTooltip(pContext, pChartValue, 1, pChartValue.getValue().toString(), pClienteId + "_tooltip", null);
 			pWriter.endElement("foreignObject");
 		}
 

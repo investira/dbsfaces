@@ -42,6 +42,7 @@ dbsfaces.tooltip = {
 			xTooltip.data("timerhide", null);
 			xTooltip.data("timershow", null);
 			xTooltip.data("dl", Number(xTooltip.attr("dl")));
+			xTooltip.data("setPos", !pSourceComponent.svgHasClass("-foreignobject")); //Assume que posição já foi definida no parent(-foreignobject) em gráficos svg 
 		}
 		pSourceComponent.data("tooltip", xTooltip);
 	},
@@ -73,7 +74,6 @@ dbsfaces.tooltip = {
 		}
 		var xTooltip = xComponent.data("tooltip");
 		var xDelay = xTooltip.data("delay");
-		xDelay = 0;
 		//Cria timer para exibição e armazena no próprio componente
 		clearTimeout(xTooltip.data("timershow"));
 		xTooltip.data("timershow", 
@@ -250,9 +250,10 @@ dbsfaces.tooltip = {
 		var xTop = 0;
 		var xLeft = 0;
 		var xContainer = pTooltip.data("container");
-		
-		pTooltip.css("left", xComponentRect.left + (xComponentRect.width / 2))
-			    .css("top", xComponentRect.top + (xComponentRect.height / 2));
+		if (pTooltip.data("setPos")){
+			pTooltip.css("left", xComponentRect.left + (xComponentRect.width / 2))
+				    .css("top", xComponentRect.top + (xComponentRect.height / 2));
+		}
 
 //		console.log(pComponent.get(0).getBoundingClientRect().top 
 //			    + "\t" + pComponent.offset().top

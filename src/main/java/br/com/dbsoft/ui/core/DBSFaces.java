@@ -2548,7 +2548,6 @@ public class  DBSFaces {
 					xChartValue.setIndex(xIndex);
 					xChartValue.setPreviousValue(pChart.getTotalValue());
 					pChart.setTotalValue(pChart.getTotalValue() + DBSObject.getNotNull(xChartValue.getValue(),0D));
-//					System.out.println("save:\t" + xChartValue.getIndex() + "\t" + xChartValue.getLabel() + "\t" + xChartValue.getValue() + "\t" + xChartValue.getPreviousValue());
 					//Salva valores alterados
 					xChartValue.setSavedState(xChartValue.saveState(FacesContext.getCurrentInstance()));
 				}
@@ -2877,14 +2876,13 @@ public class  DBSFaces {
 			xTooltip != null){
 			xWriter.startElement("div", pComponent);
 				String xClass = DBSFaces.CSS.MODIFIER.TOOLTIP;
-				
 				if (pBasicTooltip){
 					xClass += "-tt"; //Tooltip padrão
 				}else{
 					xClass += "-qi"; //Tooltip para o quickinfo
 				}
 				setAttribute(xWriter, "class", xClass, null);
-				setAttribute(xWriter, "delay", pDelay, "300");
+				setAttribute(xWriter, "delay", pDelay, "1000");
 				setAttribute(xWriter, "dl", pDefaultLocation, "1");
 				xWriter.startElement("div", pComponent);
 					xClass = DBSFaces.CSS.MODIFIER.CONTAINER;
@@ -2916,68 +2914,6 @@ public class  DBSFaces {
 		return false;
 	}
 
-	 
-//	/**
-//	 * Cria o elemento que conterá o tooltip.
-//	 * @param pWriter
-//	 * @param pComponent
-//	 * @param pTooltip
-//	 * @param pClienteId 
-//	 * @throws IOException
-//	 */
-//	private static void pvEncodeTooltip(boolean pBasicTooltip, FacesContext pContext, UIComponent pComponent, String pTooltipText) throws IOException{
-//		ResponseWriter 	xWriter = pContext.getResponseWriter();	
-//		UIComponent 	xTooltip;
-//		
-//		if (pBasicTooltip){
-//			xTooltip = pComponent.getFacet("tooltip");
-//		}else{
-//			xTooltip = pComponent;
-//		}
-//		
-//		//Encode do tooltip se houver um texto para o tooltip ou foi defindo via facet(name="tooltip") dentro do componente...
-//		if (!DBSObject.isEmpty(pTooltipText) ||
-//			xTooltip != null){
-//			xWriter.startElement("div", pComponent);
-//				String xClass = DBSFaces.CSS.MODIFIER.TOOLTIP;
-//				if (pBasicTooltip){
-//					xClass += "-tt"; //Tooltip padrão
-//				}else{
-//					xClass += "-qi"; //Tooltip para o quickinfo
-//				}
-//				xWriter.writeAttribute("class", xClass, null);
-//				xWriter.writeAttribute("style", "display: none;", null);
-//				xWriter.startElement("div", pComponent);
-//					xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.MASK, null);
-//					xWriter.startElement("div", pComponent);
-//						xClass = DBSFaces.CSS.MODIFIER.CONTAINER;
-//						if (!pBasicTooltip){
-//							xClass += CSS.BACK_TEXTURE_BLACK_GRADIENT;
-//						}
-//						xWriter.writeAttribute("class", xClass.trim(), null);
-//						xWriter.startElement("div", pComponent);
-//							xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT.trim() , null);
-//							//Dá prioridade para o facet
-//							if (xTooltip != null){
-//								if (pBasicTooltip){
-//									//Encode conteúdo do facet
-//									xTooltip.encodeAll(pContext);
-//								}else{
-//									//Encode dos filhos do componente
-//									renderChildren(pContext, xTooltip);
-//								}
-//							}else{
-//								//Encode texto
-////								xWriter.write(getHtmlStringWithLineBreak(pTooltipText));
-//								xWriter.write(pTooltipText);
-//							}
-//						xWriter.endElement("div");
-//					xWriter.endElement("div");
-//				xWriter.endElement("div");
-//			xWriter.endElement("div");
-//		}
-//	}
-//
 	//Private
 	private static ResponseWriter pvCreateResponseWriter(FacesContext pContext, Writer pWriter) {
 		ExternalContext 	xExtContext = pContext.getExternalContext();

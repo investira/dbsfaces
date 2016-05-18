@@ -8,14 +8,14 @@ dbs_chartValue = function(pId) {
 //	dbsfaces.chartValue.selectDelta(xChart, xChartValue);
 	//Seleciona nova posição do delta e do item selecionado
 	if (xChartValue.data("parent").attr("type") != "line"){
-//		$(pId).on("mouseleave", function(e){
-//			dbsfaces.tooltip.hideTooltip(pId + '_tooltip');
-//			e.stopImmediatePropagation();
-//			return false;
-//		});
+		$(pId).on("mouseleave", function(e){
+			dbsfaces.tooltip.hide($(pId + '_tooltip'));
+			e.stopImmediatePropagation();
+			return false;
+		});
 
 		$(pId).on("mouseenter", function(e){
-//			dbsfaces.tooltip.showTooltip(pId + '_tooltip');
+			dbsfaces.tooltip.showDelayed($(pId + '_tooltip'));
 //			console.log("chartvalue\t" + e.originalEvent.type + "\t" + $(e.target).attr("class"));
 			dbsfaces.chartValue.select(xChartValue, null);
 //			e.preventDefault();

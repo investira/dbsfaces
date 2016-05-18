@@ -54,10 +54,6 @@
 	overflow:visible;
 }
 
-.dbs_chartValue > .-foreignobject > span{
-	display: inline-block;
-	position: absolute;
-}
 
 .dbs_chartValue .dbs_input-data{
 	min-height: 13px;
