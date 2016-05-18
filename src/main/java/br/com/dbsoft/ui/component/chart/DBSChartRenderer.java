@@ -92,7 +92,7 @@ public class DBSChartRenderer extends DBSRenderer {
 						pvEncodePieDeltaTextPaths(xCharts, xChart, xWriter);
 					}else if (xType == TYPE.LINE){
 					//Divisão onde serão desenhadas as linhas que ligam os pontos no gráfico por linha.
-						pvEncodeLineDeltaAutoSelection(xCharts, xChart, xWriter);
+//						pvEncodeLineDeltaAutoSelection(xCharts, xChart, xWriter);
 					}
 				xWriter.endElement("g");
 			}
