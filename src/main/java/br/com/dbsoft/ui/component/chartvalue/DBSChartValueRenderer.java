@@ -220,7 +220,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			}
 		pWriter.endElement("g");
 		//Tooltip -------------------------------------------------------------------------
-		pvEncodeTooptip(pCharts, pType, pChartValue, xXText.doubleValue(), xYTextTooltip.doubleValue(), xClientId, pContext, pWriter);
+		pvEncodeTooptip(pChartValue, xXText.doubleValue(), xYTextTooltip.doubleValue(), xClientId, pContext, pWriter);
 	}
 	
 
@@ -378,7 +378,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		}
 		
 		//Tooltip -------------------------------------------------------------------------
-		pvEncodeTooptip(pCharts, TYPE.PIE, pChartValue, pChartValue.getPoint().getX(), pChartValue.getPoint().getY(), xClientId, pContext, pWriter);
+		pvEncodeTooptip(pChartValue, pChartValue.getPoint().getX(), pChartValue.getPoint().getY(), xClientId, pContext, pWriter);
 
 	}
 
@@ -558,7 +558,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 							   pAttrs);
 	}
 
-	private void pvEncodeTooptip(DBSCharts pCharts, TYPE pType, DBSChartValue pChartValue, Double pX, Double pY, String pClienteId, FacesContext pContext, ResponseWriter pWriter) throws IOException{
+	private void pvEncodeTooptip(DBSChartValue pChartValue, Double pX, Double pY, String pClienteId, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 			pWriter.startElement("foreignObject", pChartValue);
 				pWriter.writeAttribute("xmlns","http://www.w3.org/1999/xhtml", null);
 				pWriter.writeAttribute("id", pClienteId + "_tooltip", null);
