@@ -27,7 +27,6 @@ dbsfaces.tooltip = {
 	
 	initialize: function(pSourceComponent){
 		dbsfaces.tooltip.initializeData(pSourceComponent);
-		dbsfaces.tooltip.initializeDimension(pSourceComponent);
 	},
 	
 	initializeData: function(pSourceComponent){
@@ -47,48 +46,30 @@ dbsfaces.tooltip = {
 		pSourceComponent.data("tooltip", xTooltip);
 	},
 	
-	initializeDimension: function(pSourceComponent){
-//		var xTooltip = pSourceComponent.data("tooltip");
-//		var xRect = pSourceComponent.get(0).getBoundingClientRect();
-//		var xP1 = xRect.top; //top;
-//		var xP4 = xRect.left; //left
-//		var xP2 = xP4 + xRect.width; //right
-//		var xP3 = xP1 + xRect.height; //bottom
-//		xTooltip.css("left", xRect.left + (xRect.width / 2));
-//		xTooltip.css("top", xRect.top + (xRect.height / 2));
-//		xTooltip.data("cx", xRect.left + (xRect.width / 2));
-//		xTooltip.data("cy", xRect.top + (xRect.height / 2));
-//		xTooltip.data("height", xRect.height);
-//		xTooltip.data("left", xRect.left);
-//		xTooltip.data("top", xRect.top);
-//		xTooltip.attr("width", xRect.width);
-//		xTooltip.attr("height", xRect.height);
-//		xTooltip.attr("left", xRect.left);
-//		xTooltip.attr("top", xRect.top);
-	},
-	
 	showDelayed: function(pSourceComponent){
+		if (pSourceComponent == null){return;}
 		var xComponent = pSourceComponent;
 		if (!(xComponent instanceof jQuery)){
 			xComponent = $(pSourceComponent);
 		}
 		var xTooltip = xComponent.data("tooltip");
+		if (xTooltip == null){return;} 
 		var xDelay = xTooltip.data("delay");
 		//Cria timer para exibição e armazena no próprio componente
 		clearTimeout(xTooltip.data("timershow"));
 		xTooltip.data("timershow", 
 			setTimeout(function(){
 				dbsfaces.tooltip.show(xComponent);
-				//Tempo de exibição
-				var xTime = dbsfaces.ui.getDelayFromTextLength(xTooltip.data("content").text());
+				//Tempo de exibição em função do tamanho do conteúdo
+				var xHideDelay = dbsfaces.ui.getDelayFromTextLength(xTooltip.data("content").text());
 				clearTimeout(xTooltip.data("timerhide"));
 				//Cria timer para escoder e armazena no próprio componente
 				xTooltip.data("timerhide", 
 					setTimeout(function(){
 						dbsfaces.tooltip.hide(pSourceComponent);
-					}, xTime)
+					}, xHideDelay)
 				);
-			}, xDelay) //2 Segundos -Tempo para exibir
+			}, xDelay) //Tempo para exibir
 		);
 	},
 
@@ -112,6 +93,7 @@ dbsfaces.tooltip = {
 	},
 
 	hide: function(pSourceComponent){
+		if (pSourceComponent == null){return;}
 		var xComponent = pSourceComponent;
 		if (!(xComponent instanceof jQuery)){
 			xComponent = $(pSourceComponent);
@@ -130,6 +112,7 @@ dbsfaces.tooltip = {
 	},
 
 	show: function(pSourceComponent){
+		if (pSourceComponent == null){return;}
 		var xComponent = pSourceComponent;
 		if (!(xComponent instanceof jQuery)){
 			xComponent = $(pSourceComponent);

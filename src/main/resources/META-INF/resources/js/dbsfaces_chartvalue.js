@@ -6,16 +6,17 @@ dbs_chartValue = function(pId) {
 
 	
 //	dbsfaces.chartValue.selectDelta(xChart, xChartValue);
+//	$(pId).on("mouseleave", function(e){
+//		dbsfaces.tooltip.hide($(pId + '_tooltip'));
+//	});
+//	$(pId).on("mouseenter", function(e){
+//		dbsfaces.tooltip.showDelayed($(pId + '_tooltip'));
+//	});
+
 	//Seleciona nova posição do delta e do item selecionado
 	if (xChartValue.data("parent").attr("type") != "line"){
-		$(pId).on("mouseleave", function(e){
-			dbsfaces.tooltip.hide($(pId + '_tooltip'));
-			e.stopImmediatePropagation();
-			return false;
-		});
 
 		$(pId).on("mouseenter", function(e){
-			dbsfaces.tooltip.showDelayed($(pId + '_tooltip'));
 //			console.log("chartvalue\t" + e.originalEvent.type + "\t" + $(e.target).attr("class"));
 			dbsfaces.chartValue.select(xChartValue, null);
 //			e.preventDefault();
@@ -123,20 +124,33 @@ dbsfaces.chartValue = {
 	pvInitializeData: function(pChartValue){
 		var xChart = pChartValue.closest(".dbs_chart");
 		pChartValue.data("parent", xChart);
-
 		var xChartValuePoint = pChartValue.children(".-point");
 		var xChartValueInfo = pChartValue.children(".-info");
 		pChartValue.data("infogroup", xChartValueInfo);
 		xValue = xChartValueInfo.children(".-value").text();
 		if (xValue != 0){
 			//Salva valores dentro do próprio componente para facilar o uso no momento do encode do delta
+			//Posição X
 			pChartValue.data("dx", Number(xChartValuePoint.attr("cx")));
+			//Posição Y
 			pChartValue.data("dy", Number(xChartValuePoint.attr("cy")));
+			//Cor 
 			pChartValue.data("df", xChartValuePoint.css("color"));
+			//Valor nominal
 			pChartValue.data("dv", pChartValue.attr("value"));
+			//Percentual
 			pChartValue.data("dp", pChartValue.attr("perc"));
+			//Label
 			pChartValue.data("dl", pChartValue.attr("label"));
+			//Valor para exibição
 			pChartValue.data("dd", xChartValueInfo.children(".-value").text());
+			//Tooltip
+			var xChartValueTooltip = $("#" + dbsfaces.util.jsid(pChartValue.get(0).id) + "_tooltip");
+			if (xChartValueTooltip.length > 0){
+				pChartValue.data("tooltip", xChartValueTooltip);
+			}else{
+				pChartValue.data("tooltip", null);
+			}
 		}else{
 			pChartValue.data("dx", null);
 		}
@@ -244,10 +258,16 @@ dbsfaces.chartValue = {
 			//Marca selecionado
 			pChartValue.svgAddClass("-hover");
 			pCharts.data("hover", pChartValue);
+//			setTimeout(function(){
+			dbsfaces.tooltip.showDelayed(pChartValue.data("tooltip"));
+//			},0);
 		}else{
 			//Desmarca selecionado
 			pChartValue.svgRemoveClass("-hover");
 			pCharts.data("hover", null);
+//			setTimeout(function(){
+			dbsfaces.tooltip.hide(pChartValue.data("tooltip"));
+//			},0);
 		}
 	},
 
