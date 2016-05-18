@@ -49,10 +49,14 @@ dbsfaces.charts = {
 			var xChart = $(this);
 			if (typeof(xChart.attr("showdelta")) != 'undefined'){
 				if (xChart.attr("type") == "line"){
-					dbsfaces.chart.setGuideIndex(xChart, 1);
-					dbsfaces.chartValue.select(xChart.data("guide1").data("cv"), null);
-					dbsfaces.chart.setGuideIndex(xChart, 2);
-					dbsfaces.chartValue.select(xChart.data("guide2").data("cv"), null);
+					if (xChart.data("guide1") != null){
+						dbsfaces.chart.setGuideIndex(xChart, 1);
+						dbsfaces.chartValue.select(xChart.data("guide1").data("cv"), null);
+					}
+					if (xChart.data("guide2") != null){
+						dbsfaces.chart.setGuideIndex(xChart, 2);
+						dbsfaces.chartValue.select(xChart.data("guide2").data("cv"), null);
+					}
 					dbsfaces.chart.setGuideIndex(xChart, 0);
 				}
 			}
@@ -107,9 +111,9 @@ dbsfaces.charts = {
 			//Ativa o primeiro gráfico que possuir delta
 			dbsfaces.charts.activateChart(pCharts, xContentLabel.children(".-content:first"));
 		}else{
-			//Ativa o primeiro gráfico que possuir delta
-			var xFirstChart = pCharts.data("children").filter("[showdelta]:first");
-			dbsfaces.charts.pvActivateChartOne(xChart, null, true);
+			//Ativa o primeiro gráfico
+			var xFirstChart = pCharts.data("children").first();
+			dbsfaces.charts.pvActivateChartOne(xFirstChart, null, true);
 			dbsfaces.charts.pvActivateDelta(pCharts, xFirstChart, true);
 		}
 		//Artifício para corrigir altura do firefox

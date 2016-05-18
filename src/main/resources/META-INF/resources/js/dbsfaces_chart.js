@@ -59,14 +59,13 @@ dbs_chart = function(pId) {
 
 
 dbsfaces.chart = {
-	
 	initialize: function(pChart){
 		dbsfaces.chart.pvInitializeData(pChart);
 
 		var xCharts = pChart.data("parent");
 		var xChartChildren = pChart.data("children");
 		var xShowLabel = (typeof(xCharts.attr("showlabel")) != "undefined" && pChart.data("mask").length > 0) ;
-		var xShowDelta = (typeof(xChart.attr("showdelta")) != "undefined");
+		var xShowDelta = (pChart.data("deltagroup") != null);
 		var xDrawLine = (pChart.attr("type") == "line");
 		if (pChart.attr("type") == "bar"
 		 || xDrawLine){
@@ -79,6 +78,29 @@ dbsfaces.chart = {
 		}
 		dbsfaces.chart.pvSetFontSize(xCharts, pChart);
 		dbsfaces.chart.dataRefreshSelection(pChart);
+	},
+
+	pvInitializeData: function(pChart){
+		var xCharts = pChart.closest(".dbs_charts");
+		pChart.data("parent", xCharts);
+		//Salva chartvalues vinculados a este chart
+		var xChartChildren = pChart.children(".dbs_chartValue");
+		pChart.data("children", xChartChildren);
+		if (typeof(pChart.attr("showdelta")) != "undefined"){
+			var xDeltaGroup = dbsfaces.util.getNotUndefined(pChart.children(".-delta"), null);
+			pChart.data("deltagroup", xDeltaGroup);
+		}else{
+			pChart.data("deltagroup", null);
+
+		}
+		pChart.data("pathgroup", dbsfaces.util.getNotUndefined(pChart.children(".-path"), null));
+		if (pChart.data("pathgroup") == null){
+			pChart.data("mask", null);
+		}else{
+			pChart.data("mask", dbsfaces.util.getNotUndefined(pChart.data("pathgroup").children(".-mask"), null));
+		}
+		//Reseta guia 
+		dbsfaces.chart.setGuideIndex(pChart, 0);
 	},
 
 	//Definir a tamanho do fonte a partir do tamanho do gráfico
@@ -109,29 +131,6 @@ dbsfaces.chart = {
 		}
 	},
 
-	pvInitializeData: function(pChart){
-		var xCharts = pChart.closest(".dbs_charts");
-		pChart.data("parent", xCharts);
-		//Salva chartvalues vinculados a este chart
-		var xChartChildren = pChart.children(".dbs_chartValue");
-		pChart.data("children", xChartChildren);
-		if (typeof(pChart.attr("showdelta")) != "undefined"){
-			var xDeltaGroup = dbsfaces.util.getNotUndefined(pChart.children(".-delta"), null);
-			pChart.data("deltagroup", xDeltaGroup);
-		}else{
-			pChart.data("deltagroup", null);
-
-		}
-		pChart.data("pathgroup", dbsfaces.util.getNotUndefined(pChart.children(".-path"), null));
-		if (pChart.data("pathgroup") == null){
-			pChart.data("mask", null);
-		}else{
-			pChart.data("mask", dbsfaces.util.getNotUndefined(pChart.data("pathgroup").children(".-mask"), null));
-		}
-		//Reseta guia 
-		dbsfaces.chart.setGuideIndex(pChart, 0);
-	},
-	
 	//Verifica sopreposição dos labels 
 	pvInitializeLineAndLabels: function(pCharts, pChart, pChartValues, pShowLabel, pDrawLine){
 		var xChartValue;
@@ -229,6 +228,8 @@ dbsfaces.chart = {
 			var xPath = dbsfaces.svg.path(pChart.data("pathgroup"), xStringPath, null, null, {"stroke": "url(#" + pChart.get(0).id + "_linestroke)"});
 			//Salva path no próprio componente para agilizar o findPoint
 			pChart.data("path", xPath.get(0));
+		}else{
+			pChart.data("path", null);
 		}
 	},
 	
@@ -250,6 +251,7 @@ dbsfaces.chart = {
 
 		if (pChart.attr("type") == "line"){
 			var xChartChildren = pChart.data("children");
+			if (pChart.data("path") == null){return;}
 			var xCV1 = null;
 			var xCV2 = null;
 			if (xChartChildren.length > 0){
@@ -340,6 +342,7 @@ dbsfaces.chart = {
 	findPoint: function(e, pChart){
 		var xChartPathGroup = pChart.data("pathgroup");
 		var xChartPath = pChart.data("path");
+		if (xChartPath == null){return;}
 		var xChartMask = pChart.data("mask");
 		var xDecimals = 1;
 		var xPosition = xChartMask.offset();

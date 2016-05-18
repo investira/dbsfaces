@@ -181,6 +181,7 @@ dbsfaces.chartValue = {
 	},
 
 	select: function(pChartValue, pSelect){
+		if (pChartValue == null){return;}
 		var xChart = pChartValue.data("parent");
 //		console.log("guide number\t" + xChart.data("guide"));
 		var xCharts = xChart.data("parent");
