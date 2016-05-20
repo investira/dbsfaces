@@ -163,6 +163,7 @@ public class  DBSFaces {
 	    public static final String PUSH = "push";
 	    public static final String MESSAGELIST = "messageList";
 	    public static final String QUICKINFO = "quickInfo";
+	    public static final String RANGE = "quickRangeSelection";
 	    public static final String CHARTS = "charts";
 	    public static final String CHART = "chart";
 	    public static final String CHARTVALUE = "chartValue";
@@ -507,6 +508,11 @@ public class  DBSFaces {
 		public static class QUICKINFO
 		{	
 			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.QUICKINFO;
+		}
+
+		public static class RANGE
+		{	
+			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.RANGE;
 		}
 
 		public static class CHARTS
@@ -2886,12 +2892,13 @@ public class  DBSFaces {
 				setAttribute(xWriter, "dl", pDefaultLocation, "1");
 				xWriter.startElement("div", pComponent);
 					xClass = DBSFaces.CSS.MODIFIER.CONTAINER;
-					if (!pBasicTooltip){
-						xClass += CSS.BACK_TEXTURE_BLACK_GRADIENT;
-					}
 					xWriter.writeAttribute("class", xClass.trim(), null);
 					xWriter.startElement("div", pComponent);
-						xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT.trim() , null);
+						xClass = DBSFaces.CSS.MODIFIER.CONTENT;
+						if (!pBasicTooltip){
+							xClass += CSS.BACK_TEXTURE_BLACK_GRADIENT;
+						}
+						xWriter.writeAttribute("class", xClass.trim() , null);
 						//Dá prioridade para o facet
 						if (xTooltip != null){
 							if (pBasicTooltip){
