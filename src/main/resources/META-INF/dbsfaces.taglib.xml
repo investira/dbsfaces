@@ -2911,13 +2911,20 @@ Default: false;</description>
 		</attribute>
 		<attribute>
 			<description>
-			
 				&lt;span style="font-size:small"&gt;
 				Brilho da cor que varia de 0, sem brilho a 1, brilho integral.
 				&lt;/span&gt; </description>
 			<name>colorBrightness</name>
 			<required>false</required>
 			<type>java.lang.Float</type>
+		</attribute>
+		<attribute>
+			<description>
+                Lista de IDBSChartDelta para seleção rápida do intervalo do delta
+            </description>
+			<name>deltaList</name>
+			<required>false</required>
+			<type>java.util.List</type>
 		</attribute>
 	</tag>
 	<tag>

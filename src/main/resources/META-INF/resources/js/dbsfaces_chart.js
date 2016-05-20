@@ -1,4 +1,5 @@
-dbs_chart = function(pId) {
+dbs_chart = function(pId, pDeltaList) {
+	console.log(pDeltaList);
 	var xChart = $(pId);
 	
 	dbsfaces.chart.initialize(xChart);

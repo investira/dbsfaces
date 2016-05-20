@@ -1,5 +1,7 @@
 package br.com.dbsoft.ui.component.chart;
 
+import java.util.List;
+
 import javax.faces.component.FacesComponent;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
@@ -68,6 +70,7 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 		colorHue,
 		colorBrightness,
 		showDelta,
+		deltaList,
 		label,
 		//Variáveis de trabalho
 		savedState,
@@ -182,6 +185,16 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 	
 	public Boolean getShowDelta() {
 		return (Boolean) getStateHelper().eval(PropertyKeys.showDelta, true);
+	}
+
+	public void setDeltaList(List<IDBSChartDelta> pDeltaList) {
+		getStateHelper().put(PropertyKeys.deltaList, pDeltaList);
+		handleAttribute("deltaList", pDeltaList);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<IDBSChartDelta> getDeltaList() {
+		return (List<IDBSChartDelta>) getStateHelper().eval(PropertyKeys.deltaList, null);
 	}
 
 	public Double getPieChartRelativeRadius(DBSCharts pCharts, Double pRelativeWidth){

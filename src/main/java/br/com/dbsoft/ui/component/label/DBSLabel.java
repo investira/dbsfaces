@@ -16,7 +16,6 @@ public class DBSLabel extends DBSUIOutput implements ClientBehaviorHolder {
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 
 	protected enum PropertyKeys {
-//		value,
 		labelFor,
 		labelWidth,
 		tooltip,
@@ -40,18 +39,14 @@ public class DBSLabel extends DBSUIOutput implements ClientBehaviorHolder {
 		setRendererType(DBSLabel.RENDERER_TYPE);
     }
 	
-//	public String getValue() {
-//		return (String) getStateHelper().eval(PropertyKeys.value, null);
-//	}
-//	
-//	public void setValue(String pValue) {
-//		getStateHelper().put(PropertyKeys.value, pValue);
-//		handleAttribute("value", pValue);
-//	}
-
 	public String getLabelFor() {
 		return (String) getStateHelper().eval(PropertyKeys.labelFor, null);
 	}
+	public void setLabelFor(String pLabelFor) {
+		getStateHelper().put(PropertyKeys.labelFor, pLabelFor);
+		handleAttribute("labelFor", pLabelFor);
+	}
+	
 	
 	public String getLabelWidth() {
 		return (String) getStateHelper().eval(PropertyKeys.labelWidth, null);
@@ -60,11 +55,6 @@ public class DBSLabel extends DBSUIOutput implements ClientBehaviorHolder {
 	public void setLabelWidth(String pLabelWidth) {
 		getStateHelper().put(PropertyKeys.labelWidth, pLabelWidth);
 		handleAttribute("labelWidth", pLabelWidth);
-	}
-	
-	public void setLabelFor(String pLabelFor) {
-		getStateHelper().put(PropertyKeys.labelFor, pLabelFor);
-		handleAttribute("labelFor", pLabelFor);
 	}
 	
 	public String getTooltip() {

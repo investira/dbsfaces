@@ -133,6 +133,7 @@ dbsfaces.tooltip = {
 
         //Exibe tooltip  
 		xTooltip.addClass("-show");
+
         return true;
 	},
 	
@@ -233,6 +234,7 @@ dbsfaces.tooltip = {
 		var xTop = 0;
 		var xLeft = 0;
 		var xContainer = pTooltip.data("container");
+		var xContent = pTooltip.data("content");
 		if (pTooltip.data("setPos")){
 			pTooltip.css("left", xComponentRect.left + (xComponentRect.width / 2))
 				    .css("top", xComponentRect.top + (xComponentRect.height / 2));
@@ -272,7 +274,17 @@ dbsfaces.tooltip = {
 				xLeft = -xLeft - xContainer.outerWidth();
 			}
 		}
-		dbsfaces.ui.cssTransform(xContainer, "translateX(" + parseInt(xLeft) + "px) translateY(" + parseInt(xTop) + "px)");
+//		dbsfaces.ui.cssTransform(xContainer, "scale(1)");
+//		setTimeout(function(){
+//			dbsfaces.ui.cssTransform(xContainer, "translate3d(" + parseInt(xLeft) + "px, " + parseInt(xTop) + "px, 0) scale(0)");		
+//			setTimeout(function(){
+//				dbsfaces.ui.cssTransform(xContainer, "translate3d(" + parseInt(xLeft) + "px, " + parseInt(xTop) + "px, 0) scale(1)");		
+//			},100);
+//		},0);
+		dbsfaces.ui.cssAllBrowser(xContainer, "transform-origin", parseInt(-xLeft) + "px "  + parseInt(-xTop) + "px");
+		dbsfaces.ui.cssTransform(xContainer, "translate3d(" + parseInt(xLeft) + "px, " + parseInt(xTop) + "px, 0)");
+		dbsfaces.ui.cssAllBrowser(xContent, "transform-origin", parseInt(-xLeft) + "px "  + parseInt(-xTop) + "px");
+//		dbsfaces.ui.cssTransform(xContainer, "translateX(" + parseInt(xLeft) + "px) translateY(" + parseInt(xTop) + "px) scale(1)");
 	},
 	
 

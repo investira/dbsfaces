@@ -424,7 +424,7 @@ dbsfaces.ui = {
 			xE = $(obj);
 		}
 	   var off = xE.offset();
-
+	
 	   return {
 	          top: off.top,
 	          left: off.left,
@@ -528,7 +528,11 @@ dbsfaces.ui = {
 
 	//Retorna valores do transform
 	getTransform:function(e){
-		var xSt = window.getComputedStyle(xE.get(0), null);
+		var xE = e;
+		if (xE instanceof jQuery){
+			xE = $(e).get(0);
+		}
+		var xSt = window.getComputedStyle(xE, null);
 		var xTr = xSt.getPropertyValue("-webkit-transform") ||
 		          xSt.getPropertyValue("-moz-transform") ||
 		          xSt.getPropertyValue("-ms-transform") ||
