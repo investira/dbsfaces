@@ -371,19 +371,14 @@ dbsfaces.url = {
 
 dbsfaces.ui = {
 	moveToFront: function(pElement){
-		if (pElement == null || pElement == "undefined"){return;}
+		if (pElement == null || (typeof(pElement) == "undefined")){return;}
 		var xE = pElement;
 		if (xE instanceof jQuery){
 			xE = pElement.get(0);
 		}
-//		$(xE).css("animation-play-state", "paused");
-//		setTimeout(function(e){
-//		xE.parentNode.appendChild(xE);
+		if (!typeof(xE.parentElement) == "undefined"){
 			xE.parentElement.appendChild(xE);
-//			setTimeout(function(e){
-//				$(xE).css("animation-play-state", "initial");
-//			},0);
-//		},0);
+		}
 	},
 	moveToBack: function(pElement){
 		var xE = pElement;

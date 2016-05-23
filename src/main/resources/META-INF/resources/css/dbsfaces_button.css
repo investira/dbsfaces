@@ -79,6 +79,8 @@
 	padding: 0px !important;
 	line-height: 0px !important;
 	font-size: inherit;
+	white-space: nowrap;
+/* 	display: table-row; */
 }
 
 .dbs_button > table > tbody > tr > td {
@@ -86,6 +88,8 @@
 	margin: 0px !important;
 	padding: 0px !important;
 	font-size: inherit;
+	white-space: normal;
+/*     display: table-cell; */
 }
 
 

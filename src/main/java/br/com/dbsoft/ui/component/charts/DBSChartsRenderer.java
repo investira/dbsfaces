@@ -218,7 +218,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 				//Encode do texto do valor
 				xValorTmp = DBSNumber.toDouble(DBSFormat.getFormattedNumber(pCharts.convertYPxToValue(xPosicaoInvertida), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask()));
 				xFormatedValue = DBSFormat.getFormattedNumber(xValorTmp, NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask());
-				DBSFaces.encodeSVGText(pCharts, pWriter, pCharts.getWidth().doubleValue(), xPosicaoText.doubleValue(), xFormatedValue, DBSFaces.CSS.MODIFIER.LABEL, null, null);
+				DBSFaces.encodeSVGText(pCharts, pWriter, pCharts.getWidth().doubleValue() -pCharts.getPadding(), xPosicaoText.doubleValue(), xFormatedValue, DBSFaces.CSS.MODIFIER.LABEL, null, null);
 			}
 			xPosicao += xIncremento;
 		}

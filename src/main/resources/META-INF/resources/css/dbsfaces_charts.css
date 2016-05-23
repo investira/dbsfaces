@@ -1,15 +1,13 @@
 .dbs_charts{
-	display: inline-block;
+	display: table;
+/* 	border: rgba(0,0,0,.5) solid 1px; */
 }
 
 .dbs_charts > .-container{
 	position: relative;
 	display: inline-block;
 	opacity:0;
-/* 	border: rgba(0,0,0,0.1); */
-/*     border-width: 1px; */
-/*     border-style: solid; */
-/*     border-radius: 3px; */
+/* 	border: rgba(0,0,0,.5) solid 1px; */
 }
 
 .dbs_charts > .-container > .-caption,
@@ -83,7 +81,7 @@
 }
 
 .dbs_charts-grid {
-	stroke: rgb(220,220,220);
+	stroke: rgba(0,0,0,.05);
 	stroke-width: 1px;
 	shape-rendering: crispEdges;
 }

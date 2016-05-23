@@ -2881,11 +2881,11 @@ public class  DBSFaces {
 		if (!DBSObject.isEmpty(pTooltipText) ||
 			xTooltip != null){
 			xWriter.startElement("div", pComponent);
-				String xClass = DBSFaces.CSS.MODIFIER.TOOLTIP;
+				String xClass = DBSFaces.CSS.MODIFIER.TOOLTIP.trim();
 				if (pBasicTooltip){
-					xClass += "-tt"; //Tooltip padrão
+					xClass += " -tt"; //Tooltip padrão
 				}else{
-					xClass += "-qi"; //Tooltip para o quickinfo
+					xClass += " -qi"; //Tooltip para o quickinfo
 				}
 				setAttribute(xWriter, "class", xClass, null);
 				setAttribute(xWriter, "delay", pDelay, "1000");

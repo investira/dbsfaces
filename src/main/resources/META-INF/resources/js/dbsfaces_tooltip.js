@@ -127,7 +127,7 @@ dbsfaces.tooltip = {
 		if (xTooltip.hasClass("-disabled")){
 			return false;
 		}
-
+		
 		//Configura como localização default e depois verifica se ficou dentro dos limites da janela principal
         dbsfaces.tooltip.pvSetBestLocation(xTooltip);
 
@@ -137,7 +137,7 @@ dbsfaces.tooltip = {
         return true;
 	},
 	
-
+	
 	//Encontra a melhor localização, considerando a localização desejada/default
 	pvSetBestLocation: function(pTooltip){
 		var xBestLocationCode = pTooltip.data("dl"); //Utiliza inicialmente o valor do default location

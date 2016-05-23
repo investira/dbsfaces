@@ -49,9 +49,10 @@
 
 .dbs_chart > .-delta > .-guide:focus,
 .dbs_chart > .-delta > .-guide:active{
-	-moz-animation: -kf_dbs_chart_selected .1s linear;
-	-o-animation: -kf_dbs_chart_selected .1s linear;
 	-webkit-animation: -kf_dbs_chart_selected .1s linear;
+	-moz-animation: -kf_dbs_chart_selected .1s linear;
+	-ms-animation: -kf_dbs_chart_selected .1s linear;
+	-o-animation: -kf_dbs_chart_selected .1s linear;
 	animation: -kf_dbs_chart_selected .1s linear;    
 }
 
@@ -101,6 +102,7 @@
 .dbs_chart[type='line'].-activated > .-delta > .-quickSelection{
 	font-size: 1.40em;
 	pointer-events: all;
+	overflow: visible;
 }
 .dbs_chart[type='line'].-activated > .-delta > .-quickSelection > .dbs_quickInfo{
 	left: -100%;
@@ -278,6 +280,7 @@
 /*     transition: fill-opacity .2s, stroke-opacity .2s; */
 	-webkit-transition: fill-opacity .2s; 
     -moz-transition: fill-opacity .2s;
+    -ms-transition: fill-opacity .2s;
     -o-transition: fill-opacity .2s;
     transition: fill-opacity .2s;
 }
@@ -286,8 +289,11 @@
 .dbs_chart[type='line'] > .dbs_chartValue > .-info > .-label,
 .dbs_chart[type='bar'] > .dbs_chartValue > .-info > .-label{
 	text-anchor: start;
-	transform: rotate(60deg);
 	-moz-transform: rotate(0);
+	-ms-transform: rotate(0);
+	-webkit-transform: rotate(60deg);
+	-o-transform: rotate(60deg);
+	transform: rotate(60deg);
 	dominant-baseline: middle;
 /* 	dominant-baseline: text-before-edge; */
 	cursor: pointer;
@@ -296,6 +302,7 @@
 .dbs_chart[type='line'] > .dbs_chartValue > .-info > .-label > text,
 .dbs_chart[type='bar'] > .dbs_chartValue > .-info > .-label > text{
 	-moz-transform: rotate(60deg);
+	-ms-transform: rotate(60);
 }
 
 .dbs_chart[type='line'] > .dbs_chartValue > .-info > .-value,
@@ -336,9 +343,10 @@
 }
 
 .-a_dbs_chart_selected{
-	-moz-animation: -kf_dbs_chart_selected .1s linear;
-	-o-animation: -kf_dbs_chart_selected .1s linear;
 	-webkit-animation: -kf_dbs_chart_selected .1s linear;
+	-moz-animation: -kf_dbs_chart_selected .1s linear;
+	-ms-animation: -kf_dbs_chart_selected .1s linear;
+	-o-animation: -kf_dbs_chart_selected .1s linear;
 	animation: -kf_dbs_chart_selected .1s linear;
 }
 

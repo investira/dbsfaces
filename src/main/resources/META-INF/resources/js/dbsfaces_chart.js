@@ -636,12 +636,10 @@ dbsfaces.chart = {
 		var xValue;
 		if (pDV1 < 0){
 			xValue = (pDV1 / pDV2);
-//			console.log("a:\t" + pDV1 + "\t" + pDV2 + "\t" + xValue);
 		}else{
 			xValue = (pDV2 / pDV1);
-//			console.log("b:\t" + pDV2 + "\t" + pDV1 + "\t" + xValue);
 		}
-		xValue = dbsfaces.math.round(xValue, 6);
+		xValue = dbsfaces.math.round(xValue, 4);
 		xValue = (xValue - 1) * 100;
 		return dbsfaces.format.number(xValue, 2);
 	},

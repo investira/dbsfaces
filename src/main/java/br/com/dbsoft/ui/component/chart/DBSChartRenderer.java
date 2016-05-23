@@ -166,6 +166,8 @@ public class DBSChartRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(pWriter, "class", "-quickSelection -foreignobject", null);
 			DBSFaces.setAttribute(pWriter, "x", pCharts.getWidth() + "px", null);
 			DBSFaces.setAttribute(pWriter, "y", pCharts.getHeight() + "px", null);
+			DBSFaces.setAttribute(pWriter, "width", ".5", null);
+			DBSFaces.setAttribute(pWriter, "height", ".5", null);
 			xDeltaList.encodeAll(pContext);
 		pWriter.endElement("foreignObject");
 		return pChart.getDeltaList();
