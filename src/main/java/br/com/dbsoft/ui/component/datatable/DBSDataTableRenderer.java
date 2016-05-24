@@ -480,7 +480,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	private void pvEncodeJS(ResponseWriter pWriter, String pClientId) throws IOException {
 		DBSFaces.encodeJavaScriptTagStart(pWriter);
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xDataTableId = '#' + dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " var xDataTableId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
 				     " dbs_dataTable(xDataTableId); \n" +
                      "}); \n"; 
 		pWriter.write(xJS);

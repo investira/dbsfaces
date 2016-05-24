@@ -205,7 +205,7 @@ public class DBSButtonRenderer extends DBSRenderer {
 	private void pvEncodeJS(ResponseWriter pWriter, String pClientId) throws IOException {
 		DBSFaces.encodeJavaScriptTagStart(pWriter);
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xButtonId = '#' + dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " var xButtonId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
 				     " dbs_button(xButtonId); \n" +
                      "}); \n";
 		pWriter.write(xJS);

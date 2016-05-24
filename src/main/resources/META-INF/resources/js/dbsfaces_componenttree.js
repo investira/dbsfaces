@@ -36,8 +36,8 @@ dbs_componenttree = function(pId) {
 	});	
 	
 	$(pId + " > .-container li > .-label").mouseenter(function(e){
-		var xParentId = dbsfaces.util.jsid("#" + $(this).closest(".dbs_componenttree").get(0).id);
-		var xSelectedKey =dbsfaces.util.jsid("#" + $(this).get(0).id);
+		var xParentId = dbsfaces.util.jsid($(this).closest(".dbs_componenttree").get(0).id);
+		var xSelectedKey = dbsfaces.util.jsid($(this).get(0).id);
 		xSelectedKey = xSelectedKey.replace("-extrainfo","");
 		$(xParentId + " > .-container li.-hover").removeClass("-hover");
 		$(xSelectedKey + "-extrainfo").parent().addClass("-hover");
@@ -50,7 +50,7 @@ dbs_componenttree = function(pId) {
 
 dbsfaces.componenttree = {
 	showNode: function(pLabel){
-		var xExtraInfoId = dbsfaces.util.jsid("#" + $(pLabel).attr("id") + "-extrainfo");
+		var xExtraInfoId = dbsfaces.util.jsid($(pLabel).attr("id") + "-extrainfo");
 		var xExtraInfoContent = $(xExtraInfoId).siblings(".-content").children("div");
 		var xCaptionContent = $(pLabel).siblings(".-content").children("div");
 		dbsfaces.componenttree.setExpandedIds(pLabel);
@@ -75,8 +75,8 @@ dbsfaces.componenttree = {
 
 	select: function(e, pLabel, pSelectedKey){
 		var xParentId = $(pLabel).closest(".dbs_componenttree").get(0).id; 
-		var xInputId = dbsfaces.util.jsid("#" + xParentId + ":selection-input");
-		var xButtonId = dbsfaces.util.jsid("#" + xParentId + ":selection-submit");
+		var xInputId = dbsfaces.util.jsid(xParentId + ":selection-input");
+		var xButtonId = dbsfaces.util.jsid(xParentId + ":selection-submit");
 		$(xInputId).val(pSelectedKey);
 		//Faz requuisição para dar submit das seleções e atualizar a linha
 		jsf.ajax.request(e, 'update', {execute:xParentId, onevent:dbsfaces.onajax, onerror:dbsfaces.onajaxerror});
@@ -88,7 +88,7 @@ dbsfaces.componenttree = {
 		var xParent = $(pLabel).closest(".dbs_componenttree").get(0);
 		if (typeof(xParent) != 'undefined'){
 			var xParentId = xParent.id; 
-			var xInputId = dbsfaces.util.jsid("#" + xParentId + ":expandedIds");
+			var xInputId = dbsfaces.util.jsid(xParentId + ":expandedIds");
 			var xExpandedIds = " " + $(xInputId).val() + " ";
 			if (xExpandedIds.indexOf(xSelectedKey) == -1){
 				xExpandedIds = xExpandedIds + " " + $.trim(xSelectedKey); 

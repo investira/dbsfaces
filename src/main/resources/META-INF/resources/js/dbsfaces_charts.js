@@ -270,13 +270,13 @@ dbsfaces.charts = {
 	activateChart: function(pCharts, pLabel){
 		var xSiblings = pLabel.siblings();
 		var xSiblingsActivated = xSiblings.filter(".-activated");
-		var xChart= $("#" + dbsfaces.util.jsid(pLabel.attr("chartid")));
+		var xChart= $(dbsfaces.util.jsid(pLabel.attr("chartid")));
 		//Move label para primeiro plano
 		dbsfaces.ui.moveToFront(pLabel);
 		//Desmarca todos
 		xSiblingsActivated.each(function(){
 			var xSibilingLabel = $(this);
-			var xSibilingChart = $("#" + dbsfaces.util.jsid(xSibilingLabel.attr("chartid")));
+			var xSibilingChart = $(dbsfaces.util.jsid(xSibilingLabel.attr("chartid")));
 			dbsfaces.charts.pvActivateDelta(pCharts, xSibilingChart, false);
 			dbsfaces.charts.pvActivateChartOne(xSibilingChart, xSibilingLabel, false);
 		});

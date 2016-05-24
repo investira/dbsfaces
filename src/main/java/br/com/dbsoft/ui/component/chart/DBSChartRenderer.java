@@ -15,9 +15,8 @@ import com.sun.faces.renderkit.RenderKitUtils;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
 import br.com.dbsoft.ui.component.chartvalue.DBSChartValue;
-import br.com.dbsoft.ui.component.quickinfo.DBSQuickInfo;
+import br.com.dbsoft.ui.component.div.DBSDiv;
 import br.com.dbsoft.ui.component.DBSRenderer;
-import br.com.dbsoft.ui.component.button.DBSButton;
 import br.com.dbsoft.ui.component.chart.DBSChart.TYPE;
 import br.com.dbsoft.ui.component.charts.DBSCharts;
 import br.com.dbsoft.ui.core.DBSFaces;
@@ -63,7 +62,6 @@ public class DBSChartRenderer extends DBSRenderer {
 		}
 
 		String xClientId = xChart.getClientId(pContext);
-//		xChart.restoreState(pContext, xChart.getSavedState());
 
 		xWriter.startElement("g", xChart);
 			DBSFaces.setAttribute(xWriter, "id", xClientId, null);
@@ -96,7 +94,7 @@ public class DBSChartRenderer extends DBSRenderer {
 						pvEncodePieDeltaTextPaths(xCharts, xChart, xWriter);
 					}else if (xType == TYPE.LINE){
 					//Divisão onde serão desenhadas as linhas que ligam os pontos no gráfico por linha.
-						pvEncodeLineDeltaQuickSelection(xCharts, xChart, pContext, xWriter);
+						pvEncodeDeltaList(xCharts, xChart, pContext, xWriter);
 					}
 				xWriter.endElement("g");
 			}
@@ -134,44 +132,62 @@ public class DBSChartRenderer extends DBSRenderer {
 		pWriter.endElement("g");
 	}
 
-	private List<IDBSChartDelta> pvEncodeLineDeltaQuickSelection(DBSCharts pCharts, DBSChart pChart, FacesContext pContext, ResponseWriter pWriter) throws IOException{
-		if (!pCharts.getShowDelta() 
-		 || !pCharts.getShowLabel()
-		 || pChart.getDeltaList() == null
-		 || pChart.getDeltaList().size() == 0){
-			pChart.setDeltaList(null);
-		 	return null;
-		 }
-		DBSQuickInfo xDeltaList = (DBSQuickInfo) pChart.getFacet("deltalist");
+	private void pvEncodeDeltaList(DBSCharts pCharts, DBSChart pChart, FacesContext pContext, ResponseWriter pWriter) throws IOException{
+		if (!pCharts.getShowDeltaList()){return;}
+		DBSDiv xDeltaList = (DBSDiv) pChart.getFacet("deltalist");
 		if (xDeltaList == null){
-			xDeltaList = (DBSQuickInfo) pContext.getApplication().createComponent(DBSQuickInfo.COMPONENT_TYPE);
+			xDeltaList = (DBSDiv) pContext.getApplication().createComponent(DBSDiv.COMPONENT_TYPE);
 			xDeltaList.setId("deltalist");
-			xDeltaList.setShowOnHover(false);
-			xDeltaList.setDefaultLocation(4);
-			xDeltaList.setIconClass("-i_selection");
 			pChart.getFacets().put("deltalist", xDeltaList);
 			//Adiciona botões com as opções dos deltas pré definidos
-			for (IDBSChartDelta xChartDelta: pChart.getDeltaList()){
-				DBSButton xDeltaButton = (DBSButton) pContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
-				xDeltaButton.setLabel(xChartDelta.getLabel());
-				xDeltaButton.setIconClass(xChartDelta.getIconClass());
-				xDeltaButton.setTooltip(xChartDelta.getTooltip());
-				xDeltaButton.setonclick("alert('" + xChartDelta.getLabel() + "'");
-				xDeltaList.getChildren().add(xDeltaButton);
-			}
+//			for (IDBSChartDelta xChartDelta: pChart.getDeltaList()){
+//				DBSButton xDeltaButton = (DBSButton) pContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
+//				xDeltaButton.setLabel(xChartDelta.getLabel());
+//				xDeltaButton.setIconClass(xChartDelta.getIconClass());
+//				xDeltaButton.setTooltip(xChartDelta.getTooltip());
+//				xDeltaButton.setonclick("alert('" + xChartDelta.getLabel() + "'");
+//				xDeltaList.getChildren().add(xDeltaButton);
+//			}
 		}
-		pWriter.startElement("foreignObject", pChart);
-			pWriter.writeAttribute("xmlns","http://www.w3.org/1999/xhtml", null);
-			pWriter.writeAttribute("id", pChart.getClientId() + "_quickselection", null);
-			DBSFaces.setAttribute(pWriter, "class", "-quickSelection -foreignobject", null);
-			DBSFaces.setAttribute(pWriter, "x", pCharts.getWidth() + "px", null);
-			DBSFaces.setAttribute(pWriter, "y", pCharts.getHeight() + "px", null);
-			DBSFaces.setAttribute(pWriter, "width", ".5", null);
-			DBSFaces.setAttribute(pWriter, "height", ".5", null);
-			xDeltaList.encodeAll(pContext);
-		pWriter.endElement("foreignObject");
-		return pChart.getDeltaList();
-
+		pWriter.startElement("g", pChart);
+			pWriter.writeAttribute("id", pChart.getClientId() + "_deltalist", null);
+			DBSFaces.setAttribute(pWriter, "class", "-deltaList", null);
+//			DBSFaces.setAttribute(pWriter, "x", pCharts.getWidth() + "px", null);
+//			DBSFaces.setAttribute(pWriter, "y", pCharts.getHeight() + "px", null);
+//			DBSFaces.setAttribute(pWriter, "width", ".5", null);
+//			DBSFaces.setAttribute(pWriter, "height", ".5", null);
+//			DBSFaces.encodeSVGRect(pCharts, pWriter, xX.toString(), "0", xWidth.toString(), null, null, null, "fill=url(#" + pChart.getClientId() + "_linestroke); stroke=url(#" + pChart.getClientId() + "_linestroke)");
+//			xDeltaList.encodeAll(pContext);
+		pWriter.endElement("g");
+//		DBSQuickInfo xDeltaList = (DBSQuickInfo) pChart.getFacet("deltalist");
+//		if (xDeltaList == null){
+//			xDeltaList = (DBSQuickInfo) pContext.getApplication().createComponent(DBSQuickInfo.COMPONENT_TYPE);
+//			xDeltaList.setId("deltalist");
+//			xDeltaList.setShowOnHover(false);
+//			xDeltaList.setDefaultLocation(4);
+//			xDeltaList.setIconClass("-i_selection");
+//			pChart.getFacets().put("deltalist", xDeltaList);
+//			//Adiciona botões com as opções dos deltas pré definidos
+//			for (IDBSChartDelta xChartDelta: pChart.getDeltaList()){
+//				DBSButton xDeltaButton = (DBSButton) pContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
+//				xDeltaButton.setLabel(xChartDelta.getLabel());
+//				xDeltaButton.setIconClass(xChartDelta.getIconClass());
+//				xDeltaButton.setTooltip(xChartDelta.getTooltip());
+//				xDeltaButton.setonclick("alert('" + xChartDelta.getLabel() + "'");
+//				xDeltaList.getChildren().add(xDeltaButton);
+//			}
+//		}
+//		pWriter.startElement("foreignObject", pChart);
+//			pWriter.writeAttribute("xmlns","http://www.w3.org/1999/xhtml", null);
+//			pWriter.writeAttribute("id", pChart.getClientId() + "_quickselection", null);
+//			DBSFaces.setAttribute(pWriter, "class", "-deltaList -foreignobject", null);
+//			DBSFaces.setAttribute(pWriter, "x", pCharts.getWidth() + "px", null);
+//			DBSFaces.setAttribute(pWriter, "y", pCharts.getHeight() + "px", null);
+//			DBSFaces.setAttribute(pWriter, "width", ".5", null);
+//			DBSFaces.setAttribute(pWriter, "height", ".5", null);
+//			xDeltaList.encodeAll(pContext);
+//		pWriter.endElement("foreignObject");
+		
 	}
 	
 	/**
@@ -214,11 +230,11 @@ public class DBSChartRenderer extends DBSRenderer {
 	
 	private void pvEncodeJS(String pClientId, DBSChart pChart, ResponseWriter pWriter) throws IOException{
 		DBSFaces.encodeJavaScriptTagStart(pWriter);
-		Gson xDeltaList = new Gson();
-		xDeltaList.toJson(pChart.getDeltaList());
+		Gson xDeltaListJson = new Gson();
+//		xDeltaListJson.toJson(pChart.getDeltaList());
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xChartId = '#' + dbsfaces.util.jsid('" + pClientId + "'); \n " + 
-				     " dbs_chart(xChartId, " + xDeltaList.toJsonTree(pChart.getDeltaList(), List.class) + "); \n" +
+				     " var xChartId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " dbs_chart(xChartId, " + xDeltaListJson.toJsonTree(pChart.getDeltaList(), List.class) + "); \n" +
                      "}); \n"; 
 		pWriter.write(xJS); 
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);		

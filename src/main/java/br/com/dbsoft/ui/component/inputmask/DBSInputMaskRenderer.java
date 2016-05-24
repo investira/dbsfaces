@@ -71,7 +71,7 @@ public class DBSInputMaskRenderer extends DBSRenderer {
 		if (!xInputMask.getReadOnly()){
 			DBSFaces.encodeJavaScriptTagStart(xWriter);
 			String xJS = "$(document).ready(function() { \n" +
-					     " var xInputMaskId = '#' + dbsfaces.util.jsid('" + getInputDataClientId(xInputMask) + "'); \n " + 
+					     " var xInputMaskId = dbsfaces.util.jsid('" + getInputDataClientId(xInputMask) + "'); \n " + 
 					     " dbs_inputMask(xInputMaskId," + pvGetMaskParm(xInputMask) + "); \n" +
 	                     "}); \n"; 
 			xWriter.write(xJS);

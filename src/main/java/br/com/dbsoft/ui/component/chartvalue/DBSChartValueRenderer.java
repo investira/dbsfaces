@@ -575,7 +575,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 	private void pvEncodeJS(String pClientId, ResponseWriter pWriter) throws IOException{
 		DBSFaces.encodeJavaScriptTagStart(pWriter);
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xChartValueId = '#' + dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " var xChartValueId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
 				     " dbs_chartValue(xChartValueId); \n" +
                      "}); \n"; 
 		pWriter.write(xJS);

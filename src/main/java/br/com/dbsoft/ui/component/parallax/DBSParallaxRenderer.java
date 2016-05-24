@@ -65,7 +65,7 @@ public class DBSParallaxRenderer extends DBSRenderer {
 		
 		DBSFaces.encodeJavaScriptTagStart(xWriter);
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xParallaxId = '#' + dbsfaces.util.jsid('" + xClientId + "'); \n " + 
+				     " var xParallaxId = dbsfaces.util.jsid('" + xClientId + "'); \n " + 
 				     " dbs_parallax(xParallaxId); \n" +
                      "}); \n"; 
 		xWriter.write(xJS);

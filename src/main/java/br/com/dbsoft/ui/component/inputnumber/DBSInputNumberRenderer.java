@@ -84,7 +84,7 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 			DBSFaces.encodeJavaScriptTagStart(xWriter);
 			//Comentado o JS com $(document).ready por não inicializar corretamente o campo no IE
 			String xJS = "$(document).ready(function() { \n"
-						+ " var xInputNumberId = '#' + dbsfaces.util.jsid('"
+						+ " var xInputNumberId = dbsfaces.util.jsid('"
 						+ getInputDataClientId(xInputNumber) + "'); \n "
 						+ " dbs_inputNumber(xInputNumberId,"
 						+ pvGetMaskParm(xInputNumber) + "); \n" + "}); \n";

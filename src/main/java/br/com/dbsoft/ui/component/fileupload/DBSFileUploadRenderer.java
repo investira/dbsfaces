@@ -142,7 +142,7 @@ public class DBSFileUploadRenderer extends DBSRenderer {
 		
 		DBSFaces.encodeJavaScriptTagStart(pWriter);
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xFileUploadId = '#' + dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " var xFileUploadId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
 				     " dbs_fileUpload(xFileUploadId, '" + xFileUploadServlet + "'); \n" +
                      "}); \n";
 		pWriter.write(xJS);

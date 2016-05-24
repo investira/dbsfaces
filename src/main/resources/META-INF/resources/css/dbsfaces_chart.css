@@ -47,15 +47,6 @@
 	stroke-opacity: 0;
 }
 
-.dbs_chart > .-delta > .-guide:focus,
-.dbs_chart > .-delta > .-guide:active{
-	-webkit-animation: -kf_dbs_chart_selected .1s linear;
-	-moz-animation: -kf_dbs_chart_selected .1s linear;
-	-ms-animation: -kf_dbs_chart_selected .1s linear;
-	-o-animation: -kf_dbs_chart_selected .1s linear;
-	animation: -kf_dbs_chart_selected .1s linear;    
-}
-
 .dbs_chart > .-delta > .-deltaarea_r,
 .dbs_chart > .-delta > .-deltaarea_l{
     stroke-width: 0px;
@@ -99,15 +90,15 @@
 .dbs_chart[type='line'].-activated > .-delta{
 	display: inline-block;
 }
-.dbs_chart[type='line'].-activated > .-delta > .-quickSelection{
+.dbs_chart[type='line'].-activated > .-delta > .-deltaList{
 	font-size: 1.40em;
 	pointer-events: all;
 	overflow: visible;
 }
-.dbs_chart[type='line'].-activated > .-delta > .-quickSelection > .dbs_quickInfo{
-	left: -100%;
-    display: table-cell;
-    position: relative;
+.dbs_chart[type='line'].-activated > .-delta > .-deltaList > .dbs_quickInfo{
+/* 	left: -100%; */
+/*     display: table-cell; */
+/*     position: relative; */
 }
 
 
@@ -133,6 +124,11 @@
 .dbs_chart[type='line'] > .-delta > .-guide:focus,
 .dbs_chart[type='line'] > .-delta > .-guide:active{
 	opacity: 1;
+	-webkit-animation: -kf_dbs_chart_selected .1s linear;
+	-moz-animation: -kf_dbs_chart_selected .1s linear;
+	-ms-animation: -kf_dbs_chart_selected .1s linear;
+	-o-animation: -kf_dbs_chart_selected .1s linear;
+	animation: -kf_dbs_chart_selected .1s linear;    
 }
 
 .dbs_chart[type='line'] > .-delta > .-deltaarea_r,
@@ -352,29 +348,29 @@
 
 /* single pulse */			
 @-moz-keyframes -kf_dbs_chart_selected {
-  0% {stroke-width: 0px;}
+  0% {stroke-width: initial;}
   1% {stroke-width: 1em;}
-  100% {stroke-width: 0px;}
+  100% {stroke-width: initial;}
 }
 @-webkit-keyframes -kf_dbs_chart_selected {
-  0% {stroke-width: 0px;}
+  0% {stroke-width: initial;}
   1% {stroke-width: 1em;}
-  100% {stroke-width: 0px;}
+  100% {stroke-width: initial;}
 }
 @-o-keyframes -kf_dbs_chart_selected {
-  0% {stroke-width: 0px;}
+  0% {stroke-width: initial;}
   1% {stroke-width: 1em;}
-  100% {stroke-width: 0px;}
+  100% {stroke-width: initial;}
 }
 @-ms-keyframes -kf_dbs_chart_selected {
-  0% {stroke-width: 0px;}
+  0% {stroke-width: initial;}
   1% {stroke-width: 1em;}
-  100% {stroke-width: 0px;}
+  100% {stroke-width: initial;}
 }
 @keyframes -kf_dbs_chart_selected {
-  0% {stroke-width: 0px;}
+  0% {stroke-width: initial;}
   1% {stroke-width: 1em;}
-  100% {stroke-width: 0px;}
+  100% {stroke-width: initial;}
 }
 
 

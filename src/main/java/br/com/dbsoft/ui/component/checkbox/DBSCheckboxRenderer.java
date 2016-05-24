@@ -136,7 +136,7 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 	private void pvEncodeJS(ResponseWriter pWriter, String pClientId) throws IOException {
 		DBSFaces.encodeJavaScriptTagStart(pWriter);
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xCheckboxId = '#' + dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " var xCheckboxId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
 				     " dbs_checkbox(xCheckboxId); \n" +
                      "}); \n";
 		pWriter.write(xJS);

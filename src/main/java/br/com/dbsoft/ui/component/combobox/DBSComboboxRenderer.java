@@ -88,7 +88,7 @@ public class DBSComboboxRenderer extends DBSRenderer {
 				xJS = " dbsfaces.combobox.triggerChange(xComboboxId); \n";
 			}
 			xJS = "$(document).ready(function() { \n" +
-					     " var xComboboxId = '#' + dbsfaces.util.jsid('" + xClientId + "'); \n " + 
+					     " var xComboboxId = dbsfaces.util.jsid('" + xClientId + "'); \n " + 
 					     " dbs_combobox(xComboboxId); \n" +
 					     xJS +
 	                     "}); \n"; 

@@ -111,7 +111,7 @@ public class DBSAccordionRenderer extends DBSRenderer {
 			
 			DBSFaces.encodeJavaScriptTagStart(xWriter);
 			String xJS = "$(document).ready(function() { \n" +
-					     " var xAccordionId = '#' + dbsfaces.util.jsid('" + xClientId + "'); \n " + 
+					     " var xAccordionId = dbsfaces.util.jsid('" + xClientId + "'); \n " + 
 					     " dbs_accordion(xAccordionId); \n" +
 	                     "}); \n"; 
 			xWriter.write(xJS);

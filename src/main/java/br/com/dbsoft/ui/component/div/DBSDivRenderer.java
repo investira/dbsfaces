@@ -85,9 +85,9 @@ public class DBSDivRenderer extends DBSRenderer {
 						DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.LOADING + DBSFaces.CSS.MODIFIER.LARGE, null);
 	    			}
 				xWriter.endElement("div");
-				DBSFaces.encodeJavaScriptTagStart(xWriter); //dbsfaces.ui.showLoadingError
+				DBSFaces.encodeJavaScriptTagStart(xWriter);
 				String xJS = "setTimeout(function(){" +
-										"jsf.ajax.request('" + xDiv.getClientId() + "', 'update', {render:'" + xDiv.getClientId() + "', onevent:dbsfaces.ui.ajaxTriggerLoaded,  onerror:dbsfaces.ui.showLoadingError(dbsfaces.util.jsid('" + xClientId + "'))});" +
+										"jsf.ajax.request('" + xDiv.getClientId() + "', 'update', {render:'" + xDiv.getClientId() + "', onevent:dbsfaces.ui.ajaxTriggerLoaded,  onerror:dbsfaces.ui.showLoadingError('" + xClientId + "')});" +
 												   "}, 0);";
 				xWriter.write(xJS);
 				DBSFaces.encodeJavaScriptTagEnd(xWriter);	

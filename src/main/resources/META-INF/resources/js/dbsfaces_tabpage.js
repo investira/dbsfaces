@@ -11,7 +11,7 @@ dbsfaces.tabPage = {
 		var xTabId = $(pId).closest(".dbs_tab").get(0).id;
 		var xTabPageId = $(pId).get(0).id;
 		var xInputId = xTabId + ":input";
-		var xSelectedTab = $(dbsfaces.util.jsid("#" + xInputId)).val().trim().toUpperCase();
+		var xSelectedTab = $(dbsfaces.util.jsid(xInputId)).val().trim().toUpperCase();
 		if (xTabPageId.toUpperCase() == xSelectedTab){
 			dbsfaces.tab.showTab(pId, xTabPageId);
 		}

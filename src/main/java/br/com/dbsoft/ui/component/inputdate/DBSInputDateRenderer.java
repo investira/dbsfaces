@@ -142,7 +142,7 @@ public class DBSInputDateRenderer extends DBSRenderer {
 		if (!xInputDate.getReadOnly()){
 			DBSFaces.encodeJavaScriptTagStart(xWriter);
 			String xJS = "$(document).ready(function() { \n" +
-					     " var xInputDateId = '#' + dbsfaces.util.jsid('" + xClientId + "'); \n " + 
+					     " var xInputDateId = dbsfaces.util.jsid('" + xClientId + "'); \n " + 
 					     " dbs_inputDate(xInputDateId); \n" +
 	                     "}); \n"; 
 			xWriter.write(xJS);

@@ -376,7 +376,7 @@ dbsfaces.ui = {
 		if (xE instanceof jQuery){
 			xE = pElement.get(0);
 		}
-		if (!typeof(xE.parentElement) == "undefined"){
+		if (xE.parentElement != null){
 			xE.parentElement.appendChild(xE);
 		}
 	},
@@ -389,26 +389,25 @@ dbsfaces.ui = {
 	},
 	/*Exibe a imagem de que indica que está aguardando o recebimento dos dados*/
 	showLoading : function(pId, pShow){
-		
-		var xId = "dbs_ajaximg_" + $.trim(pId);
+		var xId = dbsfaces.util.jsid(pId + "_loading");
 		//Sempre remove loading se já existir 
 		
 		//Exibe loading
 	    if (pShow){
-			if ($("#" + xId).length == 0){
-				$('body').append("<span id='" + xId + "' class='-loading -large'/>");
+			if ($(xId).length == 0){
+				$('body').append("<span id='" + xId.replace("#","") + "' class='-loading -large'/>");
 			}
 	    }else{
-			if ($("#" + xId).length > 0){
-		    	$("#" + xId).remove();
+			if ($(xId).length > 0){
+		    	$(xId).remove();
 			}
 	    }
 	},
 	
 	showLoadingError : function(pId){
-		var xId = "dbs_ajaximg_" + $.trim(pId);
-		$("#" + xId).fadeOut(2000, function(){ 
-			$("#" + xId).remove();
+		var xId = dbsfaces.util.jsid(pId + "_loading");
+		$(xId).fadeOut(2000, function(){ 
+			$(xId).remove();
 //			$("div .-loading").remove(); Comentado em 08/abr/15 - Ricardo: Excluid código até a certeza que código não é mais necessário.
 		});
 	},
@@ -804,13 +803,22 @@ dbsfaces.util = {
 
 
 dbsfaces.util.jsid = function(pClientId){
-	if (typeof(pClientId) == "undefined"){
-		console.log("asdc");
+	if (pClientId == null
+	 || typeof(pClientId) == "undefined"){
+		return "";
 	}
 	//Retira dois pontos(:) do inicio
-	pClientId = pClientId.replace(/^(:)/,"");
+	pClientId = pClientId.trim().replace(/^(:)/,"");
+	//Retira dois pontos(:) em escaped se houver
+	pClientId = pClientId.replace(/\\:/g,":");
 	//Convert os outros dois pontos(:)  em escaped caracter
-	return pClientId.replace(/:/g,"\\:");
+	pClientId = pClientId.replace(/:/g,"\\:");
+	//Incluir o "#" se não houver
+	if (pClientId.length > 0
+	 && pClientId.charAt(0) != "#"){
+		pClientId = "#" + pClientId;
+	}
+	return pClientId;
 }
 
 dbsfaces.date = {

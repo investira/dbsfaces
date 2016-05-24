@@ -145,7 +145,7 @@ dbsfaces.chartValue = {
 			//Valor para exibição
 			pChartValue.data("dd", xChartValueInfo.children(".-value").text());
 			//Tooltip
-			var xChartValueTooltip = $("#" + dbsfaces.util.jsid(pChartValue.get(0).id) + "_tooltip");
+			var xChartValueTooltip = $(dbsfaces.util.jsid(pChartValue.get(0).id) + "_tooltip");
 			if (xChartValueTooltip.length > 0){
 				pChartValue.data("tooltip", xChartValueTooltip);
 			}else{
