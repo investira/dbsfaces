@@ -189,7 +189,7 @@ dbsfaces.dataTable = {
 	},
 
 	focus: function(e){
-		var xTBody = $('#' + dbsfaces.util.jsid(e.source.id) + " > .-container > .-content > table > tbody");
+		var xTBody = $(dbsfaces.util.jsid(e.source.id) + " > .-container > .-content > table > tbody");
 		//Monitora evento ajax recebido e dispara evento dbsoft
 		dbsfaces.onajax(e);
 		
@@ -200,7 +200,7 @@ dbsfaces.dataTable = {
 			if (typeof(wScrollTopValue) != "undefined"){
 				xTBody.scrollTop(jQuery.data(e.source, 'wScrollTop'));
 			}
-			$('#' + dbsfaces.util.jsid(e.source.id) + " > .-container > input.-foo").focus();
+			$(dbsfaces.util.jsid(e.source.id) + " > .-container > input.-foo").focus();
 		}
 	},
 		

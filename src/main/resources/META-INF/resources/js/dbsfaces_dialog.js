@@ -114,7 +114,7 @@ dbsfaces.dialog = {
 	//Retorna componente que contém o conteúdo principal do dialog.
 	//Este método também é chamado externamente
 	getBackgroundComponent: function(pId){
-		return $(dbsfaces.util.jsid("#" + pId) + dbsfaces.dialog.getBackgroundComponentSelector());
+		return $(dbsfaces.util.jsid(pId) + dbsfaces.dialog.getBackgroundComponentSelector());
 	},
 
 	getBackgroundComponentSelector: function(){

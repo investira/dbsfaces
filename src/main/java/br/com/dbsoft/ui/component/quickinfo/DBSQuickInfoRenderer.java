@@ -76,7 +76,7 @@ public class DBSQuickInfoRenderer extends DBSRenderer {
 	private void pvEncodeJS(ResponseWriter pWriter, String pClientId) throws IOException {
 		DBSFaces.encodeJavaScriptTagStart(pWriter);
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xQuickInfoId = '#' + dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " var xQuickInfoId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
 				     " dbs_quickInfo(xQuickInfoId); \n" +
                      "}); \n";
 		pWriter.write(xJS);

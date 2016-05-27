@@ -11,20 +11,20 @@ dbsfaces.crudDialog = {
 	setBackgroundColor: function(pCrudId, pRadioId){
 		dbsfaces.crudDialog.setBackgroundColorStyleClass(xCrudId, xRadioId);
 		
-		$(dbsfaces.util.jsid("#" + xCrudId + ":dialog:" + xRadioId) + " input:radio").off("change.cor");
-		$(dbsfaces.util.jsid("#" + xCrudId + ":dialog:" + xRadioId) + " input:radio").on("change.cor", function(){
+		$(dbsfaces.util.jsid(xCrudId + ":dialog:" + xRadioId) + " input:radio").off("change.cor");
+		$(dbsfaces.util.jsid(xCrudId + ":dialog:" + xRadioId) + " input:radio").on("change.cor", function(){
 			dbsfaces.crudDialog.setBackgroundColorStyleClass(xCrudId, xRadioId);
 		});
 	},
 	
 	setBackgroundColorStyleClass: function(pCrudId, pRadioId){
 		//VENDA OU DÉBITO
-		if($(dbsfaces.util.jsid("#" + pCrudId + ":dialog:" + pRadioId + "1")).is(":checked")){
+		if($(dbsfaces.util.jsid(pCrudId + ":dialog:" + pRadioId + "1")).is(":checked")){
 			dbsfaces.crudDialog.getBackgroundComponent(pCrudId).addClass("dbs_back_gradient_orange")
 														 	   .removeClass("dbs_back_gradient_blue")
 		            						  		   	 	   .removeClass("dbs_back_gradient_white");
   		//COMPRA OU CRÉDITO   	 
-		}else if($(dbsfaces.util.jsid("#" + pCrudId + ":dialog:" + pRadioId + "0")).is(":checked")){
+		}else if($(dbsfaces.util.jsid(pCrudId + ":dialog:" + pRadioId + "0")).is(":checked")){
 			dbsfaces.crudDialog.getBackgroundComponent(pCrudId).addClass("dbs_back_gradient_blue")
 												  		   	   .removeClass("dbs_back_gradient_orange")
 															   .removeClass("dbs_back_gradient_white");

@@ -94,7 +94,7 @@ public class DBSInputPhoneRenderer extends DBSRenderer {
 		if (!xInputPhone.getReadOnly()){
 			DBSFaces.encodeJavaScriptTagStart(xWriter);
 			String xJS = "$(document).ready(function() { \n" +
-					     " var xInputPhoneId = '#' + dbsfaces.util.jsid('" + xClientId + "'); \n " + 
+					     " var xInputPhoneId = dbsfaces.util.jsid('" + xClientId + "'); \n " + 
 					     " dbs_inputPhone(xInputPhoneId); \n" +
 	                     "}); \n"; 
 			xWriter.write(xJS);

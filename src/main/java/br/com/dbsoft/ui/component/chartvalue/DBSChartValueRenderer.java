@@ -195,7 +195,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			//Encode do valor da linha ---------------------------------------------------------------------
 			pvEncodeText(pChartValue, 
 						 DBSFormat.getFormattedNumber(DBSObject.getNotNull(pChartValue.getDisplayValue(), pChartValue.getValue()), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask()), 
-						 pCharts.getWidth().doubleValue(), 
+						 pCharts.getWidth().doubleValue() - pCharts.getPadding(), 
 						 xYText.doubleValue(), 
 						 DBSFaces.CSS.MODIFIER.VALUE + "-hide", 
 						 null, 
@@ -566,6 +566,8 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(pWriter, "class", "-foreignobject", null);
 			DBSFaces.setAttribute(pWriter, "x", pX + "px", null);
 			DBSFaces.setAttribute(pWriter, "y", pY + "px", null);
+			DBSFaces.setAttribute(pWriter, "width", ".5", null);
+			DBSFaces.setAttribute(pWriter, "height", ".5", null);
 			DBSFaces.encodeTooltip(pContext, pChartValue, 1, pChartValue.getTooltip(), pClienteId + "_tooltip", null);
 		pWriter.endElement("foreignObject");
 	}
@@ -573,7 +575,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 	private void pvEncodeJS(String pClientId, ResponseWriter pWriter) throws IOException{
 		DBSFaces.encodeJavaScriptTagStart(pWriter);
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xChartValueId = '#' + dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " var xChartValueId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
 				     " dbs_chartValue(xChartValueId); \n" +
                      "}); \n"; 
 		pWriter.write(xJS);

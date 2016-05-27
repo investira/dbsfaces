@@ -220,7 +220,7 @@ public class DBSMessageListRenderer extends DBSRenderer {
 			DBSFaces.encodeJavaScriptBeep(pWriter);
 		}
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xMessageListId = '#' + dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " var xMessageListId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
 				     " dbs_messageList(xMessageListId); \n" +
                      "}); \n"; 
 		pWriter.write(xJS);

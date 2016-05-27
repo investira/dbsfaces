@@ -2,13 +2,13 @@ dbs_quickInfo = function(pId) {
 	
 	dbsfaces.quickInfo.initialize($(pId));
 	
-	$(pId + ".-oh > .-icon").on("mouseenter", function(e){
+	$(pId + ".-oh > .-icon > .-content").on("mouseenter", function(e){
 		dbsfaces.quickInfo.showQuickInfo($(pId));
 	});
-	$(pId + ".-oh > .-icon").on("mouseleave", function(e){
+	$(pId + ".-oh > .-icon > .-content").on("mouseleave", function(e){
 		dbsfaces.quickInfo.hideQuickInfo($(pId));
 	});
-	$(pId + " > .-icon").on("click", function(e){
+	$(pId + " > .-icon > .-content").on("mousedown", function(e){
 		//Desconsidera se origem do click não for no icon
 		if (e.target != this){
 			return;
@@ -32,6 +32,12 @@ dbsfaces.quickInfo = {
 	initializeData: function(pComponent){
 		var xContent = pComponent.find(".-icon > .-content");
 		pComponent.data("content", xContent);
+		var xTooltip = xContent.children(".-tooltip");
+		var xParent = pComponent.parent();
+		//Copia informação que é foreignobjet para o tooltip
+		if (xParent.svgHasClass("-foreignobject")){
+			xTooltip.parent().addClass("-foreignobject");
+		}
 	},
 		
 	showQuickInfo: function(pComponent){
@@ -81,5 +87,6 @@ dbsfaces.quickInfo = {
 		var xOf = xScrollParent.attr("of");
 		xScrollParent.attr("of", "").css("overflow", xOf);
 	}
+
 }
 

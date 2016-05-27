@@ -1614,7 +1614,7 @@ public class  DBSFaces {
 			//Javascript 
 			DBSFaces.encodeJavaScriptTagStart(xWriter);
 			String xJS = "$(document).ready(function() { \n" +
-					     " var xTooltip = '#' + dbsfaces.util.jsid('" + pSourceClientId + "'); \n " + 
+					     " var xTooltip = dbsfaces.util.jsid('" + pSourceClientId + "'); \n " + 
 					     " dbs_tooltip(xTooltip); \n" +
 	                     "}); \n"; 
 			xWriter.write(xJS);
@@ -2431,19 +2431,19 @@ public class  DBSFaces {
 					xChartIndex++;
 					xChart.setIndex(xChartIndex);
 					// quando por PIE
-					if (xType == TYPE.PIE){
-						//Não exibe linhas do grid
-						pCharts.setShowGrid(false);
-//						pCharts.setShowDelta(false);
-//					}else if (xType == TYPE.LINE){
-//						if (xChart.getShowDelta()){
-//							pCharts.setShowDelta(true);
-//						}
-					}
 					if (xType == TYPE.LINE
 					 || xType == TYPE.PIE){
 						if (xChart.getShowDelta()){
 							pCharts.setShowDelta(true);
+						}
+						if (xType == TYPE.PIE){
+							//Não exibe linhas do grid
+							pCharts.setShowGrid(false);
+						}else{
+							if (xChart.getDeltaList() != null
+							 && xChart.getDeltaList().size() > 0){
+								pCharts.setShowDeltaList(true);
+							 }
 						}
 					}
 //					if (xChart.getShowDelta()){
@@ -2881,11 +2881,11 @@ public class  DBSFaces {
 		if (!DBSObject.isEmpty(pTooltipText) ||
 			xTooltip != null){
 			xWriter.startElement("div", pComponent);
-				String xClass = DBSFaces.CSS.MODIFIER.TOOLTIP;
+				String xClass = DBSFaces.CSS.MODIFIER.TOOLTIP.trim();
 				if (pBasicTooltip){
-					xClass += "-tt"; //Tooltip padrão
+					xClass += " -tt"; //Tooltip padrão
 				}else{
-					xClass += "-qi"; //Tooltip para o quickinfo
+					xClass += " -qi"; //Tooltip para o quickinfo
 				}
 				setAttribute(xWriter, "class", xClass, null);
 				setAttribute(xWriter, "delay", pDelay, "1000");

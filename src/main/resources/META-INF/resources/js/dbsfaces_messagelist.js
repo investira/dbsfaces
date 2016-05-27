@@ -38,7 +38,7 @@ dbsfaces.messageList = {
 	excluir: function(pBtn){
 		var xMsg = $(pBtn).closest(".-message");
 		var xId = $(pBtn).closest(".dbs_messageList").attr("id");
-		var xInput = $(dbsfaces.util.jsid("#" + xId + ":foo"))
+		var xInput = $(dbsfaces.util.jsid(xId + ":foo"))
 		var xIndex = $(xMsg).attr("index");
 		if ($(xInput).val() != xIndex){
 			$(xInput).val(xIndex);

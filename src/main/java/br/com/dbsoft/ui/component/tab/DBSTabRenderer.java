@@ -208,7 +208,7 @@ public class DBSTabRenderer extends DBSRenderer {
 	private void pvEncodeJS(ResponseWriter pWriter, String pClientId) throws IOException {
 		DBSFaces.encodeJavaScriptTagStart(pWriter);
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xTabId = '#' + dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " var xTabId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
 				     " dbs_tab(xTabId); \n" +
                      "}); \n"; 
 		pWriter.write(xJS);

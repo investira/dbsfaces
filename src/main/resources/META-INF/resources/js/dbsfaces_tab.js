@@ -25,7 +25,7 @@ dbsfaces.tab = {
 			return;
 		}
 
-		var xTabPageId = dbsfaces.util.jsid("#" + pTabPageRawId);
+		var xTabPageId = dbsfaces.util.jsid(pTabPageRawId);
 		var xTabPage = $(xTabPageId);
 		var xTabAba = $(".dbs_tab > .-container > .-tabs > .-tab[tabpage='" + pTabPageRawId + "']");
 		
@@ -52,7 +52,7 @@ dbsfaces.tab = {
 		//Salva id da aba selecionada
 		var xInputId = $(pId).closest(".dbs_tab").get(0).id + ":input";
 
-		$(dbsfaces.util.jsid("#" + xInputId)).val(xTabPageId);
+		$(dbsfaces.util.jsid(xInputId)).val(xTabPageId);
 		
 		//Exibe Aba
 		dbsfaces.tab.showTab(pId, xTabPageId);

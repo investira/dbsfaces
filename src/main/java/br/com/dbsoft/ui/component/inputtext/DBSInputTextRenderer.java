@@ -322,7 +322,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 	private void pvEncodeJS(String pClientId, ResponseWriter pWriter) throws IOException{
 		DBSFaces.encodeJavaScriptTagStart(pWriter);
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xInputTextId = '#' + dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " var xInputTextId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
 				     " dbs_inputText(xInputTextId); \n" +
                      "}); \n"; 
 		pWriter.write(xJS);

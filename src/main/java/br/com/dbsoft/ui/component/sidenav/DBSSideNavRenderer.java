@@ -114,7 +114,7 @@ public class DBSSideNavRenderer extends DBSRenderer {
 	private void pvEncodeJS(String pClientId, DBSSideNav pSideNav, ResponseWriter pWriter) throws IOException{
 		DBSFaces.encodeJavaScriptTagStart(pWriter);
 		String xJS = "$(document).ready(function() { \n" +
-					 " var xSideNavId = '#' + dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+					 " var xSideNavId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
 					 " dbs_sideNav(xSideNavId, "+ pSideNav.getDefaultLocation() +", '"+ pSideNav.getWidth() +"', '"+ pSideNav.getHeight() +"'); \n" +
 		             "}); \n"; 
 		pWriter.write(xJS);

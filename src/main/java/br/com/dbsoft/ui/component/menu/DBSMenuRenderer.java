@@ -59,7 +59,7 @@ public class DBSMenuRenderer extends DBSRenderer {
 	private void pvEncodeJS(String pClientId, ResponseWriter pWriter) throws IOException{
 		DBSFaces.encodeJavaScriptTagStart(pWriter);
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xMenuId = '#' + dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " var xMenuId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
 				     " dbs_menu(xMenuId); \n" +
                      "}); \n"; 
 		pWriter.write(xJS);

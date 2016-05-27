@@ -382,7 +382,7 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 	private void pvEncodeJS(String pClientId, ResponseWriter pWriter) throws IOException{
 		DBSFaces.encodeJavaScriptTagStart(pWriter);
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xComponenttreeId = '#' + dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " var xComponenttreeId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
 				     " dbs_componenttree(xComponenttreeId); \n" +
                      "}); \n"; 
 		pWriter.write(xJS);

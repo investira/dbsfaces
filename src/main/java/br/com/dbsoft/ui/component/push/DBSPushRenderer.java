@@ -49,7 +49,7 @@ public class DBSPushRenderer extends DBSRenderer {
 		xWriter.endElement("span");
 		DBSFaces.encodeJavaScriptTagStart(xWriter);
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xPushId = '#' + dbsfaces.util.jsid('" + xClientId + "'); \n " + 
+				     " var xPushId = dbsfaces.util.jsid('" + xClientId + "'); \n " + 
 				     " dbs_push(xPushId,'" + xPush.getUrl() + "'); \n" +
                      "}); \n"; 
 		xWriter.write(xJS);

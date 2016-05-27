@@ -47,14 +47,6 @@
 	stroke-opacity: 0;
 }
 
-.dbs_chart > .-delta > .-guide:focus,
-.dbs_chart > .-delta > .-guide:active{
-	-moz-animation: -kf_dbs_chart_selected .1s linear;
-	-o-animation: -kf_dbs_chart_selected .1s linear;
-	-webkit-animation: -kf_dbs_chart_selected .1s linear;
-	animation: -kf_dbs_chart_selected .1s linear;    
-}
-
 .dbs_chart > .-delta > .-deltaarea_r,
 .dbs_chart > .-delta > .-deltaarea_l{
     stroke-width: 0px;
@@ -98,14 +90,15 @@
 .dbs_chart[type='line'].-activated > .-delta{
 	display: inline-block;
 }
-.dbs_chart[type='line'].-activated > .-delta > .-quickSelection{
+.dbs_chart[type='line'].-activated > .-delta > .-deltaList{
 	font-size: 1.40em;
 	pointer-events: all;
+	overflow: visible;
 }
-.dbs_chart[type='line'].-activated > .-delta > .-quickSelection > .dbs_quickInfo{
-	left: -100%;
-    display: table-cell;
-    position: relative;
+.dbs_chart[type='line'].-activated > .-delta > .-deltaList > .dbs_quickInfo{
+/* 	left: -100%; */
+/*     display: table-cell; */
+/*     position: relative; */
 }
 
 
@@ -131,6 +124,11 @@
 .dbs_chart[type='line'] > .-delta > .-guide:focus,
 .dbs_chart[type='line'] > .-delta > .-guide:active{
 	opacity: 1;
+	-webkit-animation: -kf_dbs_chart_selected .1s linear;
+	-moz-animation: -kf_dbs_chart_selected .1s linear;
+	-ms-animation: -kf_dbs_chart_selected .1s linear;
+	-o-animation: -kf_dbs_chart_selected .1s linear;
+	animation: -kf_dbs_chart_selected .1s linear;    
 }
 
 .dbs_chart[type='line'] > .-delta > .-deltaarea_r,
@@ -278,6 +276,7 @@
 /*     transition: fill-opacity .2s, stroke-opacity .2s; */
 	-webkit-transition: fill-opacity .2s; 
     -moz-transition: fill-opacity .2s;
+    -ms-transition: fill-opacity .2s;
     -o-transition: fill-opacity .2s;
     transition: fill-opacity .2s;
 }
@@ -286,8 +285,11 @@
 .dbs_chart[type='line'] > .dbs_chartValue > .-info > .-label,
 .dbs_chart[type='bar'] > .dbs_chartValue > .-info > .-label{
 	text-anchor: start;
-	transform: rotate(60deg);
 	-moz-transform: rotate(0);
+	-ms-transform: rotate(0);
+	-webkit-transform: rotate(60deg);
+	-o-transform: rotate(60deg);
+	transform: rotate(60deg);
 	dominant-baseline: middle;
 /* 	dominant-baseline: text-before-edge; */
 	cursor: pointer;
@@ -296,6 +298,7 @@
 .dbs_chart[type='line'] > .dbs_chartValue > .-info > .-label > text,
 .dbs_chart[type='bar'] > .dbs_chartValue > .-info > .-label > text{
 	-moz-transform: rotate(60deg);
+	-ms-transform: rotate(60);
 }
 
 .dbs_chart[type='line'] > .dbs_chartValue > .-info > .-value,
@@ -336,37 +339,38 @@
 }
 
 .-a_dbs_chart_selected{
-	-moz-animation: -kf_dbs_chart_selected .1s linear;
-	-o-animation: -kf_dbs_chart_selected .1s linear;
 	-webkit-animation: -kf_dbs_chart_selected .1s linear;
+	-moz-animation: -kf_dbs_chart_selected .1s linear;
+	-ms-animation: -kf_dbs_chart_selected .1s linear;
+	-o-animation: -kf_dbs_chart_selected .1s linear;
 	animation: -kf_dbs_chart_selected .1s linear;
 }
 
 /* single pulse */			
 @-moz-keyframes -kf_dbs_chart_selected {
-  0% {stroke-width: 0px;}
+  0% {stroke-width: initial;}
   1% {stroke-width: 1em;}
-  100% {stroke-width: 0px;}
+  100% {stroke-width: initial;}
 }
 @-webkit-keyframes -kf_dbs_chart_selected {
-  0% {stroke-width: 0px;}
+  0% {stroke-width: initial;}
   1% {stroke-width: 1em;}
-  100% {stroke-width: 0px;}
+  100% {stroke-width: initial;}
 }
 @-o-keyframes -kf_dbs_chart_selected {
-  0% {stroke-width: 0px;}
+  0% {stroke-width: initial;}
   1% {stroke-width: 1em;}
-  100% {stroke-width: 0px;}
+  100% {stroke-width: initial;}
 }
 @-ms-keyframes -kf_dbs_chart_selected {
-  0% {stroke-width: 0px;}
+  0% {stroke-width: initial;}
   1% {stroke-width: 1em;}
-  100% {stroke-width: 0px;}
+  100% {stroke-width: initial;}
 }
 @keyframes -kf_dbs_chart_selected {
-  0% {stroke-width: 0px;}
+  0% {stroke-width: initial;}
   1% {stroke-width: 1em;}
-  100% {stroke-width: 0px;}
+  100% {stroke-width: initial;}
 }
 
 

@@ -147,7 +147,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 	private void pvEncodeJS(String pClientId, ResponseWriter pWriter) throws IOException{
 		DBSFaces.encodeJavaScriptTagStart(pWriter);
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xChartsId = '#' + dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " var xChartsId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
 				     " dbs_charts(xChartsId); \n" +
                      "}); \n"; 
 		pWriter.write(xJS);
@@ -184,7 +184,31 @@ public class DBSChartsRenderer extends DBSRenderer {
 				DBSFaces.encodeSVGText(pCharts, pWriter, xX.toString(), "1.2em", xLabel, null, null, null);
 		pWriter.endElement("g");
 	}
+	
+//	/**
+//	 * Espaço que conterá os botões para selação rápida dos deltas
+//	 * @param pCharts
+//	 * @param pChart
+//	 * @param pWriter
+//	 * @throws IOException
+//	 */
+//	private void pvEncodeDeltaList(DBSCharts pCharts, DBSChart pChart, ResponseWriter pWriter) throws IOException{
+//		String xLabel = DBSObject.getNotEmpty(pChart.getLabel(), pChart.getId());
+//		Double xWidth = DBSNumber.divide(pCharts.getWidth(), pCharts.getChildCount()).doubleValue();
+//		Double xX = xWidth * (pChart.getIndex() - 1);
+//		pWriter.startElement("g", pCharts);
+//			DBSFaces.setAttribute(pWriter, "class", "-deltaList", "class");
+////				DBSFaces.encodeSVGRect(pCharts, pWriter, "0", pCharts.getChartHeight().toString(), pCharts.getChartWidth().toString(), "1em", null, null, "fill=url(#" + pChart.getClientId() + "_linestroke); stroke=url(#" + pChart.getClientId() + "_linestroke)");
+//		pWriter.endElement("g");
+//	}
 
+	/**
+	 * Linhas horizontais dos valores
+	 * @param pCharts
+	 * @param pWriter
+	 * @param pEncodeTopLine
+	 * @throws IOException
+	 */
 	private void pvEncodeLines(DBSCharts pCharts, ResponseWriter pWriter, boolean pEncodeTopLine) throws IOException{
 		if (pCharts.getCaption()!=null){
 			//Linha top
@@ -200,6 +224,12 @@ public class DBSChartsRenderer extends DBSRenderer {
 		}
 	}
 	
+	/**
+	 * Linhas horizontais dos valores
+	 * @param pCharts
+	 * @param pWriter
+	 * @throws IOException
+	 */
 	private void pvEncodeLinhaDeValores(DBSCharts pCharts, ResponseWriter pWriter) throws IOException{
 		Double xIncremento = DBSNumber.divide(pCharts.getChartHeight(), pCharts.getNumberOfGridLines()).doubleValue();
 		Double xPosicao = (xIncremento / 2);
@@ -218,7 +248,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 				//Encode do texto do valor
 				xValorTmp = DBSNumber.toDouble(DBSFormat.getFormattedNumber(pCharts.convertYPxToValue(xPosicaoInvertida), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask()));
 				xFormatedValue = DBSFormat.getFormattedNumber(xValorTmp, NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask());
-				DBSFaces.encodeSVGText(pCharts, pWriter, pCharts.getWidth().doubleValue(), xPosicaoText.doubleValue(), xFormatedValue, DBSFaces.CSS.MODIFIER.LABEL, null, null);
+				DBSFaces.encodeSVGText(pCharts, pWriter, pCharts.getWidth().doubleValue() -pCharts.getPadding(), xPosicaoText.doubleValue(), xFormatedValue, DBSFaces.CSS.MODIFIER.LABEL, null, null);
 			}
 			xPosicao += xIncremento;
 		}

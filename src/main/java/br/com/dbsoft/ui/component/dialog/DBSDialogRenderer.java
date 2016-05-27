@@ -88,7 +88,7 @@ public class DBSDialogRenderer extends DBSRenderer {
 			//Javascript 
 			DBSFaces.encodeJavaScriptTagStart(xWriter);
 			String xJS = "$(document).ready(function() { \n" +
-					     " var xDialogId = '#' + dbsfaces.util.jsid('" + xClientId + "'); \n " + 
+					     " var xDialogId = dbsfaces.util.jsid('" + xClientId + "'); \n " + 
 					     " dbs_dialog(xDialogId); \n" +
 	                     "}); \n"; 
 			xWriter.write(xJS);
