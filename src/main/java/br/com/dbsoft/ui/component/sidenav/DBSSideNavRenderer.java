@@ -48,7 +48,7 @@ public class DBSSideNavRenderer extends DBSRenderer {
 			xClass += DBSObject.getNotEmpty(xSidenav.getStyleClass(), "");
 		}
 		if (DBSObject.isEmpty(xSidenav.getIconClass())) {
-			xIcon = "-i_equal"; //ÍCONE PADRÃO
+			xIcon = "-i_menu"; //ÍCONE PADRÃO
 		}
 		
 		//DIV PRINCIPAL
