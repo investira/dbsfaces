@@ -100,7 +100,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 						//CONTENT--------------------------
 						xWriter.startElement("g", xCharts);
 							DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
-							//LABEL--------------------------
+							//LABELS QUANDO HOUVER MAIS DE UM GRÁFICO--------------------------
 							boolean xHasLabel= pvEncodeLabels(xCharts, xWriter);
 							//LEFT--------------------------
 							xWriter.startElement("g", xCharts);
@@ -154,6 +154,13 @@ public class DBSChartsRenderer extends DBSRenderer {
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);		
 	}
 	
+	/**
+	 * Labels para selecionar cada um dos gráficos
+	 * @param pCharts
+	 * @param pWriter
+	 * @return
+	 * @throws IOException
+	 */
 	private Boolean pvEncodeLabels(DBSCharts pCharts, ResponseWriter pWriter) throws IOException{
 		boolean xHasLabels = false;
 		if (pCharts.getItensCount() > 1){

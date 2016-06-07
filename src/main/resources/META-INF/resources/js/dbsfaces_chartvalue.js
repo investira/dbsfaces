@@ -116,8 +116,9 @@ dbsfaces.chartValue = {
 		///Inicializa conforme tipo de gráfico
 		if (xChart.attr("type") == "pie"){
 			dbsfaces.chartValue.pvInitializePie(pChartValue);
-		}else if (xChart.attr("type") == "line"){
-			dbsfaces.chartValue.pvInitializeLine(pChartValue);
+		}else if (xChart.attr("type") == "line"
+			   || xChart.attr("type") == "bar"){
+			dbsfaces.chartValue.pvInitializeBoxAndLine(pChartValue);
 		}	
 	},
 
@@ -143,7 +144,7 @@ dbsfaces.chartValue = {
 			//Label
 			pChartValue.data("dl", pChartValue.attr("label"));
 			//Valor para exibição
-			pChartValue.data("dd", xChartValueInfo.children(".-value").text());
+			pChartValue.data("dd", xValue);
 			//Tooltip
 			var xChartValueTooltip = $(dbsfaces.util.jsid(pChartValue.get(0).id) + "_tooltip");
 			if (xChartValueTooltip.length > 0){
@@ -156,7 +157,20 @@ dbsfaces.chartValue = {
 		}
 	},
 
-	pvInitializeLine: function(pChartValue){
+	pvInitializeBoxAndLine: function(pChartValue){
+		var xChart = pChartValue.data("parent");
+		var xChartValueInfo = pChartValue.data("infogroup");
+		var xChartValueLabel = xChartValueInfo.children(".-label");
+		if (xChartValueLabel.length==0){ return;}
+		var xX = Number(xChartValueLabel.attr("x"));
+		var xY = Number(xChartValueLabel.attr("y"))
+		//Ajusta X se houver deltalist a ser exibido utilizando a altura do corrente do gráfico
+		if (typeof(xChart.attr("showdeltalist")) != "undefined"){
+			xY += Number(dbsfaces.number.getOnlyNumber(xChart.css("font-size"))) * 2;
+			xChart.data("deltalistheight", xY);
+		}	
+		var xTransform = "translate(" + xX + "," + xY + ")";
+		xChartValueLabel.svgAttr("transform", xTransform);
 	},
 
 	pvInitializePie: function(pChartValue){

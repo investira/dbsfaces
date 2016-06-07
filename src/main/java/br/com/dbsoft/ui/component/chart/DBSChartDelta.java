@@ -2,11 +2,21 @@ package br.com.dbsoft.ui.component.chart;
 
 public class DBSChartDelta implements IDBSChartDelta {
 
+	private String Id = null;
 	private String Label;
 	private String StartLabel;
 	private String EndLabel;
 	private String Tooltip;
 	private String IconClass;
+	
+	@Override
+	public String getId() {
+		return Id;
+	}
+	@Override
+	public void setId(String pId) {
+		Id = pId;
+	}
 	
 	@Override
 	public String getLabel() {
@@ -50,5 +60,6 @@ public class DBSChartDelta implements IDBSChartDelta {
 	public void setIconClass(String pIconClass) {
 		IconClass = pIconClass;
 	}
+
 	
 }

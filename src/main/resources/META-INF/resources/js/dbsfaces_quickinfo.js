@@ -35,9 +35,9 @@ dbsfaces.quickInfo = {
 		var xTooltip = xContent.children(".-tooltip");
 		var xParent = pComponent.parent();
 		//Copia informação que é foreignobjet para o tooltip
-		if (xParent.svgHasClass("-foreignobject")){
-			xTooltip.parent().addClass("-foreignobject");
-		}
+//		if (xParent.svgHasClass("-foreignobject")){
+//			xTooltip.parent().addClass("-foreignobject");
+//		}
 	},
 		
 	showQuickInfo: function(pComponent){

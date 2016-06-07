@@ -77,7 +77,8 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 		itensCount,
 		index,
 		columnScale,
-		totalValue;
+		totalValue,
+		showDeltaList;
 
 		String toString;
 
@@ -124,6 +125,16 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 		getStateHelper().put(PropertyKeys.savedState, pSavedState);
 		handleAttribute("savedState", pSavedState);
 	}
+
+	public Boolean getShowDeltaList() {
+		//DeltaList só é exibido quando for também exibido os labels e deltas
+		return (Boolean) getStateHelper().eval(PropertyKeys.showDeltaList, false);
+	}
+
+	public void setShowDeltaList(Boolean pShowDeltaList) {
+		getStateHelper().put(PropertyKeys.showDeltaList, pShowDeltaList);
+		handleAttribute("showDeltaList", pShowDeltaList);
+	} 
 
 	public Double getTotalValue() {
 		return DBSNumber.toDouble(getStateHelper().eval(PropertyKeys.totalValue, 0D));

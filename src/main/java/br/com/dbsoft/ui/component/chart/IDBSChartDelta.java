@@ -2,6 +2,9 @@ package br.com.dbsoft.ui.component.chart;
 
 public interface IDBSChartDelta {
 
+	public String getId();
+	public void setId(String pId);
+
 	public String getLabel();
 	public void setLabel(String pLabel);
 

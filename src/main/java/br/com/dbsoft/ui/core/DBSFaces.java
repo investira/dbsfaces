@@ -1837,7 +1837,15 @@ public class  DBSFaces {
 	 * @throws IOException
 	 */
 	public static void encodeSVGText(UIComponent pComponent, ResponseWriter pWriter, Number pX, Number pY, String pText, String pStyleClass, String pStyle, String pAttrs) throws IOException{
-		encodeSVGText(pComponent, pWriter, DBSNumber.round(pX, 4).toString(), DBSNumber.round(pY, 4).toString(), pText, pStyleClass, pStyle, pAttrs);
+		String xX = null;
+		String xY = null;
+		if (pX !=null){
+			xX = DBSNumber.round(pX, 4).toString();
+		}
+		if (pY !=null){
+			xY = DBSNumber.round(pY, 4).toString();
+		}
+		encodeSVGText(pComponent, pWriter, xX, xY, pText, pStyleClass, pStyle, pAttrs);
 	}
 	/**
 	 * Encode de Texto para grádico SVG
@@ -1854,8 +1862,8 @@ public class  DBSFaces {
 	public static void encodeSVGText(UIComponent pComponent, ResponseWriter pWriter, String pX, String pY, String pText, String pStyleClass, String pStyle, String pAttrs) throws IOException{
 		pWriter.startElement("text", pComponent);
 			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pAttrs);
-			setAttribute(pWriter, "x", 	pX, null);
-			setAttribute(pWriter, "y", 	pY, null);
+			setAttribute(pWriter, "x", pX, null);
+			setAttribute(pWriter, "y", pY, null);
 			if (pText != null){
 				pWriter.write(pText);
 			}
@@ -2439,11 +2447,6 @@ public class  DBSFaces {
 						if (xType == TYPE.PIE){
 							//Não exibe linhas do grid
 							pCharts.setShowGrid(false);
-						}else{
-							if (xChart.getDeltaList() != null
-							 && xChart.getDeltaList().size() > 0){
-								pCharts.setShowDeltaList(true);
-							 }
 						}
 					}
 //					if (xChart.getShowDelta()){
@@ -2888,8 +2891,8 @@ public class  DBSFaces {
 					xClass += " -qi"; //Tooltip para o quickinfo
 				}
 				setAttribute(xWriter, "class", xClass, null);
-				setAttribute(xWriter, "delay", pDelay, "1000");
-				setAttribute(xWriter, "dl", pDefaultLocation, "1");
+				setAttribute(xWriter, "delay", pDelay, "1000"); //Tempo padrão para exibição do tooltip:1s
+				setAttribute(xWriter, "dl", pDefaultLocation, "1"); //Posição padrão para exibição do tooltip:Top
 				xWriter.startElement("div", pComponent);
 					xClass = DBSFaces.CSS.MODIFIER.CONTAINER;
 					xWriter.writeAttribute("class", xClass.trim(), null);

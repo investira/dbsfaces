@@ -165,7 +165,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			//Valore positivos acima
 			if (pChartValue.getValue() > 0){
 				DBSFaces.encodeSVGRect(pChartValue, pWriter, xX.intValue(), xY.doubleValue(), xLineWidth.toString(), xHeight.toString(), DBSFaces.CSS.MODIFIER.POINT, xStroke, "fill=" + wFillColor);
-			//Valore negativos
+			//Valores negativos
 			}else{
 				//inverte a posição Yx
 				xYTextTooltip = DBSNumber.subtract(pCharts.getChartHeight(), pCharts.getZeroPosition().doubleValue());
@@ -204,16 +204,23 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			//Encode label da coluna ---------------------------------------------------------------------
 			if (pCharts.getShowLabel()){
 				pWriter.startElement("g", pChartValue);
+					Double xHeight = (pCharts.getHeight().doubleValue() + 2);
 					DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.LABEL + "-hide", null);
-					Double xHeight = (pCharts.getHeight().doubleValue() -5);
-					DBSFaces.setAttribute(pWriter, "transform-origin", xXText.doubleValue() + "px " + xHeight + "px 0px", null);
+					 //atributos X e Y somente para informar os valores para posicionamento que será efetivamente efetuado via JS com transform:translate
+					DBSFaces.setAttribute(pWriter, "x",  xXText.doubleValue(), null);
+					DBSFaces.setAttribute(pWriter, "y",  xHeight, null);
+//					DBSFaces.setAttribute(pWriter, "transform-origin", xXText.doubleValue() + "px " + xHeight + "px 0px", null);
+//					DBSFaces.setAttribute(pWriter, "style", "transform: translate3d(" + xXText.doubleValue() + "px, " + xHeight + "px, 0px)", null);
 					pvEncodeText(pChartValue, 
 								 "<tspan class='-small'>" + pChartValue.getLabel() + "</tspan>" +
 								 "<tspan class='-normal'>" + pChartValue.getLabel() + "</tspan>", 
-								 xXText.doubleValue(), 
-								 xHeight, 
+//								 xXText.doubleValue(), 
+//								 xHeight,
+								 null,
+								 null,
 								 null, 
-								 "-moz-transform-origin:" +  xXText.doubleValue() + "px " + xHeight + "px 0px;", //Artificio para resolver problema no firefox
+//								 "-moz-transform-origin:" +  xXText.doubleValue() + "px " + xHeight + "px 0px;", //Artificio para resolver problema no firefox
+								 null, //Artificio para resolver problema no firefox
 								 null,
 								 pWriter);
 				pWriter.endElement("g");

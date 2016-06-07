@@ -17,6 +17,7 @@ import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
 import br.com.dbsoft.ui.component.chartvalue.DBSChartValue;
 import br.com.dbsoft.ui.component.div.DBSDiv;
 import br.com.dbsoft.ui.component.DBSRenderer;
+import br.com.dbsoft.ui.component.button.DBSButton;
 import br.com.dbsoft.ui.component.chart.DBSChart.TYPE;
 import br.com.dbsoft.ui.component.charts.DBSCharts;
 import br.com.dbsoft.ui.core.DBSFaces;
@@ -48,9 +49,10 @@ public class DBSChartRenderer extends DBSRenderer {
 		if (!pComponent.isRendered()){return;}
 		DBSChart xChart = (DBSChart) pComponent;
 		if (xChart.getType()==null){return;}
-		ResponseWriter xWriter = pContext.getResponseWriter();
-		String 		xClass = DBSFaces.CSS.CHART.MAIN;
-		TYPE 		xType = DBSChart.TYPE.get(xChart.getType());
+		ResponseWriter 			xWriter = pContext.getResponseWriter();
+		String 					xClass = DBSFaces.CSS.CHART.MAIN;
+		TYPE 					xType = DBSChart.TYPE.get(xChart.getType());
+		List<IDBSChartDelta>	xDeltaList = null;
 		DBSCharts	xCharts;
 		if (!(xChart.getParent() instanceof DBSCharts)){
 			return;
@@ -62,6 +64,8 @@ public class DBSChartRenderer extends DBSRenderer {
 		}
 
 		String xClientId = xChart.getClientId(pContext);
+		
+		pvInitialize(xCharts, xChart);
 
 		xWriter.startElement("g", xChart);
 			DBSFaces.setAttribute(xWriter, "id", xClientId, null);
@@ -71,10 +75,14 @@ public class DBSChartRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "type", xChart.getType(), null);
 			DBSFaces.setAttribute(xWriter, "index", xChart.getIndex(), null);
 			DBSFaces.setAttribute(xWriter, "cs", xChart.getColumnScale(), null);
+			DBSFaces.setAttribute(xWriter, "bc", DBSFaces.calcChartFillcolor(xChart.getColorHue(), xChart.getColorBrightness(), xCharts.getItensCount(), xChart.getItensCount(), xChart.getIndex(), 1), null);
 			if (xType == TYPE.LINE
 			 || xType == TYPE.PIE){
 				if (xChart.getShowDelta()){ //Artificio para padronizar o false como não existindo o atributo(comportamento do chrome)
 					DBSFaces.setAttribute(xWriter, "showdelta", xChart.getShowDelta(), null);
+					if(xChart.getShowDeltaList()){
+						DBSFaces.setAttribute(xWriter, "showdeltalist", xChart.getShowDeltaList(), null);
+					}
 				}
 			}
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xChart, DBSPassThruAttributes.getAttributes(Key.CHART));
@@ -94,7 +102,7 @@ public class DBSChartRenderer extends DBSRenderer {
 						pvEncodePieDeltaTextPaths(xCharts, xChart, xWriter);
 					}else if (xType == TYPE.LINE){
 					//Divisão onde serão desenhadas as linhas que ligam os pontos no gráfico por linha.
-						pvEncodeDeltaList(xCharts, xChart, pContext, xWriter);
+						xDeltaList = pvEncodeDeltaList(xCharts, xChart, pContext, xWriter);
 					}
 				xWriter.endElement("g");
 			}
@@ -107,7 +115,7 @@ public class DBSChartRenderer extends DBSRenderer {
 				pvEncodeResultSetChartValue(pContext, xChart, xWriter);
 			}
 
-			pvEncodeJS(xClientId, xChart, xWriter);
+			pvEncodeJS(xClientId, xDeltaList, xWriter);
 			
 		xWriter.endElement("g");
 	}
@@ -132,62 +140,55 @@ public class DBSChartRenderer extends DBSRenderer {
 		pWriter.endElement("g");
 	}
 
-	private void pvEncodeDeltaList(DBSCharts pCharts, DBSChart pChart, FacesContext pContext, ResponseWriter pWriter) throws IOException{
-		if (!pCharts.getShowDeltaList()){return;}
-		DBSDiv xDeltaList = (DBSDiv) pChart.getFacet("deltalist");
-		if (xDeltaList == null){
-			xDeltaList = (DBSDiv) pContext.getApplication().createComponent(DBSDiv.COMPONENT_TYPE);
-			xDeltaList.setId("deltalist");
-			pChart.getFacets().put("deltalist", xDeltaList);
+	/**
+	 * Encodo dos botões de seleção rápida do delta
+	 * @param pCharts
+	 * @param pChart
+	 * @param pContext
+	 * @param pWriter
+	 * @return
+	 * @throws IOException
+	 */
+	private List<IDBSChartDelta> pvEncodeDeltaList(DBSCharts pCharts, DBSChart pChart, FacesContext pContext, ResponseWriter pWriter) throws IOException{
+		if (!pChart.getShowDeltaList()){return null;}
+		DBSDiv xDeltaListContent = (DBSDiv) pChart.getFacet("deltalist");
+		List<IDBSChartDelta> xDeltaList = pChart.getDeltaList();
+		if (xDeltaListContent == null){
+			xDeltaListContent = (DBSDiv) pContext.getApplication().createComponent(DBSDiv.COMPONENT_TYPE);
+			xDeltaListContent.setId("deltalist");
+			xDeltaListContent.setStyleClass("-content");
+//			xDeltaList.setStyleClass("-foreignobject");
+			pChart.getFacets().put("deltalist", xDeltaListContent);
 			//Adiciona botões com as opções dos deltas pré definidos
-//			for (IDBSChartDelta xChartDelta: pChart.getDeltaList()){
-//				DBSButton xDeltaButton = (DBSButton) pContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
-//				xDeltaButton.setLabel(xChartDelta.getLabel());
-//				xDeltaButton.setIconClass(xChartDelta.getIconClass());
-//				xDeltaButton.setTooltip(xChartDelta.getTooltip());
-//				xDeltaButton.setonclick("alert('" + xChartDelta.getLabel() + "'");
-//				xDeltaList.getChildren().add(xDeltaButton);
-//			}
+			for (IDBSChartDelta xChartDelta: xDeltaList){
+				DBSButton xDeltaButton = (DBSButton) pContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
+				xDeltaButton.setId(xChartDelta.getId());
+				xDeltaButton.setLabel(xChartDelta.getLabel());
+				xDeltaButton.setIconClass(xChartDelta.getIconClass());
+				xDeltaButton.setTooltip(xChartDelta.getTooltip());
+				xDeltaButton.setonclick("null");
+				xDeltaButton.setStyle("color:" + DBSFaces.calcChartFillcolor(pChart.getColorHue(), pChart.getColorBrightness(), pCharts.getItensCount(), pChart.getItensCount(), pChart.getIndex(), 1));
+				xDeltaListContent.getChildren().add(xDeltaButton);
+				//Força que id atribuido ao botão seja efetivamente o gerado/configurado 
+				xChartDelta.setId(xDeltaButton.getClientId());
+			}
 		}
-		pWriter.startElement("g", pChart);
+		pWriter.startElement("foreignObject", pChart);
+			pWriter.writeAttribute("xmlns","http://www.w3.org/1999/xhtml", null);
 			pWriter.writeAttribute("id", pChart.getClientId() + "_deltalist", null);
-			DBSFaces.setAttribute(pWriter, "class", "-deltaList", null);
-//			DBSFaces.setAttribute(pWriter, "x", pCharts.getWidth() + "px", null);
-//			DBSFaces.setAttribute(pWriter, "y", pCharts.getHeight() + "px", null);
-//			DBSFaces.setAttribute(pWriter, "width", ".5", null);
-//			DBSFaces.setAttribute(pWriter, "height", ".5", null);
-//			DBSFaces.encodeSVGRect(pCharts, pWriter, xX.toString(), "0", xWidth.toString(), null, null, null, "fill=url(#" + pChart.getClientId() + "_linestroke); stroke=url(#" + pChart.getClientId() + "_linestroke)");
-//			xDeltaList.encodeAll(pContext);
-		pWriter.endElement("g");
-//		DBSQuickInfo xDeltaList = (DBSQuickInfo) pChart.getFacet("deltalist");
-//		if (xDeltaList == null){
-//			xDeltaList = (DBSQuickInfo) pContext.getApplication().createComponent(DBSQuickInfo.COMPONENT_TYPE);
-//			xDeltaList.setId("deltalist");
-//			xDeltaList.setShowOnHover(false);
-//			xDeltaList.setDefaultLocation(4);
-//			xDeltaList.setIconClass("-i_selection");
-//			pChart.getFacets().put("deltalist", xDeltaList);
-//			//Adiciona botões com as opções dos deltas pré definidos
-//			for (IDBSChartDelta xChartDelta: pChart.getDeltaList()){
-//				DBSButton xDeltaButton = (DBSButton) pContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
-//				xDeltaButton.setLabel(xChartDelta.getLabel());
-//				xDeltaButton.setIconClass(xChartDelta.getIconClass());
-//				xDeltaButton.setTooltip(xChartDelta.getTooltip());
-//				xDeltaButton.setonclick("alert('" + xChartDelta.getLabel() + "'");
-//				xDeltaList.getChildren().add(xDeltaButton);
-//			}
-//		}
-//		pWriter.startElement("foreignObject", pChart);
-//			pWriter.writeAttribute("xmlns","http://www.w3.org/1999/xhtml", null);
-//			pWriter.writeAttribute("id", pChart.getClientId() + "_quickselection", null);
-//			DBSFaces.setAttribute(pWriter, "class", "-deltaList -foreignobject", null);
-//			DBSFaces.setAttribute(pWriter, "x", pCharts.getWidth() + "px", null);
-//			DBSFaces.setAttribute(pWriter, "y", pCharts.getHeight() + "px", null);
-//			DBSFaces.setAttribute(pWriter, "width", ".5", null);
-//			DBSFaces.setAttribute(pWriter, "height", ".5", null);
-//			xDeltaList.encodeAll(pContext);
-//		pWriter.endElement("foreignObject");
-		
+			DBSFaces.setAttribute(pWriter, "class", "-deltaList -foreignobject", null);
+			DBSFaces.setAttribute(pWriter, "x", pCharts.getPadding() + "px", null);
+			DBSFaces.setAttribute(pWriter, "y", ((pCharts.getPadding() * 2) + pCharts.getChartHeight()) + "px", null);
+			DBSFaces.setAttribute(pWriter, "width", pCharts.getChartWidth(), null);
+			DBSFaces.setAttribute(pWriter, "height", "1.6em", null);
+			DBSFaces.setAttribute(pWriter, "width", ".5", null);
+			DBSFaces.setAttribute(pWriter, "height", ".5", null);
+			pWriter.startElement("div", pChart);
+				DBSFaces.setAttribute(pWriter, "class", "-container", null);
+				xDeltaListContent.encodeAll(pContext);
+			pWriter.endElement("div");
+		pWriter.endElement("foreignObject");
+		return xDeltaList;
 	}
 	
 	/**
@@ -228,13 +229,13 @@ public class DBSChartRenderer extends DBSRenderer {
 		DBSFaces.encodeSVGPath(pChart, pWriter, xPath.toString(), "-path" + pSide, null, "id=" + pvGetDeltaPathId(pChart, pSide) + "; fill=none;");
 	}
 	
-	private void pvEncodeJS(String pClientId, DBSChart pChart, ResponseWriter pWriter) throws IOException{
+	private void pvEncodeJS(String pClientId, List<IDBSChartDelta> pDeltaList, ResponseWriter pWriter) throws IOException{
 		DBSFaces.encodeJavaScriptTagStart(pWriter);
 		Gson xDeltaListJson = new Gson();
 //		xDeltaListJson.toJson(pChart.getDeltaList());
 		String xJS = "$(document).ready(function() { \n" +
 				     " var xChartId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
-				     " dbs_chart(xChartId, " + xDeltaListJson.toJsonTree(pChart.getDeltaList(), List.class) + "); \n" +
+				     " dbs_chart(xChartId, " + xDeltaListJson.toJsonTree(pDeltaList, List.class) + "); \n" +
                      "}); \n"; 
 		pWriter.write(xJS); 
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);		
@@ -275,6 +276,17 @@ public class DBSChartRenderer extends DBSRenderer {
 	
 	private String pvGetDeltaPathId(DBSChart pChart,String pSide){
 		return pChart.getClientId() + "_deltapath" + pSide;
+	}
+	
+	private void pvInitialize(DBSCharts pCharts, DBSChart pChart){
+		if (pChart.getDeltaList() != null
+		 && pChart.getDeltaList().size() > 0
+		 && pCharts.getShowDelta()
+		 && pCharts.getShowLabel()){
+			pChart.setShowDeltaList(true);
+		}else{
+			 pChart.setShowDeltaList(false);
+		}
 	}
 
 }

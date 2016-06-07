@@ -42,8 +42,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		chartHeight,
 		itensCount,
 		numberOfGridLines,
-		showDelta,
-		showDeltaList;
+		showDelta;
 
 		String toString;
 
@@ -104,18 +103,6 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	public void setShowDelta(Boolean pShowDelta) {
 		getStateHelper().put(PropertyKeys.showDelta, pShowDelta);
 		handleAttribute("showDelta", pShowDelta);
-	} 
-	public Boolean getShowDeltaList() {
-		//DeltaList só é exibido quando for também exibido os labels e deltas
-		if (this.getShowDelta() 
-		 && this.getShowLabel()){
-			return (Boolean) getStateHelper().eval(PropertyKeys.showDeltaList, false);
-		}
-		return false;
-	}
-	public void setShowDeltaList(Boolean pShowDeltaList) {
-		getStateHelper().put(PropertyKeys.showDeltaList, pShowDeltaList);
-		handleAttribute("showDeltaList", pShowDeltaList);
 	} 
 	
 	public Integer getHeight() {
@@ -312,13 +299,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		return (getDiameter() / 2) - getPadding();
 	}
 	
-	private void pvSetChartHeight(TYPE pType, Integer pHeight){
-		if (pType.isMatrix()){
-			if (getShowLabel()){
-				//Subtrai da altura do a altura do texto da coluna 
-				pHeight -= DBSCharts.FontSize;
-			}
-		}
+	private void pvSetChartHeight(@SuppressWarnings("unused") TYPE pType, Integer pHeight){
 		pHeight -= (getPadding() * 2); //Retira o espaço para o padding do top e bottom
 		getStateHelper().put(PropertyKeys.chartHeight, pHeight);
 		handleAttribute("chartHeight", pHeight);
