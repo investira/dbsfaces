@@ -59,20 +59,6 @@ public class DBSImgRenderer extends DBSRenderer {
 			}
 			DBSFaces.encodeTooltip(pContext, xImg, xImg.getTooltip());
 		xWriter.endElement("div");
-//		String xEle = (xImg.getSrc()==null) ? "span":"img";
-//		xWriter.startElement(xEle, xImg);
-//			DBSFaces.setAttribute(xWriter, "id", xImg.getClientId(pContext), null);
-//			//DBSFaces.setAttribute(xWriter, xImg, "name", pComponent.getClientId(), null); // span e img não possuem 'name'
-//			DBSFaces.setAttribute(xWriter, "style", xImg.getStyle(), null);
-//			DBSFaces.setAttribute(xWriter, "class", xImg.getStyleClass(), null);
-//			DBSFaces.setAttribute(xWriter, "alt", xImg.getAlt(), null);
-//			if (xImg.getSrc()!=null){
-//				DBSFaces.setAttribute(xWriter, "src", xImg.getSrc(), null);
-//			}else{
-//				DBSFaces.renderChildren(pContext, xImg);
-//			}
-//			DBSFaces.encodeTooltip(pContext, xImg, xImg.getTooltip());
-//		xWriter.endElement(xEle);		
 	}
 
 	

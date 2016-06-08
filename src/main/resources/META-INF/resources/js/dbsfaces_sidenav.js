@@ -5,18 +5,18 @@ dbs_sideNav = function(pId, pDefaultLocation, pWidth, pHeight) {
 	$(pId +" > .-th_action").on("click", function(e){
 		dbsfaces.sideNav.open(xSideNav, pDefaultLocation, pWidth, pHeight);
 		//Desabilita inputs atrás do dialog
-	    dbsfaces.dialog.disableBackgroundInputs(pId);
+	    dbsfaces.ui.disableBackgroundInputs(pId);
 	});
 	
 	//FECHAR
 	$(pId +" > .dbs_sidebar > .-sidebarHeader > .-th_action").on("click", function(e){
 		dbsfaces.sideNav.close(xSideNav, pDefaultLocation);
-		dbsfaces.dialog.enableForegroundInputs($("body"));
+		dbsfaces.ui.enableForegroundInputs($("body"));
 	});
 	//FECHAR
 	$(pId +" > .dbs_hiddennav").on("click", function(e){
 		dbsfaces.sideNav.close(xSideNav, pDefaultLocation);
-		dbsfaces.dialog.enableForegroundInputs($("body"));
+		dbsfaces.ui.enableForegroundInputs($("body"));
 	});
 	
 	//SWIPE - Comentado pois o Javascrip para Mobile está quebrando o CSS de alguns componentes e telas

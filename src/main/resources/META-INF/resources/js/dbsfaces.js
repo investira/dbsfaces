@@ -474,6 +474,34 @@ dbsfaces.ui = {
 	selectRange: function(pObj, pStart, pEnd){
 		$(pObj).get(0).setSelectionRange(pStart, pEnd);
 	},
+	
+	disableBackgroundInputs: function(pObj){
+		var xE = pObj;
+		if (!(pObj instanceof jQuery)){
+			xE = $(pObj);
+		}
+		var xId = xE[0].id;
+	    var xOP = $("body");
+		xOP.find("input").not('[type="hidden"]').not(xId + " input").attr('disabled', true);
+		xOP.find("button").not(xId + " button").attr('disabled', true);
+		xOP.find("select").not(xId + " select").attr('disabled', true);
+		xOP.find("a").not(xId + " a").attr('disabled', true);
+		xOP.find("textarea").not(xId + " textarea").attr('disabled', true);
+
+		dbsfaces.ui.enableForegroundInputs(xE);
+	},
+	
+	enableForegroundInputs: function(pObj){
+		var xE = pObj;
+		if (!(pObj instanceof jQuery)){
+			xE = $(pObj);
+		}
+		xE.find("input").not(".-disabled").attr('disabled', false);
+		xE.find("a").not(".-disabled").attr('disabled', false);
+		xE.find("button").not(".-disabled").attr('disabled', false);
+		xE.find("select").not(".-disabled").attr('disabled', false);
+		xE.find("textarea").not(".-disabled").attr('disabled', false);
+	},
 
 	cssAllBrowser: function(e, pAtribute, pValue){
 		var xE = e;

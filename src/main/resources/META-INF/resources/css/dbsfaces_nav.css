@@ -1,0 +1,234 @@
+.dbs_nav {
+	position: fixed;
+	top:0;
+	left:0;
+	width: 100vw;
+	height: 100vh;
+}
+
+.dbs_nav > .-mask{
+	position: fixed;
+	top:0;
+	left:0;
+	background-color: black;
+	opacity: 0.3;
+	width: 100%;
+	height: 100%;
+	transition: opacity .3s;
+}
+
+.dbs_nav > .-nav{
+	position: fixed;
+	display: inline-block;
+	transition: width .3s, height .3s;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.dbs_nav > .-nav > .-container {
+    height: 100%;
+    width: 100%;
+	background-color: rgba(255,0,0,.5);
+}
+
+.dbs_nav.-closed > .-mask{
+	opacity: 0;
+	pointer-events: none;
+}
+
+/*TOP - BOTTOM */
+.dbs_nav.-closed.-tlh > .-nav,
+.dbs_nav.-closed.-trh > .-nav,
+.dbs_nav.-closed.-blh > .-nav,
+.dbs_nav.-closed.-brh > .-nav{
+	width: 0;
+}
+/* LEFT - RIGHT */
+.dbs_nav.-closed.-tlv > .-nav,
+.dbs_nav.-closed.-trv > .-nav,
+.dbs_nav.-closed.-blv > .-nav,
+.dbs_nav.-closed.-brv > .-nav{
+	height: 0;
+}
+
+/*TOP - BOTTOM */
+.dbs_nav.-tlh > .-nav,
+.dbs_nav.-trh > .-nav,
+.dbs_nav.-blh > .-nav,
+.dbs_nav.-brh > .-nav{
+	width: 90%;
+	height: 100%;
+}
+/* LEFT - RIGHT */
+.dbs_nav.-tlv > .-nav,
+.dbs_nav.-trv > .-nav,
+.dbs_nav.-blv > .-nav,
+.dbs_nav.-brv > .-nav{
+	height: 90%;
+	width: 100%;
+}
+/* TOP */
+.dbs_nav.-tlh > .-nav,
+.dbs_nav.-tlv > .-nav,
+.dbs_nav.-trh > .-nav,
+.dbs_nav.-trv > .-nav{
+	top: 0;
+}
+/* BOTTOM */
+.dbs_nav.-blh > .-nav,
+.dbs_nav.-blv > .-nav,
+.dbs_nav.-brh > .-nav,
+.dbs_nav.-brv > .-nav{
+	bottom: 0;
+}
+
+/* RIGHT */
+.dbs_nav.-trh > .-nav,
+.dbs_nav.-trv > .-nav,
+.dbs_nav.-brh > .-nav,
+.dbs_nav.-brv > .-nav{
+	right: 0;
+}
+/* LEFT */
+.dbs_nav.-tlh > .-nav,
+.dbs_nav.-tlv > .-nav,
+.dbs_nav.-blh > .-nav,
+.dbs_nav.-blv > .-nav{
+	left: 0;
+}
+
+
+.dbs_nav > .-nav > .-container > .-content{
+	position: relative;
+	display: block;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+}
+.dbs_nav > .-nav > .-container > .-content > nav{
+	display: block;
+	position: absolute;
+}
+
+/* TOP*/
+.dbs_nav.-tlh > .-nav > .-container > .-content > nav,
+.dbs_nav.-tlv > .-nav > .-container > .-content > nav,
+.dbs_nav.-trh > .-nav > .-container > .-content > nav,
+.dbs_nav.-trv > .-nav > .-container > .-content > nav{
+    top: 0;
+}
+
+/* BOTTOM*/
+.dbs_nav.-blh > .-nav > .-container > .-content > nav,
+.dbs_nav.-blv > .-nav > .-container > .-content > nav,
+.dbs_nav.-brh > .-nav > .-container > .-content > nav,
+.dbs_nav.-brv > .-nav > .-container > .-content > nav{
+    bottom: 0;
+}
+
+/* LEFT */
+.dbs_nav.-tlh > .-nav > .-container > .-content > nav,
+.dbs_nav.-tlv > .-nav > .-container > .-content > nav,
+.dbs_nav.-blh > .-nav > .-container > .-content > nav,
+.dbs_nav.-blv > .-nav > .-container > .-content > nav{
+    left: 0;
+	text-align: left;
+}
+/* RIGHT */
+.dbs_nav.-trh > .-nav > .-container > .-content > nav,
+.dbs_nav.-trv > .-nav > .-container > .-content > nav,
+.dbs_nav.-brh > .-nav > .-container > .-content > nav,
+.dbs_nav.-brv > .-nav > .-container > .-content > nav{
+    right: 0;
+	text-align: right;
+}
+
+
+.dbs_nav > .-caption {
+	position: absolute;
+    display: inline-block;
+    height: 2em;
+}
+.dbs_nav > .-caption > .-icon {
+	position: relative;
+	cursor: pointer;
+	font-size: 2em;
+}
+
+/* TOP     */
+.dbs_nav.-tlh > .-caption,
+.dbs_nav.-tlv > .-caption,
+.dbs_nav.-trh > .-caption,
+.dbs_nav.-trv > .-caption{
+	top: 0;
+}
+/* BOTTOM */
+.dbs_nav.-blh > .-caption,
+.dbs_nav.-blv > .-caption,
+.dbs_nav.-brh > .-caption,
+.dbs_nav.-brv > .-caption{
+	bottom: 0;
+}
+/* LEFT */
+.dbs_nav.-tlh > .-caption,
+.dbs_nav.-tlv > .-caption,
+.dbs_nav.-blh > .-caption,
+.dbs_nav.-blv > .-caption{
+	left: 0;
+    text-align: left;
+}
+/* RIGHT */
+.dbs_nav.-trh > .-caption,
+.dbs_nav.-trv > .-caption,
+.dbs_nav.-brh > .-caption,
+.dbs_nav.-brv > .-caption{
+	right: 0;
+    text-align: right;
+}
+
+/* TOP */
+.dbs_nav.-tlh > .-caption > .-icon,
+.dbs_nav.-tlv > .-caption > .-icon,
+.dbs_nav.-trh > .-caption > .-icon,
+.dbs_nav.-trv > .-caption > .-icon{
+    top: -.1em;
+}
+
+/* BOTTOM */
+.dbs_nav.-tlh > .-caption > .-icon,
+.dbs_nav.-tlv > .-caption > .-icon,
+.dbs_nav.-trh > .-caption > .-icon,
+.dbs_nav.-trv > .-caption > .-icon{
+    bottom: -.1em;
+}
+/* LEFT */
+.dbs_nav.-tlh > .-caption > .-icon,
+.dbs_nav.-tlv > .-caption > .-icon,
+.dbs_nav.-blh > .-caption > .-icon,
+.dbs_nav.-blv > .-caption > .-icon{
+    left: -.1em;
+}
+/* RIGHT */
+.dbs_nav.-trh > .-caption > .-icon,
+.dbs_nav.-trv > .-caption > .-icon,
+.dbs_nav.-brh > .-caption > .-icon,
+.dbs_nav.-brv > .-caption > .-icon{
+    right: -.1em;
+}
+
+.dbs_nav.-tlh > .-caption{
+}
+.dbs_nav.-tlv > .-caption{
+}
+.dbs_nav.-trh > .-caption{
+}
+.dbs_nav.-trv > .-caption{
+}
+.dbs_nav.-blh > .-caption{
+}
+.dbs_nav.-blv > .-caption{
+}
+.dbs_nav.-brh > .-caption{
+}
+.dbs_nav.-brv > .-caption{
+}

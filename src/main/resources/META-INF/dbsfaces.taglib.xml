@@ -2601,6 +2601,80 @@ Default: false;</description>
 		</attribute>
 	</tag>
 	<tag>
+		<tag-name>nav</tag-name>
+		<component>
+			<component-type>br.com.dbsoft.ui.component.nav</component-type>
+			<handler-class />
+		</component>
+		<attribute>
+			<description>
+                Divisão para navegação
+            </description>
+			<name>id</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Class CSS que será utilizado com style
+            </description>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Adiciona style 
+            </description>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                rendered
+            </description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+            	iconClass
+            </description>
+			<name>iconClass</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Localização. padrão é tlh.&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;TOP_LEFT_HORIZONTAL = tlh&lt;/li&gt;
+					&lt;li&gt;TOP_LEFT_VERTICAL = tlv&lt;/li&gt;
+					&lt;li&gt;TOP_RIGHT_HORIZONTAL = trh&lt;/li&gt;
+					&lt;li&gt;TOP_RIGHT_VERTICAL = trv&lt;/li&gt;
+					&lt;li&gt;BOTTOM_LEFT_HORIZONTAL = blh&lt;/li&gt;
+					&lt;li&gt;BOTTOM_LEFT_VERTICAL = blv&lt;/li&gt;
+					&lt;li&gt;BOTTOM_RIGHT_HORIZONTAL = brh&lt;/li&gt;
+					&lt;li&gt;BOTTOM_RIGHT_VERTICAL = brv&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; 
+            </description>
+			<name>location</name>
+			<required>false</required>
+			<type>java.lang.Sting</type>
+		</attribute>
+		<attribute>
+			<description>Padding interno. O padrão é 0.2em;
+            </description>
+			<name>padding</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
+	<tag>
 		<tag-name>parallax</tag-name>
 		<component>
 			<component-type>br.com.dbsoft.ui.component.parallax</component-type>
@@ -2889,7 +2963,6 @@ Default: false;</description>
 		</attribute>
 		<attribute>
 			<description>
-			
 				&lt;span style="font-size:small"&gt;
 				Hue que indicará a cor base que será utilizado calcular as cores de cada um dos valores do gráfico.&lt;br/&gt;
 				Caso não seja informado, as cores serão gerada automaticamente.
@@ -2904,7 +2977,8 @@ Default: false;</description>
 					&lt;li&gt;Rosa = 0.85&lt;/li&gt;
 					&lt;li&gt;Vermelho = 1&lt;/li&gt;
 				&lt;ul&gt;
-				&lt;/span&gt; </description>
+				&lt;/span&gt; 
+			</description>
 			<name>colorHue</name>
 			<required>false</required>
 			<type>java.lang.Float</type>
