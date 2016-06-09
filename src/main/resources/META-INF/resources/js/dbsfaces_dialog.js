@@ -9,14 +9,14 @@ dbs_dialog = function(pId) {
 		   var xLastDialog = $("body").find(".dbs_dialog:last");
 		   if (xLastDialog.length == 0){
 			   var xOP = $(e.currentTarget).offsetParent();
-			   dbsfaces.dialog.enableForegroundInputs($("body"));
+			   dbsfaces.ui.enableForegroundInputs($("body"));
 		   }
 		   e.stopImmediatePropagation();
 	   }
 	});
 
  	//Desabilita inputs atrás do dialog
-    dbsfaces.ui.disableBackgroundInputs(pId);
+    dbsfaces.ui.disableBackgroundInputs($(pId));
     
     if ($(pId).hasClass("-confirmation")){
         //Exibe tela já que foi criada escondida para dar tempo de todos os componentes serem exibidos
@@ -91,25 +91,25 @@ dbsfaces.dialog = {
 
 	},
 
-//	disableBackgroundInputs: function(pId){
-////	    var xOP = $(pId).offsetParent();
-//	    var xOP = $("body");
-//		xOP.find("input").not('[type="hidden"]').not(pId + " input").attr('disabled', true);
-//		xOP.find("button").not(pId + " button").attr('disabled', true);
-//		xOP.find("select").not(pId + " select").attr('disabled', true);
-//		xOP.find("a").not(pId + " a").attr('disabled', true);
-//		xOP.find("textarea").not(pId + " textarea").attr('disabled', true);
-//
-//		dbsfaces.dialog.enableForegroundInputs($(pId));
-//	},
-//	
-//	enableForegroundInputs: function(pE){
-//		pE.find("input").not(".-disabled").attr('disabled', false);
-//		pE.find("a").not(".-disabled").attr('disabled', false);
-//		pE.find("button").not(".-disabled").attr('disabled', false);
-//		pE.find("select").not(".-disabled").attr('disabled', false);
-//		pE.find("textarea").not(".-disabled").attr('disabled', false);
-//	},
+	disableBackgroundInputs: function(pId){
+//	    var xOP = $(pId).offsetParent();
+	    var xOP = $("body");
+		xOP.find("input").not('[type="hidden"]').not(pId + " input").attr('disabled', true);
+		xOP.find("button").not(pId + " button").attr('disabled', true);
+		xOP.find("select").not(pId + " select").attr('disabled', true);
+		xOP.find("a").not(pId + " a").attr('disabled', true);
+		xOP.find("textarea").not(pId + " textarea").attr('disabled', true);
+
+		dbsfaces.dialog.enableForegroundInputs($(pId));
+	},
+	
+	enableForegroundInputs: function(pE){
+		pE.find("input").not(".-disabled").attr('disabled', false);
+		pE.find("a").not(".-disabled").attr('disabled', false);
+		pE.find("button").not(".-disabled").attr('disabled', false);
+		pE.find("select").not(".-disabled").attr('disabled', false);
+		pE.find("textarea").not(".-disabled").attr('disabled', false);
+	},
 	
 	//Retorna componente que contém o conteúdo principal do dialog.
 	//Este método também é chamado externamente

@@ -480,7 +480,7 @@ dbsfaces.ui = {
 		if (!(pObj instanceof jQuery)){
 			xE = $(pObj);
 		}
-		var xId = xE[0].id;
+		var xId = dbsfaces.util.jsid(xE[0].id);
 	    var xOP = $("body");
 		xOP.find("input").not('[type="hidden"]').not(xId + " input").attr('disabled', true);
 		xOP.find("button").not(xId + " button").attr('disabled', true);
