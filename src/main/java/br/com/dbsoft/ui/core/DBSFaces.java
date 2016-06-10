@@ -194,26 +194,26 @@ public class  DBSFaces {
 	public static class CSS
 	{
 		public static final String CLASS_PREFIX = "dbs_";
-		public static final String WINDOW_CENTER = DBSFaces.CSS.CLASS_PREFIX +  "window_center "; 
-		public static final String CHILD_CENTER = DBSFaces.CSS.CLASS_PREFIX +  "child_center ";
-		public static final String NOT_SELECTABLE = DBSFaces.CSS.CLASS_PREFIX +  "not_selectable ";
-		public static final String BACK_TEXTURE_BLACK = DBSFaces.CSS.CLASS_PREFIX +  "back_texture_black "; 
-		public static final String BACK_TEXTURE_BLACK_TRANSPARENT_GRADIENT = DBSFaces.CSS.CLASS_PREFIX +  "back_texture_black_transparent_gradient ";
-		public static final String BACK_TEXTURE_BLACK_GRADIENT = DBSFaces.CSS.CLASS_PREFIX +  "back_texture_black_gradient ";
-		public static final String BACK_TEXTURE_WHITE_GRADIENT = DBSFaces.CSS.CLASS_PREFIX +  "back_texture_white_gradient "; 
-		public static final String BACK_TEXTURE_WHITE_TRANSPARENT = DBSFaces.CSS.CLASS_PREFIX +  "back_texture_white_transparent";
-		public static final String BACK_TEXTURE_WHITE_TRANSPARENT_GRADIENT = DBSFaces.CSS.CLASS_PREFIX +  "back_texture_white_transparent_gradient ";
-		public static final String BACK_GRADIENT_WHITE = DBSFaces.CSS.CLASS_PREFIX +  "back_gradient_white ";
-		public static final String PARENT_FILL = DBSFaces.CSS.CLASS_PREFIX +  "parent_fill ";
-		public static final String HORIZONTAL_LINE = DBSFaces.CSS.CLASS_PREFIX +  "horizontal_line ";
-		public static final String HORIZONTAL_LINE_WHITE = DBSFaces.CSS.CLASS_PREFIX +  "horizontal_line_white ";
-		public static final String VERTICAL_LINE = DBSFaces.CSS.CLASS_PREFIX +  "vertical_line ";
+		public static final String WINDOW_CENTER = " " + CLASS_PREFIX +  "window_center "; 
+		public static final String CHILD_CENTER =  " " + CLASS_PREFIX +  "child_center ";
+		public static final String NOT_SELECTABLE =  " " + CLASS_PREFIX +  "not_selectable ";
+		public static final String BACK_TEXTURE_BLACK =  " " + CLASS_PREFIX +  "back_texture_black "; 
+		public static final String BACK_TEXTURE_BLACK_TRANSPARENT_GRADIENT =  " " + CLASS_PREFIX +  "back_texture_black_transparent_gradient ";
+		public static final String BACK_TEXTURE_BLACK_GRADIENT =  " " + CLASS_PREFIX +  "back_texture_black_gradient ";
+		public static final String BACK_TEXTURE_WHITE_GRADIENT =  " " + CLASS_PREFIX +  "back_texture_white_gradient "; 
+		public static final String BACK_TEXTURE_WHITE_TRANSPARENT =  " " + CLASS_PREFIX +  "back_texture_white_transparent";
+		public static final String BACK_TEXTURE_WHITE_TRANSPARENT_GRADIENT =  " " + CLASS_PREFIX +  "back_texture_white_transparent_gradient ";
+		public static final String BACK_GRADIENT_WHITE =  " " + CLASS_PREFIX +  "back_gradient_white ";
+		public static final String PARENT_FILL =  " " + CLASS_PREFIX +  "parent_fill ";
+		public static final String HORIZONTAL_LINE =  " " + CLASS_PREFIX +  "horizontal_line ";
+		public static final String HORIZONTAL_LINE_WHITE =  " " + CLASS_PREFIX +  "horizontal_line_white ";
+		public static final String VERTICAL_LINE =  " " + CLASS_PREFIX +  "vertical_line ";
 		
 		public static class THEME
 		{
+			public static final String BC = " -th_bc ";
+			public static final String FC = " -th_fc ";
 			public static final String ACTION = " -th_action ";
-			public static final String BACKGROUND_COLOR = " -th_back_color ";
-			public static final String FONT_COLOR = " -th_font_color ";
 			public static final String CAPTION = " -th_caption ";
 		}
 		
@@ -245,6 +245,7 @@ public class  DBSFaces {
 			public static final String INVALID = " -invalid ";
 			public static final String INPUT = " -input ";
 			public static final String INFO = " -info ";
+			public static final String INVERT = " -i ";
 			public static final String KEY = " -key ";
 			public static final String LABEL = " -label ";
 			public static final String LAST = " -last ";
@@ -261,6 +262,8 @@ public class  DBSFaces {
 			public static final String MASK = " -mask ";
 			public static final String MESSAGE = " -message ";
 			public static final String NORMAL = " -normal ";
+			public static final String ON = " -on ";
+			public static final String OFF = " -off ";
 			public static final String POINT = " -point ";
 			public static final String PUSHDISABLED = " -pushDisabled ";
 			public static final String READONLY = " -readOnly ";
@@ -282,289 +285,305 @@ public class  DBSFaces {
 
 		public static class CRUDDIALOG
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.CRUDDIALOG;
+			public static final String MAIN = " " + CLASS_PREFIX +  ID.CRUDDIALOG + " ";
 		}
 
 		public static class CRUDTABLE
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.CRUDTABLE;
+			public static final String MAIN = " " + CLASS_PREFIX +  ID.CRUDTABLE + " ";
 		}
 		
 		public static class DATATABLE
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.DATATABLE;
+			public static final String MAIN = " " + CLASS_PREFIX +  ID.DATATABLE + " ";
 		}
 
 		public static class DATATABLECOLUMN
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.DATATABLECOLUMN;
-
+			public static final String MAIN = " " + CLASS_PREFIX +  ID.DATATABLECOLUMN + " ";
 		}
 		
 		public static class LABEL
 		{	
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.LABEL;
+			public static final String MAIN = " " + CLASS_PREFIX + ID.LABEL + " ";
 		}
 		
 		public static class UL
 		{	
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.UL;
+			public static final String MAIN = " " + CLASS_PREFIX + ID.UL + " ";
 		}
 
 		public static class LI
 		{	
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.LI;
+			public static final String MAIN = " " + CLASS_PREFIX + ID.LI + " ";
 		}
 	
 		public static class DIALOG
 		{	
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.DIALOG;
-			public static final String CONFIRMATION = DBSFaces.CSS.DIALOG.MAIN + "-confirmation ";
+			public static final String MAIN = " " + CLASS_PREFIX + ID.DIALOG + " ";
+			public static final String CONFIRMATION = " " + MAIN.trim() + "-confirmation ";
 		}
 
 		public static class FILEUPLOAD
 		{	
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.FILEUPLOAD;
+			public static final String MAIN = " " + CLASS_PREFIX + ID.FILEUPLOAD + " ";
 		}
 
 		public static class INPUT
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  "input";
-			public static final String DATA = DBSFaces.CSS.INPUT.MAIN + DBSFaces.CSS.MODIFIER.DATA.trim();
-			public static final String LABEL = DBSFaces.CSS.INPUT.MAIN + DBSFaces.CSS.MODIFIER.LABEL.trim();
-			public static final String SUBMIT = DBSFaces.CSS.INPUT.MAIN + DBSFaces.CSS.MODIFIER.SUBMIT.trim();
+			public static final String MAIN = " " + CLASS_PREFIX +  "input ";
+			public static final String DATA = " " + MAIN.trim() + MODIFIER.DATA.trim() + " ";
+			public static final String LABEL = " " + MAIN.trim() + MODIFIER.LABEL.trim() + " ";
+			public static final String SUBMIT = " " + MAIN.trim() + MODIFIER.SUBMIT.trim() + " ";
 //			public static final String SUGGESTIONVALUE = DBSFaces.CSS.INPUT.MAIN + DBSFaces.CSS.MODIFIER.SUGGESTION.trim() + DBSFaces.CSS.MODIFIER.VALUE.trim();
-			public static final String SUGGESTION = DBSFaces.CSS.INPUT.MAIN + DBSFaces.CSS.MODIFIER.SUGGESTION.trim();
-			public static final String SUGGESTIONKEY = DBSFaces.CSS.INPUT.MAIN + DBSFaces.CSS.MODIFIER.SUGGESTION.trim() + DBSFaces.CSS.MODIFIER.KEY.trim();
+			public static final String SUGGESTION = " " + MAIN.trim() + MODIFIER.SUGGESTION.trim() + " ";
+			public static final String SUGGESTIONKEY = " " + SUGGESTION.trim() + MODIFIER.KEY.trim() + " ";
 		}
 		
 		public static class INPUTTEXT
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.INPUTTEXT;
+			public static final String MAIN = " " + CLASS_PREFIX +  ID.INPUTTEXT + " ";
 		}
 
 		public static class INPUTTEXTAREA
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.INPUTTEXTAREA;
+			public static final String MAIN = " " + CLASS_PREFIX +  ID.INPUTTEXTAREA + " ";
 		}
 
 		public static class INPUTDATE
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.INPUTDATE;
-			public static final String DAY = "-day";
-			public static final String MONTH = "-month";
-			public static final String YEAR = "-year";
-			public static final String HOUR = "-hour";
-			public static final String MINUTE = "-minute";
-			public static final String SECOND = "-second";
+			public static final String MAIN = " " + CLASS_PREFIX +  ID.INPUTDATE + " ";
+			public static final String DAY = " -day ";
+			public static final String MONTH = " -month ";
+			public static final String YEAR = " -year";
+			public static final String HOUR = " -hour ";
+			public static final String MINUTE = " -minute ";
+			public static final String SECOND = " -second ";
 		}
 		
 		public static class INPUTPHONE
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.INPUTPHONE;
-			public static final String DDI = "-ddi";
-			public static final String DDD = "-ddd";
-			public static final String NUMBER = "-number";
+			public static final String MAIN = " " + CLASS_PREFIX +  ID.INPUTPHONE + " ";
+			public static final String DDI = " -ddi ";
+			public static final String DDD = " -ddd ";
+			public static final String NUMBER = " -number ";
 		}
 
 		public static class INPUTNUMBER
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.INPUTNUMBER;
+			public static final String MAIN = " " + CLASS_PREFIX +  ID.INPUTNUMBER + " ";
 		}
 		public static class INPUTMASK
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.INPUTMASK;
+			public static final String MAIN = " " + CLASS_PREFIX +  ID.INPUTMASK + " ";
 		}
 		
 		public static class IMG
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.IMG;
+			public static final String MAIN = " " + CLASS_PREFIX +  ID.IMG + " ";
 		}
 
 		public static class CHECKBOX
 		{	
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.CHECKBOX;
+			public static final String MAIN = " " + CLASS_PREFIX + ID.CHECKBOX + " ";
 		}
 		public static class LISTBOX
 		{	
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.LISTBOX;
+			public static final String MAIN = " " + CLASS_PREFIX + ID.LISTBOX + " ";
 		}
 		public static class COMBOBOX
 		{	
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.COMBOBOX;
+			public static final String MAIN = " " + CLASS_PREFIX + ID.COMBOBOX + " ";
 		}
 
 		public static class BUTTON
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.BUTTON;
+			public static final String MAIN = " " + CLASS_PREFIX +  ID.BUTTON + " ";
 		}
 		public static class DIV
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.DIV;
+			public static final String MAIN = " " + CLASS_PREFIX +  ID.DIV + " ";
 		}
 		public static class NAV
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.NAV;
+			public static final String MAIN = " " + CLASS_PREFIX +  ID.NAV + " ";
 		}
 		
 		public static class MENU
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.MENU;
+			public static final String MAIN = " " + CLASS_PREFIX +  ID.MENU + " ";
 		}
 
 		public static class MENUITEM
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.MENUITEM;
+			public static final String MAIN = " " + CLASS_PREFIX +  ID.MENUITEM + " ";
 		}
 		
 		public static class MENUITEMSEPARATOR
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.MENUITEMSEPARATOR;
+			public static final String MAIN = " " + CLASS_PREFIX +  ID.MENUITEMSEPARATOR + " ";
 		}
 		
 		public static class COMPONENTTREE
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.COMPONENTTREE;
+			public static final String MAIN = " " + CLASS_PREFIX +  ID.COMPONENTTREE + " ";
 		}
 		
 		
 		public static class LINK
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.LINK;
+			public static final String MAIN = " " + CLASS_PREFIX +  ID.LINK + " ";
 		}
 		
 		public static class LOADING
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.LOADING;
-			public static final String CONTENT = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.LOADING + "_content";
+			public static final String MAIN = " " + CLASS_PREFIX +  ID.LOADING + " ";
+			public static final String CONTENT = " " + MAIN.trim() + "_content ";
 		}
 		
 		public static class TAB
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.TAB;
+			public static final String MAIN = " " + CLASS_PREFIX +  ID.TAB + " ";
 		}
 
 		public static class TABPAGE
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.TABPAGE;
+			public static final String MAIN = " " + CLASS_PREFIX +  ID.TABPAGE + " ";
 		}
 
 		public static class ACCORDION
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.ACCORDION;
-			public static final String SECTION = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.ACCORDION + "_section";
-			public static final String SECTION_CAPTION = DBSFaces.CSS.ACCORDION.SECTION + DBSFaces.CSS.MODIFIER.CAPTION.trim();
-			public static final String SECTION_CONTAINER = DBSFaces.CSS.ACCORDION.SECTION + DBSFaces.CSS.MODIFIER.CONTAINER.trim();
+			public static final String MAIN = " " + CLASS_PREFIX +  ID.ACCORDION + " ";
+			public static final String SECTION = " " + MAIN.trim() + "_section ";
+			public static final String SECTION_CAPTION = " " + SECTION.trim() + MODIFIER.CAPTION.trim() + " ";
+			public static final String SECTION_CONTAINER = " " + SECTION.trim() + MODIFIER.CONTAINER.trim() + " ";
 		}
 
 		public static class CALENDAR
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.CALENDAR;
-			public static final String DAYS = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.CALENDAR + "_days";
-			public static final String MONTH = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.CALENDAR + "_month";
-			public static final String YEAR = DBSFaces.CSS.CLASS_PREFIX +  DBSFaces.ID.CALENDAR + "_year";
+			public static final String MAIN = " " + CLASS_PREFIX +  ID.CALENDAR + " ";
+			public static final String DAYS = " " + MAIN.trim() + "_days ";
+			public static final String MONTH = " " + MAIN.trim() +  "_month ";
+			public static final String YEAR = " " + MAIN.trim() +  "_year ";
 		}
 
 		public static class RADIO
 		{	
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.RADIO;
+			public static final String MAIN = " " + CLASS_PREFIX + ID.RADIO + " ";
 		}
 
 		public static class PROGRESS
 		{	
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.PROGRESS;
+			public static final String MAIN = " " + CLASS_PREFIX + ID.PROGRESS + " ";
 		}
 		
 		public static class TOOLTIP
 		{	
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.TOOLTIP;
+			public static final String MAIN = " " + CLASS_PREFIX + ID.TOOLTIP + " ";
 		}
 		
 		public static class REPORT
 		{	
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.REPORT;
+			public static final String MAIN = " " + CLASS_PREFIX + ID.REPORT + " ";
 		}
 
 		public static class REPORTFORM
 		{	
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.REPORTFORM;
+			public static final String MAIN = " " + CLASS_PREFIX + ID.REPORTFORM + " ";
 		}
 
 		public static class MESSAGES
 		{	
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.MESSAGES;
+			public static final String MAIN = " " + CLASS_PREFIX + ID.MESSAGES + " ";
 		}
 		
 		public static class GROUP
 		{	
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.GROUP;
+			public static final String MAIN = " " + CLASS_PREFIX + ID.GROUP + " ";
 		}
 
 		public static class PUSH
 		{	
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.PUSH;
+			public static final String MAIN = " " + CLASS_PREFIX + ID.PUSH + " ";
 		}
 
 		public static class MESSAGELIST
 		{	
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.MESSAGELIST;
+			public static final String MAIN = " " + CLASS_PREFIX + ID.MESSAGELIST + " ";
 		}
 
 		public static class QUICKINFO
 		{	
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.QUICKINFO;
+			public static final String MAIN = " " + CLASS_PREFIX + ID.QUICKINFO + " ";
 		}
 
 		public static class RANGE
 		{	
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.RANGE;
+			public static final String MAIN = " " + CLASS_PREFIX + ID.RANGE + " ";
 		}
 
 		public static class CHARTS
 		{	
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.CHARTS;
+			public static final String MAIN = " " + CLASS_PREFIX + ID.CHARTS + " ";
 		}
 
 		public static class CHART
 		{	
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.CHART;
+			public static final String MAIN = " " + CLASS_PREFIX + ID.CHART + " ";
 		}
 		
 		public static class CHARTVALUE
 		{	
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.CHARTVALUE;
+			public static final String MAIN = " " + CLASS_PREFIX + ID.CHARTVALUE + " ";
 		}
 
 		public static class PARALLAX
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.PARALLAX;
+			public static final String MAIN = " " + CLASS_PREFIX + ID.PARALLAX + " ";
 		}
 		public static class PARALLAXSECTION
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.PARALLAXSECTION;
+			public static final String MAIN = " " + CLASS_PREFIX + ID.PARALLAXSECTION + " ";
 		}
 		
 		public static class FLOATBUTTON
 		{
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.FLOATBUTTON;
+			public static final String MAIN = " " + CLASS_PREFIX + ID.FLOATBUTTON + " ";
 		}
 		
-		public static class SIDENAV {
-			public static final String MAIN = DBSFaces.CSS.CLASS_PREFIX + DBSFaces.ID.SIDENAV;
-			public static final String HIDDENNAV = DBSFaces.CSS.CLASS_PREFIX + "hiddennav";
-			public static final String SIDEBAR = DBSFaces.CSS.CLASS_PREFIX + "sidebar";
-			public static final String SIDEBARITEM = DBSFaces.CSS.CLASS_PREFIX + "sidebaritem";
-			public static final String SIDEBARHEADER = "-sidebarHeader";
-			public static final String CAPTIONCENTRAL = " -captionCentral ";
-			public static final String ICONCAPTION = " -iconCaption ";
-			public static final String DEFAULTLOCATION = " dbs_sidenav_location";
-		}
 	}
 	
 	
+    /**
+     * Efetua o <b>writeAttribute</b> testanto se valor é nulo.
+     * @param pWriter
+     * @param pAttribute
+     * @param pValue
+     * @throws IOException
+     */
+    public static void setAttribute(ResponseWriter pWriter, String pAttribute, Object pValue) throws IOException{
+    	setAttribute(pWriter, pAttribute, pValue, null);
+    }
 	
+    /**
+     * Efetua o <b>writeAttribute</b> testanto se valor é nulo.
+     * @param pWriter
+     * @param pAttribute
+     * @param pValue
+     * @throws IOException
+     */
     public static void setAttribute(ResponseWriter pWriter, String pAttribute, Object pValue, String pValueDefault) throws IOException{
-	   	if (pValue != null){	
+	   	if (pAttribute == null){return;}
+	   	pAttribute = pAttribute.trim();
+    	if (pValue != null){
+    		if (pValue.getClass().isAssignableFrom(String.class)){
+    			String xValue = ((String) pValue).trim();
+        		if (pAttribute.trim().toLowerCase() == "class"){
+        			//Retira todos espaços extras
+        			xValue = xValue.replaceAll(" +", " ");
+        		}
+        		pValue = xValue;
+    		}
 			pWriter.writeAttribute(pAttribute, pValue, pAttribute);
 		}else{
 			if (pValueDefault != null ){	
