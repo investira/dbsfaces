@@ -52,7 +52,7 @@ public class DBSNavRenderer extends DBSRenderer {
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xNav, DBSPassThruAttributes.getAttributes(Key.NAV));
 			//Mask
 			xWriter.startElement("div", xNav);
-				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.MASK + CSS.THEME.BC);
+				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.MASK + CSS.THEME.BC + CSS.THEME.INVERT);
 			xWriter.endElement("div");
 			//Nav
 			pvEncodeNav(xNav, pContext, xWriter);
