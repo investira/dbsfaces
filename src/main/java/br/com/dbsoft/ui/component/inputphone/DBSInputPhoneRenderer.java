@@ -34,14 +34,14 @@ public class DBSInputPhoneRenderer extends DBSRenderer {
     	
 		String xClientIdAction = getInputDataClientId(xInputPhone);
 		ExternalContext xEC = pContext.getExternalContext();
-		if (xEC.getRequestParameterMap().containsKey(xClientIdAction + DBSFaces.CSS.INPUTPHONE.NUMBER)){
-			if (xEC.getRequestParameterMap().containsKey(xClientIdAction + DBSFaces.CSS.INPUTPHONE.DDI)){
-    			xDDI = xEC.getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTPHONE.DDI);
+		if (xEC.getRequestParameterMap().containsKey(xClientIdAction + DBSFaces.CSS.INPUTPHONE.NUMBER.trim())){
+			if (xEC.getRequestParameterMap().containsKey(xClientIdAction + DBSFaces.CSS.INPUTPHONE.DDI.trim())){
+    			xDDI = xEC.getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTPHONE.DDI.trim());
     		}
-			if (xEC.getRequestParameterMap().containsKey(xClientIdAction + DBSFaces.CSS.INPUTPHONE.DDD)){
-    			xDDD = xEC.getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTPHONE.DDD);
+			if (xEC.getRequestParameterMap().containsKey(xClientIdAction + DBSFaces.CSS.INPUTPHONE.DDD.trim())){
+    			xDDD = xEC.getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTPHONE.DDD.trim());
     		}
-   			xNumber = xEC.getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTPHONE.NUMBER);
+   			xNumber = xEC.getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTPHONE.NUMBER.trim());
    			String xValue = DBSFormat.getPhoneNumber(xDDI, xDDD, xNumber);
 			if (xValue == null){
 				xInputPhone.setSubmittedValue("");
@@ -156,12 +156,12 @@ public class DBSInputPhoneRenderer extends DBSRenderer {
 		if (pInputPhone.getShowDDI()){
 			pWriter.startElement("label", pInputPhone);
 				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.NOT_SELECTABLE, null);
-				DBSFaces.setAttribute(pWriter, "for", xClientId + DBSFaces.CSS.INPUTPHONE.DDI, null);
+				DBSFaces.setAttribute(pWriter, "for", xClientId + DBSFaces.CSS.INPUTPHONE.DDI.trim(), null);
 				pWriter.write("(");
 			pWriter.endElement("label");
 			pWriter.startElement("input", pInputPhone);
-				DBSFaces.setAttribute(pWriter, "id", xClientId + DBSFaces.CSS.INPUTPHONE.DDI, null);
-				DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTPHONE.DDI, null);
+				DBSFaces.setAttribute(pWriter, "id", xClientId + DBSFaces.CSS.INPUTPHONE.DDI.trim(), null);
+				DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTPHONE.DDI.trim(), null);
 				DBSFaces.setAttribute(pWriter, "type", "tel", null);
 				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUTPHONE.DDI, null);
 				DBSFaces.setAttribute(pWriter, "style", wWidth3, null);
@@ -173,19 +173,19 @@ public class DBSInputPhoneRenderer extends DBSRenderer {
 			pWriter.endElement("input");
 			pWriter.startElement("label", pInputPhone);
 				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.NOT_SELECTABLE, null);
-				DBSFaces.setAttribute(pWriter, "for", xClientId + DBSFaces.CSS.INPUTPHONE.DDD, null);
+				DBSFaces.setAttribute(pWriter, "for", xClientId + DBSFaces.CSS.INPUTPHONE.DDD.trim(), null);
 				pWriter.write(")");
 			pWriter.endElement("label");
 		}
 		if (pInputPhone.getShowDDD()){
 			pWriter.startElement("label", pInputPhone);
 				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.NOT_SELECTABLE, null);
-				DBSFaces.setAttribute(pWriter, "for", xClientId + DBSFaces.CSS.INPUTPHONE.DDD, null);
+				DBSFaces.setAttribute(pWriter, "for", xClientId + DBSFaces.CSS.INPUTPHONE.DDD.trim(), null);
 				pWriter.write("(");
 			pWriter.endElement("label");
 			pWriter.startElement("input", pInputPhone);
-				DBSFaces.setAttribute(pWriter, "id", xClientId + DBSFaces.CSS.INPUTPHONE.DDD, null);
-				DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTPHONE.DDD, null);
+				DBSFaces.setAttribute(pWriter, "id", xClientId + DBSFaces.CSS.INPUTPHONE.DDD.trim(), null);
+				DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTPHONE.DDD.trim(), null);
 				DBSFaces.setAttribute(pWriter, "type", "tel", null);
 				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUTPHONE.DDD, null);
 				DBSFaces.setAttribute(pWriter, "style", wWidth2, null);
@@ -197,13 +197,13 @@ public class DBSInputPhoneRenderer extends DBSRenderer {
 			pWriter.endElement("input");
 			pWriter.startElement("label", pInputPhone);
 				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.NOT_SELECTABLE, null);
-				DBSFaces.setAttribute(pWriter, "for", xClientId + DBSFaces.CSS.INPUTPHONE.NUMBER, null);
+				DBSFaces.setAttribute(pWriter, "for", xClientId + DBSFaces.CSS.INPUTPHONE.NUMBER.trim(), null);
 				pWriter.write(")");
 			pWriter.endElement("label");
 		}
 		pWriter.startElement("input", pInputPhone);
-			DBSFaces.setAttribute(pWriter, "id", xClientId + DBSFaces.CSS.INPUTPHONE.NUMBER, null);
-			DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTPHONE.NUMBER, null);
+			DBSFaces.setAttribute(pWriter, "id", xClientId + DBSFaces.CSS.INPUTPHONE.NUMBER.trim(), null);
+			DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTPHONE.NUMBER.trim(), null);
 			DBSFaces.setAttribute(pWriter, "type", "tel", null);
 			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUTPHONE.NUMBER, null);
 			DBSFaces.setAttribute(pWriter, "style", wWidth10, null);

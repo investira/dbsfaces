@@ -320,7 +320,6 @@ public class  DBSFaces {
 		public static class DIALOG
 		{	
 			public static final String MAIN = " " + CLASS_PREFIX + ID.DIALOG + " ";
-			public static final String CONFIRMATION = " " + MAIN.trim() + "-confirmation ";
 		}
 
 		public static class FILEUPLOAD
@@ -334,7 +333,6 @@ public class  DBSFaces {
 			public static final String DATA = " " + MAIN.trim() + MODIFIER.DATA.trim() + " ";
 			public static final String LABEL = " " + MAIN.trim() + MODIFIER.LABEL.trim() + " ";
 			public static final String SUBMIT = " " + MAIN.trim() + MODIFIER.SUBMIT.trim() + " ";
-//			public static final String SUGGESTIONVALUE = DBSFaces.CSS.INPUT.MAIN + DBSFaces.CSS.MODIFIER.SUGGESTION.trim() + DBSFaces.CSS.MODIFIER.VALUE.trim();
 			public static final String SUGGESTION = " " + MAIN.trim() + MODIFIER.SUGGESTION.trim() + " ";
 			public static final String SUGGESTIONKEY = " " + SUGGESTION.trim() + MODIFIER.KEY.trim() + " ";
 		}
@@ -437,7 +435,6 @@ public class  DBSFaces {
 		public static class LOADING
 		{
 			public static final String MAIN = " " + CLASS_PREFIX +  ID.LOADING + " ";
-			public static final String CONTENT = " " + MAIN.trim() + "_content ";
 		}
 		
 		public static class TAB
@@ -1449,7 +1446,7 @@ public class  DBSFaces {
 				xStyle += " width:" + pInput.getLabelWidth() + ";";
 			}
 			pWriter.startElement("label", pInput);
-				pWriter.writeAttribute("class", DBSFaces.CSS.INPUT.LABEL + " " + DBSFaces.CSS.NOT_SELECTABLE , null);
+				pWriter.writeAttribute("class", DBSFaces.CSS.INPUT.LABEL + DBSFaces.CSS.NOT_SELECTABLE , null);
 				pWriter.writeAttribute("for", xClientId + DBSFaces.CSS.MODIFIER.DATA.trim(), null);
 				if (pRenderSeparator){
 					pWriter.writeAttribute("style", xStyle, null);
@@ -1495,7 +1492,7 @@ public class  DBSFaces {
 		if (pInput.getRightLabel()!=null){
 			String xClientId = pInput.getClientId(pContext);
 			pWriter.startElement("label", pInput);
-				pWriter.writeAttribute("class", DBSFaces.CSS.INPUT.LABEL + " " + DBSFaces.CSS.NOT_SELECTABLE , null);
+				pWriter.writeAttribute("class", DBSFaces.CSS.INPUT.LABEL + DBSFaces.CSS.NOT_SELECTABLE , null);
 				pWriter.writeAttribute("for", xClientId + DBSFaces.CSS.MODIFIER.DATA.trim(), null);
 				pWriter.writeAttribute("style", "margin:0 3px 0 3px; vertical-align: middle; display:inline-block;", null);
 				pWriter.write(pInput.getRightLabel().trim());

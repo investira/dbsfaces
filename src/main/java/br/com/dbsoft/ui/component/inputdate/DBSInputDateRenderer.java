@@ -40,13 +40,13 @@ public class DBSInputDateRenderer extends DBSRenderer {
     	ExternalContext xEC = pContext.getExternalContext();
     	
 		String xClientIdAction = getInputDataClientId(xInputDate) ;
-		if (xEC.getRequestParameterMap().containsKey(xClientIdAction + DBSFaces.CSS.INPUTDATE.DAY) ||
-			xEC.getRequestParameterMap().containsKey(xClientIdAction + DBSFaces.CSS.INPUTDATE.HOUR)){
+		if (xEC.getRequestParameterMap().containsKey(xClientIdAction + DBSFaces.CSS.INPUTDATE.DAY.trim()) ||
+			xEC.getRequestParameterMap().containsKey(xClientIdAction + DBSFaces.CSS.INPUTDATE.HOUR.trim())){
     		if (xInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.DATE) ||
     			xInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.DATETIME)){
-    			xDay = xEC.getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.DAY);
-	        	xMonth = xEC.getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.MONTH);
-	        	xYear = xEC.getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.YEAR);
+    			xDay = xEC.getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.DAY.trim());
+	        	xMonth = xEC.getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.MONTH.trim());
+	        	xYear = xEC.getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.YEAR.trim());
 	        	if (xDay.length()==0 ||
 	        		xMonth.length()==0 ||
 	        		xYear.length()==0){
@@ -58,9 +58,9 @@ public class DBSInputDateRenderer extends DBSRenderer {
     		if (xInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.TIME) ||
     			xInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.TIMES) ||
 	    		xInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.DATETIME)){
-        		xHour = DBSString.toString(xEC.getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.HOUR), "");
-    			xMinute = DBSString.toString(xEC.getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.MINUTE), "");
-    			xSecond = DBSString.toString(xEC.getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.SECOND), "00");
+        		xHour = DBSString.toString(xEC.getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.HOUR.trim()), "");
+    			xMinute = DBSString.toString(xEC.getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.MINUTE.trim()), "");
+    			xSecond = DBSString.toString(xEC.getRequestParameterMap().get(xClientIdAction + DBSFaces.CSS.INPUTDATE.SECOND.trim()), "00");
 	        	if (xHour.length()==0 ||
 	        		xMinute.length()==0){
 		        	xTime = null;
@@ -221,8 +221,8 @@ public class DBSInputDateRenderer extends DBSRenderer {
 		String xClientId = getInputDataClientId(pInputDate);
 		//Se for somente leitura, gera código como <Span>
 		pWriter.startElement("input", pInputDate);
-			DBSFaces.setAttribute(pWriter, "id", xClientId + DBSFaces.CSS.INPUTDATE.DAY, null);
-			DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTDATE.DAY, null);
+			DBSFaces.setAttribute(pWriter, "id", xClientId + DBSFaces.CSS.INPUTDATE.DAY.trim(), null);
+			DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTDATE.DAY.trim(), null);
 			DBSFaces.setAttribute(pWriter, "type", "text", null);
 			DBSFaces.setAttribute(pWriter, "pattern", "[0-9]*", null);
 			DBSFaces.setAttribute(pWriter, "inputmode", "numeric", null);
@@ -236,12 +236,12 @@ public class DBSInputDateRenderer extends DBSRenderer {
 		pWriter.endElement("input");
 		pWriter.startElement("label", pInputDate);
 			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.NOT_SELECTABLE, null);
-			DBSFaces.setAttribute(pWriter, "for", xClientId + DBSFaces.CSS.INPUTDATE.MONTH, null);
+			DBSFaces.setAttribute(pWriter, "for", xClientId + DBSFaces.CSS.INPUTDATE.MONTH.trim(), null);
 			pWriter.write("/");
 		pWriter.endElement("label");
 		pWriter.startElement("input", pInputDate);
-			DBSFaces.setAttribute(pWriter, "id", xClientId + DBSFaces.CSS.INPUTDATE.MONTH, null);
-			DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTDATE.MONTH, null);
+			DBSFaces.setAttribute(pWriter, "id", xClientId + DBSFaces.CSS.INPUTDATE.MONTH.trim(), null);
+			DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTDATE.MONTH.trim(), null);
 			DBSFaces.setAttribute(pWriter, "type", "text", null);
 			DBSFaces.setAttribute(pWriter, "pattern", "[0-9]*", null);
 			DBSFaces.setAttribute(pWriter, "inputmode", "numeric", null);
@@ -255,12 +255,12 @@ public class DBSInputDateRenderer extends DBSRenderer {
 		pWriter.endElement("input");
 		pWriter.startElement("label", pInputDate);
 			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.NOT_SELECTABLE, null);
-			DBSFaces.setAttribute(pWriter, "for", xClientId + DBSFaces.CSS.INPUTDATE.YEAR, null);
+			DBSFaces.setAttribute(pWriter, "for", xClientId + DBSFaces.CSS.INPUTDATE.YEAR.trim(), null);
 			pWriter.write("/");
 		pWriter.endElement("label");
 		pWriter.startElement("input", pInputDate);
-			DBSFaces.setAttribute(pWriter, "id", xClientId + DBSFaces.CSS.INPUTDATE.YEAR, null);
-			DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTDATE.YEAR, null);
+			DBSFaces.setAttribute(pWriter, "id", xClientId + DBSFaces.CSS.INPUTDATE.YEAR.trim(), null);
+			DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTDATE.YEAR.trim(), null);
 			DBSFaces.setAttribute(pWriter, "type", "text", null);
 			DBSFaces.setAttribute(pWriter, "pattern", "[0-9]*", null);
 			DBSFaces.setAttribute(pWriter, "inputmode", "numeric", null);
@@ -278,8 +278,8 @@ public class DBSInputDateRenderer extends DBSRenderer {
 		String xClientId = getInputDataClientId(pInputDate);
 		//HORA
 		pWriter.startElement("input", pInputDate);
-			DBSFaces.setAttribute(pWriter, "id", xClientId + DBSFaces.CSS.INPUTDATE.HOUR, null);
-			DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTDATE.HOUR, null);
+			DBSFaces.setAttribute(pWriter, "id", xClientId + DBSFaces.CSS.INPUTDATE.HOUR.trim(), null);
+			DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTDATE.HOUR.trim(), null);
 			DBSFaces.setAttribute(pWriter, "type", "text", null);
 			DBSFaces.setAttribute(pWriter, "pattern", "[0-9]*", null);
 			DBSFaces.setAttribute(pWriter, "inputmode", "numeric", null);
@@ -295,12 +295,12 @@ public class DBSInputDateRenderer extends DBSRenderer {
 		//Minutos
 		pWriter.startElement("label", pInputDate);
 			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.NOT_SELECTABLE, null);
-			DBSFaces.setAttribute(pWriter, "for", xClientId + DBSFaces.CSS.INPUTDATE.MINUTE, null);
+			DBSFaces.setAttribute(pWriter, "for", xClientId + DBSFaces.CSS.INPUTDATE.MINUTE.trim(), null);
 			pWriter.write(":");
 		pWriter.endElement("label");
 		pWriter.startElement("input", pInputDate);
-			DBSFaces.setAttribute(pWriter, "id", xClientId + DBSFaces.CSS.INPUTDATE.MINUTE, null);
-			DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTDATE.MINUTE, null);
+			DBSFaces.setAttribute(pWriter, "id", xClientId + DBSFaces.CSS.INPUTDATE.MINUTE.trim(), null);
+			DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTDATE.MINUTE.trim(), null);
 			DBSFaces.setAttribute(pWriter, "type", "text", null);
 			DBSFaces.setAttribute(pWriter, "pattern", "[0-9]*", null);
 			DBSFaces.setAttribute(pWriter, "inputmode", "numeric", null);
@@ -321,12 +321,12 @@ public class DBSInputDateRenderer extends DBSRenderer {
 		//Segundos
 		pWriter.startElement("label", pInputDate);
 			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.NOT_SELECTABLE, null);
-			DBSFaces.setAttribute(pWriter, "for", xClientId + DBSFaces.CSS.INPUTDATE.SECOND, null);
+			DBSFaces.setAttribute(pWriter, "for", xClientId + DBSFaces.CSS.INPUTDATE.SECOND.trim(), null);
 			pWriter.write(":");
 		pWriter.endElement("label");
 		pWriter.startElement("input", pInputDate);
-			DBSFaces.setAttribute(pWriter, "id", xClientId + DBSFaces.CSS.INPUTDATE.SECOND, null);
-			DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTDATE.SECOND, null);
+			DBSFaces.setAttribute(pWriter, "id", xClientId + DBSFaces.CSS.INPUTDATE.SECOND.trim(), null);
+			DBSFaces.setAttribute(pWriter, "name", xClientId + DBSFaces.CSS.INPUTDATE.SECOND.trim(), null);
 			DBSFaces.setAttribute(pWriter, "type", "text", null);
 			DBSFaces.setAttribute(pWriter, "pattern", "[0-9]*", null);
 			DBSFaces.setAttribute(pWriter, "inputmode", "numeric", null);
@@ -346,7 +346,7 @@ public class DBSInputDateRenderer extends DBSRenderer {
 		pvEncodeInputDate(pContext, pInputDate, pWriter);
 		pWriter.startElement("label", pInputDate);
 			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.NOT_SELECTABLE, null);
-			DBSFaces.setAttribute(pWriter, "for", xClientId + DBSFaces.CSS.INPUTDATE.HOUR, null);
+			DBSFaces.setAttribute(pWriter, "for", xClientId + DBSFaces.CSS.INPUTDATE.HOUR.trim(), null);
 			DBSFaces.setAttribute(pWriter, "style", wWidth1, null);
 			pWriter.write(" ");
 		pWriter.endElement("label");
