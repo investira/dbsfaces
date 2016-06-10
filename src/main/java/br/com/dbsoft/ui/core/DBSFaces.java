@@ -190,6 +190,10 @@ public class  DBSFaces {
 		}
 	}
 	
+	/**
+	 * COM EXCEÇÃO DO CLASS_PREFIX
+	 * TODOS CSS DEVEM INICIAR E TERMINAR COM ESPAÇO
+	 */
 	public static class CSS
 	{
 		public static final String CLASS_PREFIX = "dbs_";
@@ -215,6 +219,7 @@ public class  DBSFaces {
 			public static final String ACTION = " -th_action ";
 			public static final String CAPTION = " -th_caption ";
 		}
+		
 		
 		public static class MODIFIER
 		{
@@ -339,17 +344,17 @@ public class  DBSFaces {
 		
 		public static class INPUTTEXT
 		{
-			public static final String MAIN = " " + CLASS_PREFIX +  ID.INPUTTEXT + " ";
+			public static final String MAIN = " " + CLASS_PREFIX + ID.INPUTTEXT + " ";
 		}
 
 		public static class INPUTTEXTAREA
 		{
-			public static final String MAIN = " " + CLASS_PREFIX +  ID.INPUTTEXTAREA + " ";
+			public static final String MAIN = " " + CLASS_PREFIX + ID.INPUTTEXTAREA + " ";
 		}
 
 		public static class INPUTDATE
 		{
-			public static final String MAIN = " " + CLASS_PREFIX +  ID.INPUTDATE + " ";
+			public static final String MAIN = " " + CLASS_PREFIX + ID.INPUTDATE + " ";
 			public static final String DAY = " -day ";
 			public static final String MONTH = " -month ";
 			public static final String YEAR = " -year";
@@ -360,7 +365,7 @@ public class  DBSFaces {
 		
 		public static class INPUTPHONE
 		{
-			public static final String MAIN = " " + CLASS_PREFIX +  ID.INPUTPHONE + " ";
+			public static final String MAIN = " " + CLASS_PREFIX + ID.INPUTPHONE + " ";
 			public static final String DDI = " -ddi ";
 			public static final String DDD = " -ddd ";
 			public static final String NUMBER = " -number ";
@@ -368,16 +373,16 @@ public class  DBSFaces {
 
 		public static class INPUTNUMBER
 		{
-			public static final String MAIN = " " + CLASS_PREFIX +  ID.INPUTNUMBER + " ";
+			public static final String MAIN = " " + CLASS_PREFIX + ID.INPUTNUMBER + " ";
 		}
 		public static class INPUTMASK
 		{
-			public static final String MAIN = " " + CLASS_PREFIX +  ID.INPUTMASK + " ";
+			public static final String MAIN = " " + CLASS_PREFIX + ID.INPUTMASK + " ";
 		}
 		
 		public static class IMG
 		{
-			public static final String MAIN = " " + CLASS_PREFIX +  ID.IMG + " ";
+			public static final String MAIN = " " + CLASS_PREFIX + ID.IMG + " ";
 		}
 
 		public static class CHECKBOX
@@ -395,61 +400,61 @@ public class  DBSFaces {
 
 		public static class BUTTON
 		{
-			public static final String MAIN = " " + CLASS_PREFIX +  ID.BUTTON + " ";
+			public static final String MAIN = " " + CLASS_PREFIX + ID.BUTTON + " ";
 		}
 		public static class DIV
 		{
-			public static final String MAIN = " " + CLASS_PREFIX +  ID.DIV + " ";
+			public static final String MAIN = " " + CLASS_PREFIX + ID.DIV + " ";
 		}
 		public static class NAV
 		{
-			public static final String MAIN = " " + CLASS_PREFIX +  ID.NAV + " ";
+			public static final String MAIN = " " + CLASS_PREFIX + ID.NAV + " ";
 		}
 		
 		public static class MENU
 		{
-			public static final String MAIN = " " + CLASS_PREFIX +  ID.MENU + " ";
+			public static final String MAIN = " " + CLASS_PREFIX + ID.MENU + " ";
 		}
 
 		public static class MENUITEM
 		{
-			public static final String MAIN = " " + CLASS_PREFIX +  ID.MENUITEM + " ";
+			public static final String MAIN = " " + CLASS_PREFIX + ID.MENUITEM + " ";
 		}
 		
 		public static class MENUITEMSEPARATOR
 		{
-			public static final String MAIN = " " + CLASS_PREFIX +  ID.MENUITEMSEPARATOR + " ";
+			public static final String MAIN = " " + CLASS_PREFIX + ID.MENUITEMSEPARATOR + " ";
 		}
 		
 		public static class COMPONENTTREE
 		{
-			public static final String MAIN = " " + CLASS_PREFIX +  ID.COMPONENTTREE + " ";
+			public static final String MAIN = " " + CLASS_PREFIX + ID.COMPONENTTREE + " ";
 		}
 		
 		
 		public static class LINK
 		{
-			public static final String MAIN = " " + CLASS_PREFIX +  ID.LINK + " ";
+			public static final String MAIN = " " + CLASS_PREFIX + ID.LINK + " ";
 		}
 		
 		public static class LOADING
 		{
-			public static final String MAIN = " " + CLASS_PREFIX +  ID.LOADING + " ";
+			public static final String MAIN = " " + CLASS_PREFIX + ID.LOADING + " ";
 		}
 		
 		public static class TAB
 		{
-			public static final String MAIN = " " + CLASS_PREFIX +  ID.TAB + " ";
+			public static final String MAIN = " " + CLASS_PREFIX + ID.TAB + " ";
 		}
 
 		public static class TABPAGE
 		{
-			public static final String MAIN = " " + CLASS_PREFIX +  ID.TABPAGE + " ";
+			public static final String MAIN = " " + CLASS_PREFIX + ID.TABPAGE + " ";
 		}
 
 		public static class ACCORDION
 		{
-			public static final String MAIN = " " + CLASS_PREFIX +  ID.ACCORDION + " ";
+			public static final String MAIN = " " + CLASS_PREFIX + ID.ACCORDION + " ";
 			public static final String SECTION = " " + MAIN.trim() + "_section ";
 			public static final String SECTION_CAPTION = " " + SECTION.trim() + MODIFIER.CAPTION.trim() + " ";
 			public static final String SECTION_CONTAINER = " " + SECTION.trim() + MODIFIER.CONTAINER.trim() + " ";
@@ -457,7 +462,7 @@ public class  DBSFaces {
 
 		public static class CALENDAR
 		{
-			public static final String MAIN = " " + CLASS_PREFIX +  ID.CALENDAR + " ";
+			public static final String MAIN = " " + CLASS_PREFIX + ID.CALENDAR + " ";
 			public static final String DAYS = " " + MAIN.trim() + "_days ";
 			public static final String MONTH = " " + MAIN.trim() +  "_month ";
 			public static final String YEAR = " " + MAIN.trim() +  "_year ";
