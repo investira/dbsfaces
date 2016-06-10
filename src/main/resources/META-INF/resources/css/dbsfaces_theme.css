@@ -1,14 +1,14 @@
 .-th_fc{
-	color:rgba(13,25,45);
+	color:rgb(13,25,45);
 }
-.-th_fc.-i{
+.-th_fc.-th_i{
 	color:white;
 }
 .-th_bc{
-	background-color:rgb(13,25,45);
-}
-.-th_bc.-i{
 	background-color:white;
+}
+.-th_bc.-th_i{
+	background-color:rgb(13,25,45);
 }
 
 .-th_action{

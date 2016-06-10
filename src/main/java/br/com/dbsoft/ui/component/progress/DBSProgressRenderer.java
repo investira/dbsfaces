@@ -9,6 +9,7 @@ import javax.faces.render.FacesRenderer;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.util.DBSNumber;
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSProgress.RENDERER_TYPE)
@@ -36,17 +37,17 @@ public class DBSProgressRenderer extends DBSRenderer {
 		DBSProgress xProgress = (DBSProgress) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xProgress.getClientId(pContext);
-		String xClass = DBSFaces.CSS.PROGRESS.MAIN;
+		String xClass = CSS.PROGRESS.MAIN;
 		if (xProgress.getStyleClass()!=null){
 			xClass = xClass + xProgress.getStyleClass();
 		}
 		xWriter.startElement("div", xProgress);
 			if (shouldWriteIdAttribute(pComponent)){
-				xWriter.writeAttribute("id", xClientId, "id");
-				xWriter.writeAttribute("name", xClientId, "name");
+				DBSFaces.setAttribute(xWriter, "id", xClientId);
+				DBSFaces.setAttribute(xWriter, "name", xClientId);
 			}
-			xWriter.writeAttribute("class", xClass, "class");
-			DBSFaces.setAttribute(xWriter, "style", xProgress.getStyle(), null);
+			DBSFaces.setAttribute(xWriter, "class", xClass);
+			DBSFaces.setAttribute(xWriter, "style", xProgress.getStyle());
 //				DBSFaces.encodeLabel(pContext, xProgress, xWriter);
 				pvEncodeProgress(xProgress, xWriter);
 			DBSFaces.encodeTooltip(pContext, xProgress, xProgress.getTooltip().toString());
@@ -62,7 +63,7 @@ public class DBSProgressRenderer extends DBSRenderer {
 		Double xValueWidth = 0D;
 		String xValueStyle = "";
 		String xStyle = "width:" + xWidth + "px";
-		String xClassLabel = DBSFaces.CSS.MODIFIER.LABEL;
+		String xClassLabel = CSS.MODIFIER.LABEL;
 		String xTextLabel = "";
 		String xClassLoading = "";
 		//Exibe já preenchido se não houver valor máximo
@@ -94,23 +95,23 @@ public class DBSProgressRenderer extends DBSRenderer {
 			xTextLabel  = "Ok";
 		//Iniciado
 		}else if (xF > 0){
-			xClassLoading = DBSFaces.CSS.MODIFIER.LOADING;
+			xClassLoading = CSS.MODIFIER.LOADING;
 			xTextLabel = xF.intValue() + "%";
 		}
 		pWriter.startElement("div", pProgress);
-		DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER, null);
+		DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
 			pWriter.startElement("div", pProgress);
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
 				DBSFaces.setAttribute(pWriter, "style", xStyle, null);
 				pWriter.startElement("div", pProgress);
 					DBSFaces.setAttribute(pWriter, "class", xClassLoading, null);
 				pWriter.endElement("div");
 				pWriter.startElement("div", pProgress);
-					DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.VALUE, null);
-					DBSFaces.setAttribute(pWriter, "style", xValueStyle, null);
+					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.VALUE);
+					DBSFaces.setAttribute(pWriter, "style", xValueStyle);
 				pWriter.endElement("div");
 				pWriter.startElement("div", pProgress);
-					DBSFaces.setAttribute(pWriter, "class", xClassLabel, null);
+					DBSFaces.setAttribute(pWriter, "class", xClassLabel);
 					pWriter.write(xTextLabel);
 				pWriter.endElement("div");
 			pWriter.endElement("div");

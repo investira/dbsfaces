@@ -16,6 +16,7 @@ import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.util.DBSString;
 
 
@@ -49,7 +50,7 @@ public class DBSLinkRenderer extends DBSRenderer {
 		if (!pComponent.isRendered()){return;}
 		DBSLink xLink = (DBSLink) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
-		String xClass = DBSFaces.CSS.NOT_SELECTABLE + xLink.getStyleClass();
+		String xClass = CSS.NOT_SELECTABLE + xLink.getStyleClass();
 		String xOnClick = null;
 		String xExecute = "";
 		if (xLink.getExecute() == null){
@@ -59,7 +60,7 @@ public class DBSLinkRenderer extends DBSRenderer {
 		}
 		
 		if (xLink.getReadOnly()){
-			xClass += " " + DBSFaces.CSS.MODIFIER.DISABLED;
+			xClass += CSS.MODIFIER.DISABLED;
 		}
 
 		if (xLink.getExecute() != null
@@ -75,18 +76,18 @@ public class DBSLinkRenderer extends DBSRenderer {
 		}else{
 			xWriter.startElement("a", xLink);
 		}
-			xWriter.writeAttribute("id", xClientId, "id");
-			xWriter.writeAttribute("name", xClientId, "name");
-			xWriter.writeAttribute("class", xClass, "class"); 
-			DBSFaces.setAttribute(xWriter, "style", xLink.getStyle(), null);
+			DBSFaces.setAttribute(xWriter, "id", xClientId);
+			DBSFaces.setAttribute(xWriter, "name", xClientId);
+			DBSFaces.setAttribute(xWriter, "class", xClass); 
+			DBSFaces.setAttribute(xWriter, "style", xLink.getStyle());
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xLink, DBSPassThruAttributes.getAttributes(Key.LINK));
 			
 			if (xLink.getActionExpression() != null
 	 		 && xOnClick != null ){				
 //				xWriter.writeAttribute("ontouchstart", "", "ontouchstart"); //Para ipad ativar o css:ACTIVE
-				xWriter.writeAttribute("type", "submit", "type"); 
+				DBSFaces.setAttribute(xWriter, "type", "submit"); 
 				//if (xLink.getUpdate()!=null){
-					DBSFaces.setAttribute(xWriter, DBSFaces.HTML.EVENTS.ONCLICK, xOnClick, null); 
+					DBSFaces.setAttribute(xWriter, DBSFaces.HTML.EVENTS.ONCLICK, xOnClick); 
 				//}
 			}else{
 				pvRenderHref(pContext, xWriter, xLink);

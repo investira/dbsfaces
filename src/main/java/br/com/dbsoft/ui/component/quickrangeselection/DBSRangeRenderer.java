@@ -10,6 +10,7 @@ import javax.faces.render.FacesRenderer;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSRange.RENDERER_TYPE)
@@ -37,18 +38,18 @@ public class DBSRangeRenderer extends DBSRenderer {
 		if (!pComponent.isRendered()){return;}
 		DBSRange xRange = (DBSRange) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
-		String xClass = DBSFaces.CSS.RANGE.MAIN;
+		String xClass = CSS.RANGE.MAIN;
 		
 		
 		xWriter.startElement("span", xRange);
-			DBSFaces.setAttribute(xWriter, "id", xRange.getClientId(pContext), null);
-			DBSFaces.setAttribute(xWriter, "class", xClass, null);
-			DBSFaces.setAttribute(xWriter, "style", "display:none;", null);
-			DBSFaces.setAttribute(xWriter, "label", xRange.getLabel(), null);
-			DBSFaces.setAttribute(xWriter, "value1", xRange.getValue1(), null);
-			DBSFaces.setAttribute(xWriter, "value2", xRange.getValue2(), null);
-			DBSFaces.setAttribute(xWriter, "tooltip", xRange.getTooltip(), null);
-			DBSFaces.setAttribute(xWriter, "iconclass", xRange.getIconClass(), null);
+			DBSFaces.setAttribute(xWriter, "id", xRange.getClientId(pContext));
+			DBSFaces.setAttribute(xWriter, "class", xClass);
+			DBSFaces.setAttribute(xWriter, "style", "display:none;");
+			DBSFaces.setAttribute(xWriter, "label", xRange.getLabel());
+			DBSFaces.setAttribute(xWriter, "value1", xRange.getValue1());
+			DBSFaces.setAttribute(xWriter, "value2", xRange.getValue2());
+			DBSFaces.setAttribute(xWriter, "tooltip", xRange.getTooltip());
+			DBSFaces.setAttribute(xWriter, "iconclass", xRange.getIconClass());
 		xWriter.endElement("span");
 	}
 	

@@ -12,6 +12,7 @@ import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.button.DBSButton;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.util.DBSObject;
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSDialog.RENDERER_TYPE)
@@ -40,7 +41,7 @@ public class DBSDialogRenderer extends DBSRenderer {
 		DBSDialog 			xDialog = (DBSDialog) pComponent;
 		ResponseWriter 		xWriter = pContext.getResponseWriter();
 		String 				xClientId = xDialog.getClientId(pContext);
-		String 				xClass = DBSFaces.CSS.DIALOG.MAIN + " ";
+		String 				xClass = CSS.DIALOG.MAIN + " ";
 		String 				xStyle = "";
 		MESSAGE_TYPE 		xMT = MESSAGE_TYPE.get(xDialog.getMessageType());
 		if (xDialog.getWidth() != null
@@ -66,19 +67,19 @@ public class DBSDialogRenderer extends DBSRenderer {
 	
 		//Mascará de fundo
 		xWriter.startElement("div", xDialog);
-			xWriter.writeAttribute("id", xClientId, null);
-			xWriter.writeAttribute("name", xClientId, null);
-			xWriter.writeAttribute("class", xClass, null);
+			DBSFaces.setAttribute(xWriter, "id", xClientId);
+			DBSFaces.setAttribute(xWriter, "name", xClientId);
+			DBSFaces.setAttribute(xWriter, "class", xClass);
 			//DIALOG
 			xWriter.startElement("div", xDialog);
 				xClass = "-dialog ";
 				if (xDialog.getStyleClass()!=null){
 					xClass += xDialog.getStyleClass();
 				}
-				xWriter.writeAttribute("class", xClass, null); 
-				xWriter.writeAttribute("style", xStyle, null);
+				DBSFaces.setAttribute(xWriter, "class", xClass); 
+				DBSFaces.setAttribute(xWriter, "style", xStyle);
 				xWriter.startElement("div", xDialog);
-					xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER, null); 
+					DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER); 
 
 					pvEncodeTable(pContext, xWriter, xDialog);
 				
@@ -103,8 +104,8 @@ public class DBSDialogRenderer extends DBSRenderer {
 
 	private void pvEncodeTable(FacesContext pContext, ResponseWriter pWriter, DBSDialog pDialog) throws IOException{
 		pWriter.startElement("table", pDialog);
-			pWriter.writeAttribute("cellspacing", "0px", null);
-			pWriter.writeAttribute("cellpadding", "0px", null);
+			DBSFaces.setAttribute(pWriter, "cellspacing", "0px", null);
+			DBSFaces.setAttribute(pWriter, "cellpadding", "0px", null);
 			
 			//HEADER
 			pWriter.startElement("thead", pDialog);
@@ -148,11 +149,11 @@ public class DBSDialogRenderer extends DBSRenderer {
 
 		if (xCaption!=null){
 			pWriter.startElement("tr", pDialog);
-				pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CAPTION + DBSFaces.CSS.BACK_TEXTURE_BLACK_GRADIENT, null);
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CAPTION + CSS.BACK_TEXTURE_BLACK_GRADIENT);
 				pWriter.startElement("th", pDialog);
-					pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER, null);
+					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
 					pWriter.startElement("div", pDialog);
-						pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.LABEL + DBSFaces.CSS.NOT_SELECTABLE, null);
+						DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.LABEL + CSS.NOT_SELECTABLE);
 						pWriter.write(xCaption);
 					pWriter.endElement("div");
 				pWriter.endElement("th");
@@ -171,9 +172,9 @@ public class DBSDialogRenderer extends DBSRenderer {
 		UIComponent xToolbar = pDialog.getFacet("toolbar");
 		if (xToolbar!=null){
 			pWriter.startElement("tr", pDialog);
-				pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.TOOLBAR + DBSFaces.CSS.BACK_TEXTURE_WHITE_TRANSPARENT, null);
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.TOOLBAR + CSS.BACK_TEXTURE_WHITE_TRANSPARENT);
 				pWriter.startElement("th", pDialog);
-					pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER, null);
+					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
 					//Conteúdo
 					xToolbar.encodeAll(pContext);
 				pWriter.endElement("th");
@@ -193,31 +194,31 @@ public class DBSDialogRenderer extends DBSRenderer {
 		String			xIconId = pDialog.getClientId() + "_icon"; //Id para ser utilizado no tooptip do icon.
 
 		pWriter.startElement("tr", pDialog);
-			String xClass = DBSFaces.CSS.MODIFIER.MESSAGE;
+			String xClass = CSS.MODIFIER.MESSAGE;
 			if (xMT == null){
-				xClass += DBSFaces.CSS.BACK_GRADIENT_WHITE;
+				xClass += CSS.BACK_GRADIENT_WHITE;
 			}else{
-				xClass += DBSFaces.CSS.BACK_TEXTURE_BLACK_GRADIENT;
+				xClass += CSS.BACK_TEXTURE_BLACK_GRADIENT;
 			}
-			pWriter.writeAttribute("class",xClass, null);
+			DBSFaces.setAttribute(pWriter, "class",xClass, null);
 			pWriter.startElement("td", pDialog);
-				pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER, null);
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
 				pWriter.startElement("table", pDialog);
-					pWriter.writeAttribute("cellspacing", "0px", null);
-					pWriter.writeAttribute("cellpadding", "0px", null);
+					DBSFaces.setAttribute(pWriter, "cellspacing", "0px");
+					DBSFaces.setAttribute(pWriter, "cellpadding", "0px");
 					pWriter.startElement("tbody", pDialog);
 						pWriter.startElement("tr", pDialog);
-		//					pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT, null);
+		//					pWriter.writeAttribute("class", CSS.MODIFIER.CONTENT, null);
 							//Icone da mensagem
 							if (xMT != null){
 								pWriter.startElement("td", pDialog);
-									pWriter.writeAttribute("colspan", 0, null);
-									pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.ICON, null);
+									DBSFaces.setAttribute(pWriter, "colspan", 0, null);
+									DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON);
 		//							pWriter.startElement("div", pDialog);
-		//								pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER, null);
+		//								pWriter.writeAttribute("class", CSS.MODIFIER.CONTAINER, null);
 													pWriter.startElement("div", pDialog);
-														pWriter.writeAttribute("id", xIconId, null);
-														pWriter.writeAttribute("class", xMT.getIconClass(), null);
+														DBSFaces.setAttribute(pWriter, "id", xIconId);
+														DBSFaces.setAttribute(pWriter, "class", xMT.getIconClass());
 														DBSFaces.encodeTooltip(pContext, pDialog, pDialog.getTooltip(), xIconId);
 													pWriter.endElement("div");
 		//							pWriter.endElement("div");
@@ -225,10 +226,10 @@ public class DBSDialogRenderer extends DBSRenderer {
 							}
 							//Conteúdo do dialog/mensagem
 							pWriter.startElement("td", pDialog);
-								pWriter.writeAttribute("colspan", 0, null);
-								pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER, null);
+								DBSFaces.setAttribute(pWriter, "colspan", 0);
+								DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
 								pWriter.startElement("div", pDialog);
-									pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT, null);
+									DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
 									DBSFaces.renderChildren(pContext, pDialog);
 								pWriter.endElement("div");
 							pWriter.endElement("td");
@@ -255,20 +256,20 @@ public class DBSDialogRenderer extends DBSRenderer {
 			return;
 		}
 		pWriter.startElement("tr", pDialog);
-			pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.FOOTER + DBSFaces.CSS.BACK_TEXTURE_BLACK, null);
+			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.FOOTER + CSS.BACK_TEXTURE_BLACK);
 			//Linha horizontal-------------
 
 			//Conteudo-------------
 			pWriter.startElement("td", pDialog);
-				pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER, null);
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
 				//Linha horizontal-------------
 				pWriter.startElement("span", pDialog);
-					pWriter.writeAttribute("class", " -line -horizontalLineAfter -black", null);
+					DBSFaces.setAttribute(pWriter, "class", " -line -horizontalLineAfter -black");
 				pWriter.endElement("span");
 					//Botoes padrão ----------------
 					if (pvHasFooterAction(pDialog)){
 						pWriter.startElement("div", pDialog);
-							pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.BUTTON, null);
+							DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.BUTTON);
 							if (!DBSObject.isEmpty(pDialog.getNoAction())){
 								pvEncodeButton(pContext,pDialog,pDialog.getNoAction(),"btno", "Não","-i_no -red");
 							}
@@ -283,7 +284,7 @@ public class DBSDialogRenderer extends DBSRenderer {
 					//Footer do usuário ----------------
 					if (xFooter!=null){
 						pWriter.startElement("div", pDialog);
-							pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT, null);
+							DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
 							xFooter.encodeAll(pContext);
 						pWriter.endElement("div");
 					}
@@ -299,7 +300,7 @@ public class DBSDialogRenderer extends DBSRenderer {
 			xBtn = (DBSButton) FacesContext.getCurrentInstance().getApplication().createComponent(DBSButton.COMPONENT_TYPE);
 			xBtn.setId(pId);
 			xBtn.setLabel(pLabel);
-			xBtn.setIconClass(DBSFaces.CSS.MODIFIER.ICON + pIconClass);
+			xBtn.setIconClass(CSS.MODIFIER.ICON + pIconClass);
 //			xBtn.setActionExpression(pContext.getApplication().getExpressionFactory().createMethodExpression(pContext.getELContext(), pMethod, String.class, new Class[0]));
 			//Se for EL...
 			if (pMethod.startsWith("#")){

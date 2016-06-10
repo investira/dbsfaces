@@ -16,6 +16,7 @@ import br.com.dbsoft.ui.component.button.DBSButton;
 import br.com.dbsoft.ui.component.menuitem.DBSMenuitem;
 
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSString;
 
@@ -89,7 +90,7 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 		ResponseWriter 		xWriter = pContext.getResponseWriter();
     	xComponenttree.setRowIndex(-1);
 		String 				xClientId = xComponenttree.getClientId();
-		String				xClass = DBSFaces.CSS.COMPONENTTREE.MAIN + " " + DBSFaces.getInputDataClass(pComponent);
+		String				xClass = CSS.COMPONENTTREE.MAIN + " " + DBSFaces.getInputDataClass(pComponent);
 		if (xComponenttree.getStyleClass()!=null){
 			xClass += " " + xComponenttree.getStyleClass();
 		}
@@ -103,33 +104,33 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 		}	
 		
 		if (xComponenttree.getReadOnly()){		
-			xClass = xClass + DBSFaces.CSS.MODIFIER.READONLY;
+			xClass = xClass + CSS.MODIFIER.READONLY;
 		}
 		
 		//Se houver filhos ou facets como filhos
 		if (xComponenttree.getChildCount() > 0 ||
 			xComponenttree.getFacetCount() > 0){
 			xWriter.startElement("div", xComponenttree);
-				DBSFaces.setAttribute(xWriter, "id", xClientId, null);
-				DBSFaces.setAttribute(xWriter, "name", xClientId, null);
-				DBSFaces.setAttribute(xWriter, "class", xClass, null);
-				DBSFaces.setAttribute(xWriter, "style", xComponenttree.getStyle(), null);
+				DBSFaces.setAttribute(xWriter, "id", xClientId);
+				DBSFaces.setAttribute(xWriter, "name", xClientId);
+				DBSFaces.setAttribute(xWriter, "class", xClass);
+				DBSFaces.setAttribute(xWriter, "style", xComponenttree.getStyle());
 
 				encodeClientBehaviors(pContext, xComponenttree);
 
 				xWriter.startElement("div", xComponenttree);
-					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER, null);
+					DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
 
 					//Encode das informações adicionais dos componentes filhos
 					xWriter.startElement("ul", pComponent);
-						DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.EXTRAINFO, null);
+						DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.EXTRAINFO);
 						xComponenttree.setRowIndex(0);
 						pvEncodeExtraInfo(pContext, xWriter, xComponenttree, xComponenttree.getFacetsAndChildren());
 					xWriter.endElement("ul");
 					
 					//Encode da lista dos componentes filhos
 					xWriter.startElement("ul", pComponent);
-						DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CAPTION, null);
+						DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CAPTION);
 						xComponenttree.setRowIndex(0);
 						pvEncodeNodes(pContext, xWriter, xComponenttree, xComponenttree.getFacetsAndChildren());
 						xComponenttree.setRowIndex(-1);
@@ -175,10 +176,10 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 					pWriter.startElement("li", pComponenttree);
 						//Encode do face 'extrainfo' 
 						pWriter.startElement("span", pComponenttree);
-							DBSFaces.setAttribute(pWriter, "id", xChild.getClientId() + DBSFaces.CSS.MODIFIER.EXTRAINFO.trim(), null);
-							DBSFaces.setAttribute(pWriter, "name", xChild.getClientId() + DBSFaces.CSS.MODIFIER.EXTRAINFO.trim(), null);
-							DBSFaces.setAttribute(pWriter, "key", xKey, null);
-							DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.LABEL, null);
+							DBSFaces.setAttribute(pWriter, "id", xChild.getClientId() + CSS.MODIFIER.EXTRAINFO.trim());
+							DBSFaces.setAttribute(pWriter, "name", xChild.getClientId() + CSS.MODIFIER.EXTRAINFO.trim());
+							DBSFaces.setAttribute(pWriter, "key", xKey);
+							DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.LABEL);
 							//Encode do face 'extrainfo' SOMENTE se for o último item filho ou
 							//Não, dependento do parametro getExtraInfoOnLastChildOnly() 
 							if ((pComponenttree.getExtraInfoOnLastChildOnly() && xChild.getChildCount() == 0)
@@ -198,7 +199,7 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 						pWriter.endElement("span");
 						//Encode dos filhos 
 						pWriter.startElement("div", pComponenttree);
-							DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
+							DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
 							if (xChild.getChildCount()>0){
 								pWriter.startElement("div", pComponenttree);
 									if (!pvExpand(pComponenttree, xKey)){
@@ -274,44 +275,44 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 					pWriter.startElement("li", pComponenttree);
 						//Encode da lista dos componentes
 						pWriter.startElement("span", pComponenttree);
-							String xClass = DBSFaces.CSS.MODIFIER.LABEL;
+							String xClass = CSS.MODIFIER.LABEL;
 							if (xChild.getChildCount() == 0){
-								xClass += DBSFaces.CSS.MODIFIER.LAST;
+								xClass += CSS.MODIFIER.LAST;
 							}
-							DBSFaces.setAttribute(pWriter, "id", xChild.getClientId(), null);
-							DBSFaces.setAttribute(pWriter, "name", xChild.getClientId(), null);
-							DBSFaces.setAttribute(pWriter, "class", xClass, null);
-							DBSFaces.setAttribute(pWriter, "key", xKey, null);
+							DBSFaces.setAttribute(pWriter, "id", xChild.getClientId());
+							DBSFaces.setAttribute(pWriter, "name", xChild.getClientId());
+							DBSFaces.setAttribute(pWriter, "class", xClass);
+							DBSFaces.setAttribute(pWriter, "key", xKey);
 
 							pWriter.startElement("div", pComponenttree);
 								pWriter.startElement("span", pComponenttree);
 								if (xChild.getChildCount()>0){
 									if (pvExpand(pComponenttree, xKey)){
-										DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CLOSABLE + " -i_subtract -small ", null);
+										DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CLOSABLE + " -i_subtract -small ");
 									}else{
-										DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CLOSABLE + " -i_add -small ", null);
+										DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CLOSABLE + " -i_add -small ");
 									}
 								}
 								pWriter.endElement("span");
 								pWriter.startElement("span", pComponenttree);
-									DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.ICON + xIconClass, null);
+									DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON + xIconClass);
 //									pWriter.startElement("span", pComponenttree);
-//										pWriter.writeAttribute("class", xIconClass, null);
+//										pWriter.writeAttribute("class", xIconClass);
 //									pWriter.endElement("span");
 								pWriter.endElement("span");
 								pWriter.startElement("span", pComponenttree);
-									DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.VALUE, null);
+									DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.VALUE);
 									pWriter.write(xValue);
 								pWriter.endElement("span");
 							pWriter.endElement("div");
 						pWriter.endElement("span");	
 						//Encode dos filhos 
 						pWriter.startElement("div", pComponenttree);
-							DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
+							DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
 							if (xChild.getChildCount()>0){
 								pWriter.startElement("div", pComponenttree);
 									if (!pvExpand(pComponenttree, xKey)){
-										pWriter.writeAttribute("style", "display:none;", null);
+										DBSFaces.setAttribute(pWriter, "style", "display:none;");
 									}
 									pWriter.startElement("ul", pComponenttree);
 							    		pvEncodeNodes(pContext, pWriter, pComponenttree, xChild.getFacetsAndChildren());
@@ -334,10 +335,10 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 	 */
 	private void pvEncodeSelection(FacesContext pContext, ResponseWriter pWriter, DBSComponentTree pComponenttree) throws IOException  {
 		pWriter.startElement("input", pComponenttree);
-			DBSFaces.setAttribute(pWriter, "id", pvGetFxExpandedIds(pComponenttree), null);
-			DBSFaces.setAttribute(pWriter, "name", pvGetFxExpandedIds(pComponenttree), null);
-			DBSFaces.setAttribute(pWriter, "type", "hidden", null);
-			DBSFaces.setAttribute(pWriter, "value", pComponenttree.getExpandedIds(), null);
+			DBSFaces.setAttribute(pWriter, "id", pvGetFxExpandedIds(pComponenttree));
+			DBSFaces.setAttribute(pWriter, "name", pvGetFxExpandedIds(pComponenttree));
+			DBSFaces.setAttribute(pWriter, "type", "hidden");
+			DBSFaces.setAttribute(pWriter, "value", pComponenttree.getExpandedIds());
 		pWriter.endElement("input");	
 		
 		UIComponent xExtraInfo = pComponenttree.getFacet(DBSComponentTree.FACET_EXTRAINFO);
@@ -346,16 +347,16 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 			!(xExtraInfo==null)){
 			//Campo que conterá o item selectionado
 			pWriter.startElement("input", pComponenttree);
-				DBSFaces.setAttribute(pWriter, "id", pvGetFxSelectedClientId(pComponenttree), null);
-				DBSFaces.setAttribute(pWriter, "name", pvGetFxSelectedClientId(pComponenttree), null);
-				DBSFaces.setAttribute(pWriter, "type", "hidden", null);
-				DBSFaces.setAttribute(pWriter, "value", pComponenttree.getValue(), null);
+				DBSFaces.setAttribute(pWriter, "id", pvGetFxSelectedClientId(pComponenttree));
+				DBSFaces.setAttribute(pWriter, "name", pvGetFxSelectedClientId(pComponenttree));
+				DBSFaces.setAttribute(pWriter, "type", "hidden");
+				DBSFaces.setAttribute(pWriter, "value", pComponenttree.getValue());
 			pWriter.endElement("input");						
 		}
 	}
 	
 	private String pvGetFxSelectedClientId(UIComponent pInputText){
-		return pInputText.getClientId() + DBSFaces.ID_SEPARATOR + "selection" + DBSFaces.CSS.MODIFIER.INPUT.trim();
+		return pInputText.getClientId() + DBSFaces.ID_SEPARATOR + "selection" + CSS.MODIFIER.INPUT.trim();
 	}
 	
 	private String pvGetFxExpandedIds(UIComponent pInputText){

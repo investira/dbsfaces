@@ -13,6 +13,7 @@ import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSParallaxSection.RENDERER_TYPE)
@@ -40,15 +41,15 @@ public class DBSParallaxSectionRenderer extends DBSRenderer {
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xParallaxSection.getClientId(pContext);
 		
-		String xClass = DBSFaces.CSS.PARALLAXSECTION.MAIN;
+		String xClass = CSS.PARALLAXSECTION.MAIN;
 		if (xParallaxSection.getStyleClass()!=null){
 			xClass += xParallaxSection.getStyleClass();
 		}
 		xWriter.startElement("div", xParallaxSection);
-			DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER, null);
+			DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
 			if (shouldWriteIdAttribute(xParallaxSection)){
-				DBSFaces.setAttribute(xWriter, "id", xClientId + "_container", null);
-				DBSFaces.setAttribute(xWriter, "name", xClientId + "_container", null);
+				DBSFaces.setAttribute(xWriter, "id", xClientId + "_container");
+				DBSFaces.setAttribute(xWriter, "name", xClientId + "_container");
 			}
 
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xParallaxSection, DBSPassThruAttributes.getAttributes(Key.PARALLAX));

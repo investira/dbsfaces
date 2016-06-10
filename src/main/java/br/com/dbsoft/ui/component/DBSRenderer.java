@@ -27,7 +27,7 @@ import org.apache.log4j.Logger;
 import com.sun.faces.renderkit.RenderKitUtils;
 import com.sun.faces.renderkit.html_basic.HtmlBasicRenderer.Param;
 
-import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.util.DBSString;
 
 public class DBSRenderer extends Renderer {
@@ -275,7 +275,7 @@ public class DBSRenderer extends Renderer {
 	 * @return
 	 */
 	public String getInputDataClientId(UIComponent pComponent){
-		return pComponent.getClientId() + DBSFaces.CSS.MODIFIER.DATA.trim();
+		return pComponent.getClientId() + CSS.MODIFIER.DATA.trim();
 	}
 	
     /**

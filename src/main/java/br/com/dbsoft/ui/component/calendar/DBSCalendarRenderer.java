@@ -12,6 +12,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
 
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.util.DBSDate;
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSCalendar.RENDERER_TYPE)
@@ -42,7 +43,7 @@ public class DBSCalendarRenderer extends DBSRenderer {
 		DBSCalendar xCalendar = (DBSCalendar) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xCalendar.getClientId(pContext);
-		String xClass = DBSFaces.CSS.CALENDAR.MAIN;
+		String xClass = CSS.CALENDAR.MAIN;
 		
 		if (xCalendar.getStyleClass()!=null){
 			xClass += xCalendar.getStyleClass();
@@ -56,7 +57,7 @@ public class DBSCalendarRenderer extends DBSRenderer {
 
 			//Container
 			xWriter.startElement("div", xCalendar);
-				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER);
+				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
 	
 				pvEncodeHeader(pContext, xWriter, xCalendar);
 				pvEncodeDays(xWriter, xCalendar);
@@ -68,14 +69,14 @@ public class DBSCalendarRenderer extends DBSRenderer {
 	private void pvEncodeHeader(FacesContext pContext, ResponseWriter pWriter, DBSCalendar pCalendar) throws IOException{
 		/*Título Mes/Anos*/
 		pWriter.startElement("div", pCalendar);
-			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CAPTION);
+			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CAPTION);
 			
 			pvCreateComboMes(pContext, pCalendar);
 			pvCreateInputAno(pContext, pCalendar);
 
 		pWriter.endElement("div");	
 		pWriter.startElement("span", pCalendar);
-			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.HORIZONTAL_LINE_WHITE);
+			DBSFaces.setAttribute(pWriter, "class", CSS.HORIZONTAL_LINE_WHITE);
 		pWriter.endElement("span");		
 	}
 
@@ -83,10 +84,10 @@ public class DBSCalendarRenderer extends DBSRenderer {
 	private void pvEncodeDays(ResponseWriter pWriter, DBSCalendar pCalendar) throws IOException{
 		/*Dias*/
 		pWriter.startElement("div", pCalendar);
-			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.CALENDAR.DAYS);
+			DBSFaces.setAttribute(pWriter, "class", CSS.CALENDAR.DAYS);
 			pWriter.startElement("div", pCalendar);
 				pWriter.startElement("div", pCalendar);
-					DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CAPTION);
+					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CAPTION);
 					pWriter.startElement("span", pCalendar);
 						pWriter.write("S");
 					pWriter.endElement("span");
@@ -112,7 +113,7 @@ public class DBSCalendarRenderer extends DBSRenderer {
 					pWriter.endElement("span");
 				pWriter.endElement("div");
 				pWriter.startElement("div", pCalendar);
-					DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT);
+					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
 					pWriter.startElement("div", pCalendar);
 						pvEndodeDias(pWriter,pCalendar);
 					pWriter.endElement("div");
@@ -130,9 +131,9 @@ public class DBSCalendarRenderer extends DBSRenderer {
 		while (!xInicio.equals(xFim)){
 			pWriter.startElement("span", pCalendar);
 				if (DBSDate.getMonth(xInicio) != xMes){
-					DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.DISABLED);
+					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.DISABLED);
 				}else if(xInicio.equals(xDate)){
-					DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.SELECTED);
+					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.SELECTED);
 				}
 				pWriter.write(DBSDate.getDay(xInicio).toString());
 			pWriter.endElement("span");
@@ -164,7 +165,7 @@ public class DBSCalendarRenderer extends DBSRenderer {
 		if (xComboMes == null){
 			xComboMes = (DBSCombobox) pContext.getApplication().createComponent(DBSCombobox.COMPONENT_TYPE);
 			xComboMes.setId("mes");
-			xComboMes.setStyleClass(DBSFaces.CSS.CALENDAR.MONTH);
+			xComboMes.setStyleClass(CSS.CALENDAR.MONTH);
 			xComboMes.setSize(10);
 			
 			//Inclui nomes dos meses na lista
@@ -183,7 +184,7 @@ public class DBSCalendarRenderer extends DBSRenderer {
 		if (xComboAno == null){
 			xComboAno = (DBSCombobox) pContext.getApplication().createComponent(DBSCombobox.COMPONENT_TYPE);
 			xComboAno.setId("ano");
-			xComboAno.setStyleClass(DBSFaces.CSS.CALENDAR.YEAR);
+			xComboAno.setStyleClass(CSS.CALENDAR.YEAR);
 			xComboAno.setSize(6);
 			
 			//Inclui nomes dos meses na lista

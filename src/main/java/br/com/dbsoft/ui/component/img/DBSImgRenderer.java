@@ -9,6 +9,7 @@ import javax.faces.render.FacesRenderer;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSImg.RENDERER_TYPE)
 public class DBSImgRenderer extends DBSRenderer {
@@ -34,24 +35,24 @@ public class DBSImgRenderer extends DBSRenderer {
 		if (!pComponent.isRendered()){return;}
 		DBSImg xImg = (DBSImg) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
-		String xClass = DBSFaces.CSS.IMG.MAIN;
+		String xClass = CSS.IMG.MAIN;
 		if (xImg.getStyleClass() != null){
 			xClass += " " + xImg.getStyleClass(); 
 		}
 		xWriter.startElement("div", xImg);
 			if (shouldWriteIdAttribute(xImg)){
-				DBSFaces.setAttribute(xWriter, "id", xImg.getClientId(pContext), null);
+				DBSFaces.setAttribute(xWriter, "id", xImg.getClientId(pContext));
 			}
-			DBSFaces.setAttribute(xWriter, "style", xImg.getStyle(), null);
-			DBSFaces.setAttribute(xWriter, "class", xClass, null);
+			DBSFaces.setAttribute(xWriter, "style", xImg.getStyle());
+			DBSFaces.setAttribute(xWriter, "class", xClass);
 			if (xImg.getSrc()!=null 
 			 || xImg.getChildren().size() > 0){
 				String xEle = (xImg.getSrc()==null) ? "span":"img";
 				xWriter.startElement(xEle, xImg);
-					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
-					DBSFaces.setAttribute(xWriter, "alt", xImg.getAlt(), null);
+					DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTENT);
+					DBSFaces.setAttribute(xWriter, "alt", xImg.getAlt());
 					if (xImg.getSrc()!=null){
-						DBSFaces.setAttribute(xWriter, "src", xImg.getSrc(), null);
+						DBSFaces.setAttribute(xWriter, "src", xImg.getSrc());
 					}else{
 						DBSFaces.renderChildren(pContext, xImg);
 					}

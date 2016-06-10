@@ -13,6 +13,7 @@ import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSDiv.RENDERER_TYPE)
@@ -48,13 +49,13 @@ public class DBSDivRenderer extends DBSRenderer {
 		if (!pComponent.isRendered()){return;}
 		DBSDiv xDiv = (DBSDiv) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
-		String xClass = DBSFaces.CSS.DIV.MAIN;
+		String xClass = CSS.DIV.MAIN;
 		if (xDiv.getStyleClass()!=null){
 			xClass += xDiv.getStyleClass();
 		}
 		if (xDiv.getSelectable()!=null){
 			if (!xDiv.getSelectable()){
-				xClass += DBSFaces.CSS.NOT_SELECTABLE;
+				xClass += CSS.NOT_SELECTABLE;
 			}
 		}
 		String xClientId = xDiv.getClientId(pContext);
@@ -69,8 +70,8 @@ public class DBSDivRenderer extends DBSRenderer {
 				xClass += " dbs_div_loading";
 			}
 
-			DBSFaces.setAttribute(xWriter, "class", xClass, null);
-			DBSFaces.setAttribute(xWriter, "style", xDiv.getStyle(), null);
+			DBSFaces.setAttribute(xWriter, "class", xClass);
+			DBSFaces.setAttribute(xWriter, "style", xDiv.getStyle());
 
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xDiv, DBSPassThruAttributes.getAttributes(Key.DIV));
 			
@@ -78,9 +79,9 @@ public class DBSDivRenderer extends DBSRenderer {
 			if (pvEncodeLater(pContext, xDiv)){
 	    		xWriter.startElement("div", xDiv);
 	    			if (xDiv.getAjaxLoadingSmallIcon()){
-						DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.LOADING, null);
+						DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.LOADING);
 	    			}else{
-						DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.LOADING + DBSFaces.CSS.MODIFIER.LARGE, null);
+						DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.LOADING + CSS.MODIFIER.LARGE);
 	    			}
 				xWriter.endElement("div");
 				DBSFaces.encodeJavaScriptTagStart(xWriter);

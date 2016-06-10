@@ -9,6 +9,7 @@ import javax.faces.render.FacesRenderer;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSPush.RENDERER_TYPE)
@@ -36,14 +37,14 @@ public class DBSPushRenderer extends DBSRenderer {
 		DBSPush xPush = (DBSPush) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xPush.getClientId(pContext);
-		String xClass = DBSFaces.CSS.PUSH.MAIN;
+		String xClass = CSS.PUSH.MAIN;
 		xWriter.startElement("span", xPush);
-			xWriter.writeAttribute("id", xClientId, "id");
-			xWriter.writeAttribute("name", xClientId, "name");
-			DBSFaces.setAttribute(xWriter, "class", xClass, null);
+			DBSFaces.setAttribute(xWriter, "id", xClientId);
+			DBSFaces.setAttribute(xWriter, "name", xClientId);
+			DBSFaces.setAttribute(xWriter, "class", xClass);
 			if (xPush.getShowStatus()){
 				xWriter.startElement("span", xPush);
-					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
+					DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTENT);
 				xWriter.endElement("span");
 			}
 		xWriter.endElement("span");

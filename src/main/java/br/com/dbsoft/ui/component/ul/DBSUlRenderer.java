@@ -46,9 +46,9 @@ public class DBSUlRenderer extends DBSRenderer {
 //			DBSFaces.setAttribute(xWriter, xUl, "id", xClientId, null);
 //			xWriter.writeAttribute("name", xClientId, "name");
 			if (xClass!=""){
-				DBSFaces.setAttribute(xWriter, "class", xClass, null);
+				DBSFaces.setAttribute(xWriter, "class", xClass);
 			}
-			DBSFaces.setAttribute(xWriter, "style", xUl.getStyle(), null);
+			DBSFaces.setAttribute(xWriter, "style", xUl.getStyle());
 			DBSFaces.renderChildren(pContext, xUl);
 	} 
 	

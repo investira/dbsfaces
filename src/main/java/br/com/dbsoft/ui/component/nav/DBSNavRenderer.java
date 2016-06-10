@@ -14,6 +14,7 @@ import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
 import br.com.dbsoft.ui.component.nav.DBSNav.LOCATION;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSNav.RENDERER_TYPE)
@@ -38,20 +39,20 @@ public class DBSNavRenderer extends DBSRenderer {
 		DBSNav 			xNav = (DBSNav) pComponent;
 		ResponseWriter 	xWriter = pContext.getResponseWriter();
 		LOCATION 		xLocation = LOCATION.get(xNav.getLocation());
-		String 			xClass = DBSFaces.CSS.NAV.MAIN + DBSFaces.CSS.THEME.FC + DBSFaces.CSS.MODIFIER.CLOSED + xLocation.getCSS();
+		String 			xClass = CSS.NAV.MAIN + CSS.THEME.FC + CSS.MODIFIER.CLOSED + xLocation.getCSS();
 		if (xNav.getStyleClass()!=null){
 			xClass += xNav.getStyleClass();
 		}
 		String xClientId = xNav.getClientId(pContext);
 		xWriter.startElement("div", xNav);
-			DBSFaces.setAttribute(xWriter, "id", xClientId, null);
-			DBSFaces.setAttribute(xWriter, "name", xClientId, null);
-			DBSFaces.setAttribute(xWriter, "class", xClass, null);
-			DBSFaces.setAttribute(xWriter, "style", xNav.getStyle(), null);
+			DBSFaces.setAttribute(xWriter, "id", xClientId);
+			DBSFaces.setAttribute(xWriter, "name", xClientId);
+			DBSFaces.setAttribute(xWriter, "class", xClass);
+			DBSFaces.setAttribute(xWriter, "style", xNav.getStyle());
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xNav, DBSPassThruAttributes.getAttributes(Key.NAV));
 			//Mask
 			xWriter.startElement("div", xNav);
-				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.MASK + DBSFaces.CSS.THEME.BC, null);
+				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.MASK + CSS.THEME.BC);
 			xWriter.endElement("div");
 			//Nav
 			pvEncodeNav(xNav, pContext, xWriter);
@@ -63,12 +64,12 @@ public class DBSNavRenderer extends DBSRenderer {
 	
 	private void pvEncodeNav(DBSNav pNav, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("div", pNav);
-			DBSFaces.setAttribute(pWriter, "class", "-nav" + DBSFaces.CSS.THEME.BC, null);
+			DBSFaces.setAttribute(pWriter, "class", "-nav" + CSS.THEME.FC + CSS.THEME.BC + CSS.THEME.INVERT, null);
 			pWriter.startElement("div", pNav);
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER, null);
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER, null);
 				DBSFaces.setAttribute(pWriter, "style", "padding:" + pNav.getPadding(), null);
 				pWriter.startElement("div", pNav);
-					DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
+					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT, null);
 					pWriter.startElement("nav", pNav);
 						//Encode dos conteúdo
 						DBSFaces.renderChildren(pContext, pNav);
@@ -80,10 +81,10 @@ public class DBSNavRenderer extends DBSRenderer {
 	
 	private void pvEncodeCaption(DBSNav pNav, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("div", pNav);
-			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CAPTION, null);
-			DBSFaces.setAttribute(pWriter, "style", pvGetPaddingCaption(pNav), null);
+			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CAPTION);
+			DBSFaces.setAttribute(pWriter, "style", pvGetPaddingCaption(pNav));
 			pWriter.startElement("div", pNav);
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.ICON + DBSFaces.CSS.THEME.ACTION + pNav.getIconClass(), null);
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON + CSS.THEME.ACTION + pNav.getIconClass());
 			pWriter.endElement("div");
 		pWriter.endElement("div");
 	}

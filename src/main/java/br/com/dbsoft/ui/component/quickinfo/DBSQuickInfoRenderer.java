@@ -9,6 +9,7 @@ import javax.faces.render.FacesRenderer;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSQuickInfo.RENDERER_TYPE)
 public class DBSQuickInfoRenderer extends DBSRenderer {
@@ -35,7 +36,7 @@ public class DBSQuickInfoRenderer extends DBSRenderer {
 		if (!pComponent.isRendered()){return;}
 		DBSQuickInfo xQuickInfo = (DBSQuickInfo) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
-		String xClass = DBSFaces.CSS.QUICKINFO.MAIN;
+		String xClass = CSS.QUICKINFO.MAIN;
 
 		if (xQuickInfo.getStyleClass()!=null){
 			xClass += xQuickInfo.getStyleClass();
@@ -43,18 +44,18 @@ public class DBSQuickInfoRenderer extends DBSRenderer {
 		if (xQuickInfo.getShowOnHover()){
 			xClass += "-oh "; //Indica que quickinfo é exibido com a passagem do mouse
 		}else{
-			xClass += DBSFaces.CSS.THEME.ACTION; //Estilo padrão de botão
+			xClass += CSS.THEME.ACTION; //Estilo padrão de botão
 		}
 		xWriter.startElement("div", xQuickInfo);
-			DBSFaces.setAttribute(xWriter, "id", xQuickInfo.getClientId(pContext), null);
-			DBSFaces.setAttribute(xWriter, "style", xQuickInfo.getStyle(), null);
+			DBSFaces.setAttribute(xWriter, "id", xQuickInfo.getClientId(pContext));
+			DBSFaces.setAttribute(xWriter, "style", xQuickInfo.getStyle());
 //			DBSFaces.setAttribute(xWriter, "dl", xQuickInfo.getDefaultLocation(), null);
-			DBSFaces.setAttribute(xWriter, "class", xClass, null);
+			DBSFaces.setAttribute(xWriter, "class", xClass);
 			xWriter.startElement("div", xQuickInfo);
-				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.ICON + xQuickInfo.getIconClass(), null);
+				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.ICON + xQuickInfo.getIconClass());
 				encodeClientBehaviors(pContext, xQuickInfo);
 				xWriter.startElement("div", xQuickInfo);
-					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
+					DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTENT);
 					//Conteúdo do quickinfo
 					DBSFaces.encodeTooltipQuickInfo(pContext, xQuickInfo, xQuickInfo.getDefaultLocation());
 				xWriter.endElement("div");

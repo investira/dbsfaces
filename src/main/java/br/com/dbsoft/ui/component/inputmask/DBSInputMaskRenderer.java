@@ -9,6 +9,7 @@ import javax.faces.render.FacesRenderer;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.util.DBSFormat;
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSInputMask.RENDERER_TYPE)
@@ -49,18 +50,18 @@ public class DBSInputMaskRenderer extends DBSRenderer {
 		DBSInputMask xInputMask = (DBSInputMask) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xInputMask.getClientId(pContext);
-		String xClass = DBSFaces.CSS.INPUTMASK.MAIN + " " + DBSFaces.CSS.INPUT.MAIN + " ";
+		String xClass = CSS.INPUTMASK.MAIN + " " + CSS.INPUT.MAIN + " ";
 		if (xInputMask.getStyleClass()!=null){
 			xClass = xClass + xInputMask.getStyleClass();
 		}
 		xWriter.startElement("div", xInputMask);
-			xWriter.writeAttribute("id", xClientId, "id");
-			xWriter.writeAttribute("name", xClientId, "name");
-			xWriter.writeAttribute("class", xClass, "class");
-			DBSFaces.setAttribute(xWriter, "style", xInputMask.getStyle(), null);
+			DBSFaces.setAttribute(xWriter, "id", xClientId);
+			DBSFaces.setAttribute(xWriter, "name", xClientId);
+			DBSFaces.setAttribute(xWriter, "class", xClass);
+			DBSFaces.setAttribute(xWriter, "style", xInputMask.getStyle());
 			//Container
 			xWriter.startElement("div", xInputMask);
-				xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER, "class");
+				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
 
 					DBSFaces.encodeLabel(pContext, xInputMask, xWriter);
 					pvEncodeInput(pContext, xInputMask, xWriter);
@@ -100,23 +101,23 @@ public class DBSInputMaskRenderer extends DBSRenderer {
 		}else{
 			//Se for somente leitura, gera código como <Span>
 			pWriter.startElement("input", pInputMask);
-				DBSFaces.setAttribute(pWriter, "id", xClientId, null);
-				DBSFaces.setAttribute(pWriter, "name", xClientId, null);
+				DBSFaces.setAttribute(pWriter, "id", xClientId);
+				DBSFaces.setAttribute(pWriter, "name", xClientId);
 				if (pInputMask.getSecret()){
-					DBSFaces.setAttribute(pWriter, "type", "password", null);
+					DBSFaces.setAttribute(pWriter, "type", "password");
 				}else{
-					DBSFaces.setAttribute(pWriter, "type", "text", null);
+					DBSFaces.setAttribute(pWriter, "type", "text");
 				}
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputMask), null);
-				DBSFaces.setAttribute(pWriter, "style", xStyle, null);
+				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputMask));
+				DBSFaces.setAttribute(pWriter, "style", xStyle);
 				DBSFaces.setSizeAttributes(pWriter, pInputMask.getMask().length(), null);
 				//Grava a largura do campo
-				DBSFaces.setAttribute(pWriter, "size", pInputMask.getMask().length(), null);
+				DBSFaces.setAttribute(pWriter, "size", pInputMask.getMask().length());
 				if (pInputMask.getMaxLength()!=0){
 					if (pInputMask.getMask().length() >  pInputMask.getMaxLength()){
-						DBSFaces.setAttribute(pWriter, "maxlength", pInputMask.getMaxLength(), null);
+						DBSFaces.setAttribute(pWriter, "maxlength", pInputMask.getMaxLength());
 					}else{
-						DBSFaces.setAttribute(pWriter, "maxlength", pInputMask.getMask().length(), null);
+						DBSFaces.setAttribute(pWriter, "maxlength", pInputMask.getMask().length());
 					}
 				}
 				DBSFaces.setAttribute(pWriter, "value",xValue, "0");

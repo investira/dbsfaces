@@ -14,6 +14,7 @@ import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.menu.DBSMenu;
 import br.com.dbsoft.ui.component.menuitem.DBSMenuitem;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSMenuitem.RENDERER_TYPE)
@@ -53,7 +54,7 @@ public class DBSMenuitemRenderer extends DBSRenderer {
 		Boolean xIsSubmenu = true;
 		String xOnClick;
 		String xExecute;
-		String xClass = DBSFaces.CSS.MENUITEM.MAIN + DBSFaces.CSS.NOT_SELECTABLE;
+		String xClass = CSS.MENUITEM.MAIN + CSS.NOT_SELECTABLE;
 
 		//Verifica se é um submenu filho de um outro submenu ou filho do menu principal
 		UIComponent xParent = pComponent.getParent();
@@ -70,29 +71,29 @@ public class DBSMenuitemRenderer extends DBSRenderer {
 
 		//Class----------
 		if (xIsSubmenu){
-			xClass += DBSFaces.CSS.THEME.ACTION;
+			xClass += CSS.THEME.ACTION;
 		}
 		if (xMenuitem.getStyleClass()!=null){
 			xClass += xMenuitem.getStyleClass();
 		}
 		if (xMenuitem.getChildCount() == 0){
 			if (xMenuitem.getActionExpression() == null){
-				xClass += DBSFaces.CSS.MODIFIER.DISABLED;
+				xClass += CSS.MODIFIER.DISABLED;
 			}
 		}
 		
 		//Encode --------
 		xWriter.startElement("li", xMenuitem);
-			DBSFaces.setAttribute(xWriter, "class", xClass, null);
-			DBSFaces.setAttribute(xWriter, "style", xMenuitem.getStyle(), null);
+			DBSFaces.setAttribute(xWriter, "class", xClass);
+			DBSFaces.setAttribute(xWriter, "style", xMenuitem.getStyle());
 			xWriter.startElement("a", xMenuitem);
 				writeIdAttribute(xWriter, xMenuitem, xClientId);
-				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
+				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTENT);
 				DBSFaces.setAttribute(xWriter, "ontouchstart", "", null);
 				if (!xMenuitem.getReadOnly()){
 					if (xMenuitem.getActionExpression() != null){
-						DBSFaces.setAttribute(xWriter, "type", "submit", null); 
-						DBSFaces.setAttribute(xWriter, DBSFaces.HTML.EVENTS.ONCLICK, xOnClick, null);
+						DBSFaces.setAttribute(xWriter, "type", "submit"); 
+						DBSFaces.setAttribute(xWriter, DBSFaces.HTML.EVENTS.ONCLICK, xOnClick);
 					}
 				}
 				encodeMenuLine(xMenuitem, xWriter, xMenuitem.getLabel(), xMenuitem.getIconClass(), xIsSubmenu & xMenuitem.getChildCount() > 0);
@@ -109,18 +110,18 @@ public class DBSMenuitemRenderer extends DBSRenderer {
 	public void encodeMenuLine(UIComponent pComponent, ResponseWriter pWriter, String pLabel, String pIconClass, Boolean pHasChildren) throws IOException{
 		if (pIconClass!=null){
 			pWriter.startElement("span", pComponent);
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.ICON + pIconClass, null);
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON + pIconClass);
 			pWriter.endElement("span");
 		}
 		if (pLabel!=null){
 			pWriter.startElement("span", pComponent);
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.LABEL + DBSFaces.CSS.INPUT.LABEL, null);
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.LABEL + CSS.INPUT.LABEL);
 				pWriter.write(pLabel);
 			pWriter.endElement("span");
 		}
 		if (pHasChildren!=null && pHasChildren){
 			pWriter.startElement("span", pComponent);
-				DBSFaces.setAttribute(pWriter, "class",  "-i_add", null);
+				DBSFaces.setAttribute(pWriter, "class",  "-i_add");
 			pWriter.endElement("span");
 		}
 		

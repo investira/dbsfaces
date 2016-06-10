@@ -12,6 +12,7 @@ import javax.faces.render.FacesRenderer;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSAccordion.RENDERER_TYPE)
 public class DBSAccordionRenderer extends DBSRenderer {
@@ -38,7 +39,7 @@ public class DBSAccordionRenderer extends DBSRenderer {
 		DBSAccordion xAccordion = (DBSAccordion) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xAccordion.getClientId(pContext);
-		String xClass = DBSFaces.CSS.ACCORDION.MAIN;
+		String xClass = CSS.ACCORDION.MAIN;
 		
 		if (xAccordion.getStyleClass()!=null){
 			xClass = xClass + xAccordion.getStyleClass();
@@ -68,29 +69,29 @@ public class DBSAccordionRenderer extends DBSRenderer {
 				for (int xX=0; xX<xAccordionSection.size(); xX++){
 					/*section*/
 					xWriter.startElement("div", xAccordion);
-						DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.ACCORDION.SECTION + DBSFaces.CSS.MODIFIER.NORMAL);
+						DBSFaces.setAttribute(xWriter, "class", CSS.ACCORDION.SECTION + CSS.MODIFIER.NORMAL);
 						xWriter.startElement("div", xAccordion);
 							/*header*/
 							xWriter.startElement("div", xAccordion);
-								DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.ACCORDION.SECTION_CAPTION + DBSFaces.CSS.NOT_SELECTABLE);
+								DBSFaces.setAttribute(xWriter, "class", CSS.ACCORDION.SECTION_CAPTION + CSS.NOT_SELECTABLE);
 								if (xAccordionSection.get(xX).getIconClass()!=null){
 									xWriter.startElement("span", xAccordion);
-										DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.ICON + xAccordionSection.get(xX).getIconClass());
+										DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.ICON + xAccordionSection.get(xX).getIconClass());
 									xWriter.endElement("span");
 								}
 								if (xAccordionSection.get(xX).getCaption()!=null){
 									xWriter.startElement("span", xAccordion);
-										DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CAPTION);
+										DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CAPTION);
 										xWriter.write(xAccordionSection.get(xX).getCaption());
 									xWriter.endElement("span");
 								}
 							xWriter.endElement("div");
 							/*container*/
 							xWriter.startElement("div", xAccordion);
-								DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.ACCORDION.SECTION_CONTAINER);
+								DBSFaces.setAttribute(xWriter, "class", CSS.ACCORDION.SECTION_CONTAINER);
 								
 								xWriter.startElement("div", xAccordion);
-									DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT);
+									DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTENT);
 									//***Render filhos do dbsaccordionsection***
 									
 									xAccordionSection.get(xX).encodeAll(pContext);
@@ -101,7 +102,7 @@ public class DBSAccordionRenderer extends DBSRenderer {
 								xWriter.endElement("div");
 								
 								xWriter.startElement("div", xAccordion);
-									DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.COVER);
+									DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.COVER);
 								xWriter.endElement("div");
 							xWriter.endElement("div");
 						xWriter.endElement("div");

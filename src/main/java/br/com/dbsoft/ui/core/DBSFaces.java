@@ -218,6 +218,7 @@ public class  DBSFaces {
 			public static final String FC = " -th_fc ";
 			public static final String ACTION = " -th_action ";
 			public static final String CAPTION = " -th_caption ";
+			public static final String INVERT = " -th_i ";
 		}
 		
 		
@@ -1451,14 +1452,14 @@ public class  DBSFaces {
 				xStyle += " width:" + pInput.getLabelWidth() + ";";
 			}
 			pWriter.startElement("label", pInput);
-				pWriter.writeAttribute("class", DBSFaces.CSS.INPUT.LABEL + DBSFaces.CSS.NOT_SELECTABLE , null);
-				pWriter.writeAttribute("for", xClientId + DBSFaces.CSS.MODIFIER.DATA.trim(), null);
+				DBSFaces.setAttribute(pWriter, "class", CSS.INPUT.LABEL + CSS.NOT_SELECTABLE);
+				DBSFaces.setAttribute(pWriter, "for", xClientId + CSS.MODIFIER.DATA.trim());
 				if (pRenderSeparator){
-					pWriter.writeAttribute("style", xStyle, null);
+					DBSFaces.setAttribute(pWriter, "style", xStyle);
 					pWriter.write(pInput.getLabel().trim() + ":");
 				}else{
 					xStyle += "padding-left:2px;";
-					pWriter.writeAttribute("style", xStyle, null);
+					DBSFaces.setAttribute(pWriter, "style", xStyle);
 					pWriter.write(pInput.getLabel().trim());
 				}
 				//Encode simbolo da moeda se componente for do tipo inputnumber
@@ -1466,7 +1467,7 @@ public class  DBSFaces {
 					DBSInputNumber xIN = (DBSInputNumber) pInput;
 					if (xIN.getCurrencySymbol()!=null){
 						pWriter.startElement("span", pInput);
-							pWriter.writeAttribute("style","float: right;", null);
+							DBSFaces.setAttribute(pWriter, "style","float: right;");
 							pWriter.write(xIN.getCurrencySymbol().trim());
 						pWriter.endElement("span");
 					}
@@ -1497,9 +1498,9 @@ public class  DBSFaces {
 		if (pInput.getRightLabel()!=null){
 			String xClientId = pInput.getClientId(pContext);
 			pWriter.startElement("label", pInput);
-				pWriter.writeAttribute("class", DBSFaces.CSS.INPUT.LABEL + DBSFaces.CSS.NOT_SELECTABLE , null);
-				pWriter.writeAttribute("for", xClientId + DBSFaces.CSS.MODIFIER.DATA.trim(), null);
-				pWriter.writeAttribute("style", "margin:0 3px 0 3px; vertical-align: middle; display:inline-block;", null);
+				DBSFaces.setAttribute(pWriter, "class", CSS.INPUT.LABEL + CSS.NOT_SELECTABLE);
+				DBSFaces.setAttribute(pWriter, "for", xClientId + CSS.MODIFIER.DATA.trim());
+				DBSFaces.setAttribute(pWriter, "style", "margin:0 3px 0 3px; vertical-align: middle; display:inline-block;");
 				pWriter.write(pInput.getRightLabel().trim());
 			pWriter.endElement("label");
 		}
@@ -1544,10 +1545,10 @@ public class  DBSFaces {
 			pStyle += "white-space: pre; overflow:hidden;";
 		}
 		pWriter.startElement("span", pComponent);
-			setAttribute(pWriter, "id", pClientId, null);
-			setAttribute(pWriter, "name", pClientId, null);
-			setAttribute(pWriter, "class", getInputDataClass(pComponent), null);
-			pWriter.writeAttribute("style", pStyle, null);
+			setAttribute(pWriter, "id", pClientId);
+			setAttribute(pWriter, "name", pClientId);
+			setAttribute(pWriter, "class", getInputDataClass(pComponent));
+			setAttribute(pWriter, "style", pStyle);
 			setSizeAttributes(pWriter, pTW, pTH);
 			if (DBSObject.isEmpty(pValue)){
 				pWriter.write(" ");
@@ -1653,7 +1654,7 @@ public class  DBSFaces {
 	 * @return
 	 */
 	public static String getInputDataClass(UIComponent pInput){
-		String xClass = DBSFaces.CSS.INPUT.DATA;
+		String xClass = CSS.INPUT.DATA;
 		DBSUIInput xInput;
 		if (pInput instanceof DBSUIInput){
 			xInput = (DBSUIInput) pInput;
@@ -1661,10 +1662,10 @@ public class  DBSFaces {
 			return xClass;
 		}
 		if (xInput.getReadOnly()){
-			xClass += DBSFaces.CSS.MODIFIER.READONLY;
+			xClass += CSS.MODIFIER.READONLY;
 		}
 		if (!xInput.isValid()){
-			xClass += DBSFaces.CSS.MODIFIER.INVALID;
+			xClass += CSS.MODIFIER.INVALID;
 		}
 		return xClass;
 	}
@@ -2275,7 +2276,7 @@ public class  DBSFaces {
 				//Encode: Seleção multipla (habilitada também quando a edição é inline, para poder selecionar vários itens em caso de exclusão)
 				if (pDataTable.getMultipleSelection()){
 					//Troca styleClass para poder exibir a coluna
-					xC0.setStyleClass(DBSFaces.CSS.MODIFIER.CHECKBOX);
+					xC0.setStyleClass(CSS.MODIFIER.CHECKBOX);
 					//Botão no cabeçalho para seleção de todas as linhas----------------------------------------
 					DBSButton xBtn = (DBSButton) xContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
 						xBtn.setId("btSelect");
@@ -2328,7 +2329,7 @@ public class  DBSFaces {
 				DBSButton xBtPesquisar = (DBSButton) xContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
 				xBtPesquisar.setId("btPesquisar");
 				xBtPesquisar.setLabel(getBundlePropertyValue("dbsfaces", "pesquisar"));
-				xBtPesquisar.setIconClass(DBSFaces.CSS.MODIFIER.ICON + " -i_find");
+				xBtPesquisar.setIconClass(CSS.MODIFIER.ICON + " -i_find");
 				if (pDataTable.getSearchAction() == null){
 					wLogger.error(pDataTable.getClientId() +  ": searchAction não informado");
 				}else{
@@ -2402,7 +2403,7 @@ public class  DBSFaces {
 		if (xButtonStart == null){
 			xButtonStart = (DBSButton) FacesContext.getCurrentInstance().getApplication().createComponent(DBSButton.COMPONENT_TYPE);
 			xButtonStart.setId("btStart");
-			xButtonStart.setIconClass(DBSFaces.CSS.MODIFIER.ICON + " -i_upload");
+			xButtonStart.setIconClass(CSS.MODIFIER.ICON + " -i_upload");
 			xButtonStart.setReadOnly(pFileUpload.getReadOnly());
 			xButtonStart.setExecute("");
 			xButtonStart.setUpdate("");
@@ -2425,7 +2426,7 @@ public class  DBSFaces {
 			xButtonCancel.setId("btCancel");
 			xButtonCancel.setExecute("");
 			xButtonCancel.setUpdate("");
-			xButtonCancel.setIconClass(DBSFaces.CSS.MODIFIER.ICON + " -i_media_stop");
+			xButtonCancel.setIconClass(CSS.MODIFIER.ICON + " -i_media_stop");
 			xButtonCancel.setStyle("display:none;");
 			xButtonCancel.setReadOnly(pFileUpload.getReadOnly());
 			xButtonCancel.setTooltip(getBundlePropertyValue("dbsfaces", "fileupload.btCancel"));
@@ -2909,24 +2910,24 @@ public class  DBSFaces {
 		if (!DBSObject.isEmpty(pTooltipText) ||
 			xTooltip != null){
 			xWriter.startElement("div", pComponent);
-				String xClass = DBSFaces.CSS.MODIFIER.TOOLTIP.trim();
+				String xClass = CSS.MODIFIER.TOOLTIP + CSS.THEME.FC + CSS.THEME.INVERT;
 				if (pBasicTooltip){
 					xClass += " -tt"; //Tooltip padrão
 				}else{
 					xClass += " -qi"; //Tooltip para o quickinfo
 				}
-				setAttribute(xWriter, "class", xClass, null);
+				setAttribute(xWriter, "class", xClass);
 				setAttribute(xWriter, "delay", pDelay, "1000"); //Tempo padrão para exibição do tooltip:1s
 				setAttribute(xWriter, "dl", pDefaultLocation, "1"); //Posição padrão para exibição do tooltip:Top
 				xWriter.startElement("div", pComponent);
-					xClass = DBSFaces.CSS.MODIFIER.CONTAINER;
-					xWriter.writeAttribute("class", xClass.trim(), null);
+					xClass = CSS.MODIFIER.CONTAINER;
+					DBSFaces.setAttribute(xWriter, "class", xClass);
 					xWriter.startElement("div", pComponent);
-						xClass = DBSFaces.CSS.MODIFIER.CONTENT;
+						xClass = CSS.MODIFIER.CONTENT + CSS.THEME.BC + CSS.THEME.INVERT;
 						if (!pBasicTooltip){
 							xClass += CSS.BACK_TEXTURE_BLACK_GRADIENT;
 						}
-						xWriter.writeAttribute("class", xClass.trim() , null);
+						DBSFaces.setAttribute(xWriter, "class", xClass);
 						//Dá prioridade para o facet
 						if (xTooltip != null){
 							if (pBasicTooltip){

@@ -9,6 +9,7 @@ import javax.faces.render.FacesRenderer;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.util.DBSFormat;
 import br.com.dbsoft.util.DBSFormat.NUMBER_SIGN;
 import br.com.dbsoft.util.DBSNumber;
@@ -59,19 +60,19 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 		DBSInputNumber xInputNumber = (DBSInputNumber) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xInputNumber.getClientId(pContext);
-		String xClass = DBSFaces.CSS.INPUTNUMBER.MAIN + DBSFaces.CSS.INPUT.MAIN;
+		String xClass = CSS.INPUTNUMBER.MAIN + CSS.INPUT.MAIN;
 		if (xInputNumber.getStyleClass() != null) {
 			xClass += xInputNumber.getStyleClass();
 		}
 
 		xWriter.startElement("div", xInputNumber);
-			DBSFaces.setAttribute(xWriter, "id", xClientId, null);
-			DBSFaces.setAttribute(xWriter, "name", xClientId, null);
-			DBSFaces.setAttribute(xWriter, "class", xClass, null);
-			DBSFaces.setAttribute(xWriter, "style", xInputNumber.getStyle(), null);
+			DBSFaces.setAttribute(xWriter, "id", xClientId);
+			DBSFaces.setAttribute(xWriter, "name", xClientId);
+			DBSFaces.setAttribute(xWriter, "class", xClass);
+			DBSFaces.setAttribute(xWriter, "style", xInputNumber.getStyle());
 			//Container
 			xWriter.startElement("div", xInputNumber);
-				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER, null);
+				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
 					DBSFaces.encodeLabel(pContext, xInputNumber, xWriter);
 					pvEncodeInput(pContext, xInputNumber, xWriter);
 					DBSFaces.encodeRightLabel(pContext, xInputNumber, xWriter);
@@ -150,7 +151,7 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 		}
 		if (pInputNumber.getValueDouble() > DBSNumber.toDouble(pInputNumber.getMaxValue()) ||
 			pInputNumber.getValueDouble() < DBSNumber.toDouble(pInputNumber.getMinValue())){
-			xStyleClass = DBSFaces.CSS.MODIFIER.ERROR;
+			xStyleClass = CSS.MODIFIER.ERROR;
 		}
 
 		if (pInputNumber.getReadOnly()) {
@@ -158,34 +159,34 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 		} else {
 			// Se for somente leitura, gera código como <Span>
 			pWriter.startElement("input", pInputNumber);
-				DBSFaces.setAttribute(pWriter, "id", xClientId, null);
-				DBSFaces.setAttribute(pWriter, "name", xClientId, null);
+				DBSFaces.setAttribute(pWriter, "id", xClientId);
+				DBSFaces.setAttribute(pWriter, "name", xClientId);
 				if (pInputNumber.getSecret()) {
-					DBSFaces.setAttribute(pWriter, "type", "password", null);
+					DBSFaces.setAttribute(pWriter, "type", "password");
 				} else {
-					DBSFaces.setAttribute(pWriter, "type", "text", null);
+					DBSFaces.setAttribute(pWriter, "type", "text");
 				}
-				DBSFaces.setAttribute(pWriter, "pattern", "[0-9]*", null);
-				DBSFaces.setAttribute(pWriter, "inputmode", "numeric", null);
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputNumber) + xStyleClass, null);
-				DBSFaces.setAttribute(pWriter, "style", xStyle, null);
+				DBSFaces.setAttribute(pWriter, "pattern", "[0-9]*");
+				DBSFaces.setAttribute(pWriter, "inputmode", "numeric");
+				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputNumber) + xStyleClass);
+				DBSFaces.setAttribute(pWriter, "style", xStyle);
 				DBSFaces.setSizeAttributes(pWriter, xSize, null);
-				DBSFaces.setAttribute(pWriter, "minValue", pInputNumber.getMinValue(), null); 
-				DBSFaces.setAttribute(pWriter, "maxValue", pInputNumber.getMaxValue(), null);
+				DBSFaces.setAttribute(pWriter, "minValue", pInputNumber.getMinValue()); 
+				DBSFaces.setAttribute(pWriter, "maxValue", pInputNumber.getMaxValue());
 				//Verifica se o sinal é negativo
 				if (DBSNumber.toDouble(pInputNumber.getMinValue())<0){
 					if (pInputNumber.getValueDouble()<0){
-						DBSFaces.setAttribute(pWriter, "n", "-", null);
+						DBSFaces.setAttribute(pWriter, "n", "-");
 					}
 				}
 				if (!pInputNumber.getAutocomplete().toLowerCase().equals("on") &&
 					!pInputNumber.getAutocomplete().toLowerCase().equals("true")){
-					DBSFaces.setAttribute(pWriter, "autocomplete", "off", null);
+					DBSFaces.setAttribute(pWriter, "autocomplete", "off");
 				}
 
 
-				DBSFaces.setAttribute(pWriter, "size", xSize, null);
-				DBSFaces.setAttribute(pWriter, "maxlength", xSize, null);
+				DBSFaces.setAttribute(pWriter, "size", xSize);
+				DBSFaces.setAttribute(pWriter, "maxlength", xSize);
 				DBSFaces.setAttribute(pWriter, "value", xValue, "0");
 				encodeClientBehaviors(pContext, pInputNumber);
 			pWriter.endElement("input");

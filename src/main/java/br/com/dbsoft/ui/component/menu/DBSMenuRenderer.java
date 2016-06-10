@@ -10,6 +10,7 @@ import javax.faces.render.FacesRenderer;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.menu.DBSMenu.TYPE;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSMenu.RENDERER_TYPE)
@@ -38,20 +39,20 @@ public class DBSMenuRenderer extends DBSRenderer {
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xMenu.getClientId(pContext);
 		TYPE xType = TYPE.get(xMenu.getType());
-		String xClass = DBSFaces.CSS.MENU.MAIN + " " + DBSFaces.CSS.NOT_SELECTABLE + xType.getCSS();
+		String xClass = CSS.MENU.MAIN + CSS.NOT_SELECTABLE + xType.getCSS();
 
 		if (xMenu.getStyleClass()!=null){
 			xClass += xMenu.getStyleClass();
 		}
 		xWriter.startElement("div", xMenu);
 			if (shouldWriteIdAttribute(xMenu)){
-				xWriter.writeAttribute("id", xClientId, "id");
-				xWriter.writeAttribute("name", xClientId, "name");
+				DBSFaces.setAttribute(xWriter, "id", xClientId);
+				DBSFaces.setAttribute(xWriter, "name", xClientId);
 			}
-			DBSFaces.setAttribute(xWriter, "style", xMenu.getStyle(), null);
-			DBSFaces.setAttribute(xWriter, "class", xClass, null);
+			DBSFaces.setAttribute(xWriter, "style", xMenu.getStyle());
+			DBSFaces.setAttribute(xWriter, "class", xClass);
 			xWriter.startElement("ul", xMenu);
-				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
+				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTENT);
 				DBSFaces.renderChildren(pContext, xMenu);
 			xWriter.endElement("ul");
 			pvEncodeJS(xClientId, xWriter);

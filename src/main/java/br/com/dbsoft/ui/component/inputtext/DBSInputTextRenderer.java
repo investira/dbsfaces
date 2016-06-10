@@ -20,6 +20,7 @@ import br.com.dbsoft.ui.component.datatable.DBSDataTableColumn;
 import br.com.dbsoft.ui.component.div.DBSDiv;
 import br.com.dbsoft.ui.component.inputtext.DBSInputText;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.util.DBSObject;
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSInputText.RENDERER_TYPE)
@@ -98,18 +99,18 @@ public class DBSInputTextRenderer extends DBSRenderer {
 		DBSInputText xInputText = (DBSInputText) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xInputText.getClientId(pContext);
-		String xClass = DBSFaces.CSS.INPUTTEXT.MAIN + " " + DBSFaces.CSS.INPUT.MAIN + " "; 
+		String xClass = CSS.INPUTTEXT.MAIN + CSS.INPUT.MAIN; 
 		if (xInputText.getStyleClass()!=null){
 			xClass = xClass + xInputText.getStyleClass();
 		}
 		xWriter.startElement("div", xInputText);
-			xWriter.writeAttribute("id", xClientId, "id");
-			xWriter.writeAttribute("name", xClientId, "name");
-			xWriter.writeAttribute("class", xClass, "class");
+			DBSFaces.setAttribute(xWriter, "id", xClientId);
+			DBSFaces.setAttribute(xWriter, "name", xClientId);
+			DBSFaces.setAttribute(xWriter, "class", xClass);
 			DBSFaces.setAttribute(xWriter, "style", xInputText.getStyle(), null);
 			//Container
 			xWriter.startElement("div", xInputText);
-				xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER, "class");
+				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
 					DBSFaces.encodeLabel(pContext, xInputText, xWriter);
 					pvEncodeInput(pContext, xInputText, xWriter);
 					DBSFaces.encodeRightLabel(pContext, xInputText, xWriter);
@@ -126,7 +127,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 		String xClientIdData = getInputDataClientId(pInputText);
 		String xClientIdSuggestionKey = pvGetSuggestionKeyId(pInputText, true);
 		String xClientIdButton = pvGetButtonId(pInputText, false);
-		String xClientIdSuggestion = xClientId + DBSFaces.CSS.MODIFIER.SUGGESTION.trim();
+		String xClientIdSuggestion = xClientId + CSS.MODIFIER.SUGGESTION.trim();
 		String xClientAjaxUpdate = pvGetListId(pInputText, true);//pvGetListClientId(pInputText); //pvGetDataTableClientId(pInputText);
 		String xStyle = "";
 		String xValue = "";
@@ -157,38 +158,38 @@ public class DBSInputTextRenderer extends DBSRenderer {
 		}else{
 			if (pInputText.hasSuggestion()){ 
 				pWriter.startElement("div", pInputText);
-					DBSFaces.setAttribute(pWriter, "class", "-input", null);
+					DBSFaces.setAttribute(pWriter, "class", "-input");
 					//Campo escondido que receberá a chave resultado da pesquisa ajax
 					pWriter.startElement("input", pInputText);
-						DBSFaces.setAttribute(pWriter, "id", xClientIdSuggestionKey, null);
-						DBSFaces.setAttribute(pWriter, "name", xClientIdSuggestionKey, null);
-						DBSFaces.setAttribute(pWriter, "type", "hidden", null);
-						DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.SUGGESTIONKEY, null);
-						DBSFaces.setAttribute(pWriter, "value", xValueKey, null);
-						DBSFaces.setAttribute(pWriter, "key", xValueKey, null);
-						DBSFaces.setAttribute(pWriter, "nulltext", pInputText.getSuggestionNullText(), null);
+						DBSFaces.setAttribute(pWriter, "id", xClientIdSuggestionKey);
+						DBSFaces.setAttribute(pWriter, "name", xClientIdSuggestionKey);
+						DBSFaces.setAttribute(pWriter, "type", "hidden");
+						DBSFaces.setAttribute(pWriter, "class", CSS.INPUT.SUGGESTIONKEY);
+						DBSFaces.setAttribute(pWriter, "value", xValueKey);
+						DBSFaces.setAttribute(pWriter, "key", xValueKey);
+						DBSFaces.setAttribute(pWriter, "nulltext", pInputText.getSuggestionNullText());
 					pWriter.endElement("input");	
 
 					//Icon que indica para indicar que é possível efetuar pesquisa a partir do texto digitado
 					pWriter.startElement("div", pInputText);
-						DBSFaces.setAttribute(pWriter, "class", "-small -i_find", null);
+						DBSFaces.setAttribute(pWriter, "class", "-small -i_find");
 					pWriter.endElement("div");	
 
 					//Campo que receberá o conteúdo integral ou parcial do campo escondido ajax. 
 					pWriter.startElement("input", pInputText);
-						DBSFaces.setAttribute(pWriter, "id", xClientIdSuggestion, null);
-						DBSFaces.setAttribute(pWriter, "name", xClientIdSuggestion, null);
-						DBSFaces.setAttribute(pWriter, "type", "text", null);
+						DBSFaces.setAttribute(pWriter, "id", xClientIdSuggestion);
+						DBSFaces.setAttribute(pWriter, "name", xClientIdSuggestion);
+						DBSFaces.setAttribute(pWriter, "type", "text");
 						if (pInputText.getSize()!=0){
-							DBSFaces.setAttribute(pWriter, "size", pInputText.getSize(), null);
+							DBSFaces.setAttribute(pWriter, "size", pInputText.getSize());
 						}
 						if (!xStyle.equals("")){
-							DBSFaces.setAttribute(pWriter, "style", xStyle, null);
+							DBSFaces.setAttribute(pWriter, "style", xStyle);
 						}						
-						DBSFaces.setAttribute(pWriter, "autocomplete", "off", null);
-						DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.SUGGESTION, null);
-						DBSFaces.setAttribute(pWriter, "tabindex", "-1", null);
-						DBSFaces.setAttribute(pWriter, "value", xValue, null);
+						DBSFaces.setAttribute(pWriter, "autocomplete", "off");
+						DBSFaces.setAttribute(pWriter, "class", CSS.INPUT.SUGGESTION);
+						DBSFaces.setAttribute(pWriter, "tabindex", "-1");
+						DBSFaces.setAttribute(pWriter, "value", xValue);
 					pWriter.endElement("input");
 					
 					//Botão que efetuará a chamada ajax
@@ -198,7 +199,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 							xBtn = (DBSButton) pContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
 						}
 						xBtn.setId(xClientIdButton);
-						xBtn.setStyleClass(DBSFaces.CSS.INPUT.SUBMIT); 
+						xBtn.setStyleClass(CSS.INPUT.SUBMIT); 
 						//xBtn.setActionExpression(DBSFaces.createMethodExpression(pContext, pInputText.getSuggestionSearchAction(), String.class, new Class[0]));
 						if (pInputText.getSuggestionUpdate()!=null){
 							xBtn.setUpdate(xClientAjaxUpdate + " " + pInputText.getSuggestionUpdate());
@@ -212,26 +213,26 @@ public class DBSInputTextRenderer extends DBSRenderer {
 			}
 			//Campo Input
 			pWriter.startElement("input", pInputText);
-				DBSFaces.setAttribute(pWriter, "id", xClientIdData, null);
-				DBSFaces.setAttribute(pWriter, "name", xClientIdData, null);
+				DBSFaces.setAttribute(pWriter, "id", xClientIdData);
+				DBSFaces.setAttribute(pWriter, "name", xClientIdData);
 				if (pInputText.getSecret()){
-					DBSFaces.setAttribute(pWriter, "type", "password", null);
+					DBSFaces.setAttribute(pWriter, "type", "password");
 				}else{
-					DBSFaces.setAttribute(pWriter, "type", "text", null);
+					DBSFaces.setAttribute(pWriter, "type", "text");
 				}
 				if (pInputText.hasSuggestion() ||
 					pInputText.getAutocomplete().toLowerCase().equals("off") ||
 					pInputText.getAutocomplete().toLowerCase().equals("false")){
 					DBSFaces.setAttribute(pWriter, "autocomplete", "off", null);
 				}
-				DBSFaces.setAttribute(pWriter, "class", xClass, null);
+				DBSFaces.setAttribute(pWriter, "class", xClass);
 				DBSFaces.setSizeAttributes(pWriter, pInputText.getSize(), null);
 				if (!xStyle.equals("")){
 					DBSFaces.setAttribute(pWriter, "style", xStyle, null);
 				}
 				//Grava a largura do campo
 				if (pInputText.getSize()!=0){
-					DBSFaces.setAttribute(pWriter, "size", pInputText.getSize(), null);
+					DBSFaces.setAttribute(pWriter, "size", pInputText.getSize());
 				}
 				if (pInputText.getMaxLength()!=0){
 					DBSFaces.setAttribute(pWriter, "maxlength", pInputText.getMaxLength(), null);
@@ -335,7 +336,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 	}
 
 	private String pvGetSuggestionKeyId(UIComponent pInputText, boolean pFullId){
-		return pvGetId(pInputText, DBSFaces.CSS.MODIFIER.SUGGESTION.trim() + DBSFaces.CSS.MODIFIER.KEY.trim(), pFullId);
+		return pvGetId(pInputText, CSS.MODIFIER.SUGGESTION.trim() + CSS.MODIFIER.KEY.trim(), pFullId);
 	}
 
 	private String pvGetListId(UIComponent pInputText, boolean pFullId){
@@ -344,7 +345,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 
 	
 	private String pvGetButtonId(DBSInputText pInputText, boolean pFullId){
-		return pvGetId(pInputText, DBSFaces.CSS.MODIFIER.SUBMIT.trim(), pFullId);
+		return pvGetId(pInputText, CSS.MODIFIER.SUBMIT.trim(), pFullId);
 	}
 	
 	private String pvGetId(UIComponent pInputText, String pSufix, boolean pFullId){

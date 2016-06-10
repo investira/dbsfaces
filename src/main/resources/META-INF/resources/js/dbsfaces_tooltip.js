@@ -27,6 +27,7 @@ dbsfaces.tooltip = {
 	
 	initialize: function(pSourceComponent){
 		dbsfaces.tooltip.initializeData(pSourceComponent);
+		dbsfaces.tooltip.initializeLayout(pSourceComponent);
 	},
 	
 	initializeData: function(pSourceComponent){
@@ -42,12 +43,17 @@ dbsfaces.tooltip = {
 			xTooltip.data("timershow", null);
 			
 			xTooltip.data("dl", Number(xTooltip.attr("dl")));
-//			xTooltip.data("setPos", (pSourceComponent.closest(".-foreignobject").length == 0));
-			xTooltip.data("setPos", (pSourceComponent.closest("foreignObject").length == 0));
-			xTooltip.attr("achou", xTooltip.data("setPos"));
-//			xTooltip.data("setPos", !pSourceComponent.svgHasClass("-foreignobject")); //Assume que posição já foi definida no parent(-foreignobject) em gráficos svg 
+
+			xTooltip.data("setPos", !xTooltip.isParentFixed());
+			xTooltip.attr("setPos", xTooltip.data("setPos"));//Somente para exibir atributo no fonte html
 		}
 		pSourceComponent.data("tooltip", xTooltip);
+	},
+	
+	initializeLayout: function(pSourceComponent){
+		var xContent = pSourceComponent.data("tooltip").data("content");
+		var xContainer = pSourceComponent.data("tooltip").data("container");
+		xContainer.css("border-color", xContent.css("background-color"));
 	},
 	
 	showDelayed: function(pSourceComponent){
@@ -242,8 +248,8 @@ dbsfaces.tooltip = {
 		if (pTooltip.data("setPos")){
 			pTooltip.css("left", xComponentRect.left + (xComponentRect.width / 2))
 				    .css("top", xComponentRect.top + xComponentRect.height);
-//			pTooltip.css("left", xComponentRect.left + (xComponentRect.width / 2))
-//					.css("top", xComponentRect.top + (xComponentRect.height / 2));
+//			console.log(xComponent.offset().left + "\t" + xComponent.offset().top);
+//			console.log(xComponent.offsetParent().offset().left + "\t" + xComponent.offsetParent().offset().top);
 		}
 
 //		console.log(pComponent.get(0).getBoundingClientRect().top 
@@ -252,34 +258,6 @@ dbsfaces.tooltip = {
 //			    + "\t" + pComponent.offsetParent().offset().top
 //			    + "\t" + pComponent.parent().offset().top);
 ////		xTop = (pContainer.get(0).getBoundingClientRect().top + pComponent.scrollParent(false).scrollTop()) - pContainer.offset().top;
-
-//		//Top e Bottom
-//		if (pLocationCode == 1
-//		 || pLocationCode == 3){
-////			xLeft += xComponent.outerWidth() / 2;
-//			xLeft -= xContainer.outerWidth() / 2;
-//			xTop = (xComponent.height() / 2) + xArrowSize;
-//			//Top
-//			if (pLocationCode == 1){
-//				//Ajuste do componente e do conteúdo da tooltip
-//				xTop = -xTop - xContainer.outerHeight();
-//			}else{
-//			//Bottom
-////				xTop = +xArrowSize + xComponent.outerHeight();
-//			}
-//		//Right e Left
-//		}else{
-//			//Ajuste do componente e do conteúdo da tooltip
-//			xTop = -(xContainer.outerHeight() / 2);
-//			xLeft = xArrowSize + (xComponent.outerWidth() / 2);
-//			//Right
-//			if (pLocationCode == 2){
-////				xLeft = (xArrowSize + (xComponent.outerWidth() / 2));
-//			}else{
-//			//Left
-//				xLeft = -xLeft - xContainer.outerWidth();
-//			}
-//		}
 
 		//Top e Bottom
 		if (pLocationCode == 1

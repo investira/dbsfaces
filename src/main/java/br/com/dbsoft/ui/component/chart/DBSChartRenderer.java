@@ -21,6 +21,7 @@ import br.com.dbsoft.ui.component.button.DBSButton;
 import br.com.dbsoft.ui.component.chart.DBSChart.TYPE;
 import br.com.dbsoft.ui.component.charts.DBSCharts;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSObject;
 
@@ -50,7 +51,7 @@ public class DBSChartRenderer extends DBSRenderer {
 		DBSChart xChart = (DBSChart) pComponent;
 		if (xChart.getType()==null){return;}
 		ResponseWriter 			xWriter = pContext.getResponseWriter();
-		String 					xClass = DBSFaces.CSS.CHART.MAIN;
+		String 					xClass = CSS.CHART.MAIN;
 		TYPE 					xType = DBSChart.TYPE.get(xChart.getType());
 		List<IDBSChartDelta>	xDeltaList = null;
 		DBSCharts	xCharts;
@@ -68,20 +69,20 @@ public class DBSChartRenderer extends DBSRenderer {
 		pvInitialize(xCharts, xChart);
 
 		xWriter.startElement("g", xChart);
-			DBSFaces.setAttribute(xWriter, "id", xClientId, null);
-			DBSFaces.setAttribute(xWriter, "name", xClientId, null);
-			DBSFaces.setAttribute(xWriter, "class", xClass, null);
-			DBSFaces.setAttribute(xWriter, "style", xChart.getStyle(), null);
-			DBSFaces.setAttribute(xWriter, "type", xChart.getType(), null);
-			DBSFaces.setAttribute(xWriter, "index", xChart.getIndex(), null);
-			DBSFaces.setAttribute(xWriter, "cs", xChart.getColumnScale(), null);
-			DBSFaces.setAttribute(xWriter, "bc", DBSFaces.calcChartFillcolor(xChart.getColorHue(), xChart.getColorBrightness(), xCharts.getItensCount(), xChart.getItensCount(), xChart.getIndex(), 1), null);
+			DBSFaces.setAttribute(xWriter, "id", xClientId);
+			DBSFaces.setAttribute(xWriter, "name", xClientId);
+			DBSFaces.setAttribute(xWriter, "class", xClass);
+			DBSFaces.setAttribute(xWriter, "style", xChart.getStyle());
+			DBSFaces.setAttribute(xWriter, "type", xChart.getType());
+			DBSFaces.setAttribute(xWriter, "index", xChart.getIndex());
+			DBSFaces.setAttribute(xWriter, "cs", xChart.getColumnScale());
+			DBSFaces.setAttribute(xWriter, "bc", DBSFaces.calcChartFillcolor(xChart.getColorHue(), xChart.getColorBrightness(), xCharts.getItensCount(), xChart.getItensCount(), xChart.getIndex(), 1));
 			if (xType == TYPE.LINE
 			 || xType == TYPE.PIE){
 				if (xChart.getShowDelta()){ //Artificio para padronizar o false como não existindo o atributo(comportamento do chrome)
-					DBSFaces.setAttribute(xWriter, "showdelta", xChart.getShowDelta(), null);
+					DBSFaces.setAttribute(xWriter, "showdelta", xChart.getShowDelta());
 					if(xChart.getShowDeltaList()){
-						DBSFaces.setAttribute(xWriter, "showdeltalist", xChart.getShowDeltaList(), null);
+						DBSFaces.setAttribute(xWriter, "showdeltalist", xChart.getShowDeltaList());
 					}
 				}
 			}
@@ -97,7 +98,7 @@ public class DBSChartRenderer extends DBSRenderer {
 			//Divisão para exibição do delta   
 			if (xChart.getShowDelta()){
 				xWriter.startElement("g", xChart);
-					DBSFaces.setAttribute(xWriter, "class", "-delta", null);
+					DBSFaces.setAttribute(xWriter, "class", "-delta");
 					if (xType == TYPE.PIE){
 						pvEncodePieDeltaTextPaths(xCharts, xChart, xWriter);
 					}else if (xType == TYPE.LINE){
@@ -134,9 +135,9 @@ public class DBSChartRenderer extends DBSRenderer {
 		xChartsWidth = pCharts.getChartWidth() + pCharts.getPadding();
 		xChartsHeight = pCharts.getChartHeight() + pCharts.getPadding();
 		pWriter.startElement("g", pChart);
-			DBSFaces.setAttribute(pWriter, "class", "-path", null);
+			DBSFaces.setAttribute(pWriter, "class", "-path");
 			//Area que irá captura o mousemove
-			DBSFaces.encodeSVGRect(pChart, pWriter, pCharts.getPadding() / 2D, pCharts.getPadding() / 2D, xChartsWidth.toString(), xChartsHeight.toString(), DBSFaces.CSS.MODIFIER.MASK.trim(), null, null);
+			DBSFaces.encodeSVGRect(pChart, pWriter, pCharts.getPadding() / 2D, pCharts.getPadding() / 2D, xChartsWidth.toString(), xChartsHeight.toString(), CSS.MODIFIER.MASK.trim(), null, null);
 		pWriter.endElement("g");
 	}
 

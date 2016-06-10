@@ -13,6 +13,7 @@ import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSParallax.RENDERER_TYPE)
@@ -37,7 +38,7 @@ public class DBSParallaxRenderer extends DBSRenderer {
 		if (!pComponent.isRendered()){return;}
 		DBSParallax xParallax = (DBSParallax) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
-		String xClass = DBSFaces.CSS.PARALLAX.MAIN;
+		String xClass = CSS.PARALLAX.MAIN;
 		if (xParallax.getStyleClass()!=null){
 			xClass += xParallax.getStyleClass();
 		}

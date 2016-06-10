@@ -14,6 +14,7 @@ import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.button.DBSButton;
 import br.com.dbsoft.ui.component.menuitem.DBSMenuitem;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.util.DBSObject;
 
 /**
@@ -55,7 +56,7 @@ public class DBSFloatButtonRenderer extends DBSRenderer {
 		DBSFloatButton xFloatButton = (DBSFloatButton) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xFloatButton.getClientId(pContext);
-		String xClass = DBSFaces.CSS.FLOATBUTTON.MAIN;
+		String xClass = CSS.FLOATBUTTON.MAIN;
 		xClass += " dbs_floatbutton_location"+ xFloatButton.getDefaultLocation();
 		
 		if (!DBSObject.isEmpty(xFloatButton.getStyleClass())){

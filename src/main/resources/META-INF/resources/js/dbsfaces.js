@@ -46,6 +46,14 @@ String.prototype.replaceAll = function(target, replacement) {
     $.fn.hasScrollBar = function() {
         return this.get(0).scrollHeight > this.height();
     },
+
+    $.fn.isParentFixed = function() {
+    	if (this.closest("foreignObject").length == 0){
+    		return dbsfaces.ui.pvIsParentFixed(this);
+    	}
+        return true;
+    },
+    
     $.fn.svgHasClass = function (pClassName) {
   	  return new RegExp('(\\s|^)' + pClassName + '(\\s|$)').test(this.get(0).getAttribute('class'));
     },
@@ -86,9 +94,6 @@ String.prototype.replaceAll = function(target, replacement) {
     	}
    		return this.get(0).getPathSegAtLength(this.get(0).getTotalLength() + 10) + 1;
 	}
-
-    
-
 })(jQuery);
 
 
@@ -702,6 +707,25 @@ dbsfaces.ui = {
 		var xTime = pText.length;
 		xTime = (xTime / 2) * 200;
 		return xTime;
+	},
+	
+	//	Verificar se elemento esta contido dentro de algum elemento com position:fixed
+	pvIsParentFixed: function(pElement){
+		var xE = pElement;
+		if (xE instanceof jQuery){
+			xE = pElement.get(0);
+		}
+		var xParent = xE.parentElement;
+		if (xParent == null){
+			return false;
+		}
+		var xStyle = window.getComputedStyle(xParent);
+	    var xPosition = xStyle.getPropertyValue("position");
+		if (xPosition == "fixed"){
+			return true;
+		}else{
+			return dbsfaces.ui.pvIsParentFixed(xParent);
+		}
 	}
 
 }

@@ -10,6 +10,7 @@ import javax.faces.render.FacesRenderer;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSCheckbox.RENDERER_TYPE)
 public class DBSCheckboxRenderer extends DBSRenderer {
@@ -50,7 +51,7 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 		DBSCheckbox xCheckbox = (DBSCheckbox) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xCheckbox.getClientId(pContext);
-		String xClass = DBSFaces.CSS.CHECKBOX.MAIN + " " + DBSFaces.CSS.INPUT.MAIN + " ";
+		String xClass = CSS.CHECKBOX.MAIN + " " + CSS.INPUT.MAIN + " ";
 		if (xCheckbox.getStyleClass()!=null){
 			xClass += xCheckbox.getStyleClass();
 		}
@@ -66,7 +67,7 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "style", xCheckbox.getStyle());
 			//Container
 			xWriter.startElement("div", xCheckbox);
-				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER);
+				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
 				if (!xCheckbox.getInvertLabel()){
 					DBSFaces.encodeLabel(pContext, xCheckbox, xWriter);
 				}
@@ -94,17 +95,17 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 		}
 
 		pWriter.startElement("input", pCheckbox); 
-			DBSFaces.setAttribute(pWriter, "id", xClientId, null);
-			DBSFaces.setAttribute(pWriter, "name", xClientId, null);
-			DBSFaces.setAttribute(pWriter, "type", "checkbox", null);
+			DBSFaces.setAttribute(pWriter, "id", xClientId);
+			DBSFaces.setAttribute(pWriter, "name", xClientId);
+			DBSFaces.setAttribute(pWriter, "type", "checkbox");
 			if (pCheckbox.getReadOnly()){
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pCheckbox) + DBSFaces.CSS.MODIFIER.DISABLED, null);
-				DBSFaces.setAttribute(pWriter, "disabled","disabled", null);
+				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pCheckbox) + CSS.MODIFIER.DISABLED);
+				DBSFaces.setAttribute(pWriter, "disabled","disabled");
 			}else{
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pCheckbox), null);
+				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pCheckbox));
 			}
 			if (xOnChange!=null){
-				DBSFaces.setAttribute(pWriter, DBSFaces.HTML.EVENTS.ONCHANGE, xOnChange, null); 
+				DBSFaces.setAttribute(pWriter, DBSFaces.HTML.EVENTS.ONCHANGE, xOnChange); 
 			}
 			if(pvIsChecked(pCheckbox.getValue())) {
 				DBSFaces.setAttribute(pWriter, "checked", "checked");

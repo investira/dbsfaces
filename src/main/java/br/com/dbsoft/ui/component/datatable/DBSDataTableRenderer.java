@@ -19,6 +19,7 @@ import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.button.DBSButton;
 import br.com.dbsoft.ui.component.link.DBSLink;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.util.DBSIO.SORT_DIRECTION;
 import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSObject;
@@ -62,11 +63,11 @@ public class DBSDataTableRenderer extends DBSRenderer {
 		ResponseWriter 	xWriter = pContext.getResponseWriter();
 		String 			xClientId = xDataTable.getClientId(pContext);
 
-		String xClass = DBSFaces.CSS.DATATABLE.MAIN + " " + xDataTable.getStyleClass();
+		String xClass = CSS.DATATABLE.MAIN + " " + xDataTable.getStyleClass();
 		String xStyle = xDataTable.getStyle();
 		
 		if (xDataTable.isSelectable()){
-			xClass += DBSFaces.CSS.MODIFIER.SELECTABLE;
+			xClass += CSS.MODIFIER.SELECTABLE;
 		}
 		//Cria botões no toolbar para edição diretamente na linha
 //		DBSFaces.createDataTableInlineEditToolbar(xDataTable);
@@ -93,7 +94,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 			xWriter.startElement("div", xDataTable);
 				DBSFaces.setAttribute(xWriter, "id", xClientId + ":container");
 				DBSFaces.setAttribute(xWriter, "name", xClientId + ":container");
-				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER);
+				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
 				//Cabeçalho externo
 				pvEncodeHeader(pContext, xDataTable, xWriter);
 	}
@@ -149,15 +150,15 @@ public class DBSDataTableRenderer extends DBSRenderer {
 		
 		if (pvHasHeader(pDataTable)) { 
 			pWriter.startElement("div", pDataTable);
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.HEADER);
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.HEADER);
 				// Caption -------------------------
 				if (!DBSObject.isEmpty(pDataTable.getCaption())
 				 || !DBSObject.isEmpty(pDataTable.getIconClass())) {
 					pWriter.startElement("div", pDataTable);
-						DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CAPTION + DBSFaces.CSS.NOT_SELECTABLE);
+						DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CAPTION + CSS.NOT_SELECTABLE);
 						if (!DBSObject.isEmpty(pDataTable.getIconClass())) {
 							pWriter.startElement("span", pDataTable);
-								DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.ICON + pDataTable.getIconClass());
+								DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON + pDataTable.getIconClass());
 							pWriter.endElement("span");
 						}
 						if (!DBSObject.isEmpty(pDataTable.getCaption())){
@@ -171,22 +172,22 @@ public class DBSDataTableRenderer extends DBSRenderer {
 					if (!pDataTable.getCaption().equals("")) {
 						// Linha de separação
 						pWriter.startElement("span", pDataTable);
-							DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.HORIZONTAL_LINE_WHITE + " -line1");
+							DBSFaces.setAttribute(pWriter, "class", CSS.HORIZONTAL_LINE_WHITE + " -line1");
 						pWriter.endElement("span");
 					}
 					pWriter.startElement("div", pDataTable);
 						//Campos de seleção do filtro
-						DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.FILTER); 
+						DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.FILTER); 
 						
 						pWriter.startElement("div", pDataTable);
-							DBSFaces.setAttribute(pWriter, "class",DBSFaces.CSS.MODIFIER.INPUT);
+							DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.INPUT);
 							xFilter.encodeAll(pContext);
 						pWriter.endElement("div");
 
 						
 						//Botão de "Pesquisar"
 						pWriter.startElement("div", pDataTable);
-							DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.BUTTON);
+							DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.BUTTON);
 							UIComponent xFacetPesquisar = pDataTable.getFacet(DBSDataTable.FACET_PESQUISAR);
 							if (xFacetPesquisar!=null){
 								DBSButton xBtPesquisar = (DBSButton) xFacetPesquisar.findComponent("btPesquisar");
@@ -218,11 +219,11 @@ public class DBSDataTableRenderer extends DBSRenderer {
 					if (!pDataTable.getCaption().equals("") || 
 						xFilter != null) {
 						pWriter.startElement("span", pDataTable);
-							DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.HORIZONTAL_LINE_WHITE + " -line2");
+							DBSFaces.setAttribute(pWriter, "class", CSS.HORIZONTAL_LINE_WHITE + " -line2");
 						pWriter.endElement("span");
 					}
 					pWriter.startElement("div", pDataTable);
-						DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.TOOLBAR); 
+						DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.TOOLBAR); 
 							DBSFaces.encodeDataTableHeaderToolbar(pDataTable);
 					pWriter.endElement("div");
 				}
@@ -259,10 +260,10 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	private void pvEncodeDataTable(FacesContext pContext,DBSDataTable pDataTable, ResponseWriter pWriter) throws IOException {
 		pDataTable.setRowIndex(-1);
 		pWriter.startElement("div", pDataTable);
-			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
+			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
 	        pWriter.startElement("table", pDataTable);
-				DBSFaces.setAttribute(pWriter, "cellspacing", "0px", null);
-				DBSFaces.setAttribute(pWriter, "cellpadding", "0px", null);
+				DBSFaces.setAttribute(pWriter, "cellspacing", "0px");
+				DBSFaces.setAttribute(pWriter, "cellpadding", "0px");
 				//Cabeçalho da tabela
 				pvEncodeDataTableHeader(pContext, pDataTable, pWriter);
 				//Dados da tabela
@@ -326,13 +327,13 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	private void pvEncodeFocusInput(FacesContext pContext, DBSDataTable pDataTable,ResponseWriter pWriter) throws IOException {
 		//Input para controle do focus e caracteres digitados----
 		pWriter.startElement("input", pDataTable);
-			DBSFaces.setAttribute(pWriter, "id", pvGetInputFooId(pContext, pDataTable), null);
-			DBSFaces.setAttribute(pWriter, "name", pvGetInputFooId(pContext, pDataTable), null);
-			DBSFaces.setAttribute(pWriter, "type", "text", null);
-			DBSFaces.setAttribute(pWriter, "class", "-foo", null);
-			DBSFaces.setAttribute(pWriter, "autocomplete", "off", null);
-			DBSFaces.setAttribute(pWriter, "readonly", "readonly", null);
-			DBSFaces.setAttribute(pWriter, "value", pDataTable.getCurrentRowIndex(), null);
+			DBSFaces.setAttribute(pWriter, "id", pvGetInputFooId(pContext, pDataTable));
+			DBSFaces.setAttribute(pWriter, "name", pvGetInputFooId(pContext, pDataTable));
+			DBSFaces.setAttribute(pWriter, "type", "text");
+			DBSFaces.setAttribute(pWriter, "class", "-foo");
+			DBSFaces.setAttribute(pWriter, "autocomplete", "off");
+			DBSFaces.setAttribute(pWriter, "readonly", "readonly");
+			DBSFaces.setAttribute(pWriter, "value", pDataTable.getCurrentRowIndex());
 		pWriter.endElement("input");
 	}
 	
@@ -406,7 +407,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 
 	        		//Controle da class da linha
 	        		if (xRowIndex == pDataTable.getCurrentRowIndex()){
-						DBSFaces.setAttribute(pWriter, "class", xRowClasses[xRowClassIndex] + DBSFaces.CSS.MODIFIER.SELECTED);
+						DBSFaces.setAttribute(pWriter, "class", xRowClasses[xRowClassIndex] + CSS.MODIFIER.SELECTED);
 	        		}else{
 
 						DBSFaces.setAttribute(pWriter, "class", xRowClasses[xRowClassIndex]);
@@ -541,12 +542,12 @@ public class DBSDataTableRenderer extends DBSRenderer {
 				pStyleClass += " -sort ";
 				//Marca como selecionado se for a colluna que está o sort
 				if (pDataTable.getSortColumn().equals(pColumn.getId())){
-					pStyleClass += DBSFaces.CSS.MODIFIER.SELECTED;
+					pStyleClass += CSS.MODIFIER.SELECTED;
 				}
 				DBSFaces.setAttribute(pWriter, "sortColumn", pColumn.getId(), null);
 			}
 			//Encode do conteúdo da coluna
-			DBSFaces.setAttribute(pWriter, "class", pStyleClass, null);
+			DBSFaces.setAttribute(pWriter, "class", pStyleClass);
 			if (pColumnContent != null){
 				pColumnContent.encodeAll(pContext);
 				if (pColumnContent instanceof ClientBehaviorHolder){
@@ -558,14 +559,14 @@ public class DBSDataTableRenderer extends DBSRenderer {
 			&& pColumn.getSortable()){
 				//Indica a direção se é a coluna que que está o sort
 				pWriter.startElement("span", pDataTable);
-					DBSFaces.setAttribute(pWriter, "class", "-sort_icon", null);
+					DBSFaces.setAttribute(pWriter, "class", "-sort_icon");
 					pWriter.startElement("span", pDataTable);
 						if (pDataTable.getSortColumn().equals(pColumn.getId())){
 							pStyleClass = SORT_DIRECTION.get(pDataTable.getSortDirection()).getIcon();
 						}else{
 							pStyleClass = SORT_DIRECTION.NONE.getIcon();
 						}
-						DBSFaces.setAttribute(pWriter, "class", pStyleClass, null);
+						DBSFaces.setAttribute(pWriter, "class", pStyleClass);
 					pWriter.endElement("span");
 				pWriter.endElement("span");
 			}

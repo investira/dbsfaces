@@ -9,6 +9,7 @@ import javax.faces.render.FacesRenderer;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSTabPage.RENDERER_TYPE)
@@ -53,18 +54,18 @@ public class DBSTabPageRenderer extends DBSRenderer {
 		String xClientId = xTabPage.getClientId(pContext);
 //		DBSTab xTab = (DBSTab) xTabPage.getParent();
 
-		String xClass = DBSFaces.CSS.TABPAGE.MAIN + xTabPage.getStyleClass();
+		String xClass = CSS.TABPAGE.MAIN + xTabPage.getStyleClass();
 //		String xSelectedPage = DBSObject.getNotNull(pContext.getExternalContext().getRequestParameterMap().get(xTab.getInputId(true)), "").toString().toUpperCase();
 		
 		xWriter.startElement("div", xTabPage);
-			DBSFaces.setAttribute(xWriter, "id", xClientId, "id");
-			DBSFaces.setAttribute(xWriter, "name", xClientId, "name");
+			DBSFaces.setAttribute(xWriter, "id", xClientId);
+			DBSFaces.setAttribute(xWriter, "name", xClientId);
 //			if (xClientId.toUpperCase().equals(xTab.getSelectedTabPage().toUpperCase())
 //			 || xClientId.toUpperCase().equals(xSelectedPage)){
-//				xClass = xClass + " " + DBSFaces.CSS.MODIFIER.SELECTED;
+//				xClass = xClass + " " + CSS.MODIFIER.SELECTED;
 //			}
-			DBSFaces.setAttribute(xWriter, "class", xClass, "class");
-			DBSFaces.setAttribute(xWriter, "style",xTabPage.getStyle(), null);
+			DBSFaces.setAttribute(xWriter, "class", xClass);
+			DBSFaces.setAttribute(xWriter, "style",xTabPage.getStyle());
 //			encodeClientBehaviors(pContext, xTabPage);
 	}
 	

@@ -173,27 +173,27 @@ public class DBSComboboxRenderer extends DBSRenderer {
 				DBSFaces.setAttribute(pWriter, "style", xStyle);
 				DBSFaces.setSizeAttributes(pWriter, pCombobox.getSize(), null);
 				pWriter.startElement("span", pCombobox);
-					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.DATA, null);
+					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.DATA);
 					pWriter.write(xValue);
 				pWriter.endElement("span");
 				//Encode do botão
 				pWriter.startElement("span", pCombobox);
-					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.BUTTON + CSS.MODIFIER.SMALL + " -i_navigate_down", null);
+					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.BUTTON + CSS.MODIFIER.SMALL + " -i_navigate_down");
 				pWriter.endElement("span");
 				//Encode do combobox escondido
 				pWriter.startElement("select", pCombobox);
-					DBSFaces.setAttribute(pWriter, "id", xClientId, null);
-					DBSFaces.setAttribute(pWriter, "name", xClientId, null);
-					DBSFaces.setAttribute(pWriter, "size", "1", null);
+					DBSFaces.setAttribute(pWriter, "id", xClientId);
+					DBSFaces.setAttribute(pWriter, "name", xClientId);
+					DBSFaces.setAttribute(pWriter, "size", "1");
 					encodeClientBehaviors(pContext, pCombobox);
 					if (xList != null
 					 && xList.size() > 0){
 						for (Map.Entry<Object, Object> xListItem : xList.entrySet()) {
 							if (xListItem.getKey() != null){
 								pWriter.startElement("option", pCombobox);
-									DBSFaces.setAttribute(pWriter, "value", xListItem.getKey(), null);
+									DBSFaces.setAttribute(pWriter, "value", xListItem.getKey());
 									if (xListItem.getKey().equals(xValueKey)){
-										DBSFaces.setAttribute(pWriter, "selected", "", null);
+										DBSFaces.setAttribute(pWriter, "selected", "");
 									}
 									pWriter.write((String) DBSObject.getNotEmpty(xListItem.getValue(), "") );
 									

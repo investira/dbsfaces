@@ -10,6 +10,7 @@ import javax.faces.render.FacesRenderer;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSRadio.RENDERER_TYPE)
 public class DBSRadioRenderer extends DBSRenderer {
@@ -48,7 +49,7 @@ public class DBSRadioRenderer extends DBSRenderer {
 		DBSRadio xRadio = (DBSRadio) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xRadio.getClientId(pContext);
-		String xClass = DBSFaces.CSS.RADIO.MAIN + " ";
+		String xClass = CSS.RADIO.MAIN;
 		String xOnChange = null;
 
 		if (xRadio.getStyleClass()!=null){
@@ -63,13 +64,13 @@ public class DBSRadioRenderer extends DBSRenderer {
 		//xRadio.getChildren().add(xInput);
 		//xInput.setValueExpression("value", pSelect.getValueExpression("value"));
 		xWriter.startElement("div", xRadio);
-			xWriter.writeAttribute("id", xClientId, "id");
-			xWriter.writeAttribute("name", xClientId, "name");
-			xWriter.writeAttribute("class", xClass, "class");
+			DBSFaces.setAttribute(xWriter, "id", xClientId);
+			DBSFaces.setAttribute(xWriter, "name", xClientId);
+			DBSFaces.setAttribute(xWriter, "class", xClass);
 			if (xOnChange!=null){
 				DBSFaces.setAttribute(xWriter, DBSFaces.HTML.EVENTS.ONCHANGE, xOnChange, null); 
 			}
-			DBSFaces.setAttribute(xWriter, "style", xRadio.getStyle(), null);
+			DBSFaces.setAttribute(xWriter, "style", xRadio.getStyle());
 			if (xRadio.getChildren().size()>0){
 				pvEncodeInput(pContext, xRadio, xWriter);
 			}
@@ -94,24 +95,24 @@ public class DBSRadioRenderer extends DBSRenderer {
 			if (xItem.getClass().equals(UISelectItem.class)){
 				UISelectItem xS = (UISelectItem) xItem;
 				pWriter.startElement("td", pRadio);
-					pWriter.writeAttribute("class", DBSFaces.CSS.INPUT.MAIN , "class");
+					DBSFaces.setAttribute(pWriter, "class", CSS.INPUT.MAIN);
 					if (pRadio.getFloatLeft()){
-						pWriter.writeAttribute("style", "float:left;", null);
+						DBSFaces.setAttribute(pWriter, "style", "float:left;");
 					}
 					pWriter.startElement("input", pRadio);
-						DBSFaces.setAttribute(pWriter, "id", xClientId + xI, null);
-						DBSFaces.setAttribute(pWriter, "type", "radio", null);
-						DBSFaces.setAttribute(pWriter, "name", xClientId, null);
+						DBSFaces.setAttribute(pWriter, "id", xClientId + xI);
+						DBSFaces.setAttribute(pWriter, "type", "radio");
+						DBSFaces.setAttribute(pWriter, "name", xClientId);
 						if (pRadio.getReadOnly()){
-							DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pRadio) + DBSFaces.CSS.MODIFIER.DISABLED, null);
-							DBSFaces.setAttribute(pWriter, "disabled","disabled", null);
+							DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pRadio) + CSS.MODIFIER.DISABLED);
+							DBSFaces.setAttribute(pWriter, "disabled", "disabled");
 						}else{
-							DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pRadio), null);
+							DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pRadio));
 						}			
 						DBSFaces.setAttribute(pWriter, "value", xS.getItemValue(), null);
 						if (pRadio.getValue()!=null){
 							if (pRadio.getValue().toString().equals(xS.getItemValue())){
-								DBSFaces.setAttribute(pWriter, "checked", "checked", null);
+								DBSFaces.setAttribute(pWriter, "checked", "checked");
 							}
 						}
 						encodeClientBehaviors(pContext, pRadio);
@@ -119,9 +120,9 @@ public class DBSRadioRenderer extends DBSRenderer {
 					//Encode do label do radio caso tenha sido informado
 					if (xS.getItemLabel() != null && !xS.getItemLabel().equals("")){
 						pWriter.startElement("label", pRadio);
-							DBSFaces.setAttribute(pWriter, "for", xClientId + xI, null);
-							DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.LABEL, null);
-							DBSFaces.setAttribute(pWriter, "style","width:" + pRadio.getLabelWidth() + ";", null);
+							DBSFaces.setAttribute(pWriter, "for", xClientId + xI);
+							DBSFaces.setAttribute(pWriter, "class", CSS.INPUT.LABEL);
+							DBSFaces.setAttribute(pWriter, "style","width:" + pRadio.getLabelWidth() + ";");
 							pWriter.write(" " + xS.getItemLabel());
 						pWriter.endElement("label");
 					}

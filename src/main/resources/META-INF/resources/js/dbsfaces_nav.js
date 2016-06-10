@@ -104,7 +104,7 @@ dbsfaces.nav = {
 								 .css("width", "");
 			dbsfaces.ui.enableForegroundInputs($("body"));
 		}
-		pNav.toggleClass("-closed -i");
+		pNav.toggleClass("-closed -th_i");
 	},
 	
 		

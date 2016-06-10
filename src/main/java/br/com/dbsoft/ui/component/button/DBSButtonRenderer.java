@@ -10,6 +10,7 @@ import javax.faces.render.FacesRenderer;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.util.DBSObject;
 
 import com.sun.faces.renderkit.RenderKitUtils;
@@ -79,7 +80,7 @@ public class DBSButtonRenderer extends DBSRenderer {
 		DBSButton xButton = (DBSButton) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xButton.getClientId(pContext);
-		String xClass = DBSFaces.CSS.BUTTON.MAIN + DBSFaces.CSS.THEME.ACTION;
+		String xClass = CSS.BUTTON.MAIN + CSS.THEME.ACTION;
 		String xOnClick = null;
 		String xExecute = "";
 		if (xButton.getExecute() == null){
@@ -91,7 +92,7 @@ public class DBSButtonRenderer extends DBSRenderer {
 			xClass += xButton.getStyleClass();
 		}
 		if (xButton.getReadOnly()){
-			xClass += DBSFaces.CSS.MODIFIER.DISABLED;
+			xClass += CSS.MODIFIER.DISABLED;
 		}
 		
 		//if (xButton.getUpdate()!=null){
@@ -103,14 +104,14 @@ public class DBSButtonRenderer extends DBSRenderer {
 		}else{
 			xWriter.startElement("button", xButton);
 		}
-			DBSFaces.setAttribute(xWriter, "id", xClientId, null);
-			DBSFaces.setAttribute(xWriter, "name", xClientId, null);
-			DBSFaces.setAttribute(xWriter, "class", xClass, null);
-			DBSFaces.setAttribute(xWriter, "style", xButton.getStyle(), null);
-			DBSFaces.setAttribute(xWriter, "value", xButton.getValue(), null);
+			DBSFaces.setAttribute(xWriter, "id", xClientId);
+			DBSFaces.setAttribute(xWriter, "name", xClientId);
+			DBSFaces.setAttribute(xWriter, "class", xClass);
+			DBSFaces.setAttribute(xWriter, "style", xButton.getStyle());
+			DBSFaces.setAttribute(xWriter, "value", xButton.getValue());
 			if (xButton.getDisabled()
 			 || xButton.getReadOnly()){
-				DBSFaces.setAttribute(xWriter, "disabled", "disabled", null);
+				DBSFaces.setAttribute(xWriter, "disabled", "disabled");
 			}
 			
 			if (!xButton.getReadOnly()){
@@ -154,21 +155,21 @@ public class DBSButtonRenderer extends DBSRenderer {
 	private void pvEncodeTable(DBSButton pButton, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("table", pButton);
 //			if (pButton.getReadOnly()){
-//				pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CENTRALIZED_REL, null);
+//				pWriter.writeAttribute("class", CSS.MODIFIER.CENTRALIZED_REL, null);
 //			}
-			DBSFaces.setAttribute(pWriter, "cellspacing", "0px", null);
-			DBSFaces.setAttribute(pWriter, "cellpadding", "0px", null);
+			DBSFaces.setAttribute(pWriter, "cellspacing", "0px");
+			DBSFaces.setAttribute(pWriter, "cellpadding", "0px");
 			pWriter.startElement("tbody", pButton);
 				pWriter.startElement("tr", pButton);
 					if (pButton.getIconClass()!=null && pButton.getIconClass()!="") {
 						pWriter.startElement("td", pButton);
-							DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.NOT_SELECTABLE, null);
+							DBSFaces.setAttribute(pWriter, "class", CSS.NOT_SELECTABLE);
 							pvEncodeIcon(pButton, pWriter);
 						pWriter.endElement("td");
 					}
 					if (pButton.getLabel()!=null && pButton.getLabel()!="") {
 						pWriter.startElement("td", pButton);
-							DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.NOT_SELECTABLE, null);
+							DBSFaces.setAttribute(pWriter, "class", CSS.NOT_SELECTABLE);
 							pvEncodeLabel(pButton, pWriter);
 						pWriter.endElement("td");
 					}
@@ -178,19 +179,19 @@ public class DBSButtonRenderer extends DBSRenderer {
 	}	
 
 	private void pvEncodeIcon(DBSButton pButton, ResponseWriter pWriter) throws IOException{
-		String xClass = DBSFaces.CSS.NOT_SELECTABLE + " " + DBSFaces.CSS.MODIFIER.ICON + " " +  pButton.getIconClass();
+		String xClass = CSS.NOT_SELECTABLE + CSS.MODIFIER.ICON + pButton.getIconClass();
 		pWriter.startElement("div", pButton);
-			DBSFaces.setAttribute(pWriter, "class", xClass, null);
+			DBSFaces.setAttribute(pWriter, "class", xClass);
 		pWriter.endElement("div");
 	}
 
 	private void pvEncodeLabel(DBSButton pButton, ResponseWriter pWriter) throws IOException{
-		String xClass = DBSFaces.CSS.NOT_SELECTABLE +  " " + DBSFaces.CSS.MODIFIER.LABEL;
+		String xClass = CSS.NOT_SELECTABLE + CSS.MODIFIER.LABEL;
 		pWriter.startElement("div", pButton);
-			DBSFaces.setAttribute(pWriter, "class", xClass, null);
+			DBSFaces.setAttribute(pWriter, "class", xClass);
 			//Adiciona espaço extra entre o icone e o texto
 			if (pButton.getIconClass()!=null){ 
-				DBSFaces.setAttribute(pWriter, "style", "padding-left:2px;", null); 
+				DBSFaces.setAttribute(pWriter, "style", "padding-left:2px;"); 
 			}
 			pWriter.write(pButton.getLabel());
 		pWriter.endElement("div");

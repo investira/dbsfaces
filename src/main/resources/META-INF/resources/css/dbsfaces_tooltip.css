@@ -57,7 +57,6 @@
 .-tooltip > .-container > .-content{
 	margin:0px;
 	padding: 4px;
-	color:white;
 
 	-moz-border-radius: 3px;
  	-webkit-border-radius: 3px;
@@ -67,7 +66,6 @@
 
 
 	background-repeat: repeat;
- 	background-color: rgb(13,25,45);
 
 	-moz-box-shadow: 0px 0px 2px #222;  
 	-webkit-box-shadow: 0px 0px 2px #222;  
@@ -96,11 +94,13 @@
 }
 
 .-tooltip.-l1 > .-container:before{
-    border-top: 8px solid  rgb(13,25,45);
+    border-top: 8px solid;
+	border-top-color: inherit;
     top:100%;
 }
 .-tooltip.-l3 > .-container:before{
-    border-bottom: 8px solid rgb(13,25,45);
+    border-bottom: 8px solid;
+	border-bottom-color: inherit;
     top: -7px;
 }
 
@@ -115,11 +115,13 @@
     transform: translateY(-50%);
 }
 .-tooltip.-l4 > .-container:before{
-    border-left: 8px solid rgb(13,25,45);
+    border-left: 8px solid;
+    border-left-color: inherit;
 	left: 100%;
 }
 .-tooltip.-l2 > .-container:before{
-    border-right: 8px solid rgb(13,25,45);
+    border-right: 8px solid;
+    border-right-color: inherit;
     left: -7px;
 }
 

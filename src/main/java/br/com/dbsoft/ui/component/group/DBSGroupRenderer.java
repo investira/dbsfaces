@@ -9,6 +9,7 @@ import javax.faces.render.FacesRenderer;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSGroup.RENDERER_TYPE)
@@ -37,42 +38,42 @@ public class DBSGroupRenderer extends DBSRenderer {
 		if (!pComponent.isRendered()){return;}
 		DBSGroup xGroup = (DBSGroup) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
-		String xClass = DBSFaces.CSS.GROUP.MAIN;
+		String xClass = CSS.GROUP.MAIN;
 		if (xGroup.getStyleClass()!=null){
 			xClass = xClass + " " + xGroup.getStyleClass();
 		}
 
 		String xClientId = xGroup.getClientId(pContext);
 		xWriter.startElement("div", xGroup);
-			DBSFaces.setAttribute(xWriter, "id", xClientId, null);
-			DBSFaces.setAttribute(xWriter, "name", xClientId, null);
+			DBSFaces.setAttribute(xWriter, "id", xClientId);
+			DBSFaces.setAttribute(xWriter, "name", xClientId);
 			if (xClass!=""){
-				DBSFaces.setAttribute(xWriter, "class", xClass, null);
+				DBSFaces.setAttribute(xWriter, "class", xClass);
 			}
-			DBSFaces.setAttribute(xWriter, "style", xGroup.getStyle(), null);
+			DBSFaces.setAttribute(xWriter, "style", xGroup.getStyle());
 			xWriter.startElement("div", xGroup);
-				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER, null);
+				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
 				xWriter.startElement("div", xGroup);
-					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.HEADER, null);
+					DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.HEADER);
 					xWriter.startElement("div", xGroup);
 						xWriter.startElement("div", xGroup);
-							DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.INPUT.LABEL + DBSFaces.CSS.NOT_SELECTABLE, null);
+							DBSFaces.setAttribute(xWriter, "class", CSS.INPUT.LABEL + CSS.NOT_SELECTABLE);
 							if (!xGroup.getLabel().equals("")){
 								xWriter.write(xGroup.getLabel() + ":");
 							}
 						xWriter.endElement("div");
 					xWriter.endElement("div");
 					xWriter.startElement("div", xGroup);
-						DBSFaces.setAttribute(xWriter, "class", "-line", null);
+						DBSFaces.setAttribute(xWriter, "class", "-line");
 						xWriter.startElement("span", xGroup);
 						xWriter.endElement("span");
 					xWriter.endElement("div");
 				xWriter.endElement("div");
 				xWriter.startElement("div", xGroup);
 					if (xGroup.getFloatLeft()){ 
-						DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT + "-floatleft", null);
+						DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTENT + "-floatleft");
 					}else{
-						DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
+						DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTENT);
 					}
 					DBSFaces.renderChildren(pContext, xGroup);
 	}
