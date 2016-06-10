@@ -49,7 +49,7 @@ public class DBSLinkRenderer extends DBSRenderer {
 		if (!pComponent.isRendered()){return;}
 		DBSLink xLink = (DBSLink) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
-		String xClass = DBSFaces.CSS.NOT_SELECTABLE.trim() + " " + xLink.getStyleClass();
+		String xClass = DBSFaces.CSS.NOT_SELECTABLE + xLink.getStyleClass();
 		String xOnClick = null;
 		String xExecute = "";
 		if (xLink.getExecute() == null){

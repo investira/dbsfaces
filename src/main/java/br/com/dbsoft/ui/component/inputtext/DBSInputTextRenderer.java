@@ -163,7 +163,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 						DBSFaces.setAttribute(pWriter, "id", xClientIdSuggestionKey, null);
 						DBSFaces.setAttribute(pWriter, "name", xClientIdSuggestionKey, null);
 						DBSFaces.setAttribute(pWriter, "type", "hidden", null);
-						DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.SUGGESTIONKEY.trim(), null);
+						DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.INPUT.SUGGESTIONKEY, null);
 						DBSFaces.setAttribute(pWriter, "value", xValueKey, null);
 						DBSFaces.setAttribute(pWriter, "key", xValueKey, null);
 						DBSFaces.setAttribute(pWriter, "nulltext", pInputText.getSuggestionNullText(), null);
@@ -198,7 +198,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 							xBtn = (DBSButton) pContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
 						}
 						xBtn.setId(xClientIdButton);
-						xBtn.setStyleClass(DBSFaces.CSS.INPUT.SUBMIT.trim()); 
+						xBtn.setStyleClass(DBSFaces.CSS.INPUT.SUBMIT); 
 						//xBtn.setActionExpression(DBSFaces.createMethodExpression(pContext, pInputText.getSuggestionSearchAction(), String.class, new Class[0]));
 						if (pInputText.getSuggestionUpdate()!=null){
 							xBtn.setUpdate(xClientAjaxUpdate + " " + pInputText.getSuggestionUpdate());

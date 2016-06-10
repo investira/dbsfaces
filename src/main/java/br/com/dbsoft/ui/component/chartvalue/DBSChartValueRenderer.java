@@ -79,7 +79,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 
 		//Configura class
 		if (xChartValue.getStyleClass()!=null){
-			xClass = xClass.trim()  + " " + xChartValue.getStyleClass().trim();
+			xClass += xChartValue.getStyleClass();
 		}
 		
 		pvSetFillcolor(xCharts, xChart, xChartValue);
@@ -89,7 +89,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		xWriter.startElement("g", xChartValue);
 			DBSFaces.setAttribute(xWriter, "id", xClientId, null);
 			DBSFaces.setAttribute(xWriter, "index", xChartValue.getIndex(), null);
-			DBSFaces.setAttribute(xWriter, "class", xClass.trim(), null);
+			DBSFaces.setAttribute(xWriter, "class", xClass, null);
 			DBSFaces.setAttribute(xWriter, "style", xChartValue.getStyle(), null);
 			DBSFaces.setAttribute(xWriter, "value", DBSNumber.toDouble(xChartValue.getValue(), 0D, Locale.US), null);
 			DBSFaces.setAttribute(xWriter, "perc", DBSNumber.toDouble(xPercValue, 0D, Locale.US), null);
@@ -568,13 +568,13 @@ public class DBSChartValueRenderer extends DBSRenderer {
 	private void pvEncodeTooptip(DBSChartValue pChartValue, Double pX, Double pY, String pClienteId, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 		if (DBSObject.isEmpty(pChartValue.getTooltip())){return;}
 		pWriter.startElement("foreignObject", pChartValue);
-			pWriter.writeAttribute("xmlns","http://www.w3.org/1999/xhtml", null);
-			pWriter.writeAttribute("id", pClienteId + "_tooltip", null);
-			DBSFaces.setAttribute(pWriter, "class", "-foreignobject", null);
-			DBSFaces.setAttribute(pWriter, "x", pX + "px", null);
-			DBSFaces.setAttribute(pWriter, "y", pY + "px", null);
-			DBSFaces.setAttribute(pWriter, "width", ".5", null);
-			DBSFaces.setAttribute(pWriter, "height", ".5", null);
+			DBSFaces.setAttribute(pWriter, "xmlns","http://www.w3.org/1999/xhtml");
+			DBSFaces.setAttribute(pWriter, "id", pClienteId + "_tooltip");
+			DBSFaces.setAttribute(pWriter, "class", "-foreignobject");
+			DBSFaces.setAttribute(pWriter, "x", pX + "px");
+			DBSFaces.setAttribute(pWriter, "y", pY + "px");
+			DBSFaces.setAttribute(pWriter, "width", ".5");
+			DBSFaces.setAttribute(pWriter, "height", ".5");
 			DBSFaces.encodeTooltip(pContext, pChartValue, 1, pChartValue.getTooltip(), pClienteId + "_tooltip", null);
 		pWriter.endElement("foreignObject");
 	}

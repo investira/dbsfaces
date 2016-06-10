@@ -66,7 +66,7 @@ public class DBSFloatButtonRenderer extends DBSRenderer {
 		xWriter.startElement("div", xFloatButton);
 		xWriter.writeAttribute("id", xClientId, "id");
 		xWriter.writeAttribute("name", xClientId, "name");
-		DBSFaces.setAttribute(xWriter, "class", xClass.trim(), null);
+		DBSFaces.setAttribute(xWriter, "class", xClass, null);
 		DBSFaces.setAttribute(xWriter, "style",xFloatButton.getStyle(), null);
 		
 		//BOTÃO FLUTUANTE PRINCIPAL

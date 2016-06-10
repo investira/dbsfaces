@@ -48,13 +48,13 @@ public class DBSDivRenderer extends DBSRenderer {
 		if (!pComponent.isRendered()){return;}
 		DBSDiv xDiv = (DBSDiv) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
-		String xClass = DBSFaces.CSS.DIV.MAIN + " ";
+		String xClass = DBSFaces.CSS.DIV.MAIN;
 		if (xDiv.getStyleClass()!=null){
-			xClass += xDiv.getStyleClass() + " ";
+			xClass += xDiv.getStyleClass();
 		}
 		if (xDiv.getSelectable()!=null){
 			if (!xDiv.getSelectable()){
-				xClass += DBSFaces.CSS.NOT_SELECTABLE.trim() + " ";
+				xClass += DBSFaces.CSS.NOT_SELECTABLE;
 			}
 		}
 		String xClientId = xDiv.getClientId(pContext);
@@ -69,9 +69,7 @@ public class DBSDivRenderer extends DBSRenderer {
 				xClass += " dbs_div_loading";
 			}
 
-			if (xClass!=""){
-				DBSFaces.setAttribute(xWriter, "class", xClass.trim(), null);
-			}
+			DBSFaces.setAttribute(xWriter, "class", xClass, null);
 			DBSFaces.setAttribute(xWriter, "style", xDiv.getStyle(), null);
 
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xDiv, DBSPassThruAttributes.getAttributes(Key.DIV));

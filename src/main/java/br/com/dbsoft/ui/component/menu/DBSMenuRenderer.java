@@ -8,6 +8,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
+import br.com.dbsoft.ui.component.menu.DBSMenu.TYPE;
 import br.com.dbsoft.ui.core.DBSFaces;
 
 
@@ -36,7 +37,8 @@ public class DBSMenuRenderer extends DBSRenderer {
 		DBSMenu xMenu = (DBSMenu) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xMenu.getClientId(pContext);
-		String xClass = DBSFaces.CSS.MENU.MAIN + " " + DBSFaces.CSS.NOT_SELECTABLE.trim();
+		TYPE xType = TYPE.get(xMenu.getType());
+		String xClass = DBSFaces.CSS.MENU.MAIN + " " + DBSFaces.CSS.NOT_SELECTABLE + xType.getCSS();
 
 		if (xMenu.getStyleClass()!=null){
 			xClass += xMenu.getStyleClass();

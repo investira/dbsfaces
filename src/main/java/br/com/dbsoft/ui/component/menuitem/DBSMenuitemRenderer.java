@@ -53,7 +53,7 @@ public class DBSMenuitemRenderer extends DBSRenderer {
 		Boolean xIsSubmenu = true;
 		String xOnClick;
 		String xExecute;
-		String xClass = DBSFaces.CSS.MENUITEM.MAIN + " " + DBSFaces.CSS.NOT_SELECTABLE.trim();
+		String xClass = DBSFaces.CSS.MENUITEM.MAIN + DBSFaces.CSS.NOT_SELECTABLE;
 
 		//Verifica se é um submenu filho de um outro submenu ou filho do menu principal
 		UIComponent xParent = pComponent.getParent();
@@ -87,11 +87,11 @@ public class DBSMenuitemRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "style", xMenuitem.getStyle(), null);
 			xWriter.startElement("a", xMenuitem);
 				writeIdAttribute(xWriter, xMenuitem, xClientId);
-				xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT, "class");
+				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
 				DBSFaces.setAttribute(xWriter, "ontouchstart", "", null);
 				if (!xMenuitem.getReadOnly()){
 					if (xMenuitem.getActionExpression() != null){
-						xWriter.writeAttribute("type", "submit", "type"); 
+						DBSFaces.setAttribute(xWriter, "type", "submit", null); 
 						DBSFaces.setAttribute(xWriter, DBSFaces.HTML.EVENTS.ONCLICK, xOnClick, null);
 					}
 				}
@@ -109,18 +109,18 @@ public class DBSMenuitemRenderer extends DBSRenderer {
 	public void encodeMenuLine(UIComponent pComponent, ResponseWriter pWriter, String pLabel, String pIconClass, Boolean pHasChildren) throws IOException{
 		if (pIconClass!=null){
 			pWriter.startElement("span", pComponent);
-				pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.ICON + " " + pIconClass, "class");
+				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.ICON + pIconClass, null);
 			pWriter.endElement("span");
 		}
 		if (pLabel!=null){
 			pWriter.startElement("span", pComponent);
-				pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.LABEL + " " + DBSFaces.CSS.INPUT.LABEL, "class");
+				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.LABEL + DBSFaces.CSS.INPUT.LABEL, null);
 				pWriter.write(pLabel);
 			pWriter.endElement("span");
 		}
 		if (pHasChildren!=null && pHasChildren){
 			pWriter.startElement("span", pComponent);
-				pWriter.writeAttribute("class",  " -i_add ", "class");
+				DBSFaces.setAttribute(pWriter, "class",  "-i_add", null);
 			pWriter.endElement("span");
 		}
 		

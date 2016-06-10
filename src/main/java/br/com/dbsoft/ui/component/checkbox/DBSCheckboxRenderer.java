@@ -60,13 +60,13 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 		//xInput.setValueExpression("value", pCheckbox.getValueExpression("value"));
 
 		xWriter.startElement("div", xCheckbox);
-			xWriter.writeAttribute("id", xClientId, "id");
-			xWriter.writeAttribute("name", xClientId, "name");
-			xWriter.writeAttribute("class", xClass, "class");
-			DBSFaces.setAttribute(xWriter, "style", xCheckbox.getStyle(), null);
+			DBSFaces.setAttribute(xWriter, "id", xClientId);
+			DBSFaces.setAttribute(xWriter, "name", xClientId);
+			DBSFaces.setAttribute(xWriter, "class", xClass);
+			DBSFaces.setAttribute(xWriter, "style", xCheckbox.getStyle());
 			//Container
 			xWriter.startElement("div", xCheckbox);
-				xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER, "class");
+				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER);
 				if (!xCheckbox.getInvertLabel()){
 					DBSFaces.encodeLabel(pContext, xCheckbox, xWriter);
 				}
@@ -107,7 +107,7 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 				DBSFaces.setAttribute(pWriter, DBSFaces.HTML.EVENTS.ONCHANGE, xOnChange, null); 
 			}
 			if(pvIsChecked(pCheckbox.getValue())) {
-				pWriter.writeAttribute("checked", "checked", null);
+				DBSFaces.setAttribute(pWriter, "checked", "checked");
 			}
 
 			encodeClientBehaviors(pContext, pCheckbox);

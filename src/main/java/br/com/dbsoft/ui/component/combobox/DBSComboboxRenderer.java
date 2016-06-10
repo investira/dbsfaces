@@ -60,18 +60,18 @@ public class DBSComboboxRenderer extends DBSRenderer {
 		DBSCombobox xCombobox = (DBSCombobox) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xCombobox.getClientId(pContext);
-		String xClass = CSS.COMBOBOX.MAIN + " " + CSS.INPUT.MAIN + " ";
+		String xClass = CSS.COMBOBOX.MAIN + CSS.INPUT.MAIN;
 		Object xOldValue = xCombobox.getValue();
 		if (xCombobox.getStyleClass()!=null){
-			xClass = xClass + xCombobox.getStyleClass();
+			xClass += xCombobox.getStyleClass();
 		}
 		xWriter.startElement("div", xCombobox);
-			xWriter.writeAttribute("id", xClientId, "id");
-			xWriter.writeAttribute("name", xClientId, "name");
-			xWriter.writeAttribute("class", xClass, "class");
+			DBSFaces.setAttribute(xWriter, "id", xClientId);
+			DBSFaces.setAttribute(xWriter, "name", xClientId);
+			DBSFaces.setAttribute(xWriter, "class", xClass);
 			DBSFaces.setAttribute(xWriter, "style", xCombobox.getStyle(), null);
 			xWriter.startElement("div", xCombobox);
-				xWriter.writeAttribute("class", CSS.MODIFIER.CONTAINER, "class");
+				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
 					DBSFaces.encodeLabel(pContext, xCombobox, xWriter);
 					pvEncodeInput(pContext, xCombobox, xWriter);
 					DBSFaces.encodeRightLabel(pContext, xCombobox, xWriter);
@@ -169,8 +169,8 @@ public class DBSComboboxRenderer extends DBSRenderer {
 			DBSFaces.encodeInputDataReadOnly(pCombobox, pWriter, xClientId, false, xValue.toString(), pCombobox.getSize(), null, xStyle);
 		}else{
 			pWriter.startElement("span", pCombobox);
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pCombobox), null);
-				DBSFaces.setAttribute(pWriter, "style", xStyle, null);
+				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pCombobox));
+				DBSFaces.setAttribute(pWriter, "style", xStyle);
 				DBSFaces.setSizeAttributes(pWriter, pCombobox.getSize(), null);
 				pWriter.startElement("span", pCombobox);
 					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.DATA, null);

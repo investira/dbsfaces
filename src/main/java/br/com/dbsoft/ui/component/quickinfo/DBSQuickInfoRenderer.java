@@ -35,28 +35,26 @@ public class DBSQuickInfoRenderer extends DBSRenderer {
 		if (!pComponent.isRendered()){return;}
 		DBSQuickInfo xQuickInfo = (DBSQuickInfo) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
-		String xClass = DBSFaces.CSS.QUICKINFO.MAIN + " ";
+		String xClass = DBSFaces.CSS.QUICKINFO.MAIN;
 
 		if (xQuickInfo.getStyleClass()!=null){
-			xClass += xQuickInfo.getStyleClass().trim() + " ";
+			xClass += xQuickInfo.getStyleClass();
 		}		
 		if (xQuickInfo.getShowOnHover()){
 			xClass += "-oh "; //Indica que quickinfo é exibido com a passagem do mouse
 		}else{
-			xClass += "-th_action "; //Estilo padrão de botão
+			xClass += DBSFaces.CSS.THEME.ACTION; //Estilo padrão de botão
 		}
-		if (xClass.trim().equals("")){xClass = null;}
-
 		xWriter.startElement("div", xQuickInfo);
 			DBSFaces.setAttribute(xWriter, "id", xQuickInfo.getClientId(pContext), null);
 			DBSFaces.setAttribute(xWriter, "style", xQuickInfo.getStyle(), null);
 //			DBSFaces.setAttribute(xWriter, "dl", xQuickInfo.getDefaultLocation(), null);
-			DBSFaces.setAttribute(xWriter, "class", xClass.trim(), null);
+			DBSFaces.setAttribute(xWriter, "class", xClass, null);
 			xWriter.startElement("div", xQuickInfo);
 				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.ICON + xQuickInfo.getIconClass(), null);
 				encodeClientBehaviors(pContext, xQuickInfo);
 				xWriter.startElement("div", xQuickInfo);
-					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT.trim(), null);
+					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
 					//Conteúdo do quickinfo
 					DBSFaces.encodeTooltipQuickInfo(pContext, xQuickInfo, xQuickInfo.getDefaultLocation());
 				xWriter.endElement("div");

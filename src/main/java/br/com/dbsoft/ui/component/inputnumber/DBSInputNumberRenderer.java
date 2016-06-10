@@ -59,19 +59,19 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 		DBSInputNumber xInputNumber = (DBSInputNumber) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xInputNumber.getClientId(pContext);
-		String xClass = DBSFaces.CSS.INPUTNUMBER.MAIN + " " + DBSFaces.CSS.INPUT.MAIN + " ";
+		String xClass = DBSFaces.CSS.INPUTNUMBER.MAIN + DBSFaces.CSS.INPUT.MAIN;
 		if (xInputNumber.getStyleClass() != null) {
-			xClass = xClass + xInputNumber.getStyleClass();
+			xClass += xInputNumber.getStyleClass();
 		}
 
 		xWriter.startElement("div", xInputNumber);
-			xWriter.writeAttribute("id", xClientId, "id");
-			xWriter.writeAttribute("name", xClientId, "name");
-			xWriter.writeAttribute("class", xClass.trim(), "class");
+			DBSFaces.setAttribute(xWriter, "id", xClientId, null);
+			DBSFaces.setAttribute(xWriter, "name", xClientId, null);
+			DBSFaces.setAttribute(xWriter, "class", xClass, null);
 			DBSFaces.setAttribute(xWriter, "style", xInputNumber.getStyle(), null);
 			//Container
 			xWriter.startElement("div", xInputNumber);
-				xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER, "class");
+				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER, null);
 					DBSFaces.encodeLabel(pContext, xInputNumber, xWriter);
 					pvEncodeInput(pContext, xInputNumber, xWriter);
 					DBSFaces.encodeRightLabel(pContext, xInputNumber, xWriter);

@@ -45,19 +45,18 @@ public class DBSCalendarRenderer extends DBSRenderer {
 		String xClass = DBSFaces.CSS.CALENDAR.MAIN;
 		
 		if (xCalendar.getStyleClass()!=null){
-			xClass = xClass + " " + xCalendar.getStyleClass();
+			xClass += xCalendar.getStyleClass();
 		}
 		
-		
 		xWriter.startElement("div", xCalendar);
-			xWriter.writeAttribute("id", xClientId, "id");
-			xWriter.writeAttribute("name", xClientId, "name");
-			xWriter.writeAttribute("class", xClass, "class");
-			DBSFaces.setAttribute(xWriter, "style", xCalendar.getStyle(), null);
+			DBSFaces.setAttribute(xWriter, "id", xClientId);
+			DBSFaces.setAttribute(xWriter, "name", xClientId);
+			DBSFaces.setAttribute(xWriter, "class", xClass);
+			DBSFaces.setAttribute(xWriter, "style", xCalendar.getStyle());
 
 			//Container
 			xWriter.startElement("div", xCalendar);
-				xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER, "class");
+				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER);
 	
 				pvEncodeHeader(pContext, xWriter, xCalendar);
 				pvEncodeDays(xWriter, xCalendar);
@@ -69,14 +68,14 @@ public class DBSCalendarRenderer extends DBSRenderer {
 	private void pvEncodeHeader(FacesContext pContext, ResponseWriter pWriter, DBSCalendar pCalendar) throws IOException{
 		/*Título Mes/Anos*/
 		pWriter.startElement("div", pCalendar);
-			pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CAPTION, "class");
+			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CAPTION);
 			
 			pvCreateComboMes(pContext, pCalendar);
 			pvCreateInputAno(pContext, pCalendar);
 
 		pWriter.endElement("div");	
 		pWriter.startElement("span", pCalendar);
-			pWriter.writeAttribute("class", DBSFaces.CSS.HORIZONTAL_LINE_WHITE, "class");
+			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.HORIZONTAL_LINE_WHITE);
 		pWriter.endElement("span");		
 	}
 
@@ -84,10 +83,10 @@ public class DBSCalendarRenderer extends DBSRenderer {
 	private void pvEncodeDays(ResponseWriter pWriter, DBSCalendar pCalendar) throws IOException{
 		/*Dias*/
 		pWriter.startElement("div", pCalendar);
-			pWriter.writeAttribute("class", DBSFaces.CSS.CALENDAR.DAYS, "class");
+			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.CALENDAR.DAYS);
 			pWriter.startElement("div", pCalendar);
 				pWriter.startElement("div", pCalendar);
-					pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CAPTION, "class");
+					DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CAPTION);
 					pWriter.startElement("span", pCalendar);
 						pWriter.write("S");
 					pWriter.endElement("span");
@@ -104,16 +103,16 @@ public class DBSCalendarRenderer extends DBSRenderer {
 						pWriter.write("S");
 					pWriter.endElement("span");
 					pWriter.startElement("span", pCalendar);
-						pWriter.writeAttribute("style", "opacity:0.4;", null);
+						DBSFaces.setAttribute(pWriter, "style", "opacity:0.4;");
 						pWriter.write("S");
 					pWriter.endElement("span");
 					pWriter.startElement("span", pCalendar);
-						pWriter.writeAttribute("style", "opacity:0.4;", null);
+						DBSFaces.setAttribute(pWriter, "style", "opacity:0.4;");
 						pWriter.write("D");
 					pWriter.endElement("span");
 				pWriter.endElement("div");
 				pWriter.startElement("div", pCalendar);
-					pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT, "class");
+					DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT);
 					pWriter.startElement("div", pCalendar);
 						pvEndodeDias(pWriter,pCalendar);
 					pWriter.endElement("div");
@@ -131,9 +130,9 @@ public class DBSCalendarRenderer extends DBSRenderer {
 		while (!xInicio.equals(xFim)){
 			pWriter.startElement("span", pCalendar);
 				if (DBSDate.getMonth(xInicio) != xMes){
-					pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.DISABLED, "class");
+					DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.DISABLED);
 				}else if(xInicio.equals(xDate)){
-					pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.SELECTED, "class");
+					DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.SELECTED);
 				}
 				pWriter.write(DBSDate.getDay(xInicio).toString());
 			pWriter.endElement("span");

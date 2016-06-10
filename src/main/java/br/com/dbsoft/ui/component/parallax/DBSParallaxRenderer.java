@@ -37,18 +37,15 @@ public class DBSParallaxRenderer extends DBSRenderer {
 		if (!pComponent.isRendered()){return;}
 		DBSParallax xParallax = (DBSParallax) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
-		String xClass = DBSFaces.CSS.PARALLAX.MAIN.trim() + " ";
+		String xClass = DBSFaces.CSS.PARALLAX.MAIN;
 		if (xParallax.getStyleClass()!=null){
-			xClass += xParallax.getStyleClass() + " ";
+			xClass += xParallax.getStyleClass();
 		}
 		String xClientId = xParallax.getClientId(pContext);
 		xWriter.startElement("div", xParallax);
 			DBSFaces.setAttribute(xWriter, "id", xClientId, null);
 			DBSFaces.setAttribute(xWriter, "name", xClientId, null);
-
-			if (xClass!=""){
-				DBSFaces.setAttribute(xWriter, "class", xClass.trim(), null);
-			}
+			DBSFaces.setAttribute(xWriter, "class", xClass, null);
 			DBSFaces.setAttribute(xWriter, "style", xParallax.getStyle(), null);
 
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xParallax, DBSPassThruAttributes.getAttributes(Key.PARALLAX));

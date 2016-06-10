@@ -70,7 +70,7 @@ public class DBSChartRenderer extends DBSRenderer {
 		xWriter.startElement("g", xChart);
 			DBSFaces.setAttribute(xWriter, "id", xClientId, null);
 			DBSFaces.setAttribute(xWriter, "name", xClientId, null);
-			DBSFaces.setAttribute(xWriter, "class", xClass.trim(), null);
+			DBSFaces.setAttribute(xWriter, "class", xClass, null);
 			DBSFaces.setAttribute(xWriter, "style", xChart.getStyle(), null);
 			DBSFaces.setAttribute(xWriter, "type", xChart.getType(), null);
 			DBSFaces.setAttribute(xWriter, "index", xChart.getIndex(), null);
@@ -174,17 +174,17 @@ public class DBSChartRenderer extends DBSRenderer {
 			}
 		}
 		pWriter.startElement("foreignObject", pChart);
-			pWriter.writeAttribute("xmlns","http://www.w3.org/1999/xhtml", null);
-			pWriter.writeAttribute("id", pChart.getClientId() + "_deltalist", null);
-			DBSFaces.setAttribute(pWriter, "class", "-deltaList -foreignobject", null);
-			DBSFaces.setAttribute(pWriter, "x", pCharts.getPadding() + "px", null);
-			DBSFaces.setAttribute(pWriter, "y", ((pCharts.getPadding() * 2) + pCharts.getChartHeight()) + "px", null);
-			DBSFaces.setAttribute(pWriter, "width", pCharts.getChartWidth(), null);
-			DBSFaces.setAttribute(pWriter, "height", "1.6em", null);
-			DBSFaces.setAttribute(pWriter, "width", ".5", null);
-			DBSFaces.setAttribute(pWriter, "height", ".5", null);
+			DBSFaces.setAttribute(pWriter, "xmlns","http://www.w3.org/1999/xhtml");
+			DBSFaces.setAttribute(pWriter, "id", pChart.getClientId() + "_deltalist");
+			DBSFaces.setAttribute(pWriter, "class", "-deltaList -foreignobject");
+			DBSFaces.setAttribute(pWriter, "x", pCharts.getPadding() + "px");
+			DBSFaces.setAttribute(pWriter, "y", ((pCharts.getPadding() * 2) + pCharts.getChartHeight()) + "px");
+			DBSFaces.setAttribute(pWriter, "width", pCharts.getChartWidth());
+			DBSFaces.setAttribute(pWriter, "height", "1.6em");
+			DBSFaces.setAttribute(pWriter, "width", ".5");
+			DBSFaces.setAttribute(pWriter, "height", ".5");
 			pWriter.startElement("div", pChart);
-				DBSFaces.setAttribute(pWriter, "class", "-container", null);
+				DBSFaces.setAttribute(pWriter, "class", "-container");
 				xDeltaListContent.encodeAll(pContext);
 			pWriter.endElement("div");
 		pWriter.endElement("foreignObject");

@@ -1,3 +1,16 @@
+.-th_fc{
+	color:rgba(13,25,45);
+}
+.-th_fc.-i{
+	color:white;
+}
+.-th_bc{
+	background-color:rgb(13,25,45);
+}
+.-th_bc.-i{
+	background-color:white;
+}
+
 .-th_action{
 }
 

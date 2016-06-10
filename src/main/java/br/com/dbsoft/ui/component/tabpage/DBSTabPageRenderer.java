@@ -53,7 +53,7 @@ public class DBSTabPageRenderer extends DBSRenderer {
 		String xClientId = xTabPage.getClientId(pContext);
 //		DBSTab xTab = (DBSTab) xTabPage.getParent();
 
-		String xClass = DBSFaces.CSS.TABPAGE.MAIN + " " + xTabPage.getStyleClass();
+		String xClass = DBSFaces.CSS.TABPAGE.MAIN + xTabPage.getStyleClass();
 //		String xSelectedPage = DBSObject.getNotNull(pContext.getExternalContext().getRequestParameterMap().get(xTab.getInputId(true)), "").toString().toUpperCase();
 		
 		xWriter.startElement("div", xTabPage);
@@ -63,7 +63,7 @@ public class DBSTabPageRenderer extends DBSRenderer {
 //			 || xClientId.toUpperCase().equals(xSelectedPage)){
 //				xClass = xClass + " " + DBSFaces.CSS.MODIFIER.SELECTED;
 //			}
-			xWriter.writeAttribute("class", xClass.trim(), "class");
+			DBSFaces.setAttribute(xWriter, "class", xClass, "class");
 			DBSFaces.setAttribute(xWriter, "style",xTabPage.getStyle(), null);
 //			encodeClientBehaviors(pContext, xTabPage);
 	}

@@ -62,7 +62,7 @@ public class DBSMessageListRenderer extends DBSRenderer {
 		ResponseWriter 	xWriter = pContext.getResponseWriter();
 		String 			xClientId = xMessageList.getClientId(pContext);
 
-		String xClass = DBSFaces.CSS.MESSAGELIST.MAIN.trim() + " " + xMessageList.getStyleClass();
+		String xClass = DBSFaces.CSS.MESSAGELIST.MAIN + xMessageList.getStyleClass();
 		String xStyle = xMessageList.getStyle();
 
 		MESSAGE_TYPE xType = MESSAGE_TYPE.INFORMATION; //Padrão
@@ -70,9 +70,9 @@ public class DBSMessageListRenderer extends DBSRenderer {
 		Integer xNew = 0;
 		//Encode principal
 		xWriter.startElement("div", xMessageList);
-			xWriter.writeAttribute("id", xClientId, null);
-			xWriter.writeAttribute("name", xClientId, null);
-			DBSFaces.setAttribute(xWriter, "class", xClass.trim(), null);
+			DBSFaces.setAttribute(xWriter, "id", xClientId, null);
+			DBSFaces.setAttribute(xWriter, "name", xClientId, null);
+			DBSFaces.setAttribute(xWriter, "class", xClass, null);
 			if (!DBSObject.isEmpty(xStyle)){
 				DBSFaces.setAttribute(xWriter, "style", xStyle, null);
 			}
@@ -102,15 +102,15 @@ public class DBSMessageListRenderer extends DBSRenderer {
 						xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER, null);
 						//Encode do icone principal e o balão com o contador de mensagens
 						xWriter.startElement("div", xMessageList);
-							xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.BUTTON.trim(), null);
+							DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.BUTTON, null);
 							//Exibe Ícone
 							xWriter.startElement("div", xMessageList);
-								xWriter.writeAttribute("class", "-i_message", null);
+								DBSFaces.setAttribute(xWriter, "class", "-i_message", null);
 							xWriter.endElement("div");
 							//Exibe contador de mensagens
 							if (xCount > 0){
 								xWriter.startElement("div", xMessageList);
-									xWriter.writeAttribute("class", "-count " + " -severity" + xType.getSeverity(), null);
+									DBSFaces.setAttribute(xWriter, "class", "-count " + " -severity" + xType.getSeverity(), null);
 									xWriter.write(xCount.toString());
 								xWriter.endElement("div");
 							}
@@ -151,13 +151,13 @@ public class DBSMessageListRenderer extends DBSRenderer {
 	 */
 	private void pvEncodeMessageList(FacesContext pContext, DBSMessageList pMessageList, ResponseWriter pWriter) throws IOException {
 		pWriter.startElement("div", pMessageList);
-			String xClass = "-list " + DBSFaces.CSS.BACK_GRADIENT_WHITE.trim();
+			String xClass = "-list " + DBSFaces.CSS.BACK_GRADIENT_WHITE;
 			if (pMessageList.getDeleting()){
 				xClass+= DBSFaces.CSS.MODIFIER.OPENED;
 			}
 			DBSFaces.setAttribute(pWriter, "class",  xClass, null);
 			pWriter.startElement("div", pMessageList);
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT.trim(), null);
+				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
 				//Exibe a lista de mensagens em ordem invertida de inclusão(PEPS/LIFO), onde o mais recente é será exibido primeiro;
 				@SuppressWarnings("unchecked")
 				Collection<String> xCollection = pMessageList.getValue().getMessages().keySet();
@@ -166,10 +166,10 @@ public class DBSMessageListRenderer extends DBSRenderer {
 				for (Integer xI=xMsgKey.length-1; xI!=-1; xI--){
 					xMsg = (IDBSMessage) pMessageList.getValue().getMessages().get(xMsgKey[xI]);
 					pWriter.startElement("div", pMessageList);
-						DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.MESSAGE.trim() + " -severity" + xMsg.getMessageType().getSeverity(), null);
+						DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.MESSAGE + " -severity" + xMsg.getMessageType().getSeverity(), null);
 						DBSFaces.setAttribute(pWriter, "index",xMsgKey[xI], null);
 						pWriter.startElement("div", pMessageList);
-							DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER.trim(), null);
+							DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER, null);
 							//Hora da mensagem
 							pWriter.startElement("div", pMessageList);
 								DBSFaces.setAttribute(pWriter, "class", "-time", null);
@@ -179,18 +179,18 @@ public class DBSMessageListRenderer extends DBSRenderer {
 							pWriter.endElement("div");
 							//Texto da mensagem
 							pWriter.startElement("div", pMessageList);
-								DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT.trim(), null);
+								DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
 								pWriter.write(xMsg.getMessageText());
 							pWriter.endElement("div");
 							if (!pMessageList.getReadOnly()){
 								//Botões
 								pWriter.startElement("div", pMessageList);
-									DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.BUTTON.trim(), null);
+									DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.BUTTON, null);
 									//Botão de exclusão da mensagem
 									pWriter.startElement("span", pMessageList);
-										pWriter.writeAttribute("class", "dbs_button ", null);
+										DBSFaces.setAttribute(pWriter, "class", "dbs_button ", null);
 										pWriter.startElement("span", pMessageList);
-											pWriter.writeAttribute("class", "-i_delete", null);
+											DBSFaces.setAttribute(pWriter, "class", "-i_delete", null);
 										pWriter.endElement("span");
 									pWriter.endElement("span");
 								pWriter.endElement("div");

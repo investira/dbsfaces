@@ -98,19 +98,19 @@ public class DBSProgressRenderer extends DBSRenderer {
 			xTextLabel = xF.intValue() + "%";
 		}
 		pWriter.startElement("div", pProgress);
-		pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER.trim(), null);
+		DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER, null);
 			pWriter.startElement("div", pProgress);
-				pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT.trim(), null);
-				pWriter.writeAttribute("style", xStyle, null);
+				DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
+				DBSFaces.setAttribute(pWriter, "style", xStyle, null);
 				pWriter.startElement("div", pProgress);
-					pWriter.writeAttribute("class", xClassLoading, null);
+					DBSFaces.setAttribute(pWriter, "class", xClassLoading, null);
 				pWriter.endElement("div");
 				pWriter.startElement("div", pProgress);
-					pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.VALUE.trim(), null);
-					pWriter.writeAttribute("style", xValueStyle, null);
+					DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.VALUE, null);
+					DBSFaces.setAttribute(pWriter, "style", xValueStyle, null);
 				pWriter.endElement("div");
 				pWriter.startElement("div", pProgress);
-					pWriter.writeAttribute("class", xClassLabel, null);
+					DBSFaces.setAttribute(pWriter, "class", xClassLabel, null);
 					pWriter.write(xTextLabel);
 				pWriter.endElement("div");
 			pWriter.endElement("div");

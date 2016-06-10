@@ -112,7 +112,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 								DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.VALUE, null);
 								//Linhas do grid
 								xWriter.startElement("g", xCharts);
-									DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.CHARTS.MAIN.trim() + DBSFaces.CSS.MODIFIER.GRID.trim(), null);
+									DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.CHARTS.MAIN + DBSFaces.CSS.MODIFIER.GRID, null);
 									if (xCharts.getShowDelta()){ 
 										DBSFaces.setAttribute(xWriter, "showdelta", xCharts.getShowDelta(), null);
 									}

@@ -40,12 +40,12 @@ public class DBSParallaxSectionRenderer extends DBSRenderer {
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xParallaxSection.getClientId(pContext);
 		
-		String xClass = DBSFaces.CSS.PARALLAXSECTION.MAIN + " ";
+		String xClass = DBSFaces.CSS.PARALLAXSECTION.MAIN;
 		if (xParallaxSection.getStyleClass()!=null){
-			xClass += xParallaxSection.getStyleClass() + " ";
+			xClass += xParallaxSection.getStyleClass();
 		}
 		xWriter.startElement("div", xParallaxSection);
-			DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER.trim(), null);
+			DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER, null);
 			if (shouldWriteIdAttribute(xParallaxSection)){
 				DBSFaces.setAttribute(xWriter, "id", xClientId + "_container", null);
 				DBSFaces.setAttribute(xWriter, "name", xClientId + "_container", null);
@@ -58,7 +58,7 @@ public class DBSParallaxSectionRenderer extends DBSRenderer {
 					DBSFaces.setAttribute(xWriter, "id", xClientId, null);
 					DBSFaces.setAttribute(xWriter, "name", xClientId, null);
 				}
-				DBSFaces.setAttribute(xWriter, "class", xClass.trim(), null);
+				DBSFaces.setAttribute(xWriter, "class", xClass, null);
 				DBSFaces.setAttribute(xWriter, "style", xParallaxSection.getStyle(), null);
 				DBSFaces.setAttribute(xWriter, "data-a", xParallaxSection.getA(), null);
 				DBSFaces.setAttribute(xWriter, "data-centerAttraction", xParallaxSection.getCenterAttraction(), null);

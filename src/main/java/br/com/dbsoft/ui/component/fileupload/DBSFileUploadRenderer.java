@@ -52,26 +52,26 @@ public class DBSFileUploadRenderer extends DBSRenderer {
 		DBSFileUpload xFileUpload = (DBSFileUpload) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xFileUpload.getClientId(pContext);
-		String xClass = DBSFaces.CSS.FILEUPLOAD.MAIN + " ";
+		String xClass = DBSFaces.CSS.FILEUPLOAD.MAIN;
 		if (xFileUpload.getStyleClass()!=null){
-			xClass += xFileUpload.getStyleClass().trim();
+			xClass += xFileUpload.getStyleClass();
 		}
 
 		if (xFileUpload.getReadOnly()){
-			xClass += " " + DBSFaces.CSS.MODIFIER.DISABLED;
+			xClass += DBSFaces.CSS.MODIFIER.DISABLED;
 		}
 		//Configura para não save o state, pois componete não pode ser usado em chamadas ajax já que o upload é efetuado pelo browser enquanto a tela esta aberta
 		xFileUpload.setTransient(true);
 		
 		xWriter.startElement("div", xFileUpload);
-			xWriter.writeAttribute("id", xClientId, null);
-			xWriter.writeAttribute("name", xClientId, null);
-			xWriter.writeAttribute("class", xClass.trim(), null);
+			DBSFaces.setAttribute(xWriter, "id", xClientId, null);
+			DBSFaces.setAttribute(xWriter, "name", xClientId, null);
+			DBSFaces.setAttribute(xWriter, "class", xClass, null);
 			DBSFaces.setAttribute(xWriter, "style", xFileUpload.getStyle(), null);
 			encodeClientBehaviors(pContext, xFileUpload);
 			//Container
 			xWriter.startElement("div", xFileUpload);
-				xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTAINER, "class");
+				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER, null);
 				
 				pvEncodeToolbar(pContext, xFileUpload, xWriter);
 		
@@ -91,7 +91,7 @@ public class DBSFileUploadRenderer extends DBSRenderer {
 	private void pvEncodeToolbar(FacesContext pContext, DBSFileUpload pFileUpload, ResponseWriter pWriter) throws IOException{
 		//Encode do toolbar
 		pWriter.startElement("div", pFileUpload);
-			pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.TOOLBAR, null);
+			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.TOOLBAR, null);
 			//Botão START
 			DBSButton xButtonStart = (DBSButton) pFileUpload.getFacet("btStart");
 			if (xButtonStart != null){
@@ -107,10 +107,10 @@ public class DBSFileUploadRenderer extends DBSRenderer {
 
 	private void pvEncodeInput(@SuppressWarnings("unused") FacesContext pContext, DBSFileUpload pFileUpload, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("input", pFileUpload);
-		 	pWriter.writeAttribute("id", pFileUpload.getClientId().replaceAll(":", "_") + DBSFaces.CSS.MODIFIER.INPUT.trim(), null);
-			pWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.INPUT, null);
-			pWriter.writeAttribute("style", "display:none;", null);
-			pWriter.writeAttribute("type", "file", null);
+			DBSFaces.setAttribute(pWriter, "id", pFileUpload.getClientId().replaceAll(":", "_") + DBSFaces.CSS.MODIFIER.INPUT.trim(), null);
+			DBSFaces.setAttribute(pWriter, "class", DBSFaces.CSS.MODIFIER.INPUT, null);
+			DBSFaces.setAttribute(pWriter, "style", "display:none;", null);
+			DBSFaces.setAttribute(pWriter, "type", "file", null);
 			if (pFileUpload.getMultiple()){
 				pWriter.writeAttribute("multiple", "multiple", null);
 			}

@@ -51,12 +51,12 @@ public class DBSGroupRenderer extends DBSRenderer {
 			}
 			DBSFaces.setAttribute(xWriter, "style", xGroup.getStyle(), null);
 			xWriter.startElement("div", xGroup);
-				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER.trim(), null);
+				DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTAINER, null);
 				xWriter.startElement("div", xGroup);
-					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.HEADER.trim(), null);
+					DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.HEADER, null);
 					xWriter.startElement("div", xGroup);
 						xWriter.startElement("div", xGroup);
-							DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.INPUT.LABEL.trim() + " " + DBSFaces.CSS.NOT_SELECTABLE.trim(), null);
+							DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.INPUT.LABEL + DBSFaces.CSS.NOT_SELECTABLE, null);
 							if (!xGroup.getLabel().equals("")){
 								xWriter.write(xGroup.getLabel() + ":");
 							}

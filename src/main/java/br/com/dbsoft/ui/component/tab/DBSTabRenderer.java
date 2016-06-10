@@ -144,7 +144,7 @@ public class DBSTabRenderer extends DBSRenderer {
 				xWriter.startElement("div", xTab);
 					xWriter.writeAttribute("class", "-tabPage",  null);
 					xWriter.startElement("div", xTab);
-						xWriter.writeAttribute("class", DBSFaces.CSS.MODIFIER.CONTENT.trim(), "class");
+						DBSFaces.setAttribute(xWriter, "class", DBSFaces.CSS.MODIFIER.CONTENT, null);
 
 						//Input para salvar a pagina selecionada ====================================================
 						HtmlInputHidden xInput = (HtmlInputHidden) xTab.getFacet("input");
