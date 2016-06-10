@@ -168,7 +168,6 @@ public class  DBSFaces {
 	    public static final String CHARTS = "charts";
 	    public static final String CHART = "chart";
 	    public static final String CHARTVALUE = "chartValue";
-	    public static final String SIDENAV = "sidenav";
 	}
 
 	public static class HTML
