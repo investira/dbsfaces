@@ -65,7 +65,7 @@
 
 	-webkit-border-radius: 3px 3px 0px 0px;  
 	-moz-border-radius: 3px 3px 0px 0px; 
-	border-radius: 3px 3px 0px 0px;
+	border-radius: 3px 3px 0px 0px; 
 }  
 
 /*altera exibição do menu principal(Horinzontal)*/
@@ -124,7 +124,7 @@
 /* grupo do filho */
 .dbs_menuitem > ul{
 	position: absolute;
-	emargin-top: 4px;
+	margin-top: 4px;
 	padding: 5px;
 
 	-webkit-border-radius: 3px;  
