@@ -51,6 +51,7 @@ dbsfaces.tooltip = {
 	},
 	
 	initializeLayout: function(pSourceComponent){
+		if (pSourceComponent.data("tooltip") == null){return;}
 		var xContent = pSourceComponent.data("tooltip").data("content");
 		var xContainer = pSourceComponent.data("tooltip").data("container");
 		xContainer.css("border-color", xContent.css("background-color"));
