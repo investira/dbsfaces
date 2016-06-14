@@ -68,9 +68,8 @@ dbsfaces.nav = {
 			var xWidth = pNav.data("nav").get(0).getBoundingClientRect().width;
 			//Utiliza largura do caption se este for maior que largura do conteúdo do nav
 			if (xCaptionWidth > xWidth){
-				xWidth = xCaptionWidth;
+				xWidth = xCaptionWidth + (xPadding * 2);
 			}
-			xWidth += (xPadding * 2);
 			if (xWidth > xMaskWidth){
 				xWidth = "95%";
 			}
