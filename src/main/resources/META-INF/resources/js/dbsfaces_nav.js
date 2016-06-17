@@ -45,8 +45,8 @@ dbsfaces.nav = {
 		pNav.data("container", pNav.data("navgroup").children(".-container"));
 		pNav.data("caption", pNav.children(".-caption"));
 		pNav.data("mask", pNav.children(".-mask"));
-		pNav.data("nav", pNav.data("container").find(".-content > nav"));
-		pNav.data("padding", Number(dbsfaces.number.getOnlyNumber(pNav.find(".-nav > .-container").css("padding-left"))) + 1);
+		pNav.data("nav", pNav.data("container").find("> .-content > nav"));
+		pNav.data("padding", Number(dbsfaces.number.getOnlyNumber(pNav.find(" > .-nav > .-container").css("padding-left"))) + 1);
 	},
 	
 
@@ -55,6 +55,20 @@ dbsfaces.nav = {
 			dbsfaces.nav.pvAjustLayout(pNav);
 		}
 	},
+
+	show: function(pNav){
+		//Está fechado e vai abrir
+		if (pNav.hasClass("-closed")){
+			dbsfaces.nav.pvAjustLayout(pNav);
+			dbsfaces.ui.disableBackgroundInputs(pNav);
+		}else{
+			pNav.data("navgroup").css("height", "")
+								 .css("width", "");
+			dbsfaces.ui.enableForegroundInputs($("body"));
+		}
+		pNav.toggleClass("-closed -th_i");
+	},
+	
 	
 	pvAjustLayout: function(pNav){
 		var xPadding = pNav.data("padding");
@@ -68,10 +82,12 @@ dbsfaces.nav = {
 			var xWidth = pNav.data("nav").get(0).getBoundingClientRect().width;
 			//Utiliza largura do caption se este for maior que largura do conteúdo do nav
 			if (xCaptionWidth > xWidth){
-				xWidth = xCaptionWidth + (xPadding * 2);
+				xWidth = xCaptionWidth;
 			}
 			if (xWidth > xMaskWidth){
 				xWidth = "95%";
+			}else{
+				xWidth += xPadding;
 			}
 			//Limita largura a largura do conteúdo do nav
 			pNav.data("navgroup").css("width", xWidth);
@@ -91,21 +107,8 @@ dbsfaces.nav = {
 			pNav.data("container").css("padding-bottom", xCaptionHeight + xPadding);
 		}
 		
-	},
+	}
 
-	show: function(pNav){
-		//Está fechado e vai abrir
-		if (pNav.hasClass("-closed")){
-			dbsfaces.nav.pvAjustLayout(pNav);
-			dbsfaces.ui.disableBackgroundInputs(pNav);
-		}else{
-			pNav.data("navgroup").css("height", "")
-								 .css("width", "");
-			dbsfaces.ui.enableForegroundInputs($("body"));
-		}
-		pNav.toggleClass("-closed -th_i");
-	},
 	
-		
 };
 

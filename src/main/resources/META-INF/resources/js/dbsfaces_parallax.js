@@ -18,7 +18,7 @@ dbsfaces.parallax = {
 		var xList = [];
 		var xA;
 		//Armazena em xA a lista com os valores que forem diferentes para depois sortá-la		
-		pParallax.find(".-container > .dbs_parallaxSection").each(function(){
+		pParallax.find(" > .-container > .dbs_parallaxSection").each(function(){
 			xA = dbsfaces.parallax.getA($(this));
 			if (xList.indexOf(xA) == -1){
 				xList.push(xA);
@@ -26,7 +26,7 @@ dbsfaces.parallax = {
 		});
 		xList.sort();
 		//Atribui zIndex a seção conforma a posição dele na lista já sortada
-		pParallax.find(".-container > .dbs_parallaxSection").each(function(){
+		pParallax.find(" > .-container > .dbs_parallaxSection").each(function(){
 			xA = dbsfaces.parallax.getA($(this));
 			//Busca em qual posição da lista esta o Z na lista
 			for	(i = 0; i < xList.length; i++) {
@@ -124,7 +124,7 @@ dbsfaces.parallax = {
 		//Alinha seção verticalmente com o centro da tela
 		clearTimeout(dbsfaces.parallax.wAutoAjust);
 		dbsfaces.parallax.wAutoAjust = window.setTimeout(function(){
-			pParallax.find("[data-centerattraction]").each(function(){
+			pParallax.find(" > .-container > .dbs_parallaxSection[data-centerattraction]").each(function(){
 				var xVSF = parseFloat($(this).attr("vsf"));
 				if ((xVSF > 0 && xVSF < 0.30)
 				 || (xVSF < 0 && xVSF > -0.30)){

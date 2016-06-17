@@ -39,18 +39,17 @@ public class DBSMenuRenderer extends DBSRenderer {
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xMenu.getClientId(pContext);
 		TYPE xType = TYPE.get(xMenu.getType());
-		String xClass = CSS.MENU.MAIN + CSS.NOT_SELECTABLE + xType.getCSS();
+		String xClass = CSS.MENU.MAIN + CSS.THEME.FC; 
 
 		if (xMenu.getStyleClass()!=null){
 			xClass += xMenu.getStyleClass();
 		}
 		xWriter.startElement("div", xMenu);
-			if (shouldWriteIdAttribute(xMenu)){
-				DBSFaces.setAttribute(xWriter, "id", xClientId);
-				DBSFaces.setAttribute(xWriter, "name", xClientId);
-			}
+			DBSFaces.setAttribute(xWriter, "id", xClientId);
+			DBSFaces.setAttribute(xWriter, "name", xClientId);
 			DBSFaces.setAttribute(xWriter, "style", xMenu.getStyle());
 			DBSFaces.setAttribute(xWriter, "class", xClass);
+			DBSFaces.setAttribute(xWriter, "type", xType.getCode());
 			xWriter.startElement("ul", xMenu);
 				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTENT);
 				DBSFaces.renderChildren(pContext, xMenu);

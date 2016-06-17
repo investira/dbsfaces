@@ -15,6 +15,7 @@ import br.com.dbsoft.ui.component.menu.DBSMenu;
 import br.com.dbsoft.ui.component.menuitem.DBSMenuitem;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
+import br.com.dbsoft.ui.core.DBSFaces.HTML;
 
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSMenuitem.RENDERER_TYPE)
@@ -81,6 +82,9 @@ public class DBSMenuitemRenderer extends DBSRenderer {
 				xClass += CSS.MODIFIER.DISABLED;
 			}
 		}
+		if (xMenuitem.getOpened()){
+			xClass += CSS.MODIFIER.OPENED;
+		}
 		
 		//Encode --------
 		xWriter.startElement("li", xMenuitem);
@@ -88,43 +92,54 @@ public class DBSMenuitemRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "style", xMenuitem.getStyle());
 			xWriter.startElement("a", xMenuitem);
 				writeIdAttribute(xWriter, xMenuitem, xClientId);
-				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTENT);
+				xClass = CSS.MODIFIER.CAPTION;
+				DBSFaces.setAttribute(xWriter, "class", xClass);
 				DBSFaces.setAttribute(xWriter, "ontouchstart", "", null);
 				if (!xMenuitem.getReadOnly()){
 					if (xMenuitem.getActionExpression() != null){
 						DBSFaces.setAttribute(xWriter, "type", "submit"); 
-						DBSFaces.setAttribute(xWriter, DBSFaces.HTML.EVENTS.ONCLICK, xOnClick);
+						DBSFaces.setAttribute(xWriter, HTML.EVENTS.ONCLICK, xOnClick);
 					}
 				}
-				encodeMenuLine(xMenuitem, xWriter, xMenuitem.getLabel(), xMenuitem.getIconClass(), xIsSubmenu & xMenuitem.getChildCount() > 0);
+				pvEncodeMenuLine(xMenuitem, xWriter, xMenuitem.getLabel(), xMenuitem.getIconClass(), xMenuitem.getChildCount() > 0);
+//				pvEncodeMenuLine(xMenuitem, xWriter, xMenuitem.getLabel(), xMenuitem.getIconClass(), xIsSubmenu & xMenuitem.getChildCount() > 0);
 				
 			xWriter.endElement("a");
 			if (xMenuitem.getChildCount() > 0){
-				xWriter.startElement("ul", xMenuitem);
-					DBSFaces.renderChildren(pContext, xMenuitem);
-				xWriter.endElement("ul");
+				xWriter.startElement("div", xMenuitem);
+					DBSFaces.setAttribute(xWriter, "class", "-submenu");
+					xWriter.startElement("div", xMenuitem);
+					DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
+						xWriter.startElement("ul", xMenuitem);
+							DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTENT);
+							DBSFaces.renderChildren(pContext, xMenuitem);
+						xWriter.endElement("ul");
+					xWriter.endElement("div");
+				xWriter.endElement("div");
 			}
 		xWriter.endElement("li");
 	}
 	
-	public void encodeMenuLine(UIComponent pComponent, ResponseWriter pWriter, String pLabel, String pIconClass, Boolean pHasChildren) throws IOException{
-		if (pIconClass!=null){
-			pWriter.startElement("span", pComponent);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON + pIconClass);
-			pWriter.endElement("span");
-		}
-		if (pLabel!=null){
-			pWriter.startElement("span", pComponent);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.LABEL + CSS.INPUT.LABEL);
-				pWriter.write(pLabel);
-			pWriter.endElement("span");
-		}
-		if (pHasChildren!=null && pHasChildren){
-			pWriter.startElement("span", pComponent);
-				DBSFaces.setAttribute(pWriter, "class",  "-i_add");
-			pWriter.endElement("span");
-		}
-		
+	public void pvEncodeMenuLine(DBSMenuitem pMenuItem, ResponseWriter pWriter, String pLabel, String pIconClass, Boolean pHasChildren) throws IOException{
+		pWriter.startElement("div", pMenuItem);
+			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
+			if (pIconClass!=null){
+				pWriter.startElement("span", pMenuItem);
+					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON + pIconClass);
+				pWriter.endElement("span");
+			}
+			if (pLabel!=null){
+				pWriter.startElement("span", pMenuItem);
+					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.LABEL + CSS.INPUT.LABEL);
+					pWriter.write(pLabel);
+				pWriter.endElement("span");
+			}
+			if (pHasChildren!=null && pHasChildren){
+				pWriter.startElement("span", pMenuItem);
+				DBSFaces.setAttribute(pWriter, "class", "-childrenIcon"); //Marcação closed="-c", opened="-o". Setado via JS. 
+				pWriter.endElement("span");
+			}
+		pWriter.endElement("div");
 	}
 
 }

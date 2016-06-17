@@ -69,7 +69,7 @@ dbsfaces.charts = {
 	
 	//Cria guia padrão para indicar a posição no gráfico tipo line
 	pvCreateDefGuides: function(pCharts){
-		var xDefs = pCharts.find("svg > defs");
+		var xDefs = pCharts.find("svg > defs").first();
 		var xMarker = xDefs.children(".-point");
 		var xElement;
 		//Cria quia individual

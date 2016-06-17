@@ -142,8 +142,9 @@ dbsfaces = {
 		ON_AJAX_SUCCESS: "dbs_ON_AJAX_SUCESS",
 		ON_AJAX_ERROR: "dbs_ON_AJAX_ERROR",
 		ON_ROW_SELECTED: "select.dataTable",
-		ON_TRANSITION_END: "webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend",
-		ON_ANIMATION_END: "webkitAnimationEnd oanimationend msAnimationEnd animationend",
+		ON_TRANSITION_START: "webkitTransitionStart otransitionStart oTransitionStart msTransitionStart transitionstart",
+		ON_TRANSITION_END: "webkitTransitionEnd otransitionEnd oTransitionEnd msTransitionEnd transitionend",
+		ON_ANIMATION_END: "webkitAnimationEnd oanimationEnd msAnimationEnd animationend",
 		ON_ANIMATION_INTERATION: "webkitAnimationIteration animationiteration"
 	}	
 }
