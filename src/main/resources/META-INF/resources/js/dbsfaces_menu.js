@@ -49,7 +49,7 @@ dbsfaces.menu = {
 		pMenuItem.data("content", pMenuItem.data("container").children(".-content"));
 		pMenuItem.data("childrenIcon", pMenuItem.find(" > .-caption > .-content > .-childrenIcon"));
 		if (pMenuItem.data("type") == "scroll"){
-			pMenuItem.data("delay", 100);
+			pMenuItem.data("delay", 150);
 		}else{
 			pMenuItem.data("delay", 0);
 		}
