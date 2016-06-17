@@ -50,21 +50,10 @@
 }
 
 .dbs_menuitem.-opened > .-submenu > .-container{
-/*     overflow: visible; */
 }
 	
-/* 	transition: max-height 1s ease-out; */
-/* 	max-height: none; */
-/* 	overflow: visible; */
-}
 .dbs_menuitem:not(.-disabled) > .-submenu > .-container{
-/* 	max-height: inherit; */
 }
-
-/* .dbs_menuitem.-opened > .-submenu > .-container{ */
-/* 	overflow: visible !important; */
-/* 	transition: max-height .1s ease-out; */
-/* } */
 
 .dbs_menuitem > .-caption{
 	display:table;
@@ -114,8 +103,8 @@
 /* 	padding: 0px 8px 4px 8px; */
 	line-height: 2em !important;
 /* 	padding: 0px .73em .4em .73em; */
-/* 	padding: 0px 1.33em .4em .73em; */
-	padding: 0px 1.33em 4px .73em;
+	padding: 0px 1.33em .4em .73em;
+/* 	padding: 0px 1.33em 4px .73em; */
 
 	-webkit-border-radius: 3px 3px 0px 0px;  
 	-moz-border-radius: 3px 3px 0px 0px; 
@@ -174,8 +163,8 @@
 /* grupo do filho */
 .dbs_menu[type="float"] .dbs_menuitem > .-submenu{
 	position: absolute;
-	margin-top: 4px;
-/* 	margin-top: .4em; */
+/* 	margin-top: 4px; */
+	margin-top: .4em;
 
 	-webkit-border-radius: 3px;  
 	-moz-border-radius: 3px; 
@@ -237,30 +226,3 @@
 	padding-right: 1.3em;
 }
 
-/* 	-moz-animation: -kf_menu_open 0.2s forwards; */
-/* 	-o-animation: -kf_menu_open 0.2s forwards; */
-/* 	-webkit-animation: -kf_menu_open 0.2s forwards; */
-/* 	animation: -kf_menu_open .5s forwards; */
-
-/* @-moz-keyframes -kf_menu_open { */
-/* /*   0% {max-height:0;} */ */
-/* /*   100% {overflow: visible; */ */
-/* /*   	    max-height:inherit;} */ */
-/* } */
-/* @-webkit-keyframes -kf_menu_open { */
-/* /*   0% {-webkit-transform: rotate(0deg);} */ */
-/* /*   100% {overflow: visible;} */ */
-/* } */
-/* @-o-keyframes -kf_menu_open { */
-/* /*   0% {-o-transform: rotate(0deg);} */ */
-/* /*   100% {overflow: visible;} */ */
-/* } */
-/* @-ms-keyframes -kf_menu_open { */
-/* /*   0% {transform: rotate(0deg);} */ */
-/* /*   100% {overflow: visible;} */ */
-/* } */
-/* @keyframes -kf_menu_open { */
-/*   0% {max-height:0;} */
-/*   100% {overflow: visible; */
-/*   	    max-height:inherit;} */
-/* } */
