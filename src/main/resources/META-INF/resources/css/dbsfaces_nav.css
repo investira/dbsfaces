@@ -34,14 +34,14 @@
 	pointer-events: none;
 }
 
-/*TOP - BOTTOM */
+/*HORIZONTAL */
 .dbs_nav.-closed.-tlh > .-nav,
 .dbs_nav.-closed.-trh > .-nav,
 .dbs_nav.-closed.-blh > .-nav,
 .dbs_nav.-closed.-brh > .-nav{
 	width: 0;
 }
-/* LEFT - RIGHT */
+/*VERTICAL */
 .dbs_nav.-closed.-tlv > .-nav,
 .dbs_nav.-closed.-trv > .-nav,
 .dbs_nav.-closed.-blv > .-nav,
@@ -49,7 +49,7 @@
 	height: 0;
 }
 
-/*TOP - BOTTOM */
+/*HORIZONTAL */
 .dbs_nav.-tlh > .-nav,
 .dbs_nav.-trh > .-nav,
 .dbs_nav.-blh > .-nav,
@@ -57,7 +57,7 @@
 	width: 90%;
 	height: 100%;
 }
-/* LEFT - RIGHT */
+/*VERTICAL */
 .dbs_nav.-tlv > .-nav,
 .dbs_nav.-trv > .-nav,
 .dbs_nav.-blv > .-nav,
@@ -104,8 +104,11 @@
 	overflow: hidden;
 }
 .dbs_nav > .-nav > .-container > .-content > nav{
-	display: block;
-	position: absolute;
+	display: inline-block;
+	position: relative;
+	height: 100%;
+	overflow-y: auto;
+	
 }
 
 /* TOP*/
