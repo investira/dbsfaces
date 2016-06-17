@@ -3,12 +3,14 @@ dbs_nav = function(pId) {
 
 	dbsfaces.nav.initialize(xNav);
 	
-	$(pId + " > .-caption").on("click touchstart", function(e){
+	$(pId + " > .-caption").on("mousedown touchstart", function(e){
 		dbsfaces.nav.show(xNav);
+		return false;
 	});
 
-	$(pId + " > .-mask").on("click touchstart", function(e){
+	$(pId + " > .-mask").on("mousedown touchstart", function(e){
 		dbsfaces.nav.show(xNav);
+		return false;
 	});
 
 	$(window).resize(function(){

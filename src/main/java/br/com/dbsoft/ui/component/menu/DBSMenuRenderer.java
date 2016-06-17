@@ -39,7 +39,7 @@ public class DBSMenuRenderer extends DBSRenderer {
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xMenu.getClientId(pContext);
 		TYPE xType = TYPE.get(xMenu.getType());
-		String xClass = CSS.MENU.MAIN + CSS.THEME.FC; 
+		String xClass = CSS.MENU.MAIN; 
 
 		if (xMenu.getStyleClass()!=null){
 			xClass += xMenu.getStyleClass();
