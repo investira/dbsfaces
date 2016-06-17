@@ -86,14 +86,13 @@ dbsfaces.nav = {
 			if (xCaptionWidth > xWidth){
 				xWidth = xCaptionWidth;
 			}
+			xWidth += xPadding;
+			//Força largura máxima em 95% caso largura seja superior a largura da tela
 			if (xWidth > xMaskWidth){
 				xWidth = "95%";
-			}else{
-				xWidth += xPadding;
 			}
 			//Limita largura a largura do conteúdo do nav
 			pNav.data("navgroup").css("width", xWidth);
-//			pNav.children(".-nav").css("max-width", xWidth + (xPadding * 2));
 		}else{
 			var xHeight = pNav.data("nav").get(0).getBoundingClientRect().height + (xPadding * 2);
 			if (xHeight > xMaskHeight){
@@ -101,7 +100,6 @@ dbsfaces.nav = {
 			}
 			//Limita altura a altura do conteúdo do nav
 			pNav.data("navgroup").css("height", xHeight);
-//			pNav.children(".-nav").css("max-height", pNav.data("nav").get(0).getBoundingClientRect().height + (xPadding * 2));
 		}
 		if (pNav.data("t")){
 			pNav.data("container").css("padding-top", xCaptionHeight + xPadding);
