@@ -103,8 +103,8 @@
 /* 	padding: 0px 8px 4px 8px; */
 	line-height: 2em !important;
 /* 	padding: 0px .73em .4em .73em; */
-	padding: 0px 1.33em .4em .73em;
-/* 	padding: 0px 1.33em 4px .73em; */
+/* 	padding: 0px 1.33em .4em .73em; */
+	padding: 0px 1.33em 4px .73em;
 
 	-webkit-border-radius: 3px 3px 0px 0px;  
 	-moz-border-radius: 3px 3px 0px 0px; 
@@ -163,8 +163,8 @@
 /* grupo do filho */
 .dbs_menu[type="float"] .dbs_menuitem > .-submenu{
 	position: absolute;
-/* 	margin-top: 4px; */
-	margin-top: .4em;
+	margin-top: 4px;
+/* 	margin-top: .4em; */
 
 	-webkit-border-radius: 3px;  
 	-moz-border-radius: 3px; 

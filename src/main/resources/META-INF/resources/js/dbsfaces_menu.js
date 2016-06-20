@@ -13,7 +13,7 @@ dbs_menu = function(pId) {
 		dbsfaces.menu.setOpened(xMenuItem, false);
 //		return false;
 	});
-	$(pId + "[type=scroll] .dbs_menuitem:not(.-disabled)").on("click touchstart", function(e){
+	$(pId + "[type=scroll] .dbs_menuitem:not(.-disabled)").on("click", function(e){
 		var xMenuItem = $(this);
 //		console.log("Click\t" + $(this).find(" > .-caption > .-content > .-label").text());
 		dbsfaces.menu.setOpened(xMenuItem, !xMenuItem.hasClass("-opened"));
@@ -127,8 +127,8 @@ dbsfaces.menu = {
 		var xChildrenIcon = pMenuItem.data("childrenIcon");
 		var xMenu = pMenuItem.data("menu");
 		if (pMenuItem.data("type") == "scroll"){
-			xClassC = "-i_navigate_next";
-			xClassO = "-i_navigate_down";
+			xClassC = "-i_navigate_down";
+			xClassO = "-i_navigate_up";
 		}else{
 			xClassC = "-i_add";
 			xClassO = "-i_subtract";
