@@ -71,6 +71,7 @@ import br.com.dbsoft.ui.component.chartvalue.DBSChartValue;
 import br.com.dbsoft.ui.component.checkbox.DBSCheckbox;
 import br.com.dbsoft.ui.component.datatable.DBSDataTable;
 import br.com.dbsoft.ui.component.datatable.DBSDataTableColumn;
+import br.com.dbsoft.ui.component.datatable.DBSDataTable.SELECTION_TYPE;
 import br.com.dbsoft.ui.component.fileupload.DBSFileUpload;
 import br.com.dbsoft.ui.component.inputnumber.DBSInputNumber;
 import br.com.dbsoft.util.DBSBoolean;
@@ -2274,7 +2275,7 @@ public class  DBSFaces {
 					xC0.getChildren().add(xKey);
 				}
 				//Encode: Seleção multipla (habilitada também quando a edição é inline, para poder selecionar vários itens em caso de exclusão)
-				if (pDataTable.getMultipleSelection()){
+				if (DBSDataTable.SELECTION_TYPE.get(pDataTable.getSelectionType()) == SELECTION_TYPE.MULTI){
 					//Troca styleClass para poder exibir a coluna
 					xC0.setStyleClass(CSS.MODIFIER.CHECKBOX);
 					//Botão no cabeçalho para seleção de todas as linhas----------------------------------------

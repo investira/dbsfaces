@@ -211,9 +211,9 @@
 		</attribute>
 		<attribute>
 			<description>
-                Habilita checkbox para seleção de mais de um registro
+                Tipo de seleção de registro. Sendo none=sem seleção, single(ou false)=seleção única e multi(ou true):Habilita checkbox para seleção de mais de um registro
             </description>
-			<name>multipleSelection</name>
+			<name>selectionType</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>

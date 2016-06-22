@@ -63,7 +63,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 		ResponseWriter 	xWriter = pContext.getResponseWriter();
 		String 			xClientId = xDataTable.getClientId(pContext);
 
-		String xClass = CSS.DATATABLE.MAIN + " " + xDataTable.getStyleClass();
+		String xClass = CSS.DATATABLE.MAIN + xDataTable.getStyleClass();
 		String xStyle = xDataTable.getStyle();
 		
 		if (xDataTable.isSelectable()){

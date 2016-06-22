@@ -40,7 +40,7 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 	protected enum PropertyKeys {
 		rowStyleClass, 
 		caption, 
-		multipleSelection, 
+		selectionType, 
 		searchAction, 
 		viewOneAction, 
 		selectAllAction,
@@ -60,6 +60,49 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 		public String toString() {
 			return ((this.toString != null) ? this.toString : super.toString());
 		}
+	}
+	
+	public static enum SELECTION_TYPE {
+		NONE 			("none"),
+		SINGLE 			("single"),	
+	    MULTI 			("multi");
+		
+		private String 	wName;
+		
+		private SELECTION_TYPE(String pName) {
+			this.wName = pName;
+		}
+
+		public String getName() {
+			return wName;
+		}
+		
+		/**
+		 * Se é um gráfico de linhas e colunas
+		 * @return
+		 */
+		public Boolean isSelectable(){
+			return (wName != "none");
+		}
+
+		public static SELECTION_TYPE get(String pCode) {
+			if (pCode == null){
+				return NONE;
+			}			
+			pCode = pCode.trim().toLowerCase();
+			switch (pCode) {
+			case "none":
+				return NONE;
+			case "false":
+			case "single":
+				return SINGLE;
+			case "true":
+			case "multi":
+				return MULTI;
+			default:
+				return NONE;
+			}
+		}	
 	}
 
 	public DBSDataTable() {
@@ -194,24 +237,15 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 		handleAttribute("caption", pCaption);
 	}
 
-	/**
-	 * Retorna se está habilitada a opção de multiplos seleções de registros
-	 * 
-	 * @return
-	 */
-	public Boolean getMultipleSelection() {
-		return (Boolean) getStateHelper().eval(PropertyKeys.multipleSelection, false);
+	public String getSelectionType() {
+		return (String) getStateHelper().eval(PropertyKeys.selectionType, null);
+	}
+	
+	public void setSelectionType(String pSelectionType) {
+		getStateHelper().put(PropertyKeys.selectionType, pSelectionType);
+		handleAttribute("selectionType", pSelectionType);
 	}
 
-	/**
-	 * Configura se está habilitada a opção de multiplos seleções de registros
-	 * 
-	 * @param pMultipleSelection
-	 */
-	public void setMultipleSelection(Boolean pMultipleSelection) {
-		getStateHelper().put(PropertyKeys.multipleSelection, pMultipleSelection);
-		handleAttribute("multipleSelection", pMultipleSelection);
-	}
 
 	/**
 	 * Indica se item da lista pode ser selecionado.
@@ -219,7 +253,7 @@ public class DBSDataTable extends DBSUIData implements ClientBehaviorHolder, Sys
 	 */
 	public Boolean isSelectable() {
 		if (this.getHasViewOneAction() 
-		 || this.getMultipleSelection() 
+		 || SELECTION_TYPE.get(getSelectionType()) !=  SELECTION_TYPE.NONE
 		 || this .getClientBehaviors().size() > 0 //Se houver algum <f:ajax
 		 || !this.getKeyColumnName().equals("")){
 			return true;
