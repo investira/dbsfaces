@@ -49,6 +49,7 @@ dbsfaces.nav = {
 		pNav.data("container", pNav.data("navgroup").children(".-container"));
 		pNav.data("content", pNav.data("container").children(".-content"));
 		pNav.data("nav", pNav.data("content").find("> div > nav"));
+		pNav.data("header", pNav.data("navgroup").children(".-header"));
 		pNav.data("footer", pNav.data("navgroup").children(".-footer"));
 //		pNav.data("foocaption", pNav.data("container").children(".-foocaption"));
 		pNav.data("icon", pNav.find("> .-container > .-icon"));
@@ -91,23 +92,30 @@ dbsfaces.nav = {
 //		var xPadding = pNav.data("padding");
 		var xPadding = 0;
 		var xMask = pNav.data("mask");
-		var xMaskWidth = pNav.data("mask").get(0).getBoundingClientRect().width;
-		var xMaskHeight = pNav.data("mask").get(0).getBoundingClientRect().height;
-		var xIconWidth = pNav.data("icon").get(0).getBoundingClientRect().width;
-		var xIconHeight = pNav.data("icon").get(0).getBoundingClientRect().height;
+		var xHeader = pNav.data("header");
+		var xFooter = pNav.data("footer");
+		var xContainer = pNav.data("container");
+		var xMaskWidth = xMask.get(0).getBoundingClientRect().width;
+		var xMaskHeight = xMask.get(0).getBoundingClientRect().height;
+		var xHeaderWidth = null;
+		var xHeaderHeight = null;
 		var xFooterWidth = null;
 		var xFooterHeight = null;
-		if (pNav.data("footer").length > 0){
-			xFooterWidth = pNav.data("footer").get(0).getBoundingClientRect().width;
-			xFooterHeight = pNav.data("footer").get(0).getBoundingClientRect().height;
+		if (xHeader.length > 0){
+			xHeaderWidth = xHeader.get(0).getBoundingClientRect().width;
+			xHeaderHeight = xHeader.get(0).getBoundingClientRect().height;
+		}
+		if (xFooter.length > 0){
+			xFooterWidth = xFooter.get(0).getBoundingClientRect().width;
+			xFooterHeight = xFooter.get(0).getBoundingClientRect().height;
 		}
 
 		//Limita dimensão
 		if (pNav.data("v")){
 			var xWidth = pNav.data("nav").get(0).getBoundingClientRect().width;
 			//Utiliza largura do caption se este for maior que largura do conteúdo do nav
-			if (xIconWidth > xWidth){
-				xWidth = xIconWidth;
+			if (xHeaderWidth > xWidth){
+				xWidth = xHeaderWidth;
 			}
 			xWidth += (xPadding * 2);
 			//Força largura máxima em 95% caso largura seja superior a largura da tela
@@ -116,16 +124,20 @@ dbsfaces.nav = {
 			}
 			//Limita largura a largura do conteúdo do nav
 			pNav.data("navgroup").css("width", xWidth);
-//			pNav.data("foocaption").css("height", xIconHeight + xPadding);
+//			pNav.data("foocaption").css("height", xHeaderHeight + xPadding);
 			if (pNav.data("t")){
-				pNav.data("container").css("padding-top", xIconHeight + xPadding);
+				if (xHeaderHeight != null){
+					xContainer.css("padding-top", xHeaderHeight + xPadding);
+				}
 				if (xFooterHeight != null){
-					pNav.data("container").css("padding-bottom", xFooterHeight + xPadding);
+					xContainer.css("padding-bottom", xFooterHeight + xPadding);
 				}
 			}else{
-				pNav.data("container").css("padding-bottom", xIconHeight + xPadding);
+				if (xHeaderHeight != null){
+					xContainer.css("padding-bottom", xHeaderHeight + xPadding);
+				}
 				if (xFooterHeight != null){
-					pNav.data("container").css("padding-top", xFooterHeight + xPadding);
+					xContainer.css("padding-top", xFooterHeight + xPadding);
 				}
 			}
 		}else{
@@ -136,16 +148,20 @@ dbsfaces.nav = {
 			xHeight += (xPadding * 2);
 			//Limita altura a altura do conteúdo do nav
 			pNav.data("navgroup").css("height", xHeight);
-//			pNav.data("foocaption").css("width", xIconHeight + xPadding);
+//			pNav.data("foocaption").css("width", xHeaderHeight + xPadding);
 			if (pNav.data("l")){
-				pNav.data("container").css("padding-left", xIconWidth + xPadding);
+				if (xHeaderHeight != null){
+					xContainer.css("padding-left", xHeaderWidth + xPadding);
+				}
 				if (xFooterWidth != null){
-					pNav.data("container").css("padding-right", xFooterWidth + xPadding);
+					xContainer.css("padding-right", xFooterWidth + xPadding);
 				}
 			}else{
-				pNav.data("container").css("padding-right", xIconWidth + xPadding);
+				if (xHeaderHeight != null){
+					xContainer.css("padding-right", xHeaderWidth + xPadding);
+				}
 				if (xFooterWidth != null){
-					pNav.data("container").css("padding-left", xFooterWidth + xPadding);
+					xContainer.css("padding-left", xFooterWidth + xPadding);
 				}
 			}
 		}

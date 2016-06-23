@@ -8,7 +8,7 @@
 
 .dbs_nav > .-container{
 	position: relative;
-	display: block;
+	display: inline-block;
 	top:0;
 	left:0;
 /* 	width: 100%; */
@@ -183,13 +183,16 @@
 
 
 .dbs_nav > .-container > .-icon {
-	position: absolute;
+	position: relative;
     display: inline-block;
+    top:0;
+    left:0;
 }
+
 .dbs_nav > .-container > .-icon > .-content {
 	position: relative;
 	cursor: pointer;
-	font-size: 2em;
+/* 	font-size: 2em; */
 }
 
 /* TOP     */
@@ -197,30 +200,30 @@
 .dbs_nav.-tlv > .-container > .-icon,
 .dbs_nav.-trh > .-container > .-icon,
 .dbs_nav.-trv > .-container > .-icon{
-	top: 0;
+/* 	top: 0; */
 }
 /* BOTTOM */
 .dbs_nav.-blh > .-container > .-icon,
 .dbs_nav.-blv > .-container > .-icon,
 .dbs_nav.-brh > .-container > .-icon,
 .dbs_nav.-brv > .-container > .-icon{
-	bottom: 0;
+/* 	bottom: 0; */
 }
 /* LEFT */
 .dbs_nav.-tlh > .-container > .-icon,
 .dbs_nav.-tlv > .-container > .-icon,
 .dbs_nav.-blh > .-container > .-icon,
 .dbs_nav.-blv > .-container > .-icon{
-	left: 0;
-    text-align: left;
+/* 	left: 0; */
+/*     text-align: left; */
 }
 /* RIGHT */
 .dbs_nav.-trh > .-container > .-icon,
 .dbs_nav.-trv > .-container > .-icon,
 .dbs_nav.-brh > .-container > .-icon,
 .dbs_nav.-brv > .-container > .-icon{
-	right: 0;
-    text-align: right;
+/* 	right: 0; */
+/*     text-align: right; */
 }
 
 /* TOP */
@@ -264,6 +267,46 @@
 .dbs_nav.-brh > .-container > .-icon{
 }
 .dbs_nav.-brv > .-container > .-icon{
+}
+
+.dbs_nav > .-container > .-nav > .-header {
+	position: absolute;
+    display: inline-block;
+}
+
+.dbs_nav > .-container > .-nav > .-header > .-content {
+	position: relative;
+}
+
+/* TOP     */
+.dbs_nav.-tlh > .-container > .-nav > .-header,
+.dbs_nav.-tlv > .-container > .-nav > .-header,
+.dbs_nav.-trh > .-container > .-nav > .-header,
+.dbs_nav.-trv > .-container > .-nav > .-header{
+	top: 0;
+}
+/* BOTTOM */
+.dbs_nav.-blh > .-container > .-nav > .-header,
+.dbs_nav.-blv > .-container > .-nav > .-header,
+.dbs_nav.-brh > .-container > .-nav > .-header,
+.dbs_nav.-brv > .-container > .-nav > .-header{
+	bottom: 0;
+}
+/* LEFT */
+.dbs_nav.-tlv > .-container > .-nav > .-header,
+.dbs_nav.-blv > .-container > .-nav > .-header,
+.dbs_nav.-trh > .-container > .-nav > .-header,
+.dbs_nav.-brh > .-container > .-nav > .-header{
+	left: 0;
+    text-align: left;
+}
+/* LEFT */
+.dbs_nav.-tlh > .-container > .-nav > .-header,
+.dbs_nav.-blh > .-container > .-nav > .-header,
+.dbs_nav.-trv > .-container > .-nav > .-header,
+.dbs_nav.-brv > .-container > .-nav > .-header{
+	right: 0;
+    text-align: right;
 }
 
 
