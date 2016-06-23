@@ -13,6 +13,11 @@ public class DBSNav extends DBSUIComponentBase {
 	
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.NAV;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
+	
+	public final static String FACET_HEADER = "header";
+	public final static String FACET_FOOTER = "footer";
+	public final static String FACET_TOOLBAR = "toolbar";
+
 
 	protected enum PropertyKeys {
 		styleClass,

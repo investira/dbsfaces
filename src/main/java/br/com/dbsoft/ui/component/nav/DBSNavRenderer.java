@@ -57,8 +57,8 @@ public class DBSNavRenderer extends DBSRenderer {
 			xWriter.endElement("div");
 			//Nav
 			pvEncodeNav(xNav, pContext, xWriter);
-			//Caption
-			pvEncodeCaption(xNav, xWriter);
+			//Icon
+			pvEncodeIcon(xNav, xWriter);
 			pvEncodeJS(xClientId, xWriter);
 		xWriter.endElement("div");
 	}
@@ -68,7 +68,6 @@ public class DBSNavRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(pWriter, "class", "-nav" + CSS.THEME.FC + CSS.THEME.BC + CSS.THEME.INVERT, null);
 			pWriter.startElement("div", pNav);
 				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER, null);
-//				DBSFaces.setAttribute(pWriter, "style", pvGetPaddingNav(pNav, false), null);
 				pWriter.startElement("div", pNav);
 					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT, null);
 					pWriter.startElement("div", pNav);
@@ -80,18 +79,54 @@ public class DBSNavRenderer extends DBSRenderer {
 					pWriter.endElement("div");
 				pWriter.endElement("div");
 			pWriter.endElement("div");
+			//Footer
+			pvEncodeFooter(pNav, pContext, pWriter);
 		pWriter.endElement("div");
 	}
-	
-	private void pvEncodeCaption(DBSNav pNav, ResponseWriter pWriter) throws IOException{
+	private void pvEncodeFooter(DBSNav pNav, FacesContext pContext,  ResponseWriter pWriter) throws IOException{
+		UIComponent xFooter = pNav.getFacet(DBSNav.FACET_FOOTER);
+		if (xFooter == null){return;}
 		pWriter.startElement("div", pNav);
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CAPTION);
-			DBSFaces.setAttribute(pWriter, "style", pvGetPaddingCaption(pNav));
+			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.FOOTER);
+			DBSFaces.setAttribute(pWriter, "style", pvGetPaddingFooter(pNav));
 			pWriter.startElement("div", pNav);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON + CSS.THEME.ACTION + pNav.getIconClass());
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
+				xFooter.encodeAll(pContext);
 			pWriter.endElement("div");
 		pWriter.endElement("div");
 	}
+	private void pvEncodeIcon(DBSNav pNav, ResponseWriter pWriter) throws IOException{
+		pWriter.startElement("div", pNav);
+			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON);
+			DBSFaces.setAttribute(pWriter, "style", pvGetPaddingIcon(pNav));
+			pWriter.startElement("div", pNav);
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + CSS.THEME.ACTION + pNav.getIconClass());
+			pWriter.endElement("div");
+		pWriter.endElement("div");
+	}
+	
+//	private void pvEncodeHeader(DBSNav pNav, ResponseWriter pWriter) throws IOException{
+//		pWriter.startElement("div", pNav);
+//			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.HEADER);
+//			DBSFaces.setAttribute(pWriter, "style", pvGetPaddingCaption(pNav));
+//			pWriter.startElement("div", pNav);
+////				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON + CSS.THEME.ACTION + pNav.getIconClass());
+//			pWriter.endElement("div");
+//		pWriter.endElement("div");
+//	}
+//	
+//
+//	private void pvEncodeToolbar(DBSNav pNav, ResponseWriter pWriter) throws IOException{
+//		pWriter.startElement("div", pNav);
+//			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.TOOLBAR);
+//			DBSFaces.setAttribute(pWriter, "style", pvGetPaddingCaption(pNav));
+//			pWriter.startElement("div", pNav);
+////				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON + CSS.THEME.ACTION + pNav.getIconClass());
+//			pWriter.endElement("div");
+//		pWriter.endElement("div");
+//	}
+	
+
 	
 	private void pvEncodeJS(String pClientId, ResponseWriter pWriter) throws IOException{
 		DBSFaces.encodeJavaScriptTagStart(pWriter);
@@ -104,7 +139,7 @@ public class DBSNavRenderer extends DBSRenderer {
 	}
 
 	
-	private String pvGetPaddingCaption(DBSNav pNav){
+	private String pvGetPaddingIcon(DBSNav pNav){
 		LOCATION xLocation = LOCATION.get(pNav.getLocation());
 		String xPT = pNav.getPadding();
 		String xPB = pNav.getPadding();
@@ -123,6 +158,29 @@ public class DBSNavRenderer extends DBSRenderer {
 				xPR = "0";
 			}else{
 				xPL = "0";
+			}
+		}
+		return "padding:" + xPT + " " + xPR + " " + xPB + " " + xPL + ";"; 
+	}
+	private String pvGetPaddingFooter(DBSNav pNav){
+		LOCATION xLocation = LOCATION.get(pNav.getLocation());
+		String xPT = pNav.getPadding();
+		String xPB = pNav.getPadding();
+		String xPL = pNav.getPadding();
+		String xPR = pNav.getPadding();
+		
+		//Padding top e bottom
+		if (xLocation.getIsVertical()){
+			if (xLocation.getIsTop()){
+				xPT = "0";
+			}else{
+				xPB = "0";
+			}
+		}else{
+			if (xLocation.getIsLeft()){
+				xPL = "0";
+			}else{
+				xPR = "0";
 			}
 		}
 		return "padding:" + xPT + " " + xPR + " " + xPB + " " + xPL + ";"; 
