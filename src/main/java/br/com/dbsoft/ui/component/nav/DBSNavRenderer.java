@@ -39,10 +39,16 @@ public class DBSNavRenderer extends DBSRenderer {
 		DBSNav 			xNav = (DBSNav) pComponent;
 		ResponseWriter 	xWriter = pContext.getResponseWriter();
 		LOCATION 		xLocation = LOCATION.get(xNav.getLocation());
-		String 			xClass = CSS.NAV.MAIN + CSS.THEME.FC + CSS.MODIFIER.CLOSED + xLocation.getCSS();
+		String 			xClass = CSS.NAV.MAIN + CSS.THEME.FC + xLocation.getCSS();
+		if (xNav.getOpened()){
+			xClass += CSS.THEME.INVERT; //Inverte cor
+		}else{
+			xClass += CSS.MODIFIER.CLOSED; //Indica que esta fechado
+		}
 		if (xNav.getStyleClass()!=null){
 			xClass += xNav.getStyleClass();
 		}
+		
 		String xClientId = xNav.getClientId(pContext);
 		xWriter.startElement("div", xNav);
 			DBSFaces.setAttribute(xWriter, "id", xClientId);
@@ -50,15 +56,19 @@ public class DBSNavRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "class", xClass);
 			DBSFaces.setAttribute(xWriter, "style", xNav.getStyle());
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xNav, DBSPassThruAttributes.getAttributes(Key.NAV));
-			//Mask
 			xWriter.startElement("div", xNav);
-				DBSFaces.setAttribute(xWriter, "style", "padding:" + xNav.getPadding(), null);
-				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.MASK + CSS.THEME.BC + CSS.THEME.INVERT);
+				DBSFaces.setAttribute(xWriter, "style", "opacity:0", null); //Inicia escondido para ser exibido após a execução do JS
+				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
+				//Mask
+				xWriter.startElement("div", xNav);
+					DBSFaces.setAttribute(xWriter, "style", "padding:" + xNav.getPadding(), null);
+					DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.MASK + CSS.THEME.BC + CSS.THEME.INVERT);
+				xWriter.endElement("div");
+				//Nav
+				pvEncodeNav(xNav, pContext, xWriter);
+				//Icon
+				pvEncodeIcon(xNav, xWriter);
 			xWriter.endElement("div");
-			//Nav
-			pvEncodeNav(xNav, pContext, xWriter);
-			//Icon
-			pvEncodeIcon(xNav, xWriter);
 			pvEncodeJS(xClientId, xWriter);
 		xWriter.endElement("div");
 	}

@@ -2670,6 +2670,14 @@ Default: false;</description>
 			<required>true</required>
 			<type>java.lang.String</type>
 		</attribute>
+		<attribute>
+			<description>
+                Se exibe já aberto. Padrao é false.
+            </description>
+			<name>opened</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>		
 	</tag>
 	<tag>
 		<tag-name>parallax</tag-name>

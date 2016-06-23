@@ -24,7 +24,8 @@ public class DBSNav extends DBSUIComponentBase {
 		style,
 		iconClass,
 		location,
-		padding;
+		padding,
+		opened;
 
 		String toString;
 
@@ -135,6 +136,15 @@ public class DBSNav extends DBSUIComponentBase {
 	public void setIconClass(String pIconClass) {
 		getStateHelper().put(PropertyKeys.iconClass, pIconClass);
 		handleAttribute("iconClass", pIconClass);
+	}
+	
+	public Boolean getOpened() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.opened, false);
+	}
+	
+	public void setOpened(Boolean pOpened) {
+		getStateHelper().put(PropertyKeys.opened, pOpened);
+		handleAttribute("opened", pOpened);
 	}
 	
 	public String getLocation() {
