@@ -79,9 +79,6 @@ public class DBSNavRenderer extends DBSRenderer {
 						pWriter.endElement("nav");
 					pWriter.endElement("div");
 				pWriter.endElement("div");
-//				pWriter.startElement("div", pNav);
-//					DBSFaces.setAttribute(pWriter, "class", "-foocaption", null);
-//				pWriter.endElement("div");
 			pWriter.endElement("div");
 		pWriter.endElement("div");
 	}

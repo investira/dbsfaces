@@ -118,49 +118,6 @@ dbsfaces.nav = {
 		}
 		
 	}
-//	pvAjustLayout: function(pNav){
-//		var xPadding = pNav.data("padding");
-//		var xMask = pNav.data("mask");
-//		var xMaskHeight = pNav.data("mask").get(0).getBoundingClientRect().height;
-//		var xMaskWidth = pNav.data("mask").get(0).getBoundingClientRect().width;
-//		var xCaptionHeight = pNav.data("caption").get(0).getBoundingClientRect().height;
-//		var xCaptionWidth = pNav.data("caption").get(0).getBoundingClientRect().width;
-//		//Limita dimensão
-//		if (pNav.data("v")){
-//			var xWidth = pNav.data("nav").get(0).getBoundingClientRect().width;
-//			//Utiliza largura do caption se este for maior que largura do conteúdo do nav
-//			if (xCaptionWidth > xWidth){
-//				xWidth = xCaptionWidth;
-//			}
-////			xWidth += (xPadding * 2);
-//			//Força largura máxima em 95% caso largura seja superior a largura da tela
-//			if (xWidth > xMaskWidth){
-//				xWidth = "95%";
-//			}
-//			//Limita largura a largura do conteúdo do nav
-//			pNav.data("navgroup").css("width", xWidth);
-//			if (pNav.data("t")){
-//				pNav.data("container").css("padding-top", xCaptionHeight);
-//			}else{
-//				pNav.data("container").css("padding-bottom", xCaptionHeight);
-//			}
-//		}else{
-//			var xHeight = pNav.data("nav").get(0).getBoundingClientRect().height + (xPadding * 2);
-//			if (xHeight > xMaskHeight){
-//				xHeight = "95%";
-//			}
-////			xHeight += (xPadding * 2);
-//			//Limita altura a altura do conteúdo do nav
-//			pNav.data("navgroup").css("height", xHeight);
-//			if (pNav.data("l")){
-//				pNav.data("container").css("padding-left", xCaptionWidth);
-//			}else{
-//				pNav.data("container").css("padding-right", xCaptionWidth);
-//			}
-//		}
-//		
-//	}
-
 	
 };
 
