@@ -52,6 +52,7 @@ public class DBSNavRenderer extends DBSRenderer {
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xNav, DBSPassThruAttributes.getAttributes(Key.NAV));
 			//Mask
 			xWriter.startElement("div", xNav);
+				DBSFaces.setAttribute(xWriter, "style", "padding:" + xNav.getPadding(), null);
 				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.MASK + CSS.THEME.BC + CSS.THEME.INVERT);
 			xWriter.endElement("div");
 			//Nav
@@ -67,14 +68,20 @@ public class DBSNavRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(pWriter, "class", "-nav" + CSS.THEME.FC + CSS.THEME.BC + CSS.THEME.INVERT, null);
 			pWriter.startElement("div", pNav);
 				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER, null);
-				DBSFaces.setAttribute(pWriter, "style", "padding:" + pNav.getPadding(), null);
+//				DBSFaces.setAttribute(pWriter, "style", pvGetPaddingNav(pNav, false), null);
 				pWriter.startElement("div", pNav);
 					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT, null);
-					pWriter.startElement("nav", pNav);
-						//Encode dos conteúdo
-						DBSFaces.renderChildren(pContext, pNav);
-					pWriter.endElement("nav");
+					pWriter.startElement("div", pNav);
+						pWriter.startElement("nav", pNav);
+							DBSFaces.setAttribute(pWriter, "style", "padding:" + pNav.getPadding(), null);
+							//Encode dos conteúdo
+							DBSFaces.renderChildren(pContext, pNav);
+						pWriter.endElement("nav");
+					pWriter.endElement("div");
 				pWriter.endElement("div");
+//				pWriter.startElement("div", pNav);
+//					DBSFaces.setAttribute(pWriter, "class", "-foocaption", null);
+//				pWriter.endElement("div");
 			pWriter.endElement("div");
 		pWriter.endElement("div");
 	}
@@ -99,21 +106,66 @@ public class DBSNavRenderer extends DBSRenderer {
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);		
 	}
 	
+//	private String pvGetPaddingNav(DBSNav pNav, Boolean pContainer){
+//		LOCATION xLocation = LOCATION.get(pNav.getLocation());
+//		String xPT = pNav.getPadding();
+//		String xPB = pNav.getPadding();
+//		String xPL = pNav.getPadding();
+//		String xPR = pNav.getPadding();
+//		
+//		//Padding top e bottom
+//		if (xLocation.getIsVertical()
+//		&& pContainer){
+//			xPL = "0";
+//			xPR = "0";
+//		}else{
+//			xPT = "0";
+//			xPB = "0";
+//		}
+//		return "padding:" + xPT + " " + xPR + " " + xPB + " " + xPL + ";"; 
+//	}
+	
+	private String pvGetPaddingNav(DBSNav pNav, Boolean pContainer){
+		LOCATION xLocation = LOCATION.get(pNav.getLocation());
+		String xPT = pNav.getPadding();
+		String xPB = pNav.getPadding();
+		String xPL = pNav.getPadding();
+		String xPR = pNav.getPadding();
+		
+		//Padding top e bottom
+		if (xLocation.getIsVertical()
+		&& pContainer){
+			xPL = "0";
+			xPR = "0";
+		}else{
+			xPT = "0";
+			xPB = "0";
+		}
+		return "padding:" + xPT + " " + xPR + " " + xPB + " " + xPL + ";"; 
+	}
+	
 	private String pvGetPaddingCaption(DBSNav pNav){
 		LOCATION xLocation = LOCATION.get(pNav.getLocation());
-		String xPT = "0";
-		String xPB = "0";
-		if (xLocation ==  LOCATION.TOP_LEFT_VERTICAL
-		 || xLocation ==  LOCATION.TOP_LEFT_HORIZONTAL
-		 || xLocation ==  LOCATION.TOP_RIGHT_VERTICAL
-		 || xLocation ==  LOCATION.TOP_RIGHT_HORIZONTAL){
-			xPT = pNav.getPadding();
-		}else if (xLocation ==  LOCATION.BOTTOM_LEFT_VERTICAL
-			   || xLocation ==  LOCATION.BOTTOM_LEFT_HORIZONTAL
-			   || xLocation ==  LOCATION.BOTTOM_RIGHT_VERTICAL
-			   || xLocation ==  LOCATION.BOTTOM_RIGHT_HORIZONTAL){
-			xPB = pNav.getPadding();
+		String xPT = pNav.getPadding();
+		String xPB = pNav.getPadding();
+		String xPL = pNav.getPadding();
+		String xPR = pNav.getPadding();
+		
+		//Padding top e bottom
+		if (xLocation.getIsVertical()){
+			if (xLocation.getIsTop()){
+				xPB = "0";
+			}else{
+				xPT = "0";
+			}
+		}else{
+			if (xLocation.getIsLeft()){
+				xPR = "0";
+			}else{
+				xPL = "0";
+			}
 		}
-		return "padding:" + xPT + " " + pNav.getPadding() + " " + xPB + " " + pNav.getPadding() + ";"; 
+		return "padding:" + xPT + " " + xPR + " " + xPB + " " + xPL + ";"; 
 	}
+
 }

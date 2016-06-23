@@ -36,19 +36,25 @@ public class DBSNav extends DBSUIComponentBase {
 	}
 	
 	public static enum LOCATION {
-		TOP_LEFT_HORIZONTAL 	("tlh"),
-		TOP_LEFT_VERTICAL		("tlv"),
-		TOP_RIGHT_HORIZONTAL 	("trh"),
-		TOP_RIGHT_VERTICAL		("trv"),
-		BOTTOM_LEFT_HORIZONTAL 	("blh"),
-		BOTTOM_LEFT_VERTICAL	("blv"),
-		BOTTOM_RIGHT_HORIZONTAL ("brh"),
-		BOTTOM_RIGHT_VERTICAL	("brv");
+		TOP_LEFT_VERTICAL		("tlv",true,true,true),
+		TOP_LEFT_HORIZONTAL 	("tlh",true,true,false),
+		TOP_RIGHT_VERTICAL		("trv",true,false,true),
+		TOP_RIGHT_HORIZONTAL 	("trh",true,false,false),
+		BOTTOM_LEFT_VERTICAL	("blv",false,true,true),
+		BOTTOM_LEFT_HORIZONTAL 	("blh",false,true,false),
+		BOTTOM_RIGHT_VERTICAL	("brv",false,false,true),
+		BOTTOM_RIGHT_HORIZONTAL ("brh",false,false,false);
 		
 		private String 	wCode;
+		private Boolean	wIsTop;
+		private Boolean	wIsLeft;
+		private Boolean	wIsVertical;
 		
-		private LOCATION(String pCode) {
-			this.wCode = pCode;
+		private LOCATION(String pCode, Boolean pIsTop, Boolean pIsLeft, Boolean pIsVertical) {
+			wCode = pCode;
+			wIsTop = pIsTop;
+			wIsLeft = pIsLeft;
+			wIsVertical = pIsVertical;
 		}
 
 		public String getCode() {
@@ -56,6 +62,15 @@ public class DBSNav extends DBSUIComponentBase {
 		}
 		public String getCSS() {
 			return " -" + wCode;
+		}
+		public Boolean getIsTop(){
+			return wIsTop;
+		}
+		public Boolean getIsLeft(){
+			return wIsLeft;
+		}
+		public Boolean getIsVertical(){
+			return wIsVertical;
 		}
 		
 		public static LOCATION get(String pCode) {

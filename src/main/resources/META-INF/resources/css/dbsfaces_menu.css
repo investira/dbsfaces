@@ -23,6 +23,7 @@
 }
 
 
+    
 .dbs_menuitem{
 	position: relative;
 /* 	line-height: 20px; */
@@ -225,4 +226,9 @@
 .dbs_menu[type="scroll"] .dbs_menuitem > .-caption > .-content > .-label{
 	padding-right: 1.3em;
 }
+
+.dbs_menu[type="scroll"] .dbs_menuitemSeparator{
+    margin: .5em 0;
+}
+
 
