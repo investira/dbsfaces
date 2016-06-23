@@ -102,44 +102,7 @@ public class DBSNavRenderer extends DBSRenderer {
 		pWriter.write(xJS);
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);		
 	}
-	
-//	private String pvGetPaddingNav(DBSNav pNav, Boolean pContainer){
-//		LOCATION xLocation = LOCATION.get(pNav.getLocation());
-//		String xPT = pNav.getPadding();
-//		String xPB = pNav.getPadding();
-//		String xPL = pNav.getPadding();
-//		String xPR = pNav.getPadding();
-//		
-//		//Padding top e bottom
-//		if (xLocation.getIsVertical()
-//		&& pContainer){
-//			xPL = "0";
-//			xPR = "0";
-//		}else{
-//			xPT = "0";
-//			xPB = "0";
-//		}
-//		return "padding:" + xPT + " " + xPR + " " + xPB + " " + xPL + ";"; 
-//	}
-	
-	private String pvGetPaddingNav(DBSNav pNav, Boolean pContainer){
-		LOCATION xLocation = LOCATION.get(pNav.getLocation());
-		String xPT = pNav.getPadding();
-		String xPB = pNav.getPadding();
-		String xPL = pNav.getPadding();
-		String xPR = pNav.getPadding();
-		
-		//Padding top e bottom
-		if (xLocation.getIsVertical()
-		&& pContainer){
-			xPL = "0";
-			xPR = "0";
-		}else{
-			xPT = "0";
-			xPB = "0";
-		}
-		return "padding:" + xPT + " " + xPR + " " + xPB + " " + xPL + ";"; 
-	}
+
 	
 	private String pvGetPaddingCaption(DBSNav pNav){
 		LOCATION xLocation = LOCATION.get(pNav.getLocation());
