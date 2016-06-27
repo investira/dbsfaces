@@ -17,6 +17,11 @@ dbs_nav = function(pId) {
 		return false;
 	});
 
+	$(pId + " > .-container > .-nav > .-iconclose").on("mousedown touchstart", function(e){
+		dbsfaces.nav.show(xNav);
+		return false;
+	});
+
 
 };
 
@@ -112,6 +117,7 @@ dbsfaces.nav = {
 
 		//Limita dimensão
 		if (pNav.data("v")){
+			pNav.data("navgroup").css("width", "");
 			var xWidth = pNav.data("nav").get(0).getBoundingClientRect().width;
 			//Utiliza largura do caption se este for maior que largura do conteúdo do nav
 			if (xHeaderWidth > xWidth){
@@ -141,6 +147,7 @@ dbsfaces.nav = {
 				}
 			}
 		}else{
+			pNav.data("navgroup").css("height", "");
 			var xHeight = pNav.data("nav").get(0).getBoundingClientRect().height + (xPadding * 2);
 			if (xHeight > xMaskHeight){
 				xHeight = "95%";

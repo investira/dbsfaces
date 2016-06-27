@@ -1,9 +1,6 @@
 .dbs_nav {
-/* 	position: fixed; */
-/* 	top:0; */
-/* 	left:0; */
-/* 	width: 100vw; */
-/* 	height: 100vh; */
+    display: inline-block;
+    position: relative;
 }
 
 .dbs_nav > .-container{
@@ -22,6 +19,7 @@
 	width: 100%;
 	height: 100%;
 	transition: opacity .3s;
+	z-index: 9999998;
 }
 
 .dbs_nav > .-container > .-nav{
@@ -30,6 +28,7 @@
 	transition: width .3s, height .3s;
 	overflow: hidden;
 	white-space: nowrap;
+	z-index: 9999999;
 }
 
 
@@ -192,7 +191,7 @@
 .dbs_nav > .-container > .-icon > .-content {
 	position: relative;
 	cursor: pointer;
-/* 	font-size: 2em; */
+	font-size: inherit;
 }
 
 /* TOP     */
@@ -226,31 +225,6 @@
 /*     text-align: right; */
 }
 
-/* TOP */
-/* .dbs_nav.-tlh > .-container > .-icon > .-content, */
-/* .dbs_nav.-tlv > .-container > .-icon > .-content, */
-/* .dbs_nav.-trh > .-container > .-icon > .-content, */
-/* .dbs_nav.-trv > .-container > .-icon > .-content{ */
-/* } */
-
-/* BOTTOM */
-/* .dbs_nav.-blh > .-container > .-icon > .-content, */
-/* .dbs_nav.-blv > .-container > .-icon > .-content, */
-/* .dbs_nav.-brh > .-container > .-icon > .-content, */
-/* .dbs_nav.-brv > .-container > .-icon > .-content{ */
-/* } */
-/* LEFT */
-/* .dbs_nav.-tlh > .-container > .-icon > .-content, */
-/* .dbs_nav.-tlv > .-container > .-icon > .-content, */
-/* .dbs_nav.-blh > .-container > .-icon > .-content, */
-/* .dbs_nav.-blv > .-container > .-icon > .-content{ */
-/* } */
-/* RIGHT */
-/* .dbs_nav.-trh > .-container > .-icon > .-content, */
-/* .dbs_nav.-trv > .-container > .-icon > .-content, */
-/* .dbs_nav.-brh > .-container > .-icon > .-content, */
-/* .dbs_nav.-brv > .-container > .-icon > .-content{ */
-/* } */
 
 .dbs_nav.-tlh > .-container > .-icon{
 }
@@ -292,23 +266,69 @@
 .dbs_nav.-brv > .-container > .-nav > .-header{
 	bottom: 0;
 }
-/* LEFT */
+/* RIGHT */
 .dbs_nav.-tlv > .-container > .-nav > .-header,
 .dbs_nav.-blv > .-container > .-nav > .-header,
 .dbs_nav.-trh > .-container > .-nav > .-header,
 .dbs_nav.-brh > .-container > .-nav > .-header{
-	left: 0;
+	right: 0;
     text-align: left;
 }
-/* LEFT */
+/* LEFT*/
 .dbs_nav.-tlh > .-container > .-nav > .-header,
 .dbs_nav.-blh > .-container > .-nav > .-header,
 .dbs_nav.-trv > .-container > .-nav > .-header,
 .dbs_nav.-brv > .-container > .-nav > .-header{
-	right: 0;
+	left: 0;
     text-align: right;
 }
 
+/* VERTICAL */
+.dbs_nav.-tlv > .-container > .-nav > .-header,
+.dbs_nav.-blv > .-container > .-nav > .-header,
+.dbs_nav.-trv > .-container > .-nav > .-header,
+.dbs_nav.-brv > .-container > .-nav > .-header{
+	width: 100%;
+}
+/* HORIZONTAL */
+.dbs_nav.-tlh > .-container > .-nav > .-header,
+.dbs_nav.-blh > .-container > .-nav > .-header,
+.dbs_nav.-trh > .-container > .-nav > .-header,
+.dbs_nav.-brh > .-container > .-nav > .-header{
+	height: 100%;
+}
+
+.dbs_nav > .-container > .-nav > .-iconclose{
+    position: absolute;
+    display: inline-block;
+    font-size: 0.6em;
+    padding: 0.5em;
+    opacity: .6;
+}
+
+.dbs_nav.-tlv > .-container > .-nav > .-iconclose,
+.dbs_nav.-brh > .-container > .-nav > .-iconclose{
+	top: 0;
+	right: 0;
+}
+
+.dbs_nav.-tlh > .-container > .-nav > .-iconclose,
+.dbs_nav.-brv > .-container > .-nav > .-iconclose{
+	bottom: 0;
+	left: 0;
+}
+/* LEFT VERTICAL / RIGHT HORIZONTAL */
+.dbs_nav.-trh > .-container > .-nav > .-iconclose,
+.dbs_nav.-blv > .-container > .-nav > .-iconclose{
+	bottom: 0;
+	right: 0;
+}
+/* LEFT HORIZONTAL / RIGHT VERTICAL */
+.dbs_nav.-trv > .-container > .-nav > .-iconclose,
+.dbs_nav.-blh > .-container > .-nav > .-iconclose{
+	top: 0;
+	left: 0;
+}
 
 .dbs_nav > .-container > .-nav > .-footer {
 	position: absolute;
@@ -333,7 +353,7 @@
 .dbs_nav.-brv > .-container > .-nav > .-footer{
 	top: 0;
 }
-/* LEFT */
+/* LEFT VERTICAL / RIGHT HORIZONTAL */
 .dbs_nav.-tlv > .-container > .-nav > .-footer,
 .dbs_nav.-blv > .-container > .-nav > .-footer,
 .dbs_nav.-trh > .-container > .-nav > .-footer,
@@ -341,7 +361,7 @@
 	left: 0;
     text-align: left;
 }
-/* LEFT */
+/* LEFT HORIZONTAL / RIGHT VERTICAL */
 .dbs_nav.-tlh > .-container > .-nav > .-footer,
 .dbs_nav.-blh > .-container > .-nav > .-footer,
 .dbs_nav.-trv > .-container > .-nav > .-footer,

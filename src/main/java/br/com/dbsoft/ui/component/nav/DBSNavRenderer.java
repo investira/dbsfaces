@@ -94,6 +94,16 @@ public class DBSNavRenderer extends DBSRenderer {
 			pWriter.endElement("div");
 			//Footer
 			pvEncodeFooter(pNav, pContext, pWriter);
+			//Iconclose
+			pvEncodeIconClose(pNav, pWriter);
+		pWriter.endElement("div");
+	}
+	private void pvEncodeIconClose(DBSNav pNav, ResponseWriter pWriter) throws IOException{
+		pWriter.startElement("div", pNav);
+			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICONCLOSE + CSS.THEME.ACTION);
+			pWriter.startElement("div", pNav);
+				DBSFaces.setAttribute(pWriter, "class", "-i_cancel");
+			pWriter.endElement("div");
 		pWriter.endElement("div");
 	}
 	private void pvEncodeHeader(DBSNav pNav, FacesContext pContext,  ResponseWriter pWriter) throws IOException{
@@ -124,7 +134,7 @@ public class DBSNavRenderer extends DBSRenderer {
 		pWriter.startElement("div", pNav);
 			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON);
 			pWriter.startElement("div", pNav);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + CSS.THEME.ACTION + pNav.getIconClass());
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + CSS.THEME.ACTION + pNav.getIconClass() + CSS.MODIFIER.INHERIT);
 			pWriter.endElement("div");
 		pWriter.endElement("div");
 	}
