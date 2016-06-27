@@ -252,6 +252,7 @@ public class  DBSFaces {
 			public static final String INPUT = " -input ";
 			public static final String INFO = " -info ";
 			public static final String INVERT = " -i ";
+			public static final String INHERIT = " -inherit ";
 			public static final String KEY = " -key ";
 			public static final String LABEL = " -label ";
 			public static final String LAST = " -last ";
