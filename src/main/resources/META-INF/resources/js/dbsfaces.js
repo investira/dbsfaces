@@ -376,14 +376,24 @@ dbsfaces.url = {
 }
 
 dbsfaces.ui = {
-	moveToFront: function(pElement){
+	moveToFront: function(pElement, pMoveToElement){
 		if (pElement == null || (typeof(pElement) == "undefined")){return;}
 		var xE = pElement;
+		var xToE;
 		if (xE instanceof jQuery){
 			xE = pElement.get(0);
 		}
-		if (xE.parentElement != null){
-			xE.parentElement.appendChild(xE);
+		if (pMoveToElement == null){
+			xToE = xE.parentElement; 
+		}else{
+			if (pMoveToElement instanceof jQuery){
+				xToE = pMoveToElement.get(0);
+			}else{
+				xToE = pMoveToElement;
+			}
+		}
+		if (xToE != null){
+			xToE.appendChild(xE);
 		}
 	},
 	moveToBack: function(pElement){
