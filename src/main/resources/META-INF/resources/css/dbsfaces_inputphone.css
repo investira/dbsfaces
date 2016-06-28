@@ -5,15 +5,15 @@
 	position:relative;
 }
 
-.dbs_inputPhone > .-container > .dbs_input-data{
+.dbs_inputPhone > .-container > .-th_input-data{
 }
 
-.dbs_inputPhone > .-container > .dbs_input-label {
+.dbs_inputPhone > .-container > .-th_input-label {
 }
 
 
-.dbs_inputPhone > .-container > .dbs_input-data > input,
-.dbs_inputPhone > .-container > .dbs_input-data > label{
+.dbs_inputPhone > .-container > .-th_input-data > input,
+.dbs_inputPhone > .-container > .-th_input-data > label{
 /* 	line-height: 100%; */
 	border: 0 none;
 	font-size: inherit;
@@ -23,10 +23,10 @@
 /* 	margin-top: 2px; */
 }
 
-.dbs_inputPhone > .-container > .dbs_input-data > label{
+.dbs_inputPhone > .-container > .-th_input-data > label{
 }
 
-.dbs_inputPhone > .-container > .dbs_input-data > input{
+.dbs_inputPhone > .-container > .-th_input-data > input{
 	text-align: right;
 }
 	

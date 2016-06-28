@@ -3,37 +3,37 @@ dbs_inputDate = function(pId) {
 		dbsfaces.ui.selectAll(this);
 	});
 	
-	$(pId + " > .-container > .dbs_input-data").focusin(function(){
-		$(this).addClass("dbs_input-data-FOCUS");
+	$(pId + " > .-container > .-th_input-data").focusin(function(){
+		$(this).addClass("-th_input-data-FOCUS");
 	});
 	
-	$(pId + " > .-container > .dbs_input-data > .-day").focusout(function(){
+	$(pId + " > .-container > .-th_input-data > .-day").focusout(function(){
 		var xV = dbsfaces.inputDate.getInputDateDay($(this));
 		$(this).val(xV);
 	});
-	$(pId + " > .-container > .dbs_input-data > .-month").focusout(function(){
+	$(pId + " > .-container > .-th_input-data > .-month").focusout(function(){
 		var xV = dbsfaces.inputDate.getInputDateMonth($(this));
 		$(this).val(xV);
 	});
-	$(pId + " > .-container > .dbs_input-data > .-year").focusout(function(){
+	$(pId + " > .-container > .-th_input-data > .-year").focusout(function(){
 		var xV = dbsfaces.inputDate.getInputDateYear($(this));
 		$(this).val(xV);
 	});
-	$(pId + " > .-container > .dbs_input-data > .-hour").focusout(function(){
+	$(pId + " > .-container > .-th_input-data > .-hour").focusout(function(){
 		var xV = dbsfaces.inputDate.getInputDateHour($(this));
 		$(this).val(xV);
 	});
-	$(pId + " > .-container > .dbs_input-data > .-minute").focusout(function(){
+	$(pId + " > .-container > .-th_input-data > .-minute").focusout(function(){
 		var xV = dbsfaces.inputDate.getInputDateMinute($(this));
 		$(this).val(xV);
 	});
-	$(pId + " > .-container > .dbs_input-data > .-second").focusout(function(){
+	$(pId + " > .-container > .-th_input-data > .-second").focusout(function(){
 		var xV = dbsfaces.inputDate.getInputDateSecond($(this));
 		$(this).val(xV);
 	});
 	
-	$(pId + " > .-container > .dbs_input-data").focusout(function(){
-		$(this).removeClass("dbs_input-data-FOCUS");
+	$(pId + " > .-container > .-th_input-data").focusout(function(){
+		$(this).removeClass("-th_input-data-FOCUS");
 		if (dbsfaces.inputDate.getIsValid($(this).parent())==""){
 			$(this).addClass("-error");
 		}else{
@@ -42,7 +42,7 @@ dbs_inputDate = function(pId) {
 	});
 	
 	
-	$(pId + " > .-container > .dbs_input-data > input").keydown(function(e){
+	$(pId + " > .-container > .-th_input-data > input").keydown(function(e){
 		var xC = "";
 		//Ignora tecla se não for uma tecla válida para o campo de data
 		if (!dbsfaces.inputDate.isValidKey(e)){
@@ -110,7 +110,7 @@ dbs_inputDate = function(pId) {
 		}
 	});
 	
-	$(pId + " > .-container > .dbs_input-data > input").keyup(function(e){
+	$(pId + " > .-container > .-th_input-data > input").keyup(function(e){
 		var xC = "";
 		var xS = $(this).get(0).selectionEnd - $(this).get(0).selectionStart; 
 		//Pula para o próximo campo(mes ou ano) da data caso e campo atual esteja completo
@@ -188,7 +188,7 @@ dbsfaces.inputDate = {
 	},
 
 	getInputDateValue: function(pId){
-		var xId = $(pId).find(".dbs_input-data > .-day");
+		var xId = $(pId).find(".-th_input-data > .-day");
 		var xD = dbsfaces.inputDate.getInputDateDay(xId);
 		var xM = dbsfaces.inputDate.getInputDateMonth(xId);
 		var xY = dbsfaces.inputDate.getInputDateYear(xId);
@@ -197,7 +197,7 @@ dbsfaces.inputDate = {
 	},
 
 	getIsValid: function(pId){
-		var xId = $(pId).find(".dbs_input-data > .-day");
+		var xId = $(pId).find(".-th_input-data > .-day");
 		var xD = dbsfaces.inputDate.getInputDateDay(xId);
 		var xM = dbsfaces.inputDate.getInputDateMonth(xId);
 		var xY = dbsfaces.inputDate.getInputDateYear(xId);

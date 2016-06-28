@@ -5,7 +5,7 @@
 	position:relative;
 }
 
-.dbs_checkbox > .-container > .dbs_input-data {
+.dbs_checkbox > .-container > .-th_input-data {
 	background-color: transparent;
 	height: 19px;
 }

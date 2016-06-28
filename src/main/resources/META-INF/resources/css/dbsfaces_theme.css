@@ -1,13 +1,13 @@
 .-th_fc{
 	color:rgb(13,25,45);
 }
-.-th_fc.-th_i{
+.-th_fc.-th_i{ /*Invert*/
 	color:white;
 }
 .-th_bc{
 	background-color:white;
 }
-.-th_bc.-th_i{
+.-th_bc.-th_i{/*Invert*/
 	background-color:rgb(13,25,45);
 }
 
@@ -88,4 +88,213 @@
     -moz-border-radius: 3px 3px 0px 0px;
     border-radius: 3px 3px 0px 0px;
     font-weight: bold;	
+}
+
+.-th_input {
+	font-size: inherit;
+/* 	font-size: 11px; Comentado em 2016-01-13 */
+	display: table;
+	padding: 0px;
+	margin: 0px;
+	border-style: solid;
+	border-width: 0px;
+}
+
+input,
+textarea,
+select,
+.-th_input-data > label,
+.-th_input-data > .-data {
+	font-family: inherit;
+	font-weight: normal;
+	color: rgb(13, 25, 45);
+}
+
+input,
+textarea,
+select{
+	background: white;
+}
+
+
+
+.-th_input-label{
+	text-align: left;
+}
+
+/* @media only screen and (max-width: 1370px){ */
+/* 	.dbs_input-label{ */
+/* 	    position: absolute !important; */
+/* 	    opacity: 0.3; */
+/* 	    padding: .2em .1em .2em .1em; */
+/* 	    top: 1px !important; */
+/* 	    left: 1px; */
+/* 	} */
+/* 	.-th_input-data{ */
+/* 		background-color: inherit; */
+/* 	} */
+/* 	.-th_input-data:empty{ */
+/* 		background-color: transparent; */
+/* 	} */
+/* } */
+
+.-th_input-data{
+	position: relative;
+}
+
+.-th_input-data,
+.-th_input-label,
+.-th_input-suggestion {
+	font-size: inherit;
+	font-weight: normal;
+}
+
+.-th_input-data,
+.-th_input-suggestion{
+	background-color: white;
+}
+
+.-th_input-data,
+.-th_input-suggestion {
+	display: inline-block;
+	font-style: normal;
+	text-shadow: none !important;
+	font-weight: normal !important;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	vertical-align: middle;
+	min-height: 1.45em;
+/* 	min-height: 19px; Comentado em 2016-01-13 ricardo*/
+}
+
+.-th_input-data[type=text],
+.-th_input-data[type=password],
+.-th_input-data[type=email],
+.-th_input-data[type=tel],
+.-th_input-data[type=number],
+.-th_input-data[type=date],
+.-th_input-data[type=time],
+.-th_input-data[type=url],
+textarea.-th_input-data{
+	-webkit-appearance: none;
+	-moz-appearance: none;
+    appearance: none;
+}
+
+
+.-th_input-data[type=text],
+.-th_input-data[type=password],
+.-th_input-data[type=email],
+.-th_input-data[type=tel],
+.-th_input-data[type=number],
+.-th_input-data[type=date],
+.-th_input-data[type=time],
+.-th_input-data[type=url],
+select.-th_input-data, 
+textarea.-th_input-data,
+span.-th_input-data,
+div.-th_input-data,
+label.-th_input-data,
+.-th_input-suggestion{
+   	border-color: rgba(13, 25, 45, 0.1);
+/*    	border-color: rgba(13, 25, 45, 0.3) rgb(220, 220, 220) rgb(220, 220, 220) rgba(13, 25, 45, 0.3); */
+    border-style: solid;
+    border-width: 1px;
+/* 	padding: 0px 1px 0px 1px !important; comentado em 2016-01-13 */
+	padding: .2em .1em .2em .1em !important;
+	-webkit-border-radius: .15em !important;
+	-moz-border-radius: .15em !important;
+	border-radius: .15em !important;
+/* 	-webkit-box-shadow: 1px 1px 1px rgba(13, 25, 45, 0.1) inset; */
+/* 	-moz-box-shadow: 1px 1px 1px rgba(13, 25, 45, 0.1) inset; */
+/* 	box-shadow: 1px 1px 1px rgba(13, 25, 45, 0.1) inset; */
+}
+
+.-th_input-data.-readOnly {
+	background-color: rgba(0, 0, 0, 0.05) !important;
+	overflow: hidden;
+}
+
+.-th_input-data[type=text].-readOnly,
+.-th_input-data[type=password].-readOnly,
+.-th_input-data[type=email].-readOnly,
+.-th_input-data[type=tel].-readOnly,
+.-th_input-data[type=number].-readOnly,
+.-th_input-data[type=date].-readOnly,
+.-th_input-data[type=time].-readOnly,
+.-th_input-data[type=url].-readOnly,
+select.-th_input-data.-readOnly,
+textarea.-th_input-data.-readOnly,
+span.-th_input-data.-readOnly,
+div.-th_input-data.-readOnly,
+label.-th_input-data.-readOnly
+	{
+/* 	padding: 1px 1px 1px 1px !important; */
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+	border-color: rgba(0, 0, 0, 0.05);
+/* 	line-height: 15px; */
+}
+
+.-th_input-data:FOCUS,
+.-th_input-data-FOCUS {
+	background-color: rgb(221, 235, 255);
+}
+
+.-th_input-data[type=text]:FOCUS,
+.-th_input-data[type=password]:FOCUS,
+.-th_input-data[type=email]:FOCUS,
+.-th_input-data[type=tel]:FOCUS,
+.-th_input-data[type=number]:FOCUS,
+.-th_input-data[type=date]:FOCUS,
+.-th_input-data[type=time]:FOCUS,
+.-th_input-data[type=url]:FOCUS,
+select.-th_input-data:FOCUS,
+textarea.-th_input-data:FOCUS,
+.-th_input-data-FOCUS{
+	-webkit-box-shadow: 0 0 1px rgb(0, 153, 255), 0 0 0 rgb(143, 143, 143) inset !important;
+	-moz-box-shadow: 0 0 1px rgb(0, 153, 255), 0 0 0 rgb(143, 143, 143) inset !important;
+	box-shadow: 0 0 1px rgb(0, 153, 255), 0 0 0 rgb(143, 143, 143) inset !important;
+	outline: none;
+}
+
+.-th_input .-error {
+	background-color: rgb(255, 255, 210);
+}
+.-th_input .-invalid {
+	background-color: rgb(255, 210, 210);
+}
+.-th_input .-required {
+	background-color: rgb(110, 210, 210);
+}
+
+.-th_input > .-container {
+	white-space: nowrap;
+	display: inline-block;
+    position: relative;
+    width: 100%;
+}
+
+
+.-th_input-data{
+	
+}
+
+.-th_input-label{
+	
+}
+
+.-th_respo{
+	vertical-align: middle;
+    display: inline-block;
+    position: absolute;
+    /* top: inherit; */
+    z-index: 1;
+    padding: .2em .1em .2em .1em !important;
+    /* border-width: 1px; */
+    /* border-color: transparent; */
+    top: 1px;
+    left: 1px;
 }

@@ -5,12 +5,12 @@
 	position: relative;
 }
 
-.dbs_inputTextArea > .-container > .dbs_input-label {
+.dbs_inputTextArea > .-container > .-th_input-label {
     vertical-align: top !important;
     top: .25em;
     position: relative;	
 }
 
-.dbs_inputTextArea > .-container > .dbs_input-data {
+.dbs_inputTextArea > .-container > .-th_input-data {
 	resize:none;
 }

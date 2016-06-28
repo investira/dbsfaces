@@ -220,6 +220,9 @@ public class  DBSFaces {
 			public static final String ACTION = " -th_action ";
 			public static final String CAPTION = " -th_caption ";
 			public static final String INVERT = " -th_i ";
+			public static final String INPUT = " -th_input ";
+			public static final String INPUT_LABEL = " -th_input-label ";
+			public static final String INPUT_DATA = " -th_input-data ";
 		}
 		
 		
@@ -337,11 +340,8 @@ public class  DBSFaces {
 
 		public static class INPUT
 		{
-			public static final String MAIN = " " + CLASS_PREFIX +  "input ";
-			public static final String DATA = " " + MAIN.trim() + MODIFIER.DATA.trim() + " ";
-			public static final String LABEL = " " + MAIN.trim() + MODIFIER.LABEL.trim() + " ";
-			public static final String SUBMIT = " " + MAIN.trim() + MODIFIER.SUBMIT.trim() + " ";
-			public static final String SUGGESTION = " " + MAIN.trim() + MODIFIER.SUGGESTION.trim() + " ";
+			public static final String SUBMIT = " " + CSS.THEME.INPUT.trim() + MODIFIER.SUBMIT.trim() + " ";
+			public static final String SUGGESTION = " " + CSS.THEME.INPUT.trim() + MODIFIER.SUGGESTION.trim() + " ";
 			public static final String SUGGESTIONKEY = " " + SUGGESTION.trim() + MODIFIER.KEY.trim() + " ";
 		}
 		
@@ -1454,7 +1454,7 @@ public class  DBSFaces {
 				xStyle += " width:" + pInput.getLabelWidth() + ";";
 			}
 			pWriter.startElement("label", pInput);
-				DBSFaces.setAttribute(pWriter, "class", CSS.INPUT.LABEL + CSS.NOT_SELECTABLE);
+				DBSFaces.setAttribute(pWriter, "class", CSS.THEME.INPUT_LABEL + CSS.NOT_SELECTABLE);
 				DBSFaces.setAttribute(pWriter, "for", xClientId + CSS.MODIFIER.DATA.trim());
 				if (pRenderSeparator){
 					DBSFaces.setAttribute(pWriter, "style", xStyle);
@@ -1500,7 +1500,7 @@ public class  DBSFaces {
 		if (pInput.getRightLabel()!=null){
 			String xClientId = pInput.getClientId(pContext);
 			pWriter.startElement("label", pInput);
-				DBSFaces.setAttribute(pWriter, "class", CSS.INPUT.LABEL + CSS.NOT_SELECTABLE);
+				DBSFaces.setAttribute(pWriter, "class", CSS.THEME.INPUT_LABEL + CSS.NOT_SELECTABLE);
 				DBSFaces.setAttribute(pWriter, "for", xClientId + CSS.MODIFIER.DATA.trim());
 				DBSFaces.setAttribute(pWriter, "style", "margin:0 3px 0 3px; vertical-align: middle; display:inline-block;");
 				pWriter.write(pInput.getRightLabel().trim());
@@ -1656,7 +1656,7 @@ public class  DBSFaces {
 	 * @return
 	 */
 	public static String getInputDataClass(UIComponent pInput){
-		String xClass = CSS.INPUT.DATA;
+		String xClass = CSS.THEME.INPUT_DATA;
 		DBSUIInput xInput;
 		if (pInput instanceof DBSUIInput){
 			xInput = (DBSUIInput) pInput;

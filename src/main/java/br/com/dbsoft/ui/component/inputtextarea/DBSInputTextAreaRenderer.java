@@ -51,7 +51,7 @@ public class DBSInputTextAreaRenderer extends DBSRenderer {
 		DBSInputTextArea xInputTextArea = (DBSInputTextArea) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xInputTextArea.getClientId(pContext);
-		String xClass = CSS.INPUTTEXTAREA.MAIN + CSS.INPUT.MAIN;
+		String xClass = CSS.INPUTTEXTAREA.MAIN + CSS.THEME.INPUT;
 		if (xInputTextArea.getStyleClass()!=null){
 			xClass = xClass + xInputTextArea.getStyleClass();
 		}

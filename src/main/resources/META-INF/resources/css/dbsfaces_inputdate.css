@@ -5,15 +5,15 @@
 	position: relative;
 }
 
-.dbs_inputDate > .-container > .dbs_input-label {
+.dbs_inputDate > .-container > .-th_input-label {
 }
 
-.dbs_inputDate > .-container > .dbs_input-data > input{
+.dbs_inputDate > .-container > .-th_input-data > input{
 }
 
 
-.dbs_inputDate > .-container > .dbs_input-data > input,
-.dbs_inputDate > .-container > .dbs_input-data > label{
+.dbs_inputDate > .-container > .-th_input-data > input,
+.dbs_inputDate > .-container > .-th_input-data > label{
 	display: inline-block;
 	line-height: 100%;
 	border: 0 none;

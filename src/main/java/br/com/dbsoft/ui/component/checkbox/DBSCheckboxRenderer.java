@@ -51,7 +51,7 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 		DBSCheckbox xCheckbox = (DBSCheckbox) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xCheckbox.getClientId(pContext);
-		String xClass = CSS.CHECKBOX.MAIN + " " + CSS.INPUT.MAIN + " ";
+		String xClass = CSS.CHECKBOX.MAIN + CSS.THEME.INPUT;
 		if (xCheckbox.getStyleClass()!=null){
 			xClass += xCheckbox.getStyleClass();
 		}

@@ -6,7 +6,7 @@
 
 
 /* 	desativa altura padrão dos checkbox que por ventura existam dentro do data table */
-.dbs_dataTable .dbs_checkbox > .-container > .dbs_input-data {
+.dbs_dataTable .dbs_checkbox > .-container > .-th_input-data {
 	height: auto;
 }
 
@@ -80,7 +80,7 @@
 	
 }
 
-.dbs_dataTable > .-container > .-header > .-filter > .-input .dbs_input,
+.dbs_dataTable > .-container > .-header > .-filter > .-input .-th_input,
 .dbs_dataTable > .-container > .-header > .-filter > .-input .dbs_group{
 	margin-bottom: 2px;
 }
@@ -351,13 +351,13 @@
 	display: block;
 }
 
-.dbs_dataTable > .-container > .-content > table > tbody .dbs_input{
+.dbs_dataTable > .-container > .-content > table > tbody .-th_input{
 	margin: -1px 0 -2px -1px;
 }
 
 			
-/* .dbs_dataTable.-formStyle_Table > .-container > .-content > table > tbody > tr:not(.-selected) .dbs_input-data{ */
-.dbs_dataTable.-formStyle_Table > .-container > .-content > table > tbody .dbs_input-data.-readOnly{
+/* .dbs_dataTable.-formStyle_Table > .-container > .-content > table > tbody > tr:not(.-selected) .-th_input-data{ */
+.dbs_dataTable.-formStyle_Table > .-container > .-content > table > tbody .-th_input-data.-readOnly{
 	border: none;
 	-webkit-border-radius: 0px !important;
 	-moz-border-radius: 0px !important;
@@ -373,11 +373,11 @@
 	min-height: 19px !important;
 }
 
-.dbs_dataTable > .-container > .-content > table > tbody .dbs_input-data.-readOnly{
+.dbs_dataTable > .-container > .-content > table > tbody .-th_input-data.-readOnly{
 	background-color: transparent !important;
 }
 
-.dbs_dataTable > .-container > .-content > table > tbody .dbs_input-data:focus:not(.-editing){
+.dbs_dataTable > .-container > .-content > table > tbody .-th_input-data:focus:not(.-editing){
 	border:none !important;
 	-webkit-box-shadow: none !important;
 	-moz-box-shadow: none !important;
@@ -392,12 +392,12 @@
 	background: linear-gradient(to bottom,  rgb(15,43,76) 0%,rgba(13,25,45,1) 100%) !important; /* W3C */
 }
 
-.dbs_dataTable > .-container > .-content > table > tbody .dbs_checkbox > .dbs_input-data{
+.dbs_dataTable > .-container > .-content > table > tbody .dbs_checkbox > .-th_input-data{
 	height: 12px;
 }
 
-.dbs_dataTable > .-container > .-content > table > tbody .dbs_input-data:FOCUS,
-.dbs_dataTable > .-container > .-content > table > tbody .dbs_input-data-FOCUS{
+.dbs_dataTable > .-container > .-content > table > tbody .-th_input-data:FOCUS,
+.dbs_dataTable > .-container > .-content > table > tbody .-th_input-data-FOCUS{
 	background-color: rgb(221, 235, 255);
 	color: rgb(13,25,45);
 	-webkit-box-shadow: none;

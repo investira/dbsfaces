@@ -118,7 +118,7 @@ public class DBSInputDateRenderer extends DBSRenderer {
 		DBSInputDate xInputDate = (DBSInputDate) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xInputDate.getClientId(pContext);
-		String xClass = CSS.INPUTDATE.MAIN + CSS.INPUT.MAIN;
+		String xClass = CSS.INPUTDATE.MAIN + CSS.THEME.INPUT;
 		if (xInputDate.getStyleClass()!=null){
 			xClass += xInputDate.getStyleClass();
 		}

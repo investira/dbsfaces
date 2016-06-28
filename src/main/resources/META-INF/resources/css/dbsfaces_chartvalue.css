@@ -55,6 +55,6 @@
 }
 
 
-.dbs_chartValue .dbs_input-data{
+.dbs_chartValue .-th_input-data{
 	min-height: 13px;
 }

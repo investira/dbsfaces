@@ -60,7 +60,7 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 		DBSInputNumber xInputNumber = (DBSInputNumber) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xInputNumber.getClientId(pContext);
-		String xClass = CSS.INPUTNUMBER.MAIN + CSS.INPUT.MAIN;
+		String xClass = CSS.INPUTNUMBER.MAIN + CSS.THEME.INPUT;
 		if (xInputNumber.getStyleClass() != null) {
 			xClass += xInputNumber.getStyleClass();
 		}

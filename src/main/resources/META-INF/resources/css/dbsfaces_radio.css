@@ -5,19 +5,19 @@
 	display: table;
 }
 
-.dbs_radio > table > tbody > tr .dbs_input {}
+.dbs_radio > table > tbody > tr .-th_input {}
 
 .dbs_radio > table > tbody > tr > td {
 	display: table;
 	white-space: nowrap;
 }
 
-.dbs_radio > table > tbody > tr > td > .dbs_input-data {
+.dbs_radio > table > tbody > tr > td > .-th_input-data {
 	background-color: transparent;
 	height: 19px;
 }
 
-.dbs_radio > table > tbody > tr > td > .dbs_input-label {
+.dbs_radio > table > tbody > tr > td > .-th_input-label {
 	margin-right: 10px;
 	display: inline-block; 
 	padding: 0px 0px 0px 3px;

@@ -130,7 +130,7 @@ public class DBSMenuitemRenderer extends DBSRenderer {
 			}
 			if (pLabel!=null){
 				pWriter.startElement("span", pMenuItem);
-					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.LABEL + CSS.INPUT.LABEL);
+					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.LABEL + CSS.THEME.INPUT_LABEL);
 					pWriter.write(pLabel);
 				pWriter.endElement("span");
 			}

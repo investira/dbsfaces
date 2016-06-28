@@ -6,10 +6,10 @@
 	position: relative;
 }
 
-.dbs_combobox > .-container > .dbs_input-label {
+.dbs_combobox > .-container > .-th_input-label {
 }
 
-.dbs_combobox > .-container > .dbs_input-data {
+.dbs_combobox > .-container > .-th_input-data {
 /* 	height: 19px; COMENTADO EM 2016-01-12 por Ricardo para permitir ajuste fontes de tamanhos diferentes*/ 
 	position: relative;
 	padding-right: 14px !important;
@@ -19,7 +19,7 @@
 	overflow: hidden;
 }
 
-.dbs_combobox > .-container > .dbs_input-data > select {
+.dbs_combobox > .-container > .-th_input-data > select {
 	opacity: 0;
 	position: absolute;
 	cursor: pointer;
@@ -30,18 +30,18 @@
 	width: 100%;
 }
 
-.dbs_combobox > .-container > .dbs_input-data.-readOnly {
+.dbs_combobox > .-container > .-th_input-data.-readOnly {
 /* 	line-height: 1.5; COMENTADO EM 2016-01-13*/
 }
 
-.dbs_combobox > .-container > .dbs_input-data > .-data {
+.dbs_combobox > .-container > .-th_input-data > .-data {
 	display:block;
 	overflow: hidden;	
 	position: relative;
 /*     top: 1px;	COMENTADO EM 2016-01-13*/
 }
 
-.dbs_combobox > .-container > .dbs_input-data > .-button {
+.dbs_combobox > .-container > .-th_input-data > .-button {
 	color: rgb(13,25,45);
 	position: absolute;
     right: 2px;
@@ -51,5 +51,5 @@
 
 
 
-.dbs_combobox > .-container > .dbs_input-data > .-button.-disabled {
+.dbs_combobox > .-container > .-th_input-data > .-button.-disabled {
 }

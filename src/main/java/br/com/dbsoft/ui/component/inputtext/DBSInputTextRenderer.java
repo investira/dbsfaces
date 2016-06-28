@@ -99,7 +99,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 		DBSInputText xInputText = (DBSInputText) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xInputText.getClientId(pContext);
-		String xClass = CSS.INPUTTEXT.MAIN + CSS.INPUT.MAIN; 
+		String xClass = CSS.INPUTTEXT.MAIN + CSS.THEME.INPUT; 
 		if (xInputText.getStyleClass()!=null){
 			xClass = xClass + xInputText.getStyleClass();
 		}

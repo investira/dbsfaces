@@ -10,29 +10,29 @@
 	position: relative;
 }
 
-.dbs_inputText > .-container > .dbs_input-label {
+.dbs_inputText > .-container > .-th_input-label {
 }
 
-.dbs_inputText > .-container > .-input > .dbs_input-suggestion-key,
-.dbs_inputText > .-container > .-input > .dbs_input-submit{
+.dbs_inputText > .-container > .-input > .-th_input-suggestion-key,
+.dbs_inputText > .-container > .-input > .-th_input-submit{
 	display:none;
 }
 
-.dbs_inputText > .-container > .-input > .dbs_input-suggestion{
+.dbs_inputText > .-container > .-input > .-th_input-suggestion{
 	position: absolute;
 	color: rgb(0, 180, 255);	
 	border-color: transparent;
 } 
 
-.dbs_inputText > .-container > .-input > .dbs_input-suggestion.dbs_input-data-FOCUS{
+.dbs_inputText > .-container > .-input > .-th_input-suggestion.-th_input-data-FOCUS{
 	box-shadow: none !important;
 }
 
-.dbs_inputText > .-container > .-input > .dbs_input-data{
+.dbs_inputText > .-container > .-input > .-th_input-data{
 	position: relative;
 }
 
-.dbs_inputText > .-container > .-input > .dbs_input-data:Focus{
+.dbs_inputText > .-container > .-input > .-th_input-data:Focus{
 	background-color: transparent;
 }
 

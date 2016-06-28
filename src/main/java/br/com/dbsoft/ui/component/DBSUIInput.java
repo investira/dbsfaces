@@ -103,6 +103,7 @@ public abstract class DBSUIInput extends UIInput implements IDBSUIComponentBase,
 	protected enum PropertyKeys {
 		label,
 		labelWidth,
+		responsive,
 		rightLabel,
 		styleClass,
 		style,
@@ -175,6 +176,15 @@ public abstract class DBSUIInput extends UIInput implements IDBSUIComponentBase,
 	public void setRightLabel(String pRightLabel) {
 		getStateHelper().put(PropertyKeys.rightLabel, pRightLabel);
 		handleAttribute("rightLabel", pRightLabel);
+	}
+
+	public Boolean getResponsive() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
+	}
+	
+	public void setResponsive(String pResponsive) {
+		getStateHelper().put(PropertyKeys.responsive, pResponsive);
+		handleAttribute("responsive", pResponsive);
 	}
 	
 	public String getStyle() {

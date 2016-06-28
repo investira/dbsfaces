@@ -50,7 +50,7 @@ public class DBSInputMaskRenderer extends DBSRenderer {
 		DBSInputMask xInputMask = (DBSInputMask) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xInputMask.getClientId(pContext);
-		String xClass = CSS.INPUTMASK.MAIN + " " + CSS.INPUT.MAIN + " ";
+		String xClass = CSS.INPUTMASK.MAIN + CSS.THEME.INPUT;
 		if (xInputMask.getStyleClass()!=null){
 			xClass = xClass + xInputMask.getStyleClass();
 		}

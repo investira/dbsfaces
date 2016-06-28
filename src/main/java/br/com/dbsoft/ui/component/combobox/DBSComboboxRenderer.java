@@ -60,7 +60,7 @@ public class DBSComboboxRenderer extends DBSRenderer {
 		DBSCombobox xCombobox = (DBSCombobox) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xCombobox.getClientId(pContext);
-		String xClass = CSS.COMBOBOX.MAIN + CSS.INPUT.MAIN;
+		String xClass = CSS.COMBOBOX.MAIN + CSS.THEME.INPUT;
 		Object xOldValue = xCombobox.getValue();
 		if (xCombobox.getStyleClass()!=null){
 			xClass += xCombobox.getStyleClass();

@@ -64,7 +64,7 @@ dbs_dataTable = function(pId) {
 	/*Força o foco no click*/
 	$(wTable + " > tbody > tr").click(function(e){
 		//Se click foi em campo de input, não precisa forçar o foco no input-foo, para não dar problema na edição diretamente no grid
-		if ($(e.target).hasClass("dbs_input-data:not(.-readOnly)")
+		if ($(e.target).hasClass("-th_input-data:not(.-readOnly)")
 		 || $(e.target).is("input:not(.-readOnly)")){
 			dbsfaces.dataTable.headFocusAdd(pId);
 		}else{

@@ -49,7 +49,7 @@
 
 
 
-.dbs_report > .-content > .dbs_tab > .-container > div > .-content > .-filter .dbs_input:not(td) {
+.dbs_report > .-content > .dbs_tab > .-container > div > .-content > .-filter .-th_input:not(td) {
     margin-bottom: 2px;
 }
 

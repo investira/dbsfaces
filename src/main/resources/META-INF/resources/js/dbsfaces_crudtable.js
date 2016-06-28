@@ -60,7 +60,7 @@ dbsfaces.crudTable = {
 	//Incluir nova linha ou nevega entre elas
 	rowEdit: function(e, pId, pRow){
 		//Se foi em campo de input
-		if ($(e.target).hasClass("dbs_input-data")){
+		if ($(e.target).hasClass("-th_input-data")){
 			var xCheckbox = pRow.children(".-C1").children("input[type='hidden']");
 			//Inclusão de nova linha
 			if (e.which == 40){ //DOWN

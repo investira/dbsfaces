@@ -205,7 +205,7 @@
 .dbs_dialog > .-dialog > .-container > table > tbody > tr > td > table > tbody > tr > .-container > .-content{
 }
 
-.dbs_dialog > .-dialog > .-container > table > tbody > tr > td > table > tbody > tr > .-container > .-content .dbs_input:not(td), 
+.dbs_dialog > .-dialog > .-container > table > tbody > tr > td > table > tbody > tr > .-container > .-content .-th_input:not(td), 
 .dbs_dialog > .-dialog > .-container > table > tbody > tr > td > table > tbody > tr > .-container > .-content .dbs_group {
     margin-bottom: 2px;
 }

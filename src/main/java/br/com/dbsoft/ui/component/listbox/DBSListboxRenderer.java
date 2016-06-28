@@ -49,7 +49,7 @@ public class DBSListboxRenderer extends DBSRenderer {
 		DBSListbox xListbox = (DBSListbox) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xListbox.getClientId(pContext);
-		String xClass = CSS.LISTBOX.MAIN + CSS.INPUT.MAIN;
+		String xClass = CSS.LISTBOX.MAIN + CSS.THEME.INPUT;
 		if (xListbox.getStyleClass()!=null){
 			xClass = xClass + xListbox.getStyleClass();
 		}

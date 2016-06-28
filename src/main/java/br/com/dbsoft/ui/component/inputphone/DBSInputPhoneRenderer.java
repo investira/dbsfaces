@@ -70,7 +70,7 @@ public class DBSInputPhoneRenderer extends DBSRenderer {
 		DBSInputPhone xInputPhone = (DBSInputPhone) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xInputPhone.getClientId(pContext);
-		String xClass = CSS.INPUTPHONE.MAIN + " " + CSS.INPUT.MAIN + " ";
+		String xClass = CSS.INPUTPHONE.MAIN + CSS.THEME.INPUT;
 		if (xInputPhone.getStyleClass()!=null){
 			xClass = xClass + xInputPhone.getStyleClass();
 		}

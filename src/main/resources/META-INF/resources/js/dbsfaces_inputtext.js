@@ -24,13 +24,13 @@ dbs_inputText = function(pId) {
 		dbsfaces.inputText.letterCase(pId, $(this), e,"upperfirst");
 	});	
 	
-	$(pId + " > .-container > .-input > .dbs_input-data").focus(function(e){
-		$(pId + "-suggestion").addClass("dbs_input-data-FOCUS");
+	$(pId + " > .-container > .-input > .-th_input-data").focus(function(e){
+		$(pId + "-suggestion").addClass("-th_input-data-FOCUS");
 	});
 	
 	
-	$(pId + " > .-container > .-input > .dbs_input-data").blur(function(e){
-		$(pId + "-suggestion").removeClass("dbs_input-data-FOCUS");
+	$(pId + " > .-container > .-input > .-th_input-data").blur(function(e){
+		$(pId + "-suggestion").removeClass("-th_input-data-FOCUS");
 		dbsfaces.ui.selectNone(this);
 		wTime = +new Date();
 
@@ -49,7 +49,7 @@ dbs_inputText = function(pId) {
 	});
 
 	/* copia a sugestão para o input ou navega pela lista de sugestões*/
-	$(pId + " > .-container > .-input > .dbs_input-data").keydown(function(e){
+	$(pId + " > .-container > .-input > .-th_input-data").keydown(function(e){
 		//Confirma sugestão com tab e seta para a direita
 		if ((e.which == 13 || //ENTER
 			 e.which == 39) && //RIGHT
@@ -95,7 +95,7 @@ dbs_inputText = function(pId) {
 		}
 	});
 
-	$(pId + " > .-container > .-input > .dbs_input-data").on("paste", function(e){
+	$(pId + " > .-container > .-input > .-th_input-data").on("paste", function(e){
 		dbsfaces.inputText.requestSuggestion(pId);
 		
 	});

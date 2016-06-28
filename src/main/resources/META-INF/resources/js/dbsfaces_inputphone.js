@@ -3,24 +3,24 @@ dbs_inputPhone = function(pId) {
 		dbsfaces.ui.selectAll(this);
 	});
 	
-	$(pId + " > .-container > .dbs_input-data").focusin(function(){
-		$(this).addClass("dbs_input-data-FOCUS");
+	$(pId + " > .-container > .-th_input-data").focusin(function(){
+		$(this).addClass("-th_input-data-FOCUS");
 	});
 
-	$(pId + " > .-container > .dbs_input-data").focusin(function(){
-		$(this).addClass("dbs_input-data-FOCUS");
+	$(pId + " > .-container > .-th_input-data").focusin(function(){
+		$(this).addClass("-th_input-data-FOCUS");
 	});
 //	
 	
-	$(pId + " > .-container > .dbs_input-data").focusout(function(){
-		$(this).removeClass("dbs_input-data-FOCUS");
+	$(pId + " > .-container > .-th_input-data").focusout(function(){
+		$(this).removeClass("-th_input-data-FOCUS");
 	});
 	
-	$(pId + " > .-container > .dbs_input-data > .-number").focusin(function(e){
+	$(pId + " > .-container > .-th_input-data > .-number").focusin(function(e){
 		$(this).val(dbsfaces.number.getOnlyNumber($(this).val()));
 	});
 	
-	$(pId + " > .-container > .dbs_input-data > input").keydown(function(e){
+	$(pId + " > .-container > .-th_input-data > input").keydown(function(e){
 		var xC = "";
 		//Ignora tecla se não for uma tecla válida para o campo de data
 		if (!dbsfaces.inputPhone.isValidKey(e)){
@@ -48,11 +48,11 @@ dbs_inputPhone = function(pId) {
 		}		
 		
 	});
-	$(pId + " > .-container > .dbs_input-data > .-ddd").keyup(function(e){
+	$(pId + " > .-container > .-th_input-data > .-ddd").keyup(function(e){
 		dbsfaces.inputPhone.nextField($(this), 2, e);
 	});
 
-	$(pId + " > .-container > .dbs_input-data > .-ddi").keyup(function(e){
+	$(pId + " > .-container > .-th_input-data > .-ddi").keyup(function(e){
 		dbsfaces.inputPhone.nextField($(this), 3, e);
 	});
 	
