@@ -57,7 +57,7 @@ public class DBSGroupRenderer extends DBSRenderer {
 					DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.HEADER);
 					xWriter.startElement("div", xGroup);
 						xWriter.startElement("div", xGroup);
-							DBSFaces.setAttribute(xWriter, "class", CSS.THEME.INPUT_DATA + CSS.NOT_SELECTABLE);
+							DBSFaces.setAttribute(xWriter, "class", CSS.THEME.INPUT_LABEL + CSS.NOT_SELECTABLE);
 							if (!xGroup.getLabel().equals("")){
 								xWriter.write(xGroup.getLabel() + ":");
 							}
