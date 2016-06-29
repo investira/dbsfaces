@@ -6,8 +6,8 @@
 }
 
 .dbs_checkbox > .-container > .-th_input-label {
-	padding-left:2px;
 }
+
 .dbs_checkbox > .-container > .-th_input-label:after {
 	content: "";
 }
