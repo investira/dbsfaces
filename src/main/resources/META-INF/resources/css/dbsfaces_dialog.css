@@ -243,4 +243,10 @@
     left: 0px;
 }
 
+.dbs_quickInfo > .-icon > .-content > .-tooltip {
+	left: 0.65em !important;	
+    position: absolute !important;
+}
+
+
 			
