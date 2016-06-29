@@ -87,7 +87,9 @@
 /* 	padding-left: 3px; */
 	padding-left: .3em;
 }
-
+.dbs_menuitem > .-caption > .-content > .-label:after{
+    content: "";
+}
 .dbs_menuitem > .-caption > .-content > .-childrenIcon{
 	font-size: .8em;
     position: absolute;

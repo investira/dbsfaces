@@ -283,10 +283,16 @@ textarea.-th_input-data:FOCUS,
 }
 
 .-th_input-label{
-	
+	vertical-align:middle; 
+	display:inline-block;
 }
 
-.-th_respo{
+
+.-th_input-label:first-child:after{
+	content:":";
+}
+
+.-th_r2{
 	vertical-align: middle;
     display: inline-block;
     position: absolute;
@@ -298,3 +304,23 @@ textarea.-th_input-data:FOCUS,
     top: 1px;
     left: 1px;
 }
+
+@media screen and (max-width: 800px){
+	.-th_input-data{
+	}
+	
+	.-th_input-label:first-child{
+	    display: block;
+	    position: relative;
+	    font-size: .7em;
+	    left: .2em;
+	    
+	}
+
+	.-th_input-label:first-child:after{
+		content:"";
+	}
+	
+}
+
+

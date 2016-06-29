@@ -1446,24 +1446,25 @@ public class  DBSFaces {
 	 * @param pWriter
 	 * @throws IOException
 	 */
-	public static <InputComponent extends DBSUIInput> void encodeLabel(FacesContext pContext, InputComponent pInput, ResponseWriter pWriter, Boolean pRenderSeparator) throws IOException{
+	public static <InputComponent extends DBSUIInput> void encodeLabel(FacesContext pContext, InputComponent pInput, ResponseWriter pWriter) throws IOException{
 		if (pInput.getLabel()!=null){
 			String xClientId = pInput.getClientId(pContext);
-			String xStyle = "vertical-align:middle; display:inline-block;";
+//			String xStyle = "vertical-align:middle; display:inline-block;";
+			String xStyle = "";
 			if (!pInput.getLabelWidth().equals("")){
 				xStyle += " width:" + pInput.getLabelWidth() + ";";
 			}
 			pWriter.startElement("label", pInput);
 				DBSFaces.setAttribute(pWriter, "class", CSS.THEME.INPUT_LABEL + CSS.NOT_SELECTABLE);
 				DBSFaces.setAttribute(pWriter, "for", xClientId + CSS.MODIFIER.DATA.trim());
-				if (pRenderSeparator){
-					DBSFaces.setAttribute(pWriter, "style", xStyle);
-					pWriter.write(pInput.getLabel().trim() + ":");
-				}else{
-					xStyle += "padding-left:2px;";
+//				if (pRenderSeparator){
 					DBSFaces.setAttribute(pWriter, "style", xStyle);
 					pWriter.write(pInput.getLabel().trim());
-				}
+//				}else{
+//					xStyle += "padding-left:2px;";
+//					DBSFaces.setAttribute(pWriter, "style", xStyle);
+//					pWriter.write(pInput.getLabel().trim());
+//				}
 				//Encode simbolo da moeda se componente for do tipo inputnumber
 				if(pInput instanceof DBSInputNumber){
 					DBSInputNumber xIN = (DBSInputNumber) pInput;
@@ -1476,17 +1477,6 @@ public class  DBSFaces {
 				}
 			pWriter.endElement("label");
 		}
-	}
-	
-	/**
-	 * Gere HTML padrão do label a esquesta do campo, já incluindo o sinal ":"
-	 * @param pContext
-	 * @param pInput
-	 * @param pWriter
-	 * @throws IOException
-	 */
-	public static void encodeLabel(FacesContext pContext, DBSUIInput pInput, ResponseWriter pWriter) throws IOException{
-		encodeLabel(pContext, pInput, pWriter, true);
 	}
 	
 	/**

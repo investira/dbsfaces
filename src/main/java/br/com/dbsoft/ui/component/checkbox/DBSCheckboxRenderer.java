@@ -73,7 +73,7 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 				}
 				pvEncodeInput(pContext, xCheckbox, xWriter);
 				if (xCheckbox.getInvertLabel()){
-					DBSFaces.encodeLabel(pContext, xCheckbox, xWriter, false);
+					DBSFaces.encodeLabel(pContext, xCheckbox, xWriter);
 				}
 				DBSFaces.encodeRightLabel(pContext, xCheckbox, xWriter);
 			xWriter.endElement("div");
