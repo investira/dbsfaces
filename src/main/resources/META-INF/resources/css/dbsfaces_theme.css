@@ -292,20 +292,20 @@ textarea.-th_input-data:FOCUS,
 	content:":";
 }
 
-
-@media screen and (max-width: 800px){
-	.-th_input-data{
+/* (min-width: 700px) and landscape */
+/* Resposive */
+@media screen and (max-width: 600px) and (orientation: portrait){
+	-responsive .-th_input-data{
 	}
 	
-	.-th_input-label:first-child{
+	-responsive .-th_input .-th_input-label:first-child{
 	    display: block;
 	    position: relative;
 	    font-size: .7em;
 	    left: .2em;
-	    
 	}
 
-	.-th_input-label:first-child:after{
+	-responsive .-th_input .-th_input-label:first-child:after{
 		content:"";
 	}
 	

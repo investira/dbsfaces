@@ -86,10 +86,6 @@
 .dbs_menuitem > .-caption > .-content > .-label{
 /* 	padding-left: 3px; */
 	padding-left: .3em;
-	display: inherit;
-	position: inherit;
-	font-size: inherit;
-	left: inherit;
 }
 .dbs_menuitem > .-caption > .-content > .-label:after{
     content: "";
