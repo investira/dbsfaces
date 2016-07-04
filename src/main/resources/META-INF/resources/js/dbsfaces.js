@@ -21,6 +21,7 @@ var wsAnimationTime = 200;
 //var evt = (evt) ? evt : ((event) ? event : null); 
 //var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null); 
 
+//Desabilita TECLAS ESPECÍFICAS para INPUTS ESPECÍFICOS
 $(document).on("keydown", function(e){
 	if ((e.which == 13) && //ENTER
 		(e.target.type=="text"))  {
@@ -35,6 +36,16 @@ $(document).on("keydown", function(e){
 			return false;
 	} 
 });
+
+//Inicializa tamanho do fonte quando for class for responsivo(-responsive)
+$(document).ready(function() { 
+	dbsfaces.ui.initializeResponsive();
+	$(window).resize(function() {
+		dbsfaces.ui.initializeResponsive();
+	});
+});
+
+
 
 String.prototype.replaceAll = function(target, replacement) {
   return this.split(target).join(replacement);
@@ -376,6 +387,15 @@ dbsfaces.url = {
 }
 
 dbsfaces.ui = {
+	initializeResponsive: function(){
+		var xResponsive = $(".-responsive");
+		if (xResponsive.length == 0){return;}
+		var xRatio = screen.width / screen.height;
+//		console.log(window.orientation + "\t" + xRatio + "\t" + screen.width + "\t" + screen.height);
+		var xFontSize = 11 + Math.round(1 * xRatio);
+		xResponsive.css("font-size", xFontSize + "px");
+	},
+	
 	moveToFront: function(pElement, pMoveToElement){
 		if (pElement == null || (typeof(pElement) == "undefined")){return;}
 		var xE = pElement;
@@ -635,6 +655,7 @@ dbsfaces.ui = {
 		xTr = xTr.match(/matrix(?:(3d)\(-{0,1}\d+\.?\d*(?:, -{0,1}\d+\.?\d*)*(?:, (-{0,1}\d+\.?\d*))(?:, (-{0,1}\d+\.?\d*))(?:, (-{0,1}\d+\.?\d*)), -{0,1}\d+\.?\d*\)|\(-{0,1}\d+\.?\d*(?:, -{0,1}\d+\.?\d*)*(?:, (-{0,1}\d+\.?\d*))(?:, (-{0,1}\d+\.?\d*))\))/);
 		return xTr;
 	},
+	
 	//	Retorna fator mínimo para ajuste de tamanho conforme largura e altura da tela atual em relação a tela desejada
 	aspectRatio: function(pWindow, pBaseWidth, pBaseHeight){
 		var xBaseRatio = pBaseWidth / pBaseHeight;
