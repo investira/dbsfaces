@@ -86,6 +86,7 @@ public class DBSNavRenderer extends DBSRenderer {
 					pWriter.startElement("div", pNav);
 						pWriter.startElement("nav", pNav);
 							DBSFaces.setAttribute(pWriter, "style", "padding:" + pNav.getPadding(), null);
+//							DBSFaces.setAttribute(pWriter, "style", pvGetPaddingIconClose(pNav));
 							//Encode dos conteúdo
 							DBSFaces.renderChildren(pContext, pNav);
 						pWriter.endElement("nav");
@@ -99,10 +100,27 @@ public class DBSNavRenderer extends DBSRenderer {
 		pWriter.endElement("div");
 	}
 	private void pvEncodeIconClose(DBSNav pNav, ResponseWriter pWriter) throws IOException{
+		LOCATION xLocation = LOCATION.get(pNav.getLocation());
+//		String xClass = CSS.THEME.ACTION;
+		String xClass = "";
 		pWriter.startElement("div", pNav);
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICONCLOSE + CSS.THEME.ACTION);
+			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICONCLOSE);
 			pWriter.startElement("div", pNav);
-				DBSFaces.setAttribute(pWriter, "class", "-i_cancel");
+//				DBSFaces.setAttribute(pWriter, "class", "-i_cancel");
+				if (xLocation.getIsVertical()){
+					if (xLocation.getIsLeft()){
+						xClass += "-i_navigate_previous";
+					}else{
+						xClass += "-i_navigate_next";
+					}
+				}else{
+					if (xLocation.getIsTop()){
+						xClass += "-i_navigate_up";
+					}else{
+						xClass += "-i_navigate_down";
+					}
+				}
+				DBSFaces.setAttribute(pWriter, "class", xClass);
 			pWriter.endElement("div");
 		pWriter.endElement("div");
 	}
@@ -111,7 +129,7 @@ public class DBSNavRenderer extends DBSRenderer {
 		if (xFooter == null){return;}
 		pWriter.startElement("div", pNav);
 			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.HEADER);
-			DBSFaces.setAttribute(pWriter, "style", pvGetPaddingIcon(pNav));
+//			DBSFaces.setAttribute(pWriter, "style", pvGetPaddingIcon(pNav));
 			pWriter.startElement("div", pNav);
 				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
 				xFooter.encodeAll(pContext);
@@ -150,30 +168,6 @@ public class DBSNavRenderer extends DBSRenderer {
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);		
 	}
 
-	
-	private String pvGetPaddingIcon(DBSNav pNav){
-		LOCATION xLocation = LOCATION.get(pNav.getLocation());
-		String xPT = pNav.getPadding();
-		String xPB = pNav.getPadding();
-		String xPL = pNav.getPadding();
-		String xPR = pNav.getPadding();
-		
-		//Padding top e bottom
-		if (xLocation.getIsVertical()){
-			if (xLocation.getIsTop()){
-				xPB = "0";
-			}else{
-				xPT = "0";
-			}
-		}else{
-			if (xLocation.getIsLeft()){
-				xPR = "0";
-			}else{
-				xPL = "0";
-			}
-		}
-		return "padding:" + xPT + " " + xPR + " " + xPB + " " + xPL + ";"; 
-	}
 	private String pvGetPaddingFooter(DBSNav pNav){
 		LOCATION xLocation = LOCATION.get(pNav.getLocation());
 		String xPT = pNav.getPadding();
@@ -197,5 +191,54 @@ public class DBSNavRenderer extends DBSRenderer {
 		}
 		return "padding:" + xPT + " " + xPR + " " + xPB + " " + xPL + ";"; 
 	}
+	
+
+	
+//	private String pvGetPaddingIcon(DBSNav pNav){
+//		LOCATION xLocation = LOCATION.get(pNav.getLocation());
+//		String xPT = pNav.getPadding();
+//		String xPB = pNav.getPadding();
+//		String xPL = pNav.getPadding();
+//		String xPR = pNav.getPadding();
+//		
+//		//Padding top e bottom
+//		if (xLocation.getIsVertical()){
+//			if (xLocation.getIsTop()){
+//				xPB = "0";
+//			}else{
+//				xPT = "0";
+//			}
+//		}else{
+//			if (xLocation.getIsLeft()){
+//				xPR = "0";
+//			}else{
+//				xPL = "0";
+//			}
+//		}
+//		return "padding:" + xPT + " " + xPR + " " + xPB + " " + xPL + ";"; 
+//	}
+//	private String pvGetPaddingIconClose(DBSNav pNav){
+//		LOCATION xLocation = LOCATION.get(pNav.getLocation());
+//		String xPT = pNav.getPadding();
+//		String xPB = pNav.getPadding();
+//		String xPL = pNav.getPadding();
+//		String xPR = pNav.getPadding();
+//		
+//		//Padding top e bottom
+//		if (xLocation.getIsVertical()){
+//			if (xLocation.getIsTop()){
+//				xPT = "0";
+//			}else{
+//				xPB = "0";
+//			}
+//		}else{
+//			if (xLocation.getIsLeft()){
+//				xPL = "0";
+//			}else{
+//				xPR = "0";
+//			}
+//		}
+//		return "padding:" + xPT + " " + xPR + " " + xPB + " " + xPL + ";"; 
+//	}
 
 }

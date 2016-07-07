@@ -16,6 +16,16 @@ dbs_nav = function(pId) {
 		dbsfaces.nav.show(xNav);
 		return false;
 	});
+	
+	$(pId + " > .-container > .-nav").on("mousewheel touchmove", function(e){
+		e.stopImmediatePropagation();
+	});
+	$(pId + " > .-container > .-mask").on("mousewheel touchmove", function(e){
+//		e.preventDefault();
+//		e.stopPropagation();
+		e.stopImmediatePropagation();
+//		return false;
+	});
 
 	$(pId + " > .-container > .-nav > .-iconclose").on("mousedown touchstart", function(e){
 		dbsfaces.nav.show(xNav);
@@ -59,6 +69,7 @@ dbsfaces.nav = {
 //		pNav.data("foocaption", pNav.data("container").children(".-foocaption"));
 		pNav.data("icon", pNav.find("> .-container > .-icon"));
 		pNav.data("mask", pNav.find("> .-container > .-mask"));
+		pNav.data("iconclose", pNav.data("navgroup").children(".-iconclose"));
 		pNav.data("padding", Number(dbsfaces.number.getOnlyNumber(pNav.data("mask").css("padding-left"))));
 	},
 	
@@ -81,9 +92,7 @@ dbsfaces.nav = {
 		if (pNav.hasClass("-closed")){
 			dbsfaces.nav.pvOpen(pNav);
 		}else{
-			pNav.data("navgroup").css("height", "")
-								 .css("width", "");
-			dbsfaces.ui.enableForegroundInputs($("body"));
+			dbsfaces.nav.pvClose(pNav);
 		}
 		pNav.toggleClass("-closed -th_i");
 	},
@@ -91,6 +100,14 @@ dbsfaces.nav = {
 	pvOpen: function(pNav){
 		dbsfaces.nav.pvAjustLayout(pNav);
 		dbsfaces.ui.disableBackgroundInputs(pNav);
+		$("html").addClass("dbs_nav-freeze");
+	},
+	
+	pvClose: function(pNav){
+		pNav.data("navgroup").css("height", "")
+		 					 .css("width", "");
+		dbsfaces.ui.enableForegroundInputs($("body"));
+		$("html").removeClass("dbs_nav-freeze");
 	},
 	
 	pvAjustLayout: function(pNav){
@@ -102,8 +119,8 @@ dbsfaces.nav = {
 		var xContainer = pNav.data("container");
 		var xMaskWidth = xMask.get(0).getBoundingClientRect().width;
 		var xMaskHeight = xMask.get(0).getBoundingClientRect().height;
-		var xHeaderWidth = null;
-		var xHeaderHeight = null;
+		var xHeaderWidth = pNav.data("iconclose").get(0).getBoundingClientRect().width;
+		var xHeaderHeight = pNav.data("iconclose").get(0).getBoundingClientRect().height;
 		var xFooterWidth = null;
 		var xFooterHeight = null;
 		if (xHeader.length > 0){
@@ -132,16 +149,16 @@ dbsfaces.nav = {
 			pNav.data("navgroup").css("width", xWidth);
 //			pNav.data("foocaption").css("height", xHeaderHeight + xPadding);
 			if (pNav.data("t")){
-				if (xHeaderHeight != null){
+//				if (xHeaderHeight != null){
 					xContainer.css("padding-top", xHeaderHeight + xPadding);
-				}
+//				}
 				if (xFooterHeight != null){
 					xContainer.css("padding-bottom", xFooterHeight + xPadding);
 				}
 			}else{
-				if (xHeaderHeight != null){
+//				if (xHeaderHeight != null){
 					xContainer.css("padding-bottom", xHeaderHeight + xPadding);
-				}
+//				}
 				if (xFooterHeight != null){
 					xContainer.css("padding-top", xFooterHeight + xPadding);
 				}
@@ -157,16 +174,16 @@ dbsfaces.nav = {
 			pNav.data("navgroup").css("height", xHeight);
 //			pNav.data("foocaption").css("width", xHeaderHeight + xPadding);
 			if (pNav.data("l")){
-				if (xHeaderHeight != null){
+//				if (xHeaderWidth != null){
 					xContainer.css("padding-left", xHeaderWidth + xPadding);
-				}
+//				}
 				if (xFooterWidth != null){
 					xContainer.css("padding-right", xFooterWidth + xPadding);
 				}
 			}else{
-				if (xHeaderHeight != null){
+//				if (xHeaderWidth != null){
 					xContainer.css("padding-right", xHeaderWidth + xPadding);
-				}
+//				}
 				if (xFooterWidth != null){
 					xContainer.css("padding-left", xFooterWidth + xPadding);
 				}
