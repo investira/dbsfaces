@@ -52,6 +52,7 @@ import br.com.dbsoft.ui.core.DBSFaces;
 	@ResourceDependency(library = "css", name = "dbsfaces_chartvalue.css", target = "head"),
 	@ResourceDependency(library = "js", name = "jquery-2.1.4.min.js", target = "head"),
 	@ResourceDependency(library = "js", name = "jquery.actual.min.js", target = "head"),
+	@ResourceDependency(library = "js", name = "tinycolor.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsmask.js", target = "head"),
 	@ResourceDependency(library = "javax.faces", name = "jsf.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces.js", target = "head"),
