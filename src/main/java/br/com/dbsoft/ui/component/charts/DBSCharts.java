@@ -109,6 +109,9 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		return (Integer) getStateHelper().eval(PropertyKeys.height, 50);
 	}
 	public void setHeight(Integer pHeight) {
+		if (pHeight == null || pHeight < 1){
+			pHeight = 50;
+		}
 		getStateHelper().put(PropertyKeys.height, pHeight);
 		handleAttribute("hight", pHeight);
 	}
@@ -117,6 +120,9 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		return (Integer) getStateHelper().eval(PropertyKeys.width, 50);
 	}
 	public void setWidth(Integer pWidth) {
+		if (pWidth == null || pWidth < 1){
+			pWidth = 50;
+		}
 		getStateHelper().put(PropertyKeys.width, pWidth);
 		handleAttribute("width", pWidth);
 	}
