@@ -10,6 +10,7 @@ import javax.faces.render.FacesRenderer;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
+import br.com.dbsoft.util.DBSObject;
 
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSGroup.RENDERER_TYPE)
@@ -56,12 +57,12 @@ public class DBSGroupRenderer extends DBSRenderer {
 				xWriter.startElement("div", xGroup);
 					DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.HEADER);
 					xWriter.startElement("div", xGroup);
+					if (!DBSObject.isEmpty(xGroup.getLabel())){
 						xWriter.startElement("div", xGroup);
 							DBSFaces.setAttribute(xWriter, "class", CSS.THEME.INPUT_LABEL + CSS.NOT_SELECTABLE);
-							if (!xGroup.getLabel().equals("")){
-								xWriter.write(xGroup.getLabel() + ":");
-							}
+							xWriter.write(xGroup.getLabel());
 						xWriter.endElement("div");
+					}
 					xWriter.endElement("div");
 					xWriter.startElement("div", xGroup);
 						DBSFaces.setAttribute(xWriter, "class", "-line");
