@@ -314,9 +314,6 @@
 /*     z-index: -1; */
     width: 0em;
     height: 0em;
-	background-color: inherit;
-	color: inherit;
-	opacity: 0.5;
 }
 /* VERTICAL */
 .dbs_nav.-tlv > .-container > .-nav > .-iconclose,
@@ -357,6 +354,7 @@
 	overflow: hidden;
 	background-color: inherit;
 	color: inherit;
+	cursor: pointer;
 }
 
 /* VERTICAL */
@@ -551,6 +549,7 @@
 .dbs_nav > .-container > .-nav > .-footer {
 	position: absolute;
     display: inline-block;
+    overflow: hidden;    
 }
 
 .dbs_nav > .-container > .-nav > .-footer > .-content {
@@ -571,6 +570,22 @@
 .dbs_nav.-brv > .-container > .-nav > .-footer{
 	top: 0;
 }
+
+/* HORIZONTAL */
+.dbs_nav.-tlh > .-container > .-nav > .-footer,
+.dbs_nav.-trh > .-container > .-nav > .-footer,
+.dbs_nav.-blh > .-container > .-nav > .-footer,
+.dbs_nav.-brh > .-container > .-nav > .-footer{
+	height: 100%;
+}
+/* VERTICAL */
+.dbs_nav.-tlv > .-container > .-nav > .-footer,
+.dbs_nav.-trv > .-container > .-nav > .-footer,
+.dbs_nav.-blv > .-container > .-nav > .-footer,
+.dbs_nav.-brv > .-container > .-nav > .-footer{
+	width: 100%;
+}
+
 /* LEFT VERTICAL / RIGHT HORIZONTAL */
 .dbs_nav.-tlv > .-container > .-nav > .-footer,
 .dbs_nav.-blv > .-container > .-nav > .-footer,
