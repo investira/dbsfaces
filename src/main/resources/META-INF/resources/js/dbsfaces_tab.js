@@ -30,8 +30,8 @@ dbsfaces.tab = {
 		var xTabAba = $(".dbs_tab > .-container > .-tabs > .-tab[tabpage='" + pTabPageRawId + "']");
 		
 		/* título */
-		$(pId + " > .-container > .-tabs > .-tab").removeClass("-selected");
-		xTabAba.addClass("-selected");
+		$(pId + " > .-container > .-tabs > .-tab").removeClass("-selected").addClass("-th_i");
+		xTabAba.addClass("-selected ").removeClass("-th_i");
 		
 		/* conteúdo */
 		$(pId + " > .-container > div > .-content > .dbs_tabPage").removeClass("-selected");
