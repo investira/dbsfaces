@@ -141,8 +141,8 @@ public class DBSNavRenderer extends DBSRenderer {
 		if (xFooter == null){return;}
 		pWriter.startElement("div", pNav);
 			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.FOOTER);
-			DBSFaces.setAttribute(pWriter, "style", pvGetPaddingFooter(pNav));
 			pWriter.startElement("div", pNav);
+				DBSFaces.setAttribute(pWriter, "style", pvGetPaddingFooter(pNav));
 				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
 				xFooter.encodeAll(pContext);
 			pWriter.endElement("div");
