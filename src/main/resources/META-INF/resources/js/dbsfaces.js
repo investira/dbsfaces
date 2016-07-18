@@ -37,7 +37,7 @@ $(document).on("keydown", function(e){
 	} 
 });
 
-//Inicializa tamanho do fonte quando for class for responsivo(-responsive)
+//Inicializa tamanho do fonte quando for class for responsivo(-th_responsive)
 $(document).ready(function() { 
 	dbsfaces.ui.initializeResponsive();
 	$(window).resize(function() {
@@ -54,20 +54,10 @@ String.prototype.replaceAll = function(target, replacement) {
 //JQUERY PLUGINS===================================================================
 
 (function($) {
-    $.fn.hasScrollBar = function() {
-        return this.get(0).scrollHeight > this.height();
+	$.fn.svgHasClass = function (pClassName) {
+    	 return new RegExp('(\\s|^)' + pClassName + '(\\s|$)').test(this.get(0).getAttribute('class'));
     },
-
-    $.fn.isParentFixed = function() {
-    	if (this.closest("foreignObject").length == 0){
-    		return dbsfaces.ui.pvIsParentFixed(this);
-    	}
-        return true;
-    },
-    
-    $.fn.svgHasClass = function (pClassName) {
-  	  return new RegExp('(\\s|^)' + pClassName + '(\\s|$)').test(this.get(0).getAttribute('class'));
-    },
+      
     $.fn.svgRemoveClass = function (pClassName) {
 		this.each(function(){
 	    	var xObject = this;
@@ -88,42 +78,68 @@ String.prototype.replaceAll = function(target, replacement) {
 		});
 		return this;
     },
+      
     $.fn.svgAttr = function (pAttribute, pValue) {
-    	if (typeof(pValue) == "undefined"){
-    		return this.get(0).getAttributeNS(null, pAttribute);
-    	}else{
-    		if (pValue != null){
-        		this.get(0).setAttributeNS(null, pAttribute, pValue);
-    		}
-    		return this;
+      	if (typeof(pValue) == "undefined"){
+      		return this.get(0).getAttributeNS(null, pAttribute);
+      	}else{
+      		if (pValue != null){
+          		this.get(0).setAttributeNS(null, pAttribute, pValue);
+      		}
+      		return this;
+      	}
+  	},
+  	
+  	//Retorna o total de segmentos de um path
+  	$.fn.svgGetPathTotalSegs = function () {
+      	if (typeof(this) == "undefined"){
+      		return 0;
+      	}
+ 		return this.get(0).getPathSegAtLength(this.get(0).getTotalLength() + 10) + 1;
+  	},
+
+    $.fn.hasScrollBar = function() {
+        return this.get(0).scrollHeight > this.height();
+    },
+
+    $.fn.isParentFixed = function() {
+    	if (this.closest("foreignObject").length == 0){
+    		return dbsfaces.ui.pvIsParentFixed(this);
     	}
+        return true;
+    },
+    
+	//Encontra o parente mais próximo que possuir barra de rolagem
+	$.fn.scrollParent = function( includeHidden ) {
+		var position = this.css( "position" ),
+			excludeStaticParent = position === "absolute",
+			overflowRegex = includeHidden ? /(auto|scroll|hidden)/ : /(auto|scroll)/,
+			scrollParent = this.parents().filter( function() {
+				var parent = $( this );
+				if ( excludeStaticParent && parent.css( "position" ) === "static" ) {
+					return false;
+				}
+				return overflowRegex.test( parent.css( "overflow" ) + parent.css( "overflow-y" ) + parent.css( "overflow-x" ) );
+			} ).eq( 0 );
+
+		return position === "fixed" || !scrollParent.length ? $("body") : scrollParent;
+//		return position === "fixed" || !scrollParent.length ? $( this[ 0 ].ownerDocument || document ) : scrollParent;
 	},
-	//Retorna o total de segmentos de um path
-	$.fn.svgGetPathTotalSegs = function () {
-    	if (typeof(this) == "undefined"){
-    		return 0;
-    	}
-   		return this.get(0).getPathSegAtLength(this.get(0).getTotalLength() + 10) + 1;
+
+	$.fn.focusNextInputField = function() {
+	    return this.each(function() {
+	        var fields = $(this).parents('form:eq(0),body').find('button,input,textarea,select');
+	        var index = fields.index( this );
+	        if ( index > -1 && ( index + 1 ) < fields.length ) {
+	            fields.eq( index).focus();
+	        }
+	        return false;
+	    });
 	}
+
 })(jQuery);
 
 
-//Encontra o parente mais próximo que possuir barra de rolagem
-var scrollParent = $.fn.scrollParent = function( includeHidden ) {
-	var position = this.css( "position" ),
-		excludeStaticParent = position === "absolute",
-		overflowRegex = includeHidden ? /(auto|scroll|hidden)/ : /(auto|scroll)/,
-		scrollParent = this.parents().filter( function() {
-			var parent = $( this );
-			if ( excludeStaticParent && parent.css( "position" ) === "static" ) {
-				return false;
-			}
-			return overflowRegex.test( parent.css( "overflow" ) + parent.css( "overflow-y" ) + parent.css( "overflow-x" ) );
-		} ).eq( 0 );
-
-	return position === "fixed" || !scrollParent.length ? $("body") : scrollParent;
-//	return position === "fixed" || !scrollParent.length ? $( this[ 0 ].ownerDocument || document ) : scrollParent;
-};
 
 //DBSFACES===========================================================
 
@@ -157,7 +173,15 @@ dbsfaces = {
 		ON_TRANSITION_END: "webkitTransitionEnd otransitionEnd oTransitionEnd msTransitionEnd transitionend",
 		ON_ANIMATION_END: "webkitAnimationEnd oanimationEnd msAnimationEnd animationend",
 		ON_ANIMATION_INTERATION: "webkitAnimationIteration animationiteration"
-	}	
+	},
+	
+	JAVAX: {
+		VIEWSTATE: "javax.faces.ViewState",
+		SOURCE: "javax.faces.source",
+		PARTIAL_EXECUTE: "javax.faces.partial.execute",
+		PARTIAL_RENDER: "javax.faces.partial.render",
+		PARTIAL_AJAX: "javax.faces.partial.ajax"
+	}
 }
 
 var wAjaxTimeout;
@@ -388,7 +412,7 @@ dbsfaces.url = {
 
 dbsfaces.ui = {
 	initializeResponsive: function(){
-		var xResponsive = $(".-responsive");
+		var xResponsive = $(".-th_responsive");
 		if (xResponsive.length == 0){return;}
 		var xRatio = screen.width / screen.height;
 //		console.log(window.orientation + "\t" + xRatio + "\t" + screen.width + "\t" + screen.height);
@@ -422,30 +446,6 @@ dbsfaces.ui = {
 			xE = pElement.get(0);
 		}
 		xE.parentElement.insertBefore(xE, xE.parentElement.childNodes[0]);
-	},
-	/*Exibe a imagem de que indica que está aguardando o recebimento dos dados*/
-	showLoading : function(pId, pShow){
-		var xId = dbsfaces.util.jsid(pId + "_loading");
-		//Sempre remove loading se já existir 
-		
-		//Exibe loading
-	    if (pShow){
-			if ($(xId).length == 0){
-				$('body').append("<span id='" + xId.replace("#","") + "' class='-loading -large'/>");
-			}
-	    }else{
-			if ($(xId).length > 0){
-		    	$(xId).remove();
-			}
-	    }
-	},
-	
-	showLoadingError : function(pId){
-		var xId = dbsfaces.util.jsid(pId + "_loading");
-		$(xId).fadeOut(2000, function(){ 
-			$(xId).remove();
-//			$("div .-loading").remove(); Comentado em 08/abr/15 - Ricardo: Excluid código até a certeza que código não é mais necessário.
-		});
 	},
 	
 	getRectangle : function(obj) {
@@ -672,48 +672,6 @@ dbsfaces.ui = {
 		return xRatio;
 	},
 
-	//Dispara evento click
-	ajaxTriggerClick: function(e){
-		if ($(e.source).length == 0){
-			return;
-		}
-		if (e.status == "success"){
-			$(e.source).trigger("click");
-		}
-	},
-	
-	ajaxTriggerLoaded: function(e){
-		if ($(e.source).length == 0){
-			return;
-		}
-		if (e.status == "success"){
-			$(e.source).trigger("loaded");
-		}
-	},	
-
-	//Captura evento ajax dbsoft
-	ajaxShowLoading : function(pSelector){
-//		console.log("ajaxShowLoading:" + pSelector);
-		$(pSelector).off(dbsfaces.EVENT.ON_AJAX_BEGIN);
-		$(pSelector).on(dbsfaces.EVENT.ON_AJAX_BEGIN, function(e){
-			dbsfaces.ui.showLoading("main",true);
-		});
-		$(pSelector).off(dbsfaces.EVENT.ON_AJAX_COMPLETE);
-		$(pSelector).on(dbsfaces.EVENT.ON_AJAX_COMPLETE, function(e){
-			//Reinicia a contagem do timeout a cada complete, já que existe respostas ajax em andamento
-			window.clearTimeout(wAjaxTimeout);
-			wAjaxTimeout = window.setTimeout(function(e){
-				dbsfaces.ui.showLoadingError("main");
-			}, 1000); //Time de delay para efetuar a chamada acima(showLoadingError). A chamada será cancelada em caso de sucesso. 	
-		});
-
-		$(pSelector).off(dbsfaces.EVENT.ON_AJAX_SUCCESS);
-		$(pSelector).on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
-			window.clearTimeout(wAjaxTimeout); //Cancela o timeout definido no evento COMPLETE, cancelando a respectiva chamada ao showLoadingError.
-			dbsfaces.ui.showLoading("main",false);
-		});
-	},
-	
 	getAllEvents: function(e) {
 	    var xResult = [];
 	    for (var xKey in e) {
@@ -758,6 +716,73 @@ dbsfaces.ui = {
 		}else{
 			return dbsfaces.ui.pvIsParentFixed(xParent);
 		}
+	},
+	
+	//Dispara evento click
+	ajaxTriggerClick: function(e){
+		if ($(e.source).length == 0){
+			return;
+		}
+		if (e.status == "success"){
+			$(e.source).trigger("click");
+		}
+	},
+	
+	ajaxTriggerLoaded: function(e){
+		if ($(e.source).length == 0){
+			return;
+		}
+		if (e.status == "success"){
+			$(e.source).trigger("loaded");
+		}
+	},	
+
+	//Captura evento ajax dbsoft
+	ajaxShowLoading : function(pSelector){
+//		console.log("ajaxShowLoading:" + pSelector);
+		$(pSelector).off(dbsfaces.EVENT.ON_AJAX_BEGIN);
+		$(pSelector).on(dbsfaces.EVENT.ON_AJAX_BEGIN, function(e){
+			dbsfaces.ui.showLoading("main",true);
+		});
+		$(pSelector).off(dbsfaces.EVENT.ON_AJAX_COMPLETE);
+		$(pSelector).on(dbsfaces.EVENT.ON_AJAX_COMPLETE, function(e){
+			//Reinicia a contagem do timeout a cada complete, já que existe respostas ajax em andamento
+			window.clearTimeout(wAjaxTimeout);
+			wAjaxTimeout = window.setTimeout(function(e){
+				dbsfaces.ui.showLoadingError("main");
+			}, 1000); //Time de delay para efetuar a chamada acima(showLoadingError). A chamada será cancelada em caso de sucesso. 	
+		});
+
+		$(pSelector).off(dbsfaces.EVENT.ON_AJAX_SUCCESS);
+		$(pSelector).on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
+			window.clearTimeout(wAjaxTimeout); //Cancela o timeout definido no evento COMPLETE, cancelando a respectiva chamada ao showLoadingError.
+			dbsfaces.ui.showLoading("main",false);
+		});
+	},
+	
+	/*Exibe a imagem de que indica que está aguardando o recebimento dos dados*/
+	showLoading : function(pId, pShow){
+		var xId = dbsfaces.util.jsid(pId + "_loading");
+		//Sempre remove loading se já existir 
+		
+		//Exibe loading
+	    if (pShow){
+			if ($(xId).length == 0){
+				$('body').append("<span id='" + xId.replace("#","") + "' class='-loading -large'/>");
+			}
+	    }else{
+			if ($(xId).length > 0){
+		    	$(xId).remove();
+			}
+	    }
+	},
+	
+	showLoadingError : function(pId){
+		var xId = dbsfaces.util.jsid(pId + "_loading");
+		$(xId).fadeOut(2000, function(){ 
+			$(xId).remove();
+//			$("div .-loading").remove(); Comentado em 08/abr/15 - Ricardo: Excluid código até a certeza que código não é mais necessário.
+		});
 	}
 
 }
@@ -1037,6 +1062,110 @@ dbsfaces.string = {
 	}	
 };
 
+dbsfaces.ajax = {
+	request: function(pSourceId, pExecuteIds, pRenderIds, pOnEvent, pOnError, pParams){
+		if (pSourceId == null){return;}
+		pSourceId = dbsfaces.util.jsid(pSourceId);
+		var xSource = $(pSourceId);
+
+	    var xForm = xSource.closest("form");
+	    if (xForm.length == 0){return;}
+	    
+	    var xUrl = xForm.attr("action");
+	    if (xUrl == null){return;}
+	    
+		var xData = xForm.serialize();
+		xData += "&" + dbsfaces.JAVAX.SOURCE + "=" + xSource[0].id; 
+		xData += "&" + dbsfaces.JAVAX.PARTIAL_AJAX + "=true";
+		//EXECUTE
+		xData += "&" + dbsfaces.JAVAX.PARTIAL_EXECUTE + "=" + xSource[0].id;
+		if (pExecuteIds != null){
+			pExecuteIds = pExecuteIds.replace("@this", xSource[0].id);
+			pExecuteIds = pExecuteIds.replace("@form", xForm[0].id);
+			xData += " " + pExecuteIds;
+		}
+		//RENDER
+		if (pRenderIds != null){
+			pRenderIds = pRenderIds.replace("@this", xSource[0].id);
+			pRenderIds = pRenderIds.replace("@form", xForm[0].id);
+			xData += "&" + dbsfaces.JAVAX.PARTIAL_RENDER + "=" + pRenderIds;
+		}
+		if (pParams != null){
+			xData += "&params=" + pParams;
+		}
+		
+		var xEvent = {};  // data payload for function
+		xEvent.source = pSourceId;
+		
+        var xhrOptions = {
+	        url : xUrl,
+	        async: true,
+	        type : "POST",
+	        cache : false,
+	        timeout: 0,
+	        crossDomain: true,
+	        data : xData,
+	        dataType : "xml",
+	        xhr: function(){
+				var xXhr = new XMLHttpRequest();
+				xXhr.onprogress = this.onprogress;
+				xXhr.addEventListener('readystatechange',function(pEvt){
+					if (pOnEvent && typeof pOnEvent === 'function') {
+						xEvent.type = "event";
+						xEvent.status = "statechange";
+						xEvent.readyState = pEvt.target.readyState;
+						pOnEvent(xEvent);
+					}
+				}, false);
+				return xXhr;
+	        },
+	        beforeSend: function(xhr) {
+	        	xhr.setRequestHeader('Faces-Request', 'partial/ajax');
+	        },
+	        error: function(pXhr, pStatus, pErrorThrown) {
+        		console.log("erro");
+                if (pOnError && typeof pOnError === 'function') {
+            		xEvent.type = "error";
+            		xEvent.status = pStatus;
+            		pOnError(xEvent);
+	        	}
+	        },
+	        complete : function(pXhr, pStatus) {
+               if (pOnEvent && typeof pOnEvent === 'function') {
+               		xEvent.type = "event";
+            		xEvent.status = pStatus;
+            		pOnEvent(xEvent);
+	        	}
+	        },
+	        success : function(pData, pStatus, pXhr) {
+	        	dbsfaces.ajax.response(pData);
+	        	if (pOnEvent && typeof pOnEvent === 'function') {
+               		xEvent.type = "event";
+            		xEvent.status = pStatus;
+            		pOnEvent(xEvent);
+	        	}
+	        }
+	    };
+        xhrOptions.global = false;
+        $.ajax(xhrOptions);
+	},
+	
+	response: function(pData){
+	    xUpdates = $(pData).find('update');
+	    for(var i=0; i < xUpdates.length; i++) {
+	        var xUpdate = xUpdates.eq(i);
+	        var xId = xUpdate.attr('id');
+	        var xContent = xUpdate.text();
+	        //Atualiza conteúdo do componente
+			$(dbsfaces.util.jsid(xId)).replaceWith(xContent);
+	    }
+	},
+	
+	onprogress: function(pData){
+		
+	}
+	
+}
 		
 //Monitora evento ajax recebido e dispara evento dbsoft
 dbsfaces.onajax = function(e){
@@ -1057,13 +1186,3 @@ dbsfaces.onajaxerror = function(e){
 	return false;
 };
 
-$.fn.focusNextInputField = function() {
-    return this.each(function() {
-        var fields = $(this).parents('form:eq(0),body').find('button,input,textarea,select');
-        var index = fields.index( this );
-        if ( index > -1 && ( index + 1 ) < fields.length ) {
-            fields.eq( index).focus();
-        }
-        return false;
-    });
-};
