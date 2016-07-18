@@ -78,6 +78,9 @@ dbsfaces.nav = {
 			dbsfaces.nav.pvOpen(pNav);
 		}
 		pNav.children(".-container").css("opacity", "");
+		var xColor = tinycolor(pNav.data("navgroup").css("background-color"));
+		xColor.setAlpha(.5);
+		pNav.data("iconclose").css("background-color", xColor.toRgbString());
 	},
 	
 
@@ -112,13 +115,14 @@ dbsfaces.nav = {
 	
 	pvAjustLayout: function(pNav){
 //		var xPadding = pNav.data("padding");
+		var xLimit = 95;
 		var xPadding = 0;
 		var xMask = pNav.data("mask");
 		var xHeader = pNav.data("header");
 		var xFooter = pNav.data("footer");
 		var xContainer = pNav.data("container");
-		var xMaskWidth = xMask.get(0).getBoundingClientRect().width;
-		var xMaskHeight = xMask.get(0).getBoundingClientRect().height;
+		var xMaskWidth = xMask.get(0).getBoundingClientRect().width * (xLimit / 100);
+		var xMaskHeight = xMask.get(0).getBoundingClientRect().height * (xLimit / 100);
 		var xHeaderWidth = pNav.data("iconclose").get(0).getBoundingClientRect().width;
 		var xHeaderHeight = pNav.data("iconclose").get(0).getBoundingClientRect().height;
 		var xFooterWidth = null;
@@ -135,15 +139,15 @@ dbsfaces.nav = {
 		//Limita dimensão
 		if (pNav.data("v")){
 			pNav.data("navgroup").css("width", "");
-			var xWidth = pNav.data("nav").get(0).getBoundingClientRect().width;
+			var xWidth = pNav.data("nav").get(0).getBoundingClientRect().width + (xPadding * 2);
 			//Utiliza largura do caption se este for maior que largura do conteúdo do nav
 			if (xHeaderWidth > xWidth){
 				xWidth = xHeaderWidth;
 			}
-			xWidth += (xPadding * 2);
+//			xWidth += (xPadding * 2);
 			//Força largura máxima em 95% caso largura seja superior a largura da tela
 			if (xWidth > xMaskWidth){
-				xWidth = "95%";
+				xWidth = xLimit + "%";
 			}
 			//Limita largura a largura do conteúdo do nav
 			pNav.data("navgroup").css("width", xWidth);
@@ -167,9 +171,9 @@ dbsfaces.nav = {
 			pNav.data("navgroup").css("height", "");
 			var xHeight = pNav.data("nav").get(0).getBoundingClientRect().height + (xPadding * 2);
 			if (xHeight > xMaskHeight){
-				xHeight = "95%";
+				xHeight = xLimit + "%";
 			}
-			xHeight += (xPadding * 2);
+//			xHeight += (xPadding * 2);
 			//Limita altura a altura do conteúdo do nav
 			pNav.data("navgroup").css("height", xHeight);
 //			pNav.data("foocaption").css("width", xHeaderHeight + xPadding);
