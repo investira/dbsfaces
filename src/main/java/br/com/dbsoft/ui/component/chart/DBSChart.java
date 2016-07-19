@@ -203,14 +203,25 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 		handleAttribute("deltaList", pDeltaList);
 	}
 	
+	/**
+	 * Lista com os valores dos deltas
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public List<IDBSChartDelta> getDeltaList() {
 		return (List<IDBSChartDelta>) getStateHelper().eval(PropertyKeys.deltaList, null);
 	}
 
-	public Double getPieChartRelativeRadius(DBSCharts pCharts, Double pRelativeWidth){
-		Double xRodaRaio = pRelativeWidth / 2;
-		return xRodaRaio + ((pRelativeWidth + DBSCharts.PieInternalPadding) * (pCharts.getItensCount() - getIndex()));
+	/**
+	 * Raio referente o chart conforme index dele
+	 * @param pCharts
+	 * @param pRelativeWidth
+	 * @return
+	 */
+	public Double getPieChartRelativeRadius(DBSCharts pCharts){
+		Double xPieChartWidth  = pCharts.getPieChartWidth();
+		Double xRodaRaio = xPieChartWidth / 2;
+		return xRodaRaio + ((xPieChartWidth + DBSCharts.PieInternalPadding) * (pCharts.getItensCount() - getIndex()));
 	}
 
 	public Float getColorHue() {

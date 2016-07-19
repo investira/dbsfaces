@@ -66,8 +66,6 @@ public class DBSChartRenderer extends DBSRenderer {
 
 		String xClientId = xChart.getClientId(pContext);
 		
-		pvInitialize(xCharts, xChart);
-
 		xWriter.startElement("g", xChart);
 			DBSFaces.setAttribute(xWriter, "id", xClientId);
 			DBSFaces.setAttribute(xWriter, "name", xClientId);
@@ -152,8 +150,11 @@ public class DBSChartRenderer extends DBSRenderer {
 	 */
 	private List<IDBSChartDelta> pvEncodeDeltaList(DBSCharts pCharts, DBSChart pChart, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 		if (!pChart.getShowDeltaList()){return null;}
-		DBSDiv xDeltaListContent = (DBSDiv) pChart.getFacet("deltalist");
+		//Lista com os valores dos deltas
 		List<IDBSChartDelta> xDeltaList = pChart.getDeltaList();
+		//Facet com os botões
+		DBSDiv xDeltaListContent = (DBSDiv) pChart.getFacet("deltalist");
+		//Se não informado o facet, cria contendo botões a partir da lista com os valores dos deltas e
 		if (xDeltaListContent == null){
 			xDeltaListContent = (DBSDiv) pContext.getApplication().createComponent(DBSDiv.COMPONENT_TYPE);
 			xDeltaListContent.setId("deltalist");
@@ -174,6 +175,7 @@ public class DBSChartRenderer extends DBSRenderer {
 				xChartDelta.setId(xDeltaButton.getClientId());
 			}
 		}
+		//Encode do foreignObject que conterá os botões
 		pWriter.startElement("foreignObject", pChart);
 			DBSFaces.setAttribute(pWriter, "xmlns","http://www.w3.org/1999/xhtml");
 			DBSFaces.setAttribute(pWriter, "id", pChart.getClientId() + "_deltalist");
@@ -181,7 +183,7 @@ public class DBSChartRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(pWriter, "x", pCharts.getPadding() + "px");
 			DBSFaces.setAttribute(pWriter, "y", ((pCharts.getPadding() * 2) + pCharts.getChartHeight()) + "px");
 			DBSFaces.setAttribute(pWriter, "width", pCharts.getChartWidth());
-			DBSFaces.setAttribute(pWriter, "height", "1.6em");
+			DBSFaces.setAttribute(pWriter, "height", "1.7em");
 			DBSFaces.setAttribute(pWriter, "width", ".5");
 			DBSFaces.setAttribute(pWriter, "height", ".5");
 			pWriter.startElement("div", pChart);
@@ -200,7 +202,7 @@ public class DBSChartRenderer extends DBSRenderer {
 	 * @throws IOException
 	 */
 	private void pvEncodePieDeltaTextPaths(DBSCharts pCharts, DBSChart pChart, ResponseWriter pWriter) throws IOException{
-		Double xMiddleRadius = (pCharts.getPieChartWidth() / 2) + pChart.getPieChartRelativeRadius(pCharts, pCharts.getPieChartWidth());
+		Double xMiddleRadius = (pCharts.getPieChartWidth() / 2) + pChart.getPieChartRelativeRadius(pCharts) - 1;
 		Point2D xPathPoint1 = new Point2D.Double();
 		Point2D xPathPoint2 = new Point2D.Double();
 		//Arco a esquerda
@@ -278,16 +280,6 @@ public class DBSChartRenderer extends DBSRenderer {
 	private String pvGetDeltaPathId(DBSChart pChart,String pSide){
 		return pChart.getClientId() + "_deltapath" + pSide;
 	}
-	
-	private void pvInitialize(DBSCharts pCharts, DBSChart pChart){
-		if (pChart.getDeltaList() != null
-		 && pChart.getDeltaList().size() > 0
-		 && pCharts.getShowDelta()
-		 && pCharts.getShowLabel()){
-			pChart.setShowDeltaList(true);
-		}else{
-			 pChart.setShowDeltaList(false);
-		}
-	}
+
 
 }

@@ -1,27 +1,39 @@
 .dbs_charts{
-	display: table;
+    display: inline-block;
+/*     display: table; */ 
 /* 	border: rgba(0,0,0,.5) solid 1px; */
 }
 
+.dbs_charts > .-fonts{
+}
+.dbs_charts > .-fonts > .-labels{
+	font-size: .7em;
+}
+
 .dbs_charts > .-container{
+	height: 100%;
+    width: 100%;	
 	position: relative;
 	display: inline-block;
 	opacity:0;
-/* 	border: rgba(0,0,0,.5) solid 1px; */
+	-webkit-transition: opacity 200ms;
+	-moz-transition: opacity 200ms;
+	-ms-transition: opacity 200ms;
+	-o-transition: opacity 200ms;
+	transition: opacity 200ms;
 }
 
 .dbs_charts > .-container > .-caption,
 .dbs_charts > .-container > .-data,
 .dbs_charts > .-container > .-footer{
 	position: relative;
-	display: block;
     cursor: default;
 }
 
 .dbs_charts > .-container > .-caption{
     width: 100%;	
+	display: inline-block;
 	text-align: left;
-	padding-left: .3em;
     font-weight: bold;
 	background-image: url("#{request.contextPath}/images/back_texture_white.png");
     background-color: rgba(13,25,45,.02);
@@ -32,6 +44,7 @@
 
 .dbs_charts > .-container > .-data{
 	font-size: .7em;
+	display: inline-flex;
 }
 
 .dbs_charts > .-container > .-data > .-container{
@@ -47,18 +60,16 @@
 .dbs_charts > .-container > .-data > .-container > .-content > .-left{
 }
 	
-.dbs_charts > .-container > .-data > .-container > .-content > .-label{
-	font-size: 1.8em;
+.dbs_charts > .-container > .-data > .-container > .-content > .-captions{
 	stroke-width: 0;
-	height:1.8em;
+/* 	height:1.8em; */
 }	
 
-.dbs_charts > .-container > .-data > .-container > .-content > .-label > .-content{
-	font-size: 0.6em;
+.dbs_charts > .-container > .-data > .-container > .-content > .-captions > .-content{
 	cursor: pointer;
 	opacity: 0.7;
 }
-.dbs_charts > .-container > .-data > .-container > .-content > .-label > .-content.-activated{
+.dbs_charts > .-container > .-data > .-container > .-content > .-captions > .-content.-activated{
 	opacity: 1;
 	-moz-animation: -kf_dbs_chart_selected .1s linear;
 	-o-animation: -kf_dbs_chart_selected .1s linear;
@@ -66,16 +77,19 @@
 	animation: -kf_dbs_chart_selected .1s linear;
 }
 
-.dbs_charts > .-container > .-data > .-container > .-content > .-label > .-content > text{
+.dbs_charts > .-container > .-data > .-container > .-content > .-captions > .-content > text{
 	fill: white;
+	-webkit-transform: translate(.5em);
+	-moz-transform: translate(.5em);
+	-o-transform: translate(.5em);
 	transform: translate(.5em);
 	fill-opacity:0.8;
 }	
-.dbs_charts > .-container > .-data > .-container > .-content > .-label > .-content.-activated > text{
+.dbs_charts > .-container > .-data > .-container > .-content > .-captions > .-content.-activated > text{
 	fill-opacity:1;
 }	
 
-.dbs_charts > .-container > .-data > .-container > .-content > .-label > .-content > rect{
+.dbs_charts > .-container > .-data > .-container > .-content > .-captions > .-content > rect{
 }	
 
 .dbs_charts > .-container > .-data > .-container > .-content > .-value{
@@ -114,6 +128,8 @@
 }
 
 .dbs_charts > .-container > .-footer{
+    display: inline-block;
+    width: 100%;
 }
 
 

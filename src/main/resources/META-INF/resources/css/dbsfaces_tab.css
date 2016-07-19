@@ -61,7 +61,7 @@
 	border-bottom:0px;
 	border-color: rgb(140,140,140);
 	border-style: solid;
-	color:white;
+
 	font-weight: normal;
     text-shadow: none;
 	cursor:pointer;
@@ -89,7 +89,6 @@
 	border-style: solid;
 	text-shadow: none;
 	border-color: rgb(210,210,210);
-	color:rgb(13,25,45);
 /* 	display:block; */
 	position:relative;
 	background: rgb(245,245,245);

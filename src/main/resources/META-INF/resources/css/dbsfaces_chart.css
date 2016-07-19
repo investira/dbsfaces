@@ -39,7 +39,7 @@
 .dbs_chart > .-delta > .-guide{
 	cursor: ew-resize;
 	pointer-events: all;
-	font-size: 0.3em;
+/* 	font-size: 0.3em; */
 }
 
 .dbs_chart > .-delta > path{
@@ -125,10 +125,6 @@
 }
 
 
-.dbs_chart[type='line'] > .-delta > .-info{
-	fill-opacity: 0.7;
-	stroke-opacity: 0.8;
-}
 /*Para resolver Firefox*/
 @-moz-document url-prefix() { 
 	.dbs_chart[type='line'].-dim > .-delta > .-info,
@@ -271,7 +267,7 @@
 /* ----------------------------------------------------------------------------------- */
 
 .dbs_chart[type='pie'] > .-delta > .-info{
-    font-size: 2.1em;
+    font-size: 2em;
 }
 
 .dbs_chart[type='pie'] > .-delta > .-info > .-value > textPath{
@@ -279,8 +275,10 @@
 }
 
 .dbs_chart[type='line'] > .-delta > .-info{
-	stroke-width: 0;
+	stroke-width: 0px;
+	fill-opacity: 1;
 }
+
 /*sinal de percentual */
 .dbs_chart[type='line'] > .-delta > .-info > .-value > .-label{
     font-size: .5em;

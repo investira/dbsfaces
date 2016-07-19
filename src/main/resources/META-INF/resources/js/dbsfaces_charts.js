@@ -1,31 +1,49 @@
-dbs_charts = function(pId) {
+dbs_charts = function(pId, pPreRender) {
 	var xCharts = $(pId);
-
-	dbsfaces.charts.initialize(xCharts);
-
-	$(pId).mouseleave(function(e){
-		//Verificar se componente que disparou esta fora deste chart. 
-		//Artifício necessário pois o Firefox dispara este evento diversas vezes 
-		var xE = $(e.originalEvent.toElement || e.relatedTarget).closest(".dbs_charts");
-        if (xE == "undefined"
-        || xE[0] != this ){
-    		dbsfaces.charts.lostFocus(xCharts);
-        }
- 	});
+	//Prepara gráfico com a altura e largura
+	if (pPreRender){
+		//Faz o render do gráfico já com a altura e largura definido
+		var xWidth = parseInt(xCharts[0].getBoundingClientRect().width);
+		var xHeight = parseInt(xCharts[0].getBoundingClientRect().height);
+		var xFontSize = parseInt(xCharts.css("font-size"));
+		setTimeout(function(){
+//			console.log(pId + "\t" + xWidth + "\t" + xHeight + "\t" + xFontSize);
+			dbsfaces.ajax.request(xCharts[0].id, xCharts[0].id, xCharts[0].id, dbsfaces.ui.ajaxTriggerLoaded, dbsfaces.ui.showLoadingError(pId), [xWidth,xHeight, xFontSize]);
+//			jsf.ajax.request(xCharts[0].id, 'update', {render:xCharts[0].id, 
+//													  onevent:dbsfaces.ui.ajaxTriggerLoaded, 
+//													  onerror:dbsfaces.ui.showLoadingError(pId),
+//													  params:[xWidth,xHeight]});
+		}, 0);
+	//Render final do gráfico
+	}else{
+		dbsfaces.charts.initialize(xCharts);
+		//Exibe gráfico
+		xCharts.data("container").css("opacity",1);
 	
-	$(pId + " > .-container > .-data > .-container > .-content > .-label > .-content").on("mousedown", function(e){
-		dbsfaces.charts.activateChart(xCharts, $(this));
-	});
+		$(pId).mouseleave(function(e){
+			//Verificar se componente que disparou esta fora deste chart. 
+			//Artifício necessário pois o Firefox dispara este evento diversas vezes 
+			var xE = $(e.originalEvent.toElement || e.relatedTarget).closest(".dbs_charts");
+	        if (xE == "undefined"
+	        || xE[0] != this ){
+	    		dbsfaces.charts.lostFocus(xCharts);
+	        }
+	 	});
+		
+		$(pId + " > .-container > .-data > .-container > .-content > .-captions > .-content").on("mousedown", function(e){
+			dbsfaces.charts.activateChart(xCharts, $(this));
+		});
+	}
 };
 
 dbsfaces.charts = {
+	
 	initialize: function(pCharts){
 		dbsfaces.charts.pvInitializeData(pCharts);
 		dbsfaces.charts.pvInitializeGroupMember(pCharts);
 		dbsfaces.charts.pvInitializeGuides(pCharts);
 		dbsfaces.charts.pvInitializeChartActivate(pCharts);
-		//Exibe gráfico
-		pCharts.children(".-container").css("opacity",1);
+		dbsfaces.charts.pvInitializeDimensions(pCharts);
 	},
 
 	pvInitializeData: function(pCharts){
@@ -35,6 +53,10 @@ dbsfaces.charts = {
 		pCharts.data("fontsize", Number(dbsfaces.number.getOnlyNumber(pCharts.css("font-size"))));
 		//Item selecionado temporariamente(Hover)
 		pCharts.data("hover", null);
+		pCharts.data("container", pCharts.children(".-container"));
+		pCharts.data("caption", pCharts.data("container").children(".-caption"));
+		pCharts.data("footer", pCharts.data("container").children(".-footer"));
+		pCharts.data("data", pCharts.data("container").children(".-data"));
 	},
 
 	//Cria guia padrão para indicar a posição no gráfico tipo line
@@ -94,32 +116,28 @@ dbsfaces.charts = {
 	},
 
 	pvInitializeChartActivate: function(pCharts){
-		var xContainer = pCharts.children(".-container");
-		var xContainerData = xContainer.children(".-data");
-		var xContent = xContainerData.find(".-container > .-content");
-		var xContentLabel = xContent.children(".-label");
-		//Verifica se existe labels definidas
-		if (xContentLabel.length != 0
-		 && xContentLabel.children().length > 0){
+		var xFirstChart = pCharts.data("children").first();
+		var xContainerData = pCharts.data("data");
+		var xContent = xContainerData.find(".-container > .-content").first();
+		var xChartCaptions = xContent.children(".-captions");
+		
+		//Verifica se existe labels de cada gráfico definidas
+		if (xChartCaptions.length != 0
+		 && xChartCaptions.children().length > 0){
 			//Ativa todos os labels
-			xContentLabel.children(".-content").svgAddClass("-activated");
-			var xHeight = xContentLabel.css("font-size");
+			xChartCaptions.children(".-content").svgAddClass("-activated");
+			//Reposiciona valores para dar espaço os labels de título do gráfico
 			//Ajusta altura conforme tamanho do fonte definido no css. Artíficio pois height do css não funciona em todos os browsers
-			xContentLabel.find("rect").attr("height", xHeight);
+			var xChartCaptionsHeight = xChartCaptions.find("rect").attr("height");
 			//Reposiciona gráfico
-			dbsfaces.ui.cssTransform(xContent.children(".-value"), "translateY(" + xHeight + ")");
+			dbsfaces.ui.cssTransform(xContent.children(".-value"), "translateY(" + xChartCaptionsHeight + ")");
 			//Ativa o primeiro gráfico que possuir delta
-			dbsfaces.charts.activateChart(pCharts, xContentLabel.children(".-content:first"));
+			dbsfaces.charts.activateChart(pCharts, xChartCaptions.children(".-content:first"));
 		}else{
 			//Ativa o primeiro gráfico
-			var xFirstChart = pCharts.data("children").first();
 			dbsfaces.charts.pvActivateChartOne(xFirstChart, null, true);
 			dbsfaces.charts.pvActivateDelta(pCharts, xFirstChart, true);
 		}
-		//Artifício para corrigir altura do firefox
-		var xHeight = xContent[0].getBoundingClientRect().height;
-		xContainerData.css("height", xHeight);
-		
 	},
 
 	pvInitializeGroupMember: function(pCharts){
@@ -135,15 +153,22 @@ dbsfaces.charts = {
 	},
 	
 	pvInitializeDimensions: function(pCharts){
-		var xGroupId = pCharts.attr("groupid");
-		if (typeof(xGroupId) != 'undefined'){
-			var xMembers = $("div.dbs_charts[groupid='" + xGroupId + "']");
-			xMembers.each(function(){
-				$(this).data("groupmembers", xMembers);
-			});
-		}else{
-			pCharts.data("groupmembers", null);
+		var xHeight = 0;
+		if (pCharts.data("caption").length > 0){
+			xHeight += pCharts.data("caption")[0].getBoundingClientRect().height;
 		}
+		if (pCharts.data("data").length > 0){
+			xHeight += pCharts.data("data")[0].getBoundingClientRect().height;
+		}
+		if (pCharts.data("footer").length > 0){
+			xHeight += pCharts.data("footer")[0].getBoundingClientRect().height;
+		}
+//		pCharts.data("container").css("height", xHeight);
+//		var xWidth = 0;
+//		xWidth += pCharts.data("caption")[0].getBoundingClientRect().width;
+//		xWidth += pCharts.data("data")[0].getBoundingClientRect().width;
+//		xWidth += pCharts.data("footer")[0].getBoundingClientRect().width;
+//		pCharts.data("container").css("width", xWidth);
 	},
 
 	lostFocus: function(pCharts){

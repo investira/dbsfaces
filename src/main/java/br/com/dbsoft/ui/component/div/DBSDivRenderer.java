@@ -85,10 +85,14 @@ public class DBSDivRenderer extends DBSRenderer {
 	    			}
 				xWriter.endElement("div");
 				DBSFaces.encodeJavaScriptTagStart(xWriter);
+//				String xJS = "setTimeout(function(){" +
+//										"jsf.ajax.request('" + xDiv.getClientId() + "', 'update', {render:'" + xDiv.getClientId() + "', onevent:dbsfaces.ui.ajaxTriggerLoaded,  onerror:dbsfaces.ui.showLoadingError('" + xClientId + "')});" +
+//												   "}, 0);";
 				String xJS = "setTimeout(function(){" +
-										"jsf.ajax.request('" + xDiv.getClientId() + "', 'update', {render:'" + xDiv.getClientId() + "', onevent:dbsfaces.ui.ajaxTriggerLoaded,  onerror:dbsfaces.ui.showLoadingError('" + xClientId + "')});" +
-												   "}, 0);";
+								"dbsfaces.ajax.request('" + xDiv.getClientId() + "', null, '" + xDiv.getClientId() + "', dbsfaces.ui.ajaxTriggerLoaded, dbsfaces.ui.showLoadingError('" + xClientId + "'));" +
+							  "}, 0);";				
 				xWriter.write(xJS);
+				
 				DBSFaces.encodeJavaScriptTagEnd(xWriter);	
 			}
 

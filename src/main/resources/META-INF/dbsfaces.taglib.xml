@@ -2868,21 +2868,7 @@ Default: false;</description>
 			<type>java.lang.Boolean</type>
 		</attribute>
 		<attribute>
-			<description>Altura do gráfico em px
-            </description>
-			<name>width</name>
-			<required>true</required>
-			<type>java.lang.Integer</type>
-		</attribute>
-		<attribute>
-			<description>Largura do gráfico em px
-            </description>
-			<name>height</name>
-			<required>true</required>
-			<type>java.lang.Integer</type>
-		</attribute>
-		<attribute>
-			<description>Padding interno. O padrão é 2;
+			<description>Padding interno. O padrão é 2px;
             </description>
 			<name>padding</name>
 			<required>true</required>

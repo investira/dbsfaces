@@ -95,7 +95,7 @@ public class DBSTabRenderer extends DBSRenderer {
 
 									DBSFaces.setAttribute(xWriter, "id", xPageClientId + "_aba");
 									DBSFaces.setAttribute(xWriter, "name", xPageClientId + "_aba");
-									DBSFaces.setAttribute(xWriter, "class", "-tab");	
+									DBSFaces.setAttribute(xWriter, "class", "-tab" + DBSFaces.CSS.THEME.FC + DBSFaces.CSS.THEME.INVERT);	
 									DBSFaces.setAttribute(xWriter, "tabPage", xPageClientId);
 									
 									encodeClientBehaviors(pContext, xPage);
@@ -188,8 +188,11 @@ public class DBSTabRenderer extends DBSRenderer {
 					if (xPage.getAjaxLoading()){
 						DBSFaces.encodeJavaScriptTagStart(xWriter);
 						String xJS = "setTimeout(function(){" +
-												"jsf.ajax.request('" + xPage.getClientId() + "_aba" + "', 'update', {render:'" + xPage.getClientId() + "', execute:'" + xTab.getInputId(true) + "', onevent:dbsfaces.onajax, onerror:dbsfaces.onajaxerror});" +
-														   "}, 0);";
+										"dbsfaces.ajax.request('" + xPage.getClientId() + "_aba" + "', '" + xTab.getInputId(true) + "', '" + xPage.getClientId() + "', dbsfaces.onajax, dbsfaces.onajaxerror);" +
+										"}, 0);";
+//						String xJS = "setTimeout(function(){" +
+//												"jsf.ajax.request('" + xPage.getClientId() + "_aba" + "', 'update', {render:'" + xPage.getClientId() + "', execute:'" + xTab.getInputId(true) + "', onevent:dbsfaces.onajax, onerror:dbsfaces.onajaxerror});" +
+//														   "}, 0);";
 						xWriter.write(xJS);
 						DBSFaces.encodeJavaScriptTagEnd(xWriter);	
 					}

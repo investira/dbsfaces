@@ -77,10 +77,12 @@ import br.com.dbsoft.ui.component.inputnumber.DBSInputNumber;
 import br.com.dbsoft.util.DBSBoolean;
 import br.com.dbsoft.util.DBSDate;
 import br.com.dbsoft.util.DBSFile;
+import br.com.dbsoft.util.DBSFormat;
 import br.com.dbsoft.util.DBSIO;
 import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSObject;
 import br.com.dbsoft.util.DBSString;
+import br.com.dbsoft.util.DBSFormat.NUMBER_SIGN;
 	
 /**
  * @author ricardo.villar
@@ -2438,80 +2440,175 @@ public class  DBSFaces {
 		BigDecimal 	xX = BigDecimal.ZERO;
 		boolean	   	xFound = false;
 		TYPE 		xType = null;
-		Integer 	xChartIndex = 0;
 		
 		pCharts.setMinValue(null);
 		pCharts.setMaxValue(null);
-		
+		pCharts.setLabelMaxHeight(0);
+		pCharts.setLabelMaxWidth(0);
+		List<DBSChart> xChartList = new ArrayList<DBSChart>();
 		//Loop nos componentes Chart
 		for (UIComponent xObject:pCharts.getChildren()){
 			if (xObject instanceof DBSChart){
 				DBSChart xChart = (DBSChart) xObject;
-				//Zera totalizadores
-		        xChart.setTotalValue(0D);
-		        Integer xChartItensCount = 0;
-		        //--
-				xType = DBSChart.TYPE.get(xChart.getType());
 				//Verifica se será exibido
 				if (xChart.isRendered()){
-					xChartIndex++;
-					xChart.setIndex(xChartIndex);
-					// quando por PIE
-					if (xType == TYPE.LINE
-					 || xType == TYPE.PIE){
-						if (xChart.getShowDelta()){
-							pCharts.setShowDelta(true);
-						}
-						if (xType == TYPE.PIE){
-							//Não exibe linhas do grid
-							pCharts.setShowGrid(false);
-						}
-					}
-//					if (xChart.getShowDelta()){
-//						pCharts.setShowDelta(true);
-//					}
-					//Se não foi informado DBSResultSet
-					if (DBSObject.isEmpty(xChart.getVar())
-					 || DBSObject.isEmpty(xChart.getValueExpression("value"))){
-						//Loop nos componentes ChartValues filhos do chart
-						xChartItensCount = pvInitializeChartsValues(pCharts, xChart, 1);
-					}else{
-				        int xRowCount = xChart.getRowCount();
-				        xChart.setRowIndex(-1);
-				        xChartItensCount = xRowCount;
-						//Loop por todos os registros em ordem descrecente pois o saveState e restoreState é: o último que entra é o primeiro qua sai.
-				        //Desta forma, quando for efetuado o restoreState no encode, o primeiro será realmente o primeiro
-				        for (int xRowIndex = xRowCount - 1; xRowIndex >= 0; xRowIndex--) {
-				        	xChart.setRowIndex(xRowIndex);
-				        	pvInitializeChartsValues(pCharts, xChart, xRowIndex + 1);
-				        }
-				        xChart.setRowIndex(-1);
-					}
-					//Calcula Largura e Altura Geral 
-			        xChart.setItensCount(xChartItensCount);
-					pCharts.setChartWidthHeight(xType); 
-					if (xChartItensCount > 0){
-						xFound = true;
-					}
-					//ColumnScale
-					xX = BigDecimal.ONE;
-					if (xChart.getItensCount() > 1){
-						if (xType == TYPE.LINE){
-							xX = DBSNumber.divide(pCharts.getChartWidth(), //0,98 para dat espaço nas laterais
-												  xChart.getItensCount() - 1); //Para ir até a borda
-						}else if (xType == TYPE.BAR){
-							xX = DBSNumber.divide(pCharts.getChartWidth(),
-												  xChart.getItensCount());
-						}
-					}
-					xChart.setColumnScale(xX.doubleValue());
+					xChart.setIndex(xChartList.size() + 1);
+					xChartList.add(xChart);
 				}else{
 					xChart.setIndex(-1);
 				}
 			}
 		}
 		//Aproveita xCharIndex para setar quantidade de gráficos
-		pCharts.setItensCount(xChartIndex); 
+		pCharts.setItensCount(xChartList.size()); 
+		
+		
+		//Loop nos componentes Chart
+		for (DBSChart xChart: xChartList){
+			//Zera totalizadores
+	        xChart.setTotalValue(0D);
+	        Integer xChartItensCount = 0;
+	        //--
+			xType = DBSChart.TYPE.get(xChart.getType());
+			if (xType == TYPE.LINE
+			 || xType == TYPE.PIE){
+				// Exibição dos delta
+				if (!pCharts.getShowDelta()
+				 && xChart.getShowDelta()){
+					pCharts.setShowDelta(true);
+				}
+				if (xType == TYPE.PIE){
+					//Não exibe linhas do grid
+					pCharts.setShowGrid(false);
+				}else{
+					//Se possui deltalist
+					if (!pCharts.getShowDeltaList()
+					 && xChart.getDeltaList() != null
+					 && xChart.getDeltaList().size() > 0
+					 && pCharts.getShowDelta()
+					 && pCharts.getShowLabel()){
+						xChart.setShowDeltaList(true);
+						pCharts.setShowDeltaList(true);
+					}
+				}
+			}
+			//Se não foi informado DBSResultSet
+			if (DBSObject.isEmpty(xChart.getVar())
+			 || DBSObject.isEmpty(xChart.getValueExpression("value"))){
+				//Loop nos componentes ChartValues filhos do chart
+				xChartItensCount = pvInitializeChartsValues(pCharts, xChart, 1);
+			}else{
+		        int xRowCount = xChart.getRowCount();
+		        xChart.setRowIndex(-1);
+		        xChartItensCount = xRowCount;
+				//Loop por todos os registros em ordem descrecente pois o saveState e restoreState é: o último que entra é o primeiro qua sai.
+		        //Desta forma, quando for efetuado o restoreState no encode, o primeiro será realmente o primeiro
+		        for (int xRowIndex = xRowCount - 1; xRowIndex >= 0; xRowIndex--) {
+		        	xChart.setRowIndex(xRowIndex);
+		        	pvInitializeChartsValues(pCharts, xChart, xRowIndex + 1);
+		        }
+		        xChart.setRowIndex(-1);
+			}
+			//Calcula Largura e Altura Geral 
+	        xChart.setItensCount(xChartItensCount);
+			pCharts.setChartWidthHeight(xType); 
+			if (xChartItensCount > 0){
+				xFound = true;
+			}
+			//ColumnScale
+			xX = BigDecimal.ONE;
+			if (xChart.getItensCount() > 1){
+				if (xType == TYPE.LINE){
+					xX = DBSNumber.divide(pCharts.getChartWidth(), 
+										  xChart.getItensCount() - 1); //Para ir até a borda
+				}else if (xType == TYPE.BAR){
+					xX = DBSNumber.divide(pCharts.getChartWidth(),
+										  xChart.getItensCount());
+				}
+			}
+			xChart.setColumnScale(xX.doubleValue());
+		}
+
+		
+//		//Loop nos componentes Chart
+//		for (UIComponent xObject:pCharts.getChildren()){
+//			if (xObject instanceof DBSChart){
+//				DBSChart xChart = (DBSChart) xObject;
+//				//Zera totalizadores
+//		        xChart.setTotalValue(0D);
+//		        Integer xChartItensCount = 0;
+//		        //--
+//				xType = DBSChart.TYPE.get(xChart.getType());
+//				//Verifica se será exibido
+//				if (xChart.isRendered()){
+//					xChartIndex++;
+//					xChart.setIndex(xChartIndex);
+//					if (xType == TYPE.LINE
+//					 || xType == TYPE.PIE){
+//						// Exibição dos delta
+//						if (!pCharts.getShowDelta()
+//						 && xChart.getShowDelta()){
+//							pCharts.setShowDelta(true);
+//						}
+//						if (xType == TYPE.PIE){
+//							//Não exibe linhas do grid
+//							pCharts.setShowGrid(false);
+//						}else{
+//							//Se possui deltalist
+//							if (!pCharts.getShowDeltaList()
+//							 && xChart.getDeltaList() != null
+//							 && xChart.getDeltaList().size() > 0
+//							 && pCharts.getShowDelta()
+//							 && pCharts.getShowLabel()){
+//								xChart.setShowDeltaList(true);
+//								pCharts.setShowDeltaList(true);
+//							}
+//						}
+//					}
+//					//Se não foi informado DBSResultSet
+//					if (DBSObject.isEmpty(xChart.getVar())
+//					 || DBSObject.isEmpty(xChart.getValueExpression("value"))){
+//						//Loop nos componentes ChartValues filhos do chart
+//						xChartItensCount = pvInitializeChartsValues(pCharts, xChart, 1);
+//					}else{
+//				        int xRowCount = xChart.getRowCount();
+//				        xChart.setRowIndex(-1);
+//				        xChartItensCount = xRowCount;
+//						//Loop por todos os registros em ordem descrecente pois o saveState e restoreState é: o último que entra é o primeiro qua sai.
+//				        //Desta forma, quando for efetuado o restoreState no encode, o primeiro será realmente o primeiro
+//				        for (int xRowIndex = xRowCount - 1; xRowIndex >= 0; xRowIndex--) {
+//				        	xChart.setRowIndex(xRowIndex);
+//				        	pvInitializeChartsValues(pCharts, xChart, xRowIndex + 1);
+//				        }
+//				        xChart.setRowIndex(-1);
+//					}
+//					//Calcula Largura e Altura Geral 
+//			        xChart.setItensCount(xChartItensCount);
+//					pCharts.setChartWidthHeight(xType); 
+//					if (xChartItensCount > 0){
+//						xFound = true;
+//					}
+//					//ColumnScale
+//					xX = BigDecimal.ONE;
+//					if (xChart.getItensCount() > 1){
+//						if (xType == TYPE.LINE){
+//							xX = DBSNumber.divide(pCharts.getChartWidth(), 
+//												  xChart.getItensCount() - 1); //Para ir até a borda
+//						}else if (xType == TYPE.BAR){
+//							xX = DBSNumber.divide(pCharts.getChartWidth(),
+//												  xChart.getItensCount());
+//						}
+//					}
+//					xChart.setColumnScale(xX.doubleValue());
+//				}else{
+//					xChart.setIndex(-1);
+//				}
+//			}
+//		}
+//		//Aproveita xCharIndex para setar quantidade de gráficos
+//		pCharts.setItensCount(xChartIndex); 
+
+		
 		//Zera valores caso não existam valores nos gráficos
 		if (!xFound){
 			pCharts.setMinValue(0D);
@@ -2553,9 +2650,17 @@ public class  DBSFaces {
 	}
 
 
+	/**
+	 * Configura DBSCharts a partir do conteúdo dos DBSChart e respectivos DBSChartValues
+	 * @param pCharts
+	 * @param pChart
+	 * @param pIndex
+	 * @return
+	 */
 	private static Integer pvInitializeChartsValues(DBSCharts pCharts, DBSChart pChart, Integer pIndex){
 		Integer xIndex = pIndex - 1;
 		for (UIComponent xChild : pChart.getChildren()){
+			TYPE xType = TYPE.get(pChart.getType());
 			if (xChild instanceof DBSChartValue){
 				DBSChartValue xChartValue = (DBSChartValue) xChild;
 				if (xChartValue.isRendered()){
@@ -2577,6 +2682,22 @@ public class  DBSFaces {
 					pChart.setTotalValue(pChart.getTotalValue() + DBSObject.getNotNull(xChartValue.getValue(),0D));
 					//Salva valores alterados
 					xChartValue.setSavedState(xChartValue.saveState(FacesContext.getCurrentInstance()));
+					if (xType.isMatrix()){
+						//Salva largura e altura máxima dos labels
+						String xFormattedValue = DBSFormat.getFormattedNumber(DBSObject.getNotNull(xChartValue.getDisplayValue(), xChartValue.getValue()), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask()); 
+						Double xMaxWidth = ((xFormattedValue.length() - 1) * pCharts.getFontSize() * .7); 
+						if (pCharts.getLabelMaxWidth() == null 
+						 || xMaxWidth.intValue() > pCharts.getLabelMaxWidth()){
+							pCharts.setLabelMaxWidth(xMaxWidth.intValue());
+						}
+						if (xChartValue.getLabel() != null){
+							Double xMaxHeight = ((xChartValue.getLabel().length() - 1) * pCharts.getFontSize() * .7 * .66); 
+							if (pCharts.getLabelMaxHeight() == null 
+							 || xMaxHeight.intValue() > pCharts.getLabelMaxHeight()){
+								pCharts.setLabelMaxHeight(xMaxHeight.intValue());
+							}
+						}
+					}
 				}
 			}
 		}

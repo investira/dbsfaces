@@ -92,6 +92,10 @@ dbsfaces.chart = {
 		pChart.data("deltalistgroup", null);
 		pChart.data("deltalist", null);
 		pChart.data("mask", null);
+		//Tamanho máximo do label da coluna
+		pChart.data("maxlabelheight", 0);
+		//Tamanho máximo do label da linha
+		pChart.data("maxlabelwidth", 0);
 		if (typeof(pChart.attr("showdelta")) != "undefined"){
 			var xDeltaGroup = dbsfaces.util.getNotUndefined(pChart.children(".-delta"), null);
 			pChart.data("deltagroup", xDeltaGroup);
@@ -157,6 +161,7 @@ dbsfaces.chart = {
 			//Esconde as labels sobrepostas
 			if (pShowLabel){
 				xChartValueLabel = xChartValue.data("infogroup").children(".-label");
+				xChartValueLabelLine = xChartValue.data("infogroup").children(".-value");
 				xChartValueLabelText = xChartValueLabel.children("text"); //xChartValueLabelText
 				xChartValueLabelSmall = xChartValueLabelText.children(".-small");
 				xChartValueLabelNormal = xChartValueLabelText.children(".-normal");//xChartValueLabelText
@@ -165,7 +170,7 @@ dbsfaces.chart = {
 				if (i == 1){
 					xChartValueLabel.svgRemoveClass("-hide");
 					xLabelPadding = xPos;
-					var xLabelTotalWidth = (pChart.data("mask").get(0).getBoundingClientRect().width) - xLabelPadding;
+					var xLabelTotalWidth = (pChart.data("mask")[0].getBoundingClientRect().width) - xLabelPadding;
 					var xLabelMaxItens = Math.round(xLabelTotalWidth / (Number(dbsfaces.number.getOnlyNumber(pChartValues.css("font-size"))) * 2));
 					xLabelScale = xLabelTotalWidth / (xLabelMaxItens + 1);
 					xPreviousLabel = xChartValue.attr("label");
@@ -183,6 +188,12 @@ dbsfaces.chart = {
 						xChartValueLabel.svgRemoveClass("-hide");
 						xLabelIndex++;
 					}
+				}
+				if (xChartValueLabel[0].getBoundingClientRect().height > pChart.data("maxlabelheight")){
+					pChart.data("maxlabelheight", xChartValueLabel[0].getBoundingClientRect().height); 
+				}
+				if (xChartValueLabelLine[0].getBoundingClientRect().width > pChart.data("maxlabelwidth")){
+					pChart.data("maxlabelwidth", xChartValueLabelLine[0].getBoundingClientRect().width); 
 				}
 //				xChartValueLabel.children("svg").svgAttr("height", xChartValueLabelSmall.get(0).getBoundingClientRect().height);
 			}
@@ -645,7 +656,7 @@ dbsfaces.chart = {
 	pvCalcDelta: function(pDV1, pDV2){
 		if (pDV1 == 0
 		 || pDV2 == 0){
-			return "-";
+			return "(na)";
 		}
 		var xValue;
 		if (pDV1 < 0){
