@@ -171,7 +171,7 @@ dbsfaces.chart = {
 					xChartValueLabel.svgRemoveClass("-hide");
 					xLabelPadding = xPos;
 					var xLabelTotalWidth = Number(pChart.data("mask").svgAttr("width")) - xLabelPadding;
-					//Calcula quantidade labels sem haver sobreposição.
+					//Calcula quantidade máxima de labels sem haver sobreposição.
 					var xLabelMaxItens = Math.round(xLabelTotalWidth / (Number(dbsfaces.number.getOnlyNumber(pChartValues.css("font-size"))) * 2));
 					xLabelScale = xLabelTotalWidth / (xLabelMaxItens + 1);
 					xPreviousLabel = xChartValue.attr("label");
@@ -180,6 +180,7 @@ dbsfaces.chart = {
 					if (i < (pChartValues.length) 
 					&& xPos < ((xLabelIndex * xLabelScale) + xLabelPadding)){
 						xChartValueLabel.svgAddClass("-hide");
+					//Exibe label
 					}else{
 						//Simplifica o texto do label para evitar repetição de informação
 						if (i < pChartValues.length){
@@ -532,7 +533,7 @@ dbsfaces.chart = {
 			var xX = pChartValue.data("dx");
 			var xY = pChartValue.data("dy");
 			//Copia cor do ponto para a cor da guia
-			var xColor = pChartValue.children(".-point").css("stroke");
+			var xColor = pChartValue.data("pointgroup").css("stroke");
 			xChartPathGuide.css("color", xColor);
 			//Reposiciona guia nas coordenadas do chartvalue
 			var xCenterY = Number(pChart.data("mask").attr("height")) / 2;
