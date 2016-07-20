@@ -126,6 +126,7 @@ dbsfaces.chartValue = {
 		var xChart = pChartValue.closest(".dbs_chart");
 		pChartValue.data("parent", xChart);
 		var xChartValuePoint = pChartValue.children(".-point");
+		pChartValue.data("pointgroup", xChartValuePoint);
 		var xChartValueInfo = pChartValue.children(".-info");
 		pChartValue.data("infogroup", xChartValueInfo);
 		xValue = xChartValueInfo.children(".-value").text();
@@ -293,7 +294,7 @@ dbsfaces.chartValue = {
 		var xType = pChart.attr("type");
 		//Seleção do item
 		if (pSelect !=null){
-			var xChartValuePoint = pChartValue.children(".-point");
+			var xChartValuePoint = pChartValue.data("pointgroup");
 			var xAnimationClass = "-a_dbs_chart_selected";
 			if (pSelect){
 				dbsfaces.ui.moveToFront(pChartValue);
