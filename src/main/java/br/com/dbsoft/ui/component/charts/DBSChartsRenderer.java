@@ -455,6 +455,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 	private Integer pvInitializeChartsValues(DBSCharts pCharts, DBSChart pChart, Integer pIndex){
 		Integer xIndex = pIndex - 1;
 		TYPE xType = TYPE.get(pCharts.getType());
+		//Loop por todos os DBSChartValue de todos os DBSChart deste DBSCharts
 		for (UIComponent xChild : pChart.getChildren()){
 			if (xChild instanceof DBSChartValue){
 				DBSChartValue xChartValue = (DBSChartValue) xChild;
@@ -477,8 +478,8 @@ public class DBSChartsRenderer extends DBSRenderer {
 					pChart.setTotalValue(pChart.getTotalValue() + DBSObject.getNotNull(xChartValue.getValue(),0D));
 					//Salva valores alterados
 					xChartValue.setSavedState(xChartValue.saveState(FacesContext.getCurrentInstance()));
+					//Salva largura e altura máxima dos labels
 					if (xType.isMatrix()){
-						//Salva largura e altura máxima dos labels
 						String xFormattedValue = DBSFormat.getFormattedNumber(DBSObject.getNotNull(xChartValue.getDisplayValue(), xChartValue.getValue()), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask()); 
 						Double xMaxWidth = ((xFormattedValue.length() - 1) * pCharts.getFontSize() * .7); 
 						if (pCharts.getLabelMaxWidth() == null 
@@ -492,68 +493,6 @@ public class DBSChartsRenderer extends DBSRenderer {
 								pCharts.setLabelMaxHeight(xMaxHeight.intValue());
 							}
 						}
-					}
-				}
-			}
-		}
-		return xIndex;
-	}
-
-	/**
-	 * Configura DBSCharts a partir do conteúdo dos DBSChart e respectivos DBSChartValues
-	 * @param pCharts
-	 * @param pChart
-	 * @param pIndex
-	 * @return
-	 */
-	private Integer pvInitializeChartsValuesX(DBSCharts pCharts, DBSChart pChart, Integer pIndex){
-		Integer xIndex = pIndex - 1;
-		TYPE xType = TYPE.get(pCharts.getType());
-		//Cria lista com os valores filhos(DBSChartValues) que serão considerados para exibição
-		List<DBSChartValue> xChartValueList = new ArrayList<DBSChartValue>();
-		for (UIComponent xChild : pChart.getChildren()){
-			if (xChild instanceof DBSChartValue){
-				DBSChartValue xChartValue = (DBSChartValue) xChild;
-				if (xChartValue.isRendered()){
-					xChartValueList.add(xChartValue);
-				}
-			}
-		}
-		
-	
-		//Loop nos valores que serão considerados para exibição
-		for (DBSChartValue xChartValue:xChartValueList){
-			xIndex++;
-			//Salva valor mínimo
-			Double xValue = xChartValue.getValue();
-			if (pCharts.getMinValue() == null 
-			 || xValue < pCharts.getMinValue()){
-				pCharts.setMinValue(xValue);
-			}
-			//Salva valor máximo
-			if (pCharts.getMaxValue() == null
-			 || xValue > pCharts.getMaxValue()){
-				pCharts.setMaxValue(xValue);
-			}
-			//Configura valores iniciais
-			xChartValue.setIndex(xIndex);
-			xChartValue.setPreviousValue(pChart.getTotalValue());
-			pChart.setTotalValue(pChart.getTotalValue() + DBSObject.getNotNull(xChartValue.getValue(),0D));
-			//Salva valores alterados
-			xChartValue.setSavedState(xChartValue.saveState(FacesContext.getCurrentInstance()));
-			if (xType.isMatrix()){
-				//Salva largura e altura máxima dos labels
-				String xFormattedValue = DBSFormat.getFormattedNumber(DBSObject.getNotNull(xChartValue.getDisplayValue(), xChartValue.getValue()), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask()); 
-				Double xMaxWidth = ((xFormattedValue.length() - 1) * pCharts.getFontSize() * .7); 
-				if (pCharts.getLabelMaxWidth() == null 
-				 || xMaxWidth.intValue() > pCharts.getLabelMaxWidth()){
-					pCharts.setLabelMaxWidth(xMaxWidth.intValue());
-				}
-				if (xChartValue.getLabel() != null){
-					Double xMaxHeight = ((xChartValue.getLabel().length() - 1) * pCharts.getFontSize() * .7 * .66); 
-					if (pCharts.getLabelMaxHeight() == null 
-					 || xMaxHeight.intValue() > pCharts.getLabelMaxHeight()){
-						pCharts.setLabelMaxHeight(xMaxHeight.intValue());
 					}
 				}
 			}
