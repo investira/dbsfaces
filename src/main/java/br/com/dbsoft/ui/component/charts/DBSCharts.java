@@ -35,7 +35,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		}
 		
 		/**
-		 * Se é um gráfico de linhas e colunas
+		 * Se é um gráfico de linhas ou colunas(Matrix X x Y)
 		 * @return
 		 */
 		public Boolean isMatrix(){
