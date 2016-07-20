@@ -480,8 +480,9 @@ public class DBSChartsRenderer extends DBSRenderer {
 					xChartValue.setSavedState(xChartValue.saveState(FacesContext.getCurrentInstance()));
 					//Salva largura e altura máxima dos labels
 					if (xType.isMatrix()){
-						String xFormattedValue = DBSFormat.getFormattedNumber(DBSObject.getNotNull(xChartValue.getDisplayValue(), xChartValue.getValue()), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask()); 
-						Double xMaxWidth = ((xFormattedValue.length() - 1) * pCharts.getFontSize() * .7); 
+//						String xFormattedValue = DBSFormat.getFormattedNumber(DBSObject.getNotNull(xChartValue.getDisplayValue(), xChartValue.getValue()), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask()); 
+//						Double xMaxWidth = ((xFormattedValue.length() - 1) * pCharts.getFontSize() * .7); 
+						Double xMaxWidth = ((pCharts.getValueFormatMask().length() - 1) * pCharts.getFontSize() * .7); 
 						if (pCharts.getLabelMaxWidth() == null 
 						 || xMaxWidth.intValue() > pCharts.getLabelMaxWidth()){
 							pCharts.setLabelMaxWidth(xMaxWidth.intValue());
