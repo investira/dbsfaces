@@ -440,7 +440,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 			}
 			pCharts.setRowScale(xX.doubleValue());
 			
-			//Quantidade de linhas. 3 é a quantidade mínima de linhas
+			//Quantidade de linhas do grid. 3 é a quantidade mínima de linhas
 			pCharts.setNumberOfGridLines(3 + DBSNumber.divide(pCharts.getChartHeight(), 60).intValue());
 		}
 	}
