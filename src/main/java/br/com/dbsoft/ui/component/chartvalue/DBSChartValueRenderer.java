@@ -71,8 +71,10 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			return;
 		}
 		xCharts =  (DBSCharts) xChart.getParent();
-		//Le tipo do chart pai
+
+		//Le tipo de gráfico
 		xType =	TYPE.get(xCharts.getType());
+
 
 		//Configura id a partir do index
 		xChartValue.setId("i" + xChartValue.getIndex());
