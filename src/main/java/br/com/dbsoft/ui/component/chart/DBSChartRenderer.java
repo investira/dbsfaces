@@ -135,7 +135,7 @@ public class DBSChartRenderer extends DBSRenderer {
 		pWriter.startElement("g", pChart);
 			DBSFaces.setAttribute(pWriter, "class", "-path");
 			//Area que irá captura o mousemove
-			DBSFaces.encodeSVGRect(pChart, pWriter, pCharts.getPadding() / 2D, pCharts.getPadding() / 2D, xChartsWidth.toString(), xChartsHeight.toString(), CSS.MODIFIER.MASK.trim(), null, null);
+			DBSFaces.encodeSVGRect(pChart, pWriter, pCharts.getPadding() / 2D, pCharts.getPadding() / 2D, xChartsWidth.toString(), xChartsHeight.toString(), CSS.MODIFIER.MASK, null, null);
 		pWriter.endElement("g");
 	}
 

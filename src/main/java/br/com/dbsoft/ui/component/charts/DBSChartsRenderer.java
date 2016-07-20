@@ -68,7 +68,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 				DBSFaces.initializeChartsValues(xCharts);
 			}
 		}
-		System.out.println(xCharts.getId() + "\t" + xPreRender + "\t" + xCharts.getWidth() + "\t" + xCharts.getHeight() + "\t" + xCharts.getFontSize());
+//		System.out.println(xCharts.getId() + "\t" + xPreRender + "\t" + xCharts.getWidth() + "\t" + xCharts.getHeight() + "\t" + xCharts.getFontSize());
 		//Inicializa valores de controle 
 
 
