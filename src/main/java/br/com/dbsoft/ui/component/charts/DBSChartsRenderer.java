@@ -1,6 +1,9 @@
 package br.com.dbsoft.ui.component.charts;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -13,6 +16,7 @@ import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
 import br.com.dbsoft.ui.component.chart.DBSChart;
 import br.com.dbsoft.ui.component.charts.DBSCharts.TYPE;
+import br.com.dbsoft.ui.component.chartvalue.DBSChartValue;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
@@ -65,7 +69,12 @@ public class DBSChartsRenderer extends DBSRenderer {
 				xCharts.setHeight(DBSNumber.toInteger(xDimensions[1]));
 				xCharts.setFontSize(DBSNumber.toInteger(xDimensions[2]));
 //				System.out.println(xCharts.getId() + "\t Reseted");
-				DBSFaces.initializeChartsValues(xCharts);
+				if (xCharts.getWidth() == 0
+				 || xCharts.getHeight() == 0){
+					wLogger.error("Dimensão zerada");
+					return;
+				}
+				pvInitializeCharts(xCharts);
 			}
 		}
 //		System.out.println(xCharts.getId() + "\t" + xPreRender + "\t" + xCharts.getWidth() + "\t" + xCharts.getHeight() + "\t" + xCharts.getFontSize());
@@ -299,4 +308,257 @@ public class DBSChartsRenderer extends DBSRenderer {
 		}
 		return true;
 	}
+	
+	/**
+	 * Calcula valor máximo, mínimo, posição 0 e largura das colunas
+	 * @param pCharts
+	 */
+	private void pvInitializeCharts(DBSCharts pCharts){
+		BigDecimal 	xX = BigDecimal.ZERO;
+		boolean	   	xFound = false;
+		TYPE 		xType = TYPE.get(pCharts.getType());
+		
+		pCharts.setMinValue(null);
+		pCharts.setMaxValue(null);
+		pCharts.setLabelMaxHeight(0);
+		pCharts.setLabelMaxWidth(0);
+		List<DBSChart> xChartList = new ArrayList<DBSChart>();
+		//Cria lista com os graficos filhos(DBSChart) que serão exibidos
+		for (UIComponent xObject:pCharts.getChildren()){
+			if (xObject instanceof DBSChart){
+				DBSChart xChart = (DBSChart) xObject;
+				//Verifica se será exibido
+				if (xChart.isRendered()){
+					xChart.setIndex(xChartList.size() + 1);
+					xChartList.add(xChart);
+				}else{
+					xChart.setIndex(-1);
+				}
+			}
+		}
+		//Seta a qualtidade de gráficos filhos(DBSChart)
+		pCharts.setItensCount(xChartList.size()); 
+		
+		//Loop nos componentes Chart
+		for (DBSChart xChart: xChartList){
+			//Zera totalizadores
+	        xChart.setTotalValue(0D);
+	        Integer xChartItensCount = 0;
+			if (xType == TYPE.LINE
+			 || xType == TYPE.PIE){
+				// Exibição dos delta
+				if (!pCharts.getShowDelta()
+				 && xChart.getShowDelta()){
+					pCharts.setShowDelta(true);
+				}
+				if (xType == TYPE.PIE){
+					//Não exibe linhas do grid
+					pCharts.setShowGrid(false);
+				}else{
+					//Se possui deltalist
+					if (!pCharts.getShowDeltaList()
+					 && xChart.getDeltaList() != null
+					 && xChart.getDeltaList().size() > 0
+					 && pCharts.getShowDelta()
+					 && pCharts.getShowLabel()){
+						xChart.setShowDeltaList(true);
+						pCharts.setShowDeltaList(true);
+					}
+				}
+			}
+			//Se não foi informado DBSResultSet
+			if (DBSObject.isEmpty(xChart.getVar())
+			 || DBSObject.isEmpty(xChart.getValueExpression("value"))){
+				//Loop nos componentes ChartValues filhos do chart
+				xChartItensCount = pvInitializeChartsValues(pCharts, xChart, 1);
+			//Com DBSResultset
+			}else{
+		        int xRowCount = xChart.getRowCount();
+		        xChart.setRowIndex(-1);
+		        xChartItensCount = xRowCount;
+				//Loop por todos os registros em ordem descrecente pois o saveState e restoreState é: o último que entra é o primeiro qua sai.
+		        //Desta forma, quando for efetuado o restoreState no encode, o primeiro será realmente o primeiro
+		        for (int xRowIndex = xRowCount - 1; xRowIndex >= 0; xRowIndex--) {
+		        	xChart.setRowIndex(xRowIndex);
+		        	pvInitializeChartsValues(pCharts, xChart, xRowIndex + 1);
+		        }
+		        xChart.setRowIndex(-1);
+			}
+			//Quantidade de valores 
+	        xChart.setItensCount(xChartItensCount);
+			//Calcula Largura e Altura Geral 
+			pCharts.setChartWidthHeight(xType); 
+			if (xChartItensCount > 0){
+				xFound = true;
+			}
+			//ColumnScale
+			xX = BigDecimal.ONE;
+			if (xChart.getItensCount() > 1){
+				if (xType == TYPE.LINE){
+					xX = DBSNumber.divide(pCharts.getChartWidth(), 
+										  xChart.getItensCount() - 1); //Para ir até a borda
+				}else if (xType == TYPE.BAR){
+					xX = DBSNumber.divide(pCharts.getChartWidth(),
+										  xChart.getItensCount());
+				}
+			}
+			xChart.setColumnScale(xX.doubleValue());
+		}
+		
+		//Zera valores caso não existam valores nos gráficos
+		if (!xFound){
+			pCharts.setMinValue(0D);
+			pCharts.setMaxValue(0D);
+			pCharts.setRowScale(0D);
+			pCharts.setNumberOfGridLines(1);
+		}else{
+			//Largura da coluna dos valores caso seja para exibi-la
+//			if (pCharts.getShowGrid() 
+//			 && pCharts.getShowGridValue()){
+//				pCharts.setFormatMaskWidth(DBSNumber.multiply(pCharts.getValueFormatMask().length(), 5.5D).intValue());
+//			}else{
+//				pCharts.setFormatMaskWidth(0);
+//			}
+			//RowScale
+			if (xType !=null){
+				if (xType == TYPE.BAR
+				 || xType == TYPE.LINE){
+					xX = DBSNumber.subtract(pCharts.getMaxValue(), pCharts.getMinValue());
+					if (xX.doubleValue() != 0D){
+						xX = DBSNumber.divide(pCharts.getChartHeight(), 
+											  xX);
+					}
+				}else if (xType == TYPE.PIE){
+					if (pCharts.getChartWidth() < pCharts.getChartHeight()){
+						xX = DBSNumber.divide(pCharts.getChartWidth(),
+								  			  14.5);
+					}else{
+						xX = DBSNumber.divide(pCharts.getChartHeight(),
+					  			  			  14.5);
+					}
+				}
+			}
+			pCharts.setRowScale(xX.doubleValue());
+			
+			//Quantidade de linhas. 3 é a quantidade mínima de linhas
+			pCharts.setNumberOfGridLines(3 + DBSNumber.divide(pCharts.getChartHeight(), 60).intValue());
+		}
+	}
+
+	/**
+	 * Configura DBSCharts a partir do conteúdo dos DBSChart e respectivos DBSChartValues
+	 * @param pCharts
+	 * @param pChart
+	 * @param pIndex
+	 * @return
+	 */
+	private Integer pvInitializeChartsValues(DBSCharts pCharts, DBSChart pChart, Integer pIndex){
+		Integer xIndex = pIndex - 1;
+		TYPE xType = TYPE.get(pCharts.getType());
+		for (UIComponent xChild : pChart.getChildren()){
+			if (xChild instanceof DBSChartValue){
+				DBSChartValue xChartValue = (DBSChartValue) xChild;
+				if (xChartValue.isRendered()){
+					xIndex++;
+					//Salva valor mínimo
+					Double xValue = xChartValue.getValue();
+					if (pCharts.getMinValue() == null 
+					 || xValue < pCharts.getMinValue()){
+						pCharts.setMinValue(xValue);
+					}
+					//Salva valor máximo
+					if (pCharts.getMaxValue() == null
+					 || xValue > pCharts.getMaxValue()){
+						pCharts.setMaxValue(xValue);
+					}
+					//Configura valores iniciais
+					xChartValue.setIndex(xIndex);
+					xChartValue.setPreviousValue(pChart.getTotalValue());
+					pChart.setTotalValue(pChart.getTotalValue() + DBSObject.getNotNull(xChartValue.getValue(),0D));
+					//Salva valores alterados
+					xChartValue.setSavedState(xChartValue.saveState(FacesContext.getCurrentInstance()));
+					if (xType.isMatrix()){
+						//Salva largura e altura máxima dos labels
+						String xFormattedValue = DBSFormat.getFormattedNumber(DBSObject.getNotNull(xChartValue.getDisplayValue(), xChartValue.getValue()), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask()); 
+						Double xMaxWidth = ((xFormattedValue.length() - 1) * pCharts.getFontSize() * .7); 
+						if (pCharts.getLabelMaxWidth() == null 
+						 || xMaxWidth.intValue() > pCharts.getLabelMaxWidth()){
+							pCharts.setLabelMaxWidth(xMaxWidth.intValue());
+						}
+						if (xChartValue.getLabel() != null){
+							Double xMaxHeight = ((xChartValue.getLabel().length() - 1) * pCharts.getFontSize() * .7 * .66); 
+							if (pCharts.getLabelMaxHeight() == null 
+							 || xMaxHeight.intValue() > pCharts.getLabelMaxHeight()){
+								pCharts.setLabelMaxHeight(xMaxHeight.intValue());
+							}
+						}
+					}
+				}
+			}
+		}
+		return xIndex;
+	}
+
+	/**
+	 * Configura DBSCharts a partir do conteúdo dos DBSChart e respectivos DBSChartValues
+	 * @param pCharts
+	 * @param pChart
+	 * @param pIndex
+	 * @return
+	 */
+	private Integer pvInitializeChartsValuesX(DBSCharts pCharts, DBSChart pChart, Integer pIndex){
+		Integer xIndex = pIndex - 1;
+		TYPE xType = TYPE.get(pCharts.getType());
+		//Cria lista com os valores filhos(DBSChartValues) que serão considerados para exibição
+		List<DBSChartValue> xChartValueList = new ArrayList<DBSChartValue>();
+		for (UIComponent xChild : pChart.getChildren()){
+			if (xChild instanceof DBSChartValue){
+				DBSChartValue xChartValue = (DBSChartValue) xChild;
+				if (xChartValue.isRendered()){
+					xChartValueList.add(xChartValue);
+				}
+			}
+		}
+		
+	
+		//Loop nos valores que serão considerados para exibição
+		for (DBSChartValue xChartValue:xChartValueList){
+			xIndex++;
+			//Salva valor mínimo
+			Double xValue = xChartValue.getValue();
+			if (pCharts.getMinValue() == null 
+			 || xValue < pCharts.getMinValue()){
+				pCharts.setMinValue(xValue);
+			}
+			//Salva valor máximo
+			if (pCharts.getMaxValue() == null
+			 || xValue > pCharts.getMaxValue()){
+				pCharts.setMaxValue(xValue);
+			}
+			//Configura valores iniciais
+			xChartValue.setIndex(xIndex);
+			xChartValue.setPreviousValue(pChart.getTotalValue());
+			pChart.setTotalValue(pChart.getTotalValue() + DBSObject.getNotNull(xChartValue.getValue(),0D));
+			//Salva valores alterados
+			xChartValue.setSavedState(xChartValue.saveState(FacesContext.getCurrentInstance()));
+			if (xType.isMatrix()){
+				//Salva largura e altura máxima dos labels
+				String xFormattedValue = DBSFormat.getFormattedNumber(DBSObject.getNotNull(xChartValue.getDisplayValue(), xChartValue.getValue()), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask()); 
+				Double xMaxWidth = ((xFormattedValue.length() - 1) * pCharts.getFontSize() * .7); 
+				if (pCharts.getLabelMaxWidth() == null 
+				 || xMaxWidth.intValue() > pCharts.getLabelMaxWidth()){
+					pCharts.setLabelMaxWidth(xMaxWidth.intValue());
+				}
+				if (xChartValue.getLabel() != null){
+					Double xMaxHeight = ((xChartValue.getLabel().length() - 1) * pCharts.getFontSize() * .7 * .66); 
+					if (pCharts.getLabelMaxHeight() == null 
+					 || xMaxHeight.intValue() > pCharts.getLabelMaxHeight()){
+						pCharts.setLabelMaxHeight(xMaxHeight.intValue());
+					}
+				}
+			}
+		}
+		return xIndex;
+	}
+
 }
