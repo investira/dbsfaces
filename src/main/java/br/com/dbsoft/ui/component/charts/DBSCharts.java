@@ -7,7 +7,6 @@ import javax.faces.component.FacesComponent;
 import javax.faces.component.NamingContainer;
 
 import br.com.dbsoft.ui.component.DBSUIInput;
-import br.com.dbsoft.ui.component.chart.DBSChart.TYPE;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSNumber;
 
@@ -18,7 +17,52 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 	public static Integer 	PieInternalPadding = 2;
 
+	public static enum TYPE {
+		BAR 			("bar", true),
+		LINE 			("line", true),	
+	    PIE 			("pie", false);
+		
+		private String 	wName;
+		private Boolean	wMatrix;
+		
+		private TYPE(String pName, Boolean pMatrix) {
+			this.wName = pName;
+			this.wMatrix = pMatrix;
+		}
+
+		public String getName() {
+			return wName;
+		}
+		
+		/**
+		 * Se é um gráfico de linhas e colunas
+		 * @return
+		 */
+		public Boolean isMatrix(){
+			return wMatrix;
+		}
+
+		public static TYPE get(String pCode) {
+			if (pCode == null){
+				return LINE;
+			}			
+			pCode = pCode.trim().toLowerCase();
+			switch (pCode) {
+			case "bar":
+				return BAR;
+			case "line":
+				return LINE;
+			case "pie":
+				return PIE;
+			default:
+				return LINE;
+			}
+		}	
+	}
+	
+
 	protected enum PropertyKeys {
+		type,
 		caption,
 		footer,
 		width,
@@ -64,6 +108,15 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		setRendererType(DBSCharts.RENDERER_TYPE);
     }
 	
+
+	public String getType() {
+		return (String) getStateHelper().eval(PropertyKeys.type, null);
+	}
+	
+	public void setType(String pType) {
+		getStateHelper().put(PropertyKeys.type, pType);
+		handleAttribute("type", pType);
+	}
 
 	public String getCaption() {
 		return (String) getStateHelper().eval(PropertyKeys.caption, null);

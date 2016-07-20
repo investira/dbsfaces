@@ -18,8 +18,8 @@ import br.com.dbsoft.ui.component.chartvalue.DBSChartValue;
 import br.com.dbsoft.ui.component.div.DBSDiv;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.button.DBSButton;
-import br.com.dbsoft.ui.component.chart.DBSChart.TYPE;
 import br.com.dbsoft.ui.component.charts.DBSCharts;
+import br.com.dbsoft.ui.component.charts.DBSCharts.TYPE;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.util.DBSNumber;
@@ -49,16 +49,16 @@ public class DBSChartRenderer extends DBSRenderer {
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent) throws IOException {
 		if (!pComponent.isRendered()){return;}
 		DBSChart xChart = (DBSChart) pComponent;
-		if (xChart.getType()==null){return;}
 		ResponseWriter 			xWriter = pContext.getResponseWriter();
 		String 					xClass = CSS.CHART.MAIN;
-		TYPE 					xType = DBSChart.TYPE.get(xChart.getType());
+		TYPE					xType;
 		List<IDBSChartDelta>	xDeltaList = null;
 		DBSCharts	xCharts;
 		if (!(xChart.getParent() instanceof DBSCharts)){
 			return;
 		}
 		xCharts =  (DBSCharts) xChart.getParent();
+		xType = TYPE.get(xCharts.getType());
 		
 		if (xChart.getStyleClass()!=null){
 			xClass += xChart.getStyleClass() + " ";
@@ -71,8 +71,8 @@ public class DBSChartRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "name", xClientId);
 			DBSFaces.setAttribute(xWriter, "class", xClass);
 			DBSFaces.setAttribute(xWriter, "style", xChart.getStyle());
-			DBSFaces.setAttribute(xWriter, "type", xChart.getType());
 			DBSFaces.setAttribute(xWriter, "index", xChart.getIndex());
+			DBSFaces.setAttribute(xWriter, "type", xCharts.getType());
 			DBSFaces.setAttribute(xWriter, "cs", xChart.getColumnScale());
 			DBSFaces.setAttribute(xWriter, "bc", DBSFaces.calcChartFillcolor(xChart.getColorHue(), xChart.getColorBrightness(), xCharts.getItensCount(), xChart.getItensCount(), xChart.getIndex(), 1));
 			if (xType == TYPE.LINE

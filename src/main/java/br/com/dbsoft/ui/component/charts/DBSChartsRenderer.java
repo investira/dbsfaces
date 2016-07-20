@@ -12,7 +12,7 @@ import com.sun.faces.renderkit.RenderKitUtils;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
 import br.com.dbsoft.ui.component.chart.DBSChart;
-import br.com.dbsoft.ui.component.chart.DBSChart.TYPE;
+import br.com.dbsoft.ui.component.charts.DBSCharts.TYPE;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
@@ -46,6 +46,8 @@ public class DBSChartsRenderer extends DBSRenderer {
 		if (!pComponent.isRendered()){return;}
 		
 		DBSCharts 		xCharts = (DBSCharts) pComponent;
+		//Tipo de gráficos não informado
+		if (xCharts.getType()==null){return;}
 		ResponseWriter 	xWriter = pContext.getResponseWriter();
 		String 			xClass = CSS.CHARTS.MAIN + CSS.MODIFIER.NOT_SELECTABLE;
 		boolean			xPreRender = pvIsPreRender(pContext, xCharts);
@@ -66,7 +68,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 				DBSFaces.initializeChartsValues(xCharts);
 			}
 		}
-//		System.out.println(xCharts.getId() + "\t" + pContext.isPostback() + "\t" + xCharts.getWidth() + "\t" + xCharts.getHeight() + "\t" + xCharts.getFontSize());
+		System.out.println(xCharts.getId() + "\t" + xPreRender + "\t" + xCharts.getWidth() + "\t" + xCharts.getHeight() + "\t" + xCharts.getFontSize());
 		//Inicializa valores de controle 
 
 
@@ -76,6 +78,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "name", xClientId);
 			DBSFaces.setAttribute(xWriter, "class", xClass);
 			DBSFaces.setAttribute(xWriter, "style", xCharts.getStyle());
+			DBSFaces.setAttribute(xWriter, "type", xCharts.getType());
 			DBSFaces.setAttribute(xWriter, "groupid", xCharts.getGroupId());
 			if (xCharts.getShowLabel()){
 				DBSFaces.setAttribute(xWriter, "showlabel", xCharts.getShowLabel());
@@ -112,6 +115,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 		//CONTAINER--------------------------
 		pWriter.startElement("div", pCharts);
 			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
+
 			//CAPTION--------------------------
 			if (pCharts.getCaption() !=null){
 				pWriter.startElement("div", pCharts);
@@ -191,7 +195,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 			for (UIComponent xObject:pCharts.getChildren()){
 				if (xObject instanceof DBSChart){
 					DBSChart xChart = (DBSChart) xObject;
-					if (TYPE.get(xChart.getType()) == TYPE.LINE){
+					if (TYPE.get(pCharts.getType()) == TYPE.LINE){
 						pvEncodeLabel(pCharts, xChart, pWriter);
 						xHasLabels = true;
 					}

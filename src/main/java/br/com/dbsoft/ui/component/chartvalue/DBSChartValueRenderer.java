@@ -16,8 +16,8 @@ import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.chart.DBSChart;
-import br.com.dbsoft.ui.component.chart.DBSChart.TYPE;
 import br.com.dbsoft.ui.component.charts.DBSCharts;
+import br.com.dbsoft.ui.component.charts.DBSCharts.TYPE;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.util.DBSFormat;
@@ -54,7 +54,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		DBSChart 		xChart;
 		DBSCharts 		xCharts;
 		ResponseWriter 	xWriter = pContext.getResponseWriter();
-		String 			xClass = CSS.CHARTVALUE.MAIN + " ";
+		String 			xClass = CSS.CHARTVALUE.MAIN;
 		String 			xClientId;
 		Double 			xPercValue = 0D;
 		TYPE			xType;
@@ -64,8 +64,6 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			return;
 		}
 		xChart =  (DBSChart) xChartValue.getParent();
-		//Le tipo do chart pai
-		xType =	DBSChart.TYPE.get(xChart.getType());
 
 		//Recupera DBSCharts avô
 		if (xChart.getParent() == null
@@ -73,6 +71,8 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			return;
 		}
 		xCharts =  (DBSCharts) xChart.getParent();
+		//Le tipo do chart pai
+		xType =	TYPE.get(xCharts.getType());
 
 		//Configura id a partir do index
 		xChartValue.setId("i" + xChartValue.getIndex());

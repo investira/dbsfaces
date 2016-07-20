@@ -65,8 +65,8 @@ import br.com.dbsoft.ui.bean.report.DBSReportBean;
 import br.com.dbsoft.ui.component.DBSUIInput;
 import br.com.dbsoft.ui.component.button.DBSButton;
 import br.com.dbsoft.ui.component.chart.DBSChart;
-import br.com.dbsoft.ui.component.chart.DBSChart.TYPE;
 import br.com.dbsoft.ui.component.charts.DBSCharts;
+import br.com.dbsoft.ui.component.charts.DBSCharts.TYPE;
 import br.com.dbsoft.ui.component.chartvalue.DBSChartValue;
 import br.com.dbsoft.ui.component.checkbox.DBSCheckbox;
 import br.com.dbsoft.ui.component.datatable.DBSDataTable;
@@ -1909,6 +1909,7 @@ public class  DBSFaces {
 	
 	//================================================================================
 	public static String calcChartFillcolor(Float pHue, Float pColorBrightness, Integer pChartsItensCount, Integer pChartItensCount, Integer pChartIndex, Integer pChartValueIndex){
+		if (pChartItensCount ==null || pChartItensCount == 0){return null;}
 		Float xChartFator = DBSNumber.divide(pChartIndex, pChartsItensCount).floatValue();
 		Float xChartValueFator = DBSNumber.divide(pChartValueIndex, pChartItensCount).floatValue();
 		Float xColorH;
@@ -2439,14 +2440,14 @@ public class  DBSFaces {
 	public static void initializeChartsValues(DBSCharts pCharts){
 		BigDecimal 	xX = BigDecimal.ZERO;
 		boolean	   	xFound = false;
-		TYPE 		xType = null;
+		TYPE 		xType = TYPE.get(pCharts.getType());
 		
 		pCharts.setMinValue(null);
 		pCharts.setMaxValue(null);
 		pCharts.setLabelMaxHeight(0);
 		pCharts.setLabelMaxWidth(0);
 		List<DBSChart> xChartList = new ArrayList<DBSChart>();
-		//Loop nos componentes Chart
+		//Cria lista com os graficos filhos(DBSChart) que serão exibidos
 		for (UIComponent xObject:pCharts.getChildren()){
 			if (xObject instanceof DBSChart){
 				DBSChart xChart = (DBSChart) xObject;
@@ -2459,7 +2460,7 @@ public class  DBSFaces {
 				}
 			}
 		}
-		//Aproveita xCharIndex para setar quantidade de gráficos
+		//Seta a qualtidade de gráficos filhos(DBSChart)
 		pCharts.setItensCount(xChartList.size()); 
 		
 		
@@ -2468,8 +2469,6 @@ public class  DBSFaces {
 			//Zera totalizadores
 	        xChart.setTotalValue(0D);
 	        Integer xChartItensCount = 0;
-	        //--
-			xType = DBSChart.TYPE.get(xChart.getType());
 			if (xType == TYPE.LINE
 			 || xType == TYPE.PIE){
 				// Exibição dos delta
@@ -2659,8 +2658,8 @@ public class  DBSFaces {
 	 */
 	private static Integer pvInitializeChartsValues(DBSCharts pCharts, DBSChart pChart, Integer pIndex){
 		Integer xIndex = pIndex - 1;
+		TYPE xType = TYPE.get(pCharts.getType());
 		for (UIComponent xChild : pChart.getChildren()){
-			TYPE xType = TYPE.get(pChart.getType());
 			if (xChild instanceof DBSChartValue){
 				DBSChartValue xChartValue = (DBSChartValue) xChild;
 				if (xChartValue.isRendered()){

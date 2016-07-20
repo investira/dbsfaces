@@ -22,51 +22,7 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.CHART;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 	
-	public static enum TYPE {
-		BAR 			("bar", true),
-		LINE 			("line", true),	
-	    PIE 			("pie", false);
-		
-		private String 	wName;
-		private Boolean	wMatrix;
-		
-		private TYPE(String pName, Boolean pMatrix) {
-			this.wName = pName;
-			this.wMatrix = pMatrix;
-		}
-
-		public String getName() {
-			return wName;
-		}
-		
-		/**
-		 * Se é um gráfico de linhas e colunas
-		 * @return
-		 */
-		public Boolean isMatrix(){
-			return wMatrix;
-		}
-
-		public static TYPE get(String pCode) {
-			if (pCode == null){
-				return LINE;
-			}			
-			pCode = pCode.trim().toLowerCase();
-			switch (pCode) {
-			case "bar":
-				return BAR;
-			case "line":
-				return LINE;
-			case "pie":
-				return PIE;
-			default:
-				return LINE;
-			}
-		}	
-	}
-	
 	protected enum PropertyKeys {
-		type,
 		colorHue,
 		colorBrightness,
 		showDelta,
@@ -106,15 +62,6 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 	public void setLabel(String pLabel) {
 		getStateHelper().put(PropertyKeys.label, pLabel);
 		handleAttribute("label", pLabel);
-	}
-
-	public String getType() {
-		return (String) getStateHelper().eval(PropertyKeys.type, null);
-	}
-	
-	public void setType(String pType) {
-		getStateHelper().put(PropertyKeys.type, pType);
-		handleAttribute("type", pType);
 	}
 
 	public Object getSavedState() {

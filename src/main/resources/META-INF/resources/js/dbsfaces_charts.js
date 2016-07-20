@@ -7,7 +7,7 @@ dbs_charts = function(pId, pPreRender) {
 		var xHeight = parseInt(xCharts[0].getBoundingClientRect().height);
 		var xFontSize = parseInt(xCharts.css("font-size"));
 		setTimeout(function(){
-//			console.log(pId + "\t" + xWidth + "\t" + xHeight + "\t" + xFontSize);
+			console.log(pId + "\t" + xWidth + "\t" + xHeight + "\t" + xFontSize);
 			dbsfaces.ajax.request(xCharts[0].id, xCharts[0].id, xCharts[0].id, dbsfaces.ui.ajaxTriggerLoaded, dbsfaces.ui.showLoadingError(pId), [xWidth,xHeight, xFontSize]);
 //			jsf.ajax.request(xCharts[0].id, 'update', {render:xCharts[0].id, 
 //													  onevent:dbsfaces.ui.ajaxTriggerLoaded, 

@@ -2788,6 +2788,13 @@ Default: false;</description>
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
+			<description>Tipo de gráfico. bar, line, pie. Padrão é bar.
+            </description>
+			<name>type</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
 			<description>
                 Título
             </description>
@@ -2895,13 +2902,6 @@ Default: false;</description>
             </description>
 			<name>label</name>
 			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>Tipo de gráfico. bar, line, pie. Padrão é bar.
-            </description>
-			<name>type</name>
-			<required>true</required>
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
@@ -3039,7 +3039,7 @@ Default: false;</description>
 		</attribute>
 		<attribute>
 			<description>
-				Valor norminal a ser exibido quando este for diferente do 'valeu' que é utilizado para os cálculo do sistema. Caso não seja informado será utilizado  o valor contido no atributo 'Value'.
+				Valor norminal a ser exibido quando este for diferente do 'valeu'(que é utilizado para os cálculo do sistema). Caso não seja informado será utilizado o valor contido no atributo 'value'.
             </description>
 			<name>displayValue</name>
 			<required>false</required>
@@ -3047,7 +3047,7 @@ Default: false;</description>
 		</attribute>
 		<attribute>
 			<description>
-				Label que será exibido no rodapé. 
+				Label que será exibido no rodapé da coluna. 
             </description>
 			<name>label</name>
 			<required>false</required>

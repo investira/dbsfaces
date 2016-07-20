@@ -633,22 +633,18 @@ input.-foo {
 .-loading {
 	position: absolute;
 	display: inline-block;	
-/* 	width: 12px; */
-/* 	height: 12px; */
 	width: 1em;
 	height: 1em;
 	background-image: url("#{request.contextPath}/images/loading.svg");
-/* 	background-position: .5em .5em; */
 	background-position: 0px 0px;
 	background-repeat: no-repeat !important;
-/* 	background-size: 12px 12px; */
 	background-size: 1em 1em;
-	top: 50%;
-	left: 50%;
-/* 	margin-top: -6px; */
-/* 	margin-left: -6px; */
-	margin-top: -.5em;
-	margin-left: -.5em;
+	top: calc(50% - .5em);
+	left: calc(50% - .5em);	
+/* 	top: 50%; */
+/* 	left: 50%; */
+/* 	margin-top: -.5em; */
+/* 	margin-left: -.5em; */
 	-moz-animation: -kf_loading 0.5s infinite;
 	-o-animation: -kf_loading 0.5s infinite;
 	-webkit-animation: -kf_loading 0.5s infinite;
@@ -656,11 +652,6 @@ input.-foo {
 }
 
 .-loading.-large {
-/* 	width: 40px; */
-/* 	height: 40px; */
-/* 	background-size: 40px 40px; */
-/* 	margin-top: -20px; */
-/* 	margin-left: -20px; */
 	font-size: 3em;
 	z-index: 999;
 }
