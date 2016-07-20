@@ -7,7 +7,7 @@ dbs_charts = function(pId, pPreRender) {
 		var xHeight = parseInt(xCharts[0].getBoundingClientRect().height);
 		var xFontSize = parseInt(xCharts.css("font-size"));
 		setTimeout(function(){
-			console.log(pId + "\t" + xWidth + "\t" + xHeight + "\t" + xFontSize);
+//			console.log(pId + "\t" + xWidth + "\t" + xHeight + "\t" + xFontSize);
 			dbsfaces.ajax.request(xCharts[0].id, xCharts[0].id, xCharts[0].id, dbsfaces.ui.ajaxTriggerLoaded, dbsfaces.ui.showLoadingError(pId), [xWidth,xHeight, xFontSize]);
 //			jsf.ajax.request(xCharts[0].id, 'update', {render:xCharts[0].id, 
 //													  onevent:dbsfaces.ui.ajaxTriggerLoaded, 
@@ -19,20 +19,21 @@ dbs_charts = function(pId, pPreRender) {
 		dbsfaces.charts.initialize(xCharts);
 		//Exibe gráfico
 		xCharts.data("container").css("opacity",1);
-	
-		$(pId).mouseleave(function(e){
-			//Verificar se componente que disparou esta fora deste chart. 
-			//Artifício necessário pois o Firefox dispara este evento diversas vezes 
-			var xE = $(e.originalEvent.toElement || e.relatedTarget).closest(".dbs_charts");
-	        if (xE == "undefined"
-	        || xE[0] != this ){
-	    		dbsfaces.charts.lostFocus(xCharts);
-	        }
-	 	});
-		
-		$(pId + " > .-container > .-data > .-container > .-content > .-captions > .-content").on("mousedown", function(e){
-			dbsfaces.charts.activateChart(xCharts, $(this));
-		});
+		if (xCharts.data("error") == null){
+			$(pId).mouseleave(function(e){
+				//Verificar se componente que disparou esta fora deste chart. 
+				//Artifício necessário pois o Firefox dispara este evento diversas vezes 
+				var xE = $(e.originalEvent.toElement || e.relatedTarget).closest(".dbs_charts");
+		        if (xE == "undefined"
+		        || xE[0] != this ){
+		    		dbsfaces.charts.lostFocus(xCharts);
+		        }
+		 	});
+			
+			$(pId + " > .-container > .-data > .-container > .-content > .-captions > .-content").on("mousedown", function(e){
+				dbsfaces.charts.activateChart(xCharts, $(this));
+			});
+		}
 	}
 };
 
@@ -42,8 +43,10 @@ dbsfaces.charts = {
 		dbsfaces.charts.pvInitializeData(pCharts);
 		dbsfaces.charts.pvInitializeGroupMember(pCharts);
 		dbsfaces.charts.pvInitializeGuides(pCharts);
-		dbsfaces.charts.pvInitializeChartActivate(pCharts);
-		dbsfaces.charts.pvInitializeDimensions(pCharts);
+		if (pCharts.data("error") == null){
+			dbsfaces.charts.pvInitializeChartActivate(pCharts);
+			dbsfaces.charts.pvInitializeDimensions(pCharts);
+		}
 	},
 
 	pvInitializeData: function(pCharts){
@@ -57,18 +60,29 @@ dbsfaces.charts = {
 		pCharts.data("caption", pCharts.data("container").children(".-caption"));
 		pCharts.data("footer", pCharts.data("container").children(".-footer"));
 		pCharts.data("data", pCharts.data("container").children(".-data"));
+		pCharts.data("error", null);
 	},
 
 	//Cria guia padrão para indicar a posição no gráfico tipo line
 	pvInitializeGuides: function(pCharts){
 		dbsfaces.charts.pvCreateDefGuides(pCharts);
-//		dbsfaces.charts.lostFocus(pCharts);
 
 //		//Seta posição dos guides do delta
 		var xChartsChildren = pCharts.data("children");
 		xChartsChildren.each(function(){
 			//Verifica se não há registro marca antes de desmarcar
 			var xChart = $(this);
+			var xMask = xChart.data("mask");
+			if (xMask.length > 0){
+				if(xMask.svgAttr("height") < 0){
+					pCharts.data("error", "height of " + pCharts.css("height") + " is to low");
+					return;
+				};
+				if(xMask.svgAttr("width") < 0){
+					pCharts.data("error", "width of " + pCharts.css("width") + " is to low");
+					return;
+				};
+			}
 			if (typeof(xChart.attr("showdelta")) != 'undefined'){
 				if (xChart.attr("type") == "line"){
 					if (xChart.data("guide1") != null){
@@ -82,11 +96,12 @@ dbsfaces.charts = {
 					dbsfaces.chart.setGuideIndex(xChart, 0);
 				}
 			}
-
-//			dbsfaces.chart.setGuideIndex(pChart, pGuideIndex);
-//			dbsfaces.chartValue.select(pChartValue, true);
 		});
-		dbsfaces.charts.lostFocus(pCharts);
+		if (pCharts.data("error") == null){
+			dbsfaces.charts.lostFocus(pCharts);
+		}else{
+			pCharts.data("data").text(pCharts.data("error"));
+		}
 	},
 	
 	//Cria guia padrão para indicar a posição no gráfico tipo line

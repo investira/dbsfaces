@@ -170,7 +170,8 @@ dbsfaces.chart = {
 				if (i == 1){
 					xChartValueLabel.svgRemoveClass("-hide");
 					xLabelPadding = xPos;
-					var xLabelTotalWidth = (pChart.data("mask")[0].getBoundingClientRect().width) - xLabelPadding;
+					var xLabelTotalWidth = Number(pChart.data("mask").svgAttr("width")) - xLabelPadding;
+					//Calcula quantidade labels sem haver sobreposição.
 					var xLabelMaxItens = Math.round(xLabelTotalWidth / (Number(dbsfaces.number.getOnlyNumber(pChartValues.css("font-size"))) * 2));
 					xLabelScale = xLabelTotalWidth / (xLabelMaxItens + 1);
 					xPreviousLabel = xChartValue.attr("label");
