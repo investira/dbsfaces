@@ -28,7 +28,7 @@
 	stroke-linecap: round;
 	stroke-linejoin: bevel;
 	fill: none;
-	stroke-width: 0.2em;
+    stroke-width: 1px;
 	shape-rendering: geometricprecision;
 }
 

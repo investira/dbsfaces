@@ -2575,17 +2575,9 @@ Default: false;</description>
 		</attribute>
 		<attribute>
 			<description>
-                Indica se página será carregada via ajax. Diapara evento ajax 'loaded' após finalizado a laod.
+                Indica se página será carregada via ajax. Dispara evento ajax 'loaded' após finalizado a load.
             </description>
-			<name>ajaxLoading</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
-                Indica se utilizará o icone pequeno. Padrão é false.
-            </description>
-			<name>ajaxLoadingSmallIcon</name>
+			<name>ajax</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
@@ -3380,7 +3372,7 @@ Default: false;</description>
 			<description>
                 Indica se página será carregada via ajax.
             </description>
-			<name>ajaxLoading</name>
+			<name>ajax</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>

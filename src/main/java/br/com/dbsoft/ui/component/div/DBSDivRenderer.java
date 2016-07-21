@@ -31,13 +31,6 @@ public class DBSDivRenderer extends DBSRenderer {
     @Override
     public void encodeChildren(FacesContext pContext, UIComponent pComponent) throws IOException {
 		DBSDiv xDiv = (DBSDiv) pComponent;
-//		System.out.println("----------------");
-//		System.out.println(pContext.isPostback());
-//		System.out.println(pContext.getCurrentPhaseId());
-//		System.out.println(pContext.getPartialViewContext().isAjaxRequest());
-//		System.out.println(pContext.getPartialViewContext().isRenderAll());
-//		System.out.println(pContext.getPartialViewContext().isPartialRequest());
-//		System.out.println(pContext.getPartialViewContext().getRenderIds());
     	if (!pvEncodeLater(pContext, xDiv)){
     		DBSFaces.renderChildren(pContext, pComponent);
     	}
@@ -58,18 +51,19 @@ public class DBSDivRenderer extends DBSRenderer {
 				xClass += CSS.NOT_SELECTABLE;
 			}
 		}
+
+		if (xDiv.getAjax()
+		 && pContext.getPartialViewContext().getRenderIds().contains(xDiv.getClientId())){
+			xClass += "-posUpdate";
+		}
+		
 		String xClientId = xDiv.getClientId(pContext);
 		xWriter.startElement(xDiv.getTagName(), xDiv);
-			if (xDiv.getAjaxLoading() 
+			if (xDiv.getAjax() 
 			 || shouldWriteIdAttribute(xDiv)){
 				DBSFaces.setAttribute(xWriter, "id", xClientId, null);
 				DBSFaces.setAttribute(xWriter, "name", xClientId, null);
 			}
-
-			if (xDiv.getAjaxLoading()){
-				xClass += " dbs_div_loading";
-			}
-
 			DBSFaces.setAttribute(xWriter, "class", xClass);
 			DBSFaces.setAttribute(xWriter, "style", xDiv.getStyle());
 
@@ -78,21 +72,17 @@ public class DBSDivRenderer extends DBSRenderer {
 			//Força para que o encode deste componente seja efetuado após, via chamada ajax. 
 			if (pvEncodeLater(pContext, xDiv)){
 	    		xWriter.startElement("div", xDiv);
-	    			if (xDiv.getAjaxLoadingSmallIcon()){
-						DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.LOADING);
-	    			}else{
-						DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.LOADING + CSS.MODIFIER.LARGE);
-	    			}
+					DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.LOADING, null);
 				xWriter.endElement("div");
+				//Chamada ajax via JS
 				DBSFaces.encodeJavaScriptTagStart(xWriter);
-//				String xJS = "setTimeout(function(){" +
-//										"jsf.ajax.request('" + xDiv.getClientId() + "', 'update', {render:'" + xDiv.getClientId() + "', onevent:dbsfaces.ui.ajaxTriggerLoaded,  onerror:dbsfaces.ui.showLoadingError('" + xClientId + "')});" +
-//												   "}, 0);";
 				String xJS = "setTimeout(function(){" +
 								"dbsfaces.ajax.request('" + xDiv.getClientId() + "', null, '" + xDiv.getClientId() + "', dbsfaces.ui.ajaxTriggerLoaded, dbsfaces.ui.showLoadingError('" + xClientId + "'));" +
 							  "}, 0);";				
 				xWriter.write(xJS);
-				
+//				String xJS = "setTimeout(function(){" +
+//				"jsf.ajax.request('" + xDiv.getClientId() + "', 'update', {render:'" + xDiv.getClientId() + "', onevent:dbsfaces.ui.ajaxTriggerLoaded,  onerror:dbsfaces.ui.showLoadingError('" + xClientId + "')});" +
+//						   "}, 0);";
 				DBSFaces.encodeJavaScriptTagEnd(xWriter);	
 			}
 
@@ -106,7 +96,7 @@ public class DBSDivRenderer extends DBSRenderer {
 		//Fim do componente
 		xWriter.endElement(xDiv.getTagName());
 	}
-	
+
 	/**
 	 * Retorna se é uma chamada que deverá efetivamente efetuar o encode co componente ou se. 
 	 * fará uma chamada ajax para que posteriormente seja efetuado o encode.<br/>
@@ -116,7 +106,7 @@ public class DBSDivRenderer extends DBSRenderer {
 	 * @return
 	 */
 	private boolean pvEncodeLater(FacesContext pContext, DBSDiv pDiv){
-		if (pDiv.getAjaxLoading()
+		if (pDiv.getAjax()
 		 && !pContext.getPartialViewContext().getRenderIds().contains(pDiv.getClientId())){
 			return true;
 		}

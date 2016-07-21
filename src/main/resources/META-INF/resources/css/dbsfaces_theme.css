@@ -296,24 +296,35 @@ textarea.-th_input-data:FOCUS,
 /* 	content: ""; */
 /* 	text-align: left; */
 /* } */
-.-th_responsive	.-th_section{
+.-th_responsive	.-th_tr{
     position: relative;
 	display: inline-table;
     width: 100%;
     text-align: center;
 }
 
-.-th_responsive	.-th_section .-th_section{
+.-th_responsive	.-th_tr > .-th_td{
     display: inline-table;
-/*     width: 50%; */
     vertical-align: top;
+    min-width: 320px;
+}
+.-th_responsive	.-th_tr.-c1 > .-th_td{
+	width: 100%;
 }
 
-@media screen and (min-width: 560px){
-	.-th_responsive	.-th_section .-th_section{
-	    width: 50%;
-	}
+.-th_responsive	.-th_tr.-c2 > .-th_td{
+	width: 50%;
 }
+.-th_responsive	.-th_tr.-c3 > .-th_td{
+	width: 33%;
+}
+
+
+/* @media screen and (min-width: 560px){ */
+/* 	.-th_responsive	.-th_tr > .-th_section{ */
+/* 	    width: 50%; */
+/* 	} */
+/* } */
 
 /* (min-width: 700px) and landscape */
 /* Resposive */

@@ -16,6 +16,51 @@
 //    fjs.parentNode.insertBefore(js, fjs);
 //  }(document, 'script', 'facebook-jssdk'));
 //  
+
+//DBSFACES===========================================================
+
+dbsfaces = {
+	CSS : {
+		MODIFIER : {
+			CLOSABLE : " -closable ",
+			CLOSED : " -closed ",
+			SELECTED : " -selected ",
+			SELECTABLE : " -selectable ",
+			TITLE : " -title ",
+			LABEL : " -label ",
+			ICON : " -icon ",
+			ICONCLOSE : " -iconclose ",
+			DISABLED : " -disabled "
+		}
+	},
+	
+	ID: {
+		DIALOG: "dialog",
+		INPUTTEXT: "inputText"
+	},
+	
+	EVENT: {
+		ON_AJAX_BEGIN: "dbs_ON_AJAX_BEGIN",
+		ON_AJAX_COMPLETE: "dbs_ON_AJAX_COMPLETE",
+		ON_AJAX_SUCCESS: "dbs_ON_AJAX_SUCESS",
+		ON_AJAX_ERROR: "dbs_ON_AJAX_ERROR",
+		ON_ROW_SELECTED: "select.dataTable",
+		ON_TRANSITION_START: "webkitTransitionStart otransitionStart oTransitionStart msTransitionStart transitionstart",
+		ON_TRANSITION_END: "webkitTransitionEnd otransitionEnd oTransitionEnd msTransitionEnd transitionend",
+		ON_ANIMATION_END: "webkitAnimationEnd oanimationEnd msAnimationEnd animationend",
+		ON_ANIMATION_INTERATION: "webkitAnimationIteration animationiteration"
+	},
+	
+	JAVAX: {
+		VIEWSTATE: "javax.faces.ViewState",
+		SOURCE: "javax.faces.source",
+		PARTIAL_EXECUTE: "javax.faces.partial.execute",
+		PARTIAL_RENDER: "javax.faces.partial.render",
+		PARTIAL_AJAX: "javax.faces.partial.ajax"
+	}
+}
+
+var wAjaxTimeout;
 var wsAnimationTime = 200;   
 
 //var evt = (evt) ? evt : ((event) ? event : null); 
@@ -141,50 +186,6 @@ String.prototype.replaceAll = function(target, replacement) {
 
 
 
-//DBSFACES===========================================================
-
-dbsfaces = {
-	CSS : {
-		MODIFIER : {
-			CLOSABLE : " -closable ",
-			CLOSED : " -closed ",
-			SELECTED : " -selected ",
-			SELECTABLE : " -selectable ",
-			TITLE : " -title ",
-			LABEL : " -label ",
-			ICON : " -icon ",
-			ICONCLOSE : " -iconclose ",
-			DISABLED : " -disabled "
-		}
-	},
-	
-	ID: {
-		DIALOG: "dialog",
-		INPUTTEXT: "inputText"
-	},
-	
-	EVENT: {
-		ON_AJAX_BEGIN: "dbs_ON_AJAX_BEGIN",
-		ON_AJAX_COMPLETE: "dbs_ON_AJAX_COMPLETE",
-		ON_AJAX_SUCCESS: "dbs_ON_AJAX_SUCESS",
-		ON_AJAX_ERROR: "dbs_ON_AJAX_ERROR",
-		ON_ROW_SELECTED: "select.dataTable",
-		ON_TRANSITION_START: "webkitTransitionStart otransitionStart oTransitionStart msTransitionStart transitionstart",
-		ON_TRANSITION_END: "webkitTransitionEnd otransitionEnd oTransitionEnd msTransitionEnd transitionend",
-		ON_ANIMATION_END: "webkitAnimationEnd oanimationEnd msAnimationEnd animationend",
-		ON_ANIMATION_INTERATION: "webkitAnimationIteration animationiteration"
-	},
-	
-	JAVAX: {
-		VIEWSTATE: "javax.faces.ViewState",
-		SOURCE: "javax.faces.source",
-		PARTIAL_EXECUTE: "javax.faces.partial.execute",
-		PARTIAL_RENDER: "javax.faces.partial.render",
-		PARTIAL_AJAX: "javax.faces.partial.ajax"
-	}
-}
-
-var wAjaxTimeout;
 
 dbsfaces.sound = {
 	beep : function(){
@@ -1157,7 +1158,18 @@ dbsfaces.ajax = {
 	        var xId = xUpdate.attr('id');
 	        var xContent = xUpdate.text();
 	        //Atualiza conteúdo do componente
-			$(dbsfaces.util.jsid(xId)).replaceWith(xContent);
+	        var xTarget = $(dbsfaces.util.jsid(xId));
+	        xTarget.replaceWith(xContent);
+	        xTarget.trigger("loaded");
+	        //Busca componente novamente já que foi substituido integralmente
+	        xTarget = $(dbsfaces.util.jsid(xId));
+	        //Se há controle para exibição gradativa posUpdate(DBSDiv)
+	        if (xTarget.hasClass("-posUpdate")){
+		        xTarget.css("opacity", "1");
+		        xTarget.on(dbsfaces.EVENT.ON_TRANSITION_END, function(e){
+		        	$(e.target).removeClass("-posUpdate");
+		        });
+	        }
 	    }
 	},
 	

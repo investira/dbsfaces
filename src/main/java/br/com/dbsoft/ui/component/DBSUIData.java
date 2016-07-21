@@ -30,6 +30,7 @@ import br.com.dbsoft.util.DBSIO.SORT_DIRECTION;
 	@ResourceDependency(library = "css", name = "dbsfaces_datatable.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_group.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_dialog.css", target = "head"),
+	@ResourceDependency(library = "css", name = "dbsfaces_div.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_parallax.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_fileupload.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_floatbutton.css", target = "head"),

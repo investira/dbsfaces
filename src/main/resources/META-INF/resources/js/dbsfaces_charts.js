@@ -9,16 +9,12 @@ dbs_charts = function(pId, pPreRender) {
 		setTimeout(function(){
 //			console.log(pId + "\t" + xWidth + "\t" + xHeight + "\t" + xFontSize);
 			dbsfaces.ajax.request(xCharts[0].id, xCharts[0].id, xCharts[0].id, dbsfaces.ui.ajaxTriggerLoaded, dbsfaces.ui.showLoadingError(pId), [xWidth,xHeight, xFontSize]);
-//			jsf.ajax.request(xCharts[0].id, 'update', {render:xCharts[0].id, 
-//													  onevent:dbsfaces.ui.ajaxTriggerLoaded, 
-//													  onerror:dbsfaces.ui.showLoadingError(pId),
-//													  params:[xWidth,xHeight]});
 		}, 0);
 	//Render final do gráfico
 	}else{
 		dbsfaces.charts.initialize(xCharts);
 		//Exibe gráfico
-		xCharts.data("container").css("opacity",1);
+		xCharts.data("container").css("opacity", 1);
 		if (xCharts.data("error") == null){
 			$(pId).mouseleave(function(e){
 				//Verificar se componente que disparou esta fora deste chart. 

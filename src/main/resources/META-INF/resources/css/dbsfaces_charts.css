@@ -4,10 +4,8 @@
 /* 	border: rgba(0,0,0,.5) solid 1px; */
 }
 
-.dbs_charts > .-fonts{
-}
-.dbs_charts > .-fonts > .-labels{
-	font-size: .7em;
+.dbs_charts > .-loading{
+	font-size: 3em;	
 }
 
 .dbs_charts > .-container{

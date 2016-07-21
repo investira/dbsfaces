@@ -114,7 +114,7 @@ public class DBSTabRenderer extends DBSRenderer {
 //									}
 									
 									xWriter.startElement("a", xTab);
-										if (xPage.getAjaxLoading()){
+										if (xPage.getAjax()){
 											xWriter.writeAttribute("style", "opacity:0.2", null);
 										}
 	//									xWriter.writeAttribute("ontouchstart", "javascript:void(0)", "ontouchstart"); //Para ipad ativar o css:ACTIVE
@@ -127,7 +127,7 @@ public class DBSTabRenderer extends DBSRenderer {
 											xWriter.write(xPage.getCaption());
 										xWriter.endElement("span");
 									xWriter.endElement("a");
-									if (xPage.getAjaxLoading()){
+									if (xPage.getAjax()){
 										xWriter.startElement("span", xTab);
 											DBSFaces.setAttribute(xWriter, "class", "loading_container");
 											xWriter.startElement("span", xTab);
@@ -165,7 +165,7 @@ public class DBSTabRenderer extends DBSRenderer {
 								if (xPage.isRendered()){
 									xPage.encodeBegin(pContext);
 									//Ignora o encode do conteúdo da página
-									if (!xPage.getAjaxLoading()){
+									if (!xPage.getAjax()){
 										xPage.encodeChildren(pContext);
 									}
 									xPage.encodeEnd(pContext);
@@ -185,7 +185,7 @@ public class DBSTabRenderer extends DBSRenderer {
 			if (xTab.getChildren().get(xI) instanceof DBSTabPage){
 				DBSTabPage xPage = (DBSTabPage) xTab.getChildren().get(xI);
 				if (xPage.isRendered()){
-					if (xPage.getAjaxLoading()){
+					if (xPage.getAjax()){
 						DBSFaces.encodeJavaScriptTagStart(xWriter);
 						String xJS = "setTimeout(function(){" +
 										"dbsfaces.ajax.request('" + xPage.getClientId() + "_aba" + "', '" + xTab.getInputId(true) + "', '" + xPage.getClientId() + "', dbsfaces.onajax, dbsfaces.onajaxerror);" +

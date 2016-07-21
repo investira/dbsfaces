@@ -649,16 +649,13 @@ input.-foo {
 	-o-animation: -kf_loading 0.5s infinite;
 	-webkit-animation: -kf_loading 0.5s infinite;
 	animation: -kf_loading 0.5s infinite;
+	max-width: 100px;
+	max-height: 100px;
 }
 
 .-loading.-large {
 	font-size: 3em;
 	z-index: 999;
-}
-
-.dbs_div_loading{
-	min-width: 12px;
-	min-height: 12px;
 }
 
 
