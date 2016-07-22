@@ -1,15 +1,12 @@
 dbs_charts = function(pId, pPreRender) {
 	var xCharts = $(pId);
 	//Prepara gráfico com a altura e largura
+	$(window).resize(function(e){
+		dbsfaces.charts.resize(xCharts);
+	});
+	
 	if (pPreRender){
-		//Faz o render do gráfico já com a altura e largura definido
-		var xWidth = parseInt(xCharts[0].getBoundingClientRect().width);
-		var xHeight = parseInt(xCharts[0].getBoundingClientRect().height);
-		var xFontSize = parseInt(xCharts.css("font-size"));
-		setTimeout(function(){
-//			console.log(pId + "\t" + xWidth + "\t" + xHeight + "\t" + xFontSize);
-			dbsfaces.ajax.request(xCharts[0].id, xCharts[0].id, xCharts[0].id, dbsfaces.ui.ajaxTriggerLoaded, dbsfaces.ui.showLoadingError(pId), [xWidth,xHeight, xFontSize]);
-		}, 0);
+		dbsfaces.charts.update(xCharts, false);
 	//Render final do gráfico
 	}else{
 		dbsfaces.charts.initialize(xCharts);
@@ -34,7 +31,48 @@ dbs_charts = function(pId, pPreRender) {
 };
 
 dbsfaces.charts = {
-	
+	resize: function(pCharts){
+		var xTimeoutId = "chartsTimeout" + pCharts[0].id;
+		//Timeout para evitar chamadas repetidas desnecessárias. Alguns browsers chamam resize para widht e height.
+		//Salva timeout no próprio body para depois poder cancela-lo.Timeout não é salvo do próprio componente pois seria pedido depois que componente fosse recriado no update.
+		clearTimeout($("body").data(xTimeoutId));
+		$("body").data(xTimeoutId, 
+			setTimeout(function(e){
+				var xWidthNew = parseInt(pCharts[0].getBoundingClientRect().width);
+				var xHeightNew = parseInt(pCharts[0].getBoundingClientRect().height);
+				var xWidth = parseInt(pCharts.css("width"));
+				var xHeight = parseInt(pCharts.css("height"));
+				
+				var xWidth = parseInt(pCharts.attr("w"));
+				var xHeight = parseInt(pCharts.attr("h"));
+//				console.log(pCharts[0].id + "\t" + xWidth + "\t" + xWidthNew + "\t" + xHeight + "\t" + xHeightNew);
+				//Não efetua atualizaçãso se tamanho do gráfico NÃO foi alterado		
+				if (Math.abs(xWidth - xWidthNew) < 2
+				 && Math.abs(xHeight - xHeightNew) < 2){
+					return;
+				}
+				dbsfaces.charts.update(pCharts, true);
+			},500)
+		);
+
+	},
+
+	update: function(pCharts, pOnResize){
+		//Faz o render do gráfico já com a altura e largura definido
+		setTimeout(function(e){
+			var xWidth = parseInt(pCharts[0].getBoundingClientRect().width);
+			var xHeight = parseInt(pCharts[0].getBoundingClientRect().height);
+			var xFontSize = parseInt(pCharts.css("font-size"));
+			var xParams = null;
+			if(pOnResize == null || pOnResize == false){
+				xParams = [xWidth,xHeight, xFontSize];
+			}
+//			console.log(pCharts[0].id + "\t request" + "\t" + xWidth + "\t" + xHeight + "\t" + xFontSize);
+			dbsfaces.ajax.request(pCharts[0].id, pCharts[0].id, pCharts[0].id, dbsfaces.ui.ajaxTriggerLoaded, dbsfaces.ui.showLoadingError(dbsfaces.util.jsid(pCharts[0].id)), xParams);
+		},0);
+
+	},
+
 	initialize: function(pCharts){
 		dbsfaces.charts.pvInitializeData(pCharts);
 		dbsfaces.charts.pvInitializeGroupMember(pCharts);

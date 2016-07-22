@@ -298,13 +298,13 @@ textarea.-th_input-data:FOCUS,
 /* } */
 .-th_responsive	.-th_tr{
     position: relative;
-	display: inline-table;
+/* 	display: inline-table; */
     width: 100%;
     text-align: center;
 }
 
 .-th_responsive	.-th_tr > .-th_td{
-    display: inline-table;
+/*     display: inline-table; */
     vertical-align: top;
     min-width: 320px;
 }

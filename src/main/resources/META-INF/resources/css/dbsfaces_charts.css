@@ -1,11 +1,13 @@
 .dbs_charts{
     display: inline-block;
-/*     display: table; */ 
-/* 	border: rgba(0,0,0,.5) solid 1px; */
+	position: relative;
 }
 
 .dbs_charts > .-loading{
 	font-size: 3em;	
+}
+.dbs_charts:not([prerender]) > .-loading{
+	display: none;	
 }
 
 .dbs_charts > .-container{

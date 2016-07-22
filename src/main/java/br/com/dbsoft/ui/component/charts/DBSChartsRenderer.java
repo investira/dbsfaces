@@ -89,19 +89,23 @@ public class DBSChartsRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "style", xCharts.getStyle());
 			DBSFaces.setAttribute(xWriter, "type", xCharts.getType());
 			DBSFaces.setAttribute(xWriter, "groupid", xCharts.getGroupId());
+			DBSFaces.setAttribute(xWriter, "prerender", xPreRender);
 			if (xCharts.getShowLabel()){
 				DBSFaces.setAttribute(xWriter, "showlabel", xCharts.getShowLabel());
 			}
 			DBSFaces.setAttribute(xWriter, "diameter", xCharts.getDiameter());
+			//Salva largura e altura para auxiliar refresh no caso de resize
+			DBSFaces.setAttribute(xWriter, "w", xCharts.getWidth());
+			DBSFaces.setAttribute(xWriter, "h", xCharts.getHeight());
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xCharts, DBSPassThruAttributes.getAttributes(Key.CHARTS));
 			
 			//Força para que o encode deste componente seja efetuado após, via chamada ajax.
 			//para que a altura e largura seja cálculada via js e enviada no request ajax.
 //			if (pvEncodeLater(pContext, xCharts)){
+    		xWriter.startElement("div", xCharts);
+				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.LOADING);
+			xWriter.endElement("div");
 			if (xPreRender){
-	    		xWriter.startElement("div", xCharts);
-	    			DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.LOADING);
-				xWriter.endElement("div");
 			}else{
 				pvEncodeContainer(pContext, xCharts, xWriter);
 			}
