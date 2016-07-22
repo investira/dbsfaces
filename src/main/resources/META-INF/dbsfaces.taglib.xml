@@ -2890,9 +2890,9 @@ Default: false;</description>
 		</attribute>
 		<attribute>
 			<description>
-                Label
+                Título do gráfico. Título somente será exibido quando houver gráfico dentro de gráfico. Para o título principal, utilizar o caption do DBSChats.
             </description>
-			<name>label</name>
+			<name>caption</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>

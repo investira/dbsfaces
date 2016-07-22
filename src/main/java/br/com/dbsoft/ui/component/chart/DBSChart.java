@@ -27,7 +27,7 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 		colorBrightness,
 		showDelta,
 		deltaList,
-		label,
+		caption,
 		//Variáveis de trabalho
 		savedState,
 		itensCount,
@@ -55,13 +55,13 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 		setRendererType(DBSChart.RENDERER_TYPE);
     }
 
-	public String getLabel() {
-		return (String) getStateHelper().eval(PropertyKeys.label, null);
+	public String getCaption() {
+		return (String) getStateHelper().eval(PropertyKeys.caption, null);
 	}
 	
-	public void setLabel(String pLabel) {
-		getStateHelper().put(PropertyKeys.label, pLabel);
-		handleAttribute("label", pLabel);
+	public void setCaption(String pCaption) {
+		getStateHelper().put(PropertyKeys.caption, pCaption);
+		handleAttribute("caption", pCaption);
 	}
 
 	public Object getSavedState() {

@@ -209,7 +209,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 				if (xObject instanceof DBSChart){
 					DBSChart xChart = (DBSChart) xObject;
 					if (TYPE.get(pCharts.getType()) == TYPE.LINE){
-						pvEncodeLabel(pCharts, xChart, pWriter);
+						pvEncodeCaption(pCharts, xChart, pWriter);
 						xHasLabels = true;
 					}
 				}
@@ -219,8 +219,8 @@ public class DBSChartsRenderer extends DBSRenderer {
 		return xHasLabels;
 	}
 	
-	private void pvEncodeLabel(DBSCharts pCharts, DBSChart pChart, ResponseWriter pWriter) throws IOException{
-		String xLabel = DBSObject.getNotEmpty(pChart.getLabel(), pChart.getId());
+	private void pvEncodeCaption(DBSCharts pCharts, DBSChart pChart, ResponseWriter pWriter) throws IOException{
+		String xLabel = DBSObject.getNotEmpty(pChart.getCaption(), pChart.getId());
 		Double xWidth = DBSNumber.divide(pCharts.getWidth(), pCharts.getChildCount()).doubleValue();
 		Double xX = xWidth * (pChart.getIndex() - 1);
 		pWriter.startElement("g", pCharts);
