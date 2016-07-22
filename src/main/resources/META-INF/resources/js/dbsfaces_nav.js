@@ -70,7 +70,7 @@ dbsfaces.nav = {
 		pNav.data("icon", pNav.find("> .-container > .-icon"));
 		pNav.data("mask", pNav.find("> .-container > .-mask"));
 		pNav.data("iconclose", pNav.data("navgroup").children(".-iconclose"));
-		pNav.data("padding", Number(dbsfaces.number.getOnlyNumber(pNav.data("mask").css("padding-left"))));
+		pNav.data("padding", parseFloat(pNav.data("mask").css("padding-left")));
 	},
 	
 	pvInitializeLayout: function(pNav){

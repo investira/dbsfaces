@@ -167,7 +167,7 @@ dbsfaces.chartValue = {
 		var xY = Number(xChartValueLabel.attr("y"))
 		//Ajusta X se houver deltalist a ser exibido utilizando a altura do corrente do gráfico
 		if (typeof(xChart.attr("showdeltalist")) != "undefined"){
-			xY += Number(dbsfaces.number.getOnlyNumber(xChart.css("font-size"))) * 2;
+			xY += parseFloat(xChart.css("font-size")) * 2;
 			xChart.data("deltalistheight", xY);
 		}	
 		var xTransform = "translate(" + xX + "," + xY + ")";

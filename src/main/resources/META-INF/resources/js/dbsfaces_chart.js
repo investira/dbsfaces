@@ -172,7 +172,7 @@ dbsfaces.chart = {
 					xLabelPadding = xPos;
 					var xLabelTotalWidth = Number(pChart.data("mask").svgAttr("width")) - xLabelPadding;
 					//Calcula quantidade máxima de labels sem haver sobreposição.
-					var xLabelMaxItens = Math.round(xLabelTotalWidth / (Number(dbsfaces.number.getOnlyNumber(pChartValues.css("font-size"))) * 2));
+					var xLabelMaxItens = Math.round(xLabelTotalWidth / (parseFloat(pChartValues.css("font-size")) * 2));
 					xLabelScale = xLabelTotalWidth / (xLabelMaxItens + 1);
 					xPreviousLabel = xChartValue.attr("label");
 				}else{
