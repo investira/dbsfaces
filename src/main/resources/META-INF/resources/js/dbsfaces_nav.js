@@ -32,6 +32,11 @@ dbs_nav = function(pId) {
 		return false;
 	});
 
+	$(pId + " > .-container > .-nav").on(dbsfaces.EVENT.ON_TRANSITION_END, function(e){
+		dbsfaces.ui.focusOnFirstInput($(this));
+	});
+	
+
 
 };
 
@@ -153,16 +158,12 @@ dbsfaces.nav = {
 			pNav.data("navgroup").css("width", xWidth);
 //			pNav.data("foocaption").css("height", xHeaderHeight + xPadding);
 			if (pNav.data("t")){
-//				if (xHeaderHeight != null){
-					xContainer.css("padding-top", xHeaderHeight + xPadding);
-//				}
+				xContainer.css("padding-top", xHeaderHeight + xPadding);
 				if (xFooterHeight != null){
 					xContainer.css("padding-bottom", xFooterHeight + xPadding);
 				}
 			}else{
-//				if (xHeaderHeight != null){
-					xContainer.css("padding-bottom", xHeaderHeight + xPadding);
-//				}
+				xContainer.css("padding-bottom", xHeaderHeight + xPadding);
 				if (xFooterHeight != null){
 					xContainer.css("padding-top", xFooterHeight + xPadding);
 				}
@@ -178,16 +179,12 @@ dbsfaces.nav = {
 			pNav.data("navgroup").css("height", xHeight);
 //			pNav.data("foocaption").css("width", xHeaderHeight + xPadding);
 			if (pNav.data("l")){
-//				if (xHeaderWidth != null){
-					xContainer.css("padding-left", xHeaderWidth + xPadding);
-//				}
+				xContainer.css("padding-left", xHeaderWidth + xPadding);
 				if (xFooterWidth != null){
 					xContainer.css("padding-right", xFooterWidth + xPadding);
 				}
 			}else{
-//				if (xHeaderWidth != null){
-					xContainer.css("padding-right", xHeaderWidth + xPadding);
-//				}
+				xContainer.css("padding-right", xHeaderWidth + xPadding);
 				if (xFooterWidth != null){
 					xContainer.css("padding-left", xFooterWidth + xPadding);
 				}
