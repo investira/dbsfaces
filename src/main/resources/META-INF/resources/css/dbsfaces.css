@@ -631,26 +631,26 @@ input.-foo {
 /* loadings --------------------------------------------------- */
 
 .-loading {
-	position: absolute;
+	position: absolute !important;
 	display: inline-block;	
-	width: 1em;
-	height: 1em;
+	width: 1em !important;
+	height: 1em !important;
 	background-image: url("#{request.contextPath}/images/loading.svg");
-	background-position: 0px 0px;
+	background-position: 0px 0px !important;
 	background-repeat: no-repeat !important;
-	background-size: 1em 1em;
-	top: calc(50% - .5em);
-	left: calc(50% - .5em);	
+	background-size: 1em 1em !important;
+	top: calc(50% - .5em) !important;
+	left: calc(50% - .5em) !important;	
 /* 	top: 50%; */
 /* 	left: 50%; */
 /* 	margin-top: -.5em; */
 /* 	margin-left: -.5em; */
-	-moz-animation: -kf_loading 0.5s infinite;
-	-o-animation: -kf_loading 0.5s infinite;
-	-webkit-animation: -kf_loading 0.5s infinite;
-	animation: -kf_loading 0.5s infinite;
-	max-width: 100px;
-	max-height: 100px;
+	-moz-animation: -kf_loading 0.5s infinite !important;
+	-o-animation: -kf_loading 0.5s infinite !important;
+	-webkit-animation: -kf_loading 0.5s infinite !important;
+	animation: -kf_loading 0.5s infinite !important;
+	max-width: 100px !important;
+	max-height: 100px !important;
 }
 
 .-loading.-large {
