@@ -2947,32 +2947,12 @@ Default: false;</description>
 		<attribute>
 			<description>
 				&lt;span style="font-size:small"&gt;
-				Hue que indicará a cor base que será utilizado calcular as cores de cada um dos valores do gráfico.&lt;br/&gt;
-				Caso não seja informado, as cores serão gerada automaticamente.
-				O valor do Hue varia de 0 a 1. Abaixo, valores aproximados&lt;br/&gt;
-				&lt;ul&gt;
-					&lt;li&gt;Vermelho = 0&lt;/li&gt;
-					&lt;li&gt;Laranja = 0.1&lt;/li&gt;
-					&lt;li&gt;Amarelo = 0.17&lt;/li&gt;
-					&lt;li&gt;Verde = 0.3&lt;/li&gt;
-					&lt;li&gt;Aniz = 0.5&lt;/li&gt;
-					&lt;li&gt;Azul = 0.65&lt;/li&gt;
-					&lt;li&gt;Rosa = 0.85&lt;/li&gt;
-					&lt;li&gt;Vermelho = 1&lt;/li&gt;
-				&lt;ul&gt;
+				Cor base que será utilizado calcular as cores de cada um dos valores do gráfico.&lt;br/&gt;
+				Caso não seja informado as cores serão gerada automaticamente.&lt;br/&gt;
 				&lt;/span&gt; </description>
-			<name>colorHue</name>
+			<name>color</name>
 			<required>false</required>
-			<type>java.lang.Float</type>
-		</attribute>
-		<attribute>
-			<description>
-				&lt;span style="font-size:small"&gt;
-				Brilho da cor que varia de 0, sem brilho a 1, brilho integral.
-				&lt;/span&gt; </description>
-			<name>colorBrightness</name>
-			<required>false</required>
-			<type>java.lang.Float</type>
+			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
 			<description>
@@ -3047,9 +3027,9 @@ Default: false;</description>
 		</attribute>
 		<attribute>
 			<description>
-				Cor
+				Cor a ser utilizada para indicar este valor. Quando não informado é utilizada a cor padrão do gráfico definido em "color" do dbschart pai.
             </description>
-			<name>fillColor</name>
+			<name>color</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>

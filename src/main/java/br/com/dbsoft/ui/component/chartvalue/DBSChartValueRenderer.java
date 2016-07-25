@@ -85,7 +85,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			xClass += xChartValue.getStyleClass();
 		}
 		
-		pvSetFillcolor(xCharts, xChart, xChartValue);
+		pvSetColor(xCharts, xChart, xChartValue);
 		
 		xPercValue = pvCalcPercValue(xChart, xChartValue);
 
@@ -151,7 +151,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		xYText = xY;
 		xYTextTooltip = xY;
 		
-		xStroke = "stroke:" + pChartValue.getFillColor() + ";";
+		xStroke = "stroke:" + pChartValue.getColor() + ";";
 
 		//Encode BAR ---------------------------------------------------------------------------------
 		if (pType == TYPE.BAR){
@@ -167,13 +167,13 @@ public class DBSChartValueRenderer extends DBSRenderer {
 					   		   DBSNumber.divide(pChart.getColumnScale() - xLineWidth, 2));
 			//Valore positivos acima
 			if (pChartValue.getValue() > 0){
-				DBSFaces.encodeSVGRect(pChartValue, pWriter, xX.intValue(), xY.doubleValue(), xLineWidth.toString(), xHeight.toString(), CSS.MODIFIER.POINT, xStroke, "fill=" + pChartValue.getFillColor());
+				DBSFaces.encodeSVGRect(pChartValue, pWriter, xX.intValue(), xY.doubleValue(), xLineWidth.toString(), xHeight.toString(), CSS.MODIFIER.POINT, xStroke, "fill=" + pChartValue.getColor());
 			//Valores negativos
 			}else{
 				//inverte a posição Yx
 				xYTextTooltip = DBSNumber.subtract(pCharts.getChartHeight(), pCharts.getZeroPosition().doubleValue());
 				xYTextTooltip =  DBSNumber.add(pCharts.getPadding(), xYTextTooltip);
-				DBSFaces.encodeSVGRect(pChartValue, pWriter, xX.intValue(), xYTextTooltip.doubleValue(), xLineWidth.toString(), xHeight.toString(), CSS.MODIFIER.POINT, xStroke, "fill=" + pChartValue.getFillColor());
+				DBSFaces.encodeSVGRect(pChartValue, pWriter, xX.intValue(), xYTextTooltip.doubleValue(), xLineWidth.toString(), xHeight.toString(), CSS.MODIFIER.POINT, xStroke, "fill=" + pChartValue.getColor());
 			}
 		//Encode LINE - ponto. as linhas que ligam os pontos, são desenhadas no código JS.
 		}else if (pType == TYPE.LINE){
@@ -183,7 +183,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			pChartValue.setPoint(new Point2D.Double(xX.doubleValue(), xY.doubleValue()));
 			//Encode do circulo
 			//Artifício pois o fcirefox só funciona com valores fixos no transform-origin
-			String xStyle = "stroke:currentColor; color:" + pChartValue.getFillColor() + ";";
+			String xStyle = "stroke:currentColor; color:" + pChartValue.getColor() + ";";
 			if (pChart.getShowDelta()){
 				DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xX.doubleValue(), xY.doubleValue(), ".2em", ".2em", CSS.MODIFIER.POINT, xStyle, "fill=white");
 			}else{
@@ -194,7 +194,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		//Encode Dados
 		pWriter.startElement("g", pChartValue);
 			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.INFO);
-			DBSFaces.setAttribute(pWriter, "fill", pChartValue.getFillColor(), null);
+			DBSFaces.setAttribute(pWriter, "fill", pChartValue.getColor(), null);
 			//Encode do valor da linha ---------------------------------------------------------------------
 			pvEncodeText(pChartValue, 
 						 DBSFormat.getFormattedNumber(DBSObject.getNotNull(pChartValue.getDisplayValue(), pChartValue.getValue()), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask()), 
@@ -244,13 +244,13 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		Point2D 		x2 = new Point2D.Double();
 		Point2D 		x3 = new Point2D.Double();
 		Point2D 		x4 = new Point2D.Double();
-		String 			xStroke = "stroke:" + pChartValue.getFillColor() + ";";
+		String 			xStroke = "stroke:" + pChartValue.getColor() + ";";
 
 		Point2D 		xPoint = new Point2D.Double();
 
 		String 			xPercLabelStyle =  "fill:white; text-anchor:";
 		Integer 		xPercLineWidth =  4;
-		String 			xPerBoxStyle = "fill:" + pChartValue.getFillColor() + ";";
+		String 			xPerBoxStyle = "fill:" + pChartValue.getColor() + ";";
 		Integer			xPositionInverter = 1;
 		Point2D			xPointLabel = new Point2D.Double();
 		
@@ -323,7 +323,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		xPath.append("L" + x3.getX() + "," + x3.getY()); //Linha do arco externo até o início do arco interno
 		xPath.append("A" + xPneuRaioInterno + "," + xPneuRaioInterno + " 0 " + xBig + " 0 " + x4.getX() + "," + x4.getY()); //Arco interno até o ponto incial interno
 		xPath.append("Z"); //Fecha o path ligando o arco interno ao arco externo  
-		DBSFaces.encodeSVGPath(pChartValue, pWriter, xPath.toString(), CSS.MODIFIER.POINT, xStroke, "fill=" + pChartValue.getFillColor());
+		DBSFaces.encodeSVGPath(pChartValue, pWriter, xPath.toString(), CSS.MODIFIER.POINT, xStroke, "fill=" + pChartValue.getColor());
 
 
 		//Encode Dados
@@ -339,7 +339,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 				DBSFaces.encodeSVGPath(pChartValue, pWriter, xPath.toString(),CSS.MODIFIER.LINE, xStroke + " stroke-width:1px; ", "fill=none");
 	
 				//Ponto pequeno no centro e na tangente do arco	
-				DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xPoint.getX(), xPoint.getY(), "2px", "2px", CSS.MODIFIER.POINT, null, "fill=" + pChartValue.getFillColor());
+				DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xPoint.getX(), xPoint.getY(), "2px", "2px", CSS.MODIFIER.POINT, null, "fill=" + pChartValue.getColor());
 				
 				//Valor do percentual, label e valor ---------------------------------------------------------------------
 				StringBuilder xText = new StringBuilder();
@@ -597,10 +597,10 @@ public class DBSChartValueRenderer extends DBSRenderer {
 	 * @param pChart
 	 * @param pChartValue
 	 */
-	private void pvSetFillcolor(DBSCharts pCharts, DBSChart pChart, DBSChartValue pChartValue){
+	private void pvSetColor(DBSCharts pCharts, DBSChart pChart, DBSChartValue pChartValue){
 		//Usa cor informada pelo usuário
-		if (pChartValue.getFillColor() == null){
-			pChartValue.setFillColor(DBSFaces.calcChartFillcolor(pChart.getColorHue(), pChart.getColorBrightness(), pCharts.getItensCount(), pChart.getItensCount(), pChart.getIndex(), pChartValue.getIndex()));
+		if (pChartValue.getColor() == null){
+			pChartValue.setColor(DBSFaces.calcChartFillcolor(pChart.getDBSColor(), pCharts.getItensCount(), pChart.getItensCount(), pChart.getIndex(), pChartValue.getIndex()));
 		}
 	}
 }

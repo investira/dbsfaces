@@ -8,23 +8,18 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import br.com.dbsoft.ui.component.DBSUIData;
 import br.com.dbsoft.ui.component.charts.DBSCharts;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.util.DBSColor;
 import br.com.dbsoft.util.DBSNumber;
 
 
 @FacesComponent(DBSChart.COMPONENT_TYPE)
 public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 	
-	/**
-	 * 
-	 */
-//	private static final long serialVersionUID = -8364183453449728463L;
-	
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.CHART;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 	
 	protected enum PropertyKeys {
-		colorHue,
-		colorBrightness,
+		color,
 		showDelta,
 		deltaList,
 		caption,
@@ -34,7 +29,8 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 		index,
 		columnScale,
 		totalValue,
-		showDeltaList;
+		showDeltaList,
+		dbscolor;
 
 		String toString;
 
@@ -170,32 +166,23 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 		Double xRodaRaio = xPieChartWidth / 2;
 		return xRodaRaio + ((xPieChartWidth + DBSCharts.PieInternalPadding) * (pCharts.getItensCount() - getIndex()));
 	}
+	
+	public String getColor() {
+		return (String) getStateHelper().eval(PropertyKeys.color, null);
+	}
+	public void setColor(String pColor) {
+		getStateHelper().put(PropertyKeys.color, pColor);
+		handleAttribute("color", pColor);
+		setDBSColor(DBSColor.fromString(pColor));
+	}
 
-	public Float getColorHue() {
-		return (Float) getStateHelper().eval(PropertyKeys.colorHue, null);
+	public DBSColor getDBSColor() {
+		return (DBSColor) getStateHelper().eval(PropertyKeys.dbscolor, null);
 	}
-	public void setColorHue(Float pColorHue) {
-		if (pColorHue != null){
-			if (pColorHue > 1
-			 || pColorHue < 0){
-				pColorHue = null;
-			}
-		}
-		getStateHelper().put(PropertyKeys.colorHue, pColorHue);
-		handleAttribute("colorHue", pColorHue);
+	public void setDBSColor(DBSColor pDBSColor) {
+		getStateHelper().put(PropertyKeys.dbscolor, pDBSColor);
+		handleAttribute("dbscolor", pDBSColor);
 	}
-	public Float getColorBrightness() {
-		return (Float) getStateHelper().eval(PropertyKeys.colorBrightness, null);
-	}
-	public void setColorBrightness(Float pColorBrightness) {
-		if (pColorBrightness != null){
-			if (pColorBrightness > 1
-			 || pColorBrightness < 0){
-				pColorBrightness = null;
-			}
-		}
-		getStateHelper().put(PropertyKeys.colorBrightness, pColorBrightness);
-		handleAttribute("colorBrightness", pColorBrightness);
-	}
+
 
 }

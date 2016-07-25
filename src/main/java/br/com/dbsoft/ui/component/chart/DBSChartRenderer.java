@@ -74,7 +74,7 @@ public class DBSChartRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "index", xChart.getIndex());
 			DBSFaces.setAttribute(xWriter, "type", xCharts.getType());
 			DBSFaces.setAttribute(xWriter, "cs", xChart.getColumnScale());
-			DBSFaces.setAttribute(xWriter, "bc", DBSFaces.calcChartFillcolor(xChart.getColorHue(), xChart.getColorBrightness(), xCharts.getItensCount(), xChart.getItensCount(), xChart.getIndex(), 1));
+			DBSFaces.setAttribute(xWriter, "bc", DBSFaces.calcChartFillcolor(xChart.getDBSColor(), xCharts.getItensCount(), xChart.getItensCount(), xChart.getIndex(), 1));
 			if (xType == TYPE.LINE
 			 || xType == TYPE.PIE){
 				if (xChart.getShowDelta()){ //Artificio para padronizar o false como não existindo o atributo(comportamento do chrome)
@@ -169,7 +169,7 @@ public class DBSChartRenderer extends DBSRenderer {
 				xDeltaButton.setIconClass(xChartDelta.getIconClass());
 				xDeltaButton.setTooltip(xChartDelta.getTooltip());
 				xDeltaButton.setonclick("null");
-				xDeltaButton.setStyle("color:" + DBSFaces.calcChartFillcolor(pChart.getColorHue(), pChart.getColorBrightness(), pCharts.getItensCount(), pChart.getItensCount(), pChart.getIndex(), 1));
+//				xDeltaButton.setStyle("color:" + DBSFaces.calcChartFillcolor(pChart.getDBSColor(), pCharts.getItensCount(), pChart.getItensCount(), pChart.getIndex(), 1));
 				xDeltaListContent.getChildren().add(xDeltaButton);
 				//Força que id atribuido ao botão seja efetivamente o gerado/configurado 
 				xChartDelta.setId(xDeltaButton.getClientId());

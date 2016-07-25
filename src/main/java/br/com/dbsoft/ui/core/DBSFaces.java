@@ -1,7 +1,6 @@
 package br.com.dbsoft.ui.core;
 
 
-import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -71,6 +70,7 @@ import br.com.dbsoft.ui.component.datatable.DBSDataTable.SELECTION_TYPE;
 import br.com.dbsoft.ui.component.fileupload.DBSFileUpload;
 import br.com.dbsoft.ui.component.inputnumber.DBSInputNumber;
 import br.com.dbsoft.util.DBSBoolean;
+import br.com.dbsoft.util.DBSColor;
 import br.com.dbsoft.util.DBSDate;
 import br.com.dbsoft.util.DBSFile;
 import br.com.dbsoft.util.DBSIO;
@@ -1897,39 +1897,54 @@ public class  DBSFaces {
 	}
 	
 	//================================================================================
-	public static String calcChartFillcolor(Float pHue, Float pColorBrightness, Integer pChartsItensCount, Integer pChartItensCount, Integer pChartIndex, Integer pChartValueIndex){
+	public static String calcChartFillcolor(DBSColor pColor, Integer pChartsItensCount, Integer pChartItensCount, Integer pChartIndex, Integer pChartValueIndex){
 		if (pChartItensCount ==null || pChartItensCount == 0){return null;}
 		Float xChartFator = DBSNumber.divide(pChartIndex, pChartsItensCount).floatValue();
 		Float xChartValueFator = DBSNumber.divide(pChartValueIndex, pChartItensCount).floatValue();
 		Float xColorH;
-		Float xColorB;
-		Float xColorS = DBSNumber.multiply(1, xChartValueFator).floatValue();
-		if (pHue != null){
-			xColorH = pHue;
+		Float xColorL;
+		Float xColorS = DBSNumber.multiply(100, xChartValueFator).floatValue();
+		if (pColor != null){
+			xColorH = pColor.getHue();
+			xColorL = DBSNumber.multiply(pColor.getLightness(), xChartValueFator).floatValue();
 		}else{
-			xColorH = DBSNumber.multiply(1, xChartFator).floatValue();
+			xColorH = DBSNumber.multiply(360, xChartFator).floatValue();
+			xColorL = DBSNumber.multiply(50, xChartValueFator).floatValue();
 		}
-		if (pColorBrightness != null){
-			xColorB = DBSNumber.multiply(pColorBrightness, xChartValueFator).floatValue();
-		}else{
-			xColorB = DBSNumber.multiply(.8, xChartValueFator).floatValue();
-			xColorB += .2F;
-		}
-		xColorH += 0F;
-		xColorS = 1F;
-		Color xColor = Color.getHSBColor(xColorH, xColorS, xColorB);
-		StringBuilder xSB = new StringBuilder();
-		xSB.append("rgb(");
-		xSB.append(xColor.getRed());
-		xSB.append(",");
-		xSB.append(xColor.getGreen());
-		xSB.append(",");
-		xSB.append(xColor.getBlue());
-		xSB.append(")");
-		return xSB.toString();
+		return DBSColor.fromString("hsl(" + xColorH + "," + xColorS + "% ," + xColorL + "%)").asRgb();
 	}
 	
-
+//	public static String calcChartFillcolor(Float pHue, Float pColorBrightness, Integer pChartsItensCount, Integer pChartItensCount, Integer pChartIndex, Integer pChartValueIndex){
+//		if (pChartItensCount ==null || pChartItensCount == 0){return null;}
+//		Float xChartFator = DBSNumber.divide(pChartIndex, pChartsItensCount).floatValue();
+//		Float xChartValueFator = DBSNumber.divide(pChartValueIndex, pChartItensCount).floatValue();
+//		Float xColorH;
+//		Float xColorB;
+//		Float xColorS = DBSNumber.multiply(1, xChartValueFator).floatValue();
+//		if (pHue != null){
+//			xColorH = pHue;
+//		}else{
+//			xColorH = DBSNumber.multiply(1, xChartFator).floatValue();
+//		}
+//		if (pColorBrightness != null){
+//			xColorB = DBSNumber.multiply(pColorBrightness, xChartValueFator).floatValue();
+//		}else{
+//			xColorB = DBSNumber.multiply(.8, xChartValueFator).floatValue();
+//			xColorB += .2F;
+//		}
+//		xColorH += 0F;
+//		xColorS = 1F;
+//		Color xColor = Color.getHSBColor(xColorH, xColorS, xColorB);
+//		StringBuilder xSB = new StringBuilder();
+//		xSB.append("rgb(");
+//		xSB.append(xColor.getRed());
+//		xSB.append(",");
+//		xSB.append(xColor.getGreen());
+//		xSB.append(",");
+//		xSB.append(xColor.getBlue());
+//		xSB.append(")");
+//		return xSB.toString();
+//	}
 	//UIComponent =========================================================================
 	public static void handleAttribute(String pName, Object pValue, UIComponent pComponent) {
         @SuppressWarnings("unchecked")

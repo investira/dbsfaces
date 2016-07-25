@@ -76,10 +76,11 @@
 
 /*--------------------- */
 .dbs_chart[type='line'] > .-path > path{
-	stroke-opacity: 0.8;
+	stroke-opacity: 0.9;
 }
 .dbs_chart[type='line'].-activated > .-path > path{
 	stroke-opacity: 1;
+	stroke-width: 1.5px;
 }
 .dbs_chart[type='line'][showdelta].-activated > .-path > path{
 	stroke-opacity: 0.8;

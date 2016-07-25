@@ -8,14 +8,12 @@ import javax.faces.component.NamingContainer;
 
 import br.com.dbsoft.ui.component.DBSUIInput;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.util.DBSColor;
 import br.com.dbsoft.util.DBSNumber;
 
 @FacesComponent(DBSChartValue.COMPONENT_TYPE)
-public class DBSChartValue extends DBSUIInput implements NamingContainer, Serializable{ //, Serializable
+public class DBSChartValue extends DBSUIInput implements NamingContainer, Serializable{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2431823370810712385L;
 	/**
 	 * 
@@ -25,11 +23,12 @@ public class DBSChartValue extends DBSUIInput implements NamingContainer, Serial
 
 	protected enum PropertyKeys {
 		index,
-		fillColor,
+		color,
 		displayValue,
 		//Variáveis de trabalho
 		savedState,
 		previousValue,
+		dbscolor,
 		point;
 
 		String toString;
@@ -78,14 +77,23 @@ public class DBSChartValue extends DBSUIInput implements NamingContainer, Serial
 		handleAttribute("index", pIndex);
 	}
 
-	public String getFillColor() {
-		return (String) getStateHelper().eval(PropertyKeys.fillColor, null);
+	public String getColor() {
+		return (String) getStateHelper().eval(PropertyKeys.color, null);
 	}
-	public void setFillColor(String pFillColor) {
-		getStateHelper().put(PropertyKeys.fillColor, pFillColor);
-		handleAttribute("fillColor", pFillColor);
+	public void setColor(String pColor) {
+		getStateHelper().put(PropertyKeys.color, pColor);
+		handleAttribute("color", pColor);
+		setDBSColor(DBSColor.fromString(pColor));
 	}
-	
+
+	public DBSColor getDBSColor() {
+		return (DBSColor) getStateHelper().eval(PropertyKeys.dbscolor, null);
+	}
+	public void setDBSColor(DBSColor pDBSColor) {
+		getStateHelper().put(PropertyKeys.dbscolor, pDBSColor);
+		handleAttribute("dbscolor", pDBSColor);
+	}
+
 	public Double getPreviousValue() {
 		return DBSNumber.toDouble(getStateHelper().eval(PropertyKeys.previousValue, 0D));
 	}
