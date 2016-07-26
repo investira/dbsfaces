@@ -1904,14 +1904,16 @@ public class  DBSFaces {
 		Float xColorH;
 		Float xColorL;
 		Float xColorS = DBSNumber.multiply(100, xChartValueFator).floatValue();
+		double xColorA = 1F;
 		if (pColor != null){
+			xColorA = pColor.getAlpha();
 			xColorH = pColor.getHue();
 			xColorL = DBSNumber.multiply(pColor.getLightness(), xChartValueFator).floatValue();
 		}else{
 			xColorH = DBSNumber.multiply(360, xChartFator).floatValue();
 			xColorL = DBSNumber.multiply(50, xChartValueFator).floatValue();
 		}
-		return DBSColor.fromString("hsl(" + xColorH + "," + xColorS + "% ," + xColorL + "%)").asRgb();
+		return DBSColor.fromString("hsla(" + xColorH + ", " + xColorS + "%, " + xColorL + "%, " + xColorA + ")").asRgba();
 	}
 	
 //	public static String calcChartFillcolor(Float pHue, Float pColorBrightness, Integer pChartsItensCount, Integer pChartItensCount, Integer pChartIndex, Integer pChartValueIndex){
