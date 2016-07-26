@@ -1897,56 +1897,44 @@ public class  DBSFaces {
 	}
 	
 	//================================================================================
+	/**
+	 * Calcula color em função da quantidade de gráficos e itens em cada gráficos e a posição do item que se deseja calcular a cor.<br/>
+	 * Quando não for informado uma cor para o gráfico, a rotina irá atribuir um cor.
+	 * @param pColor
+	 * @param pChartsItensCount
+	 * @param pChartItensCount
+	 * @param pChartIndex
+	 * @param pChartValueIndex
+	 * @return
+	 */
 	public static String calcChartFillcolor(DBSColor pColor, Integer pChartsItensCount, Integer pChartItensCount, Integer pChartIndex, Integer pChartValueIndex){
 		if (pChartItensCount ==null || pChartItensCount == 0){return null;}
 		Float xChartFator = DBSNumber.divide(pChartIndex, pChartsItensCount).floatValue();
 		Float xChartValueFator = DBSNumber.divide(pChartValueIndex, pChartItensCount).floatValue();
 		Float xColorH;
 		Float xColorL;
-		Float xColorS = DBSNumber.multiply(100, xChartValueFator).floatValue();
-		double xColorA = 1F;
+		Float xColorS;
+		double xColorA;
 		if (pColor != null){
-			xColorA = pColor.getAlpha();
-			xColorH = pColor.getHue();
-			xColorL = DBSNumber.multiply(pColor.getLightness(), xChartValueFator).floatValue();
+			xColorA = pColor.toHSLA().getAlpha();
+			xColorH = pColor.toHSLA().getHue();
+			xColorS = 100f;
+			//usa meteda da luminosidade para gerar nova cor 
+			xColorL = DBSNumber.add(DBSNumber.multiply(DBSNumber.divide(pColor.toHSLA().getLightness(),
+																		2), 
+														xChartValueFator),
+									DBSNumber.divide(pColor.toHSLA().getLightness(),
+									2)).floatValue();
 		}else{
+			xColorA = 1F;
+			xColorS = 100f;
 			xColorH = DBSNumber.multiply(360, xChartFator).floatValue();
-			xColorL = DBSNumber.multiply(50, xChartValueFator).floatValue();
+			xColorL = 25 + DBSNumber.multiply(25, xChartValueFator).floatValue();
 		}
-		return DBSColor.fromString("hsla(" + xColorH + ", " + xColorS + "%, " + xColorL + "%, " + xColorA + ")").asRgba();
+		System.out.println("hsla(" + xColorH + ", " + xColorS + "%, " + xColorL + "%, " + xColorA + ")");
+		return "hsla(" + xColorH + ", " + xColorS + "%, " + xColorL + "%, " + xColorA + ")";
 	}
-	
-//	public static String calcChartFillcolor(Float pHue, Float pColorBrightness, Integer pChartsItensCount, Integer pChartItensCount, Integer pChartIndex, Integer pChartValueIndex){
-//		if (pChartItensCount ==null || pChartItensCount == 0){return null;}
-//		Float xChartFator = DBSNumber.divide(pChartIndex, pChartsItensCount).floatValue();
-//		Float xChartValueFator = DBSNumber.divide(pChartValueIndex, pChartItensCount).floatValue();
-//		Float xColorH;
-//		Float xColorB;
-//		Float xColorS = DBSNumber.multiply(1, xChartValueFator).floatValue();
-//		if (pHue != null){
-//			xColorH = pHue;
-//		}else{
-//			xColorH = DBSNumber.multiply(1, xChartFator).floatValue();
-//		}
-//		if (pColorBrightness != null){
-//			xColorB = DBSNumber.multiply(pColorBrightness, xChartValueFator).floatValue();
-//		}else{
-//			xColorB = DBSNumber.multiply(.8, xChartValueFator).floatValue();
-//			xColorB += .2F;
-//		}
-//		xColorH += 0F;
-//		xColorS = 1F;
-//		Color xColor = Color.getHSBColor(xColorH, xColorS, xColorB);
-//		StringBuilder xSB = new StringBuilder();
-//		xSB.append("rgb(");
-//		xSB.append(xColor.getRed());
-//		xSB.append(",");
-//		xSB.append(xColor.getGreen());
-//		xSB.append(",");
-//		xSB.append(xColor.getBlue());
-//		xSB.append(")");
-//		return xSB.toString();
-//	}
+
 	//UIComponent =========================================================================
 	public static void handleAttribute(String pName, Object pValue, UIComponent pComponent) {
         @SuppressWarnings("unchecked")

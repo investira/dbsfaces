@@ -224,7 +224,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 		Double xWidth = DBSNumber.divide(pCharts.getWidth(), pCharts.getChildCount()).doubleValue();
 		Double xX = xWidth * (pChart.getIndex() - 1);
 		pWriter.startElement("g", pCharts);
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
+			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + CSS.THEME.FC);
 			DBSFaces.setAttribute(pWriter, "chartid", pChart.getClientId());
 				DBSFaces.encodeSVGRect(pCharts, pWriter, xX.toString(), "0", xWidth.toString(), "1.7em", null, null, "fill=url(#" + pChart.getClientId() + "_linestroke); stroke=url(#" + pChart.getClientId() + "_linestroke)");
 				DBSFaces.encodeSVGText(pCharts, pWriter, xX.toString(), "1.2em", xLabel, null, null, "transform:translateY(1.7em)");

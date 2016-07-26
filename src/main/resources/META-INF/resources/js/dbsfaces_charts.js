@@ -341,36 +341,36 @@ dbsfaces.charts = {
 
 	},
 	
-	activateChart: function(pCharts, pLabel){
-		var xSiblings = pLabel.siblings();
+	activateChart: function(pCharts, pCaption){
+		var xSiblings = pCaption.siblings();
 		var xSiblingsActivated = xSiblings.filter(".-activated");
-		var xChart= $(dbsfaces.util.jsid(pLabel.attr("chartid")));
+		var xChart= $(dbsfaces.util.jsid(pCaption.attr("chartid")));
 		//Move label para primeiro plano
-		dbsfaces.ui.moveToFront(pLabel);
+		dbsfaces.ui.moveToFront(pCaption);
 		//Desmarca todos
 		xSiblingsActivated.each(function(){
-			var xSibilingLabel = $(this);
-			var xSibilingChart = $(dbsfaces.util.jsid(xSibilingLabel.attr("chartid")));
+			var xSibilingCaption = $(this);
+			var xSibilingChart = $(dbsfaces.util.jsid(xSibilingCaption.attr("chartid")));
 			dbsfaces.charts.pvActivateDelta(pCharts, xSibilingChart, false);
-			dbsfaces.charts.pvActivateChartOne(xSibilingChart, xSibilingLabel, false);
+			dbsfaces.charts.pvActivateChartOne(xSibilingChart, xSibilingCaption, false);
 		});
 		//Ativa delta
 		dbsfaces.charts.pvActivateDelta(pCharts, xChart, true);
 		//Marca selecionado
-		dbsfaces.charts.pvActivateChartOne(xChart, pLabel, true);
+		dbsfaces.charts.pvActivateChartOne(xChart, pCaption, true);
 		dbsfaces.ui.moveToFront(xChart);
 	},
 
-	pvActivateChartOne: function(pChart, pLabel, pActivate){
+	pvActivateChartOne: function(pChart, pCaption, pActivate){
 		if (pActivate){
 			pChart.svgAddClass("-activated");
-			if (pLabel != null){
-				pLabel.svgAddClass("-activated");
+			if (pCaption != null){
+				pCaption.svgAddClass("-activated").svgAddClass("-th_i");
 			}
 		}else{
 			pChart.svgRemoveClass("-activated");
-			if (pLabel != null){
-				pLabel.svgRemoveClass("-activated");
+			if (pCaption != null){
+				pCaption.svgRemoveClass("-activated").svgRemoveClass("-th_i");
 			}
 		}
 	},
