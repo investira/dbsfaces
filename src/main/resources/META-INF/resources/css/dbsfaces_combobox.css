@@ -42,7 +42,7 @@
 }
 
 .dbs_combobox > .-container > .-th_input-data > .-button {
-	color: rgb(13,25,45);
+/* 	color: rgb(13,25,45); */
 	position: absolute;
     right: 2px;
     top: 50%;
