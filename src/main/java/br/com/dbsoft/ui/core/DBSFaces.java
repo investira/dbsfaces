@@ -1931,7 +1931,6 @@ public class  DBSFaces {
 			xColorH = DBSNumber.multiply(360, xChartFator).floatValue();
 			xColorL = 25 + DBSNumber.multiply(25, xChartValueFator).floatValue();
 		}
-		System.out.println("hsla(" + xColorH + ", " + xColorS + "%, " + xColorL + "%, " + xColorA + ")");
 		return "hsla(" + xColorH + ", " + xColorS + "%, " + xColorL + "%, " + xColorA + ")";
 	}
 
