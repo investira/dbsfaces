@@ -331,17 +331,17 @@ textarea.-th_input-data:FOCUS,
 /* (min-width: 700px) and landscape */
 /* Resposive */
 @media screen and (max-width: 600px) and (orientation: portrait){
-	-th_responsive .-th_input-data{
+	.-th_responsive .-th_input-data{
 	}
 	
-	-th_responsive .-th_input .-th_input-label:first-child{
+	.-th_responsive .-th_input .-th_input-label:first-child{
 	    display: block;
 	    position: relative;
 	    font-size: .7em;
 	    left: .2em;
 	}
 
-	-th_responsive .-th_input .-th_input-label:first-child:after{
+	.-th_responsive .-th_input .-th_input-label:first-child:after{
 		content:"";
 	}
 	
