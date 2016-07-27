@@ -67,7 +67,7 @@
 
 .dbs_charts > .-container > .-data > .-container > .-content > .-captions > .-content{
 	cursor: pointer;
-	fill-opacity: .1;
+	fill-opacity: .2;
 }
 .dbs_charts > .-container > .-data > .-container > .-content > .-captions > .-content.-activated{
 	opacity: 1;
@@ -87,11 +87,17 @@
 	-o-transform: translate(.5em);
 	transform: translate(.5em);
 }	
+
+
 .dbs_charts > .-container > .-data > .-container > .-content > .-captions > .-content.-activated > text{
 	fill-opacity:1;
 }	
 
-.dbs_charts > .-container > .-data > .-container > .-content > .-captions > .-content > rect{
+.dbs_charts > .-container > .-data > .-container > .-content > .-captions > .-content > .-legend{
+	fill-opacity:1;
+}	
+.dbs_charts > .-container > .-data > .-container > .-content > .-captions > .-content.-activated > .-legend{
+	fill-opacity:0;
 }	
 
 .dbs_charts > .-container > .-data > .-container > .-content > .-value{
