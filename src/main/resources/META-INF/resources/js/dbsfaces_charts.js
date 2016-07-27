@@ -353,6 +353,8 @@ dbsfaces.charts = {
 			var xSibilingChart = $(dbsfaces.util.jsid(xSibilingCaption.attr("chartid")));
 			dbsfaces.charts.pvActivateDelta(pCharts, xSibilingChart, false);
 			dbsfaces.charts.pvActivateChartOne(xSibilingChart, xSibilingCaption, false);
+			//Desmarca qualquer valor marcado 
+			dbsfaces.chartValue.unSelect(xSibilingChart.data("parent").data("hover"));
 		});
 		//Ativa delta
 		dbsfaces.charts.pvActivateDelta(pCharts, xChart, true);
