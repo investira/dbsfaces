@@ -43,7 +43,13 @@ dbs_nav = function(pId) {
 	});
 
 	$(pId + " > .-container > .-nav").on(dbsfaces.EVENT.ON_TRANSITION_END, function(e){
-		dbsfaces.ui.focusOnFirstInput($(this));
+		if (xNav.hasClass("-closed")){
+			$(":focus").blur();
+			xNav.trigger("closed");
+		}else{
+			dbsfaces.ui.focusOnFirstInput($(this));
+			xNav.trigger("opened");
+		}
 	});
 	
 
