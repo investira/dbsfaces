@@ -173,10 +173,10 @@ String.prototype.replaceAll = function(target, replacement) {
 
 	$.fn.focusNextInputField = function() {
 	    return this.each(function() {
-	        var fields = $(this).parents('form:eq(0),body').find('button,input,textarea,select');
-	        var index = fields.index( this );
-	        if ( index > -1 && ( index + 1 ) < fields.length ) {
-	            fields.eq( index).focus();
+	        var xFields = $(this).parents('form:eq(0),body').find('button,input,textarea,select');
+	        var xIndex = xFields.index(this);
+	        if (xIndex > -1 && (xIndex + 1 ) < xFields.length) {
+	            xFields.eq(xIndex).focus();
 	        }
 	        return false;
 	    });
