@@ -17,14 +17,24 @@ dbs_nav = function(pId) {
 		return false;
 	});
 	
-	$(pId + " > .-container > .-nav").on("mousewheel touchmove", function(e){
-		e.stopImmediatePropagation();
-	});
+//	$(pId + " > .-container > .-nav").on("mousewheel touchmove", function(e){
+//		e.stopImmediatePropagation();
+//	});
 	$(pId + " > .-container > .-mask").on("mousewheel touchmove", function(e){
 //		e.preventDefault();
 //		e.stopPropagation();
 		e.stopImmediatePropagation();
 //		return false;
+	});
+
+	$(pId + " > .-container > .-nav").touchwipe({
+	     wipeLeft: function() {dbsfaces.nav.whipe(xNav, "l");},
+	     wipeRight: function() {dbsfaces.nav.whipe(xNav, "r");},
+	     wipeUp: function() {dbsfaces.nav.whipe(xNav, "u");},
+	     wipeDown: function() {dbsfaces.nav.whipe(xNav, "d");},
+	     min_move_x: 50,
+	     min_move_y: 50,
+	     preventDefaultEvents: true
 	});
 
 	$(pId + " > .-container > .-nav > .-iconclose").on("mousedown touchstart", function(e){
@@ -41,11 +51,34 @@ dbs_nav = function(pId) {
 };
 
 dbsfaces.nav = {
+	whipe: function(pNav, pDirection){
+//		alert(pDirection + "\t" + pNav.data("v") + "\t" + pNav.data("l"));
+		if (pDirection=="l"
+		 && pNav.data("v")
+		 && pNav.data("l")){
+			dbsfaces.nav.show(pNav);
+		}
+		if (pDirection=="r"
+		 && pNav.data("v")
+		 && !pNav.data("l")){
+			dbsfaces.nav.show(pNav);
+		}
+		if (pDirection=="d"
+		 && !pNav.data("v")
+		 && !pNav.data("t")){
+			dbsfaces.nav.show(pNav);
+		}
+		if (pDirection=="u"
+		 && !pNav.data("v")
+		 && pNav.data("t")){
+			dbsfaces.nav.show(pNav);
+		}
+	},
+
 	initialize: function(pNav){
 		dbsfaces.nav.pvInitializeData(pNav);
 		dbsfaces.nav.pvInitializeLayout(pNav);
 	},
-
 	pvInitializeData: function(pNav){
 		var xTop = pNav.hasClass("-tlh")
 		        || pNav.hasClass("-tlv")
@@ -102,7 +135,7 @@ dbsfaces.nav = {
 		}else{
 			dbsfaces.nav.pvClose(pNav);
 		}
-		pNav.toggleClass("-closed -th_i");
+		pNav.toggleClass("-closed");
 	},
 
 	pvOpen: function(pNav){
