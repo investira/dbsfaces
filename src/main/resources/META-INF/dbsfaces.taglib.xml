@@ -2639,16 +2639,16 @@ Default: false;</description>
 		<attribute>
 			<description>
 				&lt;span style="font-size:small"&gt;
-				Localização. padrão é tlh.&lt;br/&gt;
+				Localização. Padrão é tlv.&lt;br/&gt;
 				&lt;ul&gt;
-					&lt;li&gt;TOP_LEFT_HORIZONTAL = tlh&lt;/li&gt;
-					&lt;li&gt;TOP_LEFT_VERTICAL = tlv&lt;/li&gt;
-					&lt;li&gt;TOP_RIGHT_HORIZONTAL = trh&lt;/li&gt;
-					&lt;li&gt;TOP_RIGHT_VERTICAL = trv&lt;/li&gt;
-					&lt;li&gt;BOTTOM_LEFT_HORIZONTAL = blh&lt;/li&gt;
-					&lt;li&gt;BOTTOM_LEFT_VERTICAL = blv&lt;/li&gt;
-					&lt;li&gt;BOTTOM_RIGHT_HORIZONTAL = brh&lt;/li&gt;
-					&lt;li&gt;BOTTOM_RIGHT_VERTICAL = brv&lt;/li&gt;
+					&lt;li&gt;Conteúdo:TOP e LEFT. Abertura:HORIZONTAL = tlh&lt;/li&gt;
+					&lt;li&gt;Conteúdo:TOP e LEFT. Abertura:VERTICAL = tlv&lt;/li&gt;
+					&lt;li&gt;Conteúdo:TOP e RIGHT. Abertura:HORIZONTAL = trh&lt;/li&gt;
+					&lt;li&gt;Conteúdo:TOP e RIGHT. Abertura:VERTICAL = trv&lt;/li&gt;
+					&lt;li&gt;Conteúdo:BOTTOM e LEFT. Abertura:HORIZONTAL = blh&lt;/li&gt;
+					&lt;li&gt;Conteúdo:BOTTOM e LEFT. Abertura:VERTICAL = blv&lt;/li&gt;
+					&lt;li&gt;Conteúdo:BOTTOM e RIGHT. Abertura:HORIZONTAL = brh&lt;/li&gt;
+					&lt;li&gt;Conteúdo:BOTTOM e RIGHT. Abertura:VERTICAL = brv&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>location</name>
