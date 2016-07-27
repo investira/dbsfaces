@@ -22,6 +22,7 @@ import br.com.dbsoft.ui.component.charts.DBSCharts;
 import br.com.dbsoft.ui.component.charts.DBSCharts.TYPE;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
+import br.com.dbsoft.util.DBSColor;
 import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSObject;
 
@@ -65,6 +66,10 @@ public class DBSChartRenderer extends DBSRenderer {
 		}
 
 		String xClientId = xChart.getClientId(pContext);
+		//Força configuração de cor caso não tenha sido informada.
+		if (xChart.getColor() == null){
+			xChart.setColor(DBSFaces.calcChartFillcolor(xChart.getDBSColor(), xCharts.getItensCount(), xChart.getItensCount(), xChart.getIndex(), xChart.getItensCount()));
+		}
 		
 		xWriter.startElement("g", xChart);
 			DBSFaces.setAttribute(xWriter, "id", xClientId);
@@ -74,7 +79,8 @@ public class DBSChartRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "index", xChart.getIndex());
 			DBSFaces.setAttribute(xWriter, "type", xCharts.getType());
 			DBSFaces.setAttribute(xWriter, "cs", xChart.getColumnScale());
-			DBSFaces.setAttribute(xWriter, "bc", DBSFaces.calcChartFillcolor(xChart.getDBSColor(), xCharts.getItensCount(), xChart.getItensCount(), xChart.getIndex(), 1));
+			DBSFaces.setAttribute(xWriter, "bc", xChart.getColor());
+//			DBSFaces.setAttribute(xWriter, "bc", DBSFaces.calcChartFillcolor(xChart.getDBSColor(), xCharts.getItensCount(), xChart.getItensCount(), xChart.getIndex(), xChart.getItensCount()));
 			if (xType == TYPE.LINE
 			 || xType == TYPE.PIE){
 				if (xChart.getShowDelta()){ //Artificio para padronizar o false como não existindo o atributo(comportamento do chrome)
@@ -152,6 +158,10 @@ public class DBSChartRenderer extends DBSRenderer {
 		if (!pChart.getShowDeltaList()){return null;}
 		//Lista com os valores dos deltas
 		List<IDBSChartDelta> xDeltaList = pChart.getDeltaList();
+		//Define largura e cor dos botões
+		float xWidth = DBSNumber.divide(pCharts.getChartWidth(), xDeltaList.size()).floatValue();
+		DBSColor.RGB xColor = pChart.getDBSColor().toRGB();
+		String xStyle = "width:" + xWidth + "px; background-color:" + new DBSColor(xColor.getRed(), xColor.getGreen(), xColor.getBlue(), .2f).toHSLA() + ";";
 		//Facet com os botões
 		DBSDiv xDeltaListContent = (DBSDiv) pChart.getFacet("deltalist");
 		//Se não informado o facet, cria contendo botões a partir da lista com os valores dos deltas e
@@ -159,7 +169,6 @@ public class DBSChartRenderer extends DBSRenderer {
 			xDeltaListContent = (DBSDiv) pContext.getApplication().createComponent(DBSDiv.COMPONENT_TYPE);
 			xDeltaListContent.setId("deltalist");
 			xDeltaListContent.setStyleClass("-content");
-//			xDeltaList.setStyleClass("-foreignobject");
 			pChart.getFacets().put("deltalist", xDeltaListContent);
 			//Adiciona botões com as opções dos deltas pré definidos
 			for (IDBSChartDelta xChartDelta: xDeltaList){
@@ -169,7 +178,7 @@ public class DBSChartRenderer extends DBSRenderer {
 				xDeltaButton.setIconClass(xChartDelta.getIconClass());
 				xDeltaButton.setTooltip(xChartDelta.getTooltip());
 				xDeltaButton.setonclick("null");
-//				xDeltaButton.setStyle("color:" + DBSFaces.calcChartFillcolor(pChart.getDBSColor(), pCharts.getItensCount(), pChart.getItensCount(), pChart.getIndex(), 1));
+				xDeltaButton.setStyle(xStyle);
 				xDeltaListContent.getChildren().add(xDeltaButton);
 				//Força que id atribuido ao botão seja efetivamente o gerado/configurado 
 				xChartDelta.setId(xDeltaButton.getClientId());

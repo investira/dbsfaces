@@ -74,11 +74,12 @@ public class DBSChartsRenderer extends DBSRenderer {
 					wLogger.error("Dimensão zerada");
 					return;
 				}
+				//Inicializa valores de controle 
 				pvInitializeCharts(xCharts);
 			}
 		}
 //		System.out.println(xCharts.getId() + "\t" + xPreRender + "\t" + xCharts.getWidth() + "\t" + xCharts.getHeight() + "\t" + xCharts.getFontSize());
-		//Inicializa valores de controle 
+
 
 
 		String xClientId = xCharts.getClientId(pContext);
@@ -360,8 +361,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 					pCharts.setShowGrid(false);
 				}else{
 					//Se possui deltalist
-					if (!pCharts.getShowDeltaList()
-					 && xChart.getDeltaList() != null
+					if (xChart.getDeltaList() != null
 					 && xChart.getDeltaList().size() > 0
 					 && pCharts.getShowDelta()
 					 && pCharts.getShowLabel()){

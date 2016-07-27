@@ -109,7 +109,8 @@
 /*     line-height: 100%; */
 }
 .dbs_chart[type='line'].-activated > .-delta > .-deltaList > .-container > .-content{
-    display: inline-block;
+/*     display: inline-block; */
+	display: inline-flex;
     white-space: nowrap;
 	position: relative;
     height: 100%;
@@ -118,10 +119,12 @@
 
 .dbs_chart[type='line'].-activated > .-delta > .-deltaList > .-container > .-content > .-th_action{
     height: 100%;
-/*     display: block; */
     position: relative;
 	height: 1.6em;
     display: inline-block;
+	-webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
 /* 	color:white;  */
 }
 
