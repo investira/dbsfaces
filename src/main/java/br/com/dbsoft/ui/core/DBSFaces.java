@@ -1908,6 +1908,19 @@ public class  DBSFaces {
 	 * @return
 	 */
 	public static String calcChartFillcolor(DBSColor pColor, Integer pChartsItensCount, Integer pChartItensCount, Integer pChartIndex, Integer pChartValueIndex){
+		return calcChartFillcolor(pColor, pChartsItensCount, pChartItensCount, pChartIndex, pChartValueIndex, 1f);
+	}
+	/**
+	 * Calcula color em função da quantidade de gráficos e itens em cada gráficos e a posição do item que se deseja calcular a cor.<br/>
+	 * Quando não for informado uma cor para o gráfico, a rotina irá atribuir um cor.
+	 * @param pColor
+	 * @param pChartsItensCount
+	 * @param pChartItensCount
+	 * @param pChartIndex
+	 * @param pChartValueIndex
+	 * @return
+	 */
+	public static String calcChartFillcolor(DBSColor pColor, Integer pChartsItensCount, Integer pChartItensCount, Integer pChartIndex, Integer pChartValueIndex, float pAlpha){
 		if (pChartItensCount ==null || pChartItensCount == 0){return null;}
 		Float xChartFator = DBSNumber.divide(pChartIndex, pChartsItensCount).floatValue();
 		Float xChartValueFator = DBSNumber.divide(pChartValueIndex, pChartItensCount).floatValue();
@@ -1931,6 +1944,7 @@ public class  DBSFaces {
 			xColorH = DBSNumber.multiply(360, xChartFator).floatValue();
 			xColorL = 25 + DBSNumber.multiply(25, xChartValueFator).floatValue();
 		}
+		xColorA *= pAlpha;
 		return "hsla(" + xColorH + ", " + xColorS + "%, " + xColorL + "%, " + xColorA + ")";
 	}
 

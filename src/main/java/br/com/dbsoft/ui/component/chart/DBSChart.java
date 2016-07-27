@@ -173,13 +173,13 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 	public void setColor(String pColor) {
 		getStateHelper().put(PropertyKeys.color, pColor);
 		handleAttribute("color", pColor);
-		setDBSColor(DBSColor.fromString(pColor));
+		pvSetDBSColor(DBSColor.fromString(pColor));
 	}
 
 	public DBSColor getDBSColor() {
 		return (DBSColor) getStateHelper().eval(PropertyKeys.dbscolor, null);
 	}
-	public void setDBSColor(DBSColor pDBSColor) {
+	private void pvSetDBSColor(DBSColor pDBSColor) {
 		getStateHelper().put(PropertyKeys.dbscolor, pDBSColor);
 		handleAttribute("dbscolor", pDBSColor);
 	}
