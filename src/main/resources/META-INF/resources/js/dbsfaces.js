@@ -484,12 +484,12 @@ dbsfaces.url = {
 
 dbsfaces.ui = {
 	initializeResponsive: function(){
-		var xResponsive = $(".-th_responsive");
-		if (xResponsive.length == 0){return;}
-		var xRatio = screen.width / screen.height;
+//		var xResponsive = $(".-th_responsive");
+//		if (xResponsive.length == 0){return;}
+//		var xRatio = screen.width / screen.height;
 //		console.log(window.orientation + "\t" + xRatio + "\t" + screen.width + "\t" + screen.height);
-		var xFontSize = 11 + Math.round(1 * xRatio);
-		xResponsive.css("font-size", xFontSize + "px");
+//		var xFontSize = 11 + Math.round(1 * xRatio);
+//		xResponsive.css("font-size", xFontSize + "px");
 	},
 	
 	moveToFront: function(pElement, pMoveToElement){
