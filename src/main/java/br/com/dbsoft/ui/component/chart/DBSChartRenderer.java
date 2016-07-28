@@ -65,11 +65,7 @@ public class DBSChartRenderer extends DBSRenderer {
 		}
 
 		String xClientId = xChart.getClientId(pContext);
-		//Força configuração de cor caso não tenha sido informada.
-//		if (xChart.getColor() == null){
-//			xChart.setColor(DBSFaces.calcChartFillcolor(null, xCharts.getItensCount(), xChart.getItensCount(), xChart.getIndex(), xChart.getItensCount()));
-//		}
-		
+
 		xWriter.startElement("g", xChart);
 			DBSFaces.setAttribute(xWriter, "id", xClientId);
 			DBSFaces.setAttribute(xWriter, "name", xClientId);
@@ -78,7 +74,6 @@ public class DBSChartRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "index", xChart.getIndex());
 			DBSFaces.setAttribute(xWriter, "type", xCharts.getType());
 			DBSFaces.setAttribute(xWriter, "cs", xChart.getColumnScale());
-//			DBSFaces.setAttribute(xWriter, "bc", xChart.getColor());
 			DBSFaces.setAttribute(xWriter, "bc", DBSFaces.calcChartFillcolor(xChart.getDBSColor(), xCharts.getItensCount(), xChart.getItensCount(), xChart.getIndex(), xChart.getItensCount()));
 			if (xType == TYPE.LINE
 			 || xType == TYPE.PIE){
@@ -191,8 +186,6 @@ public class DBSChartRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(pWriter, "y", ((pCharts.getPadding() * 2) + pCharts.getChartHeight()) + "px");
 			DBSFaces.setAttribute(pWriter, "width", pCharts.getChartWidth());
 			DBSFaces.setAttribute(pWriter, "height", "1.7em");
-			DBSFaces.setAttribute(pWriter, "width", ".5");
-			DBSFaces.setAttribute(pWriter, "height", ".5");
 			pWriter.startElement("div", pChart);
 				DBSFaces.setAttribute(pWriter, "class", "-container");
 				xDeltaListContent.encodeAll(pContext);

@@ -177,9 +177,10 @@ dbsfaces.charts = {
 			xChartCaptions.children(".-content").svgAddClass("-activated");
 			//Reposiciona valores para dar espaço os labels de título do gráfico
 			//Ajusta altura conforme tamanho do fonte definido no css. Artíficio pois height do css não funciona em todos os browsers
-			var xChartCaptionsHeight = xChartCaptions.find("rect").attr("height");
+//			var xChartCaptionsHeight = xChartCaptions.find("rect")[0].first().attr("height");
+			var xChartCaptionsHeight = xChartCaptions.find("rect").first()[0].height.baseVal.value;
 			//Reposiciona gráfico
-			dbsfaces.ui.cssTransform(xContent.children(".-value"), "translateY(" + xChartCaptionsHeight + ")");
+			dbsfaces.ui.cssTransform(xContent.children(".-value"), "translateY(" + xChartCaptionsHeight + "px)");
 			//Ativa o primeiro gráfico que possuir delta
 			dbsfaces.charts.activateChart(pCharts, xChartCaptions.children(".-content:first"));
 		}else{

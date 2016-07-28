@@ -92,13 +92,8 @@
 	display: inline-block;
 }
 .dbs_chart[type='line'].-activated > .-delta > .-deltaList{
-/* 	dominant-baseline: text-before-edge; */
 	pointer-events: all;
 	overflow: visible;
-/* 	height: 100%; */
-/* 	display:block; */
-/* 	font-size: .7em; */
-/* 	position: fixed; */
 }
 .dbs_chart[type='line'].-activated > .-delta > .-deltaList > .-container{
     display: block;
