@@ -3,16 +3,6 @@ dbs_chartValue = function(pId) {
 	
 	dbsfaces.chartValue.initialize(xChartValue);
 	
-
-	
-//	dbsfaces.chartValue.selectDelta(xChart, xChartValue);
-//	$(pId).on("mouseleave", function(e){
-//		dbsfaces.tooltip.hide($(pId + '_tooltip'));
-//	});
-//	$(pId).on("mouseenter", function(e){
-//		dbsfaces.tooltip.showDelayed($(pId + '_tooltip'));
-//	});
-
 	//Seleciona nova posição do delta e do item selecionado
 	if (xChartValue.data("parent").attr("type") != "line"){
 
@@ -23,13 +13,6 @@ dbs_chartValue = function(pId) {
 			e.stopImmediatePropagation();
 			return false;
 		});
-//		$(pId).on("mouseleave", function(e){
-////			console.log("chartvalue\t" + e.originalEvent.type);
-//			dbsfaces.chartValue.select(null, null);
-////			e.preventDefault();
-//			e.stopImmediatePropagation();
-//			return false;
-//		});
 	
 		$(pId).on("mousedown touchstart", function(e){
 //			console.log("chartvalueX\t" + e.originalEvent.type);
@@ -55,55 +38,6 @@ dbs_chartValue = function(pId) {
 		});
 	}
 
-//	$(pId).on("mouseleave", function(e){
-//		console.log("chartvalue\t" + e.originalEvent.type);
-//		dbsfaces.chartValue.unSelect(xChartValue);
-//		e.preventDefault();
-//		return false;
-//	});
-	
-//	//Inicia seleção para cálculo do delta (computer e mobile)
-//	$(pId).on("mousedown touchstart", function(e){
-//		console.log("mousedown touchstart");
-//		dbsfaces.chart.startDeltaDrag(xChart);
-//		dbsfaces.chartValue.selectValue(xCharts, xChart, xChartValue, true);
-//		e.preventDefault();
-//		return false;
-//	});
-//
-//	//Desmaca item selecionado
-//	$(pId).mouseleave(function (e){
-////		console.log("mouseleave");
-//		dbsfaces.chartValue.selectValue(xCharts, xChart, xChartValue, false);
-//	});
-//	
-//	//Seleciona nova posição do delta e do item selecionado
-//	$(pId).mousemove(function (e){
-////		console.log("mousemove");
-//		dbsfaces.chartValue.selectValue(xCharts, xChart, xChartValue, true);
-//	});
-//
-//	//Seleciona nova posição do delta e do item selecionado (Mobile)
-//	$(pId).on("≈", function(e){
-//		console.log("touchmove");
-//		//Verifica se elemento é um dbs_chartValue
-//		var xTarget = document.elementFromPoint(e.originalEvent.touches[0].clientX, e.originalEvent.touches[0].clientY);
-//		if (typeof(xTarget) != "undefined"){
-//			var xTargetChartValue = $(xTarget).parent();
-//			if (typeof(xTargetChartValue) != "undefined"){
-//				var xClass = xTargetChartValue.attr("class");
-//				if (typeof(xClass) != "undefined" 
-//				 && xClass.indexOf('dbs_chartValue') != -1){
-//					var xTargetChart = xTargetChartValue.closest(".dbs_chart");
-//					if (xTargetChart.get(0) == xChart.get(0)){
-//						dbsfaces.chartValue.selectValue(xTargetChartValue.closest(".dbs_charts"), xTargetChart, xTargetChartValue, true);
-//						e.preventDefault();
-//						return false;
-//					}
-//				}
-//			}
-//		}
-//	});
 };
 
 
@@ -205,11 +139,11 @@ dbsfaces.chartValue = {
 		var xHoverChart = pChartValue.data("parent");
 		var xHoverCharts = xHoverChart.data("parent");
 		var xHover = xHoverCharts.data("hover");
-		dbsfaces.chartValue.pvHoverChartValue(xHoverCharts, xHoverChart, xHover, false);
+		//dbsfaces.chartValue.pvHoverChartValue(xHoverCharts, xHoverChart, xHover, false); COmentado em 2016/08/16 - Já efetuado no unSelect
 		dbsfaces.chart.unSelect(xHover);
 	},
 
-	select: function(pChartValue, pSelect){
+	select: function(pChartValue, pSelect, pIsGroupMemberSelect){
 		if (pChartValue == null){return;}
 		var xChart = pChartValue.data("parent");
 //		console.log("guide number\t" + xChart.data("guide"));
@@ -250,6 +184,10 @@ dbsfaces.chartValue = {
 				dbsfaces.chartValue.unSelect(pChartValue);
 			}
 		}
+		if (pIsGroupMemberSelect == null){
+			//Seleciona valores nos gráficos que pertencem ao mesmo groupid
+			dbsfaces.chartValue.pvSelectGroupMembers(xCharts, xChart, pChartValue, true);
+		}
 	},
 	
 	unSelect: function(pChartValue){
@@ -264,6 +202,38 @@ dbsfaces.chartValue = {
 		dbsfaces.chart.unSelect(pChartValue);
 
 		return;
+	},
+
+	pvSelectGroupMembers: function(pCharts, pChart, pChartValue, pSelect){
+		var xGroupMembers = pCharts.data("groupmembers").not(pCharts);
+		//Charts
+		xGroupMembers.each(function(){
+			var xCharts = $(this);
+			//Chart filhos
+			if (typeof(xCharts.data("children")) != "undefined"){
+				//Desmaca qualquer valor selecionado no gráfico irmão
+				if (xCharts.data("hover") != null){
+					dbsfaces.chartValue.unSelect(xCharts.data("hover"));
+				}
+				var xChart = $(this).data("children").filter(".-activated");
+				xChart.each(function(){
+					//ChartValue filhos
+					var xChartValue = $(this).data("children");
+					if (typeof(xChartValue) != "undefined"){
+						xChartValue.each(function(){
+							//Se label for iqual
+							if ($(this).data("dl") == pChartValue.data("dl")){
+								if(pSelect){
+									dbsfaces.chartValue.select($(this), true, true);
+								}else{
+									dbsfaces.chartValue.unSelect($(this));
+								}
+							}
+						});
+					}
+				});
+			}
+		});
 	},
 
 	pvHoverChartValue: function(pCharts, pChart, pChartValue, pSelect){

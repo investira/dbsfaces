@@ -38,11 +38,6 @@ dbs_chart = function(pId, pDeltaList) {
 		//Procura por chartvalue a partir da linha do gráfico
 		$(pId + " > .-path > .-mask").on("mousemove touchmove touchstart", function(e){
 //				console.log("XXchart\t" + e.originalEvent.type + "\t" + document.elementFromPoint(e.originalEvent.pageX, e.originalEvent.pageY).id);
-			//Ignora findpoint se não houver guide ativo.
-//			if (e.originalEvent.type == "mousemove" 
-//			 && e.which == 0){
-//				return;
-//			}
 			dbsfaces.chart.findPoint(e, xChart);
 			e.stopImmediatePropagation();
 			return false;
@@ -53,9 +48,7 @@ dbs_chart = function(pId, pDeltaList) {
 			e.stopImmediatePropagation();
 			return false;
 		});
-
 	} 
-	
 };
 
 
