@@ -187,6 +187,7 @@ svg{
 	user-select: none !important;
 	
 	-webkit-tap-highlight-color: transparent;
+	cursor: default;
 }
 .-odd {}
 .-opened {}

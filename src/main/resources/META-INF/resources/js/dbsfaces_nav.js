@@ -60,23 +60,23 @@ dbsfaces.nav = {
 	whipe: function(pNav, pDirection){
 //		alert(pDirection + "\t" + pNav.data("v") + "\t" + pNav.data("l"));
 		if (pDirection=="l"
-		 && pNav.data("v")
-		 && pNav.data("l")){
+		 && pNav.data("l")
+		 && pNav.data("v")){
 			dbsfaces.nav.show(pNav);
 		}
 		if (pDirection=="r"
-		 && pNav.data("v")
-		 && !pNav.data("l")){
-			dbsfaces.nav.show(pNav);
-		}
-		if (pDirection=="d"
-		 && !pNav.data("v")
-		 && !pNav.data("t")){
+		 && !pNav.data("l")
+		 && pNav.data("v")){
 			dbsfaces.nav.show(pNav);
 		}
 		if (pDirection=="u"
-		 && !pNav.data("v")
-		 && pNav.data("t")){
+		 && pNav.data("t")
+		 && !pNav.data("v")){
+			dbsfaces.nav.show(pNav);
+		}
+		if (pDirection=="d"
+		 && !pNav.data("t")
+		 && !pNav.data("v")){
 			dbsfaces.nav.show(pNav);
 		}
 	},
@@ -94,7 +94,7 @@ dbsfaces.nav = {
 		var xLeft = pNav.hasClass("-tlh")
 		         || pNav.hasClass("-tlv")
 		         || pNav.hasClass("-blh")
-		         || pNav.hasClass("-blt");
+		         || pNav.hasClass("-blv");
 
 		var xVertical = pNav.hasClass("-tlv")
 		         	 || pNav.hasClass("-trv")

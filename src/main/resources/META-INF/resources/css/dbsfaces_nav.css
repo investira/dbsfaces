@@ -193,6 +193,7 @@
     display: inline-block;
     top:0;
     left:0;
+    vertical-align: middle;
 }
 
 .dbs_nav > .-container > .-icon > .-content {
