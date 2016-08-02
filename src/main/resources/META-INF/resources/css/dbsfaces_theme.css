@@ -1,5 +1,13 @@
+:root {
+  --th_fc: hsl(217.5, 55.17%, 11.37%);
+  --th_bc: rgb(254, 254, 255);
+}
+
+/* #foo h1 { */
+/*   color: var(--main-color); */
+/* } */
+
 .-th_fc{
-/* 	color:rgb(13,25,45); */
 	color: hsl(217.5, 55.17%, 11.37%);
 }
 .-th_fc.-th_i{ /*Invert*/
@@ -115,7 +123,8 @@ select,
 input,
 textarea,
 select{
-	background: white;
+	background: transparent;
+/* 	background: white; */
 }
 
 
@@ -153,7 +162,8 @@ select{
 
 .-th_input-data,
 .-th_input-suggestion{
-	background-color: white;
+/* 	background-color: white; */
+	background-color: transparent;
 }
 
 .-th_input-data,
@@ -167,6 +177,7 @@ select{
 	box-sizing: border-box;
 	vertical-align: middle;
 	min-height: 1.45em;
+	color: inherit;
 /* 	min-height: 19px; Comentado em 2016-01-13 ricardo*/
 }
 
@@ -321,6 +332,21 @@ textarea.-th_input-data:FOCUS,
 	width: 33%;
 }
 
+@media screen and (min-width: 769px){
+	.-th_responsive{
+		font-size: 15px;
+	}
+}
+@media screen and (max-width: 768px){
+	.-th_responsive{
+		font-size: 13px;
+	}
+}
+@media screen and (max-width: 320px){
+	.-th_responsive{
+		font-size: 11px;
+	}
+}
 
 /* @media screen and (min-width: 560px){ */
 /* 	.-th_responsive	.-th_tr > .-th_section{ */
@@ -346,5 +372,6 @@ textarea.-th_input-data:FOCUS,
 	}
 	
 }
+
 
 

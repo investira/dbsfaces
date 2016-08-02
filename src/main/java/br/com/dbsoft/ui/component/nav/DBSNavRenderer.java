@@ -75,7 +75,7 @@ public class DBSNavRenderer extends DBSRenderer {
 	
 	private void pvEncodeNav(DBSNav pNav, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("div", pNav);
-			DBSFaces.setAttribute(pWriter, "class", "-nav" + CSS.THEME.FC + CSS.THEME.BC + CSS.THEME.INVERT, null);
+			DBSFaces.setAttribute(pWriter, "class", "-nav" + CSS.THEME.FC + CSS.THEME.BC + CSS.THEME.INVERT +" -closed", null);
 			//Header
 			pvEncodeHeader(pNav, pContext, pWriter);
 			//Nav
@@ -150,9 +150,9 @@ public class DBSNavRenderer extends DBSRenderer {
 	}
 	private void pvEncodeIcon(DBSNav pNav, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("div", pNav);
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON);
+			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON + CSS.THEME.ACTION);
 			pWriter.startElement("div", pNav);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + CSS.THEME.ACTION + pNav.getIconClass() + CSS.MODIFIER.INHERIT);
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + pNav.getIconClass() + CSS.MODIFIER.INHERIT);
 			pWriter.endElement("div");
 		pWriter.endElement("div");
 	}

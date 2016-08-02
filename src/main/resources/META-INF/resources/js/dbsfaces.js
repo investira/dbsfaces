@@ -593,6 +593,7 @@ dbsfaces.ui = {
 		xOP.find("input").not('[type="hidden"]').not(xId + " input").attr('disabled', true);
 		xOP.find("button").not(xId + " button").attr('disabled', true);
 		xOP.find("select").not(xId + " select").attr('disabled', true);
+		xOP.find(".dbs_nav").not(xId + " nav").attr('disabled', true);
 		xOP.find("a").not(xId + " a").attr('disabled', true);
 		xOP.find("textarea").not(xId + " textarea").attr('disabled', true);
 
@@ -608,6 +609,7 @@ dbsfaces.ui = {
 		xE.find("a").not(".-disabled").attr('disabled', false);
 		xE.find("button").not(".-disabled").attr('disabled', false);
 		xE.find("select").not(".-disabled").attr('disabled', false);
+		xE.find(".dbs_nav").not(".-disabled").attr('disabled', false);
 		xE.find("textarea").not(".-disabled").attr('disabled', false);
 	},
 

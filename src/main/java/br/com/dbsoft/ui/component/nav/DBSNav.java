@@ -4,12 +4,13 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import javax.faces.component.FacesComponent;
+import javax.faces.component.NamingContainer;
 
 import br.com.dbsoft.ui.component.DBSUIComponentBase;
 import br.com.dbsoft.ui.core.DBSFaces;
 
 @FacesComponent(DBSNav.COMPONENT_TYPE)
-public class DBSNav extends DBSUIComponentBase {
+public class DBSNav extends DBSUIComponentBase implements NamingContainer{
 	
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.NAV;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
@@ -49,7 +50,8 @@ public class DBSNav extends DBSUIComponentBase {
 		BOTTOM_LEFT_VERTICAL	("blv",false,true,true),
 		BOTTOM_LEFT_HORIZONTAL 	("blh",false,true,false),
 		BOTTOM_RIGHT_VERTICAL	("brv",false,false,true),
-		BOTTOM_RIGHT_HORIZONTAL ("brh",false,false,false);
+		BOTTOM_RIGHT_HORIZONTAL ("brh",false,false,false),
+		CENTER					("c",false,false,false);
 		
 		private String 	wCode;
 		private Boolean	wIsTop;
@@ -101,6 +103,8 @@ public class DBSNav extends DBSUIComponentBase {
 				return BOTTOM_RIGHT_HORIZONTAL;
 			case "brv":
 				return BOTTOM_RIGHT_VERTICAL;
+			case "c":
+				return CENTER;
 			default:
 				return TOP_LEFT_HORIZONTAL;
 			}
