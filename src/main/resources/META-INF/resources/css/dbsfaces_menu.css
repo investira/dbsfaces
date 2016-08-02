@@ -1,5 +1,5 @@
 .dbs_menu{
-	pointer-events: all;
+	pointer-events: auto;
 	-webkit-touch-callout: none !important;
 	-webkit-user-drag: none !important;
 	-webkit-user-select: none !important;
