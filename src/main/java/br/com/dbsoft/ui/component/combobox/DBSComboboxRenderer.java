@@ -11,8 +11,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
 
+import com.sun.faces.renderkit.RenderKitUtils;
+
 import br.com.dbsoft.core.DBSSDK.UI.COMBOBOX;
+import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSRenderer;
+import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.util.DBSObject;
@@ -70,6 +74,8 @@ public class DBSComboboxRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "name", xClientId);
 			DBSFaces.setAttribute(xWriter, "class", xClass);
 			DBSFaces.setAttribute(xWriter, "style", xCombobox.getStyle(), null);
+			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xCombobox, DBSPassThruAttributes.getAttributes(Key.COMBOBOX));
+			
 			xWriter.startElement("div", xCombobox);
 				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
 					DBSFaces.encodeLabel(pContext, xCombobox, xWriter);
