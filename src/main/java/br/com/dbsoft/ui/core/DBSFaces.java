@@ -1932,17 +1932,18 @@ public class  DBSFaces {
 			xColorA = pColor.toHSLA().getAlpha();
 			xColorH = pColor.toHSLA().getHue();
 			xColorS = 100f;
-			//usa meteda da luminosidade para gerar nova cor 
-			xColorL = DBSNumber.add(DBSNumber.multiply(DBSNumber.divide(pColor.toHSLA().getLightness(),
-																		2), 
+			//usa 60% da luminosidade para gerar nova cor 
+			xColorL = DBSNumber.add(DBSNumber.multiply(DBSNumber.multiply(pColor.toHSLA().getLightness(),
+																		.6), 
 														xChartValueFator),
-									DBSNumber.divide(pColor.toHSLA().getLightness(),
-									2)).floatValue();
+									DBSNumber.multiply(pColor.toHSLA().getLightness(),
+													   .4)).floatValue();
 		}else{
 			xColorA = 1F;
 			xColorS = 100f;
 			xColorH = DBSNumber.multiply(360, xChartFator).floatValue();
-			xColorL = 25 + DBSNumber.multiply(25, xChartValueFator).floatValue();
+			//usa 60% da luminosidade para gerar nova cor 
+			xColorL = 20 + DBSNumber.multiply(30, xChartValueFator).floatValue();
 		}
 		xColorA *= pAlpha;
 		return "hsla(" + xColorH + ", " + xColorS + "%, " + xColorL + "%, " + xColorA + ")";

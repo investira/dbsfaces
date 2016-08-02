@@ -205,6 +205,7 @@ dbsfaces.chartValue = {
 	},
 
 	pvSelectGroupMembers: function(pCharts, pChart, pChartValue, pSelect){
+		if (pCharts.data("groupmembers") == null){return;}
 		var xGroupMembers = pCharts.data("groupmembers").not(pCharts);
 		//Charts
 		xGroupMembers.each(function(){

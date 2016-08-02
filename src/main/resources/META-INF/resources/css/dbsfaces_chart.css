@@ -266,7 +266,7 @@
 /* ----------------------------------------------------------------------------------- */
 
 .dbs_chart[type='pie'] > .-delta > .-info{
-    font-size: 2em;
+/*     font-size: 1em; */
 }
 
 .dbs_chart[type='pie'] > .-delta > .-info > .-value > textPath{

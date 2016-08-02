@@ -84,6 +84,7 @@ dbsfaces.chart = {
 		pChart.data("deltagroup", null);
 		pChart.data("deltalistgroup", null);
 		pChart.data("deltalist", null);
+		pChart.data("deltainfogroup", null);
 		pChart.data("mask", null);
 		//Tamanho máximo do label da coluna
 		pChart.data("maxlabelheight", 0);
@@ -97,6 +98,10 @@ dbsfaces.chart = {
 				pChart.data("deltalistgroup", xDeltaListGroup);
 				pChart.data("deltalist", pDeltaList);
 			}
+			var xDeltaInfoGroup = xDeltaGroup.children(".-info");
+			if (xDeltaInfoGroup.length != 0){
+				pChart.data("deltainfogroup", xDeltaInfoGroup);
+			}			
 		}
 		pChart.data("pathgroup", dbsfaces.util.getNotUndefined(pChart.children(".-path"), null));
 		if (pChart.data("pathgroup") != null){

@@ -88,23 +88,12 @@ public class DBSChartRenderer extends DBSRenderer {
 			
 			encodeClientBehaviors(pContext, xChart);
 			
-			if (xType == TYPE.LINE
-			 || xType == TYPE.BAR){
-				//Divisão onde serão desenhadas as linhas que ligam os pontos no gráfico por linha.
-				pvEncodePathGroup(xCharts, xChart, xWriter);
-			}
+			//Divisão onde serão desenhadas as linhas que ligam os pontos no gráfico por linha.
+			pvEncodePathGroup(xCharts, xChart, xType, xWriter);
+
 			//Divisão para exibição do delta   
-			if (xChart.getShowDelta()){
-				xWriter.startElement("g", xChart);
-					DBSFaces.setAttribute(xWriter, "class", "-delta");
-					if (xType == TYPE.PIE){
-						pvEncodePieDeltaTextPaths(xCharts, xChart, xWriter);
-					}else if (xType == TYPE.LINE){
-					//Divisão onde serão desenhadas as linhas que ligam os pontos no gráfico por linha.
-						xDeltaList = pvEncodeDeltaList(xCharts, xChart, pContext, xWriter);
-					}
-				xWriter.endElement("g");
-			}
+			xDeltaList = pvEncodeDelta(pContext, xCharts, xChart, xType, xWriter);
+
 			//Valores-------------------------
 			//Se não foi informado DBSResultSet
 			if (DBSObject.isEmpty(xChart.getVar())
@@ -118,7 +107,52 @@ public class DBSChartRenderer extends DBSRenderer {
 			
 		xWriter.endElement("g");
 	}
+
+	/**
+	 * @param pCharts
+	 * @param pChart
+	 * @param pWriter
+	 * @throws IOException
+	 */
+	private List<IDBSChartDelta> pvEncodeDelta(FacesContext pContext, DBSCharts pCharts, DBSChart pChart, TYPE pType, ResponseWriter pWriter) throws IOException{
+		if (!pChart.getShowDelta()){return null;}
+		List<IDBSChartDelta> xDeltaList = null;
+		pWriter.startElement("g", pChart);
+			DBSFaces.setAttribute(pWriter, "class", "-delta");
+			pvEncodeDeltaInfo(pCharts, pChart, pType, pWriter);
+			if (pType == TYPE.PIE){
+				pvEncodePieDeltaTextPaths(pCharts, pChart, pWriter);
+			}else if (pType == TYPE.LINE){
+				//Divisão onde serão desenhadas as linhas que ligam os pontos no gráfico por linha.
+				xDeltaList = pvEncodeDeltaList(pCharts, pChart, pContext, pWriter);
+			}
+		pWriter.endElement("g");
+		return xDeltaList;
+	}
 	
+	/**
+	 * @param pCharts
+	 * @param pChart
+	 * @param pWriter
+	 * @throws IOException
+	 */
+	private void pvEncodeDeltaInfo(DBSCharts xCharts, DBSChart xChart, TYPE pType, ResponseWriter pWriter) throws IOException{
+		if (pType != TYPE.PIE
+		 && pType == TYPE.LINE){
+			return;
+		}
+		Double xFontSize = 0D;
+		pWriter.startElement("g", xChart);
+			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.INFO);
+			if (pType == TYPE.PIE){
+				xFontSize = xCharts.getPieChartWidth() * .70;
+			}else if (pType == TYPE.LINE){
+				xFontSize = xCharts.getDiameter() / 4;
+			}
+			DBSFaces.setAttribute(pWriter, "font-size", xFontSize.floatValue() + "px");
+		pWriter.endElement("g");
+	}
+
 	/**
 	 * Divisão onde serão desenhadas as linhas que ligam os pontos no gráfico por linha.
 	 * O desenho é efetuado via JS no chartValue
@@ -127,7 +161,12 @@ public class DBSChartRenderer extends DBSRenderer {
 	 * @param pWriter
 	 * @throws IOException
 	 */
-	private void pvEncodePathGroup(DBSCharts pCharts, DBSChart pChart, ResponseWriter pWriter) throws IOException{
+	private void pvEncodePathGroup(DBSCharts pCharts, DBSChart pChart, TYPE pType, ResponseWriter pWriter) throws IOException{
+		if (pType != TYPE.LINE
+		 && pType != TYPE.BAR){
+			return;
+		}
+
 		Integer		xChartsWidth;
 		Integer 	xChartsHeight;
 		xChartsWidth = pCharts.getChartWidth() + pCharts.getPadding();
@@ -216,7 +255,7 @@ public class DBSChartRenderer extends DBSRenderer {
 	}
 
 	/**
-	 * Encode do path
+	 * Encode do path que servirá de base para o texto 
 	 * @param pChart
 	 * @param pWriter
 	 * @param pSide
