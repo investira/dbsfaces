@@ -15,6 +15,7 @@ public class DBSPassThruAttributes {
         .add("Accordion",ar(
             attr("onblur","blur")
             ,attr("onchange","change")
+            ,attr("onclick","click")
             ,attr("ondblclick","dblclick")
             ,attr("onfocus","focus")
             ,attr("onkeydown","keydown")
@@ -127,6 +128,7 @@ public class DBSPassThruAttributes {
         .add("Combobox",ar(
             attr("onblur","blur")
             ,attr("onchange","change")
+            ,attr("onclick","click")
             ,attr("ondblclick","dblclick")
             ,attr("onfocus","focus")
             ,attr("onkeydown","keydown")
@@ -143,6 +145,7 @@ public class DBSPassThruAttributes {
         .add("ComponentTree",ar(
 	        attr("onblur","blur")
 	        ,attr("onchange","change")
+            ,attr("onclick","click")
 	        ,attr("ondblclick","dblclick")
 	        ,attr("onfocus","focus")
 	        ,attr("onkeydown","keydown")
