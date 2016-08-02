@@ -64,24 +64,22 @@ dbs_nav = function(pId) {
 dbsfaces.nav = {
 	whipe: function(pNav, pDirection){
 //		alert(pDirection + "\t" + pNav.data("v") + "\t" + pNav.data("l"));
-		if (pDirection=="l"
-		 && pNav.data("l")
-		 && pNav.data("v")){
-			dbsfaces.nav.show(pNav);
-		}
-		if (pDirection=="r"
-		 && !pNav.data("l")
-		 && pNav.data("v")){
-			dbsfaces.nav.show(pNav);
-		}
-		if (pDirection=="u"
-		 && pNav.data("t")
-		 && !pNav.data("v")){
-			dbsfaces.nav.show(pNav);
-		}
-		if (pDirection=="d"
-		 && !pNav.data("t")
-		 && !pNav.data("v")){
+		if (pNav.data("c")
+		 ||	(pDirection=="l"
+		  && pNav.data("l")
+		  && pNav.data("v"))
+		  
+		 || (pDirection=="r"
+		  && !pNav.data("l")
+		  && pNav.data("v"))
+		  
+		 || (pDirection=="u"
+		  && pNav.data("t")
+		  && !pNav.data("v"))
+		  
+		 || (pDirection=="d"
+		  && !pNav.data("t")
+	      && !pNav.data("v"))){
 			dbsfaces.nav.show(pNav);
 		}
 	},
@@ -170,6 +168,13 @@ dbsfaces.nav = {
 		if (!pNav.data("v") || pNav.data("c")){
 			pNav.data("navgroup").css("height", "0");
 		}
+//		if (pNav.data("c")){
+//			pNav.data("navgroup").css("left", "-50%");
+//		}else if (pNav.data("v")){
+//			pNav.data("navgroup").css("width", "0");
+//		}else if (!pNav.data("v")){
+//			pNav.data("navgroup").css("height", "0");
+//		}
 		dbsfaces.ui.enableForegroundInputs($("body"));
 		$("html").removeClass("dbs_nav-freeze");
 		//Retira foco do componente que possuir foco
