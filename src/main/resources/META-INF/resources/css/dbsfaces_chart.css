@@ -250,6 +250,11 @@
 .dbs_chart[type='pie'].-dim > .dbs_chartValue > .-info{
 	fill-opacity: 0;
 	stroke-opacity: 0;
+	-webkit-transition: stroke-opacity .2s, fill-opacity .2s; 
+    -moz-transition: stroke-opacity .2s, fill-opacity .2s;
+    -ms-transition: stroke-opacity .2s, fill-opacity .2s;
+    -o-transition: stroke-opacity .2s, fill-opacity .2s;
+    transition: stroke-opacity .2s, fill-opacity .2s;
 }
 .dbs_chart[type='pie'].-dim > .dbs_chartValue.-selected > .-point,
 .dbs_chart[type='pie'].-dim > .dbs_chartValue.-hover > .-point,
@@ -257,6 +262,11 @@
 .dbs_chart[type='pie'].-dim > .dbs_chartValue.-selected > .-info{
 	fill-opacity: 1;
 	stroke-opacity: 1;
+	-webkit-transition: none; 
+    -moz-transition: none;
+    -ms-transition: none;
+    -o-transition: none;
+    transition: none;
 }   
 .dbs_chart[type='pie'][showdelta].-activated > .-delta > .-info{
 /* 	fill-opacity: 0.3; */

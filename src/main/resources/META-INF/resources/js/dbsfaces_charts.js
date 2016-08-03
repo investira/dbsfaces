@@ -166,6 +166,7 @@ dbsfaces.charts = {
 		}
 	},
 
+	//Charts que possuem groupid iquais
 	pvInitializeGroupMember: function(pCharts){
 		var xGroupId = pCharts.attr("groupid");
 		if (typeof(xGroupId) != 'undefined'){
@@ -189,12 +190,6 @@ dbsfaces.charts = {
 		if (pCharts.data("footer").length > 0){
 			xHeight += pCharts.data("footer")[0].getBoundingClientRect().height;
 		}
-//		pCharts.data("container").css("height", xHeight);
-//		var xWidth = 0;
-//		xWidth += pCharts.data("caption")[0].getBoundingClientRect().width;
-//		xWidth += pCharts.data("data")[0].getBoundingClientRect().width;
-//		xWidth += pCharts.data("footer")[0].getBoundingClientRect().width;
-//		pCharts.data("container").css("width", xWidth);
 	},
 
 	resize: function(pCharts){
@@ -228,22 +223,22 @@ dbsfaces.charts = {
 		var xHover = pCharts.data("hover");
 		var xDoUnSelect = true;
 		var xChartsChildren = pCharts.data("children");
-		xChartsChildren.each(function(){
-			//Verifica se não há registro marca antes de desmarcar
-			var xChart = $(this);
-//			if (typeof(xChart.attr("showdelta")) != "undefined"
-//			 || xChart.data("selection").length > 0){
+//		xChartsChildren.each(function(){
+//			//Verifica se não há registro marcado antes de desmarcar
+//			var xChart = $(this);
+////			if (typeof(xChart.attr("showdelta")) != "undefined"
+////			 || xChart.data("selection").length > 0){
+////				xDoUnSelect = false;
+////				return;
+////			}
+//			if (xChart.data("selection").length > 0){
 //				xDoUnSelect = false;
 //				return;
 //			}
-			if (xChart.data("selection").length > 0){
-				xDoUnSelect = false;
-				return;
-			}
-		});
-		if (xDoUnSelect){
+//		});
+//		if (xDoUnSelect){
 			dbsfaces.chartValue.lostFocus(xHover);
-		}
+//		}
 //		//Desmarcar qualquer guia 
 		xChartsChildren.each(function(){
 			dbsfaces.chart.lostFocus($(this));
@@ -297,12 +292,16 @@ dbsfaces.charts = {
 					var xChart = $(this);
 					//Se for o próprio chart, verifica se o item a ser deselecionado é o mesmo que está selecionado na lista 
 					if (pChart[0].id == xChart[0].id){
-						if ((xChart.data("selection").length > 1)
-						 || (xChart.data("selection").length > 0
-						  && xChart.data("selection")[0].id != pChartValue[0].id)){
+						if (xChart.data("selection").length > 0){
 							xDim = null; //Cancela desativação do DIM
 							return;
 						}
+//						if ((xChart.data("selection").length > 1)
+//						 || (xChart.data("selection").length > 0
+//						  && xChart.data("selection")[0].id != pChartValue[0].id)){
+//							xDim = null; //Cancela desativação do DIM
+//							return;
+//						}
 					}else if(xChart.data("selection").length > 0){
 						xDim = null;  //Cancela desativação do DIM
 						return;

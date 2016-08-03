@@ -217,7 +217,7 @@ dbsfaces.chartValue = {
 			if (typeof(xCharts.data("children")) != "undefined"){
 				//Desmaca qualquer valor selecionado no gráfico irmão
 				if (xCharts.data("hover") != null){
-					dbsfaces.chartValue.unSelect(xCharts.data("hover"));
+					dbsfaces.chartValue.lostFocus(xCharts.data("hover"));
 				}
 				var xChart = $(this).data("children").filter(".-activated");
 				xChart.each(function(){
@@ -228,9 +228,9 @@ dbsfaces.chartValue = {
 							//Se label for iqual
 							if ($(this).data("dl") == pChartValue.data("dl")){
 								if(pSelect){
-									dbsfaces.chartValue.select($(this), true, true);
+									dbsfaces.chartValue.select($(this), null, true);
 								}else{
-									dbsfaces.chartValue.unSelect($(this));
+									dbsfaces.chartValue.lostFocus($(this));
 								}
 							}
 						});
