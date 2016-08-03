@@ -139,7 +139,9 @@ dbsfaces.chartValue = {
 		var xHoverChart = pChartValue.data("parent");
 		var xHoverCharts = xHoverChart.data("parent");
 		var xHover = xHoverCharts.data("hover");
-		//dbsfaces.chartValue.pvHoverChartValue(xHoverCharts, xHoverChart, xHover, false); COmentado em 2016/08/16 - Já efetuado no unSelect
+		//É necessário desmarcar hover para dar oportunidade de retirar o dim do gráfico caso não existem itens selecionados  
+		dbsfaces.chartValue.pvHoverChartValue(xHoverCharts, xHoverChart, xHover, false);
+		//Configura seleção do chart pai. obs:Esta chamada precisa ser anterior ao unselect para verificar item atualmente selecionado 
 		dbsfaces.chart.unSelect(xHover);
 	},
 
@@ -166,7 +168,7 @@ dbsfaces.chartValue = {
 			}
 		}
 
-		//Configura seleção do chart pai. obs:Esta chamada previsa ser anterior ao unselect para verificar se item selecionado atual 
+		//Configura seleção do chart pai. obs:Esta chamada precisa ser anterior ao unselect para verificar item atualmente selecionado 
 		dbsfaces.chart.select(pChartValue, null);
 
 		//Desmarca item selecionado anteriormente
@@ -203,7 +205,8 @@ dbsfaces.chartValue = {
 
 		return;
 	},
-
+	
+	//Seleciona valores que possuem mesmo label em gráficos do mesmo grupoid
 	pvSelectGroupMembers: function(pCharts, pChart, pChartValue, pSelect){
 		if (pCharts.data("groupmembers") == null){return;}
 		var xGroupMembers = pCharts.data("groupmembers").not(pCharts);

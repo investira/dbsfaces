@@ -6,20 +6,23 @@ dbs_charts = function(pId, pPreRender) {
 	});
 	
 	if (pPreRender){
-		dbsfaces.charts.update(xCharts, false);
+		dbsfaces.charts.preInitialize(xCharts, false);
 	//Render final do gráfico
 	}else{
 		dbsfaces.charts.initialize(xCharts);
 		//Exibe gráfico
 		xCharts.data("container").css("opacity", 1);
 		if (xCharts.data("error") == null){
-			$(pId).mouseleave(function(e){
+			$(pId).on("mouseleave", function(e){
 				//Verificar se componente que disparou esta fora deste chart. 
 				//Artifício necessário pois o Firefox dispara este evento diversas vezes 
 				var xE = $(e.originalEvent.toElement || e.relatedTarget).closest(".dbs_charts");
 		        if (xE == "undefined"
+		        || xE.length == 0
 		        || xE[0] != this ){
-		    		dbsfaces.charts.lostFocus(xCharts);
+		    		dbsfaces.charts.lostFocus($(pId));
+					e.stopImmediatePropagation();
+					return false;
 		        }
 		 	});
 			
@@ -31,33 +34,7 @@ dbs_charts = function(pId, pPreRender) {
 };
 
 dbsfaces.charts = {
-	resize: function(pCharts){
-		var xTimeoutId = "chartsTimeout" + pCharts[0].id;
-		//Timeout para evitar chamadas repetidas desnecessárias. Alguns browsers chamam resize para widht e height.
-		//Salva timeout no próprio body para depois poder cancela-lo.Timeout não é salvo do próprio componente pois seria pedido depois que componente fosse recriado no update.
-		clearTimeout($("body").data(xTimeoutId));
-		$("body").data(xTimeoutId, 
-			setTimeout(function(e){
-				var xWidthNew = parseInt(pCharts[0].getBoundingClientRect().width);
-				var xHeightNew = parseInt(pCharts[0].getBoundingClientRect().height);
-				var xWidth = parseInt(pCharts.css("width"));
-				var xHeight = parseInt(pCharts.css("height"));
-				
-				var xWidth = parseInt(pCharts.attr("w"));
-				var xHeight = parseInt(pCharts.attr("h"));
-//				console.log(pCharts[0].id + "\t" + xWidth + "\t" + xWidthNew + "\t" + xHeight + "\t" + xHeightNew);
-				//Não efetua atualizaçãso se tamanho do gráfico NÃO foi alterado		
-				if (Math.abs(xWidth - xWidthNew) < 2
-				 && Math.abs(xHeight - xHeightNew) < 2){
-					return;
-				}
-				dbsfaces.charts.update(pCharts, true);
-			},500)
-		);
-
-	},
-
-	update: function(pCharts, pOnResize){
+	preInitialize: function(pCharts, pOnResize){
 		//Faz o render do gráfico já com a altura e largura definido
 		setTimeout(function(e){
 			var xWidth = parseInt(pCharts[0].getBoundingClientRect().width);
@@ -70,7 +47,6 @@ dbsfaces.charts = {
 //			console.log(pCharts[0].id + "\t request" + "\t" + xWidth + "\t" + xHeight + "\t" + xFontSize);
 			dbsfaces.ajax.request(pCharts[0].id, pCharts[0].id, pCharts[0].id, dbsfaces.ui.ajaxTriggerLoaded, dbsfaces.ui.showLoadingError(dbsfaces.util.jsid(pCharts[0].id)), xParams);
 		},0);
-
 	},
 
 	initialize: function(pCharts){
@@ -221,14 +197,35 @@ dbsfaces.charts = {
 //		pCharts.data("container").css("width", xWidth);
 	},
 
+	resize: function(pCharts){
+		var xTimeoutId = "chartsTimeout" + pCharts[0].id;
+		//Timeout para evitar chamadas repetidas desnecessárias. Alguns browsers chamam resize para widht e height.
+		//Salva timeout no próprio body para depois poder cancela-lo.Timeout não é salvo do próprio componente pois seria pedido depois que componente fosse recriado no update do preInitialize.
+		clearTimeout($("body").data(xTimeoutId));
+		$("body").data(xTimeoutId, 
+			setTimeout(function(e){
+				var xWidthNew = parseInt(pCharts[0].getBoundingClientRect().width);
+				var xHeightNew = parseInt(pCharts[0].getBoundingClientRect().height);
+				var xWidth = parseInt(pCharts.css("width"));
+				var xHeight = parseInt(pCharts.css("height"));
+				
+				var xWidth = parseInt(pCharts.attr("w"));
+				var xHeight = parseInt(pCharts.attr("h"));
+//				console.log(pCharts[0].id + "\t" + xWidth + "\t" + xWidthNew + "\t" + xHeight + "\t" + xHeightNew);
+				//Não efetua atualizaçãso se tamanho do gráfico NÃO foi alterado		
+				if (Math.abs(xWidth - xWidthNew) < 2
+				 && Math.abs(xHeight - xHeightNew) < 2){
+					return;
+				}
+				dbsfaces.charts.preInitialize(pCharts, true);
+			},500)
+		);
+	},
+
+
 	lostFocus: function(pCharts){
-		var xHover = pCharts.data("hover");
-		if (xHover != null){
-			xHover.svgRemoveClass("-hover");
-		}
-
 		//Verifica se não há registro marca antes de desmarcar
-
+		var xHover = pCharts.data("hover");
 		var xDoUnSelect = true;
 		var xChartsChildren = pCharts.data("children");
 		xChartsChildren.each(function(){

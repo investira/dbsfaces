@@ -48,6 +48,13 @@ dbs_chart = function(pId, pDeltaList) {
 			e.stopImmediatePropagation();
 			return false;
 		});
+	}else{
+		$(pId).on("mouseleave", function(e){
+			dbsfaces.charts.lostFocus(xChart.data("parent"));
+			e.stopImmediatePropagation();
+			return false;
+		});
+
 	} 
 };
 
