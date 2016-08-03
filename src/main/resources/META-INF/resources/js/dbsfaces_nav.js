@@ -7,26 +7,20 @@ dbs_nav = function(pId) {
 
 	dbsfaces.nav.initialize(xNav);
 
-//	$(pId).on("click", function(e){
-//		console.log("icon click");
-//		e.stopImmediatePropagation();
-//		return false;
-//	});
-
 	$(pId + ":not([disabled]) > .-container > .-icon").on("mousedown touchstart", function(e){
-		console.log("icon mousedown touchstart");
+//		console.log("icon mousedown touchstart");
 		dbsfaces.nav.show(xNav);
 		return false;
 	});
 
 	$(pId + ":not([disabled]) > .-container > .-mask").on("mousedown touchstart", function(e){
-		console.log("mask mousedown touchstart");
+//		console.log("mask mousedown touchstart");
 		dbsfaces.nav.show(xNav);
 		return false;
 	});
 	
 	$(pId + ":not([disabled]) > .-container > .-mask").on("mousewheel touchmove", function(e){
-		console.log("mask mousewheel touchmove");
+//		console.log("mask mousewheel touchmove");
 		e.stopImmediatePropagation();
 	});
 
@@ -41,13 +35,13 @@ dbs_nav = function(pId) {
 	});
 
 	$(pId + ":not([disabled]) > .-container > .-nav > .-iconclose").on("mousedown touchstart", function(e){
-		console.log("iconclose mousedown touchstart");
+//		console.log("iconclose mousedown touchstart");
 		dbsfaces.nav.show(xNav);
 		return false;
 	});
 
 	$(pId + ":not([disabled]) > .-container > .-nav").on(dbsfaces.EVENT.ON_TRANSITION_END, function(e){
-		console.log("end transition\t");
+//		console.log("end transition\t");
 		if ($(this).closest(".dbs_nav").hasClass("-closed")){
 			xNav.trigger("closed");
 			$(this).removeClass("-opened").addClass("-closed");
@@ -56,9 +50,6 @@ dbs_nav = function(pId) {
 			xNav.trigger("opened");
 		}
 	});
-	
-
-
 };
 
 dbsfaces.nav = {
