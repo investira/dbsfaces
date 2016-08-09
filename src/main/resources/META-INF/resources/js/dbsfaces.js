@@ -7,6 +7,9 @@
 //stopPropagation()            Yes           No              No
 //stopImmediatePropagation()   Yes           No              Yes
 
+//SVG dimension
+//.height.baseVal.value;
+
 //Exemplo de load assyncrono
 //  (function(d, s, id) {
 //    var js, fjs = d.getElementsByTagName(s)[0];
@@ -391,8 +394,8 @@ dbsfaces.svg = {
 		return xTextPath;
 	},
 	
-	linearGradient: function(pComponent, pId){
-		var xElement = dbsfaces.svg.createElement('linearGradient', null);
+	linearGradient: function(pComponent, pId, pAttrs){
+		var xElement = dbsfaces.svg.createElement('linearGradient', pAttrs);
 		pComponent.append(xElement);
 
 		xElement.svgAttr("id", pId);

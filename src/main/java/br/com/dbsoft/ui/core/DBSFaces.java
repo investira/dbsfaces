@@ -1744,7 +1744,7 @@ public class  DBSFaces {
 	 * @param pAttrs Atributos nos formato atributo1=valor2; atributo2=valor2
 	 * @throws IOException
 	 */
-	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, Number pX, Number pY, String pWidth, String pHeight, Integer pRX, Integer pRY, String pStyleClass, String pStyle, String pAttrs) throws IOException{
+	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, Number pX, Number pY, String pWidth, String pHeight, String pRX, String pRY, String pStyleClass, String pStyle, String pAttrs) throws IOException{
 		encodeSVGRect(pComponent, pWriter, DBSNumber.round(pX, 4).toString(), DBSNumber.round(pY, 4).toString(), pWidth, pHeight, pRX, pRY, pStyleClass, pStyle, pAttrs);
 	}
 
@@ -1762,7 +1762,7 @@ public class  DBSFaces {
 	 * @param pAttrs Atributos nos formato atributo1=valor2; atributo2=valor2
 	 * @throws IOException
 	 */
-	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, String pX, String pY, String pWidth, String pHeight, Integer pRX, Integer pRY, String pStyleClass, String pStyle, String pAttrs) throws IOException{
+	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, String pX, String pY, String pWidth, String pHeight, String pRX, String pRY, String pStyleClass, String pStyle, String pAttrs) throws IOException{
 		pWriter.startElement("rect", pComponent);
 			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pAttrs);
 			setAttribute(pWriter, "x", 	pX, null);
@@ -1878,6 +1878,14 @@ public class  DBSFaces {
 			}
 		pWriter.endElement("text");
 	}
+	/**
+	 * Encode da Class, Style e Atributos em componente SVG
+	 * @param pWriter
+	 * @param pStyleClass
+	 * @param pStyle
+	 * @param pAttrs String com atributos no formato campo1:valor1. ex:  id=grafico3:pie1_deltapath_l; fill=none;
+	 * @throws IOException
+	 */
 	public static void encodeSVGSetDefaultAttr(ResponseWriter pWriter, String pStyleClass, String pStyle, String pAttrs) throws IOException{
 		if (pAttrs!=null){
 			String[] xAttrs = pAttrs.split("[;]");

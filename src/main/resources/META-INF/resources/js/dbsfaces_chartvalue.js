@@ -63,7 +63,8 @@ dbsfaces.chartValue = {
 		pChartValue.data("pointgroup", xChartValuePoint);
 		var xChartValueInfo = pChartValue.children(".-info");
 		pChartValue.data("infogroup", xChartValueInfo);
-		xValue = xChartValueInfo.children(".-value").text();
+		pChartValue.data("value", xChartValueInfo.children(".-value"));
+		xValue = pChartValue.data("value").text();
 		if (xValue != 0){
 			//Salva valores dentro do próprio componente para facilar o uso no momento do encode do delta
 			//Posição X
@@ -71,7 +72,7 @@ dbsfaces.chartValue = {
 			//Posição Y
 			pChartValue.data("dy", Number(xChartValuePoint.attr("cy")));
 			//Cor 
-			pChartValue.data("df", xChartValuePoint.css("color"));
+			pChartValue.data("dc", xChartValuePoint.css("stroke"));
 			//Valor nominal
 			pChartValue.data("dv", pChartValue.attr("value"));
 			//Percentual
@@ -109,19 +110,19 @@ dbsfaces.chartValue = {
 	},
 
 	pvInitializePie: function(pChartValue){
-		var xChartValueInfo = pChartValue.data("infogroup");
-		var xChartValueValue = xChartValueInfo.children(".-value");
-		var xChartValueBox = xChartValueInfo.children(".-box");
-		var xTransform = "translateY(-0.70em) ";
-		var xWidth = xChartValueValue.get(0).getComputedTextLength() + 5;
-		//Ajusta largura do box do label
-		if (xChartValueValue.length != 0){
-			xChartValueBox.attr("width", xWidth);
-			if (xChartValueValue.attr("style").indexOf("text-anchor:end") != -1){
-				xTransform += "translateX(-" + xWidth + "px)";
-			}
-			dbsfaces.ui.cssTransform(xChartValueBox, xTransform);
-		}
+//		var xChartValueInfo = pChartValue.data("infogroup");
+//		var xChartValueValue = pChartValue.data("value");
+//		var xChartValueBox = xChartValueInfo.children(".-box");
+//		var xTransform = "translateY(-0.70em) ";
+//		var xWidth = xChartValueValue.get(0).getComputedTextLength() + 5;
+//		//Ajusta largura do box do label
+//		if (xChartValueValue.length != 0){
+//			xChartValueBox.attr("width", xWidth);
+//			if (xChartValueValue.attr("style").indexOf("text-anchor:end") != -1){
+//				xTransform += "translateX(-" + xWidth + "px)";
+//			}
+//			dbsfaces.ui.cssTransform(xChartValueBox, xTransform);
+//		}
 	},
 	
 	pvIsEqual: function(pChartValue, pChartValueNew){

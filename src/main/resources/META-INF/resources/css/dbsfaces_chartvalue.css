@@ -21,18 +21,6 @@
 .dbs_chartValue > .-info > .-value{
 }
 
-.dbs_chartValue > .-info > .-label,
-.dbs_chartValue > .-info > .-box,
-.dbs_chartValue > .-info > .-value{
-/* 	cursor: pointer; */
-/* 	pointer-events: all;  */
-}
-
-.dbs_chartValue > .-info > .-label,
-.dbs_chartValue > .-info > .-value{
-/* 	stroke-width: 0px !important; */
-}
-
 
 .dbs_chartValue > .-info > .-label > text > .-normal{
 	display:none;

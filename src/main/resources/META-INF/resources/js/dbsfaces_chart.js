@@ -68,11 +68,11 @@ dbsfaces.chart = {
 		var xChartChildren = pChart.data("children");
 		var xShowLabel = (typeof(xCharts.attr("showlabel")) != "undefined" && pChart.data("mask").length > 0) ;
 		var xShowDelta = (pChart.data("deltagroup") != null);
-		var xDrawLine = (pChart.attr("type") == "line");
-		if (pChart.attr("type") == "bar"
-		 || xDrawLine){
-			//Verifica sopreposição dos labels e cor da linhas
-			dbsfaces.chart.pvInitializeLineAndLabels(xCharts, pChart, xChartChildren, xShowLabel, xDrawLine);
+		//Verifica sopreposição dos labels e cor da linhas
+		if (pChart.attr("type") == "bar"){
+			dbsfaces.chart.pvInitializeLineAndLabels(xCharts, pChart, xChartChildren, xShowLabel, false);
+		}else if (pChart.attr("type") == "line"){
+			dbsfaces.chart.pvInitializeLineAndLabels(xCharts, pChart, xChartChildren, xShowLabel, true);
 		}
 		//Cria espaço exibir o resultado das seleções
 		if (xShowDelta){
@@ -166,7 +166,7 @@ dbsfaces.chart = {
 			//Esconde as labels sobrepostas
 			if (pShowLabel){
 				xChartValueLabel = xChartValue.data("infogroup").children(".-label");
-				xChartValueLabelLine = xChartValue.data("infogroup").children(".-value");
+				xChartValueLabelLine = xChartValue.data("value");
 				xChartValueLabelText = xChartValueLabel.children("text"); //xChartValueLabelText
 				xChartValueLabelSmall = xChartValueLabelText.children(".-small");
 				xChartValueLabelNormal = xChartValueLabelText.children(".-normal");//xChartValueLabelText
@@ -213,13 +213,13 @@ dbsfaces.chart = {
 				if (i==1){
 					xStringPath = "M";
 					//Salva cor do primeiro ponto
-					xStarColor = xChartValue.data("df");
+					xStarColor = xChartValue.data("dc");
 				}else {
 					xStringPath += "L";
 				}
 				if (i == pChartValues.length){
 					//Salva cor do último ponto
-					xStopColor = xChartValue.data("df");
+					xStopColor = xChartValue.data("dc");
 				}
 				xX = Number(xChartValue.data("dx"));
 				xY = Number(xChartValue.data("dy"));
@@ -235,7 +235,7 @@ dbsfaces.chart = {
 		//Cria a linha e cor que conectam os pontos
 		if (xStringPath != ""){
 			//Cria cor
-			var xSvg = pCharts.find(".-container > .-data > .-container > defs");
+			var xSvg = pCharts.find("> .-container > .-data > .-container > defs");
 			var xLG = dbsfaces.svg.linearGradient(xSvg, pChart.get(0).id + "_linestroke");
 			dbsfaces.svg.stop(xLG, 0, xStarColor);
 			dbsfaces.svg.stop(xLG, "100%", xStopColor);

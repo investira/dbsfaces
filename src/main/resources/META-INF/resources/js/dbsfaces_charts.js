@@ -42,7 +42,7 @@ dbsfaces.charts = {
 			var xFontSize = parseInt(pCharts.css("font-size"));
 			var xParams = null;
 			if(pOnResize == null || pOnResize == false){
-				xParams = [xWidth,xHeight, xFontSize];
+				xParams = [xWidth, xHeight, xFontSize];
 			}
 //			console.log(pCharts[0].id + "\t request" + "\t" + xWidth + "\t" + xHeight + "\t" + xFontSize);
 			dbsfaces.ajax.request(pCharts[0].id, pCharts[0].id, pCharts[0].id, dbsfaces.ui.ajaxTriggerLoaded, dbsfaces.ui.showLoadingError(dbsfaces.util.jsid(pCharts[0].id)), xParams);
@@ -55,7 +55,7 @@ dbsfaces.charts = {
 		dbsfaces.charts.pvInitializeGuides(pCharts);
 		if (pCharts.data("error") == null){
 			dbsfaces.charts.pvInitializeChartActivate(pCharts);
-			dbsfaces.charts.pvInitializeDimensions(pCharts);
+			dbsfaces.charts.pvInitializeLayout(pCharts);
 		}
 	},
 
@@ -63,7 +63,8 @@ dbsfaces.charts = {
 		//Salva chart's vinculados a este charts
 		pCharts.data("children", pCharts.find(".dbs_chart"));
 		pCharts.data("grid", pCharts.find(".dbs_charts-grid").first());
-		pCharts.data("fontsize", Number(dbsfaces.number.getOnlyNumber(pCharts.css("font-size"))));
+		pCharts.data("defs", pCharts.find("svg > defs").first());
+		pCharts.data("fontsize", parseFloat(pCharts.css("font-size")));
 		//Item selecionado temporariamente(Hover)
 		pCharts.data("hover", null);
 		pCharts.data("container", pCharts.children(".-container"));
@@ -75,6 +76,8 @@ dbsfaces.charts = {
 
 	//Cria guia padrão para indicar a posição no gráfico tipo line
 	pvInitializeGuides: function(pCharts){
+		if (pCharts.attr("type") != "line"){return;}
+
 		dbsfaces.charts.pvCreateDefGuides(pCharts);
 
 //		//Seta posição dos guides do delta
@@ -116,7 +119,7 @@ dbsfaces.charts = {
 	
 	//Cria guia padrão para indicar a posição no gráfico tipo line
 	pvCreateDefGuides: function(pCharts){
-		var xDefs = pCharts.find("svg > defs").first();
+		var xDefs = pCharts.data("defs");
 		var xMarker = xDefs.children(".-point");
 		var xElement;
 		//Cria quia individual
@@ -179,18 +182,94 @@ dbsfaces.charts = {
 		}
 	},
 	
-	pvInitializeDimensions: function(pCharts){
-		var xHeight = 0;
-		if (pCharts.data("caption").length > 0){
-			xHeight += pCharts.data("caption")[0].getBoundingClientRect().height;
-		}
-		if (pCharts.data("data").length > 0){
-			xHeight += pCharts.data("data")[0].getBoundingClientRect().height;
-		}
-		if (pCharts.data("footer").length > 0){
-			xHeight += pCharts.data("footer")[0].getBoundingClientRect().height;
-		}
+	pvInitializeGetTotal: function(pCharts){
+		var xTotal = 0;
+		//Conta o total de valores de todos os gráficos para posteriormente calcular a altura de cada linha de valor
+		xChartsChildren.each(function(){
+			var xChart = $(this);
+			xTotal += xChart.data("children").length;
+		});
+		return xTotal;
 	},
+	//Ajusta posição das informações no gráfico pie
+	pvInitializeLayout: function(pCharts){
+		if (pCharts.attr("type") != "pie"){return;}
+		var xChartsChildren = pCharts.data("children");
+		var xParams = {total: 0,
+					   count: 0,
+					   color: [],
+					   colorStop: []};
+		//Conta o total de valores de todos os gráficos para posteriormente calcular a altura de cada linha de valor
+		xChartsChildren.each(function(){
+			var xChart = $(this);
+			xParams.total += xChart.data("children").length;
+		});
+		//Ajusta posição do box e label de todos os valores dos gráficos e retorna todas as cores utilizadas para servir de background 
+		xChartsChildren.each(function(){
+			var xChart = $(this);
+			xParams = dbsfaces.charts.pvInitializeLayoutInfo(pCharts,
+															 xChart, 
+															 xParams);
+		});
+	},
+	
+	pvInitializeLayoutInfo: function(pCharts, pChart, pParams){
+		var xIsLeft = false;
+		var xDiameter = Number(pCharts.attr("diameter"));
+		var xLineHeight = xDiameter / pParams.total;
+		var xLineWidth = (Number(pCharts.attr("w")) - xDiameter);
+		var xChartValue = pChart.data("children");
+		var xPieIP = parseFloat(pCharts.attr("pieip"));
+		var xX = Number(pCharts.attr("cx"));
+		var xXBox;
+		if (xIsLeft){
+			xX -= (xDiameter / 2);
+			xXBox = xX - xLineWidth;
+		}else{
+			xX += (xDiameter / 2);
+			xXBox = xX;
+		}
+		//Tamanho do fonte do label é 85% da altura da linha
+//		var xFontSize = Math.min(xLineHeight * .60, pCharts.data("fontsize"));
+//		var xPadding = xLineHeight - xFontSize;
+		xChartValue.each(function(){
+			var xChartValue = $(this);
+			var xChartValueInfo = xChartValue.data("infogroup");
+			var xChartValueValue = xChartValue.data("value");
+			var xChartValueBox = xChartValueInfo.children(".-box");
+			var xChartValueTooltip = xChartValue.data("tooltip");
+			var xY = xPieIP + (pParams.count * xLineHeight);
+			//Ajusta box
+//			xChartValueBox.svgAttr("x", xXBox)
+//						  .svgAttr("y", xY)
+//						  .svgAttr("width", xLineWidth) 
+//						  .svgAttr("height", xLineHeight);
+			xChartValueBox.svgAttr("cx", xXBox + (xLineHeight / 2))
+						  .svgAttr("cy", xY + (xLineHeight/2))
+						  .svgAttr("rx", xLineHeight / 2) 
+						  .svgAttr("ry", xLineHeight / 2);
+			//Ajusta texto
+//			xChartValueValue.svgAttr("x", xX + (xIsLeft ? -xPadding:xPadding))
+//							.svgAttr("y", xY + (xLineHeight / 2))
+//							.svgAttr("font-size", xFontSize + "px");
+//			xChartValueValue.svgAttr("font-size", xFontSize + "px");			
+			//Ajusta Tooltip
+			if (xChartValueTooltip != null){
+				xChartValueTooltip.svgAttr("x", xXBox + (xLineHeight / 2))
+								  .svgAttr("y", xY);
+			}
+			pParams.count++;
+//			var xColorStop = "<stop offset=" + ((pParams.count / pParams.total) * 100) + "% style='stop-color:" + xChartValueBox.attr("fill") + "; stop-opacity:1'/>";
+//					"<stop offset="0%" style="stop-color:rgb(255,255,0);stop-opacity:1" />
+			
+//			pParams.color.push(xChartValue.data("dc"));
+//			pParams.colorStop.push((((pParams.count - 1) / pParams.total) * 100) + "%");
+//			pParams.color.push(xChartValue.data("dc"));
+//			pParams.colorStop.push((((pParams.count - .01) / pParams.total) * 100) + "%");
+		});
+		return pParams;
+	},
+
 
 	resize: function(pCharts){
 		var xTimeoutId = "chartsTimeout" + pCharts[0].id;
@@ -321,8 +400,8 @@ dbsfaces.charts = {
 			}
 		}
 		//DIM dos valores da linha no grid(Bar e Line)
-		if (pChart.attr("type") == "line"
-		 || pChart.attr("type") == "bar"){
+//		if (pChart.attr("type") == "line"
+//		 || pChart.attr("type") == "bar"){
 			if (xDim != null){
 				if (xDim){
 					if (!pCharts.data("grid").svgHasClass("-dim")){
@@ -334,7 +413,7 @@ dbsfaces.charts = {
 					}
 				}
 			}
-		}
+//		}
 
 	},
 	

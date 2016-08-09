@@ -29,7 +29,8 @@ public class DBSChartValue extends DBSUIInput implements NamingContainer, Serial
 		savedState,
 		previousValue,
 		dbscolor,
-		point;
+		point,
+		globalIndex;
 
 		String toString;
 
@@ -75,6 +76,24 @@ public class DBSChartValue extends DBSUIInput implements NamingContainer, Serial
 	public void setIndex(Integer pIndex) {
 		getStateHelper().put(PropertyKeys.index, pIndex);
 		handleAttribute("index", pIndex);
+	}
+
+	/**
+	 * Indice que identifica este valor considerando todos os gráficos.
+	 * Indice é gerado automaticamente no DBSCharts
+	 * @return
+	 */
+	public Integer getGlobalIndex() {
+		return (Integer) getStateHelper().eval(PropertyKeys.globalIndex, 0);
+	}
+	/**
+	 * Indice que identifica este valor considerando todos os gráficos.
+	 * Indice é gerado automaticamente no DBSCharts
+	 * @return
+	 */
+	public void setGlobalIndex(Integer pGlobalIndex) {
+		getStateHelper().put(PropertyKeys.globalIndex, pGlobalIndex);
+		handleAttribute("globalIndex", pGlobalIndex);
 	}
 
 	public String getColor() {

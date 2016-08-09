@@ -2873,6 +2873,16 @@ Default: false;</description>
 			<required>true</required>
 			<type>java.lang.Integer</type>
 		</attribute>
+		<attribute>
+			<description>Dimensão do círculo central. É um fator em relação a largura individual do gráfico. 
+			ex: com valor 1 o círculo central terá o tamanho da largura de um gráfico.
+			O padrão é 1;
+            </description>
+			<name>pieInternalCircleFator</name>
+			<required>true</required>
+			<type>java.lang.Double</type>
+		</attribute>
+		
 	</tag>
 	<tag>
 		<tag-name>chart</tag-name>

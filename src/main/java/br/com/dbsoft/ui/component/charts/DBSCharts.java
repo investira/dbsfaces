@@ -16,6 +16,13 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.CHARTS;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 	public static Integer 	PieInternalPadding = 2;
+	public static Double 	TopicsHeight = .7 * 1.7; //Font em .7 * 1.7(170%)
+	public static Double 	LabelsWidth = .7; //Font em .7(70%)
+	public static Double 	LabelsHeight = .7 * .66; //Font em .7 * .66(66%)
+
+	public static Double 	xLabelsHeight = .7; //Font em .7(70%)
+	public static Double 	xLabelsWidth = .7 * .66; //Font em .7 * .66(66%)
+
 
 	public static enum TYPE {
 		BAR 			("bar", true),
@@ -73,6 +80,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		showGridValue,
 		showLabel,
 		groupId,
+		pieInternalCircleFator,
 
 		//Variáveis de trabalho
 		maxValue,
@@ -85,6 +93,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		captionsMaxHeight,
 		deltaListMaxHeight,
 		itensCount,
+		chartValueItensCount,
 		numberOfGridLines,
 		fontSize,
 		showDelta,
@@ -200,6 +209,14 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		handleAttribute("padding", pPadding);
 	}
 
+	public Double getPieInternalCircleFator() {
+		return (Double) getStateHelper().eval(PropertyKeys.pieInternalCircleFator, 1D);
+	}
+	public void setPieInternalCircleFator(Double pPieInternalCircleFator) {
+		getStateHelper().put(PropertyKeys.pieInternalCircleFator, pPieInternalCircleFator);
+		handleAttribute("pieInternalCircleFator", pPieInternalCircleFator);
+	}
+
 	public String getValueFormatMask() {
 		return (String) getStateHelper().eval(PropertyKeys.valueFormatMask, "");
 	}
@@ -284,7 +301,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	}
 
 	/**
-	 * Quantidade de valores dentro deste gráfico.
+	 * Quantidade de gráfico.
 	 * Indice é gerado automaticamente no DBSCharts
 	 * @return
 	 */
@@ -293,6 +310,24 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		handleAttribute("itensCount", pItensCount);
 	}
 
+	/**
+	 * Quantidade de graficos.
+	 * Indice é gerado automaticamente no DBSCharts
+	 * @return
+	 */
+	public Integer getChartValueItensCount() {
+		return (Integer) getStateHelper().eval(PropertyKeys.chartValueItensCount, 0);
+	}
+
+	/**
+	 * Quantidade de valores total dentro deste gráfico.
+	 * Indice é gerado automaticamente no DBSCharts
+	 * @return
+	 */
+	public void setChartValueItensCount(Integer pChartValueItensCount) {
+		getStateHelper().put(PropertyKeys.chartValueItensCount, pChartValueItensCount);
+		handleAttribute("chartValueItensCount", pChartValueItensCount);
+	}
 	
 	public Integer getNumberOfGridLines() {
 		return (Integer) getStateHelper().eval(PropertyKeys.numberOfGridLines, 6);
@@ -324,9 +359,9 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		return DBSNumber.subtract(getMaxValue(), getMinValue()).doubleValue();
 	}
 	
-	public Integer getPieLabelPadding() {
-		return DBSNumber.toInteger(getFontSize());
-	}
+//	public Integer getPieLabelPadding() {
+//		return DBSNumber.toInteger(getFontSize());
+//	}
 
 
 	/**
@@ -361,7 +396,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		return xValue.doubleValue();
 	}
 
-	public void setChartWidthHeight(TYPE pType){
+	public void setChartWidthAndHeight(TYPE pType){
 		// TODO Auto-generated method stub
 		pvSetChartWidth(pType, getWidth());
 		pvSetChartHeight(pType, getHeight());
@@ -372,11 +407,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	 * @return
 	 */
 	public Double getDiameter(){
-		if (getChartWidth().doubleValue() < getChartHeight().doubleValue()){
-			return getChartWidth().doubleValue();
-		}else{
-			return getChartHeight().doubleValue();
-		}
+		return Math.min(getChartWidth().doubleValue(), getChartHeight().doubleValue());
 	}
 
 	/**
@@ -384,12 +415,12 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	 * @return
 	 */
 	public Point2D getCenter(){
-		Double xPadding = 0D;
+		Double xPadding = PieInternalPadding.doubleValue();
 		if (getPadding() != 0){
-			xPadding = getPadding().doubleValue();
+			xPadding += getPadding().doubleValue();
 		}
 
-		return DBSNumber.centerPoint(getChartWidth() - xPadding, getChartHeight() - xPadding);
+		return DBSNumber.centerPoint(getDiameter(), getChartHeight() + xPadding);
 	}
 
 	/**
@@ -397,9 +428,9 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	 * @return
 	 */
 	public Double getPieChartWidth(){
-		Double xPneuLargura = getPieChartRadius() - getPieLabelPadding(); //Retira padding principal
-		xPneuLargura -= (DBSCharts.PieInternalPadding * (getItensCount() - 1)); //Retira padding de cada pneu
-		xPneuLargura /= (getItensCount() + 0.5); // 0.5 = metade da roda
+		Double xPneuLargura = getPieChartRadius(); //Retira padding principal
+		xPneuLargura -= DBSCharts.PieInternalPadding * (getItensCount() - 1 + getPieInternalCircleFator()); //Retira padding de cada pneu
+		xPneuLargura /= getItensCount() + getPieInternalCircleFator(); 
 		return xPneuLargura;
 	}
 	
@@ -408,7 +439,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	 * @return
 	 */
 	public Double getPieChartRadius(){
-		return (getDiameter() / 2);
+		return (getDiameter() / 2D);
 	}
 	
 	private void pvSetChartHeight(@SuppressWarnings("unused") TYPE pType, Integer pHeight){
@@ -421,17 +452,18 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	}
 
 	private void pvSetChartWidth(TYPE pType, Integer pWidth){
+		Double xWidth = pWidth.doubleValue();
 		if (pType.isMatrix()){
 			if (getShowGrid() 
 			 && getShowGridValue()
 			 && getValueFormatMask().length() > 0){
 				//Subtrai da largura o comprimento em pixel a partir da mascará de formatação do valor das linhas
-				pWidth -= this.getLabelMaxWidth();
+				xWidth -= getLabelMaxWidth() * getFontSize() * DBSCharts.LabelsWidth;
 			}
 		}
-		pWidth -= (getPadding() * 2);  //Retira o espaço para o padding do left e right
-		getStateHelper().put(PropertyKeys.chartWidth, pWidth);
-		handleAttribute("chartWidth", pWidth);
+		xWidth -= (getPadding() * 2);  //Retira o espaço para o padding do left e right
+		getStateHelper().put(PropertyKeys.chartWidth, xWidth.intValue());
+		handleAttribute("chartWidth", xWidth);
 	}
 	
 	/**
@@ -439,36 +471,39 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	 * @return
 	 */
 	public Integer getTopHeight(){
-		Integer xHeight = 0;
-		if (getItensCount() > 1){
-			//Font em .7 * 1.7(70%)
-			xHeight += DBSNumber.toInteger(getFontSize() * .7 * 1.7);
+		Double xHeight = 0D;
+		if (TYPE.get(getType()) != TYPE.PIE){
+			if (getItensCount() > 1){
+				//Font em .7 * 1.7(70%)
+				xHeight += getFontSize() * DBSCharts.TopicsHeight;
+			}
 		}
 
 		xHeight += getCaptionHeight();
 
-		return xHeight;
+		return xHeight.intValue();
 	}
 
+	
 	/**
 	 * Espaço embaixo do gráfico: Footer, Labels das colunas e Deltalist
 	 * @return
 	 */
 	public Integer getBottomHeight(){
-		Integer xHeight = 0;
-		//DeltaList
-		if (getShowDeltaList()){
-			//Font em .7 * 1.7(70%)
-			xHeight += DBSNumber.toInteger(getFontSize() * .7 *  1.7);
+		Double xHeight = 0D;
+		if (TYPE.get(getType()) != TYPE.PIE){
+			//DeltaList
+			if (getShowDeltaList()){
+				//Font em .7 * 1.7(70%)
+				xHeight += DBSNumber.toInteger(getFontSize() * DBSCharts.TopicsHeight);
+			}
+			//Column Labels
+			if (getShowLabel()){
+				xHeight += getLabelMaxHeight() * getFontSize() * DBSCharts.LabelsHeight;
+			}
 		}
-		//Column Labels
-		if (getShowLabel()){
-			xHeight += getLabelMaxHeight();
-		}
-		
 		xHeight += getFooterHeight();
-
-		return xHeight;
+		return xHeight.intValue();
 	}
 	
 	/**
@@ -478,7 +513,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	public Integer getCaptionHeight(){
 		if (getCaption() != null){
 			//Font em .7 * 1.7(70%)
-			return DBSNumber.toInteger(getFontSize() * .7 * 1.7);
+			return DBSNumber.toInteger(getFontSize() * DBSCharts.TopicsHeight);
 		}		
 		return 0;
 	}
@@ -489,7 +524,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	public Integer getFooterHeight(){
 		if (getFooter() != null){
 			//Font em .7 * 1.7(70%)
-			return DBSNumber.toInteger(getFontSize() * .7 * 1.7);
+			return DBSNumber.toInteger(getFontSize() * DBSCharts.TopicsHeight);
 		}
 		return 0;
 	}
