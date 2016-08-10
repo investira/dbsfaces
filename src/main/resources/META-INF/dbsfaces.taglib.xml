@@ -2669,7 +2669,15 @@ Default: false;</description>
 			<name>opened</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-		</attribute>		
+		</attribute>
+		<attribute>
+			<description>
+                Se exibe com as cores do tema invertidas. Padrao é true.
+            </description>
+			<name>themeInverted</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
 	</tag>
 	<tag>
 		<tag-name>parallax</tag-name>
@@ -2882,7 +2890,7 @@ Default: false;</description>
 			<required>true</required>
 			<type>java.lang.Double</type>
 		</attribute>
-		
+
 	</tag>
 	<tag>
 		<tag-name>chart</tag-name>

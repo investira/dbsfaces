@@ -24,6 +24,7 @@ public class DBSNav extends DBSUIComponentBase implements NamingContainer{
 		styleClass,
 		style,
 		iconClass,
+		themeInverted,
 		location,
 		padding,
 		opened;
@@ -168,6 +169,13 @@ public class DBSNav extends DBSUIComponentBase implements NamingContainer{
 		handleAttribute("padding", pPadding);
 	}
 
+	public Boolean getThemeInverted() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.themeInverted, true);
+	}
+	public void setThemeInverted(Boolean pThemeInverted) {
+		getStateHelper().put(PropertyKeys.themeInverted, pThemeInverted);
+		handleAttribute("themeInverted", pThemeInverted);
+	}
 	
 	@Override
     public String getDefaultEventName()
