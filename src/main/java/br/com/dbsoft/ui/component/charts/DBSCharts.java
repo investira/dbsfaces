@@ -210,7 +210,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	}
 
 	public Double getPieInternalCircleFator() {
-		return (Double) getStateHelper().eval(PropertyKeys.pieInternalCircleFator, 1D);
+		return (Double) getStateHelper().eval(PropertyKeys.pieInternalCircleFator, 2D);
 	}
 	public void setPieInternalCircleFator(Double pPieInternalCircleFator) {
 		getStateHelper().put(PropertyKeys.pieInternalCircleFator, pPieInternalCircleFator);

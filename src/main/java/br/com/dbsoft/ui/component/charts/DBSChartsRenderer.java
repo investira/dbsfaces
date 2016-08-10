@@ -500,14 +500,6 @@ public class DBSChartsRenderer extends DBSRenderer {
 						xX = DBSNumber.divide(pCharts.getChartHeight(), 
 											  xX);
 					}
-				}else if (xType == TYPE.PIE){
-					if (pCharts.getChartWidth() < pCharts.getChartHeight()){
-						xX = DBSNumber.divide(pCharts.getChartWidth(),
-								  			  14.5);
-					}else{
-						xX = DBSNumber.divide(pCharts.getChartHeight(),
-					  			  			  14.5);
-					}
 				}
 			}
 			pCharts.setRowScale(xX.doubleValue());
@@ -553,12 +545,13 @@ public class DBSChartsRenderer extends DBSRenderer {
 					xChartValue.setSavedState(xChartValue.saveState(FacesContext.getCurrentInstance()));
 					//Salva largura e altura máxima dos labels
 //					if (xType.isMatrix()){
-						Integer xMaxWidth = pCharts.getValueFormatMask().length() -1; 
-						if (pCharts.getLabelMaxWidth() == null 
-						 || xMaxWidth > pCharts.getLabelMaxWidth()){
-							pCharts.setLabelMaxWidth(xMaxWidth);
-						}
+//						Integer xMaxWidth = pCharts.getValueFormatMask().length() -1; 
 						if (xChartValue.getLabel() != null){
+							Integer xMaxWidth = xChartValue.getLabel().length() -1; 
+							if (pCharts.getLabelMaxWidth() == null 
+							 || xMaxWidth > pCharts.getLabelMaxWidth()){
+								pCharts.setLabelMaxWidth(xMaxWidth);
+							}
 							Integer xMaxHeight = xChartValue.getLabel().length() -1; 
 							if (pCharts.getLabelMaxHeight() == null 
 							 || xMaxHeight > pCharts.getLabelMaxHeight()){

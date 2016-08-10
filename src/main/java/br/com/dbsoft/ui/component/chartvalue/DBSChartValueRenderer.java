@@ -382,20 +382,15 @@ public class DBSChartValueRenderer extends DBSRenderer {
 
 		//LINHA DA PAUTA
 		xPath = new StringBuilder();
-		xPath.append("M" + xI2.getX() + "," + xI2.getY());  
-		xPath.append("L" + pCharts.getChartWidth() + ", " + xI2.getY());
+		xPath.append("M" + xI4.getX() + "," + xI4.getY());  
+		xPath.append("L" + pCharts.getChartWidth() + ", " + xI4.getY());
 		DBSFaces.encodeSVGPath(pChartValue, 
 							   pWriter, 
 							   xPath.toString(), 
-							   null, 
-							   "stroke:" + pChartValue.getColor() + "; stroke-width:1px; stroke-opacity:0.1; ", 
-							   "fill=none");
+							   "-underline", 
+							   "stroke:" + pChartValue.getColor() + ";", 
+							   null);
 
-		//TEXT
-		xPointLabel.setLocation(0, xLegendaY); //Centro da linha
-		xPointLabel.setLocation(getCateto(xPneuRaioInterno + (xLegendaWidth / 8), xPointLabel.getY()) + pCharts.getCenter().getX(), xPointLabel.getY() + pCharts.getCenter().getY());
-		//Seta posição do label
-		
 		//LINHA DE CONEXÃO
 		xPointAnchor.setLocation(0, xLegendaY); //Centro da linha
 		xPointAnchor.setLocation(getCateto(xPneuRaioInterno, xPointAnchor.getY()) + pCharts.getCenter().getX(), xPointAnchor.getY() + pCharts.getCenter().getY());
@@ -408,6 +403,11 @@ public class DBSChartValueRenderer extends DBSRenderer {
 							   CSS.MODIFIER.LINE, 
 							   "stroke:" + pChartValue.getColor() + "; stroke-width:1px; ", 
 							   "fill=none");
+
+		//TEXT
+		xPointLabel.setLocation(0, xLegendaY); //Centro da linha
+		xPointLabel.setLocation(getCateto(xPneuRaioInterno + (xLegendaWidth / 8), xPointLabel.getY()) + pCharts.getCenter().getX(), xPointLabel.getY() + pCharts.getCenter().getY());
+		
 
 		//TEXT VALUE
 		StringBuilder xText = new StringBuilder();
@@ -430,7 +430,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
  			xText.append(xLabelText);
 		xText.append("</tspan>");
 //		xText.append("<tspan dx='" + pCharts.getLabelMaxWidth() + "'>");
- 		xText.append("<tspan x='" + (xLegendaX + (pCharts.getLabelMaxWidth() * xFontSize.intValue())) + "'>");
+ 		xText.append("<tspan x='" + ((xLegendaX * 1.01 ) + (pCharts.getLabelMaxWidth() * xFontSize.intValue())) + "'>");
 			xText.append(xLabelValue);
 		xText.append("</tspan>");
 //		xText.append("<tspan x='" + (pCharts.getCenter().getX() + xPneuRaioExterno + 50) + "'>");

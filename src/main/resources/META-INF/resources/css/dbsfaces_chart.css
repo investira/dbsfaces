@@ -243,7 +243,8 @@
 .dbs_chart[type='pie'].-dim > .dbs_chartValue > .-point {
 	fill-opacity:0.5;
 }
-.dbs_chart[type='pie'].-dim > .dbs_chartValue > .-info{
+.dbs_chart[type='pie'].-dim > .dbs_chartValue > .-info,
+.dbs_chart[type='pie'].-dim > .dbs_chartValue > .-info > .-underline{
 	fill-opacity: 0;
 	stroke-opacity: 0;
 }
@@ -251,7 +252,9 @@
 .dbs_chart[type='pie'].-dim > .dbs_chartValue.-selected > .-point,
 .dbs_chart[type='pie'].-dim > .dbs_chartValue.-hover > .-point,
 .dbs_chart[type='pie'].-dim > .dbs_chartValue.-selected > .-info,
-.dbs_chart[type='pie'].-dim > .dbs_chartValue.-hover > .-info{
+.dbs_chart[type='pie'].-dim > .dbs_chartValue.-hover > .-info,
+.dbs_chart[type='pie'].-dim > .dbs_chartValue.-selected > .-info > .-underline,
+.dbs_chart[type='pie'].-dim > .dbs_chartValue.-hover > .-info > .-underline{
 	fill-opacity: 1;
 	stroke-opacity: 1;
 }   
@@ -259,20 +262,21 @@
 	display: inline-block;
 }
 .dbs_chart[type='pie'][showdelta].-activated > .-delta > .-info{
-/* 	fill-opacity: 0.3; */
-/* 	stroke-opacity: 0.3; */
 }
-/* .dbs_chart[type='pie']> .dbs_chartValue.-selected > .-info > .-point, */
+
 .dbs_chart[type='pie']> .dbs_chartValue.-hover > .-info > .-point,
-/* .dbs_chart[type='pie']> .dbs_chartValue.-selected > .-info > .-line, */
 .dbs_chart[type='pie']> .dbs_chartValue.-hover > .-info > .-line{
 	fill-opacity:1;
 	stroke-opacity:1;
 }
-
-.dbs_chart[type='pie']> .dbs_chartValue.-hover > .-info > .-box{
-	stroke-width: 5px;
+.dbs_chart[type='pie']> .dbs_chartValue > .-info > .-underline{
+	stroke-width: 1px;
+	stroke-opacity: 0.1;
 }
+
+/* .dbs_chart[type='pie']> .dbs_chartValue > .-info > .-box{ */
+/* 	stroke-width: 1px; */
+/* } */
     
 .dbs_chart[type='pie']> .dbs_chartValue > .-info > .-point,
 .dbs_chart[type='pie']> .dbs_chartValue > .-info > .-line{
