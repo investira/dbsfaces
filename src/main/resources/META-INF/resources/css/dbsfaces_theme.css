@@ -305,32 +305,6 @@ textarea.-th_input-data:FOCUS,
 	content:":";
 }
 
-/* .-th_responsive	.-th_section:before{ */
-/* 	content: ""; */
-/* 	text-align: left; */
-/* } */
-.-th_responsive	.-th_tr{
-    position: relative;
-/* 	display: inline-table; */
-    width: 100%;
-    text-align: center;
-}
-
-.-th_responsive	.-th_tr > .-th_td{
-/*     display: inline-table; */
-    vertical-align: top;
-    min-width: 320px;
-}
-.-th_responsive	.-th_tr.-c1 > .-th_td{
-	width: 100%;
-}
-
-.-th_responsive	.-th_tr.-c2 > .-th_td{
-	width: 50%;
-}
-.-th_responsive	.-th_tr.-c3 > .-th_td{
-	width: 33%;
-}
 
 @media screen and (min-width: 769px){
 	.-th_responsive{
@@ -346,6 +320,133 @@ textarea.-th_input-data:FOCUS,
 	.-th_responsive{
 		font-size: 11px;
 	}
+}
+
+@media screen and (min-width: 769px){
+	.-th_col{
+/* 					width:100% !important; */
+	}
+}
+@media screen and (max-width: 768px){
+	.-th_col{
+/* 					width:100% !important; */
+	}
+}
+@media screen and (max-width: 320px){
+	.-th_col{
+		width:100% !important;
+	}
+}
+		
+.-th_col{
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+
+}
+
+.-th_col.w16{
+	width: 100%;
+}
+.-th_col.w15{
+	width: 93.75%;
+}
+.-th_col.w14{
+	width: 87.5%;
+}
+.-th_col.w13{
+	width: 81.25%;
+}
+.-th_col.w12{
+	width: 75%;
+}
+.-th_col.w11{
+	width: 68.75%;
+}
+.-th_col.w10{
+	width: 62.5%;
+}
+.-th_col.w9{
+	width: 56.25%;
+}
+.-th_col.w8{
+	width: 50%;
+}
+.-th_col.w7{
+	width: 43.75%;
+}
+.-th_col.w6{
+	width: 37.5%;
+}
+.-th_col.w5{
+	width: 31.25%;
+}
+.-th_col.w4{
+	width: 25%;
+}
+.-th_col.w3{
+	width: 18.759%;
+}
+.-th_col.w2{
+	width: 12.5%;
+}
+.-th_col.w1{
+	width: 6.25%;
+}
+
+.-th_row{
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.-th_row.h16{
+	height: 100%;
+}
+.-th_row.h15{
+	height: 93.75%;
+}
+.-th_row.h14{
+	height: 87.5%;
+}
+.-th_row.h13{
+	height: 81.25%;
+}
+.-th_row.h12{
+	height: 75%;
+}
+.-th_row.h11{
+	height: 68.75%;
+}
+.-th_row.h10{
+	height: 62.5%;
+}
+.-th_row.h9{
+	height: 56.25%;
+}
+.-th_row.h8{
+	height: 50%;
+}
+.-th_row.h7{
+	height: 43.75%;
+}
+.-th_row.h6{
+	height: 37.5%;
+}
+.-th_row.h5{
+	height: 31.25%;
+}
+.-th_row.h4{
+	height: 25%;
+}
+.-th_row.h3{
+	height: 18.759%;
+}
+.-th_row.h2{
+	height: 12.5%;
+}
+.-th_row.h1{
+	height: 6.25%;
 }
 
 /* @media screen and (min-width: 560px){ */
