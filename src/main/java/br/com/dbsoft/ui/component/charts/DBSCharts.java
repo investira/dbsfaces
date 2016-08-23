@@ -17,11 +17,8 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 	public static Integer 	PieInternalPadding = 2;
 	public static Double 	TopicsHeight = .7 * 1.7; //Font em .7 * 1.7(170%)
-	public static Double 	LabelsWidth = .7; //Font em .7(70%)
+	public static Double 	LabelsWidth = .35; //Font em .7(70%)
 	public static Double 	LabelsHeight = .7 * .66; //Font em .7 * .66(66%)
-
-	public static Double 	xLabelsHeight = .7; //Font em .7(70%)
-	public static Double 	xLabelsWidth = .7 * .66; //Font em .7 * .66(66%)
 
 
 	public static enum TYPE {
