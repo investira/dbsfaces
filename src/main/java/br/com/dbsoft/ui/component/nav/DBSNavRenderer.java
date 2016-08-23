@@ -11,8 +11,8 @@ import com.sun.faces.renderkit.RenderKitUtils;
 
 import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
-import br.com.dbsoft.ui.component.nav.DBSNav.LOCATION;
 import br.com.dbsoft.ui.component.DBSRenderer;
+import br.com.dbsoft.ui.component.nav.DBSNav.LOCATION;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
 
@@ -41,7 +41,7 @@ public class DBSNavRenderer extends DBSRenderer {
 		LOCATION 		xLocation = LOCATION.get(xNav.getLocation());
 		String 			xClass = CSS.NAV.MAIN + CSS.THEME.FC + xLocation.getCSS();
 		if (xNav.getOpened()){
-			xClass += CSS.THEME.INVERT; //Inverte cor
+			xClass += (xNav.getThemeInverted() ? CSS.THEME.INVERT : ""); //Inverte cor
 		}else{
 			xClass += CSS.MODIFIER.CLOSED; //Indica que esta fechado
 		}
@@ -64,7 +64,7 @@ public class DBSNavRenderer extends DBSRenderer {
 				//Mask
 				xWriter.startElement("div", xNav);
 					DBSFaces.setAttribute(xWriter, "style", "padding:" + xNav.getPadding(), null);
-					DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.MASK + CSS.THEME.BC + CSS.THEME.INVERT);
+					DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.MASK + CSS.THEME.BC + (xNav.getThemeInverted() ? CSS.THEME.INVERT : ""));
 				xWriter.endElement("div");
 				//Nav
 				pvEncodeNav(xNav, pContext, xWriter);
@@ -75,7 +75,7 @@ public class DBSNavRenderer extends DBSRenderer {
 	
 	private void pvEncodeNav(DBSNav pNav, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("div", pNav);
-			DBSFaces.setAttribute(pWriter, "class", "-nav" + CSS.THEME.FC + CSS.THEME.BC + CSS.THEME.INVERT +" -closed", null);
+			DBSFaces.setAttribute(pWriter, "class", "-nav" + CSS.THEME.FC + CSS.THEME.BC + (pNav.getThemeInverted() ? CSS.THEME.INVERT : "") +" -closed", null);
 			//Header
 			pvEncodeHeader(pNav, pContext, pWriter);
 			//Nav
