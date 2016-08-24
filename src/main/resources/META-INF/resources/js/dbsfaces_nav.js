@@ -124,7 +124,7 @@ dbsfaces.nav = {
 		var xColorNav = tinycolor(pNav.data("navgroup").css("background-color"));
 		xColorNav.setAlpha(.96);
 		pNav.data("navgroup").css("background-color", xColorNav.toRgbString())
-							 .css("box-shadow", tinycolor("rgba(0, 0, 0, 0.960784") + " 0 0 1em 0");
+		 					 .css("box-shadow", tinycolor("rgba(0, 0, 0, 0.5") + " 0 0 .4em .2em");
 	},
 	
 

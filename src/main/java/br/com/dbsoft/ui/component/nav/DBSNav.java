@@ -26,7 +26,8 @@ public class DBSNav extends DBSUIComponentBase implements NamingContainer{
 		iconClass,
 		themeInverted,
 		location,
-		padding,
+		contentPadding,
+		contentStyleClass,
 		opened;
 
 		String toString;
@@ -161,13 +162,23 @@ public class DBSNav extends DBSUIComponentBase implements NamingContainer{
 		handleAttribute("location", pLocation);
 	}
 
-	public String getPadding() {
-		return (String) getStateHelper().eval(PropertyKeys.padding, "0.4em");
+	public String getContentPadding() {
+		return (String) getStateHelper().eval(PropertyKeys.contentPadding, "0.4em");
 	}
-	public void setPadding(String pPadding) {
-		getStateHelper().put(PropertyKeys.padding, pPadding);
-		handleAttribute("padding", pPadding);
+	public void setContentPadding(String pContentPadding) {
+		getStateHelper().put(PropertyKeys.contentPadding, pContentPadding);
+		handleAttribute("contentPadding", pContentPadding);
 	}
+
+	public String getContentStyleClass() {
+		return (String) getStateHelper().eval(PropertyKeys.contentStyleClass, null);
+	}
+	
+	public void setContentStyleClass(String pContentStyleClass) {
+		getStateHelper().put(PropertyKeys.contentStyleClass, pContentStyleClass);
+		handleAttribute("contentStyleClass", pContentStyleClass);
+	}
+
 
 	public Boolean getThemeInverted() {
 		return (Boolean) getStateHelper().eval(PropertyKeys.themeInverted, true);

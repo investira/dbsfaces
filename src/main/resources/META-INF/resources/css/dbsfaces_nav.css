@@ -103,6 +103,7 @@
 
 .dbs_nav.-closed > .-container > .-nav{
 	pointer-events: none;
+	box-shadow: none !important;
 }
 .dbs_nav > .-container > .-nav.-closed *{
 	pointer-events: none;
@@ -151,7 +152,6 @@
 .dbs_nav > .-container > .-nav > .-container > .-content > div > nav{
     display: table-cell;
     vertical-align: bottom;
-/*     padding: 1.4em; */
 }
 
 /* VERTICAL */

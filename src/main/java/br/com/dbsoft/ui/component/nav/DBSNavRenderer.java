@@ -63,7 +63,6 @@ public class DBSNavRenderer extends DBSRenderer {
 				pvEncodeIcon(xNav, xWriter);
 				//Mask
 				xWriter.startElement("div", xNav);
-					DBSFaces.setAttribute(xWriter, "style", "padding:" + xNav.getPadding(), null);
 					DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.MASK + CSS.THEME.BC + (xNav.getThemeInverted() ? CSS.THEME.INVERT : ""));
 				xWriter.endElement("div");
 				//Nav
@@ -85,8 +84,8 @@ public class DBSNavRenderer extends DBSRenderer {
 					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT, null);
 					pWriter.startElement("div", pNav);
 						pWriter.startElement("nav", pNav);
-							DBSFaces.setAttribute(pWriter, "style", "padding:" + pNav.getPadding(), null);
-//							DBSFaces.setAttribute(pWriter, "style", pvGetPaddingIconClose(pNav));
+							DBSFaces.setAttribute(pWriter, "styleClass", pNav.getContentStyleClass(), null);
+							DBSFaces.setAttribute(pWriter, "style", "padding:" + pNav.getContentPadding(), null);
 							//Encode dos conteúdo
 							DBSFaces.renderChildren(pContext, pNav);
 						pWriter.endElement("nav");
@@ -170,10 +169,10 @@ public class DBSNavRenderer extends DBSRenderer {
 
 	private String pvGetPaddingFooter(DBSNav pNav){
 		LOCATION xLocation = LOCATION.get(pNav.getLocation());
-		String xPT = pNav.getPadding();
-		String xPB = pNav.getPadding();
-		String xPL = pNav.getPadding();
-		String xPR = pNav.getPadding();
+		String xPT = pNav.getContentPadding();
+		String xPB = pNav.getContentPadding();
+		String xPL = pNav.getContentPadding();
+		String xPR = pNav.getContentPadding();
 		
 		//Padding top e bottom
 		if (xLocation.getIsVertical()){
