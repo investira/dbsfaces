@@ -15,6 +15,7 @@ import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.nav.DBSNav.LOCATION;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
+import br.com.dbsoft.util.DBSObject;
 
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSNav.RENDERER_TYPE)
@@ -38,10 +39,10 @@ public class DBSNavRenderer extends DBSRenderer {
 		if (!pComponent.isRendered()){return;}
 		DBSNav 			xNav = (DBSNav) pComponent;
 		ResponseWriter 	xWriter = pContext.getResponseWriter();
-		LOCATION 		xLocation = LOCATION.get(xNav.getLocation());
+		LOCATION 		xLocation = LOCATION.get(xNav.getLocation(), xNav.getContentVerticalAlign(), xNav.getContentHorizontalAlign());
 		String 			xClass = CSS.NAV.MAIN + CSS.THEME.FC + xLocation.getCSS();
 		if (xNav.getOpened()){
-			xClass += (xNav.getThemeInverted() ? CSS.THEME.INVERT : ""); //Inverte cor
+//			xClass += CSS.THEME.INVERT; //Inverte cor
 		}else{
 			xClass += CSS.MODIFIER.CLOSED; //Indica que esta fechado
 		}
@@ -63,7 +64,7 @@ public class DBSNavRenderer extends DBSRenderer {
 				pvEncodeIcon(xNav, xWriter);
 				//Mask
 				xWriter.startElement("div", xNav);
-					DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.MASK + CSS.THEME.BC + (xNav.getThemeInverted() ? CSS.THEME.INVERT : ""));
+					DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.MASK + CSS.THEME.BC + CSS.THEME.INVERT);
 				xWriter.endElement("div");
 				//Nav
 				pvEncodeNav(xNav, pContext, xWriter);
@@ -72,9 +73,18 @@ public class DBSNavRenderer extends DBSRenderer {
 		xWriter.endElement("div");
 	}
 	
+	private void pvEncodeIcon(DBSNav pNav, ResponseWriter pWriter) throws IOException{
+		pWriter.startElement("div", pNav);
+			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON + CSS.THEME.ACTION);
+			pWriter.startElement("div", pNav);
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + pNav.getIconClass() + CSS.MODIFIER.INHERIT);
+			pWriter.endElement("div");
+		pWriter.endElement("div");
+	}
+	
 	private void pvEncodeNav(DBSNav pNav, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("div", pNav);
-			DBSFaces.setAttribute(pWriter, "class", "-nav" + CSS.THEME.FC + CSS.THEME.BC + (pNav.getThemeInverted() ? CSS.THEME.INVERT : "") +" -closed", null);
+			DBSFaces.setAttribute(pWriter, "class", "-nav" + CSS.THEME.FC + CSS.THEME.BC + pNav.getContentStyleClass() +" -closed", null);
 			//Header
 			pvEncodeHeader(pNav, pContext, pWriter);
 			//Nav
@@ -84,7 +94,7 @@ public class DBSNavRenderer extends DBSRenderer {
 					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT, null);
 					pWriter.startElement("div", pNav);
 						pWriter.startElement("nav", pNav);
-							DBSFaces.setAttribute(pWriter, "styleClass", pNav.getContentStyleClass(), null);
+//							DBSFaces.setAttribute(pWriter, "class", pNav.getContentStyleClass(), null);
 							DBSFaces.setAttribute(pWriter, "style", "padding:" + pNav.getContentPadding(), null);
 							//Encode dos conteúdo
 							DBSFaces.renderChildren(pContext, pNav);
@@ -98,6 +108,27 @@ public class DBSNavRenderer extends DBSRenderer {
 			pvEncodeIconClose(pNav, pWriter);
 		pWriter.endElement("div");
 	}
+	
+	private void pvEncodeHeader(DBSNav pNav, FacesContext pContext,  ResponseWriter pWriter) throws IOException{
+		UIComponent xHeader = pNav.getFacet(DBSNav.FACET_HEADER);
+		if (!DBSObject.isEqual(pNav.getLocation(), "c")) {
+			if (xHeader == null){return;}
+		}
+		pWriter.startElement("div", pNav);
+			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.HEADER);
+			pWriter.startElement("div", pNav);
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
+				DBSFaces.setAttribute(pWriter, "style", pvGetPaddingHeader(pNav));
+				//Encode do botão fechar para nav centralizado
+				pvEncodeCloseButton(pNav, pWriter);
+				//Encode o conteudo do Header definido no FACET HEADER
+				if (!DBSObject.isNull(xHeader)){
+					xHeader.encodeAll(pContext);
+				}
+			pWriter.endElement("div");
+		pWriter.endElement("div");
+	}
+
 	private void pvEncodeIconClose(DBSNav pNav, ResponseWriter pWriter) throws IOException{
 		LOCATION xLocation = LOCATION.get(pNav.getLocation());
 //		String xClass = CSS.THEME.ACTION;
@@ -123,18 +154,19 @@ public class DBSNavRenderer extends DBSRenderer {
 			pWriter.endElement("div");
 		pWriter.endElement("div");
 	}
-	private void pvEncodeHeader(DBSNav pNav, FacesContext pContext,  ResponseWriter pWriter) throws IOException{
-		UIComponent xFooter = pNav.getFacet(DBSNav.FACET_HEADER);
-		if (xFooter == null){return;}
-		pWriter.startElement("div", pNav);
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.HEADER);
-//			DBSFaces.setAttribute(pWriter, "style", pvGetPaddingIcon(pNav));
+	
+	private void pvEncodeCloseButton(DBSNav pNav, ResponseWriter pWriter) throws IOException {
+		//Faz o encode apenas se for nav centralizado
+		if (DBSObject.isEqual(pNav.getLocation(), "c")) {
 			pWriter.startElement("div", pNav);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
-				xFooter.encodeAll(pContext);
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON + CSS.THEME.ACTION + " -iconcloseCentral");
+				pWriter.startElement("div", pNav);
+					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + " -i_cancel " + CSS.MODIFIER.INHERIT);
+				pWriter.endElement("div");
 			pWriter.endElement("div");
-		pWriter.endElement("div");
+		}
 	}
+	
 	private void pvEncodeFooter(DBSNav pNav, FacesContext pContext,  ResponseWriter pWriter) throws IOException{
 		UIComponent xFooter = pNav.getFacet(DBSNav.FACET_FOOTER);
 		if (xFooter == null){return;}
@@ -147,15 +179,6 @@ public class DBSNavRenderer extends DBSRenderer {
 			pWriter.endElement("div");
 		pWriter.endElement("div");
 	}
-	private void pvEncodeIcon(DBSNav pNav, ResponseWriter pWriter) throws IOException{
-		pWriter.startElement("div", pNav);
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON + CSS.THEME.ACTION);
-			pWriter.startElement("div", pNav);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + pNav.getIconClass() + CSS.MODIFIER.INHERIT);
-			pWriter.endElement("div");
-		pWriter.endElement("div");
-	}
-
 	
 	private void pvEncodeJS(String pClientId, ResponseWriter pWriter) throws IOException{
 		DBSFaces.encodeJavaScriptTagStart(pWriter);
@@ -167,8 +190,32 @@ public class DBSNavRenderer extends DBSRenderer {
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);		
 	}
 
+	private String pvGetPaddingHeader(DBSNav pNav){
+		LOCATION xLocation = LOCATION.get(pNav.getLocation(), pNav.getContentVerticalAlign(), pNav.getContentHorizontalAlign());
+		String xPT = pNav.getContentPadding();
+		String xPB = pNav.getContentPadding();
+		String xPL = pNav.getContentPadding();
+		String xPR = pNav.getContentPadding();
+		
+		//Padding top e bottom
+		if (xLocation.getIsVertical()){
+			if (xLocation.getIsTop()){
+				xPB = "0";
+			}else{
+				xPT = "0";
+			}
+		}else{
+			if (xLocation.getIsLeft()){
+				xPR = "0";
+			}else{
+				xPL = "0";
+			}
+		}
+		return "padding:" + xPT + " " + xPR + " " + xPB + " " + xPL + ";"; 
+	}
+	
 	private String pvGetPaddingFooter(DBSNav pNav){
-		LOCATION xLocation = LOCATION.get(pNav.getLocation());
+		LOCATION xLocation = LOCATION.get(pNav.getLocation(), pNav.getContentVerticalAlign(), pNav.getContentHorizontalAlign());
 		String xPT = pNav.getContentPadding();
 		String xPB = pNav.getContentPadding();
 		String xPL = pNav.getContentPadding();
@@ -190,8 +237,6 @@ public class DBSNavRenderer extends DBSRenderer {
 		}
 		return "padding:" + xPT + " " + xPR + " " + xPB + " " + xPL + ";"; 
 	}
-	
-
 	
 //	private String pvGetPaddingIcon(DBSNav pNav){
 //		LOCATION xLocation = LOCATION.get(pNav.getLocation());
