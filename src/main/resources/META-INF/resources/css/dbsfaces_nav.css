@@ -40,7 +40,20 @@
 	z-index: 9999999;
 }
 
-/*CENTER */
+/* PROGRESS TIMEOUT */
+@keyframes progress_timeout_animation {
+    from {width: 0%;}
+    to {width: 100%;}
+}
+.dbs_nav > .-container > .-nav > .-progress_timeout{
+	position: fixed;
+    height: 0.1em;
+    bottom: 0;
+    left: 0;
+    background-color: green;
+}
+
+/* CENTER */
 .dbs_nav.-tlc > .-container > .-nav,
 .dbs_nav.-trc > .-container > .-nav,
 .dbs_nav.-blc > .-container > .-nav,

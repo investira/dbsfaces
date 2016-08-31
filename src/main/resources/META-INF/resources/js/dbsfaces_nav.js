@@ -82,7 +82,7 @@ dbsfaces.nav = {
 		}
 	},
 
-	initialize: function(pNav){
+	initialize: function(pNav, pTimeout){
 		dbsfaces.nav.pvInitializeData(pNav);
 		dbsfaces.nav.pvInitializeLayout(pNav);
 	},
@@ -122,6 +122,7 @@ dbsfaces.nav = {
 		pNav.data("mask", pNav.find("> .-container > .-mask"));
 		pNav.data("iconclose", pNav.data("navgroup").children(".-iconclose"));
 		pNav.data("padding", parseFloat(pNav.data("mask").css("padding-left")));
+		pNav.data("progressTimeout", pNav.find("> .-container > .-nav > .-progress_timeout"));
 	},
 	
 	pvInitializeLayout: function(pNav){
@@ -146,10 +147,11 @@ dbsfaces.nav = {
 		}
 	},
 
-	show: function(pNav, p){
+	show: function(pNav){
 		//Está fechado e vai abrir
 		if (pNav.hasClass("-closed")){
 			dbsfaces.nav.pvOpen(pNav);
+			dbsfaces.nav.pvCloseTimeout(pNav);
 		}else{
 			dbsfaces.nav.pvClose(pNav);
 		}
@@ -172,7 +174,7 @@ dbsfaces.nav = {
 		if (!pNav.data("v") || pNav.data("c")){
 			pNav.data("navgroup").css("height", "0");
 		}
-//		pNav.data("header").css("display", "none");
+		pNav.data("progressTimeout").css("animation-name", "none");
 		
 //		if (pNav.data("c")){
 //			pNav.data("navgroup").css("left", "-50%");
@@ -185,6 +187,12 @@ dbsfaces.nav = {
 		$("html").removeClass("dbs_nav-freeze");
 		//Retira foco do componente que possuir foco
 		$(":focus").blur();
+	},
+	
+	pvForceClose: function(pNav){
+		dbsfaces.nav.pvClose(pNav);
+		pNav.removeClass("-opened");
+		pNav.addClass("-closed");
 	},
 	
 	pvAjustLayout: function(pNav){
@@ -271,7 +279,17 @@ dbsfaces.nav = {
 				}
 			}
 		}
+	},
+
+	pvCloseTimeout: function(pNav){
+		var xTimeout = pNav.attr('timeout');
+		if (xTimeout > 0) {
+			pNav.data("progressTimeout").css("animation-name", "progress_timeout_animation");
+			pNav.data("progressTimeout").css("animation-duration", xTimeout+"s");
+			setTimeout(function () {
+				dbsfaces.nav.pvForceClose(pNav);
+			}, (xTimeout*1000));
+		}
 	}
-	
 };
 

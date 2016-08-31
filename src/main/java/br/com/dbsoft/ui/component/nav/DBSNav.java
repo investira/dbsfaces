@@ -26,6 +26,7 @@ public class DBSNav extends DBSUIComponentBase implements NamingContainer{
 		style,
 		iconClass,
 		location,
+		closeTimeout,
 		contentPadding,
 		contentStyleClass,
 		contentVerticalAlign,
@@ -94,6 +95,15 @@ public class DBSNav extends DBSUIComponentBase implements NamingContainer{
 	public void setLocation(String pLocation) {
 		getStateHelper().put(PropertyKeys.location, pLocation);
 		handleAttribute("location", pLocation);
+	}
+	
+	public String getCloseTimeout() {
+		return (String) getStateHelper().eval(PropertyKeys.closeTimeout, "0");
+	}
+	
+	public void setCloseTimeout(String pCloseTimeout) {
+		getStateHelper().put(PropertyKeys.closeTimeout, pCloseTimeout);
+		handleAttribute("closeTimeout", pCloseTimeout);
 	}
 
 	public String getContentPadding() {

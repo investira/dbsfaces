@@ -15,6 +15,7 @@ import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.nav.DBSNav.LOCATION;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
+import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSObject;
 
 
@@ -56,6 +57,7 @@ public class DBSNavRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "name", xClientId);
 			DBSFaces.setAttribute(xWriter, "class", xClass);
 			DBSFaces.setAttribute(xWriter, "style", xNav.getStyle());
+			DBSFaces.setAttribute(xWriter, "timeout", xNav.getCloseTimeout());
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xNav, DBSPassThruAttributes.getAttributes(Key.NAV));
 			xWriter.startElement("div", xNav);
 				DBSFaces.setAttribute(xWriter, "style", "opacity:0", null); //Inicia escondido para ser exibido após a execução do JS
@@ -106,6 +108,8 @@ public class DBSNavRenderer extends DBSRenderer {
 			pvEncodeFooter(pNav, pContext, pWriter);
 			//Iconclose
 			pvEncodeIconClose(pNav, pWriter);
+			//Progress Timeout
+			pvEncodeProgressTimeout(pNav, pWriter);
 		pWriter.endElement("div");
 	}
 	
@@ -188,6 +192,14 @@ public class DBSNavRenderer extends DBSRenderer {
                      "}); \n"; 
 		pWriter.write(xJS);
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);		
+	}
+
+	private void pvEncodeProgressTimeout(DBSNav pNav, ResponseWriter pWriter) throws IOException {
+		if (DBSNumber.toInteger(pNav.getCloseTimeout()) > 0) {
+			pWriter.startElement("div", pNav);
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.PROGRESS_TIMEOUT, null);
+			pWriter.endElement("div");
+		}
 	}
 
 	private String pvGetPaddingHeader(DBSNav pNav){
