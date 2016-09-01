@@ -69,9 +69,18 @@ public class DBSNavRenderer extends DBSRenderer {
 					DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.MASK + CSS.THEME.BC + CSS.THEME.INVERT);
 				xWriter.endElement("div");
 				//Nav
-				pvEncodeNav(xNav, pContext, xWriter);
-			xWriter.endElement("div");
-			pvEncodeJS(xClientId, xWriter);
+				pvEncodeNavBegin(xNav, pContext, xWriter);
+	}
+	
+	@Override
+	public void encodeEnd(FacesContext pContext, UIComponent pComponent) throws IOException {
+		ResponseWriter 	xWriter = pContext.getResponseWriter();
+		DBSNav 			xNav = (DBSNav) pComponent;
+				
+				//FAZ O ENCODE FINAL
+				pvEncodeNavEnd(xNav, pContext, xWriter);
+				xWriter.endElement("div");
+			pvEncodeJS(xNav.getClientId(pContext), xWriter);
 		xWriter.endElement("div");
 	}
 	
@@ -84,7 +93,7 @@ public class DBSNavRenderer extends DBSRenderer {
 		pWriter.endElement("div");
 	}
 	
-	private void pvEncodeNav(DBSNav pNav, FacesContext pContext, ResponseWriter pWriter) throws IOException{
+	private void pvEncodeNavBegin(DBSNav pNav, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("div", pNav);
 			DBSFaces.setAttribute(pWriter, "class", "-nav" + CSS.THEME.FC + CSS.THEME.BC + pNav.getContentStyleClass() +" -closed", null);
 			//Header
@@ -100,6 +109,9 @@ public class DBSNavRenderer extends DBSRenderer {
 							DBSFaces.setAttribute(pWriter, "style", "padding:" + pNav.getContentPadding(), null);
 							//Encode dos conteúdo
 							DBSFaces.renderChildren(pContext, pNav);
+	}
+	
+	private void pvEncodeNavEnd(DBSNav pNav, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 						pWriter.endElement("nav");
 					pWriter.endElement("div");
 				pWriter.endElement("div");
@@ -249,52 +261,4 @@ public class DBSNavRenderer extends DBSRenderer {
 		}
 		return "padding:" + xPT + " " + xPR + " " + xPB + " " + xPL + ";"; 
 	}
-	
-//	private String pvGetPaddingIcon(DBSNav pNav){
-//		LOCATION xLocation = LOCATION.get(pNav.getLocation());
-//		String xPT = pNav.getPadding();
-//		String xPB = pNav.getPadding();
-//		String xPL = pNav.getPadding();
-//		String xPR = pNav.getPadding();
-//		
-//		//Padding top e bottom
-//		if (xLocation.getIsVertical()){
-//			if (xLocation.getIsTop()){
-//				xPB = "0";
-//			}else{
-//				xPT = "0";
-//			}
-//		}else{
-//			if (xLocation.getIsLeft()){
-//				xPR = "0";
-//			}else{
-//				xPL = "0";
-//			}
-//		}
-//		return "padding:" + xPT + " " + xPR + " " + xPB + " " + xPL + ";"; 
-//	}
-//	private String pvGetPaddingIconClose(DBSNav pNav){
-//		LOCATION xLocation = LOCATION.get(pNav.getLocation());
-//		String xPT = pNav.getPadding();
-//		String xPB = pNav.getPadding();
-//		String xPL = pNav.getPadding();
-//		String xPR = pNav.getPadding();
-//		
-//		//Padding top e bottom
-//		if (xLocation.getIsVertical()){
-//			if (xLocation.getIsTop()){
-//				xPT = "0";
-//			}else{
-//				xPB = "0";
-//			}
-//		}else{
-//			if (xLocation.getIsLeft()){
-//				xPL = "0";
-//			}else{
-//				xPR = "0";
-//			}
-//		}
-//		return "padding:" + xPT + " " + xPR + " " + xPB + " " + xPL + ";"; 
-//	}
-
 }

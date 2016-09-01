@@ -123,6 +123,7 @@ public class  DBSFaces {
 	    public static final String IMG = "img";
 	    public static final String DIV = "div";
 	    public static final String NAV = "nav";
+	    public static final String NAVMESSAGE = "navmessage";
 	    public static final String MENU = "menu";
 	    public static final String MENUITEM = "menuitem";
 	    public static final String MENUITEMSEPARATOR = "menuitemSeparator";
@@ -404,6 +405,10 @@ public class  DBSFaces {
 		public static class NAV
 		{
 			public static final String MAIN = " " + CLASS_PREFIX + ID.NAV + " ";
+		}
+		public static class NAVMESSAGE
+		{
+			public static final String MAIN = " " + CLASS_PREFIX + ID.NAVMESSAGE + " ";
 		}
 		
 		public static class MENU
