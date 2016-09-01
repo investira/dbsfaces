@@ -197,7 +197,7 @@ public class DBSNavRenderer extends DBSRenderer {
 	private void pvEncodeProgressTimeout(DBSNav pNav, ResponseWriter pWriter) throws IOException {
 		if (DBSNumber.toInteger(pNav.getCloseTimeout()) > 0) {
 			pWriter.startElement("div", pNav);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.PROGRESS_TIMEOUT, null);
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.PROGRESS_TIMEOUT + CSS.THEME.BC, null);
 			pWriter.endElement("div");
 		}
 	}

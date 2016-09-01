@@ -18,8 +18,6 @@ public class DBSNav extends DBSUIComponentBase implements NamingContainer{
 	
 	public final static String FACET_HEADER = "header";
 	public final static String FACET_FOOTER = "footer";
-	public final static String FACET_TOOLBAR = "toolbar";
-
 
 	protected enum PropertyKeys {
 		styleClass,
