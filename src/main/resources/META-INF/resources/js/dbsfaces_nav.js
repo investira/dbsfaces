@@ -29,6 +29,7 @@ dbs_nav = function(pId) {
 	     wipeRight: function() {dbsfaces.nav.whipe(xNav, "r");},
 	     wipeUp: function() {dbsfaces.nav.whipe(xNav, "u");},
 	     wipeDown: function() {dbsfaces.nav.whipe(xNav, "d");},
+	     //TODO DESABILITAR EM CASO DE CENTER
 	     min_move_x: 50,
 	     min_move_y: 50,
 	     preventDefaultEvents: true
@@ -49,6 +50,12 @@ dbs_nav = function(pId) {
 			$(this).removeClass("-closed").addClass("-opened");
 			xNav.trigger("opened");
 		}
+	});
+	
+	$(pId + ":not([disabled]) > .-container > .-nav > .-header > .-content > .-iconcloseCentral").on("mousedown touchstart", function(e){
+//		console.log("mask mousedown touchstart");
+		dbsfaces.nav.show(xNav);
+		return false;
 	});
 };
 
@@ -75,7 +82,7 @@ dbsfaces.nav = {
 		}
 	},
 
-	initialize: function(pNav){
+	initialize: function(pNav, pTimeout){
 		dbsfaces.nav.pvInitializeData(pNav);
 		dbsfaces.nav.pvInitializeLayout(pNav);
 	},
@@ -95,10 +102,15 @@ dbsfaces.nav = {
 		         	 || pNav.hasClass("-blv")
 		         	 || pNav.hasClass("-brv");
 		
+		var xCenter = pNav.hasClass("-tlc")
+		    	   || pNav.hasClass("-trc")
+		    	   || pNav.hasClass("-blc")
+		    	   || pNav.hasClass("-brc");
+		
 		pNav.data("t", xTop);
 		pNav.data("l", xLeft);
 		pNav.data("v", xVertical);
-		pNav.data("c", pNav.hasClass("-c"));
+		pNav.data("c", xCenter);
 		pNav.data("navgroup", pNav.find("> .-container > .-nav"));
 		pNav.data("container", pNav.data("navgroup").children(".-container"));
 		pNav.data("content", pNav.data("container").children(".-content"));
@@ -110,6 +122,7 @@ dbsfaces.nav = {
 		pNav.data("mask", pNav.find("> .-container > .-mask"));
 		pNav.data("iconclose", pNav.data("navgroup").children(".-iconclose"));
 		pNav.data("padding", parseFloat(pNav.data("mask").css("padding-left")));
+		pNav.data("progressTimeout", pNav.find("> .-container > .-nav > .-progress_timeout"));
 	},
 	
 	pvInitializeLayout: function(pNav){
@@ -123,8 +136,8 @@ dbsfaces.nav = {
 		pNav.data("iconclose").css("background-color", xColorClose.toRgbString());
 		var xColorNav = tinycolor(pNav.data("navgroup").css("background-color"));
 		xColorNav.setAlpha(.96);
-		pNav.data("navgroup").css("background-color", xColorNav.toRgbString())
-		 					 .css("box-shadow", tinycolor("rgba(0, 0, 0, 0.5") + " 0 0 .4em .2em");
+		pNav.data("navgroup").css("box-shadow", tinycolor("rgba(0, 0, 0, 0.5") + " 0 0 .4em .2em");
+//							 .css("background-color", xColorNav.toRgbString());
 	},
 	
 
@@ -134,10 +147,11 @@ dbsfaces.nav = {
 		}
 	},
 
-	show: function(pNav, p){
+	show: function(pNav){
 		//Está fechado e vai abrir
 		if (pNav.hasClass("-closed")){
 			dbsfaces.nav.pvOpen(pNav);
+			dbsfaces.nav.pvCloseTimeout(pNav);
 		}else{
 			dbsfaces.nav.pvClose(pNav);
 		}
@@ -150,6 +164,7 @@ dbsfaces.nav = {
 		$("html").addClass("dbs_nav-freeze");
 		//Coloca o foco no primeiro campo de input dentro do nav
 		dbsfaces.ui.focusOnFirstInput(pNav);
+//		pNav.data("header").css("display", "block");
 	},
 	
 	pvClose: function(pNav){
@@ -159,6 +174,8 @@ dbsfaces.nav = {
 		if (!pNav.data("v") || pNav.data("c")){
 			pNav.data("navgroup").css("height", "0");
 		}
+		pNav.data("progressTimeout").css("animation-name", "none");
+		
 //		if (pNav.data("c")){
 //			pNav.data("navgroup").css("left", "-50%");
 //		}else if (pNav.data("v")){
@@ -170,6 +187,12 @@ dbsfaces.nav = {
 		$("html").removeClass("dbs_nav-freeze");
 		//Retira foco do componente que possuir foco
 		$(":focus").blur();
+	},
+	
+	pvForceClose: function(pNav){
+		dbsfaces.nav.pvClose(pNav);
+		pNav.removeClass("-opened");
+		pNav.addClass("-closed");
 	},
 	
 	pvAjustLayout: function(pNav){
@@ -209,15 +232,19 @@ dbsfaces.nav = {
 			//Limita largura do conteúdo do nav
 			pNav.data("navgroup").css("width", xWidth);
 			
-			//Configura o espaço do footer
+			//Configura o espaço do header e do footer
 			if (pNav.data("v")){
 				if (pNav.data("t")){
-					xContainer.css("padding-top", xHeaderHeight + xPadding);
+					if (xHeaderHeight != null){
+						xContainer.css("padding-top", xHeaderHeight + xPadding);
+					}
 					if (xFooterHeight != null){
 						xContainer.css("padding-bottom", xFooterHeight + xPadding);
 					}
 				}else{
-					xContainer.css("padding-bottom", xHeaderHeight + xPadding);
+					if (xHeaderHeight != null){
+						xContainer.css("padding-bottom", xHeaderHeight + xPadding);
+					}
 					if (xFooterHeight != null){
 						xContainer.css("padding-top", xFooterHeight + xPadding);
 					}
@@ -227,27 +254,42 @@ dbsfaces.nav = {
 		if (!pNav.data("v") || pNav.data("c")){
 			pNav.data("navgroup").css("height", "");
 			var xHeight = pNav.data("nav").get(0).getBoundingClientRect().height + (xPadding * 2);
+			if (pNav.data("header").size() > 0) {
+				xHeight = xHeight + pNav.data("header").get(0).getBoundingClientRect().height;
+			}
 			if (xHeight > xMaskHeight){
 				xHeight = xLimit + "%";
 			}
 			//Limita altura do conteúdo do nav
 			pNav.data("navgroup").css("height", xHeight);
-			if (!pNav.data("v")){
-				//Configura o espaço do footer
-				if (pNav.data("l")){
-					xContainer.css("padding-left", xHeaderWidth + xPadding);
-					if (xFooterWidth != null){
-						xContainer.css("padding-right", xFooterWidth + xPadding);
-					}
-				}else{
-					xContainer.css("padding-right", xHeaderWidth + xPadding);
-					if (xFooterWidth != null){
-						xContainer.css("padding-left", xFooterWidth + xPadding);
+			if (!pNav.data("c")){
+				if (!pNav.data("v")){
+					//Configura o espaço do footer
+					if (pNav.data("l")){
+						xContainer.css("padding-left", xHeaderWidth + xPadding);
+						if (xFooterWidth != null){
+							xContainer.css("padding-right", xFooterWidth + xPadding);
+						}
+					}else{
+						xContainer.css("padding-right", xHeaderWidth + xPadding);
+						if (xFooterWidth != null){
+							xContainer.css("padding-left", xFooterWidth + xPadding);
+						}
 					}
 				}
 			}
 		}
+	},
+
+	pvCloseTimeout: function(pNav){
+		var xTimeout = pNav.attr('timeout');
+		if (xTimeout > 0) {
+			pNav.data("progressTimeout").css("animation-name", "progress_timeout_animation");
+			pNav.data("progressTimeout").css("animation-duration", xTimeout+"s");
+			setTimeout(function () {
+				dbsfaces.nav.pvForceClose(pNav);
+			}, (xTimeout*1000));
+		}
 	}
-	
 };
 

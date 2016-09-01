@@ -282,6 +282,7 @@ public class  DBSFaces {
 			public static final String TOOLBAR = " -toolbar ";
 			public static final String TOOLTIP = " -tooltip ";
 			public static final String VALUE = " -value ";
+			public static final String PROGRESS_TIMEOUT = "-progress_timeout";
 		}
 
 		public static class CRUDDIALOG

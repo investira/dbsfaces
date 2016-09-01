@@ -8,6 +8,7 @@ import javax.faces.component.NamingContainer;
 
 import br.com.dbsoft.ui.component.DBSUIComponentBase;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.util.DBSObject;
 
 @FacesComponent(DBSNav.COMPONENT_TYPE)
 public class DBSNav extends DBSUIComponentBase implements NamingContainer{
@@ -17,17 +18,17 @@ public class DBSNav extends DBSUIComponentBase implements NamingContainer{
 	
 	public final static String FACET_HEADER = "header";
 	public final static String FACET_FOOTER = "footer";
-	public final static String FACET_TOOLBAR = "toolbar";
-
 
 	protected enum PropertyKeys {
 		styleClass,
 		style,
 		iconClass,
-		themeInverted,
 		location,
+		closeTimeout,
 		contentPadding,
 		contentStyleClass,
+		contentVerticalAlign,
+		contentHorizontalAlign,
 		opened;
 
 		String toString;
@@ -44,16 +45,132 @@ public class DBSNav extends DBSUIComponentBase implements NamingContainer{
 		}
 	}
 	
+    public DBSNav(){
+		setRendererType(DBSNav.RENDERER_TYPE);
+    }
+	
+
+	public String getStyle() {
+		return (String) getStateHelper().eval(PropertyKeys.style, null);
+	}
+	
+	public void setStyle(String pStyle) {
+		getStateHelper().put(PropertyKeys.style, pStyle);
+		handleAttribute("style", pStyle);
+	}
+
+	public String getStyleClass() {
+		return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+	}
+	
+	public void setStyleClass(String pStyleClass) {
+		getStateHelper().put(PropertyKeys.styleClass, pStyleClass);
+		handleAttribute("styleClass", pStyleClass);
+	}
+	
+	public String getIconClass() {
+		return (String) getStateHelper().eval(PropertyKeys.iconClass, null);
+	}
+	
+	public void setIconClass(String pIconClass) {
+		getStateHelper().put(PropertyKeys.iconClass, pIconClass);
+		handleAttribute("iconClass", pIconClass);
+	}
+	
+	public Boolean getOpened() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.opened, false);
+	}
+	
+	public void setOpened(Boolean pOpened) {
+		getStateHelper().put(PropertyKeys.opened, pOpened);
+		handleAttribute("opened", pOpened);
+	}
+	
+	public String getLocation() {
+		return (String) getStateHelper().eval(PropertyKeys.location, LOCATION.TOP_LEFT_HORIZONTAL.getCode());
+	}
+	
+	public void setLocation(String pLocation) {
+		getStateHelper().put(PropertyKeys.location, pLocation);
+		handleAttribute("location", pLocation);
+	}
+	
+	public String getCloseTimeout() {
+		return (String) getStateHelper().eval(PropertyKeys.closeTimeout, "0");
+	}
+	
+	public void setCloseTimeout(String pCloseTimeout) {
+		getStateHelper().put(PropertyKeys.closeTimeout, pCloseTimeout);
+		handleAttribute("closeTimeout", pCloseTimeout);
+	}
+
+	public String getContentPadding() {
+		return (String) getStateHelper().eval(PropertyKeys.contentPadding, "0.4em");
+	}
+	public void setContentPadding(String pContentPadding) {
+		getStateHelper().put(PropertyKeys.contentPadding, pContentPadding);
+		handleAttribute("contentPadding", pContentPadding);
+	}
+
+	public String getContentStyleClass() {
+		return (String) getStateHelper().eval(PropertyKeys.contentStyleClass, null);
+	}
+	
+	public void setContentStyleClass(String pContentStyleClass) {
+		getStateHelper().put(PropertyKeys.contentStyleClass, pContentStyleClass);
+		handleAttribute("contentStyleClass", pContentStyleClass);
+	}
+	
+	public String getContentVerticalAlign() {
+		return (String) getStateHelper().eval(PropertyKeys.contentVerticalAlign, null);
+	}
+	
+	public void setContentVerticalAlign(String pContentVerticalAlign) {
+		getStateHelper().put(PropertyKeys.contentVerticalAlign, pContentVerticalAlign);
+		handleAttribute("contentVerticalAlign", pContentVerticalAlign);
+	}
+	
+	public String getContentHorizontalAlign() {
+		return (String) getStateHelper().eval(PropertyKeys.contentHorizontalAlign, null);
+	}
+	
+	public void setContentHorizontalAlign(String pContentHorizontalAlign) {
+		getStateHelper().put(PropertyKeys.contentHorizontalAlign, pContentHorizontalAlign);
+		handleAttribute("contentHorizontalAlign", pContentHorizontalAlign);
+	}
+
+	@Override
+    public String getDefaultEventName()
+    {
+        return "click";
+    }
+	
+	@Override
+	public Collection<String> getEventNames() {
+		return Arrays.asList("click", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup"); 
+	}
+
+	/**
+	 * ENUM DE LOCATION
+	 * @author jose.avila@dbsoft.com.br
+	 *
+	 */
 	public static enum LOCATION {
+		//VERTICAL
 		TOP_LEFT_VERTICAL		("tlv",true,true,true),
-		TOP_LEFT_HORIZONTAL 	("tlh",true,true,false),
 		TOP_RIGHT_VERTICAL		("trv",true,false,true),
-		TOP_RIGHT_HORIZONTAL 	("trh",true,false,false),
 		BOTTOM_LEFT_VERTICAL	("blv",false,true,true),
-		BOTTOM_LEFT_HORIZONTAL 	("blh",false,true,false),
 		BOTTOM_RIGHT_VERTICAL	("brv",false,false,true),
-		BOTTOM_RIGHT_HORIZONTAL ("brh",false,false,false),
-		CENTER					("c",false,false,false);
+		//HORIZONTAL
+		TOP_LEFT_HORIZONTAL 	("tlh",true,true,false),
+		TOP_RIGHT_HORIZONTAL 	("trh",true,false,false),
+		BOTTOM_LEFT_HORIZONTAL 	("blh",false,true,false),
+		BOTTOM_RIGHT_HORIZONTAL ("brh",false,false,false), //
+		//CENTER
+		TOP_LEFT_CENTER			("tlc",true,true,false),
+		TOP_RIGHT_CENTER		("trc",true,false,false),
+		BOTTOM_LEFT_CENTER		("blc",false,true,false),
+		BOTTOM_RIGHT_CENTER		("brc",false,false,false); //
 		
 		private String 	wCode;
 		private Boolean	wIsTop;
@@ -105,97 +222,34 @@ public class DBSNav extends DBSUIComponentBase implements NamingContainer{
 				return BOTTOM_RIGHT_HORIZONTAL;
 			case "brv":
 				return BOTTOM_RIGHT_VERTICAL;
-			case "c":
-				return CENTER;
+			case "tlc":
+				return TOP_LEFT_CENTER;
+			case "trc":
+				return TOP_RIGHT_CENTER;
+			case "blc":
+				return BOTTOM_LEFT_CENTER;
+			case "brc":
+				return BOTTOM_RIGHT_CENTER;
 			default:
 				return TOP_LEFT_HORIZONTAL;
 			}
-		}	
-	}
-    public DBSNav(){
-		setRendererType(DBSNav.RENDERER_TYPE);
-    }
-	
-
-	public String getStyle() {
-		return (String) getStateHelper().eval(PropertyKeys.style, null);
-	}
-	
-	public void setStyle(String pStyle) {
-		getStateHelper().put(PropertyKeys.style, pStyle);
-		handleAttribute("style", pStyle);
-	}
-
-	public String getStyleClass() {
-		return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-	}
-	
-	public void setStyleClass(String pStyleClass) {
-		getStateHelper().put(PropertyKeys.styleClass, pStyleClass);
-		handleAttribute("styleClass", pStyleClass);
-	}
-	
-	public String getIconClass() {
-		return (String) getStateHelper().eval(PropertyKeys.iconClass, null);
-	}
-	
-	public void setIconClass(String pIconClass) {
-		getStateHelper().put(PropertyKeys.iconClass, pIconClass);
-		handleAttribute("iconClass", pIconClass);
-	}
-	
-	public Boolean getOpened() {
-		return (Boolean) getStateHelper().eval(PropertyKeys.opened, false);
-	}
-	
-	public void setOpened(Boolean pOpened) {
-		getStateHelper().put(PropertyKeys.opened, pOpened);
-		handleAttribute("opened", pOpened);
-	}
-	
-	public String getLocation() {
-		return (String) getStateHelper().eval(PropertyKeys.location, LOCATION.TOP_LEFT_HORIZONTAL.getCode());
-	}
-	
-	public void setLocation(String pLocation) {
-		getStateHelper().put(PropertyKeys.location, pLocation);
-		handleAttribute("location", pLocation);
-	}
-
-	public String getContentPadding() {
-		return (String) getStateHelper().eval(PropertyKeys.contentPadding, "0.4em");
-	}
-	public void setContentPadding(String pContentPadding) {
-		getStateHelper().put(PropertyKeys.contentPadding, pContentPadding);
-		handleAttribute("contentPadding", pContentPadding);
-	}
-
-	public String getContentStyleClass() {
-		return (String) getStateHelper().eval(PropertyKeys.contentStyleClass, null);
-	}
-	
-	public void setContentStyleClass(String pContentStyleClass) {
-		getStateHelper().put(PropertyKeys.contentStyleClass, pContentStyleClass);
-		handleAttribute("contentStyleClass", pContentStyleClass);
-	}
-
-
-	public Boolean getThemeInverted() {
-		return (Boolean) getStateHelper().eval(PropertyKeys.themeInverted, true);
-	}
-	public void setThemeInverted(Boolean pThemeInverted) {
-		getStateHelper().put(PropertyKeys.themeInverted, pThemeInverted);
-		handleAttribute("themeInverted", pThemeInverted);
-	}
-	
-	@Override
-    public String getDefaultEventName()
-    {
-        return "click";
-    }
-	
-	@Override
-	public Collection<String> getEventNames() {
-		return Arrays.asList("click", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup"); 
+		}
+		
+		public static LOCATION get(String pLocation, String pContentVerticalAlign, String pContentHorizontalAlign) {
+			String xContentVerticalAlign = pContentVerticalAlign;
+			String xContentHorizontalAlign = pContentHorizontalAlign;
+			String xLocation = pLocation;
+			
+			if (DBSObject.isEmpty(xContentVerticalAlign)) {
+				xContentVerticalAlign = "t";
+			}
+			if (DBSObject.isEmpty(xContentHorizontalAlign)) {
+				xContentHorizontalAlign = "l";
+			}
+			if (DBSObject.isEmpty(xLocation)) {
+				xLocation = "v";
+			}
+			return get(xContentVerticalAlign+xContentHorizontalAlign+xLocation);			
+		}
 	}
 }

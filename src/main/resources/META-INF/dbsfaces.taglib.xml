@@ -2639,19 +2639,23 @@ Default: false;</description>
 		<attribute>
 			<description>
 				&lt;span style="font-size:small"&gt;
-				Localização. Padrão é tlv.&lt;br/&gt;
+				Localização da abertura. Padrão é vertical.&lt;br/&gt;
 				&lt;ul&gt;
-					&lt;li&gt;Conteúdo:TOP e LEFT. Abertura:HORIZONTAL = tlh&lt;/li&gt;
-					&lt;li&gt;Conteúdo:TOP e LEFT. Abertura:VERTICAL = tlv&lt;/li&gt;
-					&lt;li&gt;Conteúdo:TOP e RIGHT. Abertura:HORIZONTAL = trh&lt;/li&gt;
-					&lt;li&gt;Conteúdo:TOP e RIGHT. Abertura:VERTICAL = trv&lt;/li&gt;
-					&lt;li&gt;Conteúdo:BOTTOM e LEFT. Abertura:HORIZONTAL = blh&lt;/li&gt;
-					&lt;li&gt;Conteúdo:BOTTOM e LEFT. Abertura:VERTICAL = blv&lt;/li&gt;
-					&lt;li&gt;Conteúdo:BOTTOM e RIGHT. Abertura:HORIZONTAL = brh&lt;/li&gt;
-					&lt;li&gt;Conteúdo:BOTTOM e RIGHT. Abertura:VERTICAL = brv&lt;/li&gt;
+					&lt;li&gt;Abertura:VERTICAL = v&lt;/li&gt;
+					&lt;li&gt;Abertura:HORIZONTAL = h&lt;/li&gt;
+					&lt;li&gt;Abertura:CENTRO = c&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>location</name>
+			<required>false</required>
+			<type>java.lang.Sting</type>
+		</attribute>
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Tempo para fechamento automatico do nav em segundos.&lt;br/&gt;
+				&lt;/span&gt; </description>
+			<name>closeTimeout</name>
 			<required>false</required>
 			<type>java.lang.Sting</type>
 		</attribute>
@@ -2672,17 +2676,35 @@ Default: false;</description>
 		</attribute>
 		<attribute>
 			<description>
-                Se exibe já aberto. Padrao é false.
-            </description>
-			<name>opened</name>
+                &lt;span style="font-size:small"&gt;
+				Alinhamento vertical do conteúdo do nav. O Padrão é TOP.&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;Conteúdo:TOP = t&lt;/li&gt;
+					&lt;li&gt;Conteúdo:BOTTOM b&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>contentVerticalAlign</name>
 			<required>false</required>
-			<type>java.lang.Boolean</type>
+			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
 			<description>
-                Se exibe com as cores do tema invertidas. Padrao é true.
+                &lt;span style="font-size:small"&gt;
+				Alinhamento horizontal do conteúdo do nav. O Padrão é LEFT.&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;Conteúdo:LEFT = l&lt;/li&gt;
+					&lt;li&gt;Conteúdo:RIGHT = r&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>contentHorizontalAlign</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Se exibe já aberto. Padrao é false.
             </description>
-			<name>themeInverted</name>
+			<name>opened</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
@@ -2898,7 +2920,6 @@ Default: false;</description>
 			<required>true</required>
 			<type>java.lang.Double</type>
 		</attribute>
-
 	</tag>
 	<tag>
 		<tag-name>chart</tag-name>
