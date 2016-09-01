@@ -322,6 +322,62 @@ textarea.-th_input-data:FOCUS,
 	}
 }
 
+
+/* .-th_row{ */
+/*     position: relative; */
+/*     display: flex; */
+/*     vertical-align: top; */
+/* } */
+
+/* .-th_row.h16{ */
+/* 	height: 100%; */
+/* } */
+/* .-th_row.h15{ */
+/* 	height: 93.75%; */
+/* } */
+/* .-th_row.h14{ */
+/* 	height: 87.5%; */
+/* } */
+/* .-th_row.h13{ */
+/* 	height: 81.25%; */
+/* } */
+/* .-th_row.h12{ */
+/* 	height: 75%; */
+/* } */
+/* .-th_row.h11{ */
+/* 	height: 68.75%; */
+/* } */
+/* .-th_row.h10{ */
+/* 	height: 62.5%; */
+/* } */
+/* .-th_row.h9{ */
+/* 	height: 56.25%; */
+/* } */
+/* .-th_row.h8{ */
+/* 	height: 50%; */
+/* } */
+/* .-th_row.h7{ */
+/* 	height: 43.75%; */
+/* } */
+/* .-th_row.h6{ */
+/* 	height: 37.5%; */
+/* } */
+/* .-th_row.h5{ */
+/* 	height: 31.25%; */
+/* } */
+/* .-th_row.h4{ */
+/* 	height: 25%; */
+/* } */
+/* .-th_row.h3{ */
+/* 	height: 18.759%; */
+/* } */
+/* .-th_row.h2{ */
+/* 	height: 12.5%; */
+/* } */
+/* .-th_row.h1{ */
+/* 	height: 6.25%; */
+/* } */
+
 @media screen and (min-width: 769px){
 	.-th_col{
 /* 					width:100% !important; */
@@ -340,10 +396,14 @@ textarea.-th_input-data:FOCUS,
 		
 .-th_col{
     position: relative;
-    display: inline-block;
+    display: flex;
     vertical-align: top;
-
+    flex-wrap: wrap;
 }
+/* .-th_col:before{ */
+/* 	content: " "; */
+/* 	display: inline-block; */
+/* } */
 
 .-th_col.w16{
 	width: 100%;
@@ -394,61 +454,6 @@ textarea.-th_input-data:FOCUS,
 	width: 6.25%;
 }
 
-.-th_row{
-    position: relative;
-    display: inline-block;
-    vertical-align: top;
-}
-
-.-th_row.h16{
-	height: 100%;
-}
-.-th_row.h15{
-	height: 93.75%;
-}
-.-th_row.h14{
-	height: 87.5%;
-}
-.-th_row.h13{
-	height: 81.25%;
-}
-.-th_row.h12{
-	height: 75%;
-}
-.-th_row.h11{
-	height: 68.75%;
-}
-.-th_row.h10{
-	height: 62.5%;
-}
-.-th_row.h9{
-	height: 56.25%;
-}
-.-th_row.h8{
-	height: 50%;
-}
-.-th_row.h7{
-	height: 43.75%;
-}
-.-th_row.h6{
-	height: 37.5%;
-}
-.-th_row.h5{
-	height: 31.25%;
-}
-.-th_row.h4{
-	height: 25%;
-}
-.-th_row.h3{
-	height: 18.759%;
-}
-.-th_row.h2{
-	height: 12.5%;
-}
-.-th_row.h1{
-	height: 6.25%;
-}
-
 /* @media screen and (min-width: 560px){ */
 /* 	.-th_responsive	.-th_tr > .-th_section{ */
 /* 	    width: 50%; */
@@ -459,6 +464,7 @@ textarea.-th_input-data:FOCUS,
 /* Resposive */
 @media screen and (max-width: 600px) and (orientation: portrait){
 	.-th_responsive .-th_input-data{
+		width:100% !important; /*ALBERTO: incluído em 26/08/2016*/
 	}
 	
 	.-th_responsive .-th_input .-th_input-label:first-child{
