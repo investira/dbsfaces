@@ -7,13 +7,13 @@ dbs_nav = function(pId) {
 
 	dbsfaces.nav.initialize(xNav);
 
-	$(pId + ":not([disabled]) > .-container > .-icon").on("mousedown touchstart", function(e){
+	$(pId + ":not([disabled]) > .-container > .-icon").on("click mousedown touchstart", function(e){
 //		console.log("icon mousedown touchstart");
 		dbsfaces.nav.show(xNav);
 		return false;
 	});
 
-	$(pId + ":not([disabled]) > .-container > .-mask").on("mousedown touchstart", function(e){
+	$(pId + ":not([disabled]) > .-container > .-mask").on("click mousedown touchstart", function(e){
 //		console.log("mask mousedown touchstart");
 		dbsfaces.nav.show(xNav);
 		return false;
@@ -35,7 +35,7 @@ dbs_nav = function(pId) {
 	     preventDefaultEvents: true
 	});
 
-	$(pId + ":not([disabled]) > .-container > .-nav > .-iconclose").on("mousedown touchstart", function(e){
+	$(pId + ":not([disabled]) > .-container > .-nav > .-iconclose").on("click mousedown touchstart", function(e){
 //		console.log("iconclose mousedown touchstart");
 		dbsfaces.nav.show(xNav);
 		return false;
@@ -52,11 +52,17 @@ dbs_nav = function(pId) {
 		}
 	});
 	
-	$(pId + ":not([disabled]) > .-container > .-nav > .-header > .-content > .-iconcloseCentral").on("mousedown touchstart", function(e){
+	$(pId + ":not([disabled]) > .-container > .-nav > .-header > .-content > .-iconcloseCentral").on("click mousedown touchstart", function(e){
 //		console.log("mask mousedown touchstart");
 		dbsfaces.nav.show(xNav);
 		return false;
 	});
+	
+	var xOpened = xNav.attr('opened');
+	if (xOpened == "true") {
+		dbsfaces.nav.show(xNav);
+		return false;
+	}
 };
 
 dbsfaces.nav = {
@@ -126,9 +132,15 @@ dbsfaces.nav = {
 	},
 	
 	pvInitializeLayout: function(pNav){
-		if (!pNav.hasClass("-closed")){
-			dbsfaces.nav.pvOpen(pNav);
-		}
+//		if (!pNav.hasClass("-closed")){
+//			dbsfaces.nav.pvOpen(pNav);
+//			dbsfaces.nav.pvCloseTimeout(pNav);
+//		}
+//		var xOpened = pNav.attr('opened');
+//		if (xOpened == "true") {
+//			dbsfaces.nav.show(pNav);
+//		}
+		
 		pNav.children(".-container").css("opacity", "");
 		//Configura cores
 		var xColorClose = tinycolor(pNav.data("navgroup").css("background-color"));
@@ -156,6 +168,7 @@ dbsfaces.nav = {
 			dbsfaces.nav.pvClose(pNav);
 		}
 		pNav.toggleClass("-closed");
+		pNav.data("nav").toggleClass("-closed");
 	},
 
 	pvOpen: function(pNav){

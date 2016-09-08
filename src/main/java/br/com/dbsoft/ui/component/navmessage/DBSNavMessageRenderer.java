@@ -2,86 +2,116 @@ package br.com.dbsoft.ui.component.navmessage;
 
 import java.io.IOException;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
 
-import br.com.dbsoft.ui.component.DBSRenderer;
-import br.com.dbsoft.ui.component.nav.DBSNav;
-import br.com.dbsoft.ui.component.nav.DBSNav.LOCATION;
+import br.com.dbsoft.ui.component.nav.DBSNavRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
-import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.util.DBSObject;
 
-
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSNavMessage.RENDERER_TYPE)
-public class DBSNavMessageRenderer extends DBSRenderer {
+public class DBSNavMessageRenderer extends DBSNavRenderer {
 	
-	@Override
-	public void decode(FacesContext pContext, UIComponent pComponent) {
-	}
-
-	@Override
-	public boolean getRendersChildren() {
-		return true; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
-	}
-	
-    @Override
-    public void encodeChildren(FacesContext pContext, UIComponent pComponent) throws IOException {
-    }
-
 	@Override
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent) throws IOException {
-		if (!pComponent.isRendered()){return;}
-		DBSNavMessage 	xNavMessage = (DBSNavMessage) pComponent;
-		ResponseWriter 	xWriter = pContext.getResponseWriter();
-		LOCATION 		xLocation = LOCATION.get(xNavMessage.getLocation(), xNavMessage.getContentVerticalAlign(), xNavMessage.getContentHorizontalAlign());
-		String 			xClass = CSS.NAVMESSAGE.MAIN + CSS.THEME.FC + xLocation.getCSS();
-		if (!xNavMessage.getOpened()){
-			xClass += CSS.MODIFIER.CLOSED; //Indica que esta fechado
-		}
-		if (xNavMessage.getStyleClass()!=null){
-			xClass += xNavMessage.getStyleClass();
+		DBSNavMessage xNavMessage = (DBSNavMessage) pComponent;
+		//VERIFICA SE FAZ O ENCODE
+		//SE TEM FOR DEFINIDO, VERIFICA SE TEM MENSAGEM
+		//SE NAO TEM FOR DEFINIDO, FAZ O ENCODE
+		if (!DBSObject.isEmpty(xNavMessage.getFor())) {
+			xNavMessage.setOpened(true);
+			if (DBSObject.isEqual(xNavMessage.getFor().toUpperCase(), "@ALL")) {
+				//Verifica se tem qualquer mensagem
+				if (DBSObject.isEmpty(FacesContext.getCurrentInstance().getMessageList())) {
+					xNavMessage.setRendered(false);
+					return;
+				}
+			} else {
+				//Verifica se tem mensagem para o componente do forParent
+				if (DBSObject.isEmpty(FacesContext.getCurrentInstance().getMessageList(xNavMessage.getFor()))) {
+					xNavMessage.setRendered(false);
+					return;
+				}
+			}
+		} else {
+			if (xNavMessage.getChildCount() <= 0) {
+				xNavMessage.setRendered(false);
+				return;
+			}
 		}
 		
-		String xClientId = xNavMessage.getClientId(pContext);
-		xWriter.startElement("div", xNavMessage);
-			DBSFaces.setAttribute(xWriter, "id", xClientId);
-			DBSFaces.setAttribute(xWriter, "name", xClientId);
+		super.encodeBegin(pContext, xNavMessage); //JÁ TEM O RenderChildren
+			pvEncodeMessageDefault(pContext, xNavMessage);
+	}
+	
+	@Override
+	public void encodeEnd(FacesContext pContext, UIComponent pComponent) throws IOException {
+		super.encodeEnd(pContext, pComponent);
+	}
+
+	private void pvEncodeMessageDefault(FacesContext pContext, DBSNavMessage pNavMessage) throws IOException {
+		if (DBSObject.isEmpty(pNavMessage.getFor())) {
+			return;
+		}
+		
+		FacesMessage 	xMessage;
+		ResponseWriter 	xWriter = pContext.getResponseWriter();
+		xMessage = pvGetFacesMessage(pNavMessage);
+		
+		xWriter.startElement("div", pNavMessage);
+			DBSFaces.setAttribute(xWriter, "class", "-divMessage");
+			//Icone da Mensagem
+			xWriter.startElement("div", pNavMessage);
+				DBSFaces.setAttribute(xWriter, "class", "-iconMessage");
+				pvEncodeIcon(pContext, pNavMessage);
+			xWriter.endElement("div");
+			//Mensagem
+			xWriter.startElement("div", pNavMessage);
+				DBSFaces.setAttribute(xWriter, "class", "-contentMessage");
+				xWriter.startElement("span", pNavMessage);
+					xWriter.write(xMessage.getSummary());
+				xWriter.endElement("span");
+			xWriter.endElement("div");
+		xWriter.endElement("div");
+		
+	}
+	
+	private void pvEncodeIcon(FacesContext pContext, DBSNavMessage pNavMessage) throws IOException {
+		if (DBSObject.isEmpty(pNavMessage.getFor())) {
+			return;
+		}
+		FacesMessage 	xMessage = pvGetFacesMessage(pNavMessage);
+		ResponseWriter 	xWriter = pContext.getResponseWriter();
+		String 			xClass = "";
+		
+		if (xMessage.getSeverity() == FacesMessage.SEVERITY_INFO) {
+			xClass = " -i_information ";
+		} else if (xMessage.getSeverity() == FacesMessage.SEVERITY_WARN) {
+			xClass = " -i_warning -yellow";
+		} else if (xMessage.getSeverity() == FacesMessage.SEVERITY_ERROR) {
+			xClass = " -i_error -red";
+		} else { //ERROR
+			xClass = " -i_error -red";
+		}
+		
+		xWriter.startElement("div", pNavMessage);
 			DBSFaces.setAttribute(xWriter, "class", xClass);
-			DBSFaces.setAttribute(xWriter, "style", xNavMessage.getStyle());
-			//ENCODE DO NAV
-			DBSNav xNav = new DBSNav();
-			xNav.setContentHorizontalAlign(xNavMessage.getContentHorizontalAlign());
-			xNav.setContentVerticalAlign(xNavMessage.getContentVerticalAlign());
-			xNav.setContentStyleClass(xNavMessage.getContentStyleClass());
-			xNav.setCloseTimeout(xNavMessage.getCloseTimeout());
-			xNav.setLocation(xNavMessage.getLocation());
-//			xNav.setId(xClientId+":msgPanel");
-			xNav.encodeBegin(pContext);
-				pvEncodeMessage(xNavMessage, xWriter);
-			xNav.encodeEnd(pContext);
-			pvEncodeJS(xClientId, xWriter);
 		xWriter.endElement("div");
 	}
 
-	private void pvEncodeMessage(DBSNavMessage pNavMessage, ResponseWriter pWriter) throws IOException {
-		if (!DBSObject.isEmpty(pNavMessage.getMessage())) {
-			pWriter.startElement("span", pNavMessage);
-				pWriter.write(pNavMessage.getMessage());
-			pWriter.endElement("span");
+	private FacesMessage pvGetFacesMessage(DBSNavMessage pNavMessage) {
+		FacesMessage xMessage = null;
+		if (!DBSObject.isEmpty(pNavMessage.getFor())) {
+			if (DBSObject.isEqual(pNavMessage.getFor().toUpperCase(), "@ALL")) {
+				xMessage = FacesContext.getCurrentInstance().getMessageList().get(0);
+			} else {
+				xMessage = FacesContext.getCurrentInstance().getMessageList(pNavMessage.getFor()).get(0);
+			}
 		}
+		return xMessage;
 	}
 	
-	private void pvEncodeJS(String pClientId, ResponseWriter pWriter) throws IOException{
-		DBSFaces.encodeJavaScriptTagStart(pWriter);
-		String xJS = "$(document).ready(function() { \n" +
-				     " var xNavMessageId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
-				     " dbs_navMessage(xNavMessageId); \n" +
-                     "}); \n"; 
-		pWriter.write(xJS);
-		DBSFaces.encodeJavaScriptTagEnd(pWriter);		
-	}
-
 }

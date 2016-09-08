@@ -1,0 +1,17 @@
+.-divMessage{
+	display: table;
+}
+
+.-iconMessage{
+	display: table-cell;
+    position: relative;
+    vertical-align: middle;
+    left: 0;
+}
+
+.-contentMessage{
+	display: table-cell;
+    position: relative;
+    vertical-align: middle;
+    padding-left: 0.5em;
+}

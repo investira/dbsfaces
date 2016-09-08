@@ -989,7 +989,7 @@ public class  DBSFaces {
 		 || pMessageType == null
 		 || pMessage == null){return;}
 		FacesMessage.Severity xSeverity = null;
-		if (pMessageType.getSeverity() < 9){
+		if (pMessageType.getSeverity() < 19){
 			xSeverity = FacesMessage.SEVERITY_INFO;
 		}else if (pMessageType.getSeverity() < 29){
 			xSeverity = FacesMessage.SEVERITY_WARN;

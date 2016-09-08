@@ -2826,6 +2826,14 @@ Default: false;</description>
    <required>false</required>
    <type>java.lang.Boolean</type>
   </attribute>
+  <attribute>
+   <description>
+                Define o nome do elemento que escutará as mensagens. As mensagens deverão ser enviadas para este nome usando o método DBSFaces.sendMessage
+            </description>
+   <name>for</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
  </tag>
  <tag>
   <tag-name>parallax</tag-name>
