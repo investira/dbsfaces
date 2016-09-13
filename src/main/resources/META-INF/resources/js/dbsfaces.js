@@ -87,10 +87,12 @@ $(document).on("keydown", function(e){
 
 //Inicializa tamanho do fonte quando for class for responsivo(-th_responsive)
 $(document).ready(function() { 
-	dbsfaces.ui.initializeResponsive();
-	$(window).resize(function() {
-		dbsfaces.ui.initializeResponsive();
-	});
+	dbsfaces.ui.initializeTheme();
+//	dbsfaces.ui.initializeParallax();
+//	dbsfaces.ui.initializeResponsive();
+//	$(window).resize(function() {
+//		dbsfaces.ui.initializeResponsive();
+//	});
 });
 
 
@@ -254,11 +256,15 @@ String.prototype.replaceAll = function(target, replacement) {
      });
  
      return this;
+   },
+   
+   $.fn.onView = function() {
+	   dbsfaces.onView.initialize(this);
+       return this;
    }
 
+
 })(jQuery);
-
-
 
 
 dbsfaces.sound = {
@@ -485,7 +491,108 @@ dbsfaces.url = {
 	}
 }
 
+
+dbsfaces.onView = {
+	initialize: function(pElement){
+		pElement.addClass("onview");
+		if ($("body").data("onview") == null){
+			$(window).resize(function(e){
+				dbsfaces.onView.event();
+			});
+			$(window).scroll(function(e){
+//				console.log("w scroll");
+				dbsfaces.onView.event();
+			});
+			pElement.scroll(function(e){
+//				console.log("E scroll");
+				dbsfaces.onView.event();
+			});
+		}
+		$("body").data("onview", $(".onview"));
+	},
+	
+	event: function(){
+		var xWindow = $(window);
+		$("body").data("onview").each(function(){
+			var xThis = $(this);
+			if (xThis.length > 0){
+				var xTotalTop = xThis[0].getBoundingClientRect().top + xThis[0].getBoundingClientRect().height;
+				if (xTotalTop < 0 
+				 || xThis[0].getBoundingClientRect().top >= xWindow.height()){
+					if (xThis.data("onview") != null){
+						clearTimeout(xThis.data("onview"));
+						xThis.data("onview", null);
+						xThis.trigger("viewExit");
+					}
+				}else{
+					if (xThis.data("onview") == null){
+						xThis.data("onview", true);
+						xThis.trigger("viewEnter");
+					}else{
+						clearTimeout(xThis.data("onview"));
+						xThis.data("onview", 
+							setTimeout(function(e){
+								var xFactor = 1 - (xTotalTop / (xWindow.height() + xThis[0].getBoundingClientRect().height));
+								var xFactorTop = 1 - (xThis[0].getBoundingClientRect().top / xWindow.height());
+								var xEvent = $.Event("viewScroll", {dbs: true, source: xThis, factor:xFactor, factorTop:xFactorTop});
+								xThis.trigger(xEvent);
+							},10)
+						);
+						
+					}
+				}
+			}
+		});
+	}
+}
+
 dbsfaces.ui = {
+//	initializeParallax: function(){
+//		if ($(".-parallax").length > 0){
+//			console.log("eded:" + $("-parallax").length);
+//			$(window).resize(function(){
+//			});
+//		}
+//	},
+
+	initializeTheme: function(){
+		var xColor = tinycolor($("body").css("color"));
+		var xStyles = "";
+		/*cor do fundo quando selecionado*/
+		xColor.setAlpha(.05);
+		xStyles += ".-th_input-data:FOCUS,.-th_input-data-FOCUS {background-color: "; 
+		xStyles += xColor.toHslString();
+		xStyles += ";} ";
+		/*cor da borda*/
+		xColor.setAlpha(.08);
+		xStyles += ".-th_input-data[type=text],";
+		xStyles += ".-th_input-data[type=password], ";
+		xStyles += ".-th_input-data[type=email], ";
+		xStyles += ".-th_input-data[type=tel], ";
+		xStyles += ".-th_input-data[type=number], ";
+		xStyles += ".-th_input-data[type=date], ";
+		xStyles += ".-th_input-data[type=time], ";
+		xStyles += ".-th_input-data[type=url], ";
+		xStyles += "select.-th_input-data,  ";
+		xStyles += "textarea.-th_input-data, ";
+		xStyles += "span.-th_input-data, ";
+		xStyles += "div.-th_input-data, ";
+		xStyles += "label.-th_input-data, ";
+		xStyles += ".-th_input-suggestion{ ";
+		xStyles += "border: 1px ";
+		xStyles += xColor.toHslString();
+		xStyles += " solid;";
+		xStyles += "}";
+		
+		var xStyleTag = document.createElement('style');
+		 if (xStyleTag.styleSheet){
+		     xStyleTag.styleSheet.cssText= Styles;
+		 }else{
+		     xStyleTag.appendChild(document.createTextNode(xStyles));
+		 }
+		 document.getElementsByTagName('head')[0].appendChild(xStyleTag);
+	},
+	
 	initializeResponsive: function(){
 //		var xResponsive = $(".-th_responsive");
 //		if (xResponsive.length == 0){return;}

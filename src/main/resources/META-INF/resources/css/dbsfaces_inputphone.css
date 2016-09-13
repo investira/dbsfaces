@@ -24,6 +24,7 @@
 }
 
 .dbs_inputPhone > .-container > .-th_input-data > label{
+	vertical-align: baseline;
 }
 
 .dbs_inputPhone > .-container > .-th_input-data > input{

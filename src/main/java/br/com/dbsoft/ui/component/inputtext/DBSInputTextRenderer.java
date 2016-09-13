@@ -225,6 +225,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 					pInputText.getAutocomplete().toLowerCase().equals("false")){
 					DBSFaces.setAttribute(pWriter, "autocomplete", "off", null);
 				}
+				DBSFaces.setAttribute(pWriter, "placeHolder", pInputText.getPlaceHolder());
 				DBSFaces.setAttribute(pWriter, "class", xClass);
 				DBSFaces.setSizeAttributes(pWriter, pInputText.getSize(), null);
 				if (!xStyle.equals("")){

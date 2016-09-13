@@ -59,6 +59,7 @@ public class DBSInputMaskRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "name", xClientId);
 			DBSFaces.setAttribute(xWriter, "class", xClass);
 			DBSFaces.setAttribute(xWriter, "style", xInputMask.getStyle());
+			DBSFaces.setAttribute(xWriter, "placeHolder", xInputMask.getPlaceHolder());
 			//Container
 			xWriter.startElement("div", xInputMask);
 				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);

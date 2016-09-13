@@ -224,6 +224,7 @@ public class DBSInputDateRenderer extends DBSRenderer {
 		pWriter.startElement("input", pInputDate);
 			DBSFaces.setAttribute(pWriter, "id", xClientId + CSS.INPUTDATE.DAY.trim());
 			DBSFaces.setAttribute(pWriter, "name", xClientId + CSS.INPUTDATE.DAY.trim());
+			DBSFaces.setAttribute(pWriter, "placeHolder", pInputDate.getPlaceHolder());
 			DBSFaces.setAttribute(pWriter, "type", "text");
 			DBSFaces.setAttribute(pWriter, "pattern", "[0-9]*");
 			DBSFaces.setAttribute(pWriter, "inputmode", "numeric");

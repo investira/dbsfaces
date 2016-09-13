@@ -146,8 +146,8 @@ dbsfaces.nav = {
 		var xColorClose = tinycolor(pNav.data("navgroup").css("background-color"));
 		xColorClose.setAlpha(.5);
 		pNav.data("iconclose").css("background-color", xColorClose.toRgbString());
-		var xColorNav = tinycolor(pNav.data("navgroup").css("background-color"));
-		xColorNav.setAlpha(.96);
+//		var xColorNav = tinycolor(pNav.data("navgroup").css("background-color"));
+//		xColorNav.setAlpha(.96);
 		pNav.data("navgroup").css("box-shadow", tinycolor("rgba(0, 0, 0, 0.5") + " 0 0 .4em .2em");
 //							 .css("background-color", xColorNav.toRgbString());
 	},

@@ -111,7 +111,8 @@ public abstract class DBSUIInput extends UIInput implements IDBSUIComponentBase,
 		styleClass,
 		style,
 		tooltip,
-		readOnly;
+		readOnly,
+		placeHolder;
 
 		String toString;
 
@@ -197,6 +198,15 @@ public abstract class DBSUIInput extends UIInput implements IDBSUIComponentBase,
 	public void setStyleClass(String pStyleClass) {
 		getStateHelper().put(PropertyKeys.styleClass, pStyleClass);
 		handleAttribute("styleClass", pStyleClass);
+	}
+
+	public String getPlaceHolder() {
+		return (String) getStateHelper().eval(PropertyKeys.placeHolder, null);
+	}
+	
+	public void setPlaceHolder(String pPlaceHolder) {
+		getStateHelper().put(PropertyKeys.placeHolder, pPlaceHolder);
+		handleAttribute("placeHolder", pPlaceHolder);
 	}
 	
 	public String getTooltip() {

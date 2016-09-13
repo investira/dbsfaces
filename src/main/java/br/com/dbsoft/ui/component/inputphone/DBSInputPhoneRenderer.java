@@ -205,6 +205,7 @@ public class DBSInputPhoneRenderer extends DBSRenderer {
 		pWriter.startElement("input", pInputPhone);
 			DBSFaces.setAttribute(pWriter, "id", xClientId + CSS.INPUTPHONE.NUMBER.trim());
 			DBSFaces.setAttribute(pWriter, "name", xClientId + CSS.INPUTPHONE.NUMBER.trim());
+			DBSFaces.setAttribute(pWriter, "placeHolder", pInputPhone.getPlaceHolder());			
 			DBSFaces.setAttribute(pWriter, "type", "tel");
 			DBSFaces.setAttribute(pWriter, "class", CSS.INPUTPHONE.NUMBER);
 			DBSFaces.setAttribute(pWriter, "style", wWidth10);

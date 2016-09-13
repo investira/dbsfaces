@@ -7,7 +7,7 @@
 
 .dbs_inputTextArea > .-container > .-th_input-label {
     vertical-align: top !important;
-    top: .25em;
+/*     top: .25em; */
     position: relative;	
 }
 

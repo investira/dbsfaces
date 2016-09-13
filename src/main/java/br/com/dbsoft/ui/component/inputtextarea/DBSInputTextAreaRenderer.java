@@ -106,6 +106,7 @@ public class DBSInputTextAreaRenderer extends DBSRenderer {
 				DBSFaces.setAttribute(pWriter, "name", xClientId);
 				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputTextArea));
 				DBSFaces.setAttribute(pWriter, "style", xStyle);
+				DBSFaces.setAttribute(pWriter, "placeHolder", pInputTextArea.getPlaceHolder());
 				DBSFaces.setSizeAttributes(pWriter, pInputTextArea.getCols(), pInputTextArea.getRows());
 				DBSFaces.setAttribute(pWriter, "cols", pInputTextArea.getCols());
 				DBSFaces.setAttribute(pWriter, "rows", pInputTextArea.getRows());
