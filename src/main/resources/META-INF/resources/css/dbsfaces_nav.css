@@ -382,8 +382,9 @@
 .dbs_nav > .-container > .-nav > .-iconclose{
     position: absolute;
     display: inline-block;
-    font-size: .3em;
-/*     z-index: -1; */
+    /* font-size: .3em; */
+    font-size: 4.5px;
+	/* z-index: -1; */
     width: 0em;
     height: 0em;
 }
@@ -635,11 +636,33 @@
 }
 
 /* CENTER */
-.dbs_nav.-tlc > .-container > .-nav > .-footer,
-.dbs_nav.-trc > .-container > .-nav > .-footer,
-.dbs_nav.-blc > .-container > .-nav > .-footer,
+.dbs_nav.-tlc > .-container > .-nav > .-footer{
+	width: 100%;
+    z-index: 1;	
+    bottom: 0;
+	left: 0;
+	text-align: left;
+}
+.dbs_nav.-trc > .-container > .-nav > .-footer{
+	width: 100%;
+    z-index: 1;	
+    bottom: 0;
+	left: 0;
+	text-align: right;
+}
+.dbs_nav.-blc > .-container > .-nav > .-footer{
+	width: 100%;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    text-align: left;
+}
 .dbs_nav.-brc > .-container > .-nav > .-footer{
-	
+	width: 100%;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    text-align: right;
 }
 
 /* CENTER MOBILE */

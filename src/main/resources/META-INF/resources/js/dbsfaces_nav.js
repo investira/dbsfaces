@@ -68,8 +68,8 @@ dbs_nav = function(pId) {
 dbsfaces.nav = {
 	whipe: function(pNav, pDirection){
 //		alert(pDirection + "\t" + pNav.data("v") + "\t" + pNav.data("l"));
-		if (pNav.data("c")
-		 ||	(pDirection=="l"
+		if (/*pNav.data("c")
+		 ||	*/(pDirection=="l"
 		  && pNav.data("l")
 		  && pNav.data("v"))
 		  

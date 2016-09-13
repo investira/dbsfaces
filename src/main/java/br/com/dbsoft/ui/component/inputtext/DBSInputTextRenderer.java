@@ -18,7 +18,6 @@ import br.com.dbsoft.ui.component.button.DBSButton;
 import br.com.dbsoft.ui.component.datatable.DBSDataTable;
 import br.com.dbsoft.ui.component.datatable.DBSDataTableColumn;
 import br.com.dbsoft.ui.component.div.DBSDiv;
-import br.com.dbsoft.ui.component.inputtext.DBSInputText;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.util.DBSObject;
@@ -190,6 +189,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 						DBSFaces.setAttribute(pWriter, "class", CSS.INPUT.SUGGESTION);
 						DBSFaces.setAttribute(pWriter, "tabindex", "-1");
 						DBSFaces.setAttribute(pWriter, "value", xValue);
+						DBSFaces.setAttribute(pWriter, "placeholder", pInputText.getPlaceholder());
 					pWriter.endElement("input");
 					
 					//Botão que efetuará a chamada ajax
@@ -239,6 +239,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 					DBSFaces.setAttribute(pWriter, "maxlength", pInputText.getMaxLength(), null);
 				}
 				DBSFaces.setAttribute(pWriter, "value", xValue, "");
+				DBSFaces.setAttribute(pWriter, "placeholder", pInputText.getPlaceholder());
 				encodeClientBehaviors(pContext, pInputText);
 //				encodeClientParameters(pContext, pInputText);
 			pWriter.endElement("input");

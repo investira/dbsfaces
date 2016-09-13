@@ -145,7 +145,7 @@ public abstract class DBSNavBaseRenderer extends DBSRenderer {
 	}
 
 	private void pvEncodeIconClose(DBSNavBase pNav, ResponseWriter pWriter) throws IOException{
-		LOCATION xLocation = LOCATION.get(pNav.getLocation());
+		LOCATION xLocation = LOCATION.get(pNav.getLocation(), pNav.getContentVerticalAlign(), pNav.getContentHorizontalAlign());
 //		String xClass = CSS.THEME.ACTION;
 		String xClass = "";
 		pWriter.startElement("div", pNav);

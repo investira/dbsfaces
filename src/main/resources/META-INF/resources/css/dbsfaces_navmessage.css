@@ -1,5 +1,6 @@
 .-divMessage{
 	display: table;
+	white-space: normal;
 }
 
 .-iconMessage{

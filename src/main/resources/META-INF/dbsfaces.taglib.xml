@@ -973,7 +973,7 @@
 			<name>placeHolder</name>
 			<required>true</required>
 			<type>java.lang.String</type>
-		</attribute>		
+		</attribute>
 		<attribute>
 			<description>Tamanho do campo em caracteres
             </description>
@@ -1153,7 +1153,7 @@
 			<name>placeHolder</name>
 			<required>true</required>
 			<type>java.lang.String</type>
-		</attribute>		
+		</attribute>
 		<attribute>
 			<description>
 				Quantidade de linhas
@@ -1276,7 +1276,7 @@
 			<name>placeHolder</name>
 			<required>true</required>
 			<type>java.lang.String</type>
-		</attribute>		
+		</attribute>
 		<attribute>
 			<description>Tipo de campo de data. date=dd/mm/yyyy, time:hh:mm, datetime=dd/mm/yyyy hh:mm, times:hh:mm:ss
             </description>
@@ -1406,7 +1406,7 @@
 			<name>placeHolder</name>
 			<required>true</required>
 			<type>java.lang.String</type>
-		</attribute>		
+		</attribute>
 		<attribute>
 			<description>Pais. Atualmente somente "BR" está implementado.
             </description>
@@ -1531,7 +1531,7 @@
 			<name>placeHolder</name>
 			<required>true</required>
 			<type>java.lang.String</type>
-		</attribute>		
+		</attribute>
 		<attribute>
 			<description>
                 Texto a ser exibido a direita do campo
@@ -1701,7 +1701,7 @@
 			<name>placeHolder</name>
 			<required>true</required>
 			<type>java.lang.String</type>
-		</attribute>		
+		</attribute>
 		<attribute>
 			<description>
                 Texto a ser exibido a direita do campo
