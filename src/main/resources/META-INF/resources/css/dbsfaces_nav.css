@@ -241,7 +241,7 @@
 
 .dbs_nav > .-container > .-icon {
 	position: relative;
-    display: inline-block;
+    display: flex;
     top:0;
     left:0;
     vertical-align: middle;
