@@ -24,16 +24,17 @@ dbs_nav = function(pId) {
 		e.stopImmediatePropagation();
 	});
 
-	$(pId + ":not([disabled]) > .-container > .-nav").touchwipe({
-	     wipeLeft: function() {dbsfaces.nav.whipe(xNav, "l");},
-	     wipeRight: function() {dbsfaces.nav.whipe(xNav, "r");},
-	     wipeUp: function() {dbsfaces.nav.whipe(xNav, "u");},
-	     wipeDown: function() {dbsfaces.nav.whipe(xNav, "d");},
-	     //TODO DESABILITAR EM CASO DE CENTER
-	     min_move_x: 50,
-	     min_move_y: 50,
-	     preventDefaultEvents: true
-	});
+	if (!xNav.data("c")) {
+		$(pId + ":not([disabled]) > .-container > .-nav").touchwipe({
+		     wipeLeft: function() {dbsfaces.nav.whipe(xNav, "l");},
+		     wipeRight: function() {dbsfaces.nav.whipe(xNav, "r");},
+		     wipeUp: function() {dbsfaces.nav.whipe(xNav, "u");},
+		     wipeDown: function() {dbsfaces.nav.whipe(xNav, "d");},
+		     min_move_x: 50,
+		     min_move_y: 50,
+		     preventDefaultEvents: true
+		});
+	}
 
 	$(pId + ":not([disabled]) > .-container > .-nav > .-iconclose").on("click mousedown touchstart", function(e){
 //		console.log("iconclose mousedown touchstart");
@@ -68,8 +69,7 @@ dbs_nav = function(pId) {
 dbsfaces.nav = {
 	whipe: function(pNav, pDirection){
 //		alert(pDirection + "\t" + pNav.data("v") + "\t" + pNav.data("l"));
-		if (/*pNav.data("c")
-		 ||	*/(pDirection=="l"
+		if ((pDirection=="l"
 		  && pNav.data("l")
 		  && pNav.data("v"))
 		  
