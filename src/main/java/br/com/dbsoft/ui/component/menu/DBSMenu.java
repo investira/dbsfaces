@@ -34,7 +34,8 @@ public class DBSMenu extends DBSUIOutput implements NamingContainer {
 	
 	public static enum TYPE {
 		FLOAT 		("float"),
-		SCROLL		("scroll");
+		SCROLL		("scroll"),
+		AUTO		("auto");
 		
 		private String 	wCode;
 		
@@ -46,7 +47,7 @@ public class DBSMenu extends DBSUIOutput implements NamingContainer {
 			return wCode;
 		}
 		public String getCSS() {
-			return " -" + wCode;
+			return " -menu_" + wCode;
 		}
 		
 		public static TYPE get(String pCode) {
@@ -59,6 +60,8 @@ public class DBSMenu extends DBSUIOutput implements NamingContainer {
 				return FLOAT;
 			case "scroll":
 				return SCROLL;
+			case "auto":
+				return AUTO;
 			default:
 				return FLOAT;
 			}

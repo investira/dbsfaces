@@ -1,8 +1,7 @@
 <?xml version="1.0"?>
-<facelet-taglib version="2.0"
-	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd">
-	<description>
+<facelet-taglib version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd">
+ <description>
 		&lt;style type="text/css"&gt;
 			description{
 				font-size:small;
@@ -10,2682 +9,2682 @@
 		&lt;/style&gt;
  		Componentes JSF DBSoft
  	</description>
-	<namespace>http://www.dbsoft.com.br/ui/dbsfaces</namespace>
-	<tag>
-		<tag-name>dialog</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.dialog</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+ <namespace>http://www.dbsoft.com.br/ui/dbsfaces</namespace>
+ <tag>
+  <tag-name>dialog</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.dialog</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Título da tela
             </description>
-			<name>caption</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>caption</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	Se pode redimencionar
             </description>
-			<name>resizable</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>resizable</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	style
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	Largura
             </description>
-			<name>width</name>
-			<required>true</required>
-			<type>java.lang.Integer</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>width</name>
+   <required>true</required>
+   <type>java.lang.Integer</type>
+  </attribute>
+  <attribute>
+   <description>
             	Altura
             </description>
-			<name>height</name>
-			<required>true</required>
-			<type>java.lang.Integer</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>height</name>
+   <required>true</required>
+   <type>java.lang.Integer</type>
+  </attribute>
+  <attribute>
+   <description>
             	Se exibe botão de fechar
             </description>
-			<name>closeable</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>closeable</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Sendo: null=normal, a=Atenção, e=Error, i=informação, c=confirmar, g=ignorar, s=sucesso, b=sobre, p=proibido, t=importante
             </description>
-			<name>messageType</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>messageType</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 update
             </description>
-			<name>update</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>update</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Componentes que serão enviados na chamada ajax
             </description>
-			<name>execute</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>execute</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 yesAction
             </description>
-			<name>yesAction</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>yesAction</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 noAction
             </description>
-			<name>noAction</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>noAction</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 okAction
             </description>
-			<name>okAction</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>okAction</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Tooltip
             </description>
-			<name>tooltip</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>dataTable</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.dataTable</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>tooltip</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>dataTable</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.dataTable</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 StyleClass
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Style
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 classes que serão utilizadas para as linhas podendo ser mais de uma class. 
                 A primeira será para a primeira linha, a segunda para a segunda, e assim sucessivamente repetindo o padrão para as linhas seguintes.
             </description>
-			<name>rowStyleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rowStyleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Título
             </description>
-			<name>caption</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>caption</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 var
             </description>
-			<name>var</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>var</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 ResultDataModel contendo os registros a serem exibidos
             </description>
-			<name>value</name>
-			<required>true</required>
-			<type>javax.faces.model.DBSResultDataModel</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>value</name>
+   <required>true</required>
+   <type>javax.faces.model.DBSResultDataModel</type>
+  </attribute>
+  <attribute>
+   <description>
                 Tipo de seleção de registro. Sendo none=sem seleção, single(ou false)=seleção única e multi(ou true):Habilita checkbox para seleção de mais de um registro
             </description>
-			<name>selectionType</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>selectionType</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
 				Se haverá edição diretamente na linha do grid. 
             </description>
-			<name>inlineEdit</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>inlineEdit</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Método que será chamado para atualizar o conteúdo da lista.
             </description>
-			<name>searchAction</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>searchAction</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Método que será chamado para atualizar efetuar sort após o usuário ter selecionado a coluna.
             </description>
-			<name>sortAction</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>sortAction</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Método que será chamadado após usuário dar duploclick na linha que deseja selecionar
             </description>
-			<name>viewOneAction</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>viewOneAction</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Método que será chamado após usuário seleciona o botão de visialização. Atualmente, este botão está desabilitado.
             </description>
-			<name>selectAllAction</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>selectAllAction</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Campo boleano indicando se linha está selecionada ou não
             </description>
-			<name>selected</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>selected</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Componente que será atualizado no ajax
             </description>
-			<name>update</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>update</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
 				Nome do atributo da lista de dados que utilizado como chave para identificar a linha selecionada
             </description>
-			<name>keyColumnName</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>keyColumnName</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Atributo que estará vinculado a este componente para acesso direto. Atenção:Binding só deve ser usado em bean REQUESTSCOPED. 
             </description>
-			<name>binding</name>
-			<required>false</required>
-			<type>java.lang.Object</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>binding</name>
+   <required>false</required>
+   <type>java.lang.Object</type>
+  </attribute>
+  <attribute>
+   <description>
             	iconClass
             </description>
-			<name>iconClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>iconClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Método que será chamado após usuário seleciona uma coluna par ser ordernada. Método receber recever uma String. O id da coluna será passado como parametro para o método.
             </description>
-			<name>sortAction</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>sortAction</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Id que identifica a coluna que foi selecionada
             </description>
-			<name>sortColumn</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>sortColumn</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Direção da coluna ordenada. A, D ou empty
             </description>
-			<name>sortDirection</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>dataTableColumn</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.dataTableColumn</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>sortDirection</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>dataTableColumn</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.dataTableColumn</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 StyleClass
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Style. O padrão já é "text-align: center; white-space: nowrap;"
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 width
             </description>
-			<name>width</name>
-			<required>true</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>width</name>
+   <required>true</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Se coluna pode ser ordenada
             </description>
-			<name>sortable</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>sortable</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>messageList</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.messageList</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>messageList</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.messageList</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 StyleClass
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Style. O padrão já é "text-align: center; white-space: nowrap;"
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 value
             </description>
-			<name>value</name>
-			<required>true</required>
-			<type>br.com.dbsoft.message.DBSMessages</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>value</name>
+   <required>true</required>
+   <type>br.com.dbsoft.message.DBSMessages</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>progress</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.progress</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>progress</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.progress</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<!-- <attribute> <description> Texto do componente </description> <name>label</name> 
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <!-- <attribute> <description> Texto do componente </description> <name>label</name> 
 			<required>false</required> <type>java.lang.String</type> </attribute> -->
-		<attribute>
-			<description>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Valor da evolução atual. 
             </description>
-			<name>value</name>
-			<required>false</required>
-			<type>java.lang.Double</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>value</name>
+   <required>false</required>
+   <type>java.lang.Double</type>
+  </attribute>
+  <attribute>
+   <description>
                 Valor Máximo. Valor default é 100. 
             </description>
-			<name>maxValue</name>
-			<required>false</required>
-			<type>java.lang.Double</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>maxValue</name>
+   <required>false</required>
+   <type>java.lang.Double</type>
+  </attribute>
+  <attribute>
+   <description>
                 Largura/Comprimento em px(não é para incluir o símbolo 'px').  
             </description>
-			<name>width</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>width</name>
+   <required>false</required>
+   <type>java.lang.Integer</type>
+  </attribute>
+  <attribute>
+   <description>
                 Tooltip
             </description>
-			<name>tooltip</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>fileUpload</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.fileUpload</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>tooltip</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>fileUpload</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.fileUpload</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
 				Caminho completo da DBSFileUploadServlet que receberá o arquivo.
             </description>
-			<name>fileUploadServletPath</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>fileUploadServletPath</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Indica se upload será de mais de um arquivo. O padrão é true.
             </description>
-			<name>multiple</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>multiple</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Arquivo que serão aceitos. ex: accept='audio/*,video/*,image/*' ou accept='text/plain' ou accept='.xls, .xlsx '. Se não informado, todos arquivos serão aceitos. 
             </description>
-			<name>accept</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>accept</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Tamanho máximo do arquivo. ex: 3MB, 1GB, 2K, 200.  
             </description>
-			<name>maxSize</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>maxSize</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Tooltip
             </description>
-			<name>tooltip</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>tooltip</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 ReadOnly
             </description>
-			<name>readOnly</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>group</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.group</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>readOnly</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>group</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.group</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Título do grupo
             </description>
-			<name>label</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>label</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Indica se os itens serão posicionados consecutivamente a esquerda. O default é false 
             </description>
-			<name>floatLeft</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>ul</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.ul</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>floatLeft</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>ul</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.ul</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	style
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	styleClass
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>li</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.li</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>li</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.li</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	style
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	styleClass
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>label</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.label</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>label</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.label</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	Valor do Campo
             </description>
-			<name>value</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>value</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	style
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	styleClass
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	iconClass
             </description>
-			<name>iconClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>iconClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	Componente que receberá foco quando o label for clicado 
             </description>
-			<name>labelFor</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>labelFor</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>Largura do label em px
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>Largura do label em px
             </description>
-			<name>labelWidth</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>labelWidth</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Tooltip
             </description>
-			<name>tooltip</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>tooltip</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 selecionavel 
             </description>
-			<name>selectable</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>img</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.img</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>selectable</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>img</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.img</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	caminho da imagem
             </description>
-			<name>src</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>src</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	style
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	styleClass
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Tooltip
             </description>
-			<name>tooltip</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>quickInfo</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.quickInfo</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>tooltip</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>quickInfo</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.quickInfo</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Exibe tela rápido(sem botão de confirmação).
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	iconClass
             </description>
-			<name>iconClass</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>iconClass</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	style
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	styleClass
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Se informação será exibida quando o mouse passar por cima do icone, se não somente com click. Default true.
             </description>
-			<name>showOnHover</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>showOnHover</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Tooltip
             </description>
-			<name>tooltip</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>tooltip</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	Localização padrão, sendo 1-top, 2-right, 3-bottom, 4-left. O padrão é 2-right;
             </description>
-			<name>defaultLocation</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>inputText</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.inputText</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>defaultLocation</name>
+   <required>false</required>
+   <type>java.lang.Integer</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>inputText</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.inputText</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Título do campo
             </description>
-			<name>label</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>Largura do label
+   <name>label</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>Largura do label
             </description>
-			<name>labelWidth</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>labelWidth</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Texto informativo a ser exibido dentro do próprio campo
             </description>
-			<name>placeHolder</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>Tamanho do campo em caracteres
+   <name>placeHolder</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>Tamanho do campo em caracteres
             </description>
-			<name>size</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>size</name>
+   <required>false</required>
+   <type>java.lang.Integer</type>
+  </attribute>
+  <attribute>
+   <description>
                 Texto a ser exibido a direita do campo
             </description>
-			<name>rightLabel</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rightLabel</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	Valor do Campo
             </description>
-			<name>value</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>value</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Typo do campo conforme HTML5. Padrão é text. 
             </description>
-			<name>type</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>type</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Tooltip
             </description>
-			<name>tooltip</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>tooltip</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Omite o valor digitado como no caso de senhas
             </description>
-			<name>secret</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<name>validator</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>secret</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <name>validator</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 ReadOnly
             </description>
-			<name>readOnly</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>readOnly</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Indica se valor do campo é obrigatório segundo regra de negócio
             </description>
-			<name>required</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>required</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Se ativa o autocomplete padrão do browser. off ou on. Default = on
             </description>
-			<name>autocomplete</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>autocomplete</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Tipo de caixa das letras. upper=Somente maiúscula, lower=Somente minúscula, proper=Nome próprio, upperfirst=Somente a primeiro é obrigatório ser maiúsculo, none=Livre.
 				O padrão é upperfirst.			                 
             </description>
-			<name>letterCase</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>letterCase</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
 				Bean que implementa a interface IDBSInputTextSuggestion e que contém a lista de sugestões
             </description>
-			<name>suggestionsBean</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>suggestionsBean</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
 				Nome do atributo do objeto será utilizado como chave para identificar o item selecionado, caso a lista de sugestão retorne algum objeto
 				Caso não seja informado, considera que a lista retorna String
             </description>
-			<name>suggestionKeyColumnName</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>suggestionKeyColumnName</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
 				Texto que será exibido quando o ainda não tiver sido selecionado nenhum item
             </description>
-			<name>suggestionNullText</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>suggestionNullText</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
 				Ids de outros componentes(xhtml) que serão atualizados a medida que o usuário digita.
             </description>
-			<name>suggestionUpdate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>inputTextArea</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.inputTextArea</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>suggestionUpdate</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>inputTextArea</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.inputTextArea</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Título do campo
             </description>
-			<name>label</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>Largura do label
+   <name>label</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>Largura do label
             </description>
-			<name>labelWidth</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>labelWidth</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Texto informativo a ser exibido dentro do próprio campo
             </description>
-			<name>placeHolder</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>placeHolder</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
 				Quantidade de linhas
             </description>
-			<name>rows</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rows</name>
+   <required>false</required>
+   <type>java.lang.Integer</type>
+  </attribute>
+  <attribute>
+   <description>
 				Tamanho do campo em caracteres de cada linha
             </description>
-			<name>cols</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>cols</name>
+   <required>false</required>
+   <type>java.lang.Integer</type>
+  </attribute>
+  <attribute>
+   <description>
             	Valor do Campo
             </description>
-			<name>value</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>value</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Tooltip
             </description>
-			<name>tooltip</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>tooltip</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Omite o valor digitado como no caso de senhas
             </description>
-			<name>secret</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<name>validator</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>secret</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <name>validator</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 ReadOnly
             </description>
-			<name>readOnly</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>readOnly</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Se campo permite o redimensionamento. Padrão é false.
             </description>
-			<name>resize</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>inputDate</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.inputDate</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>resize</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>inputDate</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.inputDate</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Título do campo
             </description>
-			<name>label</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>Largura do label
+   <name>label</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>Largura do label
             </description>
-			<name>labelWidth</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>labelWidth</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Texto informativo a ser exibido dentro do próprio campo
             </description>
-			<name>placeHolder</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>Tipo de campo de data. date=dd/mm/yyyy, time:hh:mm, datetime=dd/mm/yyyy hh:mm, times:hh:mm:ss
+   <name>placeHolder</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>Tipo de campo de data. date=dd/mm/yyyy, time:hh:mm, datetime=dd/mm/yyyy hh:mm, times:hh:mm:ss
             </description>
-			<name>type</name>
-			<required>true</required>
-			<type>java.lang.Long</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>type</name>
+   <required>true</required>
+   <type>java.lang.Long</type>
+  </attribute>
+  <attribute>
+   <description>
                 Texto a ser exibido a direita do campo
             </description>
-			<name>rightLabel</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rightLabel</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	Valor do Campo
             </description>
-			<name>value</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>value</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Se ativa o autocomplete padrão do browser. off ou on. Default = off
             </description>
-			<name>autocomplete</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>autocomplete</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Tooltip
             </description>
-			<name>tooltip</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>tooltip</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Data máxima
             </description>
-			<name>dateMax</name>
-			<required>false</required>
-			<type>java.sql.Date</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>dateMax</name>
+   <required>false</required>
+   <type>java.sql.Date</type>
+  </attribute>
+  <attribute>
+   <description>
                 Data mínima
             </description>
-			<name>dateMin</name>
-			<required>false</required>
-			<type>java.sql.Date</type>
-		</attribute>
-		<attribute>
-			<name>validator</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>dateMin</name>
+   <required>false</required>
+   <type>java.sql.Date</type>
+  </attribute>
+  <attribute>
+   <name>validator</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 ReadOnly
             </description>
-			<name>readOnly</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>readOnly</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>inputPhone</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.inputPhone</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>inputPhone</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.inputPhone</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Título do campo
             </description>
-			<name>label</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>Largura do label
+   <name>label</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>Largura do label
             </description>
-			<name>labelWidth</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>labelWidth</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Texto informativo a ser exibido dentro do próprio campo
             </description>
-			<name>placeHolder</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>Pais. Atualmente somente "BR" está implementado.
+   <name>placeHolder</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>Pais. Atualmente somente "BR" está implementado.
             </description>
-			<name>country</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>country</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Texto a ser exibido a direita do campo
             </description>
-			<name>rightLabel</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rightLabel</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	Valor do Campo
             </description>
-			<name>value</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>value</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Se ativa o autocomplete padrão do browser. off ou on. Default = off
             </description>
-			<name>autocomplete</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>autocomplete</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Tooltip
             </description>
-			<name>tooltip</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>tooltip</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Exibe campo DDI. O padrão é false.
             </description>
-			<name>showDDI</name>
-			<required>false</required>
-			<type>java.sql.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>showDDI</name>
+   <required>false</required>
+   <type>java.sql.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Exibe campo DDD. O padrão é true.
             </description>
-			<name>showDDD</name>
-			<required>false</required>
-			<type>java.sql.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>showDDD</name>
+   <required>false</required>
+   <type>java.sql.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 ReadOnly
             </description>
-			<name>readOnly</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>readOnly</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>inputNumber</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.inputNumber</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>inputNumber</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.inputNumber</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Título do campo
             </description>
-			<name>label</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>Largura do label
+   <name>label</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>Largura do label
             </description>
-			<name>labelWidth</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>labelWidth</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Texto informativo a ser exibido dentro do próprio campo
             </description>
-			<name>placeHolder</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>placeHolder</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Texto a ser exibido a direita do campo
             </description>
-			<name>rightLabel</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rightLabel</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Simbolo da moeda/valor. ex:R$
             </description>
-			<name>currencySymbol</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>Tamanho do campo em caracteres
+   <name>currencySymbol</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>Tamanho do campo em caracteres
             </description>
-			<name>size</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>size</name>
+   <required>false</required>
+   <type>java.lang.Integer</type>
+  </attribute>
+  <attribute>
+   <description>
             	Valor do Campo
             </description>
-			<name>value</name>
-			<required>false</required>
-			<type>java.lang.Double</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>value</name>
+   <required>false</required>
+   <type>java.lang.Double</type>
+  </attribute>
+  <attribute>
+   <description>
                 Se ativa o autocomplete padrão do browser. off ou on. Default = off
             </description>
-			<name>autocomplete</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>autocomplete</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Tooltip
             </description>
-			<name>tooltip</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>tooltip</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Omite o valor digitado como no caso de senhas
             </description>
-			<name>secret</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<name>validator</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>secret</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <name>validator</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 ReadOnly
             </description>
-			<name>readOnly</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>readOnly</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Quantidade de casas decimais. O padrão são duas casas.
             </description>
-			<name>decimalPlaces</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>decimalPlaces</name>
+   <required>false</required>
+   <type>java.lang.Integer</type>
+  </attribute>
+  <attribute>
+   <description>
             	Valor máximo
             </description>
-			<name>maxValue</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>maxValue</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	Valor mínimo
             </description>
-			<name>minValue</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>minValue</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Se exibe zeros a esquerda
             </description>
-			<name>leadingZero</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>leadingZero</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Se exibe ponto de separação na casa do milhar 
             </description>
-			<name>separateThousand</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>separateThousand</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>inputMask</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.inputMask</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>inputMask</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.inputMask</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Título do campo
             </description>
-			<name>label</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>Largura do label
+   <name>label</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>Largura do label
             </description>
-			<name>labelWidth</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>labelWidth</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Texto informativo a ser exibido dentro do próprio campo
             </description>
-			<name>placeHolder</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>placeHolder</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Texto a ser exibido a direita do campo
             </description>
-			<name>rightLabel</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rightLabel</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	Valor do Campo
             </description>
-			<name>value</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>value</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	Máscara 9=Numeric; a=Alpha; x=AlphaNumeric
             </description>
-			<name>mask</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>mask</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Tooltip
             </description>
-			<name>tooltip</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>tooltip</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Omite o valor digitado como no caso de senhas
             </description>
-			<name>secret</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<name>validator</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>secret</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <name>validator</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 ReadOnly
             </description>
-			<name>readOnly</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>readOnly</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
             	Caracter que será utilizado para preencher os espaços vazios
             </description>
-			<name>maskEmptyChr</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>maskEmptyChr</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Se excluir os caracteres na máscara e retorna somente os valores digitados
             </description>
-			<name>stripMask</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>stripMask</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>calendar</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.calendar</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<name>id</name>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>calendar</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.calendar</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <name>id</name>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
             	Valor do Campo
             </description>
-			<name>value</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>value</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Data máxima
             </description>
-			<name>dateMax</name>
-			<required>false</required>
-			<type>java.sql.Date</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>dateMax</name>
+   <required>false</required>
+   <type>java.sql.Date</type>
+  </attribute>
+  <attribute>
+   <description>
                 Data mínima
             </description>
-			<name>dateMin</name>
-			<required>false</required>
-			<type>java.sql.Date</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>combobox</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.combobox</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>dateMin</name>
+   <required>false</required>
+   <type>java.sql.Date</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>combobox</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.combobox</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Título do campo
             </description>
-			<name>label</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>label</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	Largura do label
             </description>
-			<name>labelWidth</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>labelWidth</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Texto a ser exibido a direita do campo
             </description>
-			<name>rightLabel</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rightLabel</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>Tamanho do campo em caracteres
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>Tamanho do campo em caracteres
             </description>
-			<name>size</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>size</name>
+   <required>false</required>
+   <type>java.lang.Integer</type>
+  </attribute>
+  <attribute>
+   <description>
             	Valor do Campo
             </description>
-			<name>value</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>value</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Tooltip
             </description>
-			<name>tooltip</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>tooltip</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 ReadOnly
             </description>
-			<name>readOnly</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>readOnly</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 List
             </description>
-			<name>list</name>
-			<required>false</required>
-			<type>java.util.Map</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>checkbox</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.checkbox</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>list</name>
+   <required>false</required>
+   <type>java.util.Map</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>checkbox</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.checkbox</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Título do campo
             </description>
-			<name>label</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>label</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	Largura do label
             </description>
-			<name>labelWidth</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>labelWidth</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	Valor do Campo
             </description>
-			<name>value</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>value</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Inverte a posição da label, posicionando-a a direita do checkbox.
             </description>
-			<name>invertLabel</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>invertLabel</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Componente que será atualizado no ajax
             </description>
-			<name>update</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>update</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Tooltip
             </description>
-			<name>tooltip</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>tooltip</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	action
             </description>
-			<name>action</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>action</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 ReadOnly
             </description>
-			<name>readOnly</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>radio</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.radio</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>readOnly</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>radio</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.radio</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	Largura do label dos radiobuttons 
             </description>
-			<name>label</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>label</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	Largura do label dos radiobuttons 
             </description>
-			<name>labelWidth</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>labelWidth</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	Valor do Campo
             </description>
-			<name>value</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>value</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Tooltip
             </description>
-			<name>tooltip</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>tooltip</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
             	Componente que será atualizado no ajax
             </description>
-			<name>update</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>update</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	Componentes que serão enviados na chamada ajax
             </description>
-			<name>execute</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>execute</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 ReadOnly
             </description>
-			<name>readOnly</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>readOnly</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Indica se os itens serão posicionados consecutivamente a esquerda. O default é true 
             </description>
-			<name>floatLeft</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>listbox</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.listbox</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>floatLeft</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>listbox</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.listbox</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Título do campo
             </description>
-			<name>label</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>label</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	Largura do label
             </description>
-			<name>labelWidth</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>labelWidth</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Texto a ser exibido a direita do campo
             </description>
-			<name>rightLabel</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>Tamanho do campo em caracteres
+   <name>rightLabel</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>Tamanho do campo em caracteres
             </description>
-			<name>size</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-		</attribute>
-		<attribute>
-			<description>Tamanho do campo em caracteres
+   <name>size</name>
+   <required>false</required>
+   <type>java.lang.Integer</type>
+  </attribute>
+  <attribute>
+   <description>Tamanho do campo em caracteres
             </description>
-			<name>lines</name>
-			<required>false</required>
-			<type>java.lang.Long</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>lines</name>
+   <required>false</required>
+   <type>java.lang.Long</type>
+  </attribute>
+  <attribute>
+   <description>
             	Valor do Campo
             </description>
-			<name>value</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>value</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Componente que será atualizado no ajax
             </description>
-			<name>update</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>update</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	action
             </description>
-			<name>action</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>action</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 ReadOnly
             </description>
-			<name>readOnly</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>readOnly</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 List
             </description>
-			<name>list</name>
-			<required>false</required>
-			<type>java.util.Map</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>list</name>
+   <required>false</required>
+   <type>java.util.Map</type>
+  </attribute>
+  <attribute>
+   <description>
                 Tooltip
             </description>
-			<name>tooltip</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>button</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.button</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>tooltip</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>button</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.button</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	Texto do botão
             </description>
-			<name>label</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>label</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	action
             </description>
-			<name>action</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>action</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	icon Class
             </description>
-			<name>iconClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>iconClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	Componente que será atualizado no ajax
             </description>
-			<name>update</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>update</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	Componentes que serão enviados na chamada ajax
             </description>
-			<name>execute</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>execute</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>disabled</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>disabled</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Tooltip
             </description>
-			<name>tooltip</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>tooltip</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 ReadOnly
             </description>
-			<name>readOnly</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>readOnly</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
 	           	evento onclick
             </description>
-			<name>onclick</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-	</tag>
-	<tag>
-		<description>Botão de menu flutuante. 
+   <name>onclick</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+ </tag>
+ <tag>
+  <description>Botão de menu flutuante. 
 Os botões do menu devem ser do tipo dbs:menuitem como filhos do floatButton.</description>
-		<tag-name>floatButton</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.floatbutton</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+  <tag-name>floatButton</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.floatbutton</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	icon Class
             </description>
-			<name>iconClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>iconClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>disabled</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>disabled</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Tooltip
             </description>
-			<name>tooltip</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>Define a orientação do menu.
+   <name>tooltip</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>Define a orientação do menu.
 true: Horizontal;
 false: Vertical;
 Default: false;</description>
-			<name>horizontal</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>horizontal</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
             	Localização padrão do componente nos 4 cantos da tela, sendo 1=top-left, 2=top-right, 3=bottom-right, 4= bottom-left. O padrão é 3=bottom-right;
             </description>
-			<name>defaultLocation</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>link</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.link</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>defaultLocation</name>
+   <required>false</required>
+   <type>java.lang.Integer</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>link</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.link</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Componente que será atualizado no ajax
             </description>
-			<name>update</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>update</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	action
             </description>
-			<name>action</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>action</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
 	           	evento onclick
             </description>
-			<name>onclick</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>onclick</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	Texto do link. Texto também pode ser o conteúdo dentro da própria tag.
             </description>
-			<name>value</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>value</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	Componentes que serão enviados na chamada ajax
             </description>
-			<name>execute</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>execute</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Tooltip
        </description>
-			<name>tooltip</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>tooltip</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 ReadOnly
             </description>
-			<name>readOnly</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>div</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.div</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>readOnly</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>div</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.div</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 selecionavel 
             </description>
-			<name>selectable</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>selectable</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Indica se página será carregada via ajax. Dispara evento ajax 'loaded' após finalizado a load.
             </description>
-			<name>ajax</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>ajax</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Nome da tag que erá utilizado. O padrão é DIV, podendo ser outros como NAV, SECTION, etc.
             </description>
-			<name>tagName</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>nav</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.nav</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>tagName</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>nav</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.nav</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Divisão para navegação
             </description>
-			<name>id</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
             	iconClass
             </description>
-			<name>iconClass</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>iconClass</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
 				&lt;span style="font-size:small"&gt;
 				Localização da abertura. Padrão é vertical.&lt;br/&gt;
 				&lt;ul&gt;
@@ -2694,36 +2693,36 @@ Default: false;</description>
 					&lt;li&gt;Abertura:CENTRO = c&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
-			<name>location</name>
-			<required>false</required>
-			<type>java.lang.Sting</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>location</name>
+   <required>false</required>
+   <type>java.lang.Sting</type>
+  </attribute>
+  <attribute>
+   <description>
 				&lt;span style="font-size:small"&gt;
 				Tempo para fechamento automatico do nav em segundos.&lt;br/&gt;
 				&lt;/span&gt; </description>
-			<name>closeTimeout</name>
-			<required>false</required>
-			<type>java.lang.Sting</type>
-		</attribute>
-		<attribute>
-			<description>Padding interno. O padrão é 0.4em;
+   <name>closeTimeout</name>
+   <required>false</required>
+   <type>java.lang.Sting</type>
+  </attribute>
+  <attribute>
+   <description>Padding interno. O padrão é 0.4em;
             </description>
-			<name>contentPadding</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>contentPadding</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada dentro do nav
             </description>
-			<name>contentStyleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>contentStyleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 &lt;span style="font-size:small"&gt;
 				Alinhamento vertical do conteúdo do nav. O Padrão é TOP.&lt;br/&gt;
 				&lt;ul&gt;
@@ -2731,12 +2730,12 @@ Default: false;</description>
 					&lt;li&gt;Conteúdo:BOTTOM b&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
-			<name>contentVerticalAlign</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>contentVerticalAlign</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 &lt;span style="font-size:small"&gt;
 				Alinhamento horizontal do conteúdo do nav. O Padrão é LEFT.&lt;br/&gt;
 				&lt;ul&gt;
@@ -2744,67 +2743,67 @@ Default: false;</description>
 					&lt;li&gt;Conteúdo:RIGHT = r&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
-			<name>contentHorizontalAlign</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>contentHorizontalAlign</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Se exibe já aberto. Padrao é false.
             </description>
-			<name>opened</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>navMessage</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.navmessage</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>opened</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>navMessage</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.navmessage</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Divisão para navegação
             </description>
-			<name>id</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
             	iconClass
             </description>
-			<name>message</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>message</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
 				&lt;span style="font-size:small"&gt;
 				Localização da abertura. Padrão é vertical.&lt;br/&gt;
 				&lt;ul&gt;
@@ -2813,36 +2812,36 @@ Default: false;</description>
 					&lt;li&gt;Abertura:CENTRO = c&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
-			<name>location</name>
-			<required>false</required>
-			<type>java.lang.Sting</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>location</name>
+   <required>false</required>
+   <type>java.lang.Sting</type>
+  </attribute>
+  <attribute>
+   <description>
 				&lt;span style="font-size:small"&gt;
 				Tempo para fechamento automatico do nav em segundos.&lt;br/&gt;
 				&lt;/span&gt; </description>
-			<name>closeTimeout</name>
-			<required>false</required>
-			<type>java.lang.Sting</type>
-		</attribute>
-		<attribute>
-			<description>Padding interno. O padrão é 0.4em;
+   <name>closeTimeout</name>
+   <required>false</required>
+   <type>java.lang.Sting</type>
+  </attribute>
+  <attribute>
+   <description>Padding interno. O padrão é 0.4em;
             </description>
-			<name>contentPadding</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>contentPadding</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada dentro do nav
             </description>
-			<name>contentStyleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>contentStyleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 &lt;span style="font-size:small"&gt;
 				Alinhamento vertical do conteúdo do nav. O Padrão é TOP.&lt;br/&gt;
 				&lt;ul&gt;
@@ -2850,12 +2849,12 @@ Default: false;</description>
 					&lt;li&gt;Conteúdo:BOTTOM b&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
-			<name>contentVerticalAlign</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>contentVerticalAlign</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 &lt;span style="font-size:small"&gt;
 				Alinhamento horizontal do conteúdo do nav. O Padrão é LEFT.&lt;br/&gt;
 				&lt;ul&gt;
@@ -2863,944 +2862,944 @@ Default: false;</description>
 					&lt;li&gt;Conteúdo:RIGHT = r&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
-			<name>contentHorizontalAlign</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>contentHorizontalAlign</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Se exibe já aberto. Padrao é false.
             </description>
-			<name>opened</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>opened</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Define o nome do elemento que escutará as mensagens. As mensagens deverão ser enviadas para este nome usando o método DBSFaces.sendMessage
             </description>
-			<name>for</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>parallax</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.parallax</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>for</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>parallax</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.parallax</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>parallaxSection</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.parallaxSection</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>parallaxSection</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.parallaxSection</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Percentual de aceleração em relação ao scroll. Valor pode ser negativo. 
             </description>
-			<name>a</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>a</name>
+   <required>false</required>
+   <type>java.lang.Integer</type>
+  </attribute>
+  <attribute>
+   <description>
                 For a centralização quando posição estiver próxima ao centro. 
             </description>
-			<name>centerAttraction</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>charts</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.charts</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>centerAttraction</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>charts</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.charts</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>Tipo de gráfico. bar, line, pie. Padrão é bar.
+   <name>id</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>Tipo de gráfico. bar, line, pie. Padrão é bar.
             </description>
-			<name>type</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>type</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Título
             </description>
-			<name>caption</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>caption</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Texto do rodapé
             </description>
-			<name>footer</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>footer</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Mascará para formatar o valor.
             </description>
-			<name>valueFormatMask</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>valueFormatMask</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 id que identificará grupos de gráficos que terão seus valores selecionados simultaneamente quando possurem os mesmos labels.
             </description>
-			<name>groupId</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>groupId</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Indica se grid será exibido(somente para gráficos Line e Bar). Padrão é true.
             </description>
-			<name>showGrid</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>showGrid</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Indica se valor do grid será exibido(somente para gráficos Line e Bar). Padrão é true.
             </description>
-			<name>showGridValue</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>showGridValue</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Indica se label será exibido. Padrão é true.
             </description>
-			<name>showLabel</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>Padding interno. O padrão é 2px;
+   <name>showLabel</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>Padding interno. O padrão é 2px;
             </description>
-			<name>padding</name>
-			<required>true</required>
-			<type>java.lang.Integer</type>
-		</attribute>
-		<attribute>
-			<description>Dimensão do círculo central. É um fator em relação a largura individual do gráfico. 
+   <name>padding</name>
+   <required>true</required>
+   <type>java.lang.Integer</type>
+  </attribute>
+  <attribute>
+   <description>Dimensão do círculo central. É um fator em relação a largura individual do gráfico. 
 			ex: com valor 1 o círculo central terá o tamanho da largura de um gráfico.
 			O padrão é 1;
             </description>
-			<name>pieInternalCircleFator</name>
-			<required>true</required>
-			<type>java.lang.Double</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>chart</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.chart</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>pieInternalCircleFator</name>
+   <required>true</required>
+   <type>java.lang.Double</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>chart</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.chart</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Título do gráfico. Título somente será exibido quando houver gráfico dentro de gráfico. Para o título principal, utilizar o caption do DBSChats.
             </description>
-			<name>caption</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>caption</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Indica se será exibido a variação percentual entre dois pontos quando o gráfico for do tipo 'line'. O default é true.
             </description>
-			<name>showDelta</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>showDelta</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 var
             </description>
-			<name>var</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>var</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 ResultDataModel contendo os registros a serem exibidos
             </description>
-			<name>value</name>
-			<required>true</required>
-			<type>javax.faces.model.DBSResultDataModel</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>value</name>
+   <required>true</required>
+   <type>javax.faces.model.DBSResultDataModel</type>
+  </attribute>
+  <attribute>
+   <description>
 				&lt;span style="font-size:small"&gt;
 				Cor base que será utilizado calcular as cores de cada um dos valores do gráfico.&lt;br/&gt;
 				Caso não seja informado as cores serão gerada automaticamente.&lt;br/&gt;
 				&lt;/span&gt; </description>
-			<name>color</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>color</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Lista de IDBSChartDelta para seleção rápida do intervalo do delta
             </description>
-			<name>deltaList</name>
-			<required>false</required>
-			<type>java.util.List</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>chartValue</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.chartValue</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>deltaList</name>
+   <required>false</required>
+   <type>java.util.List</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>chartValue</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.chartValue</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Tooltip
             </description>
-			<name>tooltip</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>tooltip</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
 				Valor
             </description>
-			<name>value</name>
-			<required>true</required>
-			<type>java.lang.Double</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>value</name>
+   <required>true</required>
+   <type>java.lang.Double</type>
+  </attribute>
+  <attribute>
+   <description>
 				Valor norminal a ser exibido quando este for diferente do 'valeu'(que é utilizado para os cálculo do sistema). Caso não seja informado será utilizado o valor contido no atributo 'value'.
             </description>
-			<name>displayValue</name>
-			<required>false</required>
-			<type>java.lang.Double</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>displayValue</name>
+   <required>false</required>
+   <type>java.lang.Double</type>
+  </attribute>
+  <attribute>
+   <description>
 				Label que será exibido no rodapé da coluna. 
             </description>
-			<name>label</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>label</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
 				Cor a ser utilizada para indicar este valor. Quando não informado é utilizada a cor padrão do gráfico definido em "color" do dbschart pai.
             </description>
-			<name>color</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>menu</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.menu</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>color</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>menu</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.menu</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Icon Class
             </description>
-			<name>iconClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>iconClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Nome no será utilizado para identificar o item. Este nome não é renderizado. 
             </description>
-			<name>label</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                Tipo: scroll ou float 
+   <name>label</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
+                Tipo: scroll, float ou auto
             </description>
-			<name>type</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>menuitem</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.menuitem</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>type</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>menuitem</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.menuitem</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Icon Class
             </description>
-			<name>iconClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>iconClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 label
             </description>
-			<name>label</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>label</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	action
             </description>
-			<name>action</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>action</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	Componente que será atualizado no ajax
             </description>
-			<name>update</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>update</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 ReadOnly
             </description>
-			<name>readOnly</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>readOnly</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
             	Componentes que serão enviados na chamada ajax
             </description>
-			<name>execute</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>execute</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Se item será exibido inicialmente aberto. Padrão: false
             </description>
-			<name>opened</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>menuitemSeparator</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.menuitemSeparator</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>opened</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>menuitemSeparator</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.menuitemSeparator</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>tab</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.tab</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>tab</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.tab</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 SelectedTabPage
             </description>
-			<name>selectedTabPage</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>selectedTabPage</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Geração dinamica das tabpages atraves do Controller das páginas no tab 
             </description>
-			<name>tabPages</name>
-			<required>false</required>
-			<type>br.com.dbsoft.ui.component.tabPagesController</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>tabPages</name>
+   <required>false</required>
+   <type>br.com.dbsoft.ui.component.tabPagesController</type>
+  </attribute>
+  <attribute>
+   <description>
                 Se exibe conteúdo da aba logo após o click na aba. Default = true. Quando for false, deverá ser utilizado o atributo SelectedTabPage para ativar a página selecionada. 
             </description>
-			<name>showTabPageOnClick</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>showTabPageOnClick</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>tabPage</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.tabPage</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>tabPage</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.tabPage</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Caption 
             </description>
-			<name>caption</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>caption</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
             	icon Class
             </description>
-			<name>iconClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>iconClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Selected
             </description>
-			<name>selected</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>selected</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 onclose
             </description>
-			<name>onclose</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>onclose</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Closeble
             </description>
-			<name>closeble</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>closeble</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Indica se página será carregada via ajax.
             </description>
-			<name>ajax</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>accordion</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.accordion</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<name>id</name>
-		</attribute>
-		<attribute>
-			<description>
+   <name>ajax</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>accordion</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.accordion</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <name>id</name>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Accordion Sections
             </description>
-			<name>accordionSections</name>
-			<required>false</required>
-			<type>java.util.List</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>accordionSection</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.accordionSection</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<name>id</name>
-		</attribute>
-		<attribute>
-			<description>
+   <name>accordionSections</name>
+   <required>false</required>
+   <type>java.util.List</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>accordionSection</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.accordionSection</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <name>id</name>
+  </attribute>
+  <attribute>
+   <description>
                 Class CSS que será utilizada
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Adiciona style 
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Caption 
             </description>
-			<name>caption</name>
-			<required>true</required>
-			<type>java.util.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>caption</name>
+   <required>true</required>
+   <type>java.util.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Icon Class 
             </description>
-			<name>iconClass</name>
-			<required>false</required>
-			<type>java.util.String</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>style</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.style</component-type>
-			<handler-class />
-		</component>
-	</tag>
-	<tag>
-		<tag-name>push</tag-name>
-		<component>
-			<description>Mantém conexão SSE com o servidor para receber Ids dos componentes que devem ser atualizados via ajax. Componentes com class contendo -pushDisabled serão ignorados</description>
-			<component-type>br.com.dbsoft.ui.component.push</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>iconClass</name>
+   <required>false</required>
+   <type>java.util.String</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>style</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.style</component-type>
+   <handler-class/>
+  </component>
+ </tag>
+ <tag>
+  <tag-name>push</tag-name>
+  <component>
+   <description>Mantém conexão SSE com o servidor para receber Ids dos componentes que devem ser atualizados via ajax. Componentes com class contendo -pushDisabled serão ignorados</description>
+   <component-type>br.com.dbsoft.ui.component.push</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Identificador único do componente.
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Url do DBSPushServlet
             </description>
-			<name>url</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>url</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Indica se deseja exibir o status da conexão com o servlet
             </description>
-			<name>showStatus</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>componenttree</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.componenttree</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
+   <name>showStatus</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>componenttree</tag-name>
+  <component>
+   <component-type>br.com.dbsoft.ui.component.componenttree</component-type>
+   <handler-class/>
+  </component>
+  <attribute>
+   <description>
                 Id da subview que será utilizado como namecontainer.
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 rendered
             </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>rendered</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Prefixos dos ids que serão considerados. 
                 Se não informado, todos os componentes serão considerados.
                 Os prefixos devem vir separados por espaço ou vírgula.
             </description>
-			<name>allowedIdsPrefixes</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>allowedIdsPrefixes</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 ReadOnly
             </description>
-			<name>readOnly</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>readOnly</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>
                 Componente que será atualizado no ajax
             </description>
-			<name>update</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>update</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Campo que receberá a chave do item selectionado
             </description>
-			<name>value</name>
-			<required>false</required>
-			<type>java.lang.Object</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>value</name>
+   <required>false</required>
+   <type>java.lang.Object</type>
+  </attribute>
+  <attribute>
+   <description>
                 StyleClass
             </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>styleClass</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Style
             </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>style</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
                 Exibe as informações extras do facet extrainfo somente no último item filho. O padrão é false.
             </description>
-			<name>extraInfoOnLastChildOnly</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>setAttributeOnParent</tag-name>
-		<handler-class>br.com.dbsoft.ui.component.setAttribute.DBSSetAttributeOnParent</handler-class>
-		<attribute>
-			<description>
+   <name>extraInfoOnLastChildOnly</name>
+   <required>false</required>
+   <type>java.lang.Boolean</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>setAttributeOnParent</tag-name>
+  <handler-class>br.com.dbsoft.ui.component.setAttribute.DBSSetAttributeOnParent</handler-class>
+  <attribute>
+   <description>
     			attributeName
             </description>
-			<name>attributeName</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>attributeName</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
     			attributeValue
             </description>
-			<name>attributeValue</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
+   <name>attributeValue</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>
     			attributeValueExpression
             </description>
-			<name>attributeValueExpression</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-	</tag>
+   <name>attributeValueExpression</name>
+   <required>false</required>
+   <type>java.lang.String</type>
+  </attribute>
+ </tag>
 </facelet-taglib>

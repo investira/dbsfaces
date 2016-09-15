@@ -85,6 +85,10 @@ dbsfaces.nav = {
 		  && !pNav.data("t")
 	      && !pNav.data("v"))){
 			dbsfaces.nav.show(pNav);
+		} else {
+			//TODO FAZER O SCROLL
+//			alert(pDirection + "\t" + pNav.data("v") + "\t" + pNav.data("l"));
+			return false;
 		}
 	},
 
