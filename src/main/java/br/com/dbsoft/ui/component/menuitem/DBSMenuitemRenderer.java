@@ -16,6 +16,7 @@ import br.com.dbsoft.ui.component.menuitem.DBSMenuitem;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.ui.core.DBSFaces.HTML;
+import br.com.dbsoft.util.DBSObject;
 
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSMenuitem.RENDERER_TYPE)
@@ -78,7 +79,8 @@ public class DBSMenuitemRenderer extends DBSRenderer {
 			xClass += xMenuitem.getStyleClass();
 		}
 		if (xMenuitem.getChildCount() == 0){
-			if (xMenuitem.getActionExpression() == null){
+			if (xMenuitem.getActionExpression() == null
+			 && DBSObject.isEmpty(xOnClick)){
 				xClass += CSS.MODIFIER.DISABLED;
 			}
 		}
@@ -96,7 +98,8 @@ public class DBSMenuitemRenderer extends DBSRenderer {
 				DBSFaces.setAttribute(xWriter, "class", xClass);
 				DBSFaces.setAttribute(xWriter, "ontouchstart", "", null);
 				if (!xMenuitem.getReadOnly()){
-					if (xMenuitem.getActionExpression() != null){
+					if (xMenuitem.getActionExpression() != null
+				  	 || !DBSObject.isEmpty(xOnClick)){
 						DBSFaces.setAttribute(xWriter, "type", "submit"); 
 						DBSFaces.setAttribute(xWriter, HTML.EVENTS.ONCLICK, xOnClick);
 					}
