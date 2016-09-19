@@ -224,20 +224,24 @@ public abstract class DBSNavBase extends DBSUIComponentBase implements NamingCon
 		}
 		
 		public static LOCATION get(String pLocation, String pContentVerticalAlign, String pContentHorizontalAlign) {
-			String xContentVerticalAlign = pContentVerticalAlign;
-			String xContentHorizontalAlign = pContentHorizontalAlign;
-			String xLocation = pLocation;
+			StringBuilder xLocation = new StringBuilder();
 			
-			if (DBSObject.isEmpty(xContentVerticalAlign)) {
-				xContentVerticalAlign = "t";
+			if (DBSObject.isEmpty(pContentVerticalAlign)) {
+				xLocation.append("t");
+			}else{
+				xLocation.append(pContentVerticalAlign.substring(0, 1).toLowerCase());
 			}
-			if (DBSObject.isEmpty(xContentHorizontalAlign)) {
-				xContentHorizontalAlign = "l";
+			if (DBSObject.isEmpty(pContentHorizontalAlign)) {
+				xLocation.append("l");
+			}else{
+				xLocation.append(pContentHorizontalAlign.substring(0, 1).toLowerCase());
 			}
-			if (DBSObject.isEmpty(xLocation)) {
-				xLocation = "v";
+			if (DBSObject.isEmpty(pLocation)) {
+				xLocation.append("v");
+			}else{
+				xLocation.append(pLocation.substring(0, 1).toLowerCase());
 			}
-			return get(xContentVerticalAlign+xContentHorizontalAlign+xLocation);			
+			return get(xLocation.toString());			
 		}
 	}
 }
