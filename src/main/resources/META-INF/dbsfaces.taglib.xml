@@ -2728,7 +2728,7 @@ Default: false;</description>
 				Alinhamento vertical do conteúdo do nav. O Padrão é TOP.&lt;br/&gt;
 				&lt;ul&gt;
 					&lt;li&gt;Conteúdo:TOP = t&lt;/li&gt;
-					&lt;li&gt;Conteúdo:BOTTOM b&lt;/li&gt;
+					&lt;li&gt;Conteúdo:BOTTOM = b&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>contentVerticalAlign</name>
@@ -2794,14 +2794,6 @@ Default: false;</description>
 			<name>rendered</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
-            	iconClass
-            </description>
-			<name>message</name>
-			<required>true</required>
-			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
 			<description>
