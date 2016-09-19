@@ -2797,6 +2797,8 @@ Default: false;</description>
 		</attribute>
 		<attribute>
 			<description>
+                rendered
+            </description>
   			 <name>rendered</name>		 
   			 <required>false</required>
   			 <type>java.lang.Boolean</type>
