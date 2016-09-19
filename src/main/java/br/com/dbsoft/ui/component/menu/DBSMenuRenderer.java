@@ -41,9 +41,11 @@ public class DBSMenuRenderer extends DBSRenderer {
 		TYPE xType = TYPE.get(xMenu.getType());
 		String xClass = CSS.MENU.MAIN; 
 
+		xClass += TYPE.get(xMenu.getType()).getCSS();
 		if (xMenu.getStyleClass()!=null){
 			xClass += xMenu.getStyleClass();
 		}
+		
 		xWriter.startElement("div", xMenu);
 			DBSFaces.setAttribute(xWriter, "id", xClientId);
 			DBSFaces.setAttribute(xWriter, "name", xClientId);

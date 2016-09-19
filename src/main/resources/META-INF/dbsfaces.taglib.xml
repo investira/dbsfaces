@@ -2797,6 +2797,12 @@ Default: false;</description>
 		</attribute>
 		<attribute>
 			<description>
+  			 <name>rendered</name>		 
+  			 <required>false</required>
+  			 <type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
 				&lt;span style="font-size:small"&gt;
 				Localização da abertura. Padrão é vertical.&lt;br/&gt;
 				&lt;ul&gt;
@@ -2804,7 +2810,8 @@ Default: false;</description>
 					&lt;li&gt;Abertura:HORIZONTAL = h&lt;/li&gt;
 					&lt;li&gt;Abertura:CENTRO = c&lt;/li&gt;
 				&lt;ul&gt;
-				&lt;/span&gt; </description>
+				&lt;/span&gt; 
+			</description>
 			<name>location</name>
 			<required>false</required>
 			<type>java.lang.Sting</type>
@@ -3304,7 +3311,7 @@ Default: false;</description>
 		</attribute>
 		<attribute>
 			<description>
-                Tipo: scroll ou float 
+                Tipo: scroll, float ou auto
             </description>
 			<name>type</name>
 			<required>false</required>

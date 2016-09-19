@@ -1,28 +1,42 @@
 dbs_menu = function(pId) {
 	dbsfaces.menu.initialize($(pId));
-
-	$(pId + "[type=float] .dbs_menuitem:not(.-disabled)").on("mouseenter", function(e){
-		var xMenuItem = $(this);
-//		console.log("enter\t" + $(this).find(" > .-caption > .-content > .-label").text());
-		dbsfaces.menu.setOpened(xMenuItem, true);
-//		return false;
+	
+	//Resize se for tipo AUTO
+	window.addEventListener("resize", function(e){
+		if ($(pId).attr("type") == "auto") {
+			dbsfaces.menu.setTypeAuto($(pId));
+		}
 	});
-	$(pId + "[type=float] .dbs_menuitem:not(.-disabled)").on("mouseleave", function(e){
+	
+	$(pId + " .dbs_menuitem:not(.-disabled)").on("mouseenter", function(e){
 		var xMenuItem = $(this);
-//		console.log("Leave\t" + $(this).find(" > .-caption > .-content > .-label").text());
-		dbsfaces.menu.setOpened(xMenuItem, false);
-//		return false;
+		if ($(pId + "[class~=-menu_float]").length > 0) {
+//			console.log("enter\t" + $(this).find(" > .-caption > .-content > .-label").text());
+			dbsfaces.menu.setOpened(xMenuItem, true);
+//			return false;
+		}
 	});
-	$(pId + "[type=scroll] .dbs_menuitem:not(.-disabled)").on("click", function(e){
+	$(pId + " .dbs_menuitem:not(.-disabled)").on("mouseleave", function(e){
 		var xMenuItem = $(this);
-//		console.log("Click\t" + $(this).find(" > .-caption > .-content > .-label").text());
-		dbsfaces.menu.setOpened(xMenuItem, !xMenuItem.hasClass("-opened"));
-		return false;
+		if ($(pId + "[class~=-menu_float]").length > 0) {
+//			console.log("Leave\t" + $(this).find(" > .-caption > .-content > .-label").text());
+			dbsfaces.menu.setOpened(xMenuItem, false);
+//			return false;
+		}
+	});
+	$(pId + " .dbs_menuitem:not(.-disabled)").on("click", function(e){
+		var xMenuItem = $(this);
+		if ($(pId + "[class~=-menu_scroll]").length > 0) {
+//			console.log("Click\t" + $(this).find(" > .-caption > .-content > .-label").text());
+			dbsfaces.menu.setOpened(xMenuItem, !xMenuItem.hasClass("-opened"));
+//			return false;
+		}
 	});
 }
 
 dbsfaces.menu = {
 	initialize: function(pMenu){
+		dbsfaces.menu.setTypeAuto(pMenu);
 		dbsfaces.menu.initializeLayout(pMenu);
 	},
 	
@@ -68,6 +82,20 @@ dbsfaces.menu = {
 		});
 	},
 
+	setTypeAuto: function(pMenu){
+		if (pMenu.attr("type") == "auto") {
+			//NOT-MOBILE
+			if ($(document).width() > 768) {
+				pMenu.removeClass("-menu_scroll");
+				pMenu.addClass("-menu_float");
+			//MOBILE
+			} else {
+				pMenu.removeClass("-menu_float");
+				pMenu.addClass("-menu_scroll");
+			}
+		}
+	},
+	
 	setOpened: function(pMenuItem, pOpened){
 		if (pMenuItem.data("submenu").length == 0){return;}
 		if (pOpened){

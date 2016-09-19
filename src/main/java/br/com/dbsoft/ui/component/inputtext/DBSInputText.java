@@ -18,7 +18,6 @@ public class DBSInputText extends DBSUIInputText{
 		letterCase,
 		autocomplete,
 		type,
-		placeholder,
 		suggestionsBean,
 		suggestionKeyColumnName,
 		suggestionNullText,
@@ -86,15 +85,6 @@ public class DBSInputText extends DBSUIInputText{
 		return xValue.toLowerCase().trim();
 	}	
 
-	public String getPlaceholder() {
-		String xValue = (String) getStateHelper().eval(PropertyKeys.placeholder, "");
-		return xValue;
-	}
-	public void setPlaceholder(String pPlaceHolder) {
-		getStateHelper().put(PropertyKeys.placeholder, pPlaceHolder);
-		handleAttribute("placeholder", pPlaceHolder);
-	}
-	
 	public boolean hasSuggestion(){
 		if (DBSFaces.getELString(this, PropertyKeys.suggestionsBean.toString())!=null){
 			return true;
