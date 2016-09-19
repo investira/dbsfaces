@@ -1372,7 +1372,9 @@ public class  DBSFaces {
 		    		}
 		    	}
 				xLocalOnClick = "mojarra.jsfcljs(document.getElementById('" + pExecute + "'),{"+ xParam.toString() + "},''); return false";
-			}			
+			}else if (!DBSObject.isEmpty(xUserOnClick)){
+				xLocalOnClick = xUserOnClick;
+			}
 			//TODO
 // menuitem deixa de funcionar com o código abaixo 			
 //			if (DBSObject.isEmpty(pExecute)){
