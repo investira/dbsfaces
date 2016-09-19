@@ -593,6 +593,9 @@ input.-foo {
 	display: block;
 	border-top: 1px solid rgba(0, 0, 0, 0.4) !important;
 	border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+	position: absolute;
+    width: 100%;
+    z-index: 1;
 }
 .-horizontalLineAfter.-white:after,
 .-horizontalLineBefore.-white:before{
@@ -604,11 +607,12 @@ input.-foo {
 .-verticalLineBefore:before{
     content: " ";
     display: inline-block;
-    height: 100%;
     border-left: 1px solid rgba(0, 0, 0, 0.4) !important;
     border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
-    position: absolute;
     top: 0px;
+    position: absolute;
+    height: 100%;
+    z-index: 1;
 }
 .-verticalLineAfter.-white:after,
 .-verticalLineBefore.-white:before{

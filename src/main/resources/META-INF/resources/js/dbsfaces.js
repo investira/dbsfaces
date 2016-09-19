@@ -494,21 +494,19 @@ dbsfaces.url = {
 
 dbsfaces.onView = {
 	initialize: function(pElement){
-		pElement.addClass("onview");
+		pElement.addClass("-th_onview");
 		if ($("body").data("onview") == null){
 			$(window).resize(function(e){
 				dbsfaces.onView.event();
 			});
 			$(window).scroll(function(e){
-//				console.log("w scroll");
 				dbsfaces.onView.event();
 			});
 			pElement.scroll(function(e){
-//				console.log("E scroll");
 				dbsfaces.onView.event();
 			});
 		}
-		$("body").data("onview", $(".onview"));
+		$("body").data("onview", $(".-th_onview"));
 	},
 	
 	event: function(){
@@ -520,18 +518,35 @@ dbsfaces.onView = {
 				if (xTotalTop < 0 
 				 || xThis[0].getBoundingClientRect().top >= xWindow.height()){
 					if (xThis.data("onview") != null){
+//						console.log("viewExit\t" + this.id);
 						clearTimeout(xThis.data("onview"));
 						xThis.data("onview", null);
+						xThis.data("onviewTopIn", null);
+						xThis.data("onviewTopOut", null);
+						xThis.removeClass("-enter");
 						xThis.trigger("viewExit");
 					}
 				}else{
 					if (xThis.data("onview") == null){
+//						console.log("viewEnter\t" + this.id);
 						xThis.data("onview", true);
+						xThis.addClass("-enter");
 						xThis.trigger("viewEnter");
 					}else{
+//						console.log("viewScroll\t" + this.id);
 						clearTimeout(xThis.data("onview"));
 						xThis.data("onview", 
 							setTimeout(function(e){
+								if (xThis.data("onviewTopIn") == null 
+								 && xThis[0].getBoundingClientRect().top > 0){
+									xThis.data("onviewTopIn" , true);
+									xThis.trigger("viewTopIn");
+								}else if (xThis.data("onviewTopOut") == null 
+								       && xThis[0].getBoundingClientRect().top < 0){
+									xThis.data("onviewTopOut" , true);
+									xThis.trigger("viewTopOut");
+								}
+									
 								var xFactor = 1 - (xTotalTop / (xWindow.height() + xThis[0].getBoundingClientRect().height));
 								var xFactorTop = 1 - (xThis[0].getBoundingClientRect().top / xWindow.height());
 								var xEvent = $.Event("viewScroll", {dbs: true, source: xThis, factor:xFactor, factorTop:xFactorTop});
@@ -547,15 +562,13 @@ dbsfaces.onView = {
 }
 
 dbsfaces.ui = {
-//	initializeParallax: function(){
-//		if ($(".-parallax").length > 0){
-//			console.log("eded:" + $("-parallax").length);
-//			$(window).resize(function(){
-//			});
-//		}
-//	},
 
 	initializeTheme: function(){
+		dbsfaces.ui.initializeThemeInput();
+		dbsfaces.ui.initializeThemeCard();
+	},
+	
+	initializeThemeInput: function(){
 		var xColor = tinycolor($("body").css("color"));
 		var xStyles = "";
 		/*cor do fundo quando selecionado*/
@@ -593,13 +606,7 @@ dbsfaces.ui = {
 		 document.getElementsByTagName('head')[0].appendChild(xStyleTag);
 	},
 	
-	initializeResponsive: function(){
-//		var xResponsive = $(".-th_responsive");
-//		if (xResponsive.length == 0){return;}
-//		var xRatio = screen.width / screen.height;
-//		console.log(window.orientation + "\t" + xRatio + "\t" + screen.width + "\t" + screen.height);
-//		var xFontSize = 11 + Math.round(1 * xRatio);
-//		xResponsive.css("font-size", xFontSize + "px");
+	initializeThemeCard: function(){
 	},
 	
 	moveToFront: function(pElement, pMoveToElement){

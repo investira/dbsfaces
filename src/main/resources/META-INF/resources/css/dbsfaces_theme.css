@@ -315,6 +315,31 @@ textarea.-th_input-data:FOCUS,
 .-th_input-label:first-child:after{
 	content:":";
 }
+/* onview */
+.-th_onview.-autoHide.-enter{
+	visibility: visible;
+}
+.-th_onview.-autoHide{
+	visibility: hidden;
+}
+
+/* card */
+.-th_card,
+.-th_card.-full{
+	position: relative;
+	width: 100%;
+/* 	max-height: 100%; */
+/* 	overflow: hidden; */
+/* 	overflow: visible; */
+}
+
+.-th_card:not(.-full){
+	padding: 1.5em;
+}
+
+.-th_card.-full{
+	line-height: 0;
+}
 
 
 /*RESPONSIVE -------------- */
@@ -342,8 +367,8 @@ textarea.-th_input-data:FOCUS,
     position: relative;
 	flex-grow: 1;
     flex-shrink: 0;
-/* 	align-self: center; */
 	box-sizing: content-box;
+	max-width: 100%;
 }
 
 .-th_responsive .-th_flex > .-th_col.-f16{
@@ -454,22 +479,15 @@ textarea.-th_input-data:FOCUS,
 }
 
 /* -------------------------- */
-/*IE Hack*/
-@media all and (-ms-high-contrast:none){
-    .-th_watermark{
-    	opacity: .2;
-   	}
-}
-
-.-th_watermark{
-  	mix-blend-mode: color-dodge;
-/*    	display: none;  */
-}
-		
+	
 .-th_list.-ok{
     left: 1.6em;
     position: relative;
 }
+.-th_list.-ok > li{
+	margin-right: 1.6em;
+}   
+    
 .-th_list.-ok > li:before {
     display: inline-block;
     position: absolute;
@@ -478,6 +496,7 @@ textarea.-th_input-data:FOCUS,
     font-family: 'dbsfaces_icons' !important;
     left: -1.2em;
 }
+
 .-th_list.-green > li:before {
     color: green;
 }
