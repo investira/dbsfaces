@@ -509,6 +509,7 @@ dbsfaces.onView = {
 		$("body").data("onview", $(".-th_onview"));
 	},
 	
+	/*Dispara eventos viewEnter, viewExit, viewScroll, viewTopIn, viewTopOut.*/
 	event: function(){
 		var xWindow = $(window);
 		$("body").data("onview").each(function(){
@@ -534,6 +535,7 @@ dbsfaces.onView = {
 						xThis.trigger("viewEnter");
 					}else{
 //						console.log("viewScroll\t" + this.id);
+						/*uso do setTimeout para evitar muitas chamadas consecutivas*/
 						clearTimeout(xThis.data("onview"));
 						xThis.data("onview", 
 							setTimeout(function(e){
