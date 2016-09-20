@@ -2702,6 +2702,7 @@ Default: false;</description>
 			<description>
 				&lt;span style="font-size:small"&gt;
 				Tempo para fechamento automatico do nav em segundos.&lt;br/&gt;
+				Se for 0, não fecha automaticamente.
 				&lt;/span&gt; </description>
 			<name>closeTimeout</name>
 			<required>false</required>
