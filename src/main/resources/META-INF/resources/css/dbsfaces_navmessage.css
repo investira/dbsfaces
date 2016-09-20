@@ -1,16 +1,16 @@
-.-divMessage{
+.dbs_nav > .-container > .-nav > .-container > .-content > div > nav > .-divMessage{
 	display: table;
 	white-space: normal;
 }
 
-.-iconMessage{
+.dbs_nav > .-container > .-nav > .-container > .-content > div > nav > .-divMessage > .-iconMessage{
 	display: table-cell;
     position: relative;
     vertical-align: middle;
     left: 0;
 }
 
-.-contentMessage{
+.dbs_nav > .-container > .-nav > .-container > .-content > div > nav > .-divMessage > .-contentMessage{
 	display: table-cell;
     position: relative;
     vertical-align: middle;
