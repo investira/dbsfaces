@@ -42,11 +42,14 @@ dbs_nav = function(pId) {
 		return false;
 	});
 
+	/*acabou de abrir ou fechar*/
 	$(pId + ":not([disabled]) > .-container > .-nav").on(dbsfaces.EVENT.ON_TRANSITION_END, function(e){
 //		console.log("end transition\t");
+		//Foi fechado
 		if ($(this).closest(".dbs_nav").hasClass("-closed")){
 			xNav.trigger("closed");
 			$(this).removeClass("-opened").addClass("-closed");
+		//Foi aberto
 		}else{
 			$(this).removeClass("-closed").addClass("-opened");
 			xNav.trigger("opened");
@@ -159,7 +162,11 @@ dbsfaces.nav = {
 
 	resized: function(pNav){
 		if (!pNav.hasClass("-closed")){
-			dbsfaces.nav.pvAjustLayout(pNav);
+			clearTimeout(pNav.data("resizetimeout"));
+			pNav.data("resizetimeout", setTimeout(function(){
+				dbsfaces.nav.pvAjustLayout(pNav);
+				},50)
+			)
 		}
 	},
 
@@ -168,11 +175,12 @@ dbsfaces.nav = {
 		if (pNav.hasClass("-closed")){
 			dbsfaces.nav.pvOpen(pNav);
 			dbsfaces.nav.pvCloseTimeout(pNav);
+			pNav.data("nav").removeClass("-closed");
 		}else{
 			dbsfaces.nav.pvClose(pNav);
+			pNav.data("nav").addClass("-closed");
 		}
 		pNav.toggleClass("-closed");
-		pNav.data("nav").toggleClass("-closed");
 	},
 
 	pvOpen: function(pNav){
