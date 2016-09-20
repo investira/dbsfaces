@@ -16,17 +16,7 @@ public class DBSNavMessage extends DBSNav {
 	}
 	
 	protected enum PropertyKeys {
-		styleClass,
-		style,
-		iconClass,
-		location,
-		forParent,
-		closeTimeout,
-		contentPadding,
-		contentStyleClass,
-		contentVerticalAlign,
-		contentHorizontalAlign,
-		opened;
+		forParent;
 
 		String toString;
 
