@@ -2,335 +2,268 @@ package br.com.dbsoft.ui.component.dialog;
 
 import java.io.IOException;
 
-import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
 
-import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
+import com.sun.faces.renderkit.RenderKitUtils;
+
+
+import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSRenderer;
-import br.com.dbsoft.ui.component.button.DBSButton;
+import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
+import br.com.dbsoft.ui.component.dialog.DBSDialog.LOCATION;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
+import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSObject;
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSDialog.RENDERER_TYPE)
 public class DBSDialogRenderer extends DBSRenderer {
-
+	
 	@Override
 	public void decode(FacesContext pContext, UIComponent pComponent) {
 	}
 
 	@Override
 	public boolean getRendersChildren() {
-		return true;//True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
+		return true; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
 	}
 	
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        //É necessário manter está função para evitar que faça o render dos childrens
-    	//O Render dos childrens é feita do encode
+    public void encodeChildren(FacesContext pContext, UIComponent pComponent) throws IOException {
     }
-	
 
 	@Override
-	public void encodeBegin(FacesContext pContext, UIComponent pComponent)
-			throws IOException {
+	public void encodeBegin(FacesContext pContext, UIComponent pComponent) throws IOException {
 		if (!pComponent.isRendered()){return;}
+		
 		DBSDialog 			xDialog = (DBSDialog) pComponent;
-		ResponseWriter 		xWriter = pContext.getResponseWriter();
-		String 				xClientId = xDialog.getClientId(pContext);
-		String 				xClass = CSS.DIALOG.MAIN + " ";
-		String 				xStyle = "";
-		MESSAGE_TYPE 		xMT = MESSAGE_TYPE.get(xDialog.getMessageType());
-		if (xDialog.getWidth() != null
-		 && xDialog.getWidth() != 0) {
-			xStyle += "width:" + xDialog.getWidth() + "px;";
-		}
-		if (xDialog.getHeight() != null
-		 && xDialog.getHeight() != 0) {
-			xStyle += "height:" + xDialog.getHeight() + "px;";
+		
+		ResponseWriter 	xWriter = pContext.getResponseWriter();
+		LOCATION 		xLocation = LOCATION.get(xDialog.getLocation(), xDialog.getContentVerticalAlign(), xDialog.getContentHorizontalAlign());
+		String 			xClass = CSS.DIALOG.MAIN + CSS.THEME.FC + xLocation.getCSS();
+//		if (xDialog.getOpened()){
+////			xClass += CSS.THEME.INVERT; //Inverte cor
+////			xClass += CSS.MODIFIER.OPENED; //Indica que esta aberto
+//		}else{
+			xClass += CSS.MODIFIER.CLOSED; //Indica que esta fechado
+//		}
+		if (xDialog.getStyleClass()!=null){
+			xClass += xDialog.getStyleClass();
 		}
 		
-		//Altera título padrão caso tenha sido informado
-		if (xMT != null){
-			xClass += " -confirmation ";
-		}
-
-		//Define style do dialog
-		if (xDialog.getStyle() != null){
-			xStyle += xDialog.getStyle();
-		}
-		
-		UIComponent xDialogMessage = xDialog.getFacet("beanDialogMessages");
-	
-		//Mascará de fundo
+		String xClientId = xDialog.getClientId(pContext);
 		xWriter.startElement("div", xDialog);
 			DBSFaces.setAttribute(xWriter, "id", xClientId);
 			DBSFaces.setAttribute(xWriter, "name", xClientId);
 			DBSFaces.setAttribute(xWriter, "class", xClass);
-			//DIALOG
+			DBSFaces.setAttribute(xWriter, "style", xDialog.getStyle());
+			DBSFaces.setAttribute(xWriter, "timeout", xDialog.getCloseTimeout());
+			DBSFaces.setAttribute(xWriter, "opened", (xDialog.getOpened() ? "true" : "false"));
+			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xDialog, DBSPassThruAttributes.getAttributes(Key.DIALOG));
 			xWriter.startElement("div", xDialog);
-				xClass = "-dialog ";
-				if (xDialog.getStyleClass()!=null){
-					xClass += xDialog.getStyleClass();
-				}
-				DBSFaces.setAttribute(xWriter, "class", xClass); 
-				DBSFaces.setAttribute(xWriter, "style", xStyle);
+				DBSFaces.setAttribute(xWriter, "style", "opacity:0", null); //Inicia escondido para ser exibido após a execução do JS
+				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
+				//Icon
+				pvEncodeIcon(xDialog, xWriter);
+				//Mask
 				xWriter.startElement("div", xDialog);
-					DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER); 
-
-					pvEncodeTable(pContext, xWriter, xDialog);
-				
+					DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.MASK + CSS.THEME.BC + CSS.THEME.INVERT);
 				xWriter.endElement("div");
-
-			xWriter.endElement("div");	
-			//Javascript 
-			DBSFaces.encodeJavaScriptTagStart(xWriter);
-			String xJS = "$(document).ready(function() { \n" +
-					     " var xDialogId = dbsfaces.util.jsid('" + xClientId + "'); \n " + 
-					     " dbs_dialog(xDialogId); \n" +
-	                     "}); \n"; 
-			xWriter.write(xJS);
-			DBSFaces.encodeJavaScriptTagEnd(xWriter);
-			//DialogMessage
-			if (xDialogMessage!=null){
-				xDialogMessage.encodeAll(pContext);
-			}
-		xWriter.endElement("div");
-
+				//Nav
+				pvEncodeNavBegin(xDialog, pContext, xWriter);
 	}
-
-	private void pvEncodeTable(FacesContext pContext, ResponseWriter pWriter, DBSDialog pDialog) throws IOException{
-		pWriter.startElement("table", pDialog);
-			DBSFaces.setAttribute(pWriter, "cellspacing", "0px", null);
-			DBSFaces.setAttribute(pWriter, "cellpadding", "0px", null);
-			
-			//HEADER
-			pWriter.startElement("thead", pDialog);
-				//CAPTION 
-				pvEncodeCaption(pWriter, pDialog);
-				
-				//TOOLBAR
-				pvEncodeToolbar(pContext, pWriter, pDialog);
-			pWriter.endElement("thead");
-			
-			//BODY
-			pWriter.startElement("tbody", pDialog);
-				//CONTENT and CHILDREN
-				pvEncodeMessage(pContext, pWriter, pDialog);
-			pWriter.endElement("tbody");
-
-			//FOOTER
-			pWriter.startElement("tfoot", pDialog);
-				pvEncodeFooter(pContext, pWriter, pDialog);
-			pWriter.endElement("tfoot");
-		pWriter.endElement("table");
-	}
-
-	/**
-	 * Título do dialog
-	 * @param pWriter
-	 * @param pDialog
-	 * @throws IOException
-	 */
-	private void pvEncodeCaption(ResponseWriter pWriter, DBSDialog pDialog) throws IOException{
-		String xCaption = null;
-		if (pDialog.getCaption()!=null){
-			xCaption = pDialog.getCaption();
-		}else{
-			MESSAGE_TYPE xCT = MESSAGE_TYPE.get(pDialog.getMessageType());
-			//Sobre escreve caption padrão a partir do tipo de confirmação
-			if (xCT != null){
-				xCaption = xCT.getName();
-			}
-		}
-
-		if (xCaption!=null){
-			pWriter.startElement("tr", pDialog);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CAPTION + CSS.BACK_TEXTURE_BLACK_GRADIENT);
-				pWriter.startElement("th", pDialog);
-					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
+	
+	private void pvEncodeNavBegin(DBSDialog pDialog, FacesContext pContext, ResponseWriter pWriter) throws IOException{
+		pWriter.startElement("div", pDialog);
+			DBSFaces.setAttribute(pWriter, "class", "-nav" + CSS.THEME.FC + CSS.THEME.BC + pDialog.getContentStyleClass() + CSS.MODIFIER.CLOSED, null); //(pDialog.getOpened() ? CSS.MODIFIER.OPENED : CSS.MODIFIER.CLOSED)
+			//Header
+			pvEncodeHeader(pDialog, pContext, pWriter);
+			//Nav
+			pWriter.startElement("div", pDialog);
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER, null);
+				pWriter.startElement("div", pDialog);
+					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT, null);
 					pWriter.startElement("div", pDialog);
-						DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.LABEL + CSS.NOT_SELECTABLE);
-						pWriter.write(xCaption);
+						pWriter.startElement("nav", pDialog);
+//							DBSFaces.setAttribute(pWriter, "class", pDialog.getContentStyleClass(), null);
+							DBSFaces.setAttribute(pWriter, "style", "padding:" + pDialog.getContentPadding(), null);
+							//Encode dos conteúdo
+							DBSFaces.renderChildren(pContext, pDialog);
+	}
+	
+	private void pvEncodeNavEnd(DBSDialog pDialog, FacesContext pContext, ResponseWriter pWriter) throws IOException{
+						pWriter.endElement("nav");
 					pWriter.endElement("div");
-				pWriter.endElement("th");
-			pWriter.endElement("tr");
+				pWriter.endElement("div");
+			pWriter.endElement("div");
+			//Footer
+			pvEncodeFooter(pDialog, pContext, pWriter);
+			//Iconclose
+			pvEncodeIconClose(pDialog, pWriter);
+			//Progress Timeout
+			pvEncodeProgressTimeout(pDialog, pWriter);
+		pWriter.endElement("div");
+	}
+	
+	@Override
+	public void encodeEnd(FacesContext pContext, UIComponent pComponent) throws IOException {
+		ResponseWriter 	xWriter = pContext.getResponseWriter();
+		DBSDialog 		xDialog = (DBSDialog) pComponent;
+				
+				//FAZ O ENCODE FINAL
+				pvEncodeNavEnd(xDialog, pContext, xWriter);
+				xWriter.endElement("div");
+			pvEncodeJS(xDialog.getClientId(pContext), xWriter);
+		xWriter.endElement("div");
+	}
+	
+	private void pvEncodeIcon(DBSDialog pDialog, ResponseWriter pWriter) throws IOException{
+		pWriter.startElement("div", pDialog);
+			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON + CSS.THEME.ACTION);
+			pWriter.startElement("div", pDialog);
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + pDialog.getIconClass() + CSS.MODIFIER.INHERIT);
+			pWriter.endElement("div");
+		pWriter.endElement("div");
+	}
+	
+	private void pvEncodeHeader(DBSDialog pDialog, FacesContext pContext,  ResponseWriter pWriter) throws IOException{
+		UIComponent xHeader = pDialog.getFacet(DBSDialog.FACET_HEADER);
+		if (!DBSObject.isEqual(pDialog.getLocation(), "c")) {
+			if (xHeader == null){return;}
+		}
+		pWriter.startElement("div", pDialog);
+			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.HEADER);
+			pWriter.startElement("div", pDialog);
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
+				DBSFaces.setAttribute(pWriter, "style", pvGetPaddingHeader(pDialog));
+				//Encode do botão fechar para nav centralizado
+				pvEncodeCloseButton(pDialog, pWriter);
+				//Encode o conteudo do Header definido no FACET HEADER
+				if (!DBSObject.isNull(xHeader)){
+					xHeader.encodeAll(pContext);
+				}
+			pWriter.endElement("div");
+		pWriter.endElement("div");
+	}
+
+	private void pvEncodeIconClose(DBSDialog pDialog, ResponseWriter pWriter) throws IOException{
+		LOCATION xLocation = LOCATION.get(pDialog.getLocation(), pDialog.getContentVerticalAlign(), pDialog.getContentHorizontalAlign());
+//		String xClass = CSS.THEME.ACTION;
+		String xClass = "";
+		pWriter.startElement("div", pDialog);
+			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICONCLOSE);
+			pWriter.startElement("div", pDialog);
+//				DBSFaces.setAttribute(pWriter, "class", "-i_cancel");
+				if (xLocation.getIsVertical()){
+					if (xLocation.getIsLeft()){
+						xClass += "-i_navigate_previous";
+					}else{
+						xClass += "-i_navigate_next";
+					}
+				}else{
+					if (xLocation.getIsTop()){
+						xClass += "-i_navigate_up";
+					}else{
+						xClass += "-i_navigate_down";
+					}
+				}
+				DBSFaces.setAttribute(pWriter, "class", xClass);
+			pWriter.endElement("div");
+		pWriter.endElement("div");
+	}
+	
+	private void pvEncodeCloseButton(DBSDialog pDialog, ResponseWriter pWriter) throws IOException {
+		//Faz o encode apenas se for nav centralizado
+		if (DBSObject.isEqual(pDialog.getLocation(), "c")) {
+			pWriter.startElement("div", pDialog);
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON + CSS.THEME.ACTION + " -iconcloseCentral");
+				pWriter.startElement("div", pDialog);
+					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + " -i_cancel " + CSS.MODIFIER.INHERIT);
+				pWriter.endElement("div");
+			pWriter.endElement("div");
 		}
 	}
 	
-	/**
-	 * Toolbar logo abaixo do título
-	 * @param pContext
-	 * @param pWriter
-	 * @param pDialog
-	 * @throws IOException
-	 */
-	private void pvEncodeToolbar(FacesContext pContext, ResponseWriter pWriter, DBSDialog pDialog) throws IOException{
-		UIComponent xToolbar = pDialog.getFacet("toolbar");
-		if (xToolbar!=null){
-			pWriter.startElement("tr", pDialog);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.TOOLBAR + CSS.BACK_TEXTURE_WHITE_TRANSPARENT);
-				pWriter.startElement("th", pDialog);
-					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
-					//Conteúdo
-					xToolbar.encodeAll(pContext);
-				pWriter.endElement("th");
-			pWriter.endElement("tr");
-		}
+	private void pvEncodeFooter(DBSDialog pDialog, FacesContext pContext,  ResponseWriter pWriter) throws IOException{
+		UIComponent xFooter = pDialog.getFacet(DBSDialog.FACET_FOOTER);
+		if (xFooter == null){return;}
+		pWriter.startElement("div", pDialog);
+			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.FOOTER);
+			pWriter.startElement("div", pDialog);
+				DBSFaces.setAttribute(pWriter, "style", pvGetPaddingFooter(pDialog));
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
+				xFooter.encodeAll(pContext);
+			pWriter.endElement("div");
+		pWriter.endElement("div");
 	}
 	
-	/**
-	 * Toolbar logo abaixo do título
-	 * @param pContext
-	 * @param pWriter
-	 * @param pDialog
-	 * @throws IOException
-	 */
-	private void pvEncodeMessage(FacesContext pContext, ResponseWriter pWriter, DBSDialog pDialog) throws IOException{
-		MESSAGE_TYPE 	xMT = MESSAGE_TYPE.get(pDialog.getMessageType());
-		String			xIconId = pDialog.getClientId() + "_icon"; //Id para ser utilizado no tooptip do icon.
-
-		pWriter.startElement("tr", pDialog);
-			String xClass = CSS.MODIFIER.MESSAGE;
-			if (xMT == null){
-				xClass += CSS.BACK_GRADIENT_WHITE;
-			}else{
-				xClass += CSS.BACK_TEXTURE_BLACK_GRADIENT;
-			}
-			DBSFaces.setAttribute(pWriter, "class",xClass, null);
-			pWriter.startElement("td", pDialog);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
-				pWriter.startElement("table", pDialog);
-					DBSFaces.setAttribute(pWriter, "cellspacing", "0px");
-					DBSFaces.setAttribute(pWriter, "cellpadding", "0px");
-					pWriter.startElement("tbody", pDialog);
-						pWriter.startElement("tr", pDialog);
-		//					pWriter.writeAttribute("class", CSS.MODIFIER.CONTENT, null);
-							//Icone da mensagem
-							if (xMT != null){
-								pWriter.startElement("td", pDialog);
-									DBSFaces.setAttribute(pWriter, "colspan", 0, null);
-									DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON);
-		//							pWriter.startElement("div", pDialog);
-		//								pWriter.writeAttribute("class", CSS.MODIFIER.CONTAINER, null);
-													pWriter.startElement("div", pDialog);
-														DBSFaces.setAttribute(pWriter, "id", xIconId);
-														DBSFaces.setAttribute(pWriter, "class", xMT.getIconClass());
-														DBSFaces.encodeTooltip(pContext, pDialog, pDialog.getTooltip(), xIconId);
-													pWriter.endElement("div");
-		//							pWriter.endElement("div");
-								pWriter.endElement("td");
-							}
-							//Conteúdo do dialog/mensagem
-							pWriter.startElement("td", pDialog);
-								DBSFaces.setAttribute(pWriter, "colspan", 0);
-								DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
-								pWriter.startElement("div", pDialog);
-									DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
-									DBSFaces.renderChildren(pContext, pDialog);
-								pWriter.endElement("div");
-							pWriter.endElement("td");
-						pWriter.endElement("tr");
-					pWriter.endElement("tbody");
-				pWriter.endElement("table");
-			pWriter.endElement("td");
-		pWriter.endElement("tr");
-
+	private void pvEncodeJS(String pClientId, ResponseWriter pWriter) throws IOException{
+		DBSFaces.encodeJavaScriptTagStart(pWriter);
+		String xJS = "$(document).ready(function() { \n" +
+				     " var xDialogId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " dbs_dialog(xDialogId); \n" +
+                     "}); \n"; 
+		pWriter.write(xJS);
+		DBSFaces.encodeJavaScriptTagEnd(pWriter);		
 	}
-	/**
-	 * Rodapé(Onde conterá os botões caso seja uma tela de confirmação)
-	 * @param pContext
-	 * @param pWriter
-	 * @param pDialog
-	 * @throws IOException
-	 */
-	private void pvEncodeFooter(FacesContext pContext, ResponseWriter pWriter, DBSDialog pDialog) throws IOException{
 
-		UIComponent xFooter = pDialog.getFacet("footer");
+	private void pvEncodeProgressTimeout(DBSDialog pDialog, ResponseWriter pWriter) throws IOException {
+		if (DBSNumber.toInteger(pDialog.getCloseTimeout()) > 0) {
+			pWriter.startElement("div", pDialog);
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.PROGRESS_TIMEOUT + CSS.THEME.BC, null);
+			pWriter.endElement("div");
+		}
+	}
+
+	private String pvGetPaddingHeader(DBSDialog pDialog){
+		LOCATION xLocation = LOCATION.get(pDialog.getLocation(), pDialog.getContentVerticalAlign(), pDialog.getContentHorizontalAlign());
+		String xPT = pDialog.getContentPadding();
+		String xPB = pDialog.getContentPadding();
+		String xPL = pDialog.getContentPadding();
+		String xPR = pDialog.getContentPadding();
 		
-		if (!pvHasFooterAction(pDialog)
-		   && xFooter == null){
-			return;
+		//Padding top e bottom
+		if (xLocation.getIsVertical()){
+			if (xLocation.getIsTop()){
+				xPB = "0";
+			}else{
+				xPT = "0";
+			}
+		}else{
+			if (xLocation.getIsLeft()){
+				xPR = "0";
+			}else{
+				xPL = "0";
+			}
 		}
-		pWriter.startElement("tr", pDialog);
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.FOOTER + CSS.BACK_TEXTURE_BLACK);
-			//Linha horizontal-------------
-
-			//Conteudo-------------
-			pWriter.startElement("td", pDialog);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
-				//Linha horizontal-------------
-				pWriter.startElement("span", pDialog);
-					DBSFaces.setAttribute(pWriter, "class", " -line -horizontalLineAfter -black");
-				pWriter.endElement("span");
-					//Botoes padrão ----------------
-					if (pvHasFooterAction(pDialog)){
-						pWriter.startElement("div", pDialog);
-							DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.BUTTON);
-							if (!DBSObject.isEmpty(pDialog.getNoAction())){
-								pvEncodeButton(pContext,pDialog,pDialog.getNoAction(),"btno", "Não","-i_no -red");
-							}
-							if (!DBSObject.isEmpty(pDialog.getYesAction())){
-								pvEncodeButton(pContext,pDialog,pDialog.getYesAction(),"btyes", "Sim","-i_yes -green");
-							}
-							if (!DBSObject.isEmpty(pDialog.getOkAction())){
-								pvEncodeButton(pContext,pDialog,pDialog.getOkAction(),"btok", "Ok","-i_yes -green");
-							}
-						pWriter.endElement("div");
-					}
-					//Footer do usuário ----------------
-					if (xFooter!=null){
-						pWriter.startElement("div", pDialog);
-							DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
-							xFooter.encodeAll(pContext);
-						pWriter.endElement("div");
-					}
-			pWriter.endElement("td");
-		pWriter.endElement("tr");
+		return "padding:" + xPT + " " + xPR + " " + xPB + " " + xPL + ";"; 
 	}
 	
-	private void pvEncodeButton(FacesContext pContext, DBSDialog pDialog, String pMethod, String pId, String pLabel, String pIconClass) throws IOException{
-		String		xClientId = pDialog.getClientId(pContext);
-		DBSButton 	xBtn = (DBSButton) pDialog.getFacet(pId); 
-		//Verifica se botão já havia sido criado
-		if (xBtn == null){
-			xBtn = (DBSButton) FacesContext.getCurrentInstance().getApplication().createComponent(DBSButton.COMPONENT_TYPE);
-			xBtn.setId(pId);
-			xBtn.setLabel(pLabel);
-			xBtn.setIconClass(CSS.MODIFIER.ICON + pIconClass);
-//			xBtn.setActionExpression(pContext.getApplication().getExpressionFactory().createMethodExpression(pContext.getELContext(), pMethod, String.class, new Class[0]));
-			//Se for EL...
-			if (pMethod.startsWith("#")){
-				xBtn.setActionExpression(DBSFaces.createMethodExpression(pContext, pMethod, String.class, new Class[0]));
-//				xBtn.setUpdate(pDialog.getUpdate());
-			//Se for um simples redirect para outra página
-			}else if (!DBSObject.isEmpty(pMethod)){
-				MethodExpression xME = pContext.getApplication().getExpressionFactory().createMethodExpression(pContext.getELContext(), pMethod, String.class, new Class[0]);
-				xBtn.setActionExpression(xME);
-//				xBtn.setUpdate(null);
-			}
-			xBtn.setUpdate(pDialog.getUpdate());
-			if (DBSObject.isEmpty(pDialog.getExecute())){
-				xBtn.setExecute(xClientId);
+	private String pvGetPaddingFooter(DBSDialog pDialog){
+		LOCATION xLocation = LOCATION.get(pDialog.getLocation(), pDialog.getContentVerticalAlign(), pDialog.getContentHorizontalAlign());
+		String xPT = pDialog.getContentPadding();
+		String xPB = pDialog.getContentPadding();
+		String xPL = pDialog.getContentPadding();
+		String xPR = pDialog.getContentPadding();
+		
+		//Padding top e bottom
+		if (xLocation.getIsVertical()){
+			if (xLocation.getIsTop()){
+				xPT = "0";
 			}else{
-				xBtn.setExecute(pDialog.getExecute());
+				xPB = "0";
 			}
-			//Inclui botão com facet do dialog para poder separa-lo dos componentes filhos criados pelo usuário.
-			pDialog.getFacets().put(pId, xBtn);
+		}else{
+			if (xLocation.getIsLeft()){
+				xPL = "0";
+			}else{
+				xPR = "0";
+			}
 		}
-		xBtn.encodeAll(pContext);
-	}
-
-	public boolean pvHasFooterAction(DBSDialog pDialog){
-		if (DBSObject.isEmpty(pDialog.getNoAction())
-		 && DBSObject.isEmpty(pDialog.getYesAction())
-		 && DBSObject.isEmpty(pDialog.getOkAction())){
-			return false;
-		}
-		return true;
+		return "padding:" + xPT + " " + xPR + " " + xPB + " " + xPL + ";"; 
 	}
 }
 

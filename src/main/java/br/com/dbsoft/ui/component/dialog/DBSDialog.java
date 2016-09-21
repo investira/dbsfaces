@@ -1,33 +1,36 @@
 package br.com.dbsoft.ui.component.dialog;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import javax.faces.component.FacesComponent;
 import javax.faces.component.NamingContainer;
-import javax.faces.context.FacesContext;
 
-import br.com.dbsoft.ui.component.DBSUIOutput;
+import br.com.dbsoft.ui.component.DBSUIComponentBase;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.util.DBSObject;
 
 
 @FacesComponent(DBSDialog.COMPONENT_TYPE)
-public class DBSDialog extends DBSUIOutput implements NamingContainer{  
-
+public class DBSDialog extends DBSUIComponentBase implements NamingContainer{  
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.DIALOG;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
+	
 
+	public final static String FACET_HEADER = "header";
+	public final static String FACET_FOOTER = "footer";
 
 	protected enum PropertyKeys {
-		caption,
-		width,
-		height,
-		resizable,
-		closeable,
-		okAction,
-		yesAction,
-		noAction,
-		update,
-		execute,
-		messageType,
-		tooltip;
+		styleClass,
+		style,
+		iconClass,
+		location,
+		closeTimeout,
+		contentPadding,
+		contentStyleClass,
+		contentVerticalAlign,
+		contentHorizontalAlign,
+		opened;
 
 		String toString;
 
@@ -43,143 +46,218 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 		}
 	}
 	
+	/**
+	 * ENUM DE LOCATION
+	 * @author jose.avila@dbsoft.com.br
+	 *
+	 */
+	public static enum LOCATION {
+		//VERTICAL
+		TOP_LEFT_VERTICAL		("tlv",true,true,true),
+		TOP_RIGHT_VERTICAL		("trv",true,false,true),
+		BOTTOM_LEFT_VERTICAL	("blv",false,true,true),
+		BOTTOM_RIGHT_VERTICAL	("brv",false,false,true),
+		//HORIZONTAL
+		TOP_LEFT_HORIZONTAL 	("tlh",true,true,false),
+		TOP_RIGHT_HORIZONTAL 	("trh",true,false,false),
+		BOTTOM_LEFT_HORIZONTAL 	("blh",false,true,false),
+		BOTTOM_RIGHT_HORIZONTAL ("brh",false,false,false), //
+		//CENTER
+		TOP_LEFT_CENTER			("tlc",true,true,false),
+		TOP_RIGHT_CENTER		("trc",true,false,false),
+		BOTTOM_LEFT_CENTER		("blc",false,true,false),
+		BOTTOM_RIGHT_CENTER		("brc",false,false,false); //
+		
+		private String 	wCode;
+		private Boolean	wIsTop;
+		private Boolean	wIsLeft;
+		private Boolean	wIsVertical;
+		
+		private LOCATION(String pCode, Boolean pIsTop, Boolean pIsLeft, Boolean pIsVertical) {
+			wCode = pCode;
+			wIsTop = pIsTop;
+			wIsLeft = pIsLeft;
+			wIsVertical = pIsVertical;
+		}
 
-	
+		public String getCode() {
+			return wCode;
+		}
+		public String getCSS() {
+			return " -" + wCode +" ";
+		}
+		public Boolean getIsTop(){
+			return wIsTop;
+		}
+		public Boolean getIsLeft(){
+			return wIsLeft;
+		}
+		public Boolean getIsVertical(){
+			return wIsVertical;
+		}
+		
+		public static LOCATION get(String pCode) {
+			if (pCode == null){
+				return TOP_LEFT_HORIZONTAL;
+			}			
+			pCode = pCode.trim().toLowerCase();
+			switch (pCode) {
+			case "tlh":
+				return TOP_LEFT_HORIZONTAL;
+			case "tlv":
+				return TOP_LEFT_VERTICAL;
+			case "trh":
+				return TOP_RIGHT_HORIZONTAL;
+			case "trv":
+				return TOP_RIGHT_VERTICAL;
+			case "blh":
+				return BOTTOM_LEFT_HORIZONTAL;
+			case "blv":
+				return BOTTOM_LEFT_VERTICAL;
+			case "brh":
+				return BOTTOM_RIGHT_HORIZONTAL;
+			case "brv":
+				return BOTTOM_RIGHT_VERTICAL;
+			case "tlc":
+				return TOP_LEFT_CENTER;
+			case "trc":
+				return TOP_RIGHT_CENTER;
+			case "blc":
+				return BOTTOM_LEFT_CENTER;
+			case "brc":
+				return BOTTOM_RIGHT_CENTER;
+			default:
+				return TOP_LEFT_HORIZONTAL;
+			}
+		}
+		
+		public static LOCATION get(String pLocation, String pContentVerticalAlign, String pContentHorizontalAlign) {
+			StringBuilder xLocation = new StringBuilder();
+			
+			if (DBSObject.isEmpty(pContentVerticalAlign)) {
+				xLocation.append("t");
+			}else{
+				xLocation.append(pContentVerticalAlign.substring(0, 1).toLowerCase());
+			}
+			if (DBSObject.isEmpty(pContentHorizontalAlign)) {
+				xLocation.append("l");
+			}else{
+				xLocation.append(pContentHorizontalAlign.substring(0, 1).toLowerCase());
+			}
+			if (DBSObject.isEmpty(pLocation)) {
+				xLocation.append("v");
+			}else{
+				xLocation.append(pLocation.substring(0, 1).toLowerCase());
+			}
+			return get(xLocation.toString());			
+		}
+	}
+
     public DBSDialog(){
 		setRendererType(DBSDialog.RENDERER_TYPE);
     }
+
+    
+	public String getStyle() {
+		return (String) getStateHelper().eval(PropertyKeys.style, null);
+	}
 	
-    @Override
-    public void decode(FacesContext pContext) {
-        super.decode(pContext);
+	public void setStyle(String pStyle) {
+		getStateHelper().put(PropertyKeys.style, pStyle);
+		handleAttribute("style", pStyle);
+	}
+
+	public String getStyleClass() {
+		return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+	}
+	
+	public void setStyleClass(String pStyleClass) {
+		getStateHelper().put(PropertyKeys.styleClass, pStyleClass);
+		handleAttribute("styleClass", pStyleClass);
+	}
+	
+	public String getIconClass() {
+		return (String) getStateHelper().eval(PropertyKeys.iconClass, null);
+	}
+	
+	public void setIconClass(String pIconClass) {
+		getStateHelper().put(PropertyKeys.iconClass, pIconClass);
+		handleAttribute("iconClass", pIconClass);
+	}
+	
+	public Boolean getOpened() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.opened, false);
+	}
+	
+	public void setOpened(Boolean pOpened) {
+		getStateHelper().put(PropertyKeys.opened, pOpened);
+		handleAttribute("opened", pOpened);
+	}
+	
+	public String getLocation() {
+		return (String) getStateHelper().eval(PropertyKeys.location, LOCATION.TOP_LEFT_HORIZONTAL.getCode());
+	}
+	
+	public void setLocation(String pLocation) {
+		getStateHelper().put(PropertyKeys.location, pLocation);
+		handleAttribute("location", pLocation);
+	}
+	
+	public String getCloseTimeout() {
+		return (String) getStateHelper().eval(PropertyKeys.closeTimeout, "0");
+	}
+	
+	public void setCloseTimeout(String pCloseTimeout) {
+		getStateHelper().put(PropertyKeys.closeTimeout, pCloseTimeout);
+		handleAttribute("closeTimeout", pCloseTimeout);
+	}
+
+	public String getContentPadding() {
+		return (String) getStateHelper().eval(PropertyKeys.contentPadding, "0.4em");
+	}
+	public void setContentPadding(String pContentPadding) {
+		getStateHelper().put(PropertyKeys.contentPadding, pContentPadding);
+		handleAttribute("contentPadding", pContentPadding);
+	}
+
+	public String getContentStyleClass() {
+		return (String) getStateHelper().eval(PropertyKeys.contentStyleClass, "");
+	}
+	
+	public void setContentStyleClass(String pContentStyleClass) {
+		getStateHelper().put(PropertyKeys.contentStyleClass, pContentStyleClass);
+		handleAttribute("contentStyleClass", pContentStyleClass);
+	}
+	
+	public String getContentVerticalAlign() {
+		return (String) getStateHelper().eval(PropertyKeys.contentVerticalAlign, null);
+	}
+	
+	public void setContentVerticalAlign(String pContentVerticalAlign) {
+		getStateHelper().put(PropertyKeys.contentVerticalAlign, pContentVerticalAlign);
+		handleAttribute("contentVerticalAlign", pContentVerticalAlign);
+	}
+	
+	public String getContentHorizontalAlign() {
+		return (String) getStateHelper().eval(PropertyKeys.contentHorizontalAlign, null);
+	}
+	
+	public void setContentHorizontalAlign(String pContentHorizontalAlign) {
+		getStateHelper().put(PropertyKeys.contentHorizontalAlign, pContentHorizontalAlign);
+		handleAttribute("contentHorizontalAlign", pContentHorizontalAlign);
+	}
+
+	@Override
+    public String getDefaultEventName()
+    {
+        return "click";
     }
-
-	public String getCaption() {
-		return (String) getStateHelper().eval(PropertyKeys.caption, null);
-	}
 	
-	public void setCaption(String pCaption) {
-		getStateHelper().put(PropertyKeys.caption, pCaption);
-		handleAttribute("caption", pCaption);
-	}
-	
-
-	public Boolean isResizable() {
-		return (Boolean) getStateHelper().eval(PropertyKeys.resizable, true);
-	}
-	
-	public void setResizable(Boolean pResizable) {
-		getStateHelper().put(PropertyKeys.resizable, pResizable);
-		handleAttribute("resizable", pResizable);
-	}
-	
-
-	public void setCloseble(Boolean pCloseble) {
-		getStateHelper().put(PropertyKeys.closeable, pCloseble);
-		handleAttribute("closeable", pCloseble);
-	}
-	
-	public Boolean getCloseble() {
-		return (Boolean) getStateHelper().eval(PropertyKeys.closeable, true);
+	@Override
+	public Collection<String> getEventNames() {
+		return Arrays.asList("click", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup"); 
 	}
 
-	public void setWidth(Integer pWidth) {
-		getStateHelper().put(PropertyKeys.width, pWidth);
-		handleAttribute("width", pWidth);
-	}
-	
-	public Integer getWidth() {
-		return (Integer) getStateHelper().eval(PropertyKeys.width, null);
-	}
-
-	public void setHeight(Integer pHeight) {
-		getStateHelper().put(PropertyKeys.height, pHeight);
-		handleAttribute("height", pHeight);
-	}
-	
-	public Integer getHeight() {
-		return (Integer) getStateHelper().eval(PropertyKeys.height, null);
-	}
-	
-	public String getMessageType() {
-		return (String) getStateHelper().eval(PropertyKeys.messageType, null);
-	}
-	
-	public void setMessageType(String pMessageType) {
-		getStateHelper().put(PropertyKeys.messageType, pMessageType);
-		handleAttribute("messageType", pMessageType);
-	}
-
-	public String getUpdate() {
-		return (String) getStateHelper().eval(PropertyKeys.update, "");
-	}
-	
-	public void setUpdate(String pUpdate) {
-		getStateHelper().put(PropertyKeys.update, pUpdate);
-		handleAttribute("update", pUpdate);
-	}
-
-	public String getExecute() {
-		return (String) getStateHelper().eval(PropertyKeys.execute, "");
-	}
-	
-	public void setExecute(String pExecute) {
-		getStateHelper().put(PropertyKeys.execute, pExecute);
-		handleAttribute("execute", pExecute);
-	}
-// ################################################################
-
-	public String getYesAction() {
-		String xStr = DBSFaces.getELString(this, PropertyKeys.yesAction.toString());
-		if (xStr==null){
-			//Considera que action por ser um redirect para outra página
-			xStr = (String) getStateHelper().eval(PropertyKeys.yesAction, null);
-		}
-		return xStr;
-
-	}
-
-	public void setYesAction(String pYesAction) {
-    	getStateHelper().put(PropertyKeys.yesAction, pYesAction);
-		handleAttribute("yesAction", pYesAction);
-	}	
-	
-	public String getNoAction() {
-		String xStr = DBSFaces.getELString(this, PropertyKeys.noAction.toString());
-		if (xStr==null){
-			//Considera que action por ser um redirect para outra página
-			xStr = (String) getStateHelper().eval(PropertyKeys.noAction, null);
-		}
-		return xStr;
-	}
-
-	public void setNoAction(String pNoAction) {
-    	getStateHelper().put(PropertyKeys.noAction, pNoAction);
-		handleAttribute("noAction", pNoAction);
-	}	
-
-	public String getOkAction() {
-		String xStr = DBSFaces.getELString(this, PropertyKeys.okAction.toString());
-		if (xStr==null){
-			//Considera que action por ser um redirect para outra página
-			xStr = (String) getStateHelper().eval(PropertyKeys.okAction, null);
-		}
-		return xStr;
-	}
-
-	public void setOkAction(String pOkAction) {
-    	getStateHelper().put(PropertyKeys.okAction, pOkAction);
-		handleAttribute("okAction", pOkAction);
-	}	
-	
-	public String getTooltip() {
-		return (String) getStateHelper().eval(PropertyKeys.tooltip, "");
-	}
-	
-	public void setTooltip(String pTooltip) {
-		getStateHelper().put(PropertyKeys.tooltip, pTooltip);
-		handleAttribute("tooltip", pTooltip);
-	}
 
 
 }
