@@ -31,6 +31,7 @@ import br.com.dbsoft.ui.core.DBSFaces;
 	@ResourceDependency(library = "css", name = "dbsfaces_inputtext.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_inputtextarea.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_inputdate.css", target = "head"),
+	@ResourceDependency(library = "css", name = "dbsfaces_inputphone.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_inputnumber.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_inputmask.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_img.css", target = "head"),
