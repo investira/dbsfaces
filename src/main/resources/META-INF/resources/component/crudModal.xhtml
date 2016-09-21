@@ -1,0 +1,86 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:dbs="http://www.dbsoft.com.br/ui/dbsfaces"
+	xmlns:dbscom="http://www.dbsoft.com.br/ui/dbsfacescom">
+		
+	<cc:interface componentType="br.com.dbsoft.ui.component.crudModal">
+		<cc:attribute name="crudBean" preferred="true" required="true"/>
+		<cc:attribute name="id" preferred="true"/>
+		<cc:attribute name="style"/>
+		<cc:attribute name="styleClass"/>
+		<cc:attribute name="rendered" preferred="true"/>	
+		<cc:attribute name="update" default=""/>
+		<cc:attribute name="allowDelete" default="true"/>
+		<cc:attribute name="allowUpdate" default="true"/>
+		<cc:attribute name="width" default="100"/>
+		<cc:attribute name="height" default="100"/>
+		<cc:facet name="approveDialog"/>
+		<cc:facet name="reproveDialog"/>
+	</cc:interface>
+	
+	<cc:implementation >
+		<div id="#{cc.clientId}" class="dbs_crudModal #{cc.attrs.styleClass}" style="#{cc.attrs.style}">
+			<dbs:div id="content">
+				<dbs:modal id="modal"
+				            caption="#{cc.crudBean.dialogCaption}">
+					<f:facet name="toolbar">
+						<c:if test="#{cc.crudBean.isViewing}">
+							<dbs:div class="-flex" style="float:left;">
+								<dbs:button id="btFirst" iconClass="-i_navigate_first" readOnly="#{cc.crudBean.isFirst}"  style="#{cc.crudBean.isFirst ? 'opacity:0.3;': ''}" action="#{cc.crudBean.moveFirst()}" update=":modal " execute="@this" tooltip="#{dbsfaces['cruddialog.btFirst']}"/>
+								<dbs:button id="btPrevious" iconClass="-i_navigate_previous" readOnly="#{cc.crudBean.isFirst}" style="#{cc.crudBean.isFirst ? 'opacity:0.3;': ''}" action="#{cc.crudBean.movePrevious()}" update=":modal " execute="@this" tooltip="#{dbsfaces['cruddialog.btPrevious']}"/>
+								<dbs:button id="btNext" iconClass="-i_navigate_next" readOnly="#{cc.crudBean.isLast}" style="#{cc.crudBean.isLast ? 'opacity:0.3;': ''}" action="#{cc.crudBean.moveNext()}" update=":modal " execute="@this" tooltip="#{dbsfaces['cruddialog.btNext']}"/>
+								<dbs:button id="btLast" iconClass="-i_navigate_last" readOnly="#{cc.crudBean.isLast}" style="#{cc.crudBean.isLast ? 'opacity:0.3;': ''}" action="#{cc.crudBean.moveLast()}" update=":modal " execute="@this" tooltip="#{dbsfaces['cruddialog.btLast']}"/>
+							</dbs:div>						
+							<dbs:div styleClass="-right">
+								<dbs:button id="btCopy" iconClass="-i_copy" rendered="#{cc.crudBean.allowCopy or cc.crudBean.allowCopyOnUpdate}" action="#{cc.crudBean.copy()}" update=":modal " execute="@this" tooltip="#{dbsfaces['cruddialog.btCopy']}"/>
+								<dbs:button id="btDelete" iconClass="-i_delete" rendered="#{cc.attrs.allowDelete and cc.crudBean.allowDelete}" action="#{cc.crudBean.delete()}" update=":modal " execute="@this" tooltip="#{dbsfaces['cruddialog.btDelete']}"/>
+								<dbs:button id="btEdit" iconClass="-i_edit" rendered="#{cc.attrs.allowUpdate and cc.crudBean.allowUpdate}" action="#{cc.crudBean.update()}" update=":modal" execute="@this" tooltip="#{dbsfaces['cruddialog.btEdit']}"/> 
+								<dbs:button id="btClose" iconClass="-i_cancel -red" action="#{cc.crudBean.close()}" update=":modal #{cc.attrs.update}" execute="@this" tooltip="#{dbsfaces['cruddialog.btClose']}"/>
+							</dbs:div>
+						</c:if>
+						<c:if test="#{cc.crudBean.isUpdating}">
+							<dbs:div styleClass="-icon">
+								<dbs:img styleClass="-i_edit"/>
+							</dbs:div>
+							<dbs:div styleClass="-right">
+								<dbs:button id="btPaste" iconClass="-i_paste" action="#{cc.crudBean.paste()}" rendered="#{cc.crudBean.allowCopyOnUpdate and cc.crudBean.isCopied}" update=":modal " execute="@this" tooltip="#{dbsfaces['cruddialog.btPaste']}"/>
+								<dbs:button id="btOk" iconClass="-i_ok -green" action="#{cc.crudBean.confirmEditing()}" update=":modal #{cc.attrs.update}" execute="#{cc.clientId}" tooltip="#{dbsfaces['cruddialog.btOk']}"/>
+								<dbs:button id="btCancel" iconClass="-i_cancel -red" action="#{cc.crudBean.ignoreEditing()}" update=":modal" execute="#{cc.clientId}" tooltip="#{dbsfaces['cruddialog.btCancel']}"/>
+							</dbs:div>
+						</c:if>
+						<c:if test="#{cc.crudBean.isInserting}">
+							<dbs:div styleClass="-icon">
+								<dbs:img styleClass="-i_insert"/>
+							</dbs:div>
+							<dbs:div styleClass="-right">
+								<dbs:button id="btPaste" iconClass="-i_paste" action="#{cc.crudBean.paste()}" rendered="#{cc.crudBean.isCopied and cc.crudBean.allowCopy}" update=":modal " execute="@this" tooltip="#{dbsfaces['cruddialog.btPaste']}"/>
+								<dbs:button id="btOk" iconClass="-i_ok -green" action="#{cc.crudBean.confirmEditing()}" update=":modal #{cc.attrs.update}" execute="#{cc.clientId}" tooltip="#{dbsfaces['cruddialog.btOk']}"/>
+								<dbs:button id="btCancel" iconClass="-i_cancel -red" action="#{cc.crudBean.ignoreEditing()}" update=":modal #{cc.attrs.update}" execute="#{cc.clientId}" tooltip="#{dbsfaces['cruddialog.btCancel']}"/>
+							</dbs:div>
+						</c:if>
+						<c:if test="#{cc.crudBean.isDeleting}">
+							<dbs:div styleClass="-icon">
+								<dbs:img styleClass="-i_delete"/>
+							</dbs:div>
+							<dbs:div style="height: 1.89em; display: inline-block;"/>
+						</c:if>
+					</f:facet>
+					
+					<cc:insertChildren/>
+						
+					<f:facet name="beanModalMessages">
+						<dbscom:beanModalCrudMessages id="message"
+												   crudBean="#{cc.crudBean}"
+		 							               update=":modal #{cc.attrs.update} ">
+<!-- 		 							               update=":modal #{cc.crudBean.isDeleting ? cc.attrs.update : ''} " -->
+		 				</dbscom:beanModalCrudMessages>
+					</f:facet>
+				</dbs:modal>
+			</dbs:div>
+		</div>
+	</cc:implementation>
+</ui:component>

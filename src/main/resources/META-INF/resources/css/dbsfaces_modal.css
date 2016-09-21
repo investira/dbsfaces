@@ -1,0 +1,252 @@
+.dbs_modal{}
+
+
+.dbs_modal{
+	position: fixed;
+	display: block;
+	background-color: rgba(0, 0, 0, 0.05);
+	background-image: url("#{request.contextPath}/images/vidro.png");
+	background-repeat: repeat;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	margin:0px;
+	padding:0px;
+	z-index: 3;
+	font-weight: normal;
+	font-size: 11px;
+}
+
+.dbs_modal > .-modal{
+	position: fixed;
+	display: inline-block;
+	opacity:0;
+	
+	padding: 0;
+    margin: 0;
+
+	/* reset transform translate     */
+    transform-style: flat;
+    -webkit-transform: translateX(0) translateY(0);
+    -moz-transform: translateX(0) translateY(0);
+    -o-transform: translateX(0) translateY(0);
+    transform: translateX(0) translateY(0);
+	/* ================ */
+
+
+/*     -webkit-transform-origin: 0 0; */
+/*     -moz-transform-origin: 0 0; */
+/*     -ms-transform-origin: 0 0; */
+/*     -o-transform-origin: 0 0; */
+/*     transform-origin: 0 0; */
+    
+/* 	-ms-filter: blur(0);  BLUR em determinados casos limita a exibição do overflow 
+/*     -o-filter: blur(0); */
+/*     -moz-filter: blur(0); */
+/*     -webkit-filter: blur(0); */
+/*     filter: blur(0); */
+
+/*     -webkit-perspective-origin-x: 0; */
+/*     -webkit-perspective-origin-y: 0; */
+/* 	-webkit-perspective-origin: 0 0; */
+/* 	-moz-perspective-origin: 0 0; */
+/* 	-ms-perspective-origin: 0 0; */
+/* 	-o-perspective-origin: 0 0; */
+/* 	perspective-origin: 0 0; */
+
+/*     -webkit-perspective: 0; */
+/*     -moz-perspective: 0; */
+/*     -ms-perspective: 0; */
+/*     -o-perspective: 0; */
+/*     perspective: 0; */
+	
+/* 	left: 50%; */
+/* 	top: 50%; */
+
+/* 	-webkit-transform: translate3d(-50%, -50%, 0); */
+/* 	-moz-transform: translate3d(-50%, -50%, 0); */
+/* 	-o-transform: translate3d(-50%, -50%, 0); */
+/* 	-ms-transform: translate3d(-50%, -50%, 0); */
+/* 	transform: translate3d(-50%, -50%, 0); */
+
+
+	
+}
+
+
+.dbs_modal > .-modal > .-container{
+	position: relative;
+	display: table;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+    height: 100%;
+
+	overflow: hidden;
+
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius:3px;
+	
+	min-height: 100px;
+	min-width: 100px;
+
+   	-webkit-box-shadow: 0 0 6px 0px rgba(0, 0, 0, 0.6);
+	-moz-box-shadow: 0 0 6px 0px rgba(0, 0, 0, 0.6);
+	box-shadow: 0 0 6px 0px rgba(0, 0, 0, 0.6);
+}
+
+.dbs_modal > .-modal > .-container > table{
+	display: table;
+	position: relative;
+	width: 100%;
+	height: 100%;
+
+}
+
+.dbs_modal > .-modal > .-container > table > thead,
+.dbs_modal > .-modal > .-container > table > tbody,
+.dbs_modal > .-modal > .-container > table > tfoot{
+}
+
+.dbs_modal > .-modal > .-container > table > thead > .-caption,
+.dbs_modal > .-modal > .-container > table > thead > .-toolbar,
+.dbs_modal > .-modal > .-container > table > tbody > .-message,
+.dbs_modal > .-modal > .-container > table > tfoot > .-footer{
+	position: relative;
+    top: 0;
+    left: 0;
+}
+
+.dbs_modal > .-modal > .-container > table > thead > .-caption > .-container,
+.dbs_modal > .-modal > .-container > table > thead > .-toolbar > .-container,
+.dbs_modal > .-modal > .-container > table > tbody > .-message > .-container,
+.dbs_modal > .-modal > .-container > table > tfoot > .-footer > .-container{
+	position: relative;
+}
+
+.dbs_modal > .-modal > .-container > table > thead {
+}
+.dbs_modal > .-modal > .-container > table > thead > .-caption{
+    font-size: 1em;
+}
+.dbs_modal > .-modal > .-container > table > thead > .-caption > .-container{
+    cursor: move;
+	padding: .5em;
+	text-align: center;
+}
+.dbs_modal > .-modal > .-container > table > thead > .-toolbar{
+	font-size: 1em;
+    background-color: rgba(240,240,240,1);
+    text-align: right;
+}
+.dbs_modal > .-modal > .-container > table > thead > .-toolbar > .-container{
+/* 	display: table-cell; */
+	display: block;
+	overflow: hidden;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.dbs_modal > .-modal > .-container > table > thead > .-toolbar > .-container .dbs_button{
+	min-height: 2em;
+    min-width: 2em;
+}
+
+.dbs_modal > .-modal > .-container > table > thead > .-toolbar > .-container .-right{
+	display: inline-flex;	
+	float: right;
+}
+
+.dbs_modal > .-modal > .-container > table > thead > .-toolbar > .-container > .-line{
+    position: absolute;
+    width: 100%;
+    left: 0px;
+    top: 100%;
+}
+.dbs_modal > .-modal > .-container > table > thead > .-toolbar > .-container > .-line:after{
+	top: -1px;
+	position: relative;
+}
+
+.dbs_modal > .-modal > .-container > table > thead > .-toolbar > .-container > .-icon{
+	position: absolute;
+    background-color: rgba(13, 25, 45, 1);
+    color: white;
+    left: 0;
+    top: 0;
+    padding: .25em;
+    display: block;
+    
+}
+
+.dbs_modal > .-modal > .-container > table > tbody {
+}
+.dbs_modal > .-modal > .-container > table > tbody > tr{
+}
+.dbs_modal > .-modal > .-container > table > tbody > tr > td{
+	padding: 1em;
+}
+.dbs_modal > .-modal > .-container > table > tbody > tr > td > table{
+    display: table;
+    width: 100%;
+    height: 100%;
+}
+.dbs_modal > .-modal > .-container > table > tbody > tr > td > table > tbody{
+}
+.dbs_modal > .-modal > .-container > table > tbody > tr > td > table > tbody > tr{
+}
+.dbs_modal > .-modal > .-container > table > tbody > tr > td > table > tbody > tr > .-icon{
+	font-size: 2.5em;
+	width: 2em;
+}
+.dbs_modal > .-modal > .-container > table > tbody > tr > td > table > tbody > tr > .-container{
+}
+.dbs_modal > .-modal > .-container > table > tbody > tr > td > table > tbody > tr > .-container > .-content{
+}
+
+.dbs_modal > .-modal > .-container > table > tbody > tr > td > table > tbody > tr > .-container > .-content .-th_input:not(td), 
+.dbs_modal > .-modal > .-container > table > tbody > tr > td > table > tbody > tr > .-container > .-content .dbs_group {
+    margin-bottom: 2px;
+}
+
+.dbs_modal.-confirmation > .-modal > .-container > table > tbody > tr > td > table > tbody > tr > .-container > .-content{
+	text-align: center;
+}
+
+
+.dbs_modal > .-modal > .-container > table > tfoot{
+}
+.dbs_modal > .-modal > .-container > table > tfoot > .-footer{
+}
+.dbs_modal > .-modal > .-container > table > tfoot > .-footer > .-container{
+}
+.dbs_modal > .-modal > .-container > table > tfoot > .-footer > .-container > .-button{
+	display: inline-block;
+	float: right;
+}
+.dbs_modal > .-modal > .-container > table > tfoot > .-footer > .-container .dbs_button{
+	margin-left: 1em;
+    height: 3em;
+    width: 5em;
+/*     float: right; */
+}
+.dbs_modal > .-modal > .-container > table > tfoot > .-footer > .-container > .-content{
+	display: inline-block;
+	float: right;
+} 
+
+.dbs_modal > .-modal > .-container > table > tfoot > .-footer > .-container > .-line{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    left: 0px;
+}
+
+.dbs_modal .dbs_quickInfo > .-icon > .-content > .-tooltip {
+	left: 0.65em !important;	
+    position: absolute !important;
+}
+
+
+			
