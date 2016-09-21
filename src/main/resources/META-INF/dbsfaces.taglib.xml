@@ -147,6 +147,126 @@
 		</attribute>
 	</tag>
 	<tag>
+		<tag-name>dialog</tag-name>
+		<component>
+			<component-type>br.com.dbsoft.ui.component.dialog</component-type>
+			<handler-class />
+		</component>
+		<attribute>
+			<description>
+                Diálogos
+            </description>
+			<name>id</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Class CSS que será utilizada
+            </description>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Adiciona style 
+            </description>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                rendered
+            </description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+            	iconClass
+            </description>
+			<name>iconClass</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Localização da abertura. Padrão é vertical.&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;Abertura:VERTICAL = v&lt;/li&gt;
+					&lt;li&gt;Abertura:HORIZONTAL = h&lt;/li&gt;
+					&lt;li&gt;Abertura:CENTRO = c&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>location</name>
+			<required>false</required>
+			<type>java.lang.Sting</type>
+		</attribute>
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Tempo para fechamento automatico do nav em segundos.&lt;br/&gt;
+				Se for 0, não fecha automaticamente.
+				&lt;/span&gt; </description>
+			<name>closeTimeout</name>
+			<required>false</required>
+			<type>java.lang.Sting</type>
+		</attribute>
+		<attribute>
+			<description>Padding interno. O padrão é 0.4em;
+            </description>
+			<name>contentPadding</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Class CSS que será utilizada dentro do nav
+            </description>
+			<name>contentStyleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                &lt;span style="font-size:small"&gt;
+				Alinhamento vertical do conteúdo do nav. O Padrão é TOP.&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;Conteúdo:TOP = t&lt;/li&gt;
+					&lt;li&gt;Conteúdo:BOTTOM = b&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>contentVerticalAlign</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                &lt;span style="font-size:small"&gt;
+				Alinhamento horizontal do conteúdo do nav. O Padrão é LEFT.&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;Conteúdo:LEFT = l&lt;/li&gt;
+					&lt;li&gt;Conteúdo:RIGHT = r&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>contentHorizontalAlign</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Se exibe já aberto. Padrao é false.
+            </description>
+			<name>opened</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+	</tag>	
+	<tag>
 		<tag-name>nav</tag-name>
 		<component>
 			<component-type>br.com.dbsoft.ui.component.nav</component-type>
