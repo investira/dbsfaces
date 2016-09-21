@@ -19,14 +19,14 @@ import br.com.dbsoft.message.DBSMessages;
 import br.com.dbsoft.message.IDBSMessage;
 import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.message.IDBSMessages;
-import br.com.dbsoft.ui.component.beandialogmessages.IDBSBeanDialogMessages;
+import br.com.dbsoft.ui.component.beanmodalmessages.IDBSBeanModalMessages;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSObject;
 
 /**
  * @author ricardo.villar
  */
-public abstract class DBSBean implements Serializable, IDBSBeanDialogMessages{
+public abstract class DBSBean implements Serializable, IDBSBeanModalMessages{
  
 	private static final long serialVersionUID = -5273728796912868413L;
 

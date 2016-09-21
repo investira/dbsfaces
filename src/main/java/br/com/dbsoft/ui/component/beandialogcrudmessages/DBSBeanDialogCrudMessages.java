@@ -14,7 +14,7 @@ import br.com.dbsoft.ui.core.DBSFaces;
 @FacesComponent(DBSBeanDialogCrudMessages.COMPONENT_TYPE)
 public class DBSBeanDialogCrudMessages extends DBSUIComponentBase { 
 
-	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.BEANCRUDDIALOGMESSAGES;
+	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.BEANDIALOGCRUDCRUDMESSAGES;
 	public final static String RENDERER_TYPE = "/resources/component/beanDialogCrudMessages.xhtml";
 	
 	protected enum PropertyKeys {

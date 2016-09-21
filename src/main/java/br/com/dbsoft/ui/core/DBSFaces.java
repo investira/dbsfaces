@@ -106,10 +106,12 @@ public class  DBSFaces {
 	    public static final String BUTTON = "button";
 	    public static final String DATATABLE = "dataTable";
 	    public static final String DATATABLECOLUMN = "dataTableColumn";
+	    public static final String CRUDMODAL = "crudModal";
 	    public static final String CRUDVIEW = "crudView";
 	    public static final String CRUDDIALOG = "crudDialog";
 	    public static final String CRUDTABLE = "crudTable";
 	    public static final String DIALOG = "dialog";
+	    public static final String MODAL = "modal";
 	    public static final String FILEUPLOAD = "fileUpload";
 	    public static final String FLOATBUTTON = "floatbutton";
 	    public static final String INPUTTEXT = "inputText";
@@ -145,13 +147,15 @@ public class  DBSFaces {
 	    public static final String TOOLTIP = "tooltip";
 	    public static final String UL = "ul";
 	    public static final String LI = "li";
-	    public static final String PARALLAX = "parallax";
-	    public static final String PARALLAXSECTION = "parallaxSection";
 	    public static final String FORM = "form";
 	    public static final String REPORT = "report"; 
 	    public static final String REPORTFORM = "reportForm"; 
+	    public static final String BEANMODALMESSAGES = "beanModalMessages";
+	    public static final String BEANMODALCRUDMESSAGES = "beanModalCrudMessages";
 	    public static final String BEANDIALOGMESSAGES = "beanDialogMessages";
-	    public static final String BEANCRUDDIALOGMESSAGES = "beanDialogCrudMessages";
+	    public static final String BEANDIALOGCRUDCRUDMESSAGES = "beanDialogCrudMessages";
+	    public static final String BEANNAVMESSAGES = "beanNavMessages";
+	    public static final String BEANNAVCRUDMESSAGES = "beanNavCrudMessages";
 	    public static final String MESSAGES = "messages";
 	    public static final String GROUP = "group";
 	    public static final String PUSH = "push";
@@ -286,16 +290,6 @@ public class  DBSFaces {
 			public static final String PROGRESS_TIMEOUT = "-progress_timeout";
 		}
 
-		public static class CRUDDIALOG
-		{
-			public static final String MAIN = " " + CLASS_PREFIX +  ID.CRUDDIALOG + " ";
-		}
-
-		public static class CRUDTABLE
-		{
-			public static final String MAIN = " " + CLASS_PREFIX +  ID.CRUDTABLE + " ";
-		}
-		
 		public static class DATATABLE
 		{
 			public static final String MAIN = " " + CLASS_PREFIX +  ID.DATATABLE + " ";
@@ -324,6 +318,11 @@ public class  DBSFaces {
 		public static class DIALOG
 		{	
 			public static final String MAIN = " " + CLASS_PREFIX + ID.DIALOG + " ";
+		}
+
+		public static class MODAL
+		{	
+			public static final String MAIN = " " + CLASS_PREFIX + ID.MODAL + " ";
 		}
 
 		public static class FILEUPLOAD
@@ -538,15 +537,6 @@ public class  DBSFaces {
 			public static final String MAIN = " " + CLASS_PREFIX + ID.CHARTVALUE + " ";
 		}
 
-		public static class PARALLAX
-		{
-			public static final String MAIN = " " + CLASS_PREFIX + ID.PARALLAX + " ";
-		}
-		public static class PARALLAXSECTION
-		{
-			public static final String MAIN = " " + CLASS_PREFIX + ID.PARALLAXSECTION + " ";
-		}
-		
 		public static class FLOATBUTTON
 		{
 			public static final String MAIN = " " + CLASS_PREFIX + ID.FLOATBUTTON + " ";
@@ -1012,23 +1002,23 @@ public class  DBSFaces {
 	}	
 	/**
 	 * Exibe um dialog inserindo o arquivo informado, que deverá conter o componente DBSDialog, no componente dialog
-	 * @param pDialogFileName
+	 * @param pModalFileName
 	 * @return
 	 */
-	public static boolean showDialogFile(String pDialogFileName){
+	public static boolean showDialogFile(String pModalFileName){
 		
-		if (!pDialogFileName.equals("")){
+		if (!pModalFileName.equals("")){
 			FacesContext xFC = FacesContext.getCurrentInstance();
 			FaceletContext xFaceletContext = (FaceletContext) xFC.getAttributes().get(FaceletContext.FACELET_CONTEXT_KEY);
-			UIComponent xDialog = xFC.getViewRoot().findComponent("dialog");
-	        if (xDialog==null){
-	        	System.out.println("componente <dbs:div id='dialog'/> não existe. É necessário que exista para o dialog ser exibido!");
+			UIComponent xModal = xFC.getViewRoot().findComponent("modal");
+	        if (xModal==null){
+	        	System.out.println("componente <dbs:div id='modal'/> não existe. É necessário que exista para o componente 'Modal' ser exibido!");
 	        }else{
-	        	xDialog.getChildren().clear();
+	        	xModal.getChildren().clear();
 				HtmlPanelGroup xNew = (HtmlPanelGroup) xFC.getApplication().createComponent(HtmlPanelGroup.COMPONENT_TYPE);
 				try {
-					xDialog.getChildren().add(xNew);
-		 			xFaceletContext.includeFacelet(xNew, pDialogFileName);
+					xModal.getChildren().add(xNew);
+		 			xFaceletContext.includeFacelet(xNew, pModalFileName);
 		 			return true;
 				} catch (IOException e) {
 					wLogger.error(e);
@@ -1304,21 +1294,21 @@ public class  DBSFaces {
 	
 	/**
 	 * Calcula e retorna a largura da tela de mensagem
-	 * @param pDialogMessageWidth
+	 * @param pMessageTextLenght
 	 * @return
 	 */
-	public static Integer getDialogMessageWidth(Integer pMessageTextLenght){
+	public static Integer getModalMessageWidth(Integer pMessageTextLenght){
 		Integer xWidth = DBSNumber.add(DBSNumber.exp(DBSNumber.multiply(pMessageTextLenght, 10), 0.70), 150).intValue();
 		return xWidth;
 	}
 
 	/**
 	 * Calcula e retorna a altura da tela de mensagem
-	 * @param pDialogMessageWidth
+	 * @param pMessageTextWidth
 	 * @return
 	 */
-	public static Integer getDialogMessageHeight(Integer pDialogMessageWidth){
-		Integer xHeight = DBSNumber.multiply(pDialogMessageWidth, 0.70).intValue();
+	public static Integer getModalMessageHeight(Integer pMessageTextWidth){
+		Integer xHeight = DBSNumber.multiply(pMessageTextWidth, 0.70).intValue();
 		return xHeight;
 	}
 	
@@ -2279,7 +2269,7 @@ public class  DBSFaces {
 						xBtn.setId("btC0");
 						xBtn.setStyleClass("-selectOne");
 						xBtn.setActionExpression(DBSFaces.createMethodExpression(xContext, pDataTable.getViewOneAction(), String.class, new Class[0]));
-						xBtn.setExecute("@this :dialog"); //:dialog necessário para fazer o submit dos campos dentro do form, em caso de crudtable dentro de crudform 
+						xBtn.setExecute("@this :modal"); //:modal necessário para fazer o submit dos campos dentro do form, em caso de crudtable dentro de crudform 
 						xBtn.setUpdate(pDataTable.getUpdate()); 
 					xC0.getChildren().add(xBtn);
 				}

@@ -28,7 +28,7 @@ import br.com.dbsoft.ui.bean.DBSBean;
 import br.com.dbsoft.ui.bean.crud.DBSCrudBeanEvent.CRUD_EVENT;
 import br.com.dbsoft.ui.component.DBSUIInput;
 import br.com.dbsoft.ui.component.DBSUIInputText;
-import br.com.dbsoft.ui.component.beandialogcrudmessages.IDBSBeanDialogCrudMessages;
+import br.com.dbsoft.ui.component.beanmodalcrudmessages.IDBSBeanModalCrudMessages;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSDate;
 import br.com.dbsoft.util.DBSIO;
@@ -183,7 +183,7 @@ import br.com.dbsoft.util.DBSIO.SORT_DIRECTION;
  * 	AFTER_EDIT
  * 
  */
-public abstract class DBSCrudBean extends DBSBean implements IDBSBeanDialogCrudMessages{
+public abstract class DBSCrudBean extends DBSBean implements IDBSBeanModalCrudMessages{
 
 	private static final long serialVersionUID = -8550893738791483527L;
 

@@ -24,7 +24,7 @@
 			<c:if test="#{!cc.crudBean.hasMessage}">
 				<!-- Exibe mansagem de confirmação					 -->
 				<c:if test="#{cc.crudBean.messageConfirmationExists}">
-					<dbs:dialog id="#{cc.id}_confirm"
+					<dbs:modal id="#{cc.id}_confirm"
 								rendered="#{cc.crudBean.isCommitting}"
 								messageType="c"
 								noAction="#{cc.crudBean.endEditing(false)}"
@@ -39,11 +39,11 @@
 						<ui:fragment rendered="#{cc.crudBean.isDeleting}">
 							<h:outputText value="#{cc.crudBean.messageConfirmationDelete}" escape="false"/>
 						</ui:fragment>		
-					</dbs:dialog>
+					</dbs:modal>
 				</c:if>
 				<!-- Exibe mansagem de confirmação					 -->
 				<c:if test="#{cc.crudBean.messageIgnoreExists}">
-					<dbs:dialog id="#{cc.id}_ignore" 
+					<dbs:modal id="#{cc.id}_ignore" 
 								rendered="#{cc.crudBean.isIgnoring}"
 								messageType="g"
 								noAction="#{cc.crudBean.endEditing(false)}"
@@ -58,7 +58,7 @@
 						<ui:fragment rendered="#{cc.crudBean.isDeleting}">
 							<h:outputText value="#{cc.crudBean.messageIgnoreDelete}" escape="false"/>
 						</ui:fragment>		
-					</dbs:dialog>
+					</dbs:modal>
 				</c:if>
 			</c:if>		
 		</div> 

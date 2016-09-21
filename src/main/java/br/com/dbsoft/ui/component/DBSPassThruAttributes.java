@@ -191,6 +191,22 @@ public class DBSPassThruAttributes {
             ,attr("onselect","select")
             ,attr("tabindex")
         ))
+        .add("CrudModal",ar(
+                attr("onblur","blur")
+                ,attr("onchange","change")
+                ,attr("ondblclick","dblclick")
+                ,attr("onfocus","focus")
+                ,attr("onkeydown","keydown")
+                ,attr("onkeypress","keypress")
+                ,attr("onkeyup","keyup")
+                ,attr("onmousedown","mousedown")
+                ,attr("onmousemove","mousemove")
+                ,attr("onmouseout","mouseout")
+                ,attr("onmouseover","mouseover")
+                ,attr("onmouseup","mouseup")
+                ,attr("onselect","select")
+                ,attr("tabindex")
+            ))        
         .add("CrudTable",ar(
             attr("onblur","blur")
             ,attr("onchange","change")
@@ -239,6 +255,22 @@ public class DBSPassThruAttributes {
             ,attr("onselect","select")
             ,attr("tabindex")
         ))
+        .add("Modal",ar(
+            attr("onblur","blur")
+            ,attr("onchange","change")
+            ,attr("ondblclick","dblclick")
+            ,attr("onfocus","focus")
+            ,attr("onkeydown","keydown")
+            ,attr("onkeypress","keypress")
+            ,attr("onkeyup","keyup")
+            ,attr("onmousedown","mousedown")
+            ,attr("onmousemove","mousemove")
+            ,attr("onmouseout","mouseout")
+            ,attr("onmouseover","mouseover")
+            ,attr("onmouseup","mouseup")
+            ,attr("onselect","select")
+            ,attr("tabindex")
+        ))
         .add("Div",ar(
             attr("onblur","blur")
             ,attr("onchange","change")
@@ -270,21 +302,6 @@ public class DBSPassThruAttributes {
                 ,attr("onmouseup","mouseup")
                 ,attr("onselect","select")
                 ,attr("tabindex")
-        ))
-        .add("Parallax",ar(
-            attr("onblur","blur")
-            ,attr("onchange","change")
-            ,attr("ondblclick","dblclick")
-            ,attr("onfocus","focus")
-            ,attr("onkeydown","keydown")
-            ,attr("onkeypress","keypress")
-            ,attr("onkeyup","keyup")
-            ,attr("onmousedown","mousedown")
-            ,attr("onmousemove","mousemove")
-            ,attr("onmouseout","mouseout")
-            ,attr("onmouseover","mouseover")
-            ,attr("onmouseup","mouseup")
-            ,attr("onselect","select")
         ))
         .add("FileUpload",ar(
             attr("onblur","blur")
@@ -686,9 +703,9 @@ public class DBSPassThruAttributes {
         CRUDTABLE("CrudTable"),
         DATATABLE("DataTable"),
         DIALOG("Dialog"),
+        MODAL("Modal"),
         DIV("Div"),
         NAV("Nav"),
-        PARALLAX("Parallax"),
         FILEUPLOAD("FileUpload"),
         GROUP("Group"),
         IMG("Img"),

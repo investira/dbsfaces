@@ -40,7 +40,7 @@
 		  					   sortColumn="#{cc.crudBean.sortColumn}"
 				               selected="#{cc.crudBean.selected}"
 				               iconClass="#{cc.attrs.iconClass}"
-				               update=":dialog #{cc.clientId}:crudTableMessages"
+				               update=":modal #{cc.clientId}:crudTableMessages"
 				               styleClass="#{cc.crudBean.formStyle == 'TABLE' ? '-formStyle_Table':''}"
 				               binding="#{cc.dataTable}">
 				    <dbs:setAttributeOnParent attributeName="var" attributeValue="#{cc.attrs.var}"/>
@@ -78,7 +78,7 @@
 								<ui:fragment rendered="#{not cc.crudBean.isEditing}">
 									<dbs:button id="btExcluir" rendered="#{cc.crudBean.hasSelected and cc.crudBean.rowCount gt 0}" iconClass="-i_delete" action="#{cc.crudBean.delete()}" update="#{cc.clientId} " execute="@this"/>
 									<dbs:button id="btEditar" rendered="#{not cc.crudBean.hasSelected and cc.crudBean.rowCount gt 0}" iconClass="-i_edit" action="#{cc.crudBean.update()}" update="#{cc.clientId} " execute="@this"/> 
-									<dbs:button id="btRefresh" rendered="#{cc.attrs.allowRefresh and cc.crudBean.allowRefresh}"  iconClass="-i_refresh" action="#{cc.crudBean.refreshList()}" update=":dialog :#{cc.clientId}" tooltip="#{dbsfaces['crudtable.btRefresh']}"/> 
+									<dbs:button id="btRefresh" rendered="#{cc.attrs.allowRefresh and cc.crudBean.allowRefresh}"  iconClass="-i_refresh" action="#{cc.crudBean.refreshList()}" update=":modal :#{cc.clientId}" tooltip="#{dbsfaces['crudtable.btRefresh']}"/> 
 								</ui:fragment>
 								<!-- Confirmação									 -->
 								<ui:fragment rendered="#{cc.crudBean.isUpdating}">
@@ -88,9 +88,9 @@
 								</ui:fragment>
 							</c:if>
 							<c:if test="#{cc.crudBean.formStyle == 'DIALOG'}">
-								<dbs:button id="btView" rendered="#{cc.attrs.multipleSelection and cc.crudBean.multipleSelection}"  iconClass="-i_document_view" action="#{cc.crudBean.viewSelection()}" update=":dialog " execute="@this"/>
-								<dbs:button id="btInsert"  rendered="#{cc.attrs.allowInsert and cc.crudBean.allowInsert}" iconClass="-i_insert" action="#{cc.crudBean.insert()}" update=":dialog " execute=":dialog @this" tooltip="#{dbsfaces['crudtable.btInsert']}"/>
-								<dbs:button id="btRefresh" rendered="#{cc.attrs.allowRefresh and cc.crudBean.allowRefresh}" iconClass="-i_refresh" action="#{cc.crudBean.refreshList()}" update=":dialog :#{cc.clientId}" tooltip="#{dbsfaces['crudtable.btRefresh']}"/>
+								<dbs:button id="btView" rendered="#{cc.attrs.multipleSelection and cc.crudBean.multipleSelection}"  iconClass="-i_document_view" action="#{cc.crudBean.viewSelection()}" update=":modal " execute="@this"/>
+								<dbs:button id="btInsert"  rendered="#{cc.attrs.allowInsert and cc.crudBean.allowInsert}" iconClass="-i_insert" action="#{cc.crudBean.insert()}" update=":modal " execute=":modal @this" tooltip="#{dbsfaces['crudtable.btInsert']}"/>
+								<dbs:button id="btRefresh" rendered="#{cc.attrs.allowRefresh and cc.crudBean.allowRefresh}" iconClass="-i_refresh" action="#{cc.crudBean.refreshList()}" update=":modal :#{cc.clientId}" tooltip="#{dbsfaces['crudtable.btRefresh']}"/>
 							</c:if>							
 						</f:facet>
 					</c:if>
@@ -152,18 +152,18 @@
 					
 				</dbs:dataTable>
 			</dbs:div>
-			<!-- Só exibe mensagem se crudDialog estiver fechado -->
+			<!-- Só exibe mensagem se crudModal estiver fechado -->
 			<dbs:div id="crudTableMessages" rendered="#{cc.crudBean.isClosed}">
 				<!-- Mensagens gerais -->
-				<dbscom:beanDialogMessages id="crudTableMessagesDialog"
+				<dbscom:beanModalMessages id="crudTableMessagesDialog"
 						   		 	 userBean="#{cc.crudBean}"
 									   update="#{cc.clientId}">
-				</dbscom:beanDialogMessages>
+				</dbscom:beanModalMessages>
 				<!-- Mensagem de aprovação				 -->
 				<c:if test="#{!cc.crudBean.hasMessage}">
 					<c:if test="#{cc.crudBean.isApproving}">
 						<c:if test="#{empty cc.facets.approveDialog}">
-							<dbs:dialog id="approve"
+							<dbs:modal id="approve"
 										caption="Aprovação"
 										messageType="c"
 										height="160" 
@@ -172,9 +172,9 @@
 										noAction="#{cc.crudBean.endEditing(false)}"
 										update="#{cc.clientId}" >
 										<h:outputText value="#{cc.crudBean.messageConfirmationApprove}"/>
-							</dbs:dialog>
+							</dbs:modal>
 						</c:if>
-						<!-- Encode de dialog customizado-->
+						<!-- Encode de modal customizado-->
 						<c:if test="#{not empty cc.facets.approveDialog}">
 							<cc:renderFacet name="approveDialog"/>
 						</c:if>
@@ -182,7 +182,7 @@
 					<!-- Mensagem de reprovação				 -->
 					<c:if test="#{cc.crudBean.isReproving}">
 						<c:if test="#{empty cc.facets.reproveDialog}">
-							<dbs:dialog id="reprove"
+							<dbs:modal id="reprove"
 										caption="Reprovação"
 										rendered="#{cc.crudBean.isReproving}"
 										messageType="g"
@@ -192,19 +192,19 @@
 										noAction="#{cc.crudBean.endEditing(false)}"
 										update="#{cc.clientId}" >
 										<h:outputText value="#{cc.crudBean.messageConfirmationReprove}"/>
-							</dbs:dialog>	
+							</dbs:modal>	
 						</c:if>
-						<!-- Encode de dialog customizado-->
+						<!-- Encode de modal customizado-->
 						<c:if test="#{not empty cc.facets.reproveDialog}">
 							<cc:renderFacet name="reproveDialog"/>
 						</c:if>
 					</c:if>
 					<!-- Só exite estes diálogos em edição como Table					 -->
 					<c:if test="#{cc.crudBean.formStyle == 'TABLE' and cc.crudBean.isEditing}">
-<!-- 						<dbscom:beanDialogCrudMessages id="message" -->
+<!-- 						<dbscom:beanModalCrudMessages id="message" -->
 <!-- 												   crudBean="#{cc.crudBean}" -->
 <!-- 		 							               update="#{cc.clientId}"> -->
-<!-- 		 				</dbscom:beanDialogCrudMessages> -->
+<!-- 		 				</dbscom:beanModalCrudMessages> -->
 					</c:if>				
 				</c:if>	
 			</dbs:div>	

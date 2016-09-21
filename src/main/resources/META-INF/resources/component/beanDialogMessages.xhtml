@@ -17,7 +17,7 @@
 		<f:event listener="#{cc.setId(cc.id)}" type="preRenderComponent"/>
 		<div id="#{cc.clientId}">
 			<c:if test="#{cc.userBean.hasMessage}">
-				<dbs:dialog id="#{cc.id}_beanDialogMessages"
+				<dbs:modal id="#{cc.id}_beanDialogMessages"
 							messageType="#{cc.userBean.messageType.code}"
 							rendered="#{cc.userBean.hasMessage}"
 							update="#{cc.attrs.update}"
@@ -30,7 +30,7 @@
 								<f:attribute name="yesAction" value="#{cc.userBean.setMessageValidated(true)}"/>
 							</c:if>
 							<h:outputText value="#{cc.userBean.messageText}" escape="false"/>
-				</dbs:dialog>		
+				</dbs:modal>		
 			</c:if>
 		</div>			
 	</cc:implementation>
