@@ -52,7 +52,7 @@ dbs_dialog = function(pId) {
 		     wipeDown: function() {return dbsfaces.dialog.whipe(xDialog, "d");},
 		     min_move_x: 50,
 		     min_move_y: 50,
-		     preventDefaultEvents: false
+		     preventDefaultEvents: true
 		});
 	}
 
