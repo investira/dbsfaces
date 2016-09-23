@@ -73,21 +73,22 @@ public class DBSDialogRenderer extends DBSRenderer {
 					DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.MASK + CSS.THEME.BC + CSS.THEME.INVERT);
 				xWriter.endElement("div");
 				//Nav
-				pvEncodeNavBegin(xDialog, pContext, xWriter);
+				pvEncodeContentBegin(xDialog, pContext, xWriter);
 	}
 	
-	private void pvEncodeNavBegin(DBSDialog pDialog, FacesContext pContext, ResponseWriter pWriter) throws IOException{
+	private void pvEncodeContentBegin(DBSDialog pDialog, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("div", pDialog);
-			DBSFaces.setAttribute(pWriter, "class", "-nav" + CSS.THEME.FC + CSS.THEME.BC + pDialog.getContentStyleClass() + CSS.MODIFIER.CLOSED, null); //(pDialog.getOpened() ? CSS.MODIFIER.OPENED : CSS.MODIFIER.CLOSED)
+			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + CSS.THEME.FC + CSS.THEME.BC + pDialog.getContentStyleClass() + CSS.MODIFIER.CLOSED, null); //(pDialog.getOpened() ? CSS.MODIFIER.OPENED : CSS.MODIFIER.CLOSED)
 			//Header
 			pvEncodeHeader(pDialog, pContext, pWriter);
 			//Nav
 			pWriter.startElement("div", pDialog);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER, null);
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.SUB_CONTAINER, null);
 				pWriter.startElement("div", pDialog);
-					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT, null);
 					pWriter.startElement("div", pDialog);
-						pWriter.startElement("nav", pDialog);
+						pWriter.startElement("div", pDialog);
+							DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.SUB_CONTENT, null);
+
 //							DBSFaces.setAttribute(pWriter, "class", pDialog.getContentStyleClass(), null);
 							DBSFaces.setAttribute(pWriter, "style", "padding:" + pDialog.getContentPadding(), null);
 							//Encode dos conteúdo
@@ -95,7 +96,7 @@ public class DBSDialogRenderer extends DBSRenderer {
 	}
 	
 	private void pvEncodeNavEnd(DBSDialog pDialog, FacesContext pContext, ResponseWriter pWriter) throws IOException{
-						pWriter.endElement("nav");
+						pWriter.endElement("div");
 					pWriter.endElement("div");
 				pWriter.endElement("div");
 			pWriter.endElement("div");

@@ -34,7 +34,7 @@
 	pointer-events: none;
 }
 
-.dbs_dialog > .-container > .-nav{
+.dbs_dialog > .-container > .-content{
 	position: fixed;
 	display: inline-block;
 	white-space: nowrap;
@@ -46,7 +46,7 @@
     from {width: 0%;}
     to {width: 100%;}
 }
-.dbs_dialog > .-container > .-nav > .-progress_timeout{
+.dbs_dialog > .-container > .-content > .-progress_timeout{
 	position: fixed;
     height: 0.1em;
     bottom: 0;
@@ -54,106 +54,107 @@
 }
 
 /* CENTER */
-.dbs_dialog.-tlc > .-container > .-nav,
-.dbs_dialog.-trc > .-container > .-nav,
-.dbs_dialog.-blc > .-container > .-nav,
-.dbs_dialog.-brc > .-container > .-nav{
+.dbs_dialog.-tlc > .-container > .-content,
+.dbs_dialog.-trc > .-container > .-content,
+.dbs_dialog.-blc > .-container > .-content,
+.dbs_dialog.-brc > .-container > .-content{
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     transition: opacity .2s, width .3s, height .3s, left .3s, top .3s;
+/*     transition: opacity .2s, width .3s, height .3s; */
 }
-.dbs_dialog.-tlc.-closed > .-container > .-nav,
-.dbs_dialog.-trc.-closed > .-container > .-nav,
-.dbs_dialog.-blc.-closed > .-container > .-nav,
-.dbs_dialog.-brc.-closed > .-container > .-nav{
+.dbs_dialog.-tlc.-closed > .-container > .-content,
+.dbs_dialog.-trc.-closed > .-container > .-content,
+.dbs_dialog.-blc.-closed > .-container > .-content,
+.dbs_dialog.-brc.-closed > .-container > .-content{
 	opacity: 0;
 }
 
 /*VERTICAL */
-.dbs_dialog.-tlv > .-container > .-nav,
-.dbs_dialog.-trv > .-container > .-nav,
-.dbs_dialog.-blv > .-container > .-nav,
-.dbs_dialog.-brv > .-container > .-nav{
+.dbs_dialog.-tlv > .-container > .-content,
+.dbs_dialog.-trv > .-container > .-content,
+.dbs_dialog.-blv > .-container > .-content,
+.dbs_dialog.-brv > .-container > .-content{
 	height: 100%;
 	transition: width .2s;
 }
 
 /*HORIZONTAL */
-.dbs_dialog.-tlh > .-container > .-nav,
-.dbs_dialog.-trh > .-container > .-nav,
-.dbs_dialog.-blh > .-container > .-nav,
-.dbs_dialog.-brh > .-container > .-nav{
+.dbs_dialog.-tlh > .-container > .-content,
+.dbs_dialog.-trh > .-container > .-content,
+.dbs_dialog.-blh > .-container > .-content,
+.dbs_dialog.-brh > .-container > .-content{
 	width: 100%;
 	transition: height .2s;
 }
 
 /* TOP */
-.dbs_dialog.-tlh > .-container > .-nav,
-.dbs_dialog.-tlv > .-container > .-nav,
-.dbs_dialog.-trh > .-container > .-nav,
-.dbs_dialog.-trv > .-container > .-nav{
+.dbs_dialog.-tlh > .-container > .-content,
+.dbs_dialog.-tlv > .-container > .-content,
+.dbs_dialog.-trh > .-container > .-content,
+.dbs_dialog.-trv > .-container > .-content{
 	top: 0;
 }
 /* BOTTOM */
-.dbs_dialog.-blh > .-container > .-nav,
-.dbs_dialog.-blv > .-container > .-nav,
-.dbs_dialog.-brh > .-container > .-nav,
-.dbs_dialog.-brv > .-container > .-nav{
+.dbs_dialog.-blh > .-container > .-content,
+.dbs_dialog.-blv > .-container > .-content,
+.dbs_dialog.-brh > .-container > .-content,
+.dbs_dialog.-brv > .-container > .-content{
 	bottom: 0;
 }
 
 /* RIGHT */
-.dbs_dialog.-trh > .-container > .-nav,
-.dbs_dialog.-trv > .-container > .-nav,
-.dbs_dialog.-brh > .-container > .-nav,
-.dbs_dialog.-brv > .-container > .-nav{
+.dbs_dialog.-trh > .-container > .-content,
+.dbs_dialog.-trv > .-container > .-content,
+.dbs_dialog.-brh > .-container > .-content,
+.dbs_dialog.-brv > .-container > .-content{
 	right: 0;
     text-align: right;
 }
 /* LEFT */
-.dbs_dialog.-tlh > .-container > .-nav,
-.dbs_dialog.-tlv > .-container > .-nav,
-.dbs_dialog.-blh > .-container > .-nav,
-.dbs_dialog.-blv > .-container > .-nav{
+.dbs_dialog.-tlh > .-container > .-content,
+.dbs_dialog.-tlv > .-container > .-content,
+.dbs_dialog.-blh > .-container > .-content,
+.dbs_dialog.-blv > .-container > .-content{
 	left: 0;
 	text-align: left;
 }
 
-.dbs_dialog.-closed > .-container > .-nav{
+.dbs_dialog.-closed > .-container > .-content{
 	pointer-events: none;
 	box-shadow: none !important;
 }
-.dbs_dialog > .-container > .-nav.-closed *{
+.dbs_dialog > .-container > .-content.-closed *{
 	pointer-events: none;
 }
 
 /*VERTICAL */
-.dbs_dialog.-closed.-tlv > .-container > .-nav,
-.dbs_dialog.-closed.-trv > .-container > .-nav,
-.dbs_dialog.-closed.-blv > .-container > .-nav,
-.dbs_dialog.-closed.-brv > .-container > .-nav{
+.dbs_dialog.-closed.-tlv > .-container > .-content,
+.dbs_dialog.-closed.-trv > .-container > .-content,
+.dbs_dialog.-closed.-blv > .-container > .-content,
+.dbs_dialog.-closed.-brv > .-container > .-content{
 	width: 0;
 }
 
 /*HORIZONTAL */
-.dbs_dialog.-closed.-tlh > .-container > .-nav,
-.dbs_dialog.-closed.-trh > .-container > .-nav,
-.dbs_dialog.-closed.-blh > .-container > .-nav,
-.dbs_dialog.-closed.-brh > .-container > .-nav{
+.dbs_dialog.-closed.-tlh > .-container > .-content,
+.dbs_dialog.-closed.-trh > .-container > .-content,
+.dbs_dialog.-closed.-blh > .-container > .-content,
+.dbs_dialog.-closed.-brh > .-container > .-content{
 	height: 0;
 }
 
 /* CENTER */
-.dbs_dialog.-closed.-tlc > .-container > .-nav,
-.dbs_dialog.-closed.-trc > .-container > .-nav,
-.dbs_dialog.-closed.-blc > .-container > .-nav,
-.dbs_dialog.-closed.-brc > .-container > .-nav{
+.dbs_dialog.-closed.-tlc > .-container > .-content,
+.dbs_dialog.-closed.-trc > .-container > .-content,
+.dbs_dialog.-closed.-blc > .-container > .-content,
+.dbs_dialog.-closed.-brc > .-container > .-content{
 	width: 0;
 	height: 0;
 }
 
-.dbs_dialog > .-container > .-nav > .-container {
+.dbs_dialog > .-container > .-content > .-sub_container {
     height: 100%;
     width: 100%;
     position: relative;
@@ -161,7 +162,7 @@
 	
 }
 
-.dbs_dialog > .-container > .-nav > .-container > .-content{
+.dbs_dialog > .-container > .-content > .-sub_container > div{
     position: relative;
     display: inline-block;
 	width: 100%;
@@ -169,76 +170,83 @@
     overflow: scroll;
 }
 
-.dbs_dialog > .-container > .-nav > .-container > .-content > div{
-	display: table;
-	width: 100%;
-    height: 100%;
+.dbs_dialog > .-container > .-content > .-sub_container > div > div{
+/* 	display: table; */
+/* 	width: 100%; */
+/*     height: 100%; */
+	display: inline-block;
+	position: relative;
 }
-.dbs_dialog > .-container > .-nav > .-container > .-content > div > nav{
-    display: table-cell;
+.dbs_dialog > .-container > .-content > .-sub_container > div > div > .-sub_content{
+/*     display: table-cell; */
+	position: relative;
+	display: inline-block;
     vertical-align: bottom;
 }
 
+.dbs_dialog > .-container > .-content > .-sub_container > div > div > .-sub_content > *{
+    display: inline-block;
+}
+
 /* VERTICAL */
-.dbs_dialog.-tlv > .-container > .-nav > .-container > .-content > div > nav,
-.dbs_dialog.-trv > .-container > .-nav > .-container > .-content > div > nav,
-.dbs_dialog.-blv > .-container > .-nav > .-container > .-content > div > nav,
-.dbs_dialog.-brv > .-container > .-nav > .-container > .-content > div > nav{
+.dbs_dialog.-tlv > .-container > .-content > .-sub_container > div > div > .-sub_content,
+.dbs_dialog.-trv > .-container > .-content > .-sub_container > div > div > .-sub_content,
+.dbs_dialog.-blv > .-container > .-content > .-sub_container > div > div > .-sub_content,
+.dbs_dialog.-brv > .-container > .-content > .-sub_container > div > div > .-sub_content{
 /* 	width: 100%; */
 }
 
 
 /* HORIZONTAL */
-.dbs_dialog.-tlh > .-container > .-nav > .-container > .-content > div > nav,
-.dbs_dialog.-trh > .-container > .-nav > .-container > .-content > div > nav,
-.dbs_dialog.-blh > .-container > .-nav > .-container > .-content > div > nav,
-.dbs_dialog.-brh > .-container > .-nav > .-container > .-content > div > nav{
+.dbs_dialog.-tlh > .-container > .-content > .-sub_container > div > div > .-sub_content,
+.dbs_dialog.-trh > .-container > .-content > .-sub_container > div > div > .-sub_content,
+.dbs_dialog.-blh > .-container > .-content > .-sub_container > div > div > .-sub_content,
+.dbs_dialog.-brh > .-container > .-content > .-sub_container > div > div > .-sub_content{
 /* 	height: 100%; */
 }
 
 /* TOP*/
-.dbs_dialog.-tlh > .-container > .-nav > .-container > .-content > div > nav,
-.dbs_dialog.-tlv > .-container > .-nav > .-container > .-content > div > nav,
-.dbs_dialog.-trh > .-container > .-nav > .-container > .-content > div > nav,
-.dbs_dialog.-trv > .-container > .-nav > .-container > .-content > div > nav{
+.dbs_dialog.-tlh > .-container > .-content > .-sub_container > div > div > .-sub_content,
+.dbs_dialog.-tlv > .-container > .-content > .-sub_container > div > div > .-sub_content,
+.dbs_dialog.-trh > .-container > .-content > .-sub_container > div > div > .-sub_content,
+.dbs_dialog.-trv > .-container > .-content > .-sub_container > div > div > .-sub_content{
     top: 0;
     vertical-align: top;
 }
 
 /* BOTTOM*/
-.dbs_dialog.-blh > .-container > .-nav > .-container > .-content > div > nav,
-.dbs_dialog.-blv > .-container > .-nav > .-container > .-content > div > nav,
-.dbs_dialog.-brh > .-container > .-nav > .-container > .-content > div > nav,
-.dbs_dialog.-brv > .-container > .-nav > .-container > .-content > div > nav{
+.dbs_dialog.-blh > .-container > .-content > .-sub_container > div > div > .-sub_content,
+.dbs_dialog.-blv > .-container > .-content > .-sub_container > div > div > .-sub_content,
+.dbs_dialog.-brh > .-container > .-content > .-sub_container > div > div > .-sub_content,
+.dbs_dialog.-brv > .-container > .-content > .-sub_container > div > div > .-sub_content{
 /*     bottom: 0; */
     vertical-align: bottom;
 }
 
 /* LEFT */
-.dbs_dialog.-tlh > .-container > .-nav > .-container > .-content > div > nav,
-.dbs_dialog.-tlv > .-container > .-nav > .-container > .-content > div > nav,
-.dbs_dialog.-blh > .-container > .-nav > .-container > .-content > div > nav,
-.dbs_dialog.-blv > .-container > .-nav > .-container > .-content > div > nav{
+.dbs_dialog.-tlh > .-container > .-content > .-sub_container > div > div > .-sub_content,
+.dbs_dialog.-tlv > .-container > .-content > .-sub_container > div > div > .-sub_content,
+.dbs_dialog.-blh > .-container > .-content > .-sub_container > div > div > .-sub_content,
+.dbs_dialog.-blv > .-container > .-content > .-sub_container > div > div > .-sub_content{
     left: 0;
 	text-align: left;
 }
 /* RIGHT */
-.dbs_dialog.-trh > .-container > .-nav > .-container > .-content > div > nav,
-.dbs_dialog.-trv > .-container > .-nav > .-container > .-content > div > nav,
-.dbs_dialog.-brh > .-container > .-nav > .-container > .-content > div > nav,
-.dbs_dialog.-brv > .-container > .-nav > .-container > .-content > div > nav{
+.dbs_dialog.-trh > .-container > .-content > .-sub_container > div > div > .-sub_content,
+.dbs_dialog.-trv > .-container > .-content > .-sub_container > div > div > .-sub_content,
+.dbs_dialog.-brh > .-container > .-content > .-sub_container > div > div > .-sub_content,
+.dbs_dialog.-brv > .-container > .-content > .-sub_container > div > div > .-sub_content{
     right: 0;
 	text-align: right;
 }
 
 /* CENTER */
-.dbs_dialog.-tlc > .-container > .-nav > .-container > .-content > div > nav,
-.dbs_dialog.-trc > .-container > .-nav > .-container > .-content > div > nav,
-.dbs_dialog.-blc > .-container > .-nav > .-container > .-content > div > nav,
-.dbs_dialog.-brc > .-container > .-nav > .-container > .-content > div > nav{
+.dbs_dialog.-tlc > .-container > .-content > .-sub_container > div > div > .-sub_content,
+.dbs_dialog.-trc > .-container > .-content > .-sub_container > div > div > .-sub_content,
+.dbs_dialog.-blc > .-container > .-content > .-sub_container > div > div > .-sub_content,
+.dbs_dialog.-brc > .-container > .-content > .-sub_container > div > div > .-sub_content{
 	
 }
-
 
 .dbs_dialog > .-container > .-icon {
 	position: relative;
@@ -301,86 +309,86 @@
 .dbs_dialog.-brv > .-container > .-icon{
 }
 
-.dbs_dialog > .-container > .-nav > .-header {
+.dbs_dialog > .-container > .-content > .-header {
     position: absolute;
     display: block;
     height: 1.5em;
     overflow: hidden;
 }
 
-.dbs_dialog > .-container > .-nav > .-header > .-content {
+.dbs_dialog > .-container > .-content > .-header > .-content {
 	position: relative;
 	/* width: 100%; */
 }
-.dbs_dialog > .-container > .-nav > .-header > .-content > .-caption {
+.dbs_dialog > .-container > .-content > .-header > .-content > .-caption {
 	width: 100%;
     text-align: center;
     font-weight: bold;
     font-size: 1.2em;
 }
-.dbs_dialog > .-container > .-nav > .-header > .-content > .-iconcloseCentral {
+.dbs_dialog > .-container > .-content > .-header > .-content > .-iconcloseCentral {
 	position: absolute;
     top: 0;
     right: 0;
 }
 
 /* TOP     */
-.dbs_dialog.-tlh > .-container > .-nav > .-header,
-.dbs_dialog.-tlv > .-container > .-nav > .-header,
-.dbs_dialog.-trh > .-container > .-nav > .-header,
-.dbs_dialog.-trv > .-container > .-nav > .-header{
+.dbs_dialog.-tlh > .-container > .-content > .-header,
+.dbs_dialog.-tlv > .-container > .-content > .-header,
+.dbs_dialog.-trh > .-container > .-content > .-header,
+.dbs_dialog.-trv > .-container > .-content > .-header{
 	top: 0;
 }
 /* BOTTOM */
-.dbs_dialog.-blh > .-container > .-nav > .-header,
-.dbs_dialog.-blv > .-container > .-nav > .-header,
-.dbs_dialog.-brh > .-container > .-nav > .-header,
-.dbs_dialog.-brv > .-container > .-nav > .-header{
+.dbs_dialog.-blh > .-container > .-content > .-header,
+.dbs_dialog.-blv > .-container > .-content > .-header,
+.dbs_dialog.-brh > .-container > .-content > .-header,
+.dbs_dialog.-brv > .-container > .-content > .-header{
 	bottom: 0;
 }
 /* RIGHT */
-.dbs_dialog.-tlv > .-container > .-nav > .-header,
-.dbs_dialog.-blv > .-container > .-nav > .-header,
-.dbs_dialog.-trh > .-container > .-nav > .-header,
-.dbs_dialog.-brh > .-container > .-nav > .-header{
+.dbs_dialog.-tlv > .-container > .-content > .-header,
+.dbs_dialog.-blv > .-container > .-content > .-header,
+.dbs_dialog.-trh > .-container > .-content > .-header,
+.dbs_dialog.-brh > .-container > .-content > .-header{
 	right: 0;
     text-align: left;
 }
 /* LEFT*/
-.dbs_dialog.-tlh > .-container > .-nav > .-header,
-.dbs_dialog.-blh > .-container > .-nav > .-header,
-.dbs_dialog.-trv > .-container > .-nav > .-header,
-.dbs_dialog.-brv > .-container > .-nav > .-header{
+.dbs_dialog.-tlh > .-container > .-content > .-header,
+.dbs_dialog.-blh > .-container > .-content > .-header,
+.dbs_dialog.-trv > .-container > .-content > .-header,
+.dbs_dialog.-brv > .-container > .-content > .-header{
 	left: 0;
     text-align: right;
 }
 
 /* VERTICAL */
-.dbs_dialog.-tlv > .-container > .-nav > .-header,
-.dbs_dialog.-blv > .-container > .-nav > .-header,
-.dbs_dialog.-trv > .-container > .-nav > .-header,
-.dbs_dialog.-brv > .-container > .-nav > .-header{
+.dbs_dialog.-tlv > .-container > .-content > .-header,
+.dbs_dialog.-blv > .-container > .-content > .-header,
+.dbs_dialog.-trv > .-container > .-content > .-header,
+.dbs_dialog.-brv > .-container > .-content > .-header{
 	width: 100%;
 }
 /* HORIZONTAL */
-.dbs_dialog.-tlh > .-container > .-nav > .-header,
-.dbs_dialog.-blh > .-container > .-nav > .-header,
-.dbs_dialog.-trh > .-container > .-nav > .-header,
-.dbs_dialog.-brh > .-container > .-nav > .-header{
+.dbs_dialog.-tlh > .-container > .-content > .-header,
+.dbs_dialog.-blh > .-container > .-content > .-header,
+.dbs_dialog.-trh > .-container > .-content > .-header,
+.dbs_dialog.-brh > .-container > .-content > .-header{
 	height: 100%;
 }
 
 /* CENTER */
-.dbs_dialog.-tlc > .-container > .-nav > .-header,
-.dbs_dialog.-trc > .-container > .-nav > .-header,
-.dbs_dialog.-blc > .-container > .-nav > .-header,
-.dbs_dialog.-brc > .-container > .-nav > .-header{
+.dbs_dialog.-tlc > .-container > .-content > .-header,
+.dbs_dialog.-trc > .-container > .-content > .-header,
+.dbs_dialog.-blc > .-container > .-content > .-header,
+.dbs_dialog.-brc > .-container > .-content > .-header{
     width: 100%;
     z-index: 1;
 }
 
 /* ----------------------------------------------------- */
-.dbs_dialog > .-container > .-nav > .-iconclose{
+.dbs_dialog > .-container > .-content > .-iconclose{
     position: absolute;
     display: inline-block;
     /* font-size: .3em; */
@@ -390,50 +398,50 @@
     height: 0em;
 }
 /* VERTICAL */
-.dbs_dialog.-tlv > .-container > .-nav > .-iconclose,
-.dbs_dialog.-blv > .-container > .-nav > .-iconclose,
-.dbs_dialog.-trv > .-container > .-nav > .-iconclose,
-.dbs_dialog.-brv > .-container > .-nav > .-iconclose{
+.dbs_dialog.-tlv > .-container > .-content > .-iconclose,
+.dbs_dialog.-blv > .-container > .-content > .-iconclose,
+.dbs_dialog.-trv > .-container > .-content > .-iconclose,
+.dbs_dialog.-brv > .-container > .-content > .-iconclose{
     top: 50%;
 }
 /* HORIZONTAL */
-.dbs_dialog.-tlh > .-container > .-nav > .-iconclose,
-.dbs_dialog.-blh > .-container > .-nav > .-iconclose,
-.dbs_dialog.-trh > .-container > .-nav > .-iconclose,
-.dbs_dialog.-brh > .-container > .-nav > .-iconclose{
+.dbs_dialog.-tlh > .-container > .-content > .-iconclose,
+.dbs_dialog.-blh > .-container > .-content > .-iconclose,
+.dbs_dialog.-trh > .-container > .-content > .-iconclose,
+.dbs_dialog.-brh > .-container > .-content > .-iconclose{
     left: 50%;
 }
 
 /* LEFT VERTICAL */
-.dbs_dialog.-tlv > .-container > .-nav > .-iconclose,
-.dbs_dialog.-blv > .-container > .-nav > .-iconclose{
+.dbs_dialog.-tlv > .-container > .-content > .-iconclose,
+.dbs_dialog.-blv > .-container > .-content > .-iconclose{
     right: 0;
 }
 /* RIGHT VERTICAL */
-.dbs_dialog.-trv > .-container > .-nav > .-iconclose,
-.dbs_dialog.-brv > .-container > .-nav > .-iconclose{
+.dbs_dialog.-trv > .-container > .-content > .-iconclose,
+.dbs_dialog.-brv > .-container > .-content > .-iconclose{
     left: 0;
 }
 
 /* TOP HORIZONTAL */
-.dbs_dialog.-tlh > .-container > .-nav > .-iconclose,
-.dbs_dialog.-trh > .-container > .-nav > .-iconclose{
+.dbs_dialog.-tlh > .-container > .-content > .-iconclose,
+.dbs_dialog.-trh > .-container > .-content > .-iconclose{
     bottom: 0;
 }
 /* BOTTOM HORIZONTAL */
-.dbs_dialog.-blh > .-container > .-nav > .-iconclose,
-.dbs_dialog.-brh > .-container > .-nav > .-iconclose{
+.dbs_dialog.-blh > .-container > .-content > .-iconclose,
+.dbs_dialog.-brh > .-container > .-content > .-iconclose{
     top: 0;
 }
 /* CENTER */
-.dbs_dialog.-tlc > .-container > .-nav > .-iconclose,
-.dbs_dialog.-trc > .-container > .-nav > .-iconclose,
-.dbs_dialog.-blc > .-container > .-nav > .-iconclose,
-.dbs_dialog.-brc > .-container > .-nav > .-iconclose{
+.dbs_dialog.-tlc > .-container > .-content > .-iconclose,
+.dbs_dialog.-trc > .-container > .-content > .-iconclose,
+.dbs_dialog.-blc > .-container > .-content > .-iconclose,
+.dbs_dialog.-brc > .-container > .-content > .-iconclose{
 	display: none;
 }
 /* -------------- */
-.dbs_dialog > .-container > .-nav > .-iconclose > div{
+.dbs_dialog > .-container > .-content > .-iconclose > div{
 	position: fixed;
 	overflow: hidden;
 	background-color: inherit;
@@ -442,223 +450,223 @@
 }
 
 /* VERTICAL */
-.dbs_dialog.-trv > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-brv > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-tlv > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-blv > .-container > .-nav > .-iconclose > div{
+.dbs_dialog.-trv > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-brv > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-tlv > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-blv > .-container > .-content > .-iconclose > div{
     width: 1em;
     height: 30%;
     min-height: 5em;
 }
 
-.dbs_dialog.-trv.-closed > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-brv.-closed > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-tlv.-closed > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-blv.-closed > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-c.-closed > .-container > .-nav > .-iconclose > div{
+.dbs_dialog.-trv.-closed > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-brv.-closed > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-tlv.-closed > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-blv.-closed > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-c.-closed > .-container > .-content > .-iconclose > div{
     width: 0em;
     min-width: 0;
 }
 /* HORIZONTAL */
-.dbs_dialog.-trh > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-brh > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-tlh > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-blh > .-container > .-nav > .-iconclose > div{
+.dbs_dialog.-trh > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-brh > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-tlh > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-blh > .-container > .-content > .-iconclose > div{
 	height: 1em;
     width: 30%;
     min-width: 5em;
 }
 
 /* CENTER */
-.dbs_dialog.-tlc > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-trc > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-blc > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-brc > .-container > .-nav > .-iconclose > div{
+.dbs_dialog.-tlc > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-trc > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-blc > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-brc > .-container > .-content > .-iconclose > div{
 	height: 1em;
     width: 30%;
     min-width: 5em;
 }
 
-.dbs_dialog.-trh.-closed > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-brh.-closed > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-tlh.-closed > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-blh.-closed > .-container > .-nav > .-iconclose > div{
+.dbs_dialog.-trh.-closed > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-brh.-closed > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-tlh.-closed > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-blh.-closed > .-container > .-content > .-iconclose > div{
     height: 0em;
     min-height: 0;
 }
 
 /* CENTER */
-.dbs_dialog.-tlc.-closed > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-trc.-closed > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-blc.-closed > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-brc.-closed > .-container > .-nav > .-iconclose > div{
+.dbs_dialog.-tlc.-closed > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-trc.-closed > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-blc.-closed > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-brc.-closed > .-container > .-content > .-iconclose > div{
     height: 0em;
     min-height: 0;
 }
 
 /* VERTICAL RIGHT */
-.dbs_dialog.-trv > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-brv > .-container > .-nav > .-iconclose > div{
+.dbs_dialog.-trv > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-brv > .-container > .-content > .-iconclose > div{
     border-radius: 1em 0 0 1em;
     transform: translate(-.95em, -50%);
 }
 /* VERTICAL LEFT */
-.dbs_dialog.-tlv > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-blv > .-container > .-nav > .-iconclose > div{
+.dbs_dialog.-tlv > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-blv > .-container > .-content > .-iconclose > div{
     border-radius: 0 1em 1em 0;
     transform: translate(0em, -50%);
 }
 /* HORIZONTAL TOP */
-.dbs_dialog.-trh > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-tlh > .-container > .-nav > .-iconclose > div{
+.dbs_dialog.-trh > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-tlh > .-container > .-content > .-iconclose > div{
     border-radius: 0 0 1em 1em;
     transform: translate(-50%, 0em);    
 }
 /* HORIZONTAL BOTTOM */
-.dbs_dialog.-brh > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-blh > .-container > .-nav > .-iconclose > div{
+.dbs_dialog.-brh > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-blh > .-container > .-content > .-iconclose > div{
     border-radius: 1em 1em 0 0;
     transform: translate(-50%, -.95em);
 }
 
 /* CENTER */
-.dbs_dialog.-tlc > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-trc > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-blc > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-brc > .-container > .-nav > .-iconclose > div{
+.dbs_dialog.-tlc > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-trc > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-blc > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-brc > .-container > .-content > .-iconclose > div{
     width: 1em;
     height: 30%;
     min-height: 5em;
 }
-.dbs_dialog.-tlc.-closed > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-trc.-closed > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-blc.-closed > .-container > .-nav > .-iconclose > div,
-.dbs_dialog.-brc.-closed > .-container > .-nav > .-iconclose > div{
+.dbs_dialog.-tlc.-closed > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-trc.-closed > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-blc.-closed > .-container > .-content > .-iconclose > div,
+.dbs_dialog.-brc.-closed > .-container > .-content > .-iconclose > div{
     width: 0em;
     min-width: 0;
 }
 
 /* -------------- */
-.dbs_dialog > .-container > .-nav > .-iconclose > div:before{
+.dbs_dialog > .-container > .-content > .-iconclose > div:before{
 /*     position: fixed; */
 	position: absolute;
     font-size: 1.3em;
 }
 /* VERTICAL */
-.dbs_dialog.-trv > .-container > .-nav > .-iconclose > div:before,
-.dbs_dialog.-brv > .-container > .-nav > .-iconclose > div:before,
-.dbs_dialog.-tlv > .-container > .-nav > .-iconclose > div:before,
-.dbs_dialog.-blv > .-container > .-nav > .-iconclose > div:before{
+.dbs_dialog.-trv > .-container > .-content > .-iconclose > div:before,
+.dbs_dialog.-brv > .-container > .-content > .-iconclose > div:before,
+.dbs_dialog.-tlv > .-container > .-content > .-iconclose > div:before,
+.dbs_dialog.-blv > .-container > .-content > .-iconclose > div:before{
 	top: 50%;
 }
 /* HORIZONTALL */
-.dbs_dialog.-trh > .-container > .-nav > .-iconclose > div:before,
-.dbs_dialog.-brh > .-container > .-nav > .-iconclose > div:before,
-.dbs_dialog.-tlh > .-container > .-nav > .-iconclose > div:before,
-.dbs_dialog.-blh > .-container > .-nav > .-iconclose > div:before{
+.dbs_dialog.-trh > .-container > .-content > .-iconclose > div:before,
+.dbs_dialog.-brh > .-container > .-content > .-iconclose > div:before,
+.dbs_dialog.-tlh > .-container > .-content > .-iconclose > div:before,
+.dbs_dialog.-blh > .-container > .-content > .-iconclose > div:before{
 	left: 50%;
 }
 /* VERTICAL RIGHT */
-.dbs_dialog.-trv > .-container > .-nav > .-iconclose > div:before,
-.dbs_dialog.-brv > .-container > .-nav > .-iconclose > div:before{
+.dbs_dialog.-trv > .-container > .-content > .-iconclose > div:before,
+.dbs_dialog.-brv > .-container > .-content > .-iconclose > div:before{
     transform: translate(-.8em,-50%);
 }
 /* VERTICAL LEFT */
-.dbs_dialog.-tlv > .-container > .-nav > .-iconclose > div:before,
-.dbs_dialog.-blv > .-container > .-nav > .-iconclose > div:before{
+.dbs_dialog.-tlv > .-container > .-content > .-iconclose > div:before,
+.dbs_dialog.-blv > .-container > .-content > .-iconclose > div:before{
 	transform: translate(-.2em,-50%);
 }
 /* HORIZONTAL TOP */
-.dbs_dialog.-trh > .-container > .-nav > .-iconclose > div:before,
-.dbs_dialog.-tlh > .-container > .-nav > .-iconclose > div:before{
+.dbs_dialog.-trh > .-container > .-content > .-iconclose > div:before,
+.dbs_dialog.-tlh > .-container > .-content > .-iconclose > div:before{
 	transform: translate(-50%, -.1em);
 }
 /* HORIZONTAL BOTTOM */
-.dbs_dialog.-brh > .-container > .-nav > .-iconclose > div:before,
-.dbs_dialog.-blh > .-container > .-nav > .-iconclose > div:before{
+.dbs_dialog.-brh > .-container > .-content > .-iconclose > div:before,
+.dbs_dialog.-blh > .-container > .-content > .-iconclose > div:before{
 	transform: translate(-50%, 0em);
 }
 
-.dbs_dialog > .-container > .-nav > .-footer {
+.dbs_dialog > .-container > .-content > .-footer {
 	position: absolute;
     display: inline-block;
     overflow: hidden;
 }
 
-.dbs_dialog > .-container > .-nav > .-footer > .-content {
+.dbs_dialog > .-container > .-content > .-footer > .-content {
 	position: relative;
 }
 
 /* TOP     */
-.dbs_dialog.-tlh > .-container > .-nav > .-footer,
-.dbs_dialog.-tlv > .-container > .-nav > .-footer,
-.dbs_dialog.-trh > .-container > .-nav > .-footer,
-.dbs_dialog.-trv > .-container > .-nav > .-footer{
+.dbs_dialog.-tlh > .-container > .-content > .-footer,
+.dbs_dialog.-tlv > .-container > .-content > .-footer,
+.dbs_dialog.-trh > .-container > .-content > .-footer,
+.dbs_dialog.-trv > .-container > .-content > .-footer{
 	bottom: 0;
 }
 /* BOTTOM */
-.dbs_dialog.-blh > .-container > .-nav > .-footer,
-.dbs_dialog.-blv > .-container > .-nav > .-footer,
-.dbs_dialog.-brh > .-container > .-nav > .-footer,
-.dbs_dialog.-brv > .-container > .-nav > .-footer{
+.dbs_dialog.-blh > .-container > .-content > .-footer,
+.dbs_dialog.-blv > .-container > .-content > .-footer,
+.dbs_dialog.-brh > .-container > .-content > .-footer,
+.dbs_dialog.-brv > .-container > .-content > .-footer{
 	top: 0;
 }
 
 /* HORIZONTAL */
-.dbs_dialog.-tlh > .-container > .-nav > .-footer,
-.dbs_dialog.-trh > .-container > .-nav > .-footer,
-.dbs_dialog.-blh > .-container > .-nav > .-footer,
-.dbs_dialog.-brh > .-container > .-nav > .-footer{
+.dbs_dialog.-tlh > .-container > .-content > .-footer,
+.dbs_dialog.-trh > .-container > .-content > .-footer,
+.dbs_dialog.-blh > .-container > .-content > .-footer,
+.dbs_dialog.-brh > .-container > .-content > .-footer{
 	height: 100%;
 }
 /* VERTICAL */
-.dbs_dialog.-tlv > .-container > .-nav > .-footer,
-.dbs_dialog.-trv > .-container > .-nav > .-footer,
-.dbs_dialog.-blv > .-container > .-nav > .-footer,
-.dbs_dialog.-brv > .-container > .-nav > .-footer{
+.dbs_dialog.-tlv > .-container > .-content > .-footer,
+.dbs_dialog.-trv > .-container > .-content > .-footer,
+.dbs_dialog.-blv > .-container > .-content > .-footer,
+.dbs_dialog.-brv > .-container > .-content > .-footer{
 	width: 100%;
 }
 
 /* LEFT VERTICAL / RIGHT HORIZONTAL */
-.dbs_dialog.-tlv > .-container > .-nav > .-footer,
-.dbs_dialog.-blv > .-container > .-nav > .-footer,
-.dbs_dialog.-trh > .-container > .-nav > .-footer,
-.dbs_dialog.-brh > .-container > .-nav > .-footer{
+.dbs_dialog.-tlv > .-container > .-content > .-footer,
+.dbs_dialog.-blv > .-container > .-content > .-footer,
+.dbs_dialog.-trh > .-container > .-content > .-footer,
+.dbs_dialog.-brh > .-container > .-content > .-footer{
 	left: 0;
     text-align: left;
 }
 /* LEFT HORIZONTAL / RIGHT VERTICAL */
-.dbs_dialog.-tlh > .-container > .-nav > .-footer,
-.dbs_dialog.-blh > .-container > .-nav > .-footer,
-.dbs_dialog.-trv > .-container > .-nav > .-footer,
-.dbs_dialog.-brv > .-container > .-nav > .-footer{
+.dbs_dialog.-tlh > .-container > .-content > .-footer,
+.dbs_dialog.-blh > .-container > .-content > .-footer,
+.dbs_dialog.-trv > .-container > .-content > .-footer,
+.dbs_dialog.-brv > .-container > .-content > .-footer{
 	right: 0;
     text-align: right;
 }
 
 /* CENTER */
-.dbs_dialog.-tlc > .-container > .-nav > .-footer{
+.dbs_dialog.-tlc > .-container > .-content > .-footer{
 	width: 100%;
     z-index: 1;	
     bottom: 0;
 	left: 0;
 	text-align: left;
 }
-.dbs_dialog.-trc > .-container > .-nav > .-footer{
+.dbs_dialog.-trc > .-container > .-content > .-footer{
 	width: 100%;
     z-index: 1;	
     bottom: 0;
 	left: 0;
 	text-align: right;
 }
-.dbs_dialog.-blc > .-container > .-nav > .-footer{
+.dbs_dialog.-blc > .-container > .-content > .-footer{
 	width: 100%;
     z-index: 1;
     top: 0;
     left: 0;
     text-align: left;
 }
-.dbs_dialog.-brc > .-container > .-nav > .-footer{
+.dbs_dialog.-brc > .-container > .-content > .-footer{
 	width: 100%;
     z-index: 1;
     top: 0;
@@ -668,10 +676,10 @@
 
 /* CENTER MOBILE */
 @media screen and (max-width: 767px) {
-	.dbs_dialog.-tlc > .-container > .-nav,
-	.dbs_dialog.-trc > .-container > .-nav,
-	.dbs_dialog.-blc > .-container > .-nav,
-	.dbs_dialog.-brc > .-container > .-nav{
+	.dbs_dialog.-tlc > .-container > .-content,
+	.dbs_dialog.-trc > .-container > .-content,
+	.dbs_dialog.-blc > .-container > .-content,
+	.dbs_dialog.-brc > .-container > .-content{
 		width: 100% !important;
 	    height: 100% !important;
 	}

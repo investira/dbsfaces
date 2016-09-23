@@ -233,6 +233,8 @@ public class  DBSFaces {
 			public static final String CLOSABLE = " -closable ";
 			public static final String CONTAINER = " -container ";
 			public static final String CONTENT = " -content ";
+			public static final String SUB_CONTAINER = " -sub_container ";
+			public static final String SUB_CONTENT = " -sub_content ";
 			public static final String COVER = " -cover ";
 			public static final String DATA = " -data ";
 			public static final String DISABLED = " -disabled ";
