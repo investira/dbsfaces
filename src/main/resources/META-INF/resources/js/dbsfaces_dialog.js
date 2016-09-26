@@ -9,8 +9,12 @@ dbs_dialog = function(pId) {
 	});
 
 	dbsfaces.dialog.initialize(xDialog);
+
 	$(pId).on("close", function(){
 		dbsfaces.dialog.pvClose(xDialog);
+	});
+	$(pId).on("open", function(){
+		dbsfaces.dialog.pvOpen(xDialog);
 	});
 	
 	$(pId + ":not([disabled]) > .-container > .-icon").on("click mousedown touchstart", function(e){
@@ -183,13 +187,13 @@ dbsfaces.dialog = {
 		//Está fechado e vai abrir
 		if (pDialog.hasClass("-closed")){
 			dbsfaces.dialog.pvOpen(pDialog);
-			dbsfaces.dialog.pvAutoCloseTimeout(pDialog);
 		}else{
 			dbsfaces.dialog.pvClose(pDialog);
 		}
 	},
 
 	pvOpen: function(pDialog){
+		dbsfaces.dialog.pvAutoCloseTimeout(pDialog);
 		dbsfaces.dialog.pvAjustLayout(pDialog);
 		dbsfaces.ui.disableBackgroundInputs(pDialog);
 		dbsfaces.dialog.pvFreeze(pDialog, true);
@@ -197,7 +201,6 @@ dbsfaces.dialog = {
 		pDialog.removeClass("-closed");
 		//Coloca o foco no primeiro campo de input dentro do nav
 		dbsfaces.ui.focusOnFirstInput(pDialog);
-//		pDialog.data("header").css("display", "block");
 	},
 	
 	pvClose: function(pDialog){
@@ -218,48 +221,18 @@ dbsfaces.dialog = {
 	},
 	
 	pvFreeze: function(pDialog, pOn){
-//		var xScrollTop = $("form").scrollTop();
-//		console.log("xxxScrollTop\t" + xScrollTop);
 		if (pOn){
 			$("html").addClass("dbs_dialog-freeze");
 		}else{
 			$("html").removeClass("dbs_dialog-freeze");
 		}
-//		setTimeout(function(){
-//			console.log("xxxScrollTop2\t" + xScrollTop);
-//			$("form").scrollTop(xScrollTop);
-//			console.log("xxxScrollTop3\t" + $("form").scrollTop());
-//		},5000);
-//		var xElements = $(".dbs_dialog-freeze *");
-//		xElements.css("overflow","hidden");
-//		var xEvents;
-//		var xId = pDialog[0].id;
-//		var xElements = $(".dbs_dialog-freeze *");
-//		xId = xId.replace(/:|#/gi,"-");
-//		xEvents = pDialog[0].id + ".touchstart ";
-//		xEvents += pDialog[0].id + ".touchmove ";
-//		xEvents = "touchstart touchmove";
-//		xElements.off(xEvents);
-//		if (pOn){
-//			xElements.on(xEvents, function(e){
-//				console.log("frr\t" + e.originalEvent.targetTouches.length);
-////				console.log("frr\t" + $(e.originalEvent.srcElement).attr("class"));
-//				if (pDialog.data("sub_content").has(e.originalEvent.srcElement).length){
-//					return true;
-//		    	}else{
-//		    		return false;
-//		    	}
-////
-////				return false;
-//			});
-//		}
 	},
 	
-	pvForceClose: function(pDialog){
-		dbsfaces.dialog.pvClose(pDialog);
-		pDialog.removeClass("-opened");
-		pDialog.addClass("-closed");
-	},
+//	pvForceClose: function(pDialog){
+//		dbsfaces.dialog.pvClose(pDialog);
+//		pDialog.removeClass("-opened");
+//		pDialog.addClass("-closed");
+//	},
 	
 	pvAjustLayout: function(pDialog){
 		var xLimit = 95;
@@ -351,10 +324,6 @@ dbsfaces.dialog = {
 				}
 			}
 		}
-//		setTimeout(function(){
-//			pDialog.data("content").removeClass("-removeTransition");
-//		},30000);
-//		},1);
 	},
 
 	pvAutoCloseTimeout: function(pDialog){
@@ -363,7 +332,8 @@ dbsfaces.dialog = {
 			pDialog.data("progressTimeout").css("animation-name", "progress_timeout_animation");
 			pDialog.data("progressTimeout").css("animation-duration", xTimeout+"s");
 			setTimeout(function () {
-				dbsfaces.dialog.pvForceClose(pDialog);
+//				dbsfaces.dialog.pvForceClose(pDialog);
+				dbsfaces.dialog.pvClose(pDialog);
 			}, (xTimeout*1000));
 		}
 	}
