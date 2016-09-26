@@ -84,7 +84,7 @@ public class DBSMenuitemRenderer extends DBSRenderer {
 				xClass += CSS.MODIFIER.DISABLED;
 			}
 		}
-		if (xMenuitem.getOpened()){
+		if (xMenuitem.getOpen()){
 			xClass += CSS.MODIFIER.OPENED;
 		}
 		

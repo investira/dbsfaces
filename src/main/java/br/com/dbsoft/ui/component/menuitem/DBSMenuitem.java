@@ -16,7 +16,7 @@ public class DBSMenuitem extends DBSUICommand implements NamingContainer {
 		label,
 		iconClass,
 		execute,
-		opened,
+		open,
 		readOnly;
 		
 		String toString;
@@ -80,13 +80,13 @@ public class DBSMenuitem extends DBSUICommand implements NamingContainer {
 		return (String) getStateHelper().eval(PropertyKeys.execute, null);
 	}
 
-	public void setOpened(Boolean pOpened) {
-		getStateHelper().put(PropertyKeys.opened, pOpened);
-		handleAttribute("opened", pOpened);
+	public void setOpen(Boolean pOpen) {
+		getStateHelper().put(PropertyKeys.open, pOpen);
+		handleAttribute("open", pOpen);
 	}
 	
-	public Boolean getOpened() {
-		return (Boolean) getStateHelper().eval(PropertyKeys.opened, false);
+	public Boolean getOpen() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.open, false);
 	}	
 	
 
