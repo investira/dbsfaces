@@ -55,7 +55,7 @@ public class DBSMenuitemRenderer extends DBSRenderer {
 		String xClientId = xMenuitem.getClientId(pContext);
 		Boolean xIsSubmenu = true;
 		String xOnClick;
-		String xExecute;
+		String xExecute = null;
 		String xClass = CSS.MENUITEM.MAIN + CSS.NOT_SELECTABLE;
 
 		//Verifica se é um submenu filho de um outro submenu ou filho do menu principal
@@ -63,11 +63,13 @@ public class DBSMenuitemRenderer extends DBSRenderer {
 		xIsSubmenu = (xParent.getAttributes().get("class") != DBSMenu.class);
 		
 		//Execute--------
-		if (xMenuitem.getExecute() == null){
-			xExecute = getFormId(pContext, pComponent); 
-		}else{
-			xExecute = xMenuitem.getExecute();
-		}		
+		if (xMenuitem.getActionExpression() != null){
+			if (xMenuitem.getExecute() == null){
+				xExecute = getFormId(pContext, pComponent); 
+			}else{
+				xExecute = xMenuitem.getExecute();
+			}		
+		}
 		
 		xOnClick = DBSFaces.getSubmitString(xMenuitem, DBSFaces.HTML.EVENTS.ONCLICK, xExecute, xMenuitem.getUpdate());
 
