@@ -1,8 +1,10 @@
-.dbs_dialog-freeze{
+.dbs_dialog-freeze {
 /* 	width: 100%; */
 /* 	height: 100%; */
 /* 	position: fixed; */
-	overflow: hidden;
+	overflow: hidden !important;
+	-webkit-overflow-scrolling: auto !important;
+/* 	pointer-events: none; */
 }
 
 .dbs_dialog {
@@ -31,6 +33,8 @@
 
 .dbs_dialog.-closed > .-container > .-mask{
 	opacity: 0;
+	width: 0;
+	height: 0;
 	pointer-events: none;
 }
 

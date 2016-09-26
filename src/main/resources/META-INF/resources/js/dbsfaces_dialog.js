@@ -10,6 +10,7 @@ dbs_dialog = function(pId) {
 
 	dbsfaces.dialog.initialize(xDialog);
 
+	
 	$(pId + ":not([disabled]) > .-container > .-icon").on("click mousedown touchstart", function(e){
 //		console.log("icon mousedown touchstart");
 		dbsfaces.dialog.show(xDialog);
@@ -22,34 +23,14 @@ dbs_dialog = function(pId) {
 		return false;
 	});
 	
-	$(pId + " > .-container > .-mask").on("mousewheel touchmove", function(e){
-//		console.log("mask mousewheel touchmove");
-		e.stopImmediatePropagation();
-		return false;
-	});
-
-	$(pId + "[disabled] > .-container > .-content").on("mousewheel touchmove", function(e){
-		return false;
-	});
-
-	$(pId + ":not([disabled]) > .-container > .-content").on("mousewheel touchmove", function(e){
-//		console.log("content mousewheel touchmove \t" + $(e.originalEvent.srcElement).attr("class"));
-		//Se não parte do conteúdo
-		if (xDialog.data("sub_content").has(e.originalEvent.srcElement).length){
-			return true;
-    	}else{
-    		return false;
-    	}
-//    	e.stopPropagation();
-		e.stopImmediatePropagation();
-	});
-
 	if (!xDialog.data("c")) {
 		$(pId + ":not([disabled]) > .-container > .-content").touchwipe({
 		     wipeLeft: function() {return dbsfaces.dialog.whipe(xDialog, "l");},
 		     wipeRight: function() {return dbsfaces.dialog.whipe(xDialog, "r");},
 		     wipeUp: function() {return dbsfaces.dialog.whipe(xDialog, "u");},
 		     wipeDown: function() {return dbsfaces.dialog.whipe(xDialog, "d");},
+		     onStart: function() {dbsfaces.dialog.scrollStart(xDialog);},
+		     onMove: function(dx, dy) {dbsfaces.dialog.scroll(xDialog, dx, dy);},
 		     min_move_x: 50,
 		     min_move_y: 50,
 		     preventDefaultEvents: true
@@ -82,16 +63,30 @@ dbs_dialog = function(pId) {
 		return false;
 	});
 	
-	var xOpened = xDialog.attr('opened');
-	if (xOpened == "true") {
+	var xOpen = xDialog.attr('open');
+	if (xOpen == "true") {
 		dbsfaces.dialog.show(xDialog);
 		return false;
 	}
 };
 
 dbsfaces.dialog = {
+	scroll: function(pDialog, pDx, pDy){
+		var xDiv = pDialog.data("divscroll");
+		xDiv.scrollLeft(xDiv.data("scrollx") + pDx);
+		xDiv.scrollTop(xDiv.data("scrolly") + pDy);
+//		console.log("atc\t" + pDx + "\t" + pDy + "\t" + xDiv.scrollTop() + "\t" + xDiv.data("scroll"));
+	},
+	
+	//Salva posição atual do scroll
+	scrollStart: function(pDialog){
+		var xDiv = pDialog.data("divscroll");
+//		console.log("start atc\t" + xDiv.scrollTop());
+		xDiv.data("scrollx", xDiv.scrollLeft());
+		xDiv.data("scrolly", xDiv.scrollTop());
+	},
+
 	whipe: function(pDialog, pDirection){
-//		alert(pDirection + "\t" + pDialog.data("v") + "\t" + pDialog.data("l"));
 		if ((pDirection=="l"
 		  && pDialog.data("l")
 		  && pDialog.data("v"))
@@ -108,6 +103,7 @@ dbsfaces.dialog = {
 		  && !pDialog.data("t")
 	      && !pDialog.data("v"))){
 			dbsfaces.dialog.show(pDialog);
+			return true;
 		} else {
 			//TODO FAZER O SCROLL
 //			alert(pDirection + "\t" + pDialog.data("v") + "\t" + pDialog.data("l"));
@@ -149,7 +145,8 @@ dbsfaces.dialog = {
 		pDialog.data("icon", pDialog.data("container").children(".-icon"));
 		pDialog.data("mask", pDialog.data("container").children(".-mask"));
 		pDialog.data("sub_container", pDialog.data("content").children(".-sub_container"));
-		pDialog.data("sub_content", pDialog.data("sub_container").find("> div > div > .-sub_content"));
+		pDialog.data("divscroll", pDialog.data("sub_container").children("div"));
+		pDialog.data("sub_content", pDialog.data("divscroll").find("> div > .-sub_content"));
 		pDialog.data("header", pDialog.data("content").children(".-header"));
 		pDialog.data("footer", pDialog.data("content").children(".-footer"));
 		pDialog.data("iconclose", pDialog.data("content").children(".-iconclose"));
@@ -196,7 +193,7 @@ dbsfaces.dialog = {
 	pvOpen: function(pDialog){
 		dbsfaces.dialog.pvAjustLayout(pDialog);
 		dbsfaces.ui.disableBackgroundInputs(pDialog);
-		$("html").addClass("dbs_dialog-freeze");
+		dbsfaces.dialog.pvFreeze(pDialog, true);
 		//Coloca o foco no primeiro campo de input dentro do nav
 		dbsfaces.ui.focusOnFirstInput(pDialog);
 //		pDialog.data("header").css("display", "block");
@@ -212,9 +209,47 @@ dbsfaces.dialog = {
 		pDialog.data("progressTimeout").css("animation-name", "none");
 		
 		dbsfaces.ui.enableForegroundInputs($("body"));
-		$("html").removeClass("dbs_dialog-freeze");
 		//Retira foco do componente que possuir foco
 		$(":focus").blur();
+		dbsfaces.dialog.pvFreeze(pDialog, false);
+	},
+	
+	pvFreeze: function(pDialog, pOn){
+//		var xScrollTop = $("form").scrollTop();
+//		console.log("xxxScrollTop\t" + xScrollTop);
+		if (pOn){
+			$("html").addClass("dbs_dialog-freeze");
+		}else{
+			$("html").removeClass("dbs_dialog-freeze");
+		}
+//		setTimeout(function(){
+//			console.log("xxxScrollTop2\t" + xScrollTop);
+//			$("form").scrollTop(xScrollTop);
+//			console.log("xxxScrollTop3\t" + $("form").scrollTop());
+//		},5000);
+//		var xElements = $(".dbs_dialog-freeze *");
+//		xElements.css("overflow","hidden");
+//		var xEvents;
+//		var xId = pDialog[0].id;
+//		var xElements = $(".dbs_dialog-freeze *");
+//		xId = xId.replace(/:|#/gi,"-");
+//		xEvents = pDialog[0].id + ".touchstart ";
+//		xEvents += pDialog[0].id + ".touchmove ";
+//		xEvents = "touchstart touchmove";
+//		xElements.off(xEvents);
+//		if (pOn){
+//			xElements.on(xEvents, function(e){
+//				console.log("frr\t" + e.originalEvent.targetTouches.length);
+////				console.log("frr\t" + $(e.originalEvent.srcElement).attr("class"));
+//				if (pDialog.data("sub_content").has(e.originalEvent.srcElement).length){
+//					return true;
+//		    	}else{
+//		    		return false;
+//		    	}
+////
+////				return false;
+//			});
+//		}
 	},
 	
 	pvForceClose: function(pDialog){
@@ -226,12 +261,13 @@ dbsfaces.dialog = {
 	pvAjustLayout: function(pDialog){
 		var xLimit = 95;
 		var xPadding = 0;
-		var xMask = pDialog.data("mask");
 		var xHeader = pDialog.data("header");
 		var xFooter = pDialog.data("footer");
 		var xSubContainer = pDialog.data("sub_container");
-		var xMaskWidth = xMask[0].getBoundingClientRect().width * (xLimit / 100);
-		var xMaskHeight = xMask[0].getBoundingClientRect().height * (xLimit / 100);
+		
+		var xMaxWidth = window.innerWidth * (xLimit / 100);
+		var xMaxHeight = window.innerHeight * (xLimit / 100);
+
 		var xHeaderWidth = pDialog.data("iconclose")[0].getBoundingClientRect().width;
 		var xHeaderHeight = pDialog.data("iconclose")[0].getBoundingClientRect().height;
 		var xFooterWidth = null;
@@ -260,7 +296,7 @@ dbsfaces.dialog = {
 				xWidth = xHeaderWidth;
 			}
 			//Força largura máxima em 95% caso largura seja superior a largura da tela
-			if (xWidth > xMaskWidth){
+			if (xWidth > xMaxWidth){
 				xWidth = xLimit + "%";
 			}
 			//Limita largura do conteúdo do nav
@@ -290,7 +326,7 @@ dbsfaces.dialog = {
 			if (pDialog.data("header").size() > 0) {
 				xHeight = xHeight + pDialog.data("header")[0].getBoundingClientRect().height;
 			}
-			if (xHeight > xMaskHeight){
+			if (xHeight > xMaxHeight){
 				xHeight = xLimit + "%";
 			}
 			//Limita altura do conteúdo do nav

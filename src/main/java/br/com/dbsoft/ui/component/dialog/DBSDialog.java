@@ -30,7 +30,7 @@ public class DBSDialog extends DBSUIComponentBase implements NamingContainer{
 		contentStyleClass,
 		contentVerticalAlign,
 		contentHorizontalAlign,
-		opened;
+		open;
 
 		String toString;
 
@@ -185,13 +185,13 @@ public class DBSDialog extends DBSUIComponentBase implements NamingContainer{
 		handleAttribute("iconClass", pIconClass);
 	}
 	
-	public Boolean getOpened() {
-		return (Boolean) getStateHelper().eval(PropertyKeys.opened, false);
+	public Boolean getOpen() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.open, false);
 	}
 	
-	public void setOpened(Boolean pOpened) {
-		getStateHelper().put(PropertyKeys.opened, pOpened);
-		handleAttribute("opened", pOpened);
+	public void setOpen(Boolean pOpen) {
+		getStateHelper().put(PropertyKeys.open, pOpen);
+		handleAttribute("open", pOpen);
 	}
 	
 	public String getLocation() {

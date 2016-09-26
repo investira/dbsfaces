@@ -61,7 +61,7 @@ public class DBSDialogRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "class", xClass);
 			DBSFaces.setAttribute(xWriter, "style", xDialog.getStyle());
 			DBSFaces.setAttribute(xWriter, "timeout", xDialog.getCloseTimeout());
-			DBSFaces.setAttribute(xWriter, "opened", (xDialog.getOpened() ? "true" : "false"));
+			DBSFaces.setAttribute(xWriter, "open", (xDialog.getOpen() ? "true" : "false"));
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xDialog, DBSPassThruAttributes.getAttributes(Key.DIALOG));
 			xWriter.startElement("div", xDialog);
 				DBSFaces.setAttribute(xWriter, "style", "opacity:0", null); //Inicia escondido para ser exibido após a execução do JS

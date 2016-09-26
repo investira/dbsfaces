@@ -195,11 +195,14 @@ String.prototype.replaceAll = function(target, replacement) {
             wipeRight: function() {},
             wipeUp: function() {},
             wipeDown: function() {},
+            onMove: function(dx, dy) {},
+            onStart: function() {},
             preventDefaultEvents: true
         };
 
-        if (settings)
+        if (settings){
             $.extend(config, settings);
+        }
 
         this.each(function() {
             var startX;
@@ -213,36 +216,41 @@ String.prototype.replaceAll = function(target, replacement) {
             }
 
             function onTouchMove(e){
-            	var xReturn = true;
+//        		if ($(this).has(e.originalEvent.srcElement).length){
+//            	console.log($(this).attr("class"));
+//            	console.log($(this).has(e.srcElement).length);
+            	var xPreventDefault = null;
                 if (config.preventDefaultEvents) {
                     e.preventDefault();
                 }
+                var x = e.touches[0].pageX;
+                var y = e.touches[0].pageY;
+                var dx = startX - x;
+                var dy = startY - y;
                 if (isMoving) {
-                    var x = e.touches[0].pageX;
-                    var y = e.touches[0].pageY;
-                    var dx = startX - x;
-                    var dy = startY - y;
                     if (Math.abs(dx) >= config.min_move_x) {
                         cancelTouch();
                         if (dx > 0) {
-                        	xReturn = config.wipeLeft();
+                        	xPreventDefault = config.wipeLeft();
                         }else{
-                        	xReturn = config.wipeRight();
+                        	xPreventDefault = config.wipeRight();
                         }
                     } else if (Math.abs(dy) >= config.min_move_y) {
                         cancelTouch();
                         if (dy > 0) {
-                        	xReturn = config.wipeUp();
+                        	xPreventDefault = config.wipeUp();
                         }else{
-                        	xReturn = config.wipeDown();
+                        	xPreventDefault = config.wipeDown();
                         }
                     }
+//                  console.log(" retornou \t" + xPreventDefault);
+                    if (xPreventDefault) {
+                    	//Prevent return false
+                        e.preventDefault();
+                    }
+                    e.stopImmediatePropagation();
                 }
-//                console.log(" retornou \t" + xReturn);
-                if (xReturn == false) {
-                	//Prevent return false
-                    e.preventDefault();
-                }
+            	config.onMove(dx, dy);
             }
 
             function onTouchStart(e){
@@ -250,6 +258,7 @@ String.prototype.replaceAll = function(target, replacement) {
                     startX = e.touches[0].pageX;
                     startY = e.touches[0].pageY;
                     isMoving = true;
+                    config.onStart();
                     this.addEventListener('touchmove', onTouchMove, false);
                 }
             }

@@ -261,7 +261,7 @@
 			<description>
                 Se exibe já aberto. Padrao é false.
             </description>
-			<name>opened</name>
+			<name>open</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
@@ -3436,7 +3436,7 @@ Default: false;</description>
 			<description>
                 Se item será exibido inicialmente aberto. Padrão: false
             </description>
-			<name>opened</name>
+			<name>open</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
