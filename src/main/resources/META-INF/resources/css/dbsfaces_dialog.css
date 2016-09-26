@@ -175,39 +175,38 @@
 }
 
 .dbs_dialog > .-container > .-content > .-sub_container > div > div{
-/* 	display: table; */
-/* 	width: 100%; */
-/*     height: 100%; */
-	display: inline-block;
-	position: relative;
+/* 	display: inline-block; */
+/* 	position: relative; */
+	display: table;
 }
+
+/* VERTICAL */
+.dbs_dialog.-tlv > .-container > .-content > .-sub_container > div > div,
+.dbs_dialog.-trv > .-container > .-content > .-sub_container > div > div,
+.dbs_dialog.-blv > .-container > .-content > .-sub_container > div > div,
+.dbs_dialog.-brv > .-container > .-content > .-sub_container > div > div{
+	height: 100%;
+}
+
+
+/* HORIZONTAL */
+.dbs_dialog.-tlh > .-container > .-content > .-sub_container > div > div,
+.dbs_dialog.-trh > .-container > .-content > .-sub_container > div > div,
+.dbs_dialog.-blh > .-container > .-content > .-sub_container > div > div,
+.dbs_dialog.-brh > .-container > .-content > .-sub_container > div > div{
+	width: 100%;
+}
+
 .dbs_dialog > .-container > .-content > .-sub_container > div > div > .-sub_content{
-/*     display: table-cell; */
+    display: table-cell;
+/* 	display: inline-block; */
 	position: relative;
-	display: inline-block;
-    vertical-align: bottom;
 }
 
 .dbs_dialog > .-container > .-content > .-sub_container > div > div > .-sub_content > *{
     display: inline-block;
 }
 
-/* VERTICAL */
-.dbs_dialog.-tlv > .-container > .-content > .-sub_container > div > div > .-sub_content,
-.dbs_dialog.-trv > .-container > .-content > .-sub_container > div > div > .-sub_content,
-.dbs_dialog.-blv > .-container > .-content > .-sub_container > div > div > .-sub_content,
-.dbs_dialog.-brv > .-container > .-content > .-sub_container > div > div > .-sub_content{
-/* 	width: 100%; */
-}
-
-
-/* HORIZONTAL */
-.dbs_dialog.-tlh > .-container > .-content > .-sub_container > div > div > .-sub_content,
-.dbs_dialog.-trh > .-container > .-content > .-sub_container > div > div > .-sub_content,
-.dbs_dialog.-blh > .-container > .-content > .-sub_container > div > div > .-sub_content,
-.dbs_dialog.-brh > .-container > .-content > .-sub_container > div > div > .-sub_content{
-/* 	height: 100%; */
-}
 
 /* TOP*/
 .dbs_dialog.-tlh > .-container > .-content > .-sub_container > div > div > .-sub_content,
