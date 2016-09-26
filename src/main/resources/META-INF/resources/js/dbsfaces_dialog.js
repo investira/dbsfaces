@@ -9,7 +9,9 @@ dbs_dialog = function(pId) {
 	});
 
 	dbsfaces.dialog.initialize(xDialog);
-
+	$(pId).on("close", function(){
+		dbsfaces.dialog.pvClose(xDialog);
+	});
 	
 	$(pId + ":not([disabled]) > .-container > .-icon").on("click mousedown touchstart", function(e){
 //		console.log("icon mousedown touchstart");
@@ -181,19 +183,18 @@ dbsfaces.dialog = {
 		//Está fechado e vai abrir
 		if (pDialog.hasClass("-closed")){
 			dbsfaces.dialog.pvOpen(pDialog);
-			dbsfaces.dialog.pvCloseTimeout(pDialog);
-			pDialog.data("sub_content").removeClass("-closed");
+			dbsfaces.dialog.pvAutoCloseTimeout(pDialog);
 		}else{
 			dbsfaces.dialog.pvClose(pDialog);
-			pDialog.data("sub_content").addClass("-closed");
 		}
-		pDialog.toggleClass("-closed");
 	},
 
 	pvOpen: function(pDialog){
 		dbsfaces.dialog.pvAjustLayout(pDialog);
 		dbsfaces.ui.disableBackgroundInputs(pDialog);
 		dbsfaces.dialog.pvFreeze(pDialog, true);
+		pDialog.data("sub_content").removeClass("-closed");
+		pDialog.removeClass("-closed");
 		//Coloca o foco no primeiro campo de input dentro do nav
 		dbsfaces.ui.focusOnFirstInput(pDialog);
 //		pDialog.data("header").css("display", "block");
@@ -211,6 +212,8 @@ dbsfaces.dialog = {
 		dbsfaces.ui.enableForegroundInputs($("body"));
 		//Retira foco do componente que possuir foco
 		$(":focus").blur();
+		pDialog.data("sub_content").addClass("-closed");
+		pDialog.addClass("-closed");
 		dbsfaces.dialog.pvFreeze(pDialog, false);
 	},
 	
@@ -354,7 +357,7 @@ dbsfaces.dialog = {
 //		},1);
 	},
 
-	pvCloseTimeout: function(pDialog){
+	pvAutoCloseTimeout: function(pDialog){
 		var xTimeout = pDialog.attr('timeout');
 		if (xTimeout > 0) {
 			pDialog.data("progressTimeout").css("animation-name", "progress_timeout_animation");
