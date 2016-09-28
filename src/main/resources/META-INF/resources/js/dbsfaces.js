@@ -7,8 +7,11 @@
 //stopPropagation()            Yes           No              No
 //stopImmediatePropagation()   Yes           No              Yes
 
-//SVG dimension
+//SVG dimension (Fire fox temn problemas com o uso dos atributos abaixo)(verificar compatibilidade(29/set/2016)
 //.height.baseVal.value;
+//.textLength.baseVal.value;
+//.clientHeight
+
 
 //Exemplo de load assyncrono
 //  (function(d, s, id) {

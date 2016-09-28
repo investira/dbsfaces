@@ -142,11 +142,6 @@
 .dbs_chart[type='line'] > .-delta > .-guide:focus,
 .dbs_chart[type='line'] > .-delta > .-guide:active{
 	opacity: 1;
-	-webkit-animation: -kf_dbs_chart_selected .1s linear;
-	-moz-animation: -kf_dbs_chart_selected .1s linear;
-	-ms-animation: -kf_dbs_chart_selected .1s linear;
-	-o-animation: -kf_dbs_chart_selected .1s linear;
-	animation: -kf_dbs_chart_selected .1s linear;    
 }
 
 .dbs_chart[type='line'] > .-delta > .-deltaarea_r,
@@ -224,16 +219,18 @@
 .dbs_chart[type='bar'].-activated > .dbs_chartValue.-hover > .-info > .-label,
 .dbs_chart[type='bar'].-activated > .dbs_chartValue.-hover > .-info > .-value{
 	fill-opacity: 1;
+/* 	stroke-opacity: 1; */
 }
 
 
 /* ACTIVATED DIM */
 .dbs_chart[type='bar'].-activated.-dim > .dbs_chartValue:not(.-selected):not(.-hover) > .-point{
-	fill-opacity: 0.4;
+	stroke-opacity: 0.4;
 }
 
 .dbs_chart[type='bar'].-activated.-dim > .dbs_chartValue:not(.-selected):not(.-hover) > .-info > .-label:not(.-hide),
 .dbs_chart[type='bar'].-activated.-dim > .dbs_chartValue:not(.-selected):not(.-hover) > .-info > .-value:not(.-hide){
+	stroke-opacity: 0.1;
 	fill-opacity: 0.1;
 }
 
@@ -241,7 +238,7 @@
 
 /* PIE -------------------- */
 .dbs_chart[type='pie'].-dim > .dbs_chartValue > .-point {
-	fill-opacity:0.5;
+	stroke-opacity:0.5;
 }
 .dbs_chart[type='pie'].-dim > .dbs_chartValue > .-info,
 .dbs_chart[type='pie'].-dim > .dbs_chartValue > .-info > .-underline{
@@ -274,16 +271,19 @@
 	stroke-opacity: 0.1;
 }
 
-/* .dbs_chart[type='pie']> .dbs_chartValue > .-info > .-box{ */
-/* 	stroke-width: 1px; */
-/* } */
+.dbs_chart[type='pie']> .dbs_chartValue > .-info > .-box{
+/* 	fill: none; */
+}
     
 .dbs_chart[type='pie']> .dbs_chartValue > .-info > .-point,
 .dbs_chart[type='pie']> .dbs_chartValue > .-info > .-line{
 	fill-opacity:0;
 	stroke-opacity:0;
 }
-
+.dbs_chart[type='pie']> .dbs_chartValue > .-info > .-line{
+	stroke-width:1px; 
+	fill: none;
+}
 
 /* ----------------------------------------------------------------------------------- */
 
@@ -325,7 +325,6 @@
 } 
 
 
-
 .dbs_chart[type='line'] > .dbs_chartValue > .-point{
 	pointer-events: none;
 	stroke-width: 1px;
@@ -353,6 +352,14 @@
 }
 	
 
+.dbs_chart > .dbs_chartValue > .-point{
+/* 	transform-origin: 50% 50%; */
+}
+
+
+.dbs_chart[type='pie'] > .dbs_chartValue > .-point {
+	fill: none;
+}
 
 .dbs_chart[type='pie'] > .dbs_chartValue > .-info{
 /* 	font-size: 1.15em; */
@@ -362,17 +369,32 @@
 .dbs_chart[type='pie'] > .dbs_chartValue > .-info.-right{
 }
 
+.dbs_chart[type='pie'] > .dbs_chartValue > .-info > .-value{
+	overflow: visible;
+}
 .dbs_chart[type='pie'] > .dbs_chartValue > .-info > .-value > *{
-	dominant-baseline: middle;
-/* 	dominant-baseline: central; */
-/* 	fill: currentC--th_bc; */
 }
 
 .dbs_chart[type='pie'] > .dbs_chartValue > .-info.-left > .-value{
 	text-anchor: end;
 }
 .dbs_chart[type='pie'] > .dbs_chartValue > .-info.-right > .-value{
-	text-anchor: start;
+}
+
+.dbs_chart[type='pie'] > .dbs_chartValue > .-info.-right > .-value > .-perc{
+	text-anchor: end;
+}
+
+.dbs_chart[type='pie'] > .dbs_chartValue > .-info.-right > .-value > .-label{
+}
+.dbs_chart[type='pie'] > .dbs_chartValue > .-info.-right > .-value > .-value{
+}
+.dbs_chart[type='pie'] > .dbs_chartValue > .-info.-right > .-value > .-label > tspan{
+	font-weight: bold;
+}
+.dbs_chart[type='pie'] > .dbs_chartValue > .-info.-right > .-value > .-label > tspan,
+.dbs_chart[type='pie'] > .dbs_chartValue > .-info.-right > .-value > .-value > tspan{
+	font-size: .5em;
 }
 
 .dbs_chart[type='pie'] > .-delta > .-info{
@@ -383,11 +405,12 @@
 	dominant-baseline: middle;
 }
 
-.dbs_chart[type='pie']:not(.-dim) > .dbs_chartValue > .-info > .-box,	
-.dbs_chart[type='pie'].-dim > .dbs_chartValue.-hover > .-info > .-box,
-.dbs_chart[type='pie'].-dim > .dbs_chartValue.-selected > .-info > .-box{
+.dbs_chart[type='pie']:not(.-dim) > .dbs_chartValue > .-info > .-value,	
+.dbs_chart[type='pie'].-dim > .dbs_chartValue.-hover > .-info > .-value,
+.dbs_chart[type='pie'].-dim > .dbs_chartValue.-selected > .-info > .-value{
 	pointer-events: all;
 	cursor: pointer;
+/* 	stroke-width: .2em; */
 }
 
 .-a_dbs_chart_selected{
@@ -400,29 +423,56 @@
 
 /* single pulse */			
 @-moz-keyframes -kf_dbs_chart_selected {
-  0% {stroke-width: initial;}
-  1% {stroke-width: 1em;}
-  100% {stroke-width: initial;}
+  0% {transform: scale(1);}
+  1% {transform: scale(1.1);}
+  100% {transform: scale(1);}
 }
 @-webkit-keyframes -kf_dbs_chart_selected {
-  0% {stroke-width: initial;}
-  1% {stroke-width: 1em;}
-  100% {stroke-width: initial;}
+  0% {transform: scale(1);}
+  1% {transform: scale(1.1);}
+  99% {transform: scale(1);}
+  100% {transform: none;}
 }
 @-o-keyframes -kf_dbs_chart_selected {
-  0% {stroke-width: initial;}
-  1% {stroke-width: 1em;}
-  100% {stroke-width: initial;}
+  0% {transform: scale(1);}
+  1% {transform: scale(1.1);}
+  100% {transform: scale(1);}
 }
 @-ms-keyframes -kf_dbs_chart_selected {
-  0% {stroke-width: initial;}
-  1% {stroke-width: 1em;}
-  100% {stroke-width: initial;}
+  0% {transform: scale(1);}
+  1% {transform: scale(1.1);}
+  100% {transform: scale(1);}
 }
 @keyframes -kf_dbs_chart_selected {
-  0% {stroke-width: initial;}
-  1% {stroke-width: 1em;}
-  100% {stroke-width: initial;}
+  0% {transform: scale(1);}
+  1% {transform: scale(1.1);}
+  99% {transform: scale(1);}
+  100% {transform: none;}
 }
 
+/* @-moz-keyframes -kf_dbs_chart_selected { */
+/*   0% {stroke-width: initial;} */
+/*   1% {stroke-width: 1em;} */
+/*   100% {stroke-width: initial;} */
+/* } */
+/* @-webkit-keyframes -kf_dbs_chart_selected { */
+/*   0% {stroke-width: initial;} */
+/*   1% {stroke-width: 1em;} */
+/*   100% {stroke-width: initial;} */
+/* } */
+/* @-o-keyframes -kf_dbs_chart_selected { */
+/*   0% {stroke-width: initial;} */
+/*   1% {stroke-width: 1em;} */
+/*   100% {stroke-width: initial;} */
+/* } */
+/* @-ms-keyframes -kf_dbs_chart_selected { */
+/*   0% {stroke-width: initial;} */
+/*   1% {stroke-width: 1em;} */
+/*   100% {stroke-width: initial;} */
+/* } */
+/* @keyframes -kf_dbs_chart_selected { */
+/*   0% {stroke-width: initial;} */
+/*   1% {stroke-width: 1em;} */
+/*   100% {stroke-width: initial;} */
+/* } */
 

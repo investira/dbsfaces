@@ -110,19 +110,6 @@ dbsfaces.chartValue = {
 	},
 
 	pvInitializePie: function(pChartValue){
-//		var xChartValueInfo = pChartValue.data("infogroup");
-//		var xChartValueValue = pChartValue.data("value");
-//		var xChartValueBox = xChartValueInfo.children(".-box");
-//		var xTransform = "translateY(-0.70em) ";
-//		var xWidth = xChartValueValue.get(0).getComputedTextLength() + 5;
-//		//Ajusta largura do box do label
-//		if (xChartValueValue.length != 0){
-//			xChartValueBox.attr("width", xWidth);
-//			if (xChartValueValue.attr("style").indexOf("text-anchor:end") != -1){
-//				xTransform += "translateX(-" + xWidth + "px)";
-//			}
-//			dbsfaces.ui.cssTransform(xChartValueBox, xTransform);
-//		}
 	},
 	
 	pvIsEqual: function(pChartValue, pChartValueNew){
@@ -263,8 +250,6 @@ dbsfaces.chartValue = {
 
 	pvSelectChartValue: function(pCharts, pChart, pChartValue, pSelect){
 		if (pChartValue == null){return;}
-		//Verifica se gráfico possui guia
-		var xGuideIndex = pChart.data("guideIndex");
 		var xGuide = null;
 		var xType = pChart.attr("type");
 		//Seleção do item

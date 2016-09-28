@@ -25,6 +25,7 @@ import br.com.dbsoft.util.DBSFormat;
 import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSFormat.NUMBER_SIGN;
 import br.com.dbsoft.util.DBSObject;
+import br.com.dbsoft.util.DBSString;
 
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSChartValue.RENDERER_TYPE)
@@ -137,7 +138,8 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		BigDecimal	xY = new BigDecimal(0);		
 		BigDecimal	xX = new BigDecimal(0);
 		String 		xClientId = pChartValue.getClientId(pContext);
-		String 		xStroke; 
+		String 		xStroke;
+		String 		xStyle;
 		//Calcula valor em pixel a partir do valor real. subtrai padding para dar espaço para a margem
 		xY = DBSNumber.subtract(pCharts.getChartHeight(),
 								DBSNumber.multiply(pCharts.getRowScale(), 
@@ -163,18 +165,20 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			if (xLineWidth < 1){
 				xLineWidth = 1D;
 			}
-			xXText = DBSNumber.add(xX,pChart.getColumnScale() / 2);
-			xX = DBSNumber.add(xX,
-					   		   DBSNumber.divide(pChart.getColumnScale() - xLineWidth, 2));
+			xXText = DBSNumber.add(xX, xLineWidth / 2);
+			xX = xXText;
+			xStyle = xStroke + "stroke-width:" + xLineWidth + "px;";
 			//Valore positivos acima
 			if (pChartValue.getValue() > 0){
-				DBSFaces.encodeSVGRect(pChartValue, pWriter, xX.intValue(), xY.doubleValue(), xLineWidth.toString(), xHeight.toString(), CSS.MODIFIER.POINT, xStroke, "fill=" + pChartValue.getColor());
+			    xStyle += "transform-origin:" + xX.intValue() + "px " + (xY.doubleValue() + xHeight) + "px;";
+				DBSFaces.encodeSVGLine(pChartValue, pWriter, xX.intValue(), xY.doubleValue(), xX.intValue(), xY.doubleValue() + xHeight,  CSS.MODIFIER.POINT, xStyle, "fill=" + pChartValue.getColor());
 			//Valores negativos
 			}else{
 				//inverte a posição Yx
 				xYTextTooltip = DBSNumber.subtract(pCharts.getChartHeight(), pCharts.getZeroPosition().doubleValue());
-				xYTextTooltip =  DBSNumber.add(pCharts.getPadding(), xYTextTooltip);
-				DBSFaces.encodeSVGRect(pChartValue, pWriter, xX.intValue(), xYTextTooltip.doubleValue(), xLineWidth.toString(), xHeight.toString(), CSS.MODIFIER.POINT, xStroke, "fill=" + pChartValue.getColor());
+				xYTextTooltip = DBSNumber.add(pCharts.getPadding(), xYTextTooltip);
+			    xStyle += "transform-origin:" + xX.intValue() + "px " + xYTextTooltip + "px;";
+				DBSFaces.encodeSVGLine(pChartValue, pWriter, xX.intValue(), xYTextTooltip, xX.intValue(), xYTextTooltip.doubleValue() + xHeight,  CSS.MODIFIER.POINT, xStyle, "fill=" + pChartValue.getColor());
 			}
 		//Encode LINE - ponto. as linhas que ligam os pontos, são desenhadas no código JS.
 		}else if (pType == TYPE.LINE){
@@ -184,7 +188,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			pChartValue.setPoint(new Point2D.Double(xX.doubleValue(), xY.doubleValue()));
 			//Encode do circulo
 			//Artifício pois o fcirefox só funciona com valores fixos no transform-origin
-			String xStyle = "stroke:currentColor; color:" + pChartValue.getColor() + ";";
+			xStyle = "stroke:currentColor; color:" + pChartValue.getColor() + ";";
 			if (pChart.getShowDelta()){
 				DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xX.doubleValue(), xY.doubleValue(), ".2em", ".2em", CSS.MODIFIER.POINT, xStyle, "fill=white");
 			}else{
@@ -199,8 +203,8 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			//Encode do valor da linha ---------------------------------------------------------------------
 			pvEncodeText(pChartValue, 
 						 DBSFormat.getFormattedNumber(DBSObject.getNotNull(pChartValue.getDisplayValue(), pChartValue.getValue()), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask()), 
-						 pCharts.getWidth().doubleValue() - pCharts.getPadding(), 
-						 xYText.doubleValue(), 
+						 (pCharts.getWidth().doubleValue() - pCharts.getPadding()) + "px", 
+						 xYText.doubleValue() + "px", 
 						 CSS.MODIFIER.VALUE + "-hide", 
 						 null, 
 						 null,
@@ -244,12 +248,11 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		Point2D 		xCentro = pCharts.getCenter();
 		Point2D 		x1 = new Point2D.Double();
 		Point2D 		x2 = new Point2D.Double();
-		Point2D 		x3 = new Point2D.Double();
-		Point2D 		x4 = new Point2D.Double();
 
-		String 			xStroke = "stroke:" + pChartValue.getColor() + ";";
+		String 			xStyle = "stroke:" + pChartValue.getColor() + "; stroke-width: " + pCharts.getPieChartWidth() + "px;";
 
 		Point2D 		xPoint = new Point2D.Double();
+		Point2D 		xPointCenter = new Point2D.Double();
 
 		Integer 		xPercLineWidth =  4;
 		Integer			xPositionInverter = 1;
@@ -257,32 +260,37 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		Double			xStartAngle;
 		Double			xEndAngle;
 		Double			xPointAngle;
-		Double			xPneuRaioInterno;
 		Double			xPneuRaioExterno;
+		Double			xPneuRaioCentro;
 		
 		if (xPercValue == 100){
 			xPercValue = 99.99; //Artifício para evitar uma volta completa anulando a exibição de conetúdo
 		}
 		
 		//Angulo inicial e final do arco
-		xStartAngle = xPreviousPercValue * DBSNumber.PIDiameterFactor;
-		xEndAngle =  xStartAngle + (xPercValue * DBSNumber.PIDiameterFactor);
+		xStartAngle = DBSNumber.round(xPreviousPercValue * DBSNumber.PIDiameterFactor, 4);
+		xEndAngle =  DBSNumber.round(xStartAngle + (xPercValue * DBSNumber.PIDiameterFactor), 4);
 		
 		//Ángulo do ponto no centro do arco para servir de referencia para o label
 		xPointAngle = xStartAngle + ((xEndAngle - xStartAngle) / 2);
 
-		xPneuRaioInterno = pChart.getPieChartRelativeRadius(pCharts);
-		xPneuRaioExterno = xPneuRaioInterno + pCharts.getPieChartWidth();
+
+		//Metade da largura, pois o stroke terá a a largura integral.
+		xPneuRaioExterno = pChart.getPieChartRelativeRadius(pCharts) + pCharts.getPieChartWidth();
+		xPneuRaioCentro = xPneuRaioExterno - (pCharts.getPieChartWidth() / 2);
 
 		//Calcula as coordenadas do arco 
 		//Ponto externo
-		x1 = DBSNumber.circlePoint(xCentro, xPneuRaioExterno, xStartAngle);
-		x2 = DBSNumber.circlePoint(xCentro, xPneuRaioExterno, xEndAngle);
-		x3 = DBSNumber.circlePoint(xCentro, xPneuRaioInterno, xEndAngle);
-		x4 = DBSNumber.circlePoint(xCentro, xPneuRaioInterno, xStartAngle);
+		x1 = DBSNumber.circlePoint(xCentro, xPneuRaioCentro, xStartAngle);
+		x2 = DBSNumber.circlePoint(xCentro, xPneuRaioCentro, xEndAngle);
+
 
 		//Ponto no centro e na tangente do arco para servir de referencia para o label
 		xPoint = DBSNumber.circlePoint(xCentro, xPneuRaioExterno, xPointAngle);
+
+		//Ponto no centro para servir no transform-origin
+		xPointCenter = DBSNumber.circlePoint(xCentro, xPneuRaioCentro, xPointAngle);
+	    xStyle += "transform-origin:" + xPointCenter.getX() + "px " + xPointCenter.getY() + "px;";
 
 		//Determina orientação horizontal
 //		if (xPoint.getX() >= xCentro.getX()){
@@ -291,6 +299,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 //			xClass = "-left";
 //			xPositionInverter = -1;
 //		}
+
 		//Direção da linha auxiliar do label
 		xPercLineWidth *= xPositionInverter;
 
@@ -301,26 +310,27 @@ public class DBSChartValueRenderer extends DBSRenderer {
 	        xBig = 1;
 	    }
 
+	    
 		xPath = new StringBuilder();
-	    xPath.append("M" + x1.getX() + "," + x1.getY()); //Ponto inicial do arco 
-		xPath.append("A" + xPneuRaioExterno + "," + xPneuRaioExterno + " 0 " + xBig + " 1 " + x2.getX() + "," + x2.getY()); //Arco externo até o ponto final 
-		xPath.append("L" + x3.getX() + "," + x3.getY()); //Linha do arco externo até o início do arco interno
-		xPath.append("A" + xPneuRaioInterno + "," + xPneuRaioInterno + " 0 " + xBig + " 0 " + x4.getX() + "," + x4.getY()); //Arco interno até o ponto incial interno
-		xPath.append("Z"); //Fecha o path ligando o arco interno ao arco externo  
-		DBSFaces.encodeSVGPath(pChartValue, pWriter, xPath.toString(), CSS.MODIFIER.POINT, xStroke, "fill=" + pChartValue.getColor());
-
+	    xPath.append("M" + DBSNumber.round(x1.getX(),2) + "," + DBSNumber.round(x1.getY(), 2)); //Ponto inicial do arco 
+		xPath.append("A" + xPneuRaioCentro + "," + xPneuRaioCentro + " 0 " + xBig + " 1 " + DBSNumber.round(x2.getX(), 2) + "," + DBSNumber.round(x2.getY(),2)); //Arco externo até o ponto final 
+		DBSFaces.encodeSVGPath(pChartValue, pWriter, xPath.toString(), CSS.MODIFIER.POINT, xStyle, null);
+	    
 
 		//Encode Dados
 		if (pCharts.getShowLabel()){
+			Double xAlturaUnitaria = DBSNumber.divide(pCharts.getDiameter() - pCharts.getPadding(), pCharts.getChartValueItensCount()).doubleValue();
+			Double xFontSize = Math.min(xAlturaUnitaria * .8D, 20); //Tamanho será 80% da altura da linha, com o máximo 20px;
 			pWriter.startElement("g", pChartValue);
 				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.INFO + xClass);
 				DBSFaces.setAttribute(pWriter, "globalindex", pChartValue.getGlobalIndex());
+				DBSFaces.setAttribute(pWriter, "style", "stroke:" + pChartValue.getColor() + "; font-size:" + xFontSize + "px");
 				
 				//Ponto pequeno no centro e na tangente do arco	
 				DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xPoint.getX(), xPoint.getY(), "2px", "2px", CSS.MODIFIER.POINT, null, "fill=" + pChartValue.getColor());
 
 				//Valor do percentual, label e valor ---------------------------------------------------------------------
-				pvEncodePieLabel(pCharts, pChartValue, pPercValue, xPoint, pWriter);
+				pvEncodePieLabel(pCharts, pChartValue, pPercValue, xPoint, xAlturaUnitaria, pWriter);
 				
 			pWriter.endElement("g");
 		}
@@ -329,137 +339,103 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		pvEncodeTooptip(pChartValue, pChartValue.getPoint().getX(), pChartValue.getPoint().getY(), xClientId, pContext, pWriter);
 
 	}
-	private void pvEncodePieLabel(DBSCharts pCharts, DBSChartValue pChartValue, Double pPercValue, Point2D pPoint, ResponseWriter pWriter) throws IOException{
+	private void pvEncodePieLabel(DBSCharts pCharts, DBSChartValue pChartValue, Double pPercValue, Point2D pPoint, Double pAlturaUnitario, ResponseWriter pWriter) throws IOException{
 		StringBuilder 	xPath;
 
-		Point2D 		xI1 = new Point2D.Double();
-		Point2D 		xI2 = new Point2D.Double();
-		Point2D 		xI3 = new Point2D.Double();
-		Point2D 		xI4 = new Point2D.Double();
 		Point2D 		xPointLabel = new Point2D.Double();
-		Point2D 		xPointAnchor = new Point2D.Double();
-		Double			xPneuRaioInterno;
-		Double			xPneuRaioExterno;
-		Integer 		xBig = 0;
-		Double			xAlturaUnitaria = DBSNumber.divide(pCharts.getDiameter() - pCharts.getPadding(), pCharts.getChartValueItensCount()).doubleValue();
-		Double			xAlturaTotal = pCharts.getPieChartRadius() - (xAlturaUnitaria * (pCharts.getChartValueItensCount() - pChartValue.getGlobalIndex())); 
-		//Tamanho do font é 70% da altura da linha quando a altura for menos que o tamanho do fonte padrão 
-		Double			xFontSize = Math.min(xAlturaUnitaria * .7, pCharts.getFontSize()); 
-		Double			xLegendaWidth = (xFontSize * 5D);
-		Double			xLegendaY = xAlturaTotal - (xAlturaUnitaria / 2) + 1;
-//		Double			xTextX = pCharts.getCenter().getX() + 
+		Double			xAlturaTotal = pCharts.getDiameter() - (pAlturaUnitario * (pCharts.getChartValueItensCount() - pChartValue.getGlobalIndex()) ); 
+		Double			xLegendaY = xAlturaTotal - (pAlturaUnitario / 2) + 1; //Centraliza verticalmente dentro da linha
+		Double 			xLegendaX = pCharts.getCenter().getX() + (pCharts.getDiameter() / 1.9); 
 
-		xPneuRaioInterno = pCharts.getPieChartRadius() + (pCharts.getPieChartWidth().intValue() / 3D) ;
-		xPneuRaioExterno = xPneuRaioInterno + xLegendaWidth;
+		xPointLabel.setLocation(DBSNumber.round(xLegendaX,2), DBSNumber.round(xLegendaY,2));
 		
-		//Legenda em cor(arcos)
-		//Y (Altura)		
-		xI1.setLocation(0, xAlturaTotal);
-		xI4.setLocation(0, xI1.getY());
-		xI2.setLocation(0, xAlturaTotal - xAlturaUnitaria);
-		xI3.setLocation(0, xI2.getY());
-		
-		//X
-		xI1.setLocation(getCateto(xPneuRaioExterno, xI1.getY()) + pCharts.getCenter().getX(), xI1.getY() + pCharts.getCenter().getY());
-		xI2.setLocation(getCateto(xPneuRaioExterno, xI2.getY()) + pCharts.getCenter().getX(), xI2.getY() + pCharts.getCenter().getY());
-		xI3.setLocation(getCateto(xPneuRaioInterno, xI3.getY()) + pCharts.getCenter().getX(), xI3.getY() + pCharts.getCenter().getY());
-		xI4.setLocation(getCateto(xPneuRaioInterno, xI4.getY()) + pCharts.getCenter().getX(), xI4.getY() + pCharts.getCenter().getY());
-
-		pChartValue.setPoint(xI4);
-
-		xPath = new StringBuilder();
-	    xPath.append("M" + xI1.getX() + "," + xI1.getY()); //Ponto inicial do arco 
-		xPath.append("A" + xPneuRaioExterno + "," + xPneuRaioExterno + " 0 " + xBig + " 0 " + xI2.getX() + "," + xI2.getY()); //Arco externo até o ponto final 
-		xPath.append("L" + xI3.getX() + "," + xI3.getY()); //Linha do arco externo até o início do arco interno
-		xPath.append("A" + xPneuRaioInterno + "," + xPneuRaioInterno + " 0 " + xBig + " 1 " + xI4.getX() + "," + xI4.getY()); //Arco interno até o ponto incial interno
-		xPath.append("Z"); //Fecha o path ligando o arco interno ao arco externo  
-		DBSFaces.encodeSVGPath(pChartValue, 
-							   pWriter, 
-							   xPath.toString(), 
-							   "-box", 
-							   null, 
-							   "fill=" + pChartValue.getColor());
-
-		//LINHA DA PAUTA
-		xPath = new StringBuilder();
-		xPath.append("M" + xI4.getX() + "," + xI4.getY());  
-		xPath.append("L" + pCharts.getChartWidth() + ", " + xI4.getY());
-		DBSFaces.encodeSVGPath(pChartValue, 
-							   pWriter, 
-							   xPath.toString(), 
-							   "-underline", 
-							   "stroke:" + pChartValue.getColor() + ";", 
-							   null);
 
 		//LINHA DE CONEXÃO
-		xPointAnchor.setLocation(0, xLegendaY); //Centro da linha
-		xPointAnchor.setLocation(getCateto(xPneuRaioInterno, xPointAnchor.getY()) + pCharts.getCenter().getX(), xPointAnchor.getY() + pCharts.getCenter().getY());
 		xPath = new StringBuilder();
 		xPath.append("M" + pPoint.getX() + "," + pPoint.getY());  
-		xPath.append("L" + xPointAnchor.getX() + "," + xPointAnchor.getY());
+		xPath.append("L" + xPointLabel.getX() + "," + xPointLabel.getY());
 		DBSFaces.encodeSVGPath(pChartValue, 
 							   pWriter, 
 							   xPath.toString(), 
 							   CSS.MODIFIER.LINE, 
-							   "stroke:" + pChartValue.getColor() + "; stroke-width:1px; ", 
-							   "fill=none");
+							   null, 
+							   null);
 
 		//TEXT
-		xPointLabel.setLocation(0, xLegendaY); //Centro da linha
-		xPointLabel.setLocation(getCateto(xPneuRaioInterno + (xLegendaWidth / 8), xPointLabel.getY()) + pCharts.getCenter().getX(), xPointLabel.getY() + pCharts.getCenter().getY());
+		pChartValue.setPoint(xPointLabel);
 		
 
 		//TEXT VALUE
 		StringBuilder xText = new StringBuilder();
-		String xLabelPerc = DBSFormat.getFormattedNumber(pPercValue, 2) + "%";
+		Double xParcValueInt = DBSNumber.toInteger(pPercValue).doubleValue();
+		Double xParcValueDec = DBSNumber.round(pPercValue - xParcValueInt,2);
+		String xLabelPerc = DBSFormat.getFormattedNumber(xParcValueInt, 0);
 		
-		String xLabelValue = DBSFormat.numberSimplify(DBSObject.getNotNull(pChartValue.getDisplayValue(), pChartValue.getValue())).toString();
-//		String xLabelValue = DBSFormat.getFormattedNumber(DBSObject.getNotNull(pChartValue.getDisplayValue(), pChartValue.getValue()), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask());
+		String xLabelValue = DBSFormat.numberSimplify(DBSObject.getNotNull(pChartValue.getDisplayValue(), pChartValue.getValue())).toString().trim();
 		String xLabelText = "";
 		if (!DBSObject.isEmpty(pChartValue.getLabel())){
 			xLabelText = pChartValue.getLabel();
 		}
 
 		DBSColor xInvertColor = pChartValue.getDBSColor().invertLightness();
-		Double xLegendaX = (pCharts.getCenter().getX() + xPneuRaioExterno) * 1.01;
-		
-		xText.append("<tspan style='fill:" + xInvertColor.toHSLA() + "'>");
-			xText.append(xLabelPerc);
-		xText.append("</tspan>");
- 		xText.append("<tspan x='" + xLegendaX + "'>");
- 			xText.append(xLabelText);
-		xText.append("</tspan>");
-//		xText.append("<tspan dx='" + pCharts.getLabelMaxWidth() + "'>");
- 		xText.append("<tspan x='" + ((xLegendaX * 1.01 ) + (pCharts.getLabelMaxWidth() * xFontSize.intValue())) + "'>");
-			xText.append(xLabelValue);
-		xText.append("</tspan>");
-//		xText.append("<tspan x='" + (pCharts.getCenter().getX() + xPneuRaioExterno + 50) + "'>");
-//		xText.append("<tspan style='text-anchor: end;'>");
-// 		xText.append("<tspan x='" + (pCharts.getCenter().getX() + xPneuRaioInterno + 10) + "' dx='5em" + ""  + "'>");
-
-		//Valor do percentual ---------------------------------------------------------------------
-		pvEncodeText(pChartValue, 
-					 xText.toString().trim(), 
-					 xPointLabel.getX(), 
-					 xPointLabel.getY(), 
-					 CSS.MODIFIER.VALUE, 
-					 "font-size:" + xFontSize.intValue() + "px", 
-					 null,
-					 pWriter);
-
+		pWriter.startElement("g", pChartValue);
+			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.VALUE);
+			DBSFaces.setAttribute(pWriter, "x", xPointLabel.getX());
+			DBSFaces.setAttribute(pWriter, "y", xPointLabel.getY());
+			DBSFaces.setAttribute(pWriter, "style", "transform: translate(" + xPointLabel.getX() + "px," + xPointLabel.getY() + "px)");
+			DBSFaces.setAttribute(pWriter, "fill", xInvertColor.toHSLA());
+			DBSFaces.setAttribute(pWriter, "dy", ".35em");
+			//Background do percentual. Dimensão será calculada via JS para considerar o tamanho do fonte.
+			xPath = new StringBuilder();
+			DBSFaces.encodeSVGPath(pChartValue, pWriter, xPath.toString(), "-box", null, "fill=" + pChartValue.getColor());
+			
+			//Percentual
+			xText = new StringBuilder();
+			xText.append("<tspan>");
+				xText.append(xLabelPerc);
+			xText.append("</tspan>");
+			xText.append("<tspan style='font-size:.5em;'>");
+				xText.append(DBSString.getSubString(xParcValueDec.toString(), 2, 3) + "%");
+			xText.append("</tspan>");
+			pvEncodeText(pChartValue, 
+						 xText.toString().trim(), 
+						 null, 
+						 null, 
+						 "-perc", 
+						 null, 
+						 "fill=" + xInvertColor.toHSLA() +";dx=3em;dy=.35em", //Centraliza base do texto--base. Lembrando que dominant-baseline não funciona no IE.
+						 pWriter);
+			//Texto do label
+			xText = new StringBuilder();
+			xText.append("<tspan>");
+				xText.append(xLabelText);
+			xText.append("</tspan>");
+			pvEncodeText(pChartValue, 
+						 xText.toString().trim(), 
+						 "3.5em", 
+						 "0em", 
+						 "-label", 
+						 null, 
+						 "fill=" + pChartValue.getDBSColor().toHSLA(), //Centraliza base do texto--base. Lembrando que dominant-baseline não funciona no IE.
+						 pWriter);
+			//Valor nominal
+			xText = new StringBuilder();
+			xText.append("<tspan dy= '1em'>");
+				xText.append(xLabelValue);
+			xText.append("</tspan>");
+			pvEncodeText(pChartValue, 
+						 xText.toString().trim(), 
+						 "3.5em", 
+						 "0", 
+						 "-value", 
+						 null, 
+						 "fill=" + pChartValue.getDBSColor().toHSLA(), //Centraliza base do texto--base. Lembrando que dominant-baseline não funciona no IE.
+						 pWriter);
+		pWriter.endElement("g");
 	}
 	
-	private Double getCateto(Double pRaio, Double pAltura){
-		Double xCateto;
-		pRaio = Math.pow(pRaio, 2D);
-		pAltura = Math.pow(pAltura, 2D);
-		xCateto = pRaio - pAltura;
-		xCateto = DBSNumber.round(Math.sqrt(xCateto),4);
-		return xCateto;
-	}
-	
 
-	private void pvEncodeText(DBSChartValue pChartValue, String pText, Double pX, Double pY, String pStyleClass, String pStyle, String pAttrs, ResponseWriter pWriter) throws IOException{
+	private void pvEncodeText(DBSChartValue pChartValue, String pText, String pX, String pY, String pStyleClass, String pStyle, String pAttrs, ResponseWriter pWriter) throws IOException{
 		//Encode label da coluna ---------------------------------------------------------------------
 		if (DBSObject.isEmpty(pText)){return;}
 		DBSFaces.encodeSVGText(pChartValue, 
@@ -509,4 +485,3 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		}
 	}
 }
-

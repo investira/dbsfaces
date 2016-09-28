@@ -214,61 +214,40 @@ dbsfaces.charts = {
 	},
 	
 	pvInitializeLayoutInfo: function(pCharts, pChart, pParams){
-		var xIsLeft = false;
-		var xDiameter = Number(pCharts.attr("diameter"));
-		var xLineHeight = xDiameter / pParams.total;
-		var xLineWidth = (Number(pCharts.attr("w")) - xDiameter);
-		var xChartValue = pChart.data("children");
-		var xPieIP = parseFloat(pCharts.attr("pieip"));
-		var xX = Number(pCharts.attr("cx"));
-		var xXBox;
-		if (xIsLeft){
-			xX -= (xDiameter / 2);
-			xXBox = xX - xLineWidth;
-		}else{
-			xX += (xDiameter / 2);
-			xXBox = xX;
-		}
-		//Tamanho do fonte do label é 85% da altura da linha
-//		var xFontSize = Math.min(xLineHeight * .60, pCharts.data("fontsize"));
-//		var xPadding = xLineHeight - xFontSize;
-		xChartValue.each(function(){
+		var xChartValues = pChart.data("children");
+		xChartValues.each(function(){
 			var xChartValue = $(this);
-			var xChartValueInfo = xChartValue.data("infogroup");
 			var xChartValueValue = xChartValue.data("value");
-			var xChartValueBox = xChartValueInfo.children(".-box");
-			var xChartValueTooltip = xChartValue.data("tooltip");
-			var xY = xPieIP + (pParams.count * xLineHeight);
-			//Ajusta box
-//			xChartValueBox.svgAttr("x", xXBox)
-//						  .svgAttr("y", xY)
-//						  .svgAttr("width", xLineWidth) 
-//						  .svgAttr("height", xLineHeight);
-			xChartValueBox.svgAttr("cx", xXBox + (xLineHeight / 2))
-						  .svgAttr("cy", xY + (xLineHeight/2))
-						  .svgAttr("rx", xLineHeight / 2) 
-						  .svgAttr("ry", xLineHeight / 2);
-			//Ajusta texto
-//			xChartValueValue.svgAttr("x", xX + (xIsLeft ? -xPadding:xPadding))
-//							.svgAttr("y", xY + (xLineHeight / 2))
-//							.svgAttr("font-size", xFontSize + "px");
-//			xChartValueValue.svgAttr("font-size", xFontSize + "px");			
-			//Ajusta Tooltip
-			if (xChartValueTooltip != null){
-				xChartValueTooltip.svgAttr("x", xXBox + (xLineHeight / 2))
-								  .svgAttr("y", xY);
-			}
-			pParams.count++;
-//			var xColorStop = "<stop offset=" + ((pParams.count / pParams.total) * 100) + "% style='stop-color:" + xChartValueBox.attr("fill") + "; stop-opacity:1'/>";
-//					"<stop offset="0%" style="stop-color:rgb(255,255,0);stop-opacity:1" />
+			var xChartValueValuePerc = xChartValueValue.children(".-perc");
+			if (xChartValueValuePerc==0){return;}
+			var xChartValueValueLabel = xChartValueValue.children(".-label");
+			var xChartValueValueValue = xChartValueValue.children(".-value");
+			var xFontSize = parseFloat(xChartValueValue.css("font-size")); 
+			var xWidth = xFontSize * 2.7; //Assume o máximo de 4 caracteres..xChartValueValuePerc.text().length;
+			var xHeight = xFontSize * .7;
+//			var xX = xChartValue.data("value").svgAttr("x");
+			var xY = (xHeight / 2);
+			var xRadius = parseInt(xFontSize * .3); 
+			var xChartValueInfo = xChartValue.data("infogroup");
+			var xChartValueBox = xChartValueValue.children(".-box");
+//			"M120,120 l0,27 a3,3 0 0,0 3,3 l50,0 a3,3 0 0,0 3,-3 l0,-27 a3,3 0 0,0 -3,-3 l-50,0 a3,3 0 0,0 -3,3"
+			var xPath = "";
+//			xPath += "M" + xX + "," + xY;
+			xPath += "M0,-" + xY;
+			xPath += "l0," + xHeight;
+			xPath += "a" + xRadius + "," + xRadius + " 0 0,0 " + xRadius + "," + xRadius;
+			xPath += "l" + xWidth + ",0";
+			xPath += "a" + xRadius + "," + xRadius + " 0 0,0 " + xRadius + ",-" + xRadius;
+			xPath += "l0,-" + xHeight;
+			xPath += "a" + xRadius + "," + xRadius + " 0 0,0 -" + xRadius + ",-" + xRadius;
+			xPath += "l-" + xWidth + ",0";
+			xPath += "a" + xRadius + "," + xRadius + " 0 0,0 -" + xRadius + "," + xRadius;
 			
-//			pParams.color.push(xChartValue.data("dc"));
-//			pParams.colorStop.push((((pParams.count - 1) / pParams.total) * 100) + "%");
-//			pParams.color.push(xChartValue.data("dc"));
-//			pParams.colorStop.push((((pParams.count - .01) / pParams.total) * 100) + "%");
+			xChartValueBox.attr("d", xPath);
 		});
-		return pParams;
+//		return pParams;
 	},
+	
 
 
 	resize: function(pCharts){
