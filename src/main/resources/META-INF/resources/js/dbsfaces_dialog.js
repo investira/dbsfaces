@@ -175,11 +175,7 @@ dbsfaces.dialog = {
 
 	resized: function(pDialog){
 		if (!pDialog.hasClass("-closed")){
-//			clearTimeout(pDialog.data("resizetimeout"));
-//			pDialog.data("resizetimeout", setTimeout(function(){
-				dbsfaces.dialog.pvAjustLayout(pDialog);
-//				},50)
-//			)
+			dbsfaces.dialog.pvAjustLayout(pDialog);
 		}
 	},
 
@@ -258,10 +254,6 @@ dbsfaces.dialog = {
 		}
 
 		//Limita dimensão
-//		if (pResize){
-//			pDialog.data("content").addClass("-removeTransition"); 
-//		}
-//		setTimeout(function(){
 		if (pDialog.data("v") || pDialog.data("c")){
 			//marca novo ponto de inicio da animação, que será o próprio ponto atual(para casos que a animação esteja em andamento)
 			pDialog.data("content").css("width", pDialog.data("content")[0].getBoundingClientRect().width); 
