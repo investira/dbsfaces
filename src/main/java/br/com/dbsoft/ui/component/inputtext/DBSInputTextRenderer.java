@@ -178,7 +178,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 					pWriter.startElement("input", pInputText);
 						DBSFaces.setAttribute(pWriter, "id", xClientIdSuggestion);
 						DBSFaces.setAttribute(pWriter, "name", xClientIdSuggestion);
-						DBSFaces.setAttribute(pWriter, "type", "text");
+						DBSFaces.setAttribute(pWriter, "type", pInputText.getType());
 						if (pInputText.getSize()!=0){
 							DBSFaces.setAttribute(pWriter, "size", pInputText.getSize());
 						}
@@ -217,7 +217,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 				if (pInputText.getSecret()){
 					DBSFaces.setAttribute(pWriter, "type", "password");
 				}else{
-					DBSFaces.setAttribute(pWriter, "type", "text");
+					DBSFaces.setAttribute(pWriter, "type", pInputText.getType());
 				}
 				if (pInputText.hasSuggestion() ||
 					pInputText.getAutocomplete().toLowerCase().equals("off") ||
