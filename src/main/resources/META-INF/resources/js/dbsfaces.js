@@ -1235,7 +1235,7 @@ dbsfaces.format = {
 		if (xLength == 0){return;}
 		var xSimple = (xVal / Math.pow(10, ((xLength -1) - ((xLength -1) % 3))));
 		var xSuf = "";
-		var xFormated = "";
+//		var xFormated = "";
 		if (xLength > 15){
 			xSuf = "quatri";
 		}else if (xLength > 12){
@@ -1249,8 +1249,13 @@ dbsfaces.format = {
 		}else{
 			xSimple = xVal;
 		}
-		xFormated = dbsfaces.format.number(xSimple, 2) + xSuf;
-		return xFormated;
+		if (xSuf != ""){
+			return dbsfaces.format.number(xSimple, 2) + xSuf;
+		}else{
+			return dbsfaces.format.number(xVal, 2);
+		}		
+//		xFormated = dbsfaces.format.number(xSimple, 2) + xSuf;
+//		return xFormated;
 	},
 	
 	getDecimalSeparator: function(){
