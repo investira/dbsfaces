@@ -115,7 +115,7 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 	}
 
 	/**
-	 * Quantidade de valores dentro deste gráfico.
+	 * Quantidade de valores(DBSChartValues) dentro deste gráfico.
 	 * Indice é gerado automaticamente no DBSCharts
 	 * @return
 	 */

@@ -128,7 +128,8 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		 && pChart.getTotalValue() != 0D){
 			return DBSNumber.divide(pChartValue.getValue(), pChart.getTotalValue()).doubleValue() * 100;
 		}
-		return null;
+//		wLogger.error("dbschartvaluerendered:\t" + pChartValue.getLabel() + " Valor zerado ou nulo.");
+		return 0D;
 	}
 	
 	private void pvEncodeBarAndLine(TYPE pType, DBSCharts pCharts, DBSChart pChart, DBSChartValue pChartValue, FacesContext pContext, ResponseWriter pWriter) throws IOException{
@@ -154,7 +155,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		xYText = xY;
 		xYTextTooltip = xY;
 		
-		xStroke = "stroke:" + pChartValue.getColor() + ";";
+		xStroke = "stroke:" + pChartValue.getDBSColor().toHSLA() + ";";
 
 		//Encode BAR ---------------------------------------------------------------------------------
 		if (pType == TYPE.BAR){
@@ -208,7 +209,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			pChartValue.setPoint(new Point2D.Double(xX.doubleValue(), xY.doubleValue()));
 			//Encode do circulo
 			//Artifício pois o fcirefox só funciona com valores fixos no transform-origin
-			xStyle = "stroke:currentColor; color:" + pChartValue.getColor() + ";";
+			xStyle = "stroke:currentColor; color:" + pChartValue.getDBSColor().toHSLA() + ";";
 			if (pChart.getShowDelta()){
 				DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xX.doubleValue(), xY.doubleValue(), ".2em", ".2em", CSS.MODIFIER.POINT, xStyle, "fill=white");
 			}else{
@@ -219,7 +220,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		//Encode Dados
 		pWriter.startElement("g", pChartValue);
 			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.INFO);
-			DBSFaces.setAttribute(pWriter, "fill", pChartValue.getColor(), null);
+			DBSFaces.setAttribute(pWriter, "fill", pChartValue.getDBSColor().toHSLA(), null);
 			//Encode do valor da linha ---------------------------------------------------------------------
 			pvEncodeText(pChartValue, 
 						 DBSFormat.getFormattedNumber(DBSObject.getNotNull(pChartValue.getDisplayValue(), pChartValue.getValue()), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask()), 
@@ -269,7 +270,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		Point2D 		x1 = new Point2D.Double();
 		Point2D 		x2 = new Point2D.Double();
 
-		String 			xStyle = "stroke:" + pChartValue.getColor() + "; stroke-width: " + pCharts.getPieChartWidth() + "px;";
+		String 			xStyle = "stroke:" + pChartValue.getDBSColor().toHSLA() + "; stroke-width: " + pCharts.getPieChartWidth() + "px;";
 
 		Point2D 		xPoint = new Point2D.Double();
 		Point2D 		xPointCenter = new Point2D.Double();
@@ -344,10 +345,10 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			pWriter.startElement("g", pChartValue);
 				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.INFO + xClass);
 				DBSFaces.setAttribute(pWriter, "globalindex", pChartValue.getGlobalIndex());
-				DBSFaces.setAttribute(pWriter, "style", "stroke:" + pChartValue.getColor() + "; font-size:" + xFontSize + "px");
+				DBSFaces.setAttribute(pWriter, "style", "stroke:" + pChartValue.getDBSColor().toHSLA() + "; font-size:" + xFontSize + "px");
 				
 				//Ponto pequeno no centro e na tangente do arco	
-				DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xPoint.getX(), xPoint.getY(), "2px", "2px", CSS.MODIFIER.POINT, null, "fill=" + pChartValue.getColor());
+				DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xPoint.getX(), xPoint.getY(), "2px", "2px", CSS.MODIFIER.POINT, null, "fill=" + pChartValue.getDBSColor().toHSLA());
 
 				//Valor do percentual, label e valor ---------------------------------------------------------------------
 				pvEncodePieLabel(pCharts, pChartValue, pPercValue, xPoint, xAlturaUnitaria, pWriter);
@@ -390,7 +391,6 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		Double xParcValueInt = DBSNumber.toInteger(pPercValue).doubleValue();
 		Double xParcValueDec = DBSNumber.round(pPercValue - xParcValueInt,2);
 		String xLabelPerc = DBSFormat.getFormattedNumber(xParcValueInt, 0);
-		
 		String xLabelValue = DBSFormat.numberSimplify(DBSObject.getNotNull(pChartValue.getDisplayValue(), pChartValue.getValue())).toString().trim();
 		String xLabelText = "";
 		if (!DBSObject.isEmpty(pChartValue.getLabel())){
@@ -407,7 +407,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(pWriter, "dy", ".35em");
 			//Background do percentual. Dimensão será calculada via JS para considerar o tamanho do fonte.
 			xPath = new StringBuilder();
-			DBSFaces.encodeSVGPath(pChartValue, pWriter, xPath.toString(), "-box", null, "fill=" + pChartValue.getColor());
+			DBSFaces.encodeSVGPath(pChartValue, pWriter, xPath.toString(), "-box", null, "fill=" + pChartValue.getDBSColor().toHSLA());
 			
 			//Percentual
 			xText = new StringBuilder();
@@ -501,7 +501,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 	private void pvSetColor(DBSCharts pCharts, DBSChart pChart, DBSChartValue pChartValue){
 		//Usa cor informada pelo usuário
 		if (pChartValue.getColor() == null){
-			pChartValue.setColor(DBSFaces.calcChartFillcolor(pChart.getDBSColor(), pCharts.getItensCount(), pChart.getItensCount(), pChart.getIndex(), pChartValue.getIndex()));
+			pChartValue.setDBSColor(DBSColor.fromString(DBSFaces.calcChartFillcolor(pChart.getDBSColor(), pCharts.getItensCount(), pChart.getItensCount(), pChart.getIndex(), pChartValue.getIndex())));
 		}
 	}
 }

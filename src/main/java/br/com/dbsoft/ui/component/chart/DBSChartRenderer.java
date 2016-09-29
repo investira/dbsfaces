@@ -296,7 +296,8 @@ public class DBSChartRenderer extends DBSRenderer {
 		//Loop por todos os registros lidos
 		//Lido de forma decrescentes por o saveState e restoreState invertou
 		//a ordem da consulta
-		for (int xRowIndex = 0; xRowIndex < xRowCount; xRowIndex++) {
+        for (int xRowIndex = xRowCount - 1; xRowIndex >= 0; xRowIndex--) {		
+
         	pChart.setRowIndex(xRowIndex);
         	//Loop no componente filho contendo as definições dos valores
 			for (UIComponent xC : pChart.getChildren()){

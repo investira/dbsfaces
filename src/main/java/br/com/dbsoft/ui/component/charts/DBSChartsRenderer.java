@@ -452,9 +452,8 @@ public class DBSChartsRenderer extends DBSRenderer {
 		        int xRowCount = xChart.getRowCount();
 		        xChart.setRowIndex(-1);
 		        xChartItensCount = xRowCount;
-				//Loop por todos os registros em ordem descrecente pois o saveState e restoreState é: o último que entra é o primeiro qua sai.
-		        //Desta forma, quando for efetuado o restoreState no encode, o primeiro será realmente o primeiro
-		        for (int xRowIndex = xRowCount - 1; xRowIndex >= 0; xRowIndex--) {
+				//Loop por todos os registros.
+		        for (int xRowIndex = 0; xRowIndex < xRowCount; xRowIndex++) {
 		        	xChart.setRowIndex(xRowIndex);
 		        	pvInitializeChartsValues(pCharts, xChart, xRowIndex + 1, xChartValueItensCount);
 		        }

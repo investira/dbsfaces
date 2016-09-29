@@ -289,7 +289,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	}
 
 	/**
-	 * Quantidade de valores dentro deste gráfico.
+	 * Quantidade de gráficos(DBSChart).
 	 * Indice é gerado automaticamente no DBSCharts
 	 * @return
 	 */
@@ -298,7 +298,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	}
 
 	/**
-	 * Quantidade de gráfico.
+	 * Quantidade de gráficos(DBSChart).
 	 * Indice é gerado automaticamente no DBSCharts
 	 * @return
 	 */

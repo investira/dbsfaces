@@ -62,7 +62,8 @@ dbsfaces.chartValue = {
 		if (typeof(xPoint.getTotalLength) == "undefined"){return;}
 		var xTotalLenght = xPoint.getTotalLength();
 		pChartValue.data("pointgroup").css("stroke-dasharray", xTotalLenght + " " + xTotalLenght);
-		if (parseFloat(pChartValue.data("dv")) > 0){
+		if (parseFloat(pChartValue.data("dv")) > 0
+		&& pChartValue.data("parent").attr("type") == "bar"){
 			pChartValue.data("pointgroup").css("stroke-dashoffset", -xTotalLenght);
 		}else{
 			pChartValue.data("pointgroup").css("stroke-dashoffset", xTotalLenght);
