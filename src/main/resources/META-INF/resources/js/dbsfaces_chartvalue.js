@@ -46,6 +46,7 @@ dbsfaces.chartValue = {
 	initialize: function(pChartValue){
 		//Indicar que nunca foi utilizado para cálculo do delta
 		dbsfaces.chartValue.pvInitializeData(pChartValue);
+		dbsfaces.chartValue.pvInitializeDash(pChartValue);
 		xChart = pChartValue.data("parent");
 		///Inicializa conforme tipo de gráfico
 		if (xChart.attr("type") == "pie"){
@@ -56,6 +57,19 @@ dbsfaces.chartValue = {
 		}	
 	},
 
+	pvInitializeDash: function(pChartValue){
+		var xPoint = pChartValue.data("pointgroup")[0];
+		if (typeof(xPoint.getTotalLength) == "undefined"){return;}
+		var xTotalLenght = xPoint.getTotalLength();
+		pChartValue.data("pointgroup").css("stroke-dasharray", xTotalLenght + " " + xTotalLenght);
+		if (parseFloat(pChartValue.data("dv")) > 0){
+			pChartValue.data("pointgroup").css("stroke-dashoffset", -xTotalLenght);
+		}else{
+			pChartValue.data("pointgroup").css("stroke-dashoffset", xTotalLenght);
+		}
+			  						  
+	},
+	
 	pvInitializeData: function(pChartValue){
 		var xChart = pChartValue.closest(".dbs_chart");
 		pChartValue.data("parent", xChart);

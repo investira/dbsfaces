@@ -9,18 +9,21 @@
 .dbs_charts:not([prerender]) > .-loading{
 	display: none;	
 }
+.dbs_charts > .-container.-hide{
+	opacity:0;
+}
 
 .dbs_charts > .-container{
 	height: 100%;
     width: 100%;	
 	position: relative;
 	display: inline-block;
-	opacity:0;
-	-webkit-transition: opacity 200ms;
-	-moz-transition: opacity 200ms;
-	-ms-transition: opacity 200ms;
-	-o-transition: opacity 200ms;
-	transition: opacity 200ms;
+	opacity:1;
+	-webkit-transition: opacity .3s;
+	-moz-transition: opacity .3s;
+	-ms-transition: opacity .3s;
+	-o-transition: opacity .3s;
+	transition: opacity .3s;
 }
 
 .dbs_charts > .-container > .-caption,
@@ -35,11 +38,6 @@
 	display: inline-block;
 	text-align: left;
     font-weight: bold;
-	background-image: url("#{request.contextPath}/images/back_texture_white.png");
-    background-color: rgba(13,25,45,.02);
-	-webkit-border-radius: 3px 3px 0px 0px;
-	-moz-border-radius: 3px 3px 0px 0px;
-	border-radius: 3px 3px 0px 0px;
 }
 
 .dbs_charts > .-container > .-data{
@@ -141,7 +139,23 @@
     display: inline-block;
     width: 100%;
 }
-
+.dbs_charts > .-container:not(.-hide) .dbs_chart[type='bar'] > .dbs_chartValue > .-point,
+.dbs_charts > .-container:not(.-hide) .dbs_chart[type='pie'] > .dbs_chartValue > .-point{
+	-webkit-transition: fill-opacity .5s, stroke-opacity .5s, stroke-dashoffset 1s ease;
+	-moz-transition: fill-opacity .5s, stroke-opacity .5s, stroke-dashoffset 1s ease;
+	-o-transition: fill-opacity .5s, stroke-opacity .5s, stroke-dashoffset 1s ease;
+	transition: fill-opacity .5s, stroke-opacity .5s, stroke-dashoffset 1s ease;
+	stroke-dashoffset: 0 !important;
+}
+/* .dbs_charts > .-container.-hide .dbs_chart[type='pie'] > .dbs_chartValue.-selected > .-info > .-value, */
+/* .dbs_charts > .-container.-hide .dbs_chart[type='bar'] > .dbs_chartValue.-selected > .-info > .-value{ */
+/* 	opacity: 0; */
+/* } */
+/* .dbs_charts > .-container:not(.-hide) .dbs_chart[type='pie'] > .dbs_chartValue.-selected > .-info > .-value, */
+/* .dbs_charts > .-container:not(.-hide) .dbs_chart[type='bar'] > .dbs_chartValue.-selected > .-info > .-value{ */
+/* 	opacity: 1; */
+/* 	transition: opacity .2s ease 15s; */
+/* } */
 
 
 

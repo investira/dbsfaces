@@ -299,6 +299,7 @@ dbsfaces.chart = {
 				xDeltaPathId = pChart.get(0).id + "_" + xClass;
 				xDeltaValuePath = dbsfaces.svg.textPath(xDeltaValue, xDeltaPathId, "", "-" + xClass, null, {"startOffset": "0%"});
 				pChart.data("deltavalue_r", xDeltaValuePath);
+
 				//Path a esquerda - Valor
 				xClass = "deltapath_l";
 				xDeltaPathId = pChart.get(0).id + "_" + xClass;

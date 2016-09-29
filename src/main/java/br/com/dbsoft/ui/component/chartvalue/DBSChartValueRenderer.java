@@ -171,14 +171,34 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			//Valore positivos acima
 			if (pChartValue.getValue() > 0){
 			    xStyle += "transform-origin:" + xX.intValue() + "px " + (xY.doubleValue() + xHeight) + "px;";
-				DBSFaces.encodeSVGLine(pChartValue, pWriter, xX.intValue(), xY.doubleValue(), xX.intValue(), xY.doubleValue() + xHeight,  CSS.MODIFIER.POINT, xStyle, "fill=" + pChartValue.getColor());
+//				DBSFaces.encodeSVGLine(pChartValue, pWriter, xX.intValue(), xY.doubleValue(), xX.intValue(), xY.doubleValue() + xHeight,  CSS.MODIFIER.POINT, xStyle, "fill=" + pChartValue.getColor());
+				StringBuilder xPath = new StringBuilder();
+				xPath.append("M");
+				xPath.append(xX.intValue());
+				xPath.append(",");
+				xPath.append(xY.intValue());
+				xPath.append("l");
+				xPath.append(0);
+				xPath.append(",");
+				xPath.append(xHeight);
+				DBSFaces.encodeSVGPath(pChartValue, pWriter, xPath.toString(), CSS.MODIFIER.POINT, xStyle, null);
 			//Valores negativos
 			}else{
 				//inverte a posição Yx
 				xYTextTooltip = DBSNumber.subtract(pCharts.getChartHeight(), pCharts.getZeroPosition().doubleValue());
 				xYTextTooltip = DBSNumber.add(pCharts.getPadding(), xYTextTooltip);
 			    xStyle += "transform-origin:" + xX.intValue() + "px " + xYTextTooltip + "px;";
-				DBSFaces.encodeSVGLine(pChartValue, pWriter, xX.intValue(), xYTextTooltip, xX.intValue(), xYTextTooltip.doubleValue() + xHeight,  CSS.MODIFIER.POINT, xStyle, "fill=" + pChartValue.getColor());
+//				DBSFaces.encodeSVGLine(pChartValue, pWriter, xX.intValue(), xYTextTooltip, xX.intValue(), xYTextTooltip.doubleValue() + xHeight,  CSS.MODIFIER.POINT, xStyle, "fill=" + pChartValue.getColor());
+				StringBuilder xPath = new StringBuilder();
+				xPath.append("M");
+				xPath.append(xX.intValue());
+				xPath.append(",");
+				xPath.append(xYTextTooltip);
+				xPath.append("l");
+				xPath.append(0);
+				xPath.append(",");
+				xPath.append(xHeight);
+				DBSFaces.encodeSVGPath(pChartValue, pWriter, xPath.toString(), CSS.MODIFIER.POINT, xStyle, null);
 			}
 		//Encode LINE - ponto. as linhas que ligam os pontos, são desenhadas no código JS.
 		}else if (pType == TYPE.LINE){

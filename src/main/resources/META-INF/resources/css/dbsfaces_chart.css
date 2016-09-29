@@ -298,6 +298,8 @@
     transition: fill-opacity .5s, stroke-opacity .5s;
 }
 
+
+
 .dbs_chart[type='line'] > .dbs_chartValue > .-info > .-label,
 .dbs_chart[type='bar'] > .dbs_chartValue > .-info > .-label{
 	text-anchor: start;
@@ -351,11 +353,6 @@
 /*     shape-rendering: crispEdges; */
 }
 	
-
-.dbs_chart > .dbs_chartValue > .-point{
-/* 	transform-origin: 50% 50%; */
-}
-
 
 .dbs_chart[type='pie'] > .dbs_chartValue > .-point {
 	fill: none;

@@ -11,7 +11,7 @@ dbs_charts = function(pId, pPreRender) {
 	}else{
 		dbsfaces.charts.initialize(xCharts);
 		//Exibe gráfico
-		xCharts.data("container").css("opacity", 1);
+		xCharts.data("container").removeClass("-hide");
 		if (xCharts.data("error") == null){
 			$(pId).on("mouseleave", function(e){
 				//Verificar se componente que disparou esta fora deste chart. 
@@ -28,6 +28,15 @@ dbs_charts = function(pId, pPreRender) {
 			
 			$(pId + " > .-container > .-data > .-container > .-content > .-captions > .-content").on("mousedown", function(e){
 				dbsfaces.charts.activateChart(xCharts, $(this));
+			});
+		}else{
+			xCharts.data("container").on(dbsfaces.EVENT.ON_TRANSITION_END, function(e){
+				console.log("asdc");
+//				.dbs_chart[type='bar'] > .dbs_chartValue > .-point,
+//				.dbs_chart[type='pie'] > .dbs_chartValue > .-point{
+//					transition: fill-opacity .5s, stroke-opacity .5s, stroke-dashoffset 2s ease 2s !important;
+//				}
+
 			});
 		}
 	}

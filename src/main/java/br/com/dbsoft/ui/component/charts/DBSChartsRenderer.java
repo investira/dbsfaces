@@ -131,7 +131,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 		encodeClientBehaviors(pContext, pCharts);
 		//CONTAINER--------------------------
 		pWriter.startElement("div", pCharts);
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
+			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER + "-hide");
 
 			//CAPTION--------------------------
 			if (pCharts.getCaption() !=null){
