@@ -203,7 +203,7 @@
 	position: relative;
 }
 
-.dbs_dialog > .-container > .-content > .-sub_container > div > div > .-sub_content > *{
+.dbs_dialog > .-container > .-content > .-sub_container > div > div > .-sub_content > *:not(style):not(script){
     display: inline-block;
 }
 
