@@ -214,30 +214,11 @@ label.-th_input-data,
 .-th_input-suggestion{
 	border: none;
 	padding: .2em .1em .2em .1em !important;
+	-webkit-border-radius: .15em;
+	-moz-border-radius: .15em;
+	border-radius: .15em;
 }
 
-/* .-th_input-data[type=text], */
-/* .-th_input-data[type=password], */
-/* .-th_input-data[type=email], */
-/* .-th_input-data[type=tel], */
-/* .-th_input-data[type=number], */
-/* .-th_input-data[type=date], */
-/* .-th_input-data[type=time], */
-/* .-th_input-data[type=url], */
-/* select.-th_input-data,  */
-/* textarea.-th_input-data, */
-/* span.-th_input-data, */
-/* div.-th_input-data, */
-/* label.-th_input-data, */
-/* .-th_input-suggestion{ */
-/*    	border-color: rgba(13, 25, 45, 0.1); */
-/*     border-style: solid; */
-/*     border-width: 1px; */
-/* 	padding: .2em .1em .2em .1em !important; */
-/* 	-webkit-border-radius: .15em !important; */
-/* 	-moz-border-radius: .15em !important; */
-/* 	border-radius: .15em !important; */
-/* } */
 
 .-th_input-data.-readOnly {
 	background-color: rgba(0, 0, 0, 0.05) !important;
@@ -256,8 +237,7 @@ select.-th_input-data.-readOnly,
 textarea.-th_input-data.-readOnly,
 span.-th_input-data.-readOnly,
 div.-th_input-data.-readOnly,
-label.-th_input-data.-readOnly
-	{
+label.-th_input-data.-readOnly{
 /* 	padding: 1px 1px 1px 1px !important; */
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;
@@ -349,9 +329,20 @@ textarea.-th_input-data:FOCUS,
 .-th_responsive .-th_flex{
     position: relative;
     display: flex;
+    display: -webkit-flex;
+    
+    -webkit-flex-flow: row wrap;
+    -moz-flex-flow: row wrap;
     flex-flow: row wrap;
+	
+	-webkit-justify-content: center;
+	-moz-justify-content: center;
     justify-content: center;
+	
+	-webkit-align-items: stretch;
+	-moz-align-items: stretch;
     align-items: stretch;
+
 /* 	align-content: space-around; */
 	box-sizing: content-box;
 /* 	flex-basis: 99.99%; */
@@ -360,12 +351,18 @@ textarea.-th_input-data:FOCUS,
 /* 	 align-items: center; */
 /* }    */
 .-th_responsive .-th_flex.-nowrap{
+    -webkit-flex-wrap: nowrap;
+    -moz-flex-wrap: nowrap;
     flex-wrap: nowrap;
 }
 
 .-th_responsive .-th_flex > .-th_col{
     position: relative;
+    -webkit-flex-grow: 1;
+    -moz-flex-grow: 1;
 	flex-grow: 1;
+	-webkit-flex-shrink: 0;
+	-moz-flex-shrink: 0;
     flex-shrink: 0;
 	box-sizing: content-box;
 	max-width: 100%;
@@ -421,7 +418,12 @@ textarea.-th_input-data:FOCUS,
 }
 
 
-@media screen and (min-width:320px) and (max-width:419px){
+@media screen and (min-width:320px) and (max-height:480px){
+	.-th_responsive{
+		font-size: 10px;
+	}
+}
+@media screen and (min-width:320px) and (max-width:419px) and (min-height:481px){
 	.-th_responsive{
 		font-size: 11px;
 	}

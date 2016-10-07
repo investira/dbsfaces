@@ -154,7 +154,7 @@
 		</component>
 		<attribute>
 			<description>
-                Diálogos
+                Identificador único do componente.
             </description>
 			<name>id</name>
 			<required>false</required>
@@ -186,6 +186,28 @@
 		</attribute>
 		<attribute>
 			<description>
+                Texto do Título 
+            </description>
+			<name>caption</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Tipo de dialog. Padrão é 'nav'&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;NAV(navigation bars - top/bottom/left/right) = nav&lt;/li&gt;
+					&lt;li&gt;MSG(mensages - center/top/bottom/left/right) = msg&lt;/li&gt;
+					&lt;li&gt;MOD(modal - center) = mod&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>type</name>
+			<required>false</required>
+			<type>java.lang.Sting</type>
+		</attribute>
+		<attribute>
+			<description>
             	iconClass
             </description>
 			<name>iconClass</name>
@@ -195,24 +217,45 @@
 		<attribute>
 			<description>
 				&lt;span style="font-size:small"&gt;
-				Localização da abertura. Padrão é vertical.&lt;br/&gt;
+				Posição principal. Padrão é CENTER.&lt;br/&gt;
 				&lt;ul&gt;
-					&lt;li&gt;Abertura:VERTICAL = v&lt;/li&gt;
-					&lt;li&gt;Abertura:HORIZONTAL = h&lt;/li&gt;
-					&lt;li&gt;Abertura:CENTRO = c&lt;/li&gt;
+					&lt;li&gt;TOP = t&lt;/li&gt;
+					&lt;li&gt;BOTTOM = b&lt;/li&gt;
+					&lt;li&gt;LEFT = l&lt;/li&gt;
+					&lt;li&gt;RIGHT = r&lt;/li&gt;
+					&lt;li&gt;CENTER = c&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
-			<name>location</name>
+			<name>position</name>
 			<required>false</required>
 			<type>java.lang.Sting</type>
 		</attribute>
 		<attribute>
 			<description>
 				&lt;span style="font-size:small"&gt;
-				Tempo para fechamento automatico do nav em segundos.&lt;br/&gt;
-				Se for 0, não fecha automaticamente.
+				Tamanho do conteúdo. Padrão é AUTO.&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;AUTO(conforme tamanho do conteúdo) = a&lt;/li&gt;
+					&lt;li&gt;SCREEN(largura e altura da tela) = s&lt;/li&gt;
+				&lt;ul&gt;
 				&lt;/span&gt; </description>
-			<name>closeTimeout</name>
+			<name>contentSize</name>
+			<required>false</required>
+			<type>java.lang.Sting</type>
+		</attribute>
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Alinhamento do conteúdo. Padrão é TOP.&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;TOP = t&lt;/li&gt;
+					&lt;li&gt;BOTTOM = b&lt;/li&gt;
+					&lt;li&gt;LEFT = l&lt;/li&gt;
+					&lt;li&gt;RIGHT = r&lt;/li&gt;
+					&lt;li&gt;CENTER = c&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>contentAlignment</name>
 			<required>false</required>
 			<type>java.lang.Sting</type>
 		</attribute>
@@ -233,39 +276,26 @@
 		</attribute>
 		<attribute>
 			<description>
-                &lt;span style="font-size:small"&gt;
-				Alinhamento vertical do conteúdo do nav. O Padrão é TOP.&lt;br/&gt;
-				&lt;ul&gt;
-					&lt;li&gt;Conteúdo:TOP = t&lt;/li&gt;
-					&lt;li&gt;Conteúdo:BOTTOM = b&lt;/li&gt;
-				&lt;ul&gt;
-				&lt;/span&gt; </description>
-			<name>contentVerticalAlign</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                &lt;span style="font-size:small"&gt;
-				Alinhamento horizontal do conteúdo do nav. O Padrão é LEFT.&lt;br/&gt;
-				&lt;ul&gt;
-					&lt;li&gt;Conteúdo:LEFT = l&lt;/li&gt;
-					&lt;li&gt;Conteúdo:RIGHT = r&lt;/li&gt;
-				&lt;ul&gt;
-				&lt;/span&gt; </description>
-			<name>contentHorizontalAlign</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
                 Se exibe já aberto. Padrao é false.
             </description>
 			<name>open</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
-	</tag>	
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Tempo para fechamento automático do nav em segundos.&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;0 = Sem timeout&lt;/li&gt;
+					&lt;li&gt;auto = Em função do tamanho do conteúdo&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>closeTimeout</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
 	<tag>
 		<tag-name>nav</tag-name>
 		<component>
@@ -274,7 +304,7 @@
 		</component>
 		<attribute>
 			<description>
-                Divisão para navegação
+                Identificador único do componente.
             </description>
 			<name>id</name>
 			<required>false</required>
@@ -394,7 +424,7 @@
 		</component>
 		<attribute>
 			<description>
-                Divisão para navegação
+                Identificador único do componente.
             </description>
 			<name>id</name>
 			<required>false</required>
@@ -1241,7 +1271,7 @@
 		</component>
 		<attribute>
 			<description>
-                Exibe tela rápido(sem botão de confirmação).
+                Identificador único do componente.
             </description>
 			<name>id</name>
 			<required>true</required>
@@ -3729,7 +3759,7 @@ Default: false;</description>
 		</component>
 		<attribute>
 			<description>
-                Id da subview que será utilizado como namecontainer.
+                Identificador único do componente.
             </description>
 			<name>id</name>
 			<required>true</required>

@@ -1654,6 +1654,25 @@ public class  DBSFaces {
 	}
 
 	/**
+	 * Encore dos names spaces padrão do SVG
+	 * @param pComponent
+	 * @param pWriter
+	 * @param pX1
+	 * @param pY1
+	 * @param pX2
+	 * @param pY2
+	 * @param pStyleClass
+	 * @param pStyle
+	 * @param pAttrs Atributos nos formato atributo1=valor2; atributo2=valor2
+	 * @throws IOException
+	 */
+	public static void encodeSVGNamespaces(ResponseWriter pWriter) throws IOException{
+		DBSFaces.setAttribute(pWriter, "xmlns", "http://www.w3.org/2000/svg");
+		DBSFaces.setAttribute(pWriter, "xmlns:xlink", "http://www.w3.org/1999/xlink");
+	}
+
+	
+	/**
 	 * Encore da linha para gráfico SVG
 	 * @param pComponent
 	 * @param pWriter
@@ -1819,7 +1838,7 @@ public class  DBSFaces {
 	/**
 	 * @param pComponent
 	 * @param pWriter
-	 * @param pData
+	 * @param pData Dados do path(d).
 	 * @param pStyleClass
 	 * @param pStyle
 	 * @param pAttrs Atributos nos formato atributo1=valor2; atributo2=valor2

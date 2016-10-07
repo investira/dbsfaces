@@ -46,7 +46,7 @@ public class DBSMenu extends DBSUIOutput implements NamingContainer {
 		public String getCode() {
 			return wCode;
 		}
-		public String getCSS() {
+		public String getStyleClass() {
 			return " -menu_" + wCode;
 		}
 		

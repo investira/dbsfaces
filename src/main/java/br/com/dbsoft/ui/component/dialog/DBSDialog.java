@@ -6,30 +6,30 @@ import java.util.Collection;
 import javax.faces.component.FacesComponent;
 import javax.faces.component.NamingContainer;
 
-import br.com.dbsoft.ui.component.DBSUIComponentBase;
+import br.com.dbsoft.ui.component.DBSUIOutput;
 import br.com.dbsoft.ui.core.DBSFaces;
-import br.com.dbsoft.util.DBSObject;
 
 
 @FacesComponent(DBSDialog.COMPONENT_TYPE)
-public class DBSDialog extends DBSUIComponentBase implements NamingContainer{  
+public class DBSDialog extends DBSUIOutput implements NamingContainer{  
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.DIALOG;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 	
 
+	public final static String FACET_CAPTION = "caption";
 	public final static String FACET_HEADER = "header";
 	public final static String FACET_FOOTER = "footer";
 
 	protected enum PropertyKeys {
-		styleClass,
-		style,
+		type,
+		caption,
 		iconClass,
-		location,
-		closeTimeout,
-		contentPadding,
+		position,
 		contentStyleClass,
-		contentVerticalAlign,
-		contentHorizontalAlign,
+		contentAlignment,
+		contentSize,
+		contentPadding,
+		closeTimeout,
 		open;
 
 		String toString;
@@ -46,134 +46,182 @@ public class DBSDialog extends DBSUIComponentBase implements NamingContainer{
 		}
 	}
 	
-	/**
-	 * ENUM DE LOCATION
-	 * @author jose.avila@dbsoft.com.br
-	 *
-	 */
-	public static enum LOCATION {
-		//VERTICAL
-		TOP_LEFT_VERTICAL		("tlv",true,true,true),
-		TOP_RIGHT_VERTICAL		("trv",true,false,true),
-		BOTTOM_LEFT_VERTICAL	("blv",false,true,true),
-		BOTTOM_RIGHT_VERTICAL	("brv",false,false,true),
-		//HORIZONTAL
-		TOP_LEFT_HORIZONTAL 	("tlh",true,true,false),
-		TOP_RIGHT_HORIZONTAL 	("trh",true,false,false),
-		BOTTOM_LEFT_HORIZONTAL 	("blh",false,true,false),
-		BOTTOM_RIGHT_HORIZONTAL ("brh",false,false,false), //
-		//CENTER
-		TOP_LEFT_CENTER			("tlc",true,true,false),
-		TOP_RIGHT_CENTER		("trc",true,false,false),
-		BOTTOM_LEFT_CENTER		("blc",false,true,false),
-		BOTTOM_RIGHT_CENTER		("brc",false,false,false); //
+	public static enum TYPE {
+		NAV 			("nav"),
+	    MOD 			("mod"),
+		MSG 			("msg");	
 		
-		private String 	wCode;
-		private Boolean	wIsTop;
-		private Boolean	wIsLeft;
-		private Boolean	wIsVertical;
+		private String 	wName;
 		
-		private LOCATION(String pCode, Boolean pIsTop, Boolean pIsLeft, Boolean pIsVertical) {
-			wCode = pCode;
-			wIsTop = pIsTop;
-			wIsLeft = pIsLeft;
-			wIsVertical = pIsVertical;
+		private TYPE(String pName) {
+			this.wName = pName;
 		}
 
-		public String getCode() {
-			return wCode;
-		}
-		public String getCSS() {
-			return " -" + wCode +" ";
-		}
-		public Boolean getIsTop(){
-			return wIsTop;
-		}
-		public Boolean getIsLeft(){
-			return wIsLeft;
-		}
-		public Boolean getIsVertical(){
-			return wIsVertical;
+		public String getName() {
+			return wName;
 		}
 		
-		public static LOCATION get(String pCode) {
+
+		public static TYPE get(String pCode) {
 			if (pCode == null){
-				return TOP_LEFT_HORIZONTAL;
+				return MSG;
 			}			
 			pCode = pCode.trim().toLowerCase();
 			switch (pCode) {
-			case "tlh":
-				return TOP_LEFT_HORIZONTAL;
-			case "tlv":
-				return TOP_LEFT_VERTICAL;
-			case "trh":
-				return TOP_RIGHT_HORIZONTAL;
-			case "trv":
-				return TOP_RIGHT_VERTICAL;
-			case "blh":
-				return BOTTOM_LEFT_HORIZONTAL;
-			case "blv":
-				return BOTTOM_LEFT_VERTICAL;
-			case "brh":
-				return BOTTOM_RIGHT_HORIZONTAL;
-			case "brv":
-				return BOTTOM_RIGHT_VERTICAL;
-			case "tlc":
-				return TOP_LEFT_CENTER;
-			case "trc":
-				return TOP_RIGHT_CENTER;
-			case "blc":
-				return BOTTOM_LEFT_CENTER;
-			case "brc":
-				return BOTTOM_RIGHT_CENTER;
+			case "msg":
+				return MSG;
+			case "nav":
+				return NAV;
+			case "mod":
+				return MOD;
 			default:
-				return TOP_LEFT_HORIZONTAL;
+				return MSG;
 			}
+		}	
+	}
+	
+	public static enum POSITION {
+		TOP 			("t"),
+	    BOTTOM 			("b"),
+		LEFT 			("l"),
+	    RIGHT 			("r"),
+		CENTER 			("c");	
+		
+		private String 	wName;
+		
+		private POSITION(String pName) {
+			this.wName = pName;
+		}
+
+		public String getName() {
+			return wName;
 		}
 		
-		public static LOCATION get(String pLocation, String pContentVerticalAlign, String pContentHorizontalAlign) {
-			StringBuilder xLocation = new StringBuilder();
-			
-			if (DBSObject.isEmpty(pContentVerticalAlign)) {
-				xLocation.append("t");
-			}else{
-				xLocation.append(pContentVerticalAlign.substring(0, 1).toLowerCase());
-			}
-			if (DBSObject.isEmpty(pContentHorizontalAlign)) {
-				xLocation.append("l");
-			}else{
-				xLocation.append(pContentHorizontalAlign.substring(0, 1).toLowerCase());
-			}
-			if (DBSObject.isEmpty(pLocation)) {
-				xLocation.append("v");
-			}else{
-				xLocation.append(pLocation.substring(0, 1).toLowerCase());
-			}
-			return get(xLocation.toString());			
+		public String getStyleClass() {
+			return " -p_" + wName;
 		}
+
+		public static POSITION get(String pCode) {
+			if (pCode == null){
+				return CENTER;
+			}			
+			pCode = pCode.trim().toLowerCase();
+			switch (pCode) {
+			case "t":
+				return TOP;
+			case "b":
+				return BOTTOM;
+			case "l":
+				return LEFT;
+			case "r":
+				return RIGHT;
+			case "c":
+				return CENTER;
+			default:
+				return CENTER;
+			}
+		}	
 	}
+
+	public static enum CONTENT_SIZE {
+		SCREEN 			("s"),
+	    AUTO 			("a");
+		
+		private String 	wName;
+		
+		private CONTENT_SIZE(String pName) {
+			this.wName = pName;
+		}
+
+		public String getName() {
+			return wName;
+		}
+		
+		public String getStyleClass() {
+			return " -cs_" + wName;
+		}
+
+		public static CONTENT_SIZE get(String pCode) {
+			if (pCode == null){
+				return AUTO;
+			}			
+			pCode = pCode.trim().toLowerCase();
+			switch (pCode) {
+			case "s":
+				return SCREEN;
+			case "a":
+				return AUTO;
+			default:
+				return null;
+			}
+		}	
+	}
+	
+	public static enum CONTENT_ALIGNMENT {
+		TOP 			("t"),
+	    BOTTOM 			("b"),
+		LEFT 			("l"),
+	    RIGHT 			("r"),
+		CENTER 			("c");	
+		
+		private String 	wName;
+		
+		private CONTENT_ALIGNMENT(String pName) {
+			this.wName = pName;
+		}
+
+		public String getName() {
+			return wName;
+		}
+		
+		public String getStyleClass() {
+			return " -ca_" + wName;
+		}
+
+		public static CONTENT_ALIGNMENT get(String pCode) {
+			if (pCode == null){
+				return CENTER;
+			}			
+			pCode = pCode.trim().toLowerCase();
+			switch (pCode) {
+			case "t":
+				return TOP;
+			case "b":
+				return BOTTOM;
+			case "l":
+				return LEFT;
+			case "r":
+				return RIGHT;
+			case "c":
+				return CENTER;
+			default:
+				return null;
+			}
+		}	
+	}
+
 
     public DBSDialog(){
 		setRendererType(DBSDialog.RENDERER_TYPE);
     }
 
     
-	public String getStyle() {
-		return (String) getStateHelper().eval(PropertyKeys.style, null);
+	public String getType() {
+		return (String) getStateHelper().eval(PropertyKeys.type, TYPE.NAV.getName());
 	}
 	
-	public void setStyle(String pStyle) {
-		getStateHelper().put(PropertyKeys.style, pStyle);
-		handleAttribute("style", pStyle);
-	}
-
-	public String getStyleClass() {
-		return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+	public void setType(String pType) {
+		getStateHelper().put(PropertyKeys.type, pType);
+		handleAttribute("type", pType);
 	}
 	
-	public void setStyleClass(String pStyleClass) {
-		getStateHelper().put(PropertyKeys.styleClass, pStyleClass);
-		handleAttribute("styleClass", pStyleClass);
+	public String getCaption() {
+		return (String) getStateHelper().eval(PropertyKeys.caption, null);
+	}
+	
+	public void setCaption(String pCaption) {
+		getStateHelper().put(PropertyKeys.caption, pCaption);
+		handleAttribute("caption", pCaption);
 	}
 	
 	public String getIconClass() {
@@ -194,20 +242,53 @@ public class DBSDialog extends DBSUIComponentBase implements NamingContainer{
 		handleAttribute("open", pOpen);
 	}
 	
-	public String getLocation() {
-		return (String) getStateHelper().eval(PropertyKeys.location, LOCATION.TOP_LEFT_HORIZONTAL.getCode());
+	public String getPosition() {
+		return (String) getStateHelper().eval(PropertyKeys.position, POSITION.CENTER.getName());
 	}
 	
-	public void setLocation(String pLocation) {
-		getStateHelper().put(PropertyKeys.location, pLocation);
-		handleAttribute("location", pLocation);
+	public void setPosition(String pPosition) {
+		POSITION xP = POSITION.get(pPosition);
+		if (xP == null){
+			System.out.println("Position invalid\t:" + pPosition);
+			return;
+		}
+		getStateHelper().put(PropertyKeys.position, pPosition);
+		handleAttribute("position", pPosition);
+	}
+
+	public String getContentSize() {
+		return (String) getStateHelper().eval(PropertyKeys.contentSize, CONTENT_SIZE.AUTO.getName());
 	}
 	
+	public void setContentSize(String pContentSize) {
+		CONTENT_SIZE xCS = CONTENT_SIZE.get(pContentSize);
+		if (xCS == null){
+			System.out.println("ContentSize invalid\t:" + pContentSize);
+			return;
+		}
+		getStateHelper().put(PropertyKeys.contentSize, pContentSize);
+		handleAttribute("contentSize", pContentSize);
+	}
+
+	public String getContentAlignment() {
+		return (String) getStateHelper().eval(PropertyKeys.contentAlignment, CONTENT_ALIGNMENT.TOP.getName());
+	}
+	
+	public void setContentAlignment(String pContentAlignment) {
+		if (CONTENT_ALIGNMENT.get(pContentAlignment) == null){
+			System.out.println("ContentAlignment invalid\t:" + pContentAlignment);
+			return;
+		}
+		getStateHelper().put(PropertyKeys.contentAlignment, pContentAlignment);
+		handleAttribute("contentAlignment", pContentAlignment);
+	}
+
 	public String getCloseTimeout() {
 		return (String) getStateHelper().eval(PropertyKeys.closeTimeout, "0");
 	}
 	
 	public void setCloseTimeout(String pCloseTimeout) {
+		if (pCloseTimeout != null){pCloseTimeout = pCloseTimeout.trim().toLowerCase();}
 		getStateHelper().put(PropertyKeys.closeTimeout, pCloseTimeout);
 		handleAttribute("closeTimeout", pCloseTimeout);
 	}
@@ -229,23 +310,7 @@ public class DBSDialog extends DBSUIComponentBase implements NamingContainer{
 		handleAttribute("contentStyleClass", pContentStyleClass);
 	}
 	
-	public String getContentVerticalAlign() {
-		return (String) getStateHelper().eval(PropertyKeys.contentVerticalAlign, null);
-	}
-	
-	public void setContentVerticalAlign(String pContentVerticalAlign) {
-		getStateHelper().put(PropertyKeys.contentVerticalAlign, pContentVerticalAlign);
-		handleAttribute("contentVerticalAlign", pContentVerticalAlign);
-	}
-	
-	public String getContentHorizontalAlign() {
-		return (String) getStateHelper().eval(PropertyKeys.contentHorizontalAlign, null);
-	}
-	
-	public void setContentHorizontalAlign(String pContentHorizontalAlign) {
-		getStateHelper().put(PropertyKeys.contentHorizontalAlign, pContentHorizontalAlign);
-		handleAttribute("contentHorizontalAlign", pContentHorizontalAlign);
-	}
+
 
 	@Override
     public String getDefaultEventName()

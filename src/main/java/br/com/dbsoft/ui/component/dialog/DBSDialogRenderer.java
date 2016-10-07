@@ -12,11 +12,10 @@ import com.sun.faces.renderkit.RenderKitUtils;
 
 import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSRenderer;
+import br.com.dbsoft.ui.component.dialog.DBSDialog.TYPE;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
-import br.com.dbsoft.ui.component.dialog.DBSDialog.LOCATION;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
-import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSObject;
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSDialog.RENDERER_TYPE)
@@ -40,16 +39,14 @@ public class DBSDialogRenderer extends DBSRenderer {
 		if (!pComponent.isRendered()){return;}
 		
 		DBSDialog 			xDialog = (DBSDialog) pComponent;
-		
-		ResponseWriter 	xWriter = pContext.getResponseWriter();
-		LOCATION 		xLocation = LOCATION.get(xDialog.getLocation(), xDialog.getContentVerticalAlign(), xDialog.getContentHorizontalAlign());
-		String 			xClass = CSS.DIALOG.MAIN + CSS.THEME.FC + xLocation.getCSS();
-//		if (xDialog.getOpened()){
-////			xClass += CSS.THEME.INVERT; //Inverte cor
-////			xClass += CSS.MODIFIER.OPENED; //Indica que esta aberto
-//		}else{
-			xClass += CSS.MODIFIER.CLOSED; //Indica que esta fechado
-//		}
+		if (xDialog.getType()==null){return;}
+
+		ResponseWriter 		xWriter = pContext.getResponseWriter();
+//		POSITION 			xPosition = POSITION.get(xDialog.getPosition());
+//		CONTENT_SIZE 		xContentSize = CONTENT_SIZE.get(xDialog.getContentSize());
+//		CONTENT_ALIGNMENT 	xContentAlignment = CONTENT_ALIGNMENT.get(xDialog.getContentAlignment());
+		String 				xClass = CSS.DIALOG.MAIN + CSS.THEME.FC + CSS.MODIFIER.CLOSED;
+
 		if (xDialog.getStyleClass()!=null){
 			xClass += xDialog.getStyleClass();
 		}
@@ -60,12 +57,18 @@ public class DBSDialogRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "name", xClientId);
 			DBSFaces.setAttribute(xWriter, "class", xClass);
 			DBSFaces.setAttribute(xWriter, "style", xDialog.getStyle());
-			DBSFaces.setAttribute(xWriter, "timeout", xDialog.getCloseTimeout());
+			DBSFaces.setAttribute(xWriter, "type", xDialog.getType());
+			if (!xDialog.getCloseTimeout().equals("0")){
+				DBSFaces.setAttribute(xWriter, "timeout", xDialog.getCloseTimeout());
+			}
+			DBSFaces.setAttribute(xWriter, "p", xDialog.getPosition());
+			DBSFaces.setAttribute(xWriter, "cs", xDialog.getContentSize());
+			DBSFaces.setAttribute(xWriter, "ca", xDialog.getContentAlignment());
 			DBSFaces.setAttribute(xWriter, "open", (xDialog.getOpen() ? "true" : "false"));
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xDialog, DBSPassThruAttributes.getAttributes(Key.DIALOG));
 			xWriter.startElement("div", xDialog);
 				DBSFaces.setAttribute(xWriter, "style", "opacity:0", null); //Inicia escondido para ser exibido após a execução do JS
-				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
+				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER + CSS.MODIFIER.CLOSED);
 				//Icon
 				pvEncodeIcon(xDialog, xWriter);
 				//Mask
@@ -78,7 +81,7 @@ public class DBSDialogRenderer extends DBSRenderer {
 	
 	private void pvEncodeContentBegin(DBSDialog pDialog, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("div", pDialog);
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + CSS.THEME.FC + CSS.THEME.BC + pDialog.getContentStyleClass() + CSS.MODIFIER.CLOSED, null); //(pDialog.getOpened() ? CSS.MODIFIER.OPENED : CSS.MODIFIER.CLOSED)
+			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + CSS.THEME.FC + CSS.THEME.BC + pDialog.getContentStyleClass(), null); //(pDialog.getOpened() ? CSS.MODIFIER.OPENED : CSS.MODIFIER.CLOSED)
 			//Header
 			pvEncodeHeader(pDialog, pContext, pWriter);
 			//Nav
@@ -87,7 +90,7 @@ public class DBSDialogRenderer extends DBSRenderer {
 				pWriter.startElement("div", pDialog);
 					pWriter.startElement("div", pDialog);
 						pWriter.startElement("div", pDialog);
-							DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.SUB_CONTENT, null);
+							DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.SUB_CONTENT + CSS.MODIFIER.CLOSED, null);
 
 //							DBSFaces.setAttribute(pWriter, "class", pDialog.getContentStyleClass(), null);
 							DBSFaces.setAttribute(pWriter, "style", "padding:" + pDialog.getContentPadding(), null);
@@ -104,8 +107,8 @@ public class DBSDialogRenderer extends DBSRenderer {
 			pvEncodeFooter(pDialog, pContext, pWriter);
 			//Iconclose
 			pvEncodeIconClose(pDialog, pWriter);
-			//Progress Timeout
-			pvEncodeProgressTimeout(pDialog, pWriter);
+			//Timeout
+//			pvEncodeTimeout(pDialog, pWriter);
 		pWriter.endElement("div");
 	}
 	
@@ -113,6 +116,8 @@ public class DBSDialogRenderer extends DBSRenderer {
 	public void encodeEnd(FacesContext pContext, UIComponent pComponent) throws IOException {
 		ResponseWriter 	xWriter = pContext.getResponseWriter();
 		DBSDialog 		xDialog = (DBSDialog) pComponent;
+		if (xDialog.getType()==null){return;}
+		
 				
 				//FAZ O ENCODE FINAL
 				pvEncodeNavEnd(xDialog, pContext, xWriter);
@@ -122,26 +127,25 @@ public class DBSDialogRenderer extends DBSRenderer {
 	}
 	
 	private void pvEncodeIcon(DBSDialog pDialog, ResponseWriter pWriter) throws IOException{
-		pWriter.startElement("div", pDialog);
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON + CSS.THEME.ACTION);
+		if (pDialog.getIconClass() != null){
 			pWriter.startElement("div", pDialog);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + pDialog.getIconClass() + CSS.MODIFIER.INHERIT);
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON + CSS.THEME.ACTION);
+				pWriter.startElement("div", pDialog);
+					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + pDialog.getIconClass() + CSS.MODIFIER.INHERIT);
+				pWriter.endElement("div");
 			pWriter.endElement("div");
-		pWriter.endElement("div");
+		}
 	}
-	
+
 	private void pvEncodeHeader(DBSDialog pDialog, FacesContext pContext,  ResponseWriter pWriter) throws IOException{
 		UIComponent xHeader = pDialog.getFacet(DBSDialog.FACET_HEADER);
-		if (!DBSObject.isEqual(pDialog.getLocation(), "c")) {
-			if (xHeader == null){return;}
-		}
+		if (xHeader == null){return;}
 		pWriter.startElement("div", pDialog);
 			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.HEADER);
 			pWriter.startElement("div", pDialog);
 				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
 				DBSFaces.setAttribute(pWriter, "style", pvGetPaddingHeader(pDialog));
-				//Encode do botão fechar para nav centralizado
-				pvEncodeCloseButton(pDialog, pWriter);
+				pvEncodeCaption(pDialog, pWriter);
 				//Encode o conteudo do Header definido no FACET HEADER
 				if (!DBSObject.isNull(xHeader)){
 					xHeader.encodeAll(pContext);
@@ -150,44 +154,47 @@ public class DBSDialogRenderer extends DBSRenderer {
 		pWriter.endElement("div");
 	}
 
-	private void pvEncodeIconClose(DBSDialog pDialog, ResponseWriter pWriter) throws IOException{
-		LOCATION xLocation = LOCATION.get(pDialog.getLocation(), pDialog.getContentVerticalAlign(), pDialog.getContentHorizontalAlign());
-//		String xClass = CSS.THEME.ACTION;
-		String xClass = "";
+	private void pvEncodeCaption(DBSDialog pDialog, ResponseWriter pWriter) throws IOException{
+		if (DBSObject.isEmpty(pDialog.getCaption())){return;}
 		pWriter.startElement("div", pDialog);
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICONCLOSE);
+			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CAPTION);
 			pWriter.startElement("div", pDialog);
-//				DBSFaces.setAttribute(pWriter, "class", "-i_cancel");
-				if (xLocation.getIsVertical()){
-					if (xLocation.getIsLeft()){
-						xClass += "-i_navigate_previous";
-					}else{
-						xClass += "-i_navigate_next";
-					}
-				}else{
-					if (xLocation.getIsTop()){
-						xClass += "-i_navigate_up";
-					}else{
-						xClass += "-i_navigate_down";
-					}
-				}
-				DBSFaces.setAttribute(pWriter, "class", xClass);
+				pWriter.write(pDialog.getCaption());
 			pWriter.endElement("div");
 		pWriter.endElement("div");
 	}
-	
-	private void pvEncodeCloseButton(DBSDialog pDialog, ResponseWriter pWriter) throws IOException {
-		//Faz o encode apenas se for nav centralizado
-		if (DBSObject.isEqual(pDialog.getLocation(), "c")) {
-			pWriter.startElement("div", pDialog);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON + CSS.THEME.ACTION + " -iconcloseCentral");
-				pWriter.startElement("div", pDialog);
-					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + " -i_cancel " + CSS.MODIFIER.INHERIT);
-				pWriter.endElement("div");
-			pWriter.endElement("div");
-		}
+
+	private void pvEncodeIconClose(DBSDialog pDialog, ResponseWriter pWriter) throws IOException{
+		TYPE xType = TYPE.get(pDialog.getType());
+		if (xType == TYPE.MOD){return;}
+		pWriter.startElement("div", pDialog);
+			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICONCLOSE);
+//			pWriter.startElement("div", pDialog);
+//				if (xPosition == POSITION.LEFT){
+//					xClass += "-i_navigate_previous";
+//				}else if (xPosition == POSITION.RIGHT){
+//					xClass += "-i_navigate_next";
+//				}else if (xPosition == POSITION.TOP){
+//					xClass += "-i_navigate_up";
+//				}else{
+//					xClass += "-i_navigate_down";
+//				}
+//				DBSFaces.setAttribute(pWriter, "class", xClass);
+//			pWriter.endElement("div");
+		pWriter.endElement("div");
 	}
 	
+//	private void pvEncodeTimeout(DBSDialog pDialog, ResponseWriter pWriter) throws IOException{
+////		if (pDialog.getCloseTimeout().equals("0")){return;}
+//		String xPathTimeout = "M 0,25 A 25,25 0 1 0 0,24.99";
+//		pWriter.startElement("svg", pDialog);
+//			DBSFaces.encodeSVGNamespaces(pWriter);
+//			DBSFaces.setAttribute(pWriter, "class", "-timeout");
+//			DBSFaces.setAttribute(pWriter, "viewBox", "0 0 50 50");
+//			DBSFaces.encodeSVGPath(pDialog, pWriter, xPathTimeout, "-o", null, null); //"fill=none;stroke=currentColor;stroke-width=.25em;"
+//		pWriter.endElement("svg");
+//	}
+
 	private void pvEncodeFooter(DBSDialog pDialog, FacesContext pContext,  ResponseWriter pWriter) throws IOException{
 		UIComponent xFooter = pDialog.getFacet(DBSDialog.FACET_FOOTER);
 		if (xFooter == null){return;}
@@ -211,59 +218,27 @@ public class DBSDialogRenderer extends DBSRenderer {
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);		
 	}
 
-	private void pvEncodeProgressTimeout(DBSDialog pDialog, ResponseWriter pWriter) throws IOException {
-		if (DBSNumber.toInteger(pDialog.getCloseTimeout()) > 0) {
-			pWriter.startElement("div", pDialog);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.PROGRESS_TIMEOUT + CSS.THEME.BC, null);
-			pWriter.endElement("div");
-		}
-	}
+//	private void pvEncodeProgressTimeout(DBSDialog pDialog, ResponseWriter pWriter) throws IOException {
+//		if (pDialog.getCloseTimeout() > 0) {
+//			pWriter.startElement("div", pDialog);
+//				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.PROGRESS_TIMEOUT + CSS.THEME.BC, null);
+//			pWriter.endElement("div");
+//		}
+//	}
 
 	private String pvGetPaddingHeader(DBSDialog pDialog){
-		LOCATION xLocation = LOCATION.get(pDialog.getLocation(), pDialog.getContentVerticalAlign(), pDialog.getContentHorizontalAlign());
 		String xPT = pDialog.getContentPadding();
-		String xPB = pDialog.getContentPadding();
+		String xPB = "0";
 		String xPL = pDialog.getContentPadding();
 		String xPR = pDialog.getContentPadding();
-		
-		//Padding top e bottom
-		if (xLocation.getIsVertical()){
-			if (xLocation.getIsTop()){
-				xPB = "0";
-			}else{
-				xPT = "0";
-			}
-		}else{
-			if (xLocation.getIsLeft()){
-				xPR = "0";
-			}else{
-				xPL = "0";
-			}
-		}
 		return "padding:" + xPT + " " + xPR + " " + xPB + " " + xPL + ";"; 
 	}
-	
+
 	private String pvGetPaddingFooter(DBSDialog pDialog){
-		LOCATION xLocation = LOCATION.get(pDialog.getLocation(), pDialog.getContentVerticalAlign(), pDialog.getContentHorizontalAlign());
-		String xPT = pDialog.getContentPadding();
+		String xPT = "0";
 		String xPB = pDialog.getContentPadding();
 		String xPL = pDialog.getContentPadding();
 		String xPR = pDialog.getContentPadding();
-		
-		//Padding top e bottom
-		if (xLocation.getIsVertical()){
-			if (xLocation.getIsTop()){
-				xPT = "0";
-			}else{
-				xPB = "0";
-			}
-		}else{
-			if (xLocation.getIsLeft()){
-				xPL = "0";
-			}else{
-				xPR = "0";
-			}
-		}
 		return "padding:" + xPT + " " + xPR + " " + xPB + " " + xPL + ";"; 
 	}
 }

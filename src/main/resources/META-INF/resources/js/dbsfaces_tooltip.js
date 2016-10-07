@@ -72,7 +72,7 @@ dbsfaces.tooltip = {
 			setTimeout(function(){
 				dbsfaces.tooltip.show(xComponent);
 				//Tempo de exibição em função do tamanho do conteúdo
-				var xHideDelay = dbsfaces.ui.getDelayFromTextLength(xTooltip.data("content").text());
+				var xHideDelay = dbsfaces.ui.getTimeFromTextLength(xTooltip.data("content").text());
 				clearTimeout(xTooltip.data("timerhide"));
 				//Cria timer para escoder e armazena no próprio componente
 				xTooltip.data("timerhide", 

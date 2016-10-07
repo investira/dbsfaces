@@ -23,6 +23,7 @@ html{
 /* 	font-family: Verdana !important; */
 /* 	font-family: Helvetica !important; */
 /* 	font-family: Arial !important; */
+    touch-action: manipulation;
 }
 
 html,

@@ -92,6 +92,7 @@ import br.com.dbsoft.ui.core.DBSFaces;
 	@ResourceDependency(library = "js", name = "dbsfaces_navmessage.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_progress.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_push.js", target = "head"),
+	@ResourceDependency(library = "js", name = "dbsfaces_plugin.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_radio.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_reportform.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_report.js", target = "head"),

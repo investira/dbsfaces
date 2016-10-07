@@ -160,13 +160,13 @@ dbs_fileUpload = function(pId, pFileUploadServlet) {
 	function showMessage(pMessage) {
 		wMessage.text(pMessage);
 		wMessage.removeClass("-error");
-		wMessage.fadeIn(200).delay(dbsfaces.ui.getDelayFromTextLength(pMessage)).fadeOut(200);
+		wMessage.fadeIn(200).delay(dbsfaces.ui.getTimeFromTextLength(pMessage)).fadeOut(200);
 	};
 	
 	function showMessageError(pMessage) {
 		wMessage.text(pMessage);
 		wMessage.addClass("-error");
-		wMessage.fadeIn(200).delay(dbsfaces.ui.getDelayFromTextLength(pMessage)).fadeOut(200);
+		wMessage.fadeIn(200).delay(dbsfaces.ui.getTimeFromTextLength(pMessage)).fadeOut(200);
 	};
 
 	function hideMessage() {

@@ -175,7 +175,7 @@ public abstract class DBSNavBase extends DBSUIComponentBase implements NamingCon
 		public String getCode() {
 			return wCode;
 		}
-		public String getCSS() {
+		public String getStyleClass() {
 			return " -" + wCode +" ";
 		}
 		public Boolean getIsTop(){

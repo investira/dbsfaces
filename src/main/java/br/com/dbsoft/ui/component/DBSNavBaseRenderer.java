@@ -38,7 +38,7 @@ public abstract class DBSNavBaseRenderer extends DBSRenderer {
 		
 		ResponseWriter 	xWriter = pContext.getResponseWriter();
 		LOCATION 		xLocation = LOCATION.get(xNav.getLocation(), xNav.getContentVerticalAlign(), xNav.getContentHorizontalAlign());
-		String 			xClass = CSS.NAV.MAIN + CSS.THEME.FC + xLocation.getCSS();
+		String 			xClass = CSS.NAV.MAIN + CSS.THEME.FC + xLocation.getStyleClass();
 //		if (xNav.getOpened()){
 ////			xClass += CSS.THEME.INVERT; //Inverte cor
 ////			xClass += CSS.MODIFIER.OPENED; //Indica que esta aberto

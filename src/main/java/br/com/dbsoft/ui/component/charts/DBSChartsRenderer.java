@@ -146,8 +146,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.DATA);
 				//CONTAINER--------------------------
 				pWriter.startElement("svg", pCharts);
-					DBSFaces.setAttribute(pWriter, "xmlns", "http://www.w3.org/2000/svg");
-					DBSFaces.setAttribute(pWriter, "xmlns:xlink", "http://www.w3.org/1999/xlink");
+					DBSFaces.encodeSVGNamespaces(pWriter);
 					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
 					DBSFaces.setAttribute(pWriter, "width", pCharts.getWidth());
 					DBSFaces.setAttribute(pWriter, "height", pCharts.getHeight() - pCharts.getCaptionHeight() - pCharts.getFooterHeight());
