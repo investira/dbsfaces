@@ -285,10 +285,10 @@
 		<attribute>
 			<description>
 				&lt;span style="font-size:small"&gt;
-				Tempo para fechamento automático do nav em segundos.&lt;br/&gt;
+				Tempo para fechamento automático do dialog em segundos.&lt;br/&gt;
 				&lt;ul&gt;
-					&lt;li&gt;0 = Sem timeout&lt;/li&gt;
-					&lt;li&gt;auto = Em função do tamanho do conteúdo&lt;/li&gt;
+					&lt;li&gt;Sem timeout = 0&lt;/li&gt;
+					&lt;li&gt;Em função do tamanho do conteúdo = a&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>closeTimeout</name>

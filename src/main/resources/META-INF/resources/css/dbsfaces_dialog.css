@@ -58,10 +58,6 @@
 	display: inline-block;
 	white-space: nowrap;
 	z-index: 9999999;
-/* 	transition: transform .2s, opacity.2s, width .3s, height .3s; */
-	-webkit-transition: -webkit-transform .2s;
-	-moz-transition: -moz-transform .2s;
-	transition: transform .2s;
 }
 
 .dbs_dialog.-closed > .-container > .-content{
@@ -126,10 +122,10 @@
     font-size: 1.2em;
 }
 
-.dbs_dialog > .-container > .-content > .-iconclose{
+.dbs_dialog > .-container > .-content > .-btback,
+.dbs_dialog > .-container > .-content > .-btclose{
     position: absolute;
     display: inline-block;
-    font-size: .15em;
 	cursor: pointer;
 	box-sizing: content-box;
 }
@@ -149,11 +145,11 @@
 
 /* CONTENT - DIMENSÃO ---------------------------------------------------*/
 /* TOP BOTTOM*/
+
 .dbs_dialog[type="mod"][cs="s"] > .-container > .-content,
 .dbs_dialog[p="c"][cs="s"] > .-container > .-content,
 .dbs_dialog[p="t"][cs="s"] > .-container > .-content,
 .dbs_dialog[p="b"][cs="s"] > .-container > .-content{
-/* 	left: 0; */
 	width: 100%;
 }
 
@@ -162,7 +158,6 @@
 .dbs_dialog[p="c"][cs="s"] > .-container > .-content,
 .dbs_dialog[p="l"][cs="s"] > .-container > .-content,
 .dbs_dialog[p="r"][cs="s"] > .-container > .-content{
-/* 	top: 0; */
 	height: 100%;
 }
 
@@ -198,6 +193,25 @@
 
 
 /* CONTENT - ALINHAMENTO e FECHAMENTO---------------------------------------------------*/
+/* TRANSIÇÃO*/
+.dbs_dialog[type="msg"] > .-container > .-content,
+.dbs_dialog[type="nav"] > .-container > .-content{
+	-webkit-transition: -webkit-transform .2s ease-out;
+	-moz-transition: -moz-transform .2s ease-out;
+	transition: transform .2s ease-out;
+}
+.dbs_dialog[type="mod"]:not([p="c"]) > .-container > .-content{
+	-webkit-transition: -webkit-transform .2s ease-out, top .2s ease-out, left .2s ease-out;
+	-moz-transition: -moz-transform .2s ease-out, top .2s ease-out, left .2s ease-out;
+	transition: transform .2s ease-out, top .2s ease-out, left .2s ease-out;
+}
+.dbs_dialog[type="mod"][p="c"] > .-container > .-content{
+	-webkit-transition: opacity .2s;
+	-moz-transition: opacity .2s;
+	transition: opacity .2s;
+}
+
+
 /* TOP BOTTOM*/
 .dbs_dialog[type="nav"][p="t"] > .-container > .-content,
 .dbs_dialog[type="nav"][p="b"] > .-container > .-content,
@@ -220,25 +234,15 @@
     transform: translate(0, -50%);
 }
 
-.dbs_dialog[type="mod"] > .-container > .-content,
-.dbs_dialog[p="c"] > .-container > .-content{
-    left: 50%;
-    top: 50%;
-}
 
 .dbs_dialog[type="nav"][p="c"] > .-container > .-content,
 .dbs_dialog[type="msg"][p="c"] > .-container > .-content{
-    -webkit-transform: translate(-50%, -50%) scale(1);
+    left: 50%;
+    top: 50%;
+	-webkit-transform: translate(-50%, -50%) scale(1);
     -moz-transform: translate(-50%, -50%) scale(1);
     transform: translate(-50%, -50%) scale(1);
 }
-
-.dbs_dialog[type="mod"] > .-container > .-content{
-    -webkit-transform: translate(-50%, -50%);
-    -moz-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-}
-
 
 /* TOP */
 .dbs_dialog[type="nav"][p="t"].-closed > .-container > .-content,
@@ -276,32 +280,50 @@
     transform: translate(-50%, -50%) scale(0);
 }
 
-.dbs_dialog[type="mod"][p="l"].-closed > .-container > .-content{
-    left: 0;
-	-webkit-transform: translate(-100%, -50%);
-	-moz-transform: translate(-100%, -50%);
-	transform: translate(-100%, -50%);
+/*MOD*/
+.dbs_dialog[type="mod"] > .-container > .-content{
+	left: 50%;
+    top: 50%;
+	-webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
+
+.dbs_dialog[type="mod"][p="c"] > .-container > .-content{
+	-webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    opacity: 1;
+}
+
+
+.dbs_dialog[type="mod"][p="l"].-closed > .-container > .-content{
+    transform: translate(-100%, -50%);
+    left: 0;
+}
+
 .dbs_dialog[type="mod"][p="r"].-closed > .-container > .-content{
-    right: 0;
-	-webkit-transform: translate(100%, -50%);
-	-moz-transform: translate(100%, -50%);
-	transform: translate(100%, -50%);
+	transform: translate(0%, -50%);
+    left: 100%;
 }
 .dbs_dialog[type="mod"][p="t"].-closed > .-container > .-content{
-    top: 0;
-    -webkit-transform: translate(-50%, -100%);
-    -moz-transform: translate(-50%, -100%);
     transform: translate(-50%, -100%);
+    top: 0;
 }
 .dbs_dialog[type="mod"][p="b"].-closed > .-container > .-content{
-/*     bottom: 0; */
-    -webkit-transform: translate(-50%, 100%);
-    -moz-transform: translate(-50%, 100%);
-    transform: translate(-50%, 100%);
+    transform: translate(-50%, 0%);
+    top: 100%;
 }
 
 
+.dbs_dialog[type="mod"][p="c"].-closed > .-container > .-content{
+    opacity: 0;
+}
+
+.dbs_dialog[type="mod"][p="c"].-closed > .-container.-closed > .-content{
+	width: 0;
+	height: 0;
+}
 
 /* CONTENT - LAYOUT E LIMITE---------------------------------------------------*/
 
@@ -411,21 +433,41 @@
     z-index: 1;
 }
 
-/* ----------------------------------------------------- */
-.dbs_dialog[type="nav"] > .-container > .-content > .-iconclose,
-.dbs_dialog[type="msg"] > .-container > .-content > .-iconclose{
+/* btclose ----------------------------------------------------- */
+.dbs_dialog[type="mod"] > .-container > .-content > .-btback,
+.dbs_dialog[type="mod"] > .-container > .-content > .-btclose{
+    font-size: 1.4em;
+    width: 1em;
+    height: 1em;
+    top: 0em;
+    z-index: 1;
+/*     color: white; */
+/*     text-shadow: black 0px 0px 0px; */
+}
+
+.dbs_dialog[type="mod"] > .-container > .-content > .-btback{
+	left: 0em;
+}
+
+.dbs_dialog[type="mod"] > .-container > .-content > .-btclose{
+	right: 0em;
+}
+
+
+.dbs_dialog[type="nav"] > .-container > .-content > .-btclose,
+.dbs_dialog[type="msg"] > .-container > .-content > .-btclose{
+    font-size: .15em;
 	border-style: solid;
     border-width: 1px;
-/*     border-color: rgba(0,0,0,0.5); */
 	border-radius: 1em;
 }
 
 
 /* VERTICAL */
-.dbs_dialog[type="nav"][p="l"] > .-container > .-content > .-iconclose,
-.dbs_dialog[type="nav"][p="r"] > .-container > .-content > .-iconclose,
-.dbs_dialog[type="msg"][p="l"] > .-container > .-content > .-iconclose,
-.dbs_dialog[type="msg"][p="r"] > .-container > .-content > .-iconclose{
+.dbs_dialog[type="nav"][p="l"] > .-container > .-content > .-btclose,
+.dbs_dialog[type="nav"][p="r"] > .-container > .-content > .-btclose,
+.dbs_dialog[type="msg"][p="l"] > .-container > .-content > .-btclose,
+.dbs_dialog[type="msg"][p="r"] > .-container > .-content > .-btclose{
     height: 30%;
     width: 1em;
     top:50%;
@@ -435,12 +477,12 @@
 }
 
 /* HORIZONTAL */
-.dbs_dialog[type="nav"][p="c"] > .-container > .-content > .-iconclose,
-.dbs_dialog[type="nav"][p="t"] > .-container > .-content > .-iconclose,
-.dbs_dialog[type="nav"][p="b"] > .-container > .-content > .-iconclose,
-.dbs_dialog[type="msg"][p="c"] > .-container > .-content > .-iconclose,
-.dbs_dialog[type="msg"][p="t"] > .-container > .-content > .-iconclose,
-.dbs_dialog[type="msg"][p="b"] > .-container > .-content > .-iconclose{
+.dbs_dialog[type="nav"][p="c"][timeout] > .-container > .-content > .-btclose,
+.dbs_dialog[type="msg"][p="c"][timeout] > .-container > .-content > .-btclose,
+.dbs_dialog[type="nav"][p="t"] > .-container > .-content > .-btclose,
+.dbs_dialog[type="msg"][p="t"] > .-container > .-content > .-btclose,
+.dbs_dialog[type="nav"][p="b"] > .-container > .-content > .-btclose,
+.dbs_dialog[type="msg"][p="b"] > .-container > .-content > .-btclose{
     width: 30%;
     height: 1em;
     left: 50%;
@@ -450,121 +492,70 @@
 }
 
 /* LEFT */
-.dbs_dialog[type="nav"][p="l"] > .-container > .-content > .-iconclose,
-.dbs_dialog[type="msg"][p="l"] > .-container > .-content > .-iconclose{
+.dbs_dialog[type="nav"][p="l"] > .-container > .-content > .-btclose,
+.dbs_dialog[type="msg"][p="l"] > .-container > .-content > .-btclose{
 	right: 0;
 }
 /* RIGHT */
-.dbs_dialog[type="nav"][p="r"] > .-container > .-content > .-iconclose,
-.dbs_dialog[type="msg"][p="r"] > .-container > .-content > .-iconclose{
+.dbs_dialog[type="nav"][p="r"] > .-container > .-content > .-btclose,
+.dbs_dialog[type="msg"][p="r"] > .-container > .-content > .-btclose{
 	left: 0;
 }
 /* TOP */
-.dbs_dialog[type="nav"][p="t"] > .-container > .-content > .-iconclose,
-.dbs_dialog[type="msg"][p="t"] > .-container > .-content > .-iconclose{
+.dbs_dialog[type="nav"][p="t"] > .-container > .-content > .-btclose,
+.dbs_dialog[type="msg"][p="t"] > .-container > .-content > .-btclose{
 	bottom: 0;
 }
 /* BOTTOM */
-.dbs_dialog[type="nav"][p="c"] > .-container > .-content > .-iconclose,
-.dbs_dialog[type="msg"][p="c"] > .-container > .-content > .-iconclose,
-.dbs_dialog[type="nav"][p="b"] > .-container > .-content > .-iconclose,
-.dbs_dialog[type="msg"][p="b"] > .-container > .-content > .-iconclose{
+.dbs_dialog[type="nav"][p="c"][timeout] > .-container > .-content > .-btclose,
+.dbs_dialog[type="msg"][p="c"][timeout] > .-container > .-content > .-btclose,
+.dbs_dialog[type="nav"][p="c"] > .-container > .-content > .-btclose,
+.dbs_dialog[type="msg"][p="c"] > .-container > .-content > .-btclose,
+.dbs_dialog[type="nav"][p="b"] > .-container > .-content > .-btclose,
+.dbs_dialog[type="msg"][p="b"] > .-container > .-content > .-btclose{
 	top: 0;
 }
 
 
-.dbs_dialog[timeout].-closed > .-container > .-content > .-iconclose{
+.dbs_dialog[timeout].-closed > .-container > .-content > .-btclose{
     -webkit-transition: none !important;
     -moz-transition: none !important;
     transition: none !important;
 }
 
-.dbs_dialog[timeout] > .-container > .-content > .-iconclose:after{
+.dbs_dialog[timeout] > .-container > .-content > .-btclose:after{
     content: " ";
     display: inline-block;
     position: absolute;
     background-color: currentColor;
-    top: 0;
+    bottom: 0;
 	left: 0;
     -webkit-transition: inherit;
     -moz-transition: inherit;
     transition: inherit;
 	border-radius: inherit;
 }
-.dbs_dialog[timeout][p="c"] > .-container > .-content > .-iconclose:after,
-.dbs_dialog[timeout][p="t"] > .-container > .-content > .-iconclose:after,
-.dbs_dialog[timeout][p="b"] > .-container > .-content > .-iconclose:after{
+.dbs_dialog[timeout][p="c"] > .-container > .-content > .-btclose:after,
+.dbs_dialog[timeout][p="t"] > .-container > .-content > .-btclose:after,
+.dbs_dialog[timeout][p="b"] > .-container > .-content > .-btclose:after{
     width: 0%;
     height: 100%;
 }
-.dbs_dialog[timeout][p="c"] > .-container.-opened > .-content > .-iconclose:after,
-.dbs_dialog[timeout][p="t"] > .-container.-opened > .-content > .-iconclose:after,
-.dbs_dialog[timeout][p="b"] > .-container.-opened > .-content > .-iconclose:after{
+.dbs_dialog[timeout][p="c"] > .-container.-opened > .-content > .-btclose:after,
+.dbs_dialog[timeout][p="t"] > .-container.-opened > .-content > .-btclose:after,
+.dbs_dialog[timeout][p="b"] > .-container.-opened > .-content > .-btclose:after{
 	width: 100%;
 }
-.dbs_dialog[timeout][p="l"] > .-container > .-content > .-iconclose:after,
-.dbs_dialog[timeout][p="r"] > .-container > .-content > .-iconclose:after{
+.dbs_dialog[timeout][p="l"] > .-container > .-content > .-btclose:after,
+.dbs_dialog[timeout][p="r"] > .-container > .-content > .-btclose:after{
     height: 0%;
     width: 100%;
 }
-.dbs_dialog[timeout][p="l"] > .-container.-opened > .-content > .-iconclose:after,
-.dbs_dialog[timeout][p="r"] > .-container.-opened > .-content > .-iconclose:after{
+.dbs_dialog[timeout][p="l"] > .-container.-opened > .-content > .-btclose:after,
+.dbs_dialog[timeout][p="r"] > .-container.-opened > .-content > .-btclose:after{
 	height: 100%;
 }
 
-/* .dbs_dialog > .-container > .-content > .-timeout{ */
-/*     position: absolute; */
-/*     overflow: visible; */
-/*     width: .4em; */
-/*     height: .4em; */
-/*     shape-rendering: geometricprecision; */
-/* } */
-
-/* .dbs_dialog[p="r"] > .-container > .-content > .-timeout, */
-/* .dbs_dialog[p="l"] > .-container > .-content > .-timeout, */
-/* .dbs_dialog[p="b"] > .-container > .-content > .-timeout, */
-/* .dbs_dialog[p="c"] > .-container > .-content > .-timeout{ */
-/*     top: .15em; */
-/* }	 */
-/* .dbs_dialog[p="t"] > .-container > .-content > .-timeout{ */
-/*     top: calc(100% - .55em); */
-/* } */
-/* .dbs_dialog[p="t"] > .-container > .-content > .-timeout, */
-/* .dbs_dialog[p="r"] > .-container > .-content > .-timeout{ */
-/*     left: .15em; */
-/* }	 */
-/* .dbs_dialog[p="l"] > .-container > .-content > .-timeout, */
-/* .dbs_dialog[p="b"] > .-container > .-content > .-timeout, */
-/* .dbs_dialog[p="c"] > .-container > .-content > .-timeout{ */
-/*     right: .15em; */
-/* } */
-
-/* .dbs_dialog > .-container > .-content > .-timeout > .-o{ */
-/*     stroke: currentColor; */
-/*     stroke-dashoffset: 0px; */
-/*     stroke-dasharray: 158; */
-/*     stroke-width: .2em; */
-/*     fill: currentColor; */
-/*     stroke: currentColor; */
-/*     fill: none; */
-/*     stroke-opacity: .8; */
-/* } */
-
-/* .dbs_dialog.-closed > .-container > .-content > .-timeout > .-o{ */
-/*     -webkit-transition: none !important; */
-/*     -moz-transition: none !important; */
-/*     transition: none !important; */
-/* } */
-/* .dbs_dialog > .-container.-opened > .-content > .-timeout > .-o{ */
-/*     stroke-dashoffset: 158; */
-/* } */
-
-/* .dbs_dialog > .-container > .-content > .-timeout > .-x{ */
-/*     stroke-width: 18px; */
-/*     fill: none; */
-/*     stroke: currentColor; */
-/*     transform: translate(-75px, -75px); */
-/* } */
 
 /* LEFT VERTICAL / RIGHT HORIZONTAL */
 .dbs_dialog[p="l"] > .-container > .-content > .-footer{

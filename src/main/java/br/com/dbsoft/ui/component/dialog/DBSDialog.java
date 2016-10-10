@@ -8,6 +8,7 @@ import javax.faces.component.NamingContainer;
 
 import br.com.dbsoft.ui.component.DBSUIOutput;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.util.DBSNumber;
 
 
 @FacesComponent(DBSDialog.COMPONENT_TYPE)
@@ -211,6 +212,11 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 	}
 	
 	public void setType(String pType) {
+		TYPE xType = TYPE.get(pType);
+		if (xType == null){
+			System.out.println("Type invalid\t:" + pType);
+			return;
+		}
 		getStateHelper().put(PropertyKeys.type, pType);
 		handleAttribute("type", pType);
 	}
@@ -288,9 +294,16 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 	}
 	
 	public void setCloseTimeout(String pCloseTimeout) {
-		if (pCloseTimeout != null){pCloseTimeout = pCloseTimeout.trim().toLowerCase();}
-		getStateHelper().put(PropertyKeys.closeTimeout, pCloseTimeout);
-		handleAttribute("closeTimeout", pCloseTimeout);
+		String xCloseTimeout = "0";
+		if (pCloseTimeout != null && pCloseTimeout.length() > 0){
+			pCloseTimeout = pCloseTimeout.trim().toLowerCase();
+			if (DBSNumber.isNumber(pCloseTimeout)
+			|| pCloseTimeout.substring(0,1).equals("a")){
+			   xCloseTimeout = pCloseTimeout;
+			}
+		}
+		getStateHelper().put(PropertyKeys.closeTimeout, xCloseTimeout);
+		handleAttribute("closeTimeout", xCloseTimeout);
 	}
 
 	public String getContentPadding() {

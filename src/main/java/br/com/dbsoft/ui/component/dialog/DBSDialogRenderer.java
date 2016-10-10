@@ -12,6 +12,7 @@ import com.sun.faces.renderkit.RenderKitUtils;
 
 import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSRenderer;
+import br.com.dbsoft.ui.component.dialog.DBSDialog.POSITION;
 import br.com.dbsoft.ui.component.dialog.DBSDialog.TYPE;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
 import br.com.dbsoft.ui.core.DBSFaces;
@@ -39,13 +40,11 @@ public class DBSDialogRenderer extends DBSRenderer {
 		if (!pComponent.isRendered()){return;}
 		
 		DBSDialog 			xDialog = (DBSDialog) pComponent;
-		if (xDialog.getType()==null){return;}
+		if (!pvIsValid(xDialog)){return;}
 
 		ResponseWriter 		xWriter = pContext.getResponseWriter();
-//		POSITION 			xPosition = POSITION.get(xDialog.getPosition());
-//		CONTENT_SIZE 		xContentSize = CONTENT_SIZE.get(xDialog.getContentSize());
-//		CONTENT_ALIGNMENT 	xContentAlignment = CONTENT_ALIGNMENT.get(xDialog.getContentAlignment());
 		String 				xClass = CSS.DIALOG.MAIN + CSS.THEME.FC + CSS.MODIFIER.CLOSED;
+		TYPE 	 			xType = TYPE.get(xDialog.getType());
 
 		if (xDialog.getStyleClass()!=null){
 			xClass += xDialog.getStyleClass();
@@ -58,7 +57,9 @@ public class DBSDialogRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "class", xClass);
 			DBSFaces.setAttribute(xWriter, "style", xDialog.getStyle());
 			DBSFaces.setAttribute(xWriter, "type", xDialog.getType());
-			if (!xDialog.getCloseTimeout().equals("0")){
+			//Configura time somente quando não for MOD
+			if (xType != TYPE.MOD 
+			&& !xDialog.getCloseTimeout().equals("0")){
 				DBSFaces.setAttribute(xWriter, "timeout", xDialog.getCloseTimeout());
 			}
 			DBSFaces.setAttribute(xWriter, "p", xDialog.getPosition());
@@ -77,6 +78,19 @@ public class DBSDialogRenderer extends DBSRenderer {
 				xWriter.endElement("div");
 				//Nav
 				pvEncodeContentBegin(xDialog, pContext, xWriter);
+	}
+	
+	@Override
+	public void encodeEnd(FacesContext pContext, UIComponent pComponent) throws IOException {
+		ResponseWriter 	xWriter = pContext.getResponseWriter();
+		DBSDialog 		xDialog = (DBSDialog) pComponent;
+		if (!pvIsValid(xDialog)){return;}
+
+				//FAZ O ENCODE FINAL
+				pvEncodeContentEnd(xDialog, pContext, xWriter);
+				xWriter.endElement("div");
+			pvEncodeJS(xDialog.getClientId(pContext), xWriter);
+		xWriter.endElement("div");
 	}
 	
 	private void pvEncodeContentBegin(DBSDialog pDialog, FacesContext pContext, ResponseWriter pWriter) throws IOException{
@@ -98,32 +112,20 @@ public class DBSDialogRenderer extends DBSRenderer {
 							DBSFaces.renderChildren(pContext, pDialog);
 	}
 	
-	private void pvEncodeNavEnd(DBSDialog pDialog, FacesContext pContext, ResponseWriter pWriter) throws IOException{
+	private void pvEncodeContentEnd(DBSDialog pDialog, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 						pWriter.endElement("div");
 					pWriter.endElement("div");
 				pWriter.endElement("div");
 			pWriter.endElement("div");
 			//Footer
 			pvEncodeFooter(pDialog, pContext, pWriter);
-			//Iconclose
-			pvEncodeIconClose(pDialog, pWriter);
+			//ButtonBack
+			pvEncodeButtonBack(pDialog, pWriter);
+			//ButtonClose
+			pvEncodeButtonClose(pDialog, pWriter);
 			//Timeout
 //			pvEncodeTimeout(pDialog, pWriter);
 		pWriter.endElement("div");
-	}
-	
-	@Override
-	public void encodeEnd(FacesContext pContext, UIComponent pComponent) throws IOException {
-		ResponseWriter 	xWriter = pContext.getResponseWriter();
-		DBSDialog 		xDialog = (DBSDialog) pComponent;
-		if (xDialog.getType()==null){return;}
-		
-				
-				//FAZ O ENCODE FINAL
-				pvEncodeNavEnd(xDialog, pContext, xWriter);
-				xWriter.endElement("div");
-			pvEncodeJS(xDialog.getClientId(pContext), xWriter);
-		xWriter.endElement("div");
 	}
 	
 	private void pvEncodeIcon(DBSDialog pDialog, ResponseWriter pWriter) throws IOException{
@@ -157,30 +159,37 @@ public class DBSDialogRenderer extends DBSRenderer {
 	private void pvEncodeCaption(DBSDialog pDialog, ResponseWriter pWriter) throws IOException{
 		if (DBSObject.isEmpty(pDialog.getCaption())){return;}
 		pWriter.startElement("div", pDialog);
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CAPTION);
+			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CAPTION + CSS.MODIFIER.NOT_SELECTABLE);
 			pWriter.startElement("div", pDialog);
 				pWriter.write(pDialog.getCaption());
 			pWriter.endElement("div");
 		pWriter.endElement("div");
 	}
 
-	private void pvEncodeIconClose(DBSDialog pDialog, ResponseWriter pWriter) throws IOException{
+	private void pvEncodeButtonClose(DBSDialog pDialog, ResponseWriter pWriter) throws IOException{
 		TYPE xType = TYPE.get(pDialog.getType());
-		if (xType == TYPE.MOD){return;}
+		String xClass = "-btclose" + CSS.MODIFIER.NOT_SELECTABLE;
+		String xStyle = null;
+		if (xType == TYPE.MOD){
+			xClass += "-i_cancel";
+			xStyle = "padding:" + pDialog.getContentPadding();
+		}
 		pWriter.startElement("div", pDialog);
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICONCLOSE);
-//			pWriter.startElement("div", pDialog);
-//				if (xPosition == POSITION.LEFT){
-//					xClass += "-i_navigate_previous";
-//				}else if (xPosition == POSITION.RIGHT){
-//					xClass += "-i_navigate_next";
-//				}else if (xPosition == POSITION.TOP){
-//					xClass += "-i_navigate_up";
-//				}else{
-//					xClass += "-i_navigate_down";
-//				}
-//				DBSFaces.setAttribute(pWriter, "class", xClass);
-//			pWriter.endElement("div");
+			DBSFaces.setAttribute(pWriter, "class", xClass);
+			DBSFaces.setAttribute(pWriter, "style", xStyle);
+		pWriter.endElement("div");
+	}
+	private void pvEncodeButtonBack(DBSDialog pDialog, ResponseWriter pWriter) throws IOException{
+		TYPE xType = TYPE.get(pDialog.getType());
+		String xClass = "-btback" + CSS.MODIFIER.NOT_SELECTABLE;
+		String xStyle = null;
+		if (xType == TYPE.MOD){
+			xClass += "-i_navigate_previous";
+			xStyle = "padding:" + pDialog.getContentPadding();
+		}
+		pWriter.startElement("div", pDialog);
+			DBSFaces.setAttribute(pWriter, "class", xClass);
+			DBSFaces.setAttribute(pWriter, "style", xStyle);
 		pWriter.endElement("div");
 	}
 	
@@ -218,13 +227,6 @@ public class DBSDialogRenderer extends DBSRenderer {
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);		
 	}
 
-//	private void pvEncodeProgressTimeout(DBSDialog pDialog, ResponseWriter pWriter) throws IOException {
-//		if (pDialog.getCloseTimeout() > 0) {
-//			pWriter.startElement("div", pDialog);
-//				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.PROGRESS_TIMEOUT + CSS.THEME.BC, null);
-//			pWriter.endElement("div");
-//		}
-//	}
 
 	private String pvGetPaddingHeader(DBSDialog pDialog){
 		String xPT = pDialog.getContentPadding();
@@ -241,6 +243,22 @@ public class DBSDialogRenderer extends DBSRenderer {
 		String xPR = pDialog.getContentPadding();
 		return "padding:" + xPT + " " + xPR + " " + xPB + " " + xPL + ";"; 
 	}
+	
+	private boolean pvIsValid(DBSDialog pDialog){
+		TYPE 	 xType = TYPE.get(pDialog.getType());
+		POSITION xPosition = POSITION.get(pDialog.getPosition());
+		if (xType == TYPE.NAV){
+			if (xPosition == POSITION.CENTER){
+				pvEncodeError(pDialog, xType, xPosition, "use type 'msg' or 'dialog'");
+				return false;
+			}
+		}
+		return true;
+	}
+	private void pvEncodeError(DBSDialog pDialog, TYPE pType, POSITION pPosition, String pString){
+		wLogger.error("DBSDialog\tid=" +  pDialog.getClientId() + ":type=" + pType + ",p=" + pPosition + " not allowed." + pString);
+	}
+	
 }
 
 

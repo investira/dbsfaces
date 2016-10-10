@@ -1,12 +1,6 @@
 dbs_dialog = function(pId) {
 	var xDialog = $(pId);
 
-	$(window).resize(function(e){
-		setTimeout(function(){
-			dbsfaces.dialog.resized(xDialog);
-		},0);
-	});
-
 	dbsfaces.dialog.initialize(xDialog);
 
 	$(pId).on("close", function(){
@@ -15,16 +9,20 @@ dbs_dialog = function(pId) {
 	$(pId).on("open", function(){
 		dbsfaces.dialog.pvOpen(xDialog);
 	});
-	
-	
+
+	$(window).resize(function(e){
+		setTimeout(function(){
+			dbsfaces.dialog.resized(xDialog);
+		},0);
+	});
+
+
 	$(pId + ":not([disabled]) > .-container > .-icon").on("mousedown touchstart", function(e){
-//		console.log("icon mousedown touchstart");
 		dbsfaces.dialog.show(xDialog);
 		return false;
 	});
 
 	$(pId + ":not([disabled]) > .-container > .-mask").on("mousedown touchstart", function(e){
-//		console.log("mask mousedown touchstart");
 		dbsfaces.dialog.show(xDialog);
 		return false;
 	});
@@ -47,7 +45,6 @@ dbs_dialog = function(pId) {
 
 	/*Após animação de abrir ou fechar*/
 	$(pId + ":not([disabled]) > .-container > .-content").on(dbsfaces.EVENT.ON_TRANSITION_END, function(e){
-//		console.log("end transition\t" + $(this).css("max-height"));
 		//Foi fechado
 		if ($(this).closest(".dbs_dialog").hasClass("-closed")){
 			xDialog.trigger("closed");
@@ -59,7 +56,8 @@ dbs_dialog = function(pId) {
 		}
 	});
 	
-	$(pId + ":not([disabled]) > .-container > .-content > .-iconclose").on("mousedown touchstart", function(e){
+	
+	$(pId + ":not([disabled]) > .-container > .-content > .-btclose").on("mousedown touchstart", function(e){
 		/*fecha normalmente se não houver timeout*/
 		if (xDialog.data("timeout") == "0"){
 			dbsfaces.dialog.show(xDialog);
@@ -69,8 +67,13 @@ dbs_dialog = function(pId) {
 		}
 	});
 	
+	/*Message contralizada, fecha com com qualquer ação*/ 
+	$(pId + "[type='msg'][p='c']:not([disabled]) > .-container > .-content").on("mousedown touchstart", function(e){
+		dbsfaces.dialog.show(xDialog);
+	});
+
 	/*Fecha o dialog*/
-	$(pId + ":not([disabled]) > .-container > .-content > .-iconclose").on("mouseup touchend", function(e){
+	$(pId + ":not([disabled]) > .-container > .-content > .-btclose").on("mouseup touchend", function(e){
 		if (xDialog.data("timeout") == "0"){return;}
 		var xTime = new Date().getTime();
 		//Fecha normalmente
@@ -84,8 +87,9 @@ dbs_dialog = function(pId) {
 	});
 
 	/*Animação do timeout*/
-	$(pId + ":not([disabled]) > .-container > .-content > .-iconclose").on(dbsfaces.EVENT.ON_TRANSITION_END, function(e){
+	$(pId + ":not([disabled]) > .-container > .-content > .-btclose").on(dbsfaces.EVENT.ON_TRANSITION_END, function(e){
 		dbsfaces.dialog.show(xDialog);
+		return false;
 	});
 	
 	/*Exibe dialog já aberto*/
@@ -116,50 +120,41 @@ dbsfaces.dialog = {
 		pDialog.data("header_content", pDialog.data("header").children(".-content"));
 		pDialog.data("footer", pDialog.data("content").children(".-footer"));
 		pDialog.data("footer_content", pDialog.data("footer").children(".-content"));
-		pDialog.data("iconclose", pDialog.data("content").children(".-iconclose"));
-		pDialog.data("padding", parseFloat(pDialog.data("mask").css("padding-left")));
+		pDialog.data("btclose", pDialog.data("content").children(".-btclose"));
+		pDialog.data("padding", parseFloat(pDialog.data("sub_content").css("padding")));
 		pDialog.data("timeout", dbsfaces.util.getNotEmpty(pDialog.attr("timeout"),"0"));
 	},
 	
 	pvInitializeLayout: function(pDialog){
+		dbsfaces.dialog.pvAjustLayout(pDialog);
+
 		pDialog.data("container").css("opacity", "");
 		//Configura cor como transparencia a partir da cor definida pelo usuário
-		if (tinycolor(pDialog.data("content").css("background-color")).isDark()){
-			xColorClose = "rgba(255,255,255,.1)";
+		if (pDialog.attr("type") == "mod"){
 		}else{
-			xColorClose = "rgba(0,0,0,.1)";
+			if (tinycolor(pDialog.data("content").css("background-color")).isDark()){
+				xColorClose = "rgba(255,255,255,.1)";
+			}else{
+				xColorClose = "rgba(0,0,0,.1)";
+			}
+			pDialog.data("btclose").css("border-color", xColorClose)
+							  	   .css("background-color", xColorClose);
 		}
-		pDialog.data("iconclose").css("border-color", xColorClose)
-								 .css("background-color", xColorClose);
-		dbsfaces.dialog.pvAjustLayout(pDialog);
 
 	},
 	
 	pvInitializeTimeout: function(pDialog){
 		if (pDialog.data("timeout") == "0"){return;}
-		if (pDialog.attr("timeout") == "auto"){
+		if (pDialog.attr("timeout") == "a"){
 			pDialog.data("timeout", dbsfaces.ui.getTimeFromTextLength(pDialog.data("sub_content").text()) / 1000);
 		}
 		var xTime = parseInt(pDialog.data("timeout"));
-		console.log("ddd\t" + xTime);
-		dbsfaces.ui.cssTransition(pDialog.data("iconclose"), "width " + xTime + "s linear, height " + xTime + "s linear");
+		dbsfaces.ui.cssTransition(pDialog.data("btclose"), "width " + xTime + "s linear, height " + xTime + "s linear");
 	},
 
 	cancelCloseTimeout: function(pDialog){
-		dbsfaces.ui.cssTransition(pDialog.data("iconclose"), "none");
+		dbsfaces.ui.cssTransition(pDialog.data("btclose"), "none");
 	},
-
-//	pvInitializeTimeout: function(pDialog){
-//		if (pDialog.attr("timeout") == "0" 
-//		 || pDialog.data("timeout").length == 0){return;}
-//		var xTime;
-//		if (pDialog.attr("timeout") == "auto"){
-//			console.log(pDialog.data("sub_content").length);
-//		}else{
-//			xTime = parseInt(pDialog.attr("timeout"));
-//		}
-//		dbsfaces.ui.cssTransition(pDialog.data("timeoutO"), "stroke-dashoffset " + xTime + "s linear");
-//	},
 	
 	/*Força o scroll já que ele não funciona naturalente no mobile*/
 	scroll: function(pDialog, pDx, pDy){
@@ -212,7 +207,7 @@ dbsfaces.dialog = {
 		dbsfaces.dialog.pvAjustLayout(pDialog);
 		dbsfaces.ui.disableBackgroundInputs(pDialog);
 		dbsfaces.dialog.pvFreeze(pDialog, true);
-		pDialog.data("sub_content").removeClass("-closed");
+//		pDialog.data("sub_content").removeClass("-closed");
 		pDialog.removeClass("-closed");
 		//Coloca o foco no primeiro campo de input dentro do nav
 		dbsfaces.ui.focusOnFirstInput(pDialog);
@@ -224,7 +219,7 @@ dbsfaces.dialog = {
 		dbsfaces.ui.enableForegroundInputs($("body"));
 		//Retira foco do componente que possuir foco
 		$(":focus").blur();
-		pDialog.data("sub_content").addClass("-closed");
+//		pDialog.data("sub_content").addClass("-closed");
 		pDialog.addClass("-closed");
 		dbsfaces.dialog.pvInitializeTimeout(pDialog);
 		dbsfaces.dialog.pvFreeze(pDialog, false);
@@ -247,6 +242,18 @@ dbsfaces.dialog = {
 	},
 	
 	pvAjustLayout: function(pDialog){
+//		if (dbsfaces.ui.isMobile()){
+//			if (pDialog.data("type") == "mod"){
+//				pDialog.attr("cs","s");
+//			}else{
+//				pDialog.attr("cs","a");
+//			}
+//		}
+		if (dbsfaces.util.isMobile()){
+			pDialog.attr("cs","s");
+//		}else{
+//			pDialog.attr("cs","a");
+		}
 		var xHeaderContent = pDialog.data("header_content");
 		var xFooterContent = pDialog.data("footer_content");
 		var xSubContainer = pDialog.data("sub_container");
