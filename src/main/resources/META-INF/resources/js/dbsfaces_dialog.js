@@ -56,10 +56,16 @@ dbs_dialog = function(pId) {
 		}
 	});
 	
+	/*Message contralizada, fecha com com qualquer ação*/ 
+//	$(pId + "[type='msg'][p='c']:not([disabled]) > .-container > .-content").on("mousedown touchstart", function(e){
+//		dbsfaces.dialog.show(xDialog);
+//	});
+
 	
 	$(pId + ":not([disabled]) > .-container > .-content > .-btclose").on("mousedown touchstart", function(e){
-		/*fecha normalmente se não houver timeout*/
-		if (xDialog.data("timeout") == "0"){
+		/*fecha normalmente se não houver timeout ou for modal*/
+		if (xDialog.attr("type") == "mod" 
+		 || xDialog.data("timeout") == "0"){
 			dbsfaces.dialog.show(xDialog);
 		}else{
 			/*Aguarda finalização do touch o mouse para verificar se é um cancelamento do timeout*/
@@ -67,11 +73,6 @@ dbs_dialog = function(pId) {
 		}
 	});
 	
-	/*Message contralizada, fecha com com qualquer ação*/ 
-	$(pId + "[type='msg'][p='c']:not([disabled]) > .-container > .-content").on("mousedown touchstart", function(e){
-		dbsfaces.dialog.show(xDialog);
-	});
-
 	/*Fecha o dialog*/
 	$(pId + ":not([disabled]) > .-container > .-content > .-btclose").on("mouseup touchend", function(e){
 		if (xDialog.data("timeout") == "0"){return;}
@@ -84,6 +85,11 @@ dbs_dialog = function(pId) {
 			dbsfaces.dialog.cancelCloseTimeout(xDialog);
 		}
 		return false;
+	});
+
+	/*dispara evento informando que botão back for pressionado*/
+	$(pId + ":not([disabled]) > .-container > .-content > .-btback").on("mousedown touchstart", function(e){
+		xDialog.trigger("back");
 	});
 
 	/*Animação do timeout*/
@@ -130,7 +136,8 @@ dbsfaces.dialog = {
 
 		pDialog.data("container").css("opacity", "");
 		//Configura cor como transparencia a partir da cor definida pelo usuário
-		if (pDialog.attr("type") == "mod"){
+		if (pDialog.attr("type") == "mod"
+		 || pDialog.attr("p") == "c"){
 		}else{
 			if (tinycolor(pDialog.data("content").css("background-color")).isDark()){
 				xColorClose = "rgba(255,255,255,.1)";

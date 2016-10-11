@@ -168,9 +168,11 @@ public class DBSDialogRenderer extends DBSRenderer {
 
 	private void pvEncodeButtonClose(DBSDialog pDialog, ResponseWriter pWriter) throws IOException{
 		TYPE xType = TYPE.get(pDialog.getType());
-		String xClass = "-btclose" + CSS.MODIFIER.NOT_SELECTABLE;
+		POSITION xPosition = POSITION.get(pDialog.getPosition());
+		String xClass = "-btclose" + CSS.THEME.ACTION;
 		String xStyle = null;
-		if (xType == TYPE.MOD){
+		if (xType == TYPE.MOD
+		 || (xType == TYPE.MSG && xPosition == POSITION.CENTER)){
 			xClass += "-i_cancel";
 			xStyle = "padding:" + pDialog.getContentPadding();
 		}
@@ -181,7 +183,7 @@ public class DBSDialogRenderer extends DBSRenderer {
 	}
 	private void pvEncodeButtonBack(DBSDialog pDialog, ResponseWriter pWriter) throws IOException{
 		TYPE xType = TYPE.get(pDialog.getType());
-		String xClass = "-btback" + CSS.MODIFIER.NOT_SELECTABLE;
+		String xClass = "-btback" + CSS.THEME.ACTION;
 		String xStyle = null;
 		if (xType == TYPE.MOD){
 			xClass += "-i_navigate_previous";
