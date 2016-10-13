@@ -523,6 +523,7 @@
 }
 .dbs_dialog[ca="c"] > .-container > .-content > .-sub_container > div > div > .-sub_content{
     vertical-align: top;
+    text-align: center;
 }
 
 
