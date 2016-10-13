@@ -1015,7 +1015,7 @@ public class  DBSFaces {
 	 * @param pClientId
 	 * @param pMessages
 	 */
-	public static void sendMessage(String pClientId, @SuppressWarnings("rawtypes") IDBSMessages pMessages){
+	public static void sendMessages(String pClientId, @SuppressWarnings("rawtypes") IDBSMessages pMessages){
 		if (pMessages == null){return;}
 		@SuppressWarnings("unchecked")
 		Iterator<IDBSMessage> xMsgs = pMessages.getMessages().iterator();
@@ -1023,6 +1023,18 @@ public class  DBSFaces {
 			sendMessage(pClientId, xMsgs.next());
 		}
 	}	
+	
+	/**
+	 * Envia mensagem do tipo <b>FacesMessage</b> e <b>DBSMessages</b>.<br/>
+	 * As mensagens <b>DBSMessages</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>m(Message)</b>.<br/>
+	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
+	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.
+	 * @param pMessages
+	 */
+	public static void sendMessages(@SuppressWarnings("rawtypes") IDBSMessages pMessages){
+		if (pMessages == null){return;}
+		sendMessages(null, pMessages);
+	}
 	
 	/**
 	 * Envia mensagem do tipo <b>FacesMessage</b> e <b>DBSMessages</b>.<br/>
