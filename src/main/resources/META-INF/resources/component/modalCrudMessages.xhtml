@@ -7,7 +7,7 @@
 	xmlns:dbs="http://www.dbsoft.com.br/ui/dbsfaces"
 	xmlns:dbscom="http://www.dbsoft.com.br/ui/dbsfacescom">
 		
-	<cc:interface componentType="br.com.dbsoft.ui.component.beanModalCrudMessages">
+	<cc:interface componentType="br.com.dbsoft.ui.component.modalCrudMessages">
 		<cc:attribute name="crudBean" preferred="true" required="true"/>
 		<cc:attribute name="update"/>
 	</cc:interface>
@@ -16,10 +16,10 @@
 		<!--Artifício para forçar o id para certificar que o clientId já vem completo com os nomes dos parents, já que por motivos desconhecidos isso não ocorre sempre -->
 		<f:event listener="#{cc.setId(cc.id)}" type="preRenderComponent"/>
 		<div id="#{cc.clientId}">
-			<dbscom:beanModalMessages id="#{cc.id}_info"
+			<dbscom:modalMessages id="#{cc.id}_info"
 								   userBean="#{cc.crudBean}"
 						               update="#{cc.attrs.update}">
-			</dbscom:beanModalMessages>
+			</dbscom:modalMessages>
 	
 			<c:if test="#{!cc.crudBean.hasMessage}">
 				<!-- Exibe mansagem de confirmação					 -->

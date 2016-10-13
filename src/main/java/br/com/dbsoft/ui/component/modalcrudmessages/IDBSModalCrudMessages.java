@@ -1,9 +1,9 @@
-package br.com.dbsoft.ui.component.beanmodalcrudmessages;
+package br.com.dbsoft.ui.component.modalcrudmessages;
 
 import br.com.dbsoft.error.DBSIOException;
-import br.com.dbsoft.ui.component.beanmodalmessages.IDBSBeanModalMessages;
+import br.com.dbsoft.ui.component.modalmessages.IDBSModalMessages;
 
-public interface IDBSBeanModalCrudMessages extends IDBSBeanModalMessages{
+public interface IDBSModalCrudMessages extends IDBSModalMessages{
 	
 	public Boolean getMessageConfirmationExists();
 	

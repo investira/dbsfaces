@@ -155,10 +155,10 @@
 			<!-- Só exibe mensagem se crudModal estiver fechado -->
 			<dbs:div id="crudTableMessages" rendered="#{cc.crudBean.isClosed}">
 				<!-- Mensagens gerais -->
-				<dbscom:beanModalMessages id="crudTableMessagesDialog"
+				<dbscom:modalMessages id="crudTableMessagesDialog"
 						   		 	 userBean="#{cc.crudBean}"
 									   update="#{cc.clientId}">
-				</dbscom:beanModalMessages>
+				</dbscom:modalMessages>
 				<!-- Mensagem de aprovação				 -->
 				<c:if test="#{!cc.crudBean.hasMessage}">
 					<c:if test="#{cc.crudBean.isApproving}">
@@ -201,10 +201,10 @@
 					</c:if>
 					<!-- Só exite estes diálogos em edição como Table					 -->
 					<c:if test="#{cc.crudBean.formStyle == 'TABLE' and cc.crudBean.isEditing}">
-<!-- 						<dbscom:beanModalCrudMessages id="message" -->
+<!-- 						<dbscom:modalCrudMessages id="message" -->
 <!-- 												   crudBean="#{cc.crudBean}" -->
 <!-- 		 							               update="#{cc.clientId}"> -->
-<!-- 		 				</dbscom:beanModalCrudMessages> -->
+<!-- 		 				</dbscom:modalCrudMessages> -->
 					</c:if>				
 				</c:if>	
 			</dbs:div>	

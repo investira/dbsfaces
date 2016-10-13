@@ -72,12 +72,12 @@
 					
 					<cc:insertChildren/>
 						
-					<f:facet name="beanModalMessages">
-						<dbscom:beanModalCrudMessages id="message"
+					<f:facet name="modalMessages">
+						<dbscom:modalCrudMessages id="message"
 												   crudBean="#{cc.crudBean}"
 		 							               update=":modal #{cc.attrs.update} ">
 <!-- 		 							               update=":modal #{cc.crudBean.isDeleting ? cc.attrs.update : ''} " -->
-		 				</dbscom:beanModalCrudMessages>
+		 				</dbscom:modalCrudMessages>
 					</f:facet>
 				</dbs:modal>
 			</dbs:div>

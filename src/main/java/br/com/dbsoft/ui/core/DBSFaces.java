@@ -62,6 +62,7 @@ import br.com.dbsoft.message.IDBSMessage;
 import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.message.IDBSMessages;
 import br.com.dbsoft.ui.bean.DBSBean;
+import br.com.dbsoft.ui.bean.DBSBeanModalMessages;
 import br.com.dbsoft.ui.bean.crud.DBSCrudBean;
 import br.com.dbsoft.ui.bean.report.DBSReportBean;
 import br.com.dbsoft.ui.component.DBSUIInput;
@@ -155,8 +156,8 @@ public class  DBSFaces {
 	    public static final String FORM = "form";
 	    public static final String REPORT = "report"; 
 	    public static final String REPORTFORM = "reportForm"; 
-	    public static final String BEANMODALMESSAGES = "beanModalMessages";
-	    public static final String BEANMODALCRUDMESSAGES = "beanModalCrudMessages";
+	    public static final String MODALMESSAGES = "modalMessages";
+	    public static final String MODALCRUDMESSAGES = "modalCrudMessages";
 	    public static final String BEANDIALOGMESSAGES = "beanDialogMessages";
 	    public static final String BEANDIALOGCRUDCRUDMESSAGES = "beanDialogCrudMessages";
 	    public static final String BEANNAVMESSAGES = "beanNavMessages";
@@ -2657,8 +2658,8 @@ public class  DBSFaces {
 	            @SuppressWarnings("rawtypes")
 				SerializableContextualInstanceImpl xImpl = (SerializableContextualInstanceImpl) xEntry.getValue();
 	            Object xO = xImpl.getInstance();
-	            if (xO instanceof DBSBean){
-            		DBSBean 	xSessionBean = (DBSBean) xO;
+	            if (xO instanceof DBSBeanModalMessages){
+	            	DBSBeanModalMessages 	xSessionBean = (DBSBeanModalMessages) xO;
             		DBSCrudBean xSessionCrudBean = null;
             		if (xSessionBean instanceof DBSCrudBean){
             			xSessionCrudBean = (DBSCrudBean) xSessionBean;
@@ -2714,9 +2715,9 @@ public class  DBSFaces {
 	            Object xSessionBean = xImpl.getInstance();
 	            if (xSessionBean.equals(pSessionBean)){
 		    		DBSCrudBean xDBSCrudBean = null;
-		    		DBSBean xDBSBean = null;
-	            	if (xSessionBean instanceof DBSBean){
-		    			xDBSBean = (DBSBean) xSessionBean; 
+		    		DBSBeanModalMessages xDBSBean = null;
+	            	if (xSessionBean instanceof DBSBeanModalMessages){
+		    			xDBSBean = (DBSBeanModalMessages) xSessionBean; 
             			for (DBSBean xChild:xDBSBean.getSlavesBean()){
     		    			finalizeSessionBean(xChild, true);
             			}

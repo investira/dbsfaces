@@ -7,7 +7,7 @@
 	xmlns:dbs="http://www.dbsoft.com.br/ui/dbsfaces" 
 	xmlns:dbscom="http://www.dbsoft.com.br/ui/dbsfacescom">
 		
-	<cc:interface componentType="br.com.dbsoft.ui.component.beanModalMessages">
+	<cc:interface componentType="br.com.dbsoft.ui.component.modalMessages">
 		<cc:attribute name="userBean" preferred="true" required="true"/>
 		<cc:attribute name="update"/>
 	</cc:interface>
@@ -17,7 +17,7 @@
 		<f:event listener="#{cc.setId(cc.id)}" type="preRenderComponent"/>
 		<div id="#{cc.clientId}">
 			<c:if test="#{cc.userBean.hasMessage}">
-				<dbs:modal id="#{cc.id}_beanModalMessages"
+				<dbs:modal id="#{cc.id}_modalMessages"
 							messageType="#{cc.userBean.messageType.code}"
 							rendered="#{cc.userBean.hasMessage}"
 							update="#{cc.attrs.update}"

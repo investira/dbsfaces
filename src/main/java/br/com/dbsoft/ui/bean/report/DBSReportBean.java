@@ -13,7 +13,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import br.com.dbsoft.error.DBSIOException;
 import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
-import br.com.dbsoft.ui.bean.DBSBean;
+import br.com.dbsoft.ui.bean.DBSBeanModalMessages;
 import br.com.dbsoft.ui.bean.report.DBSReportBeanEvent.REPORT_EVENT;
 import br.com.dbsoft.ui.core.DBSReportFormUtil;
 import br.com.dbsoft.util.DBSFormat;
@@ -27,7 +27,7 @@ import br.com.dbsoft.util.DBSString;
  * @author ricardo.villar
  *
  */
-public abstract class DBSReportBean extends DBSBean {
+public abstract class DBSReportBean extends DBSBeanModalMessages {
 
 	private static final long serialVersionUID = -4729336621811839199L;
 

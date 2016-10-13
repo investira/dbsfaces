@@ -1,22 +1,22 @@
-package br.com.dbsoft.ui.component.beanmodalcrudmessages;
+package br.com.dbsoft.ui.component.modalcrudmessages;
 
 
 import javax.faces.component.FacesComponent;
 import javax.faces.component.UINamingContainer;
 
 import br.com.dbsoft.ui.component.DBSUIComponentBase;
-import br.com.dbsoft.ui.component.beanmodalcrudmessages.IDBSBeanModalCrudMessages;
+import br.com.dbsoft.ui.component.modalcrudmessages.IDBSModalCrudMessages;
 import br.com.dbsoft.ui.core.DBSFaces;
 
 /**
  * @author ricardovillar
  *
  */
-@FacesComponent(DBSBeanModalCrudMessages.COMPONENT_TYPE)
-public class DBSBeanModalCrudMessages extends DBSUIComponentBase { 
+@FacesComponent(DBSModalCrudMessages.COMPONENT_TYPE)
+public class DBSModalCrudMessages extends DBSUIComponentBase { 
 
-	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.BEANMODALCRUDMESSAGES;
-	public final static String RENDERER_TYPE = "/resources/component/beanModalCrudMessages.xhtml";
+	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.MODALCRUDMESSAGES;
+	public final static String RENDERER_TYPE = "/resources/component/modalCrudMessages.xhtml";
 	
 	protected enum PropertyKeys {
 		crudBean;
@@ -35,8 +35,8 @@ public class DBSBeanModalCrudMessages extends DBSUIComponentBase {
 		}
 	}
 	
-	public DBSBeanModalCrudMessages(){
-		setRendererType(DBSBeanModalCrudMessages.RENDERER_TYPE);
+	public DBSModalCrudMessages(){
+		setRendererType(DBSModalCrudMessages.RENDERER_TYPE);
 	}
 
     @Override
@@ -50,15 +50,15 @@ public class DBSBeanModalCrudMessages extends DBSUIComponentBase {
 	 * Bean que contém as mensagens
 	 * @return
 	 */
-	public IDBSBeanModalCrudMessages getCrudBean() {
-		return (IDBSBeanModalCrudMessages) getStateHelper().eval(PropertyKeys.crudBean, null);
+	public IDBSModalCrudMessages getCrudBean() {
+		return (IDBSModalCrudMessages) getStateHelper().eval(PropertyKeys.crudBean, null);
 	}
 
 	/**
 	 * Bean que contém as mensagens
 	 * @param pColumnsWidth
 	 */
-	public void setCrudBean(IDBSBeanModalCrudMessages pCrudBean) {
+	public void setCrudBean(IDBSModalCrudMessages pCrudBean) {
 		getStateHelper().put(PropertyKeys.crudBean, pCrudBean);
 	}
 

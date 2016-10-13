@@ -24,11 +24,11 @@ import br.com.dbsoft.io.DBSResultDataModel;
 import br.com.dbsoft.message.DBSMessage;
 import br.com.dbsoft.message.IDBSMessage;
 import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
-import br.com.dbsoft.ui.bean.DBSBean;
+import br.com.dbsoft.ui.bean.DBSBeanModalMessages;
 import br.com.dbsoft.ui.bean.crud.DBSCrudBeanEvent.CRUD_EVENT;
 import br.com.dbsoft.ui.component.DBSUIInput;
 import br.com.dbsoft.ui.component.DBSUIInputText;
-import br.com.dbsoft.ui.component.beanmodalcrudmessages.IDBSBeanModalCrudMessages;
+import br.com.dbsoft.ui.component.modalcrudmessages.IDBSModalCrudMessages;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSDate;
 import br.com.dbsoft.util.DBSIO;
@@ -183,7 +183,7 @@ import br.com.dbsoft.util.DBSIO.SORT_DIRECTION;
  * 	AFTER_EDIT
  * 
  */
-public abstract class DBSCrudBean extends DBSBean implements IDBSBeanModalCrudMessages{
+public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSModalCrudMessages{
 
 	private static final long serialVersionUID = -8550893738791483527L;
 
@@ -3348,7 +3348,7 @@ public abstract class DBSCrudBean extends DBSBean implements IDBSBeanModalCrudMe
 
 
 			//Exibe mensagem de erro padrão, caso nehum registro tenha sido afetado e já não houver mensagem a ser exibida.
-			if (!wDialogMessages.hasMessages()
+			if (!wMessages.hasMessages()
 			 && (!xE.isOk() || (wConnection != null && xE.getCommittedRowCount().equals(0)))){
 				xE.setOk(false);
 				addMessage(wMessageNoRowComitted);

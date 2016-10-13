@@ -63,7 +63,7 @@ public class DBSModalRenderer extends DBSRenderer {
 			xStyle += xModal.getStyle();
 		}
 		
-		UIComponent xModalMessage = xModal.getFacet("beanModalMessages");
+		UIComponent xModalMessage = xModal.getFacet("modalMessages");
 	
 		//Mascará de fundo
 		xWriter.startElement("div", xModal);

@@ -1,22 +1,21 @@
-package br.com.dbsoft.ui.component.beanmodalmessages;
+package br.com.dbsoft.ui.component.modalmessages;
 
 
 import javax.faces.component.FacesComponent;
 import javax.faces.component.UINamingContainer;
 
 import br.com.dbsoft.ui.component.DBSUIComponentBase;
-import br.com.dbsoft.ui.component.beanmodalmessages.IDBSBeanModalMessages;
 import br.com.dbsoft.ui.core.DBSFaces;
 
 /**
  * @author ricardovillar
  *
  */
-@FacesComponent(DBSBeanModalMessages.COMPONENT_TYPE)
-public class DBSBeanModalMessages extends DBSUIComponentBase { 
+@FacesComponent(DBSModalMessages.COMPONENT_TYPE)
+public class DBSModalMessages extends DBSUIComponentBase { 
 
-	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.BEANMODALMESSAGES;
-	public final static String RENDERER_TYPE = "/resources/component/beanModalMessages.xhtml";
+	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.MODALMESSAGES;
+	public final static String RENDERER_TYPE = "/resources/component/modalMessages.xhtml";
 	
 	protected enum PropertyKeys {
 		userBean;
@@ -35,8 +34,8 @@ public class DBSBeanModalMessages extends DBSUIComponentBase {
 		}
 	}
 	
-	public DBSBeanModalMessages(){
-		setRendererType(DBSBeanModalMessages.RENDERER_TYPE);
+	public DBSModalMessages(){
+		setRendererType(DBSModalMessages.RENDERER_TYPE);
 	}
 
     @Override
@@ -50,15 +49,15 @@ public class DBSBeanModalMessages extends DBSUIComponentBase {
 	 * Bean que contém as mensagens
 	 * @return
 	 */
-	public IDBSBeanModalMessages getUserBean() {
-		return (IDBSBeanModalMessages) getStateHelper().eval(PropertyKeys.userBean, null);
+	public IDBSModalMessages getUserBean() {
+		return (IDBSModalMessages) getStateHelper().eval(PropertyKeys.userBean, null);
 	}
 
 	/**
 	 * Bean que contém as mensagens
 	 * @param pColumnsWidth
 	 */
-	public void setUserBean(IDBSBeanModalMessages pUserBean) {
+	public void setUserBean(IDBSModalMessages pUserBean) {
 		getStateHelper().put(PropertyKeys.userBean, pUserBean);
 	}
 

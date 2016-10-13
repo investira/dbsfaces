@@ -33,10 +33,10 @@
 			</c:if>
 			<div class="-content">
 				<c:if test="#{cc.reportBean.hasMessage}">
-					<dbscom:beanModalMessages id="reportMessagesDialog"
+					<dbscom:modalMessages id="reportMessagesDialog"
 								   		 userBean="#{cc.reportBean}"
 						               	   update="#{cc.clientId}">
-					</dbscom:beanModalMessages>
+					</dbscom:modalMessages>
 				</c:if>			
 				<dbs:tab id="report_tab" showTabPageOnClick="false" selectedTabPage="#{cc.clientId}:report_tab:#{cc.reportBean.currentTabPage}">
 					<dbs:tabPage id="#{cc.reportBean.tabPageIdFiltros}" rendered="#{not empty cc.facets.filter}" styleClass="-filter" caption="Filtros" iconClass="-i_filter" >

@@ -1,8 +1,8 @@
-package br.com.dbsoft.ui.component.beanmodalmessages;
+package br.com.dbsoft.ui.component.modalmessages;
 import br.com.dbsoft.error.DBSIOException;
 import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
 
-public interface IDBSBeanModalMessages {
+public interface IDBSModalMessages {
 	
 	public String getMessageText();
 	
