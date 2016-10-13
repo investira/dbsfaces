@@ -9,13 +9,13 @@ import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
 import br.com.dbsoft.core.DBSSDK.CONTENT_TYPE;
+import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.util.DBSDate;
 import br.com.dbsoft.util.DBSFile;
 import br.com.dbsoft.util.DBSFormat;
@@ -131,9 +131,9 @@ public class DBSReportFormUtil {
 		try {
 			// Verifica se o relatório gerado contem alguma página
 			if (pJasperPrint == null) {
-				DBSFaces.sendMessage("mensagemErro", FacesMessage.SEVERITY_ERROR, "Relatório [" + pReportFileName + "] não encontrado.");
+				DBSFaces.sendMessage("mensagemErro", MESSAGE_TYPE.ERROR, "Relatório [" + pReportFileName + "] não encontrado.");
 			} else if (pJasperPrint.getPages() == null || pJasperPrint.getPages().size() <= 0) {
-				DBSFaces.sendMessage("mensagemErro", FacesMessage.SEVERITY_ERROR, "Nenhum informação encontrada.");
+				DBSFaces.sendMessage("mensagemErro", MESSAGE_TYPE.ERROR, "Nenhum informação encontrada.");
 			} else {
 				//Define o nome do relatório contendo também o número da seção para evitar que um sessão sobreesvreva o relatório de outra. 
 //				String xReportFileName = pReportFileName + DBSSession.getSession().getId();
@@ -148,7 +148,7 @@ public class DBSReportFormUtil {
 			}
 		} catch (JRException e) {
 			wLogger.error("Erro ao gerar relatório " + pReportFileName + ": " + e);
-			DBSFaces.sendMessage("mensagemErro", FacesMessage.SEVERITY_ERROR, "Erro ao gerar relatório: " + e.getMessage());
+			DBSFaces.sendMessage("mensagemErro", MESSAGE_TYPE.ERROR, "Erro ao gerar relatório: " + e.getMessage());
 		}
 		return "";
 	}
@@ -263,7 +263,7 @@ public class DBSReportFormUtil {
 			xResponse.getWriter().println("<script>window.open(\""+ pvGetReportRelativeFilePath(DBSFile.getFileNameHTML(pReportFileName)) + "\")</script>");  
 		} catch (JRException | IOException e) {
 			wLogger.error(e);
-			DBSFaces.sendMessage("mensagemErro", FacesMessage.SEVERITY_ERROR, e.getMessage());
+			DBSFaces.sendMessage("mensagemErro", MESSAGE_TYPE.ERROR, e.getMessage());
 		}
 	}
 

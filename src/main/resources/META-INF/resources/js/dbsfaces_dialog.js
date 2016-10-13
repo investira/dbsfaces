@@ -9,6 +9,12 @@ dbs_dialog = function(pId) {
 	$(pId).on("open", function(){
 		dbsfaces.dialog.pvOpen(xDialog);
 	});
+	$(pId).on("stopTimeout", function(){
+		dbsfaces.dialog.stopTimeout(xDialog);
+	});
+	$(pId).on("startTimeout", function(){
+		dbsfaces.dialog.startTimeout(xDialog);
+	});
 
 	$(window).resize(function(e){
 		setTimeout(function(){
@@ -23,17 +29,20 @@ dbs_dialog = function(pId) {
 	});
 
 	$(pId + ":not([disabled]) > .-container > .-mask").on("mousedown touchstart", function(e){
-		dbsfaces.dialog.show(xDialog);
+		//Fecha se pussior botão de fechar padrão
+		if (xDialog.data("bttimeout").length != 0){
+			dbsfaces.dialog.show(xDialog);
+		}
 		return false;
 	});
 	
 	/*Captura movimento touch para verificar se é para fechar o dialog*/
 	if (!xDialog.data("c")) {
 		$(pId + ":not([disabled]) > .-container > .-content").touchwipe({
-		     wipeLeft: function() {return dbsfaces.dialog.whipe(xDialog, "l");},
-		     wipeRight: function() {return dbsfaces.dialog.whipe(xDialog, "r");},
-		     wipeUp: function() {return dbsfaces.dialog.whipe(xDialog, "u");},
-		     wipeDown: function() {return dbsfaces.dialog.whipe(xDialog, "d");},
+		     wipeLeft: function() {return dbsfaces.dialog.wipe(xDialog, "l");},
+		     wipeRight: function() {return dbsfaces.dialog.wipe(xDialog, "r");},
+		     wipeUp: function() {return dbsfaces.dialog.wipe(xDialog, "u");},
+		     wipeDown: function() {return dbsfaces.dialog.wipe(xDialog, "d");},
 		     onStart: function() {dbsfaces.dialog.scrollStart(xDialog);},
 		     onMove: function(dx, dy) {dbsfaces.dialog.scroll(xDialog, dx, dy);},
 		     min_move_x: 25,
@@ -62,7 +71,7 @@ dbs_dialog = function(pId) {
 //	});
 
 	
-	$(pId + ":not([disabled]) > .-container > .-content > .-btclose").on("mousedown touchstart", function(e){
+	$(pId + ":not([disabled]) > .-container > .-content > .-bttimeout").on("mousedown touchstart", function(e){
 		/*fecha normalmente se não houver timeout ou for modal*/
 		if (xDialog.attr("type") == "mod" 
 		 || xDialog.data("timeout") == "0"){
@@ -74,7 +83,7 @@ dbs_dialog = function(pId) {
 	});
 	
 	/*Fecha o dialog*/
-	$(pId + ":not([disabled]) > .-container > .-content > .-btclose").on("mouseup touchend", function(e){
+	$(pId + ":not([disabled]) > .-container > .-content > .-bttimeout").on("mouseup touchend", function(e){
 		if (xDialog.data("timeout") == "0"){return;}
 		var xTime = new Date().getTime();
 		//Fecha normalmente
@@ -82,7 +91,7 @@ dbs_dialog = function(pId) {
 			dbsfaces.dialog.show(xDialog);
 		//Interrompe o fechamento
 		}else{
-			dbsfaces.dialog.cancelCloseTimeout(xDialog);
+			xDialog.trigger("stopTimeout");
 		}
 		return false;
 	});
@@ -93,16 +102,14 @@ dbs_dialog = function(pId) {
 	});
 
 	/*Animação do timeout*/
-	$(pId + ":not([disabled]) > .-container > .-content > .-btclose").on(dbsfaces.EVENT.ON_TRANSITION_END, function(e){
+	$(pId + ":not([disabled]) > .-container > .-content > .-bttimeout").on(dbsfaces.EVENT.ON_TRANSITION_END, function(e){
 		dbsfaces.dialog.show(xDialog);
 		return false;
 	});
 	
 	/*Exibe dialog já aberto*/
-	var xOpen = xDialog.attr('open');
-	if (xOpen == "true") {
+	if (xDialog.attr("open")) {
 		dbsfaces.dialog.show(xDialog);
-		return false;
 	}
 };
 
@@ -111,7 +118,7 @@ dbsfaces.dialog = {
 	initialize: function(pDialog){
 		dbsfaces.dialog.pvInitializeData(pDialog);
 		dbsfaces.dialog.pvInitializeLayout(pDialog);
-		dbsfaces.dialog.pvInitializeTimeout(pDialog);
+		dbsfaces.dialog.pvInitializeCloseTimeout(pDialog);
 	},
 
 	pvInitializeData: function(pDialog){
@@ -126,7 +133,7 @@ dbsfaces.dialog = {
 		pDialog.data("header_content", pDialog.data("header").children(".-content"));
 		pDialog.data("footer", pDialog.data("content").children(".-footer"));
 		pDialog.data("footer_content", pDialog.data("footer").children(".-content"));
-		pDialog.data("btclose", pDialog.data("content").children(".-btclose"));
+		pDialog.data("bttimeout", pDialog.data("content").children(".-bttimeout"));
 		pDialog.data("padding", parseFloat(pDialog.data("sub_content").css("padding")));
 		pDialog.data("timeout", dbsfaces.util.getNotEmpty(pDialog.attr("timeout"),"0"));
 	},
@@ -136,33 +143,51 @@ dbsfaces.dialog = {
 
 		pDialog.data("container").css("opacity", "");
 		//Configura cor como transparencia a partir da cor definida pelo usuário
-		if (pDialog.attr("type") == "mod"
-		 || pDialog.attr("p") == "c"){
+		if (pDialog.attr("type") == "mod"){
 		}else{
 			if (tinycolor(pDialog.data("content").css("background-color")).isDark()){
 				xColorClose = "rgba(255,255,255,.1)";
 			}else{
 				xColorClose = "rgba(0,0,0,.1)";
 			}
-			pDialog.data("btclose").css("border-color", xColorClose)
-							  	   .css("background-color", xColorClose);
+			pDialog.data("bttimeout").css("border-color", xColorClose)
+							  	     .css("background-color", xColorClose);
 		}
-
+		//Largura mínima em função da largura do header
+		var xMinWidth = pDialog.data("padding") * 2;
+		var xEle;
+		xEle = pDialog.data("header").find("> .-content > .-caption > .-icon");
+		if (xEle.length != 0){
+			xMinWidth += xEle[0].clientWidth;
+		}
+		xEle = pDialog.data("header").find("> .-content > .-caption > .-label");
+		if (xEle.length != 0){
+			xMinWidth += xEle[0].clientWidth;
+		}
+		pDialog.data("sub_content").css("min-width", xMinWidth);
 	},
 	
-	pvInitializeTimeout: function(pDialog){
+	pvInitializeCloseTimeout: function(pDialog){
 		if (pDialog.data("timeout") == "0"){return;}
 		if (pDialog.attr("timeout") == "a"){
 			pDialog.data("timeout", dbsfaces.ui.getTimeFromTextLength(pDialog.data("sub_content").text()) / 1000);
 		}
 		var xTime = parseInt(pDialog.data("timeout"));
-		dbsfaces.ui.cssTransition(pDialog.data("btclose"), "width " + xTime + "s linear, height " + xTime + "s linear");
+		dbsfaces.ui.cssTransition(pDialog.data("bttimeout"), "width " + xTime + "s linear, height " + xTime + "s linear");
 	},
 
-	cancelCloseTimeout: function(pDialog){
-		dbsfaces.ui.cssTransition(pDialog.data("btclose"), "none");
+//	cancelCloseTimeout: function(pDialog){
+//		dbsfaces.ui.cssTransition(pDialog.data("bttimeout"), "none");
+//	},
+	
+	stopTimeout: function(pDialog){
+		pDialog.data("bttimeout").addClass("-stopped");
 	},
 	
+	startTimeout: function(pDialog){
+		pDialog.data("bttimeout").removeClass("-stopped");
+	},
+
 	/*Força o scroll já que ele não funciona naturalente no mobile*/
 	scroll: function(pDialog, pDx, pDy){
 		var xDiv = pDialog.data("divscroll");
@@ -178,7 +203,10 @@ dbsfaces.dialog = {
 		xDiv.data("scrolly", xDiv.scrollTop());
 	},
 
-	whipe: function(pDialog, pDirection){
+	wipe: function(pDialog, pDirection){
+		if (pDialog.data("bttimeout").length == 0){
+			return false;
+		}
 		if ((pDialog.attr("p") == "t"
 		  && pDirection == "u")
 		 || (pDialog.attr("p") == "b"
@@ -214,7 +242,6 @@ dbsfaces.dialog = {
 		dbsfaces.dialog.pvAjustLayout(pDialog);
 		dbsfaces.ui.disableBackgroundInputs(pDialog);
 		dbsfaces.dialog.pvFreeze(pDialog, true);
-//		pDialog.data("sub_content").removeClass("-closed");
 		pDialog.removeClass("-closed");
 		//Coloca o foco no primeiro campo de input dentro do nav
 		dbsfaces.ui.focusOnFirstInput(pDialog);
@@ -226,9 +253,8 @@ dbsfaces.dialog = {
 		dbsfaces.ui.enableForegroundInputs($("body"));
 		//Retira foco do componente que possuir foco
 		$(":focus").blur();
-//		pDialog.data("sub_content").addClass("-closed");
 		pDialog.addClass("-closed");
-		dbsfaces.dialog.pvInitializeTimeout(pDialog);
+		dbsfaces.dialog.startTimeout(pDialog);
 		dbsfaces.dialog.pvFreeze(pDialog, false);
 	},
 	
@@ -248,33 +274,61 @@ dbsfaces.dialog = {
 		}
 	},
 	
-	pvAjustLayout: function(pDialog){
-//		if (dbsfaces.ui.isMobile()){
-//			if (pDialog.data("type") == "mod"){
-//				pDialog.attr("cs","s");
-//			}else{
-//				pDialog.attr("cs","a");
-//			}
+//	pvAjustLayout: function(pDialog){
+//		if (dbsfaces.util.isMobile()){
+//			pDialog.attr("cs","s");
 //		}
+//		var xHeader = pDialog.data("header");
+//		var xFooter = pDialog.data("footer");
+//		var xSubContainer = pDialog.data("sub_container");
+//
+//				
+//		if (xHeader.length > 0){
+//			var xHeaderHeight = xHeader[0].clientHeight;
+//			xSubContainer.css("padding-top", xHeaderHeight);
+//		}
+//		if (xFooter.length > 0){
+//			var xFooterHeight = xFooter[0].clientHeight;
+//			xSubContainer.css("padding-bottom", xFooterHeight);
+//		}
+//
+//	}
+	pvAjustLayout: function(pDialog){
 		if (dbsfaces.util.isMobile()){
 			pDialog.attr("cs","s");
-//		}else{
-//			pDialog.attr("cs","a");
 		}
 		var xHeaderContent = pDialog.data("header_content");
-		var xFooterContent = pDialog.data("footer_content");
+		var xFooter = pDialog.data("footer");
 		var xSubContainer = pDialog.data("sub_container");
 		
 		if (xHeaderContent.length > 0){
 			var xHeaderHeight = xHeaderContent[0].clientHeight;
 			xSubContainer.css("padding-top", xHeaderHeight);
 		}
-		if (xFooterContent.length > 0){
-			var xFooterHeight = xFooterContent[0].clientHeight;
+		if (xFooter.length > 0){
+			var xFooterHeight = xFooter[0].clientHeight;
 			xSubContainer.css("padding-bottom", xFooterHeight);
 		}
 
 	}
 
+//	pvAjustLayout: function(pDialog){
+//		if (dbsfaces.util.isMobile()){
+//			pDialog.attr("cs","s");
+//		}
+//		var xHeaderContent = pDialog.data("header_content");
+//		var xFooterContent = pDialog.data("footer_content");
+//		var xSubContainer = pDialog.data("sub_container");
+//		
+//		if (xHeaderContent.length > 0){
+//			var xHeaderHeight = xHeaderContent[0].clientHeight;
+//			xSubContainer.css("padding-top", xHeaderHeight);
+//		}
+//		if (xFooterContent.length > 0){
+//			var xFooterHeight = xFooterContent[0].clientHeight;
+//			xSubContainer.css("padding-bottom", xFooterHeight);
+//		}
+//
+//	}
 };
 

@@ -197,9 +197,9 @@
 				&lt;span style="font-size:small"&gt;
 				Tipo de dialog. Padrão é 'nav'&lt;br/&gt;
 				&lt;ul&gt;
-					&lt;li&gt;NAV(navigation bars - top/bottom/left/right) = nav&lt;/li&gt;
-					&lt;li&gt;MSG(mensages - center/top/bottom/left/right) = msg&lt;/li&gt;
-					&lt;li&gt;MOD(modal - center) = mod&lt;/li&gt;
+					&lt;li&gt;navigation bars = nav&lt;/li&gt;
+					&lt;li&gt;mensages = msg&lt;/li&gt;
+					&lt;li&gt;modal = mod&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>type</name>
@@ -295,6 +295,29 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
+		<attribute>
+			<description>
+                Sendo: null=normal, a=About, w=Atenção, e=Error, i=Informação, c=Confirmar, g=Ignorar, s=Sucesso, b=Sobre, p=Proibido, t=Importante
+            </description>
+			<name>msgType</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Define o nome do elemento que escutará as mensagens enviadas por facesmessage.&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;Mensagens sem clientid = @global&lt;/li&gt;
+					&lt;li&gt;Todas as mensagens = @all&lt;/li&gt;
+					&lt;li&gt;Mensagem para um componente = clientid do componente&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt;
+            </description>
+			<name>msgFor</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>		
 	</tag>
 	<tag>
 		<tag-name>nav</tag-name>

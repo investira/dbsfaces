@@ -79,14 +79,12 @@ public class DBSDataTableRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "id", xClientId);
 			DBSFaces.setAttribute(xWriter, "name", xClientId);
 			DBSFaces.setAttribute(xWriter, "class", xClass);
+			DBSFaces.setAttribute(xWriter, "style", xStyle);
 			//Não exibe dataTable caso não exista cabeçalho principal e não possua dados a ser exibidos
 //			if (!pvHasHeader(xDataTable) &&
 //				!(xDataTable.getRowCount() > 0)){
 //				xStyle = xStyle + " display:none;";
 //			}
-			if (!xStyle.trim().equals("")){
-				DBSFaces.setAttribute(xWriter, "style", xStyle);
-			}
 
 			encodeClientBehaviors(pContext, xDataTable);
 			//CSS

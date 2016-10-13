@@ -1,7 +1,9 @@
 package br.com.dbsoft.ui.component.dialog;
 
 import java.io.IOException;
+import java.util.List;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -9,7 +11,9 @@ import javax.faces.render.FacesRenderer;
 
 import com.sun.faces.renderkit.RenderKitUtils;
 
-
+import br.com.dbsoft.message.IDBSMessage;
+import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
+import br.com.dbsoft.message.IDBSMessages;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.dialog.DBSDialog.POSITION;
@@ -19,6 +23,10 @@ import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.util.DBSObject;
 
+/**
+ * @author ricardo.villar
+ *
+ */
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSDialog.RENDERER_TYPE)
 public class DBSDialogRenderer extends DBSRenderer {
 	
@@ -40,10 +48,13 @@ public class DBSDialogRenderer extends DBSRenderer {
 		if (!pComponent.isRendered()){return;}
 		
 		DBSDialog 			xDialog = (DBSDialog) pComponent;
+
+		pvInitialize(xDialog, pContext);
+		
 		if (!pvIsValid(xDialog)){return;}
 
 		ResponseWriter 		xWriter = pContext.getResponseWriter();
-		String 				xClass = CSS.DIALOG.MAIN + CSS.THEME.FC + CSS.MODIFIER.CLOSED;
+		String 				xClass = CSS.DIALOG.MAIN + CSS.MODIFIER.CLOSED;
 		TYPE 	 			xType = TYPE.get(xDialog.getType());
 
 		if (xDialog.getStyleClass()!=null){
@@ -65,7 +76,9 @@ public class DBSDialogRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "p", xDialog.getPosition());
 			DBSFaces.setAttribute(xWriter, "cs", xDialog.getContentSize());
 			DBSFaces.setAttribute(xWriter, "ca", xDialog.getContentAlignment());
-			DBSFaces.setAttribute(xWriter, "open", (xDialog.getOpen() ? "true" : "false"));
+			if (xDialog.getOpen()){
+				DBSFaces.setAttribute(xWriter, "open", "open");
+			}
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xDialog, DBSPassThruAttributes.getAttributes(Key.DIALOG));
 			xWriter.startElement("div", xDialog);
 				DBSFaces.setAttribute(xWriter, "style", "opacity:0", null); //Inicia escondido para ser exibido após a execução do JS
@@ -94,10 +107,11 @@ public class DBSDialogRenderer extends DBSRenderer {
 	}
 	
 	private void pvEncodeContentBegin(DBSDialog pDialog, FacesContext pContext, ResponseWriter pWriter) throws IOException{
+		TYPE xType = TYPE.get(pDialog.getType());
 		pWriter.startElement("div", pDialog);
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + CSS.THEME.FC + CSS.THEME.BC + pDialog.getContentStyleClass(), null); //(pDialog.getOpened() ? CSS.MODIFIER.OPENED : CSS.MODIFIER.CLOSED)
+			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + CSS.THEME.FC + CSS.THEME.BC + pDialog.getContentStyleClass(), null); 
 			//Header
-			pvEncodeHeader(pDialog, pContext, pWriter);
+			pvEncodeHeader(pDialog, xType, pContext, pWriter);
 			//Nav
 			pWriter.startElement("div", pDialog);
 				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.SUB_CONTAINER, null);
@@ -105,26 +119,23 @@ public class DBSDialogRenderer extends DBSRenderer {
 					pWriter.startElement("div", pDialog);
 						pWriter.startElement("div", pDialog);
 							DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.SUB_CONTENT + CSS.MODIFIER.CLOSED, null);
-
-//							DBSFaces.setAttribute(pWriter, "class", pDialog.getContentStyleClass(), null);
 							DBSFaces.setAttribute(pWriter, "style", "padding:" + pDialog.getContentPadding(), null);
-							//Encode dos conteúdo
-							DBSFaces.renderChildren(pContext, pDialog);
+							pvEncodeChildren(pDialog, pContext, pWriter);
 	}
 	
 	private void pvEncodeContentEnd(DBSDialog pDialog, FacesContext pContext, ResponseWriter pWriter) throws IOException{
+		TYPE xType = TYPE.get(pDialog.getType());
+
 						pWriter.endElement("div");
 					pWriter.endElement("div");
 				pWriter.endElement("div");
 			pWriter.endElement("div");
 			//Footer
-			pvEncodeFooter(pDialog, pContext, pWriter);
+			pvEncodeFooter(pDialog, xType, pContext, pWriter);
 			//ButtonBack
-			pvEncodeButtonBack(pDialog, pWriter);
+			pvEncodeButtonBack(pDialog, xType, pWriter);
 			//ButtonClose
-			pvEncodeButtonClose(pDialog, pWriter);
-			//Timeout
-//			pvEncodeTimeout(pDialog, pWriter);
+			pvEncodeButtonTimeout(pDialog, xType, pWriter);
 		pWriter.endElement("div");
 	}
 	
@@ -139,15 +150,16 @@ public class DBSDialogRenderer extends DBSRenderer {
 		}
 	}
 
-	private void pvEncodeHeader(DBSDialog pDialog, FacesContext pContext,  ResponseWriter pWriter) throws IOException{
+	private void pvEncodeHeader(DBSDialog pDialog, TYPE pType, FacesContext pContext,  ResponseWriter pWriter) throws IOException{
 		UIComponent xHeader = pDialog.getFacet(DBSDialog.FACET_HEADER);
-		if (xHeader == null){return;}
+		if (xHeader == null
+		 && DBSObject.isEmpty(pDialog.getCaption())){return;}
 		pWriter.startElement("div", pDialog);
 			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.HEADER);
 			pWriter.startElement("div", pDialog);
 				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
 				DBSFaces.setAttribute(pWriter, "style", pvGetPaddingHeader(pDialog));
-				pvEncodeCaption(pDialog, pWriter);
+				pvEncodeCaption(pDialog, pType, pWriter);
 				//Encode o conteudo do Header definido no FACET HEADER
 				if (!DBSObject.isNull(xHeader)){
 					xHeader.encodeAll(pContext);
@@ -156,69 +168,121 @@ public class DBSDialogRenderer extends DBSRenderer {
 		pWriter.endElement("div");
 	}
 
-	private void pvEncodeCaption(DBSDialog pDialog, ResponseWriter pWriter) throws IOException{
+	private void pvEncodeCaption(DBSDialog pDialog, TYPE pType, ResponseWriter pWriter) throws IOException{
 		if (DBSObject.isEmpty(pDialog.getCaption())){return;}
+		
 		pWriter.startElement("div", pDialog);
 			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CAPTION + CSS.MODIFIER.NOT_SELECTABLE);
+			//Icone do tipo de mensagem
+			if(pType == TYPE.MSG
+		  	&& pvHasMessage(pDialog)){
+				pWriter.startElement("div", pDialog);
+					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON);
+					pWriter.startElement("div", pDialog);
+						DBSFaces.setAttribute(pWriter, "class", MESSAGE_TYPE.get(pDialog.getMsgType()).getIconClass());
+					pWriter.endElement("div");
+				pWriter.endElement("div");
+			}
+			//Label
 			pWriter.startElement("div", pDialog);
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.LABEL);
 				pWriter.write(pDialog.getCaption());
 			pWriter.endElement("div");
 		pWriter.endElement("div");
 	}
 
-	private void pvEncodeButtonClose(DBSDialog pDialog, ResponseWriter pWriter) throws IOException{
-		TYPE xType = TYPE.get(pDialog.getType());
-		POSITION xPosition = POSITION.get(pDialog.getPosition());
-		String xClass = "-btclose" + CSS.THEME.ACTION;
-		String xStyle = null;
-		if (xType == TYPE.MOD
-		 || (xType == TYPE.MSG && xPosition == POSITION.CENTER)){
-			xClass += "-i_cancel";
-			xStyle = "padding:" + pDialog.getContentPadding();
+	private void pvEncodeButtonTimeout(DBSDialog pDialog, TYPE pType, ResponseWriter pWriter) throws IOException{
+		if (pType == TYPE.NAV //é nav
+		|| !pDialog.getCloseTimeout().equals("0") // tem timeout
+		|| pDialog.getFacet(DBSDialog.FACET_TOOLBAR) == null){ //não tem toolbar
+			String xClass = "-bttimeout" + CSS.THEME.ACTION;
+			//Exibe espaço do button timeout
+			pWriter.startElement("div", pDialog);
+				DBSFaces.setAttribute(pWriter, "class", xClass);
+	//			DBSFaces.setAttribute(pWriter, "style", xStyle);
+			pWriter.endElement("div");
 		}
-		pWriter.startElement("div", pDialog);
-			DBSFaces.setAttribute(pWriter, "class", xClass);
-			DBSFaces.setAttribute(pWriter, "style", xStyle);
-		pWriter.endElement("div");
 	}
-	private void pvEncodeButtonBack(DBSDialog pDialog, ResponseWriter pWriter) throws IOException{
-		TYPE xType = TYPE.get(pDialog.getType());
-		String xClass = "-btback" + CSS.THEME.ACTION;
-		String xStyle = null;
-		if (xType == TYPE.MOD){
+
+	private void pvEncodeButtonBack(DBSDialog pDialog, TYPE pType, ResponseWriter pWriter) throws IOException{
+		//Exibe botão de back
+		if (pType == TYPE.MOD){
+			String xClass = "-btback" + CSS.THEME.ACTION;
+			String xStyle = null;
 			xClass += "-i_navigate_previous";
 			xStyle = "padding:" + pDialog.getContentPadding();
+			pWriter.startElement("div", pDialog);
+				DBSFaces.setAttribute(pWriter, "class", xClass);
+				DBSFaces.setAttribute(pWriter, "style", xStyle);
+			pWriter.endElement("div");
 		}
-		pWriter.startElement("div", pDialog);
-			DBSFaces.setAttribute(pWriter, "class", xClass);
-			DBSFaces.setAttribute(pWriter, "style", xStyle);
-		pWriter.endElement("div");
 	}
-	
-//	private void pvEncodeTimeout(DBSDialog pDialog, ResponseWriter pWriter) throws IOException{
-////		if (pDialog.getCloseTimeout().equals("0")){return;}
-//		String xPathTimeout = "M 0,25 A 25,25 0 1 0 0,24.99";
-//		pWriter.startElement("svg", pDialog);
-//			DBSFaces.encodeSVGNamespaces(pWriter);
-//			DBSFaces.setAttribute(pWriter, "class", "-timeout");
-//			DBSFaces.setAttribute(pWriter, "viewBox", "0 0 50 50");
-//			DBSFaces.encodeSVGPath(pDialog, pWriter, xPathTimeout, "-o", null, null); //"fill=none;stroke=currentColor;stroke-width=.25em;"
-//		pWriter.endElement("svg");
-//	}
 
-	private void pvEncodeFooter(DBSDialog pDialog, FacesContext pContext,  ResponseWriter pWriter) throws IOException{
+	/**
+	 * Footer
+	 * @param pDialog
+	 * @param pContext
+	 * @param pWriter
+	 * @throws IOException
+	 */
+	private void pvEncodeFooter(DBSDialog pDialog, TYPE pType, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 		UIComponent xFooter = pDialog.getFacet(DBSDialog.FACET_FOOTER);
-		if (xFooter == null){return;}
 		pWriter.startElement("div", pDialog);
 			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.FOOTER);
-			pWriter.startElement("div", pDialog);
-				DBSFaces.setAttribute(pWriter, "style", pvGetPaddingFooter(pDialog));
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
-				xFooter.encodeAll(pContext);
-			pWriter.endElement("div");
+			if (xFooter != null){
+				pWriter.startElement("div", pDialog);
+					DBSFaces.setAttribute(pWriter, "style", pvGetPaddingFooter(pDialog));
+					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
+					xFooter.encodeAll(pContext);
+				pWriter.endElement("div");
+			}
+			//Toolbar
+			pvEncodeToolbar(pDialog, pType, pContext, pWriter);
 		pWriter.endElement("div");
 	}
 	
+	/**
+	 * Footer
+	 * @param pDialog
+	 * @param pContext
+	 * @param pWriter
+	 * @throws IOException
+	 */
+	private void pvEncodeToolbar(DBSDialog pDialog, TYPE pType, FacesContext pContext, ResponseWriter pWriter) throws IOException{
+		UIComponent xToolbar = pDialog.getFacet(DBSDialog.FACET_TOOLBAR);
+		if (xToolbar == null
+		 && pType != TYPE.MOD){return;}
+		pWriter.startElement("div", pDialog);
+			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.TOOLBAR);
+			if (xToolbar == null){
+				pvEncodeButtonClose(pDialog, pWriter);
+			}else{
+				xToolbar.encodeAll(pContext);
+			}
+		pWriter.endElement("div");
+	}
+	
+	/**
+	 * Botão padrão do close
+	 * @param pDialog
+	 * @param pWriter
+	 * @throws IOException
+	 */
+	private void pvEncodeButtonClose(DBSDialog pDialog, ResponseWriter pWriter) throws IOException{
+		//Só faz o encode se for MOD
+		String xClass = "-btclose -i_cancel" + CSS.THEME.ACTION;
+		//Exibe espaço do button timeout
+		pWriter.startElement("div", pDialog);
+			DBSFaces.setAttribute(pWriter, "class", xClass);
+		pWriter.endElement("div");
+	}
+	
+	/**
+	 * javaScript
+	 * @param pClientId
+	 * @param pWriter
+	 * @throws IOException
+	 */
 	private void pvEncodeJS(String pClientId, ResponseWriter pWriter) throws IOException{
 		DBSFaces.encodeJavaScriptTagStart(pWriter);
 		String xJS = "$(document).ready(function() { \n" +
@@ -254,14 +318,108 @@ public class DBSDialogRenderer extends DBSRenderer {
 				pvEncodeError(pDialog, xType, xPosition, "use type 'msg' or 'dialog'");
 				return false;
 			}
+		}else if(xType == TYPE.MSG){
+			return pvHasMessage(pDialog);
 		}
 		return true;
 	}
+	
 	private void pvEncodeError(DBSDialog pDialog, TYPE pType, POSITION pPosition, String pString){
 		wLogger.error("DBSDialog\tid=" +  pDialog.getClientId() + ":type=" + pType + ",p=" + pPosition + " not allowed." + pString);
 	}
 	
+	private boolean pvHasMessage(DBSDialog pDialog){
+		if ((pDialog.getDBSMessages() != null && pDialog.getDBSMessages().hasMessages())
+		 || (pDialog.getListFacesMessage() != null && pDialog.getListFacesMessage().size() > 0)
+		 || pDialog.getChildren().size() > 0){
+			return true;
+		}
+		return false;
+	}
+	
+	private void pvInitialize(DBSDialog pDialog, FacesContext pContext) throws IOException{
+		TYPE 	 xType = TYPE.get(pDialog.getType());
+		//Configura mensagem vinda por facesmessage ou children
+		if(xType == TYPE.MSG){
+			//É mensagem FacesMessage
+			if (!DBSObject.isEmpty(pDialog.getMsgFor())){
+				//Se houver mensagem DBSMessages
+				if (pContext.getAttributes().get(IDBSMessage.ATTRIBUTE_NAME) != null){
+					@SuppressWarnings("rawtypes")
+					IDBSMessages xMsgs = (IDBSMessages) pContext.getAttributes().get(IDBSMessage.ATTRIBUTE_NAME);
+					IDBSMessage xMsg = xMsgs.getCurrentMessage();
+					pDialog.setCaption(xMsg.getMessageType().getName());
+					pDialog.setMsgType(xMsg.getMessageType().getCode());
+//					//Se for para exibir todas as mensagens 
+//					if (pDialog.getMsgFor().equals(DBSDialog.MSG_FOR_GLOBAL)){
+//						//Se existe mensagem sem componente(clientid) definito
+//						xFM = pContext.getMessageList(null);
+//					//Se for para exibir mensagempara de componente(clientid) 
+//					}else if (!pDialog.getMsgFor().equals(DBSDialog.MSG_FOR_ALL)){
+//						//Se existe mensagem para o componente(clientid)
+//						xFM = pContext.getMessageList(pDialog.getMsgFor());
+//					}else{
+//						xFM = pContext.getMessageList();
+//					}
+					pDialog.setDBSMessages(xMsgs);
+					pDialog.setOpen(true);
+				//Se houver mensagem FacesMessage
+				}else if (pContext.getMessageList().size() > 0){
+					List<FacesMessage> xFM = null;
+					//Se for para exibir todas as mensagens 
+					if (pDialog.getMsgFor().equals(DBSDialog.MSG_FOR_GLOBAL)){
+						//Se existe mensagem sem componente(clientid) definito
+						xFM = pContext.getMessageList(null);
+					//Se for para exibir mensagempara de componente(clientid) 
+					}else if (!pDialog.getMsgFor().equals(DBSDialog.MSG_FOR_ALL)){
+						//Se existe mensagem para o componente(clientid)
+						xFM = pContext.getMessageList(pDialog.getMsgFor());
+					}else{
+						xFM = pContext.getMessageList();
+					}
+					pDialog.setListFacesMessage(xFM);
+					//Configura para exibir o dialog já aberto/
+					if (xFM != null){
+						if (xFM.get(0).getSeverity() == FacesMessage.SEVERITY_ERROR
+						 || xFM.get(0).getSeverity() == FacesMessage.SEVERITY_FATAL){
+							pDialog.setMsgType(MESSAGE_TYPE.ERROR.getCode());
+							pDialog.setCaption(MESSAGE_TYPE.ERROR.getName());
+						}else if (xFM.get(0).getSeverity() == FacesMessage.SEVERITY_WARN){
+							pDialog.setMsgType(MESSAGE_TYPE.WARNING.getCode());
+							pDialog.setCaption(MESSAGE_TYPE.WARNING.getName());
+						}else if (xFM.get(0).getSeverity() == FacesMessage.SEVERITY_INFO){
+							pDialog.setMsgType(MESSAGE_TYPE.INFORMATION.getCode());
+							pDialog.setCaption(MESSAGE_TYPE.INFORMATION.getName());
+						}
+						pDialog.setOpen(true);
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Encode do conteúdo
+	 * @param pDialog
+	 * @param pContext
+	 * @param pWriter
+	 * @throws IOException
+	 */
+	private void pvEncodeChildren(DBSDialog pDialog, FacesContext pContext, ResponseWriter pWriter) throws IOException{
+		if (pDialog.getChildren().size() > 0){
+			//Encode dos conteúdo
+			DBSFaces.renderChildren(pContext, pDialog);
+		}else if (pDialog.getDBSMessages() != null && pDialog.getDBSMessages().hasMessages()){
+			pWriter.write(pDialog.getDBSMessages().getCurrentMessageText());
+		}else if (pDialog.getListFacesMessage() != null){
+			for (FacesMessage xFM:pDialog.getListFacesMessage()){
+				pWriter.write(xFM.getDetail());
+			}
+		}
+	}
+
 }
+
 
 
 

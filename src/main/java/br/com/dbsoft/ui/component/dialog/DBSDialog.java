@@ -2,10 +2,13 @@ package br.com.dbsoft.ui.component.dialog;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.component.FacesComponent;
 import javax.faces.component.NamingContainer;
 
+import br.com.dbsoft.message.IDBSMessages;
 import br.com.dbsoft.ui.component.DBSUIOutput;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSNumber;
@@ -17,9 +20,12 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 	
 
-	public final static String FACET_CAPTION = "caption";
 	public final static String FACET_HEADER = "header";
 	public final static String FACET_FOOTER = "footer";
+	public final static String FACET_TOOLBAR = "toolbar";
+	
+	public final static String MSG_FOR_ALL = "@all";
+	public final static String MSG_FOR_GLOBAL = "@global";
 
 	protected enum PropertyKeys {
 		type,
@@ -31,7 +37,12 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 		contentSize,
 		contentPadding,
 		closeTimeout,
-		open;
+		msgType,
+		msgFor,
+		open,
+		//Atributos internos
+		listfacesmessage,
+		dbsmessages;
 
 		String toString;
 
@@ -68,16 +79,22 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 				return MSG;
 			}			
 			pCode = pCode.trim().toLowerCase();
-			switch (pCode) {
-			case "msg":
-				return MSG;
-			case "nav":
-				return NAV;
-			case "mod":
-				return MOD;
-			default:
-				return MSG;
-			}
+	    	for (TYPE xT:TYPE.values()) {
+	    		if (xT.getName().equals(pCode)){
+	    			return xT;
+	    		}
+	    	}
+	    	return null;
+//			switch (pCode) {
+//			case "msg":
+//				return MSG;
+//			case "nav":
+//				return NAV;
+//			case "mod":
+//				return MOD;
+//			default:
+//				return MSG;
+//			}
 		}	
 	}
 	
@@ -98,29 +115,31 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 			return wName;
 		}
 		
-		public String getStyleClass() {
-			return " -p_" + wName;
-		}
-
 		public static POSITION get(String pCode) {
 			if (pCode == null){
 				return CENTER;
 			}			
 			pCode = pCode.trim().toLowerCase();
-			switch (pCode) {
-			case "t":
-				return TOP;
-			case "b":
-				return BOTTOM;
-			case "l":
-				return LEFT;
-			case "r":
-				return RIGHT;
-			case "c":
-				return CENTER;
-			default:
-				return CENTER;
-			}
+	    	for (POSITION xP:POSITION.values()) {
+	    		if (xP.getName().equals(pCode)){
+	    			return xP;
+	    		}
+	    	}
+	    	return null;
+//			switch (pCode) {
+//			case "t":
+//				return TOP;
+//			case "b":
+//				return BOTTOM;
+//			case "l":
+//				return LEFT;
+//			case "r":
+//				return RIGHT;
+//			case "c":
+//				return CENTER;
+//			default:
+//				return CENTER;
+//			}
 		}	
 	}
 
@@ -147,14 +166,21 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 				return AUTO;
 			}			
 			pCode = pCode.trim().toLowerCase();
-			switch (pCode) {
-			case "s":
-				return SCREEN;
-			case "a":
-				return AUTO;
-			default:
-				return null;
-			}
+	    	for (CONTENT_SIZE xCS:CONTENT_SIZE.values()) {
+	    		if (xCS.getName().equals(pCode)){
+	    			return xCS;
+	    		}
+	    	}
+	    	return null;
+//	    	
+//	    	switch (pCode) {
+//			case "s":
+//				return SCREEN;
+//			case "a":
+//				return AUTO;
+//			default:
+//				return null;
+//			}
 		}	
 	}
 	
@@ -174,30 +200,32 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 		public String getName() {
 			return wName;
 		}
-		
-		public String getStyleClass() {
-			return " -ca_" + wName;
-		}
 
 		public static CONTENT_ALIGNMENT get(String pCode) {
 			if (pCode == null){
 				return CENTER;
 			}			
 			pCode = pCode.trim().toLowerCase();
-			switch (pCode) {
-			case "t":
-				return TOP;
-			case "b":
-				return BOTTOM;
-			case "l":
-				return LEFT;
-			case "r":
-				return RIGHT;
-			case "c":
-				return CENTER;
-			default:
-				return null;
-			}
+	    	for (CONTENT_ALIGNMENT xCA:CONTENT_ALIGNMENT.values()) {
+	    		if (xCA.getName().equals(pCode)){
+	    			return xCA;
+	    		}
+	    	}
+	    	return null;
+//	    	switch (pCode) {
+//			case "t":
+//				return TOP;
+//			case "b":
+//				return BOTTOM;
+//			case "l":
+//				return LEFT;
+//			case "r":
+//				return RIGHT;
+//			case "c":
+//				return CENTER;
+//			default:
+//				return null;
+//			}
 		}	
 	}
 
@@ -249,7 +277,7 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 	}
 	
 	public String getPosition() {
-		return (String) getStateHelper().eval(PropertyKeys.position, POSITION.CENTER.getName());
+		return (String) getStateHelper().eval(PropertyKeys.position, POSITION.LEFT.getName());
 	}
 	
 	public void setPosition(String pPosition) {
@@ -289,6 +317,27 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 		handleAttribute("contentAlignment", pContentAlignment);
 	}
 
+	public String getMsgType() {
+		return (String) getStateHelper().eval(PropertyKeys.msgType, null);
+	}
+	
+	public void setMsgType(String pMsgType) {
+		getStateHelper().put(PropertyKeys.msgType, pMsgType);
+		handleAttribute("msgType", pMsgType);
+	}
+	
+	public String getMsgFor() {
+		return (String) getStateHelper().eval(PropertyKeys.msgFor, null);
+	}
+	
+	public void setMsgFor(String pMsgFor) {
+		if (pMsgFor != null && pMsgFor.length() > 0){
+			pMsgFor = pMsgFor.trim().toLowerCase();
+		}
+		getStateHelper().put(PropertyKeys.msgFor, pMsgFor);
+		handleAttribute("msgFor", pMsgFor);
+	}
+
 	public String getCloseTimeout() {
 		return (String) getStateHelper().eval(PropertyKeys.closeTimeout, "0");
 	}
@@ -323,7 +372,24 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 		handleAttribute("contentStyleClass", pContentStyleClass);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<FacesMessage> getListFacesMessage() {
+		return (List<FacesMessage>) getStateHelper().eval(PropertyKeys.listfacesmessage, null);
+	}
+	
+	public void setListFacesMessage(List<FacesMessage> pListFacesMessage) {
+		getStateHelper().put(PropertyKeys.listfacesmessage, pListFacesMessage);
+		handleAttribute("listfacesmessage", pListFacesMessage);
+	}
 
+	public IDBSMessages<?> getDBSMessages() {
+		return (IDBSMessages<?>) getStateHelper().eval(PropertyKeys.dbsmessages, null);
+	}
+	
+	public void setDBSMessages(IDBSMessages<?> pDBSMessages) {
+		getStateHelper().put(PropertyKeys.dbsmessages, pDBSMessages);
+		handleAttribute("dbsmessages", pDBSMessages);
+	}
 
 	@Override
     public String getDefaultEventName()

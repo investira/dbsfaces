@@ -2,9 +2,10 @@ package br.com.dbsoft.ui.component.messagelist;
 
 
 import java.io.IOException;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Map.Entry;
+import java.util.List;
+
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -83,10 +84,11 @@ public class DBSMessageListRenderer extends DBSRenderer {
 				xCount = xMessageList.getValue().getMessages().size();
 				if (xCount > 0){
 					IDBSMessage xMsg;
+
 					@SuppressWarnings("unchecked")
-					Iterator<Entry<String, IDBSMessage>> xI = xMessageList.getValue().iterator();
+					Iterator<IDBSMessage> xI = xMessageList.getValue().getMessages().iterator();
 					while (xI.hasNext()){
-						 xMsg = xI.next().getValue();
+						 xMsg = xI.next();
 						 //Se msg ainda não foi validada(visualizada, neste caso)
 						 if (xMsg.isMessageValidated() == null 
 						  || !xMsg.isMessageValidated()){
@@ -160,15 +162,21 @@ public class DBSMessageListRenderer extends DBSRenderer {
 			pWriter.startElement("div", pMessageList);
 				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
 				//Exibe a lista de mensagens em ordem invertida de inclusão(PEPS/LIFO), onde o mais recente é será exibido primeiro;
-				@SuppressWarnings("unchecked")
-				Collection<String> xCollection = pMessageList.getValue().getMessages().keySet();
-				String[] 	xMsgKey = xCollection.toArray(new String[xCollection.size()]); 
+				List<IDBSMessage> xMsgKey = new ArrayList<IDBSMessage>();
 				IDBSMessage xMsg;
-				for (Integer xI=xMsgKey.length-1; xI!=-1; xI--){
-					xMsg = (IDBSMessage) pMessageList.getValue().getMessages().get(xMsgKey[xI]);
+				@SuppressWarnings("unchecked")
+				Iterator<IDBSMessage> xMsgs = pMessageList.getValue().getMessages().iterator();
+				//Cria lista com as mensagens para ler em ordem descrescente
+				while (xMsgs.hasNext()){
+					xMsg = xMsgs.next();
+					xMsgKey.add(xMsg);
+				}
+				//Le todas as mensagens
+				for (Integer xI=xMsgKey.size()-1; xI!=-1; xI--){
+					xMsg = xMsgKey.get(xI);
 					pWriter.startElement("div", pMessageList);
 						DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.MESSAGE + " -severity" + xMsg.getMessageType().getSeverity());
-						DBSFaces.setAttribute(pWriter, "index",xMsgKey[xI], null);
+						DBSFaces.setAttribute(pWriter, "index", xMsg.getMessageKey(), null);
 						pWriter.startElement("div", pMessageList);
 							DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
 							//Hora da mensagem

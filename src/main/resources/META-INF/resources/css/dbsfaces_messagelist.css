@@ -31,7 +31,7 @@
 .dbs_messageList > .-container > .-list{
 	display: none;	
     position: absolute;
-    top: 18px;
+	top: 1.3em;
     right: 14px;
     z-index: 3;
     width: 270px;
