@@ -131,31 +131,89 @@
 
 .dbs_dialog > .-container > .-content > .-header > .-content {
 	position: relative;
+	border-width: 0 0 1px 0;
+	border-style: solid;
 }
-
+.dbs_dialog > .-container > .-content > .-header > .-content.-dark{
+	border-color: rgba(0,0,0,.1);
+	background-image: linear-gradient(0deg, hsla(0, 0%, 0%, 0.03) 1%, hsla(0, 0%, 0%, 0) 100%);
+}
+.dbs_dialog > .-container > .-content > .-header > .-content.-light{
+	border-color: rgba(255,255,255,.1);
+	background-image: linear-gradient(0deg, hsla(0, 0%, 100%, 0.03) 1%, hsla(0, 0%, 100%, 0) 100%);
+}
+    
 .dbs_dialog > .-container > .-content > .-header > .-content > .-caption {
 	width: 100%;
     text-align: center;
 /*     line-height: 100%; */
     box-sizing: content-box;
     position:relative;
+    
+/*     border-width: 1px; */
+/*     border-style: groove; */
+/*     border-color: rgba(255,255,255,.08); */
+/*     background-color: rgba(255,255,255,.02);    */
+/*     border-radius: .1em;  */
 }
 
 .dbs_dialog > .-container > .-content > .-header > .-content > .-caption > .-icon {
-/* 	position: relative; */
-/* 	top: 0; */
+	display: inline-block;
+	position: relative;
+	vertical-align: bottom;
+	padding-right: .2em;
+/* 	position: absolute; */
+/*     top: 0; */
+/*     left: 0;     */
+/*     position: fixed; */
+/*     box-shadow: rgba(0,0,0,.5) 0 0px 5px 0px; */
+}
+
+.dbs_dialog[p="t"] > .-container > .-content > .-header > .-content > .-caption > .-icon {
+/*     bottom: -.5em; */
+}
+.dbs_dialog[p="c"] > .-container > .-content > .-header > .-content > .-caption > .-icon,
+.dbs_dialog[p="l"] > .-container > .-content > .-header > .-content > .-caption > .-icon,
+.dbs_dialog[p="r"] > .-container > .-content > .-header > .-content > .-caption > .-icon,
+.dbs_dialog[p="b"] > .-container > .-content > .-header > .-content > .-caption > .-icon {
+/*     top: -.5em; */
+}
+
+.dbs_dialog[p="t"] > .-container > .-content > .-header > .-content > .-caption > .-icon,
+.dbs_dialog[p="c"] > .-container > .-content > .-header > .-content > .-caption > .-icon,
+.dbs_dialog[p="r"] > .-container > .-content > .-header > .-content > .-caption > .-icon,
+.dbs_dialog[p="b"] > .-container > .-content > .-header > .-content > .-caption > .-icon {
 /*     left: 0; */
-/*     float: left; */
-	position: absolute;
-    top: 0;
-    left: 0;    
+}
+.dbs_dialog[p="l"] > .-container > .-content > .-header > .-content > .-caption > .-icon {
+/*     right: 0em; */
+}
+
+.dbs_dialog > .-container > .-content > .-header > .-content > .-caption > .-icon > *{
+/*     background-color: white; */
+/*     box-shadow: rgba(0,0,0,.5) 0 0px 5px 0px; */
+}
+
+
+.dbs_dialog > .-container > .-content > .-header > .-content > .-caption > .-icon > .-i_sucess,
+.dbs_dialog > .-container > .-content > .-header > .-content > .-caption > .-icon > .-i_important,
+.dbs_dialog > .-container > .-content > .-header > .-content > .-caption > .-icon > .-i_warning,
+.dbs_dialog > .-container > .-content > .-header > .-content > .-caption > .-icon > .-i_question_ignore,
+.dbs_dialog > .-container > .-content > .-header > .-content > .-caption > .-icon > .-i_error{
+/*     border-radius: .1em; */
+}
+
+.dbs_dialog > .-container > .-content > .-header > .-content > .-caption > .-icon > .-i_forbidden,
+.dbs_dialog > .-container > .-content > .-header > .-content > .-caption > .-icon > .-i_question_confirm,
+.dbs_dialog > .-container > .-content > .-header > .-content > .-caption > .-icon > .-i_information {
+/*     border-radius: 1em; */
 }
 
 .dbs_dialog > .-container > .-content > .-header > .-content > .-caption > .-label {
     font-weight: bold;
     font-size: 1.2em;
 	display: inline-block;
-	padding: 0 1.4em;
+/* 	padding: 0 1.4em; */
 }
 
 .dbs_dialog > .-container > .-content > .-bttimeout.-stopped{

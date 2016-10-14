@@ -8,7 +8,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.FacesComponent;
 import javax.faces.component.NamingContainer;
 
-import br.com.dbsoft.message.IDBSMessages;
+import br.com.dbsoft.message.IDBSMessage;
 import br.com.dbsoft.ui.component.DBSUIOutput;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSNumber;
@@ -382,13 +382,14 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 		handleAttribute("listfacesmessage", pListFacesMessage);
 	}
 
-	public IDBSMessages<?> getDBSMessages() {
-		return (IDBSMessages<?>) getStateHelper().eval(PropertyKeys.dbsmessages, null);
+	@SuppressWarnings("unchecked")
+	public <T extends IDBSMessage> List<T> getListDBSMessage() {
+		return (List<T>) getStateHelper().eval(PropertyKeys.dbsmessages, null);
 	}
 	
-	public void setDBSMessages(IDBSMessages<?> pDBSMessages) {
-		getStateHelper().put(PropertyKeys.dbsmessages, pDBSMessages);
-		handleAttribute("dbsmessages", pDBSMessages);
+	public <T extends IDBSMessage> void setListDBSMessage(List<T> pListDBSMessage) {
+		getStateHelper().put(PropertyKeys.dbsmessages, pListDBSMessage);
+		handleAttribute("dbsmessages", pListDBSMessage);
 	}
 
 	@Override

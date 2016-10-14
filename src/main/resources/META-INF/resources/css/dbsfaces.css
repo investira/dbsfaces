@@ -16,13 +16,6 @@ input::-ms-clear {
 
 /* Classes de elementos HTML */
 html{
-	font-family: Verdana, Arial, Helvetica, sans-serif !important;
-/* 	font-family: Myriad Pro, Arial, Helvetica, Verdana, sans-serif !important; */
-/* 	font-family: Myriad Set Pro !important; */
-/* 	font-family: Myriad Pro !important; */
-/* 	font-family: Verdana !important; */
-/* 	font-family: Helvetica !important; */
-/* 	font-family: Arial !important; */
     touch-action: manipulation;
 }
 
@@ -45,7 +38,6 @@ tbody,
 
 body {
 	-webkit-text-size-adjust: 100%;/* Resolve ajuste automático do fonte nos tables e smartphones*/
-	font-size: 11px;
 }
 
 html,
@@ -673,7 +665,12 @@ td > .-icon{
 	font-style: normal;
 }
 
-
+[class^="-i_"]:after, 
+[class*=" -i_"]:after {
+	position: absolute;
+	clear: both;
+	content: "";
+}
 [class^="-i_"], 
 [class*=" -i_"] {
 	font-family: 'dbsfaces_icons'  !important;
@@ -718,17 +715,33 @@ td > .-icon{
 [class*=" -i_"].-red {
 	color:red;
 }
+[class^="-i_"].-red.-dark, 
+[class*=" -i_"].-red.-dark {
+	color:darkred;
+}
 [class^="-i_"].-yellow, 
 [class*=" -i_"].-yellow {
 	color:rgb(210,210,0);
+}
+[class^="-i_"].-yellow.-dark, 
+[class*=" -i_"].-yellow.-dark {
+	color:rgb(178, 178, 0);
 }
 [class^="-i_"].-blue, 
 [class*=" -i_"].-blue {
 	color:blue;
 }
+[class^="-i_"].-blue.-dark, 
+[class*=" -i_"].-blue.-dark {
+	color:darkblue;
+}
 [class^="-i_"].-green, 
 [class*=" -i_"].-green {
 	color:green;
+}
+[class^="-i_"].-green.-dark, 
+[class*=" -i_"].-green.-dark {
+	color:darkgreen;
 }
 
 .-i_yes:before{content:"\e900"}

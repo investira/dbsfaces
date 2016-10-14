@@ -2,7 +2,6 @@ package br.com.dbsoft.ui.component.messagelist;
 
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -162,18 +161,12 @@ public class DBSMessageListRenderer extends DBSRenderer {
 			pWriter.startElement("div", pMessageList);
 				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
 				//Exibe a lista de mensagens em ordem invertida de inclusão(PEPS/LIFO), onde o mais recente é será exibido primeiro;
-				List<IDBSMessage> xMsgKey = new ArrayList<IDBSMessage>();
-				IDBSMessage xMsg;
 				@SuppressWarnings("unchecked")
-				Iterator<IDBSMessage> xMsgs = pMessageList.getValue().getMessages().iterator();
-				//Cria lista com as mensagens para ler em ordem descrescente
-				while (xMsgs.hasNext()){
-					xMsg = xMsgs.next();
-					xMsgKey.add(xMsg);
-				}
+				List<IDBSMessage> xMsgs = pMessageList.getValue().getMessages();
+				IDBSMessage xMsg;
 				//Le todas as mensagens
-				for (Integer xI=xMsgKey.size()-1; xI!=-1; xI--){
-					xMsg = xMsgKey.get(xI);
+				for (Integer xI=xMsgs.size()-1; xI!=-1; xI--){
+					xMsg = xMsgs.get(xI);
 					pWriter.startElement("div", pMessageList);
 						DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.MESSAGE + " -severity" + xMsg.getMessageType().getSeverity());
 						DBSFaces.setAttribute(pWriter, "index", xMsg.getMessageKey(), null);

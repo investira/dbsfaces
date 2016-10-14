@@ -143,9 +143,29 @@ dbsfaces.dialog = {
 
 		pDialog.data("container").css("opacity", "");
 		//Configura cor como transparencia a partir da cor definida pelo usuário
-		if (pDialog.attr("type") == "mod"){
+		var xColorClose;
+		//Cor do header
+		var xIsDark = tinycolor(pDialog.data("content").css("background-color")).isDark();
+		if (xIsDark){
+//			xColorClose = "linear-gradient(0deg, hsla(0, 0%, 100%, .05) 1%, hsla(0, 0%, 100%, .1) 100%)";
+//			xColorClose = "linear-gradient(0deg, hsla(0, 0%, 100%, 0.05) 1%, hsla(0, 0%, 100%, 0) 100%)";
+//			xColorClose = "rgba(255,255,255,.05)";
+			pDialog.data("header_content").find(" > .-caption > .-icon > div").removeClass("-dark");
+			pDialog.data("header_content").addClass("-light")
+										  .removeClass("-dark");
 		}else{
-			if (tinycolor(pDialog.data("content").css("background-color")).isDark()){
+			pDialog.data("header_content").find(" > .-caption > .-icon > div").addClass("-dark");
+			pDialog.data("header_content").addClass("-dark")
+										  .removeClass("-light");
+//			xColorClose = "linear-gradient(0deg, hsla(0, 0%, 0%, .05) 1%, hsla(0, 0%, 0%, .1) 100%)";
+//			xColorClose = "linear-gradient(0deg, hsla(0, 0%, 0%, 0.05) 1%, hsla(0, 0%, 0%, 0) 100%)";
+//			xColorClose = "rgba(0,0,0,.05)";
+		}
+//		pDialog.data("header_content").css("background-color", xColorClose);
+//		pDialog.data("header_content").css("background-image", xColorClose);
+		//Cor da barra de timeout
+		if (pDialog.attr("type") != "mod"){
+			if (xIsDark){
 				xColorClose = "rgba(255,255,255,.1)";
 			}else{
 				xColorClose = "rgba(0,0,0,.1)";
