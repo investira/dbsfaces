@@ -665,12 +665,12 @@ td > .-icon{
 	font-style: normal;
 }
 
-[class^="-i_"]:after, 
-[class*=" -i_"]:after {
-	position: absolute;
-	clear: both;
-	content: "";
-}
+/* [class^="-i_"]:after,  */
+/* [class*=" -i_"]:after { */
+/* 	position: absolute; */
+/* 	clear: both; */
+/* 	content: ""; */
+/* } */
 [class^="-i_"], 
 [class*=" -i_"] {
 	font-family: 'dbsfaces_icons'  !important;

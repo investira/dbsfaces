@@ -407,6 +407,11 @@ public class DBSDialogRenderer extends DBSRenderer {
 						pDialog.setOpen(true);
 					}
 				}
+			}else{
+				if (pDialog.getChildCount() > 0){
+					pDialog.setCaption(MESSAGE_TYPE.get(pDialog.getMsgType()).getName());
+					pDialog.setOpen(true);
+				}
 			}
 		}
 	}
