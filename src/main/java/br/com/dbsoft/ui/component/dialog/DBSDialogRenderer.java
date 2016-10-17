@@ -69,7 +69,7 @@ public class DBSDialogRenderer extends DBSRenderer {
 			DBSFaces.setAttribute(xWriter, "style", xDialog.getStyle());
 			DBSFaces.setAttribute(xWriter, "type", xDialog.getType());
 			//Configura time somente quando não for MOD
-			if (xType != TYPE.MOD 
+			if (xType == TYPE.MSG 
 			&& !xDialog.getCloseTimeout().equals("0")){
 				DBSFaces.setAttribute(xWriter, "timeout", xDialog.getCloseTimeout());
 			}
@@ -139,7 +139,7 @@ public class DBSDialogRenderer extends DBSRenderer {
 			//ButtonBack
 			pvEncodeButtonBack(pDialog, xType, pWriter);
 			//ButtonClose
-			pvEncodeButtonTimeout(pDialog, xType, pWriter);
+			pvEncodeButtonClose(pDialog, xType, pWriter);
 		pWriter.endElement("div");
 	}
 	
@@ -177,6 +177,11 @@ public class DBSDialogRenderer extends DBSRenderer {
 		
 		pWriter.startElement("div", pDialog);
 			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CAPTION + CSS.MODIFIER.NOT_SELECTABLE);
+			//Label
+			pWriter.startElement("div", pDialog);
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.LABEL);
+				pWriter.write(pDialog.getCaption());
+			pWriter.endElement("div");
 			//Icone do tipo de mensagem
 			if(pType == TYPE.MSG
 		  	&& pvHasMessage(pDialog)){
@@ -187,19 +192,14 @@ public class DBSDialogRenderer extends DBSRenderer {
 					pWriter.endElement("div");
 				pWriter.endElement("div");
 			}
-			//Label
-			pWriter.startElement("div", pDialog);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.LABEL);
-				pWriter.write(pDialog.getCaption());
-			pWriter.endElement("div");
 		pWriter.endElement("div");
 	}
 
-	private void pvEncodeButtonTimeout(DBSDialog pDialog, TYPE pType, ResponseWriter pWriter) throws IOException{
-		if (pType == TYPE.NAV //é nav
-		|| !pDialog.getCloseTimeout().equals("0") // tem timeout
-		|| pDialog.getFacet(DBSDialog.FACET_TOOLBAR) == null){ //não tem toolbar
-			String xClass = "-bttimeout" + CSS.THEME.ACTION;
+	private void pvEncodeButtonClose(DBSDialog pDialog, TYPE pType, ResponseWriter pWriter) throws IOException{
+		//Não cria bar de fechar se for MOD ou existir Toolbar
+		if (pType == TYPE.NAV 
+		|| (pType == TYPE.MSG && (pDialog.getFacet(DBSDialog.FACET_TOOLBAR) == null || pDialog.getFacet(DBSDialog.FACET_TOOLBAR).getChildCount() <= 1))){
+			String xClass = "-btclose" + CSS.THEME.ACTION;
 			//Exibe espaço do button timeout
 			pWriter.startElement("div", pDialog);
 				DBSFaces.setAttribute(pWriter, "class", xClass);
@@ -254,16 +254,18 @@ public class DBSDialogRenderer extends DBSRenderer {
 	 */
 	private void pvEncodeToolbar(DBSDialog pDialog, TYPE pType, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 		UIComponent xToolbar = pDialog.getFacet(DBSDialog.FACET_TOOLBAR);
-		if (xToolbar == null
-		 && pType != TYPE.MOD){return;}
-		pWriter.startElement("div", pDialog);
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.TOOLBAR);
-			if (xToolbar == null){
-				pvEncodeButtonClose(pDialog, pWriter);
-			}else{
-				xToolbar.encodeAll(pContext);
-			}
-		pWriter.endElement("div");
+		if (xToolbar != null
+		 || pType == TYPE.MOD
+		 || (pType == TYPE.MSG && POSITION.get(pDialog.getPosition()) == POSITION.CENTER)){
+			pWriter.startElement("div", pDialog);
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.TOOLBAR);
+				if (xToolbar == null){
+					pvEncodeButtonOk(pDialog, pWriter);
+				}else{
+					xToolbar.encodeAll(pContext);
+				}
+			pWriter.endElement("div");
+		}
 	}
 	
 	/**
@@ -272,9 +274,9 @@ public class DBSDialogRenderer extends DBSRenderer {
 	 * @param pWriter
 	 * @throws IOException
 	 */
-	private void pvEncodeButtonClose(DBSDialog pDialog, ResponseWriter pWriter) throws IOException{
+	private void pvEncodeButtonOk(DBSDialog pDialog, ResponseWriter pWriter) throws IOException{
 		//Só faz o encode se for MOD
-		String xClass = "-btclose -i_cancel" + CSS.THEME.ACTION;
+		String xClass = "-btok -i_ok" + CSS.THEME.ACTION;
 		//Exibe espaço do button timeout
 		pWriter.startElement("div", pDialog);
 			DBSFaces.setAttribute(pWriter, "class", xClass);
@@ -354,51 +356,51 @@ public class DBSDialogRenderer extends DBSRenderer {
 				if (pContext.getAttributes().get(IDBSMessage.ATTRIBUTE_NAME) != null){
 					@SuppressWarnings("rawtypes")
 					IDBSMessages xDBSMessages = (IDBSMessages) pContext.getAttributes().get(IDBSMessage.ATTRIBUTE_NAME);
-					List<T> xMsgs = null;
+					List<T> xDMsgs = null;
 					//Mensagens globais 
 					if (pDialog.getMsgFor().equals(DBSDialog.MSG_FOR_GLOBAL)){
 						//Se existe mensagem sem componente(clientid) definito
-						xMsgs = xDBSMessages.getMessagesForClientId(null);
+						xDMsgs = xDBSMessages.getMessagesForClientId(null);
 					//Mensagem para componente(clientid) 
 					}else if (!pDialog.getMsgFor().equals(DBSDialog.MSG_FOR_ALL)){
 						//Se existe mensagem para o componente(clientid)
-						xMsgs = xDBSMessages.getMessagesForClientId(pDialog.getMsgFor());
+						xDMsgs = xDBSMessages.getMessagesForClientId(pDialog.getMsgFor());
 					//Todas as mensagens
 					}else{
-						xMsgs = xDBSMessages.getMessages();
+						xDMsgs = xDBSMessages.getMessages();
 					}
-					pDialog.setListDBSMessage(xMsgs);
-					if (xMsgs != null){
-						pDialog.setCaption(xMsgs.get(0).getMessageType().getName());
-						pDialog.setMsgType(xMsgs.get(0).getMessageType().getCode());
+					pDialog.setListDBSMessage(xDMsgs);
+					if (xDMsgs != null && xDMsgs.size() > 0){
+						pDialog.setCaption(xDMsgs.get(0).getMessageType().getName());
+						pDialog.setMsgType(xDMsgs.get(0).getMessageType().getCode());
 						pDialog.setOpen(true);
 					}
 				//Se houver mensagem FacesMessage
 				}else if (pContext.getMessageList().size() > 0){
-					List<FacesMessage> xFM = null;
+					List<FacesMessage> xFMsg = null;
 					//Mensagens globais 
 					if (pDialog.getMsgFor().equals(DBSDialog.MSG_FOR_GLOBAL)){
 						//Se existe mensagem sem componente(clientid) definito
-						xFM = pContext.getMessageList(null);
+						xFMsg = pContext.getMessageList(null);
 					//Mensagem para componente(clientid) 
 					}else if (!pDialog.getMsgFor().equals(DBSDialog.MSG_FOR_ALL)){
 						//Se existe mensagem para o componente(clientid)
-						xFM = pContext.getMessageList(pDialog.getMsgFor());
+						xFMsg = pContext.getMessageList(pDialog.getMsgFor());
 					//Todas as mensagens
 					}else{
-						xFM = pContext.getMessageList();
+						xFMsg = pContext.getMessageList();
 					}
-					pDialog.setListFacesMessage(xFM);
+					pDialog.setListFacesMessage(xFMsg);
 					//Configura para exibir o dialog já aberto/
-					if (xFM != null){
-						if (xFM.get(0).getSeverity() == FacesMessage.SEVERITY_ERROR
-						 || xFM.get(0).getSeverity() == FacesMessage.SEVERITY_FATAL){
+					if (xFMsg != null && xFMsg.size() > 0){
+						if (xFMsg.get(0).getSeverity() == FacesMessage.SEVERITY_ERROR
+						 || xFMsg.get(0).getSeverity() == FacesMessage.SEVERITY_FATAL){
 							pDialog.setMsgType(MESSAGE_TYPE.ERROR.getCode());
 							pDialog.setCaption(MESSAGE_TYPE.ERROR.getName());
-						}else if (xFM.get(0).getSeverity() == FacesMessage.SEVERITY_WARN){
+						}else if (xFMsg.get(0).getSeverity() == FacesMessage.SEVERITY_WARN){
 							pDialog.setMsgType(MESSAGE_TYPE.WARNING.getCode());
 							pDialog.setCaption(MESSAGE_TYPE.WARNING.getName());
-						}else if (xFM.get(0).getSeverity() == FacesMessage.SEVERITY_INFO){
+						}else if (xFMsg.get(0).getSeverity() == FacesMessage.SEVERITY_INFO){
 							pDialog.setMsgType(MESSAGE_TYPE.INFORMATION.getCode());
 							pDialog.setCaption(MESSAGE_TYPE.INFORMATION.getName());
 						}

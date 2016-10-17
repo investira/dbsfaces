@@ -117,6 +117,9 @@ public class  DBSFaces {
 	    public static final String CRUDDIALOG = "crudDialog";
 	    public static final String CRUDTABLE = "crudTable";
 	    public static final String DIALOG = "dialog";
+	    public static final String DIALOGNAV = "dialognav";
+	    public static final String DIALOGMSG = "dialogmsg";
+	    public static final String DIALOGMOD = "dialogmod";
 	    public static final String MODAL = "modal";
 	    public static final String FILEUPLOAD = "fileUpload";
 	    public static final String FLOATBUTTON = "floatbutton";

@@ -312,12 +312,403 @@
 					&lt;li&gt;Todas as mensagens = @all&lt;/li&gt;
 					&lt;li&gt;Mensagem para um componente = clientid do componente&lt;/li&gt;
 				&lt;ul&gt;
-				&lt;/span&gt;
-            </description>
+				&lt;/span&gt; </description>
 			<name>msgFor</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-		</attribute>		
+		</attribute>
+	</tag>
+	<tag>
+		<tag-name>dialognav</tag-name>
+		<component>
+			<component-type>br.com.dbsoft.ui.component.dialognav</component-type>
+			<handler-class />
+		</component>
+		<attribute>
+			<description>
+                Identificador único do componente.
+            </description>
+			<name>id</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Class CSS que será utilizada
+            </description>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Adiciona style 
+            </description>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                rendered
+            </description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+                Texto do Título 
+            </description>
+			<name>caption</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+            	iconClass
+            </description>
+			<name>iconClass</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Posição principal. Padrão é CENTER.&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;TOP = t&lt;/li&gt;
+					&lt;li&gt;BOTTOM = b&lt;/li&gt;
+					&lt;li&gt;LEFT = l&lt;/li&gt;
+					&lt;li&gt;RIGHT = r&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>position</name>
+			<required>false</required>
+			<type>java.lang.Sting</type>
+		</attribute>
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Tamanho do conteúdo. Padrão é AUTO.&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;AUTO(conforme tamanho do conteúdo) = a&lt;/li&gt;
+					&lt;li&gt;SCREEN(largura e altura da tela) = s&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>contentSize</name>
+			<required>false</required>
+			<type>java.lang.Sting</type>
+		</attribute>
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Alinhamento do conteúdo. Padrão é TOP.&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;TOP = t&lt;/li&gt;
+					&lt;li&gt;BOTTOM = b&lt;/li&gt;
+					&lt;li&gt;LEFT = l&lt;/li&gt;
+					&lt;li&gt;RIGHT = r&lt;/li&gt;
+					&lt;li&gt;CENTER = c&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>contentAlignment</name>
+			<required>false</required>
+			<type>java.lang.Sting</type>
+		</attribute>
+		<attribute>
+			<description>Padding interno. O padrão é 0.4em;
+            </description>
+			<name>contentPadding</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Class CSS que será utilizada dentro do nav
+            </description>
+			<name>contentStyleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Se exibe já aberto. Padrao é false.
+            </description>
+			<name>open</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+	</tag>
+	<tag>
+		<tag-name>dialogmsg</tag-name>
+		<component>
+			<component-type>br.com.dbsoft.ui.component.dialogmsg</component-type>
+			<handler-class />
+		</component>
+		<attribute>
+			<description>
+                Identificador único do componente.
+            </description>
+			<name>id</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Class CSS que será utilizada
+            </description>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Adiciona style 
+            </description>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                rendered
+            </description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Posição principal. Padrão é CENTER.&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;TOP = t&lt;/li&gt;
+					&lt;li&gt;BOTTOM = b&lt;/li&gt;
+					&lt;li&gt;LEFT = l&lt;/li&gt;
+					&lt;li&gt;RIGHT = r&lt;/li&gt;
+					&lt;li&gt;CENTER = c&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>position</name>
+			<required>false</required>
+			<type>java.lang.Sting</type>
+		</attribute>
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Tamanho do conteúdo. Padrão é AUTO.&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;AUTO(conforme tamanho do conteúdo) = a&lt;/li&gt;
+					&lt;li&gt;SCREEN(largura e altura da tela) = s&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>contentSize</name>
+			<required>false</required>
+			<type>java.lang.Sting</type>
+		</attribute>
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Alinhamento do conteúdo. Padrão é TOP.&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;TOP = t&lt;/li&gt;
+					&lt;li&gt;BOTTOM = b&lt;/li&gt;
+					&lt;li&gt;LEFT = l&lt;/li&gt;
+					&lt;li&gt;RIGHT = r&lt;/li&gt;
+					&lt;li&gt;CENTER = c&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>contentAlignment</name>
+			<required>false</required>
+			<type>java.lang.Sting</type>
+		</attribute>
+		<attribute>
+			<description>Padding interno. O padrão é 0.4em;
+            </description>
+			<name>contentPadding</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Class CSS que será utilizada dentro do nav
+            </description>
+			<name>contentStyleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Tempo para fechamento automático do dialog em segundos.&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;0 = Sem timeout&lt;/li&gt;
+					&lt;li&gt;a = Automático em função do tamanho do conteúdo(default)&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>closeTimeout</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Sendo: null=normal, a=About, w=Atenção, e=Error, i=Informação, c=Confirmar, g=Ignorar, s=Sucesso, b=Sobre, p=Proibido, t=Importante
+            </description>
+			<name>msgType</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Define o nome do elemento que escutará as mensagens enviadas por facesmessage.&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;Mensagens sem clientid = @global&lt;/li&gt;
+					&lt;li&gt;Todas as mensagens = @all&lt;/li&gt;
+					&lt;li&gt;Mensagem para um componente = clientid do componente&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>msgFor</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
+	<tag>
+		<tag-name>dialogmod</tag-name>
+		<component>
+			<component-type>br.com.dbsoft.ui.component.dialogmod</component-type>
+			<handler-class />
+		</component>
+		<attribute>
+			<description>
+                Identificador único do componente.
+            </description>
+			<name>id</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Class CSS que será utilizada
+            </description>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Adiciona style 
+            </description>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                rendered
+            </description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+                Texto do Título 
+            </description>
+			<name>caption</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+            	iconClass
+            </description>
+			<name>iconClass</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Posição principal. Padrão é CENTER.&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;TOP = t&lt;/li&gt;
+					&lt;li&gt;BOTTOM = b&lt;/li&gt;
+					&lt;li&gt;LEFT = l&lt;/li&gt;
+					&lt;li&gt;RIGHT = r&lt;/li&gt;
+					&lt;li&gt;CENTER = c&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>position</name>
+			<required>false</required>
+			<type>java.lang.Sting</type>
+		</attribute>
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Tamanho do conteúdo. Padrão é AUTO.&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;AUTO(conforme tamanho do conteúdo) = a&lt;/li&gt;
+					&lt;li&gt;SCREEN(largura e altura da tela) = s&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>contentSize</name>
+			<required>false</required>
+			<type>java.lang.Sting</type>
+		</attribute>
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Alinhamento do conteúdo. Padrão é TOP.&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;TOP = t&lt;/li&gt;
+					&lt;li&gt;BOTTOM = b&lt;/li&gt;
+					&lt;li&gt;LEFT = l&lt;/li&gt;
+					&lt;li&gt;RIGHT = r&lt;/li&gt;
+					&lt;li&gt;CENTER = c&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>contentAlignment</name>
+			<required>false</required>
+			<type>java.lang.Sting</type>
+		</attribute>
+		<attribute>
+			<description>Padding interno. O padrão é 0.4em;
+            </description>
+			<name>contentPadding</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Class CSS que será utilizada dentro do nav
+            </description>
+			<name>contentStyleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Se exibe já aberto. Padrao é false.
+            </description>
+			<name>open</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Tempo para fechamento automático do dialog em segundos.&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;0 = Sem timeout(default)&lt;/li&gt;
+					&lt;li&gt;a = Automático em função do tamanho do conteúdo&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>closeTimeout</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
 	</tag>
 	<tag>
 		<tag-name>nav</tag-name>

@@ -30,7 +30,7 @@ dbs_dialog = function(pId) {
 
 	$(pId + ":not([disabled]) > .-container > .-mask").on("mousedown touchstart", function(e){
 		//Fecha se pussior botão de fechar padrão
-		if (xDialog.data("bttimeout").length != 0){
+		if (xDialog.data("btclose").length != 0){
 			dbsfaces.dialog.show(xDialog);
 		}
 		return false;
@@ -70,11 +70,14 @@ dbs_dialog = function(pId) {
 //		dbsfaces.dialog.show(xDialog);
 //	});
 
+	$(pId + ":not([disabled]) > .-container > .-content > .-footer > .-toolbar > .-btok").on("mousedown touchstart", function(e){
+		dbsfaces.dialog.show(xDialog);
+	});
+
 	
-	$(pId + ":not([disabled]) > .-container > .-content > .-bttimeout").on("mousedown touchstart", function(e){
+	$(pId + ":not([disabled]) > .-container > .-content > .-btclose").on("mousedown touchstart", function(e){
 		/*fecha normalmente se não houver timeout ou for modal*/
-		if (xDialog.attr("type") == "mod" 
-		 || xDialog.data("timeout") == "0"){
+		if (xDialog.data("timeout") == "0"){
 			dbsfaces.dialog.show(xDialog);
 		}else{
 			/*Aguarda finalização do touch o mouse para verificar se é um cancelamento do timeout*/
@@ -83,7 +86,7 @@ dbs_dialog = function(pId) {
 	});
 	
 	/*Fecha o dialog*/
-	$(pId + ":not([disabled]) > .-container > .-content > .-bttimeout").on("mouseup touchend", function(e){
+	$(pId + ":not([disabled]) > .-container > .-content > .-btclose").on("mouseup touchend", function(e){
 		if (xDialog.data("timeout") == "0"){return;}
 		var xTime = new Date().getTime();
 		//Fecha normalmente
@@ -102,7 +105,7 @@ dbs_dialog = function(pId) {
 	});
 
 	/*Animação do timeout*/
-	$(pId + ":not([disabled]) > .-container > .-content > .-bttimeout").on(dbsfaces.EVENT.ON_TRANSITION_END, function(e){
+	$(pId + ":not([disabled]) > .-container > .-content > .-btclose").on(dbsfaces.EVENT.ON_TRANSITION_END, function(e){
 		dbsfaces.dialog.show(xDialog);
 		return false;
 	});
@@ -133,7 +136,8 @@ dbsfaces.dialog = {
 		pDialog.data("header_content", pDialog.data("header").children(".-content"));
 		pDialog.data("footer", pDialog.data("content").children(".-footer"));
 		pDialog.data("footer_content", pDialog.data("footer").children(".-content"));
-		pDialog.data("bttimeout", pDialog.data("content").children(".-bttimeout"));
+		pDialog.data("footer_toolbar", pDialog.data("footer").children(".-toolbar"));
+		pDialog.data("btclose", pDialog.data("content").children(".-btclose"));
 		pDialog.data("padding", parseFloat(pDialog.data("sub_content").css("padding")));
 		pDialog.data("timeout", dbsfaces.util.getNotEmpty(pDialog.attr("timeout"),"0"));
 	},
@@ -147,9 +151,6 @@ dbsfaces.dialog = {
 		//Cor do header
 		var xIsDark = tinycolor(pDialog.data("content").css("background-color")).isDark();
 		if (xIsDark){
-//			xColorClose = "linear-gradient(0deg, hsla(0, 0%, 100%, .05) 1%, hsla(0, 0%, 100%, .1) 100%)";
-//			xColorClose = "linear-gradient(0deg, hsla(0, 0%, 100%, 0.05) 1%, hsla(0, 0%, 100%, 0) 100%)";
-//			xColorClose = "rgba(255,255,255,.05)";
 			pDialog.data("header_content").find(" > .-caption > .-icon > div").removeClass("-dark");
 			pDialog.data("header_content").addClass("-light")
 										  .removeClass("-dark");
@@ -157,12 +158,7 @@ dbsfaces.dialog = {
 			pDialog.data("header_content").find(" > .-caption > .-icon > div").addClass("-dark");
 			pDialog.data("header_content").addClass("-dark")
 										  .removeClass("-light");
-//			xColorClose = "linear-gradient(0deg, hsla(0, 0%, 0%, .05) 1%, hsla(0, 0%, 0%, .1) 100%)";
-//			xColorClose = "linear-gradient(0deg, hsla(0, 0%, 0%, 0.05) 1%, hsla(0, 0%, 0%, 0) 100%)";
-//			xColorClose = "rgba(0,0,0,.05)";
 		}
-//		pDialog.data("header_content").css("background-color", xColorClose);
-//		pDialog.data("header_content").css("background-image", xColorClose);
 		//Cor da barra de timeout
 		if (pDialog.attr("type") != "mod"){
 			if (xIsDark){
@@ -170,7 +166,7 @@ dbsfaces.dialog = {
 			}else{
 				xColorClose = "rgba(0,0,0,.1)";
 			}
-			pDialog.data("bttimeout").css("border-color", xColorClose)
+			pDialog.data("btclose").css("border-color", xColorClose)
 							  	     .css("background-color", xColorClose);
 		}
 		//Largura mínima em função da largura do header
@@ -193,19 +189,19 @@ dbsfaces.dialog = {
 			pDialog.data("timeout", dbsfaces.ui.getTimeFromTextLength(pDialog.data("sub_content").text()) / 1000);
 		}
 		var xTime = parseInt(pDialog.data("timeout"));
-		dbsfaces.ui.cssTransition(pDialog.data("bttimeout"), "width " + xTime + "s linear, height " + xTime + "s linear");
+		dbsfaces.ui.cssTransition(pDialog.data("btclose"), "width " + xTime + "s linear, height " + xTime + "s linear");
 	},
 
 //	cancelCloseTimeout: function(pDialog){
-//		dbsfaces.ui.cssTransition(pDialog.data("bttimeout"), "none");
+//		dbsfaces.ui.cssTransition(pDialog.data("btclose"), "none");
 //	},
 	
 	stopTimeout: function(pDialog){
-		pDialog.data("bttimeout").addClass("-stopped");
+		pDialog.data("btclose").addClass("-stopped");
 	},
 	
 	startTimeout: function(pDialog){
-		pDialog.data("bttimeout").removeClass("-stopped");
+		pDialog.data("btclose").removeClass("-stopped");
 	},
 
 	/*Força o scroll já que ele não funciona naturalente no mobile*/
@@ -224,21 +220,22 @@ dbsfaces.dialog = {
 	},
 
 	wipe: function(pDialog, pDirection){
-		if (pDialog.data("bttimeout").length == 0){
+		if (pDialog.data("btclose").length == 0){
 			return false;
 		}
-		if ((pDialog.attr("p") == "t"
-		  && pDirection == "u")
-		 || (pDialog.attr("p") == "b"
-		  && pDirection == "d")
-		 || (pDialog.attr("p") == "l"
-		  && pDirection == "l")
-		 || (pDialog.attr("p") == "r"
-		  && pDirection == "r")
-		 || (pDialog.attr("p") == "c"
-		  && pDialog.attr("type") == "msg")){
-			dbsfaces.dialog.show(pDialog);
-			return true;
+		if (pDialog.attr("type") == "nav"
+		 || pDialog.data("footer_toolbar").length == 0){
+			if ((pDialog.attr("p") == "t"
+			  && pDirection == "u")
+			 || (pDialog.attr("p") == "b"
+			  && pDirection == "d")
+			 || (pDialog.attr("p") == "l"
+			  && pDirection == "l")
+			 || (pDialog.attr("p") == "r"
+			  && pDirection == "r")){
+				dbsfaces.dialog.show(pDialog);
+				return true;
+			}
 		}
 		return false;
 	},
