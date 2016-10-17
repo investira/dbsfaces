@@ -388,33 +388,40 @@ dbsfaces.inputText = {
 				}
 			}
 			
-			var xS = pInput.get(0).selectionEnd - pInput.get(0).selectionStart;
 			var xValue = pInput.val();
-			var xSS = pInput.get(0).selectionStart + 1;
+			var xSelectionStart = xValue.length;
+			var xSelectionEnd = xValue.length;
+			if (pInput[0].hasOwnProperty("selectionStart")){
+				xSelectionStart = pInput.get(0).selectionStart;
+				xSelectionEnd = pInput.get(0).selectionEnd;
+			}
+			var xS = xSelectionEnd - xSelectionStart;
+			var xSS = xSelectionStart + 1;
 			var xMinusculo = 0; //Default é upper
 			if (pLetterCase=="upper"){
 				xMinusculo = 0; 
 			}else if (pLetterCase=="lower"){
 				xMinusculo = 32; //Incremento para os códigos de caracteres minúsculos
 			}else if (pLetterCase=="proper"){
-				if (pInput.get(0).selectionStart!=0){
-					var xCharBefore = xValue.substr(pInput.get(0).selectionStart-1, 1);
+				if (xSelectionStart!=0){
+					var xCharBefore = xValue.substr(xSelectionStart-1, 1);
 					if (xCharBefore != " " && //Se não for inicio da palavra
 						xCharBefore != ""){
 						xMinusculo = 32; //Converte para minusculo
 					}
 				}
 			}else if (pLetterCase=="upperfirst"){
-				if (pInput.get(0).selectionStart!=0 
-				 && pInput.get(0).selectionEnd!=0){
+				if (xSelectionStart!=0 
+				 && xSelectionEnd!=0){
 					return; //Sai para não converte o caracter recebido
 				}
 			}
 			e.preventDefault();
 			//Agrupo o inicio + valor digitado + final da texto. Isto previne os casos que a substituição no meio do texto
-			xValue = xValue.substring(0, pInput.get(0).selectionStart) + String.fromCharCode(e.which + xMinusculo) + xValue.substring(pInput.get(0).selectionEnd, 200);
+			xValue = xValue.substring(0, xSelectionStart) + String.fromCharCode(e.which + xMinusculo) + xValue.substring(xSelectionEnd, 200);
 			pInput.val(xValue);
-			pInput.get(0).setSelectionRange(xSS, xSS); 
+//			pInput.get(0).setSelectionRange(xSS, xSS); 
+			dbsfaces.ui.selectRange(pInput, xSS, xSS);
 		}	
 	}
 }

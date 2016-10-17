@@ -537,7 +537,13 @@ dbsfaces.ui = {
 	},
 	//Seleciona intervalo
 	selectRange: function(pObj, pStart, pEnd){
-		$(pObj).get(0).setSelectionRange(pStart, pEnd);
+		var xE = pObj;
+		if (pObj instanceof jQuery){
+			xE = pObj[0];
+		}
+		if (xE.hasOwnProperty("selectionStart")){
+			xE.setSelectionRange(pStart, pEnd);
+		}
 	},
 	
 	disableBackgroundInputs: function(pObj){
