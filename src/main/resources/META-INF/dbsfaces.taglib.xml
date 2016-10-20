@@ -297,8 +297,23 @@
 		</attribute>
 		<attribute>
 			<description>
-                Sendo: null=normal, a=About, w=Atenção, e=Error, i=Informação, c=Confirmar, g=Ignorar, s=Sucesso, b=Sobre, p=Proibido, t=Importante
-            </description>
+				&lt;span style="font-size:small"&gt;
+                Tipo padrão de mensagem. Quando informado o cabeçalho será o texto correspondente ao tipo informado, 
+                independentemente do atributo &lt;b&gt;caption&lt;/b&gt; eventualmente informado pelo usuário.
+				&lt;ul&gt;
+					&lt;li&gt;null = normal&lt;/li&gt;
+					&lt;li&gt;a = about/Sobre&lt;/li&gt;
+					&lt;li&gt;s = success/sucesso&lt;/li&gt;
+					&lt;li&gt;i = information/informação&lt;/li&gt;
+					&lt;li&gt;i = impotant/importante&lt;/li&gt;
+					&lt;li&gt;w = warning/atenção&lt;/li&gt;
+					&lt;li&gt;c = confirmation/confirmação&lt;/li&gt;
+					&lt;li&gt;g = ignore/ignorar&lt;/li&gt;
+					&lt;li&gt;p = prohibid/proibido&lt;/li&gt;
+					&lt;li&gt;e = error/erro&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; 
+			</description>
 			<name>msgType</name>
 			<required>false</required>
 			<type>java.lang.String</type>
@@ -306,13 +321,15 @@
 		<attribute>
 			<description>
 				&lt;span style="font-size:small"&gt;
-				Define o nome do elemento que escutará as mensagens enviadas por facesmessage.&lt;br/&gt;
+				Quando informado, define o nome do elemento que escutará as mensagens enviadas por &lt;b&gt;DBSFaces.sendMessage&lt;/b&gt;.&lt;br/&gt;
+				Caso exista um conteúdo filho deste componente, as mensagens enviadas por &lt;b&gt;DBSFaces.sendMessage&lt;/b&gt; serão desconsideradas.
 				&lt;ul&gt;
-					&lt;li&gt;Mensagens sem clientid = @global&lt;/li&gt;
-					&lt;li&gt;Todas as mensagens = @all&lt;/li&gt;
-					&lt;li&gt;Mensagem para um componente = clientid do componente&lt;/li&gt;
+					&lt;li&gt;@global = Mensagens sem clientid&lt;/li&gt;
+					&lt;li&gt;@all = Todas as mensagens&lt;/li&gt;
+					&lt;li&gt;clientid do componente = Mensagem para um componente&lt;/li&gt;
 				&lt;ul&gt;
-				&lt;/span&gt; </description>
+				&lt;/span&gt; 
+			</description>
 			<name>msgFor</name>
 			<required>false</required>
 			<type>java.lang.String</type>
@@ -553,8 +570,23 @@
 		</attribute>
 		<attribute>
 			<description>
-                Sendo: null=normal, a=About, w=Atenção, e=Error, i=Informação, c=Confirmar, g=Ignorar, s=Sucesso, b=Sobre, p=Proibido, t=Importante
-            </description>
+				&lt;span style="font-size:small"&gt;
+                Tipo padrão de mensagem. Quando informado o cabeçalho será o texto correspondente ao tipo informado, 
+                independentemente do atributo &lt;b&gt;caption&lt;/b&gt; eventualmente informado pelo usuário.
+				&lt;ul&gt;
+					&lt;li&gt;null = normal&lt;/li&gt;
+					&lt;li&gt;a = about/Sobre&lt;/li&gt;
+					&lt;li&gt;s = success/sucesso&lt;/li&gt;
+					&lt;li&gt;i = information/informação&lt;/li&gt;
+					&lt;li&gt;i = impotant/importante&lt;/li&gt;
+					&lt;li&gt;w = warning/atenção&lt;/li&gt;
+					&lt;li&gt;c = confirmation/confirmação&lt;/li&gt;
+					&lt;li&gt;g = ignore/ignorar&lt;/li&gt;
+					&lt;li&gt;p = prohibid/proibido&lt;/li&gt;
+					&lt;li&gt;e = error/erro&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; 
+			</description>
 			<name>msgType</name>
 			<required>false</required>
 			<type>java.lang.String</type>
@@ -562,17 +594,20 @@
 		<attribute>
 			<description>
 				&lt;span style="font-size:small"&gt;
-				Define o nome do elemento que escutará as mensagens enviadas por facesmessage.&lt;br/&gt;
+				Quando informado, define o nome do elemento que escutará as mensagens enviadas por &lt;b&gt;DBSFaces.sendMessage&lt;/b&gt;.&lt;br/&gt;
+				Caso exista um conteúdo filho deste componente, as mensagens enviadas por &lt;b&gt;DBSFaces.sendMessage&lt;/b&gt; serão desconsideradas.
 				&lt;ul&gt;
-					&lt;li&gt;Mensagens sem clientid = @global&lt;/li&gt;
-					&lt;li&gt;Todas as mensagens = @all&lt;/li&gt;
-					&lt;li&gt;Mensagem para um componente = clientid do componente&lt;/li&gt;
+					&lt;li&gt;@global = Mensagens sem clientid&lt;/li&gt;
+					&lt;li&gt;@all = Todas as mensagens&lt;/li&gt;
+					&lt;li&gt;clientid do componente = Mensagem para um componente&lt;/li&gt;
 				&lt;ul&gt;
-				&lt;/span&gt; </description>
+				&lt;/span&gt; 
+			</description>
 			<name>msgFor</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
+
 	</tag>
 	<tag>
 		<tag-name>dialogmod</tag-name>

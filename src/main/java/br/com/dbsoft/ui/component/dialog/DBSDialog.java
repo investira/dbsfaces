@@ -2,9 +2,7 @@ package br.com.dbsoft.ui.component.dialog;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.component.FacesComponent;
 import javax.faces.component.NamingContainer;
 
@@ -24,9 +22,6 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 	public final static String FACET_FOOTER = "footer";
 	public final static String FACET_TOOLBAR = "toolbar";
 	
-	public final static String MSG_FOR_ALL = "@all";
-	public final static String MSG_FOR_GLOBAL = "@global";
-
 	protected enum PropertyKeys {
 		type,
 		caption,
@@ -41,8 +36,7 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 		msgFor,
 		open,
 		//Atributos internos
-		listfacesmessage,
-		dbsmessages;
+		dbsmessage;
 
 		String toString;
 
@@ -371,25 +365,15 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 		getStateHelper().put(PropertyKeys.contentStyleClass, pContentStyleClass);
 		handleAttribute("contentStyleClass", pContentStyleClass);
 	}
-	
-	@SuppressWarnings("unchecked")
-	public List<FacesMessage> getListFacesMessage() {
-		return (List<FacesMessage>) getStateHelper().eval(PropertyKeys.listfacesmessage, null);
-	}
-	
-	public void setListFacesMessage(List<FacesMessage> pListFacesMessage) {
-		getStateHelper().put(PropertyKeys.listfacesmessage, pListFacesMessage);
-		handleAttribute("listfacesmessage", pListFacesMessage);
-	}
 
-	@SuppressWarnings("unchecked")
-	public <T extends IDBSMessage> List<T> getListDBSMessage() {
-		return (List<T>) getStateHelper().eval(PropertyKeys.dbsmessages, null);
+
+	public IDBSMessage getDBSMessage() {
+		return (IDBSMessage) getStateHelper().eval(PropertyKeys.dbsmessage, null);
 	}
 	
-	public <T extends IDBSMessage> void setListDBSMessage(List<T> pListDBSMessage) {
-		getStateHelper().put(PropertyKeys.dbsmessages, pListDBSMessage);
-		handleAttribute("dbsmessages", pListDBSMessage);
+	public void setDBSMessage(IDBSMessage pDBSMessage) {
+		getStateHelper().put(PropertyKeys.dbsmessage, pDBSMessage);
+		handleAttribute("dbsmessage", pDBSMessage);
 	}
 
 	@Override

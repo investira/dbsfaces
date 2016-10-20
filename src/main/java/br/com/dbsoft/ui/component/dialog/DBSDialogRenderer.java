@@ -1,9 +1,7 @@
 package br.com.dbsoft.ui.component.dialog;
 
 import java.io.IOException;
-import java.util.List;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -13,7 +11,6 @@ import com.sun.faces.renderkit.RenderKitUtils;
 
 import br.com.dbsoft.message.IDBSMessage;
 import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
-import br.com.dbsoft.message.IDBSMessages;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.dialog.DBSDialog.POSITION;
@@ -21,6 +18,7 @@ import br.com.dbsoft.ui.component.dialog.DBSDialog.TYPE;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
+import br.com.dbsoft.ui.core.DBSMessagesFacesContext;
 import br.com.dbsoft.util.DBSObject;
 
 /**
@@ -91,20 +89,14 @@ public class DBSDialogRenderer extends DBSRenderer {
 				xWriter.endElement("div");
 				//Nav
 				pvEncodeContentBegin(xDialog, pContext, xWriter);
-	}
-	
-	@Override
-	public void encodeEnd(FacesContext pContext, UIComponent pComponent) throws IOException {
-		ResponseWriter 	xWriter = pContext.getResponseWriter();
-		DBSDialog 		xDialog = (DBSDialog) pComponent;
-		if (!pvIsValid(xDialog)){return;}
-
+				
 				//FAZ O ENCODE FINAL
 				pvEncodeContentEnd(xDialog, pContext, xWriter);
-				xWriter.endElement("div");
+			xWriter.endElement("div");
 			pvEncodeJS(xDialog.getClientId(pContext), xWriter);
-		xWriter.endElement("div");
+		xWriter.endElement("div");	
 	}
+	
 	
 	private void pvEncodeContentBegin(DBSDialog pDialog, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 		TYPE xType = TYPE.get(pDialog.getType());
@@ -157,6 +149,7 @@ public class DBSDialogRenderer extends DBSRenderer {
 	private void pvEncodeHeader(DBSDialog pDialog, TYPE pType, FacesContext pContext,  ResponseWriter pWriter) throws IOException{
 		UIComponent xHeader = pDialog.getFacet(DBSDialog.FACET_HEADER);
 		if (xHeader == null
+		 && pDialog.getMsgType() == null
 		 && DBSObject.isEmpty(pDialog.getCaption())){return;}
 		pWriter.startElement("div", pDialog);
 			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.HEADER);
@@ -173,14 +166,21 @@ public class DBSDialogRenderer extends DBSRenderer {
 	}
 
 	private void pvEncodeCaption(DBSDialog pDialog, TYPE pType, ResponseWriter pWriter) throws IOException{
-		if (DBSObject.isEmpty(pDialog.getCaption())){return;}
+		if (pDialog.getMsgType() == null
+		 && DBSObject.isEmpty(pDialog.getCaption())){return;}
 		
 		pWriter.startElement("div", pDialog);
 			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CAPTION + CSS.MODIFIER.NOT_SELECTABLE);
 			//Label
 			pWriter.startElement("div", pDialog);
 				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.LABEL);
-				pWriter.write(pDialog.getCaption());
+				//Se não for mensagem padrão, usa caption informada pelo usuário
+				if (pDialog.getMsgType() == null){
+					pWriter.write(pDialog.getCaption());
+				//Tipo de mensagem como caption
+				}else{
+					pWriter.write(MESSAGE_TYPE.get(pDialog.getMsgType()).getName());
+				}
 			pWriter.endElement("div");
 			//Icone do tipo de mensagem
 			if(pType == TYPE.MSG
@@ -335,78 +335,22 @@ public class DBSDialogRenderer extends DBSRenderer {
 	}
 	
 	private boolean pvHasMessage(DBSDialog pDialog){
-		if ((pDialog.getListDBSMessage() != null && pDialog.getListDBSMessage().size() > 0)
-		 || (pDialog.getListFacesMessage() != null && pDialog.getListFacesMessage().size() > 0)
+		if ((pDialog.getDBSMessage() != null)
 		 || pDialog.getChildren().size() > 0){
 			return true;
 		}
 		return false;
 	}
 	
-	@SuppressWarnings("unchecked")
-	private <T extends IDBSMessage> void pvInitialize(DBSDialog pDialog, FacesContext pContext) throws IOException{
-		pDialog.setListDBSMessage(null);
-		pDialog.setListFacesMessage(null);
+	private void pvInitialize(DBSDialog pDialog, FacesContext pContext) throws IOException{
+		pDialog.setDBSMessage(null);
 		TYPE 	 xType = TYPE.get(pDialog.getType());
 		//Configura mensagem vinda por facesmessage ou children
 		if(xType == TYPE.MSG){
-			//É mensagem FacesMessage
+			//É mensagem FacesMessage ou DBSMessage
 			if (!DBSObject.isEmpty(pDialog.getMsgFor())){
-				//Se houver mensagem DBSMessages
-				if (pContext.getAttributes().get(IDBSMessage.ATTRIBUTE_NAME) != null){
-					@SuppressWarnings("rawtypes")
-					IDBSMessages xDBSMessages = (IDBSMessages) pContext.getAttributes().get(IDBSMessage.ATTRIBUTE_NAME);
-					List<T> xDMsgs = null;
-					//Mensagens globais 
-					if (pDialog.getMsgFor().equals(DBSDialog.MSG_FOR_GLOBAL)){
-						//Se existe mensagem sem componente(clientid) definito
-						xDMsgs = xDBSMessages.getMessagesForClientId(null);
-					//Mensagem para componente(clientid) 
-					}else if (!pDialog.getMsgFor().equals(DBSDialog.MSG_FOR_ALL)){
-						//Se existe mensagem para o componente(clientid)
-						xDMsgs = xDBSMessages.getMessagesForClientId(pDialog.getMsgFor());
-					//Todas as mensagens
-					}else{
-						xDMsgs = xDBSMessages.getMessages();
-					}
-					pDialog.setListDBSMessage(xDMsgs);
-					if (xDMsgs != null && xDMsgs.size() > 0){
-						pDialog.setCaption(xDMsgs.get(0).getMessageType().getName());
-						pDialog.setMsgType(xDMsgs.get(0).getMessageType().getCode());
-						pDialog.setOpen(true);
-					}
-				//Se houver mensagem FacesMessage
-				}else if (pContext.getMessageList().size() > 0){
-					List<FacesMessage> xFMsg = null;
-					//Mensagens globais 
-					if (pDialog.getMsgFor().equals(DBSDialog.MSG_FOR_GLOBAL)){
-						//Se existe mensagem sem componente(clientid) definito
-						xFMsg = pContext.getMessageList(null);
-					//Mensagem para componente(clientid) 
-					}else if (!pDialog.getMsgFor().equals(DBSDialog.MSG_FOR_ALL)){
-						//Se existe mensagem para o componente(clientid)
-						xFMsg = pContext.getMessageList(pDialog.getMsgFor());
-					//Todas as mensagens
-					}else{
-						xFMsg = pContext.getMessageList();
-					}
-					pDialog.setListFacesMessage(xFMsg);
-					//Configura para exibir o dialog já aberto/
-					if (xFMsg != null && xFMsg.size() > 0){
-						if (xFMsg.get(0).getSeverity() == FacesMessage.SEVERITY_ERROR
-						 || xFMsg.get(0).getSeverity() == FacesMessage.SEVERITY_FATAL){
-							pDialog.setMsgType(MESSAGE_TYPE.ERROR.getCode());
-							pDialog.setCaption(MESSAGE_TYPE.ERROR.getName());
-						}else if (xFMsg.get(0).getSeverity() == FacesMessage.SEVERITY_WARN){
-							pDialog.setMsgType(MESSAGE_TYPE.WARNING.getCode());
-							pDialog.setCaption(MESSAGE_TYPE.WARNING.getName());
-						}else if (xFMsg.get(0).getSeverity() == FacesMessage.SEVERITY_INFO){
-							pDialog.setMsgType(MESSAGE_TYPE.INFORMATION.getCode());
-							pDialog.setCaption(MESSAGE_TYPE.INFORMATION.getName());
-						}
-						pDialog.setOpen(true);
-					}
-				}
+				//Recupera as mensagens
+				pDialog.setOpen(pvInitializeDBSMessage(pDialog, pContext));
 			}else{
 				if (pDialog.getChildCount() > 0){
 					pDialog.setCaption(MESSAGE_TYPE.get(pDialog.getMsgType()).getName());
@@ -415,6 +359,25 @@ public class DBSDialogRenderer extends DBSRenderer {
 			}
 		}
 	}
+
+	/**
+	 * Configura localmente as mensagem enviadas como DBSMessage
+	 * @param pDialog
+	 * @param pContext
+	 * @return
+	 * @throws IOException
+	 */
+	private boolean pvInitializeDBSMessage(DBSDialog pDialog, FacesContext pContext) throws IOException{
+		IDBSMessage xMsg = DBSMessagesFacesContext.getMessage(pDialog.getMsgFor());
+		pDialog.setDBSMessage(xMsg);
+		if (xMsg != null){
+			pDialog.setMsgType(xMsg.getMessageType().getCode());
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 
 	/**
 	 * Encode do conteúdo
@@ -427,14 +390,8 @@ public class DBSDialogRenderer extends DBSRenderer {
 		if (pDialog.getChildren().size() > 0){
 			//Encode dos conteúdo
 			DBSFaces.renderChildren(pContext, pDialog);
-		}else if (pDialog.getListDBSMessage() != null){
-			for (IDBSMessage xMsg:pDialog.getListDBSMessage()){
-				pWriter.write(xMsg.getMessageText());
-			}
-		}else if (pDialog.getListFacesMessage() != null){
-			for (FacesMessage xMsg:pDialog.getListFacesMessage()){
-				pWriter.write(xMsg.getDetail());
-			}
+		}else if (pDialog.getDBSMessage() != null){
+			pWriter.write(pDialog.getDBSMessage().getMessageText());
 		}
 	}
 

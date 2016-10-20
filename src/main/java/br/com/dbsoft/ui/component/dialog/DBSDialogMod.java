@@ -1,8 +1,5 @@
 package br.com.dbsoft.ui.component.dialog;
 
-import java.util.List;
-
-import javax.faces.application.FacesMessage;
 import javax.faces.component.FacesComponent;
 
 import br.com.dbsoft.message.IDBSMessage;
@@ -34,14 +31,9 @@ public class DBSDialogMod extends DBSDialog{
 	public void setCloseTimeout(String pCloseTimeout) {}
 
 	@Override
-	public List<FacesMessage> getListFacesMessage() {return null;}
+	public IDBSMessage getDBSMessage() {return null;}
 	@Override
-	public void setListFacesMessage(List<FacesMessage> pListFacesMessage) {}
-
-	@Override
-	public <T extends IDBSMessage> List<T> getListDBSMessage() {return null;}
-	@Override
-	public <T extends IDBSMessage> void setListDBSMessage(List<T> pListDBSMessage) {}
+	public void setDBSMessage(IDBSMessage pDBSMessage) {}
 
 
 }

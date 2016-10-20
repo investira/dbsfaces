@@ -163,6 +163,7 @@ public abstract class DBSBean implements Serializable{
 		return wMessages;
 	}
 
+
 	/**
 	 * Método após a inicialização do bean.
 	 * Ao sobre escrever este método, deve-se estar atendo em chamar o <b>super</b>.

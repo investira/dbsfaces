@@ -131,9 +131,9 @@ public class DBSReportFormUtil {
 		try {
 			// Verifica se o relatório gerado contem alguma página
 			if (pJasperPrint == null) {
-				DBSFaces.sendMessage("mensagemErro", MESSAGE_TYPE.ERROR, "Relatório [" + pReportFileName + "] não encontrado.");
+				DBSMessagesFacesContext.sendMessage(MESSAGE_TYPE.ERROR, "Relatório [" + pReportFileName + "] não encontrado.", "mensagemErro");
 			} else if (pJasperPrint.getPages() == null || pJasperPrint.getPages().size() <= 0) {
-				DBSFaces.sendMessage("mensagemErro", MESSAGE_TYPE.ERROR, "Nenhum informação encontrada.");
+				DBSMessagesFacesContext.sendMessage(MESSAGE_TYPE.ERROR, "Nenhum informação encontrada.", "mensagemErro");
 			} else {
 				//Define o nome do relatório contendo também o número da seção para evitar que um sessão sobreesvreva o relatório de outra. 
 //				String xReportFileName = pReportFileName + DBSSession.getSession().getId();
@@ -148,7 +148,7 @@ public class DBSReportFormUtil {
 			}
 		} catch (JRException e) {
 			wLogger.error("Erro ao gerar relatório " + pReportFileName + ": " + e);
-			DBSFaces.sendMessage("mensagemErro", MESSAGE_TYPE.ERROR, "Erro ao gerar relatório: " + e.getMessage());
+			DBSMessagesFacesContext.sendMessage(MESSAGE_TYPE.ERROR, "Erro ao gerar relatório: " + e.getMessage(), "mensagemErro");
 		}
 		return "";
 	}
@@ -263,7 +263,7 @@ public class DBSReportFormUtil {
 			xResponse.getWriter().println("<script>window.open(\""+ pvGetReportRelativeFilePath(DBSFile.getFileNameHTML(pReportFileName)) + "\")</script>");  
 		} catch (JRException | IOException e) {
 			wLogger.error(e);
-			DBSFaces.sendMessage("mensagemErro", MESSAGE_TYPE.ERROR, e.getMessage());
+			DBSMessagesFacesContext.sendMessage(MESSAGE_TYPE.ERROR, e.getMessage(), "mensagemErro");
 		}
 	}
 

@@ -23,7 +23,6 @@ import java.util.Map.Entry;
 
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
-import javax.faces.application.FacesMessage;
 import javax.faces.application.NavigationHandler;
 import javax.faces.application.ViewHandler;
 import javax.faces.component.EditableValueHolder;
@@ -56,11 +55,6 @@ import br.com.dbsoft.core.DBSSDK.ENCODE;
 import br.com.dbsoft.core.DBSSDK.NETWORK.METHOD;
 import br.com.dbsoft.core.DBSSDK.SYS.WEB_CLIENT;
 import br.com.dbsoft.error.DBSIOException;
-import br.com.dbsoft.message.DBSMessage;
-import br.com.dbsoft.message.DBSMessages;
-import br.com.dbsoft.message.IDBSMessage;
-import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
-import br.com.dbsoft.message.IDBSMessages;
 import br.com.dbsoft.ui.bean.DBSBean;
 import br.com.dbsoft.ui.bean.DBSBeanModalMessages;
 import br.com.dbsoft.ui.bean.crud.DBSCrudBean;
@@ -968,93 +962,7 @@ public class  DBSFaces {
 		return value.toString();
 	}
 	
-	/**
-	 * Envia mensagem do tipo <b>FacesMessage</b> e <b>DBSMessages</b>.<br/>
-	 * As mensagens <b>DBSMessages</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>m(Message)</b>.<br/>
-	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
-	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.
-	 * @param pMessage
-	 */
-	@SuppressWarnings("unchecked")
-	public static void sendMessage(IDBSMessage pMessage){
-		if (pMessage == null){return;}
-		if (pMessage.getMessageClientIds().size() == 0){
-			//Não há clientids 
-			pvSendFacesMessage(null, pMessage.getMessageType(), pMessage.getMessageText());
-		}else{
-			//Envia mensagen para todos clientsid.
-			for (String xClientId:pMessage.getMessageClientIds()){
-				pvSendFacesMessage(xClientId, pMessage.getMessageType(), pMessage.getMessageText());
-			}
-		}
 
-		@SuppressWarnings("rawtypes")
-		IDBSMessages xMsgs = (IDBSMessages) FacesContext.getCurrentInstance().getAttributes().get(IDBSMessage.ATTRIBUTE_NAME);
-		//Cria DBSMessages se não existir
-		if (xMsgs == null){
-			xMsgs = new DBSMessages<IDBSMessage>();
-			FacesContext.getCurrentInstance().getAttributes().put(IDBSMessage.ATTRIBUTE_NAME, xMsgs);
-		}
-		xMsgs.add(pMessage);
-	}
-
-	/**
-	 * Envia mensagem do tipo <b>FacesMessage</b> e <b>DBSMessages</b>.<br/>
-	 * As mensagens <b>DBSMessages</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>m(Message)</b>.<br/>
-	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
-	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.
-	 * @param pClientId
-	 * @param pMessage
-	 */
-	public static void sendMessage(String pClientId, IDBSMessage pMessage){
-		pMessage.getMessageClientIds().add(pClientId);
-		sendMessage(pMessage);
-	}	
-
-	/**
-	 * Envia mensagem do tipo <b>FacesMessage</b> e <b>DBSMessages</b>.<br/>
-	 * As mensagens <b>DBSMessages</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>m(Message)</b>.<br/>
-	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
-	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.
-	 * @param pClientId
-	 * @param pMessages
-	 */
-	public static void sendMessages(String pClientId, @SuppressWarnings("rawtypes") IDBSMessages pMessages){
-		if (pMessages == null){return;}
-		@SuppressWarnings("unchecked")
-		Iterator<IDBSMessage> xMsgs = pMessages.getMessages().iterator();
-		while (xMsgs.hasNext()){
-			sendMessage(pClientId, xMsgs.next());
-		}
-	}	
-	
-	/**
-	 * Envia mensagem do tipo <b>FacesMessage</b> e <b>DBSMessages</b>.<br/>
-	 * As mensagens <b>DBSMessages</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>m(Message)</b>.<br/>
-	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
-	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.
-	 * @param pMessages
-	 */
-	public static void sendMessages(@SuppressWarnings("rawtypes") IDBSMessages pMessages){
-		if (pMessages == null){return;}
-		sendMessages(null, pMessages);
-	}
-	
-	/**
-	 * Envia mensagem do tipo <b>FacesMessage</b> e <b>DBSMessages</b>.<br/>
-	 * As mensagens <b>DBSMessages</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>m(Message)</b>.<br/>
-	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
-	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.
-	 * @param pClientId
-	 * @param pMessageType
-	 * @param pMessageText
-	 */
-	public static void sendMessage(String pClientId, MESSAGE_TYPE pMessageType, String pMessageText){
-		DBSMessage xMsg = new DBSMessage(pMessageType, pMessageText);
-		sendMessage(pClientId, xMsg);
-	}	
-
-	
 	/**
 	 * Exibe um dialog inserindo o arquivo informado, que deverá conter o componente DBSDialog, no componente dialog
 	 * @param pModalFileName
@@ -2912,37 +2820,37 @@ public class  DBSFaces {
 		return xS.trim();
 	}
 	
-	/**
-	 * Envia FacesMessage para a view
-	 * @param pClientId Nome do componente ao aqual esta vinculado a mensagem
-	 * @param pSeverity Tipo de severidade da mensagem
-	 * @param pMessageText texto da mensagem
-	 */
-	private static void pvSendFacesMessage(String pClientId, FacesMessage.Severity pSeverity, String pMessageText){
-		if (pSeverity == null
-		 || pMessageText == null){return;}
-		FacesContext.getCurrentInstance().addMessage(pClientId, new FacesMessage(pSeverity, pMessageText, null));		
-	}	
-	
-	/**
-	 * Envia FacesMessage para a view
-	 * @param pClientId Nome do componente ao aqual esta vinculado a mensagem
-	 * @param pSeverity Tipo de severidade da mensagem
-	 * @param pMessageText texto da mensagem
-	 */
-	private static void pvSendFacesMessage(String pClientId, MESSAGE_TYPE pMessageType, String pMessageText){
-		if (pMessageType == null
-		 || pMessageText == null){return;}
-		FacesMessage.Severity xSeverity = null;
-		if (pMessageType.getSeverity() < 19){
-			xSeverity = FacesMessage.SEVERITY_INFO;
-		}else if (pMessageType.getSeverity() < 29){
-			xSeverity = FacesMessage.SEVERITY_WARN;
-		}else if (pMessageType.getSeverity() < 49){
-			xSeverity = FacesMessage.SEVERITY_ERROR;
-		}
-		pvSendFacesMessage(pClientId, xSeverity, pMessageText);
-	}	
+//	/**
+//	 * Envia FacesMessage para a view
+//	 * @param pClientId Nome do componente ao aqual esta vinculado a mensagem
+//	 * @param pSeverity Tipo de severidade da mensagem
+//	 * @param pMessageText texto da mensagem
+//	 */
+//	private static void pvSendFacesMessage(FacesMessage.Severity pSeverity, String pMessageText, String pClientId){
+//		if (pSeverity == null
+//		 || pMessageText == null){return;}
+//		FacesContext.getCurrentInstance().addMessage(pClientId, new FacesMessage(pSeverity, pMessageText, null));		
+//	}	
+//	
+//	/**
+//	 * Envia FacesMessage para a view
+//	 * @param pClientId Nome do componente ao aqual esta vinculado a mensagem
+//	 * @param pSeverity Tipo de severidade da mensagem
+//	 * @param pMessageText texto da mensagem
+//	 */
+//	private static void pvSendFacesMessage(MESSAGE_TYPE pMessageType, String pMessageText, String pClientId){
+//		if (pMessageType == null
+//		 || pMessageText == null){return;}
+//		FacesMessage.Severity xSeverity = null;
+//		if (pMessageType.getSeverity() < 19){
+//			xSeverity = FacesMessage.SEVERITY_INFO;
+//		}else if (pMessageType.getSeverity() < 29){
+//			xSeverity = FacesMessage.SEVERITY_WARN;
+//		}else if (pMessageType.getSeverity() < 49){
+//			xSeverity = FacesMessage.SEVERITY_ERROR;
+//		}
+//		pvSendFacesMessage(xSeverity, pMessageText, pClientId);
+//	}	
 
 
 
