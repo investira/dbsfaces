@@ -70,7 +70,7 @@ dbs_fileUpload = function(pId, pFileUploadServlet) {
 	function reset() {
 //		console.log("UPLOAD RESET");
 		wBtCancel.children('.-progress').remove();
-		wBtCancel.removeClass("-disabled");
+		wBtCancel.attr("disabled","disabled");
 		wFile.get(0).value = "";
 		wBtStart.show();
 		wBtCancel.hide();
@@ -82,7 +82,8 @@ dbs_fileUpload = function(pId, pFileUploadServlet) {
 	};
 	
 	function onloadHandler(evt) {
-		wBtCancel.addClass("-disabled");
+//		wBtCancel.addClass("-disabled");
+		wBtCancel.attr("disabled","");
 //		console.log("UPLOAD LOAD");
 	};
 	

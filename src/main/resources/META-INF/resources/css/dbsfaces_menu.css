@@ -39,7 +39,7 @@
 	pointer-events: none;
 }	
 
-.dbs_menuitem:not(.-disabled){
+.dbs_menu:not([disabled]) .dbs_menuitem:not([disabled]){
 	cursor: pointer;
 	pointer-events: all;
 }
@@ -55,7 +55,7 @@
 .dbs_menuitem.-opened > .-submenu > .-container{
 }
 	
-.dbs_menuitem:not(.-disabled) > .-submenu > .-container{
+.dbs_menuitem:not([disabled]) > .-submenu > .-container{
 }
 
 .dbs_menuitem > .-caption{

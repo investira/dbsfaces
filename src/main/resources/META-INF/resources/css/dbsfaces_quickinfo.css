@@ -4,7 +4,7 @@
 	-webkit-user-select: none;
 	line-height: 1;
 }
-.dbs_quickInfo.-th_action:not(.-disabled) {
+.dbs_quickInfo.-th_action:not([disabled]) {
     opacity: 1; /*Para resolver um bug que escondia o overflow dentro de um dialog*/
 }
 
@@ -23,9 +23,9 @@
 	background-color: transparent;
 }
 /* Desliga layout padrão do -th_action */
-.dbs_quickInfo.-selected.-th_action:not(.-disabled):HOVER,
-.dbs_quickInfo.-selected.-th_action:not(.-disabled):ACTIVE,
-.dbs_quickInfo.-selected.-th_action:not(.-disabled):FOCUS{
+.dbs_quickInfo.-selected.-th_action:not([disabled]):HOVER,
+.dbs_quickInfo.-selected.-th_action:not([disabled]):ACTIVE,
+.dbs_quickInfo.-selected.-th_action:not([disabled]):FOCUS{
 	background: none;
 	background-color: transparent !important;
 	-webkit-box-shadow: none;

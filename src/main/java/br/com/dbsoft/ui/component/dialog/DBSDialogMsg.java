@@ -24,4 +24,15 @@ public class DBSDialogMsg extends DBSDialog{
 		return (String) getStateHelper().eval(PropertyKeys.closeTimeout, "a");
 	}
 
+	@Override
+	public String getContentAlignment() {
+		return (String) getStateHelper().eval(PropertyKeys.contentAlignment, CONTENT_ALIGNMENT.CENTER.getName());
+	}
+	
+	@Override
+	public String getContentPadding() {
+		return (String) getStateHelper().eval(PropertyKeys.contentPadding, "0.6em");
+	}
+
+
 }

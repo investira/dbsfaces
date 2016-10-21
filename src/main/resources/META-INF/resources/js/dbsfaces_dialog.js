@@ -23,13 +23,15 @@ dbs_dialog = function(pId) {
 	});
 
 
-	$(pId + ":not([disabled]) > .-container > .-icon").on("mousedown touchstart", function(e){
+	$(pId + " > .-container > .-icon").on("mousedown touchstart", function(e){
+		if (xDialog.attr("disabled")){return;}
 		dbsfaces.dialog.show(xDialog);
 		return false;
 	});
 
-	$(pId + ":not([disabled]) > .-container > .-mask").on("mousedown touchstart", function(e){
-		//Fecha se pussior botão de fechar padrão
+	$(pId + " > .-container > .-mask").on("mousedown touchstart", function(e){
+		if (xDialog.attr("disabled")){return;}
+		//Fecha se possuior botão de fechar padrão
 		if (xDialog.data("btclose").length != 0){
 			dbsfaces.dialog.show(xDialog);
 		}
@@ -38,7 +40,7 @@ dbs_dialog = function(pId) {
 	
 	/*Captura movimento touch para verificar se é para fechar o dialog*/
 	if (!xDialog.data("c")) {
-		$(pId + ":not([disabled]) > .-container > .-content").touchwipe({
+		$(pId + " > .-container > .-content").touchwipe({
 		     wipeLeft: function() {return dbsfaces.dialog.wipe(xDialog, "l");},
 		     wipeRight: function() {return dbsfaces.dialog.wipe(xDialog, "r");},
 		     wipeUp: function() {return dbsfaces.dialog.wipe(xDialog, "u");},
@@ -53,7 +55,7 @@ dbs_dialog = function(pId) {
 
 
 	/*Após animação de abrir ou fechar*/
-	$(pId + ":not([disabled]) > .-container > .-content").on(dbsfaces.EVENT.ON_TRANSITION_END, function(e){
+	$(pId + " > .-container > .-content").on(dbsfaces.EVENT.ON_TRANSITION_END, function(e){
 		//Foi fechado
 		if ($(this).closest(".dbs_dialog").hasClass("-closed")){
 			xDialog.trigger("closed");
@@ -70,12 +72,14 @@ dbs_dialog = function(pId) {
 //		dbsfaces.dialog.show(xDialog);
 //	});
 
-	$(pId + ":not([disabled]) > .-container > .-content > .-footer > .-toolbar > .-btok").on("mousedown touchstart", function(e){
+	$(pId + " > .-container > .-content > .-footer > .-toolbar > .-btok").on("mousedown touchstart", function(e){
+		if (xDialog.attr("disabled")){return;}
 		dbsfaces.dialog.show(xDialog);
 	});
 
 	
-	$(pId + ":not([disabled]) > .-container > .-content > .-btclose").on("mousedown touchstart", function(e){
+	$(pId + " > .-container > .-content > .-btclose").on("mousedown touchstart", function(e){
+		if (xDialog.attr("disabled")){return;}
 		/*fecha normalmente se não houver timeout ou for modal*/
 		if (xDialog.data("timeout") == "0"){
 			dbsfaces.dialog.show(xDialog);
@@ -86,7 +90,8 @@ dbs_dialog = function(pId) {
 	});
 	
 	/*Fecha o dialog*/
-	$(pId + ":not([disabled]) > .-container > .-content > .-btclose").on("mouseup touchend", function(e){
+	$(pId + " > .-container > .-content > .-btclose").on("mouseup touchend", function(e){
+		if (xDialog.attr("disabled")){return;}
 		if (xDialog.data("timeout") == "0"){return;}
 		var xTime = new Date().getTime();
 		//Fecha normalmente
@@ -100,19 +105,20 @@ dbs_dialog = function(pId) {
 	});
 
 	/*dispara evento informando que botão back for pressionado*/
-	$(pId + ":not([disabled]) > .-container > .-content > .-btback").on("mousedown touchstart", function(e){
+	$(pId + " > .-container > .-content > .-btback").on("mousedown touchstart", function(e){
+		if (xDialog.attr("disabled")){return;}
 		xDialog.trigger("back");
 	});
 
-	/*Animação do timeout*/
-	$(pId + ":not([disabled]) .-th_action.-close").on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
+	/*Fecha dialog após retorno das chamadas ajax de botões com função de fechar */
+	$(pId + " .-th_action.-close").on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
 		dbsfaces.dialog.show(xDialog);
 		e.stopImmediatePropagation();
 		return false;
 	});
 	
 	/*Animação do timeout*/
-	$(pId + ":not([disabled]) > .-container > .-content > .-btclose").on(dbsfaces.EVENT.ON_TRANSITION_END, function(e){
+	$(pId + " > .-container > .-content > .-btclose").on(dbsfaces.EVENT.ON_TRANSITION_END, function(e){
 		dbsfaces.dialog.show(xDialog);
 		return false;
 	});
@@ -138,7 +144,7 @@ dbsfaces.dialog = {
 		pDialog.data("mask", pDialog.data("container").children(".-mask"));
 		pDialog.data("sub_container", pDialog.data("content").children(".-sub_container"));
 		pDialog.data("divscroll", pDialog.data("sub_container").children("div"));
-		pDialog.data("sub_content", pDialog.data("divscroll").find("> div > .-sub_content"));
+		pDialog.data("sub_content", pDialog.data("divscroll").find("> div > .-              "));
 		pDialog.data("header", pDialog.data("content").children(".-header"));
 		pDialog.data("header_content", pDialog.data("header").children(".-content"));
 		pDialog.data("footer", pDialog.data("content").children(".-footer"));
@@ -147,6 +153,7 @@ dbsfaces.dialog = {
 		pDialog.data("btclose", pDialog.data("content").children(".-btclose"));
 		pDialog.data("padding", parseFloat(pDialog.data("sub_content").css("padding")));
 		pDialog.data("timeout", dbsfaces.util.getNotEmpty(pDialog.attr("timeout"),"0"));
+		pDialog.attr("previousOpen", null);
 	},
 	
 	pvInitializeLayout: function(pDialog){
@@ -230,8 +237,8 @@ dbsfaces.dialog = {
 		if (pDialog.data("btclose").length == 0){
 			return false;
 		}
-		if (pDialog.attr("type") == "nav"
-		 || pDialog.data("footer_toolbar").length == 0){
+		if (pDialog.attr("type") == "nav" //For nav
+		 || pDialog.data("footer_toolbar").children().length == 0){ //Não houver conteúdo no toolbar
 			if ((pDialog.attr("p") == "t"
 			  && pDirection == "u")
 			 || (pDialog.attr("p") == "b"
@@ -264,22 +271,48 @@ dbsfaces.dialog = {
 
 	pvOpen: function(pDialog){
 		dbsfaces.dialog.pvAjustLayout(pDialog);
-		dbsfaces.ui.disableBackgroundInputs(pDialog);
-		dbsfaces.dialog.pvFreeze(pDialog, true);
 		pDialog.removeClass("-closed");
-		//Coloca o foco no primeiro campo de input dentro do nav
-		dbsfaces.ui.focusOnFirstInput(pDialog);
+		if (!pDialog.attr("disabled")){
+			var xPreviousOpen = dbsfaces.dialog.pvSetPreviousOpen(pDialog);
+			if (xPreviousOpen != null){
+				xPreviousOpen.attr('disabled', true);
+			}
+			
+			dbsfaces.ui.disableBackgroundInputs(pDialog);
+			dbsfaces.dialog.pvFreeze(pDialog, true);
+			//Coloca o foco no primeiro campo de input dentro do nav
+			dbsfaces.ui.focusOnFirstInput(pDialog);
+		}
 	},
 	
 	pvClose: function(pDialog){
 		var xP = pDialog.attr("p");
-
-		dbsfaces.ui.enableForegroundInputs($("body"));
+		pDialog.addClass("-closed");
 		//Retira foco do componente que possuir foco
 		$(":focus").blur();
-		pDialog.addClass("-closed");
 		dbsfaces.dialog.startTimeout(pDialog);
-		dbsfaces.dialog.pvFreeze(pDialog, false);
+		var xPreviousOpen = pDialog.data("previousOpen");
+		//Não existe dialog aberto atrás
+		if (xPreviousOpen == null){
+			dbsfaces.ui.enableForegroundInputs($("body"));
+			dbsfaces.dialog.pvFreeze(pDialog, false);
+			pDialog.attr('disabled', null);
+		}else{
+			xPreviousOpen.attr('disabled', null);
+			dbsfaces.ui.enableForegroundInputs(xPreviousOpen);
+		}
+	},
+
+	pvSetPreviousOpen: function(pDialog){
+		var xPreviousOpen = $(".dbs_dialog:not([disabled]):not(.-closed)").not(pDialog);
+		if (xPreviousOpen.length == 0){
+			xPreviousOpen = null;
+			pDialog.attr("pd", null);
+		}else{
+			pDialog.attr("pd", xPreviousOpen[0].id);
+		}
+		pDialog.data("previousOpen", xPreviousOpen);
+		return xPreviousOpen;
 	},
 	
 	pvFreeze: function(pDialog, pOn){
@@ -318,7 +351,9 @@ dbsfaces.dialog = {
 //
 //	}
 	pvAjustLayout: function(pDialog){
-		if (dbsfaces.util.isMobile()){
+		if (dbsfaces.util.isMobile()
+		&& (pDialog.attr("type") == "mod" 
+		 || pDialog.attr("type") == "nav")){
 			pDialog.attr("cs","s");
 		}
 		var xHeaderContent = pDialog.data("header_content");

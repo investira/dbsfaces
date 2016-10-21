@@ -552,28 +552,33 @@ dbsfaces.ui = {
 			xE = $(pSourceId);
 		}
 		var xId = dbsfaces.util.jsid(xE[0].id);
-	    var xOP = $("body");
-		xOP.find("input").not('[type="hidden"]').not(xId + " input").attr('disabled', true);
-		xOP.find("button").not(xId + " button").attr('disabled', true);
-		xOP.find("select").not(xId + " select").attr('disabled', true);
-		xOP.find(".dbs_nav").not(xId + " nav").attr('disabled', true);
-		xOP.find("a").not(xId + " a").attr('disabled', true);
-		xOP.find("textarea").not(xId + " textarea").attr('disabled', true);
+//		xOP.find(".dbs_dialog").not(xId).attr('disabled', true);
+	    $(".-th_action").not(xId + " .-th_action").attr('disabled', true);
+		$(".dbs_menu").not(xId + " .dbs_menu").attr('disabled', true);
+		$("input").not('[type="hidden"]').not(xId + " input").attr('disabled', true);
+		$("button").not(xId + " button").attr('disabled', true);
+		$("select").not(xId + " select").attr('disabled', true);
+		$(".dbs_nav").not(xId + " nav").attr('disabled', true);
+		$("a").not(xId + " a").attr('disabled', true);
+		$("textarea").not(xId + " textarea").attr('disabled', true);
 
 		dbsfaces.ui.enableForegroundInputs(xE);
 	},
 	
-	enableForegroundInputs: function(pObj){
-		var xE = pObj;
-		if (!(pObj instanceof jQuery)){
-			xE = $(pObj);
+	enableForegroundInputs: function(pSourceId){
+		var xE = pSourceId;
+		if (!(pSourceId instanceof jQuery)){
+			xE = $(pSourceId);
 		}
-		xE.find("input").not(".-disabled").attr('disabled', false);
-		xE.find("a").not(".-disabled").attr('disabled', false);
-		xE.find("button").not(".-disabled").attr('disabled', false);
-		xE.find("select").not(".-disabled").attr('disabled', false);
-		xE.find(".dbs_nav").not(".-disabled").attr('disabled', false);
-		xE.find("textarea").not(".-disabled").attr('disabled', false);
+		xE.find(".-th_action").not(".-disabled").attr('disabled', null);
+		xE.find(".dbs_menu").not(".-disabled").attr('disabled', null);
+//		xE.find(".dbs_dialog").not(".-disabled").attr('disabled', true);
+		xE.find("input").not(".-disabled").attr('disabled', null);
+		xE.find("a").not(".-disabled").attr('disabled', null);
+		xE.find("button").not(".-disabled").attr('disabled', null);
+		xE.find("select").not(".-disabled").attr('disabled', null);
+		xE.find(".dbs_nav").not(".-disabled").attr('disabled', null);
+		xE.find("textarea").not(".-disabled").attr('disabled', null);
 	},
 
 	cssAllBrowser: function(e, pAtribute, pValue){

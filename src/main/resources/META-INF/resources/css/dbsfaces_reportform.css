@@ -102,7 +102,7 @@
 	overflow: hidden;
 }
 
-.dbs_reportForm > .-content > object.-disabled,
-.dbs_reportForm > .-content > iframe.-disabled{
+.dbs_reportForm > .-content > object[disabled],
+.dbs_reportForm > .-content > iframe[disabled]{
 	opacity: 0.2;
 }

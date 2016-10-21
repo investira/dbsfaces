@@ -91,7 +91,7 @@ dbsfaces.tooltip = {
 		}
 		var xTooltip = xComponent.data("tooltip");
 		if (xTooltip == null){return;}
-		xTooltip.addClass("-disabled");
+		xTooltip.attr("disabled", "disabled");
 	},
 	enable: function(pSourceComponent){
 		var xComponent = pSourceComponent;
@@ -100,7 +100,7 @@ dbsfaces.tooltip = {
 		}
 		var xTooltip = xComponent.data("tooltip");
 		if (xTooltip == null){return;}
-		xTooltip.removeClass("-disabled");
+		xTooltip.attr("disabled", null);
 	},
 
 	hide: function(pSourceComponent){
@@ -135,7 +135,7 @@ dbsfaces.tooltip = {
 		var xTooltip = xComponent.data("tooltip");
 		if (xTooltip == null){return;}
 		//Não exibi se tooltip estiver desabilitado
-		if (xTooltip.hasClass("-disabled")){
+		if (xTooltip.attr("disabled")){
 			return false;
 		}
 		

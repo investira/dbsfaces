@@ -140,7 +140,7 @@
 
 
 
-/* .dbs_report > .-content > object.-disabled, */
-/* .dbs_report > .-content > iframe.-disabled{ */
+/* .dbs_report > .-content > object[disabled], */
+/* .dbs_report > .-content > iframe[disabled]{ */
 /* 	opacity: 0.2; */
 /* } */

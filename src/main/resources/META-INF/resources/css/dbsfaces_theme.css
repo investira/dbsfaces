@@ -38,16 +38,16 @@ html{
 	outline-width: 0px !important;
 }
 
-.-th_action.-disabled {
+.-th_action[disabled] {
 	cursor: default;
 	opacity: 0.9;
 }
 
-.-th_action:not(.-disabled){
+.-th_action:not([disabled]){
 	opacity: 0.95;
 }
 
-.-th_action:not(.-disabled):ACTIVE{
+.-th_action:not([disabled]):ACTIVE{
 	background-color: rgba(254, 254, 255, 0.2) !important;
 	opacity: 1;	
 	
@@ -58,8 +58,8 @@ html{
 	text-shadow: none;
 }
 
-.-th_action:not(.-disabled):HOVER,
-.-th_action:not(.-disabled):FOCUS{
+.-th_action:not([disabled]):HOVER,
+.-th_action:not([disabled]):FOCUS{
 	text-decoration: none !important;
 
 	background: -moz-linear-gradient(top,  rgba(234,234,234,0.1) 0%, rgba(71,71,71,0.1) 100%);
@@ -81,7 +81,7 @@ html{
 	color:#333333;
 }
 
-.-th_action:not(.-disabled){
+.-th_action:not([disabled]){
 	cursor: pointer;
 	outline: none !important;
 	border-collapse: separate;

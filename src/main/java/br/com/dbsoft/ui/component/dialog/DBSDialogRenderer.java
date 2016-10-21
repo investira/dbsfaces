@@ -170,7 +170,7 @@ public class DBSDialogRenderer extends DBSRenderer{
 				pWriter.startElement("div", pDialog);
 					pWriter.startElement("div", pDialog);
 						pWriter.startElement("div", pDialog);
-							DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.SUB_CONTENT + CSS.MODIFIER.CLOSED, null);
+							DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.SUB_CONTENT, null);
 							DBSFaces.setAttribute(pWriter, "style", "padding:" + pDialog.getContentPadding(), null);
 							pvEncodeChildren(pDialog, pContext, pWriter);
 	}

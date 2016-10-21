@@ -8,7 +8,7 @@ dbs_menu = function(pId) {
 		}
 	});
 	
-	$(pId + " .dbs_menuitem:not(.-disabled)").on("mouseenter", function(e){
+	$(pId + " .dbs_menuitem:not([disabled])").on("mouseenter", function(e){
 		var xMenuItem = $(this);
 		if ($(pId + "[class~=-menu_float]").length > 0) {
 //			console.log("enter\t" + $(this).find(" > .-caption > .-content > .-label").text());
@@ -16,7 +16,7 @@ dbs_menu = function(pId) {
 //			return false;
 		}
 	});
-	$(pId + " .dbs_menuitem:not(.-disabled)").on("mouseleave", function(e){
+	$(pId + " .dbs_menuitem:not([disabled])").on("mouseleave", function(e){
 		var xMenuItem = $(this);
 		if ($(pId + "[class~=-menu_float]").length > 0) {
 //			console.log("Leave\t" + $(this).find(" > .-caption > .-content > .-label").text());
@@ -24,7 +24,7 @@ dbs_menu = function(pId) {
 //			return false;
 		}
 	});
-	$(pId + " .dbs_menuitem:not(.-disabled)").on("click", function(e){
+	$(pId + " .dbs_menuitem:not([disabled])").on("click", function(e){
 		var xMenuItem = $(this);
 		if ($(pId + "[class~=-menu_scroll]").length > 0) {
 //			console.log("Click\t" + $(this).find(" > .-caption > .-content > .-label").text());
