@@ -9,7 +9,6 @@ import br.com.dbsoft.ui.core.DBSFaces;
 public class DBSDialogMsg extends DBSDialog{  
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.DIALOGMSG;
 
-
 	@Override
 	public String getType() {return TYPE.MSG.getName();}
 	@Override
@@ -24,11 +23,5 @@ public class DBSDialogMsg extends DBSDialog{
 	public String getCloseTimeout() {
 		return (String) getStateHelper().eval(PropertyKeys.closeTimeout, "a");
 	}
-
-//	@Override
-//	public Boolean getOpen() {return false;}
-//	@Override
-//	public void setOpen(Boolean pOpen) {}
-	
 
 }

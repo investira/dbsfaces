@@ -105,6 +105,13 @@ dbs_dialog = function(pId) {
 	});
 
 	/*Animação do timeout*/
+	$(pId + ":not([disabled]) .-th_action.-close").on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
+		dbsfaces.dialog.show(xDialog);
+		e.stopImmediatePropagation();
+		return false;
+	});
+	
+	/*Animação do timeout*/
 	$(pId + ":not([disabled]) > .-container > .-content > .-btclose").on(dbsfaces.EVENT.ON_TRANSITION_END, function(e){
 		dbsfaces.dialog.show(xDialog);
 		return false;

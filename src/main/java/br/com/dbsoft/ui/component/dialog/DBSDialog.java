@@ -21,6 +21,10 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 	public final static String FACET_HEADER = "header";
 	public final static String FACET_FOOTER = "footer";
 	public final static String FACET_TOOLBAR = "toolbar";
+	public final static String INPUT_MSGKEY = "msgkey";
+	public final static String BUTTON_OK = "btok";
+	public final static String BUTTON_YES = "btyes";
+	public final static String BUTTON_NO = "btno";
 	
 	protected enum PropertyKeys {
 		type,
@@ -375,7 +379,7 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 		getStateHelper().put(PropertyKeys.dbsmessage, pDBSMessage);
 		handleAttribute("dbsmessage", pDBSMessage);
 	}
-
+	
 	@Override
     public String getDefaultEventName()
     {
@@ -386,7 +390,5 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 	public Collection<String> getEventNames() {
 		return Arrays.asList("click", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup"); 
 	}
-
-
 
 }

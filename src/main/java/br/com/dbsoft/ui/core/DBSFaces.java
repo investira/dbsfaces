@@ -1275,6 +1275,35 @@ public class  DBSFaces {
 		return xHeight;
 	}
 	
+	/**
+	 * Retorna valor do campo enviado no request.
+	 * @param pContext
+	 * @param pComponenteClientId
+	 * @return
+	 */
+	public static String getDecodedComponenteValue(FacesContext pContext, String pComponenteClientId){
+		String xValue = null;
+//		if (RenderKitUtils.isPartialOrBehaviorAction(pContext, pComponenteClientId)
+//		|| pContext.getExternalContext().getRequestParameterMap().containsKey(pComponenteClientId)){ 
+		if (pContext.getExternalContext().getRequestParameterMap().containsKey(pComponenteClientId)){ 
+			xValue = pContext.getExternalContext().getRequestParameterMap().get(pComponenteClientId);
+			if (xValue == null){
+				return "";
+			}
+		}
+		return xValue;
+	}
+
+	/**
+	 * Retorna id do componente que originou o request.
+	 * @param pContext
+	 * @param pComponenteClientId
+	 * @return
+	 */
+	public static String getDecodedSourceId(FacesContext pContext){
+		return pContext.getExternalContext().getRequestParameterMap().get(DBSFaces.PARTIAL_SOURCE_PARAM); 
+	}
+
 	//############################ COMPONENTS AUXS ENCODES ################################################
 	/**
 	 * Retorna string em JS com o submit

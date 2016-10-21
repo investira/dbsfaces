@@ -12,6 +12,7 @@ import br.com.dbsoft.message.DBSMessage;
 import br.com.dbsoft.message.IDBSMessage;
 import br.com.dbsoft.message.IDBSMessages;
 import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
+import br.com.dbsoft.message.IDBSMessageListener;
 import br.com.dbsoft.util.DBSObject;
 
 public class DBSMessagesFacesContext {
@@ -27,7 +28,7 @@ public class DBSMessagesFacesContext {
 	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.
 	 * @param pMessage
 	 */
-	public static void sendMessage(IDBSMessage pMessage, String pClientId){
+	public static void sendMessage(IDBSMessage pMessage, String pClientId, IDBSMessageListener pMessageListener){
 		if (pMessage == null){return;}
 		FacesContext xContext = FacesContext.getCurrentInstance();
 		if (xContext == null){return;}
@@ -35,12 +36,24 @@ public class DBSMessagesFacesContext {
 		//Envia mensagem padrão FacesMessage
 		pvSendFacesMessage(xContext, pMessage.getMessageType(), pMessage.getMessageText(), pClientId);
 		//Envia mensagem no padrão DBSMessages
+		pMessage.addListener(pMessageListener);
 		pvSendDBSMessage(xContext, pMessage, pClientId);
+
 	}
 
- 
 	/**
 	 * Envia mensagem do tipo <b>FacesMessage</b> e <b>IDBSMessage</b>.<br/>
+	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>m(Message)</b>.<br/>
+	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
+	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.
+	 * @param pMessage
+	 */
+	public static void sendMessage(IDBSMessage pMessage, String pClientId){
+		sendMessage(pMessage, pClientId, null);
+	}
+ 
+	/**
+	 * Envia mensagem global do tipo <b>FacesMessage</b> e <b>IDBSMessage</b>.<br/>
 	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>m(Message)</b>.<br/>
 	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
 	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.
@@ -70,7 +83,21 @@ public class DBSMessagesFacesContext {
 	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>m(Message)</b>.<br/>
 	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
 	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.
+	 * @param pMessageType
+	 * @param pMessageText
 	 * @param pClientId null = mensagem global. <br/> clientId = id do componente para que se destina a mensagem.
+	 * @param pMessageListener Listener que receberá os eventos disparados pela mensagem
+	 */
+	public static void sendMessage(MESSAGE_TYPE pMessageType, String pMessageText, String pClientId, IDBSMessageListener pMessageListener){
+		DBSMessage xMsg = new DBSMessage(pMessageType, pMessageText);
+		sendMessage(xMsg, pClientId, pMessageListener);
+	}	
+
+	/**
+	 * Envia mensagem global do tipo <b>FacesMessage</b> e <b>IDBSMessage</b>.<br/>
+	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>m(Message)</b>.<br/>
+	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
+	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.
 	 * @param pMessageType
 	 * @param pMessageText
 	 */
@@ -78,33 +105,61 @@ public class DBSMessagesFacesContext {
 		DBSMessage xMsg = new DBSMessage(pMessageType, pMessageText);
 		sendMessage(xMsg, null);
 	}	
+
+	/**
+	 * Envia mensagem global do tipo <b>FacesMessage</b> e <b>IDBSMessage</b>.<br/>
+	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>m(Message)</b>.<br/>
+	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
+	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.
+	 * @param pMessageType
+	 * @param pMessageText
+	 * @param pMessageListener Listener que receberá os eventos disparados pela mensagem
+	 */
+	public static void sendMessage(MESSAGE_TYPE pMessageType, String pMessageText, IDBSMessageListener pMessageListener){
+		DBSMessage xMsg = new DBSMessage(pMessageType, pMessageText);
+		sendMessage(xMsg, null, pMessageListener);
+	}	
 	
 	/**
 	 * Envia mensagem do tipo <b>FacesMessage</b> e <b>IDBSMessage</b>.<br/>
 	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>m(Message)</b>.<br/>
 	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
 	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.
-	 * @param pClientId null = mensagem global. <br/> clientId = id do componente para que se destina a mensagem.
 	 * @param pMessages
+	 * @param pClientId null = mensagem global. <br/> clientId = id do componente para que se destina a mensagem.
 	 */
 	@SuppressWarnings("rawtypes")
-	public static void sendMessages(IDBSMessages pMessages, String pClientId){
+	public static void sendMessages(IDBSMessages pMessages, String pClientId, IDBSMessageListener pMessageListener){
 		if (pMessages == null){return;}
 		@SuppressWarnings("unchecked")
 		Iterator<IDBSMessage> xMsgs = pMessages.getMessages().iterator();
 		//Envia as mensagens individualmente
 		while (xMsgs.hasNext()){
-			sendMessage(xMsgs.next(), pClientId);
+			sendMessage(xMsgs.next(), pClientId, pMessageListener);
 		}
+	}
+	
+	/**
+	 * Envia mensagem do tipo <b>FacesMessage</b> e <b>IDBSMessage</b>.<br/>
+	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>m(Message)</b>.<br/>
+	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
+	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.
+	 * @param pMessages
+	 * @param pClientId null = mensagem global. <br/> clientId = id do componente para que se destina a mensagem.
+	 */
+	@SuppressWarnings("rawtypes")
+	public static void sendMessages(IDBSMessages pMessages, String pClientId){
+		sendMessages(pMessages, pClientId, null);
 	}
 
 	/**
-	 * Envia mensagem do tipo <b>FacesMessage</b> e <b>DBSMessages</b>.<br/>
+	 * Envia mensagem globaldo tipo <b>FacesMessage</b> e <b>DBSMessages</b>.<br/>
 	 * As mensagens <b>DBSMessages</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>m(Message)</b>.<br/>
 	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
 	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.
 	 * @param pMessages
 	 */
+
 	@SuppressWarnings("rawtypes")
 	public static void sendMessages(IDBSMessages pMessages){
 		if (pMessages == null){return;}
@@ -152,7 +207,7 @@ public class DBSMessagesFacesContext {
 	 */
 	private static List<IDBSMessage> pvGetDBSMessage(FacesContext pContext, String pClientId){
 		if (pContext.getAttributes().get(ATTRIBUTE_NAME) == null){return null;}
-		List<IDBSMessage> 					xList = new ArrayList<IDBSMessage>();
+		List<IDBSMessage> 				   xList = new ArrayList<IDBSMessage>();
 		HashMap<String, List<IDBSMessage>> xMap = pvGetMap(pContext);
 		
 		//Considera todas as mensagens
@@ -166,7 +221,7 @@ public class DBSMessagesFacesContext {
 			xList = xMap.get(pClientId);
 		}
 		
-		if (xList.size() == 0){return null;}
+		if (xList != null && xList.size() == 0){return null;}
 		
 		return xList;
 	}

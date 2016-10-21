@@ -546,10 +546,10 @@ dbsfaces.ui = {
 		}
 	},
 	
-	disableBackgroundInputs: function(pObj){
-		var xE = pObj;
-		if (!(pObj instanceof jQuery)){
-			xE = $(pObj);
+	disableBackgroundInputs: function(pSourceId){
+		var xE = pSourceId;
+		if (!(pSourceId instanceof jQuery)){
+			xE = $(pSourceId);
 		}
 		var xId = dbsfaces.util.jsid(xE[0].id);
 	    var xOP = $("body");
