@@ -18,7 +18,8 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 	
 
-	public final static String FACET_HEADER = "header";
+	public final static String FACET_HEADER_LEFT = "headerleft";
+	public final static String FACET_HEADER_RIGHT = "headerright";
 	public final static String FACET_FOOTER = "footer";
 	public final static String FACET_TOOLBAR = "toolbar";
 	public final static String INPUT_MSGKEY = "msgkey";

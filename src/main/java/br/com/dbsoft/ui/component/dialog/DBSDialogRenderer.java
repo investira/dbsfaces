@@ -184,8 +184,6 @@ public class DBSDialogRenderer extends DBSRenderer{
 			pWriter.endElement("div");
 			//Footer
 			pvEncodeFooter(pDialog, xType, pContext, pWriter);
-			//ButtonBack
-			pvEncodeButtonBack(pDialog, xType, pWriter);
 			//ButtonClose
 			pvEncodeButtonClose(pDialog, xType, pWriter);
 		pWriter.endElement("div");
@@ -203,8 +201,10 @@ public class DBSDialogRenderer extends DBSRenderer{
 	}
 
 	private void pvEncodeHeader(DBSDialog pDialog, TYPE pType, FacesContext pContext,  ResponseWriter pWriter) throws IOException{
-		UIComponent xHeader = pDialog.getFacet(DBSDialog.FACET_HEADER);
-		if (xHeader == null
+		UIComponent xHeaderLeft = pDialog.getFacet(DBSDialog.FACET_HEADER_LEFT);
+		UIComponent xHeaderRight = pDialog.getFacet(DBSDialog.FACET_HEADER_RIGHT);
+		if (xHeaderLeft == null
+		 && xHeaderRight == null
 		 && pDialog.getMsgType() == null
 		 && DBSObject.isEmpty(pDialog.getCaption())){return;}
 		pWriter.startElement("div", pDialog);
@@ -212,16 +212,12 @@ public class DBSDialogRenderer extends DBSRenderer{
 			pWriter.startElement("div", pDialog);
 				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
 				DBSFaces.setAttribute(pWriter, "style", pvGetPaddingHeader(pDialog));
-				pvEncodeCaption(pDialog, pType, pWriter);
-				//Encode o conteudo do Header definido no FACET HEADER
-				if (!DBSObject.isNull(xHeader)){
-					xHeader.encodeAll(pContext);
-				}
+					pvEncodeCaption(pDialog, pType, xHeaderRight, xHeaderLeft, pContext, pWriter);
 			pWriter.endElement("div");
 		pWriter.endElement("div");
 	}
 
-	private void pvEncodeCaption(DBSDialog pDialog, TYPE pType, ResponseWriter pWriter) throws IOException{
+	private void pvEncodeCaption(DBSDialog pDialog, TYPE pType, UIComponent pFacetHeaderRight, UIComponent pFacetHeaderLeft, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 		if (pDialog.getMsgType() == null
 		 && DBSObject.isEmpty(pDialog.getCaption())){return;}
 		
@@ -238,6 +234,7 @@ public class DBSDialogRenderer extends DBSRenderer{
 					pWriter.write(MESSAGE_TYPE.get(pDialog.getMsgType()).getName());
 				}
 			pWriter.endElement("div");
+			
 			//Icone do tipo de mensagem
 			if(pType == TYPE.MSG
 		  	&& pvHasMessage(pDialog)){
@@ -248,6 +245,22 @@ public class DBSDialogRenderer extends DBSRenderer{
 					pWriter.endElement("div");
 				pWriter.endElement("div");
 			}
+			
+			//Encode o conteudo do Header definido no FACET HEADER_LEFT
+			if (!DBSObject.isNull(pFacetHeaderLeft)){
+				pWriter.startElement("div", pDialog);
+					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.LEFT);
+					pFacetHeaderLeft.encodeAll(pContext);
+				pWriter.endElement("div");
+			}
+			//Encode o conteudo do Header definido no FACET HEADER_RIGHT
+			if (!DBSObject.isNull(pFacetHeaderRight)){
+				pWriter.startElement("div", pDialog);
+					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.RIGHT);
+					pFacetHeaderRight.encodeAll(pContext);
+				pWriter.endElement("div");
+			}
+			
 		pWriter.endElement("div");
 	}
 
@@ -261,20 +274,6 @@ public class DBSDialogRenderer extends DBSRenderer{
 			//Exibe espaço do button timeout
 			pWriter.startElement("div", pDialog);
 				DBSFaces.setAttribute(pWriter, "class", xClass);
-			pWriter.endElement("div");
-		}
-	}
-
-	private void pvEncodeButtonBack(DBSDialog pDialog, TYPE pType, ResponseWriter pWriter) throws IOException{
-		//Exibe botão de back
-		if (pType == TYPE.MOD){
-			String xClass = "-btback" + CSS.THEME.ACTION;
-			String xStyle = null;
-			xClass += "-i_navigate_previous";
-			xStyle = "padding:" + pDialog.getContentPadding();
-			pWriter.startElement("div", pDialog);
-				DBSFaces.setAttribute(pWriter, "class", xClass);
-				DBSFaces.setAttribute(pWriter, "style", xStyle);
 			pWriter.endElement("div");
 		}
 	}
@@ -418,15 +417,15 @@ public class DBSDialogRenderer extends DBSRenderer{
 		MESSAGE_TYPE xMsgType = MESSAGE_TYPE.get(pDialog.getMsgType());
 		String xStyle = "";
 		if (xMsgType.getRequireConfirmation()){
-			pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_NO, "Não","-i_no -red", null);
+			pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_NO, "Não","-i_no -red", null, null);
 		}else{
 			xStyle = "display:none;";
 		}
-		pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_YES, "Sim","-i_yes -green", xStyle);
+		pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_YES, "Sim","-i_yes -green", null, xStyle);
 	}
 
 
-	private void pvEncodeMsgButton(DBSDialog pDialog, FacesContext pContext, String pId, String pLabel, String pIconClass, String pStyle) throws IOException{
+	private void pvEncodeMsgButton(DBSDialog pDialog, FacesContext pContext, String pId, String pLabel, String pIconClass, String pStyleClass, String pStyle) throws IOException{
 //		String		xClientId = pDialog.getClientId(pContext);
 		DBSButton 	xBtn = (DBSButton) pDialog.getFacet(pId); 
 		//Verifica se botão já havia sido criado
@@ -434,7 +433,7 @@ public class DBSDialogRenderer extends DBSRenderer{
 			xBtn = (DBSButton) pContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
 			xBtn.setId(pId);
 			xBtn.setLabel(pLabel);
-			xBtn.setStyleClass("-close");
+			xBtn.setStyleClass("-close " + DBSObject.getNotEmpty(pStyleClass, ""));
 			xBtn.setStyle(pStyle);
 			xBtn.setIconClass(CSS.MODIFIER.ICON + pIconClass);
 //			//Se for EL...

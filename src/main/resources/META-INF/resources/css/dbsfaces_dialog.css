@@ -144,6 +144,20 @@
 	border-width: 0 0 1px 0;
 	border-style: solid;
 }
+.dbs_dialog > .-container > .-content > .-header > .-content > .-caption > .-left,
+.dbs_dialog > .-container > .-content > .-header > .-content > .-caption > .-right{
+    display: inline-block;
+    position: absolute;
+	top: 0;
+}
+
+.dbs_dialog > .-container > .-content > .-header > .-content > .-caption > .-left{
+	left: 0;
+}
+.dbs_dialog > .-container > .-content > .-header > .-content > .-caption > .-right{
+	right: 0;
+}
+
 .dbs_dialog > .-container > .-content > .-header > .-content.-dark{
 	border-color: rgba(0,0,0,.1);
 	background-image: linear-gradient(-6deg, hsla(0, 0%, 0%, 0.04) 0%, hsla(0, 0%, 0%, 0) 80%);
@@ -233,7 +247,6 @@
 	transition: none !important;
 }
 
-.dbs_dialog > .-container > .-content > .-btback,
 .dbs_dialog > .-container > .-content > .-btclose{
     position: absolute;
     display: inline-block;
@@ -619,7 +632,6 @@
 /* btclose ----------------------------------------------------- */
 
 /* .dbs_dialog[type="msg"][p="c"] > .-container > .-content > .-btclose, */
-.dbs_dialog[type="mod"] > .-container > .-content > .-btback,
 .dbs_dialog[type="mod"] > .-container > .-content > .-btclose{
     font-size: 1em;
     width: 1em;
@@ -628,10 +640,6 @@
     z-index: 1;
 /*     color: white; */
 /*     text-shadow: black 0px 0px 0px; */
-}
-
-.dbs_dialog[type="mod"] > .-container > .-content > .-btback{
-	left: 0em;
 }
 
 /* .dbs_dialog[type="msg"][p="c"] > .-container > .-content > .-btclose, */
