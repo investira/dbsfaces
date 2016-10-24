@@ -46,7 +46,7 @@ public class DBSDialogRenderer extends DBSRenderer{
 				if (xMsgKey != null){
 					if (xSourceId.equals(xClientId + ":" + DBSDialog.BUTTON_NO)){
 						xDialog.getDBSMessage().setMessageValidated(false);
-					}else{
+					} else if (xSourceId.equals(xClientId + ":" + DBSDialog.BUTTON_YES)){
 						xDialog.getDBSMessage().setMessageValidated(true);
 					}
 				}
@@ -253,8 +253,10 @@ public class DBSDialogRenderer extends DBSRenderer{
 
 	private void pvEncodeButtonClose(DBSDialog pDialog, TYPE pType, ResponseWriter pWriter) throws IOException{
 		//Não cria bar de fechar se for MOD ou existir Toolbar
+		MESSAGE_TYPE xMsgType = MESSAGE_TYPE.get(pDialog.getMsgType());
+//		if (xMsgType.getRequireConfirmation()){
 		if (pType == TYPE.NAV 
-		|| (pType == TYPE.MSG && (pDialog.getFacet(DBSDialog.FACET_TOOLBAR) == null || pDialog.getFacet(DBSDialog.FACET_TOOLBAR).getChildCount() <= 1))){
+		|| (pType == TYPE.MSG && !xMsgType.getRequireConfirmation())){
 			String xClass = "-btclose" + CSS.THEME.ACTION;
 			//Exibe espaço do button timeout
 			pWriter.startElement("div", pDialog);
@@ -320,13 +322,7 @@ public class DBSDialogRenderer extends DBSRenderer{
 						pvEncodeToolbarSimpleButtonOk(pDialog, pWriter);
 					}
 				}else if (pType == TYPE.MSG){
-					if (pDialog.getDBSMessage() == null){
-						if (POSITION.get(pDialog.getPosition()) == POSITION.CENTER){
-							pvEncodeToolbarSimpleButtonOk(pDialog, pWriter);
-						}
-					}else{
-						pvEncodeToolbarMSGControls(pDialog, pContext, pWriter);
-					}
+					pvEncodeToolbarMSGControls(pDialog, pContext, pWriter);
 				}
 				if (xToolbar != null){
 					xToolbar.encodeAll(pContext);
@@ -386,9 +382,18 @@ public class DBSDialogRenderer extends DBSRenderer{
 		pWriter.endElement("div");
 	}
 
+	/**
+	 * Controles para confirmação da mesagem
+	 * @param pDialog
+	 * @param pContext
+	 * @param pWriter
+	 * @throws IOException
+	 */
 	private void pvEncodeToolbarMSGControls(DBSDialog pDialog, FacesContext pContext, ResponseWriter pWriter) throws IOException  {
-		pvEncodeInputHiddenMessageKey(pDialog, pContext, pWriter);
-		pvEncodeMsgButton(pDialog, pContext);
+		pvEncodeMsgButtons(pDialog, pContext);
+		if (pDialog.getDBSMessage() != null){
+			pvEncodeInputHiddenMessageKey(pDialog, pContext, pWriter);
+		}
 	}
 	/**
 	 * Campo que recebe valor da chave para salvar qual mensagem será confirmada
@@ -409,18 +414,19 @@ public class DBSDialogRenderer extends DBSRenderer{
 		xInput.encodeAll(pContext);
 	}
 
-	private void pvEncodeMsgButton(DBSDialog pDialog, FacesContext pContext) throws IOException{
-		MESSAGE_TYPE xMsgType = MESSAGE_TYPE.get(pDialog.getMsgType()); 
+	private void pvEncodeMsgButtons(DBSDialog pDialog, FacesContext pContext) throws IOException{
+		MESSAGE_TYPE xMsgType = MESSAGE_TYPE.get(pDialog.getMsgType());
+		String xStyle = "";
 		if (xMsgType.getRequireConfirmation()){
-			pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_NO, "Não","-i_no -red");
-			pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_YES, "Sim","-i_yes -green");
+			pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_NO, "Não","-i_no -red", null);
 		}else{
-			pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_NO, "Ok","-i_yes -green");
+			xStyle = "display:none;";
 		}
+		pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_YES, "Sim","-i_yes -green", xStyle);
 	}
 
 
-	private void pvEncodeMsgButton(DBSDialog pDialog, FacesContext pContext, String pId, String pLabel, String pIconClass) throws IOException{
+	private void pvEncodeMsgButton(DBSDialog pDialog, FacesContext pContext, String pId, String pLabel, String pIconClass, String pStyle) throws IOException{
 //		String		xClientId = pDialog.getClientId(pContext);
 		DBSButton 	xBtn = (DBSButton) pDialog.getFacet(pId); 
 		//Verifica se botão já havia sido criado
@@ -429,6 +435,7 @@ public class DBSDialogRenderer extends DBSRenderer{
 			xBtn.setId(pId);
 			xBtn.setLabel(pLabel);
 			xBtn.setStyleClass("-close");
+			xBtn.setStyle(pStyle);
 			xBtn.setIconClass(CSS.MODIFIER.ICON + pIconClass);
 //			//Se for EL...
 //			if (pMethod.startsWith("#")){

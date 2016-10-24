@@ -17,8 +17,9 @@ html{
 	color: rgb(254, 254, 255);
 }
 .-th_bc{
-	background-color: rgb(254, 254, 255);
-	background-image: linear-gradient(0deg, hsla(0,0%,95%,1) 0%, hsla(0,0%,100%,1) 100%);
+	background-color: rgb(245, 245, 245);
+/* 	background-image: linear-gradient(0deg, hsla(0,0%,95%,1) 0%, hsla(0,0%,100%,1) 100%); */
+	background-image: linear-gradient(0deg, hsla(0,0%,80%,1) 0%, hsla(0,0%,96%,1) 100%);
 	
 }
 .-th_bc.-th_i{/*Invert*/

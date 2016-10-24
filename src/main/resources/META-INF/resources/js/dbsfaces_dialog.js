@@ -60,6 +60,11 @@ dbs_dialog = function(pId) {
 		if ($(this).closest(".dbs_dialog").hasClass("-closed")){
 			xDialog.trigger("closed");
 			$(this).parent().removeClass("-opened").addClass("-closed");
+			//Envia confirmação da mensagem se houver somente o botão yes
+			if (xDialog.attr("type") == "msg"
+		   	 && xDialog.data("btyes") != null){
+				xDialog.data("btyes").click();
+			}
 		//Foi aberto
 		}else{
 			$(this).parent().removeClass("-closed").addClass("-opened");
@@ -84,7 +89,7 @@ dbs_dialog = function(pId) {
 		if (xDialog.data("timeout") == "0"){
 			dbsfaces.dialog.show(xDialog);
 		}else{
-			/*Aguarda finalização do touch o mouse para verificar se é um cancelamento do timeout*/
+			/*Aguarda finalização do touch e mouse por 200ms para verificar se é um cancelamento do timeout*/
 			xDialog.data("time", new Date().getTime());
 		}
 	});
@@ -112,6 +117,7 @@ dbs_dialog = function(pId) {
 
 	/*Fecha dialog após retorno das chamadas ajax de botões com função de fechar */
 	$(pId + " .-th_action.-close").on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
+		if ($(this).css("display") == "none"){return;}
 		dbsfaces.dialog.show(xDialog);
 		e.stopImmediatePropagation();
 		return false;
@@ -144,7 +150,7 @@ dbsfaces.dialog = {
 		pDialog.data("mask", pDialog.data("container").children(".-mask"));
 		pDialog.data("sub_container", pDialog.data("content").children(".-sub_container"));
 		pDialog.data("divscroll", pDialog.data("sub_container").children("div"));
-		pDialog.data("sub_content", pDialog.data("divscroll").find("> div > .-              "));
+		pDialog.data("sub_content", pDialog.data("divscroll").find("> div > .-sub_content"));
 		pDialog.data("header", pDialog.data("content").children(".-header"));
 		pDialog.data("header_content", pDialog.data("header").children(".-content"));
 		pDialog.data("footer", pDialog.data("content").children(".-footer"));
@@ -154,6 +160,17 @@ dbsfaces.dialog = {
 		pDialog.data("padding", parseFloat(pDialog.data("sub_content").css("padding")));
 		pDialog.data("timeout", dbsfaces.util.getNotEmpty(pDialog.attr("timeout"),"0"));
 		pDialog.attr("previousOpen", null);
+		var xBtYes = null;
+		//Verifrica se há somente o botão de ok quando for mensagem.
+		if (pDialog.attr("type") == "msg"
+		 && pDialog.data("footer_toolbar").length == 1){
+			xBtYes = dbsfaces.util.getNotEmpty(pDialog.data("footer_toolbar").children("[id$='btyes']"),null);
+			if (xBtYes !=null
+			 && xBtYes.css("display") != "none"){
+				 xBtYes = null;			
+			}
+		}
+		pDialog.data("btyes", xBtYes);
 	},
 	
 	pvInitializeLayout: function(pDialog){
@@ -206,9 +223,6 @@ dbsfaces.dialog = {
 		dbsfaces.ui.cssTransition(pDialog.data("btclose"), "width " + xTime + "s linear, height " + xTime + "s linear");
 	},
 
-//	cancelCloseTimeout: function(pDialog){
-//		dbsfaces.ui.cssTransition(pDialog.data("btclose"), "none");
-//	},
 	
 	stopTimeout: function(pDialog){
 		pDialog.data("btclose").addClass("-stopped");
@@ -237,8 +251,11 @@ dbsfaces.dialog = {
 		if (pDialog.data("btclose").length == 0){
 			return false;
 		}
+//
+//		if (pDialog.attr("type") == "nav" //For nav
+//		 || pDialog.data("footer_toolbar").children().length == 0){ //Não houver conteúdo no toolbar
 		if (pDialog.attr("type") == "nav" //For nav
-		 || pDialog.data("footer_toolbar").children().length == 0){ //Não houver conteúdo no toolbar
+		 ||	(pDialog.attr("type") == "msg" && pDialog.data("btyes") != null)){ //ou Msg on só há o botão ok
 			if ((pDialog.attr("p") == "t"
 			  && pDirection == "u")
 			 || (pDialog.attr("p") == "b"
@@ -246,7 +263,8 @@ dbsfaces.dialog = {
 			 || (pDialog.attr("p") == "l"
 			  && pDirection == "l")
 			 || (pDialog.attr("p") == "r"
-			  && pDirection == "r")){
+			  && pDirection == "r")
+			 || (pDialog.attr("p") == "c")){
 				dbsfaces.dialog.show(pDialog);
 				return true;
 			}
@@ -331,31 +349,15 @@ dbsfaces.dialog = {
 		}
 	},
 	
-//	pvAjustLayout: function(pDialog){
-//		if (dbsfaces.util.isMobile()){
-//			pDialog.attr("cs","s");
-//		}
-//		var xHeader = pDialog.data("header");
-//		var xFooter = pDialog.data("footer");
-//		var xSubContainer = pDialog.data("sub_container");
-//
-//				
-//		if (xHeader.length > 0){
-//			var xHeaderHeight = xHeader[0].clientHeight;
-//			xSubContainer.css("padding-top", xHeaderHeight);
-//		}
-//		if (xFooter.length > 0){
-//			var xFooterHeight = xFooter[0].clientHeight;
-//			xSubContainer.css("padding-bottom", xFooterHeight);
-//		}
-//
-//	}
 	pvAjustLayout: function(pDialog){
+		//Força content-size para 's'
 		if (dbsfaces.util.isMobile()
 		&& (pDialog.attr("type") == "mod" 
-		 || pDialog.attr("type") == "nav")){
+		 || pDialog.attr("type") == "nav"
+		 || (pDialog.attr("type") == "msg" && pDialog.attr("p") != "c"))){
 			pDialog.attr("cs","s");
 		}
+		//Configura o padding
 		var xHeaderContent = pDialog.data("header_content");
 		var xFooter = pDialog.data("footer");
 		var xSubContainer = pDialog.data("sub_container");
@@ -371,23 +373,5 @@ dbsfaces.dialog = {
 
 	}
 
-//	pvAjustLayout: function(pDialog){
-//		if (dbsfaces.util.isMobile()){
-//			pDialog.attr("cs","s");
-//		}
-//		var xHeaderContent = pDialog.data("header_content");
-//		var xFooterContent = pDialog.data("footer_content");
-//		var xSubContainer = pDialog.data("sub_container");
-//		
-//		if (xHeaderContent.length > 0){
-//			var xHeaderHeight = xHeaderContent[0].clientHeight;
-//			xSubContainer.css("padding-top", xHeaderHeight);
-//		}
-//		if (xFooterContent.length > 0){
-//			var xFooterHeight = xFooterContent[0].clientHeight;
-//			xSubContainer.css("padding-bottom", xFooterHeight);
-//		}
-//
-//	}
 };
 

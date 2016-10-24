@@ -2,6 +2,7 @@ package br.com.dbsoft.ui.component.dialog;
 
 import javax.faces.component.FacesComponent;
 
+import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.ui.core.DBSFaces;
 
 
@@ -32,6 +33,16 @@ public class DBSDialogMsg extends DBSDialog{
 	@Override
 	public String getContentPadding() {
 		return (String) getStateHelper().eval(PropertyKeys.contentPadding, "0.6em");
+	}
+
+	@Override
+	public String getMsgType() {
+		return (String) getStateHelper().eval(PropertyKeys.msgType, MESSAGE_TYPE.INFORMATION.getName());
+
+	}
+	
+	public String getCloseTimeout1() {
+		return (String) getStateHelper().eval(PropertyKeys.closeTimeout, "a");
 	}
 
 
