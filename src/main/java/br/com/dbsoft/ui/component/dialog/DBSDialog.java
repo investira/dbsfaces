@@ -276,7 +276,7 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 	}
 	
 	public String getPosition() {
-		return (String) getStateHelper().eval(PropertyKeys.position, POSITION.LEFT.getName());
+		return (String) getStateHelper().eval(PropertyKeys.position, POSITION.CENTER.getName());
 	}
 	
 	public void setPosition(String pPosition) {

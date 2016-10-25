@@ -99,25 +99,32 @@ public class DBSDialogRenderer extends DBSRenderer{
 				DBSFaces.setAttribute(xWriter, "open", "open");
 			}
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xDialog, DBSPassThruAttributes.getAttributes(Key.DIALOG));
-			xWriter.startElement("div", xDialog);
-				DBSFaces.setAttribute(xWriter, "style", "opacity:0", null); //Inicia escondido para ser exibido após a execução do JS
-				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER + CSS.MODIFIER.CLOSED);
-				//Icon
-				pvEncodeIcon(xDialog, xWriter);
-				//Mask
-				xWriter.startElement("div", xDialog);
-					DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.MASK + CSS.THEME.BC + CSS.THEME.INVERT);
-				xWriter.endElement("div");
-				//Nav
-				pvEncodeContentBegin(xDialog, pContext, xWriter);
-				
-				//FAZ O ENCODE FINAL
-				pvEncodeContentEnd(xDialog, pContext, xWriter);
-			xWriter.endElement("div");
+
+			pvEncodeContent(xDialog, xType, pContext, xWriter);
+			
 			pvEncodeJS(xDialog.getClientId(pContext), xWriter);
 		xWriter.endElement("div");	
 	}
 	
+	
+	public void pvEncodeContent(DBSDialog pDialog, TYPE pType, FacesContext pContext, ResponseWriter pWriter) throws IOException {
+		if (pType == TYPE.MSG && !pvHasMessage(pDialog)){return;}
+		pWriter.startElement("div", pDialog);
+			DBSFaces.setAttribute(pWriter, "style", "opacity:0", null); //Inicia escondido para ser exibido após a execução do JS
+			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER + CSS.MODIFIER.CLOSED);
+			//Icon
+			pvEncodeIcon(pDialog, pWriter);
+			//Mask
+			pWriter.startElement("div", pDialog);
+				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.MASK + CSS.THEME.BC + CSS.THEME.INVERT);
+			pWriter.endElement("div");
+			//Nav
+			pvEncodeContentBegin(pDialog, pContext, pWriter);
+			
+			//FAZ O ENCODE FINAL
+			pvEncodeContentEnd(pDialog, pContext, pWriter);
+		pWriter.endElement("div");
+	}
 	
 	private void pvInitialize(DBSDialog pDialog, FacesContext pContext) throws IOException{
 //		pDialog.setDBSMessage(null);
@@ -185,7 +192,7 @@ public class DBSDialogRenderer extends DBSRenderer{
 			//Footer
 			pvEncodeFooter(pDialog, xType, pContext, pWriter);
 			//ButtonClose
-			pvEncodeButtonClose(pDialog, xType, pWriter);
+			pvEncodeHandle(pDialog, xType, pWriter);
 		pWriter.endElement("div");
 	}
 	
@@ -218,23 +225,22 @@ public class DBSDialogRenderer extends DBSRenderer{
 	}
 
 	private void pvEncodeCaption(DBSDialog pDialog, TYPE pType, UIComponent pFacetHeaderRight, UIComponent pFacetHeaderLeft, FacesContext pContext, ResponseWriter pWriter) throws IOException{
-		if (pDialog.getMsgType() == null
-		 && DBSObject.isEmpty(pDialog.getCaption())){return;}
-		
 		pWriter.startElement("div", pDialog);
 			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CAPTION + CSS.MODIFIER.NOT_SELECTABLE);
-			//Label
-			pWriter.startElement("div", pDialog);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.LABEL);
-				//Se não for mensagem padrão, usa caption informada pelo usuário
-				if (pDialog.getMsgType() == null){
-					pWriter.write(pDialog.getCaption());
-				//Tipo de mensagem como caption
-				}else{
-					pWriter.write(MESSAGE_TYPE.get(pDialog.getMsgType()).getName());
-				}
-			pWriter.endElement("div");
-			
+			if (pDialog.getMsgType() != null
+			 || !DBSObject.isEmpty(pDialog.getCaption())){
+				//Label
+				pWriter.startElement("div", pDialog);
+					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.LABEL);
+					//Se não for mensagem padrão, usa caption informada pelo usuário
+					if (pDialog.getMsgType() == null){
+						pWriter.write(pDialog.getCaption());
+					//Tipo de mensagem como caption
+					}else{
+						pWriter.write(MESSAGE_TYPE.get(pDialog.getMsgType()).getName());
+					}
+				pWriter.endElement("div");
+			}
 			//Icone do tipo de mensagem
 			if(pType == TYPE.MSG
 		  	&& pvHasMessage(pDialog)){
@@ -264,13 +270,13 @@ public class DBSDialogRenderer extends DBSRenderer{
 		pWriter.endElement("div");
 	}
 
-	private void pvEncodeButtonClose(DBSDialog pDialog, TYPE pType, ResponseWriter pWriter) throws IOException{
+	private void pvEncodeHandle(DBSDialog pDialog, TYPE pType, ResponseWriter pWriter) throws IOException{
 		//Não cria bar de fechar se for MOD ou existir Toolbar
 		MESSAGE_TYPE xMsgType = MESSAGE_TYPE.get(pDialog.getMsgType());
 //		if (xMsgType.getRequireConfirmation()){
 		if (pType == TYPE.NAV 
 		|| (pType == TYPE.MSG && !xMsgType.getRequireConfirmation())){
-			String xClass = "-btclose" + CSS.THEME.ACTION;
+			String xClass = "-bthandle" + CSS.THEME.ACTION;
 			//Exibe espaço do button timeout
 			pWriter.startElement("div", pDialog);
 				DBSFaces.setAttribute(pWriter, "class", xClass);
@@ -315,7 +321,6 @@ public class DBSDialogRenderer extends DBSRenderer{
 		 || pType == TYPE.MSG){
 			pWriter.startElement("div", pDialog);
 				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.TOOLBAR);
-//				 || POSITION.get(pDialog.getPosition()) == POSITION.CENTER
 				if (pType == TYPE.MOD){
 					if (xToolbar == null){
 						pvEncodeToolbarSimpleButtonOk(pDialog, pWriter);
@@ -460,8 +465,6 @@ public class DBSDialogRenderer extends DBSRenderer{
 				pvEncodeError(pDialog, xType, xPosition, "use type 'msg' or 'dialog'");
 				return false;
 			}
-		}else if(xType == TYPE.MSG){
-			return pvHasMessage(pDialog);
 		}
 		return true;
 	}

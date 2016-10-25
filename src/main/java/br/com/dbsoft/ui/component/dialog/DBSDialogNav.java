@@ -24,7 +24,12 @@ public class DBSDialogNav extends DBSDialog{
 		}
 		super.setPosition(pPosition);
 	}
-
+	
+	@Override
+	public String getPosition() {
+		return (String) getStateHelper().eval(PropertyKeys.position, POSITION.LEFT.getName());
+	}
+	
 	@Override
 	public String getMsgType() {return null;}
 	@Override

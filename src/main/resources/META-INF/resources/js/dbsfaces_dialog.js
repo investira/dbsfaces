@@ -32,7 +32,7 @@ dbs_dialog = function(pId) {
 	$(pId + " > .-container > .-mask").on("mousedown touchstart", function(e){
 		if (xDialog.attr("disabled")){return;}
 		//Fecha se possuior botão de fechar padrão
-		if (xDialog.data("btclose").length != 0){
+		if (xDialog.data("bthandle").length != 0){
 			dbsfaces.dialog.show(xDialog);
 		}
 		return false;
@@ -83,7 +83,7 @@ dbs_dialog = function(pId) {
 	});
 
 	
-	$(pId + " > .-container > .-content > .-btclose").on("mousedown touchstart", function(e){
+	$(pId + " > .-container > .-content > .-bthandle").on("mousedown touchstart", function(e){
 		if (xDialog.attr("disabled")){return;}
 		/*fecha normalmente se não houver timeout ou for modal*/
 		if (xDialog.data("timeout") == "0"){
@@ -95,7 +95,7 @@ dbs_dialog = function(pId) {
 	});
 	
 	/*Fecha o dialog*/
-	$(pId + " > .-container > .-content > .-btclose").on("mouseup touchend", function(e){
+	$(pId + " > .-container > .-content > .-bthandle").on("mouseup touchend", function(e){
 		if (xDialog.attr("disabled")){return;}
 		if (xDialog.data("timeout") == "0"){return;}
 		var xTime = new Date().getTime();
@@ -124,7 +124,7 @@ dbs_dialog = function(pId) {
 	});
 	
 	/*Animação do timeout*/
-	$(pId + " > .-container > .-content > .-btclose").on(dbsfaces.EVENT.ON_TRANSITION_END, function(e){
+	$(pId + " > .-container > .-content > .-bthandle").on(dbsfaces.EVENT.ON_TRANSITION_END, function(e){
 		dbsfaces.dialog.show(xDialog);
 		return false;
 	});
@@ -156,10 +156,11 @@ dbsfaces.dialog = {
 		pDialog.data("footer", pDialog.data("content").children(".-footer"));
 		pDialog.data("footer_content", pDialog.data("footer").children(".-content"));
 		pDialog.data("footer_toolbar", pDialog.data("footer").children(".-toolbar"));
-		pDialog.data("btclose", pDialog.data("content").children(".-btclose"));
+		pDialog.data("bthandle", pDialog.data("content").children(".-bthandle"));
 		pDialog.data("padding", parseFloat(pDialog.data("sub_content").css("padding")));
 		pDialog.data("timeout", dbsfaces.util.getNotEmpty(pDialog.attr("timeout"),"0"));
-		pDialog.attr("previousOpen", null);
+		pDialog.data("parent", pDialog.parent().closest(".dbs_dialog"));
+//		pDialog.attr("previousOpen", null);
 		var xBtYes = null;
 		//Verifrica se há somente o botão de ok quando for mensagem.
 		if (pDialog.attr("type") == "msg"
@@ -197,7 +198,7 @@ dbsfaces.dialog = {
 			}else{
 				xColorClose = "rgba(0,0,0,.1)";
 			}
-			pDialog.data("btclose").css("border-color", xColorClose)
+			pDialog.data("bthandle").css("border-color", xColorClose)
 							  	     .css("background-color", xColorClose);
 		}
 		//Largura mínima em função da largura do header
@@ -220,16 +221,16 @@ dbsfaces.dialog = {
 			pDialog.data("timeout", dbsfaces.ui.getTimeFromTextLength(pDialog.data("sub_content").text()) / 1000);
 		}
 		var xTime = parseInt(pDialog.data("timeout"));
-		dbsfaces.ui.cssTransition(pDialog.data("btclose"), "width " + xTime + "s linear, height " + xTime + "s linear");
+		dbsfaces.ui.cssTransition(pDialog.data("bthandle"), "width " + xTime + "s linear, height " + xTime + "s linear");
 	},
 
 	
 	stopTimeout: function(pDialog){
-		pDialog.data("btclose").addClass("-stopped");
+		pDialog.data("bthandle").addClass("-stopped");
 	},
 	
 	startTimeout: function(pDialog){
-		pDialog.data("btclose").removeClass("-stopped");
+		pDialog.data("bthandle").removeClass("-stopped");
 	},
 
 	/*Força o scroll já que ele não funciona naturalente no mobile*/
@@ -248,12 +249,10 @@ dbsfaces.dialog = {
 	},
 
 	wipe: function(pDialog, pDirection){
-		if (pDialog.data("btclose").length == 0){
+		if (pDialog.data("bthandle").length == 0){
 			return false;
 		}
-//
-//		if (pDialog.attr("type") == "nav" //For nav
-//		 || pDialog.data("footer_toolbar").children().length == 0){ //Não houver conteúdo no toolbar
+
 		if (pDialog.attr("type") == "nav" //For nav
 		 ||	(pDialog.attr("type") == "msg" && pDialog.data("btyes") != null)){ //ou Msg on só há o botão ok
 			if ((pDialog.attr("p") == "t"
@@ -291,48 +290,32 @@ dbsfaces.dialog = {
 		dbsfaces.dialog.pvAjustLayout(pDialog);
 		pDialog.removeClass("-closed");
 		if (!pDialog.attr("disabled")){
-			var xPreviousOpen = dbsfaces.dialog.pvSetPreviousOpen(pDialog);
-			if (xPreviousOpen != null){
-				xPreviousOpen.attr('disabled', true);
+			if (pDialog.data("parent").not(".-closed").length > 0){
+				dbsfaces.ui.disableBackgroundInputs(pDialog);
+				dbsfaces.dialog.pvFreeze(pDialog, true);
+				//Coloca o foco no primeiro campo de input dentro do nav
+				dbsfaces.ui.focusOnFirstInput(pDialog);
 			}
-			
-			dbsfaces.ui.disableBackgroundInputs(pDialog);
-			dbsfaces.dialog.pvFreeze(pDialog, true);
-			//Coloca o foco no primeiro campo de input dentro do nav
-			dbsfaces.ui.focusOnFirstInput(pDialog);
 		}
 	},
 	
 	pvClose: function(pDialog){
-		var xP = pDialog.attr("p");
 		pDialog.addClass("-closed");
 		//Retira foco do componente que possuir foco
 		$(":focus").blur();
 		dbsfaces.dialog.startTimeout(pDialog);
-		var xPreviousOpen = pDialog.data("previousOpen");
-		//Não existe dialog aberto atrás
-		if (xPreviousOpen == null){
+		//Destrava tudo por não existe dialog pai aberto
+		if (pDialog.data("parent").length == 0){
 			dbsfaces.ui.enableForegroundInputs($("body"));
 			dbsfaces.dialog.pvFreeze(pDialog, false);
 			pDialog.attr('disabled', null);
+		//Destrava somente dialog pai
 		}else{
-			xPreviousOpen.attr('disabled', null);
-			dbsfaces.ui.enableForegroundInputs(xPreviousOpen);
+			pDialog.data("parent").attr('disabled', null);
+			dbsfaces.ui.enableForegroundInputs(pDialog.data("parent"));
 		}
 	},
 
-	pvSetPreviousOpen: function(pDialog){
-		var xPreviousOpen = $(".dbs_dialog:not([disabled]):not(.-closed)").not(pDialog);
-		if (xPreviousOpen.length == 0){
-			xPreviousOpen = null;
-			pDialog.attr("pd", null);
-		}else{
-			pDialog.attr("pd", xPreviousOpen[0].id);
-		}
-		pDialog.data("previousOpen", xPreviousOpen);
-		return xPreviousOpen;
-	},
-	
 	pvFreeze: function(pDialog, pOn){
 		if (pOn){
 			$("html").addClass("dbs_dialog-freeze");
@@ -356,6 +339,10 @@ dbsfaces.dialog = {
 		 || pDialog.attr("type") == "nav"
 		 || (pDialog.attr("type") == "msg" && pDialog.attr("p") != "c"))){
 			pDialog.attr("cs","s");
+		}
+		if (pDialog.data("parent").length > 0
+		 && pDialog.data("parent").attr("cs") != "s"){
+			pDialog.attr("p","c");
 		}
 		//Configura o padding
 		var xHeaderContent = pDialog.data("header_content");
