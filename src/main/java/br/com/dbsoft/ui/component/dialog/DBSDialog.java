@@ -7,8 +7,7 @@ import javax.faces.component.FacesComponent;
 import javax.faces.component.NamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
-
-import javax.faces.event.PreRenderComponentEvent;
+import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 
@@ -240,11 +239,11 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer, SystemEve
     public DBSDialog(){
 		setRendererType(DBSDialog.RENDERER_TYPE);
 		 FacesContext xContext = FacesContext.getCurrentInstance();
-//		 xContext.getViewRoot().subscribeToViewEvent(PostAddToViewEvent.class, this);
+		 xContext.getViewRoot().subscribeToViewEvent(PostAddToViewEvent.class, this);
 //		 xContext.getViewRoot().subscribeToViewEvent(PreValidateEvent.class,this);
 //		 xContext.getViewRoot().subscribeToViewEvent(PostValidateEvent.class,this);
 //		 xContext.getViewRoot().subscribeToViewEvent(PreRenderViewEvent.class,this);
-		 xContext.getViewRoot().subscribeToViewEvent(PreRenderComponentEvent.class,this);
+//		 xContext.getViewRoot().subscribeToViewEvent(PreRenderComponentEvent.class,this);
     }
     
 	public String getType() {
@@ -425,6 +424,7 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer, SystemEve
 			xContent = (DBSDialogContent) FacesContext.getCurrentInstance().getApplication().createComponent(DBSDialogContent.COMPONENT_TYPE);
 			xContent.setId(FACET_CONTENT);
 			getFacets().put(FACET_CONTENT, xContent);
+//			System.out.println(xContent.getClientId());
 		}
 	}
 

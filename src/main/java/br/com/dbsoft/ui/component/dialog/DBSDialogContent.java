@@ -326,14 +326,6 @@ public class DBSDialogContent extends DBSUIOutput{
 			xBtn.setStyleClass("-close " + DBSObject.getNotEmpty(pStyleClass, ""));
 			xBtn.setStyle(pStyle);
 			xBtn.setIconClass(CSS.MODIFIER.ICON + pIconClass);
-//			//Se for EL...
-//			if (pMethod.startsWith("#")){
-//				xBtn.setActionExpression(DBSFaces.createMethodExpression(pContext, pMethod, String.class, new Class[0]));
-//			//Se for um simples redirect para outra página
-//			}else if (!DBSObject.isEmpty(pMethod)){
-//				MethodExpression xME = pContext.getApplication().getExpressionFactory().createMethodExpression(pContext.getELContext(), pMethod, String.class, new Class[0]);
-//				xBtn.setActionExpression(xME);
-//			}
 			xBtn.setUpdate("@none");
 			xBtn.setExecute(pDialog.getClientId());
 			//Inclui botão com facet do modal para poder separa-lo dos componentes filhos criados pelo usuário.
