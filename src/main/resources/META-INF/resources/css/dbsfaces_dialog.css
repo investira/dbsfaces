@@ -16,16 +16,28 @@
 }
 
 .dbs_dialog > .-container > .-mask{
-	position: fixed;
-	top:0;
-	left:0;
-	opacity: 0.3;
-	width: 100%;
-	height: 100%;
-	-webkit-transition: opacity .2s;
-	-moz-transition: opacity .2s;
-	transition: opacity .2s;
-	z-index: 9999998;
+    position: fixed;
+	top: 50%;
+    left: 50%;
+    opacity: 0.3;
+    width: 100vw;
+    height: 100vh;
+    -webkit-transition: opacity .2s;
+    -moz-transition: opacity .2s;
+    transition: opacity .2s;
+    z-index: 9999998;
+    transform: translate(-50% , -50%);
+
+/*     position: fixed; */
+/* 	top:0; */
+/* 	left:0; */
+/* 	opacity: 0.3; */
+/* 	width: 100%; */
+/* 	height: 100%; */
+/* 	-webkit-transition: opacity .2s; */
+/* 	-moz-transition: opacity .2s; */
+/* 	transition: opacity .2s; */
+/* 	z-index: 9999998; */
 }
 
 .dbs_dialog[disabled] > .-container > .-mask,
@@ -478,25 +490,25 @@
 .dbs_dialog[type="nav"][p="t"] > .-container > .-content,
 .dbs_dialog[type="msg"][p="t"] > .-container > .-content{
 	border-radius: 0 0 .2em .2em;
-	max-height: 95%;
+	max-height: 95vh;
 }
 /* BOTTOM */
 .dbs_dialog[type="nav"][p="b"] > .-container > .-content,
 .dbs_dialog[type="msg"][p="b"] > .-container > .-content{
 	border-radius: .2em .2em 0 0;
-	max-height: 95%;
+	max-height: 95vh;
 }
 /* LEFT */
 .dbs_dialog[type="nav"][p="l"] > .-container > .-content,
 .dbs_dialog[type="msg"][p="l"] > .-container > .-content{
 	border-radius: 0 .2em .2em 0;
-	max-width: 95%;
+	max-width: 95vw;
 }
 /* RIGHT */
 .dbs_dialog[type="nav"][p="r"] > .-container > .-content,
 .dbs_dialog[type="msg"][p="r"] > .-container > .-content{
 	border-radius: .2em 0 0 .2em;
-	max-width: 95%;
+	max-width: 95vw;
 }
 
 /* CENTER */
@@ -504,16 +516,16 @@
 .dbs_dialog[type="msg"][p="c"] > .-container > .-content,
 .dbs_dialog[type="mod"][cs="a"] > .-container > .-content{
 	border-radius: .2em;
-	max-width: 95%;
-	max-height: 95%;
+	max-width: 95vw;
+	max-height: 95vh;
 
 }
 
 /* MOD */
 .dbs_dialog[type="mod"] > .-container > .-content{
 	border-radius: 0em;
-	max-width: 100%;
-	max-height: 100%;
+	max-width: 100vw;
+	max-height: 100vh;
 }
 
 

@@ -1,7 +1,7 @@
 dbs_dialog = function(pId) {
 	var xDialog = $(pId);
 
-	dbsfaces.dialog.initialize(xDialog);
+//	dbsfaces.dialog.initialize(xDialog);
 
 	$(pId).on("close", function(){
 		dbsfaces.dialog.pvClose(xDialog);
@@ -38,6 +38,17 @@ dbs_dialog = function(pId) {
 		return false;
 	});
 	
+	/*Exibe dialog já aberto*/
+	if (xDialog.attr("open")) {
+		dbsfaces.dialog.show(xDialog);
+	}
+};
+
+dbs_dialogContent = function(pId) {
+	var xDialog = $(pId);
+	
+	dbsfaces.dialog.initialize(xDialog);
+
 	/*Captura movimento touch para verificar se é para fechar o dialog*/
 	if (!xDialog.data("c")) {
 		$(pId + " > .-container > .-content").touchwipe({
@@ -129,10 +140,6 @@ dbs_dialog = function(pId) {
 		return false;
 	});
 	
-	/*Exibe dialog já aberto*/
-	if (xDialog.attr("open")) {
-		dbsfaces.dialog.show(xDialog);
-	}
 };
 
 dbsfaces.dialog = {
@@ -142,7 +149,7 @@ dbsfaces.dialog = {
 		dbsfaces.dialog.pvInitializeLayout(pDialog);
 		dbsfaces.dialog.pvInitializeCloseTimeout(pDialog);
 	},
-
+		
 	pvInitializeData: function(pDialog){
 		pDialog.data("container", pDialog.children(".-container"));;
 		pDialog.data("content", pDialog.data("container").children(".-content"));

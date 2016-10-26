@@ -5,15 +5,22 @@ import java.util.Collection;
 
 import javax.faces.component.FacesComponent;
 import javax.faces.component.NamingContainer;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+
+import javax.faces.event.PreRenderComponentEvent;
+import javax.faces.event.SystemEvent;
+import javax.faces.event.SystemEventListener;
 
 import br.com.dbsoft.message.IDBSMessage;
 import br.com.dbsoft.ui.component.DBSUIOutput;
+
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSNumber;
 
 
 @FacesComponent(DBSDialog.COMPONENT_TYPE)
-public class DBSDialog extends DBSUIOutput implements NamingContainer{  
+public class DBSDialog extends DBSUIOutput implements NamingContainer, SystemEventListener{  
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.DIALOG;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 	
@@ -22,6 +29,7 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 	public final static String FACET_HEADER_RIGHT = "headerright";
 	public final static String FACET_FOOTER = "footer";
 	public final static String FACET_TOOLBAR = "toolbar";
+	public final static String FACET_CONTENT = "content";
 	public final static String INPUT_MSGKEY = "msgkey";
 	public final static String BUTTON_OK = "btok";
 	public final static String BUTTON_YES = "btyes";
@@ -231,8 +239,13 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 
     public DBSDialog(){
 		setRendererType(DBSDialog.RENDERER_TYPE);
+		 FacesContext xContext = FacesContext.getCurrentInstance();
+//		 xContext.getViewRoot().subscribeToViewEvent(PostAddToViewEvent.class, this);
+//		 xContext.getViewRoot().subscribeToViewEvent(PreValidateEvent.class,this);
+//		 xContext.getViewRoot().subscribeToViewEvent(PostValidateEvent.class,this);
+//		 xContext.getViewRoot().subscribeToViewEvent(PreRenderViewEvent.class,this);
+		 xContext.getViewRoot().subscribeToViewEvent(PreRenderComponentEvent.class,this);
     }
-
     
 	public String getType() {
 		return (String) getStateHelper().eval(PropertyKeys.type, TYPE.NAV.getName());
@@ -380,6 +393,18 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 		getStateHelper().put(PropertyKeys.dbsmessage, pDBSMessage);
 		handleAttribute("dbsmessage", pDBSMessage);
 	}
+
+	/**
+	 * Retorna se possui mensagem 
+	 * @return
+	 */
+	public boolean hasMessage(){
+		if (getDBSMessage() != null
+		 || getChildren().size() > 0){
+			return true;
+		}
+		return false;
+	}
 	
 	@Override
     public String getDefaultEventName()
@@ -390,6 +415,22 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer{
 	@Override
 	public Collection<String> getEventNames() {
 		return Arrays.asList("click", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup"); 
+	}
+
+	@Override
+	public void processEvent(SystemEvent pEvent) throws AbortProcessingException {
+		DBSDialogContent xContent = (DBSDialogContent) getFacet(FACET_CONTENT); 
+		//Cria componente 'content' do tipo DBSDialogContent dentro do dialog que será responsábel pelo encode do conteúdo do dialog.
+		if (xContent == null){
+			xContent = (DBSDialogContent) FacesContext.getCurrentInstance().getApplication().createComponent(DBSDialogContent.COMPONENT_TYPE);
+			xContent.setId(FACET_CONTENT);
+			getFacets().put(FACET_CONTENT, xContent);
+		}
+	}
+
+	@Override
+	public boolean isListenerForSource(Object pSource) {
+		return pSource.equals(this);
 	}
 
 }
