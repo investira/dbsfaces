@@ -1,7 +1,6 @@
 package br.com.dbsoft.ui.bean;
 
 import java.io.Serializable;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -28,8 +27,6 @@ public abstract class DBSBean implements Serializable{
 	protected 	Logger 		wLogger =  Logger.getLogger(this.getClass());
 	
 	protected 	static IDBSMessage wMessageError = new DBSMessage(MESSAGE_TYPE.ERROR,"Erro: %s");
-	
-	protected 	Connection					wConnection;
 	
 	protected 	IDBSMessages<IDBSMessage> 	wMessages = new DBSMessages<IDBSMessage>();
 	protected 	boolean						wBrodcastingEvent = false;
