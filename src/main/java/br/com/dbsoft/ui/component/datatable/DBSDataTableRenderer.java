@@ -13,7 +13,6 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
 
 import com.sun.faces.facelets.compiler.UIInstructions;
-import com.sun.faces.renderkit.RenderKitUtils;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.button.DBSButton;
@@ -31,12 +30,12 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	
 	@Override
 	public void decode(FacesContext pContext, UIComponent pComponent) {
-		DBSDataTable xDataTable = (DBSDataTable) pComponent;
+//		DBSDataTable xDataTable = (DBSDataTable) pComponent;
 		pvSetSubmittedInputs(pContext, pComponent, true);
 		decodeBehaviors(pContext, pComponent); 
-		if (RenderKitUtils.isPartialOrBehaviorAction(pContext, pvGetButtonSortId(pContext, xDataTable)) || /*Chamada Ajax*/
-			pContext.getExternalContext().getRequestParameterMap().containsKey(pvGetButtonSortId(pContext, xDataTable))) { 	/*Chamada Sem Ajax*/
-		} 
+//		if (RenderKitUtils.isPartialOrBehaviorAction(pContext, pvGetButtonSortId(pContext, xDataTable)) || /*Chamada Ajax*/
+//			pContext.getExternalContext().getRequestParameterMap().containsKey(pvGetButtonSortId(pContext, xDataTable))) { 	/*Chamada Sem Ajax*/
+//		} 
 	}
 	
 	@Override
@@ -680,9 +679,9 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	private String pvGetInputSortDirectionId(FacesContext pContext, DBSDataTable pDataTable){
 		return pDataTable.getClientId(pContext) + ":" + DBSDataTable.INPUT_SORT_DIRECTION_ID;
 	}
-	private String pvGetButtonSortId(FacesContext pContext, DBSDataTable pDataTable){
-		return pDataTable.getClientId(pContext) + ":" + DBSDataTable.BUTTON_SORT_ID;
-	}
+//	private String pvGetButtonSortId(FacesContext pContext, DBSDataTable pDataTable){
+//		return pDataTable.getClientId(pContext) + ":" + DBSDataTable.BUTTON_SORT_ID;
+//	}
 		
 	
 }
