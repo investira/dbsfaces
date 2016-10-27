@@ -120,12 +120,6 @@ dbs_dialogContent = function(pId) {
 		return false;
 	});
 
-	/*dispara evento informando que botão back for pressionado*/
-	$(pId + " > .-container > .-content > .-btback").on("mousedown touchstart", function(e){
-		if (xDialog.attr("disabled")){return;}
-		xDialog.trigger("back");
-	});
-
 	/*Fecha dialog após retorno das chamadas ajax de botões com função de fechar */
 	$(pId + " .-th_action.-close").on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
 		if ($(this).css("display") == "none"){return;}
@@ -297,12 +291,12 @@ dbsfaces.dialog = {
 		dbsfaces.dialog.pvAjustLayout(pDialog);
 		pDialog.removeClass("-closed");
 		if (!pDialog.attr("disabled")){
-			if (pDialog.data("parent").not(".-closed").length > 0){
+//			if (pDialog.data("parent").not(".-closed").length > 0){
 				dbsfaces.ui.disableBackgroundInputs(pDialog);
 				dbsfaces.dialog.pvFreeze(pDialog, true);
 				//Coloca o foco no primeiro campo de input dentro do nav
 				dbsfaces.ui.focusOnFirstInput(pDialog);
-			}
+//			}
 		}
 	},
 	
