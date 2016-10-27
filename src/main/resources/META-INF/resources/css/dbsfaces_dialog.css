@@ -128,6 +128,9 @@
 
 .dbs_dialog > .-container > .-content > .-sub_container > div > div{
 	display: table;
+	position: relative;
+    top: 0px;
+	line-height: 0;
 }
 
 .dbs_dialog > .-container > .-content > .-sub_container > div > div > .-sub_content{
@@ -143,7 +146,7 @@
 .dbs_dialog > .-container > .-content > .-header{
     position: absolute;
     display: block;
-    overflow: hidden;
+/*     overflow: hidden; */
 	top: 0;
 	width: 100%;
 }
