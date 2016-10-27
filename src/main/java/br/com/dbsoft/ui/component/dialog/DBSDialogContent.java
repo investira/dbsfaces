@@ -205,7 +205,7 @@ public class DBSDialogContent extends DBSUIOutput{
 	 */
 	private void pvEncodeToolbar(DBSDialog pDialog, TYPE pType, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 		UIComponent xToolbar = pDialog.getFacet(DBSDialog.FACET_TOOLBAR);
-		if ((xToolbar != null && xToolbar.getChildCount() > 0)
+		if ((xToolbar != null) 
 		 || pType == TYPE.MOD
 		 || pType == TYPE.MSG){
 			pWriter.startElement("div", pDialog);
@@ -217,7 +217,7 @@ public class DBSDialogContent extends DBSUIOutput{
 				}else if (pType == TYPE.MSG){
 					pvEncodeToolbarMSGControls(pDialog, pContext, pWriter);
 				}
-				if (xToolbar != null && xToolbar.getChildCount() > 0){
+				if (xToolbar != null){
 					xToolbar.encodeAll(pContext);
 				}
 			pWriter.endElement("div");

@@ -279,6 +279,8 @@
     flex-wrap: nowrap;
     
 	box-sizing: content-box;
+	
+	padding: 1px;
 }
 
 .dbs_dialog > .-container > .-content > .-footer > .-toolbar > * {
