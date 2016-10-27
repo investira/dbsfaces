@@ -294,7 +294,7 @@ dbsfaces.dialog = {
 //			if (pDialog.data("parent").not(".-closed").length > 0){
 				dbsfaces.ui.disableBackgroundInputs(pDialog);
 				dbsfaces.dialog.pvFreeze(pDialog, true);
-				//Coloca o foco no primeiro campo de input dentro do nav
+				//Coloca o foco no primeiro campo de input dentro do dialog
 				dbsfaces.ui.focusOnFirstInput(pDialog);
 //			}
 		}
