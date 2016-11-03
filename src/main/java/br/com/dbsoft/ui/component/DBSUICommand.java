@@ -1,5 +1,6 @@
 package br.com.dbsoft.ui.component;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -7,6 +8,12 @@ import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UICommand;
 import javax.faces.component.behavior.ClientBehaviorHolder;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.PreRenderViewEvent;
+
+import javax.faces.event.SystemEvent;
+import javax.faces.event.SystemEventListener;
 
 import br.com.dbsoft.ui.core.DBSFaces;
 
@@ -105,13 +112,19 @@ import br.com.dbsoft.ui.core.DBSFaces;
 	@ResourceDependency(library = "js", name = "dbsfaces_chart.js", target = "head")
 //	@ResourceDependency(library = "js", name = "eventsource.js", target = "head")
 })
-public abstract class DBSUICommand extends UICommand implements IDBSUIComponentBase, ClientBehaviorHolder{
-
+public abstract class DBSUICommand extends UICommand implements IDBSUIComponentBase, ClientBehaviorHolder, SystemEventListener{
+	
+	public final static String FACET_MESSAGE = "_message";
+ 
 	protected enum PropertyKeys {
 		styleClass,
 		style,
 		update,
-		onclick;
+		execute,
+		onclick,
+		readOnly,
+		tooltip,
+		closeDialog;
 
 		String toString;
 
@@ -125,6 +138,12 @@ public abstract class DBSUICommand extends UICommand implements IDBSUIComponentB
 		public String toString() {
 			return ((this.toString != null) ? this.toString : super.toString());
 		}
+	}
+	
+	
+	public DBSUICommand() {
+		 FacesContext xContext = FacesContext.getCurrentInstance();
+		 xContext.getViewRoot().subscribeToViewEvent(PreRenderViewEvent.class,this);
 	}
 	
 	@Override
@@ -164,6 +183,15 @@ public abstract class DBSUICommand extends UICommand implements IDBSUIComponentB
 		return (String) getStateHelper().eval(PropertyKeys.update, null);
 	}		
 
+	public void setExecute(String pExecute) {
+		getStateHelper().put(PropertyKeys.execute, pExecute);
+		handleAttribute("execute", pExecute);
+	}
+
+	public String getExecute() {
+		return (String) getStateHelper().eval(PropertyKeys.execute, null);
+	}
+	
 	public void setonclick(String ponclick) {
 		getStateHelper().put(PropertyKeys.onclick, ponclick);
 		handleAttribute("onclick", ponclick);
@@ -173,14 +201,86 @@ public abstract class DBSUICommand extends UICommand implements IDBSUIComponentB
 		return (String) getStateHelper().eval(PropertyKeys.onclick, null);
 	}	
 
+	
+	public void setReadOnly(Boolean pReadOnly) {
+		getStateHelper().put(PropertyKeys.readOnly, pReadOnly);
+		handleAttribute("readOnly", pReadOnly);
+	}
+	
+	public Boolean getReadOnly() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.readOnly, false);
+	}	
+	
+	public void setCloseDialog(Boolean pCloseDialog) {
+		getStateHelper().put(PropertyKeys.closeDialog, pCloseDialog);
+		handleAttribute("closeDialog", pCloseDialog);
+	}
+	
+	public Boolean getCloseDialog() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.closeDialog, false);
+	}	
+
+	public String getTooltip() {
+		return (String) getStateHelper().eval(PropertyKeys.tooltip, null);
+	}
+	
+	public void setTooltip(String pTooltip) {
+		getStateHelper().put(PropertyKeys.tooltip, pTooltip);
+		handleAttribute("tooltip", pTooltip);
+	}	
+
 	@Override
-    public String getDefaultEventName()
-    {
-        return "click";
-    }
+	public String getDefaultEventName()
+	{
+	    return "action";
+	}
 	
 	@Override
 	public Collection<String> getEventNames() {
-		return Arrays.asList("action","click", "dblclick", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup"); 
-	}	
+		return Arrays.asList("action","click", "blur", "change", "click", "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select", "valueChange"); 
+	}
+	
+	@Override
+	public void encodeBegin(FacesContext pContext) throws IOException {
+		//Chama encode padrão
+		super.encodeBegin(pContext);
+		//Encode do indicador que há mensagem
+		String 					xId = getId() + FACET_MESSAGE;
+		DBSUICommandHasMessage 	xCmdMsg = (DBSUICommandHasMessage) getFacet(xId);
+		if (xCmdMsg == null){return;}
+		xCmdMsg.encodeAll(pContext);
+	}
+	
+	@Override
+	public void processEvent(SystemEvent pEvent) throws AbortProcessingException {
+//		if (pEvent.getSource() instanceof UIComponent){
+//			UIComponent xComponent = (UIComponent) pEvent.getSource();
+//			System.out.println("DBSUICommand SystemEvent\t" + getClientId() + "\t#1 " + pEvent.getClass().getName() + "\t" + xComponent.getClass());
+//		}else{
+//			System.out.println("DBSUICommand SystemEvent\t" + getClientId() + "\t#1 " + pEvent.getClass().getName());
+//		}
+		if (getActionExpression() == null){return;}
+		FacesContext 			xContext = FacesContext.getCurrentInstance();
+		String 					xId = getId() + FACET_MESSAGE;
+		//Recupera componente utilizado para indicar se existe mensagem
+		DBSUICommandHasMessage 	xCmdMsg = (DBSUICommandHasMessage) getFacet(xId); 
+//			System.out.println(getClientId() + "\t#1 Criou " + pEvent.getClass().getName());
+		//Cria componente com JS que será utilizado para indicar se existe mensagem
+		if (xCmdMsg == null){
+			xCmdMsg = (DBSUICommandHasMessage) xContext.getApplication().createComponent(DBSUICommandHasMessage.COMPONENT_TYPE);
+			xCmdMsg.setId(xId);
+			getFacets().put(xId, xCmdMsg);
+		}
+	}
+	
+	@Override
+	public boolean isListenerForSource(Object pSource) {
+//		return pSource.equals(this) || pSource.getClass().isAssignableFrom(UIViewRoot.class);
+//		System.out.println("isListenerForSource\t" + pSource.getClass());
+//		return pSource.getClass().isAssignableFrom(UIViewRoot.class);
+		//Como o evento capturado é PreRenderViewEvent, o source sempre será ViewRoot.
+		return true;
+	}
+
+
 }

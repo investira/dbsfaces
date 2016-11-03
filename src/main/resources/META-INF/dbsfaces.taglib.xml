@@ -197,9 +197,9 @@
 				&lt;span style="font-size:small"&gt;
 				Tipo de dialog. Padrão é 'nav'&lt;br/&gt;
 				&lt;ul&gt;
-					&lt;li&gt;navigation bars = nav&lt;/li&gt;
-					&lt;li&gt;mensages = msg&lt;/li&gt;
-					&lt;li&gt;modal = mod&lt;/li&gt;
+					&lt;li&gt;nav = navigation bars&lt;/li&gt;
+					&lt;li&gt;msg = mensages&lt;/li&gt;
+					&lt;li&gt;mod = modal&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>type</name>
@@ -219,11 +219,11 @@
 				&lt;span style="font-size:small"&gt;
 				Posição principal. Padrão é CENTER.&lt;br/&gt;
 				&lt;ul&gt;
-					&lt;li&gt;TOP = t&lt;/li&gt;
-					&lt;li&gt;BOTTOM = b&lt;/li&gt;
-					&lt;li&gt;LEFT = l&lt;/li&gt;
-					&lt;li&gt;RIGHT = r&lt;/li&gt;
-					&lt;li&gt;CENTER = c&lt;/li&gt;
+					&lt;li&gt;t = TOP&lt;/li&gt;
+					&lt;li&gt;b = BOTTOM&lt;/li&gt;
+					&lt;li&gt;l = LEFT&lt;/li&gt;
+					&lt;li&gt;r = RIGHT&lt;/li&gt;
+					&lt;li&gt;c = CENTER&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>position</name>
@@ -235,8 +235,8 @@
 				&lt;span style="font-size:small"&gt;
 				Tamanho do conteúdo. Padrão é AUTO.&lt;br/&gt;
 				&lt;ul&gt;
-					&lt;li&gt;AUTO(conforme tamanho do conteúdo) = a&lt;/li&gt;
-					&lt;li&gt;SCREEN(largura e altura da tela) = s&lt;/li&gt;
+					&lt;li&gt;a = AUTO(conforme tamanho do conteúdo)&lt;/li&gt;
+					&lt;li&gt;s = SCREEN(largura e altura da tela)&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>contentSize</name>
@@ -248,11 +248,11 @@
 				&lt;span style="font-size:small"&gt;
 				Alinhamento do conteúdo. Padrão é TOP.&lt;br/&gt;
 				&lt;ul&gt;
-					&lt;li&gt;TOP = t&lt;/li&gt;
-					&lt;li&gt;BOTTOM = b&lt;/li&gt;
-					&lt;li&gt;LEFT = l&lt;/li&gt;
-					&lt;li&gt;RIGHT = r&lt;/li&gt;
-					&lt;li&gt;CENTER = c&lt;/li&gt;
+					&lt;li&gt;t = TOP&lt;/li&gt;
+					&lt;li&gt;b = BOTTOM&lt;/li&gt;
+					&lt;li&gt;l = LEFT&lt;/li&gt;
+					&lt;li&gt;r = RIGHT&lt;/li&gt;
+					&lt;li&gt;c = CENTER&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>contentAlignment</name>
@@ -287,8 +287,8 @@
 				&lt;span style="font-size:small"&gt;
 				Tempo para fechamento automático do dialog em segundos.&lt;br/&gt;
 				&lt;ul&gt;
-					&lt;li&gt;Sem timeout = 0&lt;/li&gt;
-					&lt;li&gt;Em função do tamanho do conteúdo = a&lt;/li&gt;
+					&lt;li&gt;0 = Sem timeout&lt;/li&gt;
+					&lt;li&gt;a = Em função do tamanho do conteúdo&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>closeTimeout</name>
@@ -394,10 +394,10 @@
 				&lt;span style="font-size:small"&gt;
 				Posição principal. Padrão é CENTER.&lt;br/&gt;
 				&lt;ul&gt;
-					&lt;li&gt;TOP = t&lt;/li&gt;
-					&lt;li&gt;BOTTOM = b&lt;/li&gt;
-					&lt;li&gt;LEFT = l&lt;/li&gt;
-					&lt;li&gt;RIGHT = r&lt;/li&gt;
+					&lt;li&gt;t = TOP&lt;/li&gt;
+					&lt;li&gt;b = BOTTOM&lt;/li&gt;
+					&lt;li&gt;l = LEFT&lt;/li&gt;
+					&lt;li&gt;r = RIGHT&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>position</name>
@@ -409,8 +409,8 @@
 				&lt;span style="font-size:small"&gt;
 				Tamanho do conteúdo. Padrão é AUTO.&lt;br/&gt;
 				&lt;ul&gt;
-					&lt;li&gt;AUTO(conforme tamanho do conteúdo) = a&lt;/li&gt;
-					&lt;li&gt;SCREEN(largura e altura da tela) = s&lt;/li&gt;
+					&lt;li&gt;a = AUTO(conforme tamanho do conteúdo)&lt;/li&gt;
+					&lt;li&gt;s = SCREEN(largura e altura da tela)&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>contentSize</name>
@@ -422,11 +422,11 @@
 				&lt;span style="font-size:small"&gt;
 				Alinhamento do conteúdo. Padrão é TOP.&lt;br/&gt;
 				&lt;ul&gt;
-					&lt;li&gt;TOP = t&lt;/li&gt;
-					&lt;li&gt;BOTTOM = b&lt;/li&gt;
-					&lt;li&gt;LEFT = l&lt;/li&gt;
-					&lt;li&gt;RIGHT = r&lt;/li&gt;
-					&lt;li&gt;CENTER = c&lt;/li&gt;
+					&lt;li&gt;t = TOP&lt;/li&gt;
+					&lt;li&gt;b = BOTTOM&lt;/li&gt;
+					&lt;li&gt;l = LEFT&lt;/li&gt;
+					&lt;li&gt;r = RIGHT&lt;/li&gt;
+					&lt;li&gt;c = CENTER&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>contentAlignment</name>
@@ -500,11 +500,11 @@
 				&lt;span style="font-size:small"&gt;
 				Posição principal. Padrão é CENTER.&lt;br/&gt;
 				&lt;ul&gt;
-					&lt;li&gt;TOP = t&lt;/li&gt;
-					&lt;li&gt;BOTTOM = b&lt;/li&gt;
-					&lt;li&gt;LEFT = l&lt;/li&gt;
-					&lt;li&gt;RIGHT = r&lt;/li&gt;
-					&lt;li&gt;CENTER = c&lt;/li&gt;
+					&lt;li&gt;t = TOP&lt;/li&gt;
+					&lt;li&gt;b = BOTTOM&lt;/li&gt;
+					&lt;li&gt;l = LEFT&lt;/li&gt;
+					&lt;li&gt;r = RIGHT&lt;/li&gt;
+					&lt;li&gt;c = CENTER&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>position</name>
@@ -516,8 +516,8 @@
 				&lt;span style="font-size:small"&gt;
 				Tamanho do conteúdo. Padrão é AUTO.&lt;br/&gt;
 				&lt;ul&gt;
-					&lt;li&gt;AUTO(conforme tamanho do conteúdo) = a&lt;/li&gt;
-					&lt;li&gt;SCREEN(largura e altura da tela) = s&lt;/li&gt;
+					&lt;li&gt;a = AUTO(conforme tamanho do conteúdo)&lt;/li&gt;
+					&lt;li&gt;s = SCREEN(largura e altura da tela)&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>contentSize</name>
@@ -529,11 +529,11 @@
 				&lt;span style="font-size:small"&gt;
 				Alinhamento do conteúdo. Padrão é TOP.&lt;br/&gt;
 				&lt;ul&gt;
-					&lt;li&gt;TOP = t&lt;/li&gt;
-					&lt;li&gt;BOTTOM = b&lt;/li&gt;
-					&lt;li&gt;LEFT = l&lt;/li&gt;
-					&lt;li&gt;RIGHT = r&lt;/li&gt;
-					&lt;li&gt;CENTER = c&lt;/li&gt;
+					&lt;li&gt;t = TOP&lt;/li&gt;
+					&lt;li&gt;b = BOTTOM&lt;/li&gt;
+					&lt;li&gt;l = LEFT&lt;/li&gt;
+					&lt;li&gt;r = RIGHT&lt;/li&gt;
+					&lt;li&gt;c = CENTER&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>contentAlignment</name>
@@ -668,11 +668,11 @@
 				&lt;span style="font-size:small"&gt;
 				Posição principal. Padrão é CENTER.&lt;br/&gt;
 				&lt;ul&gt;
-					&lt;li&gt;TOP = t&lt;/li&gt;
-					&lt;li&gt;BOTTOM = b&lt;/li&gt;
-					&lt;li&gt;LEFT = l&lt;/li&gt;
-					&lt;li&gt;RIGHT = r&lt;/li&gt;
-					&lt;li&gt;CENTER = c&lt;/li&gt;
+					&lt;li&gt;t = TOP&lt;/li&gt;
+					&lt;li&gt;b = BOTTOM&lt;/li&gt;
+					&lt;li&gt;l = LEFT&lt;/li&gt;
+					&lt;li&gt;r = RIGHT&lt;/li&gt;
+					&lt;li&gt;c = CENTER&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>position</name>
@@ -684,8 +684,8 @@
 				&lt;span style="font-size:small"&gt;
 				Tamanho do conteúdo. Padrão é AUTO.&lt;br/&gt;
 				&lt;ul&gt;
-					&lt;li&gt;AUTO(conforme tamanho do conteúdo) = a&lt;/li&gt;
-					&lt;li&gt;SCREEN(largura e altura da tela) = s&lt;/li&gt;
+					&lt;li&gt;a = AUTO(conforme tamanho do conteúdo)&lt;/li&gt;
+					&lt;li&gt;s = SCREEN(largura e altura da tela)&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>contentSize</name>
@@ -697,11 +697,11 @@
 				&lt;span style="font-size:small"&gt;
 				Alinhamento do conteúdo. Padrão é TOP.&lt;br/&gt;
 				&lt;ul&gt;
-					&lt;li&gt;TOP = t&lt;/li&gt;
-					&lt;li&gt;BOTTOM = b&lt;/li&gt;
-					&lt;li&gt;LEFT = l&lt;/li&gt;
-					&lt;li&gt;RIGHT = r&lt;/li&gt;
-					&lt;li&gt;CENTER = c&lt;/li&gt;
+					&lt;li&gt;t = TOP&lt;/li&gt;
+					&lt;li&gt;b = BOTTOM&lt;/li&gt;
+					&lt;li&gt;l = LEFT&lt;/li&gt;
+					&lt;li&gt;r = RIGHT&lt;/li&gt;
+					&lt;li&gt;c = CENTER&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>contentAlignment</name>
@@ -796,9 +796,9 @@
 				&lt;span style="font-size:small"&gt;
 				Localização da abertura. Padrão é vertical.&lt;br/&gt;
 				&lt;ul&gt;
-					&lt;li&gt;Abertura:VERTICAL = v&lt;/li&gt;
-					&lt;li&gt;Abertura:HORIZONTAL = h&lt;/li&gt;
-					&lt;li&gt;Abertura:CENTRO = c&lt;/li&gt;
+					&lt;li&gt;v = Abertura:VERTICAL&lt;/li&gt;
+					&lt;li&gt;h = Abertura:HORIZONTAL&lt;/li&gt;
+					&lt;li&gt;c = Abertura:CENTRO&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>location</name>
@@ -835,8 +835,8 @@
                 &lt;span style="font-size:small"&gt;
 				Alinhamento vertical do conteúdo do nav. O Padrão é TOP.&lt;br/&gt;
 				&lt;ul&gt;
-					&lt;li&gt;Conteúdo:TOP = t&lt;/li&gt;
-					&lt;li&gt;Conteúdo:BOTTOM = b&lt;/li&gt;
+					&lt;li&gt;t = TOP&lt;/li&gt;
+					&lt;li&gt;b = BOTTOM&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>contentVerticalAlign</name>
@@ -848,8 +848,8 @@
                 &lt;span style="font-size:small"&gt;
 				Alinhamento horizontal do conteúdo do nav. O Padrão é LEFT.&lt;br/&gt;
 				&lt;ul&gt;
-					&lt;li&gt;Conteúdo:LEFT = l&lt;/li&gt;
-					&lt;li&gt;Conteúdo:RIGHT = r&lt;/li&gt;
+					&lt;li&gt;l = LEFT&lt;/li&gt;
+					&lt;li&gt;r = RIGHT&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>contentHorizontalAlign</name>
@@ -916,9 +916,9 @@
 				&lt;span style="font-size:small"&gt;
 				Localização da abertura. Padrão é vertical.&lt;br/&gt;
 				&lt;ul&gt;
-					&lt;li&gt;Abertura:VERTICAL = v&lt;/li&gt;
-					&lt;li&gt;Abertura:HORIZONTAL = h&lt;/li&gt;
-					&lt;li&gt;Abertura:CENTRO = c&lt;/li&gt;
+					&lt;li&gt;v = VERTICAL&lt;/li&gt;
+					&lt;li&gt;h = HORIZONTAL&lt;/li&gt;
+					&lt;li&gt;c = CENTRO&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>location</name>
@@ -954,8 +954,8 @@
                 &lt;span style="font-size:small"&gt;
 				Alinhamento vertical do conteúdo do nav. O Padrão é TOP.&lt;br/&gt;
 				&lt;ul&gt;
-					&lt;li&gt;Conteúdo:TOP = t&lt;/li&gt;
-					&lt;li&gt;Conteúdo:BOTTOM b&lt;/li&gt;
+					&lt;li&gt;t = TOP&lt;/li&gt;
+					&lt;li&gt;b = BOTTOM&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>contentVerticalAlign</name>
@@ -967,8 +967,8 @@
                 &lt;span style="font-size:small"&gt;
 				Alinhamento horizontal do conteúdo do nav. O Padrão é LEFT.&lt;br/&gt;
 				&lt;ul&gt;
-					&lt;li&gt;Conteúdo:LEFT = l&lt;/li&gt;
-					&lt;li&gt;Conteúdo:RIGHT = r&lt;/li&gt;
+					&lt;li&gt;l = LEFT&lt;/li&gt;
+					&lt;li&gt;r = RIGHT&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>contentHorizontalAlign</name>
@@ -3243,6 +3243,19 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Se fecha o dialog pai(se houver). Padrão = false&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;true = Fecha dialog pai (se houver)&lt;/li&gt;
+					&lt;li&gt;false = Não fecha&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>closeDialog</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
 	</tag>
 	<tag>
 		<description>Botão de menu flutuante. 
@@ -3417,6 +3430,19 @@ Default: false;</description>
                 ReadOnly
             </description>
 			<name>readOnly</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Se fecha o dialog pai(se houver). Padrão = false&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;true = Fecha dialog pai (se houver)&lt;/li&gt;
+					&lt;li&gt;false = Não fecha&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>closeDialog</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
@@ -3916,6 +3942,19 @@ Default: false;</description>
                 Se item será exibido inicialmente aberto. Padrão: false
             </description>
 			<name>open</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Se fecha o dialog pai(se houver). Padrão = false&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;true = Fecha dialog pai (se houver)&lt;/li&gt;
+					&lt;li&gt;false = Não fecha&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>closeDialog</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>

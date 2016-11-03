@@ -28,5 +28,4 @@
 			br.com.dbsoft.ui.exception.DBSFacesExceptionHandlerFactory
 		</exception-handler-factory>
 	</factory>
-
 </faces-config>

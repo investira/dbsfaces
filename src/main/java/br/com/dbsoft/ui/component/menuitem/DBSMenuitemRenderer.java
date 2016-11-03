@@ -5,12 +5,9 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.event.ActionEvent;
 import javax.faces.render.FacesRenderer;
 
-import com.sun.faces.renderkit.RenderKitUtils;
-
-import br.com.dbsoft.ui.component.DBSRenderer;
+import br.com.dbsoft.ui.component.DBSUICommandRenderer;
 import br.com.dbsoft.ui.component.menu.DBSMenu;
 import br.com.dbsoft.ui.component.menuitem.DBSMenuitem;
 import br.com.dbsoft.ui.core.DBSFaces;
@@ -20,31 +17,8 @@ import br.com.dbsoft.util.DBSObject;
 
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSMenuitem.RENDERER_TYPE)
-public class DBSMenuitemRenderer extends DBSRenderer {
+public class DBSMenuitemRenderer extends DBSUICommandRenderer {
 
-	@Override
-	public void decode(FacesContext pContext, UIComponent pComponent) {
-		DBSMenuitem xMenuitem = (DBSMenuitem) pComponent;
-		String xClientId = xMenuitem.getClientId(pContext);
-		//System.out.println("DECODE Menuitem");
-		if (RenderKitUtils.isPartialOrBehaviorAction(pContext, xClientId) || /*Chamada Ajax*/
-			pContext.getExternalContext().getRequestParameterMap().containsKey(xClientId)) { /*Chamada Sem Ajax*/ 
-			//System.out.println("DECODE Menuitem achou");	
-			xMenuitem.queueEvent(new ActionEvent(xMenuitem));
-			decodeBehaviors(pContext, pComponent);
-		}
-	}
-	
-	@Override 
-	public boolean getRendersChildren() {
-		return true; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
-	}
-	
-    @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        //É necessário manter está função para evitar que faça o render dos childrens
-    	//O Render dos childrens é feita do encode
-    }
 	
 	@Override
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent)
@@ -56,7 +30,7 @@ public class DBSMenuitemRenderer extends DBSRenderer {
 		Boolean xIsSubmenu = true;
 		String xOnClick;
 		String xExecute = null;
-		String xClass = CSS.MENUITEM.MAIN + CSS.NOT_SELECTABLE;
+		String xClass = CSS.MENUITEM.MAIN + getBasicStyleClass(xMenuitem);
 
 		//Verifica se é um submenu filho de um outro submenu ou filho do menu principal
 		UIComponent xParent = pComponent.getParent();
@@ -77,33 +51,28 @@ public class DBSMenuitemRenderer extends DBSRenderer {
 		if (xIsSubmenu){
 			xClass += CSS.THEME.ACTION;
 		}
-		if (xMenuitem.getStyleClass()!=null){
-			xClass += xMenuitem.getStyleClass();
-		}
+
 		if (xMenuitem.getChildCount() == 0){
 			if (xMenuitem.getActionExpression() == null
 			 && DBSObject.isEmpty(xOnClick)){
 				xClass += CSS.MODIFIER.DISABLED;
 			}
 		}
-		if (xMenuitem.getOpen()){
-			xClass += CSS.MODIFIER.OPENED;
-		}
-		
+
 		//Encode --------
 		xWriter.startElement("li", xMenuitem);
-			DBSFaces.setAttribute(xWriter, "class", xClass);
-			DBSFaces.setAttribute(xWriter, "style", xMenuitem.getStyle());
+			DBSFaces.encodeAttribute(xWriter, "class", xClass);
+			DBSFaces.encodeAttribute(xWriter, "style", xMenuitem.getStyle());
 			xWriter.startElement("a", xMenuitem);
 				writeIdAttribute(xWriter, xMenuitem, xClientId);
 				xClass = CSS.MODIFIER.CAPTION;
-				DBSFaces.setAttribute(xWriter, "class", xClass);
-				DBSFaces.setAttribute(xWriter, "ontouchstart", "", null);
+				DBSFaces.encodeAttribute(xWriter, "class", xClass);
+				DBSFaces.encodeAttribute(xWriter, "ontouchstart", "");
 				if (!xMenuitem.getReadOnly()){
 					if (xMenuitem.getActionExpression() != null
 				  	 || !DBSObject.isEmpty(xOnClick)){
-						DBSFaces.setAttribute(xWriter, "type", "submit"); 
-						DBSFaces.setAttribute(xWriter, HTML.EVENTS.ONCLICK, xOnClick);
+						DBSFaces.encodeAttribute(xWriter, "type", "submit"); 
+						DBSFaces.encodeAttribute(xWriter, HTML.EVENTS.ONCLICK, xOnClick);
 					}
 				}
 				pvEncodeMenuLine(xMenuitem, xWriter, xMenuitem.getLabel(), xMenuitem.getIconClass(), xMenuitem.getChildCount() > 0);
@@ -112,11 +81,11 @@ public class DBSMenuitemRenderer extends DBSRenderer {
 			xWriter.endElement("a");
 			if (xMenuitem.getChildCount() > 0){
 				xWriter.startElement("div", xMenuitem);
-					DBSFaces.setAttribute(xWriter, "class", "-submenu");
+					DBSFaces.encodeAttribute(xWriter, "class", "-submenu");
 					xWriter.startElement("div", xMenuitem);
-					DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
+					DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
 						xWriter.startElement("ul", xMenuitem);
-							DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTENT);
+							DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTENT);
 							DBSFaces.renderChildren(pContext, xMenuitem);
 						xWriter.endElement("ul");
 					xWriter.endElement("div");
@@ -127,21 +96,21 @@ public class DBSMenuitemRenderer extends DBSRenderer {
 	
 	public void pvEncodeMenuLine(DBSMenuitem pMenuItem, ResponseWriter pWriter, String pLabel, String pIconClass, Boolean pHasChildren) throws IOException{
 		pWriter.startElement("div", pMenuItem);
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
 			if (pIconClass!=null){
 				pWriter.startElement("span", pMenuItem);
-					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON + pIconClass);
+					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.ICON + pIconClass);
 				pWriter.endElement("span");
 			}
 			if (pLabel!=null){
 				pWriter.startElement("span", pMenuItem);
-					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.LABEL + CSS.THEME.INPUT_LABEL);
+					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LABEL + CSS.THEME.INPUT_LABEL);
 					pWriter.write(pLabel);
 				pWriter.endElement("span");
 			}
 			if (pHasChildren!=null && pHasChildren){
 				pWriter.startElement("span", pMenuItem);
-				DBSFaces.setAttribute(pWriter, "class", "-childrenIcon"); //Marcação closed="-c", opened="-o". Setado via JS. 
+				DBSFaces.encodeAttribute(pWriter, "class", "-childrenIcon"); //Marcação closed="-c", opened="-o". Setado via JS. 
 				pWriter.endElement("span");
 			}
 		pWriter.endElement("div");

@@ -54,14 +54,6 @@ public class DBSDialogRenderer extends DBSRenderer{
 		}
 	}
 
-	@Override
-	public boolean getRendersChildren() {
-		return true; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
-	}
-	
-	@Override
-	public void encodeChildren(FacesContext pContext, UIComponent pComponent) throws IOException {
-	}
 
 	@Override
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent) throws IOException {
@@ -81,29 +73,35 @@ public class DBSDialogRenderer extends DBSRenderer{
 			xClass += xDialog.getStyleClass();
 		}
 		
+		
 		xWriter.startElement("div", xDialog);
-			DBSFaces.setAttribute(xWriter, "id", xClientId);
-			DBSFaces.setAttribute(xWriter, "name", xClientId);
-			DBSFaces.setAttribute(xWriter, "class", xClass);
-			DBSFaces.setAttribute(xWriter, "style", xDialog.getStyle());
-			DBSFaces.setAttribute(xWriter, "type", xDialog.getType());
+			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "class", xClass);
+			DBSFaces.encodeAttribute(xWriter, "style", xDialog.getStyle());
+			DBSFaces.encodeAttribute(xWriter, "type", xDialog.getType());
+			
+			
 			//Configura time somente quando não for MOD
 			if (xType == TYPE.MSG 
 			&& !xDialog.getCloseTimeout().equals("0")){
-				DBSFaces.setAttribute(xWriter, "timeout", xDialog.getCloseTimeout());
+				DBSFaces.encodeAttribute(xWriter, "timeout", xDialog.getCloseTimeout());
 			}
-			DBSFaces.setAttribute(xWriter, "p", xDialog.getPosition());
-			DBSFaces.setAttribute(xWriter, "cs", xDialog.getContentSize());
-			DBSFaces.setAttribute(xWriter, "ca", xDialog.getContentAlignment());
+			DBSFaces.encodeAttribute(xWriter, "p", xDialog.getPosition());
+			DBSFaces.encodeAttribute(xWriter, "cs", xDialog.getContentSize());
+			DBSFaces.encodeAttribute(xWriter, "ca", xDialog.getContentAlignment());
+//			if (xDialog.getDBSMessage() != null){
+//				DBSFaces.setAttribute(xWriter, "data-hasmsg", true);
+//			}
 			if (xDialog.getOpen()){
-				DBSFaces.setAttribute(xWriter, "open", "open");
+				DBSFaces.encodeAttribute(xWriter, "o", true);
 			}
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xDialog, DBSPassThruAttributes.getAttributes(Key.DIALOG));
 
 
 			pvEncodeContainer(xDialog, xType, pContext, xWriter);
 			
-			pvEncodeJS(xDialog.getClientId(pContext), xWriter);
+			pvEncodeJS(xDialog, xWriter);
 		xWriter.endElement("div");	
 	}
 	
@@ -113,15 +111,15 @@ public class DBSDialogRenderer extends DBSRenderer{
 		String xClass = CSS.MODIFIER.CONTAINER;
 		pWriter.startElement("div", pDialog);
 //			if (!pDialog.getOpen()){
-				DBSFaces.setAttribute(pWriter, "style", "opacity:0", null); //Inicia escondido para ser exibido após a execução do JS
+				DBSFaces.encodeAttribute(pWriter, "style", "opacity:0"); //Inicia escondido para ser exibido após a execução do JS
 				xClass += CSS.MODIFIER.CLOSED;
 //			}
-			DBSFaces.setAttribute(pWriter, "class", xClass);
+			DBSFaces.encodeAttribute(pWriter, "class", xClass);
 			//Icon
 			pvEncodeIcon(pDialog, pWriter);
 			//Mask
 			pWriter.startElement("div", pDialog);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.MASK + CSS.THEME.BC + CSS.THEME.INVERT);
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.MASK + CSS.THEME.BC + CSS.THEME.INVERT);
 			pWriter.endElement("div");
 //			pvEncodeContent(pDialog, pType, pContext, pWriter);
 			
@@ -171,9 +169,9 @@ public class DBSDialogRenderer extends DBSRenderer{
 	private void pvEncodeIcon(DBSDialog pDialog, ResponseWriter pWriter) throws IOException{
 		if (pDialog.getIconClass() != null){
 			pWriter.startElement("div", pDialog);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON + CSS.THEME.ACTION);
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.ICON + CSS.THEME.ACTION);
 				pWriter.startElement("div", pDialog);
-					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + pDialog.getIconClass() + CSS.MODIFIER.INHERIT);
+					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + pDialog.getIconClass() + CSS.MODIFIER.INHERIT);
 				pWriter.endElement("div");
 			pWriter.endElement("div");
 		}
@@ -201,10 +199,10 @@ public class DBSDialogRenderer extends DBSRenderer{
 	 * @param pWriter
 	 * @throws IOException
 	 */
-	private void pvEncodeJS(String pClientId, ResponseWriter pWriter) throws IOException{
-		DBSFaces.encodeJavaScriptTagStart(pWriter);
+	private void pvEncodeJS(UIComponent pComponent, ResponseWriter pWriter) throws IOException{
+		DBSFaces.encodeJavaScriptTagStart(pComponent, pWriter);
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xDialogId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " var xDialogId = dbsfaces.util.jsid('" + pComponent.getClientId() + "'); \n " + 
 				     " dbs_dialog(xDialogId); \n" +
 	                 "}); \n"; 
 		pWriter.write(xJS);

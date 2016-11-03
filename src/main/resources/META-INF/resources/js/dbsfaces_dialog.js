@@ -39,14 +39,14 @@ dbs_dialog = function(pId) {
 	});
 	
 	/*Exibe dialog já aberto*/
-	if (xDialog.attr("open")) {
+	if (xDialog.attr("o")) {
 		dbsfaces.dialog.show(xDialog);
 	}
 };
 
 dbs_dialogContent = function(pId) {
 	var xDialog = $(pId);
-	
+
 	dbsfaces.dialog.initialize(xDialog);
 
 	/*Captura movimento touch para verificar se é para fechar o dialog*/
@@ -68,7 +68,8 @@ dbs_dialogContent = function(pId) {
 	/*Após animação de abrir ou fechar*/
 	$(pId + " > .-container > .-content").on(dbsfaces.EVENT.ON_TRANSITION_END, function(e){
 		//Foi fechado
-		if ($(this).closest(".dbs_dialog").hasClass("-closed")){
+//		if ($(this).closest(".dbs_dialog").hasClass("-closed")){
+		if (xDialog.hasClass("-closed")){
 			xDialog.trigger("closed");
 			$(this).parent().removeClass("-opened").addClass("-closed");
 			//Envia confirmação da mensagem se houver somente o botão yes
@@ -121,9 +122,14 @@ dbs_dialogContent = function(pId) {
 	});
 
 	/*Fecha dialog após retorno das chamadas ajax de botões com função de fechar */
-	$(pId + " .-th_action.-close").on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
-		if ($(this).css("display") == "none"){return;}
+	$(pId + " .-th_action.-closeDialog").on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
+		var xButton = $(this);
+		if (xButton.css("display") == "none"
+		 || xButton.data("hasmessage")){return;} //Ignora se houver mensagem a ser exibida
 		dbsfaces.dialog.show(xDialog);
+		if (xButton.hasClass("-closeParent")){
+			xDialog.data("parent").trigger("close");
+		}
 		e.stopImmediatePropagation();
 		return false;
 	});

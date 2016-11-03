@@ -11,15 +11,21 @@ import javax.faces.context.FacesContext;
 import br.com.dbsoft.message.DBSMessage;
 import br.com.dbsoft.message.IDBSMessage;
 import br.com.dbsoft.message.IDBSMessages;
+import br.com.dbsoft.ui.core.DBSFaces.FACESCONTEXT_ATTRIBUTE;
 import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.message.IDBSMessageListener;
 import br.com.dbsoft.util.DBSObject;
 
 public class DBSMessagesFacesContext {
 
-	public static final String ATTRIBUTE_NAME = "DBSMESSAGES";//Utilizado para enviar atributo via facescontext
-	public final static String MSG_FOR_ALL = "@all";
-	public final static String MSG_FOR_GLOBAL = "@global";
+	/**
+	 * Todas e qualquer a mensagem.
+	 */
+	public final static String ALL = "@all";
+	/**
+	 * Mensagens que <b>não</b> são específicas de um clientId.
+	 */
+	public final static String GLOBAL = "@global";
 
 	/**
 	 * Envia mensagem do tipo <b>FacesMessage</b> e <b>IDBSMessage</b>.<br/>
@@ -166,6 +172,7 @@ public class DBSMessagesFacesContext {
 		sendMessages(pMessages, null);
 	}
 
+	
 	/**
 	 * Retorna mensagem destinada ao <b>clientId</b> informado ou <i>null</i> se não encontrar mensagem.
 	 * @param pClientId
@@ -180,7 +187,8 @@ public class DBSMessagesFacesContext {
 	}
 	
 	/**
-	 * Retorna a lista de mensagens destinadas ao <b>clientId</b> informado ou <i>null</i> se não encontrar mensagem.
+	 * Retorna a lista de mensagens destinadas ao <b>clientId</b> informado ou <i>null</i> se não encontrar mensagem.</br>
+	 * Caso <b>clientId</b> seja nulo, retorna todas as mensagens.
 	 * @param pClientId
 	 * @return
 	 */
@@ -188,7 +196,7 @@ public class DBSMessagesFacesContext {
 		FacesContext 		xContext = FacesContext.getCurrentInstance();
 		List<IDBSMessage>  xList = null;
 		
-		pClientId = DBSObject.getNotEmpty(pClientId, MSG_FOR_GLOBAL);
+		pClientId = DBSObject.getNotEmpty(pClientId, ALL);
 		pClientId = pClientId.trim().toLowerCase();
 
 		xList = pvGetDBSMessage(xContext, pClientId);
@@ -201,17 +209,18 @@ public class DBSMessagesFacesContext {
 	
 	/**
 	 * Retorna a lista de mensagens do tipo IDBSMessage destinadas ao <b>clientId</b> informado ou <i>null</i> se não encontrar mensagem.
+	 * Caso <b>clientId</b> seja nulo, retorna todas as mensagens.
 	 * @param pContext
 	 * @param pClientId
 	 * @return
 	 */
 	private static List<IDBSMessage> pvGetDBSMessage(FacesContext pContext, String pClientId){
-		if (pContext.getAttributes().get(ATTRIBUTE_NAME) == null){return null;}
+		if (pContext.getAttributes().get(FACESCONTEXT_ATTRIBUTE.MESSAGES) == null){return null;}
 		List<IDBSMessage> 				   xList = new ArrayList<IDBSMessage>();
 		HashMap<String, List<IDBSMessage>> xMap = pvGetMap(pContext);
 		
 		//Considera todas as mensagens
-		if (pClientId.equals(MSG_FOR_ALL)){
+		if (pClientId.equals(ALL)){
 			//Inclui todas as mensagens independentemente do clientId
 			for (List<IDBSMessage> xMsgs: xMap.values()){
 				xList.addAll(xMsgs);
@@ -238,11 +247,11 @@ public class DBSMessagesFacesContext {
 		List<IDBSMessage> xList = new ArrayList<IDBSMessage>();
 		List<FacesMessage> xFMsgs = null;
 		//Mensagens globais 
-		if (pClientId.equals(MSG_FOR_GLOBAL)){
+		if (pClientId.equals(GLOBAL)){
 			//Se existe mensagem sem componente(clientid) definito
 			xFMsgs = pContext.getMessageList(null);
 		//Mensagem para componente(clientid) 
-		}else if (!pClientId.equals(MSG_FOR_ALL)){
+		}else if (!pClientId.equals(ALL)){
 			//Se existe mensagem para o componente(clientid)
 			xFMsgs = pContext.getMessageList(pClientId);
 		//Todas as mensagens
@@ -279,7 +288,7 @@ public class DBSMessagesFacesContext {
 	private static void pvSendDBSMessage(FacesContext pContext, IDBSMessage pMessage, String pClientId){
 		HashMap<String, List<IDBSMessage>> xMap = pvGetMap(pContext);
 		
-		pClientId = DBSObject.getNotEmpty(pClientId, MSG_FOR_GLOBAL);
+		pClientId = DBSObject.getNotEmpty(pClientId, GLOBAL);
 		pClientId = pClientId.trim().toLowerCase();
 
 		//Recupera list referente ao clientId
@@ -301,11 +310,11 @@ public class DBSMessagesFacesContext {
 	 */
 	private static HashMap<String, List<IDBSMessage>> pvGetMap(FacesContext pContext){
 		@SuppressWarnings("unchecked")
-		HashMap<String, List<IDBSMessage>> xMap = (HashMap<String, List<IDBSMessage>>) pContext.getAttributes().get(ATTRIBUTE_NAME);
+		HashMap<String, List<IDBSMessage>> xMap = (HashMap<String, List<IDBSMessage>>) pContext.getAttributes().get(FACESCONTEXT_ATTRIBUTE.MESSAGES);
 		//Cria map se não existir
 		if (xMap == null){
 			xMap = new HashMap<String, List<IDBSMessage>>();
-			pContext.getAttributes().put(ATTRIBUTE_NAME, xMap);
+			pContext.getAttributes().put(FACESCONTEXT_ATTRIBUTE.MESSAGES, xMap);
 		}
 		return xMap;
 	}

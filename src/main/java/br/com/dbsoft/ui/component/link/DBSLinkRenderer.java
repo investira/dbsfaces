@@ -6,14 +6,13 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.event.ActionEvent;
 import javax.faces.render.FacesRenderer;
 
 import com.sun.faces.renderkit.RenderKitUtils;
 import com.sun.faces.renderkit.html_basic.HtmlBasicRenderer.Param;
 
 import br.com.dbsoft.ui.component.DBSPassThruAttributes;
-import br.com.dbsoft.ui.component.DBSRenderer;
+import br.com.dbsoft.ui.component.DBSUICommandRenderer;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
@@ -21,36 +20,14 @@ import br.com.dbsoft.util.DBSString;
 
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSLink.RENDERER_TYPE)
-public class DBSLinkRenderer extends DBSRenderer {
+public class DBSLinkRenderer extends DBSUICommandRenderer {
 	
-    @Override
-	public void decode(FacesContext pContext, UIComponent pComponent) {
-        DBSLink xLink = (DBSLink) pComponent;
-		String xClientId = xLink.getClientId(pContext);
-		if (xLink.getReadOnly()) {return;}
-		if (RenderKitUtils.isPartialOrBehaviorAction(pContext, xClientId) || /*Chamada Ajax*/
-			pContext.getExternalContext().getRequestParameterMap().containsKey(xClientId)) { 	/*Chamada Sem Ajax*/
-			xLink.queueEvent(new ActionEvent(xLink));
-		}   
-	}
-
-	@Override
-	public boolean getRendersChildren() {
-		return true; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
-	}
-	
-    @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        //É necessário manter está função para evitar que faça o render dos childrens
-    	//O Render dos childrens é feita do encode
-    }
-
 	@Override
 	public void encodeEnd(FacesContext pContext, UIComponent pComponent) throws IOException {
 		if (!pComponent.isRendered()){return;}
 		DBSLink xLink = (DBSLink) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
-		String xClass = CSS.NOT_SELECTABLE + xLink.getStyleClass();
+		String xClass = CSS.LINK.MAIN + getBasicStyleClass(xLink);
 		String xOnClick = null;
 		String xExecute = "";
 		if (xLink.getExecute() == null){
@@ -76,18 +53,18 @@ public class DBSLinkRenderer extends DBSRenderer {
 		}else{
 			xWriter.startElement("a", xLink);
 		}
-			DBSFaces.setAttribute(xWriter, "id", xClientId);
-			DBSFaces.setAttribute(xWriter, "name", xClientId);
-			DBSFaces.setAttribute(xWriter, "class", xClass); 
-			DBSFaces.setAttribute(xWriter, "style", xLink.getStyle());
+			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "class", xClass); 
+			DBSFaces.encodeAttribute(xWriter, "style", xLink.getStyle());
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xLink, DBSPassThruAttributes.getAttributes(Key.LINK));
 			
 			if (xLink.getActionExpression() != null
 	 		 && xOnClick != null ){				
 //				xWriter.writeAttribute("ontouchstart", "", "ontouchstart"); //Para ipad ativar o css:ACTIVE
-				DBSFaces.setAttribute(xWriter, "type", "submit"); 
+				DBSFaces.encodeAttribute(xWriter, "type", "submit"); 
 				//if (xLink.getUpdate()!=null){
-					DBSFaces.setAttribute(xWriter, DBSFaces.HTML.EVENTS.ONCLICK, xOnClick); 
+					DBSFaces.encodeAttribute(xWriter, DBSFaces.HTML.EVENTS.ONCLICK, xOnClick); 
 				//}
 			}else{
 				pvRenderHref(pContext, xWriter, xLink);

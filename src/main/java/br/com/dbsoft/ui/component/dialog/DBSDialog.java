@@ -240,10 +240,6 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer, SystemEve
 		setRendererType(DBSDialog.RENDERER_TYPE);
 		 FacesContext xContext = FacesContext.getCurrentInstance();
 		 xContext.getViewRoot().subscribeToViewEvent(PostAddToViewEvent.class, this);
-//		 xContext.getViewRoot().subscribeToViewEvent(PreValidateEvent.class,this);
-//		 xContext.getViewRoot().subscribeToViewEvent(PostValidateEvent.class,this);
-//		 xContext.getViewRoot().subscribeToViewEvent(PreRenderViewEvent.class,this);
-//		 xContext.getViewRoot().subscribeToViewEvent(PreRenderComponentEvent.class,this);
     }
     
 	public String getType() {
@@ -424,7 +420,6 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer, SystemEve
 			xContent = (DBSDialogContent) FacesContext.getCurrentInstance().getApplication().createComponent(DBSDialogContent.COMPONENT_TYPE);
 			xContent.setId(FACET_CONTENT);
 			getFacets().put(FACET_CONTENT, xContent);
-//			System.out.println(xContent.getClientId());
 		}
 	}
 

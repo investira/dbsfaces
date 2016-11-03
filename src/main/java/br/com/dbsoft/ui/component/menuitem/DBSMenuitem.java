@@ -15,9 +15,7 @@ public class DBSMenuitem extends DBSUICommand implements NamingContainer {
 	protected enum PropertyKeys {
 		label,
 		iconClass,
-		execute,
-		open,
-		readOnly;
+		open;
 		
 		String toString;
 
@@ -62,23 +60,6 @@ public class DBSMenuitem extends DBSUICommand implements NamingContainer {
  		handleAttribute("iconClass", pIconClass);
  	}
 
-	public void setReadOnly(Boolean pReadOnly) {
-		getStateHelper().put(PropertyKeys.readOnly, pReadOnly);
-		handleAttribute("readOnly", pReadOnly);
-	}
-	
-	public Boolean getReadOnly() {
-		return (Boolean) getStateHelper().eval(PropertyKeys.readOnly, false);
-	}	
-	
-	public void setExecute(String pExecute) {
-		getStateHelper().put(PropertyKeys.execute, pExecute);
-		handleAttribute("execute", pExecute);
-	}
-
-	public String getExecute() {
-		return (String) getStateHelper().eval(PropertyKeys.execute, null);
-	}
 
 	public void setOpen(Boolean pOpen) {
 		getStateHelper().put(PropertyKeys.open, pOpen);

@@ -101,6 +101,21 @@ public class  DBSFaces {
     @SuppressWarnings("deprecation")
 	public static final char ID_SEPARATOR = NamingContainer.SEPARATOR_CHAR; //UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance());
 	
+    public static class FACESCONTEXT_ATTRIBUTE{
+    	/**
+    	 * DBSMensagen enviadas por dbsfaces.sendMessage.
+    	 */
+    	public static final String MESSAGES = "DBSMESSAGES"; 
+    	/**
+    	 * View antes executar um action.
+    	 */
+    	public static final String PREVIOUS_VIEW = "DBSPREVIOUS_VIEW";
+    	/**
+    	 * Componente que originou a ação.
+    	 */
+    	public static final String ACTION_SOURCE = "DBSACTIONSOURCE";
+    }
+    
 	public static class ID
 	{
 	    public static final String BUTTON = "button";
@@ -110,6 +125,7 @@ public class  DBSFaces {
 	    public static final String CRUDVIEW = "crudView";
 	    public static final String CRUDDIALOG = "crudDialog";
 	    public static final String CRUDTABLE = "crudTable";
+	    public static final String COMMANDHASMESSAGE = "commandhasmessage";
 	    public static final String DIALOG = "dialog";
 	    public static final String DIALOGNAV = "dialognav";
 	    public static final String DIALOGMSG = "dialogmsg";
@@ -555,43 +571,7 @@ public class  DBSFaces {
 	}
 	
 	
-    /**
-     * Efetua o <b>writeAttribute</b> testanto se valor é nulo.
-     * @param pWriter
-     * @param pAttribute
-     * @param pValue
-     * @throws IOException
-     */
-    public static void setAttribute(ResponseWriter pWriter, String pAttribute, Object pValue) throws IOException{
-    	setAttribute(pWriter, pAttribute, pValue, null);
-    }
-	
-    /**
-     * Efetua o <b>writeAttribute</b> testanto se valor é nulo.
-     * @param pWriter
-     * @param pAttribute
-     * @param pValue
-     * @throws IOException
-     */
-    public static void setAttribute(ResponseWriter pWriter, String pAttribute, Object pValue, String pValueDefault) throws IOException{
-	   	if (pAttribute == null){return;}
-	   	pAttribute = pAttribute.trim();
-    	if (pValue != null){
-    		if (pValue.getClass().isAssignableFrom(String.class)){
-    			String xValue = ((String) pValue).trim();
-        		if (pAttribute.trim().toLowerCase() == "class"){
-        			//Retira todos espaços extras
-        			xValue = xValue.replaceAll(" +", " ");
-        		}
-        		pValue = xValue;
-    		}
-			pWriter.writeAttribute(pAttribute, pValue, pAttribute);
-		}else{
-			if (pValueDefault != null ){	
-				pWriter.writeAttribute(pAttribute, pValueDefault, pAttribute);
-			}
-		}
-     }
+
 	
 	public static Object getAttributeNotNull(UIComponent pComponent, String pAttributeName, Object pDefaultValue){
 		if (pComponent.getAttributes().get(pAttributeName) != null){ 
@@ -1398,22 +1378,127 @@ public class  DBSFaces {
 //		return xLocalOnClick;
 //	}	
 	
-	public static void encodeStyleTagStart(ResponseWriter pWriter) throws IOException{
-		pWriter.write("	<style type='text/css'> \n");
+	/**
+	 * Efetua o <b>writeAttribute</b> testanto se valor é nulo.
+	 * @param pWriter
+	 * @param pAttribute
+	 * @param pValue
+	 * @throws IOException
+	 */
+	public static void encodeAttribute(ResponseWriter pWriter, String pAttribute, Object pValue) throws IOException{
+		encodeAttribute(pWriter, pAttribute, pValue, null);
+	}
+
+
+	/**
+	 * Efetua o <b>writeAttribute</b> testanto se valor é nulo.
+	 * @param pWriter
+	 * @param pAttribute
+	 * @param pValue
+	 * @throws IOException
+	 */
+	public static void encodeAttribute(ResponseWriter pWriter, String pAttribute, Object pValue, String pValueDefault) throws IOException{
+	   	if (pAttribute == null){return;}
+	   	pAttribute = pAttribute.trim();
+		if (pValue != null){
+			if (pValue.getClass().isAssignableFrom(String.class)){
+				String xValue = ((String) pValue).trim();
+	    		if (pAttribute.trim().toLowerCase() == "class"){
+	    			//Retira todos espaços extras
+	    			xValue = xValue.replaceAll(" +", " ");
+	    		}
+	    		pValue = xValue;
+			}
+			pWriter.writeAttribute(pAttribute, pValue, pAttribute);
+		}else{
+			if (pValueDefault != null ){	
+				pWriter.writeAttribute(pAttribute, pValueDefault, pAttribute);
+			}
+		}
+	 }
+
+//	/**
+//	 * Atributo que indica que existe mensagem restornada.<br/>
+//	 * Este controle é efetuado pelo compomentes DBSUICommand com render DBSUICommandRender
+//	 * @param pWriter
+//	 * @throws IOException
+//	 */
+//	public static void encodeAttributeHasMessage(DBSUICommand pComponent, ResponseWriter pWriter) throws IOException{
+//		if (pComponent.getHasMessage()){
+//			encodeAttribute(pWriter, "data-hasmsg", "true");
+//		}
+//	}
+
+	/**
+	 * Encode atributos no formato campo:valor;.
+	 * @param pWriter
+	 * @param pAttrs String com atributos no formato campo1=valor1. ex: id=grafico3:pie1_deltapath_l; fill=none;
+	 * @throws IOException
+	 */
+	public static void encodeAttributes(ResponseWriter pWriter, String pAttrs) throws IOException{
+		if (pAttrs!=null){
+			String[] xAttrs = pAttrs.split("[;]");
+			for (String xAttr: xAttrs){
+				Integer xI = xAttr.indexOf("=");
+				String xAttrName;
+				String xAttrValue;
+				if (xI != -1){
+					xAttrName = xAttr.substring(0, xI).trim().toLowerCase();
+					xAttrValue = xAttr.substring(xI+1).trim();
+					encodeAttribute(pWriter, xAttrName, xAttrValue);
+				}
+			}
+		}
+	}
+
+
+	public static void encodeStyleTagStart(UIComponent pComponent, ResponseWriter pWriter) throws IOException{
+//		pWriter.write("	<style type='text/css'> \n");
+		pWriter.startElement("style", pComponent);
+		encodeAttribute(pWriter, "type", "text/css");
 	}
 	
 	public static void encodeStyleTagEnd(ResponseWriter pWriter) throws IOException{
-		pWriter.write(" </style> \n");
+//		pWriter.write(" </style> \n");
+		pWriter.endElement("style");
+	}
+	
+//	xWriter.startElement("script", xUICommand);
+//	DBSFaces.encodeAttribute(xWriter, "type", "text/javascript");
+//	DBSFaces.encodeJavaScriptTagStart(xWriter);
+//	String xJS = "$(document).ready(function(){\n" +
+//			     " dbsfaces.component.setHasMessage(dbsfaces.util.jsid('" + getClientId() + "'));\n" +
+//                 "});\n";
+//	String xJS = "dbsfaces.component.setHasMessage(dbsfaces.util.jsid('" + xUICommand.getClientId() + "'));";
+//	String xJS = "$(document).ready(function() { \n" +
+//		     " var xButtonId = dbsfaces.util.jsid('" + getClientId() + "'); \n " + 
+//		     " dbs_button(xButtonId); \n" +
+//            "}); \n";
+//	xWriter.write(xJS);
+	
+	public static void encodeJavaScriptTagStart(UIComponent pComponent, ResponseWriter pWriter) throws IOException{
+		encodeJavaScriptTagStart(pComponent, pWriter, null);
 	}
 
-	public static void encodeJavaScriptTagStart(ResponseWriter pWriter) throws IOException{
-		pWriter.write("	<script type='text/javascript'> \n");
+	/**
+	 * @param pComponent
+	 * @param pWriter
+	 * @param pAttrs String com atributos no formato campo1=valor1. ex: id=grafico3:pie1_deltapath_l; fill=none;
+	 * @throws IOException
+	 */
+	public static void encodeJavaScriptTagStart(UIComponent pComponent, ResponseWriter pWriter, String pAttrs) throws IOException{
+		pWriter.startElement("script", pComponent);
+		encodeAttribute(pWriter, "type", "text/javascript");
+		encodeAttributes(pWriter, pAttrs);
+//		pWriter.write("	<script type='text/javascript'> \n");
 		//pWriter.write(" /* <![CDATA[ */ \n");
 	}
+
 	
 	public static void encodeJavaScriptTagEnd(ResponseWriter pWriter) throws IOException{
 		//pWriter.write(" /* ]]> */ ");
-		pWriter.write(" </script> \n");
+		pWriter.endElement("script");
+//		pWriter.write(" </script> \n");
 	}
 	
 	public static void encodeJavaScriptBeep(ResponseWriter pWriter) throws IOException{
@@ -1437,10 +1522,10 @@ public class  DBSFaces {
 				xStyle += " width:" + pInput.getLabelWidth() + ";";
 			}
 			pWriter.startElement("label", pInput);
-				DBSFaces.setAttribute(pWriter, "class", CSS.THEME.INPUT_LABEL + CSS.NOT_SELECTABLE);
-				DBSFaces.setAttribute(pWriter, "for", xClientId + CSS.MODIFIER.DATA.trim());
+				encodeAttribute(pWriter, "class", CSS.THEME.INPUT_LABEL + CSS.NOT_SELECTABLE);
+				encodeAttribute(pWriter, "for", xClientId + CSS.MODIFIER.DATA.trim());
 //				if (pRenderSeparator){
-					DBSFaces.setAttribute(pWriter, "style", xStyle);
+					encodeAttribute(pWriter, "style", xStyle);
 					pWriter.write(pInput.getLabel().trim());
 //				}else{
 //					xStyle += "padding-left:2px;";
@@ -1452,7 +1537,7 @@ public class  DBSFaces {
 					DBSInputNumber xIN = (DBSInputNumber) pInput;
 					if (xIN.getCurrencySymbol()!=null){
 						pWriter.startElement("span", pInput);
-							DBSFaces.setAttribute(pWriter, "style","float: right;");
+							encodeAttribute(pWriter, "style","float: right;");
 							pWriter.write(xIN.getCurrencySymbol().trim());
 						pWriter.endElement("span");
 					}
@@ -1472,9 +1557,9 @@ public class  DBSFaces {
 		if (pInput.getRightLabel()!=null){
 			String xClientId = pInput.getClientId(pContext);
 			pWriter.startElement("label", pInput);
-				DBSFaces.setAttribute(pWriter, "class", CSS.THEME.INPUT_LABEL + CSS.NOT_SELECTABLE);
-				DBSFaces.setAttribute(pWriter, "for", xClientId + CSS.MODIFIER.DATA.trim());
-				DBSFaces.setAttribute(pWriter, "style", "margin:0 3px 0 3px; vertical-align: middle; display:inline-block;");
+				encodeAttribute(pWriter, "class", CSS.THEME.INPUT_LABEL + CSS.NOT_SELECTABLE);
+				encodeAttribute(pWriter, "for", xClientId + CSS.MODIFIER.DATA.trim());
+				encodeAttribute(pWriter, "style", "margin:0 3px 0 3px; vertical-align: middle; display:inline-block;");
 				pWriter.write(pInput.getRightLabel().trim());
 			pWriter.endElement("label");
 		}
@@ -1519,10 +1604,10 @@ public class  DBSFaces {
 			pStyle += "white-space: pre; overflow:hidden;";
 		}
 		pWriter.startElement("span", pComponent);
-			setAttribute(pWriter, "id", pClientId);
-			setAttribute(pWriter, "name", pClientId);
-			setAttribute(pWriter, "class", getInputDataClass(pComponent));
-			setAttribute(pWriter, "style", pStyle);
+			encodeAttribute(pWriter, "id", pClientId);
+			encodeAttribute(pWriter, "name", pClientId);
+			encodeAttribute(pWriter, "class", getInputDataClass(pComponent));
+			encodeAttribute(pWriter, "style", pStyle);
 			setSizeAttributes(pWriter, pTW, pTH);
 			if (DBSObject.isEmpty(pValue)){
 				pWriter.write(" ");
@@ -1543,10 +1628,10 @@ public class  DBSFaces {
 	 */
 	public static void setSizeAttributes(ResponseWriter pWriter, Integer pTW, Integer pTH) throws IOException{
 		if (pTW != null && pTW > 0){
-			setAttribute(pWriter, "tw", pTW, null);
+			encodeAttribute(pWriter, "tw", pTW);
 		}
 		if (pTH != null && pTH > 0){
-			setAttribute(pWriter, "th", pTH, null);
+			encodeAttribute(pWriter, "th", pTH);
 		}
 	}
 	
@@ -1612,7 +1697,7 @@ public class  DBSFaces {
 		ResponseWriter 	xWriter = pContext.getResponseWriter();		
 		if (pvEncodeTooltip(true, pContext, pComponent, pDefaultLocation, pTooltipText, pDelay)){
 			//Javascript 
-			DBSFaces.encodeJavaScriptTagStart(xWriter);
+			DBSFaces.encodeJavaScriptTagStart(pComponent, xWriter);
 			String xJS = "$(document).ready(function() { \n" +
 					     " var xTooltip = dbsfaces.util.jsid('" + pSourceClientId + "'); \n " + 
 					     " dbs_tooltip(xTooltip); \n" +
@@ -1644,7 +1729,7 @@ public class  DBSFaces {
 		return xClass;
 	}
 
-	/**
+    /**
 	 * Encore dos names spaces padrão do SVG
 	 * @param pComponent
 	 * @param pWriter
@@ -1658,8 +1743,8 @@ public class  DBSFaces {
 	 * @throws IOException
 	 */
 	public static void encodeSVGNamespaces(ResponseWriter pWriter) throws IOException{
-		DBSFaces.setAttribute(pWriter, "xmlns", "http://www.w3.org/2000/svg");
-		DBSFaces.setAttribute(pWriter, "xmlns:xlink", "http://www.w3.org/1999/xlink");
+		encodeAttribute(pWriter, "xmlns", "http://www.w3.org/2000/svg");
+		encodeAttribute(pWriter, "xmlns:xlink", "http://www.w3.org/1999/xlink");
 	}
 
 	
@@ -1698,10 +1783,10 @@ public class  DBSFaces {
 	public static void encodeSVGLine(UIComponent pComponent, ResponseWriter pWriter, Number pX1, Number pY1, Number pX2, Number pY2, String pStyleClass, String pStyle, String pAttrs) throws IOException{
 		pWriter.startElement("line", pComponent);
 			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pAttrs);
-			setAttribute(pWriter, "x1", 	pX1, null);
-			setAttribute(pWriter, "y1", 	pY1, null);
-			setAttribute(pWriter, "x2", 	pX2, null);
-			setAttribute(pWriter, "y2", 	pY2, null);
+			encodeAttribute(pWriter, "x1", 	pX1);
+			encodeAttribute(pWriter, "y1", 	pY1);
+			encodeAttribute(pWriter, "x2", 	pX2);
+			encodeAttribute(pWriter, "y2", 	pY2);
 		pWriter.endElement("line");
 	}
 
@@ -1775,13 +1860,13 @@ public class  DBSFaces {
 	public static void encodeSVGRect(UIComponent pComponent, ResponseWriter pWriter, String pX, String pY, String pWidth, String pHeight, String pRX, String pRY, String pStyleClass, String pStyle, String pAttrs) throws IOException{
 		pWriter.startElement("rect", pComponent);
 			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pAttrs);
-			setAttribute(pWriter, "x", 	pX, null);
-			setAttribute(pWriter, "y", 	pY, null);
-			setAttribute(pWriter, "rx", pRX, null);
-			setAttribute(pWriter, "ry", pRY, null);
+			encodeAttribute(pWriter, "x", 	pX, null);
+			encodeAttribute(pWriter, "y", 	pY, null);
+			encodeAttribute(pWriter, "rx", pRX, null);
+			encodeAttribute(pWriter, "ry", pRY, null);
 			
-			setAttribute(pWriter, "height", pHeight, null);
-			setAttribute(pWriter, "width", pWidth, null);
+			encodeAttribute(pWriter, "height", pHeight, null);
+			encodeAttribute(pWriter, "width", pWidth, null);
 		pWriter.endElement("rect");
 	}
 	
@@ -1801,11 +1886,11 @@ public class  DBSFaces {
 	public static void encodeSVGEllipse(UIComponent pComponent, ResponseWriter pWriter, Number pCX, Number pCY, String pRX, String pRY, String pStyleClass, String pStyle, String pAttrs) throws IOException{
 		pWriter.startElement("ellipse", pComponent);
 			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pAttrs);
-			setAttribute(pWriter, "cx", pCX, null);
-			setAttribute(pWriter, "cy", pCY, null);
+			encodeAttribute(pWriter, "cx", pCX);
+			encodeAttribute(pWriter, "cy", pCY);
 			
-			setAttribute(pWriter, "rx", pRY, null);
-			setAttribute(pWriter, "ry", pRX, null);
+			encodeAttribute(pWriter, "rx", pRY);
+			encodeAttribute(pWriter, "ry", pRX);
 		pWriter.endElement("ellipse");
 	}
 	
@@ -1822,7 +1907,7 @@ public class  DBSFaces {
 		if (pHRef == null){return;}
 		pWriter.startElement("use", pComponent);
 			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pAttrs);
-			setAttribute(pWriter, "xlink:href", "#" + pHRef, null);
+			encodeAttribute(pWriter, "xlink:href", "#" + pHRef);
 		pWriter.endElement("use");
 	}
 	
@@ -1838,7 +1923,7 @@ public class  DBSFaces {
 	public static void encodeSVGPath(UIComponent pComponent, ResponseWriter pWriter, String pData, String pStyleClass, String pStyle, String pAttrs) throws IOException{
 		pWriter.startElement("path", pComponent);
 			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pAttrs);
-			setAttribute(pWriter, "d", 	pData, null);
+			encodeAttribute(pWriter, "d", 	pData);
 		pWriter.endElement("path");
 	}
 	
@@ -1881,8 +1966,8 @@ public class  DBSFaces {
 	public static void encodeSVGText(UIComponent pComponent, ResponseWriter pWriter, String pX, String pY, String pText, String pStyleClass, String pStyle, String pAttrs) throws IOException{
 		pWriter.startElement("text", pComponent);
 			encodeSVGSetDefaultAttr(pWriter, pStyleClass, pStyle, pAttrs);
-			setAttribute(pWriter, "x", pX, null);
-			setAttribute(pWriter, "y", pY, null);
+			encodeAttribute(pWriter, "x", pX, null);
+			encodeAttribute(pWriter, "y", pY, null);
 			if (pText != null){
 				pWriter.write(pText);
 			}
@@ -1893,27 +1978,15 @@ public class  DBSFaces {
 	 * @param pWriter
 	 * @param pStyleClass
 	 * @param pStyle
-	 * @param pAttrs String com atributos no formato campo1:valor1. ex:  id=grafico3:pie1_deltapath_l; fill=none;
+	 * @param pAttrs String com atributos no formato campo1=valor1. ex:  id=grafico3:pie1_deltapath_l; fill=none;
 	 * @throws IOException
 	 */
 	public static void encodeSVGSetDefaultAttr(ResponseWriter pWriter, String pStyleClass, String pStyle, String pAttrs) throws IOException{
-		if (pAttrs!=null){
-			String[] xAttrs = pAttrs.split("[;]");
-			for (String xAttr: xAttrs){
-				Integer xI = xAttr.indexOf("=");
-				String xAttrName;
-				String xAttrValue;
-				if (xI != -1){
-					xAttrName = xAttr.substring(0, xI).trim().toLowerCase();
-					xAttrValue = xAttr.substring(xI+1).trim();
-					setAttribute(pWriter, xAttrName, xAttrValue, null);
-				}
-			}
-		}
-		setAttribute(pWriter, "class", pStyleClass, null);
-		setAttribute(pWriter, "style", pStyle, null);
+		encodeAttributes(pWriter, pAttrs);
+		encodeAttribute(pWriter, "class", pStyleClass);
+		encodeAttribute(pWriter, "style", pStyle);
 	}
-	
+
 	//================================================================================
 	/**
 	 * Calcula color em função da quantidade de gráficos e itens em cada gráficos e a posição do item que se deseja calcular a cor.<br/>
@@ -2409,8 +2482,8 @@ public class  DBSFaces {
 		try {
 			if (xToolbar != null) {
 				xWriter.startElement("nav", pDataTable);
-					setAttribute(xWriter, "id", pDataTable.getClientId() + ":toolbar", null);
-					setAttribute(xWriter, "name", pDataTable.getClientId() + ":toolbar", null);
+					encodeAttribute(xWriter, "id", pDataTable.getClientId() + ":toolbar", null);
+					encodeAttribute(xWriter, "name", pDataTable.getClientId() + ":toolbar", null);
 					xToolbar.encodeAll(xFC);
 				xWriter.endElement("nav");
 			}
@@ -2785,18 +2858,18 @@ public class  DBSFaces {
 				}else{
 					xClass += " -qi"; //Tooltip para o quickinfo
 				}
-				setAttribute(xWriter, "class", xClass);
-				setAttribute(xWriter, "delay", pDelay, "1000"); //Tempo padrão para exibição do tooltip:1s
-				setAttribute(xWriter, "dl", pDefaultLocation, "1"); //Posição padrão para exibição do tooltip:Top
+				encodeAttribute(xWriter, "class", xClass);
+				encodeAttribute(xWriter, "delay", pDelay, "1000"); //Tempo padrão para exibição do tooltip:1s
+				encodeAttribute(xWriter, "dl", pDefaultLocation, "1"); //Posição padrão para exibição do tooltip:Top
 				xWriter.startElement("div", pComponent);
 					xClass = CSS.MODIFIER.CONTAINER;
-					DBSFaces.setAttribute(xWriter, "class", xClass);
+					encodeAttribute(xWriter, "class", xClass);
 					xWriter.startElement("div", pComponent);
 						xClass = CSS.MODIFIER.CONTENT + CSS.THEME.BC + CSS.THEME.INVERT;
 						if (!pBasicTooltip){
 							xClass += CSS.BACK_TEXTURE_BLACK_GRADIENT;
 						}
-						DBSFaces.setAttribute(xWriter, "class", xClass);
+						encodeAttribute(xWriter, "class", xClass);
 						//Dá prioridade para o facet
 						if (xTooltip != null){
 							if (pBasicTooltip){

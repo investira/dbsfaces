@@ -401,6 +401,14 @@ dbsfaces.onView = {
 	}
 }
 
+dbsfaces.component = {
+	//Utilizado pelos componentes DBSUICommand para setar a existencia de mensagem
+	setHasMessage: function(pId){
+		var xComponent = $(pId);
+		xComponent.data("hasmessage" , true);
+		xComponent.attr("hasmessage" , true);
+	}
+}
 dbsfaces.ui = {
 
 	initializeTheme: function(){
@@ -1233,16 +1241,16 @@ dbsfaces.ajax = {
 }
 		
 //Monitora evento ajax recebido e dispara evento dbsoft
-dbsfaces.onajax = function(e){
+dbsfaces.onajax = function(e, pData){
 	if ($(e.source).length == 0){
 		return;
 	}
 	if (e.status == "begin"){
-		$(e.source).trigger(dbsfaces.EVENT.ON_AJAX_BEGIN);
+		$(e.source).trigger(dbsfaces.EVENT.ON_AJAX_BEGIN, pData);
 	}else if (e.status == "complete"){
-		$(e.source).trigger(dbsfaces.EVENT.ON_AJAX_COMPLETE);
+		$(e.source).trigger(dbsfaces.EVENT.ON_AJAX_COMPLETE, pData);
 	}else if (e.status == "success"){
-		$(e.source).trigger(dbsfaces.EVENT.ON_AJAX_SUCCESS);
+		$(e.source).trigger(dbsfaces.EVENT.ON_AJAX_SUCCESS, pData);
 	}
 };
 

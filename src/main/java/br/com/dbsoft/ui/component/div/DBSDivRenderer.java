@@ -19,15 +19,6 @@ import br.com.dbsoft.ui.core.DBSFaces.CSS;
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSDiv.RENDERER_TYPE)
 public class DBSDivRenderer extends DBSRenderer {
 	
-	@Override
-	public void decode(FacesContext pContext, UIComponent pComponent) {
-	}
-
-	@Override
-	public boolean getRendersChildren() {
-		return true; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
-	}
-	
     @Override
     public void encodeChildren(FacesContext pContext, UIComponent pComponent) throws IOException {
 		DBSDiv xDiv = (DBSDiv) pComponent;
@@ -61,21 +52,21 @@ public class DBSDivRenderer extends DBSRenderer {
 		xWriter.startElement(xDiv.getTagName(), xDiv);
 			if (xDiv.getAjax() 
 			 || shouldWriteIdAttribute(xDiv)){
-				DBSFaces.setAttribute(xWriter, "id", xClientId, null);
-				DBSFaces.setAttribute(xWriter, "name", xClientId, null);
+				DBSFaces.encodeAttribute(xWriter, "id", xClientId);
+				DBSFaces.encodeAttribute(xWriter, "name", xClientId);
 			}
-			DBSFaces.setAttribute(xWriter, "class", xClass);
-			DBSFaces.setAttribute(xWriter, "style", xDiv.getStyle());
+			DBSFaces.encodeAttribute(xWriter, "class", xClass);
+			DBSFaces.encodeAttribute(xWriter, "style", xDiv.getStyle());
 
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xDiv, DBSPassThruAttributes.getAttributes(Key.DIV));
 			
 			//Força para que o encode deste componente seja efetuado após, via chamada ajax. 
 			if (pvEncodeLater(pContext, xDiv)){
 	    		xWriter.startElement("div", xDiv);
-					DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.LOADING, null);
+					DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.LOADING);
 				xWriter.endElement("div");
 				//Chamada ajax via JS
-				DBSFaces.encodeJavaScriptTagStart(xWriter);
+				DBSFaces.encodeJavaScriptTagStart(pComponent, xWriter);
 				String xJS = "setTimeout(function(){" +
 								"dbsfaces.ajax.request('" + xDiv.getClientId() + "', null, '" + xDiv.getClientId() + "', dbsfaces.ui.ajaxTriggerLoaded, dbsfaces.ui.showLoadingError('" + xClientId + "'));" +
 							  "}, 0);";				
