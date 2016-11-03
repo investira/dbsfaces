@@ -31,6 +31,7 @@ public class DBSUICommandAfterActionEvent extends FacesEvent {
 	@Override
 	public void processListener(FacesListener pListener) {
 //		System.out.println("DBSUICommandAfterActionEvent processListener");
+		//Verifica se há mensagem
 		if (DBSMessagesFacesContext.getMessage(DBSMessagesFacesContext.ALL) == null){return;}
 		FacesContext xContext = FacesContext.getCurrentInstance();
 		//Força a atualização do componente que indicará se há mensagem
