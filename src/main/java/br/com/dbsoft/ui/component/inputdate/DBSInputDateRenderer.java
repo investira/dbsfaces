@@ -100,17 +100,6 @@ public class DBSInputDateRenderer extends DBSRenderer {
         }
 	}	
 	
-    @Override
-	public boolean getRendersChildren() {
-		return true; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
-	}
-	
-    @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        //É necessário manter está função para evitar que faça o render dos childrens
-    	//O Render dos childrens é feita do encode
-    }
-    
 	@Override
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent)
 			throws IOException {
@@ -123,13 +112,13 @@ public class DBSInputDateRenderer extends DBSRenderer {
 			xClass += xInputDate.getStyleClass();
 		}
 		xWriter.startElement("div", xInputDate);
-			DBSFaces.setAttribute(xWriter, "id", xClientId);
-			DBSFaces.setAttribute(xWriter, "name", xClientId);
-			DBSFaces.setAttribute(xWriter, "class", xClass);
-			DBSFaces.setAttribute(xWriter, "style", xInputDate.getStyle());
+			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "class", xClass);
+			DBSFaces.encodeAttribute(xWriter, "style", xInputDate.getStyle());
 			//Container
 			xWriter.startElement("div", xInputDate);
-				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
+				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
 
 				DBSFaces.encodeLabel(pContext, xInputDate, xWriter);
 				pvEncodeInput(pContext, xInputDate, xWriter);
@@ -141,7 +130,7 @@ public class DBSInputDateRenderer extends DBSRenderer {
 		xWriter.endElement("div");
 
 		if (!xInputDate.getReadOnly()){
-			DBSFaces.encodeJavaScriptTagStart(xWriter);
+			DBSFaces.encodeJavaScriptTagStart(pComponent, xWriter);
 			String xJS = "$(document).ready(function() { \n" +
 					     " var xInputDateId = dbsfaces.util.jsid('" + xClientId + "'); \n " + 
 					     " dbs_inputDate(xInputDateId); \n" +
@@ -200,7 +189,7 @@ public class DBSInputDateRenderer extends DBSRenderer {
 			DBSFaces.encodeInputDataReadOnly(pInputDate, pWriter, xClientId, false, xValue, xSize, null, xStyle);
 		}else{
 			pWriter.startElement("span", pInputDate);
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputDate) + xStyleClass);
+				DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputDate) + xStyleClass);
 				DBSFaces.setSizeAttributes(pWriter, xSize, null);
 				//Define a largura do campo
 				if (pInputDate.getType().equalsIgnoreCase(DBSInputDate.TYPE.DATE)){
@@ -222,55 +211,55 @@ public class DBSInputDateRenderer extends DBSRenderer {
 		String xClientId = getInputDataClientId(pInputDate);
 		//Se for somente leitura, gera código como <Span>
 		pWriter.startElement("input", pInputDate);
-			DBSFaces.setAttribute(pWriter, "id", xClientId + CSS.INPUTDATE.DAY.trim());
-			DBSFaces.setAttribute(pWriter, "name", xClientId + CSS.INPUTDATE.DAY.trim());
-			DBSFaces.setAttribute(pWriter, "placeHolder", pInputDate.getPlaceHolder());
-			DBSFaces.setAttribute(pWriter, "type", "text");
-			DBSFaces.setAttribute(pWriter, "pattern", "[0-9]*");
-			DBSFaces.setAttribute(pWriter, "inputmode", "numeric");
-			DBSFaces.setAttribute(pWriter, "class", CSS.INPUTDATE.DAY);
-			DBSFaces.setAttribute(pWriter, "style", wWidth2);
-			DBSFaces.setAttribute(pWriter, "size", "2");
-			DBSFaces.setAttribute(pWriter, "maxlength", "2");
-			DBSFaces.setAttribute(pWriter, "value", pInputDate.getDay(), "");
+			DBSFaces.encodeAttribute(pWriter, "id", xClientId + CSS.INPUTDATE.DAY.trim());
+			DBSFaces.encodeAttribute(pWriter, "name", xClientId + CSS.INPUTDATE.DAY.trim());
+			DBSFaces.encodeAttribute(pWriter, "placeHolder", pInputDate.getPlaceHolder());
+			DBSFaces.encodeAttribute(pWriter, "type", "text");
+			DBSFaces.encodeAttribute(pWriter, "pattern", "[0-9]*");
+			DBSFaces.encodeAttribute(pWriter, "inputmode", "numeric");
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.INPUTDATE.DAY);
+			DBSFaces.encodeAttribute(pWriter, "style", wWidth2);
+			DBSFaces.encodeAttribute(pWriter, "size", "2");
+			DBSFaces.encodeAttribute(pWriter, "maxlength", "2");
+			DBSFaces.encodeAttribute(pWriter, "value", pInputDate.getDay(), "");
 			pvEncodeAutocompleteAttribute(pInputDate, pWriter);			
 			encodeClientBehaviors(pContext, pInputDate);
 		pWriter.endElement("input");
 		pWriter.startElement("label", pInputDate);
-			DBSFaces.setAttribute(pWriter, "class", CSS.NOT_SELECTABLE);
-			DBSFaces.setAttribute(pWriter, "for", xClientId + CSS.INPUTDATE.MONTH.trim());
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.NOT_SELECTABLE);
+			DBSFaces.encodeAttribute(pWriter, "for", xClientId + CSS.INPUTDATE.MONTH.trim());
 			pWriter.write("/");
 		pWriter.endElement("label");
 		pWriter.startElement("input", pInputDate);
-			DBSFaces.setAttribute(pWriter, "id", xClientId + CSS.INPUTDATE.MONTH.trim());
-			DBSFaces.setAttribute(pWriter, "name", xClientId + CSS.INPUTDATE.MONTH.trim());
-			DBSFaces.setAttribute(pWriter, "type", "text");
-			DBSFaces.setAttribute(pWriter, "pattern", "[0-9]*");
-			DBSFaces.setAttribute(pWriter, "inputmode", "numeric");
-			DBSFaces.setAttribute(pWriter, "class", CSS.INPUTDATE.MONTH);
-			DBSFaces.setAttribute(pWriter, "style", wWidth2);
-			DBSFaces.setAttribute(pWriter, "size", "2");
-			DBSFaces.setAttribute(pWriter, "maxlength", "2");
-			DBSFaces.setAttribute(pWriter, "value", pInputDate.getMonth(), "");
+			DBSFaces.encodeAttribute(pWriter, "id", xClientId + CSS.INPUTDATE.MONTH.trim());
+			DBSFaces.encodeAttribute(pWriter, "name", xClientId + CSS.INPUTDATE.MONTH.trim());
+			DBSFaces.encodeAttribute(pWriter, "type", "text");
+			DBSFaces.encodeAttribute(pWriter, "pattern", "[0-9]*");
+			DBSFaces.encodeAttribute(pWriter, "inputmode", "numeric");
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.INPUTDATE.MONTH);
+			DBSFaces.encodeAttribute(pWriter, "style", wWidth2);
+			DBSFaces.encodeAttribute(pWriter, "size", "2");
+			DBSFaces.encodeAttribute(pWriter, "maxlength", "2");
+			DBSFaces.encodeAttribute(pWriter, "value", pInputDate.getMonth(), "");
 			pvEncodeAutocompleteAttribute(pInputDate, pWriter);
 			encodeClientBehaviors(pContext, pInputDate);
 		pWriter.endElement("input");
 		pWriter.startElement("label", pInputDate);
-			DBSFaces.setAttribute(pWriter, "class", CSS.NOT_SELECTABLE);
-			DBSFaces.setAttribute(pWriter, "for", xClientId + CSS.INPUTDATE.YEAR.trim());
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.NOT_SELECTABLE);
+			DBSFaces.encodeAttribute(pWriter, "for", xClientId + CSS.INPUTDATE.YEAR.trim());
 			pWriter.write("/");
 		pWriter.endElement("label");
 		pWriter.startElement("input", pInputDate);
-			DBSFaces.setAttribute(pWriter, "id", xClientId + CSS.INPUTDATE.YEAR.trim());
-			DBSFaces.setAttribute(pWriter, "name", xClientId + CSS.INPUTDATE.YEAR.trim());
-			DBSFaces.setAttribute(pWriter, "type", "text");
-			DBSFaces.setAttribute(pWriter, "pattern", "[0-9]*");
-			DBSFaces.setAttribute(pWriter, "inputmode", "numeric");
-			DBSFaces.setAttribute(pWriter, "class", CSS.INPUTDATE.YEAR);
-			DBSFaces.setAttribute(pWriter, "style", wWidth4);
-			DBSFaces.setAttribute(pWriter, "size", "4");
-			DBSFaces.setAttribute(pWriter, "maxlength", "4");
-			DBSFaces.setAttribute(pWriter, "value", pInputDate.getYear(), "");
+			DBSFaces.encodeAttribute(pWriter, "id", xClientId + CSS.INPUTDATE.YEAR.trim());
+			DBSFaces.encodeAttribute(pWriter, "name", xClientId + CSS.INPUTDATE.YEAR.trim());
+			DBSFaces.encodeAttribute(pWriter, "type", "text");
+			DBSFaces.encodeAttribute(pWriter, "pattern", "[0-9]*");
+			DBSFaces.encodeAttribute(pWriter, "inputmode", "numeric");
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.INPUTDATE.YEAR);
+			DBSFaces.encodeAttribute(pWriter, "style", wWidth4);
+			DBSFaces.encodeAttribute(pWriter, "size", "4");
+			DBSFaces.encodeAttribute(pWriter, "maxlength", "4");
+			DBSFaces.encodeAttribute(pWriter, "value", pInputDate.getYear(), "");
 			pvEncodeAutocompleteAttribute(pInputDate, pWriter);
 			encodeClientBehaviors(pContext, pInputDate);
 		pWriter.endElement("input");
@@ -280,37 +269,37 @@ public class DBSInputDateRenderer extends DBSRenderer {
 		String xClientId = getInputDataClientId(pInputDate);
 		//HORA
 		pWriter.startElement("input", pInputDate);
-			DBSFaces.setAttribute(pWriter, "id", xClientId + CSS.INPUTDATE.HOUR.trim());
-			DBSFaces.setAttribute(pWriter, "name", xClientId + CSS.INPUTDATE.HOUR.trim());
-			DBSFaces.setAttribute(pWriter, "type", "text");
-			DBSFaces.setAttribute(pWriter, "pattern", "[0-9]*");
-			DBSFaces.setAttribute(pWriter, "inputmode", "numeric");
-			DBSFaces.setAttribute(pWriter, "class", CSS.INPUTDATE.HOUR);
-			DBSFaces.setAttribute(pWriter, "style", wWidth2);
-			DBSFaces.setAttribute(pWriter, "size", "2");
-			DBSFaces.setAttribute(pWriter, "maxlength", "2");
-			DBSFaces.setAttribute(pWriter, "value", pInputDate.getHour(), "");
+			DBSFaces.encodeAttribute(pWriter, "id", xClientId + CSS.INPUTDATE.HOUR.trim());
+			DBSFaces.encodeAttribute(pWriter, "name", xClientId + CSS.INPUTDATE.HOUR.trim());
+			DBSFaces.encodeAttribute(pWriter, "type", "text");
+			DBSFaces.encodeAttribute(pWriter, "pattern", "[0-9]*");
+			DBSFaces.encodeAttribute(pWriter, "inputmode", "numeric");
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.INPUTDATE.HOUR);
+			DBSFaces.encodeAttribute(pWriter, "style", wWidth2);
+			DBSFaces.encodeAttribute(pWriter, "size", "2");
+			DBSFaces.encodeAttribute(pWriter, "maxlength", "2");
+			DBSFaces.encodeAttribute(pWriter, "value", pInputDate.getHour(), "");
 			pvEncodeAutocompleteAttribute(pInputDate, pWriter);
 			encodeClientBehaviors(pContext, pInputDate);
 		pWriter.endElement("input");
 		
 		//Minutos
 		pWriter.startElement("label", pInputDate);
-			DBSFaces.setAttribute(pWriter, "class", CSS.NOT_SELECTABLE);
-			DBSFaces.setAttribute(pWriter, "for", xClientId + CSS.INPUTDATE.MINUTE.trim());
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.NOT_SELECTABLE);
+			DBSFaces.encodeAttribute(pWriter, "for", xClientId + CSS.INPUTDATE.MINUTE.trim());
 			pWriter.write(":");
 		pWriter.endElement("label");
 		pWriter.startElement("input", pInputDate);
-			DBSFaces.setAttribute(pWriter, "id", xClientId + CSS.INPUTDATE.MINUTE.trim());
-			DBSFaces.setAttribute(pWriter, "name", xClientId + CSS.INPUTDATE.MINUTE.trim());
-			DBSFaces.setAttribute(pWriter, "type", "text");
-			DBSFaces.setAttribute(pWriter, "pattern", "[0-9]*");
-			DBSFaces.setAttribute(pWriter, "inputmode", "numeric");
-			DBSFaces.setAttribute(pWriter, "class", CSS.INPUTDATE.MINUTE);
-			DBSFaces.setAttribute(pWriter, "style", wWidth2);
-			DBSFaces.setAttribute(pWriter, "size", "2");
-			DBSFaces.setAttribute(pWriter, "maxlength", "2");
-			DBSFaces.setAttribute(pWriter, "value", pInputDate.getMinute(), "");
+			DBSFaces.encodeAttribute(pWriter, "id", xClientId + CSS.INPUTDATE.MINUTE.trim());
+			DBSFaces.encodeAttribute(pWriter, "name", xClientId + CSS.INPUTDATE.MINUTE.trim());
+			DBSFaces.encodeAttribute(pWriter, "type", "text");
+			DBSFaces.encodeAttribute(pWriter, "pattern", "[0-9]*");
+			DBSFaces.encodeAttribute(pWriter, "inputmode", "numeric");
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.INPUTDATE.MINUTE);
+			DBSFaces.encodeAttribute(pWriter, "style", wWidth2);
+			DBSFaces.encodeAttribute(pWriter, "size", "2");
+			DBSFaces.encodeAttribute(pWriter, "maxlength", "2");
+			DBSFaces.encodeAttribute(pWriter, "value", pInputDate.getMinute(), "");
 			pvEncodeAutocompleteAttribute(pInputDate, pWriter);
 			encodeClientBehaviors(pContext, pInputDate);
 		pWriter.endElement("input");
@@ -322,21 +311,21 @@ public class DBSInputDateRenderer extends DBSRenderer {
 		String xClientId = getInputDataClientId(pInputDate);
 		//Segundos
 		pWriter.startElement("label", pInputDate);
-			DBSFaces.setAttribute(pWriter, "class", CSS.NOT_SELECTABLE);
-			DBSFaces.setAttribute(pWriter, "for", xClientId + CSS.INPUTDATE.SECOND.trim());
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.NOT_SELECTABLE);
+			DBSFaces.encodeAttribute(pWriter, "for", xClientId + CSS.INPUTDATE.SECOND.trim());
 			pWriter.write(":");
 		pWriter.endElement("label");
 		pWriter.startElement("input", pInputDate);
-			DBSFaces.setAttribute(pWriter, "id", xClientId + CSS.INPUTDATE.SECOND.trim());
-			DBSFaces.setAttribute(pWriter, "name", xClientId + CSS.INPUTDATE.SECOND.trim());
-			DBSFaces.setAttribute(pWriter, "type", "text");
-			DBSFaces.setAttribute(pWriter, "pattern", "[0-9]*");
-			DBSFaces.setAttribute(pWriter, "inputmode", "numeric");
-			DBSFaces.setAttribute(pWriter, "class", CSS.INPUTDATE.SECOND);
-			DBSFaces.setAttribute(pWriter, "style", wWidth2);
-			DBSFaces.setAttribute(pWriter, "size", "2");
-			DBSFaces.setAttribute(pWriter, "maxlength", "2");
-			DBSFaces.setAttribute(pWriter, "value", pInputDate.getSecond(), "");
+			DBSFaces.encodeAttribute(pWriter, "id", xClientId + CSS.INPUTDATE.SECOND.trim());
+			DBSFaces.encodeAttribute(pWriter, "name", xClientId + CSS.INPUTDATE.SECOND.trim());
+			DBSFaces.encodeAttribute(pWriter, "type", "text");
+			DBSFaces.encodeAttribute(pWriter, "pattern", "[0-9]*");
+			DBSFaces.encodeAttribute(pWriter, "inputmode", "numeric");
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.INPUTDATE.SECOND);
+			DBSFaces.encodeAttribute(pWriter, "style", wWidth2);
+			DBSFaces.encodeAttribute(pWriter, "size", "2");
+			DBSFaces.encodeAttribute(pWriter, "maxlength", "2");
+			DBSFaces.encodeAttribute(pWriter, "value", pInputDate.getSecond(), "");
 			pvEncodeAutocompleteAttribute(pInputDate, pWriter);
 			encodeClientBehaviors(pContext, pInputDate);
 		pWriter.endElement("input");
@@ -347,9 +336,9 @@ public class DBSInputDateRenderer extends DBSRenderer {
 		String xClientId = getInputDataClientId(pInputDate);
 		pvEncodeInputDate(pContext, pInputDate, pWriter);
 		pWriter.startElement("label", pInputDate);
-			DBSFaces.setAttribute(pWriter, "class", CSS.NOT_SELECTABLE);
-			DBSFaces.setAttribute(pWriter, "for", xClientId + CSS.INPUTDATE.HOUR.trim());
-			DBSFaces.setAttribute(pWriter, "style", wWidth1);
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.NOT_SELECTABLE);
+			DBSFaces.encodeAttribute(pWriter, "for", xClientId + CSS.INPUTDATE.HOUR.trim());
+			DBSFaces.encodeAttribute(pWriter, "style", wWidth1);
 			pWriter.write(" ");
 		pWriter.endElement("label");
 		pvEncodeInputTime(pContext, pInputDate, pWriter);
@@ -358,7 +347,7 @@ public class DBSInputDateRenderer extends DBSRenderer {
 	private void pvEncodeAutocompleteAttribute(DBSInputDate pInputDate, ResponseWriter pWriter) throws IOException{
 		if (pInputDate.getAutocomplete().equalsIgnoreCase("off") ||
 			pInputDate.getAutocomplete().equalsIgnoreCase("false")){
-			DBSFaces.setAttribute(pWriter, "autocomplete", "off");
+			DBSFaces.encodeAttribute(pWriter, "autocomplete", "off");
 		}			
 	}
 }

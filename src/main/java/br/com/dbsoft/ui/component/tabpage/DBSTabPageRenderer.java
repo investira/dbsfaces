@@ -30,11 +30,6 @@ public class DBSTabPageRenderer extends DBSRenderer {
 //		}
 		
 	}
-
-	@Override 
-	public boolean getRendersChildren() {
-		return true; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
-	}
 	
     @Override
     public void encodeChildren(FacesContext pContext, UIComponent pComponent) throws IOException {
@@ -58,14 +53,14 @@ public class DBSTabPageRenderer extends DBSRenderer {
 //		String xSelectedPage = DBSObject.getNotNull(pContext.getExternalContext().getRequestParameterMap().get(xTab.getInputId(true)), "").toString().toUpperCase();
 		
 		xWriter.startElement("div", xTabPage);
-			DBSFaces.setAttribute(xWriter, "id", xClientId);
-			DBSFaces.setAttribute(xWriter, "name", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
 //			if (xClientId.toUpperCase().equals(xTab.getSelectedTabPage().toUpperCase())
 //			 || xClientId.toUpperCase().equals(xSelectedPage)){
 //				xClass = xClass + " " + CSS.MODIFIER.SELECTED;
 //			}
-			DBSFaces.setAttribute(xWriter, "class", xClass);
-			DBSFaces.setAttribute(xWriter, "style",xTabPage.getStyle());
+			DBSFaces.encodeAttribute(xWriter, "class", xClass);
+			DBSFaces.encodeAttribute(xWriter, "style",xTabPage.getStyle());
 //			encodeClientBehaviors(pContext, xTabPage);
 	}
 	
@@ -78,7 +73,7 @@ public class DBSTabPageRenderer extends DBSRenderer {
 		xWriter.endElement("div"); //Final do Div com o id _content
 		super.encodeEnd(pContext, pComponent);
 		
-		pvEncodeJS(xWriter, pComponent.getClientId());
+		pvEncodeJS(pComponent, xWriter);
 		
 	}
 	
@@ -88,10 +83,10 @@ public class DBSTabPageRenderer extends DBSRenderer {
 	 * @param pClientId
 	 * @throws IOException
 	 */
-	private void pvEncodeJS(ResponseWriter pWriter, String pClientId) throws IOException {
-		DBSFaces.encodeJavaScriptTagStart(pWriter);
+	private void pvEncodeJS(UIComponent pComponent, ResponseWriter pWriter) throws IOException {
+		DBSFaces.encodeJavaScriptTagStart(pComponent, pWriter);
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xTabPageId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " var xTabPageId = dbsfaces.util.jsid('" + pComponent.getClientId() + "'); \n " + 
 				     " dbs_tabPage(xTabPageId); \n" +
                      "}); \n"; 
 		pWriter.write(xJS);

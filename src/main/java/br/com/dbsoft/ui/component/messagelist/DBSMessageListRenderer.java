@@ -43,16 +43,6 @@ public class DBSMessageListRenderer extends DBSRenderer {
 			}
 		}
 	}
-	
-	@Override
-	public boolean getRendersChildren() {
-		return true; // True=Chama o encodeChildren abaixo e interrompe a busca
-						// por filho pela rotina renderChildren
-	}
-
-	@Override
-	public void encodeChildren(FacesContext pContext, UIComponent pComponent) throws IOException {}
-
 
 	@Override
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent) throws IOException {
@@ -71,11 +61,11 @@ public class DBSMessageListRenderer extends DBSRenderer {
 		Integer xNew = 0;
 		//Encode principal
 		xWriter.startElement("div", xMessageList);
-			DBSFaces.setAttribute(xWriter, "id", xClientId);
-			DBSFaces.setAttribute(xWriter, "name", xClientId);
-			DBSFaces.setAttribute(xWriter, "class", xClass);
+			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "class", xClass);
 			if (!DBSObject.isEmpty(xStyle)){
-				DBSFaces.setAttribute(xWriter, "style", xStyle);
+				DBSFaces.encodeAttribute(xWriter, "style", xStyle);
 			}
 
 			//Verica se há mensagem a ser exibida
@@ -101,18 +91,18 @@ public class DBSMessageListRenderer extends DBSRenderer {
 						 }
 					}
 					xWriter.startElement("div", xMessageList);
-						DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
+						DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
 						//Encode do icone principal e o balão com o contador de mensagens
 						xWriter.startElement("div", xMessageList);
-							DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.BUTTON);
+							DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.BUTTON);
 							//Exibe Ícone
 							xWriter.startElement("div", xMessageList);
-								DBSFaces.setAttribute(xWriter, "class", "-i_message");
+								DBSFaces.encodeAttribute(xWriter, "class", "-i_message");
 							xWriter.endElement("div");
 							//Exibe contador de mensagens
 							if (xCount > 0){
 								xWriter.startElement("div", xMessageList);
-									DBSFaces.setAttribute(xWriter, "class", "-count " + " -severity" + xType.getSeverityLevel());
+									DBSFaces.encodeAttribute(xWriter, "class", "-count " + " -severity" + xType.getSeverityLevel());
 									xWriter.write(xCount.toString());
 								xWriter.endElement("div");
 							}
@@ -127,7 +117,7 @@ public class DBSMessageListRenderer extends DBSRenderer {
 		
 		xMessageList.setDeleting(false); //Reset indicador que estava sendo efetuado um delete
 
-		pvEncodeJS(xWriter, xClientId, (xNew > 0 && xType != MESSAGE_TYPE.INFORMATION)); //Emite beep se houver nova mensagem que não seja INFORMATION
+		pvEncodeJS(xMessageList, xWriter, (xNew > 0 && xType != MESSAGE_TYPE.INFORMATION)); //Emite beep se houver nova mensagem que não seja INFORMATION
 	}
 	
 	private void pvEncodeMessageInputFoo(FacesContext pContext, DBSMessageList pMessageList, ResponseWriter pWriter) throws IOException {
@@ -135,13 +125,13 @@ public class DBSMessageListRenderer extends DBSRenderer {
 		String xFooId = pvGetInputFooId(pContext, pMessageList);
 		//Botão que receberá a chave do item selecionado e efetuará o submit posteriormente via chamada por JS.
 		pWriter.startElement("input", pMessageList);
-			DBSFaces.setAttribute(pWriter, "id", xFooId);
-			DBSFaces.setAttribute(pWriter, "name", xFooId);
-			DBSFaces.setAttribute(pWriter, "type", "text");
-			DBSFaces.setAttribute(pWriter, "class", "-foo");
-			DBSFaces.setAttribute(pWriter, "autocomplete", "off");
-			DBSFaces.setAttribute(pWriter, "onclick", DBSFaces.getSubmitString(pMessageList, "", xClientId, xClientId));
-			DBSFaces.setAttribute(pWriter, "value", pMessageList.getMessageKey());
+			DBSFaces.encodeAttribute(pWriter, "id", xFooId);
+			DBSFaces.encodeAttribute(pWriter, "name", xFooId);
+			DBSFaces.encodeAttribute(pWriter, "type", "text");
+			DBSFaces.encodeAttribute(pWriter, "class", "-foo");
+			DBSFaces.encodeAttribute(pWriter, "autocomplete", "off");
+			DBSFaces.encodeAttribute(pWriter, "onclick", DBSFaces.getSubmitString(pMessageList, "", xClientId, xClientId));
+			DBSFaces.encodeAttribute(pWriter, "value", pMessageList.getMessageKey());
 		pWriter.endElement("input");
 	}
 	/**
@@ -157,9 +147,9 @@ public class DBSMessageListRenderer extends DBSRenderer {
 			if (pMessageList.getDeleting()){
 				xClass+= CSS.MODIFIER.OPENED;
 			}
-			DBSFaces.setAttribute(pWriter, "class",  xClass, null);
+			DBSFaces.encodeAttribute(pWriter, "class",  xClass);
 			pWriter.startElement("div", pMessageList);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
 				//Exibe a lista de mensagens em ordem invertida de inclusão(PEPS/LIFO), onde o mais recente é será exibido primeiro;
 				@SuppressWarnings("unchecked")
 				List<IDBSMessage> xMsgs = pMessageList.getValue().getMessages();
@@ -168,31 +158,31 @@ public class DBSMessageListRenderer extends DBSRenderer {
 				for (Integer xI=xMsgs.size()-1; xI!=-1; xI--){
 					xMsg = xMsgs.get(xI);
 					pWriter.startElement("div", pMessageList);
-						DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.MESSAGE + " -severity" + xMsg.getMessageType().getSeverityLevel());
-						DBSFaces.setAttribute(pWriter, "index", xMsg.getMessageKey(), null);
+						DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.MESSAGE + " -severity" + xMsg.getMessageType().getSeverityLevel());
+						DBSFaces.encodeAttribute(pWriter, "index", xMsg.getMessageKey());
 						pWriter.startElement("div", pMessageList);
-							DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
+							DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
 							//Hora da mensagem
 							pWriter.startElement("div", pMessageList);
-								DBSFaces.setAttribute(pWriter, "class", "-time", null);
+								DBSFaces.encodeAttribute(pWriter, "class", "-time");
 								if (xMsg.getMessageTime() !=null){
 									pWriter.write(xMsg.getMessageTime().toLocalTime().toString("HH:mm"));
 								}
 							pWriter.endElement("div");
 							//Texto da mensagem
 							pWriter.startElement("div", pMessageList);
-								DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
+								DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
 								pWriter.write(xMsg.getMessageText());
 							pWriter.endElement("div");
 							if (!pMessageList.getReadOnly()){
 								//Botões
 								pWriter.startElement("div", pMessageList);
-									DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.BUTTON);
+									DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.BUTTON);
 									//Botão de exclusão da mensagem
 									pWriter.startElement("span", pMessageList);
-										DBSFaces.setAttribute(pWriter, "class", "dbs_button ");
+										DBSFaces.encodeAttribute(pWriter, "class", "dbs_button ");
 										pWriter.startElement("span", pMessageList);
-											DBSFaces.setAttribute(pWriter, "class", "-i_delete");
+											DBSFaces.encodeAttribute(pWriter, "class", "-i_delete");
 										pWriter.endElement("span");
 									pWriter.endElement("span");
 								pWriter.endElement("div");
@@ -215,14 +205,14 @@ public class DBSMessageListRenderer extends DBSRenderer {
 	 * @param pBeep Se emite beep
 	 * @throws IOException
 	 */
-	private void pvEncodeJS(ResponseWriter pWriter, String pClientId, Boolean pBeep) throws IOException {
+	private void pvEncodeJS(UIComponent pComponent, ResponseWriter pWriter, Boolean pBeep) throws IOException {
 //		String xBeep = "";
-		DBSFaces.encodeJavaScriptTagStart(pWriter);
+		DBSFaces.encodeJavaScriptTagStart(pComponent, pWriter);
 		if (pBeep){
 			DBSFaces.encodeJavaScriptBeep(pWriter);
 		}
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xMessageListId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " var xMessageListId = dbsfaces.util.jsid('" + pComponent.getClientId() + "'); \n " + 
 				     " dbs_messageList(xMessageListId); \n" +
                      "}); \n"; 
 		pWriter.write(xJS);

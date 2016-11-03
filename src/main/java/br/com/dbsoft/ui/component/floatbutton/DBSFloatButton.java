@@ -58,15 +58,6 @@ public class DBSFloatButton extends DBSUICommand {
 		handleAttribute("iconClass", pIconClass);
 	}	
 	
-	public String getTooltip() {
-		return (String) getStateHelper().eval(PropertyKeys.tooltip, null);
-	}
-	
-	public void setTooltip(String pTooltip) {
-		getStateHelper().put(PropertyKeys.tooltip, pTooltip);
-		handleAttribute("tooltip", pTooltip);
-	}	
-	
 	public void setHorizontal(Boolean pHorizontal) {
 		getStateHelper().put(PropertyKeys.horizontal, pHorizontal);
 		handleAttribute("horizontal", pHorizontal);

@@ -31,17 +31,7 @@ public class DBSInputMaskRenderer extends DBSRenderer {
 	        }
 		}
 	}	
-	
-    @Override
-	public boolean getRendersChildren() {
-		return true; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
-	}
-	
-    @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        //É necessário manter está função para evitar que faça o render dos childrens
-    	//O Render dos childrens é feita do encode
-    }
+
     
 	@Override
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent)
@@ -55,14 +45,14 @@ public class DBSInputMaskRenderer extends DBSRenderer {
 			xClass = xClass + xInputMask.getStyleClass();
 		}
 		xWriter.startElement("div", xInputMask);
-			DBSFaces.setAttribute(xWriter, "id", xClientId);
-			DBSFaces.setAttribute(xWriter, "name", xClientId);
-			DBSFaces.setAttribute(xWriter, "class", xClass);
-			DBSFaces.setAttribute(xWriter, "style", xInputMask.getStyle());
-			DBSFaces.setAttribute(xWriter, "placeHolder", xInputMask.getPlaceHolder());
+			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "class", xClass);
+			DBSFaces.encodeAttribute(xWriter, "style", xInputMask.getStyle());
+			DBSFaces.encodeAttribute(xWriter, "placeHolder", xInputMask.getPlaceHolder());
 			//Container
 			xWriter.startElement("div", xInputMask);
-				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
+				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
 
 					DBSFaces.encodeLabel(pContext, xInputMask, xWriter);
 					pvEncodeInput(pContext, xInputMask, xWriter);
@@ -71,7 +61,7 @@ public class DBSInputMaskRenderer extends DBSRenderer {
 			DBSFaces.encodeTooltip(pContext, xInputMask, xInputMask.getTooltip());
 		xWriter.endElement("div");
 		if (!xInputMask.getReadOnly()){
-			DBSFaces.encodeJavaScriptTagStart(xWriter);
+			DBSFaces.encodeJavaScriptTagStart(pComponent, xWriter);
 			String xJS = "$(document).ready(function() { \n" +
 					     " var xInputMaskId = dbsfaces.util.jsid('" + getInputDataClientId(xInputMask) + "'); \n " + 
 					     " dbs_inputMask(xInputMaskId," + pvGetMaskParm(xInputMask) + "); \n" +
@@ -102,26 +92,26 @@ public class DBSInputMaskRenderer extends DBSRenderer {
 		}else{
 			//Se for somente leitura, gera código como <Span>
 			pWriter.startElement("input", pInputMask);
-				DBSFaces.setAttribute(pWriter, "id", xClientId);
-				DBSFaces.setAttribute(pWriter, "name", xClientId);
+				DBSFaces.encodeAttribute(pWriter, "id", xClientId);
+				DBSFaces.encodeAttribute(pWriter, "name", xClientId);
 				if (pInputMask.getSecret()){
-					DBSFaces.setAttribute(pWriter, "type", "password");
+					DBSFaces.encodeAttribute(pWriter, "type", "password");
 				}else{
-					DBSFaces.setAttribute(pWriter, "type", "text");
+					DBSFaces.encodeAttribute(pWriter, "type", "text");
 				}
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputMask));
-				DBSFaces.setAttribute(pWriter, "style", xStyle);
+				DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputMask));
+				DBSFaces.encodeAttribute(pWriter, "style", xStyle);
 				DBSFaces.setSizeAttributes(pWriter, pInputMask.getMask().length(), null);
 				//Grava a largura do campo
-				DBSFaces.setAttribute(pWriter, "size", pInputMask.getMask().length());
+				DBSFaces.encodeAttribute(pWriter, "size", pInputMask.getMask().length());
 				if (pInputMask.getMaxLength()!=0){
 					if (pInputMask.getMask().length() >  pInputMask.getMaxLength()){
-						DBSFaces.setAttribute(pWriter, "maxlength", pInputMask.getMaxLength());
+						DBSFaces.encodeAttribute(pWriter, "maxlength", pInputMask.getMaxLength());
 					}else{
-						DBSFaces.setAttribute(pWriter, "maxlength", pInputMask.getMask().length());
+						DBSFaces.encodeAttribute(pWriter, "maxlength", pInputMask.getMask().length());
 					}
 				}
-				DBSFaces.setAttribute(pWriter, "value",xValue, "0");
+				DBSFaces.encodeAttribute(pWriter, "value",xValue, "0");
 				encodeClientBehaviors(pContext, pInputMask);
 			pWriter.endElement("input");
 

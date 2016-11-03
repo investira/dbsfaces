@@ -18,22 +18,6 @@ import br.com.dbsoft.util.DBSObject;
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSInclude.RENDERER_TYPE)
 public class DBSIncludeRenderer extends DBSRenderer {
 
-	
-	@Override
-	public boolean getRendersChildren() { //Indica se a rotina abaixo será chamada pelo renderChild
-		return true; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
-	}
-	
-    @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        //É necessário manter está função para evitar que faça o render dos childrens
-    	//O Render dos childrens é feita do encode
-    }
-	@Override
-	public void encodeEnd(FacesContext pContext, UIComponent pComponent)
-			throws IOException {
-	}
-	
 
 	@Override
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent)

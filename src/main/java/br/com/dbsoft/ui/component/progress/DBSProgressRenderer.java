@@ -16,20 +16,10 @@ import br.com.dbsoft.util.DBSNumber;
 public class DBSProgressRenderer extends DBSRenderer {
 	
     @Override
-	public void decode(FacesContext pContext, UIComponent pComponent) {
-	}	
-	
-    @Override
 	public boolean getRendersChildren() {
 		return false; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
 	}
-	
-    @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        //É necessário manter está função para evitar que faça o render dos childrens
-    	//O Render dos childrens é feita do encode
-    }
-    
+
 	@Override
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent)
 			throws IOException {
@@ -43,11 +33,11 @@ public class DBSProgressRenderer extends DBSRenderer {
 		}
 		xWriter.startElement("div", xProgress);
 			if (shouldWriteIdAttribute(pComponent)){
-				DBSFaces.setAttribute(xWriter, "id", xClientId);
-				DBSFaces.setAttribute(xWriter, "name", xClientId);
+				DBSFaces.encodeAttribute(xWriter, "id", xClientId);
+				DBSFaces.encodeAttribute(xWriter, "name", xClientId);
 			}
-			DBSFaces.setAttribute(xWriter, "class", xClass);
-			DBSFaces.setAttribute(xWriter, "style", xProgress.getStyle());
+			DBSFaces.encodeAttribute(xWriter, "class", xClass);
+			DBSFaces.encodeAttribute(xWriter, "style", xProgress.getStyle());
 //				DBSFaces.encodeLabel(pContext, xProgress, xWriter);
 				pvEncodeProgress(xProgress, xWriter);
 			DBSFaces.encodeTooltip(pContext, xProgress, xProgress.getTooltip().toString());
@@ -99,19 +89,19 @@ public class DBSProgressRenderer extends DBSRenderer {
 			xTextLabel = xF.intValue() + "%";
 		}
 		pWriter.startElement("div", pProgress);
-		DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
+		DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
 			pWriter.startElement("div", pProgress);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
-				DBSFaces.setAttribute(pWriter, "style", xStyle, null);
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
+				DBSFaces.encodeAttribute(pWriter, "style", xStyle);
 				pWriter.startElement("div", pProgress);
-					DBSFaces.setAttribute(pWriter, "class", xClassLoading, null);
+					DBSFaces.encodeAttribute(pWriter, "class", xClassLoading);
 				pWriter.endElement("div");
 				pWriter.startElement("div", pProgress);
-					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.VALUE);
-					DBSFaces.setAttribute(pWriter, "style", xValueStyle);
+					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.VALUE);
+					DBSFaces.encodeAttribute(pWriter, "style", xValueStyle);
 				pWriter.endElement("div");
 				pWriter.startElement("div", pProgress);
-					DBSFaces.setAttribute(pWriter, "class", xClassLabel);
+					DBSFaces.encodeAttribute(pWriter, "class", xClassLabel);
 					pWriter.write(xTextLabel);
 				pWriter.endElement("div");
 			pWriter.endElement("div");

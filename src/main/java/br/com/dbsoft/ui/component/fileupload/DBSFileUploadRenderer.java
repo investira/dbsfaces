@@ -33,19 +33,6 @@ public class DBSFileUploadRenderer extends DBSRenderer {
 //        }
 	}	
 
-
-	   
-    @Override
-	public boolean getRendersChildren() {
-		return true; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
-	}
-	
-    @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        //É necessário manter está função para evitar que faça o render dos childrens
-    	//O Render dos childrens é feita do encode
-    }
-    
 	@Override
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent)
 			throws IOException {
@@ -65,14 +52,14 @@ public class DBSFileUploadRenderer extends DBSRenderer {
 		xFileUpload.setTransient(true);
 		
 		xWriter.startElement("div", xFileUpload);
-			DBSFaces.setAttribute(xWriter, "id", xClientId);
-			DBSFaces.setAttribute(xWriter, "name", xClientId);
-			DBSFaces.setAttribute(xWriter, "class", xClass);
-			DBSFaces.setAttribute(xWriter, "style", xFileUpload.getStyle());
+			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "class", xClass);
+			DBSFaces.encodeAttribute(xWriter, "style", xFileUpload.getStyle());
 			encodeClientBehaviors(pContext, xFileUpload);
 			//Container
 			xWriter.startElement("div", xFileUpload);
-				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
+				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
 				
 				pvEncodeToolbar(pContext, xFileUpload, xWriter);
 		
@@ -92,7 +79,7 @@ public class DBSFileUploadRenderer extends DBSRenderer {
 	private void pvEncodeToolbar(FacesContext pContext, DBSFileUpload pFileUpload, ResponseWriter pWriter) throws IOException{
 		//Encode do toolbar
 		pWriter.startElement("div", pFileUpload);
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.TOOLBAR);
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.TOOLBAR);
 			//Botão START
 			DBSButton xButtonStart = (DBSButton) pFileUpload.getFacet("btStart");
 			if (xButtonStart != null){
@@ -108,26 +95,26 @@ public class DBSFileUploadRenderer extends DBSRenderer {
 
 	private void pvEncodeInput(@SuppressWarnings("unused") FacesContext pContext, DBSFileUpload pFileUpload, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("input", pFileUpload);
-			DBSFaces.setAttribute(pWriter, "id", pFileUpload.getClientId().replaceAll(":", "_") + CSS.MODIFIER.INPUT.trim());
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.INPUT);
-			DBSFaces.setAttribute(pWriter, "style", "display:none;");
-			DBSFaces.setAttribute(pWriter, "type", "file");
+			DBSFaces.encodeAttribute(pWriter, "id", pFileUpload.getClientId().replaceAll(":", "_") + CSS.MODIFIER.INPUT.trim());
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.INPUT);
+			DBSFaces.encodeAttribute(pWriter, "style", "display:none;");
+			DBSFaces.encodeAttribute(pWriter, "type", "file");
 			if (pFileUpload.getMultiple()){
-				DBSFaces.setAttribute(pWriter, "multiple", "multiple");
+				DBSFaces.encodeAttribute(pWriter, "multiple", "multiple");
 			}
 			if (!DBSObject.isEmpty(pFileUpload.getAccept())){
-				DBSFaces.setAttribute(pWriter, "accept", pFileUpload.getAccept());
+				DBSFaces.encodeAttribute(pWriter, "accept", pFileUpload.getAccept());
 			}
 			if (!DBSObject.isEmpty(pFileUpload.getMaxSize())){
-				DBSFaces.setAttribute(pWriter, "maxSize", pFileUpload.getMaxSize());
+				DBSFaces.encodeAttribute(pWriter, "maxSize", pFileUpload.getMaxSize());
 			}
 		pWriter.endElement("input");
 	}
 	
 	private void pvEncodeMessage(DBSFileUpload pFileUpload, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("div", pFileUpload);
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.MESSAGE + CSS.BACK_TEXTURE_WHITE_GRADIENT);
-			DBSFaces.setAttribute(pWriter, "style", "display:none;");
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.MESSAGE + CSS.BACK_TEXTURE_WHITE_GRADIENT);
+			DBSFaces.encodeAttribute(pWriter, "style", "display:none;");
 		pWriter.endElement("div");
 	}
 
@@ -141,7 +128,7 @@ public class DBSFileUploadRenderer extends DBSRenderer {
 	private void pvEncodeJS(DBSFileUpload pFileUpload, ResponseWriter pWriter, String pClientId) throws IOException {
 		String xFileUploadServlet = DBSObject.getNotEmpty(pFileUpload.getFileUploadServletPath(), "");
 		
-		DBSFaces.encodeJavaScriptTagStart(pWriter);
+		DBSFaces.encodeJavaScriptTagStart(pFileUpload, pWriter);
 		String xJS = "$(document).ready(function() { \n" +
 				     " var xFileUploadId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
 				     " dbs_fileUpload(xFileUploadId, '" + xFileUploadServlet + "'); \n" +

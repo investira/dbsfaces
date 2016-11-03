@@ -51,17 +51,7 @@ public class DBSInputPhoneRenderer extends DBSRenderer {
 			}
         }
 	}	
-	
-    @Override
-	public boolean getRendersChildren() {
-		return true; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
-	}
-	
-    @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        //É necessário manter está função para evitar que faça o render dos childrens
-    	//O Render dos childrens é feita do encode
-    }
+
     
 	@Override
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent)
@@ -75,13 +65,13 @@ public class DBSInputPhoneRenderer extends DBSRenderer {
 			xClass = xClass + xInputPhone.getStyleClass();
 		}
 		xWriter.startElement("div", xInputPhone);
-			DBSFaces.setAttribute(xWriter, "id", xClientId);
-			DBSFaces.setAttribute(xWriter, "name", xClientId);
-			DBSFaces.setAttribute(xWriter, "class", xClass);
-			DBSFaces.setAttribute(xWriter, "style", xInputPhone.getStyle());
+			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "class", xClass);
+			DBSFaces.encodeAttribute(xWriter, "style", xInputPhone.getStyle());
 			//Container
 			xWriter.startElement("div", xInputPhone);
-				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
+				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
 
 				DBSFaces.encodeLabel(pContext, xInputPhone, xWriter);
 				pvEncodeInput(pContext, xInputPhone, xWriter);
@@ -93,7 +83,7 @@ public class DBSInputPhoneRenderer extends DBSRenderer {
 		xWriter.endElement("div");
 
 		if (!xInputPhone.getReadOnly()){
-			DBSFaces.encodeJavaScriptTagStart(xWriter);
+			DBSFaces.encodeJavaScriptTagStart(pComponent, xWriter);
 			String xJS = "$(document).ready(function() { \n" +
 					     " var xInputPhoneId = dbsfaces.util.jsid('" + xClientId + "'); \n " + 
 					     " dbs_inputPhone(xInputPhoneId); \n" +
@@ -143,7 +133,7 @@ public class DBSInputPhoneRenderer extends DBSRenderer {
 			DBSFaces.encodeInputDataReadOnly(pInputPhone, pWriter, xClientId, false, xValue, xSize, null, xStyle);
 		}else{
 			pWriter.startElement("span", pInputPhone);
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputPhone) + xStyleClass);
+				DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputPhone) + xStyleClass);
 				//Define a largura do campo
 				DBSFaces.setSizeAttributes(pWriter, xSize, null);
 				pvEncodeInputPhone(pContext, pInputPhone, pWriter);
@@ -156,62 +146,62 @@ public class DBSInputPhoneRenderer extends DBSRenderer {
 		//Se for somente leitura, gera código como <Span>
 		if (pInputPhone.getShowDDI()){
 			pWriter.startElement("label", pInputPhone);
-				DBSFaces.setAttribute(pWriter, "class", CSS.NOT_SELECTABLE);
-				DBSFaces.setAttribute(pWriter, "for", xClientId + CSS.INPUTPHONE.DDI.trim());
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.NOT_SELECTABLE);
+				DBSFaces.encodeAttribute(pWriter, "for", xClientId + CSS.INPUTPHONE.DDI.trim());
 				pWriter.write("(");
 			pWriter.endElement("label");
 			pWriter.startElement("input", pInputPhone);
-				DBSFaces.setAttribute(pWriter, "id", xClientId + CSS.INPUTPHONE.DDI.trim());
-				DBSFaces.setAttribute(pWriter, "name", xClientId + CSS.INPUTPHONE.DDI.trim());
-				DBSFaces.setAttribute(pWriter, "type", "tel");
-				DBSFaces.setAttribute(pWriter, "class", CSS.INPUTPHONE.DDI);
-				DBSFaces.setAttribute(pWriter, "style", wWidth3);
-				DBSFaces.setAttribute(pWriter, "size", "3");
-				DBSFaces.setAttribute(pWriter, "maxlength", "3");
-				DBSFaces.setAttribute(pWriter, "value", pInputPhone.getDDI(), "");
+				DBSFaces.encodeAttribute(pWriter, "id", xClientId + CSS.INPUTPHONE.DDI.trim());
+				DBSFaces.encodeAttribute(pWriter, "name", xClientId + CSS.INPUTPHONE.DDI.trim());
+				DBSFaces.encodeAttribute(pWriter, "type", "tel");
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.INPUTPHONE.DDI);
+				DBSFaces.encodeAttribute(pWriter, "style", wWidth3);
+				DBSFaces.encodeAttribute(pWriter, "size", "3");
+				DBSFaces.encodeAttribute(pWriter, "maxlength", "3");
+				DBSFaces.encodeAttribute(pWriter, "value", pInputPhone.getDDI(), "");
 				pvEncodeAutocompleteAttribute(pInputPhone, pWriter);			
 				encodeClientBehaviors(pContext, pInputPhone);
 			pWriter.endElement("input");
 			pWriter.startElement("label", pInputPhone);
-				DBSFaces.setAttribute(pWriter, "class", CSS.NOT_SELECTABLE);
-				DBSFaces.setAttribute(pWriter, "for", xClientId + CSS.INPUTPHONE.DDD.trim());
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.NOT_SELECTABLE);
+				DBSFaces.encodeAttribute(pWriter, "for", xClientId + CSS.INPUTPHONE.DDD.trim());
 				pWriter.write(")");
 			pWriter.endElement("label");
 		}
 		if (pInputPhone.getShowDDD()){
 			pWriter.startElement("label", pInputPhone);
-				DBSFaces.setAttribute(pWriter, "class", CSS.NOT_SELECTABLE);
-				DBSFaces.setAttribute(pWriter, "for", xClientId + CSS.INPUTPHONE.DDD.trim());
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.NOT_SELECTABLE);
+				DBSFaces.encodeAttribute(pWriter, "for", xClientId + CSS.INPUTPHONE.DDD.trim());
 				pWriter.write("(");
 			pWriter.endElement("label");
 			pWriter.startElement("input", pInputPhone);
-				DBSFaces.setAttribute(pWriter, "id", xClientId + CSS.INPUTPHONE.DDD.trim());
-				DBSFaces.setAttribute(pWriter, "name", xClientId + CSS.INPUTPHONE.DDD.trim());
-				DBSFaces.setAttribute(pWriter, "type", "tel");
-				DBSFaces.setAttribute(pWriter, "class", CSS.INPUTPHONE.DDD);
-				DBSFaces.setAttribute(pWriter, "style", wWidth2);
-				DBSFaces.setAttribute(pWriter, "size", "2");
-				DBSFaces.setAttribute(pWriter, "maxlength", "2");
-				DBSFaces.setAttribute(pWriter, "value", pInputPhone.getDDD(), "");
+				DBSFaces.encodeAttribute(pWriter, "id", xClientId + CSS.INPUTPHONE.DDD.trim());
+				DBSFaces.encodeAttribute(pWriter, "name", xClientId + CSS.INPUTPHONE.DDD.trim());
+				DBSFaces.encodeAttribute(pWriter, "type", "tel");
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.INPUTPHONE.DDD);
+				DBSFaces.encodeAttribute(pWriter, "style", wWidth2);
+				DBSFaces.encodeAttribute(pWriter, "size", "2");
+				DBSFaces.encodeAttribute(pWriter, "maxlength", "2");
+				DBSFaces.encodeAttribute(pWriter, "value", pInputPhone.getDDD(), "");
 				pvEncodeAutocompleteAttribute(pInputPhone, pWriter);
 				encodeClientBehaviors(pContext, pInputPhone);
 			pWriter.endElement("input");
 			pWriter.startElement("label", pInputPhone);
-				DBSFaces.setAttribute(pWriter, "class", CSS.NOT_SELECTABLE);
-				DBSFaces.setAttribute(pWriter, "for", xClientId + CSS.INPUTPHONE.NUMBER.trim());
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.NOT_SELECTABLE);
+				DBSFaces.encodeAttribute(pWriter, "for", xClientId + CSS.INPUTPHONE.NUMBER.trim());
 				pWriter.write(")");
 			pWriter.endElement("label");
 		}
 		pWriter.startElement("input", pInputPhone);
-			DBSFaces.setAttribute(pWriter, "id", xClientId + CSS.INPUTPHONE.NUMBER.trim());
-			DBSFaces.setAttribute(pWriter, "name", xClientId + CSS.INPUTPHONE.NUMBER.trim());
-			DBSFaces.setAttribute(pWriter, "placeHolder", pInputPhone.getPlaceHolder());			
-			DBSFaces.setAttribute(pWriter, "type", "tel");
-			DBSFaces.setAttribute(pWriter, "class", CSS.INPUTPHONE.NUMBER);
-			DBSFaces.setAttribute(pWriter, "style", wWidth10);
-			DBSFaces.setAttribute(pWriter, "size", "9");
-			DBSFaces.setAttribute(pWriter, "maxlength", "9");
-			DBSFaces.setAttribute(pWriter, "value", pInputPhone.getNumber(), "");
+			DBSFaces.encodeAttribute(pWriter, "id", xClientId + CSS.INPUTPHONE.NUMBER.trim());
+			DBSFaces.encodeAttribute(pWriter, "name", xClientId + CSS.INPUTPHONE.NUMBER.trim());
+			DBSFaces.encodeAttribute(pWriter, "placeHolder", pInputPhone.getPlaceHolder());			
+			DBSFaces.encodeAttribute(pWriter, "type", "tel");
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.INPUTPHONE.NUMBER);
+			DBSFaces.encodeAttribute(pWriter, "style", wWidth10);
+			DBSFaces.encodeAttribute(pWriter, "size", "9");
+			DBSFaces.encodeAttribute(pWriter, "maxlength", "9");
+			DBSFaces.encodeAttribute(pWriter, "value", pInputPhone.getNumber(), "");
 			pvEncodeAutocompleteAttribute(pInputPhone, pWriter);
 			encodeClientBehaviors(pContext, pInputPhone);
 		pWriter.endElement("input");
@@ -221,7 +211,7 @@ public class DBSInputPhoneRenderer extends DBSRenderer {
 	private void pvEncodeAutocompleteAttribute(DBSInputPhone pInputPhone, ResponseWriter pWriter) throws IOException{
 		if (pInputPhone.getAutocomplete().equalsIgnoreCase("off") ||
 			pInputPhone.getAutocomplete().equalsIgnoreCase("false")){
-			DBSFaces.setAttribute(pWriter, "autocomplete", "off");
+			DBSFaces.encodeAttribute(pWriter, "autocomplete", "off");
 		}			
 	}
 }

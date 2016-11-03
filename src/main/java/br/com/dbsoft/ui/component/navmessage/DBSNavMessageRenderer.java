@@ -62,15 +62,15 @@ public class DBSNavMessageRenderer extends DBSNavRenderer {
 		xMessage = pvGetFacesMessage(pNavMessage);
 		
 		xWriter.startElement("div", pNavMessage);
-			DBSFaces.setAttribute(xWriter, "class", "-divMessage");
+			DBSFaces.encodeAttribute(xWriter, "class", "-divMessage");
 			//Icone da Mensagem
 			xWriter.startElement("div", pNavMessage);
-				DBSFaces.setAttribute(xWriter, "class", "-iconMessage");
+				DBSFaces.encodeAttribute(xWriter, "class", "-iconMessage");
 				pvEncodeIcon(pContext, pNavMessage);
 			xWriter.endElement("div");
 			//Mensagem
 			xWriter.startElement("div", pNavMessage);
-				DBSFaces.setAttribute(xWriter, "class", "-contentMessage");
+				DBSFaces.encodeAttribute(xWriter, "class", "-contentMessage");
 				xWriter.startElement("span", pNavMessage);
 					xWriter.write(xMessage.getSummary());
 				xWriter.endElement("span");
@@ -98,7 +98,7 @@ public class DBSNavMessageRenderer extends DBSNavRenderer {
 		}
 		
 		xWriter.startElement("div", pNavMessage);
-			DBSFaces.setAttribute(xWriter, "class", xClass);
+			DBSFaces.encodeAttribute(xWriter, "class", xClass);
 		xWriter.endElement("div");
 	}
 

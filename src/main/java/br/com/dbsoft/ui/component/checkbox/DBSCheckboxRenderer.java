@@ -31,19 +31,6 @@ public class DBSCheckboxRenderer extends DBSRenderer {
         }
 	}	
 
-
-	   
-    @Override
-	public boolean getRendersChildren() {
-		return true; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
-	}
-	
-    @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        //É necessário manter está função para evitar que faça o render dos childrens
-    	//O Render dos childrens é feita do encode
-    }
-    
 	@Override
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent)
 			throws IOException {
@@ -61,13 +48,13 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 		//xInput.setValueExpression("value", pCheckbox.getValueExpression("value"));
 
 		xWriter.startElement("div", xCheckbox);
-			DBSFaces.setAttribute(xWriter, "id", xClientId);
-			DBSFaces.setAttribute(xWriter, "name", xClientId);
-			DBSFaces.setAttribute(xWriter, "class", xClass);
-			DBSFaces.setAttribute(xWriter, "style", xCheckbox.getStyle());
+			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "class", xClass);
+			DBSFaces.encodeAttribute(xWriter, "style", xCheckbox.getStyle());
 			//Container
 			xWriter.startElement("div", xCheckbox);
-				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
+				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
 				if (!xCheckbox.getInvertLabel()){
 					DBSFaces.encodeLabel(pContext, xCheckbox, xWriter);
 				}
@@ -81,7 +68,7 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 		xWriter.endElement("div");
 		//Javascript
 		if (!xCheckbox.getReadOnly()){
-			pvEncodeJS(xWriter, xClientId);
+			pvEncodeJS(xCheckbox, xWriter);
 		}
 	}
 
@@ -95,20 +82,20 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 		}
 
 		pWriter.startElement("input", pCheckbox); 
-			DBSFaces.setAttribute(pWriter, "id", xClientId);
-			DBSFaces.setAttribute(pWriter, "name", xClientId);
-			DBSFaces.setAttribute(pWriter, "type", "checkbox");
+			DBSFaces.encodeAttribute(pWriter, "id", xClientId);
+			DBSFaces.encodeAttribute(pWriter, "name", xClientId);
+			DBSFaces.encodeAttribute(pWriter, "type", "checkbox");
 			if (pCheckbox.getReadOnly()){
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pCheckbox) + CSS.MODIFIER.DISABLED);
-				DBSFaces.setAttribute(pWriter, "disabled","disabled");
+				DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pCheckbox) + CSS.MODIFIER.DISABLED);
+				DBSFaces.encodeAttribute(pWriter, "disabled","disabled");
 			}else{
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pCheckbox));
+				DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pCheckbox));
 			}
 			if (xOnChange!=null){
-				DBSFaces.setAttribute(pWriter, DBSFaces.HTML.EVENTS.ONCHANGE, xOnChange); 
+				DBSFaces.encodeAttribute(pWriter, DBSFaces.HTML.EVENTS.ONCHANGE, xOnChange); 
 			}
 			if(pvIsChecked(pCheckbox.getValue())) {
-				DBSFaces.setAttribute(pWriter, "checked", "checked");
+				DBSFaces.encodeAttribute(pWriter, "checked", "checked");
 			}
 
 			encodeClientBehaviors(pContext, pCheckbox);
@@ -134,10 +121,10 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 	 * @param pClientId
 	 * @throws IOException
 	 */
-	private void pvEncodeJS(ResponseWriter pWriter, String pClientId) throws IOException {
-		DBSFaces.encodeJavaScriptTagStart(pWriter);
+	private void pvEncodeJS(UIComponent pComponent, ResponseWriter pWriter) throws IOException {
+		DBSFaces.encodeJavaScriptTagStart(pComponent, pWriter);
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xCheckboxId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " var xCheckboxId = dbsfaces.util.jsid('" + pComponent.getClientId() + "'); \n " + 
 				     " dbs_checkbox(xCheckboxId); \n" +
                      "}); \n";
 		pWriter.write(xJS);

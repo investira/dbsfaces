@@ -20,17 +20,6 @@ public class DBSQuickInfoRenderer extends DBSRenderer {
 	}
 
 	@Override
-	public boolean getRendersChildren() {
-		return true; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
-	}
-	
-    @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        //É necessário manter está função para evitar que faça o render dos childrens
-    	//O Render dos childrens é feita do encode
-    }
-	
-	@Override
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent)
 			throws IOException {
 		if (!pComponent.isRendered()){return;}
@@ -47,15 +36,15 @@ public class DBSQuickInfoRenderer extends DBSRenderer {
 			xClass += CSS.THEME.ACTION; //Estilo padrão de botão
 		}
 		xWriter.startElement("div", xQuickInfo);
-			DBSFaces.setAttribute(xWriter, "id", xQuickInfo.getClientId(pContext));
-			DBSFaces.setAttribute(xWriter, "style", xQuickInfo.getStyle());
+			DBSFaces.encodeAttribute(xWriter, "id", xQuickInfo.getClientId(pContext));
+			DBSFaces.encodeAttribute(xWriter, "style", xQuickInfo.getStyle());
 //			DBSFaces.setAttribute(xWriter, "dl", xQuickInfo.getDefaultLocation(), null);
-			DBSFaces.setAttribute(xWriter, "class", xClass);
+			DBSFaces.encodeAttribute(xWriter, "class", xClass);
 			xWriter.startElement("div", xQuickInfo);
-				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.ICON + xQuickInfo.getIconClass());
+				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.ICON + xQuickInfo.getIconClass());
 				encodeClientBehaviors(pContext, xQuickInfo);
 				xWriter.startElement("div", xQuickInfo);
-					DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTENT);
+					DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTENT);
 					//Conteúdo do quickinfo
 					DBSFaces.encodeTooltipQuickInfo(pContext, xQuickInfo, xQuickInfo.getDefaultLocation());
 				xWriter.endElement("div");
@@ -63,7 +52,7 @@ public class DBSQuickInfoRenderer extends DBSRenderer {
 			//Tooltip
 			DBSFaces.encodeTooltip(pContext, pComponent, xQuickInfo.getTooltip());
 		xWriter.endElement("div");
-		pvEncodeJS(xWriter, xQuickInfo.getClientId());
+		pvEncodeJS(xQuickInfo, xWriter);
 	}
 	
 	/**
@@ -72,10 +61,10 @@ public class DBSQuickInfoRenderer extends DBSRenderer {
 	 * @param pClientId
 	 * @throws IOException
 	 */
-	private void pvEncodeJS(ResponseWriter pWriter, String pClientId) throws IOException {
-		DBSFaces.encodeJavaScriptTagStart(pWriter);
+	private void pvEncodeJS(UIComponent pComponent, ResponseWriter pWriter) throws IOException {
+		DBSFaces.encodeJavaScriptTagStart(pComponent, pWriter);
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xQuickInfoId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " var xQuickInfoId = dbsfaces.util.jsid('" + pComponent.getClientId() + "'); \n " + 
 				     " dbs_quickInfo(xQuickInfoId); \n" +
                      "}); \n";
 		pWriter.write(xJS);

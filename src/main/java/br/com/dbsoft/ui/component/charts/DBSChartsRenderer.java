@@ -30,21 +30,6 @@ import br.com.dbsoft.util.DBSObject;
 public class DBSChartsRenderer extends DBSRenderer {
 
 	@Override
-	public void decode(FacesContext pContext, UIComponent pComponent) {
-	}
-
-	@Override
-	public boolean getRendersChildren() {
-		return true; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
-	}
-	
-    @Override
-    public void encodeChildren(FacesContext pContext, UIComponent pComponent) throws IOException {
-        //É necessário manter está função para evitar que faça o render dos childrens
-    	//O Render dos childrens é feita do encode
-    }
-
-	@Override
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent)
 			throws IOException {
 		if (!pComponent.isRendered()){return;}
@@ -84,43 +69,43 @@ public class DBSChartsRenderer extends DBSRenderer {
 
 		String xClientId = xCharts.getClientId(pContext);
 		xWriter.startElement("div", xCharts);
-			DBSFaces.setAttribute(xWriter, "id", xClientId);
-			DBSFaces.setAttribute(xWriter, "name", xClientId);
-			DBSFaces.setAttribute(xWriter, "class", xClass);
-			DBSFaces.setAttribute(xWriter, "style", xCharts.getStyle());
-			DBSFaces.setAttribute(xWriter, "type", xCharts.getType());
-			DBSFaces.setAttribute(xWriter, "groupid", xCharts.getGroupId());
-			DBSFaces.setAttribute(xWriter, "prerender", xPreRender);
+			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "class", xClass);
+			DBSFaces.encodeAttribute(xWriter, "style", xCharts.getStyle());
+			DBSFaces.encodeAttribute(xWriter, "type", xCharts.getType());
+			DBSFaces.encodeAttribute(xWriter, "groupid", xCharts.getGroupId());
+			DBSFaces.encodeAttribute(xWriter, "prerender", xPreRender);
 			if (xCharts.getShowLabel()){
-				DBSFaces.setAttribute(xWriter, "showlabel", xCharts.getShowLabel());
+				DBSFaces.encodeAttribute(xWriter, "showlabel", xCharts.getShowLabel());
 			}
-			DBSFaces.setAttribute(xWriter, "diameter", xCharts.getDiameter());
-			DBSFaces.setAttribute(xWriter, "cx", xCharts.getCenter().getX());
-			DBSFaces.setAttribute(xWriter, "cy", xCharts.getCenter().getY());
+			DBSFaces.encodeAttribute(xWriter, "diameter", xCharts.getDiameter());
+			DBSFaces.encodeAttribute(xWriter, "cx", xCharts.getCenter().getX());
+			DBSFaces.encodeAttribute(xWriter, "cy", xCharts.getCenter().getY());
 			//Salva largura e altura para auxiliar refresh no caso de resize
-			DBSFaces.setAttribute(xWriter, "w", xCharts.getWidth());
-			DBSFaces.setAttribute(xWriter, "h", xCharts.getHeight());
-			DBSFaces.setAttribute(xWriter, "pieip", DBSCharts.PieInternalPadding);
+			DBSFaces.encodeAttribute(xWriter, "w", xCharts.getWidth());
+			DBSFaces.encodeAttribute(xWriter, "h", xCharts.getHeight());
+			DBSFaces.encodeAttribute(xWriter, "pieip", DBSCharts.PieInternalPadding);
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xCharts, DBSPassThruAttributes.getAttributes(Key.CHARTS));
 			
 			//Força para que o encode deste componente seja efetuado após, via chamada ajax.
 			//para que a altura e largura seja cálculada via js e enviada no request ajax.
 //			if (pvEncodeLater(pContext, xCharts)){
     		xWriter.startElement("div", xCharts);
-				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.LOADING);
+				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.LOADING);
 			xWriter.endElement("div");
 			if (xPreRender){
 			}else{
 				pvEncodeContainer(pContext, xCharts, xWriter);
 			}
-			pvEncodeJS(xClientId, xWriter, xPreRender);
+			pvEncodeJS(xCharts, xWriter, xPreRender);
 		xWriter.endElement("div");
 	}
 	
-	private void pvEncodeJS(String pClientId, ResponseWriter pWriter, boolean pPreRender) throws IOException{
-		DBSFaces.encodeJavaScriptTagStart(pWriter);
+	private void pvEncodeJS(UIComponent pComponent, ResponseWriter pWriter, boolean pPreRender) throws IOException{
+		DBSFaces.encodeJavaScriptTagStart(pComponent, pWriter);
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xChartsId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " var xChartsId = dbsfaces.util.jsid('" + pComponent.getClientId() + "'); \n " + 
 				     " dbs_charts(xChartsId," + pPreRender + "); \n" +
                      "}); \n"; 
 		pWriter.write(xJS);
@@ -131,47 +116,47 @@ public class DBSChartsRenderer extends DBSRenderer {
 		encodeClientBehaviors(pContext, pCharts);
 		//CONTAINER--------------------------
 		pWriter.startElement("div", pCharts);
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER + "-hide");
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER + "-hide");
 
 			//CAPTION--------------------------
 			if (pCharts.getCaption() !=null){
 				pWriter.startElement("div", pCharts);
-					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CAPTION + CSS.THEME.CAPTION + CSS.NOT_SELECTABLE);
+					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CAPTION + CSS.THEME.CAPTION + CSS.NOT_SELECTABLE);
 					pWriter.write(pCharts.getCaption());
 				pWriter.endElement("div");
 			}
 
 			//DATA--------------------------
 			pWriter.startElement("div", pCharts);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.DATA);
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.DATA);
 				//CONTAINER--------------------------
 				pWriter.startElement("svg", pCharts);
 					DBSFaces.encodeSVGNamespaces(pWriter);
-					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
-					DBSFaces.setAttribute(pWriter, "width", pCharts.getWidth());
-					DBSFaces.setAttribute(pWriter, "height", pCharts.getHeight() - pCharts.getCaptionHeight() - pCharts.getFooterHeight());
+					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
+					DBSFaces.encodeAttribute(pWriter, "width", pCharts.getWidth());
+					DBSFaces.encodeAttribute(pWriter, "height", pCharts.getHeight() - pCharts.getCaptionHeight() - pCharts.getFooterHeight());
 					//Defs
 					pvEncodeDefs(pCharts, pWriter);
 					
 					//CONTENT--------------------------
 					pWriter.startElement("g", pCharts);
-						DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
+						DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
 						//LABELS QUANDO HOUVER MAIS DE UM GRÁFICO--------------------------
 						boolean xHasLabel= pvEncodeChartCaptions(pCharts, pWriter);
 						//LEFT--------------------------
 						pWriter.startElement("g", pCharts);
-							DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.LEFT);
+							DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LEFT);
 						pWriter.endElement("g");
 						
 						//VALUE--------------------------
 						pWriter.startElement("g", pCharts);
-							DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.VALUE);
+							DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.VALUE);
 							//Linhas do grid
 							pWriter.startElement("g", pCharts);
 								//ATENÇÃO:Não retirar os trim() desta class( CSS.CHARTS.MAIN.trim() + CSS.MODIFIER.GRID.trim())
-								DBSFaces.setAttribute(pWriter, "class", CSS.CHARTS.MAIN.trim() + CSS.MODIFIER.GRID.trim());
+								DBSFaces.encodeAttribute(pWriter, "class", CSS.CHARTS.MAIN.trim() + CSS.MODIFIER.GRID.trim());
 								if (pCharts.getShowDelta()){ 
-									DBSFaces.setAttribute(pWriter, "showdelta", pCharts.getShowDelta());
+									DBSFaces.encodeAttribute(pWriter, "showdelta", pCharts.getShowDelta());
 								}
 								pvEncodeLines(pCharts, pWriter, !xHasLabel);
 							pWriter.endElement("g");
@@ -181,7 +166,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 						
 						//RIGHT--------------------------
 						pWriter.startElement("g", pCharts);
-							DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.RIGHT);
+							DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.RIGHT);
 						pWriter.endElement("g");
 					pWriter.endElement("g");
 				pWriter.endElement("svg");
@@ -190,7 +175,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 			//FOOTER--------------------------
 			if (pCharts.getFooter() !=null){
 				pWriter.startElement("div", pCharts);
-					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.FOOTER);
+					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.FOOTER);
 					pWriter.write(pCharts.getFooter());
 				pWriter.endElement("div");
 			}
@@ -207,7 +192,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 		boolean xHasLabels = false;
 		if (pCharts.getItensCount() > 1){
 			pWriter.startElement("g", pCharts);
-			DBSFaces.setAttribute(pWriter, "class", "-captions");
+			DBSFaces.encodeAttribute(pWriter, "class", "-captions");
 			for (UIComponent xObject:pCharts.getChildren()){
 				if (xObject instanceof DBSChart){
 					DBSChart xChart = (DBSChart) xObject;
@@ -227,8 +212,8 @@ public class DBSChartsRenderer extends DBSRenderer {
 		Double xWidth = DBSNumber.divide(pCharts.getWidth(), pCharts.getChildCount()).doubleValue();
 		Double xX = xWidth * (pChart.getIndex() - 1);
 		pWriter.startElement("g", pCharts);
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + CSS.THEME.FC);
-			DBSFaces.setAttribute(pWriter, "chartid", pChart.getClientId());
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + CSS.THEME.FC);
+			DBSFaces.encodeAttribute(pWriter, "chartid", pChart.getClientId());
 				DBSFaces.encodeSVGRect(pCharts, 
 									   pWriter, 
 									   xX.toString(), 

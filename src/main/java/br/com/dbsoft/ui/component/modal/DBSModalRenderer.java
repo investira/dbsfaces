@@ -19,22 +19,6 @@ import br.com.dbsoft.util.DBSObject;
 public class DBSModalRenderer extends DBSRenderer {
 
 	@Override
-	public void decode(FacesContext pContext, UIComponent pComponent) {
-	}
-
-	@Override
-	public boolean getRendersChildren() {
-		return true;//True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
-	}
-	
-    @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        //É necessário manter está função para evitar que faça o render dos childrens
-    	//O Render dos childrens é feita do encode
-    }
-	
-
-	@Override
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent)
 			throws IOException {
 		if (!pComponent.isRendered()){return;}
@@ -67,19 +51,19 @@ public class DBSModalRenderer extends DBSRenderer {
 	
 		//Mascará de fundo
 		xWriter.startElement("div", xModal);
-			DBSFaces.setAttribute(xWriter, "id", xClientId);
-			DBSFaces.setAttribute(xWriter, "name", xClientId);
-			DBSFaces.setAttribute(xWriter, "class", xClass);
+			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "class", xClass);
 			//MODAL
 			xWriter.startElement("div", xModal);
 				xClass = "-modal ";
 				if (xModal.getStyleClass()!=null){
 					xClass += xModal.getStyleClass();
 				}
-				DBSFaces.setAttribute(xWriter, "class", xClass); 
-				DBSFaces.setAttribute(xWriter, "style", xStyle);
+				DBSFaces.encodeAttribute(xWriter, "class", xClass); 
+				DBSFaces.encodeAttribute(xWriter, "style", xStyle);
 				xWriter.startElement("div", xModal);
-					DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER); 
+					DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER); 
 
 					pvEncodeTable(pContext, xWriter, xModal);
 				
@@ -87,7 +71,7 @@ public class DBSModalRenderer extends DBSRenderer {
 
 			xWriter.endElement("div");	
 			//Javascript 
-			DBSFaces.encodeJavaScriptTagStart(xWriter);
+			DBSFaces.encodeJavaScriptTagStart(pComponent, xWriter);
 			String xJS = "$(document).ready(function() { \n" +
 					     " var xModalId = dbsfaces.util.jsid('" + xClientId + "'); \n " + 
 					     " dbs_modal(xModalId); \n" +
@@ -104,8 +88,8 @@ public class DBSModalRenderer extends DBSRenderer {
 
 	private void pvEncodeTable(FacesContext pContext, ResponseWriter pWriter, DBSModal pModal) throws IOException{
 		pWriter.startElement("table", pModal);
-			DBSFaces.setAttribute(pWriter, "cellspacing", "0px", null);
-			DBSFaces.setAttribute(pWriter, "cellpadding", "0px", null);
+			DBSFaces.encodeAttribute(pWriter, "cellspacing", "0px");
+			DBSFaces.encodeAttribute(pWriter, "cellpadding", "0px");
 			
 			//HEADER
 			pWriter.startElement("thead", pModal);
@@ -149,11 +133,11 @@ public class DBSModalRenderer extends DBSRenderer {
 
 		if (xCaption!=null){
 			pWriter.startElement("tr", pModal);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CAPTION + CSS.BACK_TEXTURE_BLACK_GRADIENT);
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CAPTION + CSS.BACK_TEXTURE_BLACK_GRADIENT);
 				pWriter.startElement("th", pModal);
-					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
+					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
 					pWriter.startElement("div", pModal);
-						DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.LABEL + CSS.NOT_SELECTABLE);
+						DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LABEL + CSS.NOT_SELECTABLE);
 						pWriter.write(xCaption);
 					pWriter.endElement("div");
 				pWriter.endElement("th");
@@ -172,9 +156,9 @@ public class DBSModalRenderer extends DBSRenderer {
 		UIComponent xToolbar = pModal.getFacet("toolbar");
 		if (xToolbar!=null){
 			pWriter.startElement("tr", pModal);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.TOOLBAR + CSS.BACK_TEXTURE_WHITE_TRANSPARENT);
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.TOOLBAR + CSS.BACK_TEXTURE_WHITE_TRANSPARENT);
 				pWriter.startElement("th", pModal);
-					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
+					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
 					//Conteúdo
 					xToolbar.encodeAll(pContext);
 				pWriter.endElement("th");
@@ -200,25 +184,25 @@ public class DBSModalRenderer extends DBSRenderer {
 			}else{
 				xClass += CSS.BACK_TEXTURE_BLACK_GRADIENT;
 			}
-			DBSFaces.setAttribute(pWriter, "class",xClass, null);
+			DBSFaces.encodeAttribute(pWriter, "class",xClass);
 			pWriter.startElement("td", pModal);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
 				pWriter.startElement("table", pModal);
-					DBSFaces.setAttribute(pWriter, "cellspacing", "0px");
-					DBSFaces.setAttribute(pWriter, "cellpadding", "0px");
+					DBSFaces.encodeAttribute(pWriter, "cellspacing", "0px");
+					DBSFaces.encodeAttribute(pWriter, "cellpadding", "0px");
 					pWriter.startElement("tbody", pModal);
 						pWriter.startElement("tr", pModal);
 		//					pWriter.writeAttribute("class", CSS.MODIFIER.CONTENT, null);
 							//Icone da mensagem
 							if (xMT != null){
 								pWriter.startElement("td", pModal);
-									DBSFaces.setAttribute(pWriter, "colspan", 0, null);
-									DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON);
+									DBSFaces.encodeAttribute(pWriter, "colspan", 0);
+									DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.ICON);
 		//							pWriter.startElement("div", pDialog);
 		//								pWriter.writeAttribute("class", CSS.MODIFIER.CONTAINER, null);
 													pWriter.startElement("div", pModal);
-														DBSFaces.setAttribute(pWriter, "id", xIconId);
-														DBSFaces.setAttribute(pWriter, "class", xMT.getIconClass());
+														DBSFaces.encodeAttribute(pWriter, "id", xIconId);
+														DBSFaces.encodeAttribute(pWriter, "class", xMT.getIconClass());
 														DBSFaces.encodeTooltip(pContext, pModal, pModal.getTooltip(), xIconId);
 													pWriter.endElement("div");
 		//							pWriter.endElement("div");
@@ -226,10 +210,10 @@ public class DBSModalRenderer extends DBSRenderer {
 							}
 							//Conteúdo do modal/mensagem
 							pWriter.startElement("td", pModal);
-								DBSFaces.setAttribute(pWriter, "colspan", 0);
-								DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
+								DBSFaces.encodeAttribute(pWriter, "colspan", 0);
+								DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
 								pWriter.startElement("div", pModal);
-									DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
+									DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
 									DBSFaces.renderChildren(pContext, pModal);
 								pWriter.endElement("div");
 							pWriter.endElement("td");
@@ -256,20 +240,20 @@ public class DBSModalRenderer extends DBSRenderer {
 			return;
 		}
 		pWriter.startElement("tr", pModal);
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.FOOTER + CSS.BACK_TEXTURE_BLACK);
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.FOOTER + CSS.BACK_TEXTURE_BLACK);
 			//Linha horizontal-------------
 
 			//Conteudo-------------
 			pWriter.startElement("td", pModal);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
 				//Linha horizontal-------------
 				pWriter.startElement("span", pModal);
-					DBSFaces.setAttribute(pWriter, "class", " -line -horizontalLineAfter -black");
+					DBSFaces.encodeAttribute(pWriter, "class", " -line -horizontalLineAfter -black");
 				pWriter.endElement("span");
 					//Botoes padrão ----------------
 					if (pvHasFooterAction(pModal)){
 						pWriter.startElement("div", pModal);
-							DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.BUTTON);
+							DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.BUTTON);
 							if (!DBSObject.isEmpty(pModal.getNoAction())){
 								pvEncodeButton(pContext,pModal,pModal.getNoAction(),"btno", "Não","-i_no -red");
 							}
@@ -284,7 +268,7 @@ public class DBSModalRenderer extends DBSRenderer {
 					//Footer do usuário ----------------
 					if (xFooter!=null){
 						pWriter.startElement("div", pModal);
-							DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
+							DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
 							xFooter.encodeAll(pContext);
 						pWriter.endElement("div");
 					}

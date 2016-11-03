@@ -33,17 +33,6 @@ public class DBSInputTextAreaRenderer extends DBSRenderer {
 
 	}	
 	
-    @Override
-	public boolean getRendersChildren() {
-		return true; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
-	}
-	
-    @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        //É necessário manter está função para evitar que faça o render dos childrens
-    	//O Render dos childrens é feita do encode
-    }
-    
 	@Override
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent)
 			throws IOException {
@@ -56,13 +45,13 @@ public class DBSInputTextAreaRenderer extends DBSRenderer {
 			xClass = xClass + xInputTextArea.getStyleClass();
 		}
 		xWriter.startElement("div", xInputTextArea);
-			DBSFaces.setAttribute(xWriter, "id", xClientId);
-			DBSFaces.setAttribute(xWriter, "name", xClientId);
-			DBSFaces.setAttribute(xWriter, "class", xClass);
-			DBSFaces.setAttribute(xWriter, "style", xInputTextArea.getStyle());
+			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "class", xClass);
+			DBSFaces.encodeAttribute(xWriter, "style", xInputTextArea.getStyle());
 			//Container
 			xWriter.startElement("div", xInputTextArea);
-				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
+				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
 	
 					DBSFaces.encodeLabel(pContext, xInputTextArea, xWriter);
 					pvEncodeInput(pContext, xInputTextArea, xWriter);
@@ -102,19 +91,19 @@ public class DBSInputTextAreaRenderer extends DBSRenderer {
 			DBSFaces.encodeInputDataReadOnly(pInputTextArea, pWriter, xClientId, true, xValue, pInputTextArea.getCols(), pInputTextArea.getRows(), xStyle);
 		}else{
 			pWriter.startElement("textarea ", pInputTextArea);
-				DBSFaces.setAttribute(pWriter, "id", xClientId);
-				DBSFaces.setAttribute(pWriter, "name", xClientId);
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputTextArea));
-				DBSFaces.setAttribute(pWriter, "style", xStyle);
-				DBSFaces.setAttribute(pWriter, "placeHolder", pInputTextArea.getPlaceHolder());
+				DBSFaces.encodeAttribute(pWriter, "id", xClientId);
+				DBSFaces.encodeAttribute(pWriter, "name", xClientId);
+				DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputTextArea));
+				DBSFaces.encodeAttribute(pWriter, "style", xStyle);
+				DBSFaces.encodeAttribute(pWriter, "placeHolder", pInputTextArea.getPlaceHolder());
 				DBSFaces.setSizeAttributes(pWriter, pInputTextArea.getCols(), pInputTextArea.getRows());
-				DBSFaces.setAttribute(pWriter, "cols", pInputTextArea.getCols());
-				DBSFaces.setAttribute(pWriter, "rows", pInputTextArea.getRows());
+				DBSFaces.encodeAttribute(pWriter, "cols", pInputTextArea.getCols());
+				DBSFaces.encodeAttribute(pWriter, "rows", pInputTextArea.getRows());
 				if (pInputTextArea.getResize()){
-					DBSFaces.setAttribute(pWriter, "resize", pInputTextArea.getResize());
+					DBSFaces.encodeAttribute(pWriter, "resize", pInputTextArea.getResize());
 				}
 				if (pInputTextArea.getMaxLength()!=0){
-					DBSFaces.setAttribute(pWriter, "maxlength", pInputTextArea.getMaxLength());
+					DBSFaces.encodeAttribute(pWriter, "maxlength", pInputTextArea.getMaxLength());
 				}			
 				pWriter.write(DBSObject.getNotNull(xValue,""));
 				encodeClientBehaviors(pContext, pInputTextArea);

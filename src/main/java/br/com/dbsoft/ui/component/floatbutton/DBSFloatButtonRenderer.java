@@ -39,18 +39,6 @@ public class DBSFloatButtonRenderer extends DBSRenderer {
     }
 
 	@Override
-	public boolean getRendersChildren() {
-		return true; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
-	}
-	
-    @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        //É necessário manter está função para evitar que faça o render dos childrens
-    	//O Render dos childrens é feita do encode
-    }
-
-	
-	@Override
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent) throws IOException {
 		if (!pComponent.isRendered()){return;}
 		DBSFloatButton xFloatButton = (DBSFloatButton) pComponent;
@@ -67,8 +55,8 @@ public class DBSFloatButtonRenderer extends DBSRenderer {
 		xWriter.startElement("div", xFloatButton);
 		xWriter.writeAttribute("id", xClientId, "id");
 		xWriter.writeAttribute("name", xClientId, "name");
-		DBSFaces.setAttribute(xWriter, "class", xClass, null);
-		DBSFaces.setAttribute(xWriter, "style",xFloatButton.getStyle(), null);
+		DBSFaces.encodeAttribute(xWriter, "class", xClass);
+		DBSFaces.encodeAttribute(xWriter, "style",xFloatButton.getStyle());
 		
 		//BOTÃO FLUTUANTE PRINCIPAL
 		DBSButton xBotaoPrincipal = new DBSButton();
@@ -80,14 +68,14 @@ public class DBSFloatButtonRenderer extends DBSRenderer {
 		//MENU FLUTUANTE
 		xWriter.startElement("div", xFloatButton);
 		xWriter.writeAttribute("id", "floatMenu", "id");
-		DBSFaces.setAttribute(xWriter, "class", "dbs_menu dbs_not_selectable dbs_floatMenu_location"+xFloatButton.getDefaultLocation(), null);
+		DBSFaces.encodeAttribute(xWriter, "class", "dbs_menu dbs_not_selectable dbs_floatMenu_location"+xFloatButton.getDefaultLocation());
 			xWriter.startElement("ul", xFloatButton);
 			if (xFloatButton.getHorizontal()) {
 				//Menu na Horizontal
-				DBSFaces.setAttribute(xWriter, "class", "-content dbs_floatMenu_horizontal dbs_floatMenu_horizontal_location"+xFloatButton.getDefaultLocation(), null); 
+				DBSFaces.encodeAttribute(xWriter, "class", "-content dbs_floatMenu_horizontal dbs_floatMenu_horizontal_location"+xFloatButton.getDefaultLocation()); 
 			} else {
 				//Menu na Vertical
-				DBSFaces.setAttribute(xWriter, "class", "-content dbs_floatMenu_vertical", null);
+				DBSFaces.encodeAttribute(xWriter, "class", "-content dbs_floatMenu_vertical");
 			}
 				//MENUITEM FILHOS DO FLOATBUTTON
 				for (UIComponent xMenuItem:pComponent.getChildren()) {
@@ -101,7 +89,7 @@ public class DBSFloatButtonRenderer extends DBSRenderer {
 		
 		DBSFaces.encodeTooltip(pContext, xFloatButton, xFloatButton.getTooltip());
 		xWriter.endElement("div");
-		pvEncodeJS(xWriter, xClientId);
+		pvEncodeJS(xFloatButton, xWriter);
 	}
 	
 	/**
@@ -110,8 +98,8 @@ public class DBSFloatButtonRenderer extends DBSRenderer {
 	 * @param pClientId
 	 * @throws IOException
 	 */
-	private void pvEncodeJS(ResponseWriter pWriter, String pClientId) throws IOException {
-		DBSFaces.encodeJavaScriptTagStart(pWriter);
+	private void pvEncodeJS(UIComponent pComponent, ResponseWriter pWriter) throws IOException {
+		DBSFaces.encodeJavaScriptTagStart(pComponent, pWriter);
 		String xJS = 
 		" function dbsOpenCloseFloatMenu() { "+
 			" var xButtons = document.getElementsByClassName('dbs_floatmenuitem'); "+

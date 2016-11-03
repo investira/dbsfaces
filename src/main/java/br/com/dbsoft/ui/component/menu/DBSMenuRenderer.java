@@ -17,21 +17,6 @@ import br.com.dbsoft.ui.core.DBSFaces.CSS;
 public class DBSMenuRenderer extends DBSRenderer {
 
 	@Override
-	public void decode(FacesContext pContext, UIComponent pComponent) {
-	}
-	
-	@Override //True=Informa que este componente chamará o render dos filhos
-	public boolean getRendersChildren() {
-		return true; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
-	}
-	
-    @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        //É necessário manter está função para evitar que faça o render dos childrens
-    	//O Render dos childrens é feita do encode
-    }
-	
-	@Override
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent)
 			throws IOException {
 		if (!pComponent.isRendered()){return;}
@@ -47,23 +32,23 @@ public class DBSMenuRenderer extends DBSRenderer {
 		}
 		
 		xWriter.startElement("div", xMenu);
-			DBSFaces.setAttribute(xWriter, "id", xClientId);
-			DBSFaces.setAttribute(xWriter, "name", xClientId);
-			DBSFaces.setAttribute(xWriter, "style", xMenu.getStyle());
-			DBSFaces.setAttribute(xWriter, "class", xClass);
-			DBSFaces.setAttribute(xWriter, "type", xType.getCode());
+			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "style", xMenu.getStyle());
+			DBSFaces.encodeAttribute(xWriter, "class", xClass);
+			DBSFaces.encodeAttribute(xWriter, "type", xType.getCode());
 			xWriter.startElement("ul", xMenu);
-				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTENT);
+				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTENT);
 				DBSFaces.renderChildren(pContext, xMenu);
 			xWriter.endElement("ul");
-			pvEncodeJS(xClientId, xWriter);
+			pvEncodeJS(xMenu, xWriter);
 		xWriter.endElement("div");
 	}
 	
-	private void pvEncodeJS(String pClientId, ResponseWriter pWriter) throws IOException{
-		DBSFaces.encodeJavaScriptTagStart(pWriter);
+	private void pvEncodeJS(UIComponent pComponent, ResponseWriter pWriter) throws IOException{
+		DBSFaces.encodeJavaScriptTagStart(pComponent, pWriter);
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xMenuId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " var xMenuId = dbsfaces.util.jsid('" + pComponent.getClientId() + "'); \n " + 
 				     " dbs_menu(xMenuId); \n" +
                      "}); \n"; 
 		pWriter.write(xJS);

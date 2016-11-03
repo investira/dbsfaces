@@ -36,6 +36,17 @@ public class DBSRenderer extends Renderer {
 	
 	protected static final Param[] EMPTY_PARAMS = new Param[0];
 	
+	@Override
+	public boolean getRendersChildren() {
+		return true; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
+	}
+	
+    @Override
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        //É necessário manter está função para evitar que faça o render dos childrens
+    	//O Render dos childrens é feita do encode
+    }
+    
 	protected void renderChildren(FacesContext pFacesContext, UIComponent pComponent, int pNivel) throws IOException {
 		if (pNivel!=-1){  //pNivel = -1, desabilita a exibição da árvore do render no system.out
 			System.out.println(DBSString.repeat(" ", pNivel) + pComponent.getClass().getSimpleName() + ":"  + "render          INI:" + pComponent.getClientId() + "----------------------------------");
@@ -49,8 +60,7 @@ public class DBSRenderer extends Renderer {
 		}
 	}
 
-	
-	
+
 //	protected void renderChild(FacesContext pFacesContext, UIComponent pChild) throws IOException {
 //		renderChild(pFacesContext, pChild, 0);
 //	}
@@ -342,23 +352,6 @@ public class DBSRenderer extends Renderer {
 
     // --------------------------------------------------------- Private Methods
 
-    protected boolean wasClicked(FacesContext context,
-                                 UIComponent component,
-                                 String clientId) {
-
-        Map<String,String> requestParamMap =
-              context.getExternalContext().getRequestParameterMap();
-
-        if (clientId == null) {
-            clientId = component.getClientId(context);
-        }
-
-        // Fire an action event if we've had a traditional (non-Ajax)
-        // postback, or if we've had a partial or behavior-based postback.
-        return (requestParamMap.containsKey(clientId) ||
-                RenderKitUtils.isPartialOrBehaviorAction(context, clientId));
-    }
-    
     /**
      * Collections parameters for use with Behavior script rendering.
      * Similar to getParamList(), but returns a collection of 
@@ -399,7 +392,19 @@ public class DBSRenderer extends Renderer {
     }
     
         
-	
+    protected boolean wasClicked(FacesContext pContext, UIComponent pComponent, String pClientId) {
+		
+		Map<String,String> xRequestParamMap = pContext.getExternalContext().getRequestParameterMap();
+		
+		if (pClientId == null) {
+			pClientId = pComponent.getClientId(pContext);
+		}
+		
+		// Fire an action event if we've had a traditional (non-Ajax)
+		// postback, or if we've had a partial or behavior-based postback.
+		return (xRequestParamMap.containsKey(pClientId)
+			 || RenderKitUtils.isPartialOrBehaviorAction(pContext, pClientId));
+	}
     
 //	protected void renderPassThruAttributes(FacesContext pFacesContext, UIComponent pComponent, String pVar, String[] pAttrs) throws IOException {
 //		ResponseWriter xWriter = pFacesContext.getResponseWriter();

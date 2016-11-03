@@ -18,19 +18,6 @@ import br.com.dbsoft.util.DBSObject;
 public abstract class DBSNavBaseRenderer extends DBSRenderer {
 	
 	@Override
-	public void decode(FacesContext pContext, UIComponent pComponent) {
-	}
-
-	@Override
-	public boolean getRendersChildren() {
-		return true; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
-	}
-	
-    @Override
-    public void encodeChildren(FacesContext pContext, UIComponent pComponent) throws IOException {
-    }
-
-	@Override
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent) throws IOException {
 		if (!pComponent.isRendered()){return;}
 		
@@ -51,21 +38,21 @@ public abstract class DBSNavBaseRenderer extends DBSRenderer {
 		
 		String xClientId = xNav.getClientId(pContext);
 		xWriter.startElement("div", xNav);
-			DBSFaces.setAttribute(xWriter, "id", xClientId);
-			DBSFaces.setAttribute(xWriter, "name", xClientId);
-			DBSFaces.setAttribute(xWriter, "class", xClass);
-			DBSFaces.setAttribute(xWriter, "style", xNav.getStyle());
-			DBSFaces.setAttribute(xWriter, "timeout", xNav.getCloseTimeout());
-			DBSFaces.setAttribute(xWriter, "opened", (xNav.getOpened() ? "true" : "false"));
+			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "class", xClass);
+			DBSFaces.encodeAttribute(xWriter, "style", xNav.getStyle());
+			DBSFaces.encodeAttribute(xWriter, "timeout", xNav.getCloseTimeout());
+			DBSFaces.encodeAttribute(xWriter, "opened", (xNav.getOpened() ? "true" : "false"));
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xNav, DBSPassThruAttributes.getAttributes(Key.NAV));
 			xWriter.startElement("div", xNav);
-				DBSFaces.setAttribute(xWriter, "style", "opacity:0", null); //Inicia escondido para ser exibido após a execução do JS
-				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
+				DBSFaces.encodeAttribute(xWriter, "style", "opacity:0", null); //Inicia escondido para ser exibido após a execução do JS
+				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
 				//Icon
 				pvEncodeIcon(xNav, xWriter);
 				//Mask
 				xWriter.startElement("div", xNav);
-					DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.MASK + CSS.THEME.BC + CSS.THEME.INVERT);
+					DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.MASK + CSS.THEME.BC + CSS.THEME.INVERT);
 				xWriter.endElement("div");
 				//Nav
 				pvEncodeNavBegin(xNav, pContext, xWriter);
@@ -73,18 +60,18 @@ public abstract class DBSNavBaseRenderer extends DBSRenderer {
 	
 	private void pvEncodeNavBegin(DBSNavBase pNav, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("div", pNav);
-			DBSFaces.setAttribute(pWriter, "class", "-nav" + CSS.THEME.FC + CSS.THEME.BC + pNav.getContentStyleClass() + CSS.MODIFIER.CLOSED, null); //(pNav.getOpened() ? CSS.MODIFIER.OPENED : CSS.MODIFIER.CLOSED)
+			DBSFaces.encodeAttribute(pWriter, "class", "-nav" + CSS.THEME.FC + CSS.THEME.BC + pNav.getContentStyleClass() + CSS.MODIFIER.CLOSED); //(pNav.getOpened() ? CSS.MODIFIER.OPENED : CSS.MODIFIER.CLOSED)
 			//Header
 			pvEncodeHeader(pNav, pContext, pWriter);
 			//Nav
 			pWriter.startElement("div", pNav);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER, null);
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
 				pWriter.startElement("div", pNav);
-					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT, null);
+					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
 					pWriter.startElement("div", pNav);
 						pWriter.startElement("nav", pNav);
 //							DBSFaces.setAttribute(pWriter, "class", pNav.getContentStyleClass(), null);
-							DBSFaces.setAttribute(pWriter, "style", "padding:" + pNav.getContentPadding(), null);
+							DBSFaces.encodeAttribute(pWriter, "style", "padding:" + pNav.getContentPadding());
 							//Encode dos conteúdo
 							DBSFaces.renderChildren(pContext, pNav);
 	}
@@ -111,15 +98,15 @@ public abstract class DBSNavBaseRenderer extends DBSRenderer {
 				//FAZ O ENCODE FINAL
 				pvEncodeNavEnd(xNav, pContext, xWriter);
 				xWriter.endElement("div");
-			pvEncodeJS(xNav.getClientId(pContext), xWriter);
+			pvEncodeJS(xNav, xWriter);
 		xWriter.endElement("div");
 	}
 	
 	private void pvEncodeIcon(DBSNavBase pNav, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("div", pNav);
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON + CSS.THEME.ACTION);
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.ICON + CSS.THEME.ACTION);
 			pWriter.startElement("div", pNav);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + pNav.getIconClass() + CSS.MODIFIER.INHERIT);
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + pNav.getIconClass() + CSS.MODIFIER.INHERIT);
 			pWriter.endElement("div");
 		pWriter.endElement("div");
 	}
@@ -130,10 +117,10 @@ public abstract class DBSNavBaseRenderer extends DBSRenderer {
 			if (xHeader == null){return;}
 		}
 		pWriter.startElement("div", pNav);
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.HEADER);
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.HEADER);
 			pWriter.startElement("div", pNav);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
-				DBSFaces.setAttribute(pWriter, "style", pvGetPaddingHeader(pNav));
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
+				DBSFaces.encodeAttribute(pWriter, "style", pvGetPaddingHeader(pNav));
 				//Encode do botão fechar para nav centralizado
 				pvEncodeCloseButton(pNav, pWriter);
 				//Encode o conteudo do Header definido no FACET HEADER
@@ -149,7 +136,7 @@ public abstract class DBSNavBaseRenderer extends DBSRenderer {
 //		String xClass = CSS.THEME.ACTION;
 		String xClass = "";
 		pWriter.startElement("div", pNav);
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICONCLOSE);
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.ICONCLOSE);
 			pWriter.startElement("div", pNav);
 //				DBSFaces.setAttribute(pWriter, "class", "-i_cancel");
 				if (xLocation.getIsVertical()){
@@ -165,7 +152,7 @@ public abstract class DBSNavBaseRenderer extends DBSRenderer {
 						xClass += "-i_navigate_down";
 					}
 				}
-				DBSFaces.setAttribute(pWriter, "class", xClass);
+				DBSFaces.encodeAttribute(pWriter, "class", xClass);
 			pWriter.endElement("div");
 		pWriter.endElement("div");
 	}
@@ -174,9 +161,9 @@ public abstract class DBSNavBaseRenderer extends DBSRenderer {
 		//Faz o encode apenas se for nav centralizado
 		if (DBSObject.isEqual(pNav.getLocation(), "c")) {
 			pWriter.startElement("div", pNav);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.ICON + CSS.THEME.ACTION + " -iconcloseCentral");
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.ICON + CSS.THEME.ACTION + " -iconcloseCentral");
 				pWriter.startElement("div", pNav);
-					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + " -i_cancel " + CSS.MODIFIER.INHERIT);
+					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + " -i_cancel " + CSS.MODIFIER.INHERIT);
 				pWriter.endElement("div");
 			pWriter.endElement("div");
 		}
@@ -186,19 +173,19 @@ public abstract class DBSNavBaseRenderer extends DBSRenderer {
 		UIComponent xFooter = pNav.getFacet(DBSNavBase.FACET_FOOTER);
 		if (xFooter == null){return;}
 		pWriter.startElement("div", pNav);
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.FOOTER);
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.FOOTER);
 			pWriter.startElement("div", pNav);
-				DBSFaces.setAttribute(pWriter, "style", pvGetPaddingFooter(pNav));
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
+				DBSFaces.encodeAttribute(pWriter, "style", pvGetPaddingFooter(pNav));
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
 				xFooter.encodeAll(pContext);
 			pWriter.endElement("div");
 		pWriter.endElement("div");
 	}
 	
-	private void pvEncodeJS(String pClientId, ResponseWriter pWriter) throws IOException{
-		DBSFaces.encodeJavaScriptTagStart(pWriter);
+	private void pvEncodeJS(DBSNavBase pNav, ResponseWriter pWriter) throws IOException{
+		DBSFaces.encodeJavaScriptTagStart(pNav, pWriter);
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xNavId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " var xNavId = dbsfaces.util.jsid('" + pNav.getClientId() + "'); \n " + 
 				     " dbs_nav(xNavId); \n" +
                      "}); \n"; 
 		pWriter.write(xJS);
@@ -208,7 +195,7 @@ public abstract class DBSNavBaseRenderer extends DBSRenderer {
 	private void pvEncodeProgressTimeout(DBSNavBase pNav, ResponseWriter pWriter) throws IOException {
 		if (DBSNumber.toInteger(pNav.getCloseTimeout()) > 0) {
 			pWriter.startElement("div", pNav);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.PROGRESS_TIMEOUT + CSS.THEME.BC, null);
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.PROGRESS_TIMEOUT + CSS.THEME.BC);
 			pWriter.endElement("div");
 		}
 	}

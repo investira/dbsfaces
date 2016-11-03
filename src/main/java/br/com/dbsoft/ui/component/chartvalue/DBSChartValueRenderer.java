@@ -31,24 +31,6 @@ import br.com.dbsoft.util.DBSString;
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSChartValue.RENDERER_TYPE)
 public class DBSChartValueRenderer extends DBSRenderer {
 	
-//	private static double w2PI = Math.PI * 2;
-//	private String wFillColor;
-	
-	@Override
-	public void decode(FacesContext pContext, UIComponent pComponent) {
-	}
-
-	@Override
-	public boolean getRendersChildren() {
-		return true; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
-	}
-	
-    @Override
-    public void encodeChildren(FacesContext pContext, UIComponent pComponent) throws IOException {
-        //É necessário manter está função para evitar que faça o render dos childrens
-    	//O Render dos childrens é feita do encode
-    }
-
 	@Override
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent) throws IOException {
 		if (!pComponent.isRendered()){return;}
@@ -92,13 +74,13 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		xPercValue = pvCalcPercValue(xChart, xChartValue);
 
 		xWriter.startElement("g", xChartValue);
-			DBSFaces.setAttribute(xWriter, "id", xClientId);
-			DBSFaces.setAttribute(xWriter, "index", xChartValue.getIndex());
-			DBSFaces.setAttribute(xWriter, "class", xClass);
-			DBSFaces.setAttribute(xWriter, "style", xChartValue.getStyle());
-			DBSFaces.setAttribute(xWriter, "value", DBSNumber.toDouble(xChartValue.getValue(), 0D, Locale.US));
-			DBSFaces.setAttribute(xWriter, "perc", DBSNumber.toDouble(xPercValue, 0D, Locale.US));
-			DBSFaces.setAttribute(xWriter, "label", xChartValue.getLabel(), "");
+			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "index", xChartValue.getIndex());
+			DBSFaces.encodeAttribute(xWriter, "class", xClass);
+			DBSFaces.encodeAttribute(xWriter, "style", xChartValue.getStyle());
+			DBSFaces.encodeAttribute(xWriter, "value", DBSNumber.toDouble(xChartValue.getValue(), 0D, Locale.US));
+			DBSFaces.encodeAttribute(xWriter, "perc", DBSNumber.toDouble(xPercValue, 0D, Locale.US));
+			DBSFaces.encodeAttribute(xWriter, "label", xChartValue.getLabel(), "");
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xChartValue, DBSPassThruAttributes.getAttributes(Key.DIV));
 			//Grafico
 			if (xType != null){
@@ -110,7 +92,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 				}
 			}
 			encodeClientBehaviors(pContext, xChartValue);
-			pvEncodeJS(xClientId, xWriter);
+			pvEncodeJS(xChartValue, xWriter);
 		xWriter.endElement("g");
 //		xChartValue.setSavedState(xChartValue.saveState(pContext));
 	}
@@ -219,8 +201,8 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		}
 		//Encode Dados
 		pWriter.startElement("g", pChartValue);
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.INFO);
-			DBSFaces.setAttribute(pWriter, "fill", pChartValue.getDBSColor().toHSLA(), null);
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.INFO);
+			DBSFaces.encodeAttribute(pWriter, "fill", pChartValue.getDBSColor().toHSLA());
 			//Encode do valor da linha ---------------------------------------------------------------------
 			pvEncodeText(pChartValue, 
 						 DBSFormat.getFormattedNumber(DBSObject.getNotNull(pChartValue.getDisplayValue(), pChartValue.getValue()), NUMBER_SIGN.MINUS_PREFIX, pCharts.getValueFormatMask()), 
@@ -235,10 +217,10 @@ public class DBSChartValueRenderer extends DBSRenderer {
 				pWriter.startElement("g", pChartValue);
 //					Double xHeight = (pCharts.getHeight().doubleValue() + 2);
 					Double xHeight = (pCharts.getHeight().doubleValue() - pCharts.getTopHeight() - pCharts.getBottomHeight() + 2);
-					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.LABEL + "-hide");
+					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LABEL + "-hide");
 					 //atributos X e Y somente para informar os valores para posicionamento que será efetivamente efetuado via JS com transform:translate
-					DBSFaces.setAttribute(pWriter, "x",  xXText.doubleValue());
-					DBSFaces.setAttribute(pWriter, "y",  xHeight);
+					DBSFaces.encodeAttribute(pWriter, "x",  xXText.doubleValue());
+					DBSFaces.encodeAttribute(pWriter, "y",  xHeight);
 //					DBSFaces.setAttribute(pWriter, "transform-origin", xXText.doubleValue() + "px " + xHeight + "px 0px");
 //					DBSFaces.setAttribute(pWriter, "style", "transform: translate3d(" + xXText.doubleValue() + "px, " + xHeight + "px, 0px)");
 					pvEncodeText(pChartValue, 
@@ -343,9 +325,9 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			Double xAlturaUnitaria = DBSNumber.divide(pCharts.getDiameter() - pCharts.getPadding(), pCharts.getChartValueItensCount()).doubleValue();
 			Double xFontSize = Math.min(xAlturaUnitaria * .8D, 20); //Tamanho será 80% da altura da linha, com o máximo 20px;
 			pWriter.startElement("g", pChartValue);
-				DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.INFO + xClass);
-				DBSFaces.setAttribute(pWriter, "globalindex", pChartValue.getGlobalIndex());
-				DBSFaces.setAttribute(pWriter, "style", "stroke:" + pChartValue.getDBSColor().toHSLA() + "; font-size:" + xFontSize + "px");
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.INFO + xClass);
+				DBSFaces.encodeAttribute(pWriter, "globalindex", pChartValue.getGlobalIndex());
+				DBSFaces.encodeAttribute(pWriter, "style", "stroke:" + pChartValue.getDBSColor().toHSLA() + "; font-size:" + xFontSize + "px");
 				
 				//Ponto pequeno no centro e na tangente do arco	
 				DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xPoint.getX(), xPoint.getY(), "2px", "2px", CSS.MODIFIER.POINT, null, "fill=" + pChartValue.getDBSColor().toHSLA());
@@ -399,12 +381,12 @@ public class DBSChartValueRenderer extends DBSRenderer {
 
 		DBSColor xInvertColor = pChartValue.getDBSColor().invertLightness();
 		pWriter.startElement("g", pChartValue);
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.VALUE);
-			DBSFaces.setAttribute(pWriter, "x", xPointLabel.getX());
-			DBSFaces.setAttribute(pWriter, "y", xPointLabel.getY());
-			DBSFaces.setAttribute(pWriter, "style", "transform: translate(" + xPointLabel.getX() + "px," + xPointLabel.getY() + "px)");
-			DBSFaces.setAttribute(pWriter, "fill", xInvertColor.toHSLA());
-			DBSFaces.setAttribute(pWriter, "dy", ".35em");
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.VALUE);
+			DBSFaces.encodeAttribute(pWriter, "x", xPointLabel.getX());
+			DBSFaces.encodeAttribute(pWriter, "y", xPointLabel.getY());
+			DBSFaces.encodeAttribute(pWriter, "style", "transform: translate(" + xPointLabel.getX() + "px," + xPointLabel.getY() + "px)");
+			DBSFaces.encodeAttribute(pWriter, "fill", xInvertColor.toHSLA());
+			DBSFaces.encodeAttribute(pWriter, "dy", ".35em");
 			//Background do percentual. Dimensão será calculada via JS para considerar o tamanho do fonte.
 			xPath = new StringBuilder();
 			DBSFaces.encodeSVGPath(pChartValue, pWriter, xPath.toString(), "-box", null, "fill=" + pChartValue.getDBSColor().toHSLA());
@@ -471,21 +453,21 @@ public class DBSChartValueRenderer extends DBSRenderer {
 	private void pvEncodeTooptip(DBSChartValue pChartValue, Double pX, Double pY, String pClienteId, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 		if (DBSObject.isEmpty(pChartValue.getTooltip())){return;}
 		pWriter.startElement("foreignObject", pChartValue);
-			DBSFaces.setAttribute(pWriter, "xmlns","http://www.w3.org/1999/xhtml");
-			DBSFaces.setAttribute(pWriter, "id", pClienteId + "_tooltip");
-			DBSFaces.setAttribute(pWriter, "class", "-foreignobject");
-			DBSFaces.setAttribute(pWriter, "x", pX + "px");
-			DBSFaces.setAttribute(pWriter, "y", pY + "px");
-			DBSFaces.setAttribute(pWriter, "width", ".5");
-			DBSFaces.setAttribute(pWriter, "height", ".5");
+			DBSFaces.encodeAttribute(pWriter, "xmlns","http://www.w3.org/1999/xhtml");
+			DBSFaces.encodeAttribute(pWriter, "id", pClienteId + "_tooltip");
+			DBSFaces.encodeAttribute(pWriter, "class", "-foreignobject");
+			DBSFaces.encodeAttribute(pWriter, "x", pX + "px");
+			DBSFaces.encodeAttribute(pWriter, "y", pY + "px");
+			DBSFaces.encodeAttribute(pWriter, "width", ".5");
+			DBSFaces.encodeAttribute(pWriter, "height", ".5");
 			DBSFaces.encodeTooltip(pContext, pChartValue, 1, pChartValue.getTooltip(), pClienteId + "_tooltip", null);
 		pWriter.endElement("foreignObject");
 	}
 
-	private void pvEncodeJS(String pClientId, ResponseWriter pWriter) throws IOException{
-		DBSFaces.encodeJavaScriptTagStart(pWriter);
+	private void pvEncodeJS(UIComponent pComponent, ResponseWriter pWriter) throws IOException{
+		DBSFaces.encodeJavaScriptTagStart(pComponent, pWriter);
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xChartValueId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " var xChartValueId = dbsfaces.util.jsid('" + pComponent.getClientId() + "'); \n " + 
 				     " dbs_chartValue(xChartValueId); \n" +
                      "}); \n"; 
 		pWriter.write(xJS);

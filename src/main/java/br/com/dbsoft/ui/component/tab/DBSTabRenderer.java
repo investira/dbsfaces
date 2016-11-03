@@ -32,18 +32,6 @@ public class DBSTabRenderer extends DBSRenderer {
 		}
 	}
 
-	@Override 
-	public boolean getRendersChildren() {
-		return true; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
-	}
-	
-    @Override
-    public void encodeChildren(FacesContext pContext, UIComponent pComponent) throws IOException {
-    	//É necessário manter está função para evitar que faça o render dos childrens
-    	//O Render dos childrens é feita do encode
-    }
-    
-
 	
 	@Override
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent)
@@ -71,19 +59,19 @@ public class DBSTabRenderer extends DBSRenderer {
 		}
 		
 		xWriter.startElement("div", xTab);
-			xWriter.writeAttribute("id", xClientId, null);
-			xWriter.writeAttribute("name", xClientId, null);
-			xWriter.writeAttribute("class", xClass.trim(), null);
+			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "class", xClass);
 			if (!xTab.getShowTabPageOnClick()){
-				xWriter.writeAttribute("showTabPageOnClick", "false", null);
+				DBSFaces.encodeAttribute(xWriter, "showTabPageOnClick", "false");
 			}
-			DBSFaces.setAttribute(xWriter, "style", xTab.getStyle(), null);
+			DBSFaces.encodeAttribute(xWriter, "style", xTab.getStyle());
 			//Container
 			xWriter.startElement("div", xTab);
-				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
+				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
 				//Abas com os título ========================================================================
 				xWriter.startElement("div", xTab);
-					DBSFaces.setAttribute(xWriter, "class", "-tabs");
+					DBSFaces.encodeAttribute(xWriter, "class", "-tabs");
 //					for (int xI=xTab.getChildren().size()-1; xI >= 0; xI--){
 					for (int xI=0; xI <= xTab.getChildren().size()-1; xI++){	
 						if (xTab.getChildren().get(xI) instanceof DBSTabPage){
@@ -93,10 +81,10 @@ public class DBSTabRenderer extends DBSRenderer {
 									String xPageId = xPage.getAttributes().get("id").toString();
 									String xPageClientId = xClientId + DBSFaces.ID_SEPARATOR + xPageId;
 
-									DBSFaces.setAttribute(xWriter, "id", xPageClientId + "_aba");
-									DBSFaces.setAttribute(xWriter, "name", xPageClientId + "_aba");
-									DBSFaces.setAttribute(xWriter, "class", "-tab" + DBSFaces.CSS.THEME.FC + DBSFaces.CSS.THEME.INVERT);	
-									DBSFaces.setAttribute(xWriter, "tabPage", xPageClientId);
+									DBSFaces.encodeAttribute(xWriter, "id", xPageClientId + "_aba");
+									DBSFaces.encodeAttribute(xWriter, "name", xPageClientId + "_aba");
+									DBSFaces.encodeAttribute(xWriter, "class", "-tab" + DBSFaces.CSS.THEME.FC + DBSFaces.CSS.THEME.INVERT);	
+									DBSFaces.encodeAttribute(xWriter, "tabPage", xPageClientId);
 									
 									encodeClientBehaviors(pContext, xPage);
 									
@@ -115,23 +103,23 @@ public class DBSTabRenderer extends DBSRenderer {
 									
 									xWriter.startElement("a", xTab);
 										if (xPage.getAjax()){
-											xWriter.writeAttribute("style", "opacity:0.2", null);
+											DBSFaces.encodeAttribute(xWriter, "style", "opacity:0.2");
 										}
 	//									xWriter.writeAttribute("ontouchstart", "javascript:void(0)", "ontouchstart"); //Para ipad ativar o css:ACTIVE
 	//									xWriter.writeAttribute("href", "#", "href"); //Para ipad ativar o css:ACTIVE
 										xWriter.startElement("span", xTab);
-											DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.ICON + CSS.NOT_SELECTABLE + xPage.getIconClass());
+											DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.ICON + CSS.NOT_SELECTABLE + xPage.getIconClass());
 										xWriter.endElement("span");
 										xWriter.startElement("span", xTab);
-											DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CAPTION + CSS.NOT_SELECTABLE);
+											DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CAPTION + CSS.NOT_SELECTABLE);
 											xWriter.write(xPage.getCaption());
 										xWriter.endElement("span");
 									xWriter.endElement("a");
 									if (xPage.getAjax()){
 										xWriter.startElement("span", xTab);
-											DBSFaces.setAttribute(xWriter, "class", "loading_container");
+											DBSFaces.encodeAttribute(xWriter, "class", "loading_container");
 											xWriter.startElement("span", xTab);
-												DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.LOADING);
+												DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.LOADING);
 											xWriter.endElement("span");
 										xWriter.endElement("span");
 									}
@@ -143,9 +131,9 @@ public class DBSTabRenderer extends DBSRenderer {
 				
 				//Conteúdo da páginas ======================================================================================
 				xWriter.startElement("div", xTab);
-					DBSFaces.setAttribute(xWriter, "class", "-tabPage");
+					DBSFaces.encodeAttribute(xWriter, "class", "-tabPage");
 					xWriter.startElement("div", xTab);
-						DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTENT);
+						DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTENT);
 
 						//Input para salvar a pagina selecionada ====================================================
 						HtmlInputHidden xInput = (HtmlInputHidden) xTab.getFacet("input");
@@ -186,7 +174,7 @@ public class DBSTabRenderer extends DBSRenderer {
 				DBSTabPage xPage = (DBSTabPage) xTab.getChildren().get(xI);
 				if (xPage.isRendered()){
 					if (xPage.getAjax()){
-						DBSFaces.encodeJavaScriptTagStart(xWriter);
+						DBSFaces.encodeJavaScriptTagStart(pComponent, xWriter);
 						String xJS = "setTimeout(function(){" +
 										"dbsfaces.ajax.request('" + xPage.getClientId() + "_aba" + "', '" + xTab.getInputId(true) + "', '" + xPage.getClientId() + "', dbsfaces.onajax, dbsfaces.onajaxerror);" +
 										"}, 0);";
@@ -200,7 +188,7 @@ public class DBSTabRenderer extends DBSRenderer {
 			}
 		}
 
-		pvEncodeJS(xWriter, xClientId);
+		pvEncodeJS(pComponent, xWriter);
 	}
 	
 	/**
@@ -209,10 +197,10 @@ public class DBSTabRenderer extends DBSRenderer {
 	 * @param pClientId
 	 * @throws IOException
 	 */
-	private void pvEncodeJS(ResponseWriter pWriter, String pClientId) throws IOException {
-		DBSFaces.encodeJavaScriptTagStart(pWriter);
+	private void pvEncodeJS(UIComponent pComponent, ResponseWriter pWriter) throws IOException {
+		DBSFaces.encodeJavaScriptTagStart(pComponent, pWriter);
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xTabId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " var xTabId = dbsfaces.util.jsid('" + pComponent.getClientId() + "'); \n " + 
 				     " dbs_tab(xTabId); \n" +
                      "}); \n"; 
 		pWriter.write(xJS);

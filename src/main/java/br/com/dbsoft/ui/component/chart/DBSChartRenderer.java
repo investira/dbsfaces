@@ -29,22 +29,6 @@ import br.com.dbsoft.util.DBSObject;
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSChart.RENDERER_TYPE)
 public class DBSChartRenderer extends DBSRenderer {
 
-	
-	@Override
-	public void decode(FacesContext pContext, UIComponent pComponent) {
-	}
-
-	@Override
-	public boolean getRendersChildren() {
-		return true; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
-	}
-	
-    @Override
-    public void encodeChildren(FacesContext pContext, UIComponent pComponent) throws IOException {
-        //É necessário manter está função para evitar que faça o render dos childrens
-    	//O Render dos childrens é feita do encode
-    }
-
 	@Override
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent) throws IOException {
 		if (!pComponent.isRendered()){return;}
@@ -67,20 +51,20 @@ public class DBSChartRenderer extends DBSRenderer {
 		String xClientId = xChart.getClientId(pContext);
 
 		xWriter.startElement("g", xChart);
-			DBSFaces.setAttribute(xWriter, "id", xClientId);
-			DBSFaces.setAttribute(xWriter, "name", xClientId);
-			DBSFaces.setAttribute(xWriter, "class", xClass);
-			DBSFaces.setAttribute(xWriter, "style", xChart.getStyle());
-			DBSFaces.setAttribute(xWriter, "index", xChart.getIndex());
-			DBSFaces.setAttribute(xWriter, "type", xCharts.getType());
-			DBSFaces.setAttribute(xWriter, "cs", xChart.getColumnScale());
-			DBSFaces.setAttribute(xWriter, "bc", DBSFaces.calcChartFillcolor(xChart.getDBSColor(), xCharts.getItensCount(), xChart.getItensCount(), xChart.getIndex(), xChart.getItensCount()));
+			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "class", xClass);
+			DBSFaces.encodeAttribute(xWriter, "style", xChart.getStyle());
+			DBSFaces.encodeAttribute(xWriter, "index", xChart.getIndex());
+			DBSFaces.encodeAttribute(xWriter, "type", xCharts.getType());
+			DBSFaces.encodeAttribute(xWriter, "cs", xChart.getColumnScale());
+			DBSFaces.encodeAttribute(xWriter, "bc", DBSFaces.calcChartFillcolor(xChart.getDBSColor(), xCharts.getItensCount(), xChart.getItensCount(), xChart.getIndex(), xChart.getItensCount()));
 			if (xType == TYPE.LINE
 			 || xType == TYPE.PIE){
 				if (xChart.getShowDelta()){ //Artificio para padronizar o false como não existindo o atributo(comportamento do chrome)
-					DBSFaces.setAttribute(xWriter, "showdelta", xChart.getShowDelta());
+					DBSFaces.encodeAttribute(xWriter, "showdelta", xChart.getShowDelta());
 					if(xChart.getShowDeltaList()){
-						DBSFaces.setAttribute(xWriter, "showdeltalist", xChart.getShowDeltaList());
+						DBSFaces.encodeAttribute(xWriter, "showdeltalist", xChart.getShowDeltaList());
 					}
 				}
 			}
@@ -103,7 +87,7 @@ public class DBSChartRenderer extends DBSRenderer {
 				pvEncodeResultSetChartValue(pContext, xChart, xWriter);
 			}
 
-			pvEncodeJS(xClientId, xDeltaList, xWriter);
+			pvEncodeJS(xChart, xDeltaList, xWriter);
 			
 		xWriter.endElement("g");
 	}
@@ -118,7 +102,7 @@ public class DBSChartRenderer extends DBSRenderer {
 		if (!pChart.getShowDelta()){return null;}
 		List<IDBSChartDelta> xDeltaList = null;
 		pWriter.startElement("g", pChart);
-			DBSFaces.setAttribute(pWriter, "class", "-delta");
+			DBSFaces.encodeAttribute(pWriter, "class", "-delta");
 			pvEncodeDeltaInfo(pCharts, pChart, pType, pWriter);
 			if (pType == TYPE.PIE){
 				pvEncodePieDeltaTextPaths(pCharts, pChart, pWriter);
@@ -143,13 +127,13 @@ public class DBSChartRenderer extends DBSRenderer {
 		}
 		Double xFontSize = 0D;
 		pWriter.startElement("g", xChart);
-			DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.INFO);
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.INFO);
 			if (pType == TYPE.PIE){
 				xFontSize = xCharts.getPieChartWidth() * .70;
 			}else if (pType == TYPE.LINE){
 				xFontSize = xCharts.getDiameter() / 4;
 			}
-			DBSFaces.setAttribute(pWriter, "font-size", xFontSize.floatValue() + "px");
+			DBSFaces.encodeAttribute(pWriter, "font-size", xFontSize.floatValue() + "px");
 		pWriter.endElement("g");
 	}
 
@@ -172,7 +156,7 @@ public class DBSChartRenderer extends DBSRenderer {
 		xChartsWidth = pCharts.getChartWidth() + pCharts.getPadding();
 		xChartsHeight = pCharts.getChartHeight() + pCharts.getPadding();
 		pWriter.startElement("g", pChart);
-			DBSFaces.setAttribute(pWriter, "class", "-path");
+			DBSFaces.encodeAttribute(pWriter, "class", "-path");
 			//Area que irá captura o mousemove
 			DBSFaces.encodeSVGRect(pChart, pWriter, pCharts.getPadding() / 2D, pCharts.getPadding() / 2D, xChartsWidth.toString(), xChartsHeight.toString(), CSS.MODIFIER.MASK, null, null);
 		pWriter.endElement("g");
@@ -218,15 +202,15 @@ public class DBSChartRenderer extends DBSRenderer {
 		}
 		//Encode do foreignObject que conterá os botões
 		pWriter.startElement("foreignObject", pChart);
-			DBSFaces.setAttribute(pWriter, "xmlns","http://www.w3.org/1999/xhtml");
-			DBSFaces.setAttribute(pWriter, "id", pChart.getClientId() + "_deltalist");
-			DBSFaces.setAttribute(pWriter, "class", "-deltaList -foreignobject");
-			DBSFaces.setAttribute(pWriter, "x", pCharts.getPadding() + "px");
-			DBSFaces.setAttribute(pWriter, "y", ((pCharts.getPadding() * 2) + pCharts.getChartHeight()) + "px");
-			DBSFaces.setAttribute(pWriter, "width", pCharts.getChartWidth());
-			DBSFaces.setAttribute(pWriter, "height", "1.7em");
+			DBSFaces.encodeAttribute(pWriter, "xmlns","http://www.w3.org/1999/xhtml");
+			DBSFaces.encodeAttribute(pWriter, "id", pChart.getClientId() + "_deltalist");
+			DBSFaces.encodeAttribute(pWriter, "class", "-deltaList -foreignobject");
+			DBSFaces.encodeAttribute(pWriter, "x", pCharts.getPadding() + "px");
+			DBSFaces.encodeAttribute(pWriter, "y", ((pCharts.getPadding() * 2) + pCharts.getChartHeight()) + "px");
+			DBSFaces.encodeAttribute(pWriter, "width", pCharts.getChartWidth());
+			DBSFaces.encodeAttribute(pWriter, "height", "1.7em");
 			pWriter.startElement("div", pChart);
-				DBSFaces.setAttribute(pWriter, "class", "-container");
+				DBSFaces.encodeAttribute(pWriter, "class", "-container");
 				xDeltaListContent.encodeAll(pContext);
 			pWriter.endElement("div");
 		pWriter.endElement("foreignObject");
@@ -271,12 +255,12 @@ public class DBSChartRenderer extends DBSRenderer {
 		DBSFaces.encodeSVGPath(pChart, pWriter, xPath.toString(), "-path" + pSide, null, "id=" + pvGetDeltaPathId(pChart, pSide) + "; fill=none;");
 	}
 	
-	private void pvEncodeJS(String pClientId, List<IDBSChartDelta> pDeltaList, ResponseWriter pWriter) throws IOException{
-		DBSFaces.encodeJavaScriptTagStart(pWriter);
+	private void pvEncodeJS(UIComponent pComponent, List<IDBSChartDelta> pDeltaList, ResponseWriter pWriter) throws IOException{
+		DBSFaces.encodeJavaScriptTagStart(pComponent, pWriter);
 		Gson xDeltaListJson = new Gson();
 //		xDeltaListJson.toJson(pChart.getDeltaList());
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xChartId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " var xChartId = dbsfaces.util.jsid('" + pComponent.getClientId() + "'); \n " + 
 				     " dbs_chart(xChartId, " + xDeltaListJson.toJsonTree(pDeltaList, List.class) + "); \n" +
                      "}); \n"; 
 		pWriter.write(xJS); 

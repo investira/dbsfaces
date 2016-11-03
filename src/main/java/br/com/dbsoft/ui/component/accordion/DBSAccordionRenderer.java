@@ -18,21 +18,6 @@ import br.com.dbsoft.ui.core.DBSFaces.CSS;
 public class DBSAccordionRenderer extends DBSRenderer {
 
 	@Override
-	public void decode(FacesContext pContext, UIComponent pComponent) {
-	}
-	
-	@Override //True=Informa que este componente chamará o render dos filhos
-	public boolean getRendersChildren() {
-		return true; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
-	}
-	
-    @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        //É necessário manter está função para evitar que faça o render dos childrens
-    	//O Render dos childrens é feita do encode
-    }
-	
-	@Override
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent)
 			throws IOException {
 		if (!pComponent.isRendered()){return;}
@@ -62,36 +47,36 @@ public class DBSAccordionRenderer extends DBSRenderer {
 		
 		if (xAccordionSection.size() > 0){
 			xWriter.startElement("div", xAccordion);
-				DBSFaces.setAttribute(xWriter, "id", xClientId);
-				DBSFaces.setAttribute(xWriter, "name", xClientId);
-				DBSFaces.setAttribute(xWriter, "class", xClass);
-				DBSFaces.setAttribute(xWriter, "style", xAccordion.getStyle());
+				DBSFaces.encodeAttribute(xWriter, "id", xClientId);
+				DBSFaces.encodeAttribute(xWriter, "name", xClientId);
+				DBSFaces.encodeAttribute(xWriter, "class", xClass);
+				DBSFaces.encodeAttribute(xWriter, "style", xAccordion.getStyle());
 				for (int xX=0; xX<xAccordionSection.size(); xX++){
 					/*section*/
 					xWriter.startElement("div", xAccordion);
-						DBSFaces.setAttribute(xWriter, "class", CSS.ACCORDION.SECTION + CSS.MODIFIER.NORMAL);
+						DBSFaces.encodeAttribute(xWriter, "class", CSS.ACCORDION.SECTION + CSS.MODIFIER.NORMAL);
 						xWriter.startElement("div", xAccordion);
 							/*header*/
 							xWriter.startElement("div", xAccordion);
-								DBSFaces.setAttribute(xWriter, "class", CSS.ACCORDION.SECTION_CAPTION + CSS.NOT_SELECTABLE);
+								DBSFaces.encodeAttribute(xWriter, "class", CSS.ACCORDION.SECTION_CAPTION + CSS.NOT_SELECTABLE);
 								if (xAccordionSection.get(xX).getIconClass()!=null){
 									xWriter.startElement("span", xAccordion);
-										DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.ICON + xAccordionSection.get(xX).getIconClass());
+										DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.ICON + xAccordionSection.get(xX).getIconClass());
 									xWriter.endElement("span");
 								}
 								if (xAccordionSection.get(xX).getCaption()!=null){
 									xWriter.startElement("span", xAccordion);
-										DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CAPTION);
+										DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CAPTION);
 										xWriter.write(xAccordionSection.get(xX).getCaption());
 									xWriter.endElement("span");
 								}
 							xWriter.endElement("div");
 							/*container*/
 							xWriter.startElement("div", xAccordion);
-								DBSFaces.setAttribute(xWriter, "class", CSS.ACCORDION.SECTION_CONTAINER);
+								DBSFaces.encodeAttribute(xWriter, "class", CSS.ACCORDION.SECTION_CONTAINER);
 								
 								xWriter.startElement("div", xAccordion);
-									DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTENT);
+									DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTENT);
 									//***Render filhos do dbsaccordionsection***
 									
 									xAccordionSection.get(xX).encodeAll(pContext);
@@ -102,7 +87,7 @@ public class DBSAccordionRenderer extends DBSRenderer {
 								xWriter.endElement("div");
 								
 								xWriter.startElement("div", xAccordion);
-									DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.COVER);
+									DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.COVER);
 								xWriter.endElement("div");
 							xWriter.endElement("div");
 						xWriter.endElement("div");
@@ -110,7 +95,7 @@ public class DBSAccordionRenderer extends DBSRenderer {
 				}
 			xWriter.endElement("div");
 			
-			DBSFaces.encodeJavaScriptTagStart(xWriter);
+			DBSFaces.encodeJavaScriptTagStart(pComponent, xWriter);
 			String xJS = "$(document).ready(function() { \n" +
 					     " var xAccordionId = dbsfaces.util.jsid('" + xClientId + "'); \n " + 
 					     " dbs_accordion(xAccordionId); \n" +

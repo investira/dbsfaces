@@ -40,19 +40,6 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 	}
 
 	@Override
-	public boolean getRendersChildren() {
-		return true; // True=Chama o encodeChildren abaixo e interrompe a busca
-						// por filho pela rotina renderChildren
-	}
-
-	@Override
-	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-		// É necessário manter está função para evitar que faça o render dos
-		// childrens
-		// O Render dos childrens é feita do encode
-	}
-
-	@Override
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent) throws IOException {
 		if (!pComponent.isRendered()) {
 			return;
@@ -66,13 +53,13 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 		}
 
 		xWriter.startElement("div", xInputNumber);
-			DBSFaces.setAttribute(xWriter, "id", xClientId);
-			DBSFaces.setAttribute(xWriter, "name", xClientId);
-			DBSFaces.setAttribute(xWriter, "class", xClass);
-			DBSFaces.setAttribute(xWriter, "style", xInputNumber.getStyle());
+			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "class", xClass);
+			DBSFaces.encodeAttribute(xWriter, "style", xInputNumber.getStyle());
 			//Container
 			xWriter.startElement("div", xInputNumber);
-				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
+				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
 					DBSFaces.encodeLabel(pContext, xInputNumber, xWriter);
 					pvEncodeInput(pContext, xInputNumber, xWriter);
 					DBSFaces.encodeRightLabel(pContext, xInputNumber, xWriter);
@@ -82,7 +69,7 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 
 		//Não gera o JS quando for somente leitura
 		if (!xInputNumber.getReadOnly()){
-			DBSFaces.encodeJavaScriptTagStart(xWriter);
+			DBSFaces.encodeJavaScriptTagStart(pComponent, xWriter);
 			//Comentado o JS com $(document).ready por não inicializar corretamente o campo no IE
 			String xJS = "$(document).ready(function() { \n"
 						+ " var xInputNumberId = dbsfaces.util.jsid('"
@@ -159,36 +146,36 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 		} else {
 			// Se for somente leitura, gera código como <Span>
 			pWriter.startElement("input", pInputNumber);
-				DBSFaces.setAttribute(pWriter, "id", xClientId);
-				DBSFaces.setAttribute(pWriter, "name", xClientId);
+				DBSFaces.encodeAttribute(pWriter, "id", xClientId);
+				DBSFaces.encodeAttribute(pWriter, "name", xClientId);
 				if (pInputNumber.getSecret()) {
-					DBSFaces.setAttribute(pWriter, "type", "password");
+					DBSFaces.encodeAttribute(pWriter, "type", "password");
 				} else {
-					DBSFaces.setAttribute(pWriter, "type", "text");
+					DBSFaces.encodeAttribute(pWriter, "type", "text");
 				}
-				DBSFaces.setAttribute(pWriter, "pattern", "[0-9]*");
-				DBSFaces.setAttribute(pWriter, "inputmode", "numeric");
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputNumber) + xStyleClass);
-				DBSFaces.setAttribute(pWriter, "style", xStyle);
-				DBSFaces.setAttribute(pWriter, "placeHolder", pInputNumber.getPlaceHolder());
+				DBSFaces.encodeAttribute(pWriter, "pattern", "[0-9]*");
+				DBSFaces.encodeAttribute(pWriter, "inputmode", "numeric");
+				DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputNumber) + xStyleClass);
+				DBSFaces.encodeAttribute(pWriter, "style", xStyle);
+				DBSFaces.encodeAttribute(pWriter, "placeHolder", pInputNumber.getPlaceHolder());
 				DBSFaces.setSizeAttributes(pWriter, xSize, null);
-				DBSFaces.setAttribute(pWriter, "minValue", pInputNumber.getMinValue()); 
-				DBSFaces.setAttribute(pWriter, "maxValue", pInputNumber.getMaxValue());
+				DBSFaces.encodeAttribute(pWriter, "minValue", pInputNumber.getMinValue()); 
+				DBSFaces.encodeAttribute(pWriter, "maxValue", pInputNumber.getMaxValue());
 				//Verifica se o sinal é negativo
 				if (DBSNumber.toDouble(pInputNumber.getMinValue())<0){
 					if (pInputNumber.getValueDouble()<0){
-						DBSFaces.setAttribute(pWriter, "n", "-");
+						DBSFaces.encodeAttribute(pWriter, "n", "-");
 					}
 				}
 				if (!pInputNumber.getAutocomplete().toLowerCase().equals("on") &&
 					!pInputNumber.getAutocomplete().toLowerCase().equals("true")){
-					DBSFaces.setAttribute(pWriter, "autocomplete", "off");
+					DBSFaces.encodeAttribute(pWriter, "autocomplete", "off");
 				}
 
 
-				DBSFaces.setAttribute(pWriter, "size", xSize);
-				DBSFaces.setAttribute(pWriter, "maxlength", xSize);
-				DBSFaces.setAttribute(pWriter, "value", xValue, "0");
+				DBSFaces.encodeAttribute(pWriter, "size", xSize);
+				DBSFaces.encodeAttribute(pWriter, "maxlength", xSize);
+				DBSFaces.encodeAttribute(pWriter, "value", xValue, "0");
 				encodeClientBehaviors(pContext, pInputNumber);
 			pWriter.endElement("input");
 

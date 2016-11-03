@@ -30,17 +30,6 @@ public class DBSListboxRenderer extends DBSRenderer {
     	xListbox.setSubmittedValue(xSubmittedValue);
 	}	
 
-	   
-    @Override
-	public boolean getRendersChildren() {
-		return true; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
-	}
-	
-    @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        //É necessário manter está função para evitar que faça o render dos childrens
-    	//O Render dos childrens é feita do encode
-    }
     
 	@Override
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent)
@@ -54,13 +43,13 @@ public class DBSListboxRenderer extends DBSRenderer {
 			xClass = xClass + xListbox.getStyleClass();
 		}
 		xWriter.startElement("div", xListbox);
-			DBSFaces.setAttribute(xWriter, "id", xClientId);
-			DBSFaces.setAttribute(xWriter, "name", xClientId);
-			DBSFaces.setAttribute(xWriter, "class", xClass);
-			DBSFaces.setAttribute(xWriter, "style", xListbox.getStyle(), null);
+			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "class", xClass);
+			DBSFaces.encodeAttribute(xWriter, "style", xListbox.getStyle());
 			//Container
 			xWriter.startElement("div", xListbox);
-				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
+				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
 					DBSFaces.encodeLabel(pContext, xListbox, xWriter);
 					pvEncodeInput(pContext, xListbox, xWriter);
 					DBSFaces.encodeRightLabel(pContext, xListbox, xWriter);
@@ -79,25 +68,25 @@ public class DBSListboxRenderer extends DBSRenderer {
 			DBSFaces.encodeInputDataReadOnly(pListbox, pWriter, xClientId, false, (String)pListbox.getList().get(pListbox.getValue().toString()), pListbox.getSize(), DBSNumber.toInteger(pListbox.getLines()), xStyle);
 		}else{
 		pWriter.startElement("select", pListbox);
-			DBSFaces.setAttribute(pWriter, "id", xClientId);
-			DBSFaces.setAttribute(pWriter, "name", xClientId);
-			DBSFaces.setAttribute(pWriter, "size", pListbox.getLines());
-			DBSFaces.setAttribute(pWriter, "style", xStyle);
+			DBSFaces.encodeAttribute(pWriter, "id", xClientId);
+			DBSFaces.encodeAttribute(pWriter, "name", xClientId);
+			DBSFaces.encodeAttribute(pWriter, "size", pListbox.getLines());
+			DBSFaces.encodeAttribute(pWriter, "style", xStyle);
 			DBSFaces.setSizeAttributes(pWriter, pListbox.getSize(), DBSNumber.toInteger(pListbox.getLines()));
 			if (pListbox.getReadOnly()){
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pListbox) + CSS.MODIFIER.DISABLED);
-				DBSFaces.setAttribute(pWriter, "disabled", "disabled");
+				DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pListbox) + CSS.MODIFIER.DISABLED);
+				DBSFaces.encodeAttribute(pWriter, "disabled", "disabled");
 			}else{
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pListbox));
+				DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pListbox));
 			}
 			//Encode dos itens na lista
 			if (pListbox.getList() != null){
 				for (Map.Entry<String, Object> xListItem : pListbox.getList().entrySet()) {
 					if (xListItem.getKey() != null){
 						pWriter.startElement("option", pListbox);
-							DBSFaces.setAttribute(pWriter, "value", xListItem.getKey());
+							DBSFaces.encodeAttribute(pWriter, "value", xListItem.getKey());
 							if (xListItem.getKey().toString().equals(pListbox.getValue().toString())){
-								DBSFaces.setAttribute(pWriter, "selected", "");
+								DBSFaces.encodeAttribute(pWriter, "selected", "");
 							}
 							pWriter.write((String) DBSObject.getNotEmpty(xListItem.getValue(), "") );
 							

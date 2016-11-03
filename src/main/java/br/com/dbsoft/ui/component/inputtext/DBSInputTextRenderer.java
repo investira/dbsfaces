@@ -77,19 +77,6 @@ public class DBSInputTextRenderer extends DBSRenderer {
 		}
 	}	
 	
-
-    
-    @Override
-	public boolean getRendersChildren() {
-		return true; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
-	}
-	
-    @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        //É necessário manter está função para evitar que faça o render dos childrens
-    	//O Render dos childrens é feita do encode
-    }
-    
 	@Override
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent)
 			throws IOException {
@@ -103,13 +90,13 @@ public class DBSInputTextRenderer extends DBSRenderer {
 			xClass = xClass + xInputText.getStyleClass();
 		}
 		xWriter.startElement("div", xInputText);
-			DBSFaces.setAttribute(xWriter, "id", xClientId);
-			DBSFaces.setAttribute(xWriter, "name", xClientId);
-			DBSFaces.setAttribute(xWriter, "class", xClass);
-			DBSFaces.setAttribute(xWriter, "style", xInputText.getStyle(), null);
+			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "class", xClass);
+			DBSFaces.encodeAttribute(xWriter, "style", xInputText.getStyle());
 			//Container
 			xWriter.startElement("div", xInputText);
-				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
+				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
 					DBSFaces.encodeLabel(pContext, xInputText, xWriter);
 					pvEncodeInput(pContext, xInputText, xWriter);
 					DBSFaces.encodeRightLabel(pContext, xInputText, xWriter);
@@ -117,7 +104,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 			DBSFaces.encodeTooltip(pContext, xInputText, xInputText.getTooltip());
 		xWriter.endElement("div");
 		if (!xInputText.getReadOnly()){
-			pvEncodeJS(xClientId, xWriter);
+			pvEncodeJS(xInputText, xWriter);
 		}
 	}
 	
@@ -157,38 +144,38 @@ public class DBSInputTextRenderer extends DBSRenderer {
 		}else{
 			if (pInputText.hasSuggestion()){ 
 				pWriter.startElement("div", pInputText);
-					DBSFaces.setAttribute(pWriter, "class", "-input");
+					DBSFaces.encodeAttribute(pWriter, "class", "-input");
 					//Campo escondido que receberá a chave resultado da pesquisa ajax
 					pWriter.startElement("input", pInputText);
-						DBSFaces.setAttribute(pWriter, "id", xClientIdSuggestionKey);
-						DBSFaces.setAttribute(pWriter, "name", xClientIdSuggestionKey);
-						DBSFaces.setAttribute(pWriter, "type", "hidden");
-						DBSFaces.setAttribute(pWriter, "class", CSS.INPUT.SUGGESTIONKEY);
-						DBSFaces.setAttribute(pWriter, "value", xValueKey);
-						DBSFaces.setAttribute(pWriter, "key", xValueKey);
-						DBSFaces.setAttribute(pWriter, "nulltext", pInputText.getSuggestionNullText());
+						DBSFaces.encodeAttribute(pWriter, "id", xClientIdSuggestionKey);
+						DBSFaces.encodeAttribute(pWriter, "name", xClientIdSuggestionKey);
+						DBSFaces.encodeAttribute(pWriter, "type", "hidden");
+						DBSFaces.encodeAttribute(pWriter, "class", CSS.INPUT.SUGGESTIONKEY);
+						DBSFaces.encodeAttribute(pWriter, "value", xValueKey);
+						DBSFaces.encodeAttribute(pWriter, "key", xValueKey);
+						DBSFaces.encodeAttribute(pWriter, "nulltext", pInputText.getSuggestionNullText());
 					pWriter.endElement("input");	
 
 					//Icon que indica para indicar que é possível efetuar pesquisa a partir do texto digitado
 					pWriter.startElement("div", pInputText);
-						DBSFaces.setAttribute(pWriter, "class", "-small -i_find");
+						DBSFaces.encodeAttribute(pWriter, "class", "-small -i_find");
 					pWriter.endElement("div");	
 
 					//Campo que receberá o conteúdo integral ou parcial do campo escondido ajax. 
 					pWriter.startElement("input", pInputText);
-						DBSFaces.setAttribute(pWriter, "id", xClientIdSuggestion);
-						DBSFaces.setAttribute(pWriter, "name", xClientIdSuggestion);
-						DBSFaces.setAttribute(pWriter, "type", pInputText.getType());
+						DBSFaces.encodeAttribute(pWriter, "id", xClientIdSuggestion);
+						DBSFaces.encodeAttribute(pWriter, "name", xClientIdSuggestion);
+						DBSFaces.encodeAttribute(pWriter, "type", pInputText.getType());
 						if (pInputText.getSize()!=0){
-							DBSFaces.setAttribute(pWriter, "size", pInputText.getSize());
+							DBSFaces.encodeAttribute(pWriter, "size", pInputText.getSize());
 						}
 						if (!xStyle.equals("")){
-							DBSFaces.setAttribute(pWriter, "style", xStyle);
+							DBSFaces.encodeAttribute(pWriter, "style", xStyle);
 						}						
-						DBSFaces.setAttribute(pWriter, "autocomplete", "off");
-						DBSFaces.setAttribute(pWriter, "class", CSS.INPUT.SUGGESTION);
-						DBSFaces.setAttribute(pWriter, "tabindex", "-1");
-						DBSFaces.setAttribute(pWriter, "value", xValue);
+						DBSFaces.encodeAttribute(pWriter, "autocomplete", "off");
+						DBSFaces.encodeAttribute(pWriter, "class", CSS.INPUT.SUGGESTION);
+						DBSFaces.encodeAttribute(pWriter, "tabindex", "-1");
+						DBSFaces.encodeAttribute(pWriter, "value", xValue);
 					pWriter.endElement("input");
 					
 					//Botão que efetuará a chamada ajax
@@ -212,32 +199,32 @@ public class DBSInputTextRenderer extends DBSRenderer {
 			}
 			//Campo Input
 			pWriter.startElement("input", pInputText);
-				DBSFaces.setAttribute(pWriter, "id", xClientIdData);
-				DBSFaces.setAttribute(pWriter, "name", xClientIdData);
+				DBSFaces.encodeAttribute(pWriter, "id", xClientIdData);
+				DBSFaces.encodeAttribute(pWriter, "name", xClientIdData);
 				if (pInputText.getSecret()){
-					DBSFaces.setAttribute(pWriter, "type", "password");
+					DBSFaces.encodeAttribute(pWriter, "type", "password");
 				}else{
-					DBSFaces.setAttribute(pWriter, "type", pInputText.getType());
+					DBSFaces.encodeAttribute(pWriter, "type", pInputText.getType());
 				}
 				if (pInputText.hasSuggestion() ||
 					pInputText.getAutocomplete().toLowerCase().equals("off") ||
 					pInputText.getAutocomplete().toLowerCase().equals("false")){
-					DBSFaces.setAttribute(pWriter, "autocomplete", "off", null);
+					DBSFaces.encodeAttribute(pWriter, "autocomplete", "off");
 				}
-				DBSFaces.setAttribute(pWriter, "placeHolder", pInputText.getPlaceHolder());
-				DBSFaces.setAttribute(pWriter, "class", xClass);
+				DBSFaces.encodeAttribute(pWriter, "placeHolder", pInputText.getPlaceHolder());
+				DBSFaces.encodeAttribute(pWriter, "class", xClass);
 				DBSFaces.setSizeAttributes(pWriter, pInputText.getSize(), null);
 				if (!xStyle.equals("")){
-					DBSFaces.setAttribute(pWriter, "style", xStyle, null);
+					DBSFaces.encodeAttribute(pWriter, "style", xStyle);
 				}
 				//Grava a largura do campo
 				if (pInputText.getSize()!=0){
-					DBSFaces.setAttribute(pWriter, "size", pInputText.getSize());
+					DBSFaces.encodeAttribute(pWriter, "size", pInputText.getSize());
 				}
 				if (pInputText.getMaxLength()!=0){
-					DBSFaces.setAttribute(pWriter, "maxlength", pInputText.getMaxLength(), null);
+					DBSFaces.encodeAttribute(pWriter, "maxlength", pInputText.getMaxLength());
 				}
-				DBSFaces.setAttribute(pWriter, "value", xValue, "");
+				DBSFaces.encodeAttribute(pWriter, "value", xValue, "");
 				encodeClientBehaviors(pContext, pInputText);
 //				encodeClientParameters(pContext, pInputText);
 			pWriter.endElement("input");
@@ -320,10 +307,10 @@ public class DBSInputTextRenderer extends DBSRenderer {
 	}	
 	
 
-	private void pvEncodeJS(String pClientId, ResponseWriter pWriter) throws IOException{
-		DBSFaces.encodeJavaScriptTagStart(pWriter);
+	private void pvEncodeJS(UIComponent pComponent, ResponseWriter pWriter) throws IOException{
+		DBSFaces.encodeJavaScriptTagStart(pComponent, pWriter);
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xInputTextId = dbsfaces.util.jsid('" + pClientId + "'); \n " + 
+				     " var xInputTextId = dbsfaces.util.jsid('" + pComponent.getClientId() + "'); \n " + 
 				     " dbs_inputText(xInputTextId); \n" +
                      "}); \n"; 
 		pWriter.write(xJS);

@@ -47,17 +47,6 @@ public class DBSComboboxRenderer extends DBSRenderer {
 		}
 	}	
 
-    @Override
-	public boolean getRendersChildren() {
-		return true; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
-	}
-	
-    @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        //É necessário manter está função para evitar que faça o render dos childrens
-    	//O Render dos childrens é feita do encode
-    }
-    
 	@Override
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent) throws IOException {
 		if (!pComponent.isRendered()){return;}
@@ -70,14 +59,14 @@ public class DBSComboboxRenderer extends DBSRenderer {
 			xClass += xCombobox.getStyleClass();
 		}
 		xWriter.startElement("div", xCombobox);
-			DBSFaces.setAttribute(xWriter, "id", xClientId);
-			DBSFaces.setAttribute(xWriter, "name", xClientId);
-			DBSFaces.setAttribute(xWriter, "class", xClass);
-			DBSFaces.setAttribute(xWriter, "style", xCombobox.getStyle(), null);
+			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "class", xClass);
+			DBSFaces.encodeAttribute(xWriter, "style", xCombobox.getStyle());
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xCombobox, DBSPassThruAttributes.getAttributes(Key.COMBOBOX));
 			
 			xWriter.startElement("div", xCombobox);
-				DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
+				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
 					DBSFaces.encodeLabel(pContext, xCombobox, xWriter);
 					pvEncodeInput(pContext, xCombobox, xWriter);
 					DBSFaces.encodeRightLabel(pContext, xCombobox, xWriter);
@@ -86,7 +75,7 @@ public class DBSComboboxRenderer extends DBSRenderer {
 		xWriter.endElement("div");
 		
 		if (!xCombobox.getReadOnly()){
-			DBSFaces.encodeJavaScriptTagStart(xWriter);
+			DBSFaces.encodeJavaScriptTagStart(pComponent, xWriter);
 			String xJS = "";
 			//Dispara evento change quando houver mudança de valor durante o encode.
 			//
@@ -175,31 +164,31 @@ public class DBSComboboxRenderer extends DBSRenderer {
 			DBSFaces.encodeInputDataReadOnly(pCombobox, pWriter, xClientId, false, xValue.toString(), pCombobox.getSize(), null, xStyle);
 		}else{
 			pWriter.startElement("span", pCombobox);
-				DBSFaces.setAttribute(pWriter, "class", DBSFaces.getInputDataClass(pCombobox));
-				DBSFaces.setAttribute(pWriter, "style", xStyle);
+				DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pCombobox));
+				DBSFaces.encodeAttribute(pWriter, "style", xStyle);
 				DBSFaces.setSizeAttributes(pWriter, pCombobox.getSize(), null);
 				pWriter.startElement("span", pCombobox);
-					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.DATA);
+					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.DATA);
 					pWriter.write(xValue);
 				pWriter.endElement("span");
 				//Encode do botão
 				pWriter.startElement("span", pCombobox);
-					DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.BUTTON + CSS.MODIFIER.SMALL + " -i_navigate_down");
+					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.BUTTON + CSS.MODIFIER.SMALL + " -i_navigate_down");
 				pWriter.endElement("span");
 				//Encode do combobox escondido
 				pWriter.startElement("select", pCombobox);
-					DBSFaces.setAttribute(pWriter, "id", xClientId);
-					DBSFaces.setAttribute(pWriter, "name", xClientId);
-					DBSFaces.setAttribute(pWriter, "size", "1");
+					DBSFaces.encodeAttribute(pWriter, "id", xClientId);
+					DBSFaces.encodeAttribute(pWriter, "name", xClientId);
+					DBSFaces.encodeAttribute(pWriter, "size", "1");
 					encodeClientBehaviors(pContext, pCombobox);
 					if (xList != null
 					 && xList.size() > 0){
 						for (Map.Entry<Object, Object> xListItem : xList.entrySet()) {
 							if (xListItem.getKey() != null){
 								pWriter.startElement("option", pCombobox);
-									DBSFaces.setAttribute(pWriter, "value", xListItem.getKey());
+									DBSFaces.encodeAttribute(pWriter, "value", xListItem.getKey());
 									if (xListItem.getKey().equals(xValueKey)){
-										DBSFaces.setAttribute(pWriter, "selected", "");
+										DBSFaces.encodeAttribute(pWriter, "selected", "");
 									}
 									pWriter.write((String) DBSObject.getNotEmpty(xListItem.getValue(), "") );
 									
