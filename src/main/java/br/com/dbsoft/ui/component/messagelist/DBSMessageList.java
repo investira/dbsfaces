@@ -9,6 +9,7 @@ import javax.faces.component.FacesComponent;
 import javax.faces.component.NamingContainer;
 
 import br.com.dbsoft.message.IDBSMessages;
+import br.com.dbsoft.message.IDBSMessagesController;
 import br.com.dbsoft.ui.component.DBSUIInput;
 import br.com.dbsoft.ui.core.DBSFaces;
 
@@ -82,13 +83,11 @@ public class DBSMessageList extends DBSUIInput implements NamingContainer {
 		handleAttribute("messageKey", pMessageKey);
 	}
 	
-	@SuppressWarnings("rawtypes")
-	public void setValue(IDBSMessages pValue) {
+	public void setValue(IDBSMessagesController pValue) {
 		super.setValue(pValue);
 	}
 
 	@Override
-	@SuppressWarnings("rawtypes")
 	public IDBSMessages getValue() {
 		return (IDBSMessages) super.getValue();
 	}

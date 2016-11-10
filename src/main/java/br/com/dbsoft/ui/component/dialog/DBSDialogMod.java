@@ -2,7 +2,7 @@ package br.com.dbsoft.ui.component.dialog;
 
 import javax.faces.component.FacesComponent;
 
-import br.com.dbsoft.message.IDBSMessage;
+import br.com.dbsoft.message.IDBSMessages;
 import br.com.dbsoft.ui.core.DBSFaces;
 
 
@@ -31,9 +31,9 @@ public class DBSDialogMod extends DBSDialog{
 	public void setCloseTimeout(String pCloseTimeout) {}
 
 	@Override
-	public IDBSMessage getDBSMessage() {return null;}
-	@Override
-	public void setDBSMessage(IDBSMessage pDBSMessage) {}
+	public IDBSMessages getDBSMessages() {return null;}
 
+	@Override
+	public void setDBSMessages(IDBSMessages pDBSMessages) {}
 
 }

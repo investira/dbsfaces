@@ -53,37 +53,33 @@ public class DBSMessageListRenderer extends DBSRenderer {
 		ResponseWriter 	xWriter = pContext.getResponseWriter();
 		String 			xClientId = xMessageList.getClientId(pContext);
 
-		String xClass = CSS.MESSAGELIST.MAIN + xMessageList.getStyleClass();
-		String xStyle = xMessageList.getStyle();
+		String xClass = CSS.MESSAGELIST.MAIN + DBSObject.getNotEmpty(xMessageList.getStyleClass(), "");
 
 		MESSAGE_TYPE xType = MESSAGE_TYPE.INFORMATION; //Padrão
 		Integer xCount = 0;
 		Integer xNew = 0;
+		
 		//Encode principal
 		xWriter.startElement("div", xMessageList);
 			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
 			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
 			DBSFaces.encodeAttribute(xWriter, "class", xClass);
-			if (!DBSObject.isEmpty(xStyle)){
-				DBSFaces.encodeAttribute(xWriter, "style", xStyle);
-			}
+			DBSFaces.encodeAttribute(xWriter, "style", xMessageList.getStyle());
 
 			//Verica se há mensagem a ser exibida
 			if (xMessageList.getValue() != null){
-				xCount = xMessageList.getValue().getMessages().size();
+				xCount = xMessageList.getValue().size();
 				if (xCount > 0){
 					IDBSMessage xMsg;
 
-					@SuppressWarnings("unchecked")
-					Iterator<IDBSMessage> xI = xMessageList.getValue().getMessages().iterator();
+					Iterator<IDBSMessage> xI = xMessageList.getValue().iterator();
 					while (xI.hasNext()){
 						 xMsg = xI.next();
 						 //Se msg ainda não foi validada(visualizada, neste caso)
-						 if (xMsg.isMessageValidated() == null 
-						  || !xMsg.isMessageValidated()){
+						 if (!xMsg.isMessageValidatedTrue()){
 							 //Conta a quantidade de mensagens novas
 							 xNew++;
-							 xMsg.setMessageValidated(true); //Marca que mensagem como vista
+							 xMsg.setMessageValidated(false); //Marca que mensagem como vista
 						 }
 						//Definie a cor do campo da quantidade de mensagens a partir da mensagem de maior revelância(error/warning/information). 
 						 if (xMsg.getMessageType().getSeverityLevel() > xType.getSeverityLevel()){
@@ -151,8 +147,7 @@ public class DBSMessageListRenderer extends DBSRenderer {
 			pWriter.startElement("div", pMessageList);
 				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
 				//Exibe a lista de mensagens em ordem invertida de inclusão(PEPS/LIFO), onde o mais recente é será exibido primeiro;
-				@SuppressWarnings("unchecked")
-				List<IDBSMessage> xMsgs = pMessageList.getValue().getMessages();
+				List<IDBSMessage> xMsgs = pMessageList.getValue().getListMessage();
 				IDBSMessage xMsg;
 				//Le todas as mensagens
 				for (Integer xI=xMsgs.size()-1; xI!=-1; xI--){

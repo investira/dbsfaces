@@ -57,6 +57,7 @@ public class DBSLinkRenderer extends DBSUICommandRenderer {
 			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
 			DBSFaces.encodeAttribute(xWriter, "class", xClass); 
 			DBSFaces.encodeAttribute(xWriter, "style", xLink.getStyle());
+			DBSFaces.encodeAttribute(xWriter, "asid", xLink.getActionSourceClientId());
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xLink, DBSPassThruAttributes.getAttributes(Key.LINK));
 			
 			if (xLink.getActionExpression() != null

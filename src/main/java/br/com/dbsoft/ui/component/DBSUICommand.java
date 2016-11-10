@@ -124,7 +124,8 @@ public abstract class DBSUICommand extends UICommand implements IDBSUIComponentB
 		onclick,
 		readOnly,
 		tooltip,
-		closeDialog;
+		closeDialog,
+		actionSourceClientId;
 
 		String toString;
 
@@ -223,7 +224,24 @@ public abstract class DBSUICommand extends UICommand implements IDBSUIComponentB
 	public String getTooltip() {
 		return (String) getStateHelper().eval(PropertyKeys.tooltip, null);
 	}
-	
+
+	/**
+	 * ClientId do componente que originou a action que disparou o encode deste componente
+	 * @param pActionSourceClientId
+	 */
+	public void setActionSourceClientId(String pActionSourceClientId) {
+		getStateHelper().put(PropertyKeys.actionSourceClientId, pActionSourceClientId);
+		handleAttribute("actionSourceClientId", pActionSourceClientId);
+	}
+
+	/**
+	 * ClientId do componente que originou a action que disparou o encode deste componente
+	 * @return
+	 */
+	public String getActionSourceClientId() {
+		return (String) getStateHelper().eval(PropertyKeys.actionSourceClientId, null);
+	}
+
 	public void setTooltip(String pTooltip) {
 		getStateHelper().put(PropertyKeys.tooltip, pTooltip);
 		handleAttribute("tooltip", pTooltip);

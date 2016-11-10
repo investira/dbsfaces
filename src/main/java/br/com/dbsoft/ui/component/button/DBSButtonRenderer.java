@@ -46,6 +46,7 @@ public class DBSButtonRenderer extends DBSUICommandRenderer {
 			DBSFaces.encodeAttribute(xWriter, "class", xClass);
 			DBSFaces.encodeAttribute(xWriter, "style", xButton.getStyle());
 			DBSFaces.encodeAttribute(xWriter, "value", xButton.getValue());
+			DBSFaces.encodeAttribute(xWriter, "asid", xButton.getActionSourceClientId());
 			if (xButton.getDisabled()
 			 || xButton.getReadOnly()){
 				DBSFaces.encodeAttribute(xWriter, "disabled", "disabled");

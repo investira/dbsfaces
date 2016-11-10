@@ -107,6 +107,10 @@ public class  DBSFaces {
     	 */
     	public static final String MESSAGES = "DBSMESSAGES"; 
     	/**
+    	 * DBSMensagen enviadas por dbsfaces.sendMessage.
+    	 */
+    	public static final String MESSAGES_LISTENERS = "DBSMESSAGES_LISTENERS"; 
+    	/**
     	 * View antes executar um action.
     	 */
     	public static final String PREVIOUS_VIEW = "DBSPREVIOUS_VIEW";

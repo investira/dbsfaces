@@ -127,9 +127,6 @@ dbs_dialogContent = function(pId) {
 		if (xButton.css("display") == "none"
 		 || xButton.data("hasmessage")){return;} //Ignora se houver mensagem a ser exibida
 		dbsfaces.dialog.show(xDialog);
-		if (xButton.hasClass("-closeParent")){
-			xDialog.data("parent").trigger("close");
-		}
 		e.stopImmediatePropagation();
 		return false;
 	});

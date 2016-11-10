@@ -10,7 +10,7 @@ import javax.faces.render.FacesRenderer;
 
 import com.sun.faces.renderkit.RenderKitUtils;
 
-import br.com.dbsoft.message.IDBSMessage;
+import br.com.dbsoft.message.IDBSMessages;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.dialog.DBSDialog.POSITION;
@@ -34,9 +34,10 @@ public class DBSDialogRenderer extends DBSRenderer{
 	public void decode(FacesContext pContext, UIComponent pComponent) {
 		DBSDialog xDialog = (DBSDialog) pComponent;
 		String xClientId = pComponent.getClientId(pContext);
+		IDBSMessages xMessages = xDialog.getDBSMessages(); 
 		
 		//Se houver mensagem a ser validada.
-		if (xDialog.getDBSMessage() != null){
+		if (xMessages != null && xMessages.size() > 0){
 			String xSourceId = DBSFaces.getDecodedSourceId(pContext);
 			//Se decode foi disparado em função de uma ação
 			if (xSourceId != null){
@@ -45,9 +46,13 @@ public class DBSDialogRenderer extends DBSRenderer{
 				//Se existe alguma mensagem sendo validada
 				if (xMsgKey != null){
 					if (xSourceId.equals(xClientId + ":" + DBSDialog.BUTTON_NO)){
-						xDialog.getDBSMessage().setMessageValidated(false);
+						xMessages.getMessage(xMsgKey).setMessageValidated(false);
+//						xMessages.get(xMsgKey).setMessageValidated(false);
+//						xMessages.setMessageValidated(false);
 					} else if (xSourceId.equals(xClientId + ":" + DBSDialog.BUTTON_YES)){
-						xDialog.getDBSMessage().setMessageValidated(true);
+						xMessages.getMessage(xMsgKey).setMessageValidated(true);
+//						xMessages.get(xMsgKey).setMessageValidated(true);
+//						xMessages.setMessageValidated(true);
 					}
 				}
 			}
@@ -138,8 +143,7 @@ public class DBSDialogRenderer extends DBSRenderer{
 			//É mensagem FacesMessage ou DBSMessage
 			if (!DBSObject.isEmpty(pDialog.getMsgFor())){
 				//Recupera as mensagens
-//				pDialog.setOpen(pDialog.getDBSMessage() != null && !DBSObject.isEmpty(pDialog.getDBSMessage().getMessageKey()));
-				pDialog.setOpen(pvInitializeDBSMessage(pDialog, pContext));
+				pDialog.setOpen(pvInitializeDBSMessages(pDialog, pContext));
 			}else{
 				pDialog.setOpen(pDialog.getChildCount() > 0);
 			}
@@ -153,12 +157,12 @@ public class DBSDialogRenderer extends DBSRenderer{
 	 * @return
 	 * @throws IOException
 	 */
-	private boolean pvInitializeDBSMessage(DBSDialog pDialog, FacesContext pContext) throws IOException{
-		IDBSMessage xMsg = DBSMessagesFacesContext.getMessage(pDialog.getMsgFor());
-		pDialog.setDBSMessage(xMsg);
+	private boolean pvInitializeDBSMessages(DBSDialog pDialog, FacesContext pContext) throws IOException{
+		IDBSMessages xMesssages = DBSMessagesFacesContext.getMessages(pDialog.getMsgFor());
+		pDialog.setDBSMessages(xMesssages); 
 		
-		if (xMsg != null){
-			pDialog.setMsgType(xMsg.getMessageType().getCode());
+		if (xMesssages != null && xMesssages.size() > 0){
+			pDialog.setMsgType(xMesssages.getListMessage().get(0).getMessageType().getCode());
 			return true;
 		}else{
 			return false;

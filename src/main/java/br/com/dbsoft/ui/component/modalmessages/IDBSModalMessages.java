@@ -10,6 +10,10 @@ public interface IDBSModalMessages {
 
 	public String getMessageTooltip();
 
+	/**
+	 * Retorna se existe alguma mensagem corrente.
+	 * @return
+	 */
 	public Boolean getHasMessage();
 	
 	public String setMessageValidated(Boolean pIsValidated) throws DBSIOException;

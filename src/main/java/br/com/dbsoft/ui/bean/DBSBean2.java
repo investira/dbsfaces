@@ -15,13 +15,13 @@ import org.apache.log4j.Logger;
 
 import br.com.dbsoft.error.DBSIOException;
 import br.com.dbsoft.message.DBSMessage;
-import br.com.dbsoft.message.DBSMessages;
+import br.com.dbsoft.message.DBSMessagesController;
 import br.com.dbsoft.message.IDBSMessage;
 import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.message.IDBSMessages;
+import br.com.dbsoft.message.IDBSMessagesController;
 import br.com.dbsoft.ui.component.modalmessages.IDBSModalMessages;
 import br.com.dbsoft.ui.core.DBSFaces;
-import br.com.dbsoft.util.DBSObject;
 
 /**
  * @author ricardo.villar
@@ -37,11 +37,11 @@ public abstract class DBSBean2 implements Serializable, IDBSModalMessages{
 	
 	protected 	Connection					wConnection;
 	
-	protected 	IDBSMessages<IDBSMessage> 	wDialogMessages = new DBSMessages<IDBSMessage>();
-	protected 	boolean						wBrodcastingEvent = false;
-	private   	DBSBean2						wMasterBean = null;
-	private 	List<DBSBean2>				wSlavesBean = new ArrayList<DBSBean2>();
-	private 	Locale						wLocale;
+	protected 	DBSMessagesController				wDialogMessages = new DBSMessagesController();
+	protected 	boolean								wBrodcastingEvent = false;
+	private   	DBSBean2							wMasterBean = null;
+	private 	List<DBSBean2>						wSlavesBean = new ArrayList<DBSBean2>();
+	private 	Locale								wLocale;
  
 	//--------------------------------------------------------------------------------------
 	//Código para impedir o erro de 'Cannot create a session after the response has been committed'
@@ -167,7 +167,7 @@ public abstract class DBSBean2 implements Serializable, IDBSModalMessages{
 	 * Retorna mensagens do dialog.
 	 * @return
 	 */
-	public IDBSMessages<IDBSMessage> getMessages(){
+	public IDBSMessagesController getMessages(){
 		return wDialogMessages;
 	}
 
@@ -176,7 +176,7 @@ public abstract class DBSBean2 implements Serializable, IDBSModalMessages{
 	 * @return
 	 */
 	public String getMessageKey(){
-		return wDialogMessages.getCurrentMessageKey();
+		return wDialogMessages.getCurrentMessage().getMessageKey();
 	}
 	
 	/**
@@ -185,7 +185,7 @@ public abstract class DBSBean2 implements Serializable, IDBSModalMessages{
 	 */
 	@Override
 	public String getMessageText(){
-		return wDialogMessages.getCurrentMessageText();
+		return wDialogMessages.getCurrentMessage().getMessageText();
 	}
 	
 
@@ -196,7 +196,7 @@ public abstract class DBSBean2 implements Serializable, IDBSModalMessages{
 	 */
 	@Override
 	public String getMessageTooltip(){
-		return wDialogMessages.getCurrentMessageTooltip();
+		return wDialogMessages.getCurrentMessage().getMessageTooltip();
 	}
 	/**
 	 * Retorna se é uma mensagem de alerta.
@@ -206,7 +206,7 @@ public abstract class DBSBean2 implements Serializable, IDBSModalMessages{
 	@Override
 	public MESSAGE_TYPE getMessageType(){
 		if (wDialogMessages.getCurrentMessage()!=null){
-			return wDialogMessages.getCurrentMessageType();
+			return wDialogMessages.getCurrentMessage().getMessageType();
 		}
 		return null;
 	}
@@ -222,7 +222,7 @@ public abstract class DBSBean2 implements Serializable, IDBSModalMessages{
 	 */
 	@Override
 	public Boolean getHasMessage(){
-		return wDialogMessages.hasMessages();
+		return wDialogMessages.getMessages().hasMessages();
 	}
 
 	/**
@@ -238,7 +238,7 @@ public abstract class DBSBean2 implements Serializable, IDBSModalMessages{
 	public String setMessageValidated(Boolean pIsValidated) throws DBSIOException{
 		if (wDialogMessages!=null){
 			IDBSMessage xMessageKey = wDialogMessages.getCurrentMessage(); //Salva a chave, pois o setValidated posiciona na próxima mensagem.
-			wDialogMessages.setMessageValidated(pIsValidated);
+			wDialogMessages.getCurrentMessage().setMessageValidated(pIsValidated);
 			if (xMessageKey.getMessageType().getRequireConfirmation()){
 				//Chama método indicando que warning foi validado
 				warningMessageValidated(xMessageKey.getMessageKey(), pIsValidated);
@@ -282,7 +282,7 @@ public abstract class DBSBean2 implements Serializable, IDBSModalMessages{
 	 * Limpa fila de mensagens
 	 */
 	protected void clearMessages(){
-		wDialogMessages.clear();
+		wDialogMessages.getMessages().clear();
 	}
 	
 
@@ -310,7 +310,7 @@ public abstract class DBSBean2 implements Serializable, IDBSModalMessages{
 	 * @param pMessage
 	 */
 	protected void addMessage(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, String pMessageTooltip){
-		wDialogMessages.add(new DBSMessage(pMessageKey, pMessageType, pMessageText, pMessageTooltip));
+		wDialogMessages.getMessages().add(new DBSMessage(pMessageKey, pMessageType, pMessageText, pMessageTooltip));
 	}
 
 	/**
@@ -326,9 +326,9 @@ public abstract class DBSBean2 implements Serializable, IDBSModalMessages{
 	 * Mensagens precisão ser do tipo DBSMessages
 	 * @param pMessages
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+
 	protected void addMessages(IDBSMessages pMessages){
-		wDialogMessages.addAll(pMessages);
+		wDialogMessages.getMessages().addAll(pMessages);
 	}
 	
 	/**
@@ -336,7 +336,7 @@ public abstract class DBSBean2 implements Serializable, IDBSModalMessages{
 	 * @param pMessageKey
 	 */
 	protected void removeMessage(String pMessageKey){
-		wDialogMessages.remove(pMessageKey);
+		wDialogMessages.getMessages().remove(pMessageKey);
 	}
 
 	/**
@@ -345,7 +345,7 @@ public abstract class DBSBean2 implements Serializable, IDBSModalMessages{
 	 * @return
 	 */
 	protected Boolean isMessageValidated(String pMessageKey){
-		return DBSObject.getNotNull(wDialogMessages.isMessageValidated(pMessageKey), false);
+		return wDialogMessages.getMessages().getMessage(pMessageKey).isMessageValidatedTrue();
 	}
 	
 	/**

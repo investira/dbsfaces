@@ -220,8 +220,8 @@ public class DBSDialogContent extends DBSUIOutput{
 		if (pDialog.getChildren().size() > 0){
 			//Encode dos conteúdo
 			DBSFaces.renderChildren(pContext, pDialog);
-		}else if (pDialog.getDBSMessage() != null){
-			pWriter.write(pDialog.getDBSMessage().getMessageText());
+		}else if (pDialog.getDBSMessages() != null && pDialog.getDBSMessages().size() > 0){
+			pWriter.write(pDialog.getDBSMessages().getListMessage().get(0).getMessageText());
 		}
 	}
 
@@ -233,8 +233,8 @@ public class DBSDialogContent extends DBSUIOutput{
 	 */
 	private void pvEncodeToolbarSimpleButtonOk(DBSDialog pDialog, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 		//Só faz o encode se for MOD
-		String xClass = "-btok -i_ok" + CSS.THEME.ACTION + pvGetClassCloseParent(pContext);
-		//Exibe espaço do button timeout
+		String xClass = "-btok -i_ok" + CSS.THEME.ACTION;
+		//Exibe espaço do button ok
 		pWriter.startElement("div", pDialog);
 			DBSFaces.encodeAttribute(pWriter, "class", xClass);
 		pWriter.endElement("div");
@@ -251,7 +251,7 @@ public class DBSDialogContent extends DBSUIOutput{
 		
 		pvEncodeMsgButtons(pDialog, pContext);
 		
-		if (pDialog.getDBSMessage() != null){
+		if (pDialog.getDBSMessages() != null && pDialog.getDBSMessages().size() > 0){
 			pvEncodeInputHiddenMessageKey(pDialog, pContext, pWriter);
 		}
 	}
@@ -268,7 +268,7 @@ public class DBSDialogContent extends DBSUIOutput{
 		if (xInput == null){
 			xInput = (HtmlInputHidden) pContext.getApplication().createComponent(HtmlInputHidden.COMPONENT_TYPE);
 			xInput.setId(DBSDialog.INPUT_MSGKEY);
-			xInput.setValue(pDialog.getDBSMessage().getMessageKey());
+			xInput.setValue(pDialog.getDBSMessages().getListMessage().get(0).getMessageKey());
 			pDialog.getFacets().put(DBSDialog.INPUT_MSGKEY, xInput);
 		}
 		xInput.encodeAll(pContext);
@@ -288,11 +288,11 @@ public class DBSDialogContent extends DBSUIOutput{
 		}else{
 			xStyle = "display:none;";
 		}
-		pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_YES, "Sim","-i_yes -green", pvGetClassCloseParent(pContext), xStyle);
+		pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_YES, "Sim","-i_yes -green", pvGetActionSourceClientId(pContext), xStyle);
 	}
 
 
-	private void pvEncodeMsgButton(DBSDialog pDialog, FacesContext pContext, String pId, String pLabel, String pIconClass, String pStyleClass, String pStyle) throws IOException{
+	private void pvEncodeMsgButton(DBSDialog pDialog, FacesContext pContext, String pId, String pLabel, String pIconClass, String pActionSourceClientId, String pStyle) throws IOException{
 //		String		xClientId = pDialog.getClientId(pContext);
 		DBSButton 	xBtn = (DBSButton) pDialog.getFacet(pId); 
 		//Verifica se botão já havia sido criado
@@ -300,7 +300,8 @@ public class DBSDialogContent extends DBSUIOutput{
 			xBtn = (DBSButton) pContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
 			xBtn.setId(pId);
 			xBtn.setLabel(pLabel);
-			xBtn.setStyleClass("-closeDialog " + DBSObject.getNotEmpty(pStyleClass, ""));
+			xBtn.setActionSourceClientId(pActionSourceClientId);
+			xBtn.setCloseDialog(true);
 			xBtn.setStyle(pStyle);
 			xBtn.setIconClass(CSS.MODIFIER.ICON + pIconClass);
 			xBtn.setUpdate("@none");
@@ -311,12 +312,12 @@ public class DBSDialogContent extends DBSUIOutput{
 		xBtn.encodeAll(pContext);
 	}
 	
-	private String pvGetClassCloseParent(FacesContext pContext){
+	private String pvGetActionSourceClientId(FacesContext pContext){
 		//Indica que fechará o dialog pai(se houver) quando este dialog tiver sido acerto em função de um action e o action for closeDialog
 		DBSUICommand xActionSource = (DBSUICommand) pContext.getAttributes().get(FACESCONTEXT_ATTRIBUTE.ACTION_SOURCE);
 		if (xActionSource != null){
 			if (xActionSource.getCloseDialog()){
-				return " -closeParent ";
+				return xActionSource.getClientId();
 			}
 		}
 		return "";

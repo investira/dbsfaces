@@ -12,10 +12,10 @@ import javax.faces.context.FacesContext;
 import org.apache.log4j.Logger;
 
 import br.com.dbsoft.message.DBSMessage;
-import br.com.dbsoft.message.DBSMessages;
+import br.com.dbsoft.message.DBSMessagesController;
 import br.com.dbsoft.message.IDBSMessage;
 import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
-import br.com.dbsoft.message.IDBSMessages;
+import br.com.dbsoft.message.IDBSMessagesController;
 
 /**
  * @author ricardo.villar
@@ -28,7 +28,7 @@ public abstract class DBSBean implements Serializable{
 	
 	protected 	static IDBSMessage wMessageError = new DBSMessage(MESSAGE_TYPE.ERROR,"Erro: %s");
 	
-	protected 	IDBSMessages<IDBSMessage> 	wMessages = new DBSMessages<IDBSMessage>();
+	protected 	IDBSMessagesController 		wMessagesController = new DBSMessagesController();
 	protected 	boolean						wBrodcastingEvent = false;
 	private   	DBSBean						wMasterBean = null;
 	private 	List<DBSBean>				wSlavesBean = new ArrayList<DBSBean>();
@@ -73,7 +73,7 @@ public abstract class DBSBean implements Serializable{
 	
 	@PreDestroy
 	void pvFinalizeClass(){
-		getMessages().clear();
+		wMessagesController.getMessages().clear();
 		finalizeClass();
 	}
 	
@@ -156,8 +156,8 @@ public abstract class DBSBean implements Serializable{
 	 * Retorna mensagens do dialog.
 	 * @return
 	 */
-	public IDBSMessages<IDBSMessage> getMessages(){
-		return wMessages;
+	public IDBSMessagesController getMessagesController(){
+		return wMessagesController;
 	}
 
 

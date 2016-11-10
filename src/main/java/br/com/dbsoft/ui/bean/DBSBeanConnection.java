@@ -30,7 +30,7 @@ public abstract class DBSBeanConnection extends DBSBean{
 	 * @return
 	 */
 	public String getMessageKey(){
-		return wMessages.getCurrentMessageKey();
+		return getMessagesController().getCurrentMessage().getMessageKey();
 	}
 	
 
@@ -58,7 +58,7 @@ public abstract class DBSBeanConnection extends DBSBean{
 					return true;
 				} catch (DBSIOException e) {
 					wMessageError.setMessageText(e.getLocalizedMessage());
-					getMessages().add(wMessageError);
+					getMessagesController().getMessages().add(wMessageError);
 					return false;
 				}
 			}else{
@@ -66,7 +66,7 @@ public abstract class DBSBeanConnection extends DBSBean{
 			}
 		} catch (SQLException e) {
 			wMessageError.setMessageTextParameters(e.getLocalizedMessage());
-			getMessages().add(wMessageError);
+			getMessagesController().getMessages().add(wMessageError);
 			return false;
 		}
 	}
@@ -82,12 +82,12 @@ public abstract class DBSBeanConnection extends DBSBean{
 						destroyConnection();
 					} catch (DBSIOException e) {
 						wMessageError.setMessageText(e.getLocalizedMessage());
-						getMessages().add(wMessageError);
+						getMessagesController().getMessages().add(wMessageError);
 					}
 				}
 			} catch (SQLException e) {
 				wMessageError.setMessageTextParameters(e.getLocalizedMessage());
-				getMessages().add(wMessageError);
+				getMessagesController().getMessages().add(wMessageError);
 			}
 		}
 	}

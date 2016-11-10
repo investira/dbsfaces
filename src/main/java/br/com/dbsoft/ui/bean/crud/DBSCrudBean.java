@@ -3348,7 +3348,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 
 
 			//Exibe mensagem de erro padrão, caso nehum registro tenha sido afetado e já não houver mensagem a ser exibida.
-			if (!wMessages.hasMessages()
+			if (!getMessagesController().getMessages().hasMessages()
 			 && (!xE.isOk() || (wConnection != null && xE.getCommittedRowCount().equals(0)))){
 				xE.setOk(false);
 				addMessage(wMessageNoRowComitted);

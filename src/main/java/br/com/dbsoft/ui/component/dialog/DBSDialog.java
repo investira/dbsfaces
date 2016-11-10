@@ -11,7 +11,7 @@ import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 
-import br.com.dbsoft.message.IDBSMessage;
+import br.com.dbsoft.message.IDBSMessages;
 import br.com.dbsoft.ui.component.DBSUIOutput;
 
 import br.com.dbsoft.ui.core.DBSFaces;
@@ -48,7 +48,7 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer, SystemEve
 		msgFor,
 		open,
 		//Atributos internos
-		dbsmessage;
+		dbsmessages;
 
 		String toString;
 
@@ -380,13 +380,13 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer, SystemEve
 	}
 
 
-	public IDBSMessage getDBSMessage() {
-		return (IDBSMessage) getStateHelper().eval(PropertyKeys.dbsmessage, null);
+	public IDBSMessages getDBSMessages() {
+		return (IDBSMessages) getStateHelper().eval(PropertyKeys.dbsmessages, null);
 	}
 	
-	public void setDBSMessage(IDBSMessage pDBSMessage) {
-		getStateHelper().put(PropertyKeys.dbsmessage, pDBSMessage);
-		handleAttribute("dbsmessage", pDBSMessage);
+	public void setDBSMessages(IDBSMessages pDBSMessages) {
+		getStateHelper().put(PropertyKeys.dbsmessages, pDBSMessages);
+		handleAttribute("dbsmessages", pDBSMessages);
 	}
 
 	/**
@@ -394,7 +394,7 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer, SystemEve
 	 * @return
 	 */
 	public boolean hasMessage(){
-		if (getDBSMessage() != null
+		if ((getDBSMessages() != null && getDBSMessages().size() > 0)
 		 || getChildren().size() > 0){
 			return true;
 		}
