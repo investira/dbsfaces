@@ -12,7 +12,7 @@ import br.com.dbsoft.util.DBSColor;
 import br.com.dbsoft.util.DBSNumber;
 
 @FacesComponent(DBSChartValue.COMPONENT_TYPE)
-public class DBSChartValue extends DBSUIInput implements NamingContainer, Serializable{
+public class DBSChartValue extends DBSUIInput implements IDBSChartValue, NamingContainer, Serializable{
 	
 	private static final long serialVersionUID = 2431823370810712385L;
 	/**
@@ -133,15 +133,19 @@ public class DBSChartValue extends DBSUIInput implements NamingContainer, Serial
 	public Double getValue() {
 		return DBSNumber.toDouble(super.getValue());
 	}
-	
+	@Override
+	public void setValue(Double pValue) {
+		super.setValue(pValue);
+	}
+	@Override
 	public Double getDisplayValue() {
 		return (Double) getStateHelper().eval(PropertyKeys.displayValue, null);
 	}
+	@Override
 	public void setDisplayValue(Double pDisplayValue) {
 		getStateHelper().put(PropertyKeys.displayValue, pDisplayValue);
 		handleAttribute("displayValue", pDisplayValue);
 	}
-
 //	@Override
 //	public void restoreState(FacesContext context) {
 //	    Object[] rtrn = new Object[2];
