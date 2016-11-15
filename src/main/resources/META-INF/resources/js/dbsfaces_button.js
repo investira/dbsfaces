@@ -7,12 +7,12 @@ dbs_button = function(pId) {
 //	$(pId + ".-disabled").css("height", $(pId).outerHeight())
 //		 .css("width", $(pId).outerWidth());
 	
-	$(pId).on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
-		var xButton = $(this);
-		if (xButton.attr("asid")){
-			$(dbsfaces.util.jsid(xButton.attr("asid"))).click();
-		}
-	});
+//	$(pId).on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
+//		var xButton = $(this);
+//		if (xButton.attr("asid")){
+//			$(dbsfaces.util.jsid(xButton.attr("asid"))).click();
+//		}
+//	});
 
 }
 
