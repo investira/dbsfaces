@@ -33,6 +33,7 @@ public class DBSUICommandAfterActionEvent extends FacesEvent {
 //		System.out.println("DBSUICommandAfterActionEvent processListener");
 		//Verifica se há mensagem
 		if (DBSMessagesFacesContext.getMessage(DBSMessagesFacesContext.ALL) == null){return;}
+//		System.out.println("DBSUICommandAfterActionEvent processListener TEM MENSAGEM");
 		FacesContext xContext = FacesContext.getCurrentInstance();
 		//Força a atualização do componente que indicará se há mensagem
 		xContext.getPartialViewContext().getRenderIds().add(getComponent().getClientId() + DBSUICommand.FACET_MESSAGE);
@@ -41,8 +42,12 @@ public class DBSUICommandAfterActionEvent extends FacesEvent {
 		MethodExpression xME = xAS.getActionExpression();
 		if (xME !=null){
 //			System.out.println("DBSUICommandAfterActionEvent processListener\t" + xME.getExpressionString());
+//			xContext.getApplication().getNavigationHandler().handleNavigation(xContext, null, xContext.getAttributes().get(FACESCONTEXT_ATTRIBUTE.PREVIOUS_VIEW).toString());
 			xContext.getApplication().getNavigationHandler().handleNavigation(xContext, xME.getExpressionString(), xContext.getAttributes().get(FACESCONTEXT_ATTRIBUTE.PREVIOUS_VIEW).toString());
 			xContext.getPartialViewContext().setRenderAll(false);
+//			xContext.getExternalContext().getRequestParameterMap().remove(getComponent().getClientId());
+//			xAS.setActionExpression(null);
+			
 		}
 	}
 
