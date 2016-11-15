@@ -63,7 +63,7 @@ public class DBSMenuitemRenderer extends DBSUICommandRenderer {
 		xWriter.startElement("li", xMenuitem);
 			DBSFaces.encodeAttribute(xWriter, "class", xClass);
 			DBSFaces.encodeAttribute(xWriter, "style", xMenuitem.getStyle());
-			DBSFaces.encodeAttribute(xWriter, "asid", xMenuitem.getActionSourceClientId());
+//			DBSFaces.encodeAttribute(xWriter, "asid", xMenuitem.getActionSourceClientId());
 			xWriter.startElement("a", xMenuitem);
 				writeIdAttribute(xWriter, xMenuitem, xClientId);
 				xClass = CSS.MODIFIER.CAPTION;
