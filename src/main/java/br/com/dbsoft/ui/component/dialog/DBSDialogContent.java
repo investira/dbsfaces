@@ -181,7 +181,7 @@ public class DBSDialogContent extends DBSUIOutput{
 				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.TOOLBAR);
 				if (pType == TYPE.MOD){
 					if (xToolbar == null){
-						pvEncodeToolbarSimpleButtonOk(pDialog, pContext, pWriter);
+						pvEncodeToolbarSimpleButtonOk(pDialog, pWriter);
 					}
 				}else if (pType == TYPE.MSG){
 					pvEncodeToolbarMSGControls(pDialog, pContext, pWriter);
@@ -231,7 +231,7 @@ public class DBSDialogContent extends DBSUIOutput{
 	 * @param pWriter
 	 * @throws IOException
 	 */
-	private void pvEncodeToolbarSimpleButtonOk(DBSDialog pDialog, FacesContext pContext, ResponseWriter pWriter) throws IOException{
+	private void pvEncodeToolbarSimpleButtonOk(DBSDialog pDialog, ResponseWriter pWriter) throws IOException{
 		//Só faz o encode se for MOD
 		String xClass = "-btok -i_ok" + CSS.THEME.ACTION;
 		//Exibe espaço do button ok
@@ -288,11 +288,17 @@ public class DBSDialogContent extends DBSUIOutput{
 		}else{
 			xStyle = "display:none;";
 		}
-		pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_YES, "Sim","-i_yes -green", pvGetActionSourceClientId(pContext), xStyle);
+		//Não utiliza o action do botão que originou este dialog
+		if (xMsgType.getStopExecution()){
+			pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_YES, "Sim","-i_yes -green", xStyle, null);
+		//Executa o action do botão que originou este dialog
+		}else{
+			pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_YES, "Sim","-i_yes -green", xStyle, (DBSUICommand) pContext.getAttributes().get(FACESCONTEXT_ATTRIBUTE.ACTION_SOURCE));
+		}
 	}
 
 
-	private void pvEncodeMsgButton(DBSDialog pDialog, FacesContext pContext, String pId, String pLabel, String pIconClass, String pActionSourceClientId, String pStyle) throws IOException{
+	private void pvEncodeMsgButton(DBSDialog pDialog, FacesContext pContext, String pId, String pLabel, String pIconClass, String pStyle, DBSUICommand pActionSource) throws IOException{
 //		String		xClientId = pDialog.getClientId(pContext);
 		DBSButton 	xBtn = (DBSButton) pDialog.getFacet(pId); 
 		//Verifica se botão já havia sido criado
@@ -300,28 +306,36 @@ public class DBSDialogContent extends DBSUIOutput{
 			xBtn = (DBSButton) pContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
 			xBtn.setId(pId);
 			xBtn.setLabel(pLabel);
-			xBtn.setActionSourceClientId(pActionSourceClientId);
-			xBtn.setCloseDialog(true);
+//			xBtn.setActionSourceClientId(pActionSourceClientId);
+			if (pActionSource != null){
+//				xBtn.setonclick("$(dbsfaces.util.jsid('" + pActionSource.getClientId() + "')).click()");
+				xBtn.setUpdate(pActionSource.getUpdate());
+				xBtn.setActionExpression(pActionSource.getActionExpression());
+//				xBtn.setExecute(pActionSource.getExecute());
+				xBtn.setCloseDialog(false);
+			}else{
+				xBtn.setUpdate("@none");
+				xBtn.setCloseDialog(true);
+			}
+			xBtn.setExecute(pDialog.getClientId());
 			xBtn.setStyle(pStyle);
 			xBtn.setIconClass(CSS.MODIFIER.ICON + pIconClass);
-			xBtn.setUpdate("@none");
-			xBtn.setExecute(pDialog.getClientId());
 			//Inclui botão com facet do modal para poder separa-lo dos componentes filhos criados pelo usuário.
 			pDialog.getFacets().put(pId, xBtn);
 		}
 		xBtn.encodeAll(pContext);
 	}
 	
-	private String pvGetActionSourceClientId(FacesContext pContext){
-		//Indica que fechará o dialog pai(se houver) quando este dialog tiver sido acerto em função de um action e o action for closeDialog
-		DBSUICommand xActionSource = (DBSUICommand) pContext.getAttributes().get(FACESCONTEXT_ATTRIBUTE.ACTION_SOURCE);
-		if (xActionSource != null){
-			if (xActionSource.getCloseDialog()){
-				return xActionSource.getClientId();
-			}
-		}
-		return "";
-	}
+//	private String pvGetActionSourceClientId(FacesContext pContext){
+//		//Indica que fechará o dialog pai(se houver) quando este dialog tiver sido acerto em função de um action e o action for closeDialog
+//		DBSUICommand xActionSource = (DBSUICommand) pContext.getAttributes().get(FACESCONTEXT_ATTRIBUTE.ACTION_SOURCE);
+//		if (xActionSource != null){
+//			if (xActionSource.getCloseDialog()){
+//				return xActionSource.getClientId();
+//			}
+//		}
+//		return "";
+//	}
 	
 	/**
 	 * javaScript
