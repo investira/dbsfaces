@@ -29,9 +29,10 @@ public class DBSMessagesFacesContext {
 
 	/**
 	 * Envia mensagem do tipo <b>FacesMessage</b> e <b>IDBSMessage</b>.<br/>
-	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>m(Message)</b>.<br/>
+	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>'m'(Message)</b>.<br/>
 	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
-	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.
+	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.<br/>
+	 * Mensagens do tipo <b>PROHIBID</b> e <b>ERROR</b> interrompem o redirect que eventualmente exista na execução de um action.
 	 * @param pMessage
 	 */
 	public static void sendMessage(IDBSMessage pMessage, String pClientId, IDBSMessageListener pMessageListener){
@@ -41,16 +42,18 @@ public class DBSMessagesFacesContext {
 
 		//Envia mensagem padrão FacesMessage
 		pvSendFacesMessage(xContext, pMessage.getMessageType(), pMessage.getMessageText(), pClientId);
-		//Envia mensagem no padrão DBSMessages
+		//Força que mensagem tenha o listener informado
 		pMessage.addMessageListener(pMessageListener);
+		//Envia mensagem no padrão DBSMessages
 		pvSendDBSMessage(xContext, pMessage, pClientId);
 	}
 
 	/**
 	 * Envia mensagem do tipo <b>FacesMessage</b> e <b>IDBSMessage</b>.<br/>
-	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>m(Message)</b>.<br/>
+	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>'m'(Message)</b>.<br/>
 	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
-	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.
+	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.<br/>
+	 * Mensagens do tipo <b>PROHIBID</b> e <b>ERROR</b> interrompem o redirect que eventualmente exista na execução de um action.
 	 * @param pMessage
 	 */
 	public static void sendMessage(IDBSMessage pMessage, String pClientId){
@@ -59,9 +62,10 @@ public class DBSMessagesFacesContext {
  
 	/**
 	 * Envia mensagem global do tipo <b>FacesMessage</b> e <b>IDBSMessage</b>.<br/>
-	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>m(Message)</b>.<br/>
+	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>'m'(Message)</b>.<br/>
 	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
-	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.
+	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.<br/>
+	 * Mensagens do tipo <b>PROHIBID</b> e <b>ERROR</b> interrompem o redirect que eventualmente exista na execução de um action.
 	 * @param pMessage
 	 * @param pClientId null = mensagem global. <br/> clientId = id do componente para que se destina a mensagem.
 	 */
@@ -71,9 +75,10 @@ public class DBSMessagesFacesContext {
 
 	/**
 	 * Envia mensagem do tipo <b>FacesMessage</b> e <b>IDBSMessage</b>.<br/>
-	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>m(Message)</b>.<br/>
+	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>'m'(Message)</b>.<br/>
 	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
-	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.
+	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.<br/>
+	 * Mensagens do tipo <b>PROHIBID</b> e <b>ERROR</b> interrompem o redirect que eventualmente exista na execução de um action.
 	 * @param pClientId null = mensagem global. <br/> clientId = id do componente para que se destina a mensagem.
 	 * @param pMessageType
 	 * @param pMessageText
@@ -85,9 +90,10 @@ public class DBSMessagesFacesContext {
 
 	/**
 	 * Envia mensagem do tipo <b>FacesMessage</b> e <b>IDBSMessage</b>.<br/>
-	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>m(Message)</b>.<br/>
+	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>'m'(Message)</b>.<br/>
 	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
-	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.
+	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.<br/>
+	 * Mensagens do tipo <b>PROHIBID</b> e <b>ERROR</b> interrompem o redirect que eventualmente exista na execução de um action.
 	 * @param pMessageType
 	 * @param pMessageText
 	 * @param pClientId null = mensagem global. <br/> clientId = id do componente para que se destina a mensagem.
@@ -100,9 +106,10 @@ public class DBSMessagesFacesContext {
 
 	/**
 	 * Envia mensagem global do tipo <b>FacesMessage</b> e <b>IDBSMessage</b>.<br/>
-	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>m(Message)</b>.<br/>
+	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>'m'(Message)</b>.<br/>
 	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
-	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.
+	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.<br/>
+	 * Mensagens do tipo <b>PROHIBID</b> e <b>ERROR</b> interrompem o redirect que eventualmente exista na execução de um action.
 	 * @param pMessageType
 	 * @param pMessageText
 	 */
@@ -113,9 +120,10 @@ public class DBSMessagesFacesContext {
 
 	/**
 	 * Envia mensagem global do tipo <b>FacesMessage</b> e <b>IDBSMessage</b>.<br/>
-	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>m(Message)</b>.<br/>
+	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>'m'(Message)</b>.<br/>
 	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
-	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.
+	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.<br/>
+	 * Mensagens do tipo <b>PROHIBID</b> e <b>ERROR</b> interrompem o redirect que eventualmente exista na execução de um action.
 	 * @param pMessageType
 	 * @param pMessageText
 	 * @param pMessageListener Listener que receberá os eventos disparados pela mensagem
@@ -127,9 +135,10 @@ public class DBSMessagesFacesContext {
 	
 	/**
 	 * Envia mensagem do tipo <b>FacesMessage</b> e <b>IDBSMessage</b>.<br/>
-	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>m(Message)</b>.<br/>
+	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>'m'(Message)</b>.<br/>
 	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
-	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.
+	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.<br/>
+	 * Mensagens do tipo <b>PROHIBID</b> e <b>ERROR</b> interrompem o redirect que eventualmente exista na execução de um action.
 	 * @param pMessages
 	 * @param pClientId null = mensagem global. <br/> clientId = id do componente para que se destina a mensagem.
 	 * @param pMessageListener Listener que receberá os eventos disparados pela mensagem
@@ -145,9 +154,10 @@ public class DBSMessagesFacesContext {
 	
 	/**
 	 * Envia mensagem do tipo <b>FacesMessage</b> e <b>IDBSMessage</b>.<br/>
-	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>m(Message)</b>.<br/>
+	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>'m'(Message)</b>.<br/>
 	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
-	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.
+	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.<br/>
+	 * Mensagens do tipo <b>PROHIBID</b> e <b>ERROR</b> interrompem o redirect que eventualmente exista na execução de um action.
 	 * @param pMessages
 	 * @param pClientId null = mensagem global. <br/> clientId = id do componente para que se destina a mensagem.
 	 */
@@ -157,9 +167,10 @@ public class DBSMessagesFacesContext {
 
 	/**
 	 * Envia mensagem globaldo tipo <b>FacesMessage</b> e <b>DBSMessages</b>.<br/>
-	 * As mensagens <b>DBSMessages</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>m(Message)</b>.<br/>
+	 * As mensagens <b>DBSMessages</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>'m'(Message)</b>.<br/>
 	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
-	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.
+	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.<br/>
+	 * Mensagens do tipo <b>PROHIBID</b> e <b>ERROR</b> interrompem o redirect que eventualmente exista na execução de um action.
 	 * @param pMessages
 	 */
 
@@ -170,9 +181,10 @@ public class DBSMessagesFacesContext {
 
 	/**
 	 * Envia mensagem do tipo <b>FacesMessage</b> e <b>IDBSMessage</b>.<br/>
-	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>m(Message)</b>.<br/>
+	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>'m'(Message)</b>.<br/>
 	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
-	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.
+	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.<br/>
+	 * Mensagens do tipo <b>PROHIBID</b> e <b>ERROR</b> interrompem o redirect que eventualmente exista na execução de um action.
 	 * @param pMessages
 	 * @param pClientId null = mensagem global. <br/> clientId = id do componente para que se destina a mensagem.
 	 * @param pMessageListener Listener que receberá os eventos disparados pela mensagem
@@ -187,9 +199,10 @@ public class DBSMessagesFacesContext {
 	
 	/**
 	 * Envia mensagem do tipo <b>FacesMessage</b> e <b>IDBSMessage</b>.<br/>
-	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>m(Message)</b>.<br/>
+	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>'m'(Message)</b>.<br/>
 	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
-	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.
+	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.<br/>
+	 * Mensagens do tipo <b>PROHIBID</b> e <b>ERROR</b> interrompem o redirect que eventualmente exista na execução de um action.
 	 * @param pMessages
 	 * @param pClientId null = mensagem global. <br/> clientId = id do componente para que se destina a mensagem.
 	 */
