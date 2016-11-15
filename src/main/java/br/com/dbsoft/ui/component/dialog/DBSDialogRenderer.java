@@ -10,6 +10,7 @@ import javax.faces.render.FacesRenderer;
 
 import com.sun.faces.renderkit.RenderKitUtils;
 
+import br.com.dbsoft.message.IDBSMessage;
 import br.com.dbsoft.message.IDBSMessages;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSRenderer;
@@ -45,15 +46,20 @@ public class DBSDialogRenderer extends DBSRenderer{
 				String xMsgKey = DBSFaces.getDecodedComponenteValue(pContext, xInputMsgKey);
 				//Se existe alguma mensagem sendo validada
 				if (xMsgKey != null){
-					if (xSourceId.equals(xClientId + ":" + DBSDialog.BUTTON_NO)){
-						xMessages.getMessage(xMsgKey).setMessageValidated(false);
-//						xMessages.get(xMsgKey).setMessageValidated(false);
-//						xMessages.setMessageValidated(false);
-					} else if (xSourceId.equals(xClientId + ":" + DBSDialog.BUTTON_YES)){
-						xMessages.getMessage(xMsgKey).setMessageValidated(true);
-//						xMessages.get(xMsgKey).setMessageValidated(true);
-//						xMessages.setMessageValidated(true);
-					}
+					IDBSMessage xMessage = xMessages.getMessage(xMsgKey);
+//					if (xMessage !=null){
+						if (xSourceId.equals(xClientId + ":" + DBSDialog.BUTTON_NO)){
+							//Seta mensagem como validada negativamente. Lembrando que o validade dispara eventuais listeners atralados a mensagem.
+							xMessage.setMessageValidated(false);
+						} else if (xSourceId.equals(xClientId + ":" + DBSDialog.BUTTON_YES)){
+							//Seta mensagem como validada positivamente
+							xMessage.setMessageValidated(true);
+							//Exclui mensagem da lista. Lembrando que o validade dispara eventuais listeners atralados a mensagem.
+							if (!xMessages.getMessage(xMsgKey).getMessageType().getRequireConfirmation()){
+								xMessages.remove(xMessage);
+							}
+						}
+//					}
 				}
 			}
 		}
