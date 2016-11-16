@@ -306,9 +306,9 @@
 					&lt;li&gt;s = success/sucesso&lt;/li&gt;
 					&lt;li&gt;i = information/informação&lt;/li&gt;
 					&lt;li&gt;i = impotant/importante&lt;/li&gt;
-					&lt;li&gt;w = warning/atenção&lt;/li&gt;
-					&lt;li&gt;c = confirmation/confirmação&lt;/li&gt;
-					&lt;li&gt;g = ignore/ignorar&lt;/li&gt;
+					&lt;li&gt;w = warning/atenção (requer confirmação)&lt;/li&gt;
+					&lt;li&gt;c = confirmation/confirmação (requer confirmação)&lt;/li&gt;
+					&lt;li&gt;g = ignore/ignorar (requer confirmação)&lt;/li&gt;
 					&lt;li&gt;p = prohibid/proibido&lt;/li&gt;
 					&lt;li&gt;e = error/erro&lt;/li&gt;
 				&lt;ul&gt;
@@ -579,9 +579,9 @@
 					&lt;li&gt;s = success/sucesso&lt;/li&gt;
 					&lt;li&gt;i = information/informação&lt;/li&gt;
 					&lt;li&gt;i = impotant/importante&lt;/li&gt;
-					&lt;li&gt;w = warning/atenção&lt;/li&gt;
-					&lt;li&gt;c = confirmation/confirmação&lt;/li&gt;
-					&lt;li&gt;g = ignore/ignorar&lt;/li&gt;
+					&lt;li&gt;w = warning/atenção (requer confirmação)&lt;/li&gt;
+					&lt;li&gt;c = confirmation/confirmação (requer confirmação)&lt;/li&gt;
+					&lt;li&gt;g = ignore/ignorar (requer confirmação)&lt;/li&gt;
 					&lt;li&gt;p = prohibid/proibido&lt;/li&gt;
 					&lt;li&gt;e = error/erro&lt;/li&gt;
 				&lt;ul&gt;

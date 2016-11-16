@@ -173,7 +173,7 @@ public abstract class DBSReportBean extends DBSBeanModalMessages {
 		//Salva o nome da view para onde será direcionado. 
 		String xView = super.setMessageValidated(pIsValidated);
 		//Força o nova geração do relatório após a confirmação de uma mensagem de WARNING
-		if (xMessageType.getRequireConfirmation() 
+		if (xMessageType.getIsWarning() 
 		 && pIsValidated){
 			create();
 		}

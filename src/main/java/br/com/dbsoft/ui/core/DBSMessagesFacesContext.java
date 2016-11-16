@@ -145,11 +145,18 @@ public class DBSMessagesFacesContext {
 	 */
 	public static void sendMessages(IDBSMessages pMessages, String pClientId, IDBSMessageListener pMessageListener){
 		if (pMessages == null){return;}
+		FacesContext xContext = FacesContext.getCurrentInstance();
+		if (xContext == null){return;}
 		Iterator<IDBSMessage> xMsgs = pMessages.iterator();
 		//Envia as mensagens individualmente
 		while (xMsgs.hasNext()){
-			sendMessage(xMsgs.next(), pClientId, pMessageListener);
+			IDBSMessage xMsg = xMsgs.next();
+			//Envia mensagem padrão FacesMessage
+			pvSendFacesMessage(xContext, xMsg.getMessageType(), xMsg.getMessageText(), pClientId);
+			xMsg.addMessageListener(pMessageListener);
 		}
+		//Seta a lista de mensagems como a própria lista de mensagens recebida.
+		pvSetContextMessagesMapDBSMessages(xContext, pMessages, pClientId);
 	}
 	
 	/**
@@ -235,10 +242,10 @@ public class DBSMessagesFacesContext {
 		pClientId = DBSObject.getNotEmpty(pClientId, ALL);
 		pClientId = pClientId.trim().toLowerCase();
 
-		xMessages = pvGetDBSMessages(xContext, pClientId);
+		xMessages = pvGetMessagesForClientId(xContext, pClientId);
 
 		if (xMessages == null){
-			xMessages = pvGetFacesMessage(xContext, pClientId);
+			xMessages = pvGetFacesMessageForClientId(xContext, pClientId);
 		}
 		return xMessages;
 	}
@@ -298,7 +305,7 @@ public class DBSMessagesFacesContext {
 	 * @param pClientId
 	 * @return
 	 */
-	private static IDBSMessages pvGetDBSMessages(FacesContext pContext, String pClientId){
+	private static IDBSMessages pvGetMessagesForClientId(FacesContext pContext, String pClientId){
 		if (pContext.getAttributes().get(FACESCONTEXT_ATTRIBUTE.MESSAGES) == null){return null;}
 		HashMap<String, IDBSMessages> xMap = pvGetContextMessagesMap(pContext);
 		IDBSMessages	xMessages = new DBSMessages();
@@ -326,7 +333,7 @@ public class DBSMessagesFacesContext {
 	 * @param pClientId
 	 * @return
 	 */
-	private static IDBSMessages pvGetFacesMessage(FacesContext pContext, String pClientId){
+	private static IDBSMessages pvGetFacesMessageForClientId(FacesContext pContext, String pClientId){
 		if (pContext.getMessageList().size() == 0){return null;}
 		IDBSMessages 		xMessages = new DBSMessages();
 		List<FacesMessage> 	xListFacesMsgs = null;
@@ -362,6 +369,23 @@ public class DBSMessagesFacesContext {
 		}
 		return xMessages;
 	}
+	
+	/**
+	 * Envia mensagem IDBSMessages para o FacesContext. 
+	 * @param pContext
+	 * @param pMessage
+	 * @param pClientId
+	 */
+	private static void pvSetContextMessagesMapDBSMessages(FacesContext pContext, IDBSMessages pMessages, String pClientId){
+		HashMap<String, IDBSMessages> xMap = pvGetContextMessagesMap(pContext);
+		
+		pClientId = DBSObject.getNotEmpty(pClientId, GLOBAL);
+		pClientId = pClientId.trim().toLowerCase();
+	
+		//Inclui DBSMessages no map vinculado a este clienteId 
+		xMap.put(pClientId, pMessages);
+	}
+
 
 	/**
 	 * Retorna atributo dentro do FacesContext resposável por armazenar as mensagens IDBSMessages.<br/>

@@ -99,7 +99,7 @@ public abstract class DBSBeanModalMessages extends DBSBean implements IDBSModalM
 		if (xCurrentMessage != null){
 //			String xMessageKey = xCurrentMessage.getMessageKey(); //Salva a chave, pois o setValidated posiciona na próxima mensagem.
 			xCurrentMessage.setMessageValidated(pIsValidated);
-			if (xCurrentMessage.getMessageType().getRequireConfirmation()){
+			if (xCurrentMessage.getMessageType().getIsWarning()){
 				//Chama método indicando que warning foi validado
 				warningMessageValidated(xCurrentMessage.getMessageKey(), pIsValidated);
 			}

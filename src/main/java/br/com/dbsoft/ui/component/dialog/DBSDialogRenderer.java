@@ -55,7 +55,7 @@ public class DBSDialogRenderer extends DBSRenderer{
 							//Seta mensagem como validada positivamente
 							xMessage.setMessageValidated(true);
 							//Exclui mensagem da lista. Lembrando que o validade dispara eventuais listeners atralados a mensagem.
-							if (!xMessages.getMessage(xMsgKey).getMessageType().getRequireConfirmation()){
+							if (!xMessages.getMessage(xMsgKey).getMessageType().getIsWarning()){
 								xMessages.remove(xMessage);
 							}
 						}

@@ -239,7 +239,7 @@ public abstract class DBSBean2 implements Serializable, IDBSModalMessages{
 		if (wDialogMessages!=null){
 			IDBSMessage xMessageKey = wDialogMessages.getCurrentMessage(); //Salva a chave, pois o setValidated posiciona na próxima mensagem.
 			wDialogMessages.getCurrentMessage().setMessageValidated(pIsValidated);
-			if (xMessageKey.getMessageType().getRequireConfirmation()){
+			if (xMessageKey.getMessageType().getIsWarning()){
 				//Chama método indicando que warning foi validado
 				warningMessageValidated(xMessageKey.getMessageKey(), pIsValidated);
 			}
