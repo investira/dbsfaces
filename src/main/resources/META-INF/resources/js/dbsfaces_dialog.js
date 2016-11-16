@@ -224,7 +224,7 @@ dbsfaces.dialog = {
 		if (pDialog.attr("timeout") == "a"){
 			pDialog.data("timeout", dbsfaces.ui.getTimeFromTextLength(pDialog.data("sub_content").text()) / 1000);
 		}
-		var xTime = parseInt(pDialog.data("timeout"));
+		var xTime = parseFloat(pDialog.data("timeout"));
 		dbsfaces.ui.cssTransition(pDialog.data("bthandle"), "width " + xTime + "s linear, height " + xTime + "s linear");
 	},
 
