@@ -42,13 +42,8 @@ public class DBSUICommandAfterActionEvent extends FacesEvent {
 		ActionSource2 xAS = (ActionSource2) wActionEvent.getSource();
 		MethodExpression xME = xAS.getActionExpression();
 		if (xME !=null){
-//			System.out.println("DBSUICommandAfterActionEvent processListener\t" + xME.getExpressionString());
-//			xContext.getApplication().getNavigationHandler().handleNavigation(xContext, null, xContext.getAttributes().get(FACESCONTEXT_ATTRIBUTE.PREVIOUS_VIEW).toString());
 			xContext.getApplication().getNavigationHandler().handleNavigation(xContext, xME.getExpressionString(), xContext.getAttributes().get(FACESCONTEXT_ATTRIBUTE.PREVIOUS_VIEW).toString());
 			xContext.getPartialViewContext().setRenderAll(false);
-//			xContext.getExternalContext().getRequestParameterMap().remove(getComponent().getClientId());
-//			xAS.setActionExpression(null);
-			
 		}
 	}
 
