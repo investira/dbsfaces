@@ -118,6 +118,10 @@ public class  DBSFaces {
     	 * Componente que originou a ação.
     	 */
     	public static final String ACTION_SOURCE = "DBSACTIONSOURCE";
+    	/**
+    	 * Componente que originou a ação.
+    	 */
+    	public static final String ACTION_MESSAGEKEY = "DBSACTIONMESSAGEKEY";
     }
     
 	public static class ID

@@ -1,4 +1,4 @@
-package br.com.dbsoft.ui.component;
+package br.com.dbsoft.ui.component.command;
 
 
 import javax.el.MethodExpression;
@@ -9,6 +9,7 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
 
 import br.com.dbsoft.ui.core.DBSFaces.FACESCONTEXT_ATTRIBUTE;
+import br.com.dbsoft.ui.component.DBSUICommand;
 import br.com.dbsoft.ui.core.DBSMessagesFacesContext;
 
 

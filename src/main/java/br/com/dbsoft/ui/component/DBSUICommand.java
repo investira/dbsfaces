@@ -15,6 +15,7 @@ import javax.faces.event.PreRenderViewEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 
+import br.com.dbsoft.ui.component.command.DBSUICommandHasMessage;
 import br.com.dbsoft.ui.core.DBSFaces;
 
 @ResourceDependencies({

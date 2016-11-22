@@ -1,4 +1,4 @@
-package br.com.dbsoft.ui.component;
+package br.com.dbsoft.ui.component.command;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -6,6 +6,8 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
+import br.com.dbsoft.ui.component.DBSRenderer;
+import br.com.dbsoft.ui.component.DBSUICommand;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.ui.core.DBSFaces.FACESCONTEXT_ATTRIBUTE;

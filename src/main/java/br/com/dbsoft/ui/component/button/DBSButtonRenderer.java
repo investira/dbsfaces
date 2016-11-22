@@ -7,7 +7,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
 
-import br.com.dbsoft.ui.component.DBSUICommandRenderer;
+import br.com.dbsoft.ui.component.command.DBSUICommandRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
 

@@ -133,7 +133,7 @@ public class DBSDialogContent extends DBSUIOutput{
 		MESSAGE_TYPE xMsgType = MESSAGE_TYPE.get(pDialog.getMsgType());
 //		if (xMsgType.getRequireConfirmation()){
 		if (pType == TYPE.NAV 
-		|| (pType == TYPE.MSG && !xMsgType.getIsWarning())){
+		|| (pType == TYPE.MSG && !xMsgType.getIsQuestion())){
 			String xClass = "-bthandle" + CSS.THEME.ACTION;
 			//Exibe espaço do button timeout
 			pWriter.startElement("div", pDialog);
@@ -282,19 +282,38 @@ public class DBSDialogContent extends DBSUIOutput{
 	 */
 	private void pvEncodeMsgButtons(DBSDialog pDialog, FacesContext pContext) throws IOException{
 		MESSAGE_TYPE xMsgType = MESSAGE_TYPE.get(pDialog.getMsgType());
+//		String xStyle = "";
+//		if (xMsgType.getIsQuestion()){
+//			pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_NO, "Não","-i_no -red", null, null);
+//		}else{
+//			xStyle = "display:none;";
+//		}
+//		//Não utiliza o action do botão que originou este dialog se mensagem for do tipo que impede que action seja efetuado
+//		if (!xMsgType.getIsQuestion() && xMsgType.getIsError()){
+//			pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_YES, "Sim","-i_yes -green", xStyle, null);
+//		//Executa o action do botão que originou este dialog
+//		}else{
+//			pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_YES, "Sim","-i_yes -green", xStyle, (DBSUICommand) pContext.getAttributes().get(FACESCONTEXT_ATTRIBUTE.ACTION_SOURCE));
+//		}
+//		
+		
 		String xStyle = "";
-		if (xMsgType.getIsWarning()){
-			pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_NO, "Não","-i_no -red", null, null);
+		DBSUICommand xActionSource = (DBSUICommand) pContext.getAttributes().get(FACESCONTEXT_ATTRIBUTE.ACTION_SOURCE);
+		if (xMsgType.getIsQuestion()){
+			if (xMsgType.getIsError()){
+				//Não utiliza o action do botão que originou este dialog se mensagem for erro. Erro impede que action seja efetuado.
+				pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_NO, "Não","-i_no -red", null, null);
+			}else{
+				pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_NO, "Não","-i_no -red", null, xActionSource);
+			}
 		}else{
 			xStyle = "display:none;";
+			//Não utiliza o action do botão que originou este dialog se mensagem for erro. Erro impede que action seja efetuado.
+			if (xMsgType.getIsError()){
+				xActionSource = null;
+			}
 		}
-		//Não utiliza o action do botão que originou este dialog se mensagem for do tipo que impide que action seja efetuado
-		if (xMsgType.getIsError()){
-			pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_YES, "Sim","-i_yes -green", xStyle, null);
-		//Executa o action do botão que originou este dialog
-		}else{
-			pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_YES, "Sim","-i_yes -green", xStyle, (DBSUICommand) pContext.getAttributes().get(FACESCONTEXT_ATTRIBUTE.ACTION_SOURCE));
-		}
+		pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_YES, "Sim","-i_yes -green", xStyle, xActionSource);
 	}
 
 

@@ -12,8 +12,8 @@ import com.sun.faces.renderkit.RenderKitUtils;
 import com.sun.faces.renderkit.html_basic.HtmlBasicRenderer.Param;
 
 import br.com.dbsoft.ui.component.DBSPassThruAttributes;
-import br.com.dbsoft.ui.component.DBSUICommandRenderer;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
+import br.com.dbsoft.ui.component.command.DBSUICommandRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.util.DBSString;

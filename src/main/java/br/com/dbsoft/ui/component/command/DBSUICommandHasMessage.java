@@ -1,4 +1,4 @@
-package br.com.dbsoft.ui.component;
+package br.com.dbsoft.ui.component.command;
 
 import java.io.IOException;
 
@@ -6,6 +6,7 @@ import javax.faces.component.FacesComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import br.com.dbsoft.ui.component.DBSUICommand;
 import br.com.dbsoft.ui.component.DBSUIOutput;
 
 import br.com.dbsoft.ui.core.DBSFaces;
