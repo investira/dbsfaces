@@ -394,9 +394,8 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer, SystemEve
 	 * @return
 	 */
 	public boolean hasMessage(){
-		if ((getDBSMessages() != null && getDBSMessages().size() > 0)
-		 || getChildren().size() > 0){
-			return true;
+		if (getDBSMessages() != null){
+			return getDBSMessages().hasMessages();
 		}
 		return false;
 	}
