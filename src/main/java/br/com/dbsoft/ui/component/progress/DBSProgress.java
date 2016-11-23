@@ -15,7 +15,6 @@ public class DBSProgress extends DBSUIOutput {
 	protected enum PropertyKeys {
 //		label,
 		maxValue,
-		width,
 		tooltip;
 		
 		String toString;
@@ -55,13 +54,13 @@ public class DBSProgress extends DBSUIOutput {
 		handleAttribute("maxValue", pMaxValue);
 	}
 
-	public Double getWidth() {
-		return (Double) getStateHelper().eval(PropertyKeys.width, 16D);
-	}
-	public void setWidth(Double pWidth) {
-		getStateHelper().put(PropertyKeys.width, pWidth);
-		handleAttribute("width", pWidth);
-	}
+//	public Double getWidth() {
+//		return (Double) getStateHelper().eval(PropertyKeys.width, 16D);
+//	}
+//	public void setWidth(Double pWidth) {
+//		getStateHelper().put(PropertyKeys.width, pWidth);
+//		handleAttribute("width", pWidth);
+//	}
 	
 	public String getTooltip() {
 		return (String) getStateHelper().eval(PropertyKeys.tooltip, "");
