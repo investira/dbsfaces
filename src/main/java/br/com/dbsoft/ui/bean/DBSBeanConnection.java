@@ -7,6 +7,11 @@ import java.sql.SQLException;
 import javax.annotation.PreDestroy;
 
 import br.com.dbsoft.error.DBSIOException;
+import br.com.dbsoft.message.DBSMessage;
+import br.com.dbsoft.message.DBSMessages;
+import br.com.dbsoft.message.IDBSMessage;
+import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
+import br.com.dbsoft.message.IDBSMessages;
 
 /**
  * @author ricardo.villar
@@ -15,22 +20,15 @@ public abstract class DBSBeanConnection extends DBSBean{
  
 	private static final long serialVersionUID = -9043064201329995188L;
 
-	protected 	Connection					wConnection;
-	
+	protected 	Connection		   wConnection;
+	protected 	static IDBSMessage wMessageError = new DBSMessage(MESSAGE_TYPE.ERROR,"Erro: %s");
+	protected 	IDBSMessages 	   wMessages = new DBSMessages(true);
+
 	@Override
 	@PreDestroy
 	void pvFinalizeClass(){
 		super.pvFinalizeClass();
 		closeConnection();
-	}
-
-	//Public -------------------------------------------------------------
-	/**
-	 * Retorna texto da mensagem que está na fila
-	 * @return
-	 */
-	public String getMessageKey(){
-		return getMessagesController().getCurrentMessage().getMessageKey();
 	}
 	
 
@@ -42,6 +40,14 @@ public abstract class DBSBeanConnection extends DBSBean{
 		wConnection = pConnection;
 	}
 
+	/**
+	 * Retorna mensagens do dialog.
+	 * @return
+	 */
+	public IDBSMessages getMessages(){
+		return wMessages;
+	}
+	
 	//---------------------------------Métodos Abstratos---------------------------------
 	/**
 	 * Método para abrir a conexão e setar a variável local wConnection.<br/>
@@ -58,7 +64,7 @@ public abstract class DBSBeanConnection extends DBSBean{
 					return true;
 				} catch (DBSIOException e) {
 					wMessageError.setMessageText(e.getLocalizedMessage());
-					getMessagesController().getMessages().add(wMessageError);
+					wMessages.add(wMessageError.clone());
 					return false;
 				}
 			}else{
@@ -66,7 +72,7 @@ public abstract class DBSBeanConnection extends DBSBean{
 			}
 		} catch (SQLException e) {
 			wMessageError.setMessageTextParameters(e.getLocalizedMessage());
-			getMessagesController().getMessages().add(wMessageError);
+			wMessages.add(wMessageError.clone());
 			return false;
 		}
 	}
@@ -82,12 +88,12 @@ public abstract class DBSBeanConnection extends DBSBean{
 						destroyConnection();
 					} catch (DBSIOException e) {
 						wMessageError.setMessageText(e.getLocalizedMessage());
-						getMessagesController().getMessages().add(wMessageError);
+						wMessages.add(wMessageError.clone());
 					}
 				}
 			} catch (SQLException e) {
 				wMessageError.setMessageTextParameters(e.getLocalizedMessage());
-				getMessagesController().getMessages().add(wMessageError);
+				wMessages.add(wMessageError.clone());
 			}
 		}
 	}
