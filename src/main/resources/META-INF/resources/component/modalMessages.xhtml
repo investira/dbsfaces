@@ -22,10 +22,10 @@
 							rendered="#{cc.userBean.hasMessage}"
 							update="#{cc.attrs.update}"
 							tooltip="#{cc.userBean.messageTooltip}">
-							<c:if test="#{!cc.userBean.messageType.requireConfirmation}">
+							<c:if test="#{!cc.userBean.messageType.isQuestion}">
 								<f:attribute name="okAction" value="#{cc.userBean.setMessageValidated(true)}"/>
 							</c:if>
-							<c:if test="#{cc.userBean.messageType.requireConfirmation}">
+							<c:if test="#{cc.userBean.messageType.isQuestion}">
 								<f:attribute name="noAction" value="#{cc.userBean.setMessageValidated(false)}"/>
 								<f:attribute name="yesAction" value="#{cc.userBean.setMessageValidated(true)}"/>
 							</c:if>
