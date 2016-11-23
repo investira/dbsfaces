@@ -1076,8 +1076,6 @@ public class  DBSFaces {
 		if (pLocalViewPath==null
 		 || FacesContext.getCurrentInstance() == null){return;}
 		try {
-//			ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-//			externalContext.redirect("http://stackoverflow.com");
 			FacesContext.getCurrentInstance().getExternalContext().redirect(pLocalViewPath);
 		} catch (IOException e) {
 			DBSIO.throwIOException(e);
