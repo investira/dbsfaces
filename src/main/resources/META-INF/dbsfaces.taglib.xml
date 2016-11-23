@@ -312,8 +312,7 @@
 					&lt;li&gt;p = prohibid/proibido&lt;/li&gt;
 					&lt;li&gt;e = error/erro&lt;/li&gt;
 				&lt;ul&gt;
-				&lt;/span&gt; 
-			</description>
+				&lt;/span&gt; </description>
 			<name>msgType</name>
 			<required>false</required>
 			<type>java.lang.String</type>
@@ -328,8 +327,7 @@
 					&lt;li&gt;@all = Todas as mensagens&lt;/li&gt;
 					&lt;li&gt;clientid do componente = Mensagem para um componente&lt;/li&gt;
 				&lt;ul&gt;
-				&lt;/span&gt; 
-			</description>
+				&lt;/span&gt; </description>
 			<name>msgFor</name>
 			<required>false</required>
 			<type>java.lang.String</type>
@@ -585,8 +583,7 @@
 					&lt;li&gt;p = prohibid/proibido&lt;/li&gt;
 					&lt;li&gt;e = error/erro&lt;/li&gt;
 				&lt;ul&gt;
-				&lt;/span&gt; 
-			</description>
+				&lt;/span&gt; </description>
 			<name>msgType</name>
 			<required>false</required>
 			<type>java.lang.String</type>
@@ -601,13 +598,11 @@
 					&lt;li&gt;@all = Todas as mensagens&lt;/li&gt;
 					&lt;li&gt;clientid do componente = Mensagem para um componente&lt;/li&gt;
 				&lt;ul&gt;
-				&lt;/span&gt; 
-			</description>
+				&lt;/span&gt; </description>
 			<name>msgFor</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
-
 	</tag>
 	<tag>
 		<tag-name>dialogmod</tag-name>
@@ -741,253 +736,6 @@
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>closeTimeout</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>nav</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.nav</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
-                Identificador único do componente.
-            </description>
-			<name>id</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                Class CSS que será utilizada
-            </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                Adiciona style 
-            </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                rendered
-            </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
-            	iconClass
-            </description>
-			<name>iconClass</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-				&lt;span style="font-size:small"&gt;
-				Localização da abertura. Padrão é vertical.&lt;br/&gt;
-				&lt;ul&gt;
-					&lt;li&gt;v = Abertura:VERTICAL&lt;/li&gt;
-					&lt;li&gt;h = Abertura:HORIZONTAL&lt;/li&gt;
-					&lt;li&gt;c = Abertura:CENTRO&lt;/li&gt;
-				&lt;ul&gt;
-				&lt;/span&gt; </description>
-			<name>location</name>
-			<required>false</required>
-			<type>java.lang.Sting</type>
-		</attribute>
-		<attribute>
-			<description>
-				&lt;span style="font-size:small"&gt;
-				Tempo para fechamento automatico do nav em segundos.&lt;br/&gt;
-				Se for 0, não fecha automaticamente.
-				&lt;/span&gt; </description>
-			<name>closeTimeout</name>
-			<required>false</required>
-			<type>java.lang.Sting</type>
-		</attribute>
-		<attribute>
-			<description>Padding interno. O padrão é 0.4em;
-            </description>
-			<name>contentPadding</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                Class CSS que será utilizada dentro do nav
-            </description>
-			<name>contentStyleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                &lt;span style="font-size:small"&gt;
-				Alinhamento vertical do conteúdo do nav. O Padrão é TOP.&lt;br/&gt;
-				&lt;ul&gt;
-					&lt;li&gt;t = TOP&lt;/li&gt;
-					&lt;li&gt;b = BOTTOM&lt;/li&gt;
-				&lt;ul&gt;
-				&lt;/span&gt; </description>
-			<name>contentVerticalAlign</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                &lt;span style="font-size:small"&gt;
-				Alinhamento horizontal do conteúdo do nav. O Padrão é LEFT.&lt;br/&gt;
-				&lt;ul&gt;
-					&lt;li&gt;l = LEFT&lt;/li&gt;
-					&lt;li&gt;r = RIGHT&lt;/li&gt;
-				&lt;ul&gt;
-				&lt;/span&gt; </description>
-			<name>contentHorizontalAlign</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                Se exibe já aberto. Padrao é false.
-            </description>
-			<name>opened</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-	</tag>
-	<tag>
-		<tag-name>navMessage</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.navmessage</component-type>
-			<handler-class />
-		</component>
-		<attribute>
-			<description>
-                Identificador único do componente.
-            </description>
-			<name>id</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                Class CSS que será utilizada
-            </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                Adiciona style 
-            </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                rendered
-            </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
-                rendered
-            </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
-				&lt;span style="font-size:small"&gt;
-				Localização da abertura. Padrão é vertical.&lt;br/&gt;
-				&lt;ul&gt;
-					&lt;li&gt;v = VERTICAL&lt;/li&gt;
-					&lt;li&gt;h = HORIZONTAL&lt;/li&gt;
-					&lt;li&gt;c = CENTRO&lt;/li&gt;
-				&lt;ul&gt;
-				&lt;/span&gt; </description>
-			<name>location</name>
-			<required>false</required>
-			<type>java.lang.Sting</type>
-		</attribute>
-		<attribute>
-			<description>
-				&lt;span style="font-size:small"&gt;
-				Tempo para fechamento automatico do nav em segundos.&lt;br/&gt;
-				&lt;/span&gt; </description>
-			<name>closeTimeout</name>
-			<required>false</required>
-			<type>java.lang.Sting</type>
-		</attribute>
-		<attribute>
-			<description>Padding interno. O padrão é 0.4em;
-            </description>
-			<name>contentPadding</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                Class CSS que será utilizada dentro do nav
-            </description>
-			<name>contentStyleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                &lt;span style="font-size:small"&gt;
-				Alinhamento vertical do conteúdo do nav. O Padrão é TOP.&lt;br/&gt;
-				&lt;ul&gt;
-					&lt;li&gt;t = TOP&lt;/li&gt;
-					&lt;li&gt;b = BOTTOM&lt;/li&gt;
-				&lt;ul&gt;
-				&lt;/span&gt; </description>
-			<name>contentVerticalAlign</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                &lt;span style="font-size:small"&gt;
-				Alinhamento horizontal do conteúdo do nav. O Padrão é LEFT.&lt;br/&gt;
-				&lt;ul&gt;
-					&lt;li&gt;l = LEFT&lt;/li&gt;
-					&lt;li&gt;r = RIGHT&lt;/li&gt;
-				&lt;ul&gt;
-				&lt;/span&gt; </description>
-			<name>contentHorizontalAlign</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                Se exibe já aberto. Padrao é false.
-            </description>
-			<name>opened</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
-                Define o nome do elemento que escutará as mensagens. As mensagens deverão ser enviadas para este nome usando o método DBSFaces.sendMessage
-            </description>
-			<name>for</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
