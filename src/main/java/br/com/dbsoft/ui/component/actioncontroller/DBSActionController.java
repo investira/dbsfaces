@@ -64,15 +64,15 @@ public abstract class DBSActionController{
 	/**
 	 * Evento disparado antes de executar o processamento existente em <b>onExecute</b>.</br>
 	 * Este evento deve ser utilizado para enviar mensagens de validação ou confirmação anterior a execução. 
-	 * @param pMessages 
+	 * @param pMessagesToSend 
 	 */
-	protected void beforeExecute(IDBSMessages pMessages){};
+	protected void beforeExecute(IDBSMessages pMessagesToSend){};
 	/**
 	 * Evento disparado após a execusão do processamento existente em <b>onExecute</b>.</br>
 	 * Este evento deve ser utilizado para enviar mensagens de erro ou informações gerados pela execução.
-	 * @param pMessages
+	 * @param pMessagesToSend
 	 */
-	protected void afterExecute(IDBSMessages pMessages){};
+	protected void afterExecute(IDBSMessages pMessagesToSend){};
 	
 	/**
 	 * @return Página a ser direcionada após a finalização <b>com sucesso</b> do processamento e exibição de todas as mensagens.
