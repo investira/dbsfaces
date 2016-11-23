@@ -141,41 +141,33 @@
 
 }
   	
-.dbs_messageList > .-container > .-button > .-count.-severity1{
-	background-color: rgb(255, 255, 255);
-	color:inherit;
-}
-.dbs_messageList > .-container > .-button > .-count.-severity10{ 
+.dbs_messageList > .-container > .-button > .-count.-severity0{ 
 	background-color: rgb(255, 236, 0); 
-	color:inherit;
 }
-.dbs_messageList > .-container > .-button > .-count.-severity20{
+.dbs_messageList > .-container > .-button > .-count.-severity1{
 	background-color: rgb(255, 180, 0);
-	color:inherit;
 }
-.dbs_messageList > .-container > .-button > .-count.-severity30{
-	background-color: rgb(255, 100, 0);
-	color:inherit;
-}
-.dbs_messageList > .-container > .-button > .-count.-severity40{
+.dbs_messageList > .-container > .-button > .-count.-severity2{
 	background-color: rgb(255, 0, 0);
-	color:inherit;
+}
+.dbs_messageList > .-container > .-button > .-count.-severity3{
+	background-color: rgb(255, 100, 0);
 }
 
-.dbs_messageList > .-container > .-list > .-content > .-message.-severity1{
-	background-color: none;
-}
-.dbs_messageList > .-container > .-list > .-content > .-message.-severity10{
+/* .dbs_messageList > .-container > .-list > .-content > .-message.-severity01{ */
+/* 	background-color: none; */
+/* } */
+.dbs_messageList > .-container > .-list > .-content > .-message.-severity0{
 	background-color: rgba(255, 236, 0, 0.27);
 }
-.dbs_messageList > .-container > .-list > .-content > .-message.-severity20{
-	background-color: 	rgba(255, 180, 0, 0.60);
+.dbs_messageList > .-container > .-list > .-content > .-message.-severity1{
+	background-color: rgba(255, 180, 0, 0.60);
 }
-.dbs_messageList > .-container > .-list > .-content > .-message.-severity30{
+.dbs_messageList > .-container > .-list > .-content > .-message.-severity2{
 	background-color: rgba(255, 0, 0, 0.70);
 }
-.dbs_messageList > .-container > .-list > .-content > .-message.-severity40{
-	background-color: rgba(255, 0, 0, 0.70);
+.dbs_messageList > .-container > .-list > .-content > .-message.-severity3{
+	background-color: rgba(255, 100, 0, 0.70);
 }
 
 .xdbs_messageList > .-list > .-content > .-message:hover {

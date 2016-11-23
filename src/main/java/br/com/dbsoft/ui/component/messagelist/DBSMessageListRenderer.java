@@ -68,7 +68,7 @@ public class DBSMessageListRenderer extends DBSRenderer {
 
 			//Verica se há mensagem a ser exibida
 			if (xMessageList.getValue() != null){
-				xCount = xMessageList.getValue().size();
+				xCount = xMessageList.getValue().getListMessage().size();
 				if (xCount > 0){
 					IDBSMessage xMsg;
 
@@ -98,7 +98,7 @@ public class DBSMessageListRenderer extends DBSRenderer {
 							//Exibe contador de mensagens
 							if (xCount > 0){
 								xWriter.startElement("div", xMessageList);
-									DBSFaces.encodeAttribute(xWriter, "class", "-count " + " -severity" + xType.getSeverityLevel());
+									DBSFaces.encodeAttribute(xWriter, "class", "-count " + " -severity" + xType.getSeverity().getOrdinal());
 									xWriter.write(xCount.toString());
 								xWriter.endElement("div");
 							}
@@ -153,7 +153,7 @@ public class DBSMessageListRenderer extends DBSRenderer {
 				for (Integer xI=xMsgs.size()-1; xI!=-1; xI--){
 					xMsg = xMsgs.get(xI);
 					pWriter.startElement("div", pMessageList);
-						DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.MESSAGE + " -severity" + xMsg.getMessageType().getSeverityLevel());
+						DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.MESSAGE + " -severity" + xMsg.getMessageType().getSeverity().getOrdinal());
 						DBSFaces.encodeAttribute(pWriter, "index", xMsg.getMessageKey());
 						pWriter.startElement("div", pMessageList);
 							DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
