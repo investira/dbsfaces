@@ -11,12 +11,6 @@ import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 
-import br.com.dbsoft.message.DBSMessage;
-import br.com.dbsoft.message.DBSMessagesController;
-import br.com.dbsoft.message.IDBSMessage;
-import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
-import br.com.dbsoft.message.IDBSMessagesController;
-
 /**
  * @author ricardo.villar
  */
@@ -26,9 +20,6 @@ public abstract class DBSBean implements Serializable{
 
 	protected 	Logger 		wLogger =  Logger.getLogger(this.getClass());
 	
-	protected 	static IDBSMessage wMessageError = new DBSMessage(MESSAGE_TYPE.ERROR,"Erro: %s");
-	
-	protected 	IDBSMessagesController 		wMessagesController = new DBSMessagesController();
 	protected 	boolean						wBrodcastingEvent = false;
 	private   	DBSBean						wMasterBean = null;
 	private 	List<DBSBean>				wSlavesBean = new ArrayList<DBSBean>();
@@ -73,7 +64,6 @@ public abstract class DBSBean implements Serializable{
 	
 	@PreDestroy
 	void pvFinalizeClass(){
-		wMessagesController.getMessages().clear();
 		finalizeClass();
 	}
 	
@@ -152,15 +142,6 @@ public abstract class DBSBean implements Serializable{
 		FacesContext.getCurrentInstance().getExternalContext().setSessionMaxInactiveInterval(pMaxInactiveInterval);
 	};
 	
-	/**
-	 * Retorna mensagens do dialog.
-	 * @return
-	 */
-	public IDBSMessagesController getMessagesController(){
-		return wMessagesController;
-	}
-
-
 	/**
 	 * Método após a inicialização do bean.
 	 * Ao sobre escrever este método, deve-se estar atendo em chamar o <b>super</b>.
