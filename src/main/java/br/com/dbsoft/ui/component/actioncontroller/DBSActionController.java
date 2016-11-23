@@ -15,15 +15,22 @@ public abstract class DBSActionController{
 	private IDBSMessages 	wBeforeMessages = new DBSMessages(true);
 	private IDBSMessages 	wAfterMessages = new DBSMessages(true);
 	private LocalListener	wLocalListener = new LocalListener();
-	private String			wMessageControlClientId;
+	private String			wMessageControlClientId = null;
 	private	Boolean 		wOk = false;
 	
 	/**
 	 * @param pMessageControlClientId ClientId do componente que receberá as mensagens quando houver.
 	 */
-	public DBSActionController(String pMessageControlClientId) {
+	public DBSActionController() {
 		wBeforeMessages.addMessagesListener(wLocalListener);
 		wAfterMessages.addMessagesListener(wLocalListener);
+	}
+	
+	/**
+	 * @param pMessageControlClientId ClientId do componente que receberá as mensagens quando houver.
+	 */
+	public DBSActionController(String pMessageControlClientId) {
+		this();
 		wMessageControlClientId = pMessageControlClientId;
 	}
 
@@ -56,7 +63,7 @@ public abstract class DBSActionController{
 
 	/**
 	 * Evento disparado antes de executar o processamento existente em <b>onExecute</b>.</br>
-	 * Este evento deve ser utilizado para enviar mensagens de validação ou confirmação anteriores a execução. 
+	 * Este evento deve ser utilizado para enviar mensagens de validação ou confirmação anterior a execução. 
 	 * @param pMessages 
 	 */
 	protected void beforeExecute(IDBSMessages pMessages){};
@@ -161,7 +168,6 @@ public abstract class DBSActionController{
 
 		@Override
 		public void afterMessageValidated(IDBSMessages pMessages, IDBSMessage pMessage){
-			System.out.println("validadadadad");
 			//Excluir todas as mensagens para reiniciar todo o processo de controle das mensagens.
 			if (!pMessage.isMessageValidatedTrue() && pMessage.getMessageType().getIsError()){
 				pvClearMessages();
