@@ -8,6 +8,7 @@ import javax.annotation.PreDestroy;
 
 import br.com.dbsoft.error.DBSIOException;
 import br.com.dbsoft.message.DBSMessage;
+import br.com.dbsoft.message.DBSMessages;
 import br.com.dbsoft.message.IDBSMessage;
 import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.message.IDBSMessages;
@@ -21,12 +22,17 @@ public abstract class DBSBeanModalMessages extends DBSBean implements IDBSModalM
  
 	private static final long serialVersionUID = -4177605027911436645L;
 
-	protected 	Connection					wConnection;
+	protected 	Connection				wConnection;
+
+	protected 	static IDBSMessage 		wMessageError = new DBSMessage(MESSAGE_TYPE.ERROR,"Erro: %s");
+	protected 	IDBSMessages 			wMessages = new DBSMessages(true);
+
 	
 	@Override
 	@PreDestroy
 	void pvFinalizeClass(){
 		super.pvFinalizeClass();
+		wMessages.clear();
 		closeConnection();
 	}
 
@@ -36,7 +42,7 @@ public abstract class DBSBeanModalMessages extends DBSBean implements IDBSModalM
 	 * @return
 	 */
 	public String getMessageKey(){
-		return getMessagesController().getCurrentMessage().getMessageKey();
+		return wMessages.getCurrentMessage().getMessageKey();
 	}
 	
 	/**
@@ -45,7 +51,7 @@ public abstract class DBSBeanModalMessages extends DBSBean implements IDBSModalM
 	 */
 	@Override
 	public String getMessageText(){
-		return getMessagesController().getCurrentMessage().getMessageText();
+		return wMessages.getCurrentMessage().getMessageText();
 	}
 	
 	/**
@@ -54,7 +60,7 @@ public abstract class DBSBeanModalMessages extends DBSBean implements IDBSModalM
 	 */
 	@Override
 	public String getMessageTooltip(){
-		return getMessagesController().getCurrentMessage().getMessageTooltip();
+		return wMessages.getCurrentMessage().getMessageTooltip();
 	}
 
 	/**
@@ -64,8 +70,8 @@ public abstract class DBSBeanModalMessages extends DBSBean implements IDBSModalM
 	 */
 	@Override
 	public MESSAGE_TYPE getMessageType(){
-		if (getMessagesController().getCurrentMessage() != null){
-			return getMessagesController().getCurrentMessage().getMessageType();
+		if (wMessages.getCurrentMessage() != null){
+			return wMessages.getCurrentMessage().getMessageType();
 		}
 		return null;
 	}
@@ -77,11 +83,7 @@ public abstract class DBSBeanModalMessages extends DBSBean implements IDBSModalM
 	 */
 	@Override
 	public Boolean getHasMessage(){
-		if (wMessagesController.getCurrentMessage() != null && wMessagesController.getCurrentMessage().getMessageKey()!=null){
-			return true;
-		}else{
-			return false;
-		}
+		return wMessages.hasMessages();
 	}
 
 	/**
@@ -95,7 +97,7 @@ public abstract class DBSBeanModalMessages extends DBSBean implements IDBSModalM
 	 */
 	@Override
 	public String setMessageValidated(Boolean pIsValidated) throws DBSIOException{
-		IDBSMessage xCurrentMessage = getMessagesController().getCurrentMessage();
+		IDBSMessage xCurrentMessage = wMessages.getCurrentMessage();
 		if (xCurrentMessage != null){
 //			String xMessageKey = xCurrentMessage.getMessageKey(); //Salva a chave, pois o setValidated posiciona na próxima mensagem.
 			xCurrentMessage.setMessageValidated(pIsValidated);
@@ -114,6 +116,14 @@ public abstract class DBSBeanModalMessages extends DBSBean implements IDBSModalM
 
 	public void setConnection(Connection pConnection) {
 		wConnection = pConnection;
+	}
+
+	/**
+	 * Retorna mensagens do dialog.
+	 * @return
+	 */
+	public IDBSMessages getMessages(){
+		return wMessages;
 	}
 
 	/**
@@ -142,7 +152,7 @@ public abstract class DBSBeanModalMessages extends DBSBean implements IDBSModalM
 	 * Limpa fila de mensagens
 	 */
 	protected void clearMessages(){
-		getMessagesController().getMessages().clear();
+		wMessages.clear();
 	}
 	
 
@@ -170,7 +180,7 @@ public abstract class DBSBeanModalMessages extends DBSBean implements IDBSModalM
 	 * @param pMessage
 	 */
 	protected void addMessage(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, String pMessageTooltip){
-		getMessagesController().getMessages().add(new DBSMessage(pMessageKey, pMessageType, pMessageText, pMessageTooltip));
+		wMessages.add(new DBSMessage(pMessageKey, pMessageType, pMessageText, pMessageTooltip));
 	}
 
 	/**
@@ -187,7 +197,7 @@ public abstract class DBSBeanModalMessages extends DBSBean implements IDBSModalM
 	 * @param pMessages
 	 */
 	protected void addMessages(IDBSMessages pMessages){
-		getMessagesController().getMessages().addAll(pMessages);
+		wMessages.addAll(pMessages);
 	}
 	
 	/**
@@ -195,7 +205,7 @@ public abstract class DBSBeanModalMessages extends DBSBean implements IDBSModalM
 	 * @param pMessageKey
 	 */
 	protected void removeMessage(String pMessageKey){
-		getMessagesController().getMessages().remove(pMessageKey);
+		wMessages.remove(pMessageKey);
 	}
 
 	/**
@@ -204,7 +214,7 @@ public abstract class DBSBeanModalMessages extends DBSBean implements IDBSModalM
 	 * @return
 	 */
 	protected Boolean isMessageValidated(String pMessageKey){
-		return getMessagesController().getMessages().getMessage(pMessageKey).isMessageValidatedTrue();
+		return wMessages.getMessage(pMessageKey).isMessageValidatedTrue();
 	}
 	
 	/**
