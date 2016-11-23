@@ -756,13 +756,13 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 
 	/**
 	 * Indica se edição será efetuado dentro de um DIALOG, TABLE ou VIEW.<br/>
-	 * Caso positivo, deverá ser implementado o form utilizando os respectivos componentes crudTable/crudView/crudDialog.<br/>
+	 * Caso positivo, deverá ser implementado o form utilizando os respectivos componentes crudTable/crudView/crudModal.<br/>
 	 * <ul>
 	 * 		<li>
 	 * 		<b>DIALOG</b><br/>
-	 * 		A edição é efetuado dentro de uma tela modal de diálogo utilizando o compoente <b>crudDialog</b>.<br/>
+	 * 		A edição é efetuado dentro de uma tela modal de diálogo utilizando o compoente <b>crudModal</b>.<br/>
 	 * 		Normalmente utilizado a partir de uma lista utilizando o <b>crudTable</b>. 
-	 * 		Nesta caso o <b>crudDialog</b> deverá ser adicionado ao final da view que onde está o <b>crudTable</b>.
+	 * 		Nesta caso o <b>crudModal</b> deverá ser adicionado ao final da view que onde está o <b>crudTable</b>.
 	 * 		</li>  
 	 * 		<li>
 	 * 		<b>TABLE</b><br/>
@@ -1509,7 +1509,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	}
 
 	// Methods ############################################################
-	
+
 	/**
 	 * Indica que deseja salvar a edição/inclusão/exclusão que está em andamento.
 	 * Nesta etapa deverão ser efetuadas as validações atráves do evento validate.
@@ -1708,7 +1708,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	public synchronized String searchList() throws DBSIOException{
 		boolean xOpenConnection = false;
 		//Abre conexão se for crud filho e conexão não estiver aberta, abre. 
-		//Isso ocorre normalmente quando o botão de REFRESH do crudtable dentro do crudDialog é selecionado antes de se iniciar a edição do crud mãe.
+		//Isso ocorre normalmente quando o botão de REFRESH do crudtable dentro do crudModal é selecionado antes de se iniciar a edição do crud mãe.
 		if (wParentCrudBean!=null
 		 && !DBSIO.isConnectionOpened(wParentCrudBean.wConnection)){
 			xOpenConnection = true;
@@ -1733,7 +1733,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	public synchronized String refreshList() throws DBSIOException{
 		boolean xOpenConnection = false;
 		//Abre conexão se for crud filho e conexão não estiver aberta, abre. 
-		//Isso ocorre normalmente quando o botão de REFRESH do crudtable dentro do crudDialog é selecionado antes de se iniciar a edição do crud mãe.
+		//Isso ocorre normalmente quando o botão de REFRESH do crudtable dentro do crudModal é selecionado antes de se iniciar a edição do crud mãe.
 		if (wParentCrudBean!=null
 		 && !DBSIO.isConnectionOpened(wParentCrudBean.wConnection)){
 			xOpenConnection = true;
@@ -3348,7 +3348,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 
 
 			//Exibe mensagem de erro padrão, caso nehum registro tenha sido afetado e já não houver mensagem a ser exibida.
-			if (!getMessagesController().getMessages().hasMessages()
+			if (!wMessages.hasMessages()
 			 && (!xE.isOk() || (wConnection != null && xE.getCommittedRowCount().equals(0)))){
 				xE.setOk(false);
 				addMessage(wMessageNoRowComitted);
