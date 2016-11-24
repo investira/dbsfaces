@@ -116,7 +116,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	
 
 	public String getType() {
-		return (String) getStateHelper().eval(PropertyKeys.type, null);
+		return (String) getStateHelper().eval(PropertyKeys.type, TYPE.BAR.getName());
 	}
 	
 	public void setType(String pType) {
