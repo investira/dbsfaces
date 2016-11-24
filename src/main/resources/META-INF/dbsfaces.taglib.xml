@@ -1084,14 +1084,6 @@
 		</attribute>
 		<attribute>
 			<description>
-                Largura/Comprimento em px(não é para incluir o símbolo 'px').  
-            </description>
-			<name>width</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-		</attribute>
-		<attribute>
-			<description>
                 Tooltip
             </description>
 			<name>tooltip</name>

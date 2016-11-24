@@ -1,6 +1,6 @@
 package br.com.dbsoft.ui.component.chartvalue;
 
-public class DadosDBSChartValue implements IDBSChartValue{
+public class DBSDadosChartValue implements IDBSChartValue{
 
 	private static final long serialVersionUID = -5134495345793538197L;
 	

@@ -68,7 +68,6 @@ dbsfaces.chartValue = {
 		}else{
 			pChartValue.data("pointgroup").css("stroke-dashoffset", xTotalLenght);
 		}
-			  						  
 	},
 	
 	pvInitializeData: function(pChartValue){

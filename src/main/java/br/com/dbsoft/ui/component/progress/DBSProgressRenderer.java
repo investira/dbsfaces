@@ -21,13 +21,13 @@ public class DBSProgressRenderer extends DBSRenderer {
 	}
 
 	@Override
-	public void encodeBegin(FacesContext pContext, UIComponent pComponent)
-			throws IOException {
+	public void encodeBegin(FacesContext pContext, UIComponent pComponent) throws IOException {
 		if (!pComponent.isRendered()){return;}
 		DBSProgress xProgress = (DBSProgress) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xProgress.getClientId(pContext);
-		String xClass = CSS.PROGRESS.MAIN;
+		String xClass = CSS.PROGRESS.MAIN + " -left";
+		
 		if (xProgress.getStyleClass()!=null){
 			xClass = xClass + xProgress.getStyleClass();
 		}
@@ -38,77 +38,73 @@ public class DBSProgressRenderer extends DBSRenderer {
 			}
 			DBSFaces.encodeAttribute(xWriter, "class", xClass);
 			DBSFaces.encodeAttribute(xWriter, "style", xProgress.getStyle());
-//				DBSFaces.encodeLabel(pContext, xProgress, xWriter);
-				pvEncodeProgress(xProgress, xWriter);
+				xWriter.startElement("div", xProgress);
+					DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
+					pvEncodeProgress(xProgress, xWriter);
+				xWriter.endElement("div");
 			DBSFaces.encodeTooltip(pContext, xProgress, xProgress.getTooltip().toString());
+			pvEncodeJS(xProgress, xWriter);
 		xWriter.endElement("div");
 	}
 	
 	
 	private void pvEncodeProgress(DBSProgress pProgress, ResponseWriter pWriter) throws IOException{
-		Double xM = DBSNumber.toDouble(pProgress.getMaxValue());
-		Double xV = DBSNumber.toDouble(pProgress.getValue());
-		Double xF = 0D;
-		Double xWidth = DBSNumber.toInteger(pProgress.getWidth(), 16).doubleValue();
-		Double xValueWidth = 0D;
-		String xValueStyle = "";
-		String xStyle = "width:" + xWidth + "px";
-		String xClassLabel = CSS.MODIFIER.LABEL;
-		String xTextLabel = "";
-		String xClassLoading = "";
-		//Exibe já preenchido se não houver valor máximo
-		if (xM == 0D){
-			xF = 1D; 
-		//Exibe já vázio se valor atual for zero
-		}else if (xV == 0D){
-			xF = 0D;
-		}else{
-			xF = (xV / xM); //Calcula fator
-		}
-		xValueWidth = xWidth * xF;
-		xValueStyle = "width:" + xValueWidth.intValue() + "px;";
-		xF *= 100D; //Calcula percentual
-		if (xF > 45){
-			//Finalizado
-			if (xF == 100){
-				xClassLabel += "-green";
-			//Pouco menos da metado concluído
-			}else{
-				xClassLabel += "-white";
-			}
-		}else{
-			//Iniciado
-			xClassLabel += "-black";
-		}
-		//Finalizado
-		if (xF == 100){
-			xTextLabel  = "Ok";
-		//Iniciado
-		}else if (xF > 0){
-			xClassLoading = CSS.MODIFIER.LOADING;
-			xTextLabel = xF.intValue() + "%";
-		}
+		Double xF = pvGetPercent(pProgress);
+		String xStyleValue = "width:" + xF + "%";
+
 		pWriter.startElement("div", pProgress);
-		DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
-			pWriter.startElement("div", pProgress);
-				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
-				DBSFaces.encodeAttribute(pWriter, "style", xStyle);
-				pWriter.startElement("div", pProgress);
-					DBSFaces.encodeAttribute(pWriter, "class", xClassLoading);
-				pWriter.endElement("div");
-				pWriter.startElement("div", pProgress);
-					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.VALUE);
-					DBSFaces.encodeAttribute(pWriter, "style", xValueStyle);
-				pWriter.endElement("div");
-				pWriter.startElement("div", pProgress);
-					DBSFaces.encodeAttribute(pWriter, "class", xClassLabel);
-					pWriter.write(xTextLabel);
-				pWriter.endElement("div");
-			pWriter.endElement("div");
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.VALUE);
+			DBSFaces.encodeAttribute(pWriter, "style", xStyleValue);
 		pWriter.endElement("div");
+		
+		pvEncodeLabel(pProgress, xF, pWriter);
 	}
 
+	private void pvEncodeLabel(DBSProgress pProgress, Double pPercent, ResponseWriter pWriter) throws IOException{
+		String xTextLabel = "";
+		String xClassLabel = "";
+		if (pPercent > 45){
+			xClassLabel += " -th_i ";
+		}
+		//Finalizado
+		if (pPercent == 100){
+			xTextLabel  = "Ok";
+		//Iniciado
+		}else if (pPercent > 0){
+			xTextLabel = pPercent.intValue() + "%";
+		}
+		pWriter.startElement("div", pProgress);
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LABEL + CSS.THEME.FC + xClassLabel);
+			pWriter.write(xTextLabel);
+		pWriter.endElement("div");
+	}
 	
+	private Double pvGetPercent(DBSProgress pProgress) throws IOException{
+		Double xM = DBSNumber.toDouble(pProgress.getMaxValue());
+		Double xV = DBSNumber.toDouble(pProgress.getValue());
+		Double xFator = 0D;
+		//Exibe já preenchido se não houver valor máximo
+		if (xM == 0D){
+			xFator = 1D; 
+		//Exibe já vázio se valor atual for zero
+		}else if (xV == 0D){
+			xFator = 0D;
+		}else{
+			xFator = (xV / xM); //Calcula fator
+		}
+		xFator *= 100D; //Calcula percentual
+		return xFator;
+	}
+	
+	private void pvEncodeJS(UIComponent pComponent, ResponseWriter pWriter) throws IOException{
+		DBSFaces.encodeJavaScriptTagStart(pComponent, pWriter);
+		String xJS = "$(document).ready(function() { \n" +
+				     " var xProgressId = dbsfaces.util.jsid('" + pComponent.getClientId() + "'); \n " + 
+				     " dbs_progress(xProgressId); \n" +
+                     "}); \n"; 
+		pWriter.write(xJS);
+		DBSFaces.encodeJavaScriptTagEnd(pWriter);		
+	}
 }
 
 

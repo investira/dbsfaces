@@ -1,6 +1,7 @@
 package br.com.dbsoft.ui.component.chartvalue;
 
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 
 import javax.faces.component.FacesComponent;
 import javax.faces.component.NamingContainer;
@@ -11,7 +12,7 @@ import br.com.dbsoft.util.DBSColor;
 import br.com.dbsoft.util.DBSNumber;
 
 @FacesComponent(DBSChartValue.COMPONENT_TYPE)
-public class DBSChartValue extends DBSUIInput implements IDBSChartValue, NamingContainer {
+public class DBSChartValue extends DBSUIInput implements Serializable, NamingContainer {
 	
 	private static final long serialVersionUID = 2431823370810712385L;
 	/**
@@ -132,15 +133,11 @@ public class DBSChartValue extends DBSUIInput implements IDBSChartValue, NamingC
 	public Double getValue() {
 		return DBSNumber.toDouble(super.getValue());
 	}
-	@Override
-	public void setValue(Double pValue) {
-		super.setValue(pValue);
-	}
-	@Override
+
 	public Double getDisplayValue() {
 		return (Double) getStateHelper().eval(PropertyKeys.displayValue, null);
 	}
-	@Override
+
 	public void setDisplayValue(Double pDisplayValue) {
 		getStateHelper().put(PropertyKeys.displayValue, pDisplayValue);
 		handleAttribute("displayValue", pDisplayValue);
