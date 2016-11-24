@@ -23,6 +23,7 @@ public abstract class DBSBeanModalMessages extends DBSBean implements IDBSModalM
 	private static final long serialVersionUID = -4177605027911436645L;
 
 	protected 	Connection				wConnection;
+	protected 	boolean					wBrodcastingEvent = false;
 
 	protected 	static IDBSMessage 		wMessageError = new DBSMessage(MESSAGE_TYPE.ERROR,"Erro: %s");
 	protected 	IDBSMessages 			wMessages = new DBSMessages(true);

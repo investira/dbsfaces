@@ -20,7 +20,6 @@ public abstract class DBSBean implements Serializable{
 
 	protected 	Logger 		wLogger =  Logger.getLogger(this.getClass());
 	
-	protected 	boolean						wBrodcastingEvent = false;
 	private   	DBSBean						wMasterBean = null;
 	private 	List<DBSBean>				wSlavesBean = new ArrayList<DBSBean>();
 	private 	Locale						wLocale;
