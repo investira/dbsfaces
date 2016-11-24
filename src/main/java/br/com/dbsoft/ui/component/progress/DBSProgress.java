@@ -60,7 +60,7 @@ public class DBSProgress extends DBSUIOutput {
 	    			return xP;
 	    		}
 	    	}
-	    	return null;
+	    	return HORIZONTAL;
 		}	
 	
 	}
