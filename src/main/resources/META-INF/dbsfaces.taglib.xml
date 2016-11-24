@@ -1308,8 +1308,20 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
-		<!-- <attribute> <description> Texto do componente </description> <name>label</name> 
-			<required>false</required> <type>java.lang.String</type> </attribute> -->
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Tipo de progress. Padrão é horizontal 'h'.&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;h = horizontal&lt;/li&gt;
+					&lt;li&gt;v = vertical&lt;/li&gt;
+					&lt;li&gt;c = círculo&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>type</name>
+			<required>false</required>
+			<type>java.lang.Sting</type>
+		</attribute>
 		<attribute>
 			<description>
                 rendered

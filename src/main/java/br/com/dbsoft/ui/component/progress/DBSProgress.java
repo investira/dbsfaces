@@ -13,7 +13,7 @@ public class DBSProgress extends DBSUIOutput {
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 	
 	protected enum PropertyKeys {
-//		label,
+		type,
 		maxValue,
 		tooltip;
 		
@@ -31,19 +31,52 @@ public class DBSProgress extends DBSUIOutput {
 		}
 	}
 	
+	public static enum TYPE {
+		HORIZONTAL 			("h"),
+		VERTICAL 			("v"),	
+	    CIRCLE 				("c");
+		
+		private String 	wName;
+		
+		private TYPE(String pName) {
+			this.wName = pName;
+		}
+
+		public String getName() {
+			return wName;
+		}
+
+		public String getStyleClass() {
+			return " -" + wName + " ";
+		}
+
+		public static TYPE get(String pType) {
+			if (pType == null){
+				return HORIZONTAL;
+			}			
+			pType = pType.trim().toLowerCase();
+	    	for (TYPE xP:TYPE.values()) {
+	    		if (xP.getName().equals(pType)){
+	    			return xP;
+	    		}
+	    	}
+	    	return null;
+		}	
+	
+	}
     public DBSProgress(){
 		setRendererType(DBSProgress.RENDERER_TYPE);
     }
 	
-//	public String getLabel() {
-//		return (String) getStateHelper().eval(PropertyKeys.label, null);
-//	}
-//	
-//	public void setLabel(String pLabel) {
-//		getStateHelper().put(PropertyKeys.label, pLabel);
-//		handleAttribute("label", pLabel);
-//	}
-//	
+	public String getType() {
+		return (String) getStateHelper().eval(PropertyKeys.type, TYPE.HORIZONTAL.getName());
+	}
+	
+	public void setType(String pType) {
+		getStateHelper().put(PropertyKeys.type, pType);
+		handleAttribute("type", pType);
+	}
+
 	
 	public Double getMaxValue() {
 		return (Double) getStateHelper().eval(PropertyKeys.maxValue, 100D);
