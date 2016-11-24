@@ -8,6 +8,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
+import br.com.dbsoft.ui.component.progress.DBSProgress.TYPE;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.util.DBSNumber;
@@ -26,59 +27,81 @@ public class DBSProgressRenderer extends DBSRenderer {
 		DBSProgress xProgress = (DBSProgress) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xProgress.getClientId(pContext);
-		String xClass = CSS.PROGRESS.MAIN + " -left";
+		String xClass = CSS.PROGRESS.MAIN + " -hide";
+		
+		TYPE xType = TYPE.get(xProgress.getType());
+		
+		xClass += xType.getStyleClass();
 		
 		if (xProgress.getStyleClass()!=null){
-			xClass = xClass + xProgress.getStyleClass();
+			xClass += xProgress.getStyleClass();
 		}
 		xWriter.startElement("div", xProgress);
-			if (shouldWriteIdAttribute(pComponent)){
-				DBSFaces.encodeAttribute(xWriter, "id", xClientId);
-				DBSFaces.encodeAttribute(xWriter, "name", xClientId);
-			}
+			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
 			DBSFaces.encodeAttribute(xWriter, "class", xClass);
 			DBSFaces.encodeAttribute(xWriter, "style", xProgress.getStyle());
-				xWriter.startElement("div", xProgress);
-					DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
-					pvEncodeProgress(xProgress, xWriter);
-				xWriter.endElement("div");
+			DBSFaces.encodeAttribute(xWriter, "v", pvGetPercent(xProgress));
+			xWriter.startElement("div", xProgress);
+				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER + CSS.MODIFIER.NOT_SELECTABLE);
+				pvEncodeContent(xProgress, xType, xWriter);
+			xWriter.endElement("div");
 			DBSFaces.encodeTooltip(pContext, xProgress, xProgress.getTooltip().toString());
 			pvEncodeJS(xProgress, xWriter);
 		xWriter.endElement("div");
 	}
 	
 	
-	private void pvEncodeProgress(DBSProgress pProgress, ResponseWriter pWriter) throws IOException{
-		Double xF = pvGetPercent(pProgress);
-		String xStyleValue = "width:" + xF + "%";
-
-		pWriter.startElement("div", pProgress);
-			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.VALUE);
-			DBSFaces.encodeAttribute(pWriter, "style", xStyleValue);
-		pWriter.endElement("div");
-		
-		pvEncodeLabel(pProgress, xF, pWriter);
+	private void pvEncodeContent(DBSProgress pProgress, TYPE pType, ResponseWriter pWriter) throws IOException{
+		if (pType == TYPE.CIRCLE){
+			pvEncodeCircle(pProgress, pWriter);
+		}else{
+			pvEncodeHorizontalVertical(pProgress, pWriter);
+		}
 	}
 
-	private void pvEncodeLabel(DBSProgress pProgress, Double pPercent, ResponseWriter pWriter) throws IOException{
-		String xTextLabel = "";
-		String xClassLabel = "";
-		if (pPercent > 45){
-			xClassLabel += " -th_i ";
-		}
-		//Finalizado
-		if (pPercent == 100){
-			xTextLabel  = "Ok";
-		//Iniciado
-		}else if (pPercent > 0){
-			xTextLabel = pPercent.intValue() + "%";
-		}
+	private void pvEncodeHorizontalVertical(DBSProgress pProgress, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("div", pProgress);
-			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LABEL + CSS.THEME.FC + xClassLabel);
-			pWriter.write(xTextLabel);
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
+			pvEncodeHorizontalVerticalLabel(pProgress, pWriter);
 		pWriter.endElement("div");
 	}
-	
+
+	private void pvEncodeHorizontalVerticalLabel(DBSProgress pProgress, ResponseWriter pWriter) throws IOException{
+		pWriter.startElement("div", pProgress);
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LABEL + CSS.THEME.FC);
+			pWriter.startElement("div", pProgress);
+				DBSFaces.encodeAttribute(pWriter, "class", "-value");
+			pWriter.endElement("div");
+			pWriter.startElement("div", pProgress);
+				DBSFaces.encodeAttribute(pWriter, "class", "-sufix");
+			pWriter.endElement("div");
+		pWriter.endElement("div");
+	}
+
+	private void pvEncodeCircle(DBSProgress pProgress, ResponseWriter pWriter) throws IOException{
+		pWriter.startElement("svg", pProgress);
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
+			pWriter.startElement("defs", pProgress);
+				pWriter.startElement("linearGradient", pProgress);
+					DBSFaces.encodeAttribute(pWriter, "id", pProgress.getClientId() + "_color");
+					pWriter.startElement("stop", pProgress);
+						DBSFaces.encodeAttribute(pWriter, "offset", "0");
+						DBSFaces.encodeAttribute(pWriter, "stop-color", "");
+					pWriter.endElement("stop");	
+					pWriter.startElement("stop", pProgress);
+						DBSFaces.encodeAttribute(pWriter, "offset", "100%");
+						DBSFaces.encodeAttribute(pWriter, "stop-color", "");
+					pWriter.endElement("stop");	
+				pWriter.endElement("linearGradient");
+			pWriter.endElement("defs");
+			pWriter.startElement("g", pProgress);
+				DBSFaces.encodeSVGPath(pProgress, pWriter, "", CSS.MODIFIER.POINT, null, "stroke=url(#" + pProgress.getClientId() + "_color)");
+				DBSFaces.encodeSVGText(pProgress, pWriter, 0, 0,  "<tspan class='-value'/><tspan class='-sufix'></tspan>", CSS.MODIFIER.LABEL + CSS.THEME.FC, null, null);
+			pWriter.endElement("g");
+		pWriter.endElement("svg");
+	}
+
 	private Double pvGetPercent(DBSProgress pProgress) throws IOException{
 		Double xM = DBSNumber.toDouble(pProgress.getMaxValue());
 		Double xV = DBSNumber.toDouble(pProgress.getValue());
