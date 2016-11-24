@@ -91,16 +91,6 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer, SystemEve
 	    		}
 	    	}
 	    	return null;
-//			switch (pCode) {
-//			case "msg":
-//				return MSG;
-//			case "nav":
-//				return NAV;
-//			case "mod":
-//				return MOD;
-//			default:
-//				return MSG;
-//			}
 		}	
 	}
 	
@@ -132,20 +122,6 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer, SystemEve
 	    		}
 	    	}
 	    	return null;
-//			switch (pCode) {
-//			case "t":
-//				return TOP;
-//			case "b":
-//				return BOTTOM;
-//			case "l":
-//				return LEFT;
-//			case "r":
-//				return RIGHT;
-//			case "c":
-//				return CENTER;
-//			default:
-//				return CENTER;
-//			}
 		}	
 	}
 
