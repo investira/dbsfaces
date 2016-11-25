@@ -1096,6 +1096,19 @@
 		</attribute>
 		<attribute>
 			<description>
+				&lt;span style="font-size:small"&gt;
+				Se progress será exibido com animação. O padrão é false.&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;true = com animação&lt;/li&gt;
+					&lt;li&gt;false = sem animação&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>animated</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>		
+		<attribute>
+			<description>
                 Tooltip
             </description>
 			<name>tooltip</name>

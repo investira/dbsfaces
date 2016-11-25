@@ -17,6 +17,7 @@ dbsfaces.progress = {
 		pProgress.data("point", pProgress.data("content").find("> g > .-point"));
 		pProgress.data("back", pProgress.data("content").find("> g > .-back"));
 		pProgress.data("type", (pProgress.hasClass("-c") ? "c": (pProgress.hasClass("-h") ? "h" : "v")));
+		pProgress.data("ani", (pProgress.hasClass("-ani") ? true: false));
 		pProgress.data("dimension", Math.min(pProgress[0].getBoundingClientRect().height, pProgress[0].getBoundingClientRect().width));
 		dbsfaces.progress.pvSetValue(pProgress, pProgress.attr("v"));
 	},
@@ -37,14 +38,14 @@ dbsfaces.progress = {
 		var xColor = tinycolor(pProgress.css("color"));
 		pProgress.data("container").css("border-color", xColor.setAlpha(.2))
 		   						   .css("background-color", xColor.setAlpha(.05));
-		var xBackground = "linear-gradient(135deg," + xColor.setAlpha(.8) + " 0%, " + xColor.setAlpha(1) + " 100%)";
+		var xBackground = "linear-gradient(135deg," + xColor.setAlpha(.7) + " 0%, " + xColor.setAlpha(1) + " 100%)";
 		pProgress.data("content").css("background", xBackground);
 	},
 	
 	pvInitializeLayoutCircle: function(pProgress){
 		var xColor = tinycolor(pProgress.css("color"));
 		var xStops = pProgress.data("content").find("> defs > linearGradient > stop");
-		$(xStops[0]).svgAttr("stop-color", xColor.setAlpha(.8));
+		$(xStops[0]).svgAttr("stop-color", xColor.setAlpha(.7));
 		$(xStops[1]).svgAttr("stop-color", xColor.setAlpha(1));
 		dbsfaces.progress.pvInitializeLayoutCirclePath(pProgress);
 	},

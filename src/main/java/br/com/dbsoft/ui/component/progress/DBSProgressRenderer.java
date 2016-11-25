@@ -27,12 +27,15 @@ public class DBSProgressRenderer extends DBSRenderer {
 		DBSProgress xProgress = (DBSProgress) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xProgress.getClientId(pContext);
-		String xClass = CSS.PROGRESS.MAIN + " -hide";
+		String xClass = CSS.PROGRESS.MAIN + " -hide ";
 		
 		TYPE xType = TYPE.get(xProgress.getType());
 		
 		xClass += xType.getStyleClass();
 		
+		if (xProgress.getAnimated()){
+			xClass += " -ani ";
+		}
 		if (xProgress.getStyleClass()!=null){
 			xClass += xProgress.getStyleClass();
 		}

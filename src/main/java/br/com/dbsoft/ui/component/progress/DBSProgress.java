@@ -15,6 +15,7 @@ public class DBSProgress extends DBSUIOutput {
 	protected enum PropertyKeys {
 		type,
 		maxValue,
+		animated,
 		tooltip;
 		
 		String toString;
@@ -109,5 +110,13 @@ public class DBSProgress extends DBSUIOutput {
 		return DBSNumber.toDouble(super.getValue());
 	}
 	
+	public void setAnimated(Boolean pAnimated) {
+		getStateHelper().put(PropertyKeys.animated, pAnimated);
+		handleAttribute("animated", pAnimated);
+	}
+	
+	public Boolean getAnimated() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.animated, false);
+	}	
 
 }
