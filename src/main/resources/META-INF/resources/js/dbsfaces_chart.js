@@ -423,11 +423,12 @@ dbsfaces.chart = {
 		pChart.data("guideIndex", pGuideIndex);
 	},
 	
-	
+	//Atualiza lista dos itens selecionados e calcula somatórios dos itens selecionados
 	dataRefreshSelection: function(pChart){
 		pChart.data("selection", pChart.children(".-selected"));
 		pChart.data("totval", null);
 		pChart.data("totper", null);
+		//Calcula somatórios dos itens selecionados
 		if (pChart.attr("type") != "line"){
 			var xTotVal = 0;
 			var xTotPer = 0;
