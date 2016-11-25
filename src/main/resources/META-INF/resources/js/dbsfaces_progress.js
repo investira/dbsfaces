@@ -15,6 +15,7 @@ dbsfaces.progress = {
 		pProgress.data("labelvalue", pProgress.data("label").children(".-value"));
 		pProgress.data("labelsufix", pProgress.data("label").children(".-sufix"));
 		pProgress.data("point", pProgress.data("content").find("> g > .-point"));
+		pProgress.data("back", pProgress.data("content").find("> g > .-back"));
 		pProgress.data("type", (pProgress.hasClass("-c") ? "c": (pProgress.hasClass("-h") ? "h" : "v")));
 		pProgress.data("dimension", Math.min(pProgress[0].getBoundingClientRect().height, pProgress[0].getBoundingClientRect().width));
 		dbsfaces.progress.pvSetValue(pProgress, pProgress.attr("v"));
@@ -60,6 +61,7 @@ dbsfaces.progress = {
 		xPath += " 0 1 1 ";
 		xPath += xDimensionHalf - .0001 + "," + xStrokeWidthHalf;
 		pProgress.data("point").svgAttr("d", xPath);
+		pProgress.data("back").svgAttr("d", xPath);
 		dbsfaces.progress.pvInitializeDash(pProgress);
 	},
 

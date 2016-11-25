@@ -96,6 +96,7 @@ public class DBSProgressRenderer extends DBSRenderer {
 				pWriter.endElement("linearGradient");
 			pWriter.endElement("defs");
 			pWriter.startElement("g", pProgress);
+				DBSFaces.encodeSVGPath(pProgress, pWriter, "", "-back", null, null);
 				DBSFaces.encodeSVGPath(pProgress, pWriter, "", CSS.MODIFIER.POINT, null, "stroke=url(#" + pProgress.getClientId() + "_color)");
 				DBSFaces.encodeSVGText(pProgress, pWriter, 0, 0,  "<tspan class='-value'/><tspan class='-sufix'></tspan>", CSS.MODIFIER.LABEL + CSS.THEME.FC, null, null);
 			pWriter.endElement("g");
