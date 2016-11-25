@@ -15,6 +15,8 @@
 	width: 100%;
 	/* box-sizing: content-box; */
 	z-index: 1;
+    left: 0;
+    top: 0;
 }
 
 .dbs_progress > .-container > .-content{
@@ -23,6 +25,7 @@
 
 .dbs_progress > .-container > .-content .-label:nth-of-type(1) > .-value{
 	float: left;
+	font-weight: bold;
 }
 
 .dbs_progress > .-container > .-content .-label:nth-of-type(1) > .-sufix{
@@ -79,10 +82,6 @@
 	transform: translate(-50%, -50%) scale(-1);
 }
 
-
-
-
-
 .dbs_progress.-c > .-container  > .-content{
 	overflow: visible;
 	position: absolute;
@@ -96,10 +95,16 @@
 .dbs_progress.-c > .-container  > .-content > g{
 
 }
-
+.dbs_progress.-c > .-container  > .-content > g > .-back,
 .dbs_progress.-c > .-container  > .-content > g > .-point{
     stroke-width: 1em;
 	fill: none;
+}
+.dbs_progress.-c > .-container  > .-content > g > .-back{
+	stroke: currentColor;
+	stroke-opacity: 0.2;
+}
+.dbs_progress.-c > .-container  > .-content > g > .-point{
 	transition: stroke-dashoffset 1s ease;
 /*     stroke-dashoffset: 0; */
 /*     stroke-dashoffset: initial; */
