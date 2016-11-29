@@ -40,10 +40,6 @@ public class DBSDialogMsg extends DBSDialog{
 		return (String) getStateHelper().eval(PropertyKeys.msgType, MESSAGE_TYPE.INFORMATION.getName());
 
 	}
-	
-	public String getCloseTimeout1() {
-		return (String) getStateHelper().eval(PropertyKeys.closeTimeout, "a");
-	}
 
 
 }
