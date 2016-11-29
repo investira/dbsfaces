@@ -32,13 +32,14 @@ public class DBSDialogContent extends DBSUIOutput{
 		TYPE 	 			xType = TYPE.get(xDialog.getType());
 		String xClass = CSS.MODIFIER.CONTENT + CSS.THEME.FC + CSS.THEME.BC + xDialog.getContentStyleClass();
 		if (xType == TYPE.MSG){
+			//Usa o cor invertida quando pfor mensagem
 			xClass += CSS.THEME.INVERT;
 		}
 
 		xWriter.startElement("div", xDialog);
-			DBSFaces.encodeAttribute(xWriter, "class", xClass); 
 			DBSFaces.encodeAttribute(xWriter, "id", getClientId());
 			DBSFaces.encodeAttribute(xWriter, "name", getClientId());
+			DBSFaces.encodeAttribute(xWriter, "class", xClass); 
 			//Header
 			pvEncodeHeader(xDialog, xType, pContext, xWriter);
 			//Sub_Container
@@ -296,7 +297,6 @@ public class DBSDialogContent extends DBSUIOutput{
 //			pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_YES, "Sim","-i_yes -green", xStyle, (DBSUICommand) pContext.getAttributes().get(FACESCONTEXT_ATTRIBUTE.ACTION_SOURCE));
 //		}
 //		
-		
 		String xStyle = "";
 		DBSUICommand xActionSource = (DBSUICommand) pContext.getAttributes().get(FACESCONTEXT_ATTRIBUTE.ACTION_SOURCE);
 		if (xMsgType.getIsQuestion()){
@@ -327,11 +327,17 @@ public class DBSDialogContent extends DBSUIOutput{
 			xBtn.setLabel(pLabel);
 //			xBtn.setActionSourceClientId(pActionSourceClientId);
 			if (pActionSource != null){
-//				xBtn.setonclick("$(dbsfaces.util.jsid('" + pActionSource.getClientId() + "')).click()");
 				xBtn.setUpdate(pActionSource.getUpdate());
 				xBtn.setActionExpression(pActionSource.getActionExpression());
+
+//				xBtn.setUpdate("@none");
+//				xBtn.setonclick("$(dbsfaces.util.jsid('" + pActionSource.getClientId() + "')).click()");
 //				xBtn.setExecute(pActionSource.getExecute());
-				xBtn.setCloseDialog(false);
+//				xBtn.setCloseDialog(false);
+//				if (pActionSource.getCloseDialog()){
+//					xBtn.setStyleClass("-closeParent");
+//				}
+				xBtn.setCloseDialog(pActionSource.getCloseDialog());
 			}else{
 				xBtn.setUpdate("@none");
 				xBtn.setCloseDialog(true);

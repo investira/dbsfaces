@@ -42,6 +42,14 @@ dbs_dialog = function(pId) {
 	if (xDialog.attr("o")) {
 		dbsfaces.dialog.show(xDialog);
 	}
+	
+	if(xDialog.children().length == 0){
+		var xList = $("body").data("dbs_dialogs");
+		if (!(typeof xList === "undefined")){
+			$(dbsfaces.util.jsid(xList.pop())).trigger("close");
+		}
+	};
+
 };
 
 dbs_dialogContent = function(pId) {
@@ -89,10 +97,10 @@ dbs_dialogContent = function(pId) {
 //		dbsfaces.dialog.show(xDialog);
 //	});
 
-	$(pId + " > .-container > .-content > .-footer > .-toolbar > .-btok").on("mousedown touchstart", function(e){
-		if (xDialog.attr("disabled")){return;}
-		dbsfaces.dialog.show(xDialog);
-	});
+//	$(pId + " > .-container > .-content > .-footer > .-toolbar > .-btok").on("mousedown touchstart", function(e){
+//		if (xDialog.attr("disabled")){return;}
+//		dbsfaces.dialog.show(xDialog);
+//	});
 
 	
 	$(pId + " > .-container > .-content > .-bthandle").on("mousedown touchstart", function(e){
@@ -121,11 +129,39 @@ dbs_dialogContent = function(pId) {
 		return false;
 	});
 
+
 	/*Fecha dialog após retorno das chamadas ajax de botões com função de fechar */
 	$(pId + " .-th_action.-closeDialog").on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
 		var xButton = $(this);
-		if (xButton.css("display") == "none"
-		 || xButton.data("hasmessage")){return;} //Ignora se houver mensagem a ser exibida
+		//Já foi fechado
+		if (xDialog.hasClass("-closed")){
+			return;
+		}
+		//Ignora se houver mensagem a ser exibida e salva id deste dialog para posteriormente fecha-lo ao final das mensagens e quando for Yes.
+ 		if (xButton.data("hasmessage")){ 
+			var xList = $("body").data("dbs_dialogs");
+			if (typeof xList === "undefined"){
+				xList = [];
+			}
+			var xI = 0;
+			var xFound = false;
+			while (xList[xI]) {
+			    if (xList[xI] == xDialog[0].id){
+			    	xFound = true;
+			    	break;
+			    }
+			    i++;
+			}
+			if (!xFound){
+				xList.push(xDialog[0].id);
+			}
+			$("body").data("dbs_dialogs", xList);
+			return;
+		} 
+	
+//		if (xButton.hasClass("-closeParent")){
+//			$(dbsfaces.util.jsid(xDialog.data("content").attr("asid"))).closest(".dbs_dialog").trigger("close");
+//		}
 		dbsfaces.dialog.show(xDialog);
 		e.stopImmediatePropagation();
 		return false;
@@ -137,6 +173,11 @@ dbs_dialogContent = function(pId) {
 		return false;
 	});
 	
+//	if (xDialog.data("closeCanceled")){
+//		xDialog.data("closeCanceled", false);
+//		dbsfaces.dialog.show(xDialog);
+//	}
+
 };
 
 dbsfaces.dialog = {
@@ -224,7 +265,8 @@ dbsfaces.dialog = {
 		if (pDialog.attr("timeout") == "a"){
 			pDialog.data("timeout", dbsfaces.ui.getTimeFromTextLength(pDialog.data("sub_content").text()) / 1000);
 		}
-		var xTime = parseFloat(pDialog.data("timeout"));
+//		var xTime = parseFloat(pDialog.data("timeout"));
+		var xTime = parseFloat(5);
 		dbsfaces.ui.cssTransition(pDialog.data("bthandle"), "width " + xTime + "s linear, height " + xTime + "s linear");
 	},
 
