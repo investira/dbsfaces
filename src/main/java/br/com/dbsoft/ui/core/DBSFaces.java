@@ -221,10 +221,10 @@ public class  DBSFaces {
 	 */
 	public static class CSS
 	{
+		public static final String NOT_SELECTABLE =  " -not_selectable ";
 		public static final String CLASS_PREFIX = "dbs_";
 		public static final String WINDOW_CENTER = " " + CLASS_PREFIX +  "window_center "; 
 		public static final String CHILD_CENTER =  " " + CLASS_PREFIX +  "child_center ";
-		public static final String NOT_SELECTABLE =  " " + CLASS_PREFIX +  "not_selectable ";
 		public static final String BACK_TEXTURE_BLACK =  " " + CLASS_PREFIX +  "back_texture_black "; 
 		public static final String BACK_TEXTURE_BLACK_TRANSPARENT_GRADIENT =  " " + CLASS_PREFIX +  "back_texture_black_transparent_gradient ";
 		public static final String BACK_TEXTURE_BLACK_GRADIENT =  " " + CLASS_PREFIX +  "back_texture_black_gradient ";

@@ -39,8 +39,7 @@
 	pointer-events: none;
 }	
 
-.dbs_menu:not([disabled]) .dbs_menuitem:not([disabled]){
-	cursor: pointer;
+.dbs_menu:not([disabled]):not(.-disabled) .dbs_menuitem:not([disabled]):not(.-disabled){
 	pointer-events: all;
 }
 
