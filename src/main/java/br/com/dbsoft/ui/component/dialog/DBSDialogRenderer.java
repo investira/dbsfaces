@@ -108,7 +108,6 @@ public class DBSDialogRenderer extends DBSRenderer{
 			DBSFaces.encodeAttribute(xWriter, "style", xDialog.getStyle());
 			DBSFaces.encodeAttribute(xWriter, "type", xDialog.getType());
 			
-			
 			//Configura time somente quando não for MOD
 			if (xType == TYPE.MSG 
 			&& !xDialog.getCloseTimeout().equals("0")){
@@ -117,14 +116,11 @@ public class DBSDialogRenderer extends DBSRenderer{
 			DBSFaces.encodeAttribute(xWriter, "p", xDialog.getPosition());
 			DBSFaces.encodeAttribute(xWriter, "cs", xDialog.getContentSize());
 			DBSFaces.encodeAttribute(xWriter, "ca", xDialog.getContentAlignment());
-//			if (xDialog.getDBSMessage() != null){
-//				DBSFaces.setAttribute(xWriter, "data-hasmsg", true);
-//			}
+
 			if (xDialog.getOpen()){
 				DBSFaces.encodeAttribute(xWriter, "o", true);
 			}
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xDialog, DBSPassThruAttributes.getAttributes(Key.DIALOG));
-
 
 			pvEncodeContainer(xDialog, xType, pContext, xWriter);
 			
