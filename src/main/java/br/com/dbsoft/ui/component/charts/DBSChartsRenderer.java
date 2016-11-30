@@ -121,7 +121,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 			//CAPTION--------------------------
 			if (pCharts.getCaption() !=null){
 				pWriter.startElement("div", pCharts);
-					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CAPTION + CSS.THEME.CAPTION + CSS.NOT_SELECTABLE);
+					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CAPTION + CSS.NOT_SELECTABLE);
 					pWriter.write(pCharts.getCaption());
 				pWriter.endElement("div");
 			}
