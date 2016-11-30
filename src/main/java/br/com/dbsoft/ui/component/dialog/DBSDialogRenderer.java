@@ -193,7 +193,7 @@ public class DBSDialogRenderer extends DBSRenderer{
 			pWriter.startElement("div", pDialog);
 				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.ICON + CSS.THEME.ACTION);
 				pWriter.startElement("div", pDialog);
-					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + pDialog.getIconClass() + CSS.MODIFIER.INHERIT);
+					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + pDialog.getIconClass());
 				pWriter.endElement("div");
 			pWriter.endElement("div");
 		}
