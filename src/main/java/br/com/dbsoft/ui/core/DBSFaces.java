@@ -242,15 +242,14 @@ public class  DBSFaces {
 			public static final String BC = " -th_bc ";
 			public static final String FC = " -th_fc ";
 			public static final String ACTION = " -th_action ";
-			public static final String CAPTION = " -th_caption ";
 			public static final String INVERT = " -th_i ";
 			public static final String INPUT = " -th_input ";
 			public static final String INPUT_LABEL = " -th_input-label ";
 			public static final String INPUT_DATA = " -th_input-data ";
-			public static final String HORIZONTAL_LINE_BEFORE = " -th_horizontalLineBefore ";
-			public static final String HORIZONTAL_LINE_AFTER = " -th_horizontalLineAfter ";
-			public static final String VERTICAL_LINE_BEFORE = " -th_verticalLineBefore ";
-			public static final String VERTICAL_LINE_AFTER = " -th_verticalLineAfter ";
+			public static final String HORIZONTAL_LINE_BEFORE = " -th_lineHorizontalBefore ";
+			public static final String HORIZONTAL_LINE_AFTER = " -th_lineHorizontalAfter ";
+			public static final String VERTICAL_LINE_BEFORE = " -th_lineVerticalBefore ";
+			public static final String VERTICAL_LINE_AFTER = " -th_lineVerticalAfter ";
 		}
 		
 		
@@ -285,7 +284,6 @@ public class  DBSFaces {
 			public static final String INPUT = " -input ";
 			public static final String INFO = " -info ";
 			public static final String INVERT = " -i ";
-			public static final String INHERIT = " -inherit ";
 			public static final String KEY = " -key ";
 			public static final String LABEL = " -label ";
 			public static final String LAST = " -last ";
