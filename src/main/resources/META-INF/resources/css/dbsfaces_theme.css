@@ -10,6 +10,21 @@ html{
 /*   color: var(--main-color); */
 /* } */
 
+/* Retira a cor padrão do browser dos campos autofill  */
+input:-webkit-autofill, 
+textarea:-webkit-autofill, 
+select:-webkit-autofill{
+    -webkit-animation-name: -kf_autofill;
+    -webkit-animation-fill-mode: both;
+}
+
+@-webkit-keyframes -kf_autofill {
+    to {
+        color: currentColor;
+        background: transparent;
+    }
+}
+
 .-th_fc{
 	color: hsl(217.5, 55.17%, 11.37%);
 }
@@ -17,20 +32,21 @@ html{
 	color: rgb(254, 254, 255);
 }
 .-th_bc{
-	background-color: rgb(245, 245, 245);
-/*     background-image: linear-gradient(161deg, hsl(0, 0%, 100%) 0%,hsl(0, 0%, 87%) 100%); */
-    background-image: linear-gradient(-30deg, hsla(218, 72%, 46%, 1) 1%,hsla(218, 74%, 62%, 1) 100%) !important
+/* 	background-color: rgb(245, 245, 245); */
+    background-image: linear-gradient(161deg, hsla(0, 0%, 100%, 1) 0%, hsla(0, 0%, 87%, 1) 100%);
 /*     background-image: linear-gradient(161deg, hsl(218, 100%, 97%) 0%,hsl(218, 100%, 87%) 100%); */
 	
 }
 .-th_bc.-th_i{/*Invert*/
 /* 	background-color:rgb(13,25,45); */
-	background-color: hsl(218, 72%, 46%);
-    background-image: linear-gradient(0deg, hsla(217.5, 55.17%, 10%, 1) 0%, hsla(218,55%,15%,1) 100%);
+/* 	background-color: hsl(218, 72%, 46%); */
+    background-image: linear-gradient(-30deg, hsla(218, 72%, 46%, 1) 1%,hsla(218, 74%, 62%, 1) 100%);
+/*     background-image: linear-gradient(0deg, hsla(217.5, 55.17%, 10%, 1) 0%, hsla(218,55%,15%,1) 100%); */
 /* 	background-image: linear-gradient(0deg, hsla(217.5, 55.17%, 7.37%, 1) 0%, hsla(217.5, 55.17%, 11.37%, 1) 100%); */
 }
 
 .-th_action{
+	font-family:inherit;
 }
 
 .-th_action,
@@ -99,48 +115,41 @@ html{
 	box-shadow: 0px 0px 0px 1px rgba(13, 25, 45, 0.1);
 }
 
-.-th_caption{
-    width: 100%;
-/*     background-image: url("/images/back_texture_white.png"); */
-    background-color: rgba(13,25,45,.02);
-/*     -webkit-border-radius: 3px 3px 0px 0px; */
-/*     -moz-border-radius: 3px 3px 0px 0px; */
-/*     border-radius: 3px 3px 0px 0px; */
-    font-weight: bold;	
-}
 
-.-th_horizontalLineAfter:after,
-.-th_horizontalLineBefore:before{
+.-th_lineHorizontalAfter:after,
+.-th_lineHorizontalBefore:before{
 	content: " ";
 	display: block;
-	border-top: 1px solid rgba(0, 0, 0, 0.4) !important;
+	border-top: 1px solid rgba(0, 0, 0, 0.3) !important;
 	border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
 	position: absolute;
     width: 100%;
     z-index: 1;
+	left: 0;
 }
 
 
-.-th_horizontalLineAfter.-white:after,
-.-th_horizontalLineBefore.-white:before{
+.-th_lineHorizontalAfter.-white:after,
+.-th_lineHorizontalBefore.-white:before{
 	border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
 	border-bottom: 1px solid rgba(255, 255, 255, 0.7) !important;
+	left: 0;
 }
 
-.-th_verticalLineAfter:after,
-.-th_verticalLineBefore:before{
+.-th_lineVerticalAfter:after,
+.-th_lineVerticalBefore:before{
     content: " ";
     display: inline-block;
-    border-left: 1px solid rgba(0, 0, 0, 0.4) !important;
+    border-left: 1px solid rgba(0, 0, 0, 0.3) !important;
     border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
-    top: 0px;
+    top: 0;
     position: absolute;
     height: 100%;
     z-index: 1;
 }
 
-.-th_verticalLineAfter.-white:after,
-.-th_verticalLineBefore.-white:before{
+.-th_lineVerticalAfter.-white:after,
+.-th_lineVerticalBefore.-white:before{
 	border-left: 1px solid rgba(0, 0, 0, 0.1) !important;
 	border-right: 1px solid rgba(255, 255, 255, 0.7) !important;
     top: 0px;
@@ -189,7 +198,6 @@ select{
 	background: transparent;
 /* 	background: white; */
 }
-
 
 
 .-th_input-label{
@@ -259,7 +267,7 @@ div.-th_input-data,
 label.-th_input-data,
 .-th_input-suggestion{
 	border: none;
-	padding: .2em .1em .2em .1em !important;
+	padding: .2em .1em;
 	-webkit-border-radius: .15em;
 	-moz-border-radius: .15em;
 	border-radius: .15em;
@@ -314,10 +322,10 @@ textarea.-th_input-data:FOCUS,
 	background-color: rgb(255, 255, 210);
 }
 .-th_input .-invalid {
-	background-color: rgb(255, 210, 210);
+	background-color: rgb(215, 225, 236);
 }
 .-th_input .-required {
-	background-color: rgb(110, 210, 210);
+	background-color: rgb(224, 224, 224);
 }
 
 .-th_input > .-container {
@@ -412,6 +420,15 @@ textarea.-th_input-data:FOCUS,
     flex-shrink: 0;
 	box-sizing: content-box;
 	max-width: 100%;
+/* 	-webkit-flex-basis: auto; */
+/* 	-moz-flex-basis: auto; */
+/* 	flex-basis: auto;	 */
+}
+
+.-th_responsive .-th_flex > .-th_col.-shrink{
+	-webkit-flex-shrink: 1;
+	-moz-flex-shrink: 1;
+    flex-shrink: 1;
 }
 
 .-th_responsive .-th_flex > .-th_col.-f16{
@@ -526,8 +543,8 @@ textarea.-th_input-data:FOCUS,
 	
 }
 
-/* -------------------------- */
-	
+
+/* ------Simbolo Ok nos itens do list-------------------- */
 .-th_list.-ok{
     left: 1.6em;
     position: relative;
