@@ -12,6 +12,7 @@ import javax.faces.context.FacesContext;
 import org.apache.log4j.Logger;
 
 /**
+ * Bean básico com controle de dependência entre bean para quando um bean master for finalizado, os beans slaves também sejam.
  * @author ricardo.villar
  */
 public abstract class DBSBean implements Serializable{
@@ -104,8 +105,8 @@ public abstract class DBSBean implements Serializable{
 		return wLocale;
 	}
 	/**
-	 * Lista de CrudBean escravos dentro deste crud.
-	 * Os crudbean escravos serão retirados da memória quando o master for
+	 * Lista de Bean escravos dentro deste.
+	 * Os bean escravos serão retirados da memória quando o master for destruido
 	 * @return
 	 */
 	public List<DBSBean> getSlavesBean() {
@@ -114,7 +115,7 @@ public abstract class DBSBean implements Serializable{
 	
 	
 	/**
-	 * CrudBean que será o principal. Responsável por apagar da memória os CrudBean escravos que a ele vinculados
+	 * Bean que será o principal. Responsável por apagar da memória os bean escravos que a ele vinculados
 	 */
 	public void setMasterBean(DBSBean pBean) {
 		wMasterBean = pBean;
