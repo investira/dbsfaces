@@ -25,7 +25,7 @@ public abstract class DBSBeanModalMessages extends DBSBean implements IDBSModalM
 	protected 	Connection				wConnection;
 	protected 	boolean					wBrodcastingEvent = false;
 
-	protected 	static IDBSMessage 		wMessageError = new DBSMessage(MESSAGE_TYPE.ERROR,"Erro: %s");
+	protected 	IDBSMessage 			wMessageError = new DBSMessage(MESSAGE_TYPE.ERROR,"Erro: %s");
 	protected 	IDBSMessages 			wMessages = new DBSMessages(true);
 
 	
