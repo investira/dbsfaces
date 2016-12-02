@@ -985,10 +985,18 @@ public class  DBSFaces {
 	 * @return
 	 */
 	public static final String getViewId(){
+		return getViewId(FacesContext.getCurrentInstance());
+	}
+
+	/**
+	 * Retorna no nome da view corrente (exemplo.xhtml).
+	 * @return
+	 */
+	public static final String getViewId(FacesContext pContext){
 		try {
-			if (FacesContext.getCurrentInstance() != null &&
-				FacesContext.getCurrentInstance().getViewRoot() != null){
-				String xViewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
+			if (pContext != null &&
+				pContext.getViewRoot() != null){
+				String xViewId = pContext.getViewRoot().getViewId();
 				if (xViewId == null){
 					return "";
 				}
@@ -2650,7 +2658,7 @@ public class  DBSFaces {
 	}
 	
 	/**
-	 * SessionsBean dos Cruds e Repors foram substiuidos por conversation scope
+	 * SessionsBean dos Cruds e Repors foram substiuidos por ConversationScope
 	 * Exclui todos os DBSBean da sessão, menos o pDBSBean informado.
 	 * @param pDBSBean
 	 * @param pIsChild
@@ -2715,6 +2723,7 @@ public class  DBSFaces {
 	    }
 	}	
 	
+
 	/**
 	 * Exclui todos os Session Beans
 	 * @param pDBSBean
@@ -2753,58 +2762,6 @@ public class  DBSFaces {
 	}	
 
 	
-//	public static void finalizeDBSBeans(DBSBean pDBSBean, boolean pIsRecursive){
-//		ExternalContext xEC = FacesContext.getCurrentInstance().getExternalContext();
-//	    for (Entry<String, Object> xEntry : xEC.getSessionMap().entrySet()) {
-//	        if((xEntry.getValue() instanceof SerializableContextualInstanceImpl)){
-//	            @SuppressWarnings("rawtypes")
-//				SerializableContextualInstanceImpl xImpl = (SerializableContextualInstanceImpl) xEntry.getValue();
-//	            Object xO = xImpl.getInstance();
-//	            if (xO instanceof DBSBean){
-//            		DBSBean 	xSessionBean = (DBSBean) xO;
-//            		DBSCrudBean xSessionCrudBean = null;
-//            		DBSCrudBean xDBSCrudBean = null;
-//            		if (xSessionBean instanceof DBSCrudBean){
-//            			xSessionCrudBean = (DBSCrudBean) xSessionBean;
-//            		}
-//            		if (pDBSBean instanceof DBSCrudBean){
-//            			xDBSCrudBean = (DBSCrudBean) pDBSBean; 
-//            		}
-//            		Boolean xFinaliza = true;
-//            		//Não finaliza de for o próprio bean ou algum filho ou escravo tiver o respectivo pai ou master como o prório bean 
-//            		if (!pIsRecursive){ //Se não for chamada recursiva, testa o próprio bean. Se for recursiva, finaliza o bean
-//            			if (pDBSBean.equals(xSessionBean)){ //Se o bean da sessão é igual ao informado
-//            				xFinaliza = false;
-//            			}else if (xSessionBean.getMasterBean() != null){ //Se for escravo
-//            				xFinaliza = false; 
-//            			}else if (xSessionCrudBean != null &&
-//            					  xSessionCrudBean.getParentCrudBean() != null){//Se for filho
-//            				xFinaliza = false; 
-//            			}else if (pDBSBean.getMasterBean() !=null && //Se o bean da sessão é igual ao master do informado(se houver)
-//            					  pDBSBean.getMasterBean().equals(xSessionBean)){
-//            				xFinaliza = false;
-//            			}else if (xDBSCrudBean != null && //Se o bean da sessão é igual ao parent do informado(se houver)
-//            					  xDBSCrudBean.getParentCrudBean() !=null &&
-//          					  	  xDBSCrudBean.getParentCrudBean().equals(xSessionCrudBean)){
-//            				xFinaliza = false; 
-//                		}
-//            		}
-//            		if (xFinaliza){
-//            			for (DBSBean xChild:pDBSBean.getSlavesBean()){
-//        					finalizeDBSBeans(xChild, true);
-//            			}
-//            			if (xDBSCrudBean != null){
-//                			for (DBSCrudBean xChild:xDBSCrudBean.getChildrenCrudBean()){
-//            					finalizeDBSBeans(xChild, true);
-//                			}
-//            			}
-//	    				xEC.getSessionMap().remove(xEntry.getKey());
-//	    				xSessionBean = null;
-//            		}
-//	            }
-//	        }
-//	    }
-//	}	
 	
 	/**
 	 * Exclui outros bean da sessão, obrigando a serem reinicializados, evitando que trabalhem com valores antigos
