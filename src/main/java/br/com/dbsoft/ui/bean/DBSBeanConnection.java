@@ -15,14 +15,15 @@ import br.com.dbsoft.message.IDBSMessages;
 
 /**
  * @author ricardo.villar
+ * Bean básic quando se precisar utiliazar conexão e controle de mensagens
  */
 public abstract class DBSBeanConnection extends DBSBean{
  
 	private static final long serialVersionUID = -9043064201329995188L;
 
-	protected 	Connection		   wConnection;
-	protected 	static IDBSMessage wMessageError = new DBSMessage(MESSAGE_TYPE.ERROR,"Erro: %s");
-	protected 	IDBSMessages 	   wMessages = new DBSMessages(true);
+	protected 	Connection		wConnection;
+	protected 	IDBSMessage 	wMessageError = new DBSMessage(MESSAGE_TYPE.ERROR,"Erro: %s");
+	protected 	IDBSMessages 	wMessages = new DBSMessages(true);
 
 	@Override
 	@PreDestroy
