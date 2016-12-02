@@ -44,7 +44,7 @@ public abstract class DBSActionController{
 			beforeExecute(wBeforeMessages);
 		}
 		if (canExecute()){
-			wOk = onExecute();
+			wOk = onExecute(wAfterMessages);
 			afterExecute(wAfterMessages);
 		}
 		sendMessages(wMessageControlClientId);
@@ -63,13 +63,13 @@ public abstract class DBSActionController{
 
 	/**
 	 * Evento disparado antes de executar o processamento existente em <b>onExecute</b>.</br>
-	 * Este evento deve ser utilizado para enviar mensagens de validação ou confirmação anterior a execução. 
+	 * Este evento deve ser utilizado para enviar mensagens de validação ou confirmação anterior a execução utilizando o <b>pMessagesToSend</b>. 
 	 * @param pMessagesToSend 
 	 */
 	protected void beforeExecute(IDBSMessages pMessagesToSend){};
 	/**
 	 * Evento disparado após a execusão do processamento existente em <b>onExecute</b>.</br>
-	 * Este evento deve ser utilizado para enviar mensagens de erro ou informações gerados pela execução.
+	 * Este evento deve ser utilizado para enviar mensagens de erro ou informações gerados pela execução utilizando o <b>pMessagesToSend</b>.
 	 * @param pMessagesToSend
 	 */
 	protected void afterExecute(IDBSMessages pMessagesToSend){};
@@ -81,9 +81,11 @@ public abstract class DBSActionController{
 	
 	/**
 	 * Implementação do processamento que se deseja efetuar.
+	 * Pode-se enviar mensagens de erro ou informações gerados pela execução utilizando o <b>pMessagesToSend</b>.<br/>
+	 * Para envio de mensagens não geradas pela execução, recomenda-se a utilização do evento <b>afterExecute</b> por questão de organização do código.
 	 * @return Se o processamento foi executado com sucesso.
 	 */
-	protected abstract boolean onExecute();
+	protected abstract boolean onExecute(IDBSMessages pMessagesToSend);
 	
 	/**
 	 * Mensagens que serão exibidas antes da execução do processamento principal.
