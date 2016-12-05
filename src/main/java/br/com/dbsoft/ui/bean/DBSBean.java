@@ -1,6 +1,7 @@
 package br.com.dbsoft.ui.bean;
 
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -10,6 +11,8 @@ import javax.annotation.PreDestroy;
 import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
+
+import br.com.dbsoft.annotation.DBSEager;
 
 /**
  * Bean básico com controle de dependência entre bean para quando um bean master for finalizado, os beans slaves também sejam.
@@ -32,7 +35,20 @@ public abstract class DBSBean implements Serializable{
 	@PostConstruct
 	void pvInitializeClass() {
 		if (FacesContext.getCurrentInstance() == null){
-			wLogger.warn(this.getClass().getCanonicalName() + ":Não há scope ativo para este bean.");
+			Boolean xIgnorer = false;
+			//Desconsidera não haver FacesContext ativo quando class for DBSEager.
+		    Annotation[] xAs = this.getClass().getAnnotations();
+		     if(xAs.length != 0) {
+		        for(Annotation xA : xAs) {
+	        	   if (xA.annotationType().equals(DBSEager.class)){
+	        		   xIgnorer = true;
+	        		   break;
+		           }
+		        }
+		     }
+		    if (!xIgnorer){
+				wLogger.warn(this.getClass().getCanonicalName() + " chamado sem haver FacesContext.");
+		    }
 		}else{ 
 			FacesContext xFC = FacesContext.getCurrentInstance();
 			if(xFC.getExternalContext().getSession(false) == null){
