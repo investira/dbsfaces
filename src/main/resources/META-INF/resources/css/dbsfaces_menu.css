@@ -41,6 +41,7 @@
 
 .dbs_menu:not([disabled]):not(.-disabled) .dbs_menuitem:not([disabled]):not(.-disabled){
 	pointer-events: all;
+	cursor: pointer;
 }
 
 .dbs_menuitem > .-submenu{
