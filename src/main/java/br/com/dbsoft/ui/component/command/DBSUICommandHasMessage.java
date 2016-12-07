@@ -28,6 +28,9 @@ public class DBSUICommandHasMessage extends DBSUIOutput{
 		ResponseWriter 		xWriter = pContext.getResponseWriter();
 		if (!xUICommand.isRendered()){return;}
 
+		/*Inclui JS no componente que irá setar o atributo 'hasmassage' no próprio componente para que outros componentes 
+		 *possam saber se o action gerou message
+		 */
 		DBSFaces.encodeJavaScriptTagStart(xUICommand, xWriter, "id=" + getClientId());
 		if (DBSMessagesFacesContext.getMessage(DBSMessagesFacesContext.ALL) != null){
 			String xJS = "dbsfaces.component.setHasMessage(dbsfaces.util.jsid('" + xUICommand.getClientId() + "'));";
