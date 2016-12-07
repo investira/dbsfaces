@@ -9,6 +9,7 @@ import javax.faces.render.FacesRenderer;
 
 import br.com.dbsoft.ui.component.command.DBSUICommandRenderer;
 import br.com.dbsoft.ui.component.menu.DBSMenu;
+import br.com.dbsoft.ui.component.menu.DBSMenu.TYPE;
 import br.com.dbsoft.ui.component.menuitem.DBSMenuitem;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
@@ -34,7 +35,11 @@ public class DBSMenuitemRenderer extends DBSUICommandRenderer {
 
 		//Verifica se é um submenu filho de um outro submenu ou filho do menu principal
 		UIComponent xParent = pComponent.getParent();
-		xIsSubmenu = (xParent.getAttributes().get("class") != DBSMenu.class);
+		if (xParent.getAttributes().get("class") != DBSMenu.class ||
+			xParent.getAttributes().get("type") != TYPE.SCROLL.getCode()){
+			xIsSubmenu = true;
+		}
+//		xIsSubmenu = (xParent.getAttributes().get("class") != DBSMenu.class);
 		
 		//Execute--------
 		if (xMenuitem.getActionExpression() != null){
