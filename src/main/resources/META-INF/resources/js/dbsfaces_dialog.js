@@ -43,6 +43,7 @@ dbs_dialog = function(pId) {
 		dbsfaces.dialog.show(xDialog);
 	}
 	
+	/*Fecha dialog que originou o action*/
 	if(xDialog.children().length == 0){
 		var xList = $("body").data("dbs_dialogs");
 		if (!(typeof xList === "undefined")){
