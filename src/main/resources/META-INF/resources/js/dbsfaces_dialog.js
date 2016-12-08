@@ -138,7 +138,7 @@ dbs_dialogContent = function(pId) {
 		if (xDialog.hasClass("-closed")){
 			return;
 		}
-		//Ignora se houver mensagem a ser exibida e salva id deste dialog para posteriormente fecha-lo ao final das mensagens e quando for Yes.
+		//Não fecha o dialog se houver mensagem a ser exibida e salva id deste dialog para posteriormente fecha-lo ao final das mensagens e quando for Yes.
  		if (xButton.data("hasmessage")){ 
 			var xList = $("body").data("dbs_dialogs");
 			if (typeof xList === "undefined"){
