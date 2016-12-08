@@ -136,6 +136,10 @@ svg{
 .-centralized_rel{
 	position: relative;
 }
+.-ajaxBegin{
+	pointer-events: none;
+	opacity: 0.2;	
+}
 .-caption {}
 .-center {text-align: center !important;}
 .-closable {}

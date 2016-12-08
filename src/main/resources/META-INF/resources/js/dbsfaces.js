@@ -831,6 +831,7 @@ dbsfaces.ui = {
 		var xId = dbsfaces.util.jsid(pId + "_loading");
 		$(xId).fadeOut(2000, function(){ 
 			$(xId).remove();
+			$(pId).removeClass("-ajaxBegin");
 //			$("div .-loading").remove(); Comentado em 08/abr/15 - Ricardo: Excluid código até a certeza que código não é mais necessário.
 		});
 	}
@@ -1246,16 +1247,19 @@ dbsfaces.onajax = function(e, pData){
 		return;
 	}
 	if (e.status == "begin"){
+		$(e.source).addClass("-ajaxBegin");
 		$(e.source).trigger(dbsfaces.EVENT.ON_AJAX_BEGIN, pData);
 	}else if (e.status == "complete"){
 		$(e.source).trigger(dbsfaces.EVENT.ON_AJAX_COMPLETE, pData);
 	}else if (e.status == "success"){
+		$(e.source).removeClass("-ajaxBegin");
 		$(e.source).trigger(dbsfaces.EVENT.ON_AJAX_SUCCESS, pData);
 	}
 };
 
 dbsfaces.onajaxerror = function(e){
 	$(e.source).trigger(dbsfaces.EVENT.ON_AJAX_ERROR);
+	$(e.source).removeClass("-ajaxBegin");
 	return false;
 };
 
