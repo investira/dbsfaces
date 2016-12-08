@@ -23,12 +23,11 @@ public class DBSRadioRenderer extends DBSRenderer {
         decodeBehaviors(pContext, xRadio);
         
 		String xClientId = xRadio.getClientId(pContext);
-		if (!xRadio.getReadOnly()){
-			Object xSubmittedValue = pContext.getExternalContext().getRequestParameterMap().get(xClientId);
-	        if(xSubmittedValue != null) {
-	            xRadio.setSubmittedValue(xSubmittedValue);
-	        }
-		}
+
+		Object xSubmittedValue = pContext.getExternalContext().getRequestParameterMap().get(xClientId);
+        if(xSubmittedValue != null) {
+            xRadio.setSubmittedValue(xSubmittedValue);
+        }
 	}	
 	
     @Override
