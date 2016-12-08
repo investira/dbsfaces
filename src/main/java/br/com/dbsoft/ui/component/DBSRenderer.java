@@ -24,7 +24,6 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.apache.log4j.Logger;
 
-import com.sun.faces.renderkit.RenderKitUtils;
 import com.sun.faces.renderkit.html_basic.HtmlBasicRenderer.Param;
 
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
@@ -390,21 +389,6 @@ public class DBSRenderer extends Renderer {
         return (params == null) ? Collections.<ClientBehaviorContext.Parameter>emptyList() : params;
 
     }
-    
-        
-    protected boolean wasClicked(FacesContext pContext, UIComponent pComponent, String pClientId) {
-		
-		Map<String,String> xRequestParamMap = pContext.getExternalContext().getRequestParameterMap();
-		
-		if (pClientId == null) {
-			pClientId = pComponent.getClientId(pContext);
-		}
-		
-		// Fire an action event if we've had a traditional (non-Ajax)
-		// postback, or if we've had a partial or behavior-based postback.
-		return (xRequestParamMap.containsKey(pClientId)
-			 || RenderKitUtils.isPartialOrBehaviorAction(pContext, pClientId));
-	}
     
 //	protected void renderPassThruAttributes(FacesContext pFacesContext, UIComponent pComponent, String pVar, String[] pAttrs) throws IOException {
 //		ResponseWriter xWriter = pFacesContext.getResponseWriter();

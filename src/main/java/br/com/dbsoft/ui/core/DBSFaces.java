@@ -48,6 +48,7 @@ import javax.faces.view.facelets.FaceletContext;
 import org.apache.log4j.Logger;
 import org.jboss.weld.context.SerializableContextualInstanceImpl;
 
+import com.sun.faces.renderkit.RenderKitUtils;
 import com.sun.faces.util.DebugUtil;
 
 import br.com.dbsoft.core.DBSSDK;
@@ -2791,6 +2792,38 @@ public class  DBSFaces {
 	        }
 	    }
 	}
+	
+    /**
+     * Retorna se componente foi clicado.
+     * @param pContext
+     * @param pComponent
+     * @return
+     */
+    public static boolean wasClicked(FacesContext pContext, UIComponent pComponent) {
+		return wasClicked(pContext, pComponent, null);
+	}
+    
+    /**
+     * Retorna se componente foi clicado.
+     * @param pContext
+     * @param pComponent
+     * @param pClientId 
+     * @return
+     */
+    public static boolean wasClicked(FacesContext pContext, UIComponent pComponent, String pClientId) {
+		
+		Map<String,String> xRequestParamMap = pContext.getExternalContext().getRequestParameterMap();
+		
+		if (pClientId == null) {
+			pClientId = pComponent.getClientId(pContext);
+		}
+		
+		// Fire an action event if we've had a traditional (non-Ajax)
+		// postback, or if we've had a partial or behavior-based postback.
+		return (xRequestParamMap.containsKey(pClientId)
+			 || RenderKitUtils.isPartialOrBehaviorAction(pContext, pClientId));
+	}
+    
 	/**
 	 * Cria o elemento que conterá o tooltip.
 	 * @param pWriter

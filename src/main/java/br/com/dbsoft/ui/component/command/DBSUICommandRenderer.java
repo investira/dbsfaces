@@ -19,13 +19,12 @@ public class DBSUICommandRenderer extends DBSRenderer implements ActionListener 
 	public void decode(FacesContext pContext, UIComponent pComponent) {
         DBSUICommand xCommand = (DBSUICommand) pComponent;
 //        System.out.println("DBSUICommandRenderer decode--\t" + xCommand.getClientId());
-		String 		xClientId = xCommand.getClientId(); //xButton.getClientId(pContext);
         if(xCommand.getReadOnly()) {return;}
 
         decodeBehaviors(pContext, xCommand);
         
         //Dispara chamada do action
-		if (wasClicked(pContext, xCommand, xClientId)) { 
+		if (DBSFaces.wasClicked(pContext, xCommand)) { 
 			//Salva qual é a página atual antes de efetur o action
 			pContext.getAttributes().put(FACESCONTEXT_ATTRIBUTE.PREVIOUS_VIEW, DBSFaces.getViewId());
 			//Salva qual é a página atual antes de efetur o action
