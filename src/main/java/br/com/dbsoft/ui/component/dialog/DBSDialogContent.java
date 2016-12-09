@@ -283,85 +283,60 @@ public class DBSDialogContent extends DBSUIOutput{
 	 */
 	private void pvEncodeMsgButtons(DBSDialog pDialog, FacesContext pContext) throws IOException{
 		MESSAGE_TYPE xMsgType = MESSAGE_TYPE.get(pDialog.getMsgType());
-//		String xStyle = "";
-//		if (xMsgType.getIsQuestion()){
-//			pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_NO, "Não","-i_no -red", null, null);
-//		}else{
-//			xStyle = "display:none;";
-//		}
-//		//Não utiliza o action do botão que originou este dialog se mensagem for do tipo que impede que action seja efetuado
-//		if (!xMsgType.getIsQuestion() && xMsgType.getIsError()){
-//			pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_YES, "Sim","-i_yes -green", xStyle, null);
-//		//Executa o action do botão que originou este dialog
-//		}else{
-//			pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_YES, "Sim","-i_yes -green", xStyle, (DBSUICommand) pContext.getAttributes().get(FACESCONTEXT_ATTRIBUTE.ACTION_SOURCE));
-//		}
-//		
+		//Exclui botões se já existirem
+		pDialog.getFacets().remove(DBSDialog.BUTTON_NO);
+		pDialog.getFacets().remove(DBSDialog.BUTTON_YES);
+		
+		//Cria botões
 		String xStyle = "";
 		DBSUICommand xActionSource = (DBSUICommand) pContext.getAttributes().get(FACESCONTEXT_ATTRIBUTE.ACTION_SOURCE);
-		//DOIS BOTÕES
+		DBSUICommand xActionSourceNO = xActionSource;
+		DBSUICommand xActionSourceYES = xActionSource;
+		//DOIS BOTÕES - NÃO(NO) e SIM(YES)
 		if (xMsgType.getIsQuestion()){
+			//BOTÃO - NÃO(NO)
 			if (xMsgType.getIsError()){
 				//Não utiliza o action do botão que originou este dialog se mensagem for erro. Erro impede que action seja efetuado.
-				pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_NO, "Não","-i_no -red", null, null);
-			}else{
-				pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_NO, "Não","-i_no -red", null, xActionSource);
+				xActionSourceNO = null;
 			}
-		//UM BOTÃO
+			pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_NO, "Não","-i_no -red", null, pDialog.getClientId(), xActionSourceNO);
+		//UM BOTÃO - SIM(YES)
 		}else{
 			xStyle = "display:none;";
 			//Não utiliza o action do botão que originou este dialog se mensagem for erro. Erro impede que action seja efetuado.
 			if (xMsgType.getIsError()){
-				xActionSource = null;
+				xActionSourceYES = null;
 			}
 		}
-		pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_YES, "Sim","-i_yes -green", xStyle, xActionSource);
+		//BOTÃO - SIM(YES)
+		pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_YES, "Sim","-i_yes -green", xStyle, pDialog.getClientId(), xActionSourceYES);
 	}
 
 
-	private void pvEncodeMsgButton(DBSDialog pDialog, FacesContext pContext, String pId, String pLabel, String pIconClass, String pStyle, DBSUICommand pActionSource) throws IOException{
-//		String		xClientId = pDialog.getClientId(pContext);
-		DBSButton 	xBtn = (DBSButton) pDialog.getFacet(pId); 
-		//Verifica se botão já havia sido criado
-		if (xBtn == null){
-			xBtn = (DBSButton) pContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
-			xBtn.setId(pId);
-			xBtn.setLabel(pLabel);
-//			xBtn.setActionSourceClientId(pActionSourceClientId);
-			if (pActionSource != null){
-				xBtn.setUpdate(pActionSource.getUpdate());
-				xBtn.setActionExpression(pActionSource.getActionExpression());
-
-//				xBtn.setUpdate("@none");
-//				xBtn.setonclick("$(dbsfaces.util.jsid('" + pActionSource.getClientId() + "')).click()");
-//				xBtn.setExecute(pActionSource.getExecute());
-//				xBtn.setCloseDialog(false);
-//				if (pActionSource.getCloseDialog()){
-//					xBtn.setStyleClass("-closeParent");
-//				}
-			}else{
-				xBtn.setUpdate("@none");
-			}
-			xBtn.setCloseDialog(true);
-			xBtn.setExecute(pDialog.getClientId());
-			xBtn.setStyle(pStyle);
-			xBtn.setIconClass(CSS.MODIFIER.ICON + pIconClass);
-			//Inclui botão com facet do modal para poder separa-lo dos componentes filhos criados pelo usuário.
-			pDialog.getFacets().put(pId, xBtn);
+	private void pvEncodeMsgButton(DBSDialog 	pDialog, 
+								   FacesContext pContext, 
+								   String 		pId, 
+								   String 		pLabel, 
+								   String 		pIconClass, 
+								   String 		pStyle, 
+								   String 		pExecute, 
+								   DBSUICommand pActionSource) throws IOException{
+		DBSButton xBtn = (DBSButton) pContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
+		xBtn.setId(pId);
+		xBtn.setLabel(pLabel);
+		xBtn.setIconClass(CSS.MODIFIER.ICON + pIconClass);
+		xBtn.setStyle(pStyle);
+		xBtn.setExecute(pExecute);
+		if (pActionSource == null){
+			xBtn.setUpdate("@none");
+		}else{
+			xBtn.setActionExpression(pActionSource.getActionExpression());
+			xBtn.setUpdate(pActionSource.getUpdate());
 		}
+		xBtn.setCloseDialog(true);
+		pDialog.getFacets().put(pId, xBtn);
 		xBtn.encodeAll(pContext);
 	}
-	
-//	private String pvGetActionSourceClientId(FacesContext pContext){
-//		//Indica que fechará o dialog pai(se houver) quando este dialog tiver sido acerto em função de um action e o action for closeDialog
-//		DBSUICommand xActionSource = (DBSUICommand) pContext.getAttributes().get(FACESCONTEXT_ATTRIBUTE.ACTION_SOURCE);
-//		if (xActionSource != null){
-//			if (xActionSource.getCloseDialog()){
-//				return xActionSource.getClientId();
-//			}
-//		}
-//		return "";
-//	}
 	
 	/**
 	 * javaScript
