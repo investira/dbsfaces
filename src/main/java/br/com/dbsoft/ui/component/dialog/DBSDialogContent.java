@@ -299,6 +299,7 @@ public class DBSDialogContent extends DBSUIOutput{
 //		
 		String xStyle = "";
 		DBSUICommand xActionSource = (DBSUICommand) pContext.getAttributes().get(FACESCONTEXT_ATTRIBUTE.ACTION_SOURCE);
+		//DOIS BOTÕES
 		if (xMsgType.getIsQuestion()){
 			if (xMsgType.getIsError()){
 				//Não utiliza o action do botão que originou este dialog se mensagem for erro. Erro impede que action seja efetuado.
@@ -306,6 +307,7 @@ public class DBSDialogContent extends DBSUIOutput{
 			}else{
 				pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_NO, "Não","-i_no -red", null, xActionSource);
 			}
+		//UM BOTÃO
 		}else{
 			xStyle = "display:none;";
 			//Não utiliza o action do botão que originou este dialog se mensagem for erro. Erro impede que action seja efetuado.
@@ -337,11 +339,10 @@ public class DBSDialogContent extends DBSUIOutput{
 //				if (pActionSource.getCloseDialog()){
 //					xBtn.setStyleClass("-closeParent");
 //				}
-				xBtn.setCloseDialog(pActionSource.getCloseDialog());
 			}else{
 				xBtn.setUpdate("@none");
-				xBtn.setCloseDialog(true);
 			}
+			xBtn.setCloseDialog(true);
 			xBtn.setExecute(pDialog.getClientId());
 			xBtn.setStyle(pStyle);
 			xBtn.setIconClass(CSS.MODIFIER.ICON + pIconClass);
