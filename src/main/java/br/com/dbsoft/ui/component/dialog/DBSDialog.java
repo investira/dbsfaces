@@ -202,7 +202,6 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer, SystemEve
 	public void setType(String pType) {
 		TYPE xType = TYPE.get(pType);
 		if (xType == null){
-			System.out.println("Type invalid\t:" + pType);
 			return;
 		}
 		getStateHelper().put(PropertyKeys.type, pType);
@@ -333,10 +332,18 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer, SystemEve
 	}
 
 
+	/**
+	 * Mensagens a serem exibidas
+	 * @return
+	 */
 	public IDBSMessages getDBSMessages() {
 		return (IDBSMessages) getStateHelper().eval(PropertyKeys.dbsmessages, null);
 	}
 	
+	/**
+	 * Mensagens a serem exibidas
+	 * @param pDBSMessages
+	 */
 	public void setDBSMessages(IDBSMessages pDBSMessages) {
 		getStateHelper().put(PropertyKeys.dbsmessages, pDBSMessages);
 		handleAttribute("dbsmessages", pDBSMessages);
@@ -367,8 +374,10 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer, SystemEve
 	@Override
 	public void processEvent(SystemEvent pEvent) throws AbortProcessingException {
 		DBSDialogContent xContent = (DBSDialogContent) getFacet(FACET_CONTENT); 
+//		System.out.println("DBSDialog processEvent \t" + getClientId());
 		//Cria componente 'content' do tipo DBSDialogContent dentro do dialog que será responsábel pelo encode do conteúdo do dialog.
 		if (xContent == null){
+//			System.out.println("DBSDialog processEvent new \t" + getClientId());
 			xContent = (DBSDialogContent) FacesContext.getCurrentInstance().getApplication().createComponent(DBSDialogContent.COMPONENT_TYPE);
 			xContent.setId(FACET_CONTENT);
 			getFacets().put(FACET_CONTENT, xContent);

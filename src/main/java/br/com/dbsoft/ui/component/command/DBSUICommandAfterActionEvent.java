@@ -8,9 +8,9 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
 
-import br.com.dbsoft.ui.core.DBSFaces.FACESCONTEXT_ATTRIBUTE;
 import br.com.dbsoft.ui.component.DBSUICommand;
 import br.com.dbsoft.ui.core.DBSMessagesFacesContext;
+import br.com.dbsoft.ui.core.DBSFaces.FACESCONTEXT_ATTRIBUTE;
 
 
 public class DBSUICommandAfterActionEvent extends FacesEvent {
@@ -32,18 +32,26 @@ public class DBSUICommandAfterActionEvent extends FacesEvent {
 	@Override
 	public void processListener(FacesListener pListener) {
 //		System.out.println("DBSUICommandAfterActionEvent processListener");
-		//Verifica se há mensagem
-		if (DBSMessagesFacesContext.getMessage(DBSMessagesFacesContext.ALL) == null){return;}
-//		System.out.println("DBSUICommandAfterActionEvent processListener TEM MENSAGEM");
 		FacesContext xContext = FacesContext.getCurrentInstance();
+		//Verifica se há mensagem
+		if (DBSMessagesFacesContext.getMessage(DBSMessagesFacesContext.ALL) == null){
+			//Salva qual ACTION ORIGINAL
+			xContext.getAttributes().put(FACESCONTEXT_ATTRIBUTE.ACTION_SOURCE, null);
+			return;
+		}
+//		System.out.println("DBSUICommandAfterActionEvent processListener TEM MENSAGEM");
 		//Força a atualização do componente que indicará se há mensagem
 		xContext.getPartialViewContext().getRenderIds().add(getComponent().getClientId() + DBSUICommand.FACET_MESSAGE);
 		//Força que se mantenha na mesma página(inibe qualquer redirect)
 		ActionSource2 xAS = (ActionSource2) wActionEvent.getSource();
 		MethodExpression xME = xAS.getActionExpression();
 		if (xME !=null){
-			xContext.getApplication().getNavigationHandler().handleNavigation(xContext, xME.getExpressionString(), xContext.getAttributes().get(FACESCONTEXT_ATTRIBUTE.PREVIOUS_VIEW).toString());
+//			xContext.getApplication().getNavigationHandler().handleNavigation(xContext, xME.getExpressionString(), xContext.getAttributes().get(FACESCONTEXT_ATTRIBUTE.PREVIOUS_VIEW).toString());
 			xContext.getPartialViewContext().setRenderAll(false);
+			if (xContext.getAttributes().get(FACESCONTEXT_ATTRIBUTE.ACTION_SOURCE) == null){
+				//Salva qual ACTION ORIGINAL
+				xContext.getAttributes().put(FACESCONTEXT_ATTRIBUTE.ACTION_SOURCE, wActionEvent.getComponent());
+			}
 		}
 	}
 

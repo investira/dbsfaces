@@ -15,6 +15,7 @@ import javax.faces.component.UIForm;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIParameter;
 import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
@@ -184,34 +185,81 @@ public class DBSRenderer extends Renderer {
     }
     
     
-    protected void decodeBehaviors(FacesContext pContext, UIComponent pComponent)  {
-
-        if(!(pComponent instanceof ClientBehaviorHolder)) {
-            return;
+    protected String decodeBehaviors(FacesContext pContext, UIComponent pComponent)  {
+        if (!(pComponent instanceof ClientBehaviorHolder)) {
+            return null;
         }
 
-        Map<String, List<ClientBehavior>> xBehaviors = ((ClientBehaviorHolder) pComponent).getClientBehaviors();
-        if(xBehaviors.isEmpty()) {
-            return;
+        ClientBehaviorHolder holder = (ClientBehaviorHolder)pComponent;
+        Map<String, List<ClientBehavior>> behaviors = holder.getClientBehaviors();
+        if (behaviors.isEmpty()) {
+            return null;
         }
 
-        Map<String, String> xParams = pContext.getExternalContext().getRequestParameterMap();
-        String xBehaviorEvent = xParams.get("javax.faces.behavior.event");
+        ExternalContext external = pContext.getExternalContext();
+        Map<String, String> params = external.getRequestParameterMap();
+        String behaviorEvent = params.get("javax.faces.behavior.event");
 
-        if(null != xBehaviorEvent) {
-            List<ClientBehavior> xBehaviorsForEvent = xBehaviors.get(xBehaviorEvent);
+        if (null != behaviorEvent) {
+            List<ClientBehavior> behaviorsForEvent = behaviors.get(behaviorEvent);
 
-            if(xBehaviorsForEvent != null && !xBehaviorsForEvent.isEmpty()) {
-               String xBehaviorSource = xParams.get("javax.faces.source");
-               String xClientId = pComponent.getClientId();
-
-               if(xBehaviorSource != null && xClientId.startsWith(xBehaviorSource)) {
-                   for(ClientBehavior xBehavior: xBehaviorsForEvent) {
-                       xBehavior.decode(pContext, pComponent);
+            if (behaviorsForEvent != null && behaviorsForEvent.size() > 0) {
+               String behaviorSource = params.get("javax.faces.source");
+               String clientId = pComponent.getClientId();
+               if (isBehaviorSource(pContext, behaviorSource, clientId)) {
+                   for (ClientBehavior behavior: behaviorsForEvent) {
+                       behavior.decode(pContext, pComponent);
                    }
                }
+
+               return clientId;
             }
         }
+
+        return null;
+
+//    	
+//        if(!(pComponent instanceof ClientBehaviorHolder)) {
+//            return null;
+//        }
+//
+//        Map<String, List<ClientBehavior>> xBehaviors = ((ClientBehaviorHolder) pComponent).getClientBehaviors();
+//        if(xBehaviors.isEmpty()) {
+//            return null;
+//        }
+//
+//        Map<String, String> xParams = pContext.getExternalContext().getRequestParameterMap();
+//        String xBehaviorEvent = xParams.get("javax.faces.behavior.event");
+//
+//        if(null != xBehaviorEvent) {
+//            List<ClientBehavior> xBehaviorsForEvent = xBehaviors.get(xBehaviorEvent);
+//
+//            if(xBehaviorsForEvent != null && !xBehaviorsForEvent.isEmpty()) {
+//               String xBehaviorSource = xParams.get("javax.faces.source");
+//               String xClientId = pComponent.getClientId();
+//
+//               if(xBehaviorSource != null && xClientId.startsWith(xBehaviorSource)) {
+//                   for(ClientBehavior xBehavior: xBehaviorsForEvent) {
+//                       xBehavior.decode(pContext, pComponent);
+//                   }
+//               }
+//            }
+//        }
+    }
+    
+    /**
+     * @param ctx the <code>FacesContext</code> for the current request
+     * @param behaviorSourceId the ID of the behavior source
+     * @param componentClientId the client ID of the component being decoded
+     * @return <code>true</code> if the behavior source is for the component
+     *  being decoded, otherwise <code>false</code>
+     */
+    protected boolean isBehaviorSource(FacesContext ctx,
+                                       String behaviorSourceId,
+                                       String componentClientId) {
+
+        return (behaviorSourceId != null && behaviorSourceId.equals(componentClientId));
+
     }
     
 //    protected void renderRecursive(FacesContext context, UIComponent component)

@@ -12,11 +12,19 @@ import br.com.dbsoft.ui.core.DBSMessagesFacesContext;
  */
 public abstract class DBSActionController{
 
+//	private enum Phase{
+//		Before,
+//		Execute,
+//		After,
+//		End;
+//	}
 	private IDBSMessages 	wBeforeMessages = new DBSMessages(true);
 	private IDBSMessages 	wAfterMessages = new DBSMessages(true);
 	private LocalListener	wLocalListener = new LocalListener();
 	private String			wMessageControlClientId = null;
 	private	Boolean 		wOk = false;
+	private Boolean			wExecuting = false;
+	
 	
 	/**
 	 * @param pMessageControlClientId ClientId do componente que receberá as mensagens quando houver.
@@ -40,14 +48,21 @@ public abstract class DBSActionController{
 	 */
 	public final String execute(){
 		wOk = false;
-		if (canValidate()){
+		if (pvCanBeforeExecute()){
+//			System.out.println("actioController validate [" + (pvGetMessages().hasMessages() ? pvGetMessages().getListMessage().get(0).getMessageKey() : "") + "]");
 			beforeExecute(wBeforeMessages);
 		}
-		if (canExecute()){
+		if (pvCanExecute()){
+//			System.out.println("actioController execute [" + (pvGetMessages().hasMessages() ? pvGetMessages().getListMessage().get(0).getMessageKey() : "") + "]");
+			wExecuting = true;
 			wOk = onExecute(wAfterMessages);
 			afterExecute(wAfterMessages);
 		}
-		sendMessages(wMessageControlClientId);
+//		System.out.println("actioController sendmessage [" + (pvGetMessages().hasMessages() ? pvGetMessages().getListMessage().get(0).getMessageKey() : "") + "]");
+		pvSendMessages(wMessageControlClientId);
+		if (pvCanFinalize()){
+			pvFinalize();
+		}
 		return getOutcome();
 
 	}
@@ -104,12 +119,22 @@ public abstract class DBSActionController{
 	}
 
 	/**
+	 * Envia mensagens.
+	 * @param pClientId
+	 * @return
+	 */
+	private final boolean pvSendMessages(String pClientId){
+		DBSMessagesFacesContext.sendMessages(pvGetMessages(), pClientId); 
+		return pvCanRedirect();
+	}
+
+	/**
 	 * Se pode executar as rotinas de validação e confirmação anterior a execução.<br/>
 	 * Dentro deste if, deve-se setar as mensagens utilizando <b>getMessagesBeforeAction().add</b>.
 	 * @return
 	 */
-	protected final boolean canValidate(){
-		return wBeforeMessages.size() == 0;
+	private final boolean pvCanBeforeExecute(){
+		return !wExecuting && wBeforeMessages.size() == 0 && wAfterMessages.size() == 0;
 	}
 	
 	/**
@@ -118,24 +143,25 @@ public abstract class DBSActionController{
 	 * setar as mensagens de erro ou finalização utilizando <b>getMessagesAfterAction().add</b>.
 	 * @return
 	 */
-	protected final boolean canExecute(){
-		return !wBeforeMessages.hasMessages() && wAfterMessages.size() == 0;
+	private final boolean pvCanExecute(){
+		return !wExecuting && !wBeforeMessages.hasMessages() && wAfterMessages.size() == 0;
 	}
 	
 	/**
-	 * Envia mensagens.
-	 * @param pClientId
+	 * Se pode executar o processamento desejado.<br/>
+	 * Dentro deste if, deve-se implementar o processamento e
+	 * setar as mensagens de erro ou finalização utilizando <b>getMessagesAfterAction().add</b>.
 	 * @return
 	 */
-	protected final boolean sendMessages(String pClientId){
-		DBSMessagesFacesContext.sendMessages(pvGetMessages(), pClientId); 
-		return pvCanRedirect();
+	private final boolean pvCanFinalize(){
+		return wExecuting && !wBeforeMessages.hasMessages() && !wAfterMessages.hasMessages();
 	}
+	
 	
 	private final boolean pvCanRedirect(){
 		boolean xRedirect = !wBeforeMessages.hasMessages() && !wAfterMessages.hasMessages();
 		if (xRedirect){
-			pvClearMessages();
+			pvFinalize();
 		}
 		return xRedirect;
 	}
@@ -149,9 +175,11 @@ public abstract class DBSActionController{
 	}
 
 	
-	private final void pvClearMessages(){
+	private final void pvFinalize(){
 		wBeforeMessages.clear();
 		wAfterMessages.clear();
+		wExecuting = false;
+//		System.out.println("actioController pvClearMessages-------------------------------");
 	}
 	
 	/**
@@ -170,9 +198,10 @@ public abstract class DBSActionController{
 
 		@Override
 		public void afterMessageValidated(IDBSMessages pMessages, IDBSMessage pMessage){
-			//Excluir todas as mensagens para reiniciar todo o processo de controle das mensagens.
-			if (!pMessage.isMessageValidatedTrue() && pMessage.getMessageType().getIsError()){
-				pvClearMessages();
+//			System.out.println("actioController afterMessageValidated\t [" + pMessage.getMessageKey() + "]");
+			//Se for mensagem que interrompe(Error) e validada como false. 
+			if (pMessage.getMessageType().getIsError() && !pMessage.isMessageValidatedTrue()){ 
+				pvFinalize();
 			}
 		}
 

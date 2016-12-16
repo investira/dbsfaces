@@ -1,6 +1,7 @@
 package br.com.dbsoft.ui.component.command;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
@@ -10,7 +11,6 @@ import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.DBSUICommand;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
-import br.com.dbsoft.ui.core.DBSFaces.FACESCONTEXT_ATTRIBUTE;
 
 
 public class DBSUICommandRenderer extends DBSRenderer implements ActionListener {
@@ -18,28 +18,41 @@ public class DBSUICommandRenderer extends DBSRenderer implements ActionListener 
     @Override
 	public void decode(FacesContext pContext, UIComponent pComponent) {
         DBSUICommand xCommand = (DBSUICommand) pComponent;
-//        System.out.println("DBSUICommandRenderer decode--\t" + xCommand.getClientId());
         if(xCommand.getReadOnly()) {return;}
 
         decodeBehaviors(pContext, xCommand);
-        
-        //Dispara chamada do action
-		if (DBSFaces.wasClicked(pContext, xCommand)) { 
-			//Salva qual é a página atual antes de efetur o action
-			pContext.getAttributes().put(FACESCONTEXT_ATTRIBUTE.PREVIOUS_VIEW, DBSFaces.getViewId());
-			//Salva qual é a página atual antes de efetur o action
-			pContext.getAttributes().put(FACESCONTEXT_ATTRIBUTE.ACTION_SOURCE, xCommand);
-			//Inclui action na fila para ser executado logo em seguida
-			xCommand.queueEvent(new ActionEvent(xCommand));
-			xCommand.addActionListener(this);
-		}
+
+        if (!(pComponent instanceof UIInput)) {
+	        //Dispara chamada do action
+			if (DBSFaces.wasClicked(pContext, xCommand) && !DBSFaces.isReset(xCommand)) { 
+//				//Salva qual é a página atual antes de efetur o action
+//				pContext.getAttributes().put(FACESCONTEXT_ATTRIBUTE.PREVIOUS_VIEW, DBSFaces.getViewId());
+//				//Salva qual ACTION ORIGINAL
+//				pContext.getAttributes().put(FACESCONTEXT_ATTRIBUTE.ACTION_SOURCE, xCommand);
+				ActionEvent xAE = new ActionEvent(xCommand);
+				xCommand.queueEvent(xAE);
+				//Adiciona listener que será executado antes do action.
+				//Este listener irá adicionar um novo evento que será executado após do action.
+				//Este novo evento irá verificar se após o action, foi adicionado mensagem.
+				//Caso positivo, impede o outcome
+				
+				//Exclui listener anterior
+				for (ActionListener xAL:xCommand.getActionListeners()){
+					if (xAL.getClass().isAssignableFrom(this.getClass())){
+						xCommand.removeActionListener(xAL);
+					}
+				}
+				xCommand.addActionListener(this); 
+			}
+        }
+
     }
 
 	@Override
 	public void processAction(ActionEvent pEvent) throws AbortProcessingException {
 //		System.out.println("DBSUICommandRenderer processAction\t" + pEvent.getPhaseId());
 		//Cria evento para ser disparado após a execução do action
-		DBSUICommandAfterActionEvent xAAE = new DBSUICommandAfterActionEvent(pEvent);
+		DBSUICommandAfterActionEvent xAAE = new DBSUICommandAfterActionEvent(pEvent); 
 		xAAE.queue();
 	}
 

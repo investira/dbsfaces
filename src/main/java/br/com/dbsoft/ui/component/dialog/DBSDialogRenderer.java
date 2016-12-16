@@ -10,7 +10,6 @@ import javax.faces.render.FacesRenderer;
 
 import com.sun.faces.renderkit.RenderKitUtils;
 
-import br.com.dbsoft.message.IDBSMessage;
 import br.com.dbsoft.message.IDBSMessages;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSRenderer;
@@ -20,7 +19,6 @@ import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
 
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
-import br.com.dbsoft.ui.core.DBSFaces.FACESCONTEXT_ATTRIBUTE;
 import br.com.dbsoft.ui.core.DBSMessagesFacesContext;
 import br.com.dbsoft.util.DBSObject;
 
@@ -31,57 +29,6 @@ import br.com.dbsoft.util.DBSObject;
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSDialog.RENDERER_TYPE)
 public class DBSDialogRenderer extends DBSRenderer{
 	
-
-	@Override
-	public void decode(FacesContext pContext, UIComponent pComponent) {
-		DBSDialog xDialog = (DBSDialog) pComponent;
-		String xClientId = pComponent.getClientId(pContext);
-//		System.out.println("DBSDialogRenderer decode--\t" + pComponent.getClientId());
-		IDBSMessages xMessages = xDialog.getDBSMessages(); 
-		
-		if (xMessages!=null){
-			//Se houver mensagem a ser validada.
-			if (xMessages.hasMessages()){
-				String xSourceId = DBSFaces.getDecodedSourceId(pContext);
-				//Se decode foi disparado em função de uma ação
-				if (xSourceId != null){
-					String xInputMsgKeyId = xClientId + ":" + DBSDialog.INPUT_MSGKEY;
-					String xMsgKey = DBSFaces.getDecodedComponenteValue(pContext, xInputMsgKeyId);
-					//Se existe alguma mensagem sendo validada
-					if (xMsgKey != null){
-						IDBSMessage xMessage = xMessages.getMessage(xMsgKey);
-	
-						//Salva qual a mensagem esta sendo validada para ser utilizado na execução do action
-						pContext.getAttributes().put(FACESCONTEXT_ATTRIBUTE.ACTION_MESSAGEKEY, xMsgKey);
-						if (xMessage.getMessageType().getIsQuestion()){
-							if (xSourceId.equals(xClientId + ":" + DBSDialog.BUTTON_NO)){
-								//Seta mensagem como validada negativamente. Lembrando que o validade dispara eventuais listeners atralados a mensagem.
-								xMessage.setMessageValidated(false);
-							} else if (xSourceId.equals(xClientId + ":" + DBSDialog.BUTTON_YES)){
-								//Seta mensagem como validada positivamente
-								xMessage.setMessageValidated(true);
-								//Exclui mensagem da lista. Lembrando que o validade dispara eventuais listeners atralados a mensagem.
-	//							if (!xMessages.getMessage(xMsgKey).getMessageType().getIsWarning()){
-	//								xMessages.remove(xMessage);
-	//							}
-							}
-						}else{
-							//Seta a validação conforme o tipo de mensagem.
-							//Mensagens de erro é validada como false
-							if (xMessage.getMessageType().getIsError()){
-								xMessage.setMessageValidated(false);
-							//Mensagens de normal é validada como true
-							}else{
-								xMessage.setMessageValidated(true);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-
 	@Override
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent) throws IOException {
 		if (!pComponent.isRendered()){return;}

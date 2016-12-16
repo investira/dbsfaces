@@ -790,12 +790,16 @@ dbsfaces.ui = {
 	//Captura evento ajax dbsoft
 	ajaxShowLoading : function(pSelector){
 //		console.log("ajaxShowLoading:" + pSelector);
-		$(pSelector).off(dbsfaces.EVENT.ON_AJAX_BEGIN);
-		$(pSelector).on(dbsfaces.EVENT.ON_AJAX_BEGIN, function(e){
+		var xEle = pSelector;
+		if (!(xEle instanceof jQuery)){
+			xEle = $(pSelector);
+		}
+		xEle.off(dbsfaces.EVENT.ON_AJAX_BEGIN);
+		xEle.on(dbsfaces.EVENT.ON_AJAX_BEGIN, function(e){
 			dbsfaces.ui.showLoading("main",true);
 		});
-		$(pSelector).off(dbsfaces.EVENT.ON_AJAX_COMPLETE);
-		$(pSelector).on(dbsfaces.EVENT.ON_AJAX_COMPLETE, function(e){
+		xEle.off(dbsfaces.EVENT.ON_AJAX_COMPLETE);
+		xEle.on(dbsfaces.EVENT.ON_AJAX_COMPLETE, function(e){
 			//Reinicia a contagem do timeout a cada complete, já que existe respostas ajax em andamento
 			window.clearTimeout(wAjaxTimeout);
 			wAjaxTimeout = window.setTimeout(function(e){
@@ -803,8 +807,8 @@ dbsfaces.ui = {
 			}, 1000); //Time de delay para efetuar a chamada acima(showLoadingError). A chamada será cancelada em caso de sucesso. 	
 		});
 
-		$(pSelector).off(dbsfaces.EVENT.ON_AJAX_SUCCESS);
-		$(pSelector).on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
+		xEle.off(dbsfaces.EVENT.ON_AJAX_SUCCESS);
+		xEle.on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
 			window.clearTimeout(wAjaxTimeout); //Cancela o timeout definido no evento COMPLETE, cancelando a respectiva chamada ao showLoadingError.
 			dbsfaces.ui.showLoading("main",false);
 		});
@@ -1243,23 +1247,25 @@ dbsfaces.ajax = {
 		
 //Monitora evento ajax recebido e dispara evento dbsoft
 dbsfaces.onajax = function(e, pData){
-	if ($(e.source).length == 0){
+	xEle = $(e.source);
+	if (xEle.length == 0){
 		return;
 	}
 	if (e.status == "begin"){
-		$(e.source).addClass("-ajaxBegin");
-		$(e.source).trigger(dbsfaces.EVENT.ON_AJAX_BEGIN, pData);
+		xEle.addClass("-ajaxBegin");
+		xEle.trigger(dbsfaces.EVENT.ON_AJAX_BEGIN, pData);
 	}else if (e.status == "complete"){
-		$(e.source).trigger(dbsfaces.EVENT.ON_AJAX_COMPLETE, pData);
+		xEle.trigger(dbsfaces.EVENT.ON_AJAX_COMPLETE, pData);
 	}else if (e.status == "success"){
-		$(e.source).removeClass("-ajaxBegin");
-		$(e.source).trigger(dbsfaces.EVENT.ON_AJAX_SUCCESS, pData);
+		xEle.removeClass("-ajaxBegin");
+		xEle.trigger(dbsfaces.EVENT.ON_AJAX_SUCCESS, pData);
 	}
 };
 
 dbsfaces.onajaxerror = function(e){
-	$(e.source).trigger(dbsfaces.EVENT.ON_AJAX_ERROR);
-	$(e.source).removeClass("-ajaxBegin");
+	xEle = $(e.source);
+	xEle.removeClass("-ajaxBegin");
+	xEle.trigger(dbsfaces.EVENT.ON_AJAX_ERROR);
 	return false;
 };
 

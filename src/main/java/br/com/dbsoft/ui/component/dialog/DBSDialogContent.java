@@ -8,6 +8,8 @@ import javax.faces.component.html.HtmlInputHidden;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import br.com.dbsoft.message.IDBSMessage;
+import br.com.dbsoft.message.IDBSMessages;
 import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.ui.component.DBSUICommand;
 import br.com.dbsoft.ui.component.DBSUIOutput;
@@ -24,6 +26,54 @@ public class DBSDialogContent extends DBSUIOutput{
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.DIALOGCONTENT;
 	
 	@Override
+	public void decode(FacesContext pContext) {
+		//Valida mensagens
+		DBSDialog xDialog = (DBSDialog) getParent();
+		String xClientId = xDialog.getClientId(pContext);
+		IDBSMessages xMessages = xDialog.getDBSMessages(); 
+		if (xMessages!=null){
+			//Se houver mensagem a ser validada.
+			if (xMessages.hasMessages()){
+				String xSourceId = DBSFaces.getDecodedSourceId(pContext); 
+				//Se decode foi disparado em função de uma ação
+				if (xSourceId != null){
+					String xMsgKeyInputId = xClientId + ":" + DBSDialog.INPUT_MSGKEY;
+					String xMsgKey = DBSFaces.getDecodedComponenteValue(pContext, xMsgKeyInputId);
+					//Se existe alguma mensagem sendo validada
+					if (xMsgKey != null){
+						IDBSMessage xMessage = xMessages.getMessage(xMsgKey);
+						if (xMessage != null){
+							//Salva qual a mensagem esta sendo validada para ser utilizado na execução do action
+							pContext.getAttributes().put(FACESCONTEXT_ATTRIBUTE.ACTION_MESSAGEKEY, xMsgKey);
+//							System.out.println("DBSDialogRenderer decode messaga Validated--\t" + xMsgKey + "\t" + xClientId);
+							if (xMessage.getMessageType().getIsQuestion()){
+								if (xSourceId.equals(xClientId + ":" + DBSDialog.BUTTON_NO)){
+									//Seta mensagem como validada negativamente. Lembrando que o validade dispara eventuais listeners atralados a mensagem.
+									xMessage.setMessageValidated(false);
+								} else if (xSourceId.equals(xClientId + ":" + DBSDialog.BUTTON_YES)){
+									//Seta mensagem como validada positivamente
+									xMessage.setMessageValidated(true);
+								}
+							}else{
+								//Seta a validação conforme o tipo de mensagem.
+								//Mensagens de erro é validada como false
+								if (xMessage.getMessageType().getIsError()){
+									xMessage.setMessageValidated(false);
+								//Mensagens de normal é validada como true
+								}else{
+									xMessage.setMessageValidated(true);
+								}
+							}
+							//Remove mensagem da lista dentro do componente
+							xMessages.remove(xMessage);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	@Override
 	public void encodeBegin(FacesContext pContext) throws IOException {
 		if (!isRendered()){return;}
 		
@@ -35,7 +85,7 @@ public class DBSDialogContent extends DBSUIOutput{
 			//Usa o cor invertida quando pfor mensagem
 			xClass += CSS.THEME.INVERT;
 		}
-
+//		System.out.println("DBSDialogContent encodeBegin\t" + this.getClientId());
 		xWriter.startElement("div", xDialog);
 			DBSFaces.encodeAttribute(xWriter, "id", getClientId());
 			DBSFaces.encodeAttribute(xWriter, "name", getClientId());
@@ -265,13 +315,12 @@ public class DBSDialogContent extends DBSUIOutput{
 	 */
 	private void pvEncodeInputHiddenMessageKey(DBSDialog pDialog, FacesContext pContext, ResponseWriter pWriter) throws IOException  {
 		//Ordem da coluna
-		HtmlInputHidden xInput = (HtmlInputHidden) pDialog.getFacet(DBSDialog.INPUT_MSGKEY);
-		if (xInput == null){
-			xInput = (HtmlInputHidden) pContext.getApplication().createComponent(HtmlInputHidden.COMPONENT_TYPE);
-			xInput.setId(DBSDialog.INPUT_MSGKEY);
-			xInput.setValue(pDialog.getDBSMessages().getListMessage().get(0).getMessageKey());
-			pDialog.getFacets().put(DBSDialog.INPUT_MSGKEY, xInput);
-		}
+		getFacets().remove(DBSDialog.INPUT_MSGKEY);
+		HtmlInputHidden xInput = (HtmlInputHidden) pContext.getApplication().createComponent(HtmlInputHidden.COMPONENT_TYPE);
+		xInput.setId(DBSDialog.INPUT_MSGKEY);
+		xInput.setValue(pDialog.getDBSMessages().getListMessage().get(0).getMessageKey());
+		getFacets().put(DBSDialog.INPUT_MSGKEY, xInput);
+
 		xInput.encodeAll(pContext);
 	}
 
@@ -284,8 +333,16 @@ public class DBSDialogContent extends DBSUIOutput{
 	private void pvEncodeMsgButtons(DBSDialog pDialog, FacesContext pContext) throws IOException{
 		MESSAGE_TYPE xMsgType = MESSAGE_TYPE.get(pDialog.getMsgType());
 		//Exclui botões se já existirem
-		pDialog.getFacets().remove(DBSDialog.BUTTON_NO);
-		pDialog.getFacets().remove(DBSDialog.BUTTON_YES);
+//		UIComponent xBtYes = getFacets().get(DBSDialog.BUTTON_YES);
+//		if (xBtYes != null){
+//			System.out.println("Achou Yes");
+//		}
+//		UIComponent xBtNo = getFacets().get(DBSDialog.BUTTON_NO);
+//		if (xBtNo != null){
+//			System.out.println("Achou No");
+//		}
+		getFacets().remove(DBSDialog.BUTTON_NO);
+		getFacets().remove(DBSDialog.BUTTON_YES);
 		
 		//Cria botões
 		String xStyle = "";
@@ -299,7 +356,7 @@ public class DBSDialogContent extends DBSUIOutput{
 				//Não utiliza o action do botão que originou este dialog se mensagem for erro. Erro impede que action seja efetuado.
 				xActionSourceNO = null;
 			}
-			pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_NO, "Não","-i_no -red", null, pDialog.getClientId(), xActionSourceNO);
+			pvEncodeMsgButton(pContext, DBSDialog.BUTTON_NO, "Não","-i_no -red", null, pDialog.getClientId(), xActionSourceNO);
 		//UM BOTÃO - SIM(YES)
 		}else{
 			xStyle = "display:none;";
@@ -309,12 +366,11 @@ public class DBSDialogContent extends DBSUIOutput{
 			}
 		}
 		//BOTÃO - SIM(YES)
-		pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_YES, "Sim","-i_yes -green", xStyle, pDialog.getClientId(), xActionSourceYES);
+		pvEncodeMsgButton(pContext, DBSDialog.BUTTON_YES, "Sim","-i_yes -green", xStyle, pDialog.getClientId(), xActionSourceYES); 
 	}
 
 
-	private void pvEncodeMsgButton(DBSDialog 	pDialog, 
-								   FacesContext pContext, 
+	private void pvEncodeMsgButton(FacesContext pContext, 
 								   String 		pId, 
 								   String 		pLabel, 
 								   String 		pIconClass, 
@@ -322,19 +378,30 @@ public class DBSDialogContent extends DBSUIOutput{
 								   String 		pExecute, 
 								   DBSUICommand pActionSource) throws IOException{
 		DBSButton xBtn = (DBSButton) pContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
+//		xBtn.setTransient(true);
 		xBtn.setId(pId);
 		xBtn.setLabel(pLabel);
 		xBtn.setIconClass(CSS.MODIFIER.ICON + pIconClass);
 		xBtn.setStyle(pStyle);
-		xBtn.setExecute(pExecute);
+//		xBtn.setExecute("@this " + pExecute + ":" + DBSDialog.INPUT_MSGKEY);
+//		xBtn.setExecute(pExecute);
+//		xBtn.setExecute(pExecute);
+		xBtn.setExecute(getClientId());
 		if (pActionSource == null){
 			xBtn.setUpdate("@none");
 		}else{
 			xBtn.setActionExpression(pActionSource.getActionExpression());
-			xBtn.setUpdate(pActionSource.getUpdate());
+			String xUpdate = DBSObject.getNotNull(pActionSource.getUpdate() , "");
+			if (xUpdate.indexOf(pExecute) == -1){
+				xUpdate += " :" + pExecute;
+			}
+			xBtn.setUpdate(xUpdate);
+			
+//			xBtn.setUpdate(pExecute);
 		}
 		xBtn.setCloseDialog(true);
-		pDialog.getFacets().put(pId, xBtn);
+		getFacets().put(pId, xBtn);
+//		getChildren().add(xBtn);
 		xBtn.encodeAll(pContext);
 	}
 	

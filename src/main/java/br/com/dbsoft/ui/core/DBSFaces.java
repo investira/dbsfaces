@@ -60,6 +60,7 @@ import br.com.dbsoft.ui.bean.DBSBean;
 import br.com.dbsoft.ui.bean.DBSBeanModalMessages;
 import br.com.dbsoft.ui.bean.crud.DBSCrudBean;
 import br.com.dbsoft.ui.bean.report.DBSReportBean;
+import br.com.dbsoft.ui.component.DBSUICommand;
 import br.com.dbsoft.ui.component.DBSUIInput;
 import br.com.dbsoft.ui.component.button.DBSButton;
 import br.com.dbsoft.ui.component.checkbox.DBSCheckbox;
@@ -114,7 +115,7 @@ public class  DBSFaces {
     	/**
     	 * View antes executar um action.
     	 */
-    	public static final String PREVIOUS_VIEW = "DBSPREVIOUS_VIEW";
+//    	public static final String PREVIOUS_VIEW = "DBSPREVIOUS_VIEW";
     	/**
     	 * Componente que originou a ação.
     	 */
@@ -1321,11 +1322,11 @@ public class  DBSFaces {
 				xExecute = "execute:'" + pvRemoveFirstColon(pExecute) + "',";
 			}
 			xLocalOnClick = "jsf.ajax.request(this, event, {" + xExecute + " render:'" +  xClientUpdate +  "', onevent:dbsfaces.onajax, onerror:dbsfaces.onajaxerror}); return false";
-			
-//			xExecute = "@this";
+//			xLocalOnClick = "mojarra.ab(this,event,'action','" + pvRemoveFirstColon(pExecute) + "','" + xClientUpdate + "',{'onevent':dbsfaces.onajax,'onerror':dbsfaces.onajaxerror});return false";
+
+			//			xExecute = "@this";
 //			xLocalOnClick = "mojarra.ab(this,event,'click',0,'" + xClientUpdate + "');return false";
 //			xLocalOnClick = "mojarra.ab(this,event,'action',0,'" + xClientUpdate + "',{'onevent':dbsfaces.onajax,'onerror':dbsfaces.onajaxerror});return false";
-
 			if (xUserOnClick != null){
 				xLocalOnClick = xLocalOnClick.replaceAll("'", "\\\\'");
 				xUserOnClick = xUserOnClick.replaceAll("'", "\\\\'");
@@ -1363,33 +1364,6 @@ public class  DBSFaces {
 		return xLocalOnClick;
 	}
 	
-//	public static String getSubmitString(UIComponentBase pComponent, String pSourceEvent, String pExecute, String pClientUpdate){
-//		String xUserOnClick = (String) pComponent.getAttributes().get(pSourceEvent);
-//		String xLocalOnClick = xUserOnClick;
-//		String xClientUpdate = pvRemoveFirstColon(pClientUpdate);
-//		
-//		//Ajax
-//		if (!DBSObject.isEmpty(xClientUpdate)){
-//			String xExecute = "";
-//			if (!DBSObject.isEmpty(pExecute)){
-//				xExecute = "execute:'" + pvRemoveFirstColon(pExecute) + "',";
-//			}
-//			xLocalOnClick = "jsf.ajax.request(this, event, {" + xExecute + " render:'" +  xClientUpdate +  "', onevent:dbsfaces.onajax}); return false;";
-//		//Não Ajax
-//		}else{
-//			if (DBSObject.isEmpty(pExecute)){
-//				System.out.println("Form/Execute não definido para o componente " + pComponent.getClientId()  + "!");
-//			}else{
-//				xLocalOnClick = "mojarra.jsfcljs(document.getElementById('" + pExecute + "'),{'"+ pComponent.getClientId() + "':'"+ pComponent.getClientId() + "'},'');return false;";
-//			}
-//		}
-//		if (xUserOnClick != null){
-//			xLocalOnClick = xLocalOnClick.replaceAll("'", "\\\\'");
-//			xUserOnClick = xUserOnClick.replaceAll("'", "\\\\'");
-//			xLocalOnClick = "jsf.util.chain(this,event,'" + xUserOnClick + "','" + xLocalOnClick + "');return false";
-//		}
-//		return xLocalOnClick;
-//	}	
 	
 	/**
 	 * Efetua o <b>writeAttribute</b> testanto se valor é nulo.
@@ -2794,12 +2768,22 @@ public class  DBSFaces {
 	}
 	
     /**
+     * @param component the component of interest
+     * @return <code>true</code> if the button represents a <code>reset</code>
+     *  button, otherwise <code>false</code>
+     */
+    public static boolean isReset(DBSUICommand component) {
+        return ("reset".equals(component.getAttributes().get("type")));
+
+    }
+	
+    /**
      * Retorna se componente foi clicado.
      * @param pContext
      * @param pComponent
      * @return
      */
-    public static boolean wasClicked(FacesContext pContext, UIComponent pComponent) {
+    public static boolean wasClicked(FacesContext pContext, DBSUICommand pComponent) {
 		return wasClicked(pContext, pComponent, null);
 	}
     
@@ -2810,9 +2794,15 @@ public class  DBSFaces {
      * @param pClientId 
      * @return
      */
-    public static boolean wasClicked(FacesContext pContext, UIComponent pComponent, String pClientId) {
+    public static boolean wasClicked(FacesContext pContext, DBSUICommand pComponent, String pClientId) {
+//        List<ClientBehavior> clientBehaviours = pComponent.getClientBehaviors().get("click");
+//        if (clientBehaviours != null) {
+//            for (ClientBehavior cb : clientBehaviours) {
+//                cb.decode(pContext, pComponent);
+//            }
+//        }
 		
-		Map<String,String> xRequestParamMap = pContext.getExternalContext().getRequestParameterMap();
+        Map<String,String> xRequestParamMap = pContext.getExternalContext().getRequestParameterMap();
 		
 		if (pClientId == null) {
 			pClientId = pComponent.getClientId(pContext);
@@ -2820,8 +2810,12 @@ public class  DBSFaces {
 		
 		// Fire an action event if we've had a traditional (non-Ajax)
 		// postback, or if we've had a partial or behavior-based postback.
-		return (xRequestParamMap.containsKey(pClientId)
-			 || RenderKitUtils.isPartialOrBehaviorAction(pContext, pClientId));
+		if (xRequestParamMap.containsKey(pClientId)
+		 || RenderKitUtils.isPartialOrBehaviorAction(pContext, pClientId)){
+//			System.out.println("DBSFaces wasClicked \t" + xRequestParamMap.size() + "\t" + pComponent.getClientId());
+			return true;
+		}
+		return false;
 	}
     
 	/**

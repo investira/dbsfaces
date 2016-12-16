@@ -10,10 +10,10 @@ import javax.faces.context.FacesContext;
 import br.com.dbsoft.message.DBSMessage;
 import br.com.dbsoft.message.DBSMessages;
 import br.com.dbsoft.message.IDBSMessage;
-import br.com.dbsoft.ui.core.DBSFaces.FACESCONTEXT_ATTRIBUTE;
 import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.message.IDBSMessageListener;
 import br.com.dbsoft.message.IDBSMessages;
+import br.com.dbsoft.ui.core.DBSFaces.FACESCONTEXT_ATTRIBUTE;
 import br.com.dbsoft.util.DBSObject;
 
 public class DBSMessagesFacesContext {
@@ -308,6 +308,8 @@ public class DBSMessagesFacesContext {
 	private static IDBSMessages pvGetMessagesForClientId(FacesContext pContext, String pClientId){
 		if (pContext.getAttributes().get(FACESCONTEXT_ATTRIBUTE.MESSAGES) == null){return null;}
 		HashMap<String, IDBSMessages> xMap = pvGetContextMessagesMap(pContext);
+		
+		//Cria componente DBSMessages que conterá as mensagens para o pClientId desejado
 		IDBSMessages	xMessages = new DBSMessages();
 		
 		//Considera todas as mensagens
@@ -318,7 +320,7 @@ public class DBSMessagesFacesContext {
 			}
 		//Considera das mensagens globais ou com clientId definido
 		}else{
-			xMessages = xMap.get(pClientId);
+			xMessages.addAll(xMap.get(pClientId));
 		}
 		
 		if (xMessages == null || xMessages.size() == 0){return null;}
