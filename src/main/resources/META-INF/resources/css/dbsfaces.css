@@ -622,7 +622,8 @@ input.-foo {
 /* loadings --------------------------------------------------- */
 
 .-loading {
-	position: absolute !important;
+	position: fixed !important;
+/* 	position: absolute !important; */
 	display: inline-block;	
 	width: 1em !important;
 	height: 1em !important;
