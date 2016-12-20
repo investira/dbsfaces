@@ -199,6 +199,7 @@ dbsfaces.dialog = {
 		pDialog.data("sub_content", pDialog.data("divscroll").find("> div > .-sub_content"));
 		pDialog.data("header", pDialog.data("content").children(".-header"));
 		pDialog.data("header_content", pDialog.data("header").children(".-content"));
+		pDialog.data("header_icon", pDialog.data("header_content").children(".-icon"));
 		pDialog.data("footer", pDialog.data("content").children(".-footer"));
 		pDialog.data("footer_content", pDialog.data("footer").children(".-content"));
 		pDialog.data("footer_toolbar", pDialog.data("footer").children(".-toolbar"));
@@ -229,14 +230,18 @@ dbsfaces.dialog = {
 		//Cor do header
 		var xIsDark = tinycolor(pDialog.data("content").css("background-color")).isDark();
 		if (xIsDark){
-			pDialog.data("header_content").find(" > .-caption > .-icon > div").removeClass("-dark");
+			pDialog.data("header_icon").removeClass("-dark");
 			pDialog.data("header_content").addClass("-light")
 										  .removeClass("-dark");
 		}else{
-			pDialog.data("header_content").find(" > .-caption > .-icon > div").addClass("-dark");
+			pDialog.data("header_icon").addClass("-dark");
 			pDialog.data("header_content").addClass("-dark")
 										  .removeClass("-light");
 		}
+		//Ajusta tamanho do icone do header
+		var xHeight = pDialog.data("header_content")[0].getBoundingClientRect().height / parseFloat(pDialog.data("header_content").css("font-size"));
+		pDialog.data("header_icon").children().css("font-size", xHeight + "em");
+		
 		//Cor da barra de timeout
 		if (pDialog.attr("type") != "mod"){
 			if (xIsDark){

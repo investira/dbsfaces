@@ -208,7 +208,7 @@
 	display: inline-block;
     left: 0;
     top: 0;
-    font-size: 2em;
+/*     font-size: 2em; */
 }
 
 .dbs_dialog > .-container > .-content > .-header > .-content > .-icon > .-i_information{

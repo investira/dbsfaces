@@ -29,7 +29,7 @@ select,
 tbody,
 .-tooltip {
 /* 	text-rendering: optimizeLegibility !important; */
-/* 	-webkit-font-smoothing: antialiased !important; */
+	-webkit-font-smoothing: antialiased;
 	text-decoration: none !important;
 	outline-style: none !important;
 	outline-width: 0px !important;
