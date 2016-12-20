@@ -230,17 +230,23 @@ dbsfaces.dialog = {
 		//Cor do header
 		var xIsDark = tinycolor(pDialog.data("content").css("background-color")).isDark();
 		if (xIsDark){
-			pDialog.data("header_icon").removeClass("-dark");
+			if (pDialog.data("header_icon").length > 0){
+				pDialog.data("header_icon").removeClass("-dark");
+			}
 			pDialog.data("header_content").addClass("-light")
 										  .removeClass("-dark");
 		}else{
-			pDialog.data("header_icon").addClass("-dark");
+			if (pDialog.data("header_icon").length > 0){
+				pDialog.data("header_icon").addClass("-dark");
+			}
 			pDialog.data("header_content").addClass("-dark")
 										  .removeClass("-light");
 		}
-		//Ajusta tamanho do icone do header
-		var xHeight = pDialog.data("header_content")[0].getBoundingClientRect().height / parseFloat(pDialog.data("header_content").css("font-size"));
-		pDialog.data("header_icon").children().css("font-size", xHeight + "em");
+		if (pDialog.data("header_content").length > 0){
+			//Ajusta tamanho do icone do header
+			var xHeight = pDialog.data("header_content")[0].getBoundingClientRect().height / parseFloat(pDialog.data("header_content").css("font-size"));
+			pDialog.data("header_icon").children().css("font-size", xHeight + "em");
+		}
 		
 		//Cor da barra de timeout
 		if (pDialog.attr("type") != "mod"){
