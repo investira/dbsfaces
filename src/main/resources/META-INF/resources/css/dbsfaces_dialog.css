@@ -203,17 +203,46 @@
 	right: 0;
 }
 
-
-.dbs_dialog > .-container > .-content > .-header > .-content > .-caption > .-icon {
+.dbs_dialog > .-container > .-content > .-header > .-content > .-icon {
+    position: absolute;
 	display: inline-block;
-	position: relative;
-	vertical-align: bottom;
-	padding-left: .2em;
-/* 	position: absolute; */
-/*     top: 0; */
-/*     left: 0;     */
-/*     position: fixed; */
-/*     box-shadow: rgba(0,0,0,.5) 0 0px 5px 0px; */
+    left: 0;
+    top: 0;
+    font-size: 2em;
+}
+
+.dbs_dialog > .-container > .-content > .-header > .-content > .-icon > .-i_information{
+}
+
+.dbs_dialog > .-container > .-content > .-header > .-content > .-icon > .-i_sucess{
+	color: rgb(0,225,0);
+}
+.dbs_dialog > .-container > .-content > .-header > .-content > .-icon > .-i_important{
+}
+
+.dbs_dialog > .-container > .-content > .-header > .-content > .-icon > .-i_warning{
+	color: rgb(253, 253, 132);
+}
+
+.dbs_dialog > .-container > .-content > .-header > .-content > .-icon > .-i_question_confirm{
+}
+
+.dbs_dialog > .-container > .-content > .-header > .-content > .-icon > .-i_question_ignore{
+	color: rgb(253, 253, 132);
+}
+.dbs_dialog > .-container > .-content > .-header > .-content > .-icon > .-i_error{
+	color: rgb(255, 173, 110);;
+}
+.dbs_dialog > .-container > .-content > .-header > .-content > .-icon > .-i_forbidden{
+	color: rgb(251, 128, 116);
+}
+
+    
+.dbs_dialog > .-container > .-content > .-header > .-content > .-caption > .-icon {
+/* 	display: inline-block; */
+/* 	position: relative; */
+/* 	vertical-align: bottom; */
+/* 	padding-left: .2em; */
 }
 
 

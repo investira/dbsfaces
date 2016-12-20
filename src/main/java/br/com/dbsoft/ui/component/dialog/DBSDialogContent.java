@@ -134,6 +134,16 @@ public class DBSDialogContent extends DBSUIOutput{
 	}
 
 	private void pvEncodeCaption(DBSDialog pDialog, TYPE pType, UIComponent pFacetHeaderRight, UIComponent pFacetHeaderLeft, FacesContext pContext, ResponseWriter pWriter) throws IOException{
+		//Icone do tipo de mensagem
+		if(pType == TYPE.MSG
+	  	&& pDialog.hasMessage()){
+			pWriter.startElement("div", pDialog);
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.ICON);
+				pWriter.startElement("div", pDialog);
+					DBSFaces.encodeAttribute(pWriter, "class", MESSAGE_TYPE.get(pDialog.getMsgType()).getIconClass());
+				pWriter.endElement("div");
+			pWriter.endElement("div");
+		}
 		pWriter.startElement("div", pDialog);
 			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CAPTION + CSS.MODIFIER.NOT_SELECTABLE);
 			if (pDialog.getMsgType() != null
@@ -148,16 +158,6 @@ public class DBSDialogContent extends DBSUIOutput{
 					}else{
 						pWriter.write(MESSAGE_TYPE.get(pDialog.getMsgType()).getName());
 					}
-				pWriter.endElement("div");
-			}
-			//Icone do tipo de mensagem
-			if(pType == TYPE.MSG
-		  	&& pDialog.hasMessage()){
-				pWriter.startElement("div", pDialog);
-					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.ICON);
-					pWriter.startElement("div", pDialog);
-						DBSFaces.encodeAttribute(pWriter, "class", MESSAGE_TYPE.get(pDialog.getMsgType()).getIconClass());
-					pWriter.endElement("div");
 				pWriter.endElement("div");
 			}
 			
