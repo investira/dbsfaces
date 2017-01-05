@@ -242,6 +242,7 @@ public class DBSRenderer extends Renderer {
                        xBehavior.decode(pContext, pComponent);
                    }
                }
+               return xClientId;
             }
         }
         return null;
