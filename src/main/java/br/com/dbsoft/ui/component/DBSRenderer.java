@@ -15,13 +15,12 @@ import javax.faces.component.UIForm;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIParameter;
 import javax.faces.component.UIViewRoot;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.render.Renderer;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.component.behavior.ClientBehaviorHolder;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.render.Renderer;
 
 import org.apache.log4j.Logger;
 
@@ -186,65 +185,66 @@ public class DBSRenderer extends Renderer {
     
     
     protected String decodeBehaviors(FacesContext pContext, UIComponent pComponent)  {
-        if (!(pComponent instanceof ClientBehaviorHolder)) {
-            return null;
-        }
-
-        ClientBehaviorHolder holder = (ClientBehaviorHolder)pComponent;
-        Map<String, List<ClientBehavior>> behaviors = holder.getClientBehaviors();
-        if (behaviors.isEmpty()) {
-            return null;
-        }
-
-        ExternalContext external = pContext.getExternalContext();
-        Map<String, String> params = external.getRequestParameterMap();
-        String behaviorEvent = params.get("javax.faces.behavior.event");
-
-        if (null != behaviorEvent) {
-            List<ClientBehavior> behaviorsForEvent = behaviors.get(behaviorEvent);
-
-            if (behaviorsForEvent != null && behaviorsForEvent.size() > 0) {
-               String behaviorSource = params.get("javax.faces.source");
-               String clientId = pComponent.getClientId();
-               if (isBehaviorSource(pContext, behaviorSource, clientId)) {
-                   for (ClientBehavior behavior: behaviorsForEvent) {
-                       behavior.decode(pContext, pComponent);
-                   }
-               }
-
-               return clientId;
-            }
-        }
-
-        return null;
-
-//    	
-//        if(!(pComponent instanceof ClientBehaviorHolder)) {
+//    	//CODIGO JSF
+//        if (!(pComponent instanceof ClientBehaviorHolder)) {
 //            return null;
 //        }
 //
-//        Map<String, List<ClientBehavior>> xBehaviors = ((ClientBehaviorHolder) pComponent).getClientBehaviors();
-//        if(xBehaviors.isEmpty()) {
+//        ClientBehaviorHolder holder = (ClientBehaviorHolder)pComponent;
+//        Map<String, List<ClientBehavior>> behaviors = holder.getClientBehaviors();
+//        if (behaviors.isEmpty()) {
 //            return null;
 //        }
 //
-//        Map<String, String> xParams = pContext.getExternalContext().getRequestParameterMap();
-//        String xBehaviorEvent = xParams.get("javax.faces.behavior.event");
+//        ExternalContext external = pContext.getExternalContext();
+//        Map<String, String> params = external.getRequestParameterMap();
+//        String behaviorEvent = params.get("javax.faces.behavior.event");
 //
-//        if(null != xBehaviorEvent) {
-//            List<ClientBehavior> xBehaviorsForEvent = xBehaviors.get(xBehaviorEvent);
+//        if (null != behaviorEvent) {
+//            List<ClientBehavior> behaviorsForEvent = behaviors.get(behaviorEvent);
 //
-//            if(xBehaviorsForEvent != null && !xBehaviorsForEvent.isEmpty()) {
-//               String xBehaviorSource = xParams.get("javax.faces.source");
-//               String xClientId = pComponent.getClientId();
-//
-//               if(xBehaviorSource != null && xClientId.startsWith(xBehaviorSource)) {
-//                   for(ClientBehavior xBehavior: xBehaviorsForEvent) {
-//                       xBehavior.decode(pContext, pComponent);
+//            if (behaviorsForEvent != null && behaviorsForEvent.size() > 0) {
+//               String behaviorSource = params.get("javax.faces.source");
+//               String clientId = pComponent.getClientId();
+//               if (isBehaviorSource(pContext, behaviorSource, clientId)) {
+//                   for (ClientBehavior behavior: behaviorsForEvent) {
+//                       behavior.decode(pContext, pComponent);
 //                   }
 //               }
+//
+//               return clientId;
 //            }
 //        }
+//
+//        return null;
+    	
+        if(!(pComponent instanceof ClientBehaviorHolder)) {
+            return null;
+        }
+
+        Map<String, List<ClientBehavior>> xBehaviors = ((ClientBehaviorHolder) pComponent).getClientBehaviors();
+        if(xBehaviors.isEmpty()) {
+            return null;
+        }
+
+        Map<String, String> xParams = pContext.getExternalContext().getRequestParameterMap();
+        String xBehaviorEvent = xParams.get("javax.faces.behavior.event");
+
+        if(null != xBehaviorEvent) {
+            List<ClientBehavior> xBehaviorsForEvent = xBehaviors.get(xBehaviorEvent);
+
+            if(xBehaviorsForEvent != null && !xBehaviorsForEvent.isEmpty()) {
+               String xBehaviorSource = xParams.get("javax.faces.source");
+               String xClientId = pComponent.getClientId();
+
+               if(xBehaviorSource != null && xClientId.startsWith(xBehaviorSource)) {
+                   for(ClientBehavior xBehavior: xBehaviorsForEvent) {
+                       xBehavior.decode(pContext, pComponent);
+                   }
+               }
+            }
+        }
+        return null;
     }
     
     /**
