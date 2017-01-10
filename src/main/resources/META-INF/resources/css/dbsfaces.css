@@ -146,6 +146,14 @@ svg{
 .-closed {}
 .-checkbox {}
 .-cover {}
+.-backcover{
+    background-position: center;
+    background-repeat: no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+    background-size: cover;
+}
 .-content {}
 .-container {}
 .-disabled {}
