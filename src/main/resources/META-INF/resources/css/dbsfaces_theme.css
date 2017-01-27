@@ -380,7 +380,7 @@ textarea.-th_input-data:FOCUS,
 .-th_responsive{
 }
 
-.-th_responsive .-th_flex{
+.-th_flex{
     position: relative;
     display: flex;
     display: -webkit-flex;
@@ -397,7 +397,10 @@ textarea.-th_input-data:FOCUS,
 	-moz-align-items: stretch;
     align-items: stretch;
 
-/* 	align-content: space-around; */
+	-webkit-align-content: strech;
+	-moz-align-content: strech;
+	align-content: strech;
+    
 	box-sizing: content-box;
 /* 	flex-basis: 99.99%; */
 }
@@ -410,7 +413,7 @@ textarea.-th_input-data:FOCUS,
     flex-wrap: nowrap;
 }
 
-.-th_responsive .-th_flex > .-th_col{
+.-th_flex > .-th_col{
     position: relative;
     -webkit-flex-grow: 1;
     -moz-flex-grow: 1;
@@ -420,63 +423,66 @@ textarea.-th_input-data:FOCUS,
     flex-shrink: 0;
 	box-sizing: content-box;
 	max-width: 100%;
+/* 	-webkit-align-self: flex-start; */
+/* 	-moz-align-self: flex-start; */
+/* 	align-self: flex-start; */
 /* 	-webkit-flex-basis: auto; */
 /* 	-moz-flex-basis: auto; */
 /* 	flex-basis: auto;	 */
 }
 
-.-th_responsive .-th_flex > .-th_col.-shrink{
+.-th_flex > .-th_col.-shrink{
 	-webkit-flex-shrink: 1;
 	-moz-flex-shrink: 1;
     flex-shrink: 1;
 }
 
-.-th_responsive .-th_flex > .-th_col.-f16{
+.-th_flex > .-th_col.-f16{
 	flex-basis: 99.99%;
 }
-.-th_responsive .-th_flex > .-th_col.-f15{
+.-th_flex > .-th_col.-f15{
 	flex-basis: 93.75%;
 }
-.-th_responsive .-th_flex > .-th_col.-f14{
+.-th_flex > .-th_col.-f14{
 	flex-basis: 87.5%;
 }
-.-th_responsive .-th_flex > .-th_col.-f13{
+.-th_flex > .-th_col.-f13{
 	flex-basis: 81.25%;
 }
-.-th_responsive .-th_flex > .-th_col.-f12{
+.-th_flex > .-th_col.-f12{
 	flex-basis: 75%;
 }
-.-th_responsive .-th_flex > .-th_col.-f11{
+.-th_flex > .-th_col.-f11{
 	flex-basis: 68.75%;
 }
-.-th_responsive .-th_flex > .-th_col.-f10{
+.-th_flex > .-th_col.-f10{
 	flex-basis: 62.5%;
 }
-.-th_responsive .-th_flex > .-th_col.-f9{
+.-th_flex > .-th_col.-f9{
 	flex-basis: 56.25%;
 }
-.-th_responsive .-th_flex > .-th_col.-f8{
+.-th_flex > .-th_col.-f8{
 	flex-basis: 50%;
 }
-.-th_responsive .-th_flex > .-th_col.-f7{
+.-th_flex > .-th_col.-f7{
 	flex-basis: 43.75%;
 }
-.-th_responsive .-th_flex > .-th_col.-f6{
+.-th_flex > .-th_col.-f6{
 	flex-basis: 37.5%;
 }
-.-th_responsive .-th_flex > .-th_col.-f5{
+.-th_flex > .-th_col.-f5{
 	flex-basis: 31.25%;
 }
-.-th_responsive .-th_flex > .-th_col.-f4{
+.-th_flex > .-th_col.-f4{
 	flex-basis: 25%;
 }
-.-th_responsive .-th_flex > .-th_col.-f3{
+.-th_flex > .-th_col.-f3{
 	flex-basis: 18.759%;
 }
-.-th_responsive .-th_flex > .-th_col.-f2{
+.-th_flex > .-th_col.-f2{
 	flex-basis: 12.5%;
 }
-.-th_responsive .-th_flex > .-th_col.-f1{
+.-th_flex > .-th_col.-f1{
 	flex-basis: 6.25%;
 }
 
