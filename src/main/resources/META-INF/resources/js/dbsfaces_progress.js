@@ -1,10 +1,18 @@
 dbs_progress = function(pId) {
 	dbsfaces.progress.initialize($(pId));
+	$(window).resize(function(e){
+		dbsfaces.progress.resize($(pId));
+	});
 }
 
 dbsfaces.progress = {
 	initialize: function(pProgress){
 		dbsfaces.progress.pvInitializeData(pProgress);
+		dbsfaces.progress.resize(pProgress);
+	},
+	
+	resize: function(pProgress){
+		dbsfaces.progress.pvSetValue(pProgress, pProgress.attr("v"));
 		dbsfaces.progress.pvInitializeLayout(pProgress);
 	},
 	
@@ -18,8 +26,6 @@ dbsfaces.progress = {
 		pProgress.data("back", pProgress.data("content").find("> g > .-back"));
 		pProgress.data("type", (pProgress.hasClass("-c") ? "c": (pProgress.hasClass("-h") ? "h" : "v")));
 		pProgress.data("ani", (pProgress.hasClass("-ani") ? true: false));
-		pProgress.data("dimension", Math.min(pProgress[0].getBoundingClientRect().height, pProgress[0].getBoundingClientRect().width));
-		dbsfaces.progress.pvSetValue(pProgress, pProgress.attr("v"));
 	},
 
 	pvInitializeLayout: function(pProgress){
@@ -142,6 +148,7 @@ dbsfaces.progress = {
 		pProgress.data("percI", xInt);
 		pProgress.data("percD", xDec);
 		pProgress.data("perc", (pValue / 100));
+		pProgress.data("dimension", Math.min(pProgress[0].getBoundingClientRect().height, pProgress[0].getBoundingClientRect().width));
 	}
 
 }
