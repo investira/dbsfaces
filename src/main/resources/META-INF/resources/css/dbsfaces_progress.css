@@ -107,7 +107,7 @@
 }
 .dbs_progress.-c > .-container > .-content > g > .-back,
 .dbs_progress.-c > .-container > .-content > g > .-point{
-    stroke-width: 1em;
+/*     stroke-width: 1em; */
 	fill: none;
 }
 .dbs_progress.-c > .-container > .-content > g > .-back{

@@ -15,6 +15,7 @@ public class DBSProgress extends DBSUIOutput {
 	protected enum PropertyKeys {
 		type,
 		maxValue,
+		circleStrokeWidth,
 		animated,
 		tooltip;
 		
@@ -88,6 +89,16 @@ public class DBSProgress extends DBSUIOutput {
 		handleAttribute("maxValue", pMaxValue);
 	}
 
+	public String getCircleStrokeWidth() {
+		return (String) getStateHelper().eval(PropertyKeys.circleStrokeWidth, "1em");
+	}
+	
+	public void setCircleStrokeWidth(String pCircleStrokeWidth) {
+		getStateHelper().put(PropertyKeys.circleStrokeWidth, pCircleStrokeWidth);
+		handleAttribute("circleStrokeWidth", pCircleStrokeWidth);
+	}
+
+		
 //	public Double getWidth() {
 //		return (Double) getStateHelper().eval(PropertyKeys.width, 16D);
 //	}

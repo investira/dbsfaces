@@ -1096,6 +1096,14 @@
 		</attribute>
 		<attribute>
 			<description>
+                Espessura do círculo quando type=c (círculo). 
+            </description>
+			<name>circleStrokeWidth</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
 				&lt;span style="font-size:small"&gt;
 				Se progress será exibido com animação. O padrão é false.&lt;br/&gt;
 				&lt;ul&gt;
