@@ -79,7 +79,7 @@
 
 .dbs_charts > .-container > .-data > .-container > .-content > .-captions > .-content > text{
 	fill:currentColor;
-	font-weight: bold;
+/* 	font-weight: bold; */
 	fill-opacity:0.8;
 	-webkit-transform: translate(.5em);
 	-moz-transform: translate(.5em);
