@@ -2009,19 +2009,19 @@ public class  DBSFaces {
 		if (pColor != null){
 			xColorA = pColor.toHSLA().getAlpha();
 			xColorH = pColor.toHSLA().getHue();
-			xColorS = 100f;
-			//usa 60% da luminosidade para gerar nova cor 
+			xColorS = pColor.toHSLA().getSaturation(); 
+			//usa 40% da luminosidade para gerar nova cor 
 			xColorL = DBSNumber.add(DBSNumber.multiply(DBSNumber.multiply(pColor.toHSLA().getLightness(),
-																		.6), 
+																		.3), 
 														xChartValueFator),
 									DBSNumber.multiply(pColor.toHSLA().getLightness(),
-													   .4)).floatValue();
+													   .7)).floatValue();
 		}else{
 			xColorA = 1F;
 			xColorS = 100f;
 			xColorH = DBSNumber.multiply(360, xChartFator).floatValue();
-			//usa 60% da luminosidade para gerar nova cor 
-			xColorL = 20 + DBSNumber.multiply(30, xChartValueFator).floatValue();
+			//usa 50% da luminosidade para gerar nova cor 
+			xColorL = 30 + DBSNumber.multiply(20, xChartValueFator).floatValue();
 		}
 		xColorA *= pAlpha;
 		return "hsla(" + xColorH + ", " + xColorS + "%, " + xColorL + "%, " + xColorA + ")";
