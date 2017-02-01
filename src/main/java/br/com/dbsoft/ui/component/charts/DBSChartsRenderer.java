@@ -219,27 +219,27 @@ public class DBSChartsRenderer extends DBSRenderer {
 									   xX.toString(), 
 									   "0", 
 									   xWidth.toString(), 
-									   "1.7em", 
+									   "1.4em", 
 									   null, 
 									   null, 
 									   "fill=url(#" + pChart.getClientId() + "_linestroke); stroke=url(#" + pChart.getClientId() + "_linestroke)");
-				DBSFaces.encodeSVGRect(pCharts, 
-									   pWriter, 
-									   xX.toString(), 
-									   "0", 
-									   ".4em", 
-									   "1.7em", 
-									   "-legend", 
-									   "stroke-wdith:0px", 
-									   "fill=" + DBSFaces.calcChartFillcolor(pChart.getDBSColor(), pCharts.getItensCount(), pChart.getItensCount(), pChart.getIndex(), pChart.getItensCount()));
+//				DBSFaces.encodeSVGRect(pCharts, 
+//									   pWriter, 
+//									   xX.toString(), 
+//									   "0", 
+//									   ".4em", 
+//									   "1.7em", 
+//									   "-legend", 
+//									   "stroke-wdith:0px", 
+//									   "fill=" + DBSFaces.calcChartFillcolor(pChart.getDBSColor(), pCharts.getItensCount(), pChart.getItensCount(), pChart.getIndex(), pChart.getItensCount()));
 				DBSFaces.encodeSVGText(pCharts, 
 									   pWriter, 
 									   xX.toString(), 
-									   "1.2em", 
+									   "1em", 
 									   xLabel, 
 									   null, 
 									   null, 
-									   "transform:translateY(1.7em)");
+									   "transform:translateY(1.4em)");
 		pWriter.endElement("g");
 	}
 	
