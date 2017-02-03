@@ -364,7 +364,7 @@ dbsfaces.chart = {
 		var xCurrentX = dbsfaces.math.round(e.originalEvent.pageX - xPosition.left, xDecimals);
 		if (xCurrentX < 0){return;}
 	    var xBeginning = xCurrentX;
-        var xEnd =  dbsfaces.math.round(xChartPath.getTotalLength(), xDecimals);
+        var xEnd = dbsfaces.math.round(xChartPath.getTotalLength(), xDecimals);
         var xTargetLenght;
         var xTargetPos;
         var xTargetPosX;
@@ -639,9 +639,9 @@ dbsfaces.chart = {
 			xDeltaValue.text("");
 		}else{
 			if (Number(pCV1.attr("index")) < Number(pCV2.attr("index"))){
-				xValue = dbsfaces.chart.pvCalcDelta(pCV1.data("dv"), pCV2.data("dv"));
+				xValue = dbsfaces.chart.pvCalcDelta(pChart, pCV1.data("dv"), pCV2.data("dv"));
 			}else{
-				xValue = dbsfaces.chart.pvCalcDelta(pCV2.data("dv"), pCV1.data("dv"));
+				xValue = dbsfaces.chart.pvCalcDelta(pChart, pCV2.data("dv"), pCV1.data("dv"));
 			}
 			xDeltaValue.svgAttr("dy", ".38em");
 			xDeltaValue.text("");
@@ -662,19 +662,28 @@ dbsfaces.chart = {
 	},
 	
 	//Coloca item como primeiro elemento para aparecer acima dos demais
-	pvCalcDelta: function(pDV1, pDV2){
+	pvCalcDelta: function(pChart, pDV1, pDV2){
 		if (pDV1 == 0
 		 || pDV2 == 0){
 			return "(na)";
 		}
 		var xValue;
-		if (pDV1 < 0){
-			xValue = (pDV1 / pDV2);
+		if (pChart.data("parent").attr("perc")){
+			if (pDV1 < 0){
+				xValue = (pDV1 - pDV2);
+			}else{
+				xValue = (pDV2 - pDV1);
+			}
+			xValue *= 100;
 		}else{
-			xValue = (pDV2 / pDV1);
+			if (pDV1 < 0){
+				xValue = (pDV1 / pDV2);
+			}else{
+				xValue = (pDV2 / pDV1);
+			}
+			xValue = dbsfaces.math.round(xValue, 4);
+			xValue = (xValue - 1) * 100;
 		}
-		xValue = dbsfaces.math.round(xValue, 4);
-		xValue = (xValue - 1) * 100;
 		return dbsfaces.format.number(xValue, 2);
 	},
 

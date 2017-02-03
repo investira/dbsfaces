@@ -88,6 +88,9 @@ public class DBSChartsRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(xWriter, "w", xCharts.getWidth());
 			DBSFaces.encodeAttribute(xWriter, "h", xCharts.getHeight());
 			DBSFaces.encodeAttribute(xWriter, "pieip", DBSCharts.PieInternalPadding);
+			if (xCharts.getValueFormatMask().indexOf("%") > -1){
+				DBSFaces.encodeAttribute(xWriter, "perc", "perc");
+			}
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xCharts, DBSPassThruAttributes.getAttributes(Key.CHARTS));
 			
 			//Força para que o encode deste componente seja efetuado após, via chamada ajax.
@@ -424,7 +427,8 @@ public class DBSChartsRenderer extends DBSRenderer {
 		        xChart.setRowIndex(-1);
 		        xChartItensCount = xRowCount;
 				//Loop por todos os registros.
-		        for (int xRowIndex = 0; xRowIndex < xRowCount; xRowIndex++) {
+//		        for (int xRowIndex = 0; xRowIndex < xRowCount; xRowIndex++) {
+	        	for (int xRowIndex = xRowCount - 1; xRowIndex >= 0; xRowIndex--) {	
 		        	xChart.setRowIndex(xRowIndex);
 		        	pvInitializeChartsValues(pCharts, xChart, xRowIndex + 1, xChartValueItensCount);
 		        }
