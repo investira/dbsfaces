@@ -252,6 +252,8 @@ public class  DBSFaces {
 			public static final String HORIZONTAL_LINE_AFTER = " -th_lineHorizontalAfter ";
 			public static final String VERTICAL_LINE_BEFORE = " -th_lineVerticalBefore ";
 			public static final String VERTICAL_LINE_AFTER = " -th_lineVerticalAfter ";
+			public static final String FLEX = " -th_flex ";
+			public static final String FLEX_COL = " -th_col ";
 		}
 		
 		
@@ -1976,7 +1978,7 @@ public class  DBSFaces {
 
 	//================================================================================
 	/**
-	 * Calcula color em função da quantidade de gráficos e itens em cada gráficos e a posição do item que se deseja calcular a cor.<br/>
+	 * Retorna color(String hsla) em função da quantidade de gráficos e itens em cada gráficos e a posição do item que se deseja calcular a cor.<br/>
 	 * Quando não for informado uma cor para o gráfico, a rotina irá atribuir um cor.
 	 * @param pColor
 	 * @param pChartsItensCount
@@ -1989,7 +1991,7 @@ public class  DBSFaces {
 		return calcChartFillcolor(pColor, pChartsItensCount, pChartItensCount, pChartIndex, pChartValueIndex, 1f);
 	}
 	/**
-	 * Calcula color em função da quantidade de gráficos e itens em cada gráficos e a posição do item que se deseja calcular a cor.<br/>
+	 * Retorna color(String hsla) em função da quantidade de gráficos e itens em cada gráficos e a posição do item que se deseja calcular a cor.<br/>
 	 * Quando não for informado uma cor para o gráfico, a rotina irá atribuir um cor.
 	 * @param pColor
 	 * @param pChartsItensCount
