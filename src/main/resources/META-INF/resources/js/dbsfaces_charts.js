@@ -232,27 +232,28 @@ dbsfaces.charts = {
 			var xChartValueValueLabel = xChartValueValue.children(".-label");
 			var xChartValueValueValue = xChartValueValue.children(".-value");
 			var xFontSize = parseFloat(xChartValueValue.css("font-size")); 
-			var xWidth = xFontSize * 2.7; //Assume o máximo de 4 caracteres..xChartValueValuePerc.text().length;
-			var xHeight = xFontSize * .7;
-//			var xX = xChartValue.data("value").svgAttr("x");
+			var xWidth = xFontSize * 3.2; //Assume o máximo de 4 caracteres..xChartValueValuePerc.text().length;
+//			var xHeight = xChartValueValuePerc[0].height.baseVal.value;
+			var xHeight = xChartValueValuePerc[0].getBoundingClientRect().height;
 			var xY = (xHeight / 2);
-			var xRadius = parseInt(xFontSize * .3); 
+//			var xRadius = parseInt(xFontSize * .3); 
 			var xChartValueInfo = xChartValue.data("infogroup");
 			var xChartValueBox = xChartValueValue.children(".-box");
-//			"M120,120 l0,27 a3,3 0 0,0 3,3 l50,0 a3,3 0 0,0 3,-3 l0,-27 a3,3 0 0,0 -3,-3 l-50,0 a3,3 0 0,0 -3,3"
-			var xPath = "";
-//			xPath += "M" + xX + "," + xY;
-			xPath += "M0,-" + xY;
-			xPath += "l0," + xHeight;
-			xPath += "a" + xRadius + "," + xRadius + " 0 0,0 " + xRadius + "," + xRadius;
-			xPath += "l" + xWidth + ",0";
-			xPath += "a" + xRadius + "," + xRadius + " 0 0,0 " + xRadius + ",-" + xRadius;
-			xPath += "l0,-" + xHeight;
-			xPath += "a" + xRadius + "," + xRadius + " 0 0,0 -" + xRadius + ",-" + xRadius;
-			xPath += "l-" + xWidth + ",0";
-			xPath += "a" + xRadius + "," + xRadius + " 0 0,0 -" + xRadius + "," + xRadius;
+//			var xPath = "";
+//			xPath += "M0,-" + xY;
+//			xPath += "l0," + xHeight;
+//			xPath += "a" + xRadius + "," + xRadius + " 0 0,0 " + xRadius + "," + xRadius;
+//			xPath += "l" + xWidth + ",0";
+//			xPath += "a" + xRadius + "," + xRadius + " 0 0,0 " + xRadius + ",-" + xRadius;
+//			xPath += "l0,-" + xHeight;
+//			xPath += "a" + xRadius + "," + xRadius + " 0 0,0 -" + xRadius + ",-" + xRadius;
+//			xPath += "l-" + xWidth + ",0";
+//			xPath += "a" + xRadius + "," + xRadius + " 0 0,0 -" + xRadius + "," + xRadius;
 			
-			xChartValueBox.attr("d", xPath);
+			xChartValueBox.attr("x", 0)
+						  .attr("y", -xY)
+						  .attr("width", xWidth)
+						  .attr("height", xHeight);
 		});
 //		return pParams;
 	},

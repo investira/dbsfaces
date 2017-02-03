@@ -391,7 +391,8 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(pWriter, "dy", ".35em");
 			//Background do percentual. Dimensão será calculada via JS para considerar o tamanho do fonte.
 			xPath = new StringBuilder();
-			DBSFaces.encodeSVGPath(pChartValue, pWriter, xPath.toString(), "-box", null, "fill=" + xFillColor);
+//			DBSFaces.encodeSVGPath(pChartValue, pWriter, xPath.toString(), "-box", null, "fill=" + xFillColor);
+			DBSFaces.encodeSVGRect(pChartValue, pWriter, 0, 0, null, null, "-box", null, "fill=" + xFillColor + ";rx=.3em;ry=.3em");
 			
 			//Percentual
 			xText = new StringBuilder();

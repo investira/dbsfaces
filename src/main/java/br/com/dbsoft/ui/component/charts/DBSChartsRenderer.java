@@ -216,7 +216,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 		DBSColor xColor = pChart.getDBSColor();
 		HSLA xOriginalColor = xColor.toHSLA();
 		HSLA xLightColor = xColor.invertLightness().toHSLA();
-		HSLA xTransparentColor = new DBSColor(DBSColor.TYPE.HSLA, xOriginalColor.getHue(), xOriginalColor.getSaturation(), xOriginalColor.getLightness(), 0.8F).toHSLA();
+		HSLA xTransparentColor = new DBSColor(DBSColor.TYPE.HSLA, xOriginalColor.getHue(), xOriginalColor.getSaturation(), xOriginalColor.getLightness(), 0.5F).toHSLA();
 		
 		pWriter.startElement("div", pCharts);
 			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + CSS.THEME.FLEX_COL);
