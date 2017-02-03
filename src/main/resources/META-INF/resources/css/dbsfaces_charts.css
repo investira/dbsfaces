@@ -57,7 +57,35 @@
 
 .dbs_charts > .-container > .-data > .-container > .-content > .-left{
 }
-	
+
+
+.dbs_charts > .-container > .-data > .-captions{
+    position: absolute;
+	width: 100%;
+	z-index: 1;
+}
+
+
+.dbs_charts > .-container > .-data > .-captions > .-content{
+    margin: .1em;
+    border: 1px;
+	border-style: solid;
+    border-radius: .3em;
+}
+.dbs_charts > .-container > .-data > .-captions > .-content:not(.-activated){
+	background: transparent !important;
+}
+
+.dbs_charts > .-container > .-data > .-captions > .-content.-activated > .-caption{
+	font-weight: bold;
+	color: inherit !important;
+}
+.dbs_charts > .-container > .-data > .-captions > .-content:not(.-activated) > .-caption{
+	background-color: transparent;
+}
+
+
+
 .dbs_charts > .-container > .-data > .-container > .-content > .-captions{
 	stroke-width: 0;
 	font-size: 1.2em;
@@ -65,22 +93,32 @@
 
 .dbs_charts > .-container > .-data > .-container > .-content > .-captions > .-content{
 	cursor: pointer;
-	fill-opacity: .2;
+/* 	fill-opacity: .2; */
 	transform-origin: 50% 50%;
+	stroke-width: 1px;
 }
 .dbs_charts > .-container > .-data > .-container > .-content > .-captions > .-content.-activated{
-	opacity: 1;
-	fill-opacity: 1;
+/* 	opacity: 1; */
+/* 	fill-opacity: 1; */
+	
 /* 	-moz-animation: -kf_dbs_chart_selected .1s linear; */
 /* 	-o-animation: -kf_dbs_chart_selected .1s linear; */
 /* 	-webkit-animation: -kf_dbs_chart_selected .1s linear; */
 /* 	animation: -kf_dbs_chart_selected .1s linear; */
 }
 
+.dbs_charts > .-container > .-data > .-container > .-content > .-captions > .-content > rect{
+	fill-opacity:0;
+}
+
+.dbs_charts > .-container > .-data > .-container > .-content > .-captions > .-content.-activated > rect{
+	fill-opacity:1;
+}
+
 .dbs_charts > .-container > .-data > .-container > .-content > .-captions > .-content > text{
-	fill:currentColor;
+/* 	fill:currentColor; */
 /* 	font-weight: bold; */
-	fill-opacity:0.8;
+/* 	fill-opacity:0.8; */
 	-webkit-transform: translate(.5em);
 	-moz-transform: translate(.5em);
 	-o-transform: translate(.5em);
@@ -89,7 +127,8 @@
 
 
 .dbs_charts > .-container > .-data > .-container > .-content > .-captions > .-content.-activated > text{
-	fill-opacity:1;
+/* 	fill-opacity:1; */
+	fill: currentColor;
 }	
 
 .dbs_charts > .-container > .-data > .-container > .-content > .-captions > .-content > .-legend{

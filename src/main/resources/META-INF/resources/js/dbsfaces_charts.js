@@ -26,7 +26,7 @@ dbs_charts = function(pId, pPreRender) {
 		        }
 		 	});
 			
-			$(pId + " > .-container > .-data > .-container > .-content > .-captions > .-content").on("mousedown", function(e){
+			$(pId + " > .-container > .-data > .-captions > .-content").on("mousedown", function(e){
 				dbsfaces.charts.activateChart(xCharts, $(this));
 			});
 		}else{
@@ -156,7 +156,7 @@ dbsfaces.charts = {
 		var xFirstChart = pCharts.data("children").first();
 		var xContainerData = pCharts.data("data");
 		var xContent = xContainerData.find(".-container > .-content").first();
-		var xChartCaptions = xContent.children(".-captions");
+		var xChartCaptions = xContainerData.children(".-captions");
 		
 		//Verifica se existe labels de cada gráfico definidas
 		if (xChartCaptions.length != 0
@@ -166,7 +166,7 @@ dbsfaces.charts = {
 			//Reposiciona valores para dar espaço os labels de título do gráfico
 			//Ajusta altura conforme tamanho do fonte definido no css. Artíficio pois height do css não funciona em todos os browsers
 //			var xChartCaptionsHeight = xChartCaptions.find("rect")[0].first().attr("height");
-			var xChartCaptionsHeight = xChartCaptions.find("rect").first()[0].height.baseVal.value;
+			var xChartCaptionsHeight = xChartCaptions[0].getBoundingClientRect().height;
 			//Reposiciona gráfico
 			dbsfaces.ui.cssTransform(xContent.children(".-value"), "translateY(" + xChartCaptionsHeight + "px)");
 			//Ativa o primeiro gráfico que possuir delta
@@ -409,8 +409,7 @@ dbsfaces.charts = {
 		var xSiblings = pCaption.siblings();
 		var xSiblingsActivated = xSiblings.filter(".-activated");
 		var xChart= $(dbsfaces.util.jsid(pCaption.attr("chartid")));
-		//Move label para primeiro plano
-		dbsfaces.ui.moveToFront(pCaption);
+
 		//Desmarca todos
 		xSiblingsActivated.each(function(){
 			var xSibilingCaption = $(this);

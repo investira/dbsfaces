@@ -21,6 +21,7 @@ import br.com.dbsoft.ui.component.charts.DBSCharts.TYPE;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.util.DBSColor;
+import br.com.dbsoft.util.DBSColor.HSLA;
 import br.com.dbsoft.util.DBSFormat;
 import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSFormat.NUMBER_SIGN;
@@ -349,6 +350,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		Double			xAlturaTotal = pCharts.getDiameter() - (pAlturaUnitario * (pCharts.getChartValueItensCount() - pChartValue.getGlobalIndex()) ); 
 		Double			xLegendaY = xAlturaTotal - (pAlturaUnitario / 2) + 1; //Centraliza verticalmente dentro da linha
 		Double 			xLegendaX = pCharts.getCenter().getX() + (pCharts.getDiameter() / 1.9); 
+		HSLA 			xFillColor = pChartValue.getDBSColor().toHSLA();
 
 		xPointLabel.setLocation(DBSNumber.round(xLegendaX,2), DBSNumber.round(xLegendaY,2));
 		
@@ -389,7 +391,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(pWriter, "dy", ".35em");
 			//Background do percentual. Dimensão será calculada via JS para considerar o tamanho do fonte.
 			xPath = new StringBuilder();
-			DBSFaces.encodeSVGPath(pChartValue, pWriter, xPath.toString(), "-box", null, "fill=" + pChartValue.getDBSColor().toHSLA());
+			DBSFaces.encodeSVGPath(pChartValue, pWriter, xPath.toString(), "-box", null, "fill=" + xFillColor);
 			
 			//Percentual
 			xText = new StringBuilder();
@@ -418,7 +420,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 						 "0em", 
 						 "-label", 
 						 null, 
-						 "fill=" + pChartValue.getDBSColor().toHSLA(), //Centraliza base do texto--base. Lembrando que dominant-baseline não funciona no IE.
+						 "fill=" + xFillColor, //Centraliza base do texto--base. Lembrando que dominant-baseline não funciona no IE.
 						 pWriter);
 			//Valor nominal
 			xText = new StringBuilder();
@@ -431,7 +433,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 						 "0", 
 						 "-value", 
 						 null, 
-						 "fill=" + pChartValue.getDBSColor().toHSLA(), //Centraliza base do texto--base. Lembrando que dominant-baseline não funciona no IE.
+						 "fill=" + xFillColor, //Centraliza base do texto--base. Lembrando que dominant-baseline não funciona no IE.
 						 pWriter);
 		pWriter.endElement("g");
 	}

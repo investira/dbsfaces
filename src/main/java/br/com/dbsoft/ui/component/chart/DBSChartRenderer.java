@@ -22,6 +22,8 @@ import br.com.dbsoft.ui.component.charts.DBSCharts;
 import br.com.dbsoft.ui.component.charts.DBSCharts.TYPE;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
+import br.com.dbsoft.util.DBSColor;
+import br.com.dbsoft.util.DBSColor.HSLA;
 import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSObject;
 
@@ -177,7 +179,9 @@ public class DBSChartRenderer extends DBSRenderer {
 		List<IDBSChartDelta> xDeltaList = pChart.getDeltaList();
 		//Define largura e cor dos botões
 		float xWidth = DBSNumber.divide(pCharts.getChartWidth(), xDeltaList.size()).floatValue();
-		String xStyle = "width:" + xWidth + "px; background-color:" + DBSFaces.calcChartFillcolor(pChart.getDBSColor(), pCharts.getItensCount(), pChart.getItensCount(), pChart.getIndex(), pChart.getItensCount(), 0.3f) + ";";
+		HSLA xColor = pChart.getDBSColor().toHSLA();
+		String xStyle = "width:" + xWidth + "px; background-color:" + new DBSColor(DBSColor.TYPE.HSLA, xColor.getHue(), xColor.getSaturation(), xColor.getLightness(), 0.3F).toHSLA() + ";";
+//		String xStyle = "width:" + xWidth + "px; background-color:" + DBSFaces.calcChartFillcolor(pChart.getDBSColor(), pCharts.getItensCount(), pChart.getItensCount(), pChart.getIndex(), pChart.getItensCount(), 0.3f) + ";";
 		//Facet com os botões
 		DBSDiv xDeltaListContent = (DBSDiv) pChart.getFacet("deltalist");
 		//Se não informado o facet, cria contendo botões a partir da lista com os valores dos deltas e

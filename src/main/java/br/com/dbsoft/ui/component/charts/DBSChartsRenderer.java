@@ -20,6 +20,8 @@ import br.com.dbsoft.ui.component.chartvalue.DBSChartValue;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
+import br.com.dbsoft.util.DBSColor;
+import br.com.dbsoft.util.DBSColor.HSLA;
 import br.com.dbsoft.util.DBSFormat;
 import br.com.dbsoft.util.DBSFormat.NUMBER_SIGN;
 import br.com.dbsoft.util.DBSNumber;
@@ -129,6 +131,8 @@ public class DBSChartsRenderer extends DBSRenderer {
 			//DATA--------------------------
 			pWriter.startElement("div", pCharts);
 				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.DATA);
+				//LABELS QUANDO HOUVER MAIS DE UM GRÁFICO--------------------------
+				boolean xHasLabel= pvEncodeChartCaptions(pCharts, pWriter);
 				//CONTAINER--------------------------
 				pWriter.startElement("svg", pCharts);
 					DBSFaces.encodeSVGNamespaces(pWriter);
@@ -141,8 +145,6 @@ public class DBSChartsRenderer extends DBSRenderer {
 					//CONTENT--------------------------
 					pWriter.startElement("g", pCharts);
 						DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
-						//LABELS QUANDO HOUVER MAIS DE UM GRÁFICO--------------------------
-						boolean xHasLabel= pvEncodeChartCaptions(pCharts, pWriter);
 						//LEFT--------------------------
 						pWriter.startElement("g", pCharts);
 							DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LEFT);
@@ -181,6 +183,8 @@ public class DBSChartsRenderer extends DBSRenderer {
 			}
 		pWriter.endElement("div");
 	}
+	
+	
 	/**
 	 * Labels para selecionar cada um dos gráficos
 	 * @param pCharts
@@ -191,8 +195,8 @@ public class DBSChartsRenderer extends DBSRenderer {
 	private Boolean pvEncodeChartCaptions(DBSCharts pCharts, ResponseWriter pWriter) throws IOException{
 		boolean xHasLabels = false;
 		if (pCharts.getItensCount() > 1){
-			pWriter.startElement("g", pCharts);
-			DBSFaces.encodeAttribute(pWriter, "class", "-captions");
+			pWriter.startElement("div", pCharts);
+			DBSFaces.encodeAttribute(pWriter, "class", "-captions" + CSS.THEME.FLEX);
 			for (UIComponent xObject:pCharts.getChildren()){
 				if (xObject instanceof DBSChart){
 					DBSChart xChart = (DBSChart) xObject;
@@ -202,47 +206,30 @@ public class DBSChartsRenderer extends DBSRenderer {
 					}
 				}
 			}
-			pWriter.endElement("g");
+			pWriter.endElement("div");
 		}
 		return xHasLabels;
 	}
 	
 	private void pvEncodeCaption(DBSCharts pCharts, DBSChart pChart, ResponseWriter pWriter) throws IOException{
 		String xLabel = DBSObject.getNotEmpty(pChart.getCaption(), pChart.getId());
-		Double xWidth = DBSNumber.divide(pCharts.getWidth(), pCharts.getChildCount()).doubleValue();
-		Double xX = xWidth * (pChart.getIndex() - 1);
-		pWriter.startElement("g", pCharts);
-			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + CSS.THEME.FC);
+		DBSColor xColor = pChart.getDBSColor();
+		HSLA xOriginalColor = xColor.toHSLA();
+		HSLA xLightColor = xColor.invertLightness().toHSLA();
+		HSLA xTransparentColor = new DBSColor(DBSColor.TYPE.HSLA, xOriginalColor.getHue(), xOriginalColor.getSaturation(), xOriginalColor.getLightness(), 0.8F).toHSLA();
+		
+		pWriter.startElement("div", pCharts);
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + CSS.THEME.FLEX_COL);
 			DBSFaces.encodeAttribute(pWriter, "chartid", pChart.getClientId());
-				DBSFaces.encodeSVGRect(pCharts, 
-									   pWriter, 
-									   xX.toString(), 
-									   "0", 
-									   xWidth.toString(), 
-									   "1.4em", 
-									   null, 
-									   null, 
-									   "fill=url(#" + pChart.getClientId() + "_linestroke); stroke=url(#" + pChart.getClientId() + "_linestroke)");
-//				DBSFaces.encodeSVGRect(pCharts, 
-//									   pWriter, 
-//									   xX.toString(), 
-//									   "0", 
-//									   ".4em", 
-//									   "1.7em", 
-//									   "-legend", 
-//									   "stroke-wdith:0px", 
-//									   "fill=" + DBSFaces.calcChartFillcolor(pChart.getDBSColor(), pCharts.getItensCount(), pChart.getItensCount(), pChart.getIndex(), pChart.getItensCount()));
-				DBSFaces.encodeSVGText(pCharts, 
-									   pWriter, 
-									   xX.toString(), 
-									   "1em", 
-									   xLabel, 
-									   null, 
-									   null, 
-									   "transform:translateY(1.4em)");
-		pWriter.endElement("g");
+			DBSFaces.encodeAttribute(pWriter, "style", "color: " + xLightColor + "; border-color:" + xTransparentColor + "; background-color:" + xOriginalColor);
+			pWriter.startElement("div", pCharts);
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CAPTION);
+				DBSFaces.encodeAttribute(pWriter, "style", "color: " + xOriginalColor);
+				pWriter.write(xLabel);
+			pWriter.endElement("div");
+		pWriter.endElement("div");
 	}
-	
+
 	/**
 	 * Linhas horizontais dos valores
 	 * @param pCharts
@@ -464,6 +451,9 @@ public class DBSChartsRenderer extends DBSRenderer {
 				}
 			}
 			xChart.setColumnScale(xX.doubleValue());
+			if (xChart.getDBSColor() == null){
+				xChart.setColor(DBSFaces.calcChartFillcolor(null, pCharts.getItensCount(), xChart.getItensCount(), xChart.getIndex(), 0));
+			}
 		}
 		
 		//Zera valores caso não existam valores nos gráficos
