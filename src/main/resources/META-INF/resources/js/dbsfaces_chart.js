@@ -630,11 +630,7 @@ dbsfaces.chart = {
 		}
 		var xValue;
 		if (pChart.data("parent").attr("perc")){
-			if (pDV1 < 0){
-				xValue = (pDV1 - pDV2);
-			}else{
-				xValue = (pDV2 - pDV1);
-			}
+			xValue = (pDV2 - pDV1);
 			xValue *= 100;
 		}else{
 			if (pDV1 < 0){
