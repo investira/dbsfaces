@@ -1,4 +1,4 @@
-dbs_charts = function(pId, pPreRender) {
+dbs_charts = function(pId, pPreRender, pDeltaList) {
 	var xCharts = $(pId);
 	//Prepara gráfico com a altura e largura
 	$(window).resize(function(e){
@@ -9,7 +9,7 @@ dbs_charts = function(pId, pPreRender) {
 		dbsfaces.charts.preInitialize(xCharts, false);
 	//Render final do gráfico
 	}else{
-		dbsfaces.charts.initialize(xCharts);
+		dbsfaces.charts.initialize(xCharts, pDeltaList);
 		//Exibe gráfico
 		xCharts.data("container").removeClass("-hide");
 		if (xCharts.data("error") == null){
@@ -29,14 +29,17 @@ dbs_charts = function(pId, pPreRender) {
 			$(pId + " > .-container > .-data > .-captions > .-content").on("mousedown", function(e){
 				dbsfaces.charts.activateChart(xCharts, $(this));
 			});
+			$(pId + " > .-container > .-data > .-deltaList > .-container > .-content > .-th_action").on("mousedown touchstart", function(e){
+				dbsfaces.chart.deltaListSelect(xChart, $(this));
+				e.stopImmediatePropagation();
+				return false;
+			});
 		}else{
 			xCharts.data("container").on(dbsfaces.EVENT.ON_TRANSITION_END, function(e){
-				console.log("asdc");
 //				.dbs_chart[type='bar'] > .dbs_chartValue > .-point,
 //				.dbs_chart[type='pie'] > .dbs_chartValue > .-point{
 //					transition: fill-opacity .5s, stroke-opacity .5s, stroke-dashoffset 2s ease 2s !important;
 //				}
-
 			});
 		}
 	}
@@ -58,8 +61,8 @@ dbsfaces.charts = {
 		},0);
 	},
 
-	initialize: function(pCharts){
-		dbsfaces.charts.pvInitializeData(pCharts);
+	initialize: function(pCharts, pDeltaList){
+		dbsfaces.charts.pvInitializeData(pCharts, pDeltaList);
 		dbsfaces.charts.pvInitializeGroupMember(pCharts);
 		dbsfaces.charts.pvInitializeGuides(pCharts);
 		if (pCharts.data("error") == null){
@@ -68,7 +71,7 @@ dbsfaces.charts = {
 		}
 	},
 
-	pvInitializeData: function(pCharts){
+	pvInitializeData: function(pCharts, pDeltaList){
 		//Salva chart's vinculados a este charts
 		pCharts.data("children", pCharts.find(".dbs_chart"));
 		pCharts.data("grid", pCharts.find(".dbs_charts-grid").first());
@@ -81,6 +84,12 @@ dbsfaces.charts = {
 		pCharts.data("footer", pCharts.data("container").children(".-footer"));
 		pCharts.data("data", pCharts.data("container").children(".-data"));
 		pCharts.data("error", null);
+		pCharts.data("showdelta", (typeof(pCharts.attr("showdelta")) != 'undefined'));
+		pCharts.data("deltalistgroup", pCharts.data("data").children(".-deltalist"));
+		pCharts.data("deltalist", null);
+		if (pCharts.data("deltalistgroup").length > 0){
+			pCharts.data("deltalist", pDeltaList);
+		}
 	},
 
 	//Cria guia padrão para indicar a posição no gráfico tipo line
@@ -105,7 +114,7 @@ dbsfaces.charts = {
 					return;
 				};
 			}
-			if (typeof(xChart.attr("showdelta")) != 'undefined'){
+			if (pCharts.data("showdelta")){
 				if (xChart.attr("type") == "line"){
 					if (xChart.data("guide1") != null){
 						dbsfaces.chart.setGuideIndex(xChart, 1);
@@ -155,7 +164,7 @@ dbsfaces.charts = {
 	pvInitializeChartActivate: function(pCharts){
 		var xFirstChart = pCharts.data("children").first();
 		var xContainerData = pCharts.data("data");
-		var xContent = xContainerData.find(".-container > .-content").first();
+		var xContent = xContainerData.find("> .-container > .-content");
 		var xChartCaptions = xContainerData.children(".-captions");
 		
 		//Verifica se existe labels de cada gráfico definidas
@@ -455,7 +464,37 @@ dbsfaces.charts = {
 				pChart.data("deltagroup").svgAddClass("-activated");
 			}
 		}
+	},
+	
+	deltaListSelect: function(pChart, pDeltaListButton){
+		var xDeltaList = pCharts.data("deltalist");
+		var xButtonId = pDeltaListButton.attr("id");
+		//Procura qual o item da lista de delta foi selecionado
+		for (var xI=0; xI < xDeltaList.length; xI++){
+			if (xDeltaList[xI].Id == xButtonId){
+				//Posiciona guia #1
+				dbsfaces.chart.deltaListSelectSetGuide(pChart, xDeltaList[xI].StartLabel, 1);
+				//Posiciona guia #2
+				dbsfaces.chart.deltaListSelectSetGuide(pChart, xDeltaList[xI].EndLabel, 2);
+			}
+		}
+	},
+	
+	deltaListSelectSetGuide: function(pChart, pSelectedLabel, pGuideIndex){
+		var xChartValues = pChart.data("children");
+		//Procura qual o chartvalue possui o label informado
+		for (var xI=0; xI < xChartValues.length; xI++){
+			var xChartValue = $(xChartValues[xI]);
+			if (xChartValue.data("dl") == pSelectedLabel){
+				//Seta número da guia
+				dbsfaces.chart.setGuideIndex(pChart, pGuideIndex);
+				//Seta guia
+				dbsfaces.chart.pvSetGuide(pChart, xChartValue, true);
+				break;
+			}
+		}
 	}
+
 		
 };
 

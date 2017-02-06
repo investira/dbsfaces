@@ -2283,6 +2283,14 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
+		<attribute>
+			<description>
+                Incremento quando for pressionado botão up ou down. Botões somente são exibidos quando &lt;b&gt;increment > 0.&lt;/b&gt; 
+            </description>
+			<name>increment</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+		</attribute>
 	</tag>
 	<tag>
 		<tag-name>inputMask</tag-name>
@@ -3432,6 +3440,22 @@ Default: false;</description>
 			<required>true</required>
 			<type>java.lang.Double</type>
 		</attribute>
+		<attribute>
+			<description>
+                Indica se será exibido a variação percentual entre dois pontos quando o gráfico for do tipo 'line'. O default é true.
+            </description>
+			<name>showDelta</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+                Lista de IDBSChartDelta para seleção rápida do intervalo do delta
+            </description>
+			<name>deltaList</name>
+			<required>false</required>
+			<type>java.util.List</type>
+		</attribute>
 	</tag>
 	<tag>
 		<tag-name>chart</tag-name>
@@ -3481,14 +3505,6 @@ Default: false;</description>
 		</attribute>
 		<attribute>
 			<description>
-                Indica se será exibido a variação percentual entre dois pontos quando o gráfico for do tipo 'line'. O default é true.
-            </description>
-			<name>showDelta</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
                 var
             </description>
 			<name>var</name>
@@ -3512,14 +3528,6 @@ Default: false;</description>
 			<name>color</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                Lista de IDBSChartDelta para seleção rápida do intervalo do delta
-            </description>
-			<name>deltaList</name>
-			<required>false</required>
-			<type>java.util.List</type>
 		</attribute>
 	</tag>
 	<tag>

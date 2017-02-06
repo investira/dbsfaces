@@ -91,37 +91,6 @@
 .dbs_chart[type='line'].-activated > .-delta{
 	display: inline-block;
 }
-.dbs_chart[type='line'].-activated > .-delta > .-deltaList{
-	pointer-events: all;
-	overflow: visible;
-}
-.dbs_chart[type='line'].-activated > .-delta > .-deltaList > .-container{
-    display: block;
-    white-space: nowrap;
-	position: fixed;
-    height: 100%;
-    width: 100%;
-/*     line-height: 100%; */
-}
-.dbs_chart[type='line'].-activated > .-delta > .-deltaList > .-container > .-content{
-/*     display: inline-block; */
-	display: inline-flex;
-    white-space: nowrap;
-	position: relative;
-    height: 100%;
-    width: 100%;
-}
-
-.dbs_chart[type='line'].-activated > .-delta > .-deltaList > .-container > .-content > .-th_action{
-    height: 100%;
-    position: relative;
-	height: 1.6em;
-    display: inline-block;
-	-webkit-border-radius: 0px;
-    -moz-border-radius: 0px;
-    border-radius: 0px;
-/* 	color:white;  */
-}
 
 
 /*Para resolver Firefox*/

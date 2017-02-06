@@ -193,7 +193,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 			//Encode do circulo
 			//Artifício pois o fcirefox só funciona com valores fixos no transform-origin
 			xStyle = "stroke:currentColor; color:" + pChartValue.getDBSColor().toHSLA() + ";";
-			if (pChart.getShowDelta()){
+			if (pCharts.getShowDelta()){
 				DBSFaces.encodeSVGEllipse(pChartValue, pWriter, xX.doubleValue(), xY.doubleValue(), ".2em", ".2em", CSS.MODIFIER.POINT, xStyle, "fill=white");
 			}else{
 				xStyle += "transform: translateX(" + xX.doubleValue() + "px) translateY(" + xY.doubleValue() + "px);";

@@ -10,13 +10,17 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
 
+import com.google.gson.Gson;
 import com.sun.faces.renderkit.RenderKitUtils;
 
 import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
+import br.com.dbsoft.ui.component.button.DBSButton;
 import br.com.dbsoft.ui.component.chart.DBSChart;
+import br.com.dbsoft.ui.component.chart.IDBSChartDelta;
 import br.com.dbsoft.ui.component.charts.DBSCharts.TYPE;
 import br.com.dbsoft.ui.component.chartvalue.DBSChartValue;
+import br.com.dbsoft.ui.component.div.DBSDiv;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
@@ -42,6 +46,8 @@ public class DBSChartsRenderer extends DBSRenderer {
 		ResponseWriter 	xWriter = pContext.getResponseWriter();
 		String 			xClass = CSS.CHARTS.MAIN + CSS.MODIFIER.NOT_SELECTABLE;
 		boolean			xPreRender = pvIsPreRender(pContext, xCharts);
+		TYPE 			xType = TYPE.get(xCharts.getType());
+		List<IDBSChartDelta>	xDeltaList = null;
 
 		if (xCharts.getStyleClass()!=null){
 			xClass += xCharts.getStyleClass();
@@ -91,6 +97,16 @@ public class DBSChartsRenderer extends DBSRenderer {
 			if (xCharts.getValueFormatMask().indexOf("%") > -1){
 				DBSFaces.encodeAttribute(xWriter, "perc", "perc");
 			}
+			if (xType == TYPE.LINE
+			 || xType == TYPE.PIE){
+				if (xCharts.getShowDelta()){ //Artificio para padronizar o false como não existindo o atributo(comportamento do chrome)
+					DBSFaces.encodeAttribute(xWriter, "showdelta", xCharts.getShowDelta());
+					if(xCharts.getShowDeltaList()){
+						DBSFaces.encodeAttribute(xWriter, "showdeltalist", xCharts.getShowDeltaList());
+					}
+				}
+			}
+
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xCharts, DBSPassThruAttributes.getAttributes(Key.CHARTS));
 			
 			//Força para que o encode deste componente seja efetuado após, via chamada ajax.
@@ -101,24 +117,32 @@ public class DBSChartsRenderer extends DBSRenderer {
 			xWriter.endElement("div");
 			if (xPreRender){
 			}else{
-				pvEncodeContainer(pContext, xCharts, xWriter);
+				xDeltaList = pvEncodeContainer(pContext, xCharts, xType, xWriter);
 			}
-			pvEncodeJS(xCharts, xWriter, xPreRender);
+			
+			pvEncodeJS(xCharts, xDeltaList, xWriter, xPreRender);
 		xWriter.endElement("div");
 	}
 	
-	private void pvEncodeJS(UIComponent pComponent, ResponseWriter pWriter, boolean pPreRender) throws IOException{
+	private void pvEncodeJS(UIComponent pComponent, List<IDBSChartDelta> pDeltaList, ResponseWriter pWriter, boolean pPreRender) throws IOException{
 		DBSFaces.encodeJavaScriptTagStart(pComponent, pWriter);
+		Gson xDeltaListJson = new Gson();
 		String xJS = "$(document).ready(function() { \n" +
 				     " var xChartsId = dbsfaces.util.jsid('" + pComponent.getClientId() + "'); \n " + 
-				     " dbs_charts(xChartsId," + pPreRender + "); \n" +
+				     " dbs_charts(xChartsId," + pPreRender + ", " + xDeltaListJson.toJsonTree(pDeltaList, List.class) + "); \n" +
                      "}); \n"; 
 		pWriter.write(xJS);
+//		String xJS = "$(document).ready(function() { \n" +
+//			     " var xChartId = dbsfaces.util.jsid('" + pComponent.getClientId() + "'); \n " + 
+//			     " dbs_chart(xChartId, " + xDeltaListJson.toJsonTree(pDeltaList, List.class) + "); \n" +
+//                "}); \n"; 
+		
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);		
 	}
 	
-	private void pvEncodeContainer(FacesContext pContext, DBSCharts pCharts, ResponseWriter pWriter) throws IOException{
+	private List<IDBSChartDelta> pvEncodeContainer(FacesContext pContext, DBSCharts pCharts, TYPE pType, ResponseWriter pWriter) throws IOException{
 		encodeClientBehaviors(pContext, pCharts);
+		List<IDBSChartDelta>	xDeltaList = null;
 		//CONTAINER--------------------------
 		pWriter.startElement("div", pCharts);
 			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER + "-hide");
@@ -136,6 +160,11 @@ public class DBSChartsRenderer extends DBSRenderer {
 				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.DATA);
 				//LABELS QUANDO HOUVER MAIS DE UM GRÁFICO--------------------------
 				boolean xHasLabel= pvEncodeChartCaptions(pCharts, pWriter);
+
+				if (pType == TYPE.LINE){
+					//Encode dos botões de seleção rápida do delta
+//					xDeltaList = pvEncodeDeltaList(pCharts, pContext, pWriter);
+				}
 				//CONTAINER--------------------------
 				pWriter.startElement("svg", pCharts);
 					DBSFaces.encodeSVGNamespaces(pWriter);
@@ -185,6 +214,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 				pWriter.endElement("div");
 			}
 		pWriter.endElement("div");
+		return xDeltaList;
 	}
 	
 	
@@ -397,21 +427,15 @@ public class DBSChartsRenderer extends DBSRenderer {
 	        Integer xChartItensCount = 0;
 			if (xType == TYPE.LINE
 			 || xType == TYPE.PIE){
-				// Exibição dos delta
-				if (!pCharts.getShowDelta()
-				 && xChart.getShowDelta()){
-					pCharts.setShowDelta(true);
-				}
 				if (xType == TYPE.PIE){
 					//Não exibe linhas do grid
 					pCharts.setShowGrid(false);
 				}else{
 					//Se possui deltalist
-					if (xChart.getDeltaList() != null
-					 && xChart.getDeltaList().size() > 0
+					if (pCharts.getDeltaList() != null
+					 && pCharts.getDeltaList().size() > 0
 					 && pCharts.getShowDelta()
 					 && pCharts.getShowLabel()){
-						xChart.setShowDeltaList(true);
 						pCharts.setShowDeltaList(true);
 					}
 				}
@@ -542,4 +566,59 @@ public class DBSChartsRenderer extends DBSRenderer {
 		return xIndex;
 	}
 
+	
+	/**
+	 * Encodo dos botões de seleção rápida do delta
+	 * @param pCharts
+	 * @param pChart
+	 * @param pContext
+	 * @param pWriter
+	 * @return
+	 * @throws IOException
+	 */
+	private List<IDBSChartDelta> pvEncodeDeltaList(DBSCharts pCharts, FacesContext pContext, ResponseWriter pWriter) throws IOException{
+		if (!pCharts.getShowDeltaList()){return null;}
+		//Lista com os valores dos deltas
+		List<IDBSChartDelta> xDeltaList = pCharts.getDeltaList();
+		//Define largura e cor dos botões
+//		float xWidth = DBSNumber.divide(pCharts.getChartWidth(), xDeltaList.size()).floatValue();
+//		String xStyle = "width:" + xWidth + "px; background-color:" + new DBSColor(DBSColor.TYPE.HSLA, xColor.getHue(), xColor.getSaturation(), xColor.getLightness(), 0.3F).toHSLA() + ";";
+//		String xStyle = "width:" + xWidth + "px; background-color:" + DBSFaces.calcChartFillcolor(pChart.getDBSColor(), pCharts.getItensCount(), pChart.getItensCount(), pChart.getIndex(), pChart.getItensCount(), 0.3f) + ";";
+		//Facet com os botões
+		DBSDiv xDeltaListContent = (DBSDiv) pCharts.getFacet("deltalist");
+		//Se não informado o facet, cria contendo botões a partir da lista com os valores dos deltas e
+		if (xDeltaListContent == null){
+			xDeltaListContent = (DBSDiv) pContext.getApplication().createComponent(DBSDiv.COMPONENT_TYPE);
+			xDeltaListContent.setId("deltalist");
+			xDeltaListContent.setStyleClass("-content");
+			pCharts.getFacets().put("deltalist", xDeltaListContent);
+			//Adiciona botões com as opções dos deltas pré definidos
+			for (IDBSChartDelta xChartDelta: xDeltaList){
+				DBSButton xDeltaButton = (DBSButton) pContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
+				xDeltaButton.setId(xChartDelta.getId());
+				xDeltaButton.setLabel(xChartDelta.getLabel());
+				xDeltaButton.setIconClass(xChartDelta.getIconClass());
+				xDeltaButton.setTooltip(xChartDelta.getTooltip());
+				xDeltaButton.setonclick("null");
+//				xDeltaButton.setStyle(xStyle);
+				xDeltaListContent.getChildren().add(xDeltaButton);
+				//Força que id atribuido ao botão seja efetivamente o gerado/configurado 
+				xChartDelta.setId(xDeltaButton.getClientId());
+			}
+		}
+		//Encode do foreignObject que conterá os botões
+		pWriter.startElement("div", pCharts);
+//			DBSFaces.encodeAttribute(pWriter, "id", pCharts.getClientId() + "_deltalist");
+			DBSFaces.encodeAttribute(pWriter, "class", "-deltaList");
+//			DBSFaces.encodeAttribute(pWriter, "x", pCharts.getPadding() + "px");
+//			DBSFaces.encodeAttribute(pWriter, "y", ((pCharts.getPadding() * 2) + pCharts.getChartHeight()) + "px");
+//			DBSFaces.encodeAttribute(pWriter, "width", pCharts.getChartWidth());
+//			DBSFaces.encodeAttribute(pWriter, "height", "1.7em");
+			pWriter.startElement("div", pCharts);
+				DBSFaces.encodeAttribute(pWriter, "class", "-container");
+				xDeltaListContent.encodeAll(pContext);
+			pWriter.endElement("div");
+		pWriter.endElement("div");
+		return xDeltaList;
+	}
 }

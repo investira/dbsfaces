@@ -2,11 +2,13 @@ package br.com.dbsoft.ui.component.charts;
 
 import java.awt.geom.Point2D;
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.faces.component.FacesComponent;
 import javax.faces.component.NamingContainer;
 
 import br.com.dbsoft.ui.component.DBSUIInput;
+import br.com.dbsoft.ui.component.chart.IDBSChartDelta;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSNumber;
 
@@ -78,6 +80,8 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		showLabel,
 		groupId,
 		pieInternalCircleFator,
+		showDelta,
+		deltaList,
 
 		//Variáveis de trabalho
 		maxValue,
@@ -93,7 +97,6 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		chartValueItensCount,
 		numberOfGridLines,
 		fontSize,
-		showDelta,
 		showDeltaList;
 
 		String toString;
@@ -175,6 +178,20 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		getStateHelper().put(PropertyKeys.showDeltaList, pShowDeltaList);
 		handleAttribute("showDeltaList", pShowDeltaList);
 	} 
+	
+	public void setDeltaList(List<IDBSChartDelta> pDeltaList) {
+		getStateHelper().put(PropertyKeys.deltaList, pDeltaList);
+		handleAttribute("deltaList", pDeltaList);
+	}
+	
+	/**
+	 * Lista com os valores dos deltas
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<IDBSChartDelta> getDeltaList() {
+		return (List<IDBSChartDelta>) getStateHelper().eval(PropertyKeys.deltaList, null);
+	}
 
 	public Integer getHeight() {
 		return (Integer) getStateHelper().eval(PropertyKeys.height, 80);

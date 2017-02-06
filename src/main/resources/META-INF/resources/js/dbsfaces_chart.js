@@ -1,7 +1,7 @@
-dbs_chart = function(pId, pDeltaList) {
+dbs_chart = function(pId) {
 	var xChart = $(pId);
 	
-	dbsfaces.chart.initialize(xChart, pDeltaList);
+	dbsfaces.chart.initialize(xChart);
 
 	if (xChart.attr("type") == "line"){
 		//Não existe cálculo delta
@@ -29,11 +29,6 @@ dbs_chart = function(pId, pDeltaList) {
 				e.stopImmediatePropagation();
 				return false;
 			});		
-			$(pId + " > .-delta > .-deltaList > .-container > .-content > .-th_action").on("mousedown touchstart", function(e){
-				dbsfaces.chart.deltaListSelect(xChart, $(this));
-				e.stopImmediatePropagation();
-				return false;
-			});
 		}
 		//Procura por chartvalue a partir da linha do gráfico
 		$(pId + " > .-path > .-mask").on("mousemove touchmove touchstart", function(e){
@@ -61,8 +56,8 @@ dbs_chart = function(pId, pDeltaList) {
 
 
 dbsfaces.chart = {
-	initialize: function(pChart, pDeltaList){
-		dbsfaces.chart.pvInitializeData(pChart, pDeltaList);
+	initialize: function(pChart){
+		dbsfaces.chart.pvInitializeData(pChart);
 
 		var xCharts = pChart.data("parent");
 		var xChartChildren = pChart.data("children");
@@ -79,32 +74,25 @@ dbsfaces.chart = {
 			dbsfaces.chart.pvInitializeDelta(xCharts, pChart);
 		}
 		dbsfaces.chart.pvSetFontSize(xCharts, pChart);
-		dbsfaces.chart.dataRefreshSelection(pChart);
+		dbsfaces.chart.dataRefreshSelection(xCharts, pChart);
 	},
 
-	pvInitializeData: function(pChart, pDeltaList){
+	pvInitializeData: function(pChart){
 		var xCharts = pChart.closest(".dbs_charts");
 		pChart.data("parent", xCharts);
 		//Salva chartvalues vinculados a este chart
 		var xChartChildren = pChart.children(".dbs_chartValue");
 		pChart.data("children", xChartChildren);
 		pChart.data("deltagroup", null);
-		pChart.data("deltalistgroup", null);
-		pChart.data("deltalist", null);
 		pChart.data("deltainfogroup", null);
 		pChart.data("mask", null);
 		//Tamanho máximo do label da coluna
 		pChart.data("maxlabelheight", 0);
 		//Tamanho máximo do label da linha
 		pChart.data("maxlabelwidth", 0);
-		if (typeof(pChart.attr("showdelta")) != "undefined"){
+		if (typeof(xCharts.attr("showdelta")) != "undefined"){
 			var xDeltaGroup = dbsfaces.util.getNotUndefined(pChart.children(".-delta"), null);
 			pChart.data("deltagroup", xDeltaGroup);
-			var xDeltaListGroup = xDeltaGroup.children(".-deltaList");
-			if (xDeltaListGroup.length > 0){
-				pChart.data("deltalistgroup", xDeltaListGroup);
-				pChart.data("deltalist", pDeltaList);
-			}
 			var xDeltaInfoGroup = xDeltaGroup.children(".-info");
 			if (xDeltaInfoGroup.length != 0){
 				pChart.data("deltainfogroup", xDeltaInfoGroup);
@@ -136,7 +124,7 @@ dbsfaces.chart = {
 
 	//Definir a tamanho do fonte do delta a partir do tamanho do gráfico
 	pvChartLineSetFontSize: function(pCharts, pChart){
-		if (typeof(pChart.attr("showdelta")) != "undefined"){
+		if (typeof(pCharts.attr("showdelta")) != "undefined"){
 			var xSize = Number(pChart.data("mask").attr("width")) / 6.5;
 			xSize = dbsfaces.math.trunc(xSize /  2, 0) * 2; 
 			var xDiameter = pCharts.attr("diameter");
@@ -262,7 +250,7 @@ dbsfaces.chart = {
 	//Cria area entre as guias para indicar seleção 
 	pvInitializeDeltaAreas: function(pCharts, pChart){
 		//Cria texto com o delta
-		dbsfaces.chart.pvInitializeDeltaInfo(pChart);
+		dbsfaces.chart.pvInitializeDeltaInfo(pCharts, pChart);
 
 		if (pChart.attr("type") == "line"){
 			var xChartChildren = pChart.data("children");
@@ -275,12 +263,12 @@ dbsfaces.chart = {
 			}
 			dbsfaces.chart.pvInitializeDeltaAreaChartLine(pCharts, pChart, xCV1, 1);
 			dbsfaces.chart.pvInitializeDeltaAreaChartLine(pCharts, pChart, xCV2, 2);
-		}else if (pChart.attr("type") == "pie"){
+		}else if (pCharts.attr("type") == "pie"){
 			dbsfaces.chart.pvInitializeDeltaAreaChartPie(pChart);
 		}
 	},
 	
-	pvInitializeDeltaInfo: function(pChart){
+	pvInitializeDeltaInfo: function(pCharts, pChart){
 		var xDeltaGroup = pChart.data("deltagroup");
 		var xDeltaInfoGroup = xDeltaGroup.children(".-info");
 		if (xDeltaInfoGroup.length == 0){
@@ -290,7 +278,7 @@ dbsfaces.chart = {
 		var xDeltaValue = xDeltaInfoGroup.children(".-value");
 		if (xDeltaValue.length == 0){
 			xDeltaValue = dbsfaces.svg.text(xDeltaInfoGroup, null, null, null, "-value", null, null);
-			if (pChart.attr("type") == "pie"){
+			if (pCharts.attr("type") == "pie"){
 				var xDeltaPathId;
 				var xDeltaValuePath;
 				var xClass;
@@ -424,10 +412,11 @@ dbsfaces.chart = {
 	},
 	
 	//Atualiza lista dos itens selecionados e calcula somatórios dos itens selecionados
-	dataRefreshSelection: function(pChart){
+	dataRefreshSelection: function(pCharts, pChart){
 		pChart.data("selection", pChart.children(".-selected"));
 		pChart.data("totval", null);
 		pChart.data("totper", null);
+		if (typeof(pCharts.attr("showdelta")) == "undefined"){return;}
 		//Calcula somatórios dos itens selecionados
 		if (pChart.attr("type") != "line"){
 			var xTotVal = 0;
@@ -450,7 +439,7 @@ dbsfaces.chart = {
 		var xCharts = xChart.data("parent");
 
 		//Exibe delta
-		dbsfaces.chart.pvShowDelta(xChart, pChartValue, pSelect);
+		dbsfaces.chart.pvShowDelta(xCharts, xChart, pChartValue, pSelect);
 		
 //		if (pSelect == null){
 			var xHover = xCharts.data("hover");
@@ -476,7 +465,7 @@ dbsfaces.chart = {
 		var xCharts = xChart.data("parent");
 
 		//Exibe delta
-		dbsfaces.chart.pvShowDelta(xChart, pChartValue, false);
+		dbsfaces.chart.pvShowDelta(xCharts, xChart, pChartValue, false);
 		
 		//Desmarca item selecionado anteriormente
 		dbsfaces.charts.unSelect(pChartValue);
@@ -484,55 +473,27 @@ dbsfaces.chart = {
 		dbsfaces.chart.pvSelectChart(xCharts, xChart, pChartValue, false);
 	},
 	
-	deltaListSelect: function(pChart, pDeltaListButton){
-		var xDeltaList = pChart.data("deltalist");
-		var xButtonId = pDeltaListButton.attr("id");
-		//Procura qual o item da lista de delta foi selecionado
-		for (var xI=0; xI < xDeltaList.length; xI++){
-			if (xDeltaList[xI].Id == xButtonId){
-				//Posiciona guia #1
-				dbsfaces.chart.deltaListSelectSetGuide(pChart, xDeltaList[xI].StartLabel, 1);
-				//Posiciona guia #2
-				dbsfaces.chart.deltaListSelectSetGuide(pChart, xDeltaList[xI].EndLabel, 2);
-			}
-		}
-	},
-	
-	deltaListSelectSetGuide: function(pChart, pSelectedLabel, pGuideIndex){
-		var xChartValues = pChart.data("children");
-		//Procura qual o chartvalue possui o label informado
-		for (var xI=0; xI < xChartValues.length; xI++){
-			var xChartValue = $(xChartValues[xI]);
-			if (xChartValue.data("dl") == pSelectedLabel){
-				//Seta número da guia
-				dbsfaces.chart.setGuideIndex(pChart, pGuideIndex);
-				//Seta guia
-				dbsfaces.chart.pvSetGuide(pChart, xChartValue, true);
-				break;
-			}
-		}
-	},
 
 	pvSelectChart: function(pCharts, pChart, pChartValue, pSelect){
 		if (pChartValue == null){return;}
 		dbsfaces.charts.select(pChartValue, pSelect);
 	},
 		
-	pvShowDelta: function(pChart, pChartValue, pSelect){
+	pvShowDelta: function(pCharts, pChart, pChartValue, pSelect){
 		var xDeltaGroup = pChart.data("deltagroup");
 		if (xDeltaGroup == null 
 		 || xDeltaGroup.length == 0){return;}
 		if (pChart.attr("type") == "line"){
 			//Reseta posição dos guias
-			dbsfaces.chart.pvSetGuide(pChart, pChartValue, pSelect);
+			dbsfaces.chart.pvSetGuide(pCharts, pChart, pChartValue, pSelect);
 		}
 	},
 	
-	pvSetGuide: function(pChart, pChartValue, pSelect){
+	pvSetGuide: function(pCharts, pChart, pChartValue, pSelect){
 		if (pChart.attr("type") != "line"){return;}
 		var xChartGuideIndex = pChart.data("guideIndex");
 		if (xChartGuideIndex == 0){return;}
-		if (typeof(pChart.attr("showdelta")) == 'undefined'){return;}
+		if (typeof(pCharts.attr("showdelta")) == "undefined"){return;}
 		var xChartPathGuide =  pChart.data("guide" + xChartGuideIndex);
 		var xChartPathGuideOther =  pChart.data("guide" + (xChartGuideIndex == 1 ? 2 : 1));
 		pChart.data("guide" + pChart.data("guideIndex"));

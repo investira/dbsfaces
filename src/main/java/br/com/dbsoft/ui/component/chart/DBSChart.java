@@ -1,7 +1,5 @@
 package br.com.dbsoft.ui.component.chart;
 
-import java.util.List;
-
 import javax.faces.component.FacesComponent;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
@@ -20,8 +18,6 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 	
 	protected enum PropertyKeys {
 		color,
-		showDelta,
-		deltaList,
 		caption,
 		//Variáveis de trabalho
 		savedState,
@@ -29,7 +25,6 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 		index,
 		columnScale,
 		totalValue,
-		showDeltaList,
 		dbscolor;
 
 		String toString;
@@ -69,15 +64,6 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 		handleAttribute("savedState", pSavedState);
 	}
 
-	public Boolean getShowDeltaList() {
-		//DeltaList só é exibido quando for também exibido os labels e deltas
-		return (Boolean) getStateHelper().eval(PropertyKeys.showDeltaList, false);
-	}
-
-	public void setShowDeltaList(Boolean pShowDeltaList) {
-		getStateHelper().put(PropertyKeys.showDeltaList, pShowDeltaList);
-		handleAttribute("showDeltaList", pShowDeltaList);
-	} 
 
 	public Double getTotalValue() {
 		return DBSNumber.toDouble(getStateHelper().eval(PropertyKeys.totalValue, 0D));
@@ -132,28 +118,6 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 		handleAttribute("columnScale", pColumnScale);
 	}
 
-	public void setShowDelta(Boolean pShowDelta) {
-		getStateHelper().put(PropertyKeys.showDelta, pShowDelta);
-		handleAttribute("showDelta", pShowDelta);
-	}
-	
-	public Boolean getShowDelta() {
-		return (Boolean) getStateHelper().eval(PropertyKeys.showDelta, true);
-	}
-
-	public void setDeltaList(List<IDBSChartDelta> pDeltaList) {
-		getStateHelper().put(PropertyKeys.deltaList, pDeltaList);
-		handleAttribute("deltaList", pDeltaList);
-	}
-	
-	/**
-	 * Lista com os valores dos deltas
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public List<IDBSChartDelta> getDeltaList() {
-		return (List<IDBSChartDelta>) getStateHelper().eval(PropertyKeys.deltaList, null);
-	}
 
 	/**
 	 * Raio referente o chart conforme index dele

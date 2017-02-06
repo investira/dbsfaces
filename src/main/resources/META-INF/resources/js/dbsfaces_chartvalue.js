@@ -302,7 +302,7 @@ dbsfaces.chartValue = {
 				}
 			}
 			//Atualiza controle de itens selecionados 
-			dbsfaces.chart.dataRefreshSelection(pChart);
+			dbsfaces.chart.dataRefreshSelection(pCharts, pChart);
 		}
 	}
 	

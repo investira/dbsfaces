@@ -24,6 +24,7 @@
 	-ms-transition: opacity .3s;
 	-o-transition: opacity .3s;
 	transition: opacity .3s;
+	font-size: 0.7em;
 }
 
 .dbs_charts > .-container > .-caption,
@@ -41,7 +42,7 @@
 }
 
 .dbs_charts > .-container > .-data{
-	font-size: .7em;
+/* 	font-size: .7em; */
 	display: inline-flex;
 }
 
@@ -58,15 +59,29 @@
 .dbs_charts > .-container > .-data > .-container > .-content > .-left{
 }
 
-
-.dbs_charts > .-container > .-data > .-captions{
+.dbs_charts .-captions{
     position: absolute;
 	width: 100%;
 	z-index: 1;
+
+    display: flex;
+    display: -webkit-flex;
+    -webkit-flex-flow: row wrap;
+    -moz-flex-flow: row wrap;
+    flex-flow: row wrap;
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    justify-content: center;
+    -webkit-align-items: stretch;
+    -moz-align-items: stretch;
+    align-items: stretch;
+    -webkit-align-content: strech;
+    -moz-align-content: strech;
+    align-content: strech;
+    box-sizing: content-box;
 }
 
-
-.dbs_charts > .-container > .-data > .-captions > .-content{
+.dbs_charts .-captions > .-content{
     margin: .1em;
     border: 1px;
 	border-style: solid;
@@ -74,20 +89,22 @@
 	font-weight: bold;
 	text-align: center;
 }
-.dbs_charts > .-container > .-data > .-captions > .-content:not(.-activated){
+
+.dbs_charts .-captions > .-content > .-caption{
+}
+
+.dbs_charts .-captions > .-content:not(.-activated){
 	background: transparent !important;
 }
 
-.dbs_charts > .-container > .-data > .-captions > .-content.-activated > .-caption{
+.dbs_charts .-captions > .-content.-activated > .-caption{
 	color: inherit !important;
 }
-.dbs_charts > .-container > .-data > .-captions > .-content:not(.-activated) > .-caption{
+.dbs_charts .-captions > .-content:not(.-activated) > .-caption{
 	background-color: transparent;
 }
 
 
-.dbs_charts > .-container > .-data > .-container > .-content > .-value{
-}
 
 .dbs_charts-grid {
 	stroke: rgba(0,0,0,.05);
