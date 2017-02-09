@@ -2285,11 +2285,17 @@
 		</attribute>
 		<attribute>
 			<description>
-                Incremento quando for pressionado botão up ou down. Botões somente são exibidos quando &lt;b&gt;increment > 0.&lt;/b&gt; 
-            </description>
+				&lt;span style="font-size:small"&gt;
+				Indica se exibirá botões de incremento . Padrão = false&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;true = Exibe&lt;/li&gt;
+					&lt;li&gt;false = Não exibe&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; 
+			</description>
 			<name>increment</name>
 			<required>false</required>
-			<type>java.lang.Double</type>
+			<type>java.lang.Boolean</type>
 		</attribute>
 	</tag>
 	<tag>
@@ -3056,15 +3062,15 @@
 					&lt;li&gt;true = Fecha dialog pai (se houver)&lt;/li&gt;
 					&lt;li&gt;false = Não fecha&lt;/li&gt;
 				&lt;ul&gt;
-				&lt;/span&gt; </description>
+				&lt;/span&gt; 
+			</description>
 			<name>closeDialog</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
 	</tag>
 	<tag>
-		<description>Botão de menu flutuante. 
-Os botões do menu devem ser do tipo dbs:menuitem como filhos do floatButton.</description>
+		<description>Botão de menu flutuante. Os botões do menu devem ser do tipo dbs:menuitem como filhos do floatButton.</description>
 		<tag-name>floatButton</tag-name>
 		<component>
 			<component-type>br.com.dbsoft.ui.component.floatbutton</component-type>

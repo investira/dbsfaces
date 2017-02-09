@@ -1526,7 +1526,7 @@ public class  DBSFaces {
 					DBSInputNumber xIN = (DBSInputNumber) pInput;
 					if (xIN.getCurrencySymbol()!=null){
 						pWriter.startElement("span", pInput);
-							encodeAttribute(pWriter, "style","float: right;");
+							encodeAttribute(pWriter, "style","right: 0; position: absolute;");
 							pWriter.write(xIN.getCurrencySymbol().trim());
 						pWriter.endElement("span");
 					}

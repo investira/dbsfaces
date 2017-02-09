@@ -25,6 +25,16 @@ select:-webkit-autofill{
     }
 }
 
+/*Remove Gray Highlight When Tapping Links in Mobile webkit browsers*/
+input,
+textarea,
+button,
+div,
+span,
+select,
+a {
+}
+
 .-th_fc{
 	color: hsl(217.5, 55.17%, 11.37%);
 }
@@ -47,6 +57,7 @@ select:-webkit-autofill{
 
 .-th_action{
 	font-family:inherit;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
 .-th_action,
@@ -161,6 +172,7 @@ select:-webkit-autofill{
 	padding: 0px;
 	margin: 0px;
 	border: none;
+  	-webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
 /* INPUTS --------------------------------*/
@@ -201,6 +213,7 @@ select{
 
 
 .-th_input-label{
+	position: relative;
 	text-align: left;
 }
 

@@ -57,6 +57,9 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
 			DBSFaces.encodeAttribute(xWriter, "class", xClass);
 			DBSFaces.encodeAttribute(xWriter, "style", xInputNumber.getStyle());
+			if (xInputNumber.getIncrement()){
+				DBSFaces.encodeAttribute(xWriter, "increment", "increment");
+			}
 			//Container
 			xWriter.startElement("div", xInputNumber);
 				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
@@ -71,11 +74,11 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 		if (!xInputNumber.getReadOnly()){
 			DBSFaces.encodeJavaScriptTagStart(pComponent, xWriter);
 			//Comentado o JS com $(document).ready por não inicializar corretamente o campo no IE
+			
 			String xJS = "$(document).ready(function() { \n"
-						+ " var xInputNumberId = dbsfaces.util.jsid('"
-						+ getInputDataClientId(xInputNumber) + "'); \n "
-						+ " dbs_inputNumber(xInputNumberId,"
-						+ pvGetMaskParm(xInputNumber) + "); \n" + "}); \n";
+						+ " var xInputNumberId = dbsfaces.util.jsid('" + pComponent.getClientId() + "'); \n "
+						+ " var xInputNumberDataId = dbsfaces.util.jsid('" + getInputDataClientId(xInputNumber) + "'); \n "
+						+ " dbs_inputNumber(xInputNumberId, xInputNumberDataId," + pvGetMaskParm(xInputNumber) + "); \n" + "}); \n";
 			xWriter.write(xJS);
 			DBSFaces.encodeJavaScriptTagEnd(xWriter);
 		}
@@ -141,44 +144,126 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 			xStyleClass = CSS.MODIFIER.ERROR;
 		}
 
-		if (pInputNumber.getReadOnly()) {
-			DBSFaces.encodeInputDataReadOnly(pInputNumber, pWriter, xClientId, false, xValue, xSize, null, xStyle);
-		} else {
-			// Se for somente leitura, gera código como <Span>
-			pWriter.startElement("input", pInputNumber);
-				DBSFaces.encodeAttribute(pWriter, "id", xClientId);
-				DBSFaces.encodeAttribute(pWriter, "name", xClientId);
-				if (pInputNumber.getSecret()) {
-					DBSFaces.encodeAttribute(pWriter, "type", "password");
-				} else {
-					DBSFaces.encodeAttribute(pWriter, "type", "text");
-				}
-				DBSFaces.encodeAttribute(pWriter, "pattern", "[0-9]*");
-				DBSFaces.encodeAttribute(pWriter, "inputmode", "numeric");
-				DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputNumber) + xStyleClass);
-				DBSFaces.encodeAttribute(pWriter, "style", xStyle);
-				DBSFaces.encodeAttribute(pWriter, "placeHolder", pInputNumber.getPlaceHolder());
-				DBSFaces.setSizeAttributes(pWriter, xSize, null);
-				DBSFaces.encodeAttribute(pWriter, "minValue", pInputNumber.getMinValue()); 
-				DBSFaces.encodeAttribute(pWriter, "maxValue", pInputNumber.getMaxValue());
-				//Verifica se o sinal é negativo
-				if (DBSNumber.toDouble(pInputNumber.getMinValue())<0){
-					if (pInputNumber.getValueDouble()<0){
-						DBSFaces.encodeAttribute(pWriter, "n", "-");
+		pWriter.startElement("div", pInputNumber);
+			DBSFaces.encodeAttribute(pWriter, "class", "-input");
+		
+			if (pInputNumber.getReadOnly()) {
+				// Se for somente leitura, gera código como <Span>
+				DBSFaces.encodeInputDataReadOnly(pInputNumber, pWriter, xClientId, false, xValue, xSize, null, xStyle);
+			} else {
+				pWriter.startElement("input", pInputNumber);
+					DBSFaces.encodeAttribute(pWriter, "id", xClientId);
+					DBSFaces.encodeAttribute(pWriter, "name", xClientId);
+					if (pInputNumber.getSecret()) {
+						DBSFaces.encodeAttribute(pWriter, "type", "password");
+					} else {
+						DBSFaces.encodeAttribute(pWriter, "type", "text");
 					}
+					DBSFaces.encodeAttribute(pWriter, "pattern", "[0-9]*"); //Força a exibição do teclado númerico no mobile
+					DBSFaces.encodeAttribute(pWriter, "inputmode", "numeric");
+					DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputNumber) + xStyleClass);
+					DBSFaces.encodeAttribute(pWriter, "style", xStyle);
+					DBSFaces.encodeAttribute(pWriter, "placeHolder", pInputNumber.getPlaceHolder());
+					DBSFaces.setSizeAttributes(pWriter, xSize, null);
+					DBSFaces.encodeAttribute(pWriter, "minValue", pInputNumber.getMinValue()); 
+					DBSFaces.encodeAttribute(pWriter, "maxValue", pInputNumber.getMaxValue());
+					//Verifica se o sinal é negativo
+					if (DBSNumber.toDouble(pInputNumber.getMinValue())<0){
+						if (pInputNumber.getValueDouble()<0){
+							DBSFaces.encodeAttribute(pWriter, "n", "-");
+						}
+					}
+					if (!pInputNumber.getAutocomplete().toLowerCase().equals("on") &&
+						!pInputNumber.getAutocomplete().toLowerCase().equals("true")){
+						DBSFaces.encodeAttribute(pWriter, "autocomplete", "off");
+					}
+	
+	
+					DBSFaces.encodeAttribute(pWriter, "size", xSize);
+					DBSFaces.encodeAttribute(pWriter, "maxlength", xSize);
+					DBSFaces.encodeAttribute(pWriter, "value", xValue, "0");
+					encodeClientBehaviors(pContext, pInputNumber);
+				pWriter.endElement("input");
+				if (pInputNumber.getIncrement()){
+//					pWriter.startElement("svg", pInputNumber);
+//						DBSFaces.encodeSVGNamespaces(pWriter);
+//						DBSFaces.encodeAttribute(pWriter, "class", "-button");
+//						DBSFaces.encodeAttribute(pWriter, "viewBox", "0 0 2 1");
+////						DBSFaces.encodeAttribute(pWriter, "viewBox", "0 0 3.3 1");
+//						DBSFaces.encodeSVGPath(pInputNumber, pWriter, "M 1,0 L2,1 L0,1 Z", "-path -up", null, null);
+////						DBSFaces.encodeSVGPath(pInputNumber, pWriter, "M 1,1 L2,0 L0,0 Z", "-path -down", null, null);
+////						DBSFaces.encodeSVGPath(pInputNumber, pWriter, "M 2.3,1 L3.3,0 L1.3,0 Z", "-path -down", null, null);
+//						
+//					pWriter.endElement("svg");
+//					pWriter.startElement("svg", pInputNumber);
+//						DBSFaces.encodeSVGNamespaces(pWriter);
+//						DBSFaces.encodeAttribute(pWriter, "class", "-button");
+//						DBSFaces.encodeAttribute(pWriter, "viewBox", "0 0 2 1");
+////						DBSFaces.encodeSVGPath(pInputNumber, pWriter, "M 1,0 L2,1 L0,1 Z", "-path -up", null, null);
+//						DBSFaces.encodeSVGPath(pInputNumber, pWriter, "M 1,1 L2,0 L0,0 Z", "-path -down", null, null);
+////						DBSFaces.encodeSVGPath(pInputNumber, pWriter, "M 2.3,1 L3.3,0 L1.3,0 Z", "-path -down", null, null);
+//					pWriter.endElement("svg");
+
+					//					DBSFaces.encodeAttribute(pWriter, "width", pCharts.getWidth());
+//					DBSFaces.encodeAttribute(pWriter, "height", pCharts.getHeight() - pCharts.getCaptionHeight() - pCharts.getFooterHeight());
+						
+//					String xUp =  " "
+//							pWriter.startElement("div", pInputNumber);
+//							<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+//							 width="800px" height="800px" viewBox="0 0 800 800" enable-background="new 0 0 2 1" xml:space="preserve">
+//						<polygon fill="none" stroke="#000000" stroke-miterlimit="10" points=“2,1 0,1 1,0 "/>
+//						</svg>
+					//Encode do botão
+					pWriter.startElement("div", pInputNumber);
+						DBSFaces.encodeAttribute(pWriter, "class", "-buttons");
+						pWriter.startElement("div", pInputNumber);
+							DBSFaces.encodeAttribute(pWriter, "class", " -container -th_flex -not_selectable");
+							pWriter.startElement("div", pInputNumber);
+								DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -delete -i_delete -th_col"); //-i_navigate_down 
+							pWriter.endElement("div");
+							pWriter.startElement("div", pInputNumber);
+								DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -i_media_play -up -th_col");
+	//							DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -i_media_play -down -th_col"); //-i_navigate_down 
+							pWriter.endElement("div");
+							Integer xUnits = (pInputNumber.getSize() - pInputNumber.getDecimalPlaces());
+							if (xUnits >= 7){
+								pWriter.startElement("div", pInputNumber);
+									DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -op_mm -th_col");
+								pWriter.endElement("div");
+								xUnits = 7;
+							}
+							if ((xUnits - 6) < 3){
+								pWriter.startElement("div", pInputNumber);
+									DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -op_cm -th_col");
+								pWriter.endElement("div");
+							}
+							if ((xUnits - 5) < 3){
+								pWriter.startElement("div", pInputNumber);
+									DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -op_xm -th_col");
+								pWriter.endElement("div");
+							}
+							if ((xUnits - 4) < 3){
+								pWriter.startElement("div", pInputNumber);
+									DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -op_m -th_col");
+								pWriter.endElement("div");
+							}
+							if ((xUnits - 3) < 3){
+								pWriter.startElement("div", pInputNumber);
+									DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -op_c -th_col");
+								pWriter.endElement("div");
+							}
+							if ((xUnits - 2) < 3){
+								pWriter.startElement("div", pInputNumber);
+									DBSFaces.encodeAttribute(pWriter, "class",CSS.THEME.ACTION + " -op_x -th_col");
+								pWriter.endElement("div");
+							}
+							pWriter.startElement("div", pInputNumber);
+								DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -close -i_cancel -th_col"); //-i_navigate_down 
+							pWriter.endElement("div");
+						pWriter.endElement("div");
+					pWriter.endElement("div");
 				}
-				if (!pInputNumber.getAutocomplete().toLowerCase().equals("on") &&
-					!pInputNumber.getAutocomplete().toLowerCase().equals("true")){
-					DBSFaces.encodeAttribute(pWriter, "autocomplete", "off");
-				}
-
-
-				DBSFaces.encodeAttribute(pWriter, "size", xSize);
-				DBSFaces.encodeAttribute(pWriter, "maxlength", xSize);
-				DBSFaces.encodeAttribute(pWriter, "value", xValue, "0");
-				encodeClientBehaviors(pContext, pInputNumber);
-			pWriter.endElement("input");
-
+			pWriter.endElement("div");
 		}
 	}
 	
@@ -233,4 +318,20 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 		return xSize;
 	}
 
+//	private Integer pvGetUnits(DBSInputNumber pInputNumber){
+//		Integer xUnits = (pInputNumber.getSize() - pInputNumber.getDecimalPlaces());
+//		if (xUnits > 7){
+//			return 7;
+//		}
+//		if (xUnits > 7){
+//			return xUnits;
+//		}
+//		10
+//		100
+//		1000
+//		10000
+//		100000
+//		1000000
+//		
+//	}
 }

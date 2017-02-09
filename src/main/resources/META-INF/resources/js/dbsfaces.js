@@ -530,9 +530,13 @@ dbsfaces.ui = {
 	},
 	//Seleciona todo o texto
 	selectAll: function(pObj){
+		var xE = pObj;
+		if (pObj instanceof jQuery){
+			xE = pObj[0];
+		}
 		//timeout para evitar que o click desmarque o item selecionado
 		setTimeout( function(){
-			dbsfaces.ui.selectRange(pObj, 0, $(pObj).get(0).value.length);
+			dbsfaces.ui.selectRange(xE, 0, xE.value.length);
 		}, 1 );
 	},
 	//Retira a seleção de qualquer texto
@@ -541,7 +545,13 @@ dbsfaces.ui = {
 	},
 	//Seleciona da posição atual até o final do texto
 	selectEnd: function(pObj){
-		dbsfaces.ui.selectRange(pObj, $(pObj).get(0).selectionStart, $(pObj).get(0).value.length);
+		var xE = pObj;
+		if (pObj instanceof jQuery){
+			xE = pObj[0];
+		}
+		if (xE.value != null){
+			dbsfaces.ui.selectRange(xE, xE.selectionStart, xE.value.length);
+		}
 	},
 	//Seleciona intervalo
 	selectRange: function(pObj, pStart, pEnd){

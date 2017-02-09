@@ -7,6 +7,7 @@
 		this.initialize.apply(this, arguments);
 	};
 
+	
 	dbsmask.prototype = {
 		options: {
 			maskEmptyChr   : ' ',
@@ -44,12 +45,18 @@
 				.bind( "keypress", function(){ self.onKeyPress.apply(self, arguments); } )
 				.bind( "keydown",  function(){ self.onKeyDown .apply(self, arguments); } )
 				.bind( "focus",    function(){ self.onFocus   .apply(self, arguments); } )
+				.bind( "refresh",  function(){ self.onRefresh .apply(self, arguments); } )
 				.bind( "blur",     function(){ self.onBlur    .apply(self, arguments); } );
+			return this;
 		},
 
 		isFixed  : function(){ return this.options.type == 'fixed';  },
 		isNumber : function(){ return this.options.type == 'number'; },
 
+		onRefresh: function( ev ) {
+			this.formatNumber();
+		},
+		
 		onMouseUp: function( ev ) {
 			ev.stopPropagation();
 			ev.preventDefault();
@@ -99,7 +106,7 @@
 							this.selectNext();
 							break;
 						case 46: // Delete
-							this.updateSelection( this.options.maskEmptyChr );
+							this.updateSelection(this.options.maskEmptyChr);
 							this.selectNext();
 							break;
 						case 109: // MENOS
@@ -147,18 +154,19 @@
 								}
 							}
 							//Inclui zeros a direita se estiver na digitação das casas decimais
-							if (this.isInputDecimals(ev)){
-								var xZeros = "0";
-								for(var len = this.getSelectionStart() + 1, i = this.getSelectionEnd(); len < i; len++) {
-									xZeros += "0";
-								}
-								this.domNode.value += xZeros;
-								this.setSelection(xStart, xEnd);
-							}
+//							if (this.isInputDecimals(ev)){
+//								var xZeros = "0";
+//								for(var len = this.getSelectionStart() + 1, i = this.getSelectionEnd(); len < i; len++) {
+//									xZeros += "0";
+//								}
+//								this.domNode.value += xZeros;
+//								this.setSelection(xStart, xEnd);
+//							}
 							var self = this;
+							//Formata apóa a finalização da deleção
 							setTimeout(function(){
 								self.formatNumber();
-							}, 1);
+							}, 0);
 							break;
 						case 109: // MENOS
 						case 173: // MENOS
@@ -174,11 +182,11 @@
 							ev.preventDefault();
 							var chr = this.chrFromEv(ev);
 							//Se campo inteiro estiver selecionado, apaga conteúdo e posiciona na parte inteira
-							if (this.domNode.value.length == (this.getSelectionEnd() - this.getSelectionStart())){
-								this.domNode.value = "";
-								this.formatNumber();
-								this.moveToIntegerPosition(ev);
-							}
+//							if (this.domNode.value.length == (this.getSelectionEnd() - this.getSelectionStart())){
+//								this.domNode.value = "";
+//								this.formatNumber();
+//								this.moveToIntegerPosition(ev);
+//							}
 							//Valida tamanho máximo
 							chr = this.validateLength(ev, chr);
 							if (chr != ''){
@@ -292,9 +300,13 @@
 
 			var self = this;
 			
-			setTimeout( function(){
-				self[ self.options.type === "fixed" ? 'selectFirst' : 'selectAll' ]();
-			}, 1 );
+			//Seleciona quando for não mobile ou quando for fixo
+			if (self.options.type === "fixed"
+			|| !dbsfaces.util.isMobile()){
+				setTimeout( function(){
+					self[ self.options.type === "fixed" ? 'selectFirst' : 'selectAll' ]();
+				}, 1 );
+			}
 		},
 
 		onBlur: function(ev) {
@@ -399,11 +411,12 @@
 		},
 
 	 	setEnd: function() {
-			var len = this.domNode.value.length - this.options.decDigits;
-			if (this.options.decDigits > 0){
-				len--;
-			}
-			this.setSelection(len, len);
+//			var len = this.domNode.value.length - this.options.decDigits;
+//			if (this.options.decDigits > 0){
+//				len--;
+//			}
+//			this.setSelection(len, len);
+			this.setSelection(this.domNode.value.length, this.domNode.value.length);
 		},
 
 		getSelectionRange : function(){
@@ -684,8 +697,9 @@
 	};
 
 	$.fn.dbsmask = function(options){
-		this.each(function(){
-			new dbsmask($(this), options);
-		});
+//		this.each(function(){
+//			new dbsmask($(this), options);
+//		});
+		return new dbsmask($(this), options);
 	};
 })(jQuery);

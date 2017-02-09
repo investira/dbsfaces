@@ -4,3 +4,142 @@
 .dbs_inputNumber > .-container{
 	position: relative;
 }
+
+.dbs_inputNumber > .-container > .-input{
+	display: inline-block;
+	position: relative;
+}
+.dbs_inputNumber > .-container > .-input > .-buttons{
+    /* transform: scale(0); */
+    /* transition: transform .2s; */
+    overflow: hidden;
+    position: absolute;
+    height: 1.8em;
+    width: 100%;
+    z-index: 33;
+	display: none;
+    /* left: 0; */
+    /* top: 0; */
+    display: block;
+}
+
+.dbs_inputNumber > .-container > .-input:not(.-selected) > .-buttons{
+	pointer-events: none;
+}
+.dbs_inputNumber > .-container > .-input:.-selected > .-buttons{
+	pointer-events: all;
+}
+
+.dbs_inputNumber > .-container > .-input.-selected > .-buttons{
+
+}
+
+.dbs_inputNumber > .-container > .-input > .-buttons .-th_action:active{
+	transform: scale(1);	
+}
+.dbs_inputNumber > .-container > .-input > .-buttons .-th_action:active{
+	transition: transform .1s;
+	transform: scale(1.3);	
+}
+
+.dbs_inputNumber > .-container > .-input > .-buttons > .-container{
+    position: absolute;
+    max-width: 100%;
+    z-index: 44;
+    width: 100%;
+    box-sizing: border-box;
+	transform: translateY(-2em);
+    transition: transform .2s;
+}   
+
+.dbs_inputNumber > .-container > .-input.-selected > .-buttons > .-container{
+	transform: translateY(0);
+}
+
+.dbs_inputNumber > .-container > .-input > .-buttons > .-container:before{
+    content: "";
+    background-color: currentColor;
+    border-radius: .3em;
+    opacity: 0.8;
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-th_action{
+	-webkit-flex-basis: .5em;
+	-moz-flex-basis: .5em;
+	flex-basis: .5em;
+	text-align: center;
+	height: 1em;
+    padding: 0.4em;
+}
+
+
+.dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-th_action:before{
+    height: 100%;
+    position: absolute;
+    top: calc(50% - .5em);
+    left: calc(50% - .5em);
+    color: white;
+    height: 1em;
+/* 	font-size: .9em; */
+}
+    
+/* .dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-up, */
+/* .dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-down{ */
+/* 	font-size: unset !important; */
+/* }    */
+
+.dbs_inputNumber > .-container > .-input > .-buttons > .-container > [class*=" -i_"]{
+	font-size: unset !important;
+}   
+
+.dbs_inputNumber > .-container > .-input > .-buttons > .-container > [class*=" -i_"]:before{
+	font-size: 1.4em;
+}
+
+.dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-up:before{
+	transform: rotate(-90deg);
+}
+
+.dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-down:before{
+	transform: rotate(90deg);
+}
+
+.dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-delete:before{
+}
+
+.dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-close:before{
+}
+
+.dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-op_mm:before{
+/* 	font-size:.9em; */
+	content: "M";
+	text-decoration: overline;
+}   
+.dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-op_cm:before{
+/* 	font-size:.9em; */
+	content: "C";
+	text-decoration: overline;
+}   
+.dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-op_xm:before{
+/* 	font-size:.9em; */
+	content: "X";
+	text-decoration: overline;
+}   
+.dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-op_m:before{
+/* 	font-size:.8em; */
+	content: "M";
+}   
+.dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-op_c:before{
+/* 	font-size:.7em; */
+	content: "C";
+}   
+.dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-op_x:before{
+/* 	font-size:.6em; */
+	content: "X";
+}   
