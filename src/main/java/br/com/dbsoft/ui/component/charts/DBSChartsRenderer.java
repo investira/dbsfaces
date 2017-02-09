@@ -576,6 +576,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 	 * @return
 	 * @throws IOException
 	 */
+	@SuppressWarnings("unused")
 	private List<IDBSChartDelta> pvEncodeDeltaList(DBSCharts pCharts, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 		if (!pCharts.getShowDeltaList()){return null;}
 		//Lista com os valores dos deltas
