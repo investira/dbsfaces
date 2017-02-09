@@ -226,33 +226,33 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 	//							DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -i_media_play -down -th_col"); //-i_navigate_down 
 							pWriter.endElement("div");
 							Integer xUnits = (pInputNumber.getSize() - pInputNumber.getDecimalPlaces());
-							if (xUnits >= 7){
+							if (xUnits >= 9){
 								pWriter.startElement("div", pInputNumber);
 									DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -op_mm -th_col");
 								pWriter.endElement("div");
-								xUnits = 7;
+								xUnits = 9;
 							}
-							if ((xUnits - 6) < 3){
+							if ((xUnits - 8) < 3){
 								pWriter.startElement("div", pInputNumber);
 									DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -op_cm -th_col");
 								pWriter.endElement("div");
 							}
-							if ((xUnits - 5) < 3){
+							if ((xUnits - 7) < 3){
 								pWriter.startElement("div", pInputNumber);
 									DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -op_xm -th_col");
 								pWriter.endElement("div");
 							}
-							if ((xUnits - 4) < 3){
+							if ((xUnits - 6) < 3){
 								pWriter.startElement("div", pInputNumber);
 									DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -op_m -th_col");
 								pWriter.endElement("div");
 							}
-							if ((xUnits - 3) < 3){
+							if ((xUnits - 5) < 3){
 								pWriter.startElement("div", pInputNumber);
 									DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -op_c -th_col");
 								pWriter.endElement("div");
 							}
-							if ((xUnits - 2) < 3){
+							if ((xUnits - 4) < 3){
 								pWriter.startElement("div", pInputNumber);
 									DBSFaces.encodeAttribute(pWriter, "class",CSS.THEME.ACTION + " -op_x -th_col");
 								pWriter.endElement("div");

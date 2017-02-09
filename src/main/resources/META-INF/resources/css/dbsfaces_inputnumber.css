@@ -50,6 +50,9 @@
     box-sizing: border-box;
 	transform: translateY(-2em);
     transition: transform .2s;
+    -webkit-flex-wrap: nowrap;
+    -moz-flex-wrap: nowrap;
+    flex-wrap: nowrap;
 }   
 
 .dbs_inputNumber > .-container > .-input.-selected > .-buttons > .-container{
