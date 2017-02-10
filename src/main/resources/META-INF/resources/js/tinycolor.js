@@ -221,6 +221,19 @@ tinycolor.prototype = {
         this.setAlpha(color._a);
         return this;
     },
+    
+
+	invertLightness: function(){
+		var xHSLA = tinycolor(this.getOriginalInput()).toHsl();
+		var xLightness = xHSLA.l;
+		if (xLightness > 50){
+			xLightness -= 50;
+		}else{
+			xLightness += 50;
+		}
+		return tinycolor("hsla(" + xHSLA.h + "," + xHSLA.s + "," + xLightness + "," + this.getAlpha() + ")");
+	},
+
     lighten: function() {
         return this._applyModification(lighten, arguments);
     },
