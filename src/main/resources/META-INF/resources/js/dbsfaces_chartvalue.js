@@ -78,8 +78,8 @@ dbsfaces.chartValue = {
 		var xChartValueInfo = pChartValue.children(".-info");
 		pChartValue.data("infogroup", xChartValueInfo);
 		pChartValue.data("value", xChartValueInfo.children(".-value"));
-		xValue = pChartValue.data("value").text();
-		if (xValue != 0){
+		if (pChartValue.data("value").length != 0){
+			xValue = pChartValue.data("value").text();
 			//Salva valores dentro do próprio componente para facilar o uso no momento do encode do delta
 			//Posição X
 			pChartValue.data("dx", Number(xChartValuePoint.attr("cx")));
@@ -102,6 +102,7 @@ dbsfaces.chartValue = {
 			}else{
 				pChartValue.data("tooltip", null);
 			}
+		
 		}else{
 			pChartValue.data("dx", null);
 		}

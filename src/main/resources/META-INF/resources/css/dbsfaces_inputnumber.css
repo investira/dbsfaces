@@ -34,7 +34,7 @@
 }
 .dbs_inputNumber > .-container > .-input > .-buttons .-th_action:active{
 	transition: transform .1s;
-	transform: scale(1.3);	
+	transform: scale(1.4);	
 }
 
 .dbs_inputNumber > .-container > .-input > .-buttons > .-container{

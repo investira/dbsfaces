@@ -132,7 +132,9 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 	private void pvEncodeInput(FacesContext pContext, DBSInputNumber pInputNumber, ResponseWriter pWriter) throws IOException {
 		Integer xSize = pvGetSize(pInputNumber); //Ajusta tamanho considerando os pontos e virgulas.
 		String xClientId = getInputDataClientId(pInputNumber);
-		String xStyle = DBSFaces.getCSSStyleWidthFromInputSize(xSize);
+//		String xStyle = DBSFaces.getCSSStyleWidthFromInputSize(xSize);
+//		Integer xWidth  = DBSFormat.getFormattedNumber(pInputNumber.getMaxValue(), NUMBER_SIGN.MINUS_PREFIX, pvGetNumberMask(pInputNumber)).replaceAll("\\D+", "").length();
+		String xStyle = DBSFaces.getCSSStyleWidthFromInputSize(DBSFormat.getFormattedNumber(pInputNumber.getMaxValue(), NUMBER_SIGN.MINUS_PREFIX, pvGetNumberMask(pInputNumber)).replaceAll("\\D+", "").length());
 		String xStyleClass = "";
 		String xValue = "";
 		if (pInputNumber.getValueDouble() != null){
@@ -238,7 +240,7 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 									}
 								}
 							pWriter.endElement("div");
-							Integer xInteiros = Math.max(pInputNumber.getMaxValue().length(), pInputNumber.getMinValue().length());
+							Integer xInteiros = Math.max(pInputNumber.getMaxValue().replaceAll("\\\\D+", "").length(), pInputNumber.getMinValue().replaceAll("\\\\D+", "").length());
 							Integer xCount = 0;
 							if (xInteiros >= 8){
 								pWriter.startElement("div", pInputNumber);
@@ -340,12 +342,14 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 		//Se valor limite for superior a quantidade permitida de caracteres
 		//Limita valor a quantidade de caracteres possíveis
 		if (xDif > 0){
-			if (xValue < 0){
-				xFormat = "-" + xFormat.substring(xDif);
-			}else{
-				xFormat = xFormat.substring(xDif);
+			String xNewLimit = xFormat.substring(xDif);
+			if (!DBSNumber.isNumber(xNewLimit.substring(0, 1))){
+				xNewLimit = xNewLimit.substring(1);
 			}
-			return BigDecimal.valueOf(DBSNumber.toInteger(xFormat)).toPlainString();
+			if (xValue < 0){
+				xNewLimit = "-" + xNewLimit;
+			}
+			return BigDecimal.valueOf(DBSNumber.toInteger(xNewLimit)).toPlainString();
 		}
 		return pValue;
 

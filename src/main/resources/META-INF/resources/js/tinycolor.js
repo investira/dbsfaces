@@ -227,9 +227,15 @@ tinycolor.prototype = {
 		var xHSLA = tinycolor(this.getOriginalInput()).toHsl();
 		var xLightness = xHSLA.l;
 		if (xLightness > 50){
-			xLightness -= 50;
+			xLightness -= 75;
+			if (xLightness < 0){
+				xLightness = 0;
+			}
 		}else{
-			xLightness += 50;
+			xLightness += 75;
+			if (xLightness > 100){
+				xLightness = 100;
+			}
 		}
 		return tinycolor("hsla(" + xHSLA.h + "," + xHSLA.s + "," + xLightness + "," + this.getAlpha() + ")");
 	},
