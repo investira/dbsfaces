@@ -46,6 +46,7 @@
 				.bind( "keydown",  function(){ self.onKeyDown .apply(self, arguments); } )
 				.bind( "focus",    function(){ self.onFocus   .apply(self, arguments); } )
 				.bind( "refresh",  function(){ self.onRefresh .apply(self, arguments); } )
+				.bind( "paste",    function(){ self.onPaste   .apply(self, arguments); } )
 				.bind( "blur",     function(){ self.onBlur    .apply(self, arguments); } );
 			return this;
 		},
@@ -56,7 +57,14 @@
 		onRefresh: function( ev ) {
 			this.formatNumber();
 		},
-		
+
+		onPaste: function( ev ) {
+			var self = this;
+			setTimeout(function(){
+				self.formatNumber();
+			},2);
+		},
+
 		onMouseUp: function( ev ) {
 			ev.stopPropagation();
 			ev.preventDefault();

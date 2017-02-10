@@ -2168,7 +2168,7 @@
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
-			<description>Tamanho do campo em caracteres
+			<description>Tamanho do campo em caracteres considerando os caractes de formatação.
             </description>
 			<name>size</name>
 			<required>false</required>

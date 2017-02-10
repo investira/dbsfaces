@@ -37,7 +37,7 @@ dbs_inputNumber = function(pId, pInputData, pType, pMask, pMaskEmptyChr, pDecDig
 	});
 
 	
-	$(pId + " > .-container > .-input > .-buttons > .-container > .-i_media_play").on("mousedown touchstart", function(e){
+	$(pId + " > .-container > .-input > .-buttons > .-container > .-direction").on("mousedown touchstart", function(e){
 		dbsfaces.inputNumber.invert($(pId));
 		dbsfaces.inputNumber.cancelBlur($(pId), e);
 	});
@@ -102,7 +102,9 @@ dbsfaces.inputNumber = {
 		pInputNumber.data("container", pInputNumber.children(".-container"));
 		pInputNumber.data("input", pInputNumber.data("container").children(".-input"));
 		pInputNumber.data("buttonscontainer", pInputNumber.find(" > .-container > .-input > .-buttons > .-container"));
-		pInputNumber.data("direction", pInputNumber.data("buttonscontainer").children(".-i_media_play"));
+		pInputNumber.data("direction", pInputNumber.data("buttonscontainer").children(".-direction"));
+		var xColor = tinycolor(pInputNumber.css("color")).invertLightness();
+		pInputNumber.data("buttonscontainer").children(".-th_action").css("color", xColor.toHslString());
 	},
 
 
@@ -128,18 +130,24 @@ dbsfaces.inputNumber = {
 		var xInputData = pInputNumber.data("inputdata");
 		var xDBSMask = pInputNumber.data("dbsmask");
 		var xSign = (xInputData.attr("n") == "-" ? -1 : 1);
-		pIncrement *= Math.pow(10, pInputNumber.data("decdigits"));
+		var xValue;
+		var xDecDigits = Math.pow(10, pInputNumber.data("decdigits"));
+		pIncrement *= xDecDigits;
 		if (pInputNumber.data("direction").hasClass("-up")){
-			xInputData[0].value = (parseFloat(xDBSMask.stripMask()) * xSign) + pIncrement;
+			xValue = (parseFloat(xDBSMask.stripMask()) * xSign) + pIncrement;
 		}else{
-			xInputData[0].value = (parseFloat(xDBSMask.stripMask()) * xSign) - pIncrement;
+			xValue = (parseFloat(xDBSMask.stripMask()) * xSign) - pIncrement;
 		}
-		if (xInputData[0].value > 0){
-			xInputData.attr("n","");
-		}else{
-			xInputData.attr("n","-");
+		if (xValue <= (parseFloat(xInputData.attr("maxvalue")) * xDecDigits)
+		 && xValue >= (parseFloat(xInputData.attr("minvalue")) * xDecDigits)){
+			xInputData[0].value = xValue;
+			if (xInputData[0].value > 0){
+				xInputData.attr("n","");
+			}else{
+				xInputData.attr("n","-");
+			}
+			xDBSMask.formatNumber();
 		}
-		xDBSMask.formatNumber();
 	},
 	
 	open: function(pInputNumber){

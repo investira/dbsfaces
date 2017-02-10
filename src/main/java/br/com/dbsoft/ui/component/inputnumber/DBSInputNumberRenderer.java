@@ -1,6 +1,7 @@
 package br.com.dbsoft.ui.component.inputnumber;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -15,6 +16,10 @@ import br.com.dbsoft.util.DBSFormat.NUMBER_SIGN;
 import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSString;
 
+/**
+ * @author ricardo.villar
+ *
+ */
 @FacesRenderer(componentFamily = DBSFaces.FAMILY, rendererType = DBSInputNumber.RENDERER_TYPE)
 public class DBSInputNumberRenderer extends DBSRenderer {
 
@@ -48,6 +53,9 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xInputNumber.getClientId(pContext);
 		String xClass = CSS.INPUTNUMBER.MAIN + CSS.THEME.INPUT;
+		
+		pvInitialize(xInputNumber);
+		
 		if (xInputNumber.getStyleClass() != null) {
 			xClass += xInputNumber.getStyleClass();
 		}
@@ -222,40 +230,56 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 								DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -delete -i_delete -th_col"); //-i_navigate_down 
 							pWriter.endElement("div");
 							pWriter.startElement("div", pInputNumber);
-								DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -i_media_play -up -th_col");
-	//							DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -i_media_play -down -th_col"); //-i_navigate_down 
+								if (pInputNumber.getValueDouble() != null){
+									if (pInputNumber.getValueDouble() < 0){
+										DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -direction -down -th_col");
+									}else{
+										DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -direction -up -th_col");
+									}
+								}
 							pWriter.endElement("div");
-							Integer xUnits = (pInputNumber.getSize() - pInputNumber.getDecimalPlaces());
-							if (xUnits >= 9){
+							Integer xInteiros = Math.max(pInputNumber.getMaxValue().length(), pInputNumber.getMinValue().length());
+							Integer xCount = 0;
+							if (xInteiros >= 8){
 								pWriter.startElement("div", pInputNumber);
 									DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -op_mm -th_col");
 								pWriter.endElement("div");
-								xUnits = 9;
+								xCount++;
 							}
-							if ((xUnits - 8) < 3){
+							if (xInteiros >= 7){
 								pWriter.startElement("div", pInputNumber);
 									DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -op_cm -th_col");
 								pWriter.endElement("div");
+								xCount++;
 							}
-							if ((xUnits - 7) < 3){
+							if (xInteiros >= 6){
 								pWriter.startElement("div", pInputNumber);
 									DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -op_xm -th_col");
 								pWriter.endElement("div");
+								xCount++;
 							}
-							if ((xUnits - 6) < 3){
-								pWriter.startElement("div", pInputNumber);
+							if (xCount < 3){
+								if (xInteiros >= 5){
+									pWriter.startElement("div", pInputNumber);
 									DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -op_m -th_col");
-								pWriter.endElement("div");
-							}
-							if ((xUnits - 5) < 3){
-								pWriter.startElement("div", pInputNumber);
-									DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -op_c -th_col");
-								pWriter.endElement("div");
-							}
-							if ((xUnits - 4) < 3){
-								pWriter.startElement("div", pInputNumber);
-									DBSFaces.encodeAttribute(pWriter, "class",CSS.THEME.ACTION + " -op_x -th_col");
-								pWriter.endElement("div");
+									pWriter.endElement("div");
+									xCount++;
+								}
+								if (xCount < 3){
+									if (xInteiros >= 4){
+										pWriter.startElement("div", pInputNumber);
+										DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -op_c -th_col");
+										pWriter.endElement("div");
+										xCount++;
+									}
+									if (xCount < 3){
+										if (xInteiros >= 3){
+											pWriter.startElement("div", pInputNumber);
+											DBSFaces.encodeAttribute(pWriter, "class",CSS.THEME.ACTION + " -op_x -th_col");
+											pWriter.endElement("div");
+										}
+									}
+								}
 							}
 							pWriter.startElement("div", pInputNumber);
 								DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -close -i_cancel -th_col"); //-i_navigate_down 
@@ -281,6 +305,51 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 		return DBSFormat.getNumberMask(pInputNumber.getDecimalPlaces(), xShowSeparator, xLeadingZeroSize);
 	}
 	
+	private void pvInitialize(DBSInputNumber pInputNumber){
+		pInputNumber.setMaxValue(pvLimitBySize(pInputNumber, pInputNumber.getMaxValue()));
+		pInputNumber.setMinValue(pvLimitBySize(pInputNumber, pInputNumber.getMinValue()));
+		//Se tamanho em caracteres do limite for inferior a quantidade permitida de caracteres
+		//Reduz a quantidade permitida de caracteres
+		String xFormat;
+		Double xValue;
+		if (pInputNumber.getMaxValue().length() > pInputNumber.getMinValue().length()){
+			xValue  = DBSNumber.toDouble(pInputNumber.getMaxValue());
+			xFormat = DBSFormat.getFormattedNumber(xValue, NUMBER_SIGN.MINUS_PREFIX, pvGetNumberMask(pInputNumber));
+		}else{
+			xValue  = DBSNumber.toDouble(pInputNumber.getMinValue());
+			xFormat = DBSFormat.getFormattedNumber(xValue, NUMBER_SIGN.MINUS_PREFIX, pvGetNumberMask(pInputNumber));
+		}
+		if (xFormat.length() < pInputNumber.getSize()){
+			pInputNumber.setSize(xFormat.length());
+		}
+	}
+	
+	/**
+	 * Limita valores até o tamanho máximo em caracteres permitido no campo.
+	 * @param pInputNumber
+	 * @param pValue
+	 * @return
+	 */
+	private String pvLimitBySize(DBSInputNumber pInputNumber, String pValue){
+		Double  xValue;
+		Integer xDif;
+		String 	xFormat;
+		xValue  = DBSNumber.toDouble(pValue);
+		xFormat = DBSFormat.getFormattedNumber(xValue, NUMBER_SIGN.MINUS_PREFIX, pvGetNumberMask(pInputNumber));
+		xDif = xFormat.length() -  pInputNumber.getSize();
+		//Se valor limite for superior a quantidade permitida de caracteres
+		//Limita valor a quantidade de caracteres possíveis
+		if (xDif > 0){
+			if (xValue < 0){
+				xFormat = "-" + xFormat.substring(xDif);
+			}else{
+				xFormat = xFormat.substring(xDif);
+			}
+			return BigDecimal.valueOf(DBSNumber.toInteger(xFormat)).toPlainString();
+		}
+		return pValue;
+
+	}
 	/**
 	 * Retorma tamanho máximo de caracteres que sertão exibidos, considerando o valor máximo e respectivos pontos/virgulas
 	 * @param pInputNumber
@@ -288,50 +357,11 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 	 */
 	private Integer pvGetSize(DBSInputNumber pInputNumber){
 		Integer xSize = pInputNumber.getSize(); 
-		if (xSize == 0){
-			//Utiliza maxlength se tiver sido informado
-			if (pInputNumber.getMaxLength()!=0){
-				xSize = pInputNumber.getMaxLength();
-			}else{
-			//Utiliza tamanho do valor mínimo e/ou máximo se não tiver sido informado.
-				Integer xMax = pInputNumber.getMaxValue().length();
-				Integer xMin = pInputNumber.getMinValue().length();
-				xSize = (xMax > xMin ? xMax: xMin);
-			}
-		}else if (pInputNumber.getMaxLength()!=0
-			   && pInputNumber.getMaxLength() < xSize){
-			xSize = pInputNumber.getMaxLength();
-		}
-//		//Ajusta tamanho considerando o valor máximo e respectivos pontos/virgulas		
-//		String xFoo;
-//		//String somente com a parte inteira, já que a aprte decimal, quando houver, é obrigatória a exibição.
-//		xFoo = "-" + DBSString.repeat("1", xSize -  pInputNumber.getDecimalPlaces());
-//		if (DBSNumber.toDouble(pInputNumber.getMinValue())<0){
-//			xSize = DBSFormat.getFormattedNumber(DBSNumber.toDouble(xFoo), NUMBER_SIGN.MINUS_PREFIX, pvGetNumberMask(pInputNumber)).length();
-//		}else{
-//			xSize = DBSFormat.getFormattedNumber(DBSNumber.toDouble(xFoo), NUMBER_SIGN.NONE, pvGetNumberMask(pInputNumber)).length();
-//		}
-		//Define valor de um caracter como tamanho mínimo
 		if (xSize < 1){
 			xSize = 1;
 		}
 		return xSize;
 	}
 
-//	private Integer pvGetUnits(DBSInputNumber pInputNumber){
-//		Integer xUnits = (pInputNumber.getSize() - pInputNumber.getDecimalPlaces());
-//		if (xUnits > 7){
-//			return 7;
-//		}
-//		if (xUnits > 7){
-//			return xUnits;
-//		}
-//		10
-//		100
-//		1000
-//		10000
-//		100000
-//		1000000
-//		
-//	}
+
 }

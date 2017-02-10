@@ -83,7 +83,7 @@ public class DBSInputNumber extends DBSUIInputText {
 	}
 
 	public Integer getSize() {
-		return (Integer) getStateHelper().eval(PropertyKeys.size, 18);
+		return (Integer) getStateHelper().eval(PropertyKeys.size, 12);
 	}
 	
 	public void setLeadingZero(Boolean pLeadingZero) {
