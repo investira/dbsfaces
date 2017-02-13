@@ -519,7 +519,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 	 */
 	private Integer pvInitializeChartsValues(DBSCharts pCharts, DBSChart pChart, Integer pIndex, Integer pGlobalIndex){
 		Integer xIndex = pIndex - 1;
-//		TYPE xType = TYPE.get(pCharts.getType());
+		TYPE xType = TYPE.get(pCharts.getType());
 		//Loop por todos os DBSChartValue de todos os DBSChart deste DBSCharts
 		for (UIComponent xChild : pChart.getChildren()){
 			if (xChild instanceof DBSChartValue){
@@ -541,7 +541,11 @@ public class DBSChartsRenderer extends DBSRenderer {
 					xChartValue.setIndex(xIndex);
 					xChartValue.setGlobalIndex(pGlobalIndex + xIndex);
 					xChartValue.setPreviousValue(pChart.getTotalValue());
-					pChart.setTotalValue(pChart.getTotalValue() + DBSObject.getNotNull(xChartValue.getValue(),0D));
+					if (xType == TYPE.PIE){
+						pChart.setTotalValue(pChart.getTotalValue() + DBSObject.getNotNull(DBSNumber.abs(xChartValue.getValue()),0D));
+					}else{
+						pChart.setTotalValue(pChart.getTotalValue() + DBSObject.getNotNull(xChartValue.getValue(),0D));
+					}
 					//Salva valores alterados
 					xChartValue.setSavedState(xChartValue.saveState(FacesContext.getCurrentInstance()));
 					//Salva largura e altura máxima dos labels

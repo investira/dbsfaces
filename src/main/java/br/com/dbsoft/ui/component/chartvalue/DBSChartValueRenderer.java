@@ -72,7 +72,7 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		
 		pvSetColor(xCharts, xChart, xChartValue);
 		
-		xPercValue = pvCalcPercValue(xChart, xChartValue);
+		xPercValue = pvCalcPercValue(xType, xChart, xChartValue);
 
 		xWriter.startElement("g", xChartValue);
 			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
@@ -104,12 +104,16 @@ public class DBSChartValueRenderer extends DBSRenderer {
 	 * @param pChartValue
 	 * @return
 	 */
-	private Double pvCalcPercValue(DBSChart pChart, DBSChartValue pChartValue){
+	private Double pvCalcPercValue(TYPE pType, DBSChart pChart, DBSChartValue pChartValue){
 		if (pChartValue.getValue() != null
 		 && pChartValue.getValue() != 0D
 		 && pChart.getTotalValue() != null
 		 && pChart.getTotalValue() != 0D){
-			return DBSNumber.divide(pChartValue.getValue(), pChart.getTotalValue()).doubleValue() * 100;
+			if (pType == TYPE.PIE){
+				return DBSNumber.divide(DBSNumber.abs(pChartValue.getValue()), pChart.getTotalValue()).doubleValue() * 100;
+			}else{
+				return DBSNumber.divide(pChartValue.getValue(), pChart.getTotalValue()).doubleValue() * 100;
+			}
 		}
 //		wLogger.error("dbschartvaluerendered:\t" + pChartValue.getLabel() + " Valor zerado ou nulo.");
 		return 0D;
