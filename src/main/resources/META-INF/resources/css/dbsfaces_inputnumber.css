@@ -84,62 +84,55 @@
     left: calc(50% - .5em);
 }
     
-/* .dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-up, */
-/* .dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-down{ */
-/* 	font-size: unset !important; */
-/* }    */
 
 .dbs_inputNumber > .-container > .-input > .-buttons > .-container > [class*=" -i_"]{
 	font-size: unset !important;
 }   
 
 .dbs_inputNumber > .-container > .-input > .-buttons > .-container > [class*=" -i_"]:before{
-/* 	font-size: 1.4em; */
     left: 0px;
-/*     top: .4em; */
 }
 
-
-.dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-delete:before{
-}
-
-.dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-close:before{
-}
 
 .dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-up:before{
-/* 	transform: rotate(-90deg); */
-	content: "+";
+	transform: rotate(-90deg);
 }
 
 .dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-down:before{
-/* 	transform: rotate(90deg); */
-	content: "-";
+	transform: rotate(90deg);
 }
 
-.dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-op_mm:before{
-/* 	font-size:.9em; */
-	content: "M";
-	text-decoration: overline;
-}   
-.dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-op_cm:before{
-/* 	font-size:.9em; */
-	content: "C";
-	text-decoration: overline;
-}   
-.dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-op_xm:before{
-/* 	font-size:.9em; */
-	content: "X";
-	text-decoration: overline;
-}   
-.dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-op_m:before{
-/* 	font-size:.8em; */
-	content: "M";
-}   
-.dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-op_c:before{
-/* 	font-size:.7em; */
-	content: "C";
-}   
-.dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-op_x:before{
-/* 	font-size:.6em; */
-	content: "X";
-}   
+/* .dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-delete:before{ */
+/* } */
+
+/* .dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-close:before{ */
+/* } */
+
+/* .dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-up:before{ */
+/* 	content: "+"; */
+/* } */
+
+/* .dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-down:before{ */
+/* 	content: "-"; */
+/* } */
+/* .dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-op_mm:before{ */
+/* 	content: "M"; */
+/* 	text-decoration: overline; */
+/* }    */
+/* .dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-op_cm:before{ */
+/* 	content: "C"; */
+/* 	text-decoration: overline; */
+/* }    */
+/* .dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-op_xm:before{ */
+/* 	content: "X"; */
+/* 	text-decoration: overline; */
+/* }    */
+/* .dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-op_m:before{ */
+/* 	content: "M"; */
+/* }    */
+/* .dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-op_c:before{ */
+/* 	content: "C"; */
+/* }    */
+/* .dbs_inputNumber > .-container > .-input > .-buttons > .-container > .-op_x:before{ */
+/* 	content: "X"; */
+/* }    */

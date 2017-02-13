@@ -65,9 +65,9 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
 			DBSFaces.encodeAttribute(xWriter, "class", xClass);
 			DBSFaces.encodeAttribute(xWriter, "style", xInputNumber.getStyle());
-			if (xInputNumber.getIncrement()){
-				DBSFaces.encodeAttribute(xWriter, "increment", "increment");
-			}
+//			if (xInputNumber.getIncrement()){
+//				DBSFaces.encodeAttribute(xWriter, "increment", "increment");
+//			}
 			//Container
 			xWriter.startElement("div", xInputNumber);
 				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
@@ -133,8 +133,14 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 		Integer xSize = pvGetSize(pInputNumber); //Ajusta tamanho considerando os pontos e virgulas.
 		String xClientId = getInputDataClientId(pInputNumber);
 //		String xStyle = DBSFaces.getCSSStyleWidthFromInputSize(xSize);
+		//Calcula o tamanho máximo sem a formatação
+		Integer xMaxSize = (pInputNumber.getMaxValue().length() > pInputNumber.getMinValue().length() ? 
+							pInputNumber.getMaxValue():pInputNumber.getMinValue()).replaceAll("\\D+", "").length();
+//		Integer xMaxSize = DBSFormat.getFormattedNumber((pInputNumber.getMaxValue().length() > pInputNumber.getMinValue().length()?pInputNumber.getMaxValue():pInputNumber.getMinValue()), 
+//				   NUMBER_SIGN.MINUS_PREFIX, 
+//				   pvGetNumberMask(pInputNumber)).replaceAll("\\D+", "").length();
 //		Integer xWidth  = DBSFormat.getFormattedNumber(pInputNumber.getMaxValue(), NUMBER_SIGN.MINUS_PREFIX, pvGetNumberMask(pInputNumber)).replaceAll("\\D+", "").length();
-		String xStyle = DBSFaces.getCSSStyleWidthFromInputSize(DBSFormat.getFormattedNumber(pInputNumber.getMaxValue(), NUMBER_SIGN.MINUS_PREFIX, pvGetNumberMask(pInputNumber)).replaceAll("\\D+", "").length());
+		String xStyle = DBSFaces.getCSSStyleWidthFromInputSize(xMaxSize + pInputNumber.getDecimalPlaces());
 		String xStyleClass = "";
 		String xValue = "";
 		if (pInputNumber.getValueDouble() != null){
@@ -194,103 +200,77 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 					DBSFaces.encodeAttribute(pWriter, "value", xValue, "0");
 					encodeClientBehaviors(pContext, pInputNumber);
 				pWriter.endElement("input");
-				if (pInputNumber.getIncrement()){
-//					pWriter.startElement("svg", pInputNumber);
-//						DBSFaces.encodeSVGNamespaces(pWriter);
-//						DBSFaces.encodeAttribute(pWriter, "class", "-button");
-//						DBSFaces.encodeAttribute(pWriter, "viewBox", "0 0 2 1");
-////						DBSFaces.encodeAttribute(pWriter, "viewBox", "0 0 3.3 1");
-//						DBSFaces.encodeSVGPath(pInputNumber, pWriter, "M 1,0 L2,1 L0,1 Z", "-path -up", null, null);
-////						DBSFaces.encodeSVGPath(pInputNumber, pWriter, "M 1,1 L2,0 L0,0 Z", "-path -down", null, null);
-////						DBSFaces.encodeSVGPath(pInputNumber, pWriter, "M 2.3,1 L3.3,0 L1.3,0 Z", "-path -down", null, null);
-//						
-//					pWriter.endElement("svg");
-//					pWriter.startElement("svg", pInputNumber);
-//						DBSFaces.encodeSVGNamespaces(pWriter);
-//						DBSFaces.encodeAttribute(pWriter, "class", "-button");
-//						DBSFaces.encodeAttribute(pWriter, "viewBox", "0 0 2 1");
-////						DBSFaces.encodeSVGPath(pInputNumber, pWriter, "M 1,0 L2,1 L0,1 Z", "-path -up", null, null);
-//						DBSFaces.encodeSVGPath(pInputNumber, pWriter, "M 1,1 L2,0 L0,0 Z", "-path -down", null, null);
-////						DBSFaces.encodeSVGPath(pInputNumber, pWriter, "M 2.3,1 L3.3,0 L1.3,0 Z", "-path -down", null, null);
-//					pWriter.endElement("svg");
-
-					//					DBSFaces.encodeAttribute(pWriter, "width", pCharts.getWidth());
-//					DBSFaces.encodeAttribute(pWriter, "height", pCharts.getHeight() - pCharts.getCaptionHeight() - pCharts.getFooterHeight());
-						
-//					String xUp =  " "
-//							pWriter.startElement("div", pInputNumber);
-//							<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-//							 width="800px" height="800px" viewBox="0 0 800 800" enable-background="new 0 0 2 1" xml:space="preserve">
-//						<polygon fill="none" stroke="#000000" stroke-miterlimit="10" points=“2,1 0,1 1,0 "/>
-//						</svg>
-					//Encode do botão
-					pWriter.startElement("div", pInputNumber);
-						DBSFaces.encodeAttribute(pWriter, "class", "-buttons");
-						pWriter.startElement("div", pInputNumber);
-							DBSFaces.encodeAttribute(pWriter, "class", " -container -th_flex -not_selectable");
-							pWriter.startElement("div", pInputNumber);
-								DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -delete -i_delete -th_col"); //-i_navigate_down 
-							pWriter.endElement("div");
-							pWriter.startElement("div", pInputNumber);
-								if (pInputNumber.getValueDouble() != null){
-									if (pInputNumber.getValueDouble() < 0){
-										DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -direction -down -th_col");
-									}else{
-										DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -direction -up -th_col");
-									}
-								}
-							pWriter.endElement("div");
-							Integer xInteiros = Math.max(pInputNumber.getMaxValue().replaceAll("\\\\D+", "").length(), pInputNumber.getMinValue().replaceAll("\\\\D+", "").length());
-							Integer xCount = 0;
-							if (xInteiros >= 8){
-								pWriter.startElement("div", pInputNumber);
-									DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -op_mm -th_col");
-								pWriter.endElement("div");
-								xCount++;
-							}
-							if (xInteiros >= 7){
-								pWriter.startElement("div", pInputNumber);
-									DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -op_cm -th_col");
-								pWriter.endElement("div");
-								xCount++;
-							}
-							if (xInteiros >= 6){
-								pWriter.startElement("div", pInputNumber);
-									DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -op_xm -th_col");
-								pWriter.endElement("div");
-								xCount++;
-							}
-							if (xCount < 3){
-								if (xInteiros >= 5){
-									pWriter.startElement("div", pInputNumber);
-									DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -op_m -th_col");
-									pWriter.endElement("div");
-									xCount++;
-								}
-								if (xCount < 3){
-									if (xInteiros >= 4){
-										pWriter.startElement("div", pInputNumber);
-										DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -op_c -th_col");
-										pWriter.endElement("div");
-										xCount++;
-									}
-									if (xCount < 3){
-										if (xInteiros >= 3){
-											pWriter.startElement("div", pInputNumber);
-											DBSFaces.encodeAttribute(pWriter, "class",CSS.THEME.ACTION + " -op_x -th_col");
-											pWriter.endElement("div");
-										}
-									}
-								}
-							}
-							pWriter.startElement("div", pInputNumber);
-								DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -close -i_cancel -th_col"); //-i_navigate_down 
-							pWriter.endElement("div");
-						pWriter.endElement("div");
-					pWriter.endElement("div");
-				}
+			}
 			pWriter.endElement("div");
-		}
+//				if (pInputNumber.getIncrement()){
+//					//Encode do botão
+//					pWriter.startElement("div", pInputNumber);
+//						DBSFaces.encodeAttribute(pWriter, "class", "-buttons");
+//						pWriter.startElement("div", pInputNumber);
+//							DBSFaces.encodeAttribute(pWriter, "class", " -container -th_flex -not_selectable");
+//							if (xMaxSize >= 114){
+//								
+//								pWriter.startElement("div", pInputNumber);
+//									DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -delete -i_delete -th_col"); //-i_navigate_down 
+//								pWriter.endElement("div");
+//								pWriter.startElement("div", pInputNumber);
+//									if (pInputNumber.getValueDouble() != null){
+//										if (pInputNumber.getValueDouble() < 0){
+//											DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -direction -down -th_col");
+//										}else{
+//											DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -direction -up -th_col");
+//										}
+//									}
+//								pWriter.endElement("div");
+//								Integer xCount = 0;
+//								if (xMaxSize >= 8){
+//									pWriter.startElement("div", pInputNumber);
+//										DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -op_mm -th_col");
+//									pWriter.endElement("div");
+//									xCount++;
+//								}
+//								if (xMaxSize >= 7){
+//									pWriter.startElement("div", pInputNumber);
+//										DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -op_cm -th_col");
+//									pWriter.endElement("div");
+//									xCount++;
+//								}
+//								if (xCount < 2){
+//									if (xMaxSize >= 6){
+//										pWriter.startElement("div", pInputNumber);
+//											DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -op_xm -th_col");
+//										pWriter.endElement("div");
+//										xCount++;
+//									}
+//									if (xCount < 2){
+//										if (xMaxSize >= 5){
+//											pWriter.startElement("div", pInputNumber);
+//												DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -op_m -th_col");
+//											pWriter.endElement("div");
+//											xCount++;
+//										}
+//									}
+//								}
+//								pWriter.startElement("div", pInputNumber);
+//								DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -close -i_cancel -th_col"); //-i_navigate_down 
+//								pWriter.endElement("div");
+//							}else{
+////								pWriter.startElement("div", pInputNumber);
+////									DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.ACTION + " -op_c -th_col");
+////								pWriter.endElement("div");
+////								pWriter.startElement("div", pInputNumber);
+////									DBSFaces.encodeAttribute(pWriter, "class",CSS.THEME.ACTION + " -op_x -th_col");
+////								pWriter.endElement("div");
+//								pWriter.startElement("div", pInputNumber);
+//									DBSFaces.encodeAttribute(pWriter, "class",CSS.THEME.ACTION + " -up -i_media_play -th_col");
+//								pWriter.endElement("div");
+//								pWriter.startElement("div", pInputNumber);
+//									DBSFaces.encodeAttribute(pWriter, "class",CSS.THEME.ACTION + " -down -i_media_play -th_col");
+//								pWriter.endElement("div");
+//
+//							}
+//						pWriter.endElement("div");
+//					pWriter.endElement("div");
 	}
 	
 	private String pvGetNumberMask(DBSInputNumber pInputNumber) {
