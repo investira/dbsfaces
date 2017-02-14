@@ -20,30 +20,30 @@ dbs_inputNumber = function(pId, pInputData, pType, pMask, pMaskEmptyChr, pDecDig
 	
 	dbsfaces.inputNumber.initialize($(pId), $(pInputData), xDBSMask, pType, pMask, pMaskEmptyChr, pDecDigits, pGroupSymbol, pDecSymbol, pGroupDigits);
 	
-	$(pInputData).on("focusin", function(e){
-		dbsfaces.inputNumber.open($(pId));
-	});
+//	$(pInputData).on("focusin", function(e){
+//		dbsfaces.inputNumber.open($(pId));
+//	});
+//
+//	$(pInputData).on("focusout", function(e){
+//		if ($(pId).data("action")){
+//			$(pId).data("action", null);
+//			e.preventDefault();
+//			return false;
+//		}
+//	});
 
-	$(pInputData).on("focusout", function(e){
-		if ($(pId).data("action")){
-			$(pId).data("action", null);
-			e.preventDefault();
-			return false;
-		}
-	});
-
-	$(pInputData).on("blur", function(e){
-		dbsfaces.inputNumber.close($(pId));
-	});
+//	$(pInputData).on("blur", function(e){
+//		dbsfaces.inputNumber.close($(pId));
+//	});
 
 
-	$(pId + " > .-container > .-input > .-buttons > .-container > .-down").on("mousedown touchstart", function(e){
-		dbsfaces.inputNumber.increment($(pId), e, "d");
-	});
-
-	$(pId + " > .-container > .-input > .-buttons > .-container > .-up").on("mousedown touchstart", function(e){
-		dbsfaces.inputNumber.increment($(pId), e, "u");
-	});
+//	$(pId + " > .-container > .-input > .-buttons > .-container > .-down").on("mousedown touchstart", function(e){
+//		dbsfaces.inputNumber.increment($(pId), e, "d");
+//	});
+//
+//	$(pId + " > .-container > .-input > .-buttons > .-container > .-up").on("mousedown touchstart", function(e){
+//		dbsfaces.inputNumber.increment($(pId), e, "u");
+//	});
 	
 //	$(pId + " > .-container > .-input > .-buttons > .-container > .-direction").on("mousedown touchstart", function(e){
 //		dbsfaces.inputNumber.invert($(pId), e);
@@ -81,13 +81,13 @@ dbs_inputNumber = function(pId, pInputData, pType, pMask, pMaskEmptyChr, pDecDig
 //		dbsfaces.inputNumber.close($(pId), e);
 //	});
 	
-	$(pId + " > .-container > .-input > .-buttons > .-container > *").on("mouseup touchend", function(e){
-		dbsfaces.inputNumber.stopIncrement($(pId));
-	});
-	
-	$(pId + " > .-container > .-input > .-buttons > .-container > *").on("mouseleave", function(e){
-		dbsfaces.inputNumber.stopIncrement($(pId));
-	});
+//	$(pId + " > .-container > .-input > .-buttons > .-container > *").on("mouseup touchend", function(e){
+//		dbsfaces.inputNumber.stopIncrement($(pId));
+//	});
+//	
+//	$(pId + " > .-container > .-input > .-buttons > .-container > *").on("mouseleave", function(e){
+//		dbsfaces.inputNumber.stopIncrement($(pId));
+//	});
 
 
 
