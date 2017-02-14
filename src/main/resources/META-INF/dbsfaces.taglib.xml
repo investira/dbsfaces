@@ -1125,6 +1125,104 @@
 		</attribute>
 	</tag>
 	<tag>
+		<tag-name>slider</tag-name>
+		<component>
+			<component-type>br.com.dbsoft.ui.component.slider</component-type>
+			<handler-class />
+		</component>
+		<attribute>
+			<description>
+                Input com slider
+            </description>
+			<name>id</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Class CSS que será utilizada
+            </description>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Adiciona style 
+            </description>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Tipo de progress. Padrão é horizontal 'h'.&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;h = horizontal&lt;/li&gt;
+					&lt;li&gt;v = vertical&lt;/li&gt;
+					&lt;li&gt;c = círculo&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>type</name>
+			<required>false</required>
+			<type>java.lang.Sting</type>
+		</attribute>
+		<attribute>
+			<description>
+                rendered
+            </description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+                Valor da evolução atual. 
+            </description>
+			<name>value</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+		</attribute>
+		<attribute>
+			<description>
+                Valor Máximo. Valor default é 100. 
+            </description>
+			<name>maxValue</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+		</attribute>
+		<attribute>
+			<description>
+                Espessura do círculo quando type=c (círculo). 
+            </description>
+			<name>circleStrokeWidth</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Se progress será exibido com animação. O padrão é false.&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;true = com animação&lt;/li&gt;
+					&lt;li&gt;false = sem animação&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>animated</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>		
+		<attribute>
+			<description>
+                Tooltip
+            </description>
+			<name>tooltip</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
+	<tag>
 		<tag-name>fileUpload</tag-name>
 		<component>
 			<component-type>br.com.dbsoft.ui.component.fileUpload</component-type>

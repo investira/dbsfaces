@@ -1,0 +1,126 @@
+.dbs_slider{
+	display: inline-block;
+	/* box-sizing: border-box; */
+	/* line-height: 1em; */
+	border: none;
+	height: 1em;
+	width: 100px;
+	position: relative;
+}
+.dbs_slider > .-container{
+	position: absolute;
+	display: inline-block;
+	height: 100%;
+	width: 100%;
+	z-index: 1;
+    left: 0;
+    top: 0;
+}
+
+.dbs_slider.-hide > .-container{
+	opacity: 0;
+}
+
+
+.dbs_slider > .-container > .-content{
+    position: absolute;
+    display: inline-block;
+	left: 0;
+    top: 0;
+    overflow: hidden;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 12em;
+}
+
+.dbs_slider > .-container > .-content > .-slider{
+/* 	content: ""; */
+/* 	display: inline-block; */
+	bottom: 0;
+	left: 0;
+	-webkit-transition: inherit;
+	-moz-transition: inherit;
+	transition: inherit;
+    position: absolute;
+}
+
+.dbs_slider > .-container > .-content > .-slider .-label{
+	fill:currentColor;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	white-space: nowrap;
+	font-size: .8em;
+}
+
+.dbs_slider > .-container > .-content > .-slider .-label:nth-of-type(1) > .-value{
+	float: left;
+	font-weight: bold;
+}
+
+.dbs_slider > .-container > .-content > .-slider .-label:nth-of-type(1) > .-sufix{
+	font-size: 30%;
+	display: inline;
+}
+
+
+.dbs_slider.-v > .-container > .-content{
+/*     transform: scale(-1); */
+    width: .4em;
+    height: 100%;
+	left: calc(50% - .2em);
+}
+
+.dbs_slider.-h > .-container > .-content{
+    width: 100%;
+    height: .4em;
+    top: calc(50% - .2em);
+}
+    
+
+.dbs_slider.-h > .-container > .-content > .-slider{
+	height: 100%;
+	width: 0;
+}
+.dbs_slider.-ani.-h > .-container > .-content > .-slider{
+	transition: width 1s ease;
+}
+
+.dbs_slider.-v > .-container > .-content > .-slider{
+	width: 100%;
+	height: 0;
+}
+
+.dbs_slider.-ani.-v > .-container > .-content > .-slider{
+	transition: height 1s ease;
+}
+	
+.dbs_slider.-h > .-container > .-content > .-slider > .-label{
+	transform: translate(-50%, -50%);
+}
+.dbs_slider.-v > .-container > .-content > .-slider > .-label{
+	transform: translate(-50%, -50%) scale(-1);
+}
+
+.dbs_slider > .-container > .-handle{
+    height: .65em;
+    width: .65em;
+    border-radius: 17em;
+    background-color: #7d7d7d;
+    display: inline-block;
+    position: absolute;
+    border: 0.2em solid #636363;
+    box-sizing: content-box;
+    /* overflow: hidden; */
+    /* max-width: 1em; */
+    /* max-height: 1em; */
+}
+
+.dbs_slider.-h > .-container > .-handle{
+    top: calc(50% - .5em);
+    margin-left: -.5em;
+}
+.dbs_slider.-v > .-container > .-handle{
+    left: calc(50% - .5em);
+    margin-top: -.5em;
+}

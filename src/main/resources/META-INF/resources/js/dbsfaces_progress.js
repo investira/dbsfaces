@@ -115,11 +115,11 @@ dbsfaces.progress = {
 			xLabelFontSize = xDimension * .35;
 		}
 		xLabel.css("font-size", xLabelFontSize);
-		if (xValue > 45){
-			xLabel.addClass("-th_i");
-		}else{
-			xLabel.removeClass("-th_i");
-		}
+//		if (xValue > 45){
+//			xLabel.addClass("-th_i");
+//		}else{
+//			xLabel.removeClass("-th_i");
+//		}
 		pProgress.data("labelvalue").text(pProgress.data("percI"));
 		pProgress.data("labelsufix").text(pProgress.data("percD") + "%");
 	},

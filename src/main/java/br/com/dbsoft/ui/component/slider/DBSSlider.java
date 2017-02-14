@@ -1,0 +1,133 @@
+package br.com.dbsoft.ui.component.slider;
+
+import javax.faces.component.FacesComponent;
+
+import br.com.dbsoft.ui.component.DBSUIOutput;
+import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.util.DBSNumber;
+
+@FacesComponent(DBSSlider.COMPONENT_TYPE)
+public class DBSSlider extends DBSUIOutput {
+
+	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.SLIDER;
+	public final static String RENDERER_TYPE = COMPONENT_TYPE;
+	
+	protected enum PropertyKeys {
+		type,
+		maxValue,
+		circleStrokeWidth,
+		animated,
+		tooltip;
+		
+		String toString;
+
+		PropertyKeys(String toString) {
+			this.toString = toString;
+		}
+
+		PropertyKeys() {}
+
+		@Override
+		public String toString() {
+			return ((this.toString != null) ? this.toString : super.toString());
+		}
+	}
+	
+	public static enum TYPE {
+		HORIZONTAL 			("h"),
+		VERTICAL 			("v"),	
+	    CIRCLE 				("c");
+		
+		private String 	wName;
+		
+		private TYPE(String pName) {
+			this.wName = pName;
+		}
+
+		public String getName() {
+			return wName;
+		}
+
+		public String getStyleClass() {
+			return " -" + wName + " ";
+		}
+
+		public static TYPE get(String pType) {
+			if (pType == null){
+				return HORIZONTAL;
+			}			
+			pType = pType.trim().toLowerCase();
+	    	for (TYPE xP:TYPE.values()) {
+	    		if (xP.getName().equals(pType)){
+	    			return xP;
+	    		}
+	    	}
+	    	return HORIZONTAL;
+		}	
+	
+	}
+    public DBSSlider(){
+		setRendererType(DBSSlider.RENDERER_TYPE);
+    }
+	
+	public String getType() {
+		return (String) getStateHelper().eval(PropertyKeys.type, TYPE.HORIZONTAL.getName());
+	}
+	
+	public void setType(String pType) {
+		getStateHelper().put(PropertyKeys.type, pType);
+		handleAttribute("type", pType);
+	}
+
+	
+	public Double getMaxValue() {
+		return (Double) getStateHelper().eval(PropertyKeys.maxValue, 100D);
+	}
+	
+	public void setMaxValue(Double pMaxValue) {
+		getStateHelper().put(PropertyKeys.maxValue, pMaxValue);
+		handleAttribute("maxValue", pMaxValue);
+	}
+
+	public String getCircleStrokeWidth() {
+		return (String) getStateHelper().eval(PropertyKeys.circleStrokeWidth, "1em");
+	}
+	
+	public void setCircleStrokeWidth(String pCircleStrokeWidth) {
+		getStateHelper().put(PropertyKeys.circleStrokeWidth, pCircleStrokeWidth);
+		handleAttribute("circleStrokeWidth", pCircleStrokeWidth);
+	}
+
+		
+//	public Double getWidth() {
+//		return (Double) getStateHelper().eval(PropertyKeys.width, 16D);
+//	}
+//	public void setWidth(Double pWidth) {
+//		getStateHelper().put(PropertyKeys.width, pWidth);
+//		handleAttribute("width", pWidth);
+//	}
+	
+	public String getTooltip() {
+		return (String) getStateHelper().eval(PropertyKeys.tooltip, "");
+	}
+	
+	public void setTooltip(String pTooltip) {
+		getStateHelper().put(PropertyKeys.tooltip, pTooltip);
+		handleAttribute("tooltip", pTooltip);
+	}
+
+	@Override
+	public Double getValue() {
+		return DBSNumber.toDouble(super.getValue());
+	}
+	
+	public void setAnimated(Boolean pAnimated) {
+		getStateHelper().put(PropertyKeys.animated, pAnimated);
+		handleAttribute("animated", pAnimated);
+	}
+	
+	public Boolean getAnimated() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.animated, false);
+	}	
+
+}
