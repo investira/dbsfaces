@@ -17,14 +17,15 @@ dbsfaces.progress = {
 	},
 	
 	pvInitializeData: function(pProgress){
+		pProgress.data("type", (pProgress.hasClass("-c") ? "c": (pProgress.hasClass("-h") ? "h" : "v")));
 		pProgress.data("container", pProgress.children(".-container"));
 		pProgress.data("content", pProgress.data("container").children(".-content"));
-		pProgress.data("label", pProgress.data("content").find(".-label").first());
+		pProgress.data("progress", pProgress.data("content").children(".-progress"));
+		pProgress.data("label", pProgress.data("progress").find(".-label").first());
 		pProgress.data("labelvalue", pProgress.data("label").children(".-value"));
 		pProgress.data("labelsufix", pProgress.data("label").children(".-sufix"));
 		pProgress.data("point", pProgress.data("content").find("> g > .-point"));
 		pProgress.data("back", pProgress.data("content").find("> g > .-back"));
-		pProgress.data("type", (pProgress.hasClass("-c") ? "c": (pProgress.hasClass("-h") ? "h" : "v")));
 		pProgress.data("ani", (pProgress.hasClass("-ani") ? true: false));
 	},
 
@@ -42,10 +43,12 @@ dbsfaces.progress = {
 
 	pvInitializeLayoutHorizontalVertical: function(pProgress){
 		var xColor = tinycolor(pProgress.css("color"));
-		pProgress.data("container").css("border-color", xColor.setAlpha(.2))
-		   						   .css("background-color", xColor.setAlpha(.05));
-		var xBackground = "linear-gradient(135deg," + xColor.setAlpha(.7) + " 0%, " + xColor.setAlpha(1) + " 100%)";
-		pProgress.data("content").css("background", xBackground);
+		pProgress.data("content").css("border-color", xColor.setAlpha(.2))
+		   						 .css("background-color", xColor.setAlpha(.05));
+		pProgress.data("progress").css("color", xColor.setAlpha(1).invertLightness());
+		var xBackground = "linear-gradient(135deg," + xColor.setAlpha(.70) + " 0%, " + xColor.setAlpha(1) + " 100%)";
+
+		pProgress.data("progress").css("background", xBackground);
 	},
 	
 	pvInitializeLayoutCircle: function(pProgress){
@@ -122,13 +125,13 @@ dbsfaces.progress = {
 	},
 	
 	pvEncodeValueHorizontal: function(pProgress){
-		var xContent = pProgress.data("content");
+		var xContent = pProgress.data("progress");
 		var xValue = pProgress.attr("v");
 		xContent.css("width", xValue + "%");
 	},
 
 	pvEncodeValueVertical: function(pProgress){
-		var xContent = pProgress.data("content");
+		var xContent = pProgress.data("progress");
 		var xValue = pProgress.attr("v");
 		xContent.css("height", xValue + "%");
 	},

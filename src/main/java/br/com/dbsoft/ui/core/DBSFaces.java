@@ -171,6 +171,7 @@ public class  DBSFaces {
 	    public static final String LISTBOX = "listbox";
 	    public static final String RADIO = "radio";
 	    public static final String PROGRESS = "progress";
+	    public static final String SLIDER = "slider";
 	    public static final String STYLE = "style";
 	    public static final String COMPONENTTREE = "componenttree";
 	    public static final String TABLE = "table";
@@ -511,6 +512,11 @@ public class  DBSFaces {
 		public static class PROGRESS
 		{	
 			public static final String MAIN = " " + CLASS_PREFIX + ID.PROGRESS + " ";
+		}
+
+		public static class SLIDER
+		{	
+			public static final String MAIN = " " + CLASS_PREFIX + ID.SLIDER + " ";
 		}
 		
 		public static class TOOLTIP

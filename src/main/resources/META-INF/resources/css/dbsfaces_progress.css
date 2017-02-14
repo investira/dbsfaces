@@ -8,12 +8,10 @@
 	position: relative;
 }
 .dbs_progress > .-container{
-	/* position: absolute; */
 	position: absolute;
 	display: inline-block;
 	height: 100%;
 	width: 100%;
-	/* box-sizing: content-box; */
 	z-index: 1;
     left: 0;
     top: 0;
@@ -24,33 +22,45 @@
 }
 
 .dbs_progress > .-container > .-content{
+    position: absolute;
+    display: inline-block;
+	left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
 }
 
+.dbs_progress > .-container > .-content > .-progress{
+}
 
-.dbs_progress > .-container > .-content .-label:nth-of-type(1) > .-value{
+.dbs_progress > .-container > .-content > .-progress .-label{
+	fill:currentColor;
+}
+
+.dbs_progress > .-container > .-content > .-progress .-label:nth-of-type(1) > .-value{
 	float: left;
 	font-weight: bold;
 }
 
-.dbs_progress > .-container > .-content .-label:nth-of-type(1) > .-sufix{
+.dbs_progress > .-container > .-content > .-progress .-label:nth-of-type(1) > .-sufix{
 	font-size: 30%;
 	display: inline;
 }
 
-.dbs_progress.-h > .-container,
-.dbs_progress.-v > .-container{
-	content: "";
-	overflow: hidden;
+
+.dbs_progress.-h > .-container > .-content,
+.dbs_progress.-v > .-container > .-content{
+    overflow: hidden;
 	border-style: solid;
 	border-width: 1px;
 	border-radius: 12em;
 }
-.dbs_progress.-v > .-container{
+.dbs_progress.-v > .-container > .-content{
     transform: scale(-1);
 }
 
-.dbs_progress.-h > .-container  > .-content,
-.dbs_progress.-v > .-container  > .-content{
+.dbs_progress.-h > .-container  > .-content > .-progress,
+.dbs_progress.-v > .-container  > .-content > .-progress{
 /* 	content: ""; */
 /* 	display: inline-block; */
 	bottom: 0;
@@ -61,45 +71,39 @@
 /* 	border-radius: inherit; */
 }
 
-.dbs_progress.-h > .-container > .-content{
+.dbs_progress.-h > .-container > .-content > .-progress{
 	height: 100%;
 	width: 0;
 }
-.dbs_progress.-ani.-h > .-container > .-content{
+.dbs_progress.-ani.-h > .-container > .-content > .-progress{
 	transition: width 1s ease;
 }
 
-.dbs_progress.-v > .-container > .-content{
+.dbs_progress.-v > .-container > .-content > .-progress{
 	width: 100%;
 	height: 0;
 }
 
-.dbs_progress.-ani.-v > .-container > .-content{
+.dbs_progress.-ani.-v > .-container > .-content > .-progress{
 	transition: height 1s ease;
 }
 	
-.dbs_progress.-h > .-container > .-content > .-label,
-.dbs_progress.-v > .-container > .-content > .-label{
+.dbs_progress.-h > .-container > .-content > .-progress > .-label,
+.dbs_progress.-v > .-container > .-content > .-progress > .-label{
 	position: absolute;
 	left: 50%;
 	top: 50%;
 	white-space: nowrap;
 }
-.dbs_progress.-h > .-container > .-content > .-label{
+.dbs_progress.-h > .-container > .-content > .-progress > .-label{
 	transform: translate(-50%, -50%);
 }
-.dbs_progress.-v > .-container > .-content > .-label{
+.dbs_progress.-v > .-container > .-content > .-progress > .-label{
 	transform: translate(-50%, -50%) scale(-1);
 }
 
 .dbs_progress.-c > .-container > .-content{
 	overflow: visible;
-	position: absolute;
-    left: 0;
-    top: 0;
-    /* display: inline-block; */
-    width: 100%;
-    height: 100%;
 }
 
 .dbs_progress.-c > .-container > .-content > g{

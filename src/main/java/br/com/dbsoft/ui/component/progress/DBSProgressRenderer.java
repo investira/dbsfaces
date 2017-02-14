@@ -66,13 +66,16 @@ public class DBSProgressRenderer extends DBSRenderer {
 	private void pvEncodeHorizontalVertical(DBSProgress pProgress, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("div", pProgress);
 			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
-			pvEncodeHorizontalVerticalLabel(pProgress, pWriter);
+			pWriter.startElement("div", pProgress);
+				DBSFaces.encodeAttribute(pWriter, "class", "-progress");
+				pvEncodeHorizontalVerticalLabel(pProgress, pWriter);
+			pWriter.endElement("div");
 		pWriter.endElement("div");
 	}
 
 	private void pvEncodeHorizontalVerticalLabel(DBSProgress pProgress, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("div", pProgress);
-			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LABEL + CSS.THEME.FC);
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LABEL);
 			pWriter.startElement("div", pProgress);
 				DBSFaces.encodeAttribute(pWriter, "class", "-value");
 			pWriter.endElement("div");
@@ -99,9 +102,10 @@ public class DBSProgressRenderer extends DBSRenderer {
 				pWriter.endElement("linearGradient");
 			pWriter.endElement("defs");
 			pWriter.startElement("g", pProgress);
+				DBSFaces.encodeAttribute(pWriter, "class", "-progress");
 				DBSFaces.encodeSVGPath(pProgress, pWriter, "", "-back", null, "stroke-width=" + pProgress.getCircleStrokeWidth() + ";");
 				DBSFaces.encodeSVGPath(pProgress, pWriter, "", CSS.MODIFIER.POINT, null, "stroke=url(#" + pProgress.getClientId() + "_color); stroke-width=" + pProgress.getCircleStrokeWidth() + ";");
-				DBSFaces.encodeSVGText(pProgress, pWriter, 0, 0,  "<tspan class='-value'/><tspan class='-sufix'></tspan>", CSS.MODIFIER.LABEL + CSS.THEME.FC, null, null);
+				DBSFaces.encodeSVGText(pProgress, pWriter, 0, 0,  "<tspan class='-value'/><tspan class='-sufix'></tspan>", CSS.MODIFIER.LABEL, null, null);
 			pWriter.endElement("g");
 		pWriter.endElement("svg");
 	}
