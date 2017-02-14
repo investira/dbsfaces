@@ -308,13 +308,17 @@
 
 			var self = this;
 			
+			setTimeout( function(){
+				self[ self.options.type === "fixed" ? 'selectFirst' : 'selectAll' ]();
+			}, 1 );
+			
 			//Seleciona quando for não mobile ou quando for fixo
-			if (self.options.type === "fixed"
-			|| !dbsfaces.util.isMobile()){
-				setTimeout( function(){
-					self[ self.options.type === "fixed" ? 'selectFirst' : 'selectAll' ]();
-				}, 1 );
-			}
+//			if (self.options.type === "fixed"
+//			|| !dbsfaces.util.isMobile()){
+//				setTimeout( function(){
+//					self[ self.options.type === "fixed" ? 'selectFirst' : 'selectAll' ]();
+//				}, 1 );
+//			}
 		},
 
 		onBlur: function(ev) {
