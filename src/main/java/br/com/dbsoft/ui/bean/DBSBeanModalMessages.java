@@ -14,6 +14,7 @@ import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.message.IDBSMessages;
 import br.com.dbsoft.ui.component.modalmessages.IDBSModalMessages;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.util.DBSObject;
 
 /**
  * @author ricardo.villar
@@ -215,6 +216,9 @@ public abstract class DBSBeanModalMessages extends DBSBean implements IDBSModalM
 	 * @return
 	 */
 	protected Boolean isMessageValidated(String pMessageKey){
+		if (DBSObject.isNull(wMessages.getMessage(pMessageKey))) {
+			return false;
+		}
 		return wMessages.getMessage(pMessageKey).isMessageValidatedTrue();
 	}
 	
