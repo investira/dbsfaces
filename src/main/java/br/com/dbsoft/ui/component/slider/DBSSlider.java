@@ -2,18 +2,20 @@ package br.com.dbsoft.ui.component.slider;
 
 import javax.faces.component.FacesComponent;
 
-import br.com.dbsoft.ui.component.DBSUIOutput;
+import br.com.dbsoft.ui.component.DBSUIInput;
+
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSNumber;
 
 @FacesComponent(DBSSlider.COMPONENT_TYPE)
-public class DBSSlider extends DBSUIOutput {
+public class DBSSlider extends DBSUIInput {
 
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.SLIDER;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 	
 	protected enum PropertyKeys {
 		type,
+		orientation,
 		maxValue,
 		circleStrokeWidth,
 		animated,
@@ -34,7 +36,7 @@ public class DBSSlider extends DBSUIOutput {
 	}
 	
 	public static enum TYPE {
-		HORIZONTAL 			("h"),
+		PROGRESS 			("p"),
 		VERTICAL 			("v"),	
 	    CIRCLE 				("c");
 		
@@ -54,10 +56,42 @@ public class DBSSlider extends DBSUIOutput {
 
 		public static TYPE get(String pType) {
 			if (pType == null){
-				return HORIZONTAL;
+				return PROGRESS;
 			}			
 			pType = pType.trim().toLowerCase();
 	    	for (TYPE xP:TYPE.values()) {
+	    		if (xP.getName().equals(pType)){
+	    			return xP;
+	    		}
+	    	}
+	    	return PROGRESS;
+		}	
+	}
+
+	public static enum ORIENTATION {
+		HORIZONTAL 			("h"),
+		VERTICAL 			("v");
+		
+		private String 	wName;
+		
+		private ORIENTATION(String pName) {
+			this.wName = pName;
+		}
+
+		public String getName() {
+			return wName;
+		}
+
+		public String getStyleClass() {
+			return " -" + wName + " ";
+		}
+
+		public static ORIENTATION get(String pType) {
+			if (pType == null){
+				return HORIZONTAL;
+			}			
+			pType = pType.trim().toLowerCase();
+	    	for (ORIENTATION xP:ORIENTATION.values()) {
 	    		if (xP.getName().equals(pType)){
 	    			return xP;
 	    		}
@@ -66,12 +100,13 @@ public class DBSSlider extends DBSUIOutput {
 		}	
 	
 	}
-    public DBSSlider(){
+
+	public DBSSlider(){
 		setRendererType(DBSSlider.RENDERER_TYPE);
     }
 	
 	public String getType() {
-		return (String) getStateHelper().eval(PropertyKeys.type, TYPE.HORIZONTAL.getName());
+		return (String) getStateHelper().eval(PropertyKeys.type, TYPE.PROGRESS.getName());
 	}
 	
 	public void setType(String pType) {
@@ -79,6 +114,14 @@ public class DBSSlider extends DBSUIOutput {
 		handleAttribute("type", pType);
 	}
 
+	public String getOrientation() {
+		return (String) getStateHelper().eval(PropertyKeys.orientation, ORIENTATION.HORIZONTAL.getName());
+	}
+	
+	public void setOrientation(String pOrientation) {
+		getStateHelper().put(PropertyKeys.orientation, pOrientation);
+		handleAttribute("orientation", pOrientation);
+	}
 	
 	public Double getMaxValue() {
 		return (Double) getStateHelper().eval(PropertyKeys.maxValue, 100D);
@@ -106,15 +149,7 @@ public class DBSSlider extends DBSUIOutput {
 //		getStateHelper().put(PropertyKeys.width, pWidth);
 //		handleAttribute("width", pWidth);
 //	}
-	
-	public String getTooltip() {
-		return (String) getStateHelper().eval(PropertyKeys.tooltip, "");
-	}
-	
-	public void setTooltip(String pTooltip) {
-		getStateHelper().put(PropertyKeys.tooltip, pTooltip);
-		handleAttribute("tooltip", pTooltip);
-	}
+
 
 	@Override
 	public Double getValue() {

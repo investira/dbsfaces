@@ -9,6 +9,7 @@ import javax.faces.render.FacesRenderer;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.slider.DBSSlider;
+import br.com.dbsoft.ui.component.slider.DBSSlider.ORIENTATION;
 import br.com.dbsoft.ui.component.slider.DBSSlider.TYPE;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
@@ -16,7 +17,13 @@ import br.com.dbsoft.util.DBSNumber;
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSSlider.RENDERER_TYPE)
 public class DBSSliderRenderer extends DBSRenderer {
-	
+    
+	@Override
+	public void decode(FacesContext pContext, UIComponent pComponent) {
+		DBSSlider xSlider = (DBSSlider) pComponent;
+        if(xSlider.getReadOnly()) {return;}
+    }
+    
     @Override
 	public boolean getRendersChildren() {
 		return false; //True=Chama o encodeChildren abaixo e interrompe a busca por filho pela rotina renderChildren
@@ -30,9 +37,11 @@ public class DBSSliderRenderer extends DBSRenderer {
 		String xClientId = xSlider.getClientId(pContext);
 		String xClass = CSS.SLIDER.MAIN + " -hide ";
 		
-		TYPE xType = TYPE.get(xSlider.getType());
+		TYPE 		xType = TYPE.get(xSlider.getType());
+		ORIENTATION xOrientation = ORIENTATION.get(xSlider.getOrientation());
 		
-		xClass += xType.getStyleClass();
+		xClass += xOrientation.getStyleClass();
+		
 		
 		if (xSlider.getAnimated()){
 			xClass += " -ani ";
@@ -45,13 +54,16 @@ public class DBSSliderRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
 			DBSFaces.encodeAttribute(xWriter, "class", xClass);
 			DBSFaces.encodeAttribute(xWriter, "style", xSlider.getStyle());
+			DBSFaces.encodeAttribute(xWriter, "type", xType.getName());
 			DBSFaces.encodeAttribute(xWriter, "v", pvGetPercent(xSlider));
 			xWriter.startElement("div", xSlider);
 				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER + CSS.MODIFIER.NOT_SELECTABLE);
 				pvEncodeContent(xSlider, xWriter);
 			xWriter.endElement("div");
-			DBSFaces.encodeTooltip(pContext, xSlider, xSlider.getTooltip().toString());
-			pvEncodeJS(xSlider, xWriter);
+			DBSFaces.encodeTooltip(pContext, xSlider, xSlider.getTooltip());
+			if (!xSlider.getReadOnly()){
+				pvEncodeJS(xSlider, xWriter);
+			}
 		xWriter.endElement("div");
 	}
 	
@@ -66,6 +78,9 @@ public class DBSSliderRenderer extends DBSRenderer {
 		pWriter.endElement("div");
 		pWriter.startElement("div", pSlider);
 			DBSFaces.encodeAttribute(pWriter, "class", "-handle");
+//			pWriter.startElement("div", pSlider);
+//				DBSFaces.encodeAttribute(pWriter, "class", "-i_dot");
+//			pWriter.endElement("div");	
 		pWriter.endElement("div");	
 	}
 
