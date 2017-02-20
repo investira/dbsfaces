@@ -87,7 +87,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 		String xClientId = xInputText.getClientId(pContext);
 		String xClass = CSS.INPUTTEXT.MAIN + CSS.THEME.INPUT; 
 		if (xInputText.getStyleClass()!=null){
-			xClass = xClass + xInputText.getStyleClass();
+			xClass += xInputText.getStyleClass();
 		}
 		xWriter.startElement("div", xInputText);
 			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
