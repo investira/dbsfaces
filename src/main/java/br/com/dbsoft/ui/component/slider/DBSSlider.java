@@ -17,7 +17,7 @@ public class DBSSlider extends DBSUIInput {
 		type,
 		orientation,
 		maxValue,
-		circleStrokeWidth,
+		minValue,
 		animated,
 		tooltip;
 		
@@ -36,9 +36,9 @@ public class DBSSlider extends DBSUIInput {
 	}
 	
 	public static enum TYPE {
-		PROGRESS 			("p"),
-		VERTICAL 			("v"),	
-	    CIRCLE 				("c");
+		VALUES 				("v"),
+		STEPS 				("s"),	
+	    OPTION 				("o");
 		
 		private String 	wName;
 		
@@ -56,7 +56,7 @@ public class DBSSlider extends DBSUIInput {
 
 		public static TYPE get(String pType) {
 			if (pType == null){
-				return PROGRESS;
+				return VALUES;
 			}			
 			pType = pType.trim().toLowerCase();
 	    	for (TYPE xP:TYPE.values()) {
@@ -64,7 +64,7 @@ public class DBSSlider extends DBSUIInput {
 	    			return xP;
 	    		}
 	    	}
-	    	return PROGRESS;
+	    	return VALUES;
 		}	
 	}
 
@@ -106,7 +106,7 @@ public class DBSSlider extends DBSUIInput {
     }
 	
 	public String getType() {
-		return (String) getStateHelper().eval(PropertyKeys.type, TYPE.PROGRESS.getName());
+		return (String) getStateHelper().eval(PropertyKeys.type, TYPE.VALUES.getName());
 	}
 	
 	public void setType(String pType) {
@@ -132,13 +132,13 @@ public class DBSSlider extends DBSUIInput {
 		handleAttribute("maxValue", pMaxValue);
 	}
 
-	public String getCircleStrokeWidth() {
-		return (String) getStateHelper().eval(PropertyKeys.circleStrokeWidth, "1em");
+	public Double getMinValue() {
+		return (Double) getStateHelper().eval(PropertyKeys.minValue, 0D);
 	}
 	
-	public void setCircleStrokeWidth(String pCircleStrokeWidth) {
-		getStateHelper().put(PropertyKeys.circleStrokeWidth, pCircleStrokeWidth);
-		handleAttribute("circleStrokeWidth", pCircleStrokeWidth);
+	public void setMinValue(Double pMinValue) {
+		getStateHelper().put(PropertyKeys.minValue, pMinValue);
+		handleAttribute("minValue", pMinValue);
 	}
 
 		

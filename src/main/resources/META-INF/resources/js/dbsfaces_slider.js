@@ -31,7 +31,6 @@ dbsfaces.slider = {
 	initialize: function(pSlider){
 		dbsfaces.slider.pvInitializeData(pSlider);
 		dbsfaces.slider.pvInitializeLayout(pSlider);
-		dbsfaces.slider.resize(pSlider);
 	},
 
 	jump: function(pSlider, e){
@@ -43,7 +42,7 @@ dbsfaces.slider = {
 		}else{
 			xValue = 1 - ((xXY.y - pSlider.data("content")[0].getBoundingClientRect().top) / pSlider.data("length"));
 		}
-		dbsfaces.slider.pvSetValue(pSlider, xValue * 100);
+		dbsfaces.slider.pvSetValuePerc(pSlider, xValue * 100);
 		e.stopImmediatePropagation();
 		e.preventDefault();
 	},
@@ -61,6 +60,7 @@ dbsfaces.slider = {
 		e.stopImmediatePropagation();
 		e.preventDefault();
 	},
+	
 	handleStop: function(pSlider, e){
 		pSlider.data("dif", null);
 		pSlider.removeClass("-selected");
@@ -84,7 +84,7 @@ dbsfaces.slider = {
 			xDif = pSlider.data("length");
 		}
 		xValue = (xDif / pSlider.data("length")) * 100;
-		dbsfaces.slider.pvSetValue(pSlider, xValue);
+		dbsfaces.slider.pvSetValuePerc(pSlider, xValue);
 		e.stopImmediatePropagation();
 		e.preventDefault();
 	},
@@ -96,7 +96,6 @@ dbsfaces.slider = {
 			pSlider.data("length", pSlider.data("content")[0].getBoundingClientRect().height);
 		}
 		dbsfaces.slider.pvSetValue(pSlider, pSlider.attr("v"));
-//		dbsfaces.slider.pvInitializeLayout(pSlider);
 	},
 	
 	pvInitializeData: function(pSlider){
@@ -113,24 +112,37 @@ dbsfaces.slider = {
 		pSlider.data("back", pSlider.data("content").find("> g > .-back"));
 		pSlider.data("ani", (pSlider.hasClass("-ani") ? true: false));
 		pSlider.data("dif", null);
+		pSlider.data("max", parseFloat(pSlider.attr("max")));
+		pSlider.data("min", parseFloat(pSlider.attr("min")));
 
 	},
 
 	pvInitializeLayout: function(pSlider){
 		dbsfaces.slider.pvInitializeLayoutHorizontalVertical(pSlider);
-		pSlider.removeClass("-hide");
+		dbsfaces.slider.resize(pSlider);
+		setTimeout(function(e){
+			pSlider.removeClass("-hide");
+		},0);
 	},
 
 	pvInitializeLayoutHorizontalVertical: function(pSlider){
 		var xColor = tinycolor(pSlider.css("color"));
-		var xInverted = xColor.invertLightness().setAlpha(1);
-		pSlider.data("content").css("background-color", xColor.setAlpha(.3));
-//		pSlider.data("slider").css("color", xColor.setAlpha(1).invertLightness());
+		var xColor2 = tinycolor(pSlider.css("color"));
+//		var xInverted = xColor.invertLightness().setAlpha(1);
+		pSlider.data("content").css("background-color", xColor2.setAlpha(.3));
 		var xBackground;
-		xBackground = "linear-gradient(135deg," + xColor.setAlpha(.70) + " 0%, " + xColor.setAlpha(1) + " 100%)";
+		xColor2.setAlpha(.70);
+		xBackground = "linear-gradient(135deg," + xColor2 + " 0%, " + xColor + " 100%)";
 		pSlider.data("slider").css("background", xBackground);
 		
-		xBackground = "linear-gradient(135deg," + xInverted.lighten(10) + " 0%, " + xInverted + " 100%)";
+		xColor2.setAlpha(1);
+		if (xColor.isDark()){
+			xColor2.lighten(10);
+			xBackground = "linear-gradient(135deg," + xColor2 + " 0%, " + xColor + " 100%)";
+		}else{
+			xColor2.darken(10);
+			xBackground = "linear-gradient(135deg," + xColor + " 0%, " + xColor2 + " 100%)";
+		}
 		pSlider.data("handle").css("background", xBackground);
 	},
 	
@@ -145,23 +157,27 @@ dbsfaces.slider = {
 	},
 
 	pvEncodeValueLabel: function(pSlider, pOrientation){
+		clearTimeout(pSlider.data("timeout"));
+		pSlider.data("timeout", setTimeout(function(){
+			pSlider.trigger("change");
+		},0));
 //		var xDimension = pSlider.data("dimension");
-		var xLabelFontSize; 
-		var xLabel = pSlider.data("label");
-		var xLabelValue = pSlider.data("labelvalue");
-		var xLabelSufix = pSlider.data("labelsufix");
-		var xValue = pSlider.attr("v");
-		var xPerc = pSlider.attr("perc");
-		var xClass = "";
+//		var xLabelFontSize; 
+//		var xLabel = pSlider.data("label");
+//		var xLabelValue = pSlider.data("labelvalue");
+//		var xLabelSufix = pSlider.data("labelsufix");
+//		var xValue = pSlider.attr("v");
+//		var xPerc = pSlider.attr("perc");
+//		var xClass = "";
 
-		pSlider.data("labelvalue").text(pSlider.data("percI"));
-		pSlider.data("labelsufix").text(pSlider.data("percD") + "%");
+//		pSlider.data("labelvalue").text(pSlider.data("percI"));
+//		pSlider.data("labelsufix").text(pSlider.data("percD") + "%");
 	},
 	
 	pvEncodeValueHorizontal: function(pSlider){
 		var xContent = pSlider.data("slider");
 		var xHandle = pSlider.data("handle");
-		var xValue = pSlider.attr("v");
+		var xValue = pSlider.data("perc") * 100;
 		xContent.css("width", xValue + "%");
 		xHandle.css("left", xValue + "%");
 	},
@@ -176,16 +192,18 @@ dbsfaces.slider = {
 
 	pvSetValue: function(pSlider, pValue){
 		pValue = dbsfaces.math.round(parseFloat(pValue),2);
-		xInt = String(dbsfaces.math.trunc(pValue, 0)); //Parte inteira
-		xDec = String(dbsfaces.math.round(pValue - xInt, 4)).substring(1, 4); //Parte decimal
-		pSlider.attr("v", pValue);
+		xValuePerc = (pValue - pSlider.data("min")) / (pSlider.data("max") - pSlider.data("min")) * 100; 
+		dbsfaces.slider.pvSetValuePerc(pSlider, xValuePerc);
+	},
+
+	pvSetValuePerc: function(pSlider, pValuePerc){
+		pValuePerc = dbsfaces.math.round(parseFloat(pValuePerc),2);
+		xInt = String(dbsfaces.math.trunc(pValuePerc, 0)); //Parte inteira
+		xDec = String(dbsfaces.math.round(pValuePerc - xInt, 4)).substring(1, 4); //Parte decimal
 		pSlider.data("percI", xInt);
 		pSlider.data("percD", xDec);
-		pSlider.data("perc", (pValue / 100));
-		setTimeout(function(e){
-			dbsfaces.slider.pvEncodeValue(pSlider);
-		}, 0);
-//		pSlider.data("dimension", Math.min(pSlider[0].getBoundingClientRect().height, pSlider[0].getBoundingClientRect().width));
+		pSlider.data("perc", (pValuePerc / 100));
+		pSlider.attr("v", (pSlider.data("max") - pSlider.data("min")) * pSlider.data("perc") + pSlider.data("min"));
+		dbsfaces.slider.pvEncodeValue(pSlider);
 	}
-
 }

@@ -1157,11 +1157,11 @@
 		<attribute>
 			<description>
 				&lt;span style="font-size:small"&gt;
-				Tipo de slider. Padrão é horizontal 'p'.&lt;br/&gt;
+				Tipo de slider. Padrão é value 'v'.&lt;br/&gt;
 				&lt;ul&gt;
-					&lt;li&gt;p = progress&lt;/li&gt;
-					&lt;li&gt;v = vertical&lt;/li&gt;
-					&lt;li&gt;c = círculo&lt;/li&gt;
+					&lt;li&gt;v = values&lt;/li&gt;
+					&lt;li&gt;s = steps&lt;/li&gt;
+					&lt;li&gt;o = options&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>type</name>
@@ -1207,11 +1207,11 @@
 		</attribute>
 		<attribute>
 			<description>
-                Espessura do círculo quando type=c (círculo). 
+                Valor Mínimo. Valor default é 0. 
             </description>
-			<name>circleStrokeWidth</name>
+			<name>maxValue</name>
 			<required>false</required>
-			<type>java.lang.String</type>
+			<type>java.lang.Double</type>
 		</attribute>
 		<attribute>
 			<description>

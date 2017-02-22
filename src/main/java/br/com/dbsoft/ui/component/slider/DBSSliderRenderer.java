@@ -13,7 +13,6 @@ import br.com.dbsoft.ui.component.slider.DBSSlider.ORIENTATION;
 import br.com.dbsoft.ui.component.slider.DBSSlider.TYPE;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
-import br.com.dbsoft.util.DBSNumber;
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSSlider.RENDERER_TYPE)
 public class DBSSliderRenderer extends DBSRenderer {
@@ -55,7 +54,9 @@ public class DBSSliderRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(xWriter, "class", xClass);
 			DBSFaces.encodeAttribute(xWriter, "style", xSlider.getStyle());
 			DBSFaces.encodeAttribute(xWriter, "type", xType.getName());
-			DBSFaces.encodeAttribute(xWriter, "v", pvGetPercent(xSlider));
+			DBSFaces.encodeAttribute(xWriter, "v", xSlider.getValue());
+			DBSFaces.encodeAttribute(xWriter, "max", xSlider.getMaxValue());
+			DBSFaces.encodeAttribute(xWriter, "min", xSlider.getMinValue());
 			xWriter.startElement("div", xSlider);
 				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER + CSS.MODIFIER.NOT_SELECTABLE);
 				pvEncodeContent(xSlider, xWriter);
@@ -96,27 +97,29 @@ public class DBSSliderRenderer extends DBSRenderer {
 //		pWriter.endElement("div");
 //	}
 
-	private Double pvGetPercent(DBSSlider pSlider) throws IOException{
-		Double xM = DBSNumber.toDouble(pSlider.getMaxValue());
-		Double xV = DBSNumber.toDouble(pSlider.getValue());
-		Double xFator = 0D;
-		//Exibe já preenchido se não houver valor máximo
-		if (xM == 0D){
-			xFator = 1D; 
-		//Exibe já vázio se valor atual for zero
-		}else if (xV == 0D){
-			xFator = 0D;
-		}else{
-			xFator = (xV / xM); //Calcula fator
-		}
-		xFator *= 100D; //Calcula percentual
-		return xFator;
-	}
+//	private Double pvGetPercent(DBSSlider pSlider) throws IOException{
+////		Double xM = DBSNumber.toDouble(pSlider.getMaxValue());
+//		Double xMin = DBSNumber.toDouble(pSlider.getMinValue());
+//		Double xMax = DBSNumber.toDouble(pSlider.getMaxValue());
+//		Double xV = DBSNumber.toDouble(pSlider.getValue());
+//		Double xFator = 0D;
+//		//Exibe já preenchido se não houver valor máximo
+//		if (xMax == 0D){
+//			xFator = 1D; 
+//		//Exibe já vázio se valor atual for zero
+//		}else if (xV == 0D){
+//			xFator = 0D;
+//		}else{
+//			xFator = (xV / (xMax - xMin)); //Calcula fator
+//		}
+//		xFator *= 100D; //Calcula percentual
+//		return xFator;
+//	}
 	
-	private void pvEncodeJS(UIComponent pComponent, ResponseWriter pWriter) throws IOException{
-		DBSFaces.encodeJavaScriptTagStart(pComponent, pWriter);
+	private void pvEncodeJS(DBSSlider pSlider, ResponseWriter pWriter) throws IOException{
+		DBSFaces.encodeJavaScriptTagStart(pSlider, pWriter);
 		String xJS = "$(document).ready(function() { \n" +
-				     " var xSliderId = dbsfaces.util.jsid('" + pComponent.getClientId() + "'); \n " + 
+				     " var xSliderId = dbsfaces.util.jsid('" + pSlider.getClientId() + "'); \n " + 
 				     " dbs_slider(xSliderId); \n" +
                      "}); \n"; 
 		pWriter.write(xJS);
