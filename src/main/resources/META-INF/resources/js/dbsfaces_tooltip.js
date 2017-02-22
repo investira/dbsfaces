@@ -53,8 +53,11 @@ dbsfaces.tooltip = {
 	initializeLayout: function(pSourceComponent){
 		if (pSourceComponent.data("tooltip") == null){return;}
 		var xContent = pSourceComponent.data("tooltip").data("content");
-		var xContainer = pSourceComponent.data("tooltip").data("container");
-		xContainer.css("border-color", xContent.css("background-color"));
+//		var xContainer = pSourceComponent.data("tooltip").data("container");
+//		xContainer.css("border-color", xContent.css("background-color"));
+		var xColor = tinycolor(pSourceComponent.css("color")).invertLightness().setAlpha(1);
+		xContent.css("background-color", pSourceComponent.css("color"));
+		xContent.css("color", xColor);
 	},
 	
 	showDelayed: function(pSourceComponent){
