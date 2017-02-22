@@ -6,7 +6,8 @@
     overflow: visible;
 	z-index: 1;
 	cursor:default;
-
+    line-height: normal;
+    
 /* 	line-height: 120%; */
 	text-shadow: none;
 	font-style: normal;
@@ -64,9 +65,8 @@
 	
 	border-style:none;
 
-
 	background-repeat: repeat;
-
+	background-color: currentColor;
 	-moz-box-shadow: 0px 0px 2px #222;  
 	-webkit-box-shadow: 0px 0px 2px #222;  
 	box-shadow: 0px 0px 2px #222;  
@@ -95,12 +95,12 @@
 
 .-tooltip.-l1 > .-container:before{
     border-top: 8px solid;
-	border-top-color: inherit;
+	border-top-color: currentColor;
     top:100%;
 }
 .-tooltip.-l3 > .-container:before{
     border-bottom: 8px solid;
-	border-bottom-color: inherit;
+	border-bottom-color: currentColor;
     top: -7px;
 }
 
@@ -116,12 +116,12 @@
 }
 .-tooltip.-l4 > .-container:before{
     border-left: 8px solid;
-    border-left-color: inherit;
+    border-left-color: currentColor;
 	left: 100%;
 }
 .-tooltip.-l2 > .-container:before{
     border-right: 8px solid;
-    border-right-color: inherit;
+    border-right-color: currentColor;
     left: -7px;
 }
 

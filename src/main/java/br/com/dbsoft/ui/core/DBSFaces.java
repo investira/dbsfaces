@@ -2848,7 +2848,7 @@ public class  DBSFaces {
 		if (!DBSObject.isEmpty(pTooltipText) ||
 			xTooltip != null){
 			xWriter.startElement("div", pComponent);
-				String xClass = CSS.MODIFIER.TOOLTIP + CSS.THEME.FC + CSS.THEME.INVERT;
+				String xClass = CSS.MODIFIER.TOOLTIP;
 				if (pBasicTooltip){
 					xClass += " -tt"; //Tooltip padrão
 				}else{
@@ -2861,7 +2861,7 @@ public class  DBSFaces {
 					xClass = CSS.MODIFIER.CONTAINER;
 					encodeAttribute(xWriter, "class", xClass);
 					xWriter.startElement("div", pComponent);
-						xClass = CSS.MODIFIER.CONTENT + CSS.THEME.BC + CSS.THEME.INVERT;
+						xClass = CSS.MODIFIER.CONTENT;
 						if (!pBasicTooltip){
 							xClass += CSS.BACK_TEXTURE_BLACK_GRADIENT;
 						}
