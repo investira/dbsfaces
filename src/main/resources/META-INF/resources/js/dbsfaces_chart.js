@@ -32,7 +32,6 @@ dbs_chart = function(pId) {
 		}
 		//Procura por chartvalue a partir da linha do gráfico
 		$(pId + " > .-path > .-mask").on("mousemove touchmove touchstart", function(e){
-//				console.log("XXchart\t" + e.originalEvent.type + "\t" + document.elementFromPoint(e.originalEvent.pageX, e.originalEvent.pageY).id);
 			dbsfaces.chart.findPoint(e, xChart);
 			e.stopImmediatePropagation();
 			return false;
@@ -349,7 +348,8 @@ dbsfaces.chart = {
 		var xChartMask = pChart.data("mask");
 		var xDecimals = 1;
 		var xPosition = xChartMask.offset();
-		var xCurrentX = dbsfaces.math.round(e.originalEvent.pageX - xPosition.left, xDecimals);
+		var xXY = dbsfaces.ui.pointerEventToXY(e);
+		var xCurrentX = dbsfaces.math.round(xXY.x - xPosition.left, xDecimals);
 		if (xCurrentX < 0){return;}
 	    var xBeginning = xCurrentX;
         var xEnd = dbsfaces.math.round(xChartPath.getTotalLength(), xDecimals);
