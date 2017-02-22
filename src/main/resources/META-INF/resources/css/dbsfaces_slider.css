@@ -3,34 +3,33 @@
 	/* box-sizing: border-box; */
 	/* line-height: 1em; */
 	border: none;
-	height: 1em;
-	width: 100px;
 	position: relative;
 }
 .dbs_slider > .-container{
-	position: absolute;
+	position: relative;
 	display: inline-block;
 	height: 100%;
 	width: 100%;
 	z-index: 1;
     left: 0;
     top: 0;
+    pointer-events: all;
 }
 
 .dbs_slider.-hide > .-container{
 	opacity: 0;
+    pointer-events: none;
 }
 
 
 .dbs_slider > .-container > .-content{
     position: absolute;
     display: inline-block;
-	left: 0;
+    left: 0;
     top: 0;
     overflow: hidden;
-	border-style: solid;
-	border-width: 1px;
-	border-radius: 12em;
+    border-radius: 1em;
+    border: none;
 }
 
 .dbs_slider:not(-readOnly) > .-container > .-content{
@@ -71,18 +70,24 @@
 	display: inline;
 }
 
+.dbs_slider.-v > .-container{
+    min-width: 2em;
+}
+.dbs_slider.-h > .-container{
+    min-height: 2em;
+}
 
 .dbs_slider.-v > .-container > .-content{
 /*     transform: scale(-1); */
-    width: .4em;
+    width: .2em;
     height: 100%;
-	left: calc(50% - .2em);
+	left: calc(50% - .1em);
 }
 
 .dbs_slider.-h > .-container > .-content{
     width: 100%;
-    height: .4em;
-    top: calc(50% - .2em);
+    height: .2em;
+    top: calc(50% - .1em);
 }
     
 
@@ -111,30 +116,31 @@
 }
 
 .dbs_slider > .-container > .-handle{
-    height: 1em;
-    width: 1em;
-    border-radius: 1em 1em;
-    background: linear-gradient(135deg, hsl(0, 0%, 100%) 1%,hsl(0, 0%, 68%) 100%);
+    height: 1.4em;
+    width: 1.4em;
+    border-radius: .2em;
+/*     background: linear-gradient(135deg, hsl(0, 0%, 100%) 1%,hsl(0, 0%, 68%) 100%); */
     display: inline-block;
     position: absolute;
     border: 0.3em solid currentColor;
     box-sizing: content-box;
-	-webkit-transform: scale(.6);
-	-moz-transform: scale(.6);
-	-o-transform: scale(.6);
-	transform: scale(.6);
-    /* overflow: hidden; */
-    /* max-width: 1em; */
-    /* max-height: 1em; */
+	-webkit-transform: scale(.5);
+	-moz-transform: scale(.5);
+	-o-transform: scale(.5);
+	transform: scale(.5);
+	-webkit-transition: transform cubic-bezier(0, 0.65, 1, 1) .2s;
+	-moz-transition: transform linear .2s;
+	-o-transition: transform linear .2s;
+	transition: transform cubic-bezier(0, 0.65, 1, 1) .2s;	
 }
 
 .dbs_slider.-h > .-container > .-handle{
-    top: calc(50% - .75em);
-    margin-left: -.75em;
+    top: calc(50% - 1em);
+    margin-left: -1em;
 }
 .dbs_slider.-v > .-container > .-handle{
-    left: calc(50% - .75em);
-    margin-top: -.75em;
+    left: calc(50% - 1em);
+    margin-top: -1em;
 }
 
 .dbs_slider.-selected > .-container > .-handle{
@@ -142,8 +148,4 @@
 	-moz-transform: scale(1);
 	-o-transform: scale(1);
 	transform: scale(1);
-	-webkit-transition: transform cubic-bezier(0, 0.65, 1, 1) .2s;
-	-moz-transition: transform linear .2s;
-	-o-transition: transform linear .2s;
-	transition: transform cubic-bezier(0, 0.65, 1, 1) .2s;	
 }

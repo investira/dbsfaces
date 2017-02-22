@@ -4,19 +4,17 @@ dbs_slider = function(pId) {
 		dbsfaces.slider.resize($(pId));
 	});
 	
-	$(pId + " > .-container > .-content").on("mousedown touchstart", function(e){
+	$(pId + " > .-container").on("mousedown touchstart", function(e){
 		dbsfaces.slider.jump($(pId), e);
-	});
-	$(pId + " > .-container > .-handle").on("mousedown touchstart", function(e){
 		dbsfaces.slider.handleStart($(pId), e);
 	});
-	$(pId + " > .-container > .-handle").on("mouseup touchend", function(e){
+	$(pId + " > .-container").on("mouseup touchend", function(e){
 		dbsfaces.slider.handleStop($(pId), e);
 	});
-	$(pId + " > .-container > .-handle").on("mouseleave", function(e){
+	$(pId + " > .-container").on("mouseleave", function(e){
 		dbsfaces.slider.handleStop($(pId), e);
 	});
-	$(pId + " > .-container > .-handle").on("mousemove touchmove", function(e){
+	$(pId + " > .-container").on("mousemove touchmove", function(e){
 		if (e.originalEvent.type == "mousemove" 
 		 && e.which == 0){
 			dbsfaces.slider.handleStop($(pId), e);
@@ -37,12 +35,13 @@ dbsfaces.slider = {
 	},
 
 	jump: function(pSlider, e){
+		pSlider.addClass("-selected");
 		var xValue = 0;
-		console.log(e.originalEvent.offsetY + "\t" + e.originalEvent.offsetX + "\t" + pSlider.data("length") + "\t" + pSlider.data("content")[0].getBoundingClientRect().top);
+		var xXY = dbsfaces.ui.pointerEventToXY(e);
 		if (pSlider.data("orientation") == "h"){
-			xValue = (e.originalEvent.clientX - pSlider.data("content")[0].getBoundingClientRect().left) / pSlider.data("length");
+			xValue = (xXY.x - pSlider.data("content")[0].getBoundingClientRect().left) / pSlider.data("length");
 		}else{
-			xValue = 1 - ((e.originalEvent.clientY - pSlider.data("content")[0].getBoundingClientRect().top) / pSlider.data("length"));
+			xValue = 1 - ((xXY.y - pSlider.data("content")[0].getBoundingClientRect().top) / pSlider.data("length"));
 		}
 		dbsfaces.slider.pvSetValue(pSlider, xValue * 100);
 		e.stopImmediatePropagation();
@@ -51,10 +50,11 @@ dbsfaces.slider = {
 
 	handleStart: function(pSlider, e){
 		pSlider.addClass("-selected");
+		var xXY = dbsfaces.ui.pointerEventToXY(e);
 		if (pSlider.data("orientation") == "h"){
-			pSlider.data("dif", e.originalEvent.pageX);
+			pSlider.data("dif", xXY.x);
 		}else{
-			pSlider.data("dif", e.originalEvent.pageY);
+			pSlider.data("dif", xXY.y);
 		}
 		pSlider.data("pospx", pSlider.data("length") * pSlider.data("perc"));
 		
@@ -72,10 +72,11 @@ dbsfaces.slider = {
 		if (pSlider.data("dif") == null){return;}
 		var xDif = pSlider.data("pospx");
 		var xValue = 0;
+		var xXY = dbsfaces.ui.pointerEventToXY(e);
 		if (pSlider.data("orientation") == "h"){
-			xDif -= pSlider.data("dif") - e.originalEvent.pageX;
+			xDif -= pSlider.data("dif") - xXY.x;
 		}else{
-			xDif -= e.originalEvent.pageY - pSlider.data("dif");
+			xDif -= xXY.y - pSlider.data("dif");
 		}
 		if (xDif < 0){
 			xDif = 0;
@@ -83,7 +84,6 @@ dbsfaces.slider = {
 			xDif = pSlider.data("length");
 		}
 		xValue = (xDif / pSlider.data("length")) * 100;
-//		console.log(pSlider.data("dif") + "\t" + e.originalEvent.pageX + "\t" + e.originalEvent.pageY + "\t" + xDif + "\t" + pSlider.data("length"));
 		dbsfaces.slider.pvSetValue(pSlider, xValue);
 		e.stopImmediatePropagation();
 		e.preventDefault();
@@ -123,12 +123,15 @@ dbsfaces.slider = {
 
 	pvInitializeLayoutHorizontalVertical: function(pSlider){
 		var xColor = tinycolor(pSlider.css("color"));
-		pSlider.data("content").css("border-color", xColor.setAlpha(.2))
-		   						 .css("background-color", xColor.setAlpha(.05))
-		pSlider.data("slider").css("color", xColor.setAlpha(1).invertLightness());
-		var xBackground = "linear-gradient(135deg," + xColor.setAlpha(.70) + " 0%, " + xColor.setAlpha(1) + " 100%)";
-
+		var xInverted = xColor.invertLightness().setAlpha(1);
+		pSlider.data("content").css("background-color", xColor.setAlpha(.3));
+//		pSlider.data("slider").css("color", xColor.setAlpha(1).invertLightness());
+		var xBackground;
+		xBackground = "linear-gradient(135deg," + xColor.setAlpha(.70) + " 0%, " + xColor.setAlpha(1) + " 100%)";
 		pSlider.data("slider").css("background", xBackground);
+		
+		xBackground = "linear-gradient(135deg," + xInverted.lighten(10) + " 0%, " + xInverted + " 100%)";
+		pSlider.data("handle").css("background", xBackground);
 	},
 	
 	pvEncodeValue: function(pSlider){

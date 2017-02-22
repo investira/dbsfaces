@@ -35,7 +35,7 @@ public class DBSSliderRenderer extends DBSRenderer {
 		DBSSlider xSlider = (DBSSlider) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xSlider.getClientId(pContext);
-		String xClass = CSS.SLIDER.MAIN + " -hide ";
+		String xClass = CSS.SLIDER.MAIN + CSS.MODIFIER.NOT_SELECTABLE + " -hide ";
 		
 		TYPE 		xType = TYPE.get(xSlider.getType());
 		ORIENTATION xOrientation = ORIENTATION.get(xSlider.getOrientation());

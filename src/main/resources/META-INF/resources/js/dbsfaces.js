@@ -848,7 +848,20 @@ dbsfaces.ui = {
 			$(pId).removeClass("-ajaxBegin");
 //			$("div .-loading").remove(); Comentado em 08/abr/15 - Ricardo: Excluid código até a certeza que código não é mais necessário.
 		});
-	}
+	},
+	
+	pointerEventToXY : function(e){
+        var xXY = {x:0, y:0};
+        if(e.type == 'touchstart' || e.type == 'touchmove' || e.type == 'touchend' || e.type == 'touchcancel'){
+          var xTouch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+          xXY.x = xTouch.pageX;
+          xXY.y = xTouch.pageY;
+        } else if (e.type == 'mousedown' || e.type == 'mouseup' || e.type == 'mousemove' || e.type == 'mouseover'|| e.type=='mouseout' || e.type=='mouseenter' || e.type=='mouseleave') {
+          xXY.x = e.pageX;
+          xXY.y = e.pageY;
+        }
+        return xXY;
+     }
 
 }
 
