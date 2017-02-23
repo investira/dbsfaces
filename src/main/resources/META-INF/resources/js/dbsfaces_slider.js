@@ -1,8 +1,11 @@
-dbs_slider = function(pId) {
-	dbsfaces.slider.initialize($(pId));
+dbs_slider = function(pId, pListValues, pMinValue, pMaxValue) {
+	dbsfaces.slider.initialize($(pId), pListValues, pMinValue, pMaxValue);
 	$(window).resize(function(e){
 		dbsfaces.slider.resize($(pId));
 	});
+	
+	if ($(pId).hasClass("-readOnly")){return;}
+	if ($(pId).hasClass("-disabled")){return;}
 	
 	$(pId + " > .-container").on("mousedown touchstart", function(e){
 		dbsfaces.slider.jump($(pId), e);
@@ -15,6 +18,7 @@ dbs_slider = function(pId) {
 		dbsfaces.slider.handleStop($(pId), e);
 	});
 	$(pId + " > .-container").on("mousemove touchmove", function(e){
+		if ($(pId).data("dif") == null){return false;}
 		if (e.originalEvent.type == "mousemove" 
 		 && e.which == 0){
 			dbsfaces.slider.handleStop($(pId), e);
@@ -28,21 +32,87 @@ dbs_slider = function(pId) {
 }
 
 dbsfaces.slider = {
-	initialize: function(pSlider){
-		dbsfaces.slider.pvInitializeData(pSlider);
+	initialize: function(pSlider, pListValues, pMinValue, pMaxValue){
+		dbsfaces.slider.pvInitializeData(pSlider, pListValues, pMinValue, pMaxValue);
 		dbsfaces.slider.pvInitializeLayout(pSlider);
 	},
 
+	
+	pvInitializeData: function(pSlider, pListValues, pMinValue, pMaxValue){
+		pSlider.data("type", pSlider.attr("type"));
+		pSlider.data("orientation", (pSlider.hasClass("-h") ? "h" : "v"));
+		pSlider.data("listvalues", pListValues);
+		pSlider.data("min", parseFloat(pMinValue));
+		pSlider.data("max", parseFloat(pMaxValue));
+		pSlider.data("container", pSlider.children(".-container"));
+		pSlider.data("content", pSlider.data("container").children(".-content"));
+		pSlider.data("handle", pSlider.data("container").children(".-handle"));
+		pSlider.data("input", pSlider.data("container").children(".-th_input-data"));
+		pSlider.data("points", pSlider.data("container").children(".-points"));
+		pSlider.data("point", pSlider.data("points").children(".-point"));
+		pSlider.data("slider", pSlider.data("content").children(".-slider"));
+		pSlider.data("label", pSlider.data("slider").find(".-label").first());
+		pSlider.data("labelvalue", pSlider.data("label").children(".-value"));
+		pSlider.data("labelsufix", pSlider.data("label").children(".-sufix"));
+		pSlider.data("ani", (pSlider.hasClass("-ani") ? true: false));
+		pSlider.data("dif", null);
+
+	},
+
+	pvInitializeLayout: function(pSlider){
+		dbsfaces.slider.pvInitializeLayoutHorizontalVertical(pSlider);
+		dbsfaces.slider.pvInitializeLayoutPoints(pSlider);
+		dbsfaces.slider.resize(pSlider);
+		setTimeout(function(e){
+			pSlider.removeClass("-hide");
+		},0);
+	},
+	
+	pvInitializeLayoutHorizontalVertical: function(pSlider){
+		var xColor = tinycolor(pSlider.css("color"));
+		var xColor2 = tinycolor(pSlider.css("color"));
+//		var xInverted = xColor.invertLightness().setAlpha(1);
+		pSlider.data("content").css("background-color", xColor2.setAlpha(.3));
+		var xBackground;
+		xColor2.setAlpha(.70);
+		xBackground = "linear-gradient(135deg," + xColor2 + " 0%, " + xColor + " 100%)";
+		pSlider.data("slider").css("background", xBackground);
+		
+		xColor2.setAlpha(1);
+		if (xColor.isDark()){
+			xColor2.lighten(10);
+			xBackground = "linear-gradient(135deg," + xColor2 + " 0%, " + xColor + " 100%)";
+		}else{
+			xColor2.darken(10);
+			xBackground = "linear-gradient(135deg," + xColor + " 0%, " + xColor2 + " 100%)";
+		}
+		pSlider.data("handle").css("background", xBackground);
+	},
+
+	pvInitializeLayoutPoints: function(pSlider){
+		var xPoint = pSlider.data("point");
+		var xValuePerc;
+		for (var xI=0; xI < xPoint.length; xI++){
+			xValuePerc = (xI / (xPoint.length - 1)) * 100;
+			if (pSlider.data("orientation") == "h"){
+				$(xPoint[xI]).css("left", xValuePerc + "%");
+			}else{
+				$(xPoint[xI]).css("top", xValuePerc + "%");
+			}
+		}
+	},
+
+
 	jump: function(pSlider, e){
 		pSlider.addClass("-selected");
-		var xValue = 0;
+		var xValuePercFator = 0;
 		var xXY = dbsfaces.ui.pointerEventToXY(e);
 		if (pSlider.data("orientation") == "h"){
-			xValue = (xXY.x - pSlider.data("content")[0].getBoundingClientRect().left) / pSlider.data("length");
+			xValuePercFator = (xXY.x - pSlider.data("content")[0].getBoundingClientRect().left) / pSlider.data("length");
 		}else{
-			xValue = 1 - ((xXY.y - pSlider.data("content")[0].getBoundingClientRect().top) / pSlider.data("length"));
+			xValuePercFator = 1 - ((xXY.y - pSlider.data("content")[0].getBoundingClientRect().top) / pSlider.data("length"));
 		}
-		dbsfaces.slider.pvSetValuePerc(pSlider, xValue * 100);
+		dbsfaces.slider.pvSetValuePerc(pSlider, xValuePercFator);
 		e.stopImmediatePropagation();
 		e.preventDefault();
 	},
@@ -71,7 +141,7 @@ dbsfaces.slider = {
 	handleMove: function(pSlider, e){
 		if (pSlider.data("dif") == null){return;}
 		var xDif = pSlider.data("pospx");
-		var xValue = 0;
+		var xValuePercFator = 0;
 		var xXY = dbsfaces.ui.pointerEventToXY(e);
 		if (pSlider.data("orientation") == "h"){
 			xDif -= pSlider.data("dif") - xXY.x;
@@ -83,8 +153,8 @@ dbsfaces.slider = {
 		}else if (xDif > pSlider.data("length")){
 			xDif = pSlider.data("length");
 		}
-		xValue = (xDif / pSlider.data("length")) * 100;
-		dbsfaces.slider.pvSetValuePerc(pSlider, xValue);
+		xValuePercFator = xDif / pSlider.data("length");
+		dbsfaces.slider.pvSetValuePerc(pSlider, xValuePercFator);
 		e.stopImmediatePropagation();
 		e.preventDefault();
 	},
@@ -95,72 +165,86 @@ dbsfaces.slider = {
 		}else{
 			pSlider.data("length", pSlider.data("content")[0].getBoundingClientRect().height);
 		}
-		dbsfaces.slider.pvSetValue(pSlider, pSlider.attr("v"));
-	},
-	
-	pvInitializeData: function(pSlider){
-		pSlider.data("type", pSlider.attr("type"));
-		pSlider.data("orientation", (pSlider.hasClass("-h") ? "h" : "v"));
-		pSlider.data("container", pSlider.children(".-container"));
-		pSlider.data("content", pSlider.data("container").children(".-content"));
-		pSlider.data("handle", pSlider.data("container").children(".-handle"));
-		pSlider.data("slider", pSlider.data("content").children(".-slider"));
-		pSlider.data("label", pSlider.data("slider").find(".-label").first());
-		pSlider.data("labelvalue", pSlider.data("label").children(".-value"));
-		pSlider.data("labelsufix", pSlider.data("label").children(".-sufix"));
-		pSlider.data("point", pSlider.data("content").find("> g > .-point"));
-		pSlider.data("back", pSlider.data("content").find("> g > .-back"));
-		pSlider.data("ani", (pSlider.hasClass("-ani") ? true: false));
-		pSlider.data("dif", null);
-		pSlider.data("max", parseFloat(pSlider.attr("max")));
-		pSlider.data("min", parseFloat(pSlider.attr("min")));
-
+		dbsfaces.slider.pvSetValue(pSlider);
 	},
 
-	pvInitializeLayout: function(pSlider){
-		dbsfaces.slider.pvInitializeLayoutHorizontalVertical(pSlider);
-		dbsfaces.slider.resize(pSlider);
-		setTimeout(function(e){
-			pSlider.removeClass("-hide");
-		},0);
-	},
 
-	pvInitializeLayoutHorizontalVertical: function(pSlider){
-		var xColor = tinycolor(pSlider.css("color"));
-		var xColor2 = tinycolor(pSlider.css("color"));
-//		var xInverted = xColor.invertLightness().setAlpha(1);
-		pSlider.data("content").css("background-color", xColor2.setAlpha(.3));
-		var xBackground;
-		xColor2.setAlpha(.70);
-		xBackground = "linear-gradient(135deg," + xColor2 + " 0%, " + xColor + " 100%)";
-		pSlider.data("slider").css("background", xBackground);
-		
-		xColor2.setAlpha(1);
-		if (xColor.isDark()){
-			xColor2.lighten(10);
-			xBackground = "linear-gradient(135deg," + xColor2 + " 0%, " + xColor + " 100%)";
+	pvSetValue: function(pSlider){
+//		var xValue = pSlider.data("input")[0].value
+		var xValue = pSlider.data("input").attr("value");
+		var xValuePercFator = 0; 
+		if (pSlider.data("type") == "v"){
+			xValuePercFator = dbsfaces.math.round(parseFloat(xValue),2);
+			xValuePercFator = (xValuePercFator - pSlider.data("min")) / (pSlider.data("max") - pSlider.data("min")) * 100; 
 		}else{
-			xColor2.darken(10);
-			xBackground = "linear-gradient(135deg," + xColor + " 0%, " + xColor2 + " 100%)";
+			xValue = xValue.trim().toLowerCase();
+			var xListValues = pSlider.data("listvalues");
+			//Procura qual o item da lista foi selecionado
+			for (var xI=0; xI < xListValues.length; xI++){
+				if (xListValues[xI].toLowerCase() == xValue){
+					 xValuePercFator = xI / (xListValues.length - 1);
+					 break;
+				}
+			}
 		}
-		pSlider.data("handle").css("background", xBackground);
+		dbsfaces.slider.pvSetValuePerc(pSlider, xValuePercFator);
 	},
-	
+
+
+	pvSetValuePerc: function(pSlider, pValuePercFator){
+		pValuePercFator = dbsfaces.math.round(parseFloat(pValuePercFator), 4);
+		var xValuePerc = pValuePercFator * 100;
+		if (pSlider.data("type") == "v"){
+			
+//			pSlider.data("input")[0].value = (pSlider.data("max") - pSlider.data("min")) * pValuePercFator + pSlider.data("min");
+			pSlider.data("input").attr("value", (pSlider.data("max") - pSlider.data("min")) * pValuePercFator + pSlider.data("min"));
+		}else{
+			var xListValues = pSlider.data("listvalues");
+			var xI = dbsfaces.math.round(((xListValues.length - 1) * pValuePercFator),0);
+//			pSlider.data("input")[0].value = xListValues[xI];
+			
+			pSlider.data("input").attr("value", xListValues[xI]);
+			pValuePercFator = xI / (xListValues.length - 1);
+			xValuePerc = pValuePercFator * 100;
+		}
+		xInt = String(dbsfaces.math.trunc(xValuePerc, 0)); //Parte inteira
+		xDec = String(dbsfaces.math.round(xValuePerc - xInt, 4)).substring(1, 4); //Parte decimal
+		pSlider.data("percI", xInt);
+		pSlider.data("percD", xDec);
+		pSlider.data("perc", pValuePercFator);
+		dbsfaces.slider.pvEncodeValue(pSlider);
+	},
+
 	pvEncodeValue: function(pSlider){
 		var xOrientation = pSlider.data("orientation");
+		var xContent = pSlider.data("slider");
+		var xHandle = pSlider.data("handle");
+		var xValuePerc = pSlider.data("perc") * 100;
 		if (xOrientation == "h"){
-			dbsfaces.slider.pvEncodeValueHorizontal(pSlider);
+			dbsfaces.slider.pvEncodeValueHorizontal(xContent, xHandle, xValuePerc);
 		}else{
-			dbsfaces.slider.pvEncodeValueVertical(pSlider);
+			dbsfaces.slider.pvEncodeValueVertical(xContent, xHandle, xValuePerc);
 		}
 		dbsfaces.slider.pvEncodeValueLabel(pSlider, xOrientation);
-	},
 
-	pvEncodeValueLabel: function(pSlider, pOrientation){
 		clearTimeout(pSlider.data("timeout"));
 		pSlider.data("timeout", setTimeout(function(){
 			pSlider.trigger("change");
 		},0));
+	},
+
+	
+	pvEncodeValueHorizontal: function(pContent, pHandle, pValuePerc){
+		pContent.css("width", pValuePerc + "%");
+		pHandle.css("left", pValuePerc + "%");
+	},
+
+	pvEncodeValueVertical: function(pContent, pHandle, pValuePerc){
+		pContent.css("height", pValuePerc + "%");
+		pHandle.css("top", 100 - pValuePerc + "%");
+	},
+
+	pvEncodeValueLabel: function(pSlider, pOrientation){
 //		var xDimension = pSlider.data("dimension");
 //		var xLabelFontSize; 
 //		var xLabel = pSlider.data("label");
@@ -172,38 +256,6 @@ dbsfaces.slider = {
 
 //		pSlider.data("labelvalue").text(pSlider.data("percI"));
 //		pSlider.data("labelsufix").text(pSlider.data("percD") + "%");
-	},
-	
-	pvEncodeValueHorizontal: function(pSlider){
-		var xContent = pSlider.data("slider");
-		var xHandle = pSlider.data("handle");
-		var xValue = pSlider.data("perc") * 100;
-		xContent.css("width", xValue + "%");
-		xHandle.css("left", xValue + "%");
-	},
-
-	pvEncodeValueVertical: function(pSlider){
-		var xContent = pSlider.data("slider");
-		var xHandle = pSlider.data("handle");
-		var xValue = pSlider.attr("v");
-		xContent.css("height", xValue + "%");
-		xHandle.css("top", 100 - xValue + "%");
-	},
-
-	pvSetValue: function(pSlider, pValue){
-		pValue = dbsfaces.math.round(parseFloat(pValue),2);
-		xValuePerc = (pValue - pSlider.data("min")) / (pSlider.data("max") - pSlider.data("min")) * 100; 
-		dbsfaces.slider.pvSetValuePerc(pSlider, xValuePerc);
-	},
-
-	pvSetValuePerc: function(pSlider, pValuePerc){
-		pValuePerc = dbsfaces.math.round(parseFloat(pValuePerc),2);
-		xInt = String(dbsfaces.math.trunc(pValuePerc, 0)); //Parte inteira
-		xDec = String(dbsfaces.math.round(pValuePerc - xInt, 4)).substring(1, 4); //Parte decimal
-		pSlider.data("percI", xInt);
-		pSlider.data("percD", xDec);
-		pSlider.data("perc", (pValuePerc / 100));
-		pSlider.attr("v", (pSlider.data("max") - pSlider.data("min")) * pSlider.data("perc") + pSlider.data("min"));
-		dbsfaces.slider.pvEncodeValue(pSlider);
 	}
+
 }

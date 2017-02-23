@@ -857,8 +857,8 @@ dbsfaces.ui = {
           xXY.x = xTouch.pageX;
           xXY.y = xTouch.pageY;
         } else if (e.type == 'mousedown' || e.type == 'mouseup' || e.type == 'mousemove' || e.type == 'mouseover'|| e.type=='mouseout' || e.type=='mouseenter' || e.type=='mouseleave') {
-          xXY.x = e.pageX;
-          xXY.y = e.pageY;
+          xXY.x = e.clientX;
+          xXY.y = e.clientY;
         }
         return xXY;
      }

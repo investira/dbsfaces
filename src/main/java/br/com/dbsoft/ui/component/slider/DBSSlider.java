@@ -1,11 +1,13 @@
 package br.com.dbsoft.ui.component.slider;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.faces.component.FacesComponent;
 
 import br.com.dbsoft.ui.component.DBSUIInput;
 
 import br.com.dbsoft.ui.core.DBSFaces;
-import br.com.dbsoft.util.DBSNumber;
 
 @FacesComponent(DBSSlider.COMPONENT_TYPE)
 public class DBSSlider extends DBSUIInput {
@@ -19,7 +21,8 @@ public class DBSSlider extends DBSUIInput {
 		maxValue,
 		minValue,
 		animated,
-		tooltip;
+		tooltip,
+		listValues;
 		
 		String toString;
 
@@ -38,7 +41,7 @@ public class DBSSlider extends DBSUIInput {
 	public static enum TYPE {
 		VALUES 				("v"),
 		STEPS 				("s"),	
-	    OPTION 				("o");
+	    OPTIONS				("o");
 		
 		private String 	wName;
 		
@@ -141,21 +144,7 @@ public class DBSSlider extends DBSUIInput {
 		handleAttribute("minValue", pMinValue);
 	}
 
-		
-//	public Double getWidth() {
-//		return (Double) getStateHelper().eval(PropertyKeys.width, 16D);
-//	}
-//	public void setWidth(Double pWidth) {
-//		getStateHelper().put(PropertyKeys.width, pWidth);
-//		handleAttribute("width", pWidth);
-//	}
 
-
-	@Override
-	public Double getValue() {
-		return DBSNumber.toDouble(super.getValue());
-	}
-	
 	public void setAnimated(Boolean pAnimated) {
 		getStateHelper().put(PropertyKeys.animated, pAnimated);
 		handleAttribute("animated", pAnimated);
@@ -165,4 +154,23 @@ public class DBSSlider extends DBSUIInput {
 		return (Boolean) getStateHelper().eval(PropertyKeys.animated, false);
 	}	
 
+	public Object getListValues() {
+		return getStateHelper().eval(PropertyKeys.listValues, Arrays.asList(""));
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void setListValues(Object pListValue) {
+		if (pListValue == null){return;}
+		if (pListValue instanceof List){
+			pvSetListValues((List<String>) pListValue);
+		}else{
+			List<String> xListValue = Arrays.asList(((String) pListValue).split("\\s*,\\s*"));
+			pvSetListValues(xListValue);
+		}
+	}
+	
+	public void pvSetListValues(List<String> pListValue) {
+		getStateHelper().put(PropertyKeys.listValues, pListValue);
+		handleAttribute("listValues", pListValue);
+	}
 }
