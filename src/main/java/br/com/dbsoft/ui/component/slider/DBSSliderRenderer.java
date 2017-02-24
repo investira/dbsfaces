@@ -16,6 +16,7 @@ import br.com.dbsoft.ui.component.slider.DBSSlider.ORIENTATION;
 import br.com.dbsoft.ui.component.slider.DBSSlider.TYPE;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
+import br.com.dbsoft.util.DBSObject;
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSSlider.RENDERER_TYPE)
 public class DBSSliderRenderer extends DBSRenderer {
@@ -107,9 +108,14 @@ public class DBSSliderRenderer extends DBSRenderer {
 		//Points
 		if (pType != TYPE.VALUES){
 			pWriter.startElement("div", pSlider);
-				DBSFaces.encodeAttribute(pWriter, "class", "-points");
-				List<String> xListValues = (List<String>)pSlider.getListValues();
+				String xClass = "-points";
 				String xValue = "";
+				List<String> xListValues = (List<String>)pSlider.getListValues();
+				if (pSlider.getShowLabel()
+				 && pSlider.getInvertLabel()){
+					xClass += CSS.MODIFIER.INVERT;
+				}
+				DBSFaces.encodeAttribute(pWriter, "class", xClass);
 				for (int xI = 0; xI < xListValues.size(); xI++){
 					if (pOrientation == ORIENTATION.HORIZONTAL){
 						xValue = xListValues.get(xI);
@@ -118,8 +124,10 @@ public class DBSSliderRenderer extends DBSRenderer {
 						xValue = xListValues.get(xListValues.size() - xI -1);
 					}
 					pWriter.startElement("div", pSlider);
-						DBSFaces.encodeAttribute(pWriter, "class", "-point");
-						pWriter.write(xValue);
+						DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.POINT);
+						if (pSlider.getShowLabel()){
+							pWriter.write(xValue);
+						}
 					pWriter.endElement("div");	
 				}
 			pWriter.endElement("div");	
@@ -134,7 +142,7 @@ public class DBSSliderRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(pWriter, "name", pvGetInputClientId(pSlider));
 			DBSFaces.encodeAttribute(pWriter, "type", "hidden");
 			DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pSlider));
-			DBSFaces.encodeAttribute(pWriter, "value", pSlider.getValue());
+			DBSFaces.encodeAttribute(pWriter, "value", DBSObject.getNotNull(pSlider.getValue(),0));
 		pWriter.endElement(xTag);
 	}
 	

@@ -1,9 +1,7 @@
 .dbs_slider{
 	display: inline-block;
-	/* box-sizing: border-box; */
-	/* line-height: 1em; */
-	border: none;
 	position: relative;
+	border: none;
 	line-height: 0;
 }
 .dbs_slider > .-container{
