@@ -94,44 +94,51 @@ public class DBSSliderRenderer extends DBSRenderer {
 	
 	@SuppressWarnings("unchecked")
 	private void pvEncodeContent(DBSSlider pSlider, ResponseWriter pWriter, TYPE pType, ORIENTATION pOrientation) throws IOException{
-		//Slider
 		pWriter.startElement("div", pSlider);
 			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
+			//Slider
 			pWriter.startElement("div", pSlider);
 				DBSFaces.encodeAttribute(pWriter, "class", "-slider");
 			pWriter.endElement("div");
-		pWriter.endElement("div");
-		//Handle
-		pWriter.startElement("div", pSlider);
-			DBSFaces.encodeAttribute(pWriter, "class", "-handle");
-		pWriter.endElement("div");	
-		//Points
-		if (pType != TYPE.VALUES){
+			//Handle
 			pWriter.startElement("div", pSlider);
-				String xClass = "-points";
-				String xValue = "";
-				List<String> xListValues = (List<String>)pSlider.getListValues();
-				if (pSlider.getShowLabel()
-				 && pSlider.getInvertLabel()){
-					xClass += CSS.MODIFIER.INVERT;
-				}
-				DBSFaces.encodeAttribute(pWriter, "class", xClass);
-				for (int xI = 0; xI < xListValues.size(); xI++){
-					if (pOrientation == ORIENTATION.HORIZONTAL){
-						xValue = xListValues.get(xI);
-					}else{
-						//Encode a partir do último pois a ordem do slider cresce de baixo para cima
-						xValue = xListValues.get(xListValues.size() - xI -1);
-					}
-					pWriter.startElement("div", pSlider);
-						DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.POINT);
-						if (pSlider.getShowLabel()){
-							pWriter.write(xValue);
-						}
-					pWriter.endElement("div");	
-				}
+				DBSFaces.encodeAttribute(pWriter, "class", "-handle");
 			pWriter.endElement("div");	
-		}
+			//Points
+			if (pType != TYPE.VALUES){
+				pWriter.startElement("div", pSlider);
+					String xClass = "-points";
+					String xValue = "";
+					List<String> xListValues = (List<String>)pSlider.getListValues();
+					if (pSlider.getShowLabel()
+					 && pSlider.getInvertLabel()){
+						xClass += CSS.MODIFIER.INVERT;
+					}
+					DBSFaces.encodeAttribute(pWriter, "class", xClass);
+					if (xListValues.size() > 0){
+						for (int xI = 0; xI < xListValues.size(); xI++){
+							if (pOrientation == ORIENTATION.HORIZONTAL){
+								xValue = xListValues.get(xI);
+							}else{
+								//Encode a partir do último pois a ordem do slider cresce de baixo para cima
+								xValue = xListValues.get(xListValues.size() - xI -1);
+							}
+							pWriter.startElement("div", pSlider);
+								DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.POINT);
+							pWriter.endElement("div");	
+							if (pSlider.getShowLabel()){
+								pWriter.startElement("div", pSlider);
+									DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LABEL);
+									pWriter.write(xValue);
+								pWriter.endElement("div");
+							}
+						}
+					}else{
+						
+					}
+				pWriter.endElement("div");	
+			}
+		pWriter.endElement("div");
 		pvEncodeInput(pSlider, pWriter);
 	}
 
