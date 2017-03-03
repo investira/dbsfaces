@@ -48,6 +48,7 @@ dbsfaces.slider = {
 		pSlider.data("content", pSlider.data("container").children(".-content"));
 		pSlider.data("input", pSlider.data("container").children(".-th_input-data"));
 		pSlider.data("slider", pSlider.data("content").children(".-slider"));
+		pSlider.data("sliderValue", pSlider.data("slider").children(".-value"));
 		pSlider.data("handle", pSlider.data("content").children(".-handle"));
 		pSlider.data("points", pSlider.data("content").children(".-points"));
 		pSlider.data("point", pSlider.data("points").children(".-point"));
@@ -69,12 +70,15 @@ dbsfaces.slider = {
 	pvInitializeLayoutHorizontalVertical: function(pSlider){
 		var xColor = tinycolor(pSlider.css("color"));
 		var xColor2 = tinycolor(pSlider.css("color"));
-//		var xInverted = xColor.invertLightness().setAlpha(1);
-		pSlider.data("content").css("background-color", xColor2.setAlpha(.3));
+		var xInverted = tinycolor(pSlider.css("color")).invertLightness().setAlpha(1);
+//		pSlider.data("content").css("background-color", xColor2.setAlpha(.3));
+		
+		xColor2.setAlpha(.3);
+		pSlider.data("slider").css("background", xColor2);
 		var xBackground;
 		xColor2.setAlpha(.70);
 		xBackground = "linear-gradient(135deg," + xColor2 + " 0%, " + xColor + " 100%)";
-		pSlider.data("slider").css("background", xBackground);
+		pSlider.data("sliderValue").css("background", xBackground);
 		
 		xColor2.setAlpha(1);
 		if (xColor.isDark()){
@@ -85,6 +89,7 @@ dbsfaces.slider = {
 			xBackground = "linear-gradient(135deg," + xColor + " 0%, " + xColor2 + " 100%)";
 		}
 		pSlider.data("handle").css("background", xBackground);
+		pSlider.data("handle").css("color", xInverted);
 	},
 
 	pvInitializeLayoutPoints: function(pSlider){
@@ -201,19 +206,19 @@ dbsfaces.slider = {
 	pvSetValuePerc: function(pSlider, pValuePercFator){
 		pValuePercFator = dbsfaces.math.round(parseFloat(pValuePercFator), 4);
 		var xValuePerc = pValuePercFator * 100;
+		var xInputValue;
 		if (pSlider.data("type") == "v"){
-			
-//			pSlider.data("input")[0].value = (pSlider.data("max") - pSlider.data("min")) * pValuePercFator + pSlider.data("min");
-			pSlider.data("input").attr("value", (pSlider.data("max") - pSlider.data("min")) * pValuePercFator + pSlider.data("min"));
+			xInputValue = ((pSlider.data("max") - pSlider.data("min")) * pValuePercFator) + pSlider.data("min");
+			xInputValue = dbsfaces.math.round(xInputValue, parseInt(pSlider.attr("dp")));
 		}else{
 			var xListValues = pSlider.data("listvalues");
 			var xI = dbsfaces.math.round(((xListValues.length - 1) * pValuePercFator),0);
-//			pSlider.data("input")[0].value = xListValues[xI];
-			
-			pSlider.data("input").attr("value", xListValues[xI]);
+			xInputValue = xListValues[xI];
 			pValuePercFator = xI / (xListValues.length - 1);
 			xValuePerc = pValuePercFator * 100;
 		}
+		pSlider.data("input").attr("value", xInputValue);
+		
 		xInt = String(dbsfaces.math.trunc(xValuePerc, 0)); //Parte inteira
 		xDec = String(dbsfaces.math.round(xValuePerc - xInt, 4)).substring(1, 4); //Parte decimal
 		pSlider.data("percI", xInt);
@@ -224,15 +229,15 @@ dbsfaces.slider = {
 
 	pvEncodeValue: function(pSlider){
 		var xOrientation = pSlider.data("orientation");
-		var xContentSlider = pSlider.data("slider");
+		var xSliderValue = pSlider.data("sliderValue");
 		var xHandle = pSlider.data("handle");
+		xHandle.attr("v", pSlider.data("input").attr("value"));
 		var xValuePerc = pSlider.data("perc") * 100;
 		if (xOrientation == "h"){
-			dbsfaces.slider.pvEncodeValueHorizontal(xContentSlider, xHandle, xValuePerc);
+			dbsfaces.slider.pvEncodeValueHorizontal(xSliderValue, xHandle, xValuePerc);
 		}else{
-			dbsfaces.slider.pvEncodeValueVertical(xContentSlider, xHandle, xValuePerc);
+			dbsfaces.slider.pvEncodeValueVertical(xSliderValue, xHandle, xValuePerc);
 		}
-		dbsfaces.slider.pvEncodeValueLabel(pSlider, xOrientation);
 
 		clearTimeout(pSlider.data("timeout"));
 		pSlider.data("timeout", setTimeout(function(){
@@ -241,28 +246,14 @@ dbsfaces.slider = {
 	},
 
 	
-	pvEncodeValueHorizontal: function(pContent, pHandle, pValuePerc){
-		pContent.css("width", pValuePerc + "%");
+	pvEncodeValueHorizontal: function(pSliderValue, pHandle, pValuePerc){
+		pSliderValue.css("width", pValuePerc + "%");
 		pHandle.css("left", pValuePerc + "%");
 	},
 
-	pvEncodeValueVertical: function(pContentSlider, pHandle, pValuePerc){
-		pContentSlider.css("height", pValuePerc + "%");
+	pvEncodeValueVertical: function(pSliderValue, pHandle, pValuePerc){
+		pSliderValue.css("height", pValuePerc + "%");
 		pHandle.css("top", 100 - pValuePerc + "%");
-	},
-
-	pvEncodeValueLabel: function(pSlider, pOrientation){
-//		var xDimension = pSlider.data("dimension");
-//		var xLabelFontSize; 
-//		var xLabel = pSlider.data("label");
-//		var xLabelValue = pSlider.data("labelvalue");
-//		var xLabelSufix = pSlider.data("labelsufix");
-//		var xValue = pSlider.attr("v");
-//		var xPerc = pSlider.attr("perc");
-//		var xClass = "";
-
-//		pSlider.data("labelvalue").text(pSlider.data("percI"));
-//		pSlider.data("labelsufix").text(pSlider.data("percD") + "%");
 	}
 
 }

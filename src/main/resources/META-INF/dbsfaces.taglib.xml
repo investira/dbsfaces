@@ -3052,6 +3052,14 @@
 		</attribute>
 		<attribute>
 			<description>
+                Quantidade de casas decimais. O padrão é 0.
+            </description>
+			<name>decimalPlaces</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+		</attribute>
+		<attribute>
+			<description>
 				&lt;span style="font-size:small"&gt;
 				Se será exibido com animação. O padrão é false.&lt;br/&gt;
 				&lt;ul&gt;
@@ -3079,6 +3087,22 @@
 			<required>false</required>
 			<type>java.lang.Object</type>
 		</attribute>
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Alinhamento do conteúdo.&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;t = TOP&lt;/li&gt;
+					&lt;li&gt;b = BOTTOM&lt;/li&gt;
+					&lt;li&gt;l = LEFT&lt;/li&gt;
+					&lt;li&gt;r = RIGHT&lt;/li&gt;
+					&lt;li&gt;c = CENTER&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>contentAlignment</name>
+			<required>false</required>
+			<type>java.lang.Sting</type>
+		</attribute>		
 	</tag>	
 	<tag>
 		<tag-name>button</tag-name>
@@ -3278,9 +3302,10 @@
 		</attribute>
 		<attribute>
 			<description>Define a orientação do menu.
-true: Horizontal;
-false: Vertical;
-Default: false;</description>
+						true: Horizontal;
+						false: Vertical;
+						Default: false;
+			</description>
 			<name>horizontal</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>

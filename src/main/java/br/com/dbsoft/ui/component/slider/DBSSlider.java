@@ -6,7 +6,6 @@ import java.util.List;
 import javax.faces.component.FacesComponent;
 
 import br.com.dbsoft.ui.component.DBSUIInput;
-
 import br.com.dbsoft.ui.core.DBSFaces;
 
 @FacesComponent(DBSSlider.COMPONENT_TYPE)
@@ -20,11 +19,13 @@ public class DBSSlider extends DBSUIInput {
 		orientation,
 		maxValue,
 		minValue,
+		decimalPlaces,
 		animated,
 		tooltip,
 		listValues,
 		showLabel,
-		invertLabel;
+		invertLabel,
+		contentAlignment;
 		
 		String toString;
 
@@ -104,6 +105,37 @@ public class DBSSlider extends DBSUIInput {
 	    	return HORIZONTAL;
 		}	
 	
+	}
+	
+	public static enum CONTENT_ALIGNMENT {
+		TOP 			("t"),
+	    BOTTOM 			("b"),
+		LEFT 			("l"),
+	    RIGHT 			("r"),
+		CENTER 			("c");	
+		
+		private String 	wName;
+		
+		private CONTENT_ALIGNMENT(String pName) {
+			this.wName = pName;
+		}
+
+		public String getName() {
+			return wName;
+		}
+
+		public static CONTENT_ALIGNMENT get(String pCode) {
+			if (pCode == null){
+				return CENTER;
+			}			
+			pCode = pCode.trim().toLowerCase();
+	    	for (CONTENT_ALIGNMENT xCA:CONTENT_ALIGNMENT.values()) {
+	    		if (xCA.getName().equals(pCode)){
+	    			return xCA;
+	    		}
+	    	}
+	    	return null;
+		}	
 	}
 
 	public DBSSlider(){
@@ -193,5 +225,27 @@ public class DBSSlider extends DBSUIInput {
 		getStateHelper().put(PropertyKeys.listValues, pListValue);
 		handleAttribute("listValues", pListValue);
 	}
+	
+	public String getContentAlignment() {
+		return (String) getStateHelper().eval(PropertyKeys.contentAlignment, null);
+	}
+	
+	public void setContentAlignment(String pContentAlignment) {
+		if (CONTENT_ALIGNMENT.get(pContentAlignment) == null){
+			System.out.println("ContentAlignment invalid\t:" + pContentAlignment);
+			return;
+		}
+		getStateHelper().put(PropertyKeys.contentAlignment, pContentAlignment);
+		handleAttribute("contentAlignment", pContentAlignment);
+	}
+
+	public void setDecimalPlaces(Integer pDecimalPlaces) {
+		getStateHelper().put(PropertyKeys.decimalPlaces, pDecimalPlaces);
+		handleAttribute("decimalPlaces", pDecimalPlaces);
+	}
+	public Integer getDecimalPlaces() {
+		return (Integer) getStateHelper().eval(PropertyKeys.decimalPlaces, 0);
+	}	
+
 	
 }

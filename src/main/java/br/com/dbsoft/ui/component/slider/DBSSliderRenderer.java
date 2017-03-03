@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.slider.DBSSlider;
+import br.com.dbsoft.ui.component.slider.DBSSlider.CONTENT_ALIGNMENT;
 import br.com.dbsoft.ui.component.slider.DBSSlider.ORIENTATION;
 import br.com.dbsoft.ui.component.slider.DBSSlider.TYPE;
 import br.com.dbsoft.ui.core.DBSFaces;
@@ -83,6 +84,24 @@ public class DBSSliderRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(xWriter, "style", xSlider.getStyle());
 			DBSFaces.encodeAttribute(xWriter, "type", xType.getName());
 			DBSFaces.encodeAttribute(xWriter, "v", xSlider.getValue());
+			DBSFaces.encodeAttribute(xWriter, "dp", xSlider.getDecimalPlaces());
+			if (xSlider.getContentAlignment() == null){
+				if (xOrientation == ORIENTATION.HORIZONTAL){
+					if (xSlider.getInvertLabel()){
+						DBSFaces.encodeAttribute(xWriter, "ca", CONTENT_ALIGNMENT.TOP.getName());
+					}else{
+						DBSFaces.encodeAttribute(xWriter, "ca", CONTENT_ALIGNMENT.BOTTOM.getName());
+					}
+				}else{
+					if (xSlider.getInvertLabel()){
+						DBSFaces.encodeAttribute(xWriter, "ca", CONTENT_ALIGNMENT.LEFT.getName());
+					}else{
+						DBSFaces.encodeAttribute(xWriter, "ca", CONTENT_ALIGNMENT.RIGHT.getName());
+					}
+				}
+			}else{
+				DBSFaces.encodeAttribute(xWriter, "ca", xSlider.getContentAlignment());
+			}
 			xWriter.startElement("div", xSlider);
 				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER + CSS.MODIFIER.NOT_SELECTABLE);
 				pvEncodeContent(xSlider, xWriter, xType, xOrientation);
@@ -99,6 +118,9 @@ public class DBSSliderRenderer extends DBSRenderer {
 			//Slider
 			pWriter.startElement("div", pSlider);
 				DBSFaces.encodeAttribute(pWriter, "class", "-slider");
+				pWriter.startElement("div", pSlider);
+					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.VALUE);
+				pWriter.endElement("div");
 			pWriter.endElement("div");
 			//Handle
 			pWriter.startElement("div", pSlider);
