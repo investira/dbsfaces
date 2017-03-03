@@ -3010,14 +3010,14 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
-		<attribute>
-			<description>
-                Se exibe o label quando for Slider do tipo "s" e "o".
-            </description>
-			<name>showLabel</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
+<!-- 		<attribute> -->
+<!-- 			<description> -->
+<!--                 Se exibe o label quando for Slider do tipo "s" e "o". -->
+<!--             </description> -->
+<!-- 			<name>showLabel</name> -->
+<!-- 			<required>false</required> -->
+<!-- 			<type>java.lang.Boolean</type> -->
+<!-- 		</attribute> -->
 		<attribute>
 			<description>
                 Se inverte a posição para exibição do label.

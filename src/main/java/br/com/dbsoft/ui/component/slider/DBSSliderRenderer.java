@@ -68,6 +68,9 @@ public class DBSSliderRenderer extends DBSRenderer {
 		if (xSlider.getAnimated()){
 			xClass += " -ani ";
 		}
+		if (xSlider.getInvertLabel()){
+			xClass += CSS.MODIFIER.INVERT;
+		}
 		if (xSlider.getStyleClass()!=null){
 			xClass += xSlider.getStyleClass();
 		}
@@ -127,36 +130,28 @@ public class DBSSliderRenderer extends DBSRenderer {
 				DBSFaces.encodeAttribute(pWriter, "class", "-handle");
 			pWriter.endElement("div");	
 			//Points
-			if (pType != TYPE.VALUES){
+			List<String> xListValues = (List<String>)pSlider.getListValues();
+			if (xListValues.size() > 0){
 				pWriter.startElement("div", pSlider);
 					String xClass = "-points";
 					String xValue = "";
-					List<String> xListValues = (List<String>)pSlider.getListValues();
-					if (pSlider.getShowLabel()
-					 && pSlider.getInvertLabel()){
-						xClass += CSS.MODIFIER.INVERT;
-					}
 					DBSFaces.encodeAttribute(pWriter, "class", xClass);
-					if (xListValues.size() > 0){
-						for (int xI = 0; xI < xListValues.size(); xI++){
-							if (pOrientation == ORIENTATION.HORIZONTAL){
-								xValue = xListValues.get(xI);
-							}else{
-								//Encode a partir do último pois a ordem do slider cresce de baixo para cima
-								xValue = xListValues.get(xListValues.size() - xI -1);
-							}
-							pWriter.startElement("div", pSlider);
-								DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.POINT);
-							pWriter.endElement("div");	
-							if (pSlider.getShowLabel()){
-								pWriter.startElement("div", pSlider);
-									DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LABEL);
-									pWriter.write(xValue);
-								pWriter.endElement("div");
-							}
+					for (int xI = 0; xI < xListValues.size(); xI++){
+						if (pOrientation == ORIENTATION.HORIZONTAL){
+							xValue = xListValues.get(xI);
+						}else{
+							//Encode a partir do último pois a ordem do slider cresce de baixo para cima
+							xValue = xListValues.get(xListValues.size() - xI -1);
 						}
-					}else{
-						
+						//Ponto na reta
+						pWriter.startElement("div", pSlider);
+							DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.POINT);
+						pWriter.endElement("div");
+						//Label do ponto
+						pWriter.startElement("div", pSlider);
+							DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LABEL);
+							pWriter.write(xValue);
+						pWriter.endElement("div");
 					}
 				pWriter.endElement("div");	
 			}

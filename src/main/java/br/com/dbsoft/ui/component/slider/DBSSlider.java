@@ -23,7 +23,7 @@ public class DBSSlider extends DBSUIInput {
 		animated,
 		tooltip,
 		listValues,
-		showLabel,
+//		showLabel,
 		invertLabel,
 		contentAlignment;
 		
@@ -188,14 +188,14 @@ public class DBSSlider extends DBSUIInput {
 		return (Boolean) getStateHelper().eval(PropertyKeys.animated, false);
 	}	
 
-	public void setShowLabel(Boolean pShowLabel) {
-		getStateHelper().put(PropertyKeys.showLabel, pShowLabel);
-		handleAttribute("showLabel", pShowLabel);
-	}
-	
-	public Boolean getShowLabel() {
-		return (Boolean) getStateHelper().eval(PropertyKeys.showLabel, true);
-	}	
+//	public void setShowLabel(Boolean pShowLabel) {
+//		getStateHelper().put(PropertyKeys.showLabel, pShowLabel);
+//		handleAttribute("showLabel", pShowLabel);
+//	}
+//	
+//	public Boolean getShowLabel() {
+//		return (Boolean) getStateHelper().eval(PropertyKeys.showLabel, true);
+//	}	
 
 	public void setInvertLabel(Boolean pInvertLabel) {
 		getStateHelper().put(PropertyKeys.invertLabel, pInvertLabel);
@@ -207,7 +207,7 @@ public class DBSSlider extends DBSUIInput {
 	}	
 
 	public Object getListValues() {
-		return getStateHelper().eval(PropertyKeys.listValues, Arrays.asList(""));
+		return getStateHelper().eval(PropertyKeys.listValues, Arrays.asList());
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -40,6 +40,7 @@ dbsfaces.slider = {
 	
 	pvInitializeData: function(pSlider, pListValues, pMinValue, pMaxValue){
 		pSlider.data("type", pSlider.attr("type"));
+		pSlider.data("dp", parseInt(pSlider.attr("dp")));
 		pSlider.data("orientation", (pSlider.hasClass("-h") ? "h" : "v"));
 		pSlider.data("listvalues", pListValues);
 		pSlider.data("min", parseFloat(pMinValue));
@@ -54,7 +55,15 @@ dbsfaces.slider = {
 		pSlider.data("point", pSlider.data("points").children(".-point"));
 		pSlider.data("label", pSlider.data("points").children(".-label"));
 		pSlider.data("ani", (pSlider.hasClass("-ani") ? true: false));
+		pSlider.data("segmentpercfator", (1 / (pSlider.data("listvalues").length - 1)));
 		pSlider.data("dif", null);
+		if (pSlider.data("type")== "v"){
+			var xListValuesNumeric = [];
+			for (var xI=0; xI < pListValues.length; xI++){
+				xListValuesNumeric.push(parseFloat(pListValues[xI].replace(/[^0-9]/g, '')));
+			}
+			pSlider.data("listvaluesnumeric", xListValuesNumeric);
+		}
 
 	},
 
@@ -71,7 +80,6 @@ dbsfaces.slider = {
 		var xColor = tinycolor(pSlider.css("color"));
 		var xColor2 = tinycolor(pSlider.css("color"));
 		var xInverted = tinycolor(pSlider.css("color")).invertLightness().setAlpha(1);
-//		pSlider.data("content").css("background-color", xColor2.setAlpha(.3));
 		
 		xColor2.setAlpha(.3);
 		pSlider.data("slider").css("background", xColor2);
@@ -93,6 +101,9 @@ dbsfaces.slider = {
 	},
 
 	pvInitializeLayoutPoints: function(pSlider){
+		if (pSlider.data("points").length > 0){
+			pSlider.addClass("-showLabel");
+		}
 		var xPoint = pSlider.data("point");
 		var xValuePerc;
 		for (var xI=0; xI < xPoint.length; xI++){
@@ -186,8 +197,25 @@ dbsfaces.slider = {
 		var xValue = pSlider.data("input").attr("value");
 		var xValuePercFator = 0; 
 		if (pSlider.data("type") == "v"){
-			xValuePercFator = dbsfaces.math.round(parseFloat(xValue),2);
-			xValuePercFator = (xValuePercFator - pSlider.data("min")) / (pSlider.data("max") - pSlider.data("min")); 
+			var xMin = pSlider.data("min");
+			var xMax = pSlider.data("max");
+			var xSegmentPercFator = pSlider.data("segmentpercfator");
+			var xListValuesNumeric = pSlider.data("listvaluesnumeric");
+			
+			xValuePercFator = dbsfaces.math.round(parseFloat(xValue.replace(/[^0-9]/g, '')), 4);
+			if (xListValuesNumeric.length > 0){
+				for (var xI=0; xI < xListValuesNumeric.length; xI++){
+					if (xListValuesNumeric[xI] > xValuePercFator){
+						 xMax = xListValuesNumeric[xI];
+						 xMin = xListValuesNumeric[xI -1];
+						 break;
+					}
+				}
+				xValuePercFator = xSegmentPercFator * ((xValuePercFator - xMin) / (xMax - xMin));
+				xValuePercFator += (xSegmentPercFator * (xI - 1));
+			}else{
+				xValuePercFator = (xValuePercFator - xMin) / (xMax - xMin); 
+			}
 		}else{
 			xValue = xValue.trim().toLowerCase();
 			var xListValues = pSlider.data("listvalues");
@@ -204,20 +232,46 @@ dbsfaces.slider = {
 
 
 	pvSetValuePerc: function(pSlider, pValuePercFator){
-		pValuePercFator = dbsfaces.math.round(parseFloat(pValuePercFator), 4);
+		pValuePercFator = dbsfaces.math.round(parseFloat(pValuePercFator), 10);
+		if (pValuePercFator > 1){
+			pValuePercFator = 1;
+		}else if(pValuePercFator < 0){
+			pValuePercFator = 0;
+		}
 		var xValuePerc = pValuePercFator * 100;
 		var xInputValue;
+		var xListValues = pSlider.data("listvalues");
+		var xI;
 		if (pSlider.data("type") == "v"){
-			xInputValue = ((pSlider.data("max") - pSlider.data("min")) * pValuePercFator) + pSlider.data("min");
-			xInputValue = dbsfaces.math.round(xInputValue, parseInt(pSlider.attr("dp")));
+			var xListValuesNumeric =pSlider.data("listvaluesnumeric");
+			var xMax;
+			var xMin;
+			var xValuePercFator = pValuePercFator;
+			var xSegmentPercFator = pSlider.data("segmentpercfator");
+			//Calcula novo percentual relativo considerando o intervalo do segmento
+			if (xListValuesNumeric.length > 0){
+				xI = dbsfaces.math.trunc(((xListValuesNumeric.length - 1) * (pValuePercFator - 0.01)),0);
+				xValuePercFator = pValuePercFator - (xSegmentPercFator * xI);
+				xValuePercFator /= xSegmentPercFator;
+				xMin = parseFloat(xListValuesNumeric[xI]);
+				xMax = parseFloat(xListValuesNumeric[xI + 1]);
+			}else{
+				xMin = pSlider.data("min");
+				xMax = pSlider.data("max");
+			}
+			xInputValue = ((xMax - xMin) * xValuePercFator) + xMin;
+			xInputValue = dbsfaces.math.round(xInputValue, pSlider.data("dp"));
 		}else{
-			var xListValues = pSlider.data("listvalues");
-			var xI = dbsfaces.math.round(((xListValues.length - 1) * pValuePercFator),0);
+			//Encontra o valor da lista mais próximo ao percentual
+			xI = dbsfaces.math.round(((xListValues.length - 1) * pValuePercFator), 0);
 			xInputValue = xListValues[xI];
 			pValuePercFator = xI / (xListValues.length - 1);
 			xValuePerc = pValuePercFator * 100;
 		}
+		//Salva como string
 		pSlider.data("input").attr("value", xInputValue);
+		//Salva como float
+		pSlider.data("input").data("value", xInputValue);
 		
 		xInt = String(dbsfaces.math.trunc(xValuePerc, 0)); //Parte inteira
 		xDec = String(dbsfaces.math.round(xValuePerc - xInt, 4)).substring(1, 4); //Parte decimal
@@ -231,7 +285,6 @@ dbsfaces.slider = {
 		var xOrientation = pSlider.data("orientation");
 		var xSliderValue = pSlider.data("sliderValue");
 		var xHandle = pSlider.data("handle");
-		xHandle.attr("v", pSlider.data("input").attr("value"));
 		var xValuePerc = pSlider.data("perc") * 100;
 		if (xOrientation == "h"){
 			dbsfaces.slider.pvEncodeValueHorizontal(xSliderValue, xHandle, xValuePerc);
@@ -239,6 +292,14 @@ dbsfaces.slider = {
 			dbsfaces.slider.pvEncodeValueVertical(xSliderValue, xHandle, xValuePerc);
 		}
 
+		//Valor para ser capturado pelo pseudoselector :before:content
+		var xInputValue = pSlider.data("input").attr("value");
+		if (pSlider.data("type") == "v"){
+			xInputValue = dbsfaces.format.number(parseFloat(xInputValue), pSlider.data("dp"));
+		}
+		xHandle.attr("v", xInputValue);
+
+		//Dispara que valor foi alterado
 		clearTimeout(pSlider.data("timeout"));
 		pSlider.data("timeout", setTimeout(function(){
 			pSlider.trigger("change");

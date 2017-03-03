@@ -192,31 +192,42 @@
     left: calc(50%);
 }
 
-.dbs_slider > .-container > .-content > .-handle:before{
+.dbs_slider[type="v"] > .-container > .-content > .-handle:before{
     display: none;
     content: attr(v);
     position: absolute;
     background: inherit;
-	padding: .2em .3em;
+    padding: .1em .3em;
     border-radius: .3em;
+    z-index: 1;
+    font-size: .9em;
 }
-.dbs_slider.-selected > .-container > .-content > .-handle:before{
+.dbs_slider[type="v"].-showLabel > .-container > .-content > .-handle:before,
+.dbs_slider[type="v"].-selected > .-container > .-content > .-handle:before{
     display: inline-block;
 }
 
-.dbs_slider.-h > .-container > .-content > .-handle:before{
+.dbs_slider[type="v"].-h > .-container > .-content > .-handle:before{
     transform: translateX(-50%);
 }
-.dbs_slider.-v > .-container > .-content > .-handle:before{
+.dbs_slider[type="v"].-v > .-container > .-content > .-handle:before{
     transform: translateY(-50%);
 }
 
-.dbs_slider.-selected.-h > .-container > .-content > .-handle:before{
-	top: -2.8em;
+.dbs_slider[type="v"].-h > .-container > .-content > .-handle:before{
+	top: -2.6em;
+}
+.dbs_slider[type="v"].-h.-i > .-container > .-content > .-handle:before{
+	top: 1.2em;
 }
 
-.dbs_slider.-selected.-v > .-container > .-content > .-handle:before{
+.dbs_slider[type="v"].-v > .-container > .-content > .-handle:before{
+    right: 1.2em;
+    left: initial;
+}
+.dbs_slider[type="v"].-v.-i > .-container > .-content > .-handle:before{
     left: 1.2em;
+    right: initial;
 }
 
 .dbs_slider > .-container > .-content > .-handle:after{
@@ -309,7 +320,7 @@
 	transform: translateY(-.5em);
 }
 
-.dbs_slider.-v > .-container > .-content > .-points.-i > .-label{
+.dbs_slider.-v.-i > .-container > .-content > .-points > .-label{
     left: 1.5em;
     right: initial;
 }
@@ -321,6 +332,6 @@
     transform: translateX(-50%);
     top: -2.5em;
 }
-.dbs_slider.-h > .-container > .-content > .-points.-i > .-label{
-    top: 1em;
+.dbs_slider.-h.-i > .-container > .-content > .-points > .-label{
+    top: 1.2em;
 }
