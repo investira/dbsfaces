@@ -215,7 +215,7 @@
 }
 
 .dbs_slider[type="v"].-h > .-container > .-content > .-handle:before{
-	top: -2.6em;
+	top: -2.55em;
 }
 .dbs_slider[type="v"].-h.-i > .-container > .-content > .-handle:before{
 	top: 1.2em;
@@ -308,7 +308,10 @@
 .dbs_slider > .-container > .-content > .-points > .-label{
     font-size: .9em;
 	position: absolute;
-    display: inline-block;	
+    display: inline-block;
+}
+.dbs_slider[type="v"] > .-container > .-content > .-points > .-label{
+	opacity: 0.5;	
 }
 
 .dbs_slider.-v > .-container > .-content > .-points > .-label{
@@ -333,5 +336,5 @@
     top: -2.5em;
 }
 .dbs_slider.-h.-i > .-container > .-content > .-points > .-label{
-    top: 1.2em;
+    top: 1.3em;
 }
