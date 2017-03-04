@@ -150,7 +150,8 @@ public class DBSSliderRenderer extends DBSRenderer {
 						//Label do ponto
 						pWriter.startElement("div", pSlider);
 							DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LABEL);
-							pWriter.write(xValue);
+							DBSFaces.encodeAttribute(pWriter, "v", xValue);
+//							pWriter.write(xValue);
 						pWriter.endElement("div");
 					}
 				pWriter.endElement("div");	

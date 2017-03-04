@@ -1,5 +1,6 @@
 dbs_slider = function(pId, pListValues, pMinValue, pMaxValue) {
 	dbsfaces.slider.initialize($(pId), pListValues, pMinValue, pMaxValue);
+
 	$(window).resize(function(e){
 		dbsfaces.slider.resize($(pId));
 	});
@@ -117,6 +118,7 @@ dbsfaces.slider = {
 		var xLabel = pSlider.data("label");
 		for (var xI=0; xI < xLabel.length; xI++){
 			xValuePerc = (xI / (xLabel.length - 1)) * 100;
+			$(xLabel[xI]).text(dbsfaces.format.number($(xLabel[xI]).attr("v"), pSlider.data("dp")));
 			if (pSlider.data("orientation") == "h"){
 				$(xLabel[xI]).css("left", xValuePerc + "%");
 			}else{
@@ -269,7 +271,7 @@ dbsfaces.slider = {
 			xValuePerc = pValuePercFator * 100;
 		}
 		//Salva como string
-		pSlider.data("input").attr("value", xInputValue);
+		pSlider.data("input").attr("value", dbsfaces.format.number(xInputValue, pSlider.data("dp")));
 		//Salva como float
 		pSlider.data("input").data("value", xInputValue);
 		
@@ -294,9 +296,9 @@ dbsfaces.slider = {
 
 		//Valor para ser capturado pelo pseudoselector :before:content
 		var xInputValue = pSlider.data("input").attr("value");
-		if (pSlider.data("type") == "v"){
-			xInputValue = dbsfaces.format.number(parseFloat(xInputValue), pSlider.data("dp"));
-		}
+//		if (pSlider.data("type") == "v"){
+//			xInputValue = dbsfaces.format.number(parseFloat(xInputValue), pSlider.data("dp"));
+//		}
 		xHandle.attr("v", xInputValue);
 
 		//Dispara que valor foi alterado

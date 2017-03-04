@@ -1100,12 +1100,16 @@ dbsfaces.format = {
 	number: function(pValue, pDecimals){
 //		var xLanguage = window.navigator.userLanguage || window.navigator.language;
 		pValue = dbsfaces.math.round(pValue, pDecimals);
-		var xDS = dbsfaces.format.getDecimalSeparator();
-	    if (xDS == ".") { //Ingles
-	    	return pValue.toString().split("/(?=(?:\d{3})+(?:\.|$))/g").join( "," );
-	    }else{ //Portugues
-	        return pValue.toString().split("/(?=(?:\d{3})+(?:,|$))/g").join( "." );
-	    }
+		return pValue.toLocaleString();
+//		var xDS = dbsfaces.format.getDecimalSeparator();
+//		console.log(xDS);
+//		//Ingles
+//		if (xDS == ".") { 
+//	    	return pValue.toString().split("/(?=(?:\d{3})+(?:\.|$))/g").join(",");
+//	    	//Portugues
+//		}else{ 
+//	        return pValue.toString().split("/(?=(?:\d{3})+(?:,|$))/g").join(".");
+//	    }
 	},
 	
 	//Retorna o número simplificado com mil, mi, bi, tri, quatri.
