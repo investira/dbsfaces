@@ -86,7 +86,6 @@ public class DBSSliderRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(xWriter, "class", xClass);
 			DBSFaces.encodeAttribute(xWriter, "style", xSlider.getStyle());
 			DBSFaces.encodeAttribute(xWriter, "type", xType.getName());
-			DBSFaces.encodeAttribute(xWriter, "v", xSlider.getValue());
 			DBSFaces.encodeAttribute(xWriter, "dp", xSlider.getDecimalPlaces());
 			if (xSlider.getContentAlignment() == null){
 				if (xOrientation == ORIENTATION.HORIZONTAL){
@@ -107,15 +106,14 @@ public class DBSSliderRenderer extends DBSRenderer {
 			}
 			xWriter.startElement("div", xSlider);
 				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER + CSS.MODIFIER.NOT_SELECTABLE);
-				pvEncodeContent(xSlider, xWriter, xType, xOrientation);
+				pvEncodeContent(xSlider, xWriter);
 			xWriter.endElement("div");
 			DBSFaces.encodeTooltip(pContext, xSlider, xSlider.getTooltip());
 			pvEncodeJS(xSlider, xWriter);
 		xWriter.endElement("div");
 	}
 	
-	@SuppressWarnings("unchecked")
-	private void pvEncodeContent(DBSSlider pSlider, ResponseWriter pWriter, TYPE pType, ORIENTATION pOrientation) throws IOException{
+	private void pvEncodeContent(DBSSlider pSlider, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("div", pSlider);
 			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
 			//Slider
@@ -129,33 +127,6 @@ public class DBSSliderRenderer extends DBSRenderer {
 			pWriter.startElement("div", pSlider);
 				DBSFaces.encodeAttribute(pWriter, "class", "-handle");
 			pWriter.endElement("div");	
-			//Points
-			List<String> xListValues = (List<String>)pSlider.getListValues();
-			if (xListValues.size() > 0){
-				pWriter.startElement("div", pSlider);
-					String xClass = "-points";
-					String xValue = "";
-					DBSFaces.encodeAttribute(pWriter, "class", xClass);
-					for (int xI = 0; xI < xListValues.size(); xI++){
-						if (pOrientation == ORIENTATION.HORIZONTAL){
-							xValue = xListValues.get(xI);
-						}else{
-							//Encode a partir do último pois a ordem do slider cresce de baixo para cima
-							xValue = xListValues.get(xListValues.size() - xI -1);
-						}
-						//Ponto na reta
-						pWriter.startElement("div", pSlider);
-							DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.POINT);
-						pWriter.endElement("div");
-						//Label do ponto
-						pWriter.startElement("div", pSlider);
-							DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LABEL);
-							DBSFaces.encodeAttribute(pWriter, "v", xValue);
-//							pWriter.write(xValue);
-						pWriter.endElement("div");
-					}
-				pWriter.endElement("div");	
-			}
 		pWriter.endElement("div");
 		pvEncodeInput(pSlider, pWriter);
 	}
