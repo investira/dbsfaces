@@ -440,7 +440,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 					}
 				}
 			}
-			//Se não foi informado DBSResultSet
+			//Busca DBSChartValue filhos se não foi informado DBSResultSet 
 			if (DBSObject.isEmpty(xChart.getVar())
 			 || DBSObject.isEmpty(xChart.getValueExpression("value"))){
 				//Loop nos componentes ChartValues filhos do chart
