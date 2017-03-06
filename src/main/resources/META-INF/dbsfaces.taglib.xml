@@ -3707,7 +3707,7 @@
                 ResultDataModel contendo os registros a serem exibidos
             </description>
 			<name>value</name>
-			<required>true</required>
+			<required>false</required>
 			<type>javax.faces.model.DBSResultDataModel</type>
 		</attribute>
 		<attribute>
