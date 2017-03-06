@@ -221,7 +221,7 @@
 }
 
 .dbs_slider[type="v"].-h > .-container > .-content > .-handle:before{
-	top: -2.55em;
+	top: -2.6em;
 }
 .dbs_slider[type="v"].-h.-i > .-container > .-content > .-handle:before{
 	top: 1.2em;

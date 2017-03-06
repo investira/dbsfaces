@@ -62,7 +62,11 @@ dbsfaces.slider = {
 		if (pSlider.data("type")== "v"){
 			var xListValuesNumeric = [];
 			for (var xI=0; xI < pListValues.length; xI++){
-				xListValuesNumeric.push(parseFloat(pListValues[xI].replace(/[^0-9]/g, '')));
+				if (typeof(pListValues[xI]) == "number"){
+					xListValuesNumeric.push(pListValues[xI]);
+				}else{
+					xListValuesNumeric.push(parseFloat(pListValues[xI].replace(/[^0-9]/g, '')));
+				}
 			}
 			pSlider.data("listvaluesnumeric", xListValuesNumeric);
 		}
