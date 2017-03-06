@@ -23,9 +23,9 @@ public class DBSSlider extends DBSUIInput {
 		animated,
 		tooltip,
 		listValues,
-//		showLabel,
-		invertLabel,
-		contentAlignment;
+		invertListValuesPosition,
+		contentAlignment,
+		obs;
 		
 		String toString;
 
@@ -188,22 +188,22 @@ public class DBSSlider extends DBSUIInput {
 		return (Boolean) getStateHelper().eval(PropertyKeys.animated, false);
 	}	
 
-//	public void setShowLabel(Boolean pShowLabel) {
-//		getStateHelper().put(PropertyKeys.showLabel, pShowLabel);
-//		handleAttribute("showLabel", pShowLabel);
-//	}
-//	
-//	public Boolean getShowLabel() {
-//		return (Boolean) getStateHelper().eval(PropertyKeys.showLabel, true);
-//	}	
-
-	public void setInvertLabel(Boolean pInvertLabel) {
-		getStateHelper().put(PropertyKeys.invertLabel, pInvertLabel);
-		handleAttribute("invertLabel", pInvertLabel);
+	public String getObs() {
+		return (String) getStateHelper().eval(PropertyKeys.obs, null);
 	}
 	
-	public Boolean getInvertLabel() {
-		return (Boolean) getStateHelper().eval(PropertyKeys.invertLabel, false);
+	public void setObs(String pObs) {
+		getStateHelper().put(PropertyKeys.obs, pObs);
+		handleAttribute("obs", pObs);
+	}
+
+	public void setInvertListValuesPosition(Boolean pInvertListValuesPosition) {
+		getStateHelper().put(PropertyKeys.invertListValuesPosition, pInvertListValuesPosition);
+		handleAttribute("invertListValuesPosition", pInvertListValuesPosition);
+	}
+	
+	public Boolean getInvertListValuesPosition() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.invertListValuesPosition, false);
 	}	
 
 	public Object getListValues() {
@@ -220,11 +220,12 @@ public class DBSSlider extends DBSUIInput {
 			pvSetListValues(xListValue);
 		}
 	}
-	
+
 	public void pvSetListValues(List<String> pListValue) {
 		getStateHelper().put(PropertyKeys.listValues, pListValue);
 		handleAttribute("listValues", pListValue);
 	}
+	
 	
 	public String getContentAlignment() {
 		return (String) getStateHelper().eval(PropertyKeys.contentAlignment, null);

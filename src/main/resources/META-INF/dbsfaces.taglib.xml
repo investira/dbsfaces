@@ -2953,6 +2953,14 @@
 		</attribute>
 		<attribute>
 			<description>
+                Título do campo
+            </description>
+			<name>label</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
                 Class CSS que será utilizada
             </description>
 			<name>styleClass</name>
@@ -3020,9 +3028,9 @@
 <!-- 		</attribute> -->
 		<attribute>
 			<description>
-                Se inverte a posição para exibição do label.
+                Se inverte a posição para exibição da lista dos valores.
             </description>
-			<name>invertLabel</name>
+			<name>invertListValuesPosition</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
@@ -3070,7 +3078,15 @@
 			<name>animated</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-		</attribute>		
+		</attribute>	
+		<attribute>
+			<description>
+                Texto auxiliar.
+            </description>
+			<name>obs</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>			
 		<attribute>
 			<description>
                 Tooltip
@@ -3081,7 +3097,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Lista de valores(somente para Slider do tipo "s" e "o").
+                Lista de valores.
             </description>
 			<name>listValues</name>
 			<required>false</required>

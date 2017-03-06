@@ -31,8 +31,6 @@
     display: inline-block;
     left: 0;
     top: 0;
-/*     overflow: hidden; */
-/*     border-radius: 1em; */
     border: none;
 }
 
@@ -41,6 +39,46 @@
 }
 
 
+.dbs_slider > .-container > .-content > .-label{
+	position: absolute;
+	display: inline-block;
+}
+
+.dbs_slider.-v > .-container > .-content > .-label{
+    top: -2em;
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+.dbs_slider.-h > .-container > .-content > .-label{
+    left: 0;
+    top: -2.5em;
+}
+
+
+.dbs_slider.-h.-showListValues:not(.-i) > .-container > .-content > .-label{
+    top: -3.7em;
+}
+
+.dbs_slider > .-container > .-content > .-obs{
+	position: absolute;
+    display: inline-block;
+    font-size: 0.7em;
+    opacity: 0.8;
+}
+.dbs_slider.-h > .-container > .-content > .-obs{
+    right: 0;
+	top: -4.7em;
+}
+.dbs_slider.-v > .-container > .-content > .-obs{
+    bottom: -2em;
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
 
 .dbs_slider > .-container > .-content > .-slider{
 	display: inline-block;
@@ -48,7 +86,7 @@
 	-webkit-transition: inherit;
 	-moz-transition: inherit;
 	transition: inherit;
-	border-radius: 1em;
+/* 	border-radius: 1em; */
     background-color: green;
     overflow: hidden;
 }
@@ -80,16 +118,6 @@
 	top: 50%;
 	white-space: nowrap;
 	font-size: .8em;
-}
-
-.dbs_slider > .-container > .-content > .-slider .-label:nth-of-type(1) > .-value{
-/* 	float: left; */
-/* 	font-weight: bold; */
-}
-
-.dbs_slider > .-container > .-content > .-slider .-label:nth-of-type(1) > .-sufix{
-/* 	font-size: 30%; */
-/* 	display: inline; */
 }
 
 .dbs_slider.-v > .-container{
@@ -192,10 +220,10 @@
 }
 
 .dbs_slider.-h > .-container > .-content > .-handle{
-    top: calc(50%);
+    top: 50%;
 }
 .dbs_slider.-v > .-container > .-content > .-handle{
-    left: calc(50%);
+    left: 50%;
 }
 
 .dbs_slider[type="v"] > .-container > .-content > .-handle:before{
@@ -208,15 +236,21 @@
     z-index: 1;
     font-size: .9em;
 }
-.dbs_slider[type="v"].-showLabel > .-container > .-content > .-handle:before,
+.dbs_slider[type="v"].-showListValues > .-container > .-content > .-handle:before,
 .dbs_slider[type="v"].-selected > .-container > .-content > .-handle:before{
     display: inline-block;
 }
 
 .dbs_slider[type="v"].-h > .-container > .-content > .-handle:before{
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
     transform: translateX(-50%);
 }
 .dbs_slider[type="v"].-v > .-container > .-content > .-handle:before{
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
     transform: translateY(-50%);
 }
 
@@ -332,6 +366,10 @@
     font-size: .9em;
 	position: absolute;
     display: inline-block;
+	-webkit-transition: opacity linear .2s;
+	-moz-transition: opacity linear .2s;
+	-o-transition: opacity linear .2s;
+	transition: opacity linear .2s;
 }
 .dbs_slider[type="v"] > .-container > .-content > .-points > .-label{
 	opacity: 0.5;	
@@ -344,6 +382,18 @@
 	-moz-transform: translateY(-.5em);
 	-o-transform: translateY(-.5em);
 	transform: translateY(-.5em);
+}
+.dbs_slider.-v > .-container > .-content > .-points > .-label.-first{
+	-webkit-transform: translateY(0);
+	-moz-transform: translateY(0);
+	-o-transform: translateY(0);
+	transform: translateY(0);
+}
+.dbs_slider.-v > .-container > .-content > .-points > .-label.-last{
+	-webkit-transform: translateY(-1em);
+	-moz-transform: translateY(-1em);
+	-o-transform: translateY(-1em);
+	transform: translateY(-1em);
 }
 
 .dbs_slider.-v.-i > .-container > .-content > .-points > .-label{
@@ -358,6 +408,19 @@
     transform: translateX(-50%);
     top: -2.5em;
 }
+.dbs_slider.-h > .-container > .-content > .-points .-label.-first{
+    -webkit-transform: translateX(0%);
+    -moz-transform: translateX(0%);
+    -o-transform: translateX(0%);
+    transform: translateX(0%);
+}
+.dbs_slider.-h > .-container > .-content > .-points .-label.-last{
+    -webkit-transform: translateX(-100%);
+    -moz-transform: translateX(-100%);
+    -o-transform: translateX(-100%);
+    transform: translateX(-100%);
+}
+
 .dbs_slider.-h.-i > .-container > .-content > .-points > .-label{
     top: 1.3em;
 }

@@ -68,7 +68,7 @@ public class DBSSliderRenderer extends DBSRenderer {
 		if (xSlider.getAnimated()){
 			xClass += " -ani ";
 		}
-		if (xSlider.getInvertLabel()){
+		if (xSlider.getInvertListValuesPosition()){
 			xClass += CSS.MODIFIER.INVERT;
 		}
 		if (xSlider.getStyleClass()!=null){
@@ -89,13 +89,13 @@ public class DBSSliderRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(xWriter, "dp", xSlider.getDecimalPlaces());
 			if (xSlider.getContentAlignment() == null){
 				if (xOrientation == ORIENTATION.HORIZONTAL){
-					if (xSlider.getInvertLabel()){
+					if (xSlider.getInvertListValuesPosition()){
 						DBSFaces.encodeAttribute(xWriter, "ca", CONTENT_ALIGNMENT.TOP.getName());
 					}else{
 						DBSFaces.encodeAttribute(xWriter, "ca", CONTENT_ALIGNMENT.BOTTOM.getName());
 					}
 				}else{
-					if (xSlider.getInvertLabel()){
+					if (xSlider.getInvertListValuesPosition()){
 						DBSFaces.encodeAttribute(xWriter, "ca", CONTENT_ALIGNMENT.LEFT.getName());
 					}else{
 						DBSFaces.encodeAttribute(xWriter, "ca", CONTENT_ALIGNMENT.RIGHT.getName());
@@ -116,6 +116,19 @@ public class DBSSliderRenderer extends DBSRenderer {
 	private void pvEncodeContent(DBSSlider pSlider, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("div", pSlider);
 			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
+			//Label
+			if (pSlider.getLabel() != null){
+				pWriter.startElement("div", pSlider);
+					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LABEL);
+					pWriter.write(pSlider.getLabel());
+				pWriter.endElement("div");
+			}
+			if (pSlider.getObs() != null){
+				pWriter.startElement("div", pSlider);
+					DBSFaces.encodeAttribute(pWriter, "class", "-obs");
+					pWriter.write(pSlider.getObs());
+				pWriter.endElement("div");
+			}
 			//Slider
 			pWriter.startElement("div", pSlider);
 				DBSFaces.encodeAttribute(pWriter, "class", "-slider");

@@ -53,9 +53,6 @@ dbsfaces.slider = {
 		pSlider.data("slider", pSlider.data("content").children(".-slider"));
 		pSlider.data("sliderValue", pSlider.data("slider").children(".-value"));
 		pSlider.data("handle", pSlider.data("content").children(".-handle"));
-//		pSlider.data("points", pSlider.data("content").children(".-points"));
-//		pSlider.data("point", pSlider.data("points").children(".-point"));
-//		pSlider.data("label", pSlider.data("points").children(".-label"));
 		pSlider.data("ani", (pSlider.hasClass("-ani") ? true: false));
 		pSlider.data("segmentpercfator", (1 / (pSlider.data("listvalues").length - 1)));
 		pSlider.data("dif", null);
@@ -115,23 +112,44 @@ dbsfaces.slider = {
 		var xOrientation = pSlider.data("orientation");
 		//Apaga os pontos anteriores se já existirem
 		xContent.children(".-points").remove();
-		//Points
+		//Cria points
+		var xPoints = $(document.createElement('div')).addClass("-points");
+		xContent.append(xPoints);
+		//Cria point e label
 		if (pListValues.length  > 0){
-			var xPoints = $(document.createElement('div')).addClass("-points");
-			xContent.append(xPoints);
 			var xValue = "";
+			var xLabel = "";
+			var xClass = "";
 			for (var xI = 0; xI < pListValues.length; xI++){
-				if (xOrientation == "h"){
-					xValue = pListValues[xI];
+				//Configura alinhamento
+				if (xI == 0){
+					xClass = " -first";
+				}else if (xI == pListValues.length - 1){
+					xClass = " -last";
 				}else{
-					//Encode a partir do último pois a ordem do slider cresce de baixo para cima
-					xValue = pListValues[pListValues.length - xI -1];
+					xClass = "";
 				}
-				var xPoint = $(document.createElement('div')).addClass("-point");
-				xPoints.append(xPoint);
-				var xLabel = $(document.createElement('div')).addClass("-label").attr("v", xValue);
-				xPoints.append(xLabel);
+				var xIndex = xI;
+				if (xOrientation == "v"){
+					//Encode a partir do último pois a ordem do slider cresce de baixo para cima
+					xIndex = pListValues.length - xI -1;
+				}
+				xValue = pListValues[xIndex];
+				xLabel = xValue;
+				if (xType == "v"){
+					//Formata número
+					xLabel = dbsfaces.format.number(xValue, pSlider.data("dp"));
+				}
+				//Point
+				dbsfaces.slider.pvInitializeCreatePointElement(xPoints);
+				//Label
+				var xLabelElement = $(document.createElement('div')).addClass("-label" + xClass).attr("v", xValue).attr("l", xLabel);
+				xPoints.append(xLabelElement);
 			}
+		}else{
+			//Point
+			dbsfaces.slider.pvInitializeCreatePointElement(xPoints);
+			dbsfaces.slider.pvInitializeCreatePointElement(xPoints);
 		}
 		pSlider.data("points", pSlider.data("content").children(".-points"));
 		pSlider.data("point", pSlider.data("points").children(".-point"));
@@ -148,9 +166,14 @@ dbsfaces.slider = {
 
 	},
 
+	pvInitializeCreatePointElement:function(pPoints){
+		var xPointElement = $(document.createElement('div')).addClass("-point");
+		pPoints.append(xPointElement);
+	},
+	
 	pvInitializeLayoutPoints: function(pSlider){
 		if (pSlider.data("points").length > 0){
-			pSlider.addClass("-showLabel");
+			pSlider.addClass("-showListValues");
 		}
 		var xValuePerc;
 		var xOrientation = pSlider.data("orientation");
@@ -169,19 +192,15 @@ dbsfaces.slider = {
 		var xLabel = pSlider.data("label");
 		for (var xI=0; xI < xLabel.length; xI++){
 			//Texto
-			if (xType == "v"){
-				//Formata número
-				$(xLabel[xI]).text(dbsfaces.format.number($(xLabel[xI]).attr("v"), pSlider.data("dp")));
-			}else{
-				$(xLabel[xI]).text($(xLabel[xI]).attr("v"));
-			}
+			$(xLabel[xI]).text($(xLabel[xI]).attr("l"));
 			//Posição
 			xValuePerc = (xI / (xLabel.length - 1)) * 100;
-			if (pSlider.data("orientation") == "h"){
+			if (xOrientation == "h"){
 				$(xLabel[xI]).css("left", xValuePerc + "%");
 			}else{
 				$(xLabel[xI]).css("top", xValuePerc + "%");
 			}
+			$(xLabel[xI]).data("perc", xValuePerc / 100);
 		}
 	},
 
@@ -266,13 +285,15 @@ dbsfaces.slider = {
 			var xListValuesNumeric = pSlider.data("listvaluesnumeric");
 			
 			xValuePercFator = dbsfaces.math.round(parseFloat(xValue.replace(/[^0-9]/g, '')), 10);
-			//Prucora qual o item da lista foi selecionado
+			//Procura qual o item da lista foi selecionado
 			if (xListValuesNumeric.length > 0){
+				//Verifica se valor ultrapassou os limites
 				if (xValuePercFator < xListValuesNumeric[0]){
 					xValuePercFator = xListValuesNumeric[0];
 				}else if(xValuePercFator > xListValuesNumeric[xListValuesNumeric.length - 1]){
 					xValuePercFator = xListValuesNumeric[xListValuesNumeric.length - 1];
 				}
+				//Procura item na lista
 				for (var xI=0; xI < xListValuesNumeric.length; xI++){
 					if (xListValuesNumeric[xI] > xValuePercFator){
 						 xMax = xListValuesNumeric[xI];
@@ -280,9 +301,11 @@ dbsfaces.slider = {
 						 break;
 					}
 				}
+				//Calcula fator
 				xValuePercFator = xSegmentPercFator * ((xValuePercFator - xMin) / (xMax - xMin));
 				xValuePercFator += (xSegmentPercFator * (xI - 1));
 			}else{
+				//Calcula fator
 				xValuePercFator = (xValuePercFator - xMin) / (xMax - xMin); 
 			}
 		}else{
@@ -344,8 +367,6 @@ dbsfaces.slider = {
 			pValuePercFator = xI / (xListValues.length - 1);
 			xValuePerc = pValuePercFator * 100;
 		}
-		//Configura steps anteriores
-		dbsfaces.slider.pvSetSteps(pSlider, xI);
 		//Salva inputValue
 		dbsfaces.slider.setInputValue(pSlider, xInputValue);
 		//Salva percentual relativo a coordenada
@@ -367,6 +388,9 @@ dbsfaces.slider = {
 		//Valor para ser capturado pelo pseudoselector :before:content
 		xHandle.attr("v", pSlider.data("input").attr("value"));
 
+		//Configura steps anteriores
+		dbsfaces.slider.pvHideLabels(pSlider);
+
 		//Dispara que valor foi alterado
 		clearTimeout(pSlider.data("timeout"));
 		pSlider.data("timeout", setTimeout(function(){
@@ -385,28 +409,41 @@ dbsfaces.slider = {
 		pHandle.css("top", 100 - pValuePerc + "%");
 	},
 	
-	pvSetSteps: function(pSlider, pCurrentIndex){
-//		if (pCurrentIndex == null){return;}
-//		var xPoint = pSlider.data("point");
-//		if (pSlider.data("orientation") == "v"){
-//			pCurrentIndex++;
-//			console.log(pCurrentIndex);
-//			for (var xI = xPoint.length -1; xI > -1; xI--){
-//				if (xI >= pCurrentIndex){
-//					$(xPoint[xI]).addClass("-executed");
-//				}else{
-//					$(xPoint[xI]).removeClass("-executed");
-//				}
-//			}
-//		}else{
-//			for (var xI=0; xI < xPoint.length; xI++){
-//				if (xI <= pCurrentIndex){
-//					$(xPoint[xI]).addClass("-executed");
-//				}else{
-//					$(xPoint[xI]).removeClass("-executed");
-//				}
-//			}
-//		}
+	pvHideLabels: function(pSlider){
+		//Label
+		var xCurrentPerc = pSlider.data("perc");
+		var xLabel = pSlider.data("label");
+		var xType = pSlider.data("type");
+		var xOrientation = pSlider.data("orientation");
+		var xLabelPerc;
+		var xCur;
+		if (xOrientation == "h"){
+			xCur = parseFloat(pSlider.data("handle").css("left"));
+		}else{
+			xCur = parseFloat(pSlider.data("handle").css("top"));
+		}
+		if (xType == "v"){
+			for (var xI=0; xI < xLabel.length; xI++){
+				var xLabelX = $(xLabel[xI]);
+				var xSize;
+				var xMin;
+				var xMax;
+				if (xOrientation == "h"){
+					xSize = parseFloat(xLabelX.css("width"));
+					xMin = parseFloat(xLabelX.css("left"));
+				}else{
+					xSize = parseFloat(xLabelX.css("height"));
+					xMin = parseFloat(xLabelX.css("top"));
+				}
+				xMax = xMin + xSize;
+				xMin -= xSize;
+				if (xCur > xMin && xCur < xMax){
+					xLabelX.css("opacity", 0);
+				}else{
+					xLabelX.css("opacity", "");
+				}
+			}
+		}
 		
 	}
 
