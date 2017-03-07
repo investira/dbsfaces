@@ -140,7 +140,7 @@ dbs_fileUpload = function(pId, pFileUploadServlet) {
 						statusText += "! O arquivo " + wFilesWithError[0] + " não foi baixado por exceder";
 					}else{
 						statusText += "! Os arquivos ";
-						for (i = 0; i < wFilesWithError.length; i++){
+						for (var i = 0; i < wFilesWithError.length; i++){
 							if (i !=0){
 								statusText += ",";
 							}
