@@ -68,7 +68,7 @@ public class DBSSliderRenderer extends DBSRenderer {
 		if (xSlider.getAnimated()){
 			xClass += " -ani ";
 		}
-		if (xSlider.getInvertListValuesPosition()){
+		if (xSlider.getInvertValuesListPosition()){
 			xClass += CSS.MODIFIER.INVERT;
 		}
 		if (xSlider.getStyleClass()!=null){
@@ -89,13 +89,13 @@ public class DBSSliderRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(xWriter, "dp", xSlider.getDecimalPlaces());
 			if (xSlider.getContentAlignment() == null){
 				if (xOrientation == ORIENTATION.HORIZONTAL){
-					if (xSlider.getInvertListValuesPosition()){
+					if (xSlider.getInvertValuesListPosition()){
 						DBSFaces.encodeAttribute(xWriter, "ca", CONTENT_ALIGNMENT.TOP.getName());
 					}else{
 						DBSFaces.encodeAttribute(xWriter, "ca", CONTENT_ALIGNMENT.BOTTOM.getName());
 					}
 				}else{
-					if (xSlider.getInvertListValuesPosition()){
+					if (xSlider.getInvertValuesListPosition()){
 						DBSFaces.encodeAttribute(xWriter, "ca", CONTENT_ALIGNMENT.LEFT.getName());
 					}else{
 						DBSFaces.encodeAttribute(xWriter, "ca", CONTENT_ALIGNMENT.RIGHT.getName());
@@ -166,7 +166,7 @@ public class DBSSliderRenderer extends DBSRenderer {
 		String xJS = "$(document).ready(function() { \n" +
 				     " var xSliderId = dbsfaces.util.jsid('" + pSlider.getClientId() + "'); \n " + 
 				     " dbs_slider(xSliderId, " + 
-				     			  xListValuesJson.toJsonTree(pSlider.getListValues(), List.class) + ", " +
+				     			  xListValuesJson.toJsonTree(pSlider.getValuesList(), List.class) + ", " +
 				     			  xListValuesJson.toJson(pSlider.getMinValue()) + ", " +
 				     			  xListValuesJson.toJson(pSlider.getMaxValue()) +
 				     			  "); \n" +

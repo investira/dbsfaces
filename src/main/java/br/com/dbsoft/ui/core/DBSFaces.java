@@ -196,6 +196,9 @@ public class  DBSFaces {
 	    public static final String CHARTS = "charts";
 	    public static final String CHART = "chart";
 	    public static final String CHARTVALUE = "chartValue";
+	    public static final String CHARTSX = "chartsX";
+	    public static final String CHARTX = "chartX";
+	    public static final String CHARTVALUEX = "chartValueX";
 	}
 
 	public static class HTML
@@ -583,7 +586,23 @@ public class  DBSFaces {
 		{
 			public static final String MAIN = " " + CLASS_PREFIX + ID.FLOATBUTTON + " ";
 		}
+
 		
+		public static class CHARTSX
+		{	
+			public static final String MAIN = " " + CLASS_PREFIX + ID.CHARTSX + " ";
+		}
+
+		public static class CHARTX
+		{	
+			public static final String MAIN = " " + CLASS_PREFIX + ID.CHARTX + " ";
+		}
+		
+		public static class CHARTVALUEX
+		{	
+			public static final String MAIN = " " + CLASS_PREFIX + ID.CHARTVALUEX + " ";
+		}
+
 	}
 	
 	

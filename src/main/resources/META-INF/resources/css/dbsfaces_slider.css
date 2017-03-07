@@ -58,7 +58,7 @@
 }
 
 
-.dbs_slider.-h.-showListValues:not(.-i) > .-container > .-content > .-label{
+.dbs_slider.-h.-showValuesList:not(.-i) > .-container > .-content > .-label{
     top: -3.7em;
 }
 
@@ -236,7 +236,7 @@
     z-index: 1;
     font-size: .9em;
 }
-.dbs_slider[type="v"].-showListValues > .-container > .-content > .-handle:before,
+.dbs_slider[type="v"].-showValuesList > .-container > .-content > .-handle:before,
 .dbs_slider[type="v"].-selected > .-container > .-content > .-handle:before{
     display: inline-block;
 }

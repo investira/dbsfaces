@@ -22,8 +22,8 @@ public class DBSSlider extends DBSUIInput {
 		decimalPlaces,
 		animated,
 		tooltip,
-		listValues,
-		invertListValuesPosition,
+		valuesList,
+		invertValuesListPosition,
 		contentAlignment,
 		obs;
 		
@@ -197,33 +197,33 @@ public class DBSSlider extends DBSUIInput {
 		handleAttribute("obs", pObs);
 	}
 
-	public void setInvertListValuesPosition(Boolean pInvertListValuesPosition) {
-		getStateHelper().put(PropertyKeys.invertListValuesPosition, pInvertListValuesPosition);
-		handleAttribute("invertListValuesPosition", pInvertListValuesPosition);
+	public void setInvertValuesListPosition(Boolean pInvertValuesListPosition) {
+		getStateHelper().put(PropertyKeys.invertValuesListPosition, pInvertValuesListPosition);
+		handleAttribute("invertListValuesPosition", pInvertValuesListPosition);
 	}
 	
-	public Boolean getInvertListValuesPosition() {
-		return (Boolean) getStateHelper().eval(PropertyKeys.invertListValuesPosition, false);
+	public Boolean getInvertValuesListPosition() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.invertValuesListPosition, false);
 	}	
 
-	public Object getListValues() {
-		return getStateHelper().eval(PropertyKeys.listValues, Arrays.asList());
+	public Object getValuesList() {
+		return getStateHelper().eval(PropertyKeys.valuesList, Arrays.asList());
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void setListValues(Object pListValue) {
-		if (pListValue == null){return;}
-		if (pListValue instanceof List){
-			pvSetListValues((List<String>) pListValue);
+	public void setValuesList(Object pValuesList) {
+		if (pValuesList == null){return;}
+		if (pValuesList instanceof List){
+			pvSetValuesList((List<String>) pValuesList);
 		}else{
-			List<String> xListValue = Arrays.asList(((String) pListValue).split("\\s*,\\s*"));
-			pvSetListValues(xListValue);
+			List<String> xValuesList = Arrays.asList(((String) pValuesList).split("\\s*,\\s*"));
+			pvSetValuesList(xValuesList);
 		}
 	}
 
-	public void pvSetListValues(List<String> pListValue) {
-		getStateHelper().put(PropertyKeys.listValues, pListValue);
-		handleAttribute("listValues", pListValue);
+	public void pvSetValuesList(List<String> pValuesList) {
+		getStateHelper().put(PropertyKeys.valuesList, pValuesList);
+		handleAttribute("valuesList", pValuesList);
 	}
 	
 	

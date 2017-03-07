@@ -3026,14 +3026,7 @@
 <!-- 			<required>false</required> -->
 <!-- 			<type>java.lang.Boolean</type> -->
 <!-- 		</attribute> -->
-		<attribute>
-			<description>
-                Se inverte a posição para exibição da lista dos valores.
-            </description>
-			<name>invertListValuesPosition</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
+
 		<attribute>
 			<description>
                 Valor atual. 
@@ -3099,9 +3092,17 @@
 			<description>
                 Lista de valores.
             </description>
-			<name>listValues</name>
+			<name>valuesList</name>
 			<required>false</required>
 			<type>java.lang.Object</type>
+		</attribute>
+		<attribute>
+			<description>
+                Se inverte a posição para exibição da lista dos valores.
+            </description>
+			<name>invertValuesListPosition</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
 		</attribute>
 		<attribute>
 			<description>
@@ -3114,7 +3115,8 @@
 					&lt;li&gt;r = RIGHT&lt;/li&gt;
 					&lt;li&gt;c = CENTER&lt;/li&gt;
 				&lt;ul&gt;
-				&lt;/span&gt; </description>
+				&lt;/span&gt; 
+			</description>
 			<name>contentAlignment</name>
 			<required>false</required>
 			<type>java.lang.Sting</type>
@@ -3514,6 +3516,142 @@
 			<type>java.lang.String</type>
 		</attribute>
 	</tag>
+		<tag>
+		<tag-name>chartsx</tag-name>
+		<component>
+			<component-type>br.com.dbsoft.ui.component.chartsx</component-type>
+			<handler-class />
+		</component>
+		<attribute>
+			<description>
+                Identificador único do componente.
+            </description>
+			<name>id</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Tipo de gráfico. O padrão é bar&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;bar = Barra&lt;/li&gt;
+					&lt;li&gt;line = Linha&lt;/li&gt;
+					&lt;li&gt;pie = Pizza&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; 
+			</description>
+			<name>type</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Título
+            </description>
+			<name>caption</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Texto do rodapé
+            </description>
+			<name>footer</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Mascará para formatar o valor.
+            </description>
+			<name>valueFormatMask</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Class CSS que será utilizada
+            </description>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Adiciona style 
+            </description>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                rendered
+            </description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+                id que identificará grupos de gráficos que terão seus valores selecionados simultaneamente quando possurem os mesmos labels.
+            </description>
+			<name>groupId</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Indica se grid será exibido(somente para gráficos Line e Bar). Padrão é true.
+            </description>
+			<name>showGrid</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+                Indica se valor do grid será exibido(somente para gráficos Line e Bar). Padrão é true.
+            </description>
+			<name>showGridValue</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+                Indica se label será exibido. Padrão é true.
+            </description>
+			<name>showLabel</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+                Indica se será exibido a variação percentual entre dois pontos quando o gráfico for do tipo 'line'. O default é true.
+            </description>
+			<name>showDelta</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>Dimensão do círculo central. É um fator em relação a largura individual do gráfico. 
+			ex: com valor 1 o círculo central terá o tamanho da largura de um gráfico.
+			O padrão é 1;
+            </description>
+			<name>pieInternalCircleFator</name>
+			<required>true</required>
+			<type>java.lang.Double</type>
+		</attribute>
+		<attribute>
+			<description>
+                Lista de IDBSChartDelta para seleção rápida do intervalo do delta
+            </description>
+			<name>deltaList</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+		</attribute>
+	</tag>
+	
 	<tag>
 		<tag-name>charts</tag-name>
 		<component>

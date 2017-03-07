@@ -1,5 +1,5 @@
-dbs_slider = function(pId, pListValues, pMinValue, pMaxValue) {
-	dbsfaces.slider.initialize($(pId), pListValues, pMinValue, pMaxValue);
+dbs_slider = function(pId, pValuesList, pMinValue, pMaxValue) {
+	dbsfaces.slider.initialize($(pId), pValuesList, pMinValue, pMaxValue);
 
 	$(window).resize(function(e){
 		dbsfaces.slider.resize($(pId));
@@ -33,18 +33,18 @@ dbs_slider = function(pId, pListValues, pMinValue, pMaxValue) {
 }
 
 dbsfaces.slider = {
-	initialize: function(pSlider, pListValues, pMinValue, pMaxValue){
-		dbsfaces.slider.pvInitializeData(pSlider, pListValues, pMinValue, pMaxValue);
-		dbsfaces.slider.pvInitializeCreatePoints(pSlider, pListValues, pMinValue, pMaxValue);
+	initialize: function(pSlider, pValuesList, pMinValue, pMaxValue){
+		dbsfaces.slider.pvInitializeData(pSlider, pValuesList, pMinValue, pMaxValue);
+		dbsfaces.slider.pvInitializeCreatePoints(pSlider, pValuesList, pMinValue, pMaxValue);
 		dbsfaces.slider.pvInitializeLayout(pSlider);
 	},
 
 	
-	pvInitializeData: function(pSlider, pListValues, pMinValue, pMaxValue){
+	pvInitializeData: function(pSlider, pValuesList, pMinValue, pMaxValue){
 		pSlider.data("type", pSlider.attr("type"));
 		pSlider.data("dp", parseInt(pSlider.attr("dp")));
 		pSlider.data("orientation", (pSlider.hasClass("-h") ? "h" : "v"));
-		pSlider.data("listvalues", pListValues);
+		pSlider.data("listvalues", pValuesList);
 		pSlider.data("min", parseFloat(pMinValue));
 		pSlider.data("max", parseFloat(pMaxValue));
 		pSlider.data("container", pSlider.children(".-container"));
@@ -57,15 +57,15 @@ dbsfaces.slider = {
 		pSlider.data("segmentpercfator", (1 / (pSlider.data("listvalues").length - 1)));
 		pSlider.data("dif", null);
 		if (pSlider.data("type")== "v"){
-			var xListValuesNumeric = [];
-			for (var xI=0; xI < pListValues.length; xI++){
-				if (typeof(pListValues[xI]) == "number"){
-					xListValuesNumeric.push(pListValues[xI]);
+			var xValuesListNumeric = [];
+			for (var xI=0; xI < pValuesList.length; xI++){
+				if (typeof(pValuesList[xI]) == "number"){
+					xValuesListNumeric.push(pValuesList[xI]);
 				}else{
-					xListValuesNumeric.push(parseFloat(pListValues[xI].replace(/[^0-9]/g, '')));
+					xValuesListNumeric.push(parseFloat(pValuesList[xI].replace(/[^0-9]/g, '')));
 				}
 			}
-			pSlider.data("listvaluesnumeric", xListValuesNumeric);
+			pSlider.data("listvaluesnumeric", xValuesListNumeric);
 		}
 
 	},
@@ -106,7 +106,7 @@ dbsfaces.slider = {
 		pSlider.data("handle").css("color", xInverted);
 	},
 	
-	pvInitializeCreatePoints: function(pSlider, pListValues, pMinValue, pMaxValue){
+	pvInitializeCreatePoints: function(pSlider, pValuesList, pMinValue, pMaxValue){
 		var xContent = pSlider.data("content");
 		var xType = pSlider.data("type");
 		var xOrientation = pSlider.data("orientation");
@@ -116,15 +116,15 @@ dbsfaces.slider = {
 		var xPoints = $(document.createElement('div')).addClass("-points");
 		xContent.append(xPoints);
 		//Cria point e label
-		if (pListValues.length  > 0){
+		if (pValuesList.length  > 0){
 			var xValue = "";
 			var xLabel = "";
 			var xClass = "";
-			for (var xI = 0; xI < pListValues.length; xI++){
+			for (var xI = 0; xI < pValuesList.length; xI++){
 				//Configura alinhamento
 				if (xI == 0){
 					xClass = " -first";
-				}else if (xI == pListValues.length - 1){
+				}else if (xI == pValuesList.length - 1){
 					xClass = " -last";
 				}else{
 					xClass = "";
@@ -132,9 +132,9 @@ dbsfaces.slider = {
 				var xIndex = xI;
 				if (xOrientation == "v"){
 					//Encode a partir do último pois a ordem do slider cresce de baixo para cima
-					xIndex = pListValues.length - xI -1;
+					xIndex = pValuesList.length - xI -1;
 				}
-				xValue = pListValues[xIndex];
+				xValue = pValuesList[xIndex];
 				xLabel = xValue;
 				if (xType == "v"){
 					//Formata número
@@ -173,7 +173,7 @@ dbsfaces.slider = {
 	
 	pvInitializeLayoutPoints: function(pSlider){
 		if (pSlider.data("points").length > 0){
-			pSlider.addClass("-showListValues");
+			pSlider.addClass("-showValuesList");
 		}
 		var xValuePerc;
 		var xOrientation = pSlider.data("orientation");
@@ -282,22 +282,22 @@ dbsfaces.slider = {
 			var xMin = pSlider.data("min");
 			var xMax = pSlider.data("max");
 			var xSegmentPercFator = pSlider.data("segmentpercfator");
-			var xListValuesNumeric = pSlider.data("listvaluesnumeric");
+			var xValuesListNumeric = pSlider.data("listvaluesnumeric");
 			
 			xValuePercFator = dbsfaces.math.round(parseFloat(xValue.replace(/[^0-9]/g, '')), 10);
 			//Procura qual o item da lista foi selecionado
-			if (xListValuesNumeric.length > 0){
+			if (xValuesListNumeric.length > 0){
 				//Verifica se valor ultrapassou os limites
-				if (xValuePercFator < xListValuesNumeric[0]){
-					xValuePercFator = xListValuesNumeric[0];
-				}else if(xValuePercFator > xListValuesNumeric[xListValuesNumeric.length - 1]){
-					xValuePercFator = xListValuesNumeric[xListValuesNumeric.length - 1];
+				if (xValuePercFator < xValuesListNumeric[0]){
+					xValuePercFator = xValuesListNumeric[0];
+				}else if(xValuePercFator > xValuesListNumeric[xValuesListNumeric.length - 1]){
+					xValuePercFator = xValuesListNumeric[xValuesListNumeric.length - 1];
 				}
 				//Procura item na lista
-				for (var xI=0; xI < xListValuesNumeric.length; xI++){
-					if (xListValuesNumeric[xI] > xValuePercFator){
-						 xMax = xListValuesNumeric[xI];
-						 xMin = xListValuesNumeric[xI -1];
+				for (var xI=0; xI < xValuesListNumeric.length; xI++){
+					if (xValuesListNumeric[xI] > xValuePercFator){
+						 xMax = xValuesListNumeric[xI];
+						 xMin = xValuesListNumeric[xI -1];
 						 break;
 					}
 				}
@@ -310,11 +310,11 @@ dbsfaces.slider = {
 			}
 		}else{
 			xValue = xValue.trim().toLowerCase();
-			var xListValues = pSlider.data("listvalues");
+			var xValuesList = pSlider.data("listvalues");
 			//Procura qual o item da lista foi selecionado
-			for (var xI=0; xI < xListValues.length; xI++){
-				if (xListValues[xI].toLowerCase() == xValue){
-					 xValuePercFator = xI / (xListValues.length - 1);
+			for (var xI=0; xI < xValuesList.length; xI++){
+				if (xValuesList[xI].toLowerCase() == xValue){
+					 xValuePercFator = xI / (xValuesList.length - 1);
 					 break;
 				}
 			}
@@ -339,21 +339,21 @@ dbsfaces.slider = {
 		}
 		var xValuePerc = pValuePercFator * 100;
 		var xInputValue;
-		var xListValues = pSlider.data("listvalues");
+		var xValuesList = pSlider.data("listvalues");
 		var xI = null;
 		if (pSlider.data("type") == "v"){
-			var xListValuesNumeric =pSlider.data("listvaluesnumeric");
+			var xValuesListNumeric =pSlider.data("listvaluesnumeric");
 			var xMax;
 			var xMin;
 			var xValuePercFator = pValuePercFator;
 			var xSegmentPercFator = pSlider.data("segmentpercfator");
 			//Calcula novo percentual relativo considerando o intervalo do segmento
-			if (xListValuesNumeric.length > 0){
-				xI = dbsfaces.math.trunc(((xListValuesNumeric.length - 1) * (pValuePercFator - 0.01)), 0);
+			if (xValuesListNumeric.length > 0){
+				xI = dbsfaces.math.trunc(((xValuesListNumeric.length - 1) * (pValuePercFator - 0.01)), 0);
 				xValuePercFator = pValuePercFator - (xSegmentPercFator * xI);
 				xValuePercFator /= xSegmentPercFator;
-				xMin = parseFloat(xListValuesNumeric[xI]);
-				xMax = parseFloat(xListValuesNumeric[xI + 1]);
+				xMin = parseFloat(xValuesListNumeric[xI]);
+				xMax = parseFloat(xValuesListNumeric[xI + 1]);
 			}else{
 				xMin = pSlider.data("min");
 				xMax = pSlider.data("max");
@@ -362,9 +362,9 @@ dbsfaces.slider = {
 			xInputValue = dbsfaces.math.round(xInputValue, pSlider.data("dp"));
 		}else{
 			//Encontra o valor da lista mais próximo ao percentual
-			xI = dbsfaces.math.round(((xListValues.length - 1) * pValuePercFator), 0);
-			xInputValue = xListValues[xI];
-			pValuePercFator = xI / (xListValues.length - 1);
+			xI = dbsfaces.math.round(((xValuesList.length - 1) * pValuePercFator), 0);
+			xInputValue = xValuesList[xI];
+			pValuePercFator = xI / (xValuesList.length - 1);
 			xValuePerc = pValuePercFator * 100;
 		}
 		//Salva inputValue
