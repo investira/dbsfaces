@@ -63,24 +63,7 @@
     position: absolute;
 	width: 100%;
 	z-index: 1;
-
-    display: flex;
-    display: -webkit-flex;
-    -webkit-flex-flow: row wrap;
-    -moz-flex-flow: row wrap;
-    flex-flow: row wrap;
-    -webkit-justify-content: center;
-    -moz-justify-content: center;
-    justify-content: center;
-    -webkit-align-items: stretch;
-    -moz-align-items: stretch;
-    align-items: stretch;
-    -webkit-align-content: strech;
-    -moz-align-content: strech;
-    align-content: strech;
-    box-sizing: content-box;
 }
-
 .dbs_charts .-captions > .-content{
     margin: .1em;
     border: 1px;
