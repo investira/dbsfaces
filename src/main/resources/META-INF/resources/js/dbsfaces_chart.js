@@ -654,7 +654,7 @@ dbsfaces.chart = {
 		for (var i=0; i < xC.length; i++){
 			if (xP.length >= i){
 				if (xP[i] != xC[i]){
-					for (k=i; k < xC.length; k++){
+					for (var k=i; k < xC.length; k++){
 						xS += xC[k];
 					}
 					break;
