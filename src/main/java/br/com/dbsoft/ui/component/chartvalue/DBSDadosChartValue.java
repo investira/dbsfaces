@@ -4,41 +4,41 @@ public class DBSDadosChartValue implements IDBSChartValue{
 
 	private static final long serialVersionUID = -5134495345793538197L;
 	
-	private String wLabel;
-	private String wTooltip;
-	private Double wValue;
-	private Double wDisplayValue;
+	private String label;
+	private String tooltip;
+	private Double value;
+	private Double displayValue;
 	
 	@Override
 	public String getLabel() {
-		return wLabel;
+		return label;
 	}
 	@Override
 	public void setLabel(String pLabel) {
-		wLabel = pLabel;
+		label = pLabel;
 	}
 	@Override
 	public String getTooltip() {
-		return wTooltip;
+		return tooltip;
 	}
 	@Override
 	public void setTooltip(String pTooltip) {
-		wTooltip = pTooltip;
+		tooltip = pTooltip;
 	}
 	@Override
 	public Double getValue() {
-		return wValue;
+		return value;
 	}
 	@Override
 	public void setValue(Double pValue) {
-		wValue = pValue;
+		value = pValue;
 	}
 	@Override
 	public Double getDisplayValue() {
-		return wDisplayValue;
+		return displayValue;
 	}
 	@Override
 	public void setDisplayValue(Double pDisplayValue) {
-		wDisplayValue = pDisplayValue;
+		displayValue = pDisplayValue;
 	}
 }
