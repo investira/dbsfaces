@@ -1,20 +1,112 @@
 .dbs_chartValueX{
 }
 
-.dbs_chartValueX.-line{
-	display: none;
-}
-.dbs_chartValueX.-line.-selected{
-	display: inline-block;
-}
 
 .dbs_chartValueX.-line > .-point{
+	display: none;
 	stroke-width: .1em;
 	stroke: currentColor;
 	fill: transparent;
 }
+.dbs_chartValueX.-line.-min > .-point,
+.dbs_chartValueX.-line.-max > .-point{
+	display: inline-block;
+	stroke: none;
+}
+.dbs_chartValueX.-line.-min > .-point{
+	fill:red;
+}
+.dbs_chartValueX.-line.-max > .-point{
+	fill:blue;
+}
 
+.dbs_chartValueX.-line.-selected > .-point{
+	display: inline-block;
+}
+.dbs_chartValueX.-line > .-info{
+	display: none;
+    stroke: none;
+    opacity: 0.8;
+}
+
+.dbs_chartValueX.-line.-min > .-info,
+.dbs_chartValueX.-line.-max > .-info{
+	display: inline-block;
+}
+.dbs_chartValueX.-line.-max > .-info{
+	fill: blue;
+	dominant-baseline: text-before-edge;
+}
+
+
+.dbs_chartValueX.-line.-min > .-info{
+	fill: red;
+	dominant-baseline: text-after-edge;
+}
+.dbs_chartValueX.-line.-right > .-info{
+	text-anchor: start;
+	-webkit-transform: translateX(1em);
+	-moz-transform: translateX(1em);
+	-o-transform: translateX(1em);
+	transform: translateX(1em);
+}
+.dbs_chartValueX.-line.-left > .-info{
+	text-anchor: end;
+	-webkit-transform: translateX(-1em);
+	-moz-transform: translateX(-1em);
+	-o-transform: translateX(-1em);
+	transform: translateX(-1em);
+}
+.dbs_chartValueX.-line.-right.-max > .-info{
+	-webkit-transform: translate(1em, .8em);
+	-moz-transform: translate(1em, .8em);
+	-o-transform: translate(1em, .8em);
+	transform: translate(1em, .8em);
+}
+.dbs_chartValueX.-line.-left.-max > .-info{
+	-webkit-transform: translate(-1em, 1em);
+	-moz-transform: translate(-1em, 1em);
+	-o-transform: translate(-1em, 1em);
+	transform: translate(-1em, 1em);
+}
+
+.dbs_chartValueX.-line > .-info > .-label{
+	font-size:0.6em;
+    font-weight: 100;	
+}
+.dbs_chartValueX.-line > .-info > .-value{
+	transform: translateY(-1em);
+	font-size:0.7em;
+    font-weight: 100;	
+}
 .dbs_chartValueX.-line > .-info > .-box{
 	stroke: none;
-	fill: currentColor;
+/* 	fill: red; */
+	opacity: 0.5;
+	display: none;
+}
+
+.dbs_chartValueX.-line.-min.-left > .-info > .-box{
+    -webkit-transform: translate(-90%, -90%);
+    -moz-transform: translate(-90%, -90%);
+    -o-transform: translate(-90%, -90%);
+    transform: translate(-90%, -90%);	
+}
+.dbs_chartValueX.-line.-min.-right > .-info > .-box{
+    -webkit-transform: translate(-10%, -90%);
+    -moz-transform: translate(-10%, -90%);
+    -o-transform: translate(-10%, -90%);
+    transform: translate(-10%, -90%);
+}
+.dbs_chartValueX.-line.-max.-left > .-info > .-box{
+    -webkit-transform: translate(-90%, -50%);
+    -moz-transform: translate(-90%, -50%);
+    -o-transform: translate(-90%, -50%);
+    transform: translate(-90%, -50%);
+}
+.dbs_chartValueX.-line.-max.-right > .-info > .-box{
+    -webkit-transform: translate(-10%, -50%);
+    -moz-transform: translate(-10%, -50%);
+    -o-transform: translate(-10%, -50%);
+    transform: translate(-10%, -50%);
 }

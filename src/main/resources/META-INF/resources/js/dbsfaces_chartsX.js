@@ -13,16 +13,16 @@ dbsfaces.chartsX = {
 	initialize: function(pCharts){
 		dbsfaces.chartsX.pvInitializeData(pCharts);
 		dbsfaces.chartsX.pvInitializeLayout(pCharts);
-		//setTimeout utilizado como artifício para resolver problema do Safari no controle da altura do chartscontainer. Possível bug do safari quando display = flex.
+		//setTimeout utilizado como artifício para resolver problema do Safari no controle da altura do -charts. Possível bug do safari quando display = flex.
 		setTimeout(function(e){
 			pCharts.removeClass("-hide");
-			pCharts.data("chartscontainer").addClass("-hide");
+			pCharts.data("charts").addClass("-hide");
 		},0);
-		//setTimeout utilizado como artifício para resolver problema do Safari no controle da altura do chartscontainer. Possível bug do safari quando display = flex.
+		//setTimeout utilizado como artifício para resolver problema do Safari no controle da altura do -charts. Possível bug do safari quando display = flex.
 		setTimeout(function(e){
 			dbsfaces.chartsX.pvInitializeAnalizeValues(pCharts);
 			dbsfaces.chartsX.pvInitializeDraw(pCharts);
-			pCharts.data("chartscontainer").removeClass("-hide");
+			pCharts.data("charts").removeClass("-hide");
 		},0);
 	},
 
@@ -34,8 +34,7 @@ dbsfaces.chartsX = {
 		pCharts.data("childrencaption", pCharts.data("container").children(".-childrenCaption"));
 		pCharts.data("childrencaptioncontainer", pCharts.data("childrencaption").children(".-container"));
 		pCharts.data("charts", pCharts.data("container").children(".-charts"));
-		pCharts.data("chartscontainer", pCharts.data("charts").children(".-container"));
-		pCharts.data("children", pCharts.data("chartscontainer").children(".dbs_chartX"));
+		pCharts.data("children", pCharts.data("charts").children(".dbs_chartX"));
 		pCharts.data("footer", pCharts.data("container").children(".-footer"));
 		pCharts.data("defs", pCharts.find("svg > defs").first());
 		pCharts.data("data", pCharts.data("container").children(".-data"));
@@ -109,32 +108,31 @@ dbsfaces.chartsX = {
 		var xChildren = pCharts.data("children");
 		var xMax = null;
 		var xMin = null;
-		var xHeight = pCharts.data("chartscontainer")[0].getBoundingClientRect().height;
-		var xWidth = pCharts.data("chartscontainer")[0].getBoundingClientRect().width;
+		var xHeight = pCharts.data("charts")[0].getBoundingClientRect().height;
+		var xWidth = pCharts.data("charts")[0].getBoundingClientRect().width;
 		var xScaleX = 0;
 		var xScaleY = 0;
-		//Verifica menor e maior valor existentes em todos os gráficos para cálcular o escale
+		//Verifica menor e maior valor existentes em todos os gráficos para cálcular a escala
 		for (var xI = 0; xI < xChildren.length; xI++){
-			var xChart = $(xChildren[xI]);
-			if (xMin == null || xChart.data("min") < xMin){
-				xMin = xChart.data("min");
+			var xChartData = $(xChildren[xI]).data("data");
+			if (xMin == null || xChartData.chartValueMin.data("data").value.value < xMin.data("data").value.value){
+				xMin = xChartData.chartValueMin;
 			}
-			if (xMax == null || xChart.data("max") > xMax){
-				xMax = xChart.data("max");
+			if (xMax == null || xChartData.chartValueMax.data("data").value.value > xMax.data("data").value.value){
+				xMax = xChartData.chartValueMax;
 			}
-			if ((xChart.data("values").length - 1) > xScaleX){
-				xScaleX = xChart.data("values").length - 1;
+			if ((xChartData.values.length - 1) > xScaleX){
+				xScaleX = xChartData.values.length - 1;
 			}
 			if (xI == 0){
-				xHeight = xChart[0].getBoundingClientRect().height;
-				xWidth = xChart[0].getBoundingClientRect().width;
+				xHeight = xChartData.chart[0].getBoundingClientRect().height;
+				xWidth = xChartData.chart[0].getBoundingClientRect().width;
 			}
 		}
 		xScaleX = xWidth / xScaleX;
-		xScaleY = xHeight / (-xMax + xMin); //Scale vertical. obs:invertida já que a coordenada do svg desce quando o valor é maior
-//		xScaleY = xHeight / (xMax - xMin); //Scale vertical. obs:invertida já que a coordenada do svg desce quando o valor é maior
-		pCharts.data("min", xMin);
-		pCharts.data("max", xMax);
+		xScaleY = xHeight / (-xMax.data("data").value.value + xMin.data("data").value.value); //Scale vertical. obs:invertida já que a coordenada do svg desce quando o valor é maior
+		pCharts.data("chartvaluemin", xMin);
+		pCharts.data("chartvaluemax", xMax);
 		pCharts.data("width", xWidth);
 		pCharts.data("height", xHeight);
 		pCharts.data("scalex", xScaleX);
@@ -143,36 +141,16 @@ dbsfaces.chartsX = {
 
 	pvInitializeDraw: function(pCharts){
 		var xChildren = pCharts.data("children");
-		var xScaleX = pCharts.data("scalex");
-		var xScaleY = pCharts.data("scaley");
-		var xType = pCharts.data("type");
-		var xMin = pCharts.data("min");
-		var xMax = pCharts.data("max");
+		//Loop em todos os gráficos
 		for (var xI = 0; xI < xChildren.length; xI++){
-			var xChart = $(xChildren[xI]);
-			var xChartChildren = xChart.data("children");
-//			for (var xChildrenChartValue in xChartChildren){
+			var xChartData = $(xChildren[xI]).data("data");
+			var xChartChildren = xChartData.children;
 			//DrawPoints
+			//Loop em todos os pontos gráfico
 			for (var xN = 0; xN < xChartChildren.length; xN++){
-				var xChartValue = $(xChartChildren[xN]);
-				var xData = {
-					chart:	xChart,
-					chartValue:	xChartValue,
-					value : xChartValue.data("value"),
-					point : xChartValue.data("point"),
-					label : xChartValue.data("label"),
-					index : xChartValue.data("index"),
-					info : xChartValue.data("info"),
-					infoLabel : xChartValue.data("infolabel"),
-					infoValue : xChartValue.data("infovalue"),
-					infoBox : xChartValue.data("infobox"),
-					min: xMin,
-					max: xMax,
-					scaleX : xScaleX,
-					scaleY : xScaleY
-				}
-				if (xType == "line"){
-					dbsfaces.chartsX.pvInitializeDrawChartLine(xData);
+				var xChartValueData = $(xChartChildren[xN]).data("data");
+				if (xChartData.type == "line"){
+					dbsfaces.chartsX.pvInitializeDrawChartLine(pCharts, xChartData, xChartValueData);
 				}
 			}
 //			if (xType == "line"){
@@ -181,41 +159,77 @@ dbsfaces.chartsX = {
 		}
 	},
 
-	pvInitializeDrawChartLine: function(pData){
-		var xX = pData.index * pData.scaleX;
-		var xY = (pData.value.value - pData.max) * pData.scaleY; //obs:invertida já que a coordenada do svg desce quando o valor é maior
+	pvInitializeDrawChartLine: function(pCharts, pChartData, pChartValueData){
+//		var xValue = pChartValue.data("value");
+//		var xPoint = pChartValue.data("point");
+//		var xIndex = pChartValue.data("index");
+//		var xInfoLabel = pChartValue.data("infolabel");
+//		var xInfoValue = pChartValue.data("infovalue");
+//		var xInfoBox = pChartValue.data("infobox");
+		var xMaxChartValue = pCharts.data("chartvaluemax");
+		var xScaleX = pCharts.data("scalex");
+		var xScaleY = pCharts.data("scaley");
+		var xX = pChartValueData.index * xScaleX;
+		var xY = (pChartValueData.value.value - xMaxChartValue.data("data").value.value) * xScaleY; //obs:invertida já que a coordenada do svg desce quando o valor é maior
+		
+		xY = dbsfaces.math.round(xY, 0);
+		xX = dbsfaces.math.round(xX, 0);
+		
 		//Salva coordenadas
-		pData.chartValue.data("x", xX)
-						.data("y", xY);
+		pChartValueData.x = xX
+		pChartValueData.y = xY;
+		
 		//Posiciona ponto
-		pData.point.svgAttr("cx", xX)
-			       .svgAttr("cy", xY);
+		pChartValueData.point.svgAttr("cx", xX)
+			  				 .svgAttr("cy", xY);
+//			  				 .svgAttr("r", xPoint.css("r"));
+		
 		//Cria linha que conecta pontos
 		var xPath;
-		if (pData.index == 0){
+		if (pChartValueData.index == 0){
 			xPath = "M";
 		}else{
-			xPath = pData.chart.data("linepath").attr("d") + "L";
+			xPath = pChartData.path.attr("d") + "L";
 		}
 		xPath += xX + "," + xY;
-		pData.chart.data("linepath").attr("d", xPath);
+		pChartData.path.attr("d", xPath);
+
 		//Ajusta Box
-		var xLabelWidth = pData.infoLabel[0].textLength.baseVal.value;
-		var xValueWidth = pData.infoValue[0].textLength.baseVal.value;
-		var xLabelHeight = pData.infoLabel.height();
-		var xValueHeight = pData.infoValue.height();
-		var xBoxHeight = xLabelHeight + xValueHeight;
-		var xBoxWidth = Math.max(xLabelWidth, xValueWidth);
-		pData.infoLabel.svgAttr("x", xX)
-					   .svgAttr("y", xY);
-		pData.infoValue.svgAttr("x", xX)
-		   			   .svgAttr("y", xY);
-		pData.infoBox.svgAttr("width", xBoxWidth)
-					 .svgAttr("height", xBoxHeight)
-					 .svgAttr("x", xX - (xBoxWidth / 2))
-					 .svgAttr("y", xY - (xBoxHeight * 2));
-		console.log(Math.max(xLabelWidth, xValueWidth));
+		var xLabelWidth = pChartValueData.infoLabel[0].textLength.baseVal.value;
+		var xValueWidth = pChartValueData.infoValue[0].textLength.baseVal.value;
+		var xLabelHeight = pChartValueData.infoLabel.height();
+		var xValueHeight = pChartValueData.infoValue.height();
+		var xBoxHeight = (xLabelHeight + xValueHeight) * 1.30;
+		var xBoxWidth = Math.max(xLabelWidth, xValueWidth) * 1.30;
+		pChartValueData.infoLabel.svgAttr("x", xX)
+				  				 .svgAttr("y", xY);
+		pChartValueData.infoValue.svgAttr("x", xX)
+		   		  				 .svgAttr("y", xY);
+		pChartValueData.infoBox.svgAttr("width", xBoxWidth)
+							   .svgAttr("height", xBoxHeight)
+							   .svgAttr("x", xX)
+							   .svgAttr("y", xY);
+//		if (pData.chartValue[0] ==  pData.maxChartValue[0]){
+//			dbsfaces.ui.moveToFront(pData.chartValue);
+//			pData.chartValue.addClass("-max");
+//			dbsfaces.chartsX.pvInitializeDrawChartLineMinMax(pData);
+//		}
+//		if (pData.chartValue[0] ==  pData.minChartValue[0]){
+//			dbsfaces.ui.moveToFront(pData.chartValue);
+//			pData.chartValue.addClass("-min");
+//			dbsfaces.chartsX.pvInitializeDrawChartLineMinMax(pData);
+//		}
 	},
+	
+//	pvInitializeDrawChartLineMinMax: function(pData){
+//		dbsfaces.ui.moveToFront(pData.chartValue);
+//		if (pData.chartValue.data("index") <= (pData.chart.data("children").length / 2)){
+//			pData.chartValue.addClass("-right");
+//		}else{
+//			pData.chartValue.addClass("-left");
+//		}
+//	},
+	
 	pvInitializeDrawBar: function(pCharts){
 	},
 	pvInitializeDrawPie: function(pCharts){

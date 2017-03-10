@@ -119,10 +119,10 @@ public class DBSChartsXRenderer extends DBSRenderer {
 //			pWriter.endElement("div");
 			pWriter.startElement("div", pCharts);
 				DBSFaces.encodeAttribute(pWriter, "class", "-charts " + CSS.THEME.FLEX_COL);
-				pWriter.startElement("div", pCharts);
-					DBSFaces.encodeAttribute(pWriter, "class",CSS.MODIFIER.CONTAINER);
+//				pWriter.startElement("div", pCharts);
+//					DBSFaces.encodeAttribute(pWriter, "class",CSS.MODIFIER.CONTAINER);
 					DBSFaces.renderChildren(pContext, pCharts);
-				pWriter.endElement("div");
+//				pWriter.endElement("div");
 			pWriter.endElement("div");
 			//FOOTER--------------------------
 			if (pCharts.getFooter() !=null){
