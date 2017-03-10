@@ -214,7 +214,6 @@ dbsfaces.chartsX = {
 					 .svgAttr("height", xBoxHeight)
 					 .svgAttr("x", xX - (xBoxWidth / 2))
 					 .svgAttr("y", xY - (xBoxHeight * 2));
-		console.log(Math.max(xLabelWidth, xValueWidth));
 	},
 	pvInitializeDrawBar: function(pCharts){
 	},
