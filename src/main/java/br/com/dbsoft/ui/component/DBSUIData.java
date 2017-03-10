@@ -57,6 +57,9 @@ import br.com.dbsoft.util.DBSIO.SORT_DIRECTION;
 	@ResourceDependency(library = "css", name = "dbsfaces_tooltip.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_radio.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_quickinfo.css", target = "head"),
+	@ResourceDependency(library = "css", name = "dbsfaces_chartsX.css", target = "head"),
+	@ResourceDependency(library = "css", name = "dbsfaces_chartX.css", target = "head"),
+	@ResourceDependency(library = "css", name = "dbsfaces_chartValueX.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_charts.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_chart.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_chartvalue.css", target = "head"),
@@ -102,6 +105,8 @@ import br.com.dbsoft.util.DBSIO.SORT_DIRECTION;
 	@ResourceDependency(library = "js", name = "dbsfaces_tabpage.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_tooltip.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_quickinfo.js", target = "head"),
+	@ResourceDependency(library = "js", name = "dbsfaces_chartsX.js", target = "head"),
+	@ResourceDependency(library = "js", name = "dbsfaces_chartX.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_chartvalue.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_charts.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_chart.js", target = "head")
@@ -247,7 +252,8 @@ public abstract class DBSUIData extends UIData implements IDBSUIComponentBase {
 		DBSFaces.handleAttribute(name, value, this);
 	}
 
-	//TODO VERIFICAR SE ESTE CÓDIGO PODE ESTAR INTERFERINDO COM OS ACTIONS DOS CHECKBOX E ETC. RICARDO 11/11/2014
+	//TODO VERIFICAR SE ESTE CÓDIGO PODE ESTAR INTERFERINDO COM OS ACTIONS DOS CHECKBOX E ETC. RICARDO 11/NOV/2014
+	//TODO VERIFICAR SE ESTE CÓDIGO AINDA É NECESSÁRIO. RICARDO 07/FEV/2017
 	@Override
 	public boolean invokeOnComponent(FacesContext context, String clientId, ContextCallback callback) throws FacesException {
 		if (this.getVar() == null || this.getRowIndex() == -1) { //this.getRowIndex() == -1 Incluido para evitar erro //server Error: class java.lang.NumberFormatException Trying to extract rowIndex from clientId

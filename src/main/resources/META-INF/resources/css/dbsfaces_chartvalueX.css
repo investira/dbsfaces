@@ -1,0 +1,20 @@
+.dbs_chartValueX{
+}
+
+.dbs_chartValueX.-line{
+	display: none;
+}
+.dbs_chartValueX.-line.-selected{
+	display: inline-block;
+}
+
+.dbs_chartValueX.-line > .-point{
+	stroke-width: .1em;
+	stroke: currentColor;
+	fill: transparent;
+}
+
+.dbs_chartValueX.-line > .-info > .-box{
+	stroke: none;
+	fill: currentColor;
+}

@@ -3517,9 +3517,9 @@
 		</attribute>
 	</tag>
 		<tag>
-		<tag-name>chartsx</tag-name>
+		<tag-name>chartsX</tag-name>
 		<component>
-			<component-type>br.com.dbsoft.ui.component.chartsx</component-type>
+			<component-type>br.com.dbsoft.ui.component.chartsX</component-type>
 			<handler-class />
 		</component>
 		<attribute>
@@ -3529,6 +3529,30 @@
 			<name>id</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Class CSS que será utilizada
+            </description>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Adiciona style 
+            </description>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                rendered
+            </description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
 		</attribute>
 		<attribute>
 			<description>
@@ -3571,30 +3595,6 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
-            </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                Adiciona style 
-            </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                rendered
-            </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
                 id que identificará grupos de gráficos que terão seus valores selecionados simultaneamente quando possurem os mesmos labels.
             </description>
 			<name>groupId</name>
@@ -3634,6 +3634,14 @@
 			<type>java.lang.Boolean</type>
 		</attribute>
 		<attribute>
+			<description>
+                Lista de IDBSChartDelta para seleção rápida do intervalo do delta
+            </description>
+			<name>deltaList</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+		</attribute>
+		<attribute>
 			<description>Dimensão do círculo central. É um fator em relação a largura individual do gráfico. 
 			ex: com valor 1 o círculo central terá o tamanho da largura de um gráfico.
 			O padrão é 1;
@@ -3642,16 +3650,64 @@
 			<required>true</required>
 			<type>java.lang.Double</type>
 		</attribute>
+	</tag>
+	<tag>
+		<tag-name>chartX</tag-name>
+		<component>
+			<component-type>br.com.dbsoft.ui.component.chartX</component-type>
+			<handler-class />
+		</component>
 		<attribute>
 			<description>
-                Lista de IDBSChartDelta para seleção rápida do intervalo do delta
+                Identificador único do componente.
             </description>
-			<name>deltaList</name>
+			<name>id</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
+			<type>java.lang.String</type>
 		</attribute>
-	</tag>
-	
+		<attribute>
+			<description>
+                Título do gráfico. Título somente será exibido quando houver gráfico dentro de gráfico. Para o título principal, utilizar o caption do DBSChats.
+            </description>
+			<name>caption</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                rendered
+            </description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Cor base que será utilizado calcular as cores de cada um dos valores do gráfico.&lt;br/&gt;
+				Caso não seja informado as cores serão gerada automaticamente.&lt;br/&gt;
+				&lt;/span&gt; </description>
+			<name>color</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                var
+            </description>
+			<name>var</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                List ou Resultset contendo os registros a serem exibidos.
+            </description>
+			<name>value</name>
+			<required>false</required>
+			<type>javax.faces.model.DBSResultDataModel</type>
+		</attribute>
+	</tag>	
 	<tag>
 		<tag-name>charts</tag-name>
 		<component>
