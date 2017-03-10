@@ -142,7 +142,7 @@ dbsfaces.charts = {
 		var xElement;
 		//Cria quia individual
 		if (xMarker.length == 0){
-			xMarker = dbsfaces.svg.g(xDefs, null, null, null, null, null);
+			xMarker = dbsfaces.svg.g(xDefs, null, null, null);
 			xMarker.svgAttr("id", pCharts.get(0).id + "_point");
 			xMarker.svgAttr("class", "-point");
 			//Circulo externo
@@ -153,7 +153,7 @@ dbsfaces.charts = {
 		//Cria cria de calculo do delta
 		var xMarker = xDefs.children(".-guide");
 		if (xMarker.length == 0){
-			xMarker = dbsfaces.svg.g(xDefs, null, null, "-guide", null, {"id": pCharts.get(0).id + "_guide"});
+			xMarker = dbsfaces.svg.g(xDefs, "-guide", null, {"id": pCharts.get(0).id + "_guide"});
 			xElement = dbsfaces.svg.ellipse(xMarker, null, null, "20px", "20px", null, null, {"fill": "none"}); //"rx:inherit; ry:inherit;"
 			xElement = dbsfaces.svg.rect(xMarker, "-3.5", "-8.5", "6px", "16px", "2", "2", null, null, {"fill": "white", "stroke": "currentColor"});
 			xElement = dbsfaces.svg.rect(xMarker, "-2", "-5", "1px", "9px", null, null, null, null, {"fill": "currentColor"});
