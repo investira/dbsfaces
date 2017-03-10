@@ -207,21 +207,38 @@ public class DBSChartRenderer extends DBSRenderer {
 		//Loop por todos os registros lidos
 		//Lido de forma decrescentes por o saveState e restoreState invertou
 		//a ordem da consulta
-        for (int xRowIndex = 0; xRowIndex < xRowCount; xRowIndex++) {		
-//        for (int xRowIndex = xRowCount - 1; xRowIndex >= 0; xRowIndex--) {		
-        	pChart.setRowIndex(xRowIndex);
-        	//Loop no componente filho contendo as definições dos valores
-			for (UIComponent xC : pChart.getChildren()){
-				if (xC instanceof DBSChartValue){
-					DBSChartValue xChartValue = (DBSChartValue) xC;
-					if (xChartValue.isRendered()){
-						xChartValue.restoreState(FacesContext.getCurrentInstance(), xChartValue.getSavedState());
-						xChartValue.encodeAll(pContext);
-					}
+		DBSChartValue xChartValue = null;
+		for (UIComponent xC : pChart.getChildren()){
+			if (xC instanceof DBSChartValue){
+				xChartValue = (DBSChartValue) xC;
+					//Loop no componente filho contendo as definições dos valores
+//			        for (int xRowIndex = xRowCount - 1; xRowIndex >= 0; xRowIndex--) {		
+		        for (int xRowIndex = 0; xRowIndex < xRowCount; xRowIndex++) {		
+		        	pChart.setRowIndex(xRowIndex);
+		        	if (xChartValue.isRendered()){
+  						xChartValue.restoreState(FacesContext.getCurrentInstance(), xChartValue.getSavedState());
+  						xChartValue.encodeAll(pContext);
+			        }
 				}
+		        pChart.setRowIndex(-1);
+				break;
 			}
-        }
-        pChart.setRowIndex(-1);
+		}
+//        for (int xRowIndex = 0; xRowIndex < xRowCount; xRowIndex++) {		
+////        for (int xRowIndex = xRowCount - 1; xRowIndex >= 0; xRowIndex--) {		
+//        	pChart.setRowIndex(xRowIndex);
+//        	//Loop no componente filho contendo as definições dos valores
+//			for (UIComponent xC : pChart.getChildren()){
+//				if (xC instanceof DBSChartValue){
+//					DBSChartValue xChartValue = (DBSChartValue) xC;
+//					if (xChartValue.isRendered()){
+//						xChartValue.restoreState(FacesContext.getCurrentInstance(), xChartValue.getSavedState());
+//						xChartValue.encodeAll(pContext);
+//					}
+//				}
+//			}
+//        }
+//        pChart.setRowIndex(-1);
 	}
 	
 	private void pvEncodeChartValue(FacesContext pContext, DBSChart pChart) throws IOException {
