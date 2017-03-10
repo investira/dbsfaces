@@ -115,16 +115,13 @@ dbsfaces.sound = {
 
 dbsfaces.svg = {
 	gsvg: function(pComponent, pX, pY, pWidth, pHeight, pStyleClass, pStyle, pAttrs){
-		var xG = dbsfaces.svg.g(pComponent, pWidth, pHeight, pStyleClass, pStyle, pAttrs);
+		var xG = dbsfaces.svg.g(pComponent, pStyleClass, pStyle, pAttrs);
 		return dbsfaces.svg.svg(xG, null, null, null, null, null, null, null);
 	},
 	 
-	g: function(pComponent, pWidth, pHeight, pStyleClass, pStyle, pAttrs){
+	g: function(pComponent, pStyleClass, pStyle, pAttrs){
 		var xG = dbsfaces.svg.createElement('g', pAttrs);
 		dbsfaces.svg.setDefaultAttrs(xG, pStyleClass, pStyle);
-
-		xG.svgAttr("width", pWidth)
-		  .svgAttr("height", pHeight);
 
 		pComponent.append(xG);
 		return xG;
@@ -224,6 +221,15 @@ dbsfaces.svg = {
 		xText.text(pText);
 		pComponent.append(xText);
 		return xText;
+	},
+
+	tspan: function(pComponent, pText, pStyleClass, pStyle, pAttrs){
+		var xTspan = dbsfaces.svg.createElement('tspan', pAttrs);
+		dbsfaces.svg.setDefaultAttrs(xTspan, pStyleClass, pStyle);
+
+		xTspan.text(pText);
+		pComponent.append(xTspan);
+		return xTspan;
 	},
 
 	textPath: function(pComponent, pHRef, pText, pStyleClass, pStyle, pAttrs){
@@ -407,7 +413,19 @@ dbsfaces.component = {
 		var xComponent = $(pId);
 		xComponent.data("hasmessage" , true);
 		xComponent.attr("hasmessage" , true);
+	},
+	
+	createElement: function(pTag, pAttrs){
+		var xElement = $(document.createElement(pTag));
+		//Seta atributos do componente.
+		if (pAttrs != null){
+			for (var xAttr in pAttrs){
+				xElement.attr(xAttr, pAttrs[xAttr]);
+			}
+		}
+		return xElement;
 	}
+
 }
 dbsfaces.ui = {
 
