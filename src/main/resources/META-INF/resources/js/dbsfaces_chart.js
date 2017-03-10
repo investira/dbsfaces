@@ -271,7 +271,7 @@ dbsfaces.chart = {
 		var xDeltaGroup = pChart.data("deltagroup");
 		var xDeltaInfoGroup = xDeltaGroup.children(".-info");
 		if (xDeltaInfoGroup.length == 0){
-			xDeltaInfoGroup = dbsfaces.svg.g(xDeltaGroup, null, null, "-info", null, null);
+			xDeltaInfoGroup = dbsfaces.svg.g(xDeltaGroup, "-info", null, null);
 			pChart.data("deltainfogroup", xDeltaInfoGroup);
 		}
 		var xDeltaValue = xDeltaInfoGroup.children(".-value");
