@@ -4,25 +4,32 @@
 
 .dbs_chartValueX.-line > .-point{
 	display: none;
-	stroke-width: .1em;
-	stroke: currentColor;
+/* 	stroke-width: .1em; */
+/* 	stroke: currentColor; */
 	fill: transparent;
 }
 .dbs_chartValueX.-line.-min > .-point,
 .dbs_chartValueX.-line.-max > .-point{
-	display: inline-block;
-	stroke: none;
+/* 	display: inline-block; */
+/* 	stroke: none; */
 }
 .dbs_chartValueX.-line.-min > .-point{
-	fill:red;
+/* 	fill:red; */
 }
 .dbs_chartValueX.-line.-max > .-point{
-	fill:blue;
+/* 	fill:blue; */
 }
 
-.dbs_chartValueX.-line.-selected > .-point{
-	display: inline-block;
+.dbs_chartValueX.-line.-hover > .-point{
+/* 	display: inline-block; */
+/*     stroke-width: .1em; */
+/*     stroke: currentColor;	 */
+	stroke-width: .2em;
+    stroke: currentColor;
+    opacity: 1;
+    fill: white;
 }
+
 .dbs_chartValueX.-line > .-info{
 	display: none;
     stroke: none;
@@ -33,51 +40,86 @@
 .dbs_chartValueX.-line.-max > .-info{
 	display: inline-block;
 }
+
 .dbs_chartValueX.-line.-max > .-info{
 	fill: blue;
-	dominant-baseline: text-before-edge;
 }
-
 
 .dbs_chartValueX.-line.-min > .-info{
 	fill: red;
-	dominant-baseline: text-after-edge;
 }
+
 .dbs_chartValueX.-line.-right > .-info{
 	text-anchor: start;
-	-webkit-transform: translateX(1em);
-	-moz-transform: translateX(1em);
-	-o-transform: translateX(1em);
-	transform: translateX(1em);
+	-webkit-transform-origin: left;	
+	-moz-transform-origin: left;	
+	-o-transform-origin: left;	
+	transform-origin: left;	
 }
 .dbs_chartValueX.-line.-left > .-info{
 	text-anchor: end;
-	-webkit-transform: translateX(-1em);
-	-moz-transform: translateX(-1em);
-	-o-transform: translateX(-1em);
-	transform: translateX(-1em);
+	-webkit-transform-origin: right;	
+	-moz-transform-origin: right;	
+	-o-transform-origin: right;	
+	transform-origin: right;	
 }
+
+.dbs_chartValueX.-line.-right.-min > .-info{
+	-webkit-transform: translateX(.7em);
+	-moz-transform: translateX(.7em);
+	-o-transform: translateX(.7em);
+	transform: translateX(.7em);
+}
+.dbs_chartValueX.-line.-left.-min > .-info{
+	-webkit-transform: translateX(-.7em);
+	-moz-transform: translateX(-.7em);
+	-o-transform: translateX(-.7em);
+	transform: translateX(-.7em);
+}
+
 .dbs_chartValueX.-line.-right.-max > .-info{
-	-webkit-transform: translate(1em, .8em);
-	-moz-transform: translate(1em, .8em);
-	-o-transform: translate(1em, .8em);
-	transform: translate(1em, .8em);
+	-webkit-transform: translate(.7em, .6em);;
+	-moz-transform: translate(.7em, .6em);
+	-o-transform: translate(.7em, .6em);
+	transform: translate(.7em, .6em);
 }
 .dbs_chartValueX.-line.-left.-max > .-info{
-	-webkit-transform: translate(-1em, 1em);
-	-moz-transform: translate(-1em, 1em);
-	-o-transform: translate(-1em, 1em);
-	transform: translate(-1em, 1em);
+	-webkit-transform: translate(-.7em, .6em);
+	-moz-transform: translate(-.7em, .6em);
+	-o-transform: translate(-.7em, .6em);
+	transform: translate(-.7em, .6em);
+}
+.dbs_chartValueX.-line.-min > .-info > .-label,
+.dbs_chartValueX.-line.-min > .-info > .-value{
+/* 	dominant-baseline: text-after-edge; */
+	
+}
+.dbs_chartValueX.-line.-max > .-info > .-label,
+.dbs_chartValueX.-line.-max > .-info > .-value{
+    dominant-baseline: text-before-edge;
+}
+.dbs_chartValueX.-line.-max.-hover > .-info > .-label,
+.dbs_chartValueX.-line.-max.-hover > .-info > .-value,
+.dbs_chartValueX.-line.-min.-hover > .-info > .-label,
+.dbs_chartValueX.-line.-min.-hover > .-info > .-value{
+	font-size:1em;
+/* 	-webkit-transition: font-size linear .3s; */
+/* 	-moz-transition: font-size linear .3s; */
+/* 	-o-transition: font-size linear .3s; */
+/* 	transition: font-size linear .3s; */
 }
 
 .dbs_chartValueX.-line > .-info > .-label{
-	font-size:0.6em;
-    font-weight: 100;	
+    font-size: 0.5em;
+    font-weight: bold;	
 }
 .dbs_chartValueX.-line > .-info > .-value{
+	-webkit-transform: translateY(-1em);
+	-moz-transform: translateY(-1em);
+	-o-transform: translateY(-1em);
 	transform: translateY(-1em);
-	font-size:0.7em;
-    font-weight: 100;	
+	font-size:0.6em;
+    font-weight: bold;
 }
 .dbs_chartValueX.-line > .-info > .-box{
 	stroke: none;

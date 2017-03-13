@@ -22,12 +22,12 @@ dbsfaces.chartX = {
 			children: null, //Filhos
 			chart: pChart.children(".-chart"), //Container dos filhos
 			info: pChart.children(".-info"), //Container das infos
-			values: pValues, //Valores recebidos
-			selected: null, //Se grático está selecionado
+			originalValues: pValues, //Valores recebidos
+			hover: null, //Se grático está selecionado
 			chartValueMin: null, //chartValue que contém o valor máximo
 			chartValueMax: null,//chartValue que contém o valor mínimo
 			med: null, //valor médio
-			path: "" //Elemento que contém o caminho
+			path: "" //Elemento que contém o desenho do caminho
 		}
 		pChart.data("data", xData);
 //		dbsfaces.chartX.addChartValue(pChart, 123);
@@ -36,49 +36,56 @@ dbsfaces.chartX = {
 
 	pvInitializeAnalizeValues: function(pChartData){
 //		pChart.data("values", []);
-		var xValues = pChartData.values;
+		var xValues = pChartData.originalValues;
 		var xMax = null;
 		var xMin = null;
 		var xMed = 0
 //		var xTotalAbs = 0;
 		var xTotal = 0;
+		pChartData.children = [];
 		//Varifica valores máximos e mínimos e cria elemento do valor
-		for (var xI = 0; xI < pChartData.values.length; xI++){
+		for (var xI = 0; xI < xValues.length; xI++){
 			//Cria elemento chartvalue
 			var xChartValueData = dbsfaces.chartX.pvInitializeAnalizeValuesCreateChartValue(pChartData, xValues[xI], xI);
-			if (xMin == null || pChartData.values[xI].value < xMin.value.value){
+			if (xMin == null || xValues[xI].value < xMin.value.value){
 				xMin = xChartValueData;
 			}
-			if (xMax == null || pChartData.values[xI].value > xMax.value.value){
+			if (xMax == null || xValues[xI].value > xMax.value.value){
 				xMax = xChartValueData;
 			}
 //			xTotalAbs += Math.abs(xValues[xI].value);
-			xTotal += pChartData.values[xI].value;
+			xTotal += xValues[xI].value;
+			//Adiciona elemento chartvalue na lista de filhos do chart.
+			pChartData.children.push(xChartValueData.self);  
 		}
+		//Marca o valor mínimo
 		pChartData.chartValueMin = xMin.self.addClass("-min");
 		dbsfaces.chartX.pvInitializeAnalizeValuesMinMax(pChartData, xMin);
 		
+		//Marca o valor máximo
 		pChartData.chartValueMax = xMax.self.addClass("-max");
 		dbsfaces.chartX.pvInitializeAnalizeValuesMinMax(pChartData, xMax);
 		
-		pChartData.min = xTotal / pChartData.values.length;
-		pChartData.children = pChartData.chart.children(".dbs_chartValueX");
+		//Calcula valor médio e salva
+		pChartData.med = xTotal / xValues.length;
+		
+		//Salva lista com os filhos(dbschartvalue) deste chart(dbs_chart)
+//		pChartData.children = pChartData.chart.children(".dbs_chartValueX");
 	},
 
 	
 	pvInitializeAnalizeValuesMinMax: function(pChartData, pChartValueData){
 		//Alinha a esquerda ou direita com forme a posição do item a partir do centro
-		if (pChartValueData.index <= (pChartData.values.Lenght / 2)){
+		if (pChartValueData.index <= (pChartData.originalValues.length / 2)){
 			pChartValueData.self.addClass("-right");
 		}else{
 			pChartValueData.self.addClass("-left");
 		}
+		dbsfaces.ui.moveToFront(pChartValueData.self);
 	},
 
 	pvInitializeAnalizeValuesCreateChartValue: function(pChartData, pValue, pI){
-		
 		var xChartValueData = dbsfaces.chartX.pvInitializeAnalizeValuesCreateChartValueData(pValue, pI);
-
 		//Cria ChartValue
 		xChartValueData.self = dbsfaces.svg.g(pChartData.chart, "dbs_chartValueX -" + pChartData.type, null, {"index": pI});
 		//Cria Elemento que contém infos
@@ -88,7 +95,7 @@ dbsfaces.chartX = {
 			//Box
 			xChartValueData.infoBox = dbsfaces.svg.rect(xChartValueData.info, null, null, null, null, ".3em", ".3em", "-box", null, null); //'r' precisa ser um atributo por problema no FIREFOX
 			//Ponto
-			xChartValueData.point = dbsfaces.svg.circle(xChartValueData.self, null, null, null, "-point", null, {"r": ".5em"}); //'r' precisa ser um atributo por problema no FIREFOX
+			xChartValueData.point = dbsfaces.svg.circle(xChartValueData.self, null, null, null, "-point", null, {"r": ".4em"}); //'r' precisa ser um atributo por problema no FIREFOX
 		}else if (pChartData.type == "bar"){
 			//Box
 			xChartValueData.infoBox = dbsfaces.svg.rect(xChartValueData.info, null, null, null, null, ".3em", ".3em", "-box", null, null); //'r' precisa ser um atributo por problema no FIREFOX
@@ -136,6 +143,8 @@ dbsfaces.chartX = {
 	pvInitializeLayoutChartLine: function(pChartData){
 		//Cria elemento que será a linha que conecta pontos
 		pChartData.path = dbsfaces.svg.path(pChartData.chart, null, "-path", null, null);
+		dbsfaces.ui.moveToBack(pChartData.path);
+
 		
 		//Captura movimento do mouse para seleciona ponto
 		pChartData.self.on("mousemove touchmove touchstart", function(e){
@@ -152,7 +161,7 @@ dbsfaces.chartX = {
 		var xDecimals = 1;
 		var xXY = dbsfaces.ui.pointerEventToXY(e);
 		var xPosition = pChartData.self.offset();
-		var xCurrentX = dbsfaces.math.round(xXY.x - xPosition.left + $(window).scrollLeft(), xDecimals);
+		var xCurrentX = dbsfaces.math.round(xXY.x - xPosition.left , xDecimals);
 		if (xCurrentX < 0){return;}
 		var xChartPath = pChartData.path[0];
 	    var xBeginning = xCurrentX;
@@ -199,18 +208,20 @@ dbsfaces.chartX = {
 				xChartValue = $(pChartData.children[xIndex - 1]);
 			}
 			//Seleciona chartvalue encontrado
-			dbsfaces.chartX.select(pChartData, xChartValue);
+			dbsfaces.chartX.select(pChartData, xChartValue.data("data"));
 		}
 	},
 
-	select: function(pChartData, pChartValue){
-		if (pChartData.selected != null){
-			pChartData.selected.removeClass("-selected");
-		}else if(pChartData.selected == pChartValue){
+	select: function(pChartData, pChartValueData){
+		if (pChartData.hover != null){
+			pChartData.hover.removeClass("-hover");
+		}else if(pChartData.hover == pChartValueData.self){
 			return;
 		}
-		pChartValue.addClass("-selected");
-		pChartData.selected = pChartValue;
+		pChartValueData.self.addClass("-hover");
+		pChartData.hover = pChartValueData.self;
+//		pChartValueData.info;
+//		xChartValueData.info;
 	},
 	
 	addChartValue: function(pChart, pValue, pLabel, pDisplayValue, pTooltip){
@@ -227,11 +238,11 @@ dbsfaces.chartX = {
 			pTooltip = "";
 		}
 		var xValue = JSON.parse('{ "value":' + pValue + ', "label":"' + pLabel + '", "displayValue":"' + pDisplayValue + '", "tooltip":"' + pTooltip + '"}');
-		pChartData.values.push(xValue);
+		pChartData.originalValues.push(xValue);
 	},
 	
 	clearChartValue: function(pChart){
-		pChartData.values = [];
+		pChartData.originalValues = [];
 	}
 };
 

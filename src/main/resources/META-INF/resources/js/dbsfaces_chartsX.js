@@ -121,8 +121,8 @@ dbsfaces.chartsX = {
 			if (xMax == null || xChartData.chartValueMax.data("data").value.value > xMax.data("data").value.value){
 				xMax = xChartData.chartValueMax;
 			}
-			if ((xChartData.values.length - 1) > xScaleX){
-				xScaleX = xChartData.values.length - 1;
+			if ((xChartData.originalValues.length - 1) > xScaleX){
+				xScaleX = xChartData.originalValues.length - 1;
 			}
 			if (xI == 0){
 				xHeight = xChartData.chart[0].getBoundingClientRect().height;
