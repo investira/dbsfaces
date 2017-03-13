@@ -2,96 +2,114 @@ dbs_slider = function(pId, pValuesList, pMinValue, pMaxValue) {
 	dbsfaces.slider.initialize($(pId), pValuesList, pMinValue, pMaxValue);
 
 	$(window).resize(function(e){
-		dbsfaces.slider.resize($(pId));
+		dbsfaces.slider.resize($(pId).data("data"));
 	});
 	
 	if ($(pId).hasClass("-readOnly")){return;}
 	if ($(pId).hasClass("-disabled")){return;}
 	
 	$(pId + " > .-container").on("mousedown touchstart", function(e){
-		dbsfaces.slider.jump($(pId), e);
-		dbsfaces.slider.handleStart($(pId), e);
+		dbsfaces.slider.jump($(pId).data("data"), e);
+		dbsfaces.slider.handleStart($(pId).data("data"), e);
 	});
 	$(pId + " > .-container").on("mouseup touchend", function(e){
-		dbsfaces.slider.handleStop($(pId), e);
+		dbsfaces.slider.handleStop($(pId).data("data"), e);
 	});
 	$(pId + " > .-container").on("mouseleave", function(e){
-		dbsfaces.slider.handleStop($(pId), e);
+		dbsfaces.slider.handleStop($(pId).data("data"), e);
 	});
 	$(pId + " > .-container").on("mousemove touchmove", function(e){
-		if ($(pId).data("dif") == null){return false;}
+		if ($(pId).data("data").startPos == null){return false;}
 		if (e.originalEvent.type == "mousemove" 
 		 && e.which == 0){
-			dbsfaces.slider.handleStop($(pId), e);
+			dbsfaces.slider.handleStop($(pId).data("data"), e);
 			return;
 		}
-		dbsfaces.slider.handleMove($(pId), e);
+		dbsfaces.slider.handleMove($(pId).data("data"), e);
 	});	
 	$(pId).on("mouseleave", function(e){
-		dbsfaces.slider.handleStop($(pId), e);
+		dbsfaces.slider.handleStop($(pId).data("data"), e);
 	});
 }
 
 dbsfaces.slider = {
 	initialize: function(pSlider, pValuesList, pMinValue, pMaxValue){
 		dbsfaces.slider.pvInitializeData(pSlider, pValuesList, pMinValue, pMaxValue);
-		dbsfaces.slider.pvInitializeCreatePoints(pSlider, pValuesList, pMinValue, pMaxValue);
-		dbsfaces.slider.pvInitializeLayout(pSlider);
+		dbsfaces.slider.pvInitializeCreatePoints(pSlider.data("data"));
+		dbsfaces.slider.pvInitializeLayout(pSlider.data("data"));
 	},
 
 	
 	pvInitializeData: function(pSlider, pValuesList, pMinValue, pMaxValue){
-		pSlider.data("type", pSlider.attr("type"));
-		pSlider.data("dp", parseInt(pSlider.attr("dp")));
-		pSlider.data("orientation", (pSlider.hasClass("-h") ? "h" : "v"));
-		pSlider.data("listvalues", pValuesList);
-		pSlider.data("min", parseFloat(pMinValue));
-		pSlider.data("max", parseFloat(pMaxValue));
-		pSlider.data("container", pSlider.children(".-container"));
-		pSlider.data("content", pSlider.data("container").children(".-content"));
-		pSlider.data("input", pSlider.data("container").children(".-th_input-data"));
-		pSlider.data("slider", pSlider.data("content").children(".-slider"));
-		pSlider.data("sliderValue", pSlider.data("slider").children(".-value"));
-		pSlider.data("handle", pSlider.data("content").children(".-handle"));
-		pSlider.data("ani", (pSlider.hasClass("-ani") ? true: false));
-		pSlider.data("segmentpercfator", (1 / (pSlider.data("listvalues").length - 1)));
-		pSlider.data("dif", null);
-		if (pSlider.data("type")== "v"){
-			var xValuesListNumeric = [];
+		var xData = {
+			self: pSlider, //O próprio slider
+			type : pSlider.attr("type"), //Tipo do slider v,o,s
+			dp : parseInt(pSlider.attr("dp")), //Quantidade de casas decimais(decimal points)
+			orientation : (pSlider.hasClass("-h") ? "h" : "v"), //Orientação vertical ou horizontal
+			valuesList : pValuesList, //Lista dos valores
+			min : parseFloat(pMinValue),  //Valor mínimo
+			max : parseFloat(pMaxValue), //Valor máximo
+			container : pSlider.children(".-container"), //Elemento que contém o container
+			content : null, //Elemento dentro do container
+			input : null, //Elemento input
+			slider : null, //Elemento do slider
+			sliderValue : null, //Elemento do valor atual do slider
+			handle : null, //Puxador do slider
+			ani : (pSlider.hasClass("-ani") ? true: false), //Se há animação
+			segmentPercFator : (1 / (pValuesList.length - 1)), //Fator de cada item da lista
+			length: null, //largura ou altura total do gráfico em px
+			lengthPos : null, //Posição atual em relação a length(ver atributo acima)
+			startPos: null, //Posição em relação a tela quando iniciado o movimento
+			lengthFator: null, //Tamanho/posição atual em fator
+			timeout: null, //Timeout para disparar evento de Change quando valor alterado
+			valuesListNumeric: null, //lista dos valores convertida para valor númerico
+			points : null, //Elemento que contém os pontos
+			point : null, //Elemento que contém um ponto
+			label : null//Elemento que contém o label do ponto
+		}
+		pSlider.data("data", xData);
+
+		xData.content = xData.container.children(".-content");
+		xData.input = xData.container.children(".-th_input-data");
+		xData.slider = xData.content.children(".-slider");
+		xData.handle = xData.content.children(".-handle");
+		xData.sliderValue = xData.slider.children(".-value");
+
+		if (xData.type == "v"){
+			xData.valuesListNumeric = [];
 			for (var xI=0; xI < pValuesList.length; xI++){
 				if (typeof(pValuesList[xI]) == "number"){
-					xValuesListNumeric.push(pValuesList[xI]);
+					xData.valuesListNumeric.push(pValuesList[xI]);
 				}else{
-					xValuesListNumeric.push(parseFloat(pValuesList[xI].replace(/[^0-9]/g, '')));
+					xData.valuesListNumeric.push(parseFloat(pValuesList[xI].replace(/[^0-9]/g, '')));
 				}
 			}
-			pSlider.data("listvaluesnumeric", xValuesListNumeric);
 		}
 
 	},
 
-	pvInitializeLayout: function(pSlider){
-		dbsfaces.slider.pvInitializeLayoutHorizontalVertical(pSlider);
-		dbsfaces.slider.pvInitializeLayoutPoints(pSlider);
-		dbsfaces.slider.resize(pSlider);
+	pvInitializeLayout: function(pSliderData){
+		dbsfaces.slider.pvInitializeLayoutHorizontalVertical(pSliderData);
+		dbsfaces.slider.pvInitializeLayoutPoints(pSliderData);
+		dbsfaces.slider.resize(pSliderData);
 		setTimeout(function(e){
-			pSlider.removeClass("-hide");
+			pSliderData.self.removeClass("-hide");
 		},0);
 	},
 	
-	pvInitializeLayoutHorizontalVertical: function(pSlider){
-		var xColor = tinycolor(pSlider.css("color"));
-		var xColor2 = tinycolor(pSlider.css("color"));
-		var xInverted = tinycolor(pSlider.css("color")).invertLightness().setAlpha(1);
+	pvInitializeLayoutHorizontalVertical: function(pSliderData){
+		var xColor = tinycolor(pSliderData.self.css("color"));
+		var xColor2 = tinycolor(pSliderData.self.css("color"));
+		var xInverted = tinycolor(pSliderData.self.css("color")).invertLightness().setAlpha(1);
 		//Slider
 		xColor2.setAlpha(.3);
-		pSlider.data("slider").css("background", xColor2);
+		pSliderData.slider.css("background", xColor2);
 		
 		//Slider value line
 		var xBackground;
 		xColor2.setAlpha(.70);
 		xBackground = "linear-gradient(135deg," + xColor2 + " 0%, " + xColor + " 100%)";
-		pSlider.data("sliderValue").css("background", xBackground);
+		pSliderData.sliderValue.css("background", xBackground);
 		
 		//Handle
 		xColor2.setAlpha(1);
@@ -102,43 +120,46 @@ dbsfaces.slider = {
 			xColor2.darken(10);
 			xBackground = "linear-gradient(135deg," + xColor + " 0%, " + xColor2 + " 100%)";
 		}
-		pSlider.data("handle").css("background", xBackground);
-		pSlider.data("handle").css("color", xInverted);
+		pSliderData.handle.css("background", xBackground);
+		pSliderData.handle.css("color", xInverted);
 	},
 	
-	pvInitializeCreatePoints: function(pSlider, pValuesList, pMinValue, pMaxValue){
-		var xContent = pSlider.data("content");
-		var xType = pSlider.data("type");
-		var xOrientation = pSlider.data("orientation");
+	pvInitializeCreatePoints: function(pSliderData){
 		//Apaga os pontos anteriores se já existirem
-		xContent.children(".-points").remove();
+		pSliderData.content.children(".-points").remove();
 		//Cria points
 		var xPoints = $(document.createElement('div')).addClass("-points");
-		xContent.append(xPoints);
+		pSliderData.content.append(xPoints);
 		//Cria point e label
-		if (pValuesList.length  > 0){
+		if (pSliderData.valuesList.length  > 0){
 			var xValue = "";
 			var xLabel = "";
 			var xClass = "";
-			for (var xI = 0; xI < pValuesList.length; xI++){
+			for (var xI = 0; xI < pSliderData.valuesList.length; xI++){
 				//Configura alinhamento
 				if (xI == 0){
 					xClass = " -first";
-				}else if (xI == pValuesList.length - 1){
+				}else if (xI == pSliderData.valuesList.length - 1){
 					xClass = " -last";
 				}else{
 					xClass = "";
 				}
-				var xIndex = xI;
-				if (xOrientation == "v"){
+				var xIndex;
+				if (pSliderData.orientation == "v"){
 					//Encode a partir do último pois a ordem do slider cresce de baixo para cima
-					xIndex = pValuesList.length - xI -1;
+					xIndex = pSliderData.valuesList.length - xI -1;
+				}else{
+					xIndex = xI;
 				}
-				xValue = pValuesList[xIndex];
-				xLabel = xValue;
-				if (xType == "v"){
+				
+				xValue = pSliderData.valuesList[xIndex];
+				//Label iqual ao valor em formato númerico
+				if (pSliderData.type == "v"){
 					//Formata número
-					xLabel = dbsfaces.format.number(xValue, pSlider.data("dp"));
+					xLabel = dbsfaces.format.number(xValue, pSliderData.dp);
+				}else{
+					//Label iqual ao valor
+					xLabel = xValue;
 				}
 				//Point
 				dbsfaces.slider.pvInitializeCreatePointElement(xPoints);
@@ -151,14 +172,14 @@ dbsfaces.slider = {
 			dbsfaces.slider.pvInitializeCreatePointElement(xPoints);
 			dbsfaces.slider.pvInitializeCreatePointElement(xPoints);
 		}
-		pSlider.data("points", pSlider.data("content").children(".-points"));
-		pSlider.data("point", pSlider.data("points").children(".-point"));
-		pSlider.data("label", pSlider.data("points").children(".-label"));
-		if (xType == "v"){
+		pSliderData.points = pSliderData.content.children(".-points");
+		pSliderData.point = pSliderData.points.children(".-point");
+		pSliderData.label = pSliderData.points.children(".-label");
+		if (pSliderData.type == "v"){
 			//Força que valor seja exatamente o valor do label selecionado
-			pSlider.data("label").on("mousedown touchstart", function(e){
-				dbsfaces.slider.setInputValue(pSlider, $(this).attr("v"));
-				dbsfaces.slider.setValue(pSlider);
+			pSliderData.label.on("mousedown touchstart", function(e){
+				dbsfaces.slider.setInputValue(pSliderData, $(this).attr("v"));
+				dbsfaces.slider.setValue(pSliderData);
 				e.stopImmediatePropagation();
 				e.preventDefault();
 			});
@@ -171,264 +192,245 @@ dbsfaces.slider = {
 		pPoints.append(xPointElement);
 	},
 	
-	pvInitializeLayoutPoints: function(pSlider){
-		if (pSlider.data("points").length > 0){
-			pSlider.addClass("-showValuesList");
+	pvInitializeLayoutPoints: function(pSliderData){
+		if (pSliderData.points.length > 0){
+			pSliderData.self.addClass("-showValuesList");
 		}
-		var xValuePerc;
-		var xOrientation = pSlider.data("orientation");
-		var xType = pSlider.data("type");
-		var xPoint = pSlider.data("point");
 		//Point
-		for (var xI=0; xI < xPoint.length; xI++){
-			xValuePerc = (xI / (xPoint.length - 1)) * 100;
-			if (xOrientation == "h"){
-				$(xPoint[xI]).css("left", xValuePerc + "%");
+		var xValuePerc;
+		for (var xI=0; xI < pSliderData.point.length; xI++){
+			xValuePerc = (xI / (pSliderData.point.length - 1)) * 100;
+			if (pSliderData.orientation == "h"){
+				$(pSliderData.point[xI]).css("left", xValuePerc + "%");
 			}else{
-				$(xPoint[xI]).css("top", xValuePerc + "%");
+				$(pSliderData.point[xI]).css("top", xValuePerc + "%");
 			}
 		}
 		//Label
-		var xLabel = pSlider.data("label");
-		for (var xI=0; xI < xLabel.length; xI++){
+		for (var xI=0; xI < pSliderData.label.length; xI++){
 			//Texto
-			$(xLabel[xI]).text($(xLabel[xI]).attr("l"));
+			$(pSliderData.label[xI]).text($(pSliderData.label[xI]).attr("l"));
 			//Posição
-			xValuePerc = (xI / (xLabel.length - 1)) * 100;
-			if (xOrientation == "h"){
-				$(xLabel[xI]).css("left", xValuePerc + "%");
+			xValuePerc = (xI / (pSliderData.label.length - 1)) * 100;
+			if (pSliderData.orientation == "h"){
+				$(pSliderData.label[xI]).css("left", xValuePerc + "%");
 			}else{
-				$(xLabel[xI]).css("top", xValuePerc + "%");
+				$(pSliderData.label[xI]).css("top", xValuePerc + "%");
 			}
-			$(xLabel[xI]).data("perc", xValuePerc / 100);
+//			$(pSliderData.label[xI]).data("perc", xValuePerc / 100);
 		}
 	},
 
 
-	jump: function(pSlider, e){
-		pSlider.addClass("-selected");
+	jump: function(pSliderData, e){
+		pSliderData.self.addClass("-selected");
 		//Calcula fator em relação as coordenada do click
-		var xValuePercFator = 0;
+		var xLengthFator = 0;
 		var xXY = dbsfaces.ui.pointerEventToXY(e);
-		if (pSlider.data("orientation") == "h"){
-			xValuePercFator = (xXY.x - pSlider.data("content")[0].getBoundingClientRect().left) / pSlider.data("length");
+		if (pSliderData.orientation == "h"){
+			xLengthFator = (xXY.x - pSliderData.content[0].getBoundingClientRect().left) / pSliderData.length;
 		}else{
-			xValuePercFator = 1 - ((xXY.y - pSlider.data("content")[0].getBoundingClientRect().top) / pSlider.data("length"));
+			xLengthFator = 1 - ((xXY.y - pSliderData.content[0].getBoundingClientRect().top) / pSliderData.length);
 		}
-		dbsfaces.slider.pvSetValuePerc(pSlider, xValuePercFator);
+		dbsfaces.slider.pvSetValuePerc(pSliderData, xLengthFator);
 
 		e.stopImmediatePropagation();
 		e.preventDefault();
 	},
 
-	handleStart: function(pSlider, e){
-		pSlider.addClass("-selected");
+	handleStart: function(pSliderData, e){
+		pSliderData.self.addClass("-selected");
 		var xXY = dbsfaces.ui.pointerEventToXY(e);
-		if (pSlider.data("orientation") == "h"){
-			pSlider.data("dif", xXY.x);
+		//Sala posição atual para calcular a diferença posteriormente
+		if (pSliderData.orientation == "h"){
+			pSliderData.startPos = xXY.x;
 		}else{
-			pSlider.data("dif", xXY.y);
+			pSliderData.startPos = xXY.y;
 		}
-		pSlider.data("pospx", pSlider.data("length") * pSlider.data("perc"));
+
+		pSliderData.lengthPos = pSliderData.length * pSliderData.lengthFator;
 		
 		e.stopImmediatePropagation();
 		e.preventDefault();
 	},
 	
-	handleStop: function(pSlider, e){
-		pSlider.data("dif", null);
-		pSlider.removeClass("-selected");
+	handleStop: function(pSliderData, e){
+		pSliderData.startPos = null;
+		pSliderData.self.removeClass("-selected");
 		e.stopImmediatePropagation();
 		e.preventDefault();
 	},
 	
-	handleMove: function(pSlider, e){
-		if (pSlider.data("dif") == null){return;}
-		var xDif = pSlider.data("pospx");
-		var xValuePercFator = 0;
+	handleMove: function(pSliderData, e){
+		if (pSliderData.startPos == null){return;}
+		var xDif = pSliderData.lengthPos;
+		var xLengthFator = 0;
 		var xXY = dbsfaces.ui.pointerEventToXY(e);
-		if (pSlider.data("orientation") == "h"){
-			xDif -= pSlider.data("dif") - xXY.x;
+		if (pSliderData.orientation == "h"){
+			xDif -= pSliderData.startPos - xXY.x;
 		}else{
-			xDif -= xXY.y - pSlider.data("dif");
+			xDif -= xXY.y - pSliderData.startPos;
 		}
 		if (xDif < 0){
 			xDif = 0;
-		}else if (xDif > pSlider.data("length")){
-			xDif = pSlider.data("length");
+		}else if (xDif > pSliderData.length){
+			xDif = pSliderData.length;
 		}
-		xValuePercFator = xDif / pSlider.data("length");
-		dbsfaces.slider.pvSetValuePerc(pSlider, xValuePercFator);
+		xLengthFator = xDif / pSliderData.length;
+		dbsfaces.slider.pvSetValuePerc(pSliderData, xLengthFator);
 		e.stopImmediatePropagation();
 		e.preventDefault();
 	},
 
-	resize: function(pSlider){
+	resize: function(pSliderData){
 		//Atualiza dimensão
-		if (pSlider.data("orientation") == "h"){
-			pSlider.data("length", pSlider.data("content")[0].getBoundingClientRect().width);
+		if (pSliderData.orientation == "h"){
+			pSliderData.length = pSliderData.content[0].getBoundingClientRect().width;
 		}else{
-			pSlider.data("length", pSlider.data("content")[0].getBoundingClientRect().height);
+			pSliderData.length = pSliderData.content[0].getBoundingClientRect().height;
 		}
-		dbsfaces.slider.setValue(pSlider);
+		dbsfaces.slider.setValue(pSliderData);
 	},
 
 
-	setValue: function(pSlider){
+	setValue: function(pSliderData){
 //		var xValue = pSlider.data("input")[0].value
-		var xValue = pSlider.data("input").attr("value");
-		var xValuePercFator = 0; 
-		if (pSlider.data("type") == "v"){
-			var xMin = pSlider.data("min");
-			var xMax = pSlider.data("max");
-			var xSegmentPercFator = pSlider.data("segmentpercfator");
-			var xValuesListNumeric = pSlider.data("listvaluesnumeric");
-			
-			xValuePercFator = dbsfaces.math.round(parseFloat(xValue.replace(/[^0-9]/g, '')), 10);
+		var xValue = pSliderData.input.attr("value");
+		var xLengthFator = 0; 
+		if (pSliderData.type == "v"){
+			var xMin = pSliderData.min;
+			var xMax = pSliderData.max;
+			xLengthFator = dbsfaces.math.round(parseFloat(xValue.replace(/[^0-9]/g, '')), 10);
 			//Procura qual o item da lista foi selecionado
-			if (xValuesListNumeric.length > 0){
+			if (pSliderData.valuesListNumeric.length > 0){
 				//Verifica se valor ultrapassou os limites
-				if (xValuePercFator < xValuesListNumeric[0]){
-					xValuePercFator = xValuesListNumeric[0];
-				}else if(xValuePercFator > xValuesListNumeric[xValuesListNumeric.length - 1]){
-					xValuePercFator = xValuesListNumeric[xValuesListNumeric.length - 1];
+				if (xLengthFator < pSliderData.valuesListNumeric[0]){
+					xLengthFator = pSliderData.valuesListNumeric[0];
+				}else if(xLengthFator > pSliderData.valuesListNumeric[pSliderData.valuesListNumeric.length - 1]){
+					xLengthFator = pSliderData.valuesListNumeric[pSliderData.valuesListNumeric.length - 1];
 				}
 				//Procura item na lista
-				for (var xI=0; xI < xValuesListNumeric.length; xI++){
-					if (xValuesListNumeric[xI] > xValuePercFator){
-						 xMax = xValuesListNumeric[xI];
-						 xMin = xValuesListNumeric[xI -1];
-						 break;
+				for (var xI=0; xI < pSliderData.valuesListNumeric.length; xI++){
+					if (pSliderData.valuesListNumeric[xI] > xLengthFator){
+						xMax = pSliderData.valuesListNumeric[xI];
+						xMin = pSliderData.valuesListNumeric[xI -1];
+						break;
 					}
 				}
 				//Calcula fator
-				xValuePercFator = xSegmentPercFator * ((xValuePercFator - xMin) / (xMax - xMin));
-				xValuePercFator += (xSegmentPercFator * (xI - 1));
+				xLengthFator = pSliderData.segmentPercFator * ((xLengthFator - xMin) / (xMax - xMin));
+				xLengthFator += (pSliderData.segmentPercFator * (xI - 1));
 			}else{
 				//Calcula fator
-				xValuePercFator = (xValuePercFator - xMin) / (xMax - xMin); 
+				xLengthFator = (xLengthFator - xMin) / (xMax - xMin); 
 			}
 		}else{
 			xValue = xValue.trim().toLowerCase();
-			var xValuesList = pSlider.data("listvalues");
 			//Procura qual o item da lista foi selecionado
-			for (var xI=0; xI < xValuesList.length; xI++){
-				if (xValuesList[xI].toLowerCase() == xValue){
-					 xValuePercFator = xI / (xValuesList.length - 1);
+			for (var xI=0; xI < pSliderData.valuesList.length; xI++){
+				if (pSliderData.valuesList[xI].toLowerCase() == xValue){
+					 xLengthFator = xI / (pSliderData.valuesList.length - 1);
 					 break;
 				}
 			}
 		}
-		dbsfaces.slider.pvSetValuePerc(pSlider, xValuePercFator);
+		dbsfaces.slider.pvSetValuePerc(pSliderData, xLengthFator);
 	},
 
-	setInputValue(pSlider, pInputValue){
+	setInputValue(pSliderData, pInputValue){
 		//Salva como string
-		pSlider.data("input").attr("value", dbsfaces.format.number(pInputValue, pSlider.data("dp")));
+		pSliderData.input.attr("value", dbsfaces.format.number(pInputValue, pSliderData.dp));
 		//Salva como float
-		pSlider.data("input").data("value", pInputValue);
+		pSliderData.input.data("value", pInputValue);
 
 	},
 
-	pvSetValuePerc: function(pSlider, pValuePercFator){
-		pValuePercFator = dbsfaces.math.round(parseFloat(pValuePercFator), 10);
-		if (pValuePercFator > 1){
-			pValuePercFator = 1;
-		}else if(pValuePercFator < 0){
-			pValuePercFator = 0;
+	pvSetValuePerc: function(pSliderData, pLengthFator){
+		pLengthFator = dbsfaces.math.round(parseFloat(pLengthFator), 10);
+		if (pLengthFator > 1){
+			pLengthFator = 1;
+		}else if(pLengthFator < 0){
+			pLengthFator = 0;
 		}
-		var xValuePerc = pValuePercFator * 100;
 		var xInputValue;
-		var xValuesList = pSlider.data("listvalues");
 		var xI = null;
-		if (pSlider.data("type") == "v"){
-			var xValuesListNumeric =pSlider.data("listvaluesnumeric");
+		if (pSliderData.type == "v"){
 			var xMax;
 			var xMin;
-			var xValuePercFator = pValuePercFator;
-			var xSegmentPercFator = pSlider.data("segmentpercfator");
+			var xValuePercFator = pLengthFator;
 			//Calcula novo percentual relativo considerando o intervalo do segmento
-			if (xValuesListNumeric.length > 0){
-				xI = dbsfaces.math.trunc(((xValuesListNumeric.length - 1) * (pValuePercFator - 0.01)), 0);
-				xValuePercFator = pValuePercFator - (xSegmentPercFator * xI);
-				xValuePercFator /= xSegmentPercFator;
-				xMin = parseFloat(xValuesListNumeric[xI]);
-				xMax = parseFloat(xValuesListNumeric[xI + 1]);
+			if (pSliderData.valuesListNumeric.length > 0){
+				xI = dbsfaces.math.trunc(((pSliderData.valuesListNumeric.length - 1) * (pLengthFator - 0.01)), 0);
+				xValuePercFator = pLengthFator - (pSliderData.segmentPercFator * xI);
+				xValuePercFator /= pSliderData.segmentPercFator;
+				xMin = parseFloat(pSliderData.valuesListNumeric[xI]);
+				xMax = parseFloat(pSliderData.valuesListNumeric[xI + 1]);
 			}else{
-				xMin = pSlider.data("min");
-				xMax = pSlider.data("max");
+				xMin = pSliderData.min;
+				xMax = pSliderData.max;
 			}
 			xInputValue = ((xMax - xMin) * xValuePercFator) + xMin;
-			xInputValue = dbsfaces.math.round(xInputValue, pSlider.data("dp"));
+			xInputValue = dbsfaces.math.round(xInputValue, pSliderData.dp);
 		}else{
 			//Encontra o valor da lista mais próximo ao percentual
-			xI = dbsfaces.math.round(((xValuesList.length - 1) * pValuePercFator), 0);
-			xInputValue = xValuesList[xI];
-			pValuePercFator = xI / (xValuesList.length - 1);
-			xValuePerc = pValuePercFator * 100;
+			xI = dbsfaces.math.round(((pSliderData.valuesList.length - 1) * pLengthFator), 0);
+			pLengthFator = xI / (pSliderData.valuesList.length - 1);
+			xInputValue = pSliderData.valuesList[xI];
 		}
 		//Salva inputValue
-		dbsfaces.slider.setInputValue(pSlider, xInputValue);
-		//Salva percentual relativo a coordenada
-		pSlider.data("perc", pValuePercFator);
-		dbsfaces.slider.pvEncodeValue(pSlider);
+		dbsfaces.slider.setInputValue(pSliderData, xInputValue);
+		//Salva percentual relativo a length(coordenada)
+		pSliderData.lengthFator = pLengthFator;
+		dbsfaces.slider.pvEncodeValue(pSliderData);
 	},
 	
-	pvEncodeValue: function(pSlider){
-		var xOrientation = pSlider.data("orientation");
-		var xSliderValue = pSlider.data("sliderValue");
-		var xHandle = pSlider.data("handle");
-		var xValuePerc = pSlider.data("perc") * 100;
-		if (xOrientation == "h"){
-			dbsfaces.slider.pvEncodeValueHorizontal(xSliderValue, xHandle, xValuePerc);
+	pvEncodeValue: function(pSliderData){
+		var xSliderValue = pSliderData.sliderValue;
+		var xValuePerc = pSliderData.lengthFator * 100;
+		if (pSliderData.orientation == "h"){
+			dbsfaces.slider.pvEncodeValueHorizontal(pSliderData, xValuePerc);
 		}else{
-			dbsfaces.slider.pvEncodeValueVertical(xSliderValue, xHandle, xValuePerc);
+			dbsfaces.slider.pvEncodeValueVertical(pSliderData, xValuePerc);
 		}
 
 		//Valor para ser capturado pelo pseudoselector :before:content
-		xHandle.attr("v", pSlider.data("input").attr("value"));
+		pSliderData.handle.attr("v", pSliderData.input.attr("value"));
 
 		//Configura steps anteriores
-		dbsfaces.slider.pvHideLabels(pSlider);
+		dbsfaces.slider.pvHideLabels(pSliderData);
 
 		//Dispara que valor foi alterado
-		clearTimeout(pSlider.data("timeout"));
-		pSlider.data("timeout", setTimeout(function(){
-			pSlider.trigger("change");
-		},0));
+		clearTimeout(pSliderData.timeout);
+		pSliderData.timeout = setTimeout(function(){
+									pSliderData.self.trigger("change");
+								},0);
 	},
 
 	
-	pvEncodeValueHorizontal: function(pSliderValue, pHandle, pValuePerc){
-		pSliderValue.css("width", pValuePerc + "%");
-		pHandle.css("left", pValuePerc + "%");
+	pvEncodeValueHorizontal: function(pSliderData, pValuePerc){
+		pSliderData.sliderValue.css("width", pValuePerc + "%");
+		pSliderData.handle.css("left", pValuePerc + "%");
 	},
 
-	pvEncodeValueVertical: function(pSliderValue, pHandle, pValuePerc){
-		pSliderValue.css("height", pValuePerc + "%");
-		pHandle.css("top", 100 - pValuePerc + "%");
+	pvEncodeValueVertical: function(pSliderData, pValuePerc){
+		pSliderData.sliderValue.css("height", pValuePerc + "%");
+		pSliderData.handle.css("top", 100 - pValuePerc + "%");
 	},
 	
-	pvHideLabels: function(pSlider){
-		//Label
-		var xCurrentPerc = pSlider.data("perc");
-		var xLabel = pSlider.data("label");
-		var xType = pSlider.data("type");
-		var xOrientation = pSlider.data("orientation");
-		var xLabelPerc;
+	pvHideLabels: function(pSliderData){
 		var xCur;
-		if (xOrientation == "h"){
-			xCur = parseFloat(pSlider.data("handle").css("left"));
+		if (pSliderData.orientation == "h"){
+			xCur = parseFloat(pSliderData.handle.css("left"));
 		}else{
-			xCur = parseFloat(pSlider.data("handle").css("top"));
+			xCur = parseFloat(pSliderData.handle.css("top"));
 		}
-		if (xType == "v"){
-			for (var xI=0; xI < xLabel.length; xI++){
-				var xLabelX = $(xLabel[xI]);
+		if (pSliderData.type == "v"){
+			for (var xI=0; xI < pSliderData.label.length; xI++){
+				var xLabelX = $(pSliderData.label[xI]);
 				var xSize;
 				var xMin;
 				var xMax;
-				if (xOrientation == "h"){
+				if (pSliderData.orientation == "h"){
 					xSize = parseFloat(xLabelX.css("width"));
 					xMin = parseFloat(xLabelX.css("left"));
 				}else{
@@ -444,7 +446,5 @@ dbsfaces.slider = {
 				}
 			}
 		}
-		
 	}
-
 }
