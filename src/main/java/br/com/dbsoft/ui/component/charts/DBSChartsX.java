@@ -16,6 +16,33 @@ public class DBSChartsX extends DBSUIOutput implements NamingContainer{
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 
 
+	protected enum PropertyKeys {
+		type,
+		caption,
+		footer,
+		valueFormatMask,
+		showGrid,
+		showGridValue,
+		showLabel,
+		showDelta,
+		groupId,
+		pieInternalCircleFator,
+		deltaList;
+
+		String toString;
+
+		PropertyKeys(String toString) {
+			this.toString = toString;
+		}
+
+		PropertyKeys() {}
+
+		@Override
+		public String toString() {
+			return ((this.toString != null) ? this.toString : super.toString());
+		}
+	}
+
 	public static enum TYPE {
 		BAR 			("bar", true),
 		LINE 			("line", true),	
@@ -44,51 +71,20 @@ public class DBSChartsX extends DBSUIOutput implements NamingContainer{
 			return wMatrix;
 		}
 
-		public static TYPE get(String pCode) {
-			if (pCode == null){
+		public static TYPE get(String pType) {
+			if (pType == null){
 				return LINE;
 			}			
-			pCode = pCode.trim().toLowerCase();
-			switch (pCode) {
-			case "bar":
-				return BAR;
-			case "line":
-				return LINE;
-			case "pie":
-				return PIE;
-			default:
-				return LINE;
-			}
-		}	
+			pType = pType.trim().toLowerCase();
+	    	for (TYPE xP:TYPE.values()) {
+	    		if (xP.getName().equals(pType)){
+	    			return xP;
+	    		}
+	    	}
+	    	return LINE;
+		}
 	}
 	
-
-	protected enum PropertyKeys {
-		type,
-		caption,
-		footer,
-		valueFormatMask,
-		showGrid,
-		showGridValue,
-		showLabel,
-		showDelta,
-		groupId,
-		pieInternalCircleFator,
-		deltaList;
-
-		String toString;
-
-		PropertyKeys(String toString) {
-			this.toString = toString;
-		}
-
-		PropertyKeys() {}
-
-		@Override
-		public String toString() {
-			return ((this.toString != null) ? this.toString : super.toString());
-		}
-	}
 
 	public DBSChartsX(){
 		setRendererType(DBSChartsX.RENDERER_TYPE);

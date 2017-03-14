@@ -36,18 +36,18 @@
     opacity: 0.8;
 }
 
-.dbs_chartValueX.-line.-min > .-info,
-.dbs_chartValueX.-line.-max > .-info{
-	display: inline-block;
-}
+/* .dbs_chartValueX.-line.-min > .-info, */
+/* .dbs_chartValueX.-line.-max > .-info{ */
+/* 	display: inline-block; */
+/* } */
 
-.dbs_chartValueX.-line.-max > .-info{
-	fill: blue;
-}
+/* .dbs_chartValueX.-line.-max > .-info{ */
+/* 	fill: blue; */
+/* } */
 
-.dbs_chartValueX.-line.-min > .-info{
-	fill: red;
-}
+/* .dbs_chartValueX.-line.-min > .-info{ */
+/* 	fill: red; */
+/* } */
 
 .dbs_chartValueX.-line.-right > .-info{
 	text-anchor: start;

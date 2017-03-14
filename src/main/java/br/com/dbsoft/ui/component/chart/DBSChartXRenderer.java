@@ -65,13 +65,13 @@ public class DBSChartXRenderer extends DBSRenderer {
 
 	private void pvEncodeContainer(ResponseWriter pWriter, DBSChartX pChart) throws IOException{
 		//CONTAINER--------------------------
+ 		pWriter.startElement("div", pChart);
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.FLEX_COL + "-info");
+		pWriter.endElement("div");
 		pWriter.startElement("svg", pChart);
 			DBSFaces.encodeSVGNamespaces(pWriter);
 			DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.FLEX_COL + "-chart");
 		pWriter.endElement("svg");
- 		pWriter.startElement("div", pChart);
-			DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.FLEX_COL + "-info");
-		pWriter.endElement("div");
 	}
 	
 	/**
