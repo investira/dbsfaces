@@ -103,14 +103,12 @@ public class DBSChartsXRenderer extends DBSRenderer {
 			}
 
 			//SUBCAPTION--------------------------
-			if (pCharts.getCaption() !=null){
+			pWriter.startElement("div", pCharts);
+				DBSFaces.encodeAttribute(pWriter, "class", "-childrenCaption"  + CSS.THEME.FLEX_COL + CSS.NOT_SELECTABLE);
 				pWriter.startElement("div", pCharts);
-					DBSFaces.encodeAttribute(pWriter, "class", "-childrenCaption"  + CSS.THEME.FLEX_COL + CSS.NOT_SELECTABLE);
-					pWriter.startElement("div", pCharts);
-						DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER + CSS.THEME.FLEX);
-					pWriter.endElement("div");
+					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER + CSS.THEME.FLEX);
 				pWriter.endElement("div");
-			}
+			pWriter.endElement("div");
 
 			//CHARTS--------------------------
 //			pWriter.startElement("div", pCharts);

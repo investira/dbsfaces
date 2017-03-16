@@ -19,8 +19,10 @@ dbsfaces.chartX = {
 				self : pChart, //O próprio chart
 				parent : xCharts, //Pai
 				children : null, //Filhos
+				caption : null, //Elemento que contém caption do gráfico
+				captionText : null, //Elemento que contém o texto do gráfico
 				chart : pChart.children(".-chart"), //Container dos filhos
-				info :pChart.children(".-info"), //Container das infos
+				info : pChart.children(".-info"), //Container das infos
 				chartValueMin : null, //chartValue que contém o valor máximo
 				chartValueMax : null, //chartValue que contém o valor mínimo
 				path: null, //Elemento que contém o desenho do caminho
@@ -28,7 +30,14 @@ dbsfaces.chartX = {
 			},	
 			type: xCharts.attr("type"), //Tipo de gráfico
 			med: null, //valor médio
-			originalValues: pValues //Valores recebidos
+			originalValues: pValues, //Valores recebidos
+			color: pChart.attr("color"), //Cor definida pelo usuário
+			colorInverted: null,
+			colorLight: null,
+			findPointTimeout: null,
+		}
+		if (typeof xData.color == "undefined"){
+			xData.color = tinycolor(pChart.css("color")).toString();
 		}
 		pChart.data("data", xData);
 //		dbsfaces.chartX.addChartValue(pChart, 123);
@@ -53,32 +62,43 @@ dbsfaces.chartX = {
 			if (xChartValueMax == null || xValues[xI].value > xChartValueMax.value.value){
 				xChartValueMax = xChartValueData;
 			}
+			//Força a exibição do primeiro e último item
+			if (xI == 0 || xI == xValues.length - 1){
+				xChartValueData.dom.self.addClass("-showLabel");
+			}
 //			xTotalAbs += Math.abs(xValues[xI].value);
 			xTotal += xValues[xI].value;
 			//Adiciona elemento chartvalue na lista de filhos do chart.
 			pChartData.dom.children.push(xChartValueData.dom.self);  
 		}
-		//Marca o valor mínimo
+		//Marca o valor mínimo e máximo
 		pChartData.dom.chartValueMin = xChartValueMin.dom.self.addClass("-min");
-		dbsfaces.chartX.pvInitializeAnalizeValuesMinMax(pChartData, xChartValueMin);
-		
-		//Marca o valor máximo
 		pChartData.dom.chartValueMax = xChartValueMax.dom.self.addClass("-max");
-		dbsfaces.chartX.pvInitializeAnalizeValuesMinMax(pChartData, xChartValueMax);
 		
 		//Calcula valor médio e salva
 		pChartData.med = xTotal / xValues.length;
 	},
 
-	
-	pvInitializeAnalizeValuesMinMax: function(pChartData, pChartValueData){
-		//Alinha a esquerda ou direita com forme a posição do item a partir do centro
-		if (pChartValueData.index <= (pChartData.originalValues.length / 2)){
-			pChartValueData.dom.self.addClass("-right");
-		}else{
-			pChartValueData.dom.self.addClass("-left");
+
+	pvInitializeAnalizeValuesCreateChartValueData: function(pValue, pI){
+		var xChartValueData = {
+			dom : {
+				self : null, // o próprio chartvalue
+				parent : null,  //o pai(chart)
+				point : null, //elemento point
+				info : null, //elemento que contém infos
+				infoLabel : null, //elemento que contém o label
+				infoValue : null, //elemento que contém o value
+				infoPath : null, //elemento que contém o value
+				infoBoxLabel : null, //elemento que contém o box do Label
+				infoBoxValue : null //elemento que contém o box do Value
+			},
+			value : pValue, //o objecto value
+			index : pI, //index do valor
+			x : null, //posição X no gráfico (dentro da escala)
+			y : null //posição Y no gráfico (dentro da escala)
 		}
-		dbsfaces.ui.moveToFront(pChartValueData.dom.self);
+		return xChartValueData;
 	},
 
 	pvInitializeAnalizeValuesCreateChartValue: function(pChartData, pValue, pI){
@@ -89,18 +109,22 @@ dbsfaces.chartX = {
 		xChartValueData.dom.info = dbsfaces.svg.g(xChartValueData.dom.self, "-info", null, null);
 		var xDisplayValue = ((typeof pValue.displayValue == "undefined" || pValue.displayValue == "") ? pValue.value : pValue.displayValue);
 		if (pChartData.type == "line"){
-			//Box
-			xChartValueData.dom.infoBox = dbsfaces.svg.rect(xChartValueData.dom.info, null, null, null, null, ".3em", ".3em", "-box", null, null); //'r' precisa ser um atributo por problema no FIREFOX
+			//Path
+			xChartValueData.dom.infoPath = dbsfaces.svg.path(xChartValueData.dom.info, null, "-path", null, null);
+			//BoxLabel
+			xChartValueData.dom.infoBoxLabel = dbsfaces.svg.rect(xChartValueData.dom.info, null, null, null, null, ".3em", ".3em", "-boxLabel", null, null); //'r' precisa ser um atributo por problema no FIREFOX
+			//BoxValue
+			xChartValueData.dom.infoBoxValue = dbsfaces.svg.rect(xChartValueData.dom.info, null, null, null, null, ".3em", ".3em", "-boxValue", null, null); //'r' precisa ser um atributo por problema no FIREFOX
 			//Ponto
-			xChartValueData.dom.point = dbsfaces.svg.circle(xChartValueData.dom.self, null, null, null, "-point", null, {"r": ".4em"}); //'r' precisa ser um atributo por problema no FIREFOX
+			xChartValueData.dom.point = dbsfaces.svg.circle(xChartValueData.dom.self, null, null, null, "-point", null, {"r": ".3em"}); //'r' precisa ser um atributo por problema no FIREFOX
 		}else if (pChartData.type == "bar"){
 			//Box
-			xChartValueData.dom.infoBox = dbsfaces.svg.rect(xChartValueData.dom.info, null, null, null, null, ".3em", ".3em", "-box", null, null); //'r' precisa ser um atributo por problema no FIREFOX
+			xChartValueData.dom.infoBoxLabel = dbsfaces.svg.rect(xChartValueData.dom.info, null, null, null, null, ".3em", ".3em", "-boxLabel", null, null); //'r' precisa ser um atributo por problema no FIREFOX
 			//Ponto
 			xChartValueData.dom.point = dbsfaces.svg.path(xChartValueData.dom.self, null, "-point", null, null);
 		}else if (pChartData.type == "pie"){
 			//Box
-			xChartValueData.dom.infoBox = dbsfaces.svg.rect(xChartValueData.dom.info, null, null, null, null, ".3em", ".3em", "-box", null, null); //'r' precisa ser um atributo por problema no FIREFOX
+			xChartValueData.dom.infoBoxLabel = dbsfaces.svg.rect(xChartValueData.dom.info, null, null, null, null, ".3em", ".3em", "-boxLabel", null, null); //'r' precisa ser um atributo por problema no FIREFOX
 			//Ponto
 			xChartValueData.dom.point = dbsfaces.svg.path(xChartValueData.dom.self, null, "-point", null, null);
 		}
@@ -113,25 +137,6 @@ dbsfaces.chartX = {
 
 		return xChartValueData;
 	},
-
-	pvInitializeAnalizeValuesCreateChartValueData: function(pValue, pI){
-		var xChartValueData = {
-			dom : {
-				self : null, // o próprio chartvalue
-				parent : null,  //o pai(chart)
-				point : null, //elemento point
-				info : null, //elemento que contém infos
-				infoLabel : null, //elemento que contém o label
-				infoValue : null, //elemento que contém o value
-				infoBox : null //elemento que contém o box
-			},
-			value : pValue, //o objecto value
-			index : pI, //index do valor
-			x : null, //posição X no gráfico (dentro da escala)
-			y : null //posição Y no gráfico (dentro da escala)
-		}
-		return xChartValueData;
-	},
 	
 	pvInitializeLayout: function(pChartData){
 		if (pChartData.type == "line"){
@@ -140,27 +145,31 @@ dbsfaces.chartX = {
 	},
 
 	pvInitializeLayoutChartLine: function(pChartData){
-		//Cria elemento que será a linha que conecta pontos
-		pChartData.dom.path = dbsfaces.svg.path(pChartData.dom.chart, null, "-path", null, null);
+		//Cria elemento que será a linha que conecta os pontos
+		pChartData.dom.path = dbsfaces.svg.path(pChartData.dom.chart, null, "-path", "stroke:" + pChartData.color, null);
 		dbsfaces.ui.moveToBack(pChartData.dom.path);
 
-		
 		//Captura movimento do mouse para seleciona ponto
 		pChartData.dom.self.on("mousemove touchmove touchstart", function(e){
 			var xChart = $(this);
 			if (xChart.hasClass("-selected")){
-				dbsfaces.chartX.findPoint(e, xChart.data("data"));
+				clearTimeout(pChartData.findPointTimeout);
+				pChartData.findPointTimeout = setTimeout(function(){
+					dbsfaces.chartX.findPoint(e, xChart.data("data"));
+				},1);
 			}
 			e.stopImmediatePropagation();
 			return false;
 		});
 	},
 
+	//Procura ponto da caminho(path)
 	findPoint: function(e, pChartData){
 		var xDecimals = 1;
 		var xXY = dbsfaces.ui.pointerEventToXY(e);
 		var xPosition = pChartData.dom.self.offset();
-		var xCurrentX = dbsfaces.math.round(xXY.x - xPosition.left + $(window).scrollLeft(), xDecimals);
+		var xCurrentX = dbsfaces.math.round(xXY.x - xPosition.left + $(window).scrollLeft() - parseFloat(pChartData.dom.self.css("padding-left")), xDecimals);
+//		var xCurrentX = dbsfaces.math.round(xXY.x - xPosition.left, xDecimals);
 		if (xCurrentX < 0){return;}
 		var xChartPath = pChartData.dom.path[0];
 	    var xBeginning = xCurrentX;
@@ -183,7 +192,6 @@ dbsfaces.chartX = {
         }
 		if (typeof(xTargetPos) != "undefined"){
 			//Procura qual dos chartsValues está mais próximo a posição do cursor
-//			var xChartChildren = pChartData.children;
 			var xTotalSegs = pChartData.dom.path.svgGetPathTotalSegs();
 			var xIndex = xChartPath.getPathSegAtLength(xTargetLenght);
 			var xClosestX = xCurrentX;
@@ -191,15 +199,11 @@ dbsfaces.chartX = {
 			var xX = Number(xChartValueData.x);
 			var xY = Number(xChartValueData.y);
 			//Se cursos estiver antes do ponto, seleciona o chartvalue anterior
-			if (xCurrentX < xX){
-				if (xIndex > 0){
-					xClosestX = $(pChartData.dom.children[xIndex - 1]).data("data").x;
-				}
+			if (xCurrentX < xX && xIndex > 0){
+				xClosestX = $(pChartData.dom.children[xIndex - 1]).data("data").x;
 			//Se cursos não estiver após do ponto, seleciona o chartvalue posterior
-			}else if(xCurrentX > xX){
-				if (xIndex < xTotalSegs){
-					xClosestX = $(pChartData.dom.children[xIndex + 1]).data("data").x;
-				}
+			}else if(xCurrentX > xX && xIndex < (xTotalSegs - 1)){
+				xClosestX = $(pChartData.dom.children[xIndex + 1]).data("data").x;
 			}
 			var xXMiddle = (Number(xClosestX) + xX) / 2;
 			//Escolhe o item anterior se estiver antes do meio do caminho entre o próximo item
@@ -213,14 +217,66 @@ dbsfaces.chartX = {
 
 	hover: function(pChartData, pChartValueData){
 		if (pChartData.dom.chartValueHover != null){
-			pChartData.dom.chartValueHover.removeClass("-hover");
-		}else if(pChartData.dom.chartValueHover == pChartValueData.dom.self){
-			return;
+			if (pChartData.dom.chartValueHover == pChartValueData.dom.self){
+				return;
+			}else{
+				pChartData.dom.chartValueHover.removeClass("-hover");
+			}
 		}
 		pChartValueData.dom.self.addClass("-hover");
+		dbsfaces.ui.moveToFront(pChartValueData.dom.self);
+//		dbsfaces.chartX.pvHoverVerificaSobreposicao(pChartValueData);
 		pChartData.dom.chartValueHover = pChartValueData.dom.self;
 	},
 	
+//	pvHoverVerificaSobreposicao: function(pChartValueData){
+//		var xCurrentStart;
+//		var xCurrentEnd;
+//		var xChartValueData;
+//		//Labels
+//		xCurrentStart = parseFloat(pChartValueData.dom.infoLabel.svgAttr("x"));
+//		xCurrentEnd = xCurrentStart + pChartValueData.dom.infoLabel[0].textLength.baseVal.value;
+//		xChartValueData = pChartValueData.dom.self.prev(".-showLabel").data("data");
+//		dbsfaces.chartX.pvHoverVerificaSobreposicaoHideLabel(xChartValueData, xCurrentStart, xCurrentEnd);
+//		xChartValueData = pChartValueData.dom.self.next(".-showLabel").data("data");
+//		dbsfaces.chartX.pvHoverVerificaSobreposicaoHideLabel(xChartValueData, xCurrentStart, xCurrentEnd);
+//		//Values
+//		xCurrentStart = parseFloat(pChartValueData.dom.infoValue.svgAttr("y"));
+//		xCurrentEnd = xCurrentStart + pChartValueData.dom.infoValue.height();
+//		xChartValueData = pChartValueData.dom.self.prev(".-showValue").data("data");
+//		dbsfaces.chartX.pvHoverVerificaSobreposicaoHideValue(xChartValueData, xCurrentStart, xCurrentEnd);
+//		xChartValueData = pChartValueData.dom.self.next(".-showValue").data("data");
+//		dbsfaces.chartX.pvHoverVerificaSobreposicaoHideValue(xChartValueData, xCurrentStart, xCurrentEnd);
+//	},
+//	
+//	pvHoverVerificaSobreposicaoHideLabel: function(pChartValueData, pCurrentStart, pCurrentEnd){
+//		if (typeof pChartValueData == "undefined"){return;}
+//		var xStart;
+//		var xEnd;
+//		xStart = parseFloat(pChartValueData.dom.infoLabel.svgAttr("x"));
+//		xEnd = xStart + pChartValueData.dom.infoLabel[0].textLength.baseVal.value;
+//		if ((pCurrentStart >= xStart && pCurrentStart <= xEnd)
+//		 || (pCurrentEnd >= xStart && pCurrentEnd <= xEnd)){
+//			pChartValueData.dom.self.addClass("-hide");
+//		}else{
+//			pChartValueData.dom.self.siblings().removeClass("-hide");
+//		}
+//	},
+
+	pvHoverVerificaSobreposicaoHideValue: function(pChartValueData, pCurrentStart, pCurrentEnd){
+		if (typeof pChartValueData == "undefined"){return;}
+		var xStart;
+		var xEnd;
+		xStart = parseFloat(pChartValueData.dom.infoValue.svgAttr("y"));
+		xEnd = xStart + pChartValueData.dom.infoValue.height();
+		if ((pCurrentStart >= xStart && pCurrentStart <= xEnd)
+		 || (pCurrentEnd >= xStart && pCurrentEnd <= xEnd)){
+			pChartValueData.dom.self.addClass("-hide");
+		}else{
+			pChartValueData.dom.self.siblings().removeClass("-hide");
+		}
+	},
+
 	addChartValue: function(pChart, pValue, pLabel, pDisplayValue, pTooltip){
 		if (typeof pValue == "undefined"){
 			return;

@@ -21,6 +21,7 @@
 	position: relative;	
 	overflow: visible;
 	flex: 1 1 100%;
+	shape-rendering: geometricPrecision;
 /* 	height: 100%; */
 /* 	width: 100%; */
 /* 	box-sizing: border-box; */
@@ -40,19 +41,9 @@
     fill: none;
     stroke-width: 1px;
     stroke: currentColor;
-    shape-rendering: geometricprecision;
+/*     shape-rendering: geometricprecision; */
 }
-.dbs_chartX.-line > .-chart > .dbs_chartValueX.-min > .-point,
-.dbs_chartX.-line > .-chart > .dbs_chartValueX.-max > .-point,
-.dbs_chartX.-line > .-chart > .dbs_chartValueX.-hover > .-point{
-	display: none;
-/* 	transform: scale 1s; */
-}
-.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-min > .-point,
-.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-max > .-point,
-.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-hover > .-point{
-	display: inline-block;
-}
+
 /* .dbs_chartX.-line.-hover > .-chart > .dbs_chartValueX.-hover > .-point{ */
 /*     stroke-width: .1em; */
 /*     stroke: currentColor; */

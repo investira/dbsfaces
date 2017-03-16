@@ -92,7 +92,7 @@
 	-webkit-flex: 1 1 100%;
 	-moz-flex: 1 1 100%;
 	flex: 1 1 100%;
-    border: 1px solid currentColor;
+    border: 1px solid rgba(0,0,0,.1);
 	top: 0;
 	left: 0;
     border-radius: 1em;

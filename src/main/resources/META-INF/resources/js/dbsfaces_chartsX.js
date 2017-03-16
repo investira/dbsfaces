@@ -40,17 +40,20 @@ dbsfaces.chartsX = {
 				charts : null,
 				childrenCaptionContainer : null,
 				chartValueMin: null,
-				chartValueMax: null 
+				chartValueMax: null
 			},
 			type : pCharts.attr("type"),
 			showLabel : pCharts.hasClass("-showLabel"),
 			showDelta : pCharts.hasClass("-showDelta"),
 			showGrid : pCharts.hasClass("-showGrid"),
 			showGridValue : pCharts.hasClass("-showGridValue"),
-			width : null,
-			height : null,
+			width : null, //Largura do espaço que contém o gráfico
+			height : null, //Altura do espaço que contém o grático
 			scaleX : null,
-			scaleY : null
+			scaleY : null,
+			infoWidth: null, //Largura da coluna de informação(value)
+			infoHeight: null, //ALtura da linha de informação(label)
+			currentColorInverted: tinycolor(pCharts.css("color")).invertLightness().setAlpha(1).toString()
 		}
 		pCharts.data("data", xData);
 		xData.dom.caption = xData.dom.container.children(".-caption");
@@ -72,21 +75,26 @@ dbsfaces.chartsX = {
 		//Exclui títulos existentes se houver
 		pChartsData.dom.childrenCaptionContainer.empty();
 		
-		if (pChartsData.dom.children.length < 1){
+		if (pChartsData.dom.children.length < 2){
 			pChartsData.dom.childrenCaption.css("display", "none");
-		}else{
+		}
+		if (pChartsData.dom.children.length >0){
 			//Cria títulos
 			pChartsData.dom.children.each(function(){
 				//Caption
 				var xElement = $(document.createElement("div"));
+				var xChartData = $(this).data("data");
 				xElement.addClass("-caption -th_col")
-						.attr("id", $(this)[0].id +"_caption")
-						.attr("chartid", $(this)[0].id);
+						.attr("id", xChartData.dom.self[0].id +"_caption")
+						.attr("chartid", this.id);
 				//Text do caption
 				var xElementText = $(document.createElement("div"));
 				xElementText.addClass("-text")
-							.text($(this).attr("caption"));
+							.text(xChartData.dom.self.attr("caption"));
 				xElement.append(xElementText);
+				//Atualiza data do chart
+				xChartData.dom.caption = xElement;
+				xChartData.dom.captionText = xElementText;
 				//Incorpora elemento Caption
 				pChartsData.dom.childrenCaptionContainer.append(xElement);
 			});
@@ -102,56 +110,61 @@ dbsfaces.chartsX = {
 	},
 	
 	pvInitializeLayoutColor: function(pChartsData){
-		var xCurrentColor = tinycolor(pChartsData.dom.self.css("color")).toString();
 		//Loop por todos os gráficos
 		pChartsData.dom.children.each(function(){
-			var xThis = $(this);
-			var xUserColor = xThis.attr("color");
+			var xChartData = $(this).data("data");
 			//Caption
-			var xChildrenCaption = $(dbsfaces.util.jsid(this.id + "_caption"));
-			var xChildrenCaptionText = xChildrenCaption.children(".-text");
-			if (typeof xUserColor == "undefined"){
-				xUserColor = xCurrentColor;
+			xChartData.colorTransparent = tinycolor(xChartData.color).setAlpha(.5).toString();
+			xChartData.colorInverted = tinycolor(xChartData.color).invertLightness().setAlpha(1).toString();
+			if (xChartData.dom.caption != null){
+				xChartData.dom.captionText.css("color", xChartData.color);
+				xChartData.dom.caption.css("background-color", xChartData.color)
+									  .css("border-color", xChartData.colorTransparent)
+									  .css("color", xChartData.colorInverted);
 			}
-			var xColor = tinycolor(xUserColor);
-			var xInverted = tinycolor(xUserColor).invertLightness().setAlpha(1);
-			xChildrenCaptionText.css("color", xColor);
-			xChildrenCaption.css("background-color", xColor)
-							.css("border-color", xColor.setAlpha(.5))
-							.css("color", xInverted);
 		});
 	},
 	
 	pvInitializeAnalizeValues: function(pChartsData){
-		pChartsData.height = pChartsData.dom.charts[0].getBoundingClientRect().height;
-		pChartsData.width = pChartsData.dom.charts[0].getBoundingClientRect().width;
-		var xMax = null;
-		var xMin = null;
-		var xScaleX = 0;
-		var xScaleY = 0;
-		//Verifica menor e maior valor existentes em todos os gráficos para cálcular a escala
-		for (var xI = 0; xI < pChartsData.dom.children.length; xI++){
-			var xChartData = $(pChartsData.dom.children[xI]).data("data");
-			if (xMin == null || xChartData.dom.chartValueMin.data("data").value.value < xMin.data("data").value.value){
-				xMin = xChartData.dom.chartValueMin;
+		//Inicializa com o largura e altura máximo
+		if (pChartsData.dom.children.length > 0){
+			var xChartValueMinData = null;
+			var xChartValueMaxData = null;
+			var xMaxCount = 0;
+			//Verifica menor e maior valor existentes em todos os gráficos para cálcular a escala
+			for (var xI = 0; xI < pChartsData.dom.children.length; xI++){
+				var xChartData = $(pChartsData.dom.children[xI]).data("data");
+				if (xChartValueMinData == null || xChartData.dom.chartValueMin.data("data").value.value < xChartValueMinData.value.value){
+					xChartValueMinData = xChartData.dom.chartValueMin.data("data");
+				}
+				if (xChartValueMaxData == null || xChartData.dom.chartValueMax.data("data").value.value > xChartValueMaxData.value.value){
+					xChartValueMaxData = xChartData.dom.chartValueMax.data("data");
+				}
+				//Quantidade máxima de itens de todos os gráficos
+				if ((xChartData.originalValues.length - 1) > xMaxCount){
+					xMaxCount = xChartData.originalValues.length - 1;
+				}
+				//Utiliza tamanho do primeiro gráfico para configurar o tamanho da áreas de gráfico
+				if (xI == 0){
+					pChartsData.height = xChartData.dom.chart[0].getBoundingClientRect().height;
+					pChartsData.width = xChartData.dom.chart[0].getBoundingClientRect().width;
+				}
 			}
-			if (xMax == null || xChartData.dom.chartValueMax.data("data").value.value > xMax.data("data").value.value){
-				xMax = xChartData.dom.chartValueMax;
-			}
-			if ((xChartData.originalValues.length - 1) > xScaleX){
-				xScaleX = xChartData.originalValues.length - 1;
-			}
-			if (xI == 0){
-				pChartsData.height = xChartData.dom.chart[0].getBoundingClientRect().height;
-				pChartsData.width = xChartData.dom.chart[0].getBoundingClientRect().width;
-			}
+			pChartsData.infoHeight = xChartValueMaxData.dom.infoLabel.height() * 1.2;
+			pChartsData.infoWidth = Math.max(xChartValueMaxData.dom.infoValue[0].textLength.baseVal.value, xChartValueMinData.dom.infoValue[0].textLength.baseVal.value) * 1.4;
+			pChartsData.width -= pChartsData.infoWidth;
+			pChartsData.height -= pChartsData.infoHeight;
+			pChartsData.dom.chartValueMin = xChartValueMinData.dom.self;
+			pChartsData.dom.chartValueMax = xChartValueMaxData.dom.self;
+			xChartValueMinData.dom.self.addClass("-showValue"); //Força a exibição do value da linha
+			xChartValueMaxData.dom.self.addClass("-showValue"); //Força a exibição do value da linha
+
+			pChartsData.scaleX = pChartsData.width / xMaxCount;
+			pChartsData.scaleY = pChartsData.height / (-xChartValueMaxData.value.value + xChartValueMinData.value.value); //Scale vertical. obs:invertida já que a coordenada do svg desce quando o valor é maior;
+		}else{
+			pChartsData.height = pChartsData.dom.charts[0].getBoundingClientRect().height;
+			pChartsData.width = pChartsData.dom.charts[0].getBoundingClientRect().width;
 		}
-		xScaleX = pChartsData.width / xScaleX;
-		xScaleY = pChartsData.height / (-xMax.data("data").value.value + xMin.data("data").value.value); //Scale vertical. obs:invertida já que a coordenada do svg desce quando o valor é maior
-		pChartsData.dom.chartValueMin = xMin;
-		pChartsData.dom.chartValueMax = xMax;
-		pChartsData.scaleX = xScaleX;
-		pChartsData.scaleY = xScaleY;
 	},
 
 	pvInitializeDraw: function(pChartsData){
@@ -174,8 +187,10 @@ dbsfaces.chartsX = {
 	},
 
 	pvInitializeDrawChartLine: function(pChartsData, pChartData, pChartValueData){
-		var xX = pChartValueData.index * pChartsData.scaleX;
-		var xY = (pChartValueData.value.value - pChartsData.dom.chartValueMax.data("data").value.value) * pChartsData.scaleY; //obs:invertida já que a coordenada do svg desce quando o valor é maior
+		var xX = pChartsData.infoWidth;
+		var xY = pChartsData.infoHeight;
+		xX += pChartValueData.index * pChartsData.scaleX;
+		xY += (pChartValueData.value.value - pChartsData.dom.chartValueMax.data("data").value.value) * pChartsData.scaleY; //obs:invertida já que a coordenada do svg desce quando o valor é maior
 		
 		xY = dbsfaces.math.round(xY, 0);
 		xX = dbsfaces.math.round(xX, 0);
@@ -194,26 +209,73 @@ dbsfaces.chartsX = {
 		if (pChartValueData.index == 0){
 			xPath = "M";
 		}else{
-			xPath = pChartData.dom.path.attr("d") + "L";
+			xPath = pChartData.dom.path.svgAttr("d") + "L";
 		}
 		xPath += xX + "," + xY;
-		pChartData.dom.path.attr("d", xPath);
+		pChartData.dom.path.svgAttr("d", xPath);
 
-		//Ajusta Box
-		var xLabelWidth = pChartValueData.dom.infoLabel[0].textLength.baseVal.value;
-		var xValueWidth = pChartValueData.dom.infoValue[0].textLength.baseVal.value;
-		var xLabelHeight = pChartValueData.dom.infoLabel.height();
-		var xValueHeight = pChartValueData.dom.infoValue.height();
-		var xBoxHeight = (xLabelHeight + xValueHeight) * 1.30;
-		var xBoxWidth = Math.max(xLabelWidth, xValueWidth) * 1.30;
+		//Info
+		xPath = null;
+		var xLabelWidth;
+		var xValueWidth;
+		var xLabelHeight;
+		var xValueHeight;
+		var xBoxLabelHeight;
+		var xBoxLabelWidth;
+		var xBoxValueHeight;
+		var xBoxValueWidth;
+		var xStyleBox = "fill:" + pChartsData.currentColorInverted;
+//		var xStyleText = "fill:" + pChartData.color;
+//		var xBoxX = 0;
+		if (pChartData.type == "line"
+		 || pChartData.type == "bar"){
+			xLabelWidth = pChartValueData.dom.infoLabel[0].textLength.baseVal.value;
+			xValueWidth = pChartsData.infoWidth;
+			xLabelHeight = pChartsData.infoHeight;
+			xValueHeight = pChartValueData.dom.infoValue.height();
+			xBoxLabelHeight = pChartValueData.dom.infoLabel.height(); //xLabelHeight;
+			xBoxLabelWidth = xLabelWidth * 1.10;
+			xBoxValueHeight = xValueHeight;
+			xBoxValueWidth = xValueWidth * 0.90;
+//			xBoxWidth = Math.max(xLabelWidth, xValueWidth) * 1.30;
+//			dbsfaces.ui.cssTransform(pChartValueData.dom.info, "translateX(" + xBoxX + ")");
+			xPath = "M" + xX + "," + pChartsData.infoHeight;
+			xPath += "L" + xX + "," + xY
+			xPath += "L" + pChartsData.infoWidth + "," + xY;
+			//Ajuste X
+			var xHalf = (xLabelWidth / 2);
+			xX -= xHalf;
+			if (xX + xLabelWidth > (pChartsData.width + pChartsData.infoWidth)){
+				xX -= (xX + xLabelWidth) - (pChartsData.width + pChartsData.infoWidth);
+			}else if (xX < pChartsData.infoWidth){
+				xX = pChartsData.infoWidth;
+			}
+			//Ajuste Y
+			xHalf = (xValueHeight / 2);
+			if (xY + xHalf > (pChartsData.height + pChartsData.infoHeight)){
+				xY -= (xY + xHalf) - (pChartsData.height + pChartsData.infoHeight);
+			}else if (xY - xHalf < pChartsData.infoHeight){
+				xY += xHalf;
+			}
+		}
 		pChartValueData.dom.infoLabel.svgAttr("x", xX)
-				  				     .svgAttr("y", xY);
-		pChartValueData.dom.infoValue.svgAttr("x", xX)
+				  				     .svgAttr("y", ".7em");
+//				  				     .svgAttr("style", xStyleText);
+		pChartValueData.dom.infoValue.svgAttr("x", pChartsData.infoWidth * .80)
 		   		  				      .svgAttr("y", xY);
-		pChartValueData.dom.infoBox.svgAttr("width", xBoxWidth)
-							       .svgAttr("height", xBoxHeight)
-							       .svgAttr("x", xX)
-							       .svgAttr("y", xY);
+//		   		  				      .svgAttr("style", xStyleText);
+		pChartValueData.dom.infoBoxLabel.svgAttr("width", xBoxLabelWidth)
+							       		.svgAttr("height", xBoxLabelHeight)
+							       		.svgAttr("x", xX - (xBoxLabelWidth * .05))
+							       		.svgAttr("y", "-.2em")
+							       		.svgAttr("style", xStyleBox);
+		pChartValueData.dom.infoBoxValue.svgAttr("width", xBoxValueWidth)
+								   		.svgAttr("height", xBoxValueHeight)
+								   		.svgAttr("x", 0)
+								   		.svgAttr("y", xY - (xBoxValueHeight / 2))
+								   		.svgAttr("style", xStyleBox);
+		
+		pChartValueData.dom.infoPath.svgAttr("d", xPath);
 	},
 	
 	pvInitializeDrawBar: function(pChartsData){
@@ -231,6 +293,7 @@ dbsfaces.chartsX = {
 		var xChartCaption = $(dbsfaces.util.jsid(pChartId + "_caption"));
 		xChart.addClass("-selected");
 		xChartCaption.addClass("-selected");
+		dbsfaces.ui.moveToFront(xChart);
 	}
 		
 };

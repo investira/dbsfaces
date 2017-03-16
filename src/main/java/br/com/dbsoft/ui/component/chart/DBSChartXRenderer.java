@@ -34,12 +34,13 @@ public class DBSChartXRenderer extends DBSRenderer {
 		ResponseWriter 			xWriter = pContext.getResponseWriter();
 		String 					xClass = CSS.CHARTX.MAIN + CSS.THEME.FLEX;
 		DBSChartsX				xDBSChartsX;
-		if (!(xChart.getParent() instanceof DBSChartsX)){
-			return;
-		}else{
-			xDBSChartsX = (DBSChartsX) xChart.getParent();
-			xClass += TYPE.get(xDBSChartsX.getType()).getStyleClass();
-		}
+		TYPE					xType;
+		if (!(xChart.getParent() instanceof DBSChartsX)){return;}
+
+		xDBSChartsX = (DBSChartsX) xChart.getParent();
+		xType = TYPE.get(xDBSChartsX.getType());
+		xClass += xType.getStyleClass();
+
 		
 		String xClientId = xChart.getClientId(pContext);
 
@@ -56,18 +57,26 @@ public class DBSChartXRenderer extends DBSRenderer {
 			
 			encodeClientBehaviors(pContext, xChart);
 
-			pvEncodeContainer(xWriter, xChart);
+			pvEncodeContainer(xWriter, xChart, xType);
 			
 			pvEncodeJS(xWriter, xChart);
 			
 		xWriter.endElement("div");
 	}
 
-	private void pvEncodeContainer(ResponseWriter pWriter, DBSChartX pChart) throws IOException{
+	private void pvEncodeContainer(ResponseWriter pWriter, DBSChartX pChart, TYPE pType) throws IOException{
 		//CONTAINER--------------------------
- 		pWriter.startElement("div", pChart);
-			DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.FLEX_COL + "-info");
-		pWriter.endElement("div");
+		if (pType == TYPE.LINE){
+			pWriter.startElement("div", pChart);
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.FLEX_COL + CSS.MODIFIER.INFO);
+//				pWriter.startElement("div", pChart);
+//				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.VALUE);
+//				pWriter.endElement("div");
+//				pWriter.startElement("div", pChart);
+//				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LABEL);
+//				pWriter.endElement("div");
+			pWriter.endElement("div");
+		}
 		pWriter.startElement("svg", pChart);
 			DBSFaces.encodeSVGNamespaces(pWriter);
 			DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.FLEX_COL + "-chart");
