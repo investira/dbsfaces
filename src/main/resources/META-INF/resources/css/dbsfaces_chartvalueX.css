@@ -19,25 +19,6 @@
 	visibility: hidden;
 }
 
-.dbs_chartX.-line > .-chart > .dbs_chartValueX.-line.-showLabel > .-info > .-label,
-.dbs_chartX.-line > .-chart > .dbs_chartValueX.-line.-showValue > .-info > .-value{
-	visibility: visible;
-/* 	opacity: 0.5; */
-}
-.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-showLabel.-hide > .-info > .-label,
-.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-showValue.-hide > .-info > .-value{
-	visibility: hidden;
-}
-
-.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-hover > .-point,
-.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-hover > .-info > .-path,
-.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-hover > .-info > .-boxLabel,
-.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-hover > .-info > .-boxValue,
-.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-hover > .-info > .-label,
-.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-hover > .-info > .-value{
-	visibility: visible;
-}
-
 .dbs_chartValueX.-line > .-info > .-label{
     font-size: 0.8em;
     color: currentColor;
@@ -72,4 +53,37 @@
 /* 	-moz-transform: translateY(-.5em); */
 /* 	-o-transform: translateY(-.5em); */
 /* 	transform: translateY(-.5em); */
+}
+
+.dbs_chartX.-line.-showDelta > .-chart > .dbs_chartValueX{
+	pointer-events: none;
+}
+
+.dbs_chartX.-line:not(.-showLabel) > .-chart > .dbs_chartValueX > .-info > .-label,
+.dbs_chartX.-line:not(.-showLabel) > .-chart > .dbs_chartValueX > .-info > .-boxLabel{
+	display:none;
+}
+
+.dbs_chartX.-line:not(.-showValue) > .-chart > .dbs_chartValueX > .-info > .-value,
+.dbs_chartX.-line:not(.-showValue) > .-chart > .dbs_chartValueX > .-info > .-boxValue{
+	display:none;
+}
+
+.dbs_chartX.-line > .-chart > .dbs_chartValueX.-line.-showLabel > .-info > .-label,
+.dbs_chartX.-line > .-chart > .dbs_chartValueX.-line.-showValue > .-info > .-value{
+	visibility: visible;
+/* 	opacity: 0.5; */
+}
+.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-showLabel.-hide > .-info > .-label,
+.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-showValue.-hide > .-info > .-value{
+	visibility: hidden;
+}
+
+.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-hover > .-point,
+.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-hover > .-info > .-path,
+.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-hover > .-info > .-boxLabel,
+.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-hover > .-info > .-boxValue,
+.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-hover > .-info > .-label,
+.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-hover > .-info > .-value{
+	visibility: visible;
 }

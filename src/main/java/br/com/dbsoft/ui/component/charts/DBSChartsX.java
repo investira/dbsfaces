@@ -21,8 +21,7 @@ public class DBSChartsX extends DBSUIOutput implements NamingContainer{
 		caption,
 		footer,
 		valueFormatMask,
-		showGrid,
-		showGridValue,
+		showValue,
 		showLabel,
 		showDelta,
 		groupId,
@@ -118,29 +117,13 @@ public class DBSChartsX extends DBSUIOutput implements NamingContainer{
 		handleAttribute("footer", pFooter);
 	}
 	
-	public Boolean getShowGrid() {
-		return (Boolean) getStateHelper().eval(PropertyKeys.showGrid, true);
+	public Boolean getShowValue() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.showValue, true);
 	}
-	public void setShowGrid(Boolean pShowGrid) {
-		getStateHelper().put(PropertyKeys.showGrid, pShowGrid);
-		handleAttribute("showGrid", pShowGrid);
+	public void setShowValue(Boolean pShowValue) {
+		getStateHelper().put(PropertyKeys.showValue, pShowValue);
+		handleAttribute("showValue", pShowValue);
 	}
-
-	public Boolean getShowGridValue() {
-		return (Boolean) getStateHelper().eval(PropertyKeys.showGridValue, true);
-	}
-	public void setShowGridValue(Boolean pShowGridValue) {
-		getStateHelper().put(PropertyKeys.showGridValue, pShowGridValue);
-		handleAttribute("showGridValue", pShowGridValue);
-	}
-
-	public Boolean getShowDelta() {
-		return (Boolean) getStateHelper().eval(PropertyKeys.showDelta, false);
-	}
-	public void setShowDelta(Boolean pShowDelta) {
-		getStateHelper().put(PropertyKeys.showDelta, pShowDelta);
-		handleAttribute("showDelta", pShowDelta);
-	} 
 
 	public void setShowLabel(Boolean pShowLabel) {
 		getStateHelper().put(PropertyKeys.showLabel, pShowLabel);
@@ -155,7 +138,15 @@ public class DBSChartsX extends DBSUIOutput implements NamingContainer{
 		getStateHelper().put(PropertyKeys.deltaList, pDeltaList);
 		handleAttribute("deltaList", pDeltaList);
 	}
-	
+
+	public Boolean getShowDelta() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.showDelta, false);
+	}
+	public void setShowDelta(Boolean pShowDelta) {
+		getStateHelper().put(PropertyKeys.showDelta, pShowDelta);
+		handleAttribute("showDelta", pShowDelta);
+	} 
+
 	/**
 	 * Lista com os valores dos deltas
 	 * @return

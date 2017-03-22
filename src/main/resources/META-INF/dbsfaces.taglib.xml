@@ -3603,17 +3603,9 @@
 		</attribute>
 		<attribute>
 			<description>
-                Indica se grid será exibido(somente para gráficos Line e Bar). Padrão é true.
+                Indica se valor será exibido. Padrão é true.
             </description>
-			<name>showGrid</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
-                Indica se valor do grid será exibido(somente para gráficos Line e Bar). Padrão é true.
-            </description>
-			<name>showGridValue</name>
+			<name>showValue</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
@@ -4163,6 +4155,14 @@
 			<name>closeDialog</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+	           	evento onclick
+            </description>
+			<name>onclick</name>
+			<required>false</required>
+			<type>java.lang.String</type>
 		</attribute>
 	</tag>
 	<tag>

@@ -16,6 +16,11 @@
     pointer-events: all;
     opacity:1;	
 }
+
+.dbs_chartX.-line.-selected.-moving{
+	cursor: ew-resize;
+}
+
 .dbs_chartX > .-chart{
 	display: inline-block;
 	position: relative;	
@@ -44,6 +49,23 @@
 /*     shape-rendering: geometricprecision; */
 }
 
+.dbs_chartX.-line > .-chart > .-delta{
+/* 	height: 100%; */
+/*     width: 100%; */
+}
+
+.dbs_chartX.-line > .-chart > .-delta > .-handle{
+	overflow: visible;
+}
+
+
+
+.dbs_chartX.-line > .-chart > .-delta > .-handle > .-handle{  /*SVG */
+    cursor: ew-resize;
+}
+.dbs_chartX.-line > .-chart > .-delta > .-handle > .-rect{
+    fill: rgba(0,0,0,.1);
+}
 /* .dbs_chartX.-line.-hover > .-chart > .dbs_chartValueX.-hover > .-point{ */
 /*     stroke-width: .1em; */
 /*     stroke: currentColor; */

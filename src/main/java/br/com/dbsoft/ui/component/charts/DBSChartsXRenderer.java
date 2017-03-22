@@ -40,20 +40,11 @@ public class DBSChartsXRenderer extends DBSRenderer {
 		if (xCharts.getShowLabel()){
 			xClass += " -showLabel ";
 		}
-		if (xType == TYPE.LINE
-		 || xType == TYPE.PIE){
-			if (xCharts.getShowDelta()){
-				xClass += " -showDelta ";
-			}
+		if (xCharts.getShowValue()){
+			xClass += " -showValue ";
 		}
-		if (xType == TYPE.LINE
-		 || xType == TYPE.BAR){
-			if (xCharts.getShowGrid()){
-				xClass += " -showGrid ";
-				if (xCharts.getShowGridValue()){
-					xClass += " -showGridValue ";
-				}
-			}
+		if (xCharts.getShowDelta()){
+			xClass += " -showDelta ";
 		}
 
 		String xClientId = xCharts.getClientId(pContext);
