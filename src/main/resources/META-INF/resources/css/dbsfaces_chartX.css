@@ -49,22 +49,73 @@
 /*     shape-rendering: geometricprecision; */
 }
 
+.dbs_chartX.-line.-showDelta > .-chart > .-path{
+	opacity:0.7;
+}
+.dbs_chartX.-line.-showDelta.-selected.-moving > .-chart > .-path{
+	opacity:1;
+}
+
 .dbs_chartX.-line > .-chart > .-delta{
-/* 	height: 100%; */
-/*     width: 100%; */
+	visibility: hidden;
+}
+.dbs_chartX.-line.-selected > .-chart > .-delta{
+	visibility: visible;
 }
 
 .dbs_chartX.-line > .-chart > .-delta > .-handle{
 	overflow: visible;
 }
 
+.dbs_chartX.-line.-selected.-moving > .-chart > .-delta > .-value{
+	opacity: 0.4;
+}
 
+.dbs_chartX.-line > .-chart > .-delta > .-value{
+	opacity: 0.9;
+	stroke:none;
+	font-size: 5em;
+	font-weight: bold;
+	-webkit-transform-origin: center;
+	-moz-transform-origin: center;
+	-o-transform-origin: center;
+	transform-origin: center;
+    -webkit-transform: translateY(.25em);
+    -moz-transform: translateY(.25em);
+    -o-transform: translateY(.25em);
+    transform: translateY(.25em);
+	text-anchor: middle;
+	-webkit-transition: opacity linear .3s;
+    -moz-transition: opacity linear .3s;
+    -o-transition: opacity linear .3s;
+    transition: opacity linear .3s;
+}
+.dbs_chartX.-line > .-chart > .-delta > .-value > .-label{
+	font-size:.3em;
+}
 
 .dbs_chartX.-line > .-chart > .-delta > .-handle > .-handle{  /*SVG */
     cursor: ew-resize;
 }
 .dbs_chartX.-line > .-chart > .-delta > .-handle > .-rect{
-    fill: rgba(0,0,0,.1);
+    fill: rgba(0,0,0,.05);
+}
+
+.dbs_chartX.-line > .-chart > .-delta > .-handle > .-handle > .-rect,
+.dbs_chartX.-line > .-chart > .-delta > .-handle > .-handle > .-line{
+    -webkit-transition: opacity linear .3s;
+    -moz-transition: opacity linear .3s;
+    -o-transition: opacity linear .3s;
+    transition: opacity linear .3s;
+	opacity: 0.7;
+}
+.dbs_chartX.-line > .-chart > .-delta > .-handle.-selected{
+/*     font-size:2em; */
+}
+
+.dbs_chartX.-line > .-chart > .-delta > .-handle.-selected > .-handle > .-rect,
+.dbs_chartX.-line > .-chart > .-delta > .-handle.-selected > .-handle > .-line{
+    opacity: 0.3;
 }
 /* .dbs_chartX.-line.-hover > .-chart > .dbs_chartValueX.-hover > .-point{ */
 /*     stroke-width: .1em; */

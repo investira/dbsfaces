@@ -26,11 +26,16 @@ dbsfaces.chartX = {
 				chartValueMin : null, //chartValue que contém o valor máximo
 				chartValueMax : null, //chartValue que contém o valor mínimo
 				path: null, //Desenho do caminho
-				chartValueHover: null, //ChartValue atualmente com hover  
+				hoverChartValueData: null, //ChartValue atualmente com hover  
 				delta: null, //Container do delta
 				deltaHandle1Data: null, // DataHandle 1
 				deltaHandle2Data: null, // DataHandle 2
-				deltaValue: null //Texto do valor do delta
+				deltaValue: null, //Texto do valor + label do delta
+				deltaValueText: null, //Texto do valor do delta
+				deltaValueLabel: null, //Texto do label do delta
+				movingDeltaHandleData: null, //Handle que está em movimento(selecionado pelo usuário)
+				leftDeltaHandleData: null, //Handle mais a esquerda
+				rightDeltaHandleData: null //Handle mais a direita
 			},	
 			type: xCharts.attr("type"), //Tipo de gráfico
 			width: null, //largura do gráfico total
@@ -42,9 +47,6 @@ dbsfaces.chartX = {
 			colorLight: null,
 			currentColorInverted: tinycolor(xCharts.css("color")).invertLightness().setAlpha(1).toString(),
 			findPointTimeout: null,
-			movingDeltaHandleData: null,
-			leftDeltaHandleData: null,
-			rightDeltaHandleData: null,
 			showDelta: pChart.hasClass("-showDelta")
 		}
 		if (typeof xData.color == "undefined"){
@@ -178,12 +180,12 @@ dbsfaces.chartX = {
 
 
 	pvInitializeLayoutChartLineCreateHandle: function(pChartData, pDeltaHandle){
-//		var xDeltaHandleHandle = dbsfaces.svg.svg(pDeltaHandle, null, pChartData.height / 2, "1.5em", "1.5em", "-handle", "overflow: visible;", {viewBox:"0 0 16 16"});
-		var xDeltaHandleHandle = dbsfaces.svg.svg(pDeltaHandle, null, null, "16", "16", "-handle", "overflow: visible;", {viewBox:"0 0 16 16"});
+//		var xDeltaHandleHandle = dbsfaces.svg.svg(pDeltaHandle, null, null, "16", "16", "-handle", "overflow: visible;", {viewBox:"0 0 16 16"});
+		var xDeltaHandleHandle = dbsfaces.svg.svg(pDeltaHandle, null, null, "1.5em", "1.5em", "-handle", "overflow: visible;", {viewBox:"0 0 16 16"});
 		dbsfaces.svg.circle(xDeltaHandleHandle, "0", "0", null, "-touch", null, {r:"16", fill:"transparent"});
-		dbsfaces.svg.rect(xDeltaHandleHandle, "-3", "-8", "6", "16", "2", "2", null, "opacity:0.5", {fill:pChartData.currentColorInverted, stroke:"currentColor", "stroke-width":"1px"});
-		dbsfaces.svg.line(xDeltaHandleHandle, "-1", "-4", "-1", "4", null, "opacity:0.5", {stroke:"currentColor", "stroke-width":"1px"});
-		dbsfaces.svg.line(xDeltaHandleHandle, "1", "-4", "1", "4", null, "opacity:0.5", {stroke:"currentColor", "stroke-width":"1px"});
+		dbsfaces.svg.rect(xDeltaHandleHandle, "-3", "-8", "6", "16", "2", "2", "-rect", null, {fill:pChartData.currentColorInverted, stroke:"currentColor", "stroke-width":"1px"});
+		dbsfaces.svg.line(xDeltaHandleHandle, "-1", "-4", "-1", "4", "-line", null, {stroke:"currentColor", "stroke-width":"1px"});
+		dbsfaces.svg.line(xDeltaHandleHandle, "1", "-4", "1", "4", "-line", null, {stroke:"currentColor", "stroke-width":"1px"});
 		
 		//Captura eventos para mover handle
 		pDeltaHandle.on("mousedown touchstart", function(e){
@@ -220,22 +222,24 @@ dbsfaces.chartX = {
 		//Cria elementos da guia do delta
 		if (pChartData.showDelta){
 			pChartData.dom.delta = dbsfaces.svg.g(pChartData.dom.chart, "-delta", null, null);
+			//Value
+			pChartData.dom.deltaValue = dbsfaces.svg.text(pChartData.dom.delta, null, null, null, "-value", null, {fill:pChartData.color});
+			pChartData.dom.deltaValueText = dbsfaces.svg.tspan(pChartData.dom.deltaValue, "0", "-text", null, null);
+			pChartData.dom.deltaValueLabel = dbsfaces.svg.tspan(pChartData.dom.deltaValue, "%", "-label", null, null);
 			//Guia 1
 			pChartData.deltaHandle1Data = dbsfaces.chartX.pvInitializeLayoutChartLineDeltaHandle(pChartData, 1);
-			pChartData.leftDeltaHandleData = pChartData.deltaHandle1Data;
+			pChartData.dom.leftDeltaHandleData = pChartData.deltaHandle1Data;
 			//Guia 2
 			pChartData.deltaHandle2Data = dbsfaces.chartX.pvInitializeLayoutChartLineDeltaHandle(pChartData, 2);
-			pChartData.rightDeltaHandleData = pChartData.deltaHandle2Data;
-			//Value
-			pChartData.dom.deltaValue = dbsfaces.svg.text(pChartData.dom.delta, null, null, null, "-value", null, null);
-			dbsfaces.svg.tspan(pChartData.dom.deltaValue, "0", null, null, null);
-			dbsfaces.svg.tspan(pChartData.dom.deltaValue, "%", "-label", null, null);
+			pChartData.dom.rightDeltaHandleData = pChartData.deltaHandle2Data;
 		}
 		
 		//Captura movimento do mouse para seleciona ponto
 		pChartData.dom.self.on("mousemove touchmove touchstart", function(e){
 			var xChart = $(this);
-			if (xChart.hasClass("-selected")){
+			if (xChart.hasClass("-selected")
+			 && xChart.hasClass("-line")){
+				//Timeout para diminuir a quantidade de chamada
 				clearTimeout(pChartData.findPointTimeout);
 				pChartData.findPointTimeout = setTimeout(function(){
 					dbsfaces.chartX.findPoint(e, xChart.data("data"));
@@ -300,80 +304,33 @@ dbsfaces.chartX = {
 	},
 	
 	selectChartValue: function(pChartData, pChartValueData){
-		//Seleciona chartvalue encontrado
-		dbsfaces.chartX.hover(pChartData, pChartValueData);
 		//Posiciona Handle
-		dbsfaces.chartX.pvSetHandlePosition(pChartData, pChartValueData);
+		if (pChartData.type == "line"){
+			if (pChartData.showDelta){
+				dbsfaces.chartX.pvShowDelta(pChartData, pChartValueData);
+				return;
+			}
+		}
+		//Seleciona chartvalue encontrado
+		pChartData.dom.hoverChartValueData = dbsfaces.chartX.pvHover(pChartData, pChartValueData, pChartData.dom.hoverChartValueData);
 	},
 	
-	pvSetHandlePosition: function(pChartData, pChartValueData){
-		if (pChartData.movingDeltaHandleData == null){return;}
-		var xChartsData = pChartData.dom.parent.data("data"); 
-		var xX;
-		var xWidth;
-		var xTrocou = false;
-		//Salva qual o chartvaluedata está vinculado ao handle
-		pChartData.movingDeltaHandleData.chartValueData = pChartValueData;
-		//Se for selecionado o handle a direita, mas a posição selecionada estiver mais a esquerda do que handle a esquerda,
-		//Seta o handle a esquerda corrente como sendo a esquerda
-		//e o handle a direita passa a ser o handle a esquerda. 
-		if (pChartData.movingDeltaHandleData == pChartData.rightDeltaHandleData){
-			if (pChartValueData.x < parseFloat(pChartData.leftDeltaHandleData.dom.handle.svgAttr("x"))){
-				pChartData.rightDeltaHandleData = pChartData.leftDeltaHandleData;
-				pChartData.leftDeltaHandleData = pChartData.movingDeltaHandleData;
-				xTrocou = true;
-				console.log("Virou left");
-			}
-		//Vice-versa quando selecionado o handle a esquerda, conforme explicação acima.
-		}else{
-			if (pChartValueData.x > parseFloat(pChartData.rightDeltaHandleData.dom.handle.svgAttr("x"))){
-				pChartData.leftDeltaHandleData = pChartData.rightDeltaHandleData;
-				pChartData.rightDeltaHandleData = pChartData.movingDeltaHandleData;
-				xTrocou = true;
-				console.log("Virou right");
-			}
-		}
-		//Configura posição e tamanho do rect
-		if (pChartData.leftDeltaHandleData.chartValueData != null){
-			pChartData.leftDeltaHandleData.dom.rect.svgAttr("width", pChartData.leftDeltaHandleData.chartValueData.x - xChartsData.infoWidth);
-			pChartData.leftDeltaHandleData.dom.rect.svgAttr("x", xChartsData.infoWidth);
-		}
-		if (pChartData.rightDeltaHandleData.chartValueData != null){
-			pChartData.rightDeltaHandleData.dom.rect.svgAttr("width", xChartsData.width - pChartData.rightDeltaHandleData.chartValueData.x + xChartsData.infoWidth);
-			pChartData.rightDeltaHandleData.dom.rect.svgAttr("x", pChartData.rightDeltaHandleData.chartValueData.x);
-		}
-		//Configura posição do handle
-		pChartData.movingDeltaHandleData.dom.handle.svgAttr("x", pChartValueData.x);
-	},
-
 
 	setMovingDeltaHandleData: function(pChartData, pDeltaHandleData){
 		//Indica se handle está em movimento
 		if (pDeltaHandleData == null){
-			if (pChartData.movingDeltaHandleData != null){
+			if (pChartData.dom.movingDeltaHandleData != null){
 				pChartData.dom.self.removeClass("-moving");
+				pChartData.dom.movingDeltaHandleData.dom.self.removeClass("-selected");
 			}
 		}else{
 			pChartData.dom.self.addClass("-moving");
+			pDeltaHandleData.dom.self.addClass("-selected");
 		}
 		//Salva qual o delta handle esta sendo movimentado
-		pChartData.movingDeltaHandleData = pDeltaHandleData;
+		pChartData.dom.movingDeltaHandleData = pDeltaHandleData;
 	},
-	
-	hover: function(pChartData, pChartValueData){
-		if (pChartData.dom.chartValueHover != null){
-			if (pChartData.dom.chartValueHover == pChartValueData.dom.self){
-				return;
-			}else{
-				pChartData.dom.chartValueHover.removeClass("-hover");
-			}
-		}
-		pChartValueData.dom.self.addClass("-hover");
-		//Move chartvalue para a frente de todos os outros
-		dbsfaces.ui.moveToFront(pChartValueData.dom.self);
-		//Salva chartvalue que está com hover
-		pChartData.dom.chartValueHover = pChartValueData.dom.self;
-	},
+
 
 	addChartValue: function(pChart, pValue, pLabel, pDisplayValue, pTooltip){
 		if (typeof pValue == "undefined"){
@@ -394,6 +351,115 @@ dbsfaces.chartX = {
 	
 	clearChartValue: function(pChart){
 		pChartData.originalValues = [];
+	},
+	
+	
+	pvHover: function(pChartData, pChartValueData, pOldChartValueData){
+		if (pOldChartValueData != null){
+			if (pChartValueData != null 
+			 && pOldChartValueData == pChartValueData){
+				return pChartValueData;
+			}else{
+				pOldChartValueData.dom.self.removeClass("-hover");
+			}
+		}
+		if (pChartValueData != null){
+			pChartValueData.dom.self.addClass("-hover");
+			//Move chartvalue para a frente de todos os outros
+			dbsfaces.ui.moveToFront(pChartValueData.dom.self);
+		}
+		return pChartValueData;
+	},
+	
+	pvShowDelta: function(pChartData, pChartValueData){
+		if (pChartData.dom.movingDeltaHandleData == null){return;}
+		var xChartsData = pChartData.dom.parent.data("data"); 
+		if (xChartsData == null
+		 || !xChartsData.showDelta){return;}
+		
+		var xX;
+		var xWidth;
+		var xTrocou = false;
+		//Retira hover de ambos para recolocar posteriormente. Isto evita apagar hover quando left e right estão no mesmo ponto
+		dbsfaces.chartX.pvHover(pChartData, null, pChartData.dom.rightDeltaHandleData.dom.chartValueData);
+		dbsfaces.chartX.pvHover(pChartData, null, pChartData.dom.leftDeltaHandleData.dom.chartValueData);
+		
+		//Salva qual o chartvaluedata está vinculado ao handle
+		pChartData.dom.movingDeltaHandleData.dom.chartValueData = pChartValueData;
+		//Se for selecionado o handle a direita, mas a posição selecionada estiver mais a esquerda do que handle a esquerda,
+		//Seta o handle a esquerda corrente como sendo a esquerda
+		//e o handle a direita passa a ser o handle a esquerda. 
+		if (pChartData.dom.movingDeltaHandleData == pChartData.dom.rightDeltaHandleData){
+			if (pChartValueData.x < parseFloat(pChartData.dom.leftDeltaHandleData.dom.handle.svgAttr("x"))){
+				pChartData.dom.rightDeltaHandleData = pChartData.dom.leftDeltaHandleData;
+				pChartData.dom.leftDeltaHandleData = pChartData.dom.movingDeltaHandleData;
+			}
+		//Vice-versa quando selecionado o handle a esquerda, conforme explicação acima.
+		}else{
+			if (pChartValueData.x > parseFloat(pChartData.dom.rightDeltaHandleData.dom.handle.svgAttr("x"))){
+				pChartData.dom.leftDeltaHandleData = pChartData.dom.rightDeltaHandleData;
+				pChartData.dom.rightDeltaHandleData = pChartData.dom.movingDeltaHandleData;
+			}
+		}
+		//Configura posição e tamanho do rect
+		if (pChartData.dom.leftDeltaHandleData.dom.chartValueData != null){
+			pChartData.dom.leftDeltaHandleData.dom.rect.svgAttr("width", pChartData.dom.leftDeltaHandleData.dom.chartValueData.x - xChartsData.infoWidth);
+			pChartData.dom.leftDeltaHandleData.dom.rect.svgAttr("x", xChartsData.infoWidth);
+			//Seta hover
+			dbsfaces.chartX.pvHover(pChartData, pChartData.dom.leftDeltaHandleData.dom.chartValueData, null);
+		}
+		if (pChartData.dom.rightDeltaHandleData.dom.chartValueData != null){
+			pChartData.dom.rightDeltaHandleData.dom.rect.svgAttr("width", xChartsData.width - pChartData.dom.rightDeltaHandleData.dom.chartValueData.x + xChartsData.infoWidth);
+			pChartData.dom.rightDeltaHandleData.dom.rect.svgAttr("x", pChartData.dom.rightDeltaHandleData.dom.chartValueData.x);
+			//Seta hover
+			dbsfaces.chartX.pvHover(pChartData, pChartData.dom.rightDeltaHandleData.dom.chartValueData, null);
+		}
+		//Configura posição do handle
+		pChartData.dom.movingDeltaHandleData.dom.handle.svgAttr("x", pChartValueData.x);
+		//Exibe valor do delta
+		dbsfaces.chartX.pvShowDeltaValue(pChartData);
+	},
+	
+	pvShowDeltaValue: function(pChartData){
+		var xValue = dbsfaces.chartX.pvCalcDelta(pChartData);
+		if (xValue == null){
+			pChartData.dom.deltaValueText.text("(na)");
+			pChartData.dom.deltaValueLabel.text("");
+		}else{
+			pChartData.dom.deltaValueText.text(xValue);
+			pChartData.dom.deltaValueLabel.text("%");
+		}
+	},
+
+	pvCalcDelta: function(pChartData){
+		if (pChartData.dom.rightDeltaHandleData.dom.chartValueData == null
+		 || pChartData.dom.rightDeltaHandleData.dom.chartValueData == null){
+			return null; 
+		}
+		var xLeftValue = pChartData.dom.leftDeltaHandleData.dom.chartValueData.value.value;
+		var xRightValue = pChartData.dom.rightDeltaHandleData.dom.chartValueData.value.value;
+		var xChartsData = pChartData.dom.parent.data("data");
+		if (xLeftValue == 0
+		 || xRightValue == 0
+		 || Math.sign(xLeftValue) != Math.sign(xRightValue)
+		 || xChartsData == null){
+			return null;
+		}
+		var xValue;
+		if (xChartsData.isPerc){
+			xValue = (xRightValue - xLeftValue);
+			xValue *= 100;
+		}else{
+			if (xLeftValue < 0){
+				xValue = (xLeftValue / xRightValue);
+			}else{
+				xValue = (xRightValue / xLeftValue);;
+			}
+			xValue = dbsfaces.math.round(xValue, 4);
+			xValue = (xValue - 1) * 100;
+		}
+		return dbsfaces.format.number(xValue, 2);
 	}
+
 };
 

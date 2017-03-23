@@ -46,10 +46,11 @@ dbsfaces.chartsX = {
 			showLabel : pCharts.hasClass("-showLabel"),
 			showValue : pCharts.hasClass("-showValue"),
 			showDelta : pCharts.hasClass("-showDelta"),
+			isPerc: pCharts.attr("perc"),
 			width : null, //Largura do espaço que contém o gráfico incluindo sem as colunas e linhas de informação
 			height : null, //Altura do espaço que contém o grático incluindo sem as colunas e linhas de informação
-			scaleX : null,
-			scaleY : null,
+			scaleX : null, //Fator de proporção dos ponto do gráfico com os ponto em tela
+			scaleY : null, //Fator de proporção dos ponto do gráfico com os ponto em tela
 			infoWidth: 0, //Largura da coluna de informação(value)
 			infoHeight: 0, //ALtura da linha de informação(label)
 			currentColorInverted: tinycolor(pCharts.css("color")).invertLightness().setAlpha(1).toString()
@@ -145,17 +146,16 @@ dbsfaces.chartsX = {
 				}
 				//Utiliza tamanho do primeiro gráfico para configurar o tamanho da áreas de gráfico
 				if (xI == 0){
-//					pChartsData.height = xChartData.dom.chart[0].getBoundingClientRect().height;
-//					pChartsData.width = xChartData.dom.chart[0].getBoundingClientRect().width;
-					pChartsData.height = xChartData.height;
-					pChartsData.width = xChartData.width;
+					pChartsData.height = xChartData.dom.chart[0].getBoundingClientRect().height; //xChartData.height;
+					pChartsData.width = xChartData.dom.chart[0].getBoundingClientRect().width; //xChartData.width;
 				}
 			}
 			if (pChartsData.showLabel){
-				pChartsData.infoHeight = xChartValueMaxData.dom.infoLabel.height() * 1.2;
+//				pChartsData.infoHeight = Math.round(xChartValueMaxData.dom.infoLabel.height() * 1.2, 0);
+				pChartsData.infoHeight = Math.round(parseFloat(xChartValueMaxData.dom.infoLabel.css("font-size")) * 1.2, 0);
 			}
 			if (pChartsData.showValue){
-				pChartsData.infoWidth = Math.max(xChartValueMaxData.dom.infoValue[0].textLength.baseVal.value, xChartValueMinData.dom.infoValue[0].textLength.baseVal.value) * 1.4;
+				pChartsData.infoWidth = Math.round(Math.max(xChartValueMaxData.dom.infoValue[0].getBoundingClientRect().width, xChartValueMinData.dom.infoValue[0].getBoundingClientRect().width) * 1.4, 0);
 			}
 			pChartsData.width -= pChartsData.infoWidth;
 //			pChartsData.height -= pChartsData.infoHeight;
@@ -183,13 +183,16 @@ dbsfaces.chartsX = {
 				var xChartValueData = $(xChartData.dom.children[xN]).data("data");
 				if (pChartsData.type == "line"){
 					dbsfaces.chartsX.pvInitializeDrawChartLine(pChartsData, xChartData, xChartValueData);
+					//Primeiro item
 					if (xN == 0){
-						xChartData.movingDeltaHandleData = xChartData.leftDeltaHandleData; 
+						dbsfaces.chartX.setMovingDeltaHandleData(xChartData, xChartData.dom.leftDeltaHandleData);
 						dbsfaces.chartX.selectChartValue(xChartData, xChartValueData);
+						dbsfaces.chartX.setMovingDeltaHandleData(xChartData, null);
+					//Último item
 					}else if (xN == xChartData.dom.children.length - 1){
-						xChartData.movingDeltaHandleData = xChartData.rightDeltaHandleData; 
+						dbsfaces.chartX.setMovingDeltaHandleData(xChartData, xChartData.dom.rightDeltaHandleData);
 						dbsfaces.chartX.selectChartValue(xChartData, xChartValueData);
-						xChartData.movingDeltaHandleData = null; 
+						dbsfaces.chartX.setMovingDeltaHandleData(xChartData, null);
 					}
 				}
 			}
@@ -200,14 +203,14 @@ dbsfaces.chartsX = {
 					var xMiddleY = (pChartsData.height + pChartsData.infoHeight) / 2;
 					var xMiddleX = (pChartsData.width + pChartsData.infoWidth) / 2;
 					//handle a esqueda
-					xChartData.leftDeltaHandleData.dom.handle.svgAttr("y", xMiddleY);
-					xChartData.leftDeltaHandleData.dom.rect.svgAttr("y", pChartsData.infoHeight);
-					xChartData.leftDeltaHandleData.dom.rect.svgAttr("height", pChartsData.height);
+					xChartData.dom.leftDeltaHandleData.dom.handle.svgAttr("y", xMiddleY);
+					xChartData.dom.leftDeltaHandleData.dom.rect.svgAttr("y", pChartsData.infoHeight);
+					xChartData.dom.leftDeltaHandleData.dom.rect.svgAttr("height", pChartsData.height);
 					//handle a direita
-					xChartData.rightDeltaHandleData.dom.handle.svgAttr("y", xMiddleY);
-					xChartData.rightDeltaHandleData.dom.rect.svgAttr("y", pChartsData.infoHeight);
-					xChartData.rightDeltaHandleData.dom.rect.svgAttr("height", pChartsData.height);
-					//Value
+					xChartData.dom.rightDeltaHandleData.dom.handle.svgAttr("y", xMiddleY);
+					xChartData.dom.rightDeltaHandleData.dom.rect.svgAttr("y", pChartsData.infoHeight);
+					xChartData.dom.rightDeltaHandleData.dom.rect.svgAttr("height", pChartsData.height);
+					//Texto do valor
 					xChartData.dom.deltaValue.svgAttr("y", xMiddleY);
 					xChartData.dom.deltaValue.svgAttr("x", xMiddleX);
 				}
@@ -254,16 +257,15 @@ dbsfaces.chartsX = {
 		var xBoxValueHeight;
 		var xBoxValueWidth;
 		var xStyleBox = "fill:" + pChartsData.currentColorInverted;
-//		var xBoxX = 0;
 		if (pChartData.type == "line"
 		 || pChartData.type == "bar"){
 			var xHalf;
 			//AJusta Layout Label
 			if (pChartsData.showLabel){
 				//Dimensões
-				xLabelWidth = pChartValueData.dom.infoLabel[0].textLength.baseVal.value;
+				xLabelWidth = pChartValueData.dom.infoLabel[0].getBoundingClientRect().width;
 				xLabelHeight = pChartsData.infoHeight;
-				xBoxLabelHeight = pChartValueData.dom.infoLabel.height(); //xLabelHeight;
+				xBoxLabelHeight = xLabelHeight // pChartValueData.dom.infoLabel.height(); //;
 				xBoxLabelWidth = xLabelWidth * 1.10;
 				//Verifica limites
 				xHalf = (xLabelWidth / 2);
@@ -285,7 +287,7 @@ dbsfaces.chartsX = {
 			//AJusta Layout Value
 			if (pChartsData.showValue){
 				xValueWidth = pChartsData.infoWidth;
-				xValueHeight = pChartValueData.dom.infoValue.height();
+				xValueHeight = pChartsData.infoHeight; //pChartValueData.dom.infoValue.height();
 				xBoxValueHeight = xValueHeight;
 				xBoxValueWidth = xValueWidth * 0.90;
 				//Verifica limites
@@ -309,7 +311,7 @@ dbsfaces.chartsX = {
 			 && pChartsData.showValue){
 				xPath = "M" + pChartValueData.x + "," + pChartsData.infoHeight;
 				xPath += "L" + pChartValueData.x + "," + pChartValueData.y
-				xPath += "L" + pChartsData.infoWidth + "," + xY;
+				xPath += "L" + pChartsData.infoWidth + "," + pChartValueData.y;
 			}else if(pChartsData.showLabel){
 				xPath = "M" + pChartValueData.x + "," + pChartValueData.y;
 				xPath += "L" + pChartValueData.x + "," + pChartsData.infoHeight;
