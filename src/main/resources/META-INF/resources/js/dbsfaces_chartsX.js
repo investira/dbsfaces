@@ -15,16 +15,16 @@ dbsfaces.chartsX = {
 		var xChartsData = pCharts.data("data");
 		dbsfaces.chartsX.pvInitializeLayout(xChartsData);
 		//setTimeout utilizado como artifício para resolver problema do Safari no controle da altura do -charts. Possível bug do safari quando display = flex.
-		setTimeout(function(e){
+//		setTimeout(function(e){
 			pCharts.removeClass("-hide");
-			xChartsData.dom.charts.addClass("-hide");
-		},0);
+//			xChartsData.dom.charts.addClass("-hide");
+//		},0);
 		//setTimeout utilizado como artifício para resolver problema do Safari no controle da altura do -charts. Possível bug do safari quando display = flex.
-		setTimeout(function(e){
+//		setTimeout(function(e){
 			dbsfaces.chartsX.pvInitializeAnalizeValues(xChartsData);
 			dbsfaces.chartsX.pvInitializeDraw(xChartsData);
-			xChartsData.dom.charts.removeClass("-hide");
-		},0);
+//			xChartsData.dom.charts.removeClass("-hide");
+//		},0);
 	},
 
 	pvInitializeData: function(pCharts){
@@ -39,8 +39,8 @@ dbsfaces.chartsX = {
 				footer : null,
 				charts : null,
 				childrenCaptionContainer : null,
-				chartValueMin: null,
-				chartValueMax: null
+				minChartValueData: null,
+				maxChartValueData: null
 			},
 			type : pCharts.attr("type"),
 			showLabel : pCharts.hasClass("-showLabel"),
@@ -128,17 +128,17 @@ dbsfaces.chartsX = {
 	pvInitializeAnalizeValues: function(pChartsData){
 		//Inicializa com o largura e altura máximo
 		if (pChartsData.dom.children.length > 0){
-			var xChartValueMinData = null;
-			var xChartValueMaxData = null;
+			var xMinChartValueData = null;
+			var xMaxChartValueData = null;
 			var xMaxCount = 0;
 			//Verifica menor e maior valor existentes em todos os gráficos para cálcular a escala
 			for (var xI = 0; xI < pChartsData.dom.children.length; xI++){
 				var xChartData = $(pChartsData.dom.children[xI]).data("data");
-				if (xChartValueMinData == null || xChartData.dom.chartValueMin.data("data").value.value < xChartValueMinData.value.value){
-					xChartValueMinData = xChartData.dom.chartValueMin.data("data");
+				if (xMinChartValueData == null || xChartData.dom.minChartValueData.value.value < xMinChartValueData.value.value){
+					xMinChartValueData = xChartData.dom.minChartValueData;
 				}
-				if (xChartValueMaxData == null || xChartData.dom.chartValueMax.data("data").value.value > xChartValueMaxData.value.value){
-					xChartValueMaxData = xChartData.dom.chartValueMax.data("data");
+				if (xMaxChartValueData == null || xChartData.dom.maxChartValueData.value.value > xMaxChartValueData.value.value){
+					xMaxChartValueData = xChartData.dom.maxChartValueData;
 				}
 				//Quantidade máxima de itens de todos os gráficos
 				if ((xChartData.originalValues.length - 1) > xMaxCount){
@@ -151,21 +151,21 @@ dbsfaces.chartsX = {
 				}
 			}
 			if (pChartsData.showLabel){
-//				pChartsData.infoHeight = Math.round(xChartValueMaxData.dom.infoLabel.height() * 1.2, 0);
-				pChartsData.infoHeight = Math.round(parseFloat(xChartValueMaxData.dom.infoLabel.css("font-size")) * 1.2, 0);
+//				pChartsData.infoHeight = Math.round(xMaxChartValueData.dom.infoLabel.height() * 1.2, 0);
+				pChartsData.infoHeight = Math.round(parseFloat(xMaxChartValueData.dom.infoLabel.css("font-size")) * 1.2, 0);
 			}
 			if (pChartsData.showValue){
-				pChartsData.infoWidth = Math.round(Math.max(xChartValueMaxData.dom.infoValue[0].getBoundingClientRect().width, xChartValueMinData.dom.infoValue[0].getBoundingClientRect().width) * 1.4, 0);
+				pChartsData.infoWidth = Math.round(Math.max(xMaxChartValueData.dom.infoValue[0].getBoundingClientRect().width, xMinChartValueData.dom.infoValue[0].getBoundingClientRect().width) * 1.4, 0);
 			}
 			pChartsData.width -= pChartsData.infoWidth;
-//			pChartsData.height -= pChartsData.infoHeight;
-			pChartsData.dom.chartValueMin = xChartValueMinData.dom.self;
-			pChartsData.dom.chartValueMax = xChartValueMaxData.dom.self;
-			xChartValueMinData.dom.self.addClass("-showValue"); //Força a exibição do value da linha
-			xChartValueMaxData.dom.self.addClass("-showValue"); //Força a exibição do value da linha
+			pChartsData.height -= pChartsData.infoHeight;
+			pChartsData.dom.minChartValueData = xMinChartValueData;
+			pChartsData.dom.maxChartValueData = xMaxChartValueData;
+			xMinChartValueData.dom.self.addClass("-showValue"); //Força a exibição do value da linha
+			xMaxChartValueData.dom.self.addClass("-showValue"); //Força a exibição do value da linha
 
 			pChartsData.scaleX = pChartsData.width / xMaxCount;
-			pChartsData.scaleY = pChartsData.height / (-xChartValueMaxData.value.value + xChartValueMinData.value.value); //Scale vertical. obs:invertida já que a coordenada do svg desce quando o valor é maior;
+			pChartsData.scaleY = -pChartsData.height / (xMaxChartValueData.value.value - xMinChartValueData.value.value); //Scale vertical. obs:invertida já que a coordenada do svg desce quando o valor é maior;
 		}else{
 			pChartsData.height = pChartsData.dom.charts[0].getBoundingClientRect().height;
 			pChartsData.width = pChartsData.dom.charts[0].getBoundingClientRect().width;
@@ -222,7 +222,7 @@ dbsfaces.chartsX = {
 		var xX = pChartsData.infoWidth;
 		var xY = pChartsData.infoHeight;
 		xX += pChartValueData.index * pChartsData.scaleX;
-		xY += (pChartValueData.value.value - pChartsData.dom.chartValueMax.data("data").value.value) * pChartsData.scaleY; //obs:invertida já que a coordenada do svg desce quando o valor é maior
+		xY += (pChartValueData.value.value - pChartsData.dom.maxChartValueData.value.value) * pChartsData.scaleY; //obs:invertida já que a coordenada do svg desce quando o valor é maior
 		
 		xY = dbsfaces.math.round(xY, 0);
 		xX = dbsfaces.math.round(xX, 0);
@@ -287,7 +287,7 @@ dbsfaces.chartsX = {
 			//AJusta Layout Value
 			if (pChartsData.showValue){
 				xValueWidth = pChartsData.infoWidth;
-				xValueHeight = pChartsData.infoHeight; //pChartValueData.dom.infoValue.height();
+				xValueHeight = pChartValueData.dom.infoValue.height();
 				xBoxValueHeight = xValueHeight;
 				xBoxValueWidth = xValueWidth * 0.90;
 				//Verifica limites

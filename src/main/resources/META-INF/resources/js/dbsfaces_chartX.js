@@ -23,8 +23,8 @@ dbsfaces.chartX = {
 				captionText : null, //Texto do gráfico
 				chart : pChart.children(".-chart"), //Chart - SVG
 				info : pChart.children(".-info"), //Container das infos
-				chartValueMin : null, //chartValue que contém o valor máximo
-				chartValueMax : null, //chartValue que contém o valor mínimo
+				minChartValueData : null, //chartValue que contém o valor máximo
+				maxChartValueData : null, //chartValue que contém o valor mínimo
 				path: null, //Desenho do caminho
 				hoverChartValueData: null, //ChartValue atualmente com hover  
 				delta: null, //Container do delta
@@ -61,8 +61,8 @@ dbsfaces.chartX = {
 
 	pvInitializeAnalizeValues: function(pChartData){
 		var xValues = pChartData.originalValues;
-		var xChartValueMax = null;
-		var xChartValueMin = null;
+		var xMaxChartValueData = null;
+		var xMinChartValueData = null;
 		var xMed = 0
 //		var xTotalAbs = 0;
 		var xTotal = 0;
@@ -71,11 +71,11 @@ dbsfaces.chartX = {
 		for (var xI = 0; xI < xValues.length; xI++){
 			//Cria elemento chartvalue
 			var xChartValueData = dbsfaces.chartX.pvInitializeAnalizeValuesCreateChartValue(pChartData, xValues[xI], xI);
-			if (xChartValueMin == null || xValues[xI].value < xChartValueMin.value.value){
-				xChartValueMin = xChartValueData;
+			if (xMinChartValueData == null || xValues[xI].value < xMinChartValueData.value.value){
+				xMinChartValueData = xChartValueData;
 			}
-			if (xChartValueMax == null || xValues[xI].value > xChartValueMax.value.value){
-				xChartValueMax = xChartValueData;
+			if (xMaxChartValueData == null || xValues[xI].value > xMaxChartValueData.value.value){
+				xMaxChartValueData = xChartValueData;
 			}
 			//Força a exibição do primeiro e último item
 			if (xI == 0 || xI == xValues.length - 1){
@@ -87,8 +87,10 @@ dbsfaces.chartX = {
 			pChartData.dom.children.push(xChartValueData.dom.self);  
 		}
 		//Marca o valor mínimo e máximo
-		pChartData.dom.chartValueMin = xChartValueMin.dom.self.addClass("-min");
-		pChartData.dom.chartValueMax = xChartValueMax.dom.self.addClass("-max");
+		xMinChartValueData.dom.self.addClass("-min");
+		xMaxChartValueData.dom.self.addClass("-max");
+		pChartData.dom.minChartValueData = xMinChartValueData;
+		pChartData.dom.maxChartValueData = xMaxChartValueData;
 		
 		//Calcula valor médio e salva
 		pChartData.med = xTotal / xValues.length;
