@@ -128,8 +128,6 @@ public class DBSChart extends DBSUIData implements ClientBehaviorHolder{
 	public Double getPieChartRelativeRadius(DBSCharts pCharts){
 		Double xPieChartWidth  = pCharts.getPieChartWidth();
 		Double xRodaRaio = xPieChartWidth;
-//		Double xAfastamento = ((xPieChartWidth + DBSCharts.PieInternalPadding) * (pCharts.getItensCount() + pCharts.getPieInternalCircleFator() - getIndex()));
-//		Double xAfastamento = ((xPieChartWidth + DBSCharts.PieInternalPadding) * (pCharts.getItensCount() + pCharts.getPieInternalCircleFator() - getIndex()));
 		Double xAfastamento = xPieChartWidth + DBSCharts.PieInternalPadding;
 		xAfastamento *= pCharts.getItensCount() - 1 + pCharts.getPieInternalCircleFator() - getIndex();
 		xRodaRaio += xAfastamento;

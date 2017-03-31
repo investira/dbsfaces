@@ -7,9 +7,9 @@ dbs_chartX = function(pId, pValues) {
 
 dbsfaces.chartX = {
 	initialize: function(pChart, pValues){
-		dbsfaces.chartX.pvInitializeData(pChart, pValues);
-		dbsfaces.chartX.pvInitializeAnalizeValues(pChart.data("data"));
-		dbsfaces.chartX.pvInitializeLayout(pChart.data("data"));
+		var xChartData = dbsfaces.chartX.pvInitializeData(pChart, pValues);
+		dbsfaces.chartX.pvInitializeAnalizeValues(xChartData);
+		dbsfaces.chartX.pvInitializeLayout(xChartData);
 	},
 
 	pvInitializeData: function(pChart, pValues){
@@ -18,7 +18,7 @@ dbsfaces.chartX = {
 			dom : {
 				self : pChart, //O próprio chart
 				parent : xCharts, //Pai
-				children : null, //Filhos
+				childrenData : null, //Filhos
 				caption : null, //Caption do gráfico
 				captionText : null, //Texto do gráfico
 				chart : pChart.children(".-chart"), //Chart - SVG
@@ -38,25 +38,30 @@ dbsfaces.chartX = {
 				rightDeltaHandleData: null //Handle mais a direita
 			},	
 			type: xCharts.attr("type"), //Tipo de gráfico
+			index: 0, //Número do gráfico - Configurado da inicialização do dbschats
 			width: null, //largura do gráfico total
 			height: null, //largura do gráfico total 
-			med: null, //valor médio
+			totalValue: 0, //Somatório de todos os valores dos chartvalues
+			medValue: null, //valor médio
 			originalValues: pValues, //Valores recebidos
 			color: pChart.attr("color"), //Cor definida pelo usuário
-			colorInverted: null,
-			colorLight: null,
+			colorInverted: null, //Cor configurada na pvInitializeLayoutColor do dbscharts
+			colorLight: null, //Cor configurada na pvInitializeLayoutColor do dbscharts
 			currentColorInverted: tinycolor(xCharts.css("color")).invertLightness().setAlpha(1).toString(),
 			findPointTimeout: null,
-			showDelta: pChart.hasClass("-showDelta")
+			showDelta: pChart.hasClass("-showDelta"),
+			globalSequence: 0 //Número sequencial do item do chartValue, considerando todos os gráficos 
 		}
+		//COnfigura como cor nula quando não tiver sido informada. Posteriormente será calculado uma cor baseada no atributo CSS color(currentColor).
 		if (typeof xData.color == "undefined"){
-			xData.color = tinycolor(pChart.css("color")).toString();
+			xData.color = null;
 		}
 		xData.width = xData.dom.chart[0].getBoundingClientRect().width;
 		xData.height = xData.dom.chart[0].getBoundingClientRect().height;
 		pChart.data("data", xData);
 //		dbsfaces.chartX.addChartValue(pChart, 123);
 //		dbsfaces.chartX.clearChartValue(pChart);
+		return xData;
 	},
 
 	pvInitializeAnalizeValues: function(pChartData){
@@ -65,8 +70,7 @@ dbsfaces.chartX = {
 		var xMinChartValueData = null;
 		var xMed = 0
 //		var xTotalAbs = 0;
-		var xTotal = 0;
-		pChartData.dom.children = [];
+		pChartData.dom.childrenData = [];
 		//Varifica valores máximos e mínimos e cria elemento do valor
 		for (var xI = 0; xI < xValues.length; xI++){
 			//Cria elemento chartvalue
@@ -81,10 +85,15 @@ dbsfaces.chartX = {
 			if (xI == 0 || xI == xValues.length - 1){
 				xChartValueData.dom.self.addClass("-showLabel");
 			}
-//			xTotalAbs += Math.abs(xValues[xI].value);
-			xTotal += xValues[xI].value;
-			//Adiciona elemento chartvalue na lista de filhos do chart.
-			pChartData.dom.children.push(xChartValueData.dom.self);  
+			//Somatório para ser utilizado posteriormente no cálculo do percentual que cada valor representa
+			if (pChartData.type == "pie"){
+				pChartData.totalValue += Math.abs(xValues[xI].value);
+			}else{
+				pChartData.totalValue += xValues[xI].value;
+			}
+			xChartValueData.totalValue = pChartData.totalValue;
+			//Adiciona elemento chartvalue na lista de filhos do chart. Artifício para manter a ordem dos elementos independentemente da ordem dentro do com pai.
+			pChartData.dom.childrenData.push(xChartValueData);  
 		}
 		//Marca o valor mínimo e máximo
 		xMinChartValueData.dom.self.addClass("-min");
@@ -93,65 +102,89 @@ dbsfaces.chartX = {
 		pChartData.dom.maxChartValueData = xMaxChartValueData;
 		
 		//Calcula valor médio e salva
-		pChartData.med = xTotal / xValues.length;
+		pChartData.medValue = pChartData.totalValue / xValues.length;
 	},
 
 
-	pvInitializeAnalizeValuesCreateChartValueData: function(pValue, pI){
+	pvInitializeAnalizeValuesCreateChartValueData: function(pChartData, pValue, pI){
 		var xChartValueData = {
 			dom : {
 				self : null, // o próprio chartvalue
-				parent : null,  //o pai(chart)
+				parent : pChartData.dom.self,  //o pai(chart)
 				point : null, //elemento point
 				info : null, //elemento que contém infos
+				infoValues : null, //elemento que contém os elementos dos textos do info(somente usado no chartpie)
 				infoLabel : null, //elemento que contém o label
+				infoLabelBox : null, //elemento que contém o box do Label
 				infoValue : null, //elemento que contém o value
-				infoPath : null, //elemento que contém o value
-				infoBoxLabel : null, //elemento que contém o box do Label
-				infoBoxValue : null //elemento que contém o box do Value
+				infoValueBox : null, //elemento que contém o box do Value
+				infoPath : null, //elemento que contém o caminho do label e value até o point
+				infoPerc : null, //elemento que contém o valor percentual no chartpie
+				infoPercBox : null //elemento que contém o box do perc
 			},
 			value : pValue, //o objecto value
-			index : pI, //index do valor
+			index : pI, //index do chartValue
 			x : null, //posição X no gráfico (dentro da escala)
-			y : null //posição Y no gráfico (dentro da escala)
+			y : null, //posição Y no gráfico (dentro da escala)
+			color: null, //Cor do valor,
+			perc: null, //Percentual que valor representa sobre o total
+			globalSequence: 0 //Número sequencial do item do chartValue, considerando todos os gráficos 
 		}
 		return xChartValueData;
 	},
 
 	pvInitializeAnalizeValuesCreateChartValue: function(pChartData, pValue, pI){
-		var xChartValueData = dbsfaces.chartX.pvInitializeAnalizeValuesCreateChartValueData(pValue, pI);
+		var xChartValueData = dbsfaces.chartX.pvInitializeAnalizeValuesCreateChartValueData(pChartData, pValue, pI);
 		//Cria ChartValue
 		xChartValueData.dom.self = dbsfaces.svg.g(pChartData.dom.chart, "dbs_chartValueX -" + pChartData.type, null, {index: pI});
 		//Cria Elemento que contém infos
 		xChartValueData.dom.info = dbsfaces.svg.g(xChartValueData.dom.self, "-info", null, null);
 		var xDisplayValue = ((typeof pValue.displayValue == "undefined" || pValue.displayValue == "") ? pValue.value : pValue.displayValue);
 		if (pChartData.type == "line"){
-			//Path
-			xChartValueData.dom.infoPath = dbsfaces.svg.path(xChartValueData.dom.info, null, "-path", null, null);
-			//BoxLabel
-			xChartValueData.dom.infoBoxLabel = dbsfaces.svg.rect(xChartValueData.dom.info, null, null, null, null, ".2em", ".2em", "-boxLabel", null, null); //'r' precisa ser um atributo por problema no FIREFOX
-			//BoxValue
-			xChartValueData.dom.infoBoxValue = dbsfaces.svg.rect(xChartValueData.dom.info, null, null, null, null, ".2em", ".2em", "-boxValue", null, null); //'r' precisa ser um atributo por problema no FIREFOX
 			//Ponto
 			xChartValueData.dom.point = dbsfaces.svg.circle(xChartValueData.dom.self, null, null, null, "-point", null, {r:".3em"}); //'r' precisa ser um atributo por problema no FIREFOX
+			//Path
+			xChartValueData.dom.infoPath = dbsfaces.svg.path(xChartValueData.dom.info, null, "-path", null, null);
+			//LabelBox
+			xChartValueData.dom.infoLabelBox = dbsfaces.svg.rect(xChartValueData.dom.info, null, null, null, null, ".2em", ".2em", "-labelBox", null, null); //'r' precisa ser um atributo por problema no FIREFOX
+			//valueBox
+			xChartValueData.dom.infoValueBox = dbsfaces.svg.rect(xChartValueData.dom.info, null, null, null, null, ".2em", ".2em", "-valueBox", null, null); //'r' precisa ser um atributo por problema no FIREFOX
+			//Texto do Label
+			xChartValueData.dom.infoLabel = dbsfaces.svg.text(xChartValueData.dom.info, null, null, pValue.label, "-label", null, null);
+			//Texto do Valor
+			xChartValueData.dom.infoValue = dbsfaces.svg.text(xChartValueData.dom.info, null, null, xDisplayValue, "-value", null, null);
 		}else if (pChartData.type == "bar"){
 			//Box
-			xChartValueData.dom.infoBoxLabel = dbsfaces.svg.rect(xChartValueData.dom.info, null, null, null, null, ".2em", ".2em", "-boxLabel", null, null); //'r' precisa ser um atributo por problema no FIREFOX
+			xChartValueData.dom.infoLabelBox = dbsfaces.svg.rect(xChartValueData.dom.info, null, null, null, null, ".2em", ".2em", "-labelBox", null, null); //'r' precisa ser um atributo por problema no FIREFOX
 			//Ponto
 			xChartValueData.dom.point = dbsfaces.svg.path(xChartValueData.dom.self, null, "-point", null, null);
 		}else if (pChartData.type == "pie"){
-			//Box
-			xChartValueData.dom.infoBoxLabel = dbsfaces.svg.rect(xChartValueData.dom.info, null, null, null, null, ".2em", ".2em", "-boxLabel", null, null); //'r' precisa ser um atributo por problema no FIREFOX
 			//Ponto
-			xChartValueData.dom.point = dbsfaces.svg.path(xChartValueData.dom.self, null, "-point", null, null);
+			xChartValueData.dom.point = dbsfaces.svg.path(xChartValueData.dom.self, null, "-point", null, {stroke:"currentColor", fill:"none"});
+			//Path
+			xChartValueData.dom.infoPath = dbsfaces.svg.path(xChartValueData.dom.self, null, "-path", null, null);
+			//Container do value
+			xChartValueData.dom.infoValues = dbsfaces.svg.g(xChartValueData.dom.info, "-values", null, null);
+			//Texto do Label
+			xChartValueData.dom.infoLabel = dbsfaces.svg.text(xChartValueData.dom.infoValues, "3.3em", "-.2em", pValue.label, "-label", null, null);
+			//Texto do Valor
+			xChartValueData.dom.infoValue = dbsfaces.svg.text(xChartValueData.dom.infoValues, "3.3em", ".8em", xDisplayValue, "-value", null, null);
+			//BoxPerc
+			xChartValueData.dom.infoPercBox = dbsfaces.svg.rect(xChartValueData.dom.infoValues, ".2em", "-1em", "3em", "2em", ".2em", ".2em", "-percBox", null, null); //'r' precisa ser um atributo por problema no FIREFOX
+			//Texto do Perc
+			xChartValueData.dom.infoPerc = dbsfaces.svg.text(xChartValueData.dom.infoValues, null, null, null, "-perc", null, null);
 		}
-		//Texto do Label
-		xChartValueData.dom.infoLabel = dbsfaces.svg.text(xChartValueData.dom.info, null, null, pValue.label, "-label", null, null);
-		//Texto do Valor
-		xChartValueData.dom.infoValue = dbsfaces.svg.text(xChartValueData.dom.info, null, null, xDisplayValue, "-value", null, null);
-
-		xChartValueData.dom.self.data("data", xChartValueData);
-
+		//Captura movimento do mouse para seleciona ponto
+		if (pChartData.type == "pie"){
+			xChartValueData.dom.self.on("mousemove touchmove touchstart", function(e){
+//				var xChartValueData = $(this).data("data");
+//				var xChartData = xChartValueData.dom.parent.data("data");
+				//Seleciona chartvalue encontrado
+				dbsfaces.chartX.selectChartValue(pChartData, xChartValueData);
+				e.stopImmediatePropagation();
+				return false;
+			});
+		}
 		return xChartValueData;
 	},
 	
@@ -237,19 +270,20 @@ dbsfaces.chartX = {
 		}
 		
 		//Captura movimento do mouse para seleciona ponto
-		pChartData.dom.self.on("mousemove touchmove touchstart", function(e){
-			var xChart = $(this);
-			if (xChart.hasClass("-selected")
-			 && xChart.hasClass("-line")){
-				//Timeout para diminuir a quantidade de chamada
-				clearTimeout(pChartData.findPointTimeout);
-				pChartData.findPointTimeout = setTimeout(function(){
-					dbsfaces.chartX.findPoint(e, xChart.data("data"));
-				},5);
-			}
-			e.stopImmediatePropagation();
-			return false;
-		});
+		if (pChartData.type == "line"){
+			pChartData.dom.self.on("mousemove touchmove touchstart", function(e){
+				var xChart = $(this);
+				if (xChart.hasClass("-selected")){
+					//Timeout para diminuir a quantidade de chamada
+					clearTimeout(pChartData.findPointTimeout);
+					pChartData.findPointTimeout = setTimeout(function(){
+						dbsfaces.chartX.findPoint(e, xChart.data("data"));
+					},5);
+				}
+				e.stopImmediatePropagation();
+				return false;
+			});
+		}
 	},
 
 
@@ -285,20 +319,20 @@ dbsfaces.chartX = {
 			var xTotalSegs = pChartData.dom.path.svgGetPathTotalSegs();
 			var xIndex = xChartPath.getPathSegAtLength(xTargetLenght);
 			var xClosestX = xCurrentX;
-			var xChartValueData = $(pChartData.dom.children[xIndex]).data("data");
+			var xChartValueData = pChartData.dom.childrenData[xIndex];
 			var xX = Number(xChartValueData.x);
 			var xY = Number(xChartValueData.y);
 			//Se cursos estiver antes do ponto, seleciona o chartvalue anterior
 			if (xCurrentX < xX && xIndex > 0){
-				xClosestX = $(pChartData.dom.children[xIndex - 1]).data("data").x;
+				xClosestX = pChartData.dom.childrenData[xIndex - 1].x;
 			//Se cursos não estiver após do ponto, seleciona o chartvalue posterior
 			}else if(xCurrentX > xX && xIndex < (xTotalSegs - 1)){
-				xClosestX = $(pChartData.dom.children[xIndex + 1]).data("data").x;
+				xClosestX = pChartData.dom.childrenData[xIndex + 1].x;
 			}
 			var xXMiddle = (Number(xClosestX) + xX) / 2;
 			//Escolhe o item anterior se estiver antes do meio do caminho entre o próximo item
 			if (xCurrentX < xXMiddle){
-				xChartValueData = $(pChartData.dom.children[xIndex - 1]).data("data");
+				xChartValueData = pChartData.dom.childrenData[xIndex - 1];
 			}
 			//Seleciona chartvalue encontrado
 			dbsfaces.chartX.selectChartValue(pChartData, xChartValueData);

@@ -1,7 +1,57 @@
 .dbs_chartValueX{
 }
 
-    
+.dbs_chartValueX > .-point{
+	cursor: pointer;
+}
+
+.dbs_chartValueX.-pie{
+    pointer-events: auto;
+    fill: currentColor;
+}
+
+.dbs_chartValueX.-pie > .-point{
+	stroke-width: 2em;
+}    
+
+.dbs_chartValueX.-pie > .-info{
+}
+
+.dbs_chartValueX.-pie > .-info > .-values{
+	font-size: .5em;
+}
+
+.dbs_chartValueX.-pie > .-info > .-values{
+	-webkit-transition:  transform linear .1s;
+	-moz-transition:  transform linear .1s;
+	-o-transition:  transform linear .1s;
+	transition:  transform linear .1s;
+	-webkit-transform: scale(1);
+	-moz-transform: scale(1);
+	-o-transform: scale(1);
+	transform: scale(1);
+}
+.dbs_chartValueX.-pie.-hover > .-info > .-values{
+	-webkit-transform: scale(2);
+	-moz-transform: scale(2);
+	-o-transform: scale(2);
+	transform: scale(2);
+}
+.dbs_chartValueX.-pie > .-info > .-values.-invert{
+	text-anchor: end;
+}
+
+.dbs_chartValueX.-pie > .-info > .-values > .-label{
+	font-weight: bold;
+}
+.dbs_chartValueX.-pie > .-info > .-values > .-value{
+}
+.dbs_chartValueX.-pie > .-info > .-values > .-perc{
+}
+.dbs_chartValueX.-pie > .-info > .-values > .-percBox{
+	fill: currentColor;
+}
+
 .dbs_chartValueX.-line > .-point{
 	stroke-width: .1em;
     stroke: currentColor;
@@ -12,8 +62,8 @@
 }
 .dbs_chartValueX.-line > .-point,
 .dbs_chartValueX.-line > .-info > .-path,
-.dbs_chartValueX.-line > .-info > .-boxLabel,
-.dbs_chartValueX.-line > .-info > .-boxValue,
+.dbs_chartValueX.-line > .-info > .-labelBox,
+.dbs_chartValueX.-line > .-info > .-valueBox,
 .dbs_chartValueX.-line > .-info > .-label,
 .dbs_chartValueX.-line > .-info > .-value{
 	visibility: hidden;
@@ -36,23 +86,13 @@
 	opacity: 0.3;
 }
 
-.dbs_chartValueX.-line > .-info > .-boxLabel{
+.dbs_chartValueX.-line > .-info > .-labelBox{
     stroke: none;
     fill: gray;
-/*     stroke-width: 1px; */
-/* 	-webkit-transform: translateY(-.55em); */
-/* 	-moz-transform: translateY(-.55em); */
-/* 	-o-transform: translateY(-.55em); */
-/* 	transform: translateY(-.55em); */
 }
-.dbs_chartValueX.-line > .-info > .-boxValue{
+.dbs_chartValueX.-line > .-info > .-valueBox{
     stroke: none;
     fill: gray;
-/*     stroke-width: 1px; */
-/* 	-webkit-transform: translateY(-.5em); */
-/* 	-moz-transform: translateY(-.5em); */
-/* 	-o-transform: translateY(-.5em); */
-/* 	transform: translateY(-.5em); */
 }
 
 .dbs_chartX.-line.-showDelta > .-chart > .dbs_chartValueX{
@@ -60,19 +100,18 @@
 }
 
 .dbs_chartX.-line:not(.-showLabel) > .-chart > .dbs_chartValueX > .-info > .-label,
-.dbs_chartX.-line:not(.-showLabel) > .-chart > .dbs_chartValueX > .-info > .-boxLabel{
+.dbs_chartX.-line:not(.-showLabel) > .-chart > .dbs_chartValueX > .-info > .-labelBox{
 	display:none;
 }
 
 .dbs_chartX.-line:not(.-showValue) > .-chart > .dbs_chartValueX > .-info > .-value,
-.dbs_chartX.-line:not(.-showValue) > .-chart > .dbs_chartValueX > .-info > .-boxValue{
+.dbs_chartX.-line:not(.-showValue) > .-chart > .dbs_chartValueX > .-info > .-valueBox{
 	display:none;
 }
 
 .dbs_chartX.-line > .-chart > .dbs_chartValueX.-line.-showLabel > .-info > .-label,
 .dbs_chartX.-line > .-chart > .dbs_chartValueX.-line.-showValue > .-info > .-value{
 	visibility: visible;
-/* 	opacity: 0.5; */
 }
 .dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-showLabel.-hide > .-info > .-label,
 .dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-showValue.-hide > .-info > .-value{
@@ -81,8 +120,8 @@
 
 .dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-hover > .-point,
 .dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-hover > .-info > .-path,
-.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-hover > .-info > .-boxLabel,
-.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-hover > .-info > .-boxValue,
+.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-hover > .-info > .-labelBox,
+.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-hover > .-info > .-valueBox,
 .dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-hover > .-info > .-label,
 .dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-hover > .-info > .-value{
 	visibility: visible;

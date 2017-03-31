@@ -60,6 +60,9 @@ public class DBSChartXRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(xWriter, "class", xClass);
 			DBSFaces.encodeAttribute(xWriter, "caption", xChart.getCaption());
 			DBSFaces.encodeAttribute(xWriter, "color", xChart.getColor());
+//			if (!DBSObject.isEmpty(xChart.getColor())){
+//				DBSFaces.encodeAttribute(xWriter, "style", "color:" + xChart.getColor());
+//			}
 //			DBSFaces.encodeAttribute(xWriter, "width", "100%");
 //			DBSFaces.encodeAttribute(xWriter, "height", "100%");
 

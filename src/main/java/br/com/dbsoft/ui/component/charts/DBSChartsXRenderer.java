@@ -11,7 +11,6 @@ import com.sun.faces.renderkit.RenderKitUtils;
 
 import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
-import br.com.dbsoft.ui.component.charts.DBSChartsX.TYPE;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
@@ -31,7 +30,7 @@ public class DBSChartsXRenderer extends DBSRenderer {
 		if (xCharts.getType()==null){return;}
 		ResponseWriter 	xWriter = pContext.getResponseWriter();
 		String 			xClass = CSS.CHARTSX.MAIN + CSS.MODIFIER.NOT_SELECTABLE + " -hide";
-		TYPE 			xType = TYPE.get(xCharts.getType());
+//		TYPE 			xType = TYPE.get(xCharts.getType());
 
 		if (xCharts.getStyleClass()!=null){
 			xClass += xCharts.getStyleClass();
@@ -102,16 +101,10 @@ public class DBSChartsXRenderer extends DBSRenderer {
 			pWriter.endElement("div");
 
 			//CHARTS--------------------------
-//			pWriter.startElement("div", pCharts);
-//				DBSFaces.encodeAttribute(pWriter, "class", "-charts " + THEME.FLEX_COL);
-//				DBSFaces.renderChildren(pContext, pCharts);
-//			pWriter.endElement("div");
 			pWriter.startElement("div", pCharts);
 				DBSFaces.encodeAttribute(pWriter, "class", "-charts " + CSS.THEME.FLEX_COL);
-//				pWriter.startElement("div", pCharts);
-//					DBSFaces.encodeAttribute(pWriter, "class",CSS.MODIFIER.CONTAINER);
-					DBSFaces.renderChildren(pContext, pCharts);
-//				pWriter.endElement("div");
+				//FILHOS
+				DBSFaces.renderChildren(pContext, pCharts);
 			pWriter.endElement("div");
 			//FOOTER--------------------------
 			if (pCharts.getFooter() !=null){

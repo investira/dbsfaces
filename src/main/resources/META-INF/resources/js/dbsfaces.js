@@ -67,7 +67,6 @@ dbsfaces = {
 }
 
 var wAjaxTimeout;
-var wsAnimationTime = 200;   
 
 //var evt = (evt) ? evt : ((event) ? event : null); 
 //var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null); 
@@ -257,7 +256,7 @@ dbsfaces.svg = {
 		var xElement = dbsfaces.svg.createElement('marker', null);
 		pComponent.append(xElement);
 
-		xElement.svgAttr("id", pid)
+		xElement.svgAttr("id", pId)
 				.svgAttr("refx", pRefX)
 				.svgAttr("refy", pRefY);
 
@@ -1054,6 +1053,9 @@ dbsfaces.date = {
 }
 
 dbsfaces.math = {
+	PIDiameter: Math.PI * 2,
+	PIDiameterFactor: (Math.PI * 2) / 100,
+		
 	round: function(pValue, pDecimals){
 		var xP = Math.pow(10, pDecimals);
 		var xValue = pValue * xP;
@@ -1066,6 +1068,13 @@ dbsfaces.math = {
 		var xValue = pValue * xP;
 		xValue = Math[xValue < 0 ? 'ceil' : 'floor'](xValue);
 		return xValue / xP;
+	},
+	
+	circlePoint: function(pCenter, pRadius, p2PIPercentual){
+		var xPoint = {};
+		xPoint.x = dbsfaces.math.round(pCenter.x + (pRadius * Math.sin(p2PIPercentual)), 2);
+		xPoint.y = dbsfaces.math.round(pCenter.y - (pRadius * Math.cos(p2PIPercentual)), 2);
+		return xPoint;
 	}
 };
 

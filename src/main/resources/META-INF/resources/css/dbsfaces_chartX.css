@@ -10,10 +10,13 @@
     -moz-flex-flow: column nowrap;
     flex-flow: column nowrap;
     pointer-events: none;
+}
+
+.dbs_chartX.-line{
     opacity:0.7;	
 }
-.dbs_chartX.-selected{
-    pointer-events: all;
+
+.dbs_chartX.-line.-selected{
     opacity:1;	
 }
 
@@ -24,6 +27,7 @@
 .dbs_chartX > .-chart{
 	display: inline-block;
 	position: relative;	
+/*     pointer-events: painted; */
 	overflow: visible;
 	flex: 1 1 100%;
 	shape-rendering: geometricPrecision;
@@ -32,12 +36,21 @@
 /* 	box-sizing: border-box; */
 }
 
+.dbs_chartX.-line:not(.-selected) > .-chart{
+    pointer-events: none;
+}
+
+
 .dbs_chartX > .-info{
 	display: inline-block;
 	position: relative;	
 	flex: 1 1 0em;
 /* 	display: none; */
 /* 	content: ""; */
+}
+
+.dbs_chartX > .-chart > .-delta{
+    fill: currentColor;
 }
 
 .dbs_chartX.-line > .-chart > .-path{

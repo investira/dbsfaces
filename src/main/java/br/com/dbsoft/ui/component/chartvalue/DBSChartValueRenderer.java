@@ -283,12 +283,11 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		xPointAngle = xStartAngle + ((xEndAngle - xStartAngle) / 2);
 
 
-		//Metade da largura, pois o stroke terá a a largura integral.
+		//Metade da largura, pois o stroke terá a largura integral.
 		xPneuRaioExterno = pChart.getPieChartRelativeRadius(pCharts) + pCharts.getPieChartWidth();
 		xPneuRaioCentro = xPneuRaioExterno - (pCharts.getPieChartWidth() / 2);
 
 		//Calcula as coordenadas do arco 
-		//Ponto externo
 		x1 = DBSNumber.circlePoint(xCentro, xPneuRaioCentro, xStartAngle);
 		x2 = DBSNumber.circlePoint(xCentro, xPneuRaioCentro, xEndAngle);
 
@@ -324,7 +323,6 @@ public class DBSChartValueRenderer extends DBSRenderer {
 		xPath.append("A" + xPneuRaioCentro + "," + xPneuRaioCentro + " 0 " + xBig + " 1 " + DBSNumber.round(x2.getX(), 2) + "," + DBSNumber.round(x2.getY(),2)); //Arco externo até o ponto final 
 		DBSFaces.encodeSVGPath(pChartValue, pWriter, xPath.toString(), CSS.MODIFIER.POINT, xStyle, null);
 	    
-
 		//Encode Dados
 		if (pCharts.getShowLabel()){
 			Double xAlturaUnitaria = DBSNumber.divide(pCharts.getDiameter() - pCharts.getPadding(), pCharts.getChartValueItensCount()).doubleValue();

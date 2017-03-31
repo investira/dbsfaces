@@ -226,18 +226,23 @@ tinycolor.prototype = {
 	invertLightness: function(){
 		var xHSLA = tinycolor(this.getOriginalInput()).toHsl();
 		var xLightness = xHSLA.l;
-		if (xLightness > 50){
-			xLightness -= 75;
+		if (xLightness > .5){
+			xLightness -= .75;
 			if (xLightness < 0){
 				xLightness = 0;
 			}
 		}else{
-			xLightness += 75;
-			if (xLightness > 100){
-				xLightness = 100;
+			xLightness += .75;
+			if (xLightness > 1){
+				xLightness = 1;
 			}
 		}
 		return tinycolor("hsla(" + xHSLA.h + "," + xHSLA.s + "," + xLightness + "," + this.getAlpha() + ")");
+	},
+
+	setHue: function(pHue){
+		var xHSLA = tinycolor(this.getOriginalInput()).toHsl();
+		return tinycolor("hsla(" + pHue + "," + xHSLA.s + "," + xHSLA.l + "," + this.getAlpha() + ")");
 	},
 
     lighten: function() {
