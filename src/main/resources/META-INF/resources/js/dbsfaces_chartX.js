@@ -1,6 +1,14 @@
 dbs_chartX = function(pId, pValues) {
 	var xChart = $(pId);
 	dbsfaces.chartX.initialize(xChart, pValues);
+	
+	xChart.on("mouseleave", function(e){
+		xChart = $(this);
+		//Seleciona chartvalue encontrado
+		dbsfaces.chartX.selectChartValue(xChart.data("data"), null);
+		e.stopImmediatePropagation();
+		return false;
+	});
 };
 
 
@@ -8,7 +16,7 @@ dbs_chartX = function(pId, pValues) {
 dbsfaces.chartX = {
 	initialize: function(pChart, pValues){
 		var xChartData = dbsfaces.chartX.pvInitializeData(pChart, pValues);
-		dbsfaces.chartX.pvInitializeAnalizeValues(xChartData);
+		dbsfaces.chartX.pvInitializeChartValues(xChartData);
 		dbsfaces.chartX.pvInitializeLayout(xChartData);
 	},
 
@@ -64,7 +72,7 @@ dbsfaces.chartX = {
 		return xData;
 	},
 
-	pvInitializeAnalizeValues: function(pChartData){
+	pvInitializeChartValues: function(pChartData){
 		var xValues = pChartData.originalValues;
 		var xMaxChartValueData = null;
 		var xMinChartValueData = null;
@@ -74,7 +82,7 @@ dbsfaces.chartX = {
 		//Varifica valores máximos e mínimos e cria elemento do valor
 		for (var xI = 0; xI < xValues.length; xI++){
 			//Cria elemento chartvalue
-			var xChartValueData = dbsfaces.chartX.pvInitializeAnalizeValuesCreateChartValue(pChartData, xValues[xI], xI);
+			var xChartValueData = dbsfaces.chartX.pvInitializeChartValuesCreate(pChartData, xValues[xI], xI);
 			if (xMinChartValueData == null || xValues[xI].value < xMinChartValueData.value.value){
 				xMinChartValueData = xChartValueData;
 			}
@@ -106,7 +114,7 @@ dbsfaces.chartX = {
 	},
 
 
-	pvInitializeAnalizeValuesCreateChartValueData: function(pChartData, pValue, pI){
+	pvInitializeChartValuesCreateData: function(pChartData, pValue, pI){
 		var xChartValueData = {
 			dom : {
 				self : null, // o próprio chartvalue
@@ -120,6 +128,8 @@ dbsfaces.chartX = {
 				infoValueBox : null, //elemento que contém o box do Value
 				infoPath : null, //elemento que contém o caminho do label e value até o point
 				infoPerc : null, //elemento que contém o valor percentual no chartpie
+				infoPercInt : null, //elemento que contém o inteiro do valor percentual no chartpie
+				infoPercDec : null, //elemento que contém o decimal do valor percentual no chartpie
 				infoPercBox : null //elemento que contém o box do perc
 			},
 			value : pValue, //o objecto value
@@ -133,10 +143,12 @@ dbsfaces.chartX = {
 		return xChartValueData;
 	},
 
-	pvInitializeAnalizeValuesCreateChartValue: function(pChartData, pValue, pI){
-		var xChartValueData = dbsfaces.chartX.pvInitializeAnalizeValuesCreateChartValueData(pChartData, pValue, pI);
+	pvInitializeChartValuesCreate: function(pChartData, pValue, pI){
+		var xChartValueData = dbsfaces.chartX.pvInitializeChartValuesCreateData(pChartData, pValue, pI);
 		//Cria ChartValue
 		xChartValueData.dom.self = dbsfaces.svg.g(pChartData.dom.chart, "dbs_chartValueX -" + pChartData.type, null, {index: pI});
+		//Salva data
+		xChartValueData.dom.self.data("data", xChartValueData);
 		//Cria Elemento que contém infos
 		xChartValueData.dom.info = dbsfaces.svg.g(xChartValueData.dom.self, "-info", null, null);
 		var xDisplayValue = ((typeof pValue.displayValue == "undefined" || pValue.displayValue == "") ? pValue.value : pValue.displayValue);
@@ -172,19 +184,23 @@ dbsfaces.chartX = {
 			//BoxPerc
 			xChartValueData.dom.infoPercBox = dbsfaces.svg.rect(xChartValueData.dom.infoValues, ".2em", "-1em", "3em", "2em", ".2em", ".2em", "-percBox", null, null); //'r' precisa ser um atributo por problema no FIREFOX
 			//Texto do Perc
-			xChartValueData.dom.infoPerc = dbsfaces.svg.text(xChartValueData.dom.infoValues, null, null, null, "-perc", null, null);
+			xChartValueData.dom.infoPerc = dbsfaces.svg.text(xChartValueData.dom.infoValues, ".4em", ".2em", null, "-perc", null, null);
+			//Texto dos Inteiros do Perc
+			xChartValueData.dom.infoPercInt = dbsfaces.svg.tspan(xChartValueData.dom.infoPerc, null, "-int", null, null);
+			//Texto dos Decimais do Perc
+			xChartValueData.dom.infoPercDec = dbsfaces.svg.tspan(xChartValueData.dom.infoPerc, null, "-dec", null, null);
 		}
 		//Captura movimento do mouse para seleciona ponto
 		if (pChartData.type == "pie"){
 			xChartValueData.dom.self.on("mousemove touchmove touchstart", function(e){
-//				var xChartValueData = $(this).data("data");
-//				var xChartData = xChartValueData.dom.parent.data("data");
+				xChartValue = $(this);
 				//Seleciona chartvalue encontrado
-				dbsfaces.chartX.selectChartValue(pChartData, xChartValueData);
+				dbsfaces.chartX.selectChartValue(pChartData, xChartValue.data("data"));
 				e.stopImmediatePropagation();
 				return false;
 			});
 		}
+		
 		return xChartValueData;
 	},
 	
@@ -210,7 +226,7 @@ dbsfaces.chartX = {
 			number: pHandleNumber
 		}
 		pDeltaHandle.data("data", xData);
-		return pDeltaHandle.data("data");
+		return xData;
 	},
 
 

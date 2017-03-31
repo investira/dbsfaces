@@ -48,6 +48,13 @@
 }
 .dbs_chartValueX.-pie > .-info > .-values > .-perc{
 }
+.dbs_chartValueX.-pie > .-info > .-values > .-perc > .-int{
+}
+.dbs_chartValueX.-pie > .-info > .-values > .-perc > .-dec{
+	font-size:0.7em;
+}
+
+
 .dbs_chartValueX.-pie > .-info > .-values > .-percBox{
 	fill: currentColor;
 }

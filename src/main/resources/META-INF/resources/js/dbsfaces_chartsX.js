@@ -239,24 +239,24 @@ dbsfaces.chartsX = {
 	
 	pvSetColor: function(pChartsData, pElementData, pIsChart){
 		var xColor = pElementData.color;
-		var xPerc;
+		var xL;
 		//Se não foi definida a cor pelo usuário, utiliza a cor corrente
 		if (xColor == null){
 			//Cor corrente
 			xColor = tinycolor(pElementData.dom.self.css("color"));
 			//Se for chart ou o chart não possui cor definida pelo usuário, ajusta a cor em degradê conforme a posição do item na sequencia global
 			if (pIsChart || pElementData.dom.parent.data("data").color == null){
-				xPerc = (pElementData.globalSequence / pChartsData.globalSequencesCount);
+				xL = (pElementData.globalSequence / pChartsData.globalSequencesCount);
 			//Se chart tem cor definida pelo usuário
 			}else{
 				//Ajusta a cor em degradê conforme a posição do item dentro do próprio chart
-				xPerc = ((pElementData.index) / pElementData.dom.parent.data("data").dom.childrenData.length);
+				xL = ((pElementData.index) / pElementData.dom.parent.data("data").dom.childrenData.length);
 			}
-			xPerc *= 20;
+			xL *= 20;
 			if (xColor.isDark()){
-				xColor.lighten(xPerc);
+				xColor.lighten(xL);
 			}else{
-				xColor.darken(xPerc);
+				xColor.darken(xL);
 			}
 		}else{
 			xColor = tinycolor(xColor);
@@ -274,7 +274,7 @@ dbsfaces.chartsX = {
 			y: pChartData.height / 2
 		};
 		
-		var xDiametro = Math.max(pChartData.width, pChartData.height);
+		var xDiametro = Math.max(pChartData.width, pChartData.height) - 90;
 		//Calcula o percentual que valore representa sobre o total
 		pChartValueData.perc = (Math.abs(pChartValueData.value.value) / pChartData.totalValue) * 100;
 
@@ -327,7 +327,7 @@ dbsfaces.chartsX = {
 
 		//Configura Infos
 		var xTransformInfo = "translate(" + xPointAnchor.x + " " + xPointAnchor.y + ") rotate(" + xGraus + ")";
-//		var xBoxWidth = (parseFloat(pChartValueData.dom.infoPercBox.attr("width")) + 0.2) + "em";
+		var xInfoPercX = pChartValueData.dom.infoPerc.attr("x");
 		var xInfoValueX = pChartValueData.dom.infoValue.attr("x");
 		var xInvert = " scale(-1, -1)";
 		//Inverte posição das informações
@@ -336,12 +336,18 @@ dbsfaces.chartsX = {
 			pChartValueData.dom.infoPercBox.attr("transform", xInvert);
 			xTransformInfo += xInvert;
 			xInfoValueX = "-" + xInfoValueX;
+			xInfoPercX = "-" + xInfoPercX;
 		}
 		pChartValueData.dom.info.attr("transform", xTransformInfo);
 		pChartValueData.dom.infoLabel.attr("x", xInfoValueX);
 		pChartValueData.dom.infoValue.attr("x", xInfoValueX);
-		pChartValueData.dom.infoPerc.text(dbsfaces.math.round(pChartValueData.perc, 2));
-		
+		pChartValueData.dom.infoPerc.attr("x", xInfoPercX);
+		pChartValueData.dom.infoPerc.attr("v",pChartValueData.perc);
+		var xPercInt = parseInt(pChartValueData.perc);
+		var xPercDec = String(dbsfaces.math.round(pChartValueData.perc - xPercInt, 2)).substring(1) + "%";
+//		String xLabelPerc = DBSFormat.getFormattedNumber(xParcValueInt, 0);
+		pChartValueData.dom.infoPercInt.text(xPercInt);
+		pChartValueData.dom.infoPercDec.text(xPercDec);
 	},
 
 //	public Double getPieChartRelativeRadius(DBSCharts pCharts){
