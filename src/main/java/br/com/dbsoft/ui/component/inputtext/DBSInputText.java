@@ -72,7 +72,12 @@ public class DBSInputText extends DBSUIInputText{
 		handleAttribute("letterCase", pLetterCase);
 	}
 	public String getLetterCase() {
-		String xValue = (String) getStateHelper().eval(PropertyKeys.letterCase, "upperfirst");
+		String xValue;
+		if (getSecret()) {
+			xValue = (String) getStateHelper().eval(PropertyKeys.letterCase, "none");
+		} else {
+			xValue = (String) getStateHelper().eval(PropertyKeys.letterCase, "upperfirst");
+		}
 		return xValue.toLowerCase().trim();
 	}	
 
