@@ -16,6 +16,7 @@ dbs_chartX = function(pId, pValues) {
 dbsfaces.chartX = {
 	initialize: function(pChart, pValues){
 		var xChartData = dbsfaces.chartX.pvInitializeData(pChart, pValues);
+		dbsfaces.chartX.pvInitializeCreateLabelGroupData(xChartData);
 		dbsfaces.chartX.pvInitializeChartValues(xChartData);
 		dbsfaces.chartX.pvInitializeLayout(xChartData);
 	},
@@ -58,6 +59,9 @@ dbsfaces.chartX = {
 			currentColorInverted: tinycolor(xCharts.css("color")).invertLightness().setAlpha(1).toString(),
 			findPointTimeout: null,
 			showDelta: pChart.hasClass("-showDelta"),
+			listsLabelKeys: [], //lsita contendo os labels convertidos valores binários(chaves)
+			relationalValues: null, //Valores organizados considerando a relação entre eles e ordenados
+			relationalCaptions: null, //Títulos dos grupos de relacionamento
 			globalSequence: 0 //Número sequencial do item do chartValue, considerando todos os gráficos 
 		}
 		//COnfigura como cor nula quando não tiver sido informada. Posteriormente será calculado uma cor baseada no atributo CSS color(currentColor).
@@ -70,6 +74,63 @@ dbsfaces.chartX = {
 //		dbsfaces.chartX.addChartValue(pChart, 123);
 //		dbsfaces.chartX.clearChartValue(pChart);
 		return xData;
+	},
+	
+	pvInitializeCreateLabelGroupData: function(pChartData){
+		//Limpa array
+		pChartData.listsLabelKeys = [];
+		//Loop por totos os valores da oroginais
+		for (var xI = 0; xI < pChartData.originalValues.length; xI++){
+			var xKey = dbsfaces.chartX.pvGetKeyData(pChartData, pChartData.originalValues[xI].label);
+//			console.log(xKey);
+//			xKeyData.values = pChartData.originalValues[xI];
+//			pChartData.relationalValues.push(xKeyData);
+		}
+
+		pChartData.listsLabelKeys.forEach(function(pListLabelKeys){
+			pListLabelKeys.forEach(function(pKey){
+				console.log("\t" + pKey.label + "\t" + pKey.key);
+			});
+		}); 		
+	},
+	
+	pvGetKeyData: function(pChartData, pLabels){
+		var xKey = "";
+		var xLabels = pLabels.split(/[;]+/);
+		//Loop por todos os labels
+		xLabels.forEach(function(pLabel, pLabelIndex){
+			var xLabel = pLabel.trim();
+			//Cria lista das chaves do index, se não existir. 
+			if (typeof pChartData.listsLabelKeys[pLabelIndex] == "undefined"){
+				//Adiciona lista que conterá as chaves dos labels deste index
+				pChartData.listsLabelKeys.push([]);
+			}
+			//Procura chave para o label
+			var xKeyData = null;
+			pChartData.listsLabelKeys[pLabelIndex].forEach(function(pKeyData){
+				if (pKeyData.label == xLabel){
+					xKeyData = pKeyData;
+					return;
+				}
+			});
+			if (xKeyData == null){
+				xKeyData = {
+					key: Math.pow(2, pChartData.listsLabelKeys[pLabelIndex].length),
+					label: xLabel
+				}
+				//Adiciona chave a lista de chaves utilizando index do respectivo label
+				pChartData.listsLabelKeys[pLabelIndex].push(xKeyData);
+//				pListsLabelKeys[pLabelIndex].sort(function(a, b){
+//				    var x = a.label.toLowerCase();
+//				    var y = b.label.toLowerCase();
+//				    if (x < y) {return -1;}
+//				    if (x > y) {return 1;}
+//				    return 0;
+//				});
+			}
+			xKey += xKeyData.key;
+		});
+		return xKey;
 	},
 
 	pvInitializeChartValues: function(pChartData){
