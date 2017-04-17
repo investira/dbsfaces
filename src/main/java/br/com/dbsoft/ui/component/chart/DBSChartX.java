@@ -52,5 +52,13 @@ public class DBSChartX extends DBSUIData implements ClientBehaviorHolder{
 		handleAttribute("color", pColor);
 	}
 
+//	public String getDimentionsCaptions() {
+//		return (String) getStateHelper().eval(PropertyKeys.dimensionsCaptions, null);
+//	}
+//	
+//	public void setDimentionsCaptions(String pDimentionsCaptions) {
+//		getStateHelper().put(PropertyKeys.dimensionsCaptions, pDimentionsCaptions);
+//		handleAttribute("dimensionsCaptions", pDimentionsCaptions);
+//	}
 
 }

@@ -1075,6 +1075,21 @@ dbsfaces.math = {
 		xPoint.x = dbsfaces.math.round(pCenter.x + (pRadius * Math.sin(p2PIPercentual)), 2);
 		xPoint.y = dbsfaces.math.round(pCenter.y - (pRadius * Math.cos(p2PIPercentual)), 2);
 		return xPoint;
+	},
+	//Retorna lista com o valores binários(1,2,4,8) que compõem o valor informado
+	getBits: function(pBinaryNumber){
+		var xBitCount = 0;
+		var xTesteBit = 1;
+		var xBits = [];
+		while (pBinaryNumber > 0){
+			xTesteBit = Math.pow(2, xBitCount);
+			if (pBinaryNumber & xTesteBit){
+				xBits.push(xTesteBit);
+				pBinaryNumber -= xTesteBit;
+			}
+			xBitCount++;
+		}
+		return xBits;
 	}
 };
 

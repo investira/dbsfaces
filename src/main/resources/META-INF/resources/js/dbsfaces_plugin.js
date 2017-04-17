@@ -27,11 +27,13 @@
     },
       
     $.fn.svgAttr = function (pAttribute, pValue) {
-      	if (typeof(pValue) == "undefined"){
+		if (typeof(pValue) == "undefined"){
       		return this.get(0).getAttributeNS(null, pAttribute);
       	}else{
       		if (pValue != null){
-          		this.get(0).setAttributeNS(null, pAttribute, pValue);
+      			this.each(function(){
+      				this.setAttributeNS(null, pAttribute, pValue);
+      			});
       		}
       		return this;
       	}
@@ -39,6 +41,7 @@
   	
   	//Retorna o total de segmentos de um path
   	$.fn.svgGetPathTotalSegs = function () {
+  		if (this.length == 0){return;}
       	if (typeof(this) == "undefined"){
       		return 0;
       	}

@@ -14,7 +14,6 @@ dbsfaces.chartsX = {
 		dbsfaces.chartsX.pvInitializeLayout(xChartsData);
 		//setTimeout utilizado como artifício para resolver problema do Safari no controle da altura do -charts. Possível bug do safari quando display = flex.
 //		setTimeout(function(e){
-			pCharts.removeClass("-hide");
 //			xChartsData.dom.charts.addClass("-hide");
 //		},0);
 		//setTimeout utilizado como artifício para resolver problema do Safari no controle da altura do -charts. Possível bug do safari quando display = flex.
@@ -23,6 +22,7 @@ dbsfaces.chartsX = {
 			dbsfaces.chartsX.pvInitializeDraw(xChartsData);
 //			xChartsData.dom.charts.removeClass("-hide");
 //		},0);
+			xChartsData.dom.container.removeClass("-hide");
 	},
 
 	pvInitializeData: function(pCharts){
@@ -121,10 +121,10 @@ dbsfaces.chartsX = {
 			var xMaxCount = 0;
 			//Verifica menor e maior valor existentes em todos os gráficos para cálcular a escala
 			pChartsData.dom.childrenData.forEach(function(pChartData, pI) {
-				if (xMinChartValueData == null || pChartData.dom.minChartValueData.value.value < xMinChartValueData.value.value){
+				if (xMinChartValueData == null || pChartData.dom.minChartValueData.value < xMinChartValueData.value){
 					xMinChartValueData = pChartData.dom.minChartValueData;
 				}
-				if (xMaxChartValueData == null || pChartData.dom.maxChartValueData.value.value > xMaxChartValueData.value.value){
+				if (xMaxChartValueData == null || pChartData.dom.maxChartValueData.value > xMaxChartValueData.value){
 					xMaxChartValueData = pChartData.dom.maxChartValueData;
 				}
 				//Quantidade máxima de itens de todos os gráficos
@@ -155,7 +155,7 @@ dbsfaces.chartsX = {
 			xMaxChartValueData.dom.self.addClass("-showValue");
 			//Escale para ajustar as coordenadas dentro do espaço do gráfico
 			pChartsData.scaleX = pChartsData.width / xMaxCount;
-			pChartsData.scaleY = -pChartsData.height / (xMaxChartValueData.value.value - xMinChartValueData.value.value); //Scale vertical. obs:invertida já que a coordenada do svg desce quando o valor é maior;
+			pChartsData.scaleY = -pChartsData.height / (xMaxChartValueData.value - xMinChartValueData.value); //Scale vertical. obs:invertida já que a coordenada do svg desce quando o valor é maior;
 		}else{
 			pChartsData.height = pChartsData.dom.charts[0].getBoundingClientRect().height;
 			pChartsData.width = pChartsData.dom.charts[0].getBoundingClientRect().width;
@@ -209,10 +209,61 @@ dbsfaces.chartsX = {
 					pChartData.dom.deltaValue.svgAttr("y", xMiddleY);
 					pChartData.dom.deltaValue.svgAttr("x", xMiddleX);
 				}
+			}else if (pChartsData.type == "pie"){
+				//Desenha relacionamentos
+				dbsfaces.chartsX.pvInitializeDrawRelationships(pChartData);
 			}
 		});
 		//Configura cor
 		dbsfaces.chartsX.pvInitializeDrawSetColor(pChartsData);
+	},
+	
+	pvInitializeDrawRelationships(pChartData){
+		var xLinkArc = dbsfaces.math.round((pChartData.width / pChartData.labelsGroupCount) / 10,0);
+		if (xLinkArc < 1){
+			xLinkArc = 1;
+		}
+		
+		pChartData.relationships.forEach(function(pRelationship){
+//			console.log(pRelationship.key + "\t" + pRelationship.total);
+			var xKeys = dbsfaces.math.getBits(pRelationship.key);
+			for (xA = 0; xA < xKeys.length - 1; xA++){
+				var xChartValueDataA = dbsfaces.chartsX.pvGetChartValueDataFromKey(pChartData, xKeys[xA]);
+				for (xB = xA + 1; xB < xKeys.length; xB++){
+					var xChartValueDataB = dbsfaces.chartsX.pvGetChartValueDataFromKey(pChartData, xKeys[xB]);
+//					console.log(xChartValueDataA.x + "\t" + xChartValueDataA.y + "\t" + xChartValueDataB.x + "\t" + xChartValueDataB.y + "\t" + xChartValueDataB.perc + "\t" + xChartValueDataB.perc);
+					//Ponto
+					var xPath = "M" + xChartValueDataA.x + "," + xChartValueDataA.y;
+					xPath += "S" + (pChartData.width / 2) + "," + (pChartData.height / 2) + " " + xChartValueDataB.x + "," + xChartValueDataB.y;
+					dbsfaces.svg.path(pChartData.dom.links, xPath, "-link", null, {a:xKeys[xA], b:xKeys[xB], "stroke-width":xLinkArc * (xChartValueDataB.perc / 100)});
+					
+
+//					pRelationship.dom.paths.push({a:xKeys[xA], b:xKeys[xB]});
+//					console.log(pRelationship.dom.chartVal[pRelationship.dom.paths.length-1].a + "\t" + pRelationship.dom.paths[pRelationship.dom.paths.length-1].b);
+				}
+			}
+//			var xKey = pRelationship.key;
+//			var xKeys = dbsfaces.math.getBits(pRelationship.key);
+//			for (xA = 0; xA < xKeys.length - 1; xA++){
+//				for (xB = xA + 1; xB < xKeys.length; xB++){
+//					pRelationship.dom.paths.push({a:xKeys[xA], b:xKeys[xB]});
+//					console.log(pRelationship.dom.paths[pRelationship.dom.paths.length-1].a + "\t" + pRelationship.dom.paths[pRelationship.dom.paths.length-1].b);
+//				}
+//			}
+		});
+	},
+	
+	pvGetChartValueDataFromKey: function(pChartData, pKey){
+		for (var xI = 0; xI < pChartData.dom.childrenData.length; xI++){
+			if (pChartData.dom.childrenData[xI].key == pKey){
+				return pChartData.dom.childrenData[xI];
+			}
+		}
+//		return pChartData.dom.childrenData.forEach(function(pChartValueData){
+//			if (pChartValueData.key == pKey){
+//				return pChartValueData;
+//			}
+//		});
 	},
 	
 	pvInitializeDrawSetColor: function(pChartsData){
@@ -231,7 +282,9 @@ dbsfaces.chartsX = {
 			}
 			//Define colores dos chartvalue
 			pChartData.dom.childrenData.forEach(function(pChartValueData, pI){
-				pChartValueData.dom.infoPerc.css("fill", pChartData.colorInverted);
+				if (pChartsData.type == "pie"){
+					pChartValueData.dom.infoPerc.css("fill", pChartData.colorInverted);
+				}
 				dbsfaces.chartsX.pvSetColor(pChartsData, pChartValueData, false);
 			});
 		});
@@ -266,9 +319,9 @@ dbsfaces.chartsX = {
 	},
 
 	pvInitializeDrawChartPie: function(pChartsData, pChartData, pChartValueData){
-		var xChartArcSpace = 0.0002;
-		var xChartArcFator = dbsfaces.math.PIDiameterFactor / pChartsData.dom.childrenData.length;
-		var xChartArcWidth = 10;
+		var xChartArcSpace = 0.0005;
+		var xChartArcFator = dbsfaces.math.PIDiameterFactor / pChartData.labelsGroupCount;
+		var xChartArcWidth = parseInt(pChartValueData.dom.point.css("stroke-width"));
 		var xCentro = {
 			x: pChartData.width / 2,
 			y: pChartData.height / 2
@@ -276,7 +329,7 @@ dbsfaces.chartsX = {
 		
 		var xDiametro = Math.max(pChartData.width, pChartData.height) - 90;
 		//Calcula o percentual que valore representa sobre o total
-		pChartValueData.perc = (Math.abs(pChartValueData.value.value) / pChartData.totalValue) * 100;
+		pChartValueData.perc = (Math.abs(pChartValueData.value) / pChartData.totalValue) * 100;
 
 		var xArcPercValue = pChartValueData.perc;
 		var xArcPercValuePrevious = 0;
@@ -284,22 +337,27 @@ dbsfaces.chartsX = {
 			pChartValueData.perc = 100;
 			xArcPercValue = 99.99; //Artifício para evitar uma volta completa anulando a exibição de conetúdo
 		}
-		if (pChartsData.dom.childrenData.length > 1){
+		//Se houver mais de um grupo de label, diminuir espaço entre os gráficos do espáco total do arco
+		if (pChartData.labelsGroupCount > 1){
 			xChartArcFator -= xChartArcSpace;
 		}
+		//Calcula posição do arco anterior desde que seja do mesmo labelGroup
+//		console.log(pChartValueData.index + "\t" + pChartValueData.labelGroupIndex + "\t" + pChartValueData.value + "\t" + pChartValueData.totalValue  + "\t" + pChartData.totalValue);
 		if (pChartValueData.index > 0){
-			xArcPercValuePrevious = (pChartData.dom.childrenData[pChartValueData.index - 1].totalValue  / pChartData.totalValue) * 100;
+			if (pChartValueData.labelGroupIndex == pChartData.dom.childrenData[pChartValueData.index - 1].labelGroupIndex){
+				xArcPercValuePrevious = (pChartData.dom.childrenData[pChartValueData.index - 1].totalValue  / pChartData.totalValue) * 100;
+			}
 		}
 		//Angulo inicial e final do arco
 		var xStartAngle = dbsfaces.math.round(xArcPercValuePrevious * xChartArcFator, 4); //Posição inicial básica
-		xStartAngle += xChartArcFator * pChartData.index * 100; //Posição com o shift em relação ao index do chart
-		xStartAngle += xChartArcSpace * (pChartData.index + 1) * 100; //Espaço entre os chart
+		xStartAngle += xChartArcFator * pChartValueData.labelGroupIndex * 100; //Posição com o shift em relação ao index do chart
+		xStartAngle += xChartArcSpace * (pChartValueData.labelGroupIndex + 1) * 100; //Espaço entre os chart
 		xStartAngle -= (xChartArcSpace / 2) * 100; //Centralização do espáco entre os chart
 		var xEndAngle = dbsfaces.math.round(xStartAngle + (xArcPercValue * xChartArcFator), 4);
 
 		//Ángulo do ponto no centro do arco para servir de referencia para o label
 		var xPointAngle = xStartAngle + ((xEndAngle - xStartAngle) / 2);
-		//Graus do ponto no centro do arco para servir de referencia para o label
+		//Graus de rotação do label
 		var xGraus = dbsfaces.math.round((180 * (xPointAngle/Math.PI)) - 90,2);
 //		console.log(xPointAngle xChartArcFator  + "\t" + pChartData.index  + "\t" +  xStartAngle + "\t" + xEndAngle);
 		//Metade da largura, pois o stroke terá a largura integral.
@@ -309,7 +367,14 @@ dbsfaces.chartsX = {
 		var xPneuRaioCentro = xPneuRaioExterno - (xChartArcWidth / 2);
 
 		//Ponto no centro e na tangente do arco para servir de referencia para o label
-		var xPointAnchor = dbsfaces.math.circlePoint(xCentro, xPneuRaioExterno + (xChartArcWidth / 2), xPointAngle);
+		var xPointAnchor = dbsfaces.math.circlePoint(xCentro, xPneuRaioExterno, xPointAngle);
+
+		
+		//Ponto no centro e na tangente do arco para servir de referencia para o label
+		var xPointLink = dbsfaces.math.circlePoint(xCentro, xPneuRaioExterno - xChartArcWidth, xPointAngle);
+		pChartValueData.x = xPointLink.x;
+		pChartValueData.y = xPointLink.y;
+		
 
 		//Calcula as coordenadas do arco 
 		var x1 = dbsfaces.math.circlePoint(xCentro, xPneuRaioCentro, xStartAngle);
@@ -323,7 +388,8 @@ dbsfaces.chartsX = {
 		var xPath = "";
 		xPath += "M" + dbsfaces.math.round(x1.x,2) + "," + dbsfaces.math.round(x1.y, 2); //Ponto inicial do arco 
 		xPath += "A" + xPneuRaioCentro + "," + xPneuRaioCentro + " 0 " + xBig + " 1 " + dbsfaces.math.round(x2.x, 2) + "," + dbsfaces.math.round(x2.y,2); //Arco externo até o ponto final 
-		pChartValueData.dom.point.attr("d", xPath); 
+		pChartValueData.dom.point.attr("d", xPath);
+
 
 		//Configura Infos
 		var xTransformInfo = "translate(" + xPointAnchor.x + " " + xPointAnchor.y + ") rotate(" + xGraus + ")";
@@ -364,7 +430,7 @@ dbsfaces.chartsX = {
 		var xX = pChartsData.infoWidth;
 		var xY = pChartsData.infoHeight;
 		xX += pChartValueData.index * pChartsData.scaleX;
-		xY += (pChartValueData.value.value - pChartsData.dom.maxChartValueData.value.value) * pChartsData.scaleY; //obs:invertida já que a coordenada do svg desce quando o valor é maior
+		xY += (pChartValueData.value - pChartsData.dom.maxChartValueData.value) * pChartsData.scaleY; //obs:invertida já que a coordenada do svg desce quando o valor é maior
 		
 		xY = dbsfaces.math.round(xY, 0);
 		xX = dbsfaces.math.round(xX, 0);

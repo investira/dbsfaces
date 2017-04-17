@@ -32,8 +32,8 @@
 /*     -moz-align-content: strech; */
 /*     align-content: flex-start; */
 }
-.dbs_chartsX.-hide > .-container{
-	opacity: 0;
+.dbs_chartsX > .-container.-hide{
+/* 	opacity: 0; */
 /* 	visibility: hidden; */
 }
 .dbs_chartsX > .-container > .-caption,
