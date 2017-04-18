@@ -1077,20 +1077,26 @@ dbsfaces.math = {
 		return xPoint;
 	},
 	//Retorna lista com o valores binários(1,2,4,8) que compõem o valor informado
+	//Bitwise operators treat their operands as a sequence of 32 bits (zeros and ones)
 	getBits: function(pBinaryNumber){
 		var xBitCount = 0;
-		var xTesteBit = 1;
 		var xBits = [];
-		while (pBinaryNumber > 0){
-			xTesteBit = Math.pow(2, xBitCount);
-			if (pBinaryNumber & xTesteBit){
-				xBits.push(xTesteBit);
-				pBinaryNumber -= xTesteBit;
+		var xTestNumber = pBinaryNumber;
+		var xBinaryNumber = pBinaryNumber;
+		while (xBinaryNumber > 0){
+			//Testa sempre o primeiro bit(já shiftado). 
+			if (xTestNumber & 1){
+				var xBit = Math.pow(2, xBitCount);
+				xBinaryNumber -= xBit;
+				xBits.push(xBit);
 			}
-			xBitCount++;
+			xBitCount++; 
+			//Shifta. Exclui os bits já testado do vaor original
+			xTestNumber = pBinaryNumber >> xBitCount;
 		}
 		return xBits;
 	}
+
 };
 
 dbsfaces.number = {
@@ -1187,6 +1193,15 @@ dbsfaces.format = {
 		}
 		return ",";
 	}
+	
+//	numberToString: function(pNumber){
+//		var xNumber = new BigDecimal(pNumber);
+//		var xNumberInt = parseInt(pNumber);
+//		var xDecimalPlaces = (xNumber - xNumberInt).toString().length;
+//		console.log(xDecimalPlaces);
+//		xNumberInt = pNumber * Math.pow(10, xDecimalPlaces);
+//		
+//	}
 
 };
 

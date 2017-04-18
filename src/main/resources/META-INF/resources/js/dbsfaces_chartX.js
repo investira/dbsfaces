@@ -133,7 +133,7 @@ dbsfaces.chartX = {
 				//Salva quantidade máxima de grupos de labels existentes
 				pChartData.labelsGroupCount = Math.max(pChartData.labelsGroupCount, xLabels.length);
 
-				var xRelationalKey = 0; //Chave binários com somatório de todos as chaves dos labels acriadas abaixo
+				//Lista de chartvalue que estão vinculados ao valor original
 				var xRelationalChartValueData = [];
 				//Cria um chartValuedata para cada labelgroup e cada label.
 				//Valores serão agrupados por labetlgorup e label
@@ -148,13 +148,7 @@ dbsfaces.chartX = {
 							break;
 						}
 					}
-//					pChartData.dom.childrenData.forEach(function(pChartValueData){
-//						if (pChartValueData.labelGroupIndex == pLabelGroupIndex
-//						 && pChartValueData.label == xLabel){
-//							xChartValueData = pChartValueData;
-//							return;
-//						}
-//					});
+
 					//Cria componente chartValueData
 					if (xChartValueData == null){
 						var xChartValueData = dbsfaces.chartX.pvInitializeChartValuesCreateData(pChartData, pLabel, pLabelGroupIndex);
@@ -171,67 +165,40 @@ dbsfaces.chartX = {
 					if (xMaxChartValueData == null || xChartValueData.value > xMaxChartValueData.value){
 						xMaxChartValueData = xChartValueData;
 					}
-					xRelationalKey += xChartValueData.key;
+					//Relação dos chartvaluedata que compoem este valor
 					xRelationalChartValueData.push(xChartValueData);
 				});
-				xOriginalValue.key = xRelationalKey;
-				//Cria resumo dos relacionamentos
-				var xKeys = dbsfaces.math.getBits(xRelationalKey);
-				for (xA = 0; xA < xKeys.length - 1; xA++){
-					for (xB = xA + 1; xB < xKeys.length; xB++){
-						var xRelationalKey = xKeys[xA] + xKeys[xB];
-						var xRelationship = null;
-						for (var xN = 0; xN < pChartData.relationships.length; xN++){
-							if (pChartData.relationships[xN].key == xRelationalKey){
-								xRelationship = pChartData.relationships[xN];
-								break;
-							}
-						}
-						if (xRelationship == null){
-							xRelationship = {
-											key: xRelationalKey, 
-											total:0 
-											};
-							pChartData.relationships.push(xRelationship);
-						}
-						xRelationship.total += xOriginalValue.value;
+				//Cria string com representação binária dos index dos chartvalues que fazem parte deste originalvalue
+				//Cada byte representa um index, iniciando da direita para esquerda. Sendo assim, o byte mais a direita é o index 0.
+				//O index de cada chartvalue representa a posição dentro da representação binário: ex: 0101 (os indexes 2 e 0 estão ligados)
+				xOriginalValue.key = ""
+				xRelationalChartValueData.forEach(function(pChartValueData){
+					//Ajusta tamanho da chave em caracterespara conter
+					var xLengthDif = pChartValueData.key - xOriginalValue.key.length + 1; 
+					if (xLengthDif > 0){
+						xOriginalValue.key = "0".repeat(xLengthDif) + xOriginalValue.key;
+					}
+					var xStart = xOriginalValue.key.length - pChartValueData.key - 1;
+					var xEnd = xStart + 1;
+					xOriginalValue.key = xOriginalValue.key.substr(0, xStart) + "1" + xOriginalValue.key.substring(xEnd); 
+				});
+				//Cria totalizador dos relacionamentos
+				var xRelationship = null;
+				for (var xN = 0; xN < pChartData.relationships.length; xN++){
+					if (pChartData.relationships[xN].key == xOriginalValue.key){
+						xRelationship = pChartData.relationships[xN];
+						break;
 					}
 				}
-				//Cria resumo dos relacionamentos
-//				for (var xN = 0; xN < pChartData.relationships.length; xN++){
-//					if (pChartData.relationships[xN].key == xRelationalKey){
-//						xRelationship = pChartData.relationships[xN];
-//						break;
-//					}
-//				}
-//				if (xRelationship == null){
-//					xRelationship = {
-//									key: xRelationalKey, 
-//									total:0, 
-//									};
-//					pChartData.relationships.push(xRelationship);
-//				}
-//				xRelationship.total += xOriginalValue.value;
+				if (xRelationship == null){
+					xRelationship = {
+									key: xOriginalValue.key, 
+									total:0 
+									};
+					pChartData.relationships.push(xRelationship);
+				}
+				xRelationship.total += xOriginalValue.value;
 			}
-//			pChartData.relationships.forEach(function(pRelationship){
-//				console.log(pRelationship.key + "\t" + pRelationship.total);
-//				var xKeys = dbsfaces.math.getBits(pRelationship.key);
-//				for (xA = 0; xA < xKeys.length - 1; xA++){
-//					for (xB = xA + 1; xB < xKeys.length; xB++){
-//						
-//						pRelationship.dom.paths.push({a:xKeys[xA], b:xKeys[xB]});
-//						console.log(pRelationship.dom.paths[pRelationship.dom.paths.length-1].a + "\t" + pRelationship.dom.paths[pRelationship.dom.paths.length-1].b);
-//					}
-//				}
-//				var xKey = pRelationship.key;
-//				var xKeys = dbsfaces.math.getBits(pRelationship.key);
-//				for (xA = 0; xA < xKeys.length - 1; xA++){
-//					for (xB = xA + 1; xB < xKeys.length; xB++){
-//						pRelationship.dom.paths.push({a:xKeys[xA], b:xKeys[xB]});
-//						console.log(pRelationship.dom.paths[pRelationship.dom.paths.length-1].a + "\t" + pRelationship.dom.paths[pRelationship.dom.paths.length-1].b);
-//					}
-//				}
-//			});
 			
 			//Marca o valor mínimo e máximo
 			pChartData.dom.minChartValueData = xMinChartValueData;
@@ -289,8 +256,9 @@ dbsfaces.chartX = {
 				});
 			}
 		}
-		
 	},
+	
+	
 	
 	pvInitializeChartValuesCreateData: function(pChartData, pLabel, pLabelGroupIndex){
 		var xChartValueData = {
@@ -310,8 +278,8 @@ dbsfaces.chartX = {
 				infoPercDec : null, //elemento que contém o decimal do valor percentual no chartpie
 				infoPercBox : null //elemento que contém o box do perc
 			},
-			key : Math.pow(2, pChartData.dom.childrenData.length), //Chave sequencial binária
-			index : pChartData.dom.childrenData.length, //pChartData.dom.childrenData.length, //index do chartValue
+			key : pChartData.dom.childrenData.length, //Chave sequencial binária
+			index : null, //Index - //Chave sequencial será atribuita após o sort 
 			value : 0, //somatótio dos valores que possuem o mesmo label
 			label : pLabel.trim(), //Label já desmenbrado do group label
 			labelGroupIndex: pLabelGroupIndex, //Index em relação ao label quando houver mais de uma
@@ -715,119 +683,7 @@ dbsfaces.chartX = {
 			xValue = (xValue - 1) * 100;
 		}
 		return dbsfaces.format.number(xValue, 2);
-	},
-
-	pvInitializeChartValues2: function(pChartData){
-		var xValues = pChartData.originalValues;
-		var xMaxChartValueData = null;
-		var xMinChartValueData = null;
-		var xMed = 0
-//		var xTotalAbs = 0;
-		pChartData.dom.childrenData = [];
-		//Varifica valores máximos e mínimos e cria elemento do valor
-		for (var xI = 0; xI < xValues.length; xI++){
-			//Cria elemento chartvalue
-			var xChartValueData = dbsfaces.chartX.pvInitializeChartValuesCreate(pChartData, xValues[xI], xI);
-			if (xMinChartValueData == null || xValues[xI].value < xMinChartValueData.value.value){
-				xMinChartValueData = xChartValueData;
-			}
-			if (xMaxChartValueData == null || xValues[xI].value > xMaxChartValueData.value.value){
-				xMaxChartValueData = xChartValueData;
-			}
-			//Força a exibição do primeiro e último item
-			if (xI == 0 || xI == xValues.length - 1){
-				xChartValueData.dom.self.addClass("-showLabel");
-			}
-			//Somatório para ser utilizado posteriormente no cálculo do percentual que cada valor representa
-			if (pChartData.type == "pie"){
-				pChartData.totalValue += Math.abs(xValues[xI].value);
-			}else{
-				pChartData.totalValue += xValues[xI].value;
-			}
-			xChartValueData.totalValue = pChartData.totalValue;
-			//Adiciona elemento chartvalue na lista de filhos do chart. Artifício para manter a ordem dos elementos independentemente da ordem dentro do com pai.
-			pChartData.dom.childrenData.push(xChartValueData);  
-		}
-		//Marca o valor mínimo e máximo
-		xMinChartValueData.dom.self.addClass("-min");
-		xMaxChartValueData.dom.self.addClass("-max");
-		pChartData.dom.minChartValueData = xMinChartValueData;
-		pChartData.dom.maxChartValueData = xMaxChartValueData;
-		
-		//Calcula valor médio e salva
-		pChartData.medValue = pChartData.totalValue / xValues.length;
-	},
-	
-	pvInitializeChartValues3: function(pChartData){
-		var xValues = pChartData.originalValues;
-		var xMaxChartValueData = null;
-		var xMinChartValueData = null;
-		var xMed = 0
-//		var xTotalAbs = 0;
-		pChartData.dom.childrenData = [];
-		//Varifica valores máximos e mínimos e cria elemento do valor
-		for (var xI = 0; xI < xValues.length; xI++){
-			//Cria elemento chartvalue
-			var xChartValueData = dbsfaces.chartX.pvInitializeChartValuesCreate(pChartData, xValues[xI], xI);
-			if (xMinChartValueData == null || xValues[xI].value < xMinChartValueData.value.value){
-				xMinChartValueData = xChartValueData;
-			}
-			if (xMaxChartValueData == null || xValues[xI].value > xMaxChartValueData.value.value){
-				xMaxChartValueData = xChartValueData;
-			}
-			//Força a exibição do primeiro e último item
-			if (xI == 0 || xI == xValues.length - 1){
-				xChartValueData.dom.self.addClass("-showLabel");
-			}
-			//Somatório para ser utilizado posteriormente no cálculo do percentual que cada valor representa
-			if (pChartData.type == "pie"){
-				pChartData.totalValue += Math.abs(xValues[xI].value);
-			}else{
-				pChartData.totalValue += xValues[xI].value;
-			}
-			xChartValueData.totalValue = pChartData.totalValue;
-			//Adiciona elemento chartvalue na lista de filhos do chart. Artifício para manter a ordem dos elementos independentemente da ordem dentro do com pai.
-			pChartData.dom.childrenData.push(xChartValueData);  
-		}
-		//Marca o valor mínimo e máximo
-		xMinChartValueData.dom.self.addClass("-min");
-		xMaxChartValueData.dom.self.addClass("-max");
-		pChartData.dom.minChartValueData = xMinChartValueData;
-		pChartData.dom.maxChartValueData = xMaxChartValueData;
-		
-		//Calcula valor médio e salva
-		pChartData.medValue = pChartData.totalValue / xValues.length;
 	}
 
-
-//	pvInitializeChartValuesCreateData: function(pChartData, pValue, pI){
-//		var xChartValueData = {
-//			dom : {
-//				self : null, // o próprio chartvalue
-//				parent : pChartData.dom.self,  //o pai(chart)
-//				point : null, //elemento point
-//				info : null, //elemento que contém infos
-//				infoValues : null, //elemento que contém os elementos dos textos do info(somente usado no chartpie)
-//				infoLabel : null, //elemento que contém o label
-//				infoLabelBox : null, //elemento que contém o box do Label
-//				infoValue : null, //elemento que contém o value
-//				infoValueBox : null, //elemento que contém o box do Value
-//				infoPath : null, //elemento que contém o caminho do label e value até o point
-//				infoPerc : null, //elemento que contém o valor percentual no chartpie
-//				infoPercInt : null, //elemento que contém o inteiro do valor percentual no chartpie
-//				infoPercDec : null, //elemento que contém o decimal do valor percentual no chartpie
-//				infoPercBox : null //elemento que contém o box do perc
-//			},
-//			value : pValue, //o objecto value
-//			index : pI, //index do chartValue
-//			x : null, //posição X no gráfico (dentro da escala)
-//			y : null, //posição Y no gráfico (dentro da escala)
-//			color: null, //Cor do valor,
-//			perc: null, //Percentual que valor representa sobre o total
-//			totalValue: 0, //Total até este chartvalue
-//			globalSequence: 0 //Número sequencial do item do chartValue, considerando todos os gráficos 
-//		}
-//		return xChartValueData;
-//	},
 };
 

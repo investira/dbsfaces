@@ -220,50 +220,44 @@ dbsfaces.chartsX = {
 	
 	pvInitializeDrawRelationships(pChartData){
 		var xLinkArc = dbsfaces.math.round((pChartData.width / pChartData.labelsGroupCount) / 10,0);
-		if (xLinkArc < 1){
-			xLinkArc = 1;
-		}
-		
 		pChartData.relationships.forEach(function(pRelationship){
-//			console.log(pRelationship.key + "\t" + pRelationship.total);
-			var xKeys = dbsfaces.math.getBits(pRelationship.key);
+			var xKeys = dbsfaces.chartsX.getKeys(pRelationship.key);
 			for (xA = 0; xA < xKeys.length - 1; xA++){
 				var xChartValueDataA = dbsfaces.chartsX.pvGetChartValueDataFromKey(pChartData, xKeys[xA]);
 				for (xB = xA + 1; xB < xKeys.length; xB++){
 					var xChartValueDataB = dbsfaces.chartsX.pvGetChartValueDataFromKey(pChartData, xKeys[xB]);
-//					console.log(xChartValueDataA.x + "\t" + xChartValueDataA.y + "\t" + xChartValueDataB.x + "\t" + xChartValueDataB.y + "\t" + xChartValueDataB.perc + "\t" + xChartValueDataB.perc);
 					//Ponto
+					var xStrokeWidth = dbsfaces.math.round(xLinkArc * (pRelationship.total / pChartData.totalValue),2);
+					if (xStrokeWidth < 0.5){
+						xStrokeWidth = 0.5;
+					}
 					var xPath = "M" + xChartValueDataA.x + "," + xChartValueDataA.y;
 					xPath += "S" + (pChartData.width / 2) + "," + (pChartData.height / 2) + " " + xChartValueDataB.x + "," + xChartValueDataB.y;
-					dbsfaces.svg.path(pChartData.dom.links, xPath, "-link", null, {a:xKeys[xA], b:xKeys[xB], "stroke-width":xLinkArc * (xChartValueDataB.perc / 100)});
-					
-
-//					pRelationship.dom.paths.push({a:xKeys[xA], b:xKeys[xB]});
-//					console.log(pRelationship.dom.chartVal[pRelationship.dom.paths.length-1].a + "\t" + pRelationship.dom.paths[pRelationship.dom.paths.length-1].b);
+					dbsfaces.svg.path(pChartData.dom.links, xPath, "-link", null, {a:xKeys[xA], b:xKeys[xB], "stroke-width":xStrokeWidth});
 				}
 			}
-//			var xKey = pRelationship.key;
-//			var xKeys = dbsfaces.math.getBits(pRelationship.key);
-//			for (xA = 0; xA < xKeys.length - 1; xA++){
-//				for (xB = xA + 1; xB < xKeys.length; xB++){
-//					pRelationship.dom.paths.push({a:xKeys[xA], b:xKeys[xB]});
-//					console.log(pRelationship.dom.paths[pRelationship.dom.paths.length-1].a + "\t" + pRelationship.dom.paths[pRelationship.dom.paths.length-1].b);
-//				}
-//			}
 		});
 	},
 	
+	//Retorna lista com o valores binários(1,2,4,8) que compõem o valor informado
+	//Bitwise operators treat their operands as a sequence of 32 bits (zeros and ones)
+	getKeys: function(pKey){
+		var xKeys = [];
+		for (var xKey = 0; xKey < pKey.length; xKey++){
+			if (pKey.substr(pKey.length - xKey - 1, 1) == "1"){
+				xKeys.push(xKey);
+			}
+		}
+		return xKeys;
+	},
+
+	//Retorna chartvaluedata a partir da chave 
 	pvGetChartValueDataFromKey: function(pChartData, pKey){
 		for (var xI = 0; xI < pChartData.dom.childrenData.length; xI++){
 			if (pChartData.dom.childrenData[xI].key == pKey){
 				return pChartData.dom.childrenData[xI];
 			}
 		}
-//		return pChartData.dom.childrenData.forEach(function(pChartValueData){
-//			if (pChartValueData.key == pKey){
-//				return pChartValueData;
-//			}
-//		});
 	},
 	
 	pvInitializeDrawSetColor: function(pChartsData){
