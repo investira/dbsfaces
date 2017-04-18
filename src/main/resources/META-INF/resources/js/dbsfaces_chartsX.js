@@ -222,9 +222,9 @@ dbsfaces.chartsX = {
 		var xLinkArc = dbsfaces.math.round((pChartData.width / pChartData.labelsGroupCount) / 10,0);
 		pChartData.relationships.forEach(function(pRelationship){
 			var xKeys = dbsfaces.chartsX.getKeys(pRelationship.key);
-			for (xA = 0; xA < xKeys.length - 1; xA++){
+			for (var xA = 0; xA < xKeys.length - 1; xA++){
 				var xChartValueDataA = dbsfaces.chartsX.pvGetChartValueDataFromKey(pChartData, xKeys[xA]);
-				for (xB = xA + 1; xB < xKeys.length; xB++){
+				for (var xB = xA + 1; xB < xKeys.length; xB++){
 					var xChartValueDataB = dbsfaces.chartsX.pvGetChartValueDataFromKey(pChartData, xKeys[xB]);
 					//Ponto
 					var xStrokeWidth = dbsfaces.math.round(xLinkArc * (pRelationship.total / pChartData.totalValue),2);

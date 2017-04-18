@@ -133,10 +133,11 @@ dbsfaces.chartX = {
 				//Salva quantidade máxima de grupos de labels existentes
 				pChartData.labelsGroupCount = Math.max(pChartData.labelsGroupCount, xLabels.length);
 
+				xOriginalValue.key = ""
 				//Lista de chartvalue que estão vinculados ao valor original
 				var xRelationalChartValueData = [];
 				//Cria um chartValuedata para cada labelgroup e cada label.
-				//Valores serão agrupados por labetlgorup e label
+				//Valores serão agrupados por labelgroup e label
 				xLabels.forEach(function(pLabel, pLabelGroupIndex){
 					var xChartValueData = null;
 					var xLabel = pLabel.trim();
@@ -171,33 +172,47 @@ dbsfaces.chartX = {
 				//Cria string com representação binária dos index dos chartvalues que fazem parte deste originalvalue
 				//Cada byte representa um index, iniciando da direita para esquerda. Sendo assim, o byte mais a direita é o index 0.
 				//O index de cada chartvalue representa a posição dentro da representação binário: ex: 0101 (os indexes 2 e 0 estão ligados)
-				xOriginalValue.key = ""
-				xRelationalChartValueData.forEach(function(pChartValueData){
-					//Ajusta tamanho da chave em caracterespara conter
-					var xLengthDif = pChartValueData.key - xOriginalValue.key.length + 1; 
-					if (xLengthDif > 0){
-						xOriginalValue.key = "0".repeat(xLengthDif) + xOriginalValue.key;
+
+				//Cria lista com os pares de relacionamento
+				for (var xA = 0; xA < xRelationalChartValueData.length - 1; xA++){
+					var xKeyA = dbsfaces.chartX.pvInitializeChartValuesAddKeyToBinaryKey("", xRelationalChartValueData[xA].key);
+					for (var xB = xA + 1; xB < xRelationalChartValueData.length; xB++){
+						var xKey = dbsfaces.chartX.pvInitializeChartValuesAddKeyToBinaryKey(xKeyA, xRelationalChartValueData[xB].key);
+						var xRelationship = null;
+						for (var xN = 0; xN < pChartData.relationships.length; xN++){
+							if (pChartData.relationships[xN].key == xKey){
+								xRelationship = pChartData.relationships[xN];
+								break;
+							}
+						}
+						if (xRelationship == null){
+							xRelationship = {
+											key: xKey, 
+											total:0 
+											};
+							pChartData.relationships.push(xRelationship);
+						}
+						xRelationship.total += xOriginalValue.value;
 					}
-					var xStart = xOriginalValue.key.length - pChartValueData.key - 1;
-					var xEnd = xStart + 1;
-					xOriginalValue.key = xOriginalValue.key.substr(0, xStart) + "1" + xOriginalValue.key.substring(xEnd); 
-				});
+				}
+
+
 				//Cria totalizador dos relacionamentos
-				var xRelationship = null;
-				for (var xN = 0; xN < pChartData.relationships.length; xN++){
-					if (pChartData.relationships[xN].key == xOriginalValue.key){
-						xRelationship = pChartData.relationships[xN];
-						break;
-					}
-				}
-				if (xRelationship == null){
-					xRelationship = {
-									key: xOriginalValue.key, 
-									total:0 
-									};
-					pChartData.relationships.push(xRelationship);
-				}
-				xRelationship.total += xOriginalValue.value;
+//				var xRelationship = null;
+//				for (var xN = 0; xN < pChartData.relationships.length; xN++){
+//					if (pChartData.relationships[xN].key == xOriginalValue.key){
+//						xRelationship = pChartData.relationships[xN];
+//						break;
+//					}
+//				}
+//				if (xRelationship == null){
+//					xRelationship = {
+//									key: xOriginalValue.key, 
+//									total:0 
+//									};
+//					pChartData.relationships.push(xRelationship);
+//				}
+//				xRelationship.total += xOriginalValue.value;
 			}
 			
 			//Marca o valor mínimo e máximo
@@ -257,8 +272,39 @@ dbsfaces.chartX = {
 			}
 		}
 	},
-	
-	
+
+	pvInitializeChartValuesAddKeyToBinaryKey: function(pBinaryKey, pIndex){
+		var xLengthDif = pIndex - pBinaryKey.length + 1; 
+		if (xLengthDif > 0){
+			pBinaryKey = "0".repeat(xLengthDif) + pBinaryKey;
+		}
+		var xStart = pBinaryKey.length - pIndex - 1;
+		var xEnd = xStart + 1;
+		pBinaryKey = pBinaryKey.substr(0, xStart) + "1" + pBinaryKey.substring(xEnd); 
+		return pBinaryKey;
+	},
+//
+//	pvInitializeChartValuesAddKeyToBinaryKey2: function(pKeyA, pKeyB){
+//		var xKey1;
+//		var xKey2;
+//		if (pKeyA.length > pKeyB.length){
+//			xKey1 = pKeyA;
+//			xKey2 = pKeyB;
+//		}else{
+//			xKey1 = pKeyB;
+//			xKey2 = pKeyA;
+//		}
+//		var xKey = "";
+//		for (var xA = xKey1.length - 1; xA > -1; xA--){
+//			if (xKey1.charAt(xA) == "1"
+//			 || xKey2.charAt(xA) == "1"){
+//				xKey = "1"+ xKey;
+//			}else{
+//				xKey = "0"+ xKey
+//			}
+//		}
+//		return xKey;
+//	},
 	
 	pvInitializeChartValuesCreateData: function(pChartData, pLabel, pLabelGroupIndex){
 		var xChartValueData = {
