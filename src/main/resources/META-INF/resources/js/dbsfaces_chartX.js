@@ -195,24 +195,6 @@ dbsfaces.chartX = {
 						xRelationship.total += xOriginalValue.value;
 					}
 				}
-
-
-				//Cria totalizador dos relacionamentos
-//				var xRelationship = null;
-//				for (var xN = 0; xN < pChartData.relationships.length; xN++){
-//					if (pChartData.relationships[xN].key == xOriginalValue.key){
-//						xRelationship = pChartData.relationships[xN];
-//						break;
-//					}
-//				}
-//				if (xRelationship == null){
-//					xRelationship = {
-//									key: xOriginalValue.key, 
-//									total:0 
-//									};
-//					pChartData.relationships.push(xRelationship);
-//				}
-//				xRelationship.total += xOriginalValue.value;
 			}
 			
 			//Marca o valor mínimo e máximo
@@ -226,7 +208,7 @@ dbsfaces.chartX = {
 				pChartData.dom.childrenData.sort(function(a, b){
 					var x = a.labelGroupIndex - b.labelGroupIndex;
 					if (x == 0){
-						x = a.value - b.value;
+						x = b.value - a.value;
 					}
 					return x;
 		//		    var x = a.label.toLowerCase();
