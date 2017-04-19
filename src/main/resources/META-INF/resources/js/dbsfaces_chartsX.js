@@ -390,8 +390,8 @@ dbsfaces.chartsX = {
 			centerAngle: null, //Ángulo do ponto no centro do arco
 			degrees: 0, //Graus de rotação. 0 é o 12hrs
 			externalRadius: null, //Raio externo
-			internalRadius: null, //Raio interno
 			centerRadius: null, //Raio no centro vertical do arco
+			internalRadius: null, //Raio interno
 			externalPoint: null, //Ponto no centro externo
 			internalPoint: null //Ponto no centro interno
 		}
@@ -407,12 +407,12 @@ dbsfaces.chartsX = {
 		xInfo.startAngle = dbsfaces.math.round(xArcPercValuePrevious * pChartData.arcFator, 4); //Posição inicial básica
 		xInfo.startAngle += pChartData.arcFator * pRelationalGroupIndex * 100; //Posição com o shift em relação ao index do chart
 		xInfo.startAngle += pChartData.arcSpace * (pRelationalGroupIndex + 1) * 100; //Espaço entre os chart
-		xInfo.startAngle -= (pChartData.arcSpace / 2) * 100; //Centralização do espáco entre os chart
+		xInfo.startAngle -= (pChartData.arcSpace / 2) * 100; //Centralização do espaço entre os chart
 		xInfo.endAngle = dbsfaces.math.round(xInfo.startAngle + (xArcPercValue * pChartData.arcFator), 4);
+		xInfo.centerAngle = xInfo.startAngle + ((xInfo.endAngle - xInfo.startAngle) / 2), //Ángulo do ponto no centro do arco
 		xInfo.externalRadius = xDiametro / 3;
 		xInfo.centerRadius = xInfo.externalRadius - (pChartData.arcWidth / 2);
-		xInfo.centerAngle = xInfo.startAngle + ((xInfo.endAngle - xInfo.startAngle) / 2), //Ángulo do ponto no centro do arco
-		xInfo.internalRadius = xInfo.externalRadius - pChartData.arcWidth,
+		xInfo.internalRadius = xInfo.externalRadius - pChartData.arcWidth;
 		xInfo.degrees = dbsfaces.math.round(180 * (xInfo.centerAngle / Math.PI), 2);
 		xInfo.externalPoint = dbsfaces.math.circlePoint(pChartData.center, xInfo.externalRadius, xInfo.centerAngle);
 		xInfo.internalPoint = dbsfaces.math.circlePoint(pChartData.center, xInfo.internalRadius, xInfo.centerAngle);
@@ -437,7 +437,6 @@ dbsfaces.chartsX = {
 		xPath += "M" + dbsfaces.math.round(x1.x,2) + "," + dbsfaces.math.round(x1.y, 2); //Ponto inicial do arco 
 		xPath += "A" + xInfo.centerRadius + "," + xInfo.centerRadius + " 0 " + xBig + " " + xDirection + " " + dbsfaces.math.round(x2.x, 2) + "," + dbsfaces.math.round(x2.y,2); //Arco externo até o ponto final 
 		pPathElement.svgAttr("d", xPath);
-		pPathElement.svgAttr("dee", xInfo.degrees);
 
 		return xInfo;
 	},
