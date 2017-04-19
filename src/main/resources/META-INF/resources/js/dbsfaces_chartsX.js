@@ -381,8 +381,8 @@ dbsfaces.chartsX = {
 		pChartValueData.dom.infoPercDec.text(xPercDec);
 	},
 
-
-	pvInitializeDrawArc: function(pChartData, pPathElement, pRelationalGroupIndex, pPercPrevious, pPerc, pInvertDirection){
+	//Desenha arco
+	pvInitializeDrawArc: function(pChartData, pPathElement, pRelationalGroupIndex, pPercPrevious, pPerc, pAlwaysUp){
 		//Retorno
 		var xInfo = {
 			startAngle: null, //Angulo inicial do arco
@@ -417,7 +417,8 @@ dbsfaces.chartsX = {
 		xInfo.externalPoint = dbsfaces.math.circlePoint(pChartData.center, xInfo.externalRadius, xInfo.centerAngle);
 		xInfo.internalPoint = dbsfaces.math.circlePoint(pChartData.center, xInfo.internalRadius, xInfo.centerAngle);
 
-		if (pInvertDirection && (xInfo.degrees > 90 && xInfo.degrees < 270)){
+		//Inverte direção do arco para evitar 'norte' do arco aponte para baixo.
+		if (pAlwaysUp && (xInfo.degrees > 90 && xInfo.degrees < 270)){
 			var xTmp = xInfo.endAngle;
 			xInfo.endAngle = xInfo.startAngle;
 			xInfo.startAngle = xTmp;
