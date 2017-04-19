@@ -34,11 +34,28 @@
 /* 	display: none; */
 /* 	content: ""; */
 }
+ 
+.dbs_chartX > .-chart > .-values{
+}
 
 .dbs_chartX > .-chart > .-delta{
     fill: currentColor;
 }
 
+.dbs_chartX.-pie > .-chart > .-relationalCaptions {
+    stroke-opacity: 0.9;
+}
+
+.dbs_chartX.-pie > .-chart > .-relationalCaptions * {
+	text-anchor: middle;
+    dominant-baseline: middle;
+	font-weight: 100;
+	stroke: none;
+}
+.dbs_chartX.-pie > .-chart > .-relationalCaptions .-path{
+	fill: none;
+	stroke: none;	
+}    
 .dbs_chartX.-pie > .-chart > .-links{
 	fill: none;
 }

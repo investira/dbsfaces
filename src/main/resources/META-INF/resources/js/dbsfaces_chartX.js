@@ -1,6 +1,6 @@
-dbs_chartX = function(pId, pValues) {
+dbs_chartX = function(pId, pValues, pRelationalCaptions) {
 	var xChart = $(pId);
-	dbsfaces.chartX.initialize(xChart, pValues);
+	dbsfaces.chartX.initialize(xChart, pValues, pRelationalCaptions);
 	
 	xChart.on("mouseleave", function(e){
 		xChart = $(this);
@@ -14,13 +14,13 @@ dbs_chartX = function(pId, pValues) {
 
 
 dbsfaces.chartX = {
-	initialize: function(pChart, pValues){
-		var xChartData = dbsfaces.chartX.pvInitializeData(pChart, pValues);
+	initialize: function(pChart, pValues, pRelationalCaptions){
+		var xChartData = dbsfaces.chartX.pvInitializeData(pChart, pValues, pRelationalCaptions);
 		dbsfaces.chartX.pvInitializeChartValues(xChartData);
 		dbsfaces.chartX.pvInitializeLayout(xChartData);
 	},
 
-	pvInitializeData: function(pChart, pValues){
+	pvInitializeData: function(pChart, pValues, pRelationalCaptions){
 		var xCharts = pChart.closest(".dbs_chartsX");
 		var xData = {
 			dom : {
@@ -30,11 +30,13 @@ dbsfaces.chartX = {
 				caption : null, //Caption do gráfico
 				captionText : null, //Texto do gráfico
 				chart : pChart.children(".-chart"), //Chart - SVG
+				values : pChart.find(".-chart > .-values"), //grupo contendo os chartvalue
 				info : pChart.children(".-info"), //Container das infos
 				minChartValueData : null, //chartValue que contém o valor máximo
 				maxChartValueData : null, //chartValue que contém o valor mínimo
 				path: null, //Desenho do caminho
 				links: null, //Links entres os chartvalues
+				relationalCaptions: null, //Títulos do grupos de relacionalmento
 				hoverChartValueData: null, //ChartValue atualmente com hover  
 				delta: null, //Container do delta
 				deltaHandle1Data: null, // DataHandle 1
@@ -54,8 +56,8 @@ dbsfaces.chartX = {
 			medValue: null, //valor médio
 			originalValues: pValues, //Valores recebidos
 //			normalizedValuesData: [], //Valores organizados considerando a relação entre eles e ordenados
-			labelsGroupCaptions: [], //Títulos dos grupos dos labels
-			labelsGroupCount: 0, //Quantidade de grupos de labels
+			relationalCaptions: pRelationalCaptions, //Texto do títulos dos grupos dos labels
+			relationalCaptionsCount: 1, //Quantidade de grupos de labels
 			relationships: [], //Relacionamentos entres os chartvalues
 			color: pChart.attr("color"), //Cor definida pelo usuário
 			colorInverted: null, //Cor configurada na pvInitializeLayoutColor do dbscharts
@@ -63,8 +65,12 @@ dbsfaces.chartX = {
 			currentColorInverted: tinycolor(xCharts.css("color")).invertLightness().setAlpha(1).toString(),
 			findPointTimeout: null,
 			showDelta: pChart.hasClass("-showDelta"),
-//			relationalCaptions: null, //Títulos dos grupos de relacionamento
-			globalSequence: 0 //Número sequencial do item do chartValue, considerando todos os gráficos 
+			globalSequence: 0, //Número sequencial do item do chartValue, considerando todos os gráficos 
+			diameter: 0, //diametro do máximo (menor valor entre a altura e largura
+			center : {x:0, y:0}, //Centro do gráfico
+			arcWidth: 0, //Largura do arco
+			arcFator: null, //Arco de cada relationalGroup(Divide diametro entres os relationalGroups)
+			arcSpace: 0.0005 //Espaço entre os arcos dos relationalgroups
 		}
 		//COnfigura como cor nula quando não tiver sido informada. Posteriormente será calculado uma cor baseada no atributo CSS color(currentColor).
 		if (typeof xData.color == "undefined"){
@@ -78,33 +84,7 @@ dbsfaces.chartX = {
 		return xData;
 	},
 	
-	pvInitializeCreateNormalizedValues: function(pChartData){
-		
-		//Cria lista com a relação(e somatório) entre todos os labels do gráfico
-		dbsfaces.chartX.pvInitializeCreateNormalizedValuesList(pChartData);
-		
-		//Ordena por ordem descrescente do somatório
-		if (pChartData.type == "pie"){
-			pChartData.normalizedValuesData.sort(function(a, b){
-				return b.labelGroupIndex - a.labelGroupIndex;
-	//		    var x = a.label.toLowerCase();
-	//		    var y = b.label.toLowerCase();
-	//		    if (x < y) {return -1;}
-	//		    if (x > y) {return 1;}
-	//		    return 0;
-			});
-		}
-//		pChartData.labelGroupData.forEach(function(pLabelGroupData){
-			pChartData.normalizedValuesData.forEach(function(pNormalizedValuesData){
-//				if (pLabelGroupData.labelGroupIndex == pNormalizedValuesData.labelGroupIndex){
-//					console.log(pChartData.totalValue + "\t" + pNormalizedValuesData.label + "\t" + pNormalizedValuesData.key + "\t" + pNormalizedValuesData.total);
-//				}
-			});
-//		});
-	},
-	
 	pvInitializeChartValues: function(pChartData){
-		pChartData.labelGroupData = [];
 		if (pChartData.originalValues.length > 0){
 			var xMaxChartValueData = null;
 			var xMinChartValueData = null;
@@ -113,6 +93,7 @@ dbsfaces.chartX = {
 			//Loop por todos os valores da originais recebidos
 			for (var xI = 0; xI < pChartData.originalValues.length; xI++){
 				var xOriginalValue = pChartData.originalValues[xI];
+				//Defini valor padrão, caso displayvalue não tenha sido informado
 				xOriginalValue.displayValue = ((typeof xOriginalValue.displayValue == "undefined" || xOriginalValue.displayValue == "") ? xOriginalValue.value : xOriginalValue.displayValue);
 
 				//Somatório para ser utilizado posteriormente no cálculo do percentual que cada valor representa
@@ -131,19 +112,18 @@ dbsfaces.chartX = {
 				}
 				
 				//Salva quantidade máxima de grupos de labels existentes
-				pChartData.labelsGroupCount = Math.max(pChartData.labelsGroupCount, xLabels.length);
+				pChartData.relationalCaptionsCount = Math.max(pChartData.relationalCaptionsCount, xLabels.length);
 
-				xOriginalValue.key = ""
 				//Lista de chartvalue que estão vinculados ao valor original
 				var xRelationalChartValueData = [];
-				//Cria um chartValuedata para cada labelgroup e cada label.
-				//Valores serão agrupados por labelgroup e label
-				xLabels.forEach(function(pLabel, pLabelGroupIndex){
+				//Cria um chartValuedata para cada relationalCaption e cada label.
+				//Valores serão agrupados por relationalCaption e label
+				xLabels.forEach(function(pLabel, pRelationalGroupIndex){
 					var xChartValueData = null;
 					var xLabel = pLabel.trim();
 					//Procura se já existe chartValue com este label no mesmo labelindex 
 					for (var xN = 0; xN < pChartData.dom.childrenData.length; xN++){
-						if (pChartData.dom.childrenData[xN].labelGroupIndex == pLabelGroupIndex
+						if (pChartData.dom.childrenData[xN].relationalGroupIndex == pRelationalGroupIndex
 						 && pChartData.dom.childrenData[xN].label == xLabel){
 							xChartValueData = pChartData.dom.childrenData[xN];
 							break;
@@ -152,7 +132,7 @@ dbsfaces.chartX = {
 
 					//Cria componente chartValueData
 					if (xChartValueData == null){
-						var xChartValueData = dbsfaces.chartX.pvInitializeChartValuesCreateData(pChartData, pLabel, pLabelGroupIndex);
+						var xChartValueData = dbsfaces.chartX.pvInitializeChartValuesCreateData(pChartData, pLabel, pRelationalGroupIndex);
 						//Adiciona valor normalizado
 						pChartData.dom.childrenData.push(xChartValueData);
 					}
@@ -169,10 +149,6 @@ dbsfaces.chartX = {
 					//Relação dos chartvaluedata que compoem este valor
 					xRelationalChartValueData.push(xChartValueData);
 				});
-				//Cria string com representação binária dos index dos chartvalues que fazem parte deste originalvalue
-				//Cada byte representa um index, iniciando da direita para esquerda. Sendo assim, o byte mais a direita é o index 0.
-				//O index de cada chartvalue representa a posição dentro da representação binário: ex: 0101 (os indexes 2 e 0 estão ligados)
-
 				//Cria lista com os pares de relacionamento
 				for (var xA = 0; xA < xRelationalChartValueData.length - 1; xA++){
 					var xKeyA = dbsfaces.chartX.pvInitializeChartValuesAddKeyToBinaryKey("", xRelationalChartValueData[xA].key);
@@ -202,59 +178,35 @@ dbsfaces.chartX = {
 			pChartData.dom.maxChartValueData = xMaxChartValueData;
 			
 			//Calcula valor médio e salva
-			pChartData.medValue = (pChartData.totalValue * pChartData.labelsGroupCount) / pChartData.dom.childrenData.length;
-			//Ordena por labelgroup e valor
-			if (pChartData.type == "pie"){
-				pChartData.dom.childrenData.sort(function(a, b){
-					var x = a.labelGroupIndex - b.labelGroupIndex;
-					if (x == 0){
-						x = b.value - a.value;
-					}
-					return x;
-		//		    var x = a.label.toLowerCase();
-		//		    var y = b.label.toLowerCase();
-		//		    if (x < y) {return -1;}
-		//		    if (x > y) {return 1;}
-		//		    return 0;
-				});
-			}
+			pChartData.medValue = (pChartData.totalValue * pChartData.relationalCaptionsCount) / pChartData.dom.childrenData.length;
 
-			var xTotalValue = 0;
-			var xLabelGrounpIndex = 0;
-			//Cria elementos do chartvalueData e configura totalizador e index 
-			pChartData.dom.childrenData.forEach(function(pChartValueData, pI){
-				if (xLabelGrounpIndex != pChartValueData.labelGroupIndex){
-					xTotalValue = 0;
-				}
-				pChartValueData.index = pI;
-				dbsfaces.chartX.pvInitializeChartValuesCreate(pChartData, pChartValueData);
-				//Força a exibição do primeiro e último item
-				if (xI == 0 || xI == pChartData.dom.childrenData.length - 1){
-					pChartValueData.dom.self.addClass("-showLabel");
-				}
-				//Calcula somatório até este chartvalue
-				if (pChartData.type == "pie"){
-					xTotalValue += Math.abs(pChartValueData.value);
-				}else{
-					xTotalValue += pChartValueData.value;
-				}
-				pChartValueData.totalValue = xTotalValue;
-				xLabelGrounpIndex = pChartValueData.labelGroupIndex;
-			});
-			pChartData.dom.minChartValueData.dom.self.addClass("-min");
-			pChartData.dom.maxChartValueData.dom.self.addClass("-max");
-
-			//Configura títulos dos labels
-			pChartData.labelsGroupCaptions = new Array(pChartData.labelsGroupCount);
-			if (typeof pChartData.dom.self.attr("labelsCaption") != "undefined"){
-				var xLabelsCaption = pChartData.dom.self.attr("labelsCaption").split(/[;]+/);
-				xLabelsCaption.forEach(function(pLabelCaption, pI){
-					pChartData.labelsGroupCaptions[pI] = pLabelCaption.trim();
-				});
-			}
+			//Ordena por RelationalGroup e valor
+			dbsfaces.chartX.pvInitializeChartValuesSort(pChartData);
 		}
 	},
 
+
+	pvInitializeChartValuesSort: function(pChartData){
+		//Ordena por RelationalGroup e valor
+		if (pChartData.type == "pie"){
+			pChartData.dom.childrenData.sort(function(a, b){
+				var x = a.relationalGroupIndex - b.relationalGroupIndex;
+				if (x == 0){
+					x = b.value - a.value;
+				}
+				return x;
+	//		    var x = a.label.toLowerCase();
+	//		    var y = b.label.toLowerCase();
+	//		    if (x < y) {return -1;}
+	//		    if (x > y) {return 1;}
+	//		    return 0;
+			});
+		}
+	},
+	
+
+	
+	//Cria representação binária do somatórios do index dos labels
 	pvInitializeChartValuesAddKeyToBinaryKey: function(pBinaryKey, pIndex){
 		var xLengthDif = pIndex - pBinaryKey.length + 1; 
 		if (xLengthDif > 0){
@@ -265,30 +217,9 @@ dbsfaces.chartX = {
 		pBinaryKey = pBinaryKey.substr(0, xStart) + "1" + pBinaryKey.substring(xEnd); 
 		return pBinaryKey;
 	},
-//
-//	pvInitializeChartValuesAddKeyToBinaryKey2: function(pKeyA, pKeyB){
-//		var xKey1;
-//		var xKey2;
-//		if (pKeyA.length > pKeyB.length){
-//			xKey1 = pKeyA;
-//			xKey2 = pKeyB;
-//		}else{
-//			xKey1 = pKeyB;
-//			xKey2 = pKeyA;
-//		}
-//		var xKey = "";
-//		for (var xA = xKey1.length - 1; xA > -1; xA--){
-//			if (xKey1.charAt(xA) == "1"
-//			 || xKey2.charAt(xA) == "1"){
-//				xKey = "1"+ xKey;
-//			}else{
-//				xKey = "0"+ xKey
-//			}
-//		}
-//		return xKey;
-//	},
+
 	
-	pvInitializeChartValuesCreateData: function(pChartData, pLabel, pLabelGroupIndex){
+	pvInitializeChartValuesCreateData: function(pChartData, pLabel, pRelationalGroupIndex){
 		var xChartValueData = {
 			dom : {
 				self : null, // o próprio chartvalue
@@ -310,7 +241,7 @@ dbsfaces.chartX = {
 			index : null, //Index - //Chave sequencial será atribuita após o sort 
 			value : 0, //somatótio dos valores que possuem o mesmo label
 			label : pLabel.trim(), //Label já desmenbrado do group label
-			labelGroupIndex: pLabelGroupIndex, //Index em relação ao label quando houver mais de uma
+			relationalGroupIndex: pRelationalGroupIndex, //Index em relação ao label quando houver mais de uma
 			originalValues : [], //valores originals que agrupados neste chartvalue
 			x : null, //posição X no gráfico (dentro da escala)
 			y : null, //posição Y no gráfico (dentro da escala)
@@ -322,12 +253,53 @@ dbsfaces.chartX = {
 		return xChartValueData;
 	},
 
+	
+	pvInitializeLayout: function(pChartData){
+		//Cria elementos do chartvalueData e configura totalizador e index 
+		dbsfaces.chartX.pvInitializeLayoutChartValueCreateElement(pChartData);
+		
+		if (pChartData.type == "line"){
+			dbsfaces.chartX.pvInitializeLayoutChartLine(pChartData);
+		}else if (pChartData.type == "pie"){
+			dbsfaces.chartX.pvInitializeLayoutChartPie(pChartData);
+		}
 
+		//Cria elementos do título dos relationalGroup
+		dbsfaces.chartX.pvInitializeLayoutCreateRelationalCaptions(pChartData);
+	},
 
-	pvInitializeChartValuesCreate: function(pChartData, pChartValueData){
-//		var xChartValueData = dbsfaces.chartX.pvInitializeChartValuesCreateData(pChartData, pLabel, pLabelGroupIndex);
+	pvInitializeLayoutChartValueCreateElement: function(pChartData){
+		var xTotalValue = 0;
+		var xRelationalGroupIndex = 0;
+		//Cria elementos do chartvalueData e configura totalizador e index 
+		pChartData.dom.childrenData.forEach(function(pChartValueData, pI){
+			if (xRelationalGroupIndex != pChartValueData.relationalGroupIndex){
+				xTotalValue = 0;
+			}
+			pChartValueData.index = pI;
+			dbsfaces.chartX.pvInitializeLayoutChartValuesCreate(pChartData, pChartValueData);
+			//Força a exibição do primeiro e último item
+			if (pI == 0 || pI == pChartData.dom.childrenData.length - 1){
+				pChartValueData.dom.self.addClass("-showLabel");
+			}
+			//Calcula somatório até este chartvalue
+			if (pChartData.type == "pie"){
+				xTotalValue += Math.abs(pChartValueData.value);
+			}else{
+				xTotalValue += pChartValueData.value;
+			}
+			pChartValueData.totalValue = xTotalValue;
+			xRelationalGroupIndex = pChartValueData.relationalGroupIndex;
+		});
+		//Força a exibição do valor mínimo e máximo
+		pChartData.dom.minChartValueData.dom.self.addClass("-min");
+		pChartData.dom.maxChartValueData.dom.self.addClass("-max");
+	},
+
+	pvInitializeLayoutChartValuesCreate: function(pChartData, pChartValueData){
+//		var xChartValueData = dbsfaces.chartX.pvInitializeChartValuesCreateData(pChartData, pLabel, prelationalGroupIndex);
 		//Cria ChartValue
-		pChartValueData.dom.self = dbsfaces.svg.g(pChartData.dom.chart, "dbs_chartValueX -" + pChartData.type, null, {index: pChartValueData.index, labelGroupIndex: pChartValueData.labelGroupIndex});
+		pChartValueData.dom.self = dbsfaces.svg.g(pChartData.dom.values, "dbs_chartValueX -" + pChartData.type, null, {index: pChartValueData.index, relationalGroupIndex: pChartValueData.relationalGroupIndex});
 		//Salva data
 		pChartValueData.dom.self.data("data", pChartValueData);
 		//Cria Elemento que contém infos
@@ -381,15 +353,21 @@ dbsfaces.chartX = {
 			});
 		}
 	},
-	
-	pvInitializeLayout: function(pChartData){
-		if (pChartData.type == "line"){
-			dbsfaces.chartX.pvInitializeLayoutChartLine(pChartData);
-		}else if (pChartData.type == "pie"){
-			dbsfaces.chartX.pvInitializeLayoutChartPie(pChartData);
+
+	//Cria os elementos para exibir os captions dos relationalGroups
+	pvInitializeLayoutCreateRelationalCaptions: function(pChartData){
+		if (pChartData.type == "pie"){
+			pChartData.relationalCaptions.forEach(function(pRelationalCaption, pI){
+				var xPathId = pChartData.dom.self[0].id + ":relationalPath_" + pI;
+				//Path que será utilizado para alinhar o texto do caption
+				dbsfaces.svg.path(pChartData.dom.relationalCaptions, null, "-path", null, {id:xPathId});
+				//Texto do caption
+				var xTextElement = dbsfaces.svg.text(pChartData.dom.relationalCaptions, null, null, null, "-caption", null, {relationalGroupIndex:pI, fill:pChartData.currentColorInverted});
+				dbsfaces.svg.textPath(xTextElement, xPathId, pRelationalCaption, null, null, {"startOffset": "50%"});
+			});
 		}
 	},
-	
+
 	pvInitializeLayoutChartLineDeltaHandle: function(pChartData, pHandleNumber){
 		var xDeltaHandle = dbsfaces.svg.g(pChartData.dom.delta, "-handle", null, {handle:pHandleNumber});
 		return dbsfaces.chartX.pvInitializeLayoutChartLineDeltaHandleData(pChartData, xDeltaHandle, pHandleNumber);
@@ -485,6 +463,8 @@ dbsfaces.chartX = {
 	pvInitializeLayoutChartPie: function(pChartData){
 		//Cria elemento que será a linha que conecta os pontos
 		pChartData.dom.links = dbsfaces.svg.g(pChartData.dom.chart, "-links", null, null);
+		//Cria elemento que agrupa todos os captions dos relationsGroup
+		pChartData.dom.relationalCaptions = dbsfaces.svg.g(pChartData.dom.chart, "-relationalCaptions", null, null);
 	},
 
 	//Procura ponto da caminho(path)

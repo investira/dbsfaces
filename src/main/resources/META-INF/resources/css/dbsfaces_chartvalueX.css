@@ -102,34 +102,34 @@
     fill: gray;
 }
 
-.dbs_chartX.-line.-showDelta > .-chart > .dbs_chartValueX{
+.dbs_chartX.-line.-showDelta > .-chart > .-values > .dbs_chartValueX{
 	pointer-events: none;
 }
 
-.dbs_chartX.-line:not(.-showLabel) > .-chart > .dbs_chartValueX > .-info > .-label,
-.dbs_chartX.-line:not(.-showLabel) > .-chart > .dbs_chartValueX > .-info > .-labelBox{
+.dbs_chartX.-line:not(.-showLabel) > .-chart > .-values > .dbs_chartValueX > .-info > .-label,
+.dbs_chartX.-line:not(.-showLabel) > .-chart > .-values > .dbs_chartValueX > .-info > .-labelBox{
 	display:none;
 }
 
-.dbs_chartX.-line:not(.-showValue) > .-chart > .dbs_chartValueX > .-info > .-value,
-.dbs_chartX.-line:not(.-showValue) > .-chart > .dbs_chartValueX > .-info > .-valueBox{
+.dbs_chartX.-line:not(.-showValue) > .-chart > .-values > .dbs_chartValueX > .-info > .-value,
+.dbs_chartX.-line:not(.-showValue) > .-chart > .-values > .dbs_chartValueX > .-info > .-valueBox{
 	display:none;
 }
 
-.dbs_chartX.-line > .-chart > .dbs_chartValueX.-line.-showLabel > .-info > .-label,
-.dbs_chartX.-line > .-chart > .dbs_chartValueX.-line.-showValue > .-info > .-value{
+.dbs_chartX.-line > .-chart > .-values > .dbs_chartValueX.-line.-showLabel > .-info > .-label,
+.dbs_chartX.-line > .-chart > .-values > .dbs_chartValueX.-line.-showValue > .-info > .-value{
 	visibility: visible;
 }
-.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-showLabel.-hide > .-info > .-label,
-.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-showValue.-hide > .-info > .-value{
+.dbs_chartX.-line.-selected > .-chart > .-values > .dbs_chartValueX.-line.-showLabel.-hide > .-info > .-label,
+.dbs_chartX.-line.-selected > .-chart > .-values > .dbs_chartValueX.-line.-showValue.-hide > .-info > .-value{
 	visibility: hidden;
 }
 
-.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-hover > .-point,
-.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-hover > .-info > .-path,
-.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-hover > .-info > .-labelBox,
-.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-hover > .-info > .-valueBox,
-.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-hover > .-info > .-label,
-.dbs_chartX.-line.-selected > .-chart > .dbs_chartValueX.-line.-hover > .-info > .-value{
+.dbs_chartX.-line.-selected > .-chart > .-values > .dbs_chartValueX.-line.-hover > .-point,
+.dbs_chartX.-line.-selected > .-chart > .-values > .dbs_chartValueX.-line.-hover > .-info > .-path,
+.dbs_chartX.-line.-selected > .-chart > .-values > .dbs_chartValueX.-line.-hover > .-info > .-labelBox,
+.dbs_chartX.-line.-selected > .-chart > .-values > .dbs_chartValueX.-line.-hover > .-info > .-valueBox,
+.dbs_chartX.-line.-selected > .-chart > .-values > .dbs_chartValueX.-line.-hover > .-info > .-label,
+.dbs_chartX.-line.-selected > .-chart > .-values > .dbs_chartValueX.-line.-hover > .-info > .-value{
 	visibility: visible;
 }

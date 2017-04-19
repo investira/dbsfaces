@@ -15,7 +15,8 @@ public class DBSChartX extends DBSUIData implements ClientBehaviorHolder{
 	
 	protected enum PropertyKeys {
 		color,
-		caption;
+		caption,
+		relationalCaptions;
 
 		String toString;
 
@@ -50,6 +51,15 @@ public class DBSChartX extends DBSUIData implements ClientBehaviorHolder{
 	public void setColor(String pColor) {
 		getStateHelper().put(PropertyKeys.color, pColor);
 		handleAttribute("color", pColor);
+	}
+
+	public String getRelationalCaptions() {
+		return (String) getStateHelper().eval(PropertyKeys.relationalCaptions, null);
+	}
+	
+	public void setRelationalCaptions(String pRelationalCaptions) {
+		getStateHelper().put(PropertyKeys.relationalCaptions, pRelationalCaptions);
+		handleAttribute("relationalCaptions", pRelationalCaptions);
 	}
 
 //	public String getDimentionsCaptions() {

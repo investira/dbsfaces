@@ -88,6 +88,9 @@ public class DBSChartXRenderer extends DBSRenderer {
 		pWriter.startElement("svg", pChart);
 			DBSFaces.encodeSVGNamespaces(pWriter);
 			DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.FLEX_COL + "-chart");
+			pWriter.startElement("g", pChart);
+				DBSFaces.encodeAttribute(pWriter, "class", "-values");
+			pWriter.endElement("g");
 		pWriter.endElement("svg");
 	}
 	
@@ -98,12 +101,14 @@ public class DBSChartXRenderer extends DBSRenderer {
 	 */
 	private void pvEncodeJS(ResponseWriter pWriter, DBSChartX pChart) throws IOException{
 		String xList = pvGetListChartValue(pChart);
+		String xRelationalCaptions = pvGetListRelationalCaptions(pChart);
 		
 		DBSFaces.encodeJavaScriptTagStart(pChart, pWriter);
 		String xJS = "$(document).ready(function() { \n" +
 				     " var xChartId = dbsfaces.util.jsid('" + pChart.getClientId() + "'); \n " + 
 				     " dbs_chartX(xChartId" 
 				     			  + "," + xList
+				     			  + "," + xRelationalCaptions
 				     			  + "); \n" +
                      "}); \n"; 
 		pWriter.write(xJS); 
@@ -125,6 +130,21 @@ public class DBSChartXRenderer extends DBSRenderer {
 			xList = pvGetListFromChildren(pChart);
 		}
 		return DBSJson.toJsonTree(xList, List.class).toString();
+	}
+	
+	/**
+	 * Retorna lista com os valores no formato json
+	 * @param pChart
+	 * @return
+	 * @throws IOException
+	 */
+	private String pvGetListRelationalCaptions(DBSChartX pChart) throws IOException {
+		if (pChart.getRelationalCaptions() == null){return null;}
+		String[] xRelationalCaptions = pChart.getRelationalCaptions().split(";");
+		for (int xI=0; xI < xRelationalCaptions.length; xI++){
+			xRelationalCaptions[xI] = xRelationalCaptions[xI].trim();
+		}
+		return DBSJson.toJson(xRelationalCaptions).toString();
 	}
 
 	/**

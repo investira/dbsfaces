@@ -3667,6 +3667,15 @@
 		</attribute>
 		<attribute>
 			<description>
+                Títulos dos grupos relacionais(separados por ";"). O grupo a que pertence o título é determinado pela sua posição, onde o primeiro título é do primeiro grupo relacional e assim sucessivamente.
+                Os grupos relacionais são criados quando é atribuido mais de 1 label no chartvalue. Ver atributo "label" do chartvalue.  
+            </description>
+			<name>relationalCaptions</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>		
+		<attribute>
+			<description>
                 rendered
             </description>
 			<name>rendered</name>
@@ -3963,7 +3972,7 @@
 		</attribute>
 		<attribute>
 			<description>
-				Label que será exibido no rodapé da coluna. 
+				Texto com a descrição a que ser refere o valor. Se houver mais de uma label(separado por ";") os valores serão replicados por cada label e será criado um link entre eles formando um grupo de relacionamento.  
             </description>
 			<name>label</name>
 			<required>false</required>
