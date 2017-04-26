@@ -1192,6 +1192,23 @@ dbsfaces.format = {
 			return ".";
 		}
 		return ",";
+	},
+	
+	splitNumber: function(pValue){
+		var xSplit = {
+			int: "",
+			dec: ""
+		}
+		if (pValue != null){
+			var xValue = parseFloat(pValue);
+			var xValueAbs = Math.abs(xValue);
+			xSplit.int = parseInt(xValueAbs);
+			xSplit.dec = String(dbsfaces.math.round(xValueAbs - xSplit.int, 2)).substring(1);
+			if (xValue < 0){
+				xSplit.int = "-" + xSplit.int;
+			}
+		}
+		return xSplit;
 	}
 	
 //	numberToString: function(pNumber){

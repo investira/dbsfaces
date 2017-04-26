@@ -30,7 +30,8 @@ dbsfaces.chartsX = {
 				charts : null, //Container dos chart
 				childrenCaptionContainer : null,
 				minChartValueData: null, //ChartValue que contém menor valor
-				maxChartValueData: null //ChartValue que contém maior valor
+				maxChartValueData: null, //ChartValue que contém maior valor
+				maxLabelChartValueData : null //chartValue que contém o maior label
 			},
 			type : pCharts.attr("type"),
 			showLabel : pCharts.hasClass("-showLabel"),
@@ -108,17 +109,20 @@ dbsfaces.chartsX = {
 	pvInitializeAnalizeValues: function(pChartsData){
 		//Inicializa com o largura e altura máximo
 		if (pChartsData.dom.childrenData.length > 0){
-			var xMinChartValueData = null;
-			var xMaxChartValueData = null;
 			var xMaxCount = 0;
 			//Verifica menor e maior valor existentes em todos os gráficos para cálcular a escala
 			pChartsData.dom.childrenData.forEach(function(pChartData, pI) {
-				if (xMinChartValueData == null || pChartData.dom.minChartValueData.value < xMinChartValueData.value){
-					xMinChartValueData = pChartData.dom.minChartValueData;
+				if (pChartsData.dom.minChartValueData == null || pChartData.dom.minChartValueData.value < pChartsData.dom.minChartValueData.value){
+					pChartsData.dom.minChartValueData = pChartData.dom.minChartValueData;
 				}
-				if (xMaxChartValueData == null || pChartData.dom.maxChartValueData.value > xMaxChartValueData.value){
-					xMaxChartValueData = pChartData.dom.maxChartValueData;
+				if (pChartsData.dom.maxChartValueData == null || pChartData.dom.maxChartValueData.value > pChartsData.dom.maxChartValueData.value){
+					pChartsData.dom.maxChartValueData = pChartData.dom.maxChartValueData;
 				}
+				//Salva maior label
+				if (pChartsData.dom.maxLabelChartValueData == null || pChartData.dom.maxLabelChartValueData.label.length > pChartsData.dom.maxLabelChartValueData.label.length){
+					pChartsData.dom.maxLabelChartValueData = pChartData.dom.maxLabelChartValueData;
+				}
+
 				//Quantidade máxima de itens de todos os gráficos
 				if ((pChartData.originalValues.length - 1) > xMaxCount){
 					xMaxCount = pChartData.originalValues.length - 1;
@@ -129,26 +133,29 @@ dbsfaces.chartsX = {
 					pChartsData.width = pChartData.dom.chart[0].getBoundingClientRect().width;
 				}
 			});
-			if (pChartsData.showLabel){
-//				pChartsData.infoHeight = Math.round(xMaxChartValueData.dom.infoLabel.height() * 1.2, 0);
-				pChartsData.infoHeight = Math.round(parseFloat(xMaxChartValueData.dom.infoLabel.css("font-size")) * 1.2, 0);
+			if (pChartsData.type == "line"){
+				if (pChartsData.showLabel){
+					pChartsData.infoHeight = Math.round(parseFloat(pChartsData.dom.maxChartValueData.dom.infoLabel.css("font-size")) * 1.2, 0);
+				}
+				if (pChartsData.showValue){
+					pChartsData.infoWidth = Math.round(Math.max(pChartsData.dom.maxChartValueData.dom.infoValue[0].getBoundingClientRect().width, 
+																pChartsData.dom.minChartValueData.dom.infoValue[0].getBoundingClientRect().width) * 1.4, 0);
+				}
+				//Trai espaço dos infos da dimensão disponível para o gráfico principal
+				pChartsData.width -= pChartsData.infoWidth;
+				pChartsData.height -= pChartsData.infoHeight;
+				//Força a exibição do value da linha
+				pChartsData.dom.minChartValueData.dom.self.addClass("-showValue"); 
+				pChartsData.dom.maxChartValueData.dom.self.addClass("-showValue");
+				//Escale para ajustar as coordenadas dentro do espaço do gráfico
+				pChartsData.scaleX = pChartsData.width / xMaxCount;
+				pChartsData.scaleY = -pChartsData.height / (pChartsData.dom.maxChartValueData.value - pChartsData.dom.minChartValueData.value); //Scale vertical. obs:invertida já que a coordenada do svg desce quando o valor é maior;
+			}else if (pChartsData.type == "pie"){
+				pChartsData.infoWidth = pChartsData.dom.maxLabelChartValueData.dom.infoLabel[0].getBoundingClientRect().width * 1.10;
+				pChartsData.infoHeight = 0; //Será configurado posteriomente como a altura do caption do relationalgroup(se houver);
 			}
-			if (pChartsData.showValue){
-				pChartsData.infoWidth = Math.round(Math.max(xMaxChartValueData.dom.infoValue[0].getBoundingClientRect().width, xMinChartValueData.dom.infoValue[0].getBoundingClientRect().width) * 1.4, 0);
-			}
-			//Trai espaço dos infos da dimensão disponível para o gráfico principal
-			pChartsData.width -= pChartsData.infoWidth;
-			pChartsData.height -= pChartsData.infoHeight;
-			//Salva chartvalue minimo e máximo
-			pChartsData.dom.minChartValueData = xMinChartValueData;
-			pChartsData.dom.maxChartValueData = xMaxChartValueData;
-			//Força a exibição do value da linha
-			xMinChartValueData.dom.self.addClass("-showValue"); 
-			xMaxChartValueData.dom.self.addClass("-showValue");
-			//Escale para ajustar as coordenadas dentro do espaço do gráfico
-			pChartsData.scaleX = pChartsData.width / xMaxCount;
-			pChartsData.scaleY = -pChartsData.height / (xMaxChartValueData.value - xMinChartValueData.value); //Scale vertical. obs:invertida já que a coordenada do svg desce quando o valor é maior;
 		}else{
+			
 			pChartsData.height = pChartsData.dom.charts[0].getBoundingClientRect().height;
 			pChartsData.width = pChartsData.dom.charts[0].getBoundingClientRect().width;
 		}
@@ -159,11 +166,12 @@ dbsfaces.chartsX = {
 		pChartsData.dom.childrenData.forEach(function(pChartData){
 			//Configura qual o sequence
 			pChartData.globalSequence = pChartsData.globalSequencesCount + 1;
-			pChartData.center.x = pChartData.width / 2;
-			pChartData.center.y = pChartData.height / 2;
+			//Centro do gráfico
+			pChartData.center.x = pChartsData.width / 2;
+			pChartData.center.y = pChartsData.height / 2;
 			
 			if (pChartsData.type == "pie"){
-				dbsfaces.chartsX.pvInitializeDrawInitializePie(pChartData);
+				dbsfaces.chartsX.pvInitializeDrawInitializePie(pChartsData, pChartData);
 			}
 
 			//DrawPoints
@@ -187,14 +195,16 @@ dbsfaces.chartsX = {
 				dbsfaces.chartsX.pvInitializeDrawDelta(pChartsData, pChartData);
 			}else if (pChartsData.type == "pie"){
 				//Desenha relacionamentos
-				dbsfaces.chartsX.pvInitializeDrawRelationships(pChartData);
+				dbsfaces.chartsX.pvInitializeDrawRelationships(pChartsData, pChartData);
+				//Desenha infos
+//				dbsfaces.chartsX.pXInitializeDrawChartPieInfos(pChartData);
 			}
 		});
 		//Configura cor
 		dbsfaces.chartsX.pvInitializeDrawSetColor(pChartsData);
 	},
 
-	pvInitializeDrawInitializePie(pChartData){
+	pvInitializeDrawInitializePie(pChartsData, pChartData){
 		//Configura medida do arco de cada relationa group
 		//Divide diametro entres os relationalGroups
 		pChartData.arcFator = dbsfaces.math.PIDiameterFactor / pChartData.relationalCaptionsCount;
@@ -202,25 +212,34 @@ dbsfaces.chartsX = {
 		if (pChartData.relationalCaptionsCount > 1){
 			pChartData.arcFator -= pChartData.arcSpace;
 		}
+		
 		//Diametro do chart
-		pChartData.diameter = Math.max(pChartData.width, pChartData.height);
+		pChartData.diameter = Math.min(pChartsData.width, pChartsData.height);
+		
+		pChartData.dom.deltaValue.attr("x", pChartData.center.x);
+		pChartData.dom.deltaValue.attr("y", pChartData.center.y);
 		
 		//Largura do arco. Utiliza a largura definida no primeiro chartvalue
-		pChartData.arcWidth = parseInt(pChartData.dom.childrenData[0].dom.point.css("stroke-width"));
+		pChartsData.infoHeight = 0;
+		if (pChartData.relationalCaptions.length > 1){
+			//Caminho que receberá o caption do relationalGroup
+			pChartData.relationalCaptions.forEach(function(pRelationalCaption, pI){
+				var xPathElementId = pChartData.dom.self[0].id + ":relationalPath_" + pI;
+				var xPathElement = $(dbsfaces.util.jsid(xPathElementId));
+				pChartsData.infoHeight = parseInt(xPathElement.css("font-size")) / 1.3; 
+				//Desenha elemento do arco
+				dbsfaces.chartsX.pvInitializeDrawArc(pChartData, 
+													 xPathElement, 
+													 pChartData.diameter / 2, //Raio externo do arco 
+													 pChartsData.infoHeight, //Largura da arco
+													 pI, 
+													 0, 
+													 100, 
+													 true);
+			});
+		}
 		
-
-		//Caminho que receberá o caption do relationalGroup
-		pChartData.relationalCaptions.forEach(function(pRelationalCaption, pI){
-			var xPathElementId = pChartData.dom.self[0].id + ":relationalPath_" + pI;
-			var xPathElement = $(dbsfaces.util.jsid(xPathElementId));
-			//Desenha elemento do arco
-			dbsfaces.chartsX.pvInitializeDrawArc(pChartData, 
-												 xPathElement, 
-												 pI, 
-												 0, 
-												 100, 
-												 true);
-		});
+		pChartData.arcWidth = pChartsData.infoWidth; 
 	},
 	
 
@@ -262,72 +281,70 @@ dbsfaces.chartsX = {
 		var xValueBoxHeight;
 		var xValueBoxWidth;
 		var xStyleBox = "fill:" + pChartsData.currentColorInverted;
-		if (pChartData.type == "line"
-		 || pChartData.type == "bar"){
-			var xHalf;
-			//AJusta Layout Label
-			if (pChartsData.showLabel){
-				//Dimensões
-				xLabelWidth = pChartValueData.dom.infoLabel[0].getBoundingClientRect().width;
-				xLabelHeight = pChartsData.infoHeight;
-				xLabelBoxHeight = xLabelHeight // pChartValueData.dom.infoLabel.height(); //;
-				xLabelBoxWidth = xLabelWidth * 1.10;
-				//Verifica limites
-				xHalf = (xLabelWidth / 2);
-				xX -= xHalf;
-				if (xX + xLabelWidth > (pChartsData.width + pChartsData.infoWidth)){
-					xX -= (xX + xLabelWidth) - (pChartsData.width + pChartsData.infoWidth);
-				}else if (xX < pChartsData.infoWidth){
-					xX = pChartsData.infoWidth;
-				}
-				//Configura elementos
-				pChartValueData.dom.infoLabel.svgAttr("x", xX)
-				     						 .svgAttr("y", ".7em");
-				pChartValueData.dom.infoLabelBox.svgAttr("width", xLabelBoxWidth)
-								       		.svgAttr("height", xLabelBoxHeight)
-								       		.svgAttr("x", xX - (xLabelBoxWidth * .05))
-								       		.svgAttr("y", "-.2em")
-								       		.svgAttr("style", xStyleBox);
+		var xHalf;
+		//AJusta Layout Label
+		if (pChartsData.showLabel){
+			//Dimensões
+			xLabelWidth = pChartValueData.dom.infoLabel[0].getBoundingClientRect().width;
+			xLabelHeight = pChartsData.infoHeight;
+			xLabelBoxHeight = xLabelHeight // pChartValueData.dom.infoLabel.height(); //;
+			xLabelBoxWidth = xLabelWidth * 1.10;
+			//Verifica limites
+			xHalf = (xLabelWidth / 2);
+			xX -= xHalf;
+			if (xX + xLabelWidth > (pChartsData.width + pChartsData.infoWidth)){
+				xX -= (xX + xLabelWidth) - (pChartsData.width + pChartsData.infoWidth);
+			}else if (xX < pChartsData.infoWidth){
+				xX = pChartsData.infoWidth;
 			}
-			//AJusta Layout Value
-			if (pChartsData.showValue){
-				xValueWidth = pChartsData.infoWidth;
-				xValueHeight = pChartValueData.dom.infoValue.height();
-				xValueBoxHeight = xValueHeight;
-				xValueBoxWidth = xValueWidth * 0.90;
-				//Verifica limites
-				xHalf = (xValueHeight / 2);
-				if (xY + xHalf > (pChartsData.height + pChartsData.infoHeight)){
-					xY -= (xY + xHalf) - (pChartsData.height + pChartsData.infoHeight);
-				}else if (xY - xHalf < pChartsData.infoHeight){
-					xY += xHalf;
-				}
-				//Configura elementos
-				pChartValueData.dom.infoValue.svgAttr("x", pChartsData.infoWidth * .80)
-				      						 .svgAttr("y", xY);
-				pChartValueData.dom.infoValueBox.svgAttr("width", xValueBoxWidth)
-							   					.svgAttr("height", xValueBoxHeight)
-							   					.svgAttr("x", 0)
-							   					.svgAttr("y", xY - (xValueBoxHeight / 2))
-							   					.svgAttr("style", xStyleBox);
+			//Configura elementos
+			pChartValueData.dom.infoLabel.svgAttr("x", xX)
+			     						 .svgAttr("y", ".7em");
+			pChartValueData.dom.infoLabelBox.svgAttr("width", xLabelBoxWidth)
+							       		.svgAttr("height", xLabelBoxHeight)
+							       		.svgAttr("x", xX - (xLabelBoxWidth * .05))
+							       		.svgAttr("y", "-.2em")
+							       		.svgAttr("style", xStyleBox);
+		}
+		//AJusta Layout Value
+		if (pChartsData.showValue){
+			xValueWidth = pChartsData.infoWidth;
+			xValueHeight = pChartValueData.dom.infoValue.height();
+			xValueBoxHeight = xValueHeight;
+			xValueBoxWidth = xValueWidth * 0.90;
+			//Verifica limites
+			xHalf = (xValueHeight / 2);
+			if (xY + xHalf > (pChartsData.height + pChartsData.infoHeight)){
+				xY -= (xY + xHalf) - (pChartsData.height + pChartsData.infoHeight);
+			}else if (xY - xHalf < pChartsData.infoHeight){
+				xY += xHalf;
 			}
-			//Configura linha guida entre o label e o value
-			if (pChartsData.showLabel
-			 && pChartsData.showValue){
-				xPath = "M" + pChartValueData.x + "," + pChartsData.infoHeight;
-				xPath += "L" + pChartValueData.x + "," + pChartValueData.y
-				xPath += "L" + pChartsData.infoWidth + "," + pChartValueData.y;
-			}else if(pChartsData.showLabel){
-				xPath = "M" + pChartValueData.x + "," + pChartValueData.y;
-				xPath += "L" + pChartValueData.x + "," + pChartsData.infoHeight;
-			}else if(pChartsData.showValue){
-				xPath = "M" + pChartValueData.x + "," + pChartValueData.y;
-				xPath += "L" + pChartsData.infoWidth + "," + pChartValueData.y;
-			}
+			//Configura elementos
+			pChartValueData.dom.infoValue.svgAttr("x", pChartsData.infoWidth * .80)
+			      						 .svgAttr("y", xY);
+			pChartValueData.dom.infoValueBox.svgAttr("width", xValueBoxWidth)
+						   					.svgAttr("height", xValueBoxHeight)
+						   					.svgAttr("x", 0)
+						   					.svgAttr("y", xY - (xValueBoxHeight / 2))
+						   					.svgAttr("style", xStyleBox);
+		}
+		//Configura linha guida entre o label e o value
+		if (pChartsData.showLabel
+		 && pChartsData.showValue){
+			xPath = "M" + pChartValueData.x + "," + pChartsData.infoHeight;
+			xPath += "L" + pChartValueData.x + "," + pChartValueData.y
+			xPath += "L" + pChartsData.infoWidth + "," + pChartValueData.y;
+		}else if(pChartsData.showLabel){
+			xPath = "M" + pChartValueData.x + "," + pChartValueData.y;
+			xPath += "L" + pChartValueData.x + "," + pChartsData.infoHeight;
+		}else if(pChartsData.showValue){
+			xPath = "M" + pChartValueData.x + "," + pChartValueData.y;
+			xPath += "L" + pChartsData.infoWidth + "," + pChartValueData.y;
 		}
 		//Desenha linha guia entre o vale e value
 		pChartValueData.dom.infoPath.svgAttr("d", xPath);
 	},
+
 
 	pvInitializeDrawChartPie: function(pChartsData, pChartData, pChartValueData){
 		//Calcula o percentual que valore representa sobre o total
@@ -343,46 +360,61 @@ dbsfaces.chartsX = {
 				xArcPercValuePrevious = (pChartData.dom.childrenData[pChartValueData.index - 1].totalValue  / pChartData.totalValue) * 100;
 			}
 		}
+		
+		//Define a largura do arco
+		pChartValueData.dom.point.css("stroke-width", pChartData.arcWidth);
+
 
 		//Desenha elemento do arco
 		var xArcInfo = dbsfaces.chartsX.pvInitializeDrawArc(pChartData, 
-														    pChartValueData.dom.point, 
+														    pChartValueData.dom.point,
+														    (pChartData.diameter / 2) - pChartsData.infoHeight, 
+														    pChartData.arcWidth,
 														    pChartValueData.relationalGroupIndex, 
 														    xArcPercValuePrevious, 
 														    pChartValueData.perc,
 														    false);
 
+		
+		pChartValueData.arcInfo = xArcInfo;
+
 		//Define o ponto interno como ponto do cahrtvalue
 		pChartValueData.x = xArcInfo.internalPoint.x;
 		pChartValueData.y = xArcInfo.internalPoint.y;
 
+		//Transform-origin 
+		dbsfaces.ui.cssAllBrowser(pChartValueData.dom.self, "transform-origin", xArcInfo.externalPoint.x + "px " + xArcInfo.externalPoint.y + "px");
+
 		//Configura Infos
-		var xTransformInfo = "translate(" + xArcInfo.externalPoint.x + " " + xArcInfo.externalPoint.y + ") rotate(" + (xArcInfo.degrees - 90) + ")";
+		var xTransformInfo = "translate(" + xArcInfo.internalPoint.x + " " + xArcInfo.internalPoint.y + ") rotate(" + (xArcInfo.degrees - 90) + ")";
 		var xInfoPercX = pChartValueData.dom.infoPerc.attr("x");
-		var xInfoValueX = pChartValueData.dom.infoValue.attr("x");
+		var xInfoLabelX = pChartValueData.dom.infoLabel.attr("x");
 		var xInvert = " scale(-1, -1)";
 		//Inverte posição das informações a esquerda 
 		if (xArcInfo.degrees > 180){
 			pChartValueData.dom.infoValues.addClass("-invert");
 			pChartValueData.dom.infoPercBox.attr("transform", xInvert);
 			xTransformInfo += xInvert;
-			xInfoValueX = "-" + xInfoValueX;
+			xInfoLabelX = "-" + xInfoLabelX;
 			xInfoPercX = "-" + xInfoPercX;
 		}
+		pChartValueData.dom.info.attr("fill", tinycolor(pChartValueData).invertLightness().setAlpha(1).toString());
 		pChartValueData.dom.info.attr("transform", xTransformInfo);
-		pChartValueData.dom.infoLabel.attr("x", xInfoValueX);
-		pChartValueData.dom.infoValue.attr("x", xInfoValueX);
+		pChartValueData.dom.infoLabel.attr("x", xInfoLabelX);
+		pChartValueData.dom.infoValue.attr("x", xInfoLabelX);
 		pChartValueData.dom.infoPerc.attr("x", xInfoPercX)
 									.attr("v",pChartValueData.perc);
-		var xPercInt = parseInt(pChartValueData.perc);
-		var xPercDec = String(dbsfaces.math.round(pChartValueData.perc - xPercInt, 2)).substring(1) + "%";
-//		String xLabelPerc = DBSFormat.getFormattedNumber(xParcValueInt, 0);
-		pChartValueData.dom.infoPercInt.text(xPercInt);
-		pChartValueData.dom.infoPercDec.text(xPercDec);
+		
+//		var xHeight = pChartValueData.dom.point[0].getBoundingClientRect().height;
+		var xHeight = pChartValueData.dom.point[0].getTotalLength() * 0.7;
+		if (parseFloat(pChartValueData.dom.infoLabel.css("font-size")) > xHeight){
+			pChartValueData.dom.infoLabel.css("font-size", xHeight);
+		}
 	},
 
+
 	//Desenha arco
-	pvInitializeDrawArc: function(pChartData, pPathElement, pRelationalGroupIndex, pPercPrevious, pPerc, pAlwaysUp){
+	pvInitializeDrawArc: function(pChartData, pPathElement, pExternalRadius, pWidth, pRelationalGroupIndex, pPercPrevious, pPerc, pAlwaysUp){
 		//Retorno
 		var xInfo = {
 			startAngle: null, //Angulo inicial do arco
@@ -393,9 +425,12 @@ dbsfaces.chartsX = {
 			centerRadius: null, //Raio no centro vertical do arco
 			internalRadius: null, //Raio interno
 			externalPoint: null, //Ponto no centro externo
+			centerPoint: null, //Ponto no centro
 			internalPoint: null //Ponto no centro interno
 		}
-		var xDiametro = pChartData.diameter - 90;
+		
+//		xDiametro = pChartData.diameter - 90;
+//		var xDiametro = pChartData.diameter;
 		var xDirection = 1;
 		var xArcPercValue = pPerc;
 		var xArcPercValuePrevious = pPercPrevious;
@@ -410,14 +445,15 @@ dbsfaces.chartsX = {
 		xInfo.startAngle -= (pChartData.arcSpace / 2) * 100; //Centralização do espaço entre os chart
 		xInfo.endAngle = dbsfaces.math.round(xInfo.startAngle + (xArcPercValue * pChartData.arcFator), 4);
 		xInfo.centerAngle = xInfo.startAngle + ((xInfo.endAngle - xInfo.startAngle) / 2), //Ángulo do ponto no centro do arco
-		xInfo.externalRadius = xDiametro / 3;
-		xInfo.centerRadius = xInfo.externalRadius - (pChartData.arcWidth / 2);
-		xInfo.internalRadius = xInfo.externalRadius - pChartData.arcWidth;
+		xInfo.externalRadius = pExternalRadius;
+		xInfo.centerRadius = xInfo.externalRadius - (pWidth / 2);
+		xInfo.internalRadius = xInfo.externalRadius - pWidth;
 		xInfo.degrees = dbsfaces.math.round(180 * (xInfo.centerAngle / Math.PI), 2);
 		xInfo.externalPoint = dbsfaces.math.circlePoint(pChartData.center, xInfo.externalRadius, xInfo.centerAngle);
 		xInfo.internalPoint = dbsfaces.math.circlePoint(pChartData.center, xInfo.internalRadius, xInfo.centerAngle);
+		xInfo.centerPoint = dbsfaces.math.circlePoint(pChartData.center, xInfo.centerRadius, xInfo.centerAngle);
 
-		//Inverte direção do arco para evitar 'norte' do arco aponte para baixo.
+		//Inverte direção do arco para evitar que 'norte' do arco aponte para baixo.
 		if (pAlwaysUp && (xInfo.degrees > 90 && xInfo.degrees < 270)){
 			var xTmp = xInfo.endAngle;
 			xInfo.endAngle = xInfo.startAngle;
@@ -469,7 +505,8 @@ dbsfaces.chartsX = {
 		}
 	},
 	
-	pvInitializeDrawRelationships(pChartData){
+	//Desenha link dos relacionamentos
+	pvInitializeDrawRelationships(pChartsData, pChartData){
 		var xLinkArc = dbsfaces.math.round((pChartData.width / pChartData.relationalCaptionsCount) / 10, 0);
 		pChartData.relationships.forEach(function(pRelationship){
 			//Lê lista com o index que compõem o relacionamento do valor informado
@@ -487,8 +524,10 @@ dbsfaces.chartsX = {
 						xStrokeWidth = 0.3;
 					}
 					//Linha do link entre chartValue A e B
-					var xPath = "M" + xChartValueDataA.x + "," + xChartValueDataA.y;
-					xPath += "S" + (pChartData.width / 2) + "," + (pChartData.height / 2) + " " + xChartValueDataB.x + "," + xChartValueDataB.y;
+//					var xPath = "M" + xChartValueDataA.arcInfo.internalPoint.x + "," + xChartValueDataA.arcInfo.internalPoint.y;
+//					xPath += "S" + (pChartsData.width / 2) + "," + (pChartsData.height / 2) + " " + xChartValueDataB.arcInfo.internalPoint.x + "," + xChartValueDataB.arcInfo.internalPoint.y;
+					var xPath = "M" + xChartValueDataA.arcInfo.internalPoint.x + "," + xChartValueDataA.arcInfo.internalPoint.y;
+					xPath += "L" + (pChartsData.width / 2) + "," + (pChartsData.height / 2) + "L" + xChartValueDataB.arcInfo.internalPoint.x + "," + xChartValueDataB.arcInfo.internalPoint.y;
 					dbsfaces.svg.path(pChartData.dom.links, xPath, "-link", null, {a:xKeys[xA], b:xKeys[xB], "stroke-width":xStrokeWidth});
 				}
 			}
@@ -581,7 +620,119 @@ dbsfaces.chartsX = {
 		xChart.addClass("-selected");
 		xChartCaption.addClass("-selected");
 		dbsfaces.ui.moveToFront(xChart);
-	}
+	},
 		
+	
+	
+	pXInitializeDrawChartPie: function(pChartsData, pChartData, pChartValueData){
+		//Calcula o percentual que valore representa sobre o total
+		pChartValueData.perc = (Math.abs(pChartValueData.value) / pChartData.totalValue) * 100;
+		if (pChartValueData.perc > 99.99){
+			pChartValueData.perc = 100;
+		}
+
+		//Formata percentual
+		var xPercInt = parseInt(pChartValueData.perc);
+		var xPercDec = String(dbsfaces.math.round(pChartValueData.perc - xPercInt, 2)).substring(1) + "%";
+		pChartValueData.dom.infoPercInt.text(xPercInt);
+		pChartValueData.dom.infoPercDec.text(xPercDec);
+
+
+		//Desenha arco
+		//Calcula posição do arco anterior desde que seja do mesmo relationalGroup
+		var xArcPercValuePrevious = 0;
+		if (pChartValueData.index > 0){
+			if (pChartValueData.relationalGroupIndex == pChartData.dom.childrenData[pChartValueData.index - 1].relationalGroupIndex){
+				xArcPercValuePrevious = (pChartData.dom.childrenData[pChartValueData.index - 1].totalValue  / pChartData.totalValue) * 100;
+			}
+		}
+		//Desenha elementodo arco e salva dados
+		pChartValueData.arcInfo = dbsfaces.chartsX.pvInitializeDrawArc(pChartData, 
+																	    pChartValueData.dom.point,
+																	    ((pChartData.diameter / 2) - pChartsData.infoHeight), //Raio externo do arco
+																	    pChartData.arcWidth, //Largura do arco
+																	    pChartValueData.relationalGroupIndex, 
+																	    xArcPercValuePrevious, 
+																	    pChartValueData.perc,
+																	    false);
+
+		//Define o ponto interno como ponto do chartvalue
+		pChartValueData.x = pChartValueData.arcInfo.externalPoint.x;
+		pChartValueData.y = pChartValueData.arcInfo.externalPoint.y;
+	},
+
+	pXInitializeDrawChartPieInfos: function(pChartData){
+		var xLeft = [];
+		var xRight = [];
+		var xCaptionHeightFator = 1.5;
+
+		//Crialista com os chartvalues a esquerda e a direita
+		pChartData.dom.childrenData.forEach(function(pChartValueData){
+			if (pChartValueData.arcInfo.degrees > 180){
+				xLeft.push(pChartValueData);
+				pChartValueData.dom.info.addClass("-left");
+			}else{
+				xRight.push(pChartValueData);
+				pChartValueData.dom.info.addClass("-right");
+			}
+		});
+		xLeft.sort(function(a, b){
+			return b.index - a.index;
+		});
+
+		//Cria lista com os relationaisgroups existentes a esquerda e a direita
+		var xLeftRelationalGroups = dbsfaces.chartsX.pXInitializeDrawChartPieInfosRelationalGroupCount(xLeft);
+		var xRightRelationalGroups = dbsfaces.chartsX.pXInitializeDrawChartPieInfosRelationalGroupCount(xRight);
+		
+		
+		var xMaxItens = Math.max(xLeft.length + ((xLeftRelationalGroups.length - 1) * xCaptionHeightFator), xRight.length + ((xRightRelationalGroups.length - 1) * xCaptionHeightFator));
+		var xValueSpace = pChartData.height / xMaxItens;
+		//Posição esquerder
+		dbsfaces.chartsX.pXInitializeDrawChartPieInfosPosition(true, pChartData.center.x - (pChartData.diameter/2) + 70, xLeft, xValueSpace, xCaptionHeightFator);
+		//Posição direita
+		dbsfaces.chartsX.pXInitializeDrawChartPieInfosPosition(false, pChartData.center.x + (pChartData.diameter/2) - 70, xRight, xValueSpace, xCaptionHeightFator);
+	},
+	
+
+	//Posiciona labels
+	pXInitializeDrawChartPieInfosPosition: function(pLeft, pX, pListChartValue, pLineHeight, pCaptionHeightFator){
+		var xIndexAnterior = -1;
+		var xY = 0;
+		var xTransformInfo = null;
+		var xPrintCaption = false;
+		for (var xI=0; xI < pListChartValue.length;  xI++){
+			xPrintCaption = (xIndexAnterior != pListChartValue[xI].relationalGroupIndex);
+			xIndexAnterior = pListChartValue[xI].relationalGroupIndex;
+			xTransformInfo = "translate(" + pX + " " + xY + ")";
+			if (xPrintCaption){
+				xY += pLineHeight * pCaptionHeightFator;
+				xI--; //Mantém no mesmo item;
+			}else{
+				pListChartValue[xI].dom.info.attr("transform", xTransformInfo);
+				xY += pLineHeight;
+			}
+		}
+	},
+
+	//Conta quandos relationalsgroups existem na lista
+	pXInitializeDrawChartPieInfosRelationalGroupCount: function(pListChartValue){
+		var xRelationalGroups = [];
+		pListChartValue.forEach(function(pChartValueData){
+			//Procura se já existe index na lista
+			var xRelationalGroupIndex = null;
+			for (var xI=0; xI < xRelationalGroups.length; xI++){
+				if (xRelationalGroups[xI] == pChartValueData.relationalGroupIndex){
+					xRelationalGroupIndex = pChartValueData.relationalGroupIndex;
+					break;
+				}
+			}
+			//Inclui se não existir 
+			if (xRelationalGroupIndex == null){
+				xRelationalGroups.push(pChartValueData.relationalGroupIndex);
+			}
+		});
+		return xRelationalGroups;
+	}
+	
 };
 

@@ -67,6 +67,34 @@
 	opacity:.6;
 }
 
+.dbs_chartX.-pie > .-chart > .-delta > .-value{
+	text-anchor: middle;
+	font-size: 2em;
+    font-weight: bold;
+    /* dominant-baseline: middle; */
+/* 	opacity: 0.9; */
+/* 	stroke:none; */
+/* 	font-weight: bold; */
+/* 	-webkit-transform-origin: center; */
+/* 	-moz-transform-origin: center; */
+/* 	-o-transform-origin: center; */
+/* 	transform-origin: center; */
+/*     -webkit-transform: translateY(.25em); */
+/*     -moz-transform: translateY(.25em); */
+/*     -o-transform: translateY(.25em); */
+/*     transform: translateY(.25em); */
+/* 	-webkit-transition: opacity linear .3s; */
+/*     -moz-transition: opacity linear .3s; */
+/*     -o-transition: opacity linear .3s; */
+/*     transition: opacity linear .3s; */
+}
+
+.dbs_chartX.-pie > .-chart > .-delta > .-value > .-int{
+}
+
+.dbs_chartX.-pie > .-chart > .-delta > .-value > .-dec{
+	font-size: .5em;
+}
 
 .dbs_chartX.-line{
     opacity:0.7;	
@@ -80,7 +108,7 @@
 	cursor: ew-resize;
 }
 
-.dbs_chartX.-line.-selected > .-chart{
+.dbs_chartX.-selected > .-chart{
     pointer-events: painted;
 }
 .dbs_chartX.-line > .-chart > .-path{
@@ -117,6 +145,7 @@
 .dbs_chartX.-line > .-chart > .-delta > .-value{
 	opacity: 0.9;
 	stroke:none;
+	text-anchor: middle;
 	font-size: 5em;
 	font-weight: bold;
 	-webkit-transform-origin: center;
@@ -127,15 +156,19 @@
     -moz-transform: translateY(.25em);
     -o-transform: translateY(.25em);
     transform: translateY(.25em);
-	text-anchor: middle;
 	-webkit-transition: opacity linear .3s;
     -moz-transition: opacity linear .3s;
     -o-transition: opacity linear .3s;
     transition: opacity linear .3s;
 }
-.dbs_chartX.-line > .-chart > .-delta > .-value > .-label{
-	font-size:.3em;
+
+.dbs_chartX.-line > .-chart > .-delta > .-value > .-int{
 }
+
+.dbs_chartX.-line > .-chart > .-delta > .-value > .-dec{
+	font-size: .5em;
+}
+
 
 .dbs_chartX.-line > .-chart > .-delta > .-handle > .-handle{  /*SVG */
     cursor: ew-resize;
