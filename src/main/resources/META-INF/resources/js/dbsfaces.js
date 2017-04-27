@@ -1148,7 +1148,7 @@ dbsfaces.format = {
 	number: function(pValue, pDecimals){
 //		var xLanguage = window.navigator.userLanguage || window.navigator.language;
 		pValue = dbsfaces.math.round(pValue, pDecimals);
-		return pValue.toLocaleString();
+		return pValue.toLocaleString(window.navigator.language, { minimumFractionDigits: pDecimals });
 //		var xDS = dbsfaces.format.getDecimalSeparator();
 //		console.log(xDS);
 //		//Ingles

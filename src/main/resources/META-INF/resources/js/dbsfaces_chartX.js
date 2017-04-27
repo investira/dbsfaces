@@ -42,10 +42,11 @@ dbsfaces.chartX = {
 				delta: null, //Container do delta
 				deltaHandle1Data: null, // DataHandle 1
 				deltaHandle2Data: null, // DataHandle 2
-				deltaValue: null, //Texto do valor + label do delta
-				deltaValueInt: null, //Texto do valor inteiro do delta
-				deltaValueDec: null, //Texto do valor decimal e sinal do percentual do delta
+				deltaPerc: null, //Texto do valor + label do delta
+				deltaPercInt: null, //Texto do percentual inteiro e sinal
+				deltaPercDec: null, //Texto do percentual decimal
 				deltaCircle: null, //Círculo que contem as informações
+				deltaValue: null, //Texto do valor decimal e sinal do percentual do delta
 				movingDeltaHandleData: null, //Handle que está em movimento(selecionado pelo usuário)
 				leftDeltaHandleData: null, //Handle mais a esquerda
 				rightDeltaHandleData: null //Handle mais a direita
@@ -452,11 +453,10 @@ dbsfaces.chartX = {
 	pvInitializeLayoutDelta: function(pChartData){
 		if (!pChartData.showDelta){return;}
 		pChartData.dom.delta = dbsfaces.svg.g(pChartData.dom.chart, "-delta", null, null);
-		//Cria elemento Value
-		pChartData.dom.deltaValue = dbsfaces.svg.text(pChartData.dom.delta, null, null, null, "-value", null, {fill:pChartData.color});
-//		pChartData.dom.deltaValue = dbsfaces.svg.text(pChartData.dom.delta, null, null, null, "-value", null, {fill:"white"});
-		pChartData.dom.deltaValueInt = dbsfaces.svg.tspan(pChartData.dom.deltaValue, "0", "-int", null, null);
-		pChartData.dom.deltaValueDec = dbsfaces.svg.tspan(pChartData.dom.deltaValue, "%", "-dec", null, null);
+		//Cria elemento Perc
+		pChartData.dom.deltaPerc = dbsfaces.svg.text(pChartData.dom.delta, null, null, null, "-perc", null, {fill:pChartData.color});
+		pChartData.dom.deltaPercInt = dbsfaces.svg.tspan(pChartData.dom.deltaPerc, null, "-int", null, null);
+		pChartData.dom.deltaPercDec = dbsfaces.svg.tspan(pChartData.dom.deltaPerc, null, "-dec", null, null);
 		//Cria elementos da guia do delta
 		if (pChartData.type == "line"){
 			//Guia 1
@@ -466,6 +466,8 @@ dbsfaces.chartX = {
 			pChartData.deltaHandle2Data = dbsfaces.chartX.pvInitializeLayoutChartLineDeltaHandle(pChartData, 2);
 			pChartData.dom.rightDeltaHandleData = pChartData.deltaHandle2Data;
 		}else if (pChartData.type == "pie"){
+			//Cria elemento Value
+			pChartData.dom.deltaValue = dbsfaces.svg.text(pChartData.dom.delta, null, null, null, "-value", null, {fill:pChartData.color});
 			//Cria círculo de sevirá de fundo para a exibição do delta
 			pChartData.dom.deltaCircle = dbsfaces.svg.circle(pChartData.dom.delta, null, null, null, "-circle", null, {fill:"white", stroke:"currentColor", "stroke-width":".1em"});
 			dbsfaces.ui.moveToBack(pChartData.dom.deltaCircle);
@@ -632,12 +634,13 @@ dbsfaces.chartX = {
 				//Exibe links entre os chartvalues
 				var xLinks = pChartData.dom.self.find("> .-chart > .-links > [key='" + pChartValueData.key + "']");
 				xLinks.addClass("-hover");
-//				xLinks.svgAttr("fill", pChartValueData.dom.self.css("color"));
 				xLinks = pChartData.dom.self.find("> .-chart > .-links > [b='" + pChartValueData.key + "']");
 				xLinks.addClass("-hover");
-				pChartData.dom.deltaCircle.svgAttr("fill", pChartValueData.dom.self.css("color"));
-				pChartData.dom.delta.css("color", pChartValueData.dom.info.svgAttr("fill"));
-//				xLinks.svgAttr("fill", pChartValueData.dom.self.css("color"));
+				//Configura as cores do delta
+				if (pChartData.showDelta){
+					pChartData.dom.deltaCircle.svgAttr("fill", pChartValueData.dom.self.css("color"));
+					pChartData.dom.delta.css("color", pChartValueData.dom.info.svgAttr("fill"));
+				}
 			}
 		}
 		return pChartValueData;
@@ -661,8 +664,10 @@ dbsfaces.chartX = {
 	pvShowDeltaValueChartPie: function(pChartData, pChartValueData){
 		if (pChartValueData == null){
 			dbsfaces.chartX.pvShowDeltaValue(pChartData, null);
+			pChartData.dom.deltaValue.text("");
 		}else{
 			dbsfaces.chartX.pvShowDeltaValue(pChartData, pChartValueData.perc);
+			pChartData.dom.deltaValue.text(dbsfaces.format.number(pChartValueData.value, 0));
 		}
 	},
 
@@ -723,12 +728,12 @@ dbsfaces.chartX = {
 	pvShowDeltaValue: function(pChartData, pValue){
 		if (pValue == null){
 //			pChartData.dom.deltaValueText.text("(na)");
-			pChartData.dom.deltaValueInt.text("");
-			pChartData.dom.deltaValueDec.text("");
+			pChartData.dom.deltaPercInt.text("");
+			pChartData.dom.deltaPercDec.text("");
 		}else{
 			var xSplit = dbsfaces.format.splitNumber(pValue);
-			pChartData.dom.deltaValueInt.text(xSplit.int);
-			pChartData.dom.deltaValueDec.text(xSplit.dec + "%");
+			pChartData.dom.deltaPercInt.text(xSplit.int);
+			pChartData.dom.deltaPercDec.text(xSplit.dec + "%");
 		}
 	},
 
