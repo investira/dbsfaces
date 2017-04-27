@@ -54,9 +54,6 @@ public class DBSChartsXRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(xWriter, "style", xCharts.getStyle());
 			DBSFaces.encodeAttribute(xWriter, "type", xCharts.getType());
 			DBSFaces.encodeAttribute(xWriter, "groupid", xCharts.getGroupId());
-			if (xCharts.getValueFormatMask().indexOf("%") > -1){
-				DBSFaces.encodeAttribute(xWriter, "perc", "perc");
-			}
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xCharts, DBSPassThruAttributes.getAttributes(Key.CHARTS));
 
 			pvEncodeContainer(pContext, xWriter, xCharts);

@@ -62,6 +62,7 @@
 }
 
 .dbs_chartX.-pie > .-chart > .-links > .-link{
+	fill: currentColor;
 	-webkit-transform: scale(0);
 	-moz-transform: scale(0);
 	-o-transform: scale(0);
@@ -85,21 +86,26 @@
 .dbs_chartX.-pie > .-chart > .-delta > .-circle.-hover{
 	visibility: visible;
 }
-.dbs_chartX.-pie > .-chart > .-delta > .-value{
-	
-}
 .dbs_chartX.-pie > .-chart > .-delta > .-perc{
 	fill: currentColor;
 	text-anchor: middle;
 	font-size: 1.8em;
     font-weight: 100;
+	-webkit-transform: translateY(-.2em);
+	-moz-transform: translateY(-.2em);
+	-o-transform: translateY(-.2em);
+	transform: translateY(-.2em);
 }
 .dbs_chartX.-pie > .-chart > .-delta > .-value{
 	fill: currentColor;
 	text-anchor: middle;
+    dominant-baseline: middle;
 	font-size: 1em;
     font-weight: 100;
-    transform: translateY(1em);
+    -webkit-transform: translateY(0.4em);
+    -moz-transform: translateY(0.4em);
+    -o-transform: translateY(0.4em);
+    transform: translateY(0.4em);
 }
 
 .dbs_chartX.-pie > .-chart > .-delta > .-perc > .-int{

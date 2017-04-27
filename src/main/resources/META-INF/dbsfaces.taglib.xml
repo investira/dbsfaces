@@ -3587,9 +3587,25 @@
 		</attribute>
 		<attribute>
 			<description>
-                Mascará para formatar o valor.
+                Quantida de casas decimal do valor
             </description>
-			<name>valueFormatMask</name>
+			<name>valueDecimalPlaces</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+		</attribute>
+		<attribute>
+			<description>
+                Prefixo do valor.
+            </description>
+			<name>valuePrefix</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Sufixo do valor.
+            </description>
+			<name>valueSufix</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>

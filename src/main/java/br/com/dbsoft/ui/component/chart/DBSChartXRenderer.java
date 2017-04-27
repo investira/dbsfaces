@@ -60,6 +60,9 @@ public class DBSChartXRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(xWriter, "class", xClass);
 			DBSFaces.encodeAttribute(xWriter, "caption", xChart.getCaption());
 			DBSFaces.encodeAttribute(xWriter, "color", xChart.getColor());
+			DBSFaces.encodeAttribute(xWriter, "vdp", xCharts.getValueDecmialPlaces());
+			DBSFaces.encodeAttribute(xWriter, "vpf", xCharts.getValuePrefix());
+			DBSFaces.encodeAttribute(xWriter, "vsf", xCharts.getValueSufix());
 //			if (!DBSObject.isEmpty(xChart.getColor())){
 //				DBSFaces.encodeAttribute(xWriter, "style", "color:" + xChart.getColor());
 //			}

@@ -20,7 +20,9 @@ public class DBSChartsX extends DBSUIOutput implements NamingContainer{
 		type,
 		caption,
 		footer,
-		valueFormatMask,
+		valueDecimalPlaces,
+		valuePrefix,
+		valueSufix,
 		showValue,
 		showLabel,
 		showDelta,
@@ -164,12 +166,30 @@ public class DBSChartsX extends DBSUIOutput implements NamingContainer{
 		handleAttribute("pieInternalCircleFator", pPieInternalCircleFator);
 	}
 
-	public String getValueFormatMask() {
-		return (String) getStateHelper().eval(PropertyKeys.valueFormatMask, "");
+	public String getValuePrefix() {
+		return (String) getStateHelper().eval(PropertyKeys.valuePrefix, null);
 	}
-	public void setValueFormatMask(String pValueFormatMask) {
-		getStateHelper().put(PropertyKeys.valueFormatMask, pValueFormatMask);
-		handleAttribute("valueFormatMask", pValueFormatMask);
+	
+	public void setValuePrefix(String pValuePrefix) {
+		getStateHelper().put(PropertyKeys.valuePrefix, pValuePrefix);
+		handleAttribute("valuePrefix", pValuePrefix);
+	}
+	
+	public String getValueSufix() {
+		return (String) getStateHelper().eval(PropertyKeys.valueSufix, null);
+	}
+	
+	public void setValueSufix(String pValueSufix) {
+		getStateHelper().put(PropertyKeys.valueSufix, pValueSufix);
+		handleAttribute("valueSufix", pValueSufix);
+	}
+
+	public Integer getValueDecmialPlaces() {
+		return (Integer) getStateHelper().eval(PropertyKeys.valueDecimalPlaces, 0);
+	}
+	public void setValueDecmialPlaces(Integer pValueDecimalPlaces) {
+		getStateHelper().put(PropertyKeys.valueDecimalPlaces, pValueDecimalPlaces);
+		handleAttribute("valueDecimalPlaces", pValueDecimalPlaces);
 	}
 
 	public String getGroupId() {

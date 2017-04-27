@@ -67,6 +67,9 @@ dbsfaces.chartX = {
 			colorLight: null, //Cor configurada na pvInitializeLayoutColor do dbscharts
 			currentColorInverted: tinycolor(xCharts.css("color")).invertLightness().setAlpha(1).toString(),
 			findPointTimeout: null,
+			valueDecimalPlaces: parseInt(pChart.attr("vdp")), //DecimalPlaces
+			valuePrefix: pChart.attr("vpf"), //Prefixo do valor
+			valueSufix: pChart.attr("vsf"), //Prefixo do valor
 			showDelta: pChart.hasClass("-showDelta"),
 			globalSequence: 0, //Número sequencial do item do chartValue, considerando todos os gráficos 
 			diameter: 0, //diametro do máximo (menor valor entre a altura e largura
@@ -81,6 +84,12 @@ dbsfaces.chartX = {
 		//COnfigura como cor nula quando não tiver sido informada. Posteriormente será calculado uma cor baseada no atributo CSS color(currentColor).
 		if (typeof xData.color == "undefined"){
 			xData.color = null;
+		}
+		if (typeof xData.valuePrefix == "undefined"){
+			xData.valuePrefix = "";
+		}
+		if (typeof xData.valueSufix == "undefined"){
+			xData.valueSufix = "";
 		}
 		xData.width = xData.dom.chart[0].getBoundingClientRect().width;
 		xData.height = xData.dom.chart[0].getBoundingClientRect().height;
@@ -667,7 +676,11 @@ dbsfaces.chartX = {
 			pChartData.dom.deltaValue.text("");
 		}else{
 			dbsfaces.chartX.pvShowDeltaValue(pChartData, pChartValueData.perc);
-			pChartData.dom.deltaValue.text(dbsfaces.format.number(pChartValueData.value, 0));
+			var xText = pChartData.valuePrefix + dbsfaces.format.number(pChartValueData.value, pChartData.valueDecimalPlaces) + pChartData.valueSufix;
+			pChartData.dom.deltaValue.text(xText);
+			//Ajusta o tamanho do fonte a partir do raio do círculo
+			var xFontSize = (parseInt(pChartData.dom.deltaCircle.attr("r")) * 2) / xText.length;
+			pChartData.dom.deltaValue.css("font-size", xFontSize);
 		}
 	},
 

@@ -1095,6 +1095,12 @@ dbsfaces.math = {
 			xTestNumber = pBinaryNumber >> xBitCount;
 		}
 		return xBits;
+	},
+	
+	distanceBetweenTwoPoints: function(pX1, pY1, pX2, pY2){
+		var xA = pX1 - pX2
+		var xB = pY1 - pY2
+		return Math.sqrt(xA*xA + xB*xB);
 	}
 
 };
