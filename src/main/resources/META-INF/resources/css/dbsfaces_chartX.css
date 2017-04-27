@@ -57,17 +57,37 @@
 	stroke: none;	
 }    
 .dbs_chartX.-pie > .-chart > .-links{
-	fill: none;
+	fill: currentColor;
+	stroke: none;
 }
 
 .dbs_chartX.-pie > .-chart > .-links > .-link{
-	opacity:0;
+	-webkit-transform: scale(0);
+	-moz-transform: scale(0);
+	-o-transform: scale(0);
+	transform: scale(0);
+	
 }
 .dbs_chartX.-pie > .-chart > .-links > .-link.-hover{
-	opacity:.6;
+	-webkit-transition: transform linear .3s;
+	-moz-transition: transform linear .3s;
+	-o-transition: transform linear .3s;
+	transition: transform linear .3s;
+	-webkit-transform: scale(1);
+	-moz-transform: scale(1);
+	-o-transform: scale(1);
+	transform: scale(1);
+}
+.dbs_chartX.-pie > .-chart > .-delta > .-circle{
+	visibility: hidden;
+}
+
+.dbs_chartX.-pie > .-chart > .-delta > .-circle.-hover{
+	visibility: visible;
 }
 
 .dbs_chartX.-pie > .-chart > .-delta > .-value{
+	fill: currentColor;
 	text-anchor: middle;
 	font-size: 2em;
     font-weight: bold;
@@ -193,7 +213,3 @@
 .dbs_chartX.-line > .-chart > .-delta > .-handle.-selected > .-handle > .-line{
     opacity: 0.3;
 }
-/* .dbs_chartX.-line.-hover > .-chart > .dbs_chartValueX.-hover > .-point{ */
-/*     stroke-width: .1em; */
-/*     stroke: currentColor; */
-/* } */

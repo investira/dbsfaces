@@ -45,6 +45,7 @@ dbsfaces.chartX = {
 				deltaValue: null, //Texto do valor + label do delta
 				deltaValueInt: null, //Texto do valor inteiro do delta
 				deltaValueDec: null, //Texto do valor decimal e sinal do percentual do delta
+				deltaCircle: null, //Círculo que contem as informações
 				movingDeltaHandleData: null, //Handle que está em movimento(selecionado pelo usuário)
 				leftDeltaHandleData: null, //Handle mais a esquerda
 				rightDeltaHandleData: null //Handle mais a direita
@@ -69,9 +70,12 @@ dbsfaces.chartX = {
 			globalSequence: 0, //Número sequencial do item do chartValue, considerando todos os gráficos 
 			diameter: 0, //diametro do máximo (menor valor entre a altura e largura
 			center : {x:0, y:0}, //Centro do gráfico
-			arcWidth: 0, //Largura do arco
+			arcWidth: 0, //largura do arco principal
 			arcFator: null, //Arco de cada relationalGroup(Divide diametro entres os relationalGroups)
-			arcSpace: 0.0005 //Espaço entre os arcos dos relationalgroups
+			arcSpace: 0.0005, //Espaço entre os arcos dos relationalgroups
+			pointRadius: 0, //Raio da posição do arco
+			pointLinkRadius: 0, //Raio da posição do arco que liga o arco principal do chartvalue ao centro
+			pointLinkWidth: 0 //Largura do arco que liga o arco principal do chartvalue ao centro 
 		}
 		//COnfigura como cor nula quando não tiver sido informada. Posteriormente será calculado uma cor baseada no atributo CSS color(currentColor).
 		if (typeof xData.color == "undefined"){
@@ -225,6 +229,7 @@ dbsfaces.chartX = {
 				self : null, // o próprio chartvalue
 				parent : pChartData.dom.self,  //o pai(chart)
 				point : null, //elemento point
+				pointLink : null, //elemento de liga point ao centro
 				info : null, //elemento que contém infos
 				infoValues : null, //elemento que contém os elementos dos textos do info(somente usado no chartpie)
 				infoLabel : null, //elemento que contém o label
@@ -330,6 +335,7 @@ dbsfaces.chartX = {
 			//Ponto
 //			pChartValueData.dom.point = dbsfaces.svg.path(pChartValueData.dom.self, null, "-point", null, {fill:"none"});
 			pChartValueData.dom.point = dbsfaces.svg.path(pChartValueData.dom.self, null, "-point", null, {stroke:"currentColor", fill:"none"});
+			pChartValueData.dom.pointLink = dbsfaces.svg.path(pChartValueData.dom.self, null, "-pointLink", null, {stroke:"currentColor", fill:"none"});
 			//Path que liga o point ao label
 //			pChartValueData.dom.infoPath = dbsfaces.svg.path(pChartValueData.dom.self, null, "-path", null, null);
 			//Container do value
@@ -447,8 +453,8 @@ dbsfaces.chartX = {
 		if (!pChartData.showDelta){return;}
 		pChartData.dom.delta = dbsfaces.svg.g(pChartData.dom.chart, "-delta", null, null);
 		//Cria elemento Value
-//		pChartData.dom.deltaValue = dbsfaces.svg.text(pChartData.dom.delta, null, null, null, "-value", null, {fill:pChartData.color});
-		pChartData.dom.deltaValue = dbsfaces.svg.text(pChartData.dom.delta, null, null, null, "-value", null, {fill:"white"});
+		pChartData.dom.deltaValue = dbsfaces.svg.text(pChartData.dom.delta, null, null, null, "-value", null, {fill:pChartData.color});
+//		pChartData.dom.deltaValue = dbsfaces.svg.text(pChartData.dom.delta, null, null, null, "-value", null, {fill:"white"});
 		pChartData.dom.deltaValueInt = dbsfaces.svg.tspan(pChartData.dom.deltaValue, "0", "-int", null, null);
 		pChartData.dom.deltaValueDec = dbsfaces.svg.tspan(pChartData.dom.deltaValue, "%", "-dec", null, null);
 		//Cria elementos da guia do delta
@@ -460,9 +466,11 @@ dbsfaces.chartX = {
 			pChartData.deltaHandle2Data = dbsfaces.chartX.pvInitializeLayoutChartLineDeltaHandle(pChartData, 2);
 			pChartData.dom.rightDeltaHandleData = pChartData.deltaHandle2Data;
 		}else if (pChartData.type == "pie"){
-			var xCircle = dbsfaces.svg.circle(pChartData.dom.delta, "120", "109", "3em", null, null, {fill:"rgba(255,255,255,0.3)", stroke:"currentColor", "stroke-width":"1px"});
-//			var xCircle = dbsfaces.svg.circle(pChartData.dom.delta, "120", "109", "3em", null, null, {fill:"currentColor", stroke:"none"});
-			dbsfaces.ui.moveToBack(xCircle);
+			//Cria círculo de sevirá de fundo para a exibição do delta
+			pChartData.dom.deltaCircle = dbsfaces.svg.circle(pChartData.dom.delta, null, null, null, "-circle", null, {fill:"white", stroke:"currentColor", "stroke-width":".1em"});
+			dbsfaces.ui.moveToBack(pChartData.dom.deltaCircle);
+			//Encobre 
+			dbsfaces.ui.moveToFront(pChartData.dom.values);
 		}
 	},
 	
@@ -605,12 +613,12 @@ dbsfaces.chartX = {
 			 && pOldChartValueData == pChartValueData){
 				return pChartValueData;
 			}else{
-//XXX
-//				pOldChartValueData.dom.self.removeClass("-hover");
-//				//Esconde links entre os chartvalues
-//				if (pChartData.type == "pie"){
-//					pChartData.dom.self.find("> .-chart > .-links > .-hover").removeClass("-hover");
-//				}	
+				pOldChartValueData.dom.self.removeClass("-hover");
+				//Esconde links entre os chartvalues
+				if (pChartData.type == "pie"){
+					pChartData.dom.self.find("> .-chart > .-links > .-hover").removeClass("-hover");
+					pChartData.dom.deltaCircle.removeClass("-hover");
+				}	
 			}
 		}
 		//Ativa hover atual
@@ -620,13 +628,16 @@ dbsfaces.chartX = {
 				//Move chartvalue para a frente de todos os outros
 				dbsfaces.ui.moveToFront(pChartValueData.dom.self);
 			}else if (pChartData.type == "pie"){
+				pChartData.dom.deltaCircle.addClass("-hover");
 				//Exibe links entre os chartvalues
-				var xLinks = pChartData.dom.self.find("> .-chart > .-links > [a='" + pChartValueData.key + "']");
+				var xLinks = pChartData.dom.self.find("> .-chart > .-links > [key='" + pChartValueData.key + "']");
 				xLinks.addClass("-hover");
-				xLinks.svgAttr("stroke", pChartValueData.dom.self.css("color"));
+//				xLinks.svgAttr("fill", pChartValueData.dom.self.css("color"));
 				xLinks = pChartData.dom.self.find("> .-chart > .-links > [b='" + pChartValueData.key + "']");
 				xLinks.addClass("-hover");
-				xLinks.svgAttr("stroke", pChartValueData.dom.self.css("color"));
+				pChartData.dom.deltaCircle.svgAttr("fill", pChartValueData.dom.self.css("color"));
+				pChartData.dom.delta.css("color", pChartValueData.dom.info.svgAttr("fill"));
+//				xLinks.svgAttr("fill", pChartValueData.dom.self.css("color"));
 			}
 		}
 		return pChartValueData;
@@ -649,8 +660,7 @@ dbsfaces.chartX = {
 
 	pvShowDeltaValueChartPie: function(pChartData, pChartValueData){
 		if (pChartValueData == null){
-//XXX
-//			dbsfaces.chartX.pvShowDeltaValue(pChartData, null);
+			dbsfaces.chartX.pvShowDeltaValue(pChartData, null);
 		}else{
 			dbsfaces.chartX.pvShowDeltaValue(pChartData, pChartValueData.perc);
 		}
