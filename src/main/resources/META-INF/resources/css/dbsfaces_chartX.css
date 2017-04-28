@@ -79,39 +79,55 @@
 	-o-transform: scale(1);
 	transform: scale(1);
 }
-.dbs_chartX.-pie > .-chart > .-delta > .-circle{
-	visibility: hidden;
+
+.dbs_chartX.-pie > .-chart > .-delta{
+	cursor: pointer;
 }
 
-.dbs_chartX.-pie > .-chart > .-delta > .-circle.-hover{
+.dbs_chartX.-pie > .-chart > .-delta > .-circle{
+	visibility: hidden;
+	transform-origin: center;
+	stroke: currentColor;
+	stroke-width: 0.1em;
+}
+
+.dbs_chartX.-pie.-hover > .-chart > .-delta > .-circle{
 	visibility: visible;
 }
+
+
 .dbs_chartX.-pie > .-chart > .-delta > .-perc{
 	fill: currentColor;
 	text-anchor: middle;
-	font-size: 1.8em;
+	font-size: 1.7em;
     font-weight: 100;
-	-webkit-transform: translateY(-.2em);
-	-moz-transform: translateY(-.2em);
-	-o-transform: translateY(-.2em);
-	transform: translateY(-.2em);
+	-webkit-transform: translateY(-.4em);
+	-moz-transform: translateY(-.4em);
+	-o-transform: translateY(-.4em);
+	transform: translateY(-.4em);
 }
+
 .dbs_chartX.-pie > .-chart > .-delta > .-value{
 	fill: currentColor;
 	text-anchor: middle;
     dominant-baseline: middle;
-	font-size: 1em;
+}
+
+.dbs_chartX.-pie.-hover > .-chart > .-delta > .-perc{
+}
+
+.dbs_chartX.-pie.-hover > .-chart > .-delta > .-value{
     font-weight: 100;
-    -webkit-transform: translateY(0.4em);
-    -moz-transform: translateY(0.4em);
-    -o-transform: translateY(0.4em);
-    transform: translateY(0.4em);
+    -webkit-transform: translateY(0.3em);
+    -moz-transform: translateY(0.3em);
+    -o-transform: translateY(0.3em);
+    transform: translateY(0.3em);
 }
 
-.dbs_chartX.-pie > .-chart > .-delta > .-perc > .-int{
+.dbs_chartX.-pie.-hover > .-chart > .-delta > .-perc > .-int{
 }
 
-.dbs_chartX.-pie > .-chart > .-delta > .-perc > .-dec{
+.dbs_chartX.-pie.-hover > .-chart > .-delta > .-perc > .-dec{
 	font-size: .5em;
 }
 

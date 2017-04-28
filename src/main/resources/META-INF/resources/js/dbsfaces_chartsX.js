@@ -151,10 +151,7 @@ dbsfaces.chartsX = {
 				pChartsData.scaleX = pChartsData.width / xMaxCount;
 				pChartsData.scaleY = -pChartsData.height / (pChartsData.dom.maxChartValueData.value - pChartsData.dom.minChartValueData.value); //Scale vertical. obs:invertida já que a coordenada do svg desce quando o valor é maior;
 			}else if (pChartsData.type == "pie"){
-//				console.log(pChartsData.dom.maxLabelChartValueData.dom.infoLabel[0].getBoundingClientRect().width + "\t" + 
-//						    pChartsData.dom.maxLabelChartValueData.dom.infoLabel[0].getComputedTextLength() + "\t" + 
-//						    pChartsData.dom.maxLabelChartValueData.dom.infoLabel[0].getBBox().width);
-				pChartsData.infoWidth = pChartsData.dom.maxLabelChartValueData.dom.infoLabel[0].getComputedTextLength() * 1.10;
+				pChartsData.infoWidth = pChartsData.dom.maxLabelChartValueData.dom.infoLabel[0].getComputedTextLength() * 1.10; 
 				pChartsData.infoHeight = 0; //Será configurado posteriomente como a altura do caption do relationalgroup(se houver);
 			}
 		}else{
@@ -206,7 +203,7 @@ dbsfaces.chartsX = {
 		dbsfaces.chartsX.pvInitializeDrawSetColor(pChartsData);
 	},
 
-	pvInitializeDrawInitializePie(pChartsData, pChartData){
+	pvInitializeDrawInitializePie: function(pChartsData, pChartData){
 		//Configura medida do arco de cada relationa group
 		//Divide diametro entres os relationalGroups
 		pChartData.arcFator = dbsfaces.math.PIDiameterFactor / pChartData.relationalCaptionsCount;
@@ -245,7 +242,7 @@ dbsfaces.chartsX = {
 		//Raio do posição do arco que liga o ponto ao círculo central
 		pChartData.pointLinkRadius = pChartData.pointRadius - pChartData.arcWidth;
 		//Largura do posição do arco que liga o ponto ao círculo central
-		pChartData.pointLinkWidth =  pChartData.pointLinkRadius / 3 + 2;
+		pChartData.pointLinkWidth =  (pChartData.pointLinkRadius / 3) + 2;
 		
 		//Define dimensão do circulo interno do delta
 		pChartData.dom.deltaCircle.svgAttr("cx", pChartData.center.x);
@@ -432,7 +429,7 @@ dbsfaces.chartsX = {
 
 
 	
-	pvInitializeDrawDelta(pChartsData, pChartData){
+	pvInitializeDrawDelta: function(pChartsData, pChartData){
 		if (pChartsData.showDelta){
 			if (pChartData.type == "line"){
 				//Primeiro item do delta
@@ -469,7 +466,7 @@ dbsfaces.chartsX = {
 	},
 	
 	//Desenha link dos relacionamentos
-	pvInitializeDrawRelationships(pChartsData, pChartData){
+	pvInitializeDrawRelationships: function(pChartsData, pChartData){
 //		var xLinkArc = dbsfaces.math.round((pChartData.width / pChartData.relationalCaptionsCount) / 10, 0);
 		pChartData.relationships.forEach(function(pRelationship){
 			//Arco total 
@@ -519,7 +516,7 @@ dbsfaces.chartsX = {
 	},
 	
 	//Desenha link dos relacionamentos
-	pvInitializeDrawRelationshipsArc(pChartData, pChartValueData, pRelationalArcAngle, pKey, pKeyB){
+	pvInitializeDrawRelationshipsArc: function(pChartData, pChartValueData, pRelationalArcAngle, pKey, pKeyB){
 		var xAngleScale;
 		//Distância entre os angulos
 		xAngleScale = pChartValueData.arcInfo.endAngle - pChartValueData.arcInfo.startAngle;

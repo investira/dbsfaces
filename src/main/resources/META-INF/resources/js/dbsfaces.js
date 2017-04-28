@@ -494,12 +494,25 @@ dbsfaces.ui = {
 			xToE.appendChild(xE);
 		}
 	},
+	
 	moveToBack: function(pElement){
 		var xE = pElement;
 		if (xE instanceof jQuery){
 			xE = pElement.get(0);
 		}
 		xE.parentElement.insertBefore(xE, xE.parentElement.childNodes[0]);
+	},
+	
+	recreate: function(pElement){
+		var xE = pElement;
+		if (xE instanceof jQuery){
+			xE = pElement.get(0);
+		}
+		var xI = xE.childElementCount;
+		if (xI > 0){
+			xI--;
+		}
+		xE.parentElement.insertBefore(xE, xE.parentElement.childNodes[xI]);
 	},
 	
 	getRectangle : function(obj) {
@@ -1101,6 +1114,17 @@ dbsfaces.math = {
 		var xA = pX1 - pX2
 		var xB = pY1 - pY2
 		return Math.sqrt(xA*xA + xB*xB);
+	},
+	
+	sign: function(pValue){
+		//Math.sign não funciona em browsers antigos
+		if (pValue > 0){
+			return 1;
+		}else if (pValue < 0){
+			return -1;
+		}else{
+			return 0;
+		}
 	}
 
 };
@@ -1233,7 +1257,11 @@ dbsfaces.string = {
 	fromCharCode: function(pVal){
 		//Ajuste para os códigos numéricos retornados pelo teclado estendido.
 		return String.fromCharCode((96 <= pVal && pVal <= 105)? pVal-48 : pVal);
-	}	
+	},
+	
+	repeat: function(pString, pTimes){
+		return Array(pTimes).join(pString); //String.repeat não funciona em browsers antigos
+	}
 };
 
 dbsfaces.ajax = {

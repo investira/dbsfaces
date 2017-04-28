@@ -337,7 +337,7 @@ dbsfaces.slider = {
 		dbsfaces.slider.pvSetValuePerc(pSliderData, xLengthFator);
 	},
 
-	setInputValue(pSliderData, pInputValue){
+	setInputValue: function(pSliderData, pInputValue){
 		//Salva como string
 		pSliderData.input.attr("value", dbsfaces.format.number(pInputValue, pSliderData.dp));
 		//Salva como float

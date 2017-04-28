@@ -79,7 +79,8 @@ dbsfaces.chartX = {
 			arcSpace: 0.0005, //Espaço entre os arcos dos relationalgroups
 			pointRadius: 0, //Raio da posição do arco
 			pointLinkRadius: 0, //Raio da posição do arco que liga o arco principal do chartvalue ao centro
-			pointLinkWidth: 0 //Largura do arco que liga o arco principal do chartvalue ao centro 
+			pointLinkWidth: 0, //Largura do arco que liga o arco principal do chartvalue ao centro
+			hoverLink: false //se hover sobre os link está ativo
 		}
 		//COnfigura como cor nula quando não tiver sido informada. Posteriormente será calculado uma cor baseada no atributo CSS color(currentColor).
 		if (typeof xData.color == "undefined"){
@@ -224,7 +225,7 @@ dbsfaces.chartX = {
 	pvInitializeChartValuesAddKeyToBinaryKey: function(pBinaryKey, pIndex){
 		var xLengthDif = pIndex - pBinaryKey.length + 1; 
 		if (xLengthDif > 0){
-			pBinaryKey = "0".repeat(xLengthDif) + pBinaryKey;
+			pBinaryKey = dbsfaces.string.repeat("0", xLengthDif) + pBinaryKey;
 		}
 		var xStart = pBinaryKey.length - pIndex - 1;
 		var xEnd = xStart + 1;
@@ -343,7 +344,6 @@ dbsfaces.chartX = {
 			pChartValueData.dom.point = dbsfaces.svg.path(pChartValueData.dom.self, null, "-point", null, null);
 		}else if (pChartData.type == "pie"){
 			//Ponto
-//			pChartValueData.dom.point = dbsfaces.svg.path(pChartValueData.dom.self, null, "-point", null, {fill:"none"});
 			pChartValueData.dom.point = dbsfaces.svg.path(pChartValueData.dom.self, null, "-point", null, {stroke:"currentColor", fill:"none"});
 			pChartValueData.dom.pointLink = dbsfaces.svg.path(pChartValueData.dom.self, null, "-pointLink", null, {stroke:"currentColor", fill:"none"});
 			//Path que liga o point ao label
@@ -351,17 +351,13 @@ dbsfaces.chartX = {
 			//Container do value
 			pChartValueData.dom.infoValues = dbsfaces.svg.g(pChartValueData.dom.info, "-values", null, null);
 			//Texto do Label
-			pChartValueData.dom.infoLabel = dbsfaces.svg.text(pChartValueData.dom.infoValues, "0.2em", null, pChartValueData.label, "-label", null, null);
-//			pChartValueData.dom.infoLabel = dbsfaces.svg.text(pChartValueData.dom.infoValues, "3.3em", "-.2em", pChartValueData.label, "-label", null, null);
+			pChartValueData.dom.infoLabel = dbsfaces.svg.text(pChartValueData.dom.infoValues, "0.4em", null, pChartValueData.label, "-label", null, null);
 			//Texto do Valor
 			pChartValueData.dom.infoValue = dbsfaces.svg.text(pChartValueData.dom.infoValues, "0.1em", ".8em", pChartValueData.value, "-value", null, null);
-//			pChartValueData.dom.infoValue = dbsfaces.svg.text(pChartValueData.dom.infoValues, "3.3em", ".8em", pChartValueData.value, "-value", null, null);
 			//BoxPerc
 			pChartValueData.dom.infoPercBox = dbsfaces.svg.rect(pChartValueData.dom.infoValues, "7em", "-1em", "1em", "1em", ".2em", ".2em", "-percBox", null, null); //'r' precisa ser um atributo por problema no FIREFOX
-//			pChartValueData.dom.infoPercBox = dbsfaces.svg.rect(pChartValueData.dom.infoValues, ".2em", "-1em", "3em", "2em", ".2em", ".2em", "-percBox", null, null); //'r' precisa ser um atributo por problema no FIREFOX
 			//Texto do Perc
 			pChartValueData.dom.infoPerc = dbsfaces.svg.text(pChartValueData.dom.infoValues, "7.4em", ".2em", null, "-perc", null, null);
-//			pChartValueData.dom.infoPerc = dbsfaces.svg.text(pChartValueData.dom.infoValues, ".4em", ".2em", null, "-perc", null, null);
 			//Texto dos Inteiros do Perc
 			pChartValueData.dom.infoPercInt = dbsfaces.svg.tspan(pChartValueData.dom.infoPerc, null, "-int", null, null);
 			//Texto dos Decimais do Perc
@@ -384,7 +380,6 @@ dbsfaces.chartX = {
 				//Seleciona chartvalue encontrado
 				dbsfaces.chartX.selectChartValue(pChartData, xChartValueData);
 				e.stopImmediatePropagation();
-				$(this).blur();
 				return false;
 			});
 		}
@@ -463,6 +458,7 @@ dbsfaces.chartX = {
 		if (!pChartData.showDelta){return;}
 		pChartData.dom.delta = dbsfaces.svg.g(pChartData.dom.chart, "-delta", null, null);
 		//Cria elemento Perc
+//		pChartData.dom.deltaPerc = dbsfaces.svg.text(pChartData.dom.delta, null, null, null, "-perc", null, {fill:pChartData.color, transform:"translate(0 -.3em)"});
 		pChartData.dom.deltaPerc = dbsfaces.svg.text(pChartData.dom.delta, null, null, null, "-perc", null, {fill:pChartData.color});
 		pChartData.dom.deltaPercInt = dbsfaces.svg.tspan(pChartData.dom.deltaPerc, null, "-int", null, null);
 		pChartData.dom.deltaPercDec = dbsfaces.svg.tspan(pChartData.dom.deltaPerc, null, "-dec", null, null);
@@ -476,22 +472,31 @@ dbsfaces.chartX = {
 			pChartData.dom.rightDeltaHandleData = pChartData.deltaHandle2Data;
 		}else if (pChartData.type == "pie"){
 			//Cria elemento Value
-			pChartData.dom.deltaValue = dbsfaces.svg.text(pChartData.dom.delta, null, null, null, "-value", null, {fill:pChartData.color});
+			pChartData.dom.deltaValue = dbsfaces.svg.text(pChartData.dom.delta, null, null, null, "-value", null, null);
 			//Cria círculo de sevirá de fundo para a exibição do delta
-			pChartData.dom.deltaCircle = dbsfaces.svg.circle(pChartData.dom.delta, null, null, null, "-circle", null, {fill:"white", stroke:"currentColor", "stroke-width":".1em"});
+			pChartData.dom.deltaCircle = dbsfaces.svg.circle(pChartData.dom.delta, null, null, null, "-circle", null, null);
 			dbsfaces.ui.moveToBack(pChartData.dom.deltaCircle);
+			//Captura movimento para ativar hover sobre os links
+			pChartData.dom.delta.on("mousedown touchstart", function(e){
+				dbsfaces.chartX.pvSetHoverLink($(this).closest(".dbs_chartX").data("data"));
+				e.stopImmediatePropagation();
+				return false;
+			});
 			//Encobre 
 			dbsfaces.ui.moveToFront(pChartData.dom.values);
 		}
+		//Zera valor do delta atual
+		dbsfaces.chartX.pvShowDelta(pChartData, null);
 	},
 	
+
 	pvInitializeLayoutChartLine: function(pChartData){
 		//Cria elemento que será a linha que conecta os pontos
 		pChartData.dom.path = dbsfaces.svg.path(pChartData.dom.chart, null, "-path", "stroke:" + pChartData.color, null);
 		dbsfaces.ui.moveToBack(pChartData.dom.path);
 
 		
-		//Captura movimento do mouse para seleciona ponto
+		//Captura movimento para seleciona ponto
 		if (pChartData.type == "line"){
 			pChartData.dom.self.on("mousemove touchmove touchstart", function(e){
 				var xChart = $(this);
@@ -517,6 +522,200 @@ dbsfaces.chartX = {
 		dbsfaces.ui.moveToBack(pChartData.dom.relationalCaptions);
 	},
 
+	
+	pvShowDelta: function(pChartData, pChartValueData){
+		if (!pChartData.hoverLink){
+			if (pChartData.type == "line"){
+				dbsfaces.chartX.pvShowDeltaChartLine(pChartData, pChartValueData);
+			}else if (pChartData.type == "pie"){
+				dbsfaces.chartX.pvShowDeltaChartPie(pChartData, pChartValueData);
+			}
+		}
+	},
+
+	pvShowDeltaChartPie: function(pChartData, pChartValueData){
+		if (pChartValueData == null){
+			//Exibe valor total do delta
+			dbsfaces.chartX.pvShowDeltaValue(pChartData, null);
+			//Exibe percentual do delta
+			dbsfaces.chartX.pvShowDeltaPerc(pChartData, null);
+		}else{
+			//Exibe valor do delta
+			dbsfaces.chartX.pvShowDeltaValue(pChartData, pChartValueData.value);
+			//Exibe percentual do delta
+			dbsfaces.chartX.pvShowDeltaPerc(pChartData, pChartValueData.perc);
+		}
+		//Seleciona chartvalue encontrado
+		pChartData.dom.hoverChartValueData = dbsfaces.chartX.pvHover(pChartData, pChartValueData, pChartData.dom.hoverChartValueData);
+	},
+
+	
+	pvShowDeltaChartLine: function(pChartData, pChartValueData){
+		if (pChartData.dom.movingDeltaHandleData == null){return;}
+		var xChartsData = pChartData.dom.parent.data("data"); 
+		if (xChartsData == null
+		 || !xChartsData.showDelta){return;}
+		
+		var xX;
+		var xWidth;
+		var xTrocou = false;
+		//Retira hover de ambos para recolocar posteriormente. Isto evita apagar hover quando left e right estão no mesmo ponto
+		dbsfaces.chartX.pvHover(pChartData, null, pChartData.dom.rightDeltaHandleData.dom.chartValueData);
+		dbsfaces.chartX.pvHover(pChartData, null, pChartData.dom.leftDeltaHandleData.dom.chartValueData);
+		
+		//Salva qual o chartvaluedata está vinculado ao handle
+		pChartData.dom.movingDeltaHandleData.dom.chartValueData = pChartValueData;
+		//Se for selecionado o handle a direita, mas a posição selecionada estiver mais a esquerda do que handle a esquerda,
+		//Seta o handle a esquerda corrente como sendo a esquerda
+		//e o handle a direita passa a ser o handle a esquerda. 
+		if (pChartData.dom.movingDeltaHandleData == pChartData.dom.rightDeltaHandleData){
+			if (pChartValueData.x < parseFloat(pChartData.dom.leftDeltaHandleData.dom.handle.svgAttr("x"))){
+				pChartData.dom.rightDeltaHandleData = pChartData.dom.leftDeltaHandleData;
+				pChartData.dom.leftDeltaHandleData = pChartData.dom.movingDeltaHandleData;
+			}
+		//Vice-versa quando selecionado o handle a esquerda, conforme explicação acima.
+		}else{
+			if (pChartValueData.x > parseFloat(pChartData.dom.rightDeltaHandleData.dom.handle.svgAttr("x"))){
+				pChartData.dom.leftDeltaHandleData = pChartData.dom.rightDeltaHandleData;
+				pChartData.dom.rightDeltaHandleData = pChartData.dom.movingDeltaHandleData;
+			}
+		}
+		//Configura posição e tamanho do rect
+		if (pChartData.dom.leftDeltaHandleData.dom.chartValueData != null){
+			pChartData.dom.leftDeltaHandleData.dom.rect.svgAttr("width", pChartData.dom.leftDeltaHandleData.dom.chartValueData.x - xChartsData.infoWidth);
+			pChartData.dom.leftDeltaHandleData.dom.rect.svgAttr("x", xChartsData.infoWidth);
+			//Seta hover
+			dbsfaces.chartX.pvHover(pChartData, pChartData.dom.leftDeltaHandleData.dom.chartValueData, null);
+		}
+		if (pChartData.dom.rightDeltaHandleData.dom.chartValueData != null){
+			pChartData.dom.rightDeltaHandleData.dom.rect.svgAttr("width", xChartsData.width - pChartData.dom.rightDeltaHandleData.dom.chartValueData.x + xChartsData.infoWidth);
+			pChartData.dom.rightDeltaHandleData.dom.rect.svgAttr("x", pChartData.dom.rightDeltaHandleData.dom.chartValueData.x);
+			//Seta hover
+			dbsfaces.chartX.pvHover(pChartData, pChartData.dom.rightDeltaHandleData.dom.chartValueData, null);
+		}
+		//Configura posição do handle
+		pChartData.dom.movingDeltaHandleData.dom.handle.svgAttr("x", pChartValueData.x);
+		//Exibe percentual do delta
+		var xValue = dbsfaces.chartX.pvCalcDeltaChartLine(pChartData);
+		dbsfaces.chartX.pvShowDeltaPerc(pChartData, xValue);
+	},
+
+	pvShowDeltaValue: function(pChartData, pValue){
+		var xDiameter = 0;
+		if (pValue == null){
+			pValue = pChartData.totalValue;
+			if (pChartData.pointLinkRadius == 0){
+				return;
+			}
+			xDiameter = pChartData.pointLinkRadius * 1.5;
+		}else{
+			xDiameter = parseInt(pChartData.dom.deltaCircle.attr("r")) * 1.5;
+		}
+		var xValueText = pChartData.valuePrefix + dbsfaces.format.number(pValue, pChartData.valueDecimalPlaces) + pChartData.valueSufix;
+		pChartData.dom.deltaValue.text(xValueText);
+		//Ajusta o tamanho do fonte a partir do raio do círculo
+		var xFator = dbsfaces.math.round(xDiameter / pChartData.dom.deltaValue[0].getComputedTextLength(), 1);
+		pChartData.dom.deltaValue.css("font-size", parseFloat(pChartData.dom.deltaValue.css("font-size")) * xFator);
+	},
+
+	pvShowDeltaPerc: function(pChartData, pPerc){
+		if (pPerc == null){
+		//xxxhover
+			pChartData.dom.deltaPercInt.text("");
+			pChartData.dom.deltaPercDec.text("");
+		}else{
+			var xSplit = dbsfaces.format.splitNumber(pPerc);
+			pChartData.dom.deltaPercInt.text(xSplit.int);
+			pChartData.dom.deltaPercDec.text(xSplit.dec + "%");
+		}
+	},
+
+	pvHover: function(pChartData, pChartValueData, pOldChartValueData){
+
+		//Remove hover anterios
+		if (pOldChartValueData != null){
+			if (pChartValueData != null 
+			 && pOldChartValueData == pChartValueData){
+				return pChartValueData;
+			}else{
+				//xxxhover
+				pOldChartValueData.dom.self.removeClass("-hover");
+				pChartData.dom.self.removeClass("-hover");
+				//Esconde links entre os chartvalues
+				if (pChartData.type == "pie"){
+					pChartData.dom.self.find("> .-chart > .-links > .-hover").removeClass("-hover");
+					//Configura as cores do delta
+					pChartData.dom.delta.css("color", "");
+				}	
+			}
+		}
+		//Ativa hover atual
+		if (pChartValueData != null){
+			pChartData.dom.self.addClass("-hover");
+			pChartValueData.dom.self.addClass("-hover");
+			if (pChartData.type == "line"){
+				//Move chartvalue para a frente de todos os outros
+				dbsfaces.ui.moveToFront(pChartValueData.dom.self);
+			}else if (pChartData.type == "pie"){
+				//Exibe links entre os chartvalues
+				var xLinks = pChartData.dom.self.find("> .-chart > .-links > [key='" + pChartValueData.key + "']");
+				xLinks.addClass("-hover");
+				xLinks = pChartData.dom.self.find("> .-chart > .-links > [b='" + pChartValueData.key + "']");
+				xLinks.addClass("-hover");
+				//Configura as cores do delta
+				if (pChartData.showDelta){
+					pChartData.dom.deltaCircle.svgAttr("fill", pChartValueData.dom.self.css("color"));
+					pChartData.dom.delta.css("color", pChartValueData.dom.info.svgAttr("fill"));
+				}
+			}
+		}
+		//Artifício para corrigir problema no safari que não considera o transform do css aplicado dinamicamente
+		dbsfaces.ui.recreate(pChartData.dom.delta);
+		return pChartValueData;
+	},
+	
+	pvSetHoverLink: function(pChartData){
+		var xClass = "-a_quick_pulse";
+		pChartData.dom.deltaCircle.toggleClass(xClass);
+		pChartData.hoverLink = pChartData.dom.deltaCircle.hasClass(xClass);
+		if (!pChartData.hoverLink){
+			dbsfaces.chartX.selectChartValue(pChartData, null);
+		}
+	},
+
+	pvHoverLink: function(pChartData){
+	},
+	
+	pvCalcDeltaChartLine: function(pChartData){
+		if (pChartData.dom.rightDeltaHandleData.dom.chartValueData == null
+		 || pChartData.dom.rightDeltaHandleData.dom.chartValueData == null){
+			return null; 
+		}
+		var xLeftValue = pChartData.dom.leftDeltaHandleData.dom.chartValueData.value;
+		var xRightValue = pChartData.dom.rightDeltaHandleData.dom.chartValueData.value;
+		var xChartsData = pChartData.dom.parent.data("data");
+		if (xLeftValue == 0
+		 || xRightValue == 0
+		 || dbsfaces.math.sign(xLeftValue) != dbsfaces.math.sign(xRightValue)
+		 || xChartsData == null){
+			return null;
+		}
+		var xValue;
+		if (xChartsData.isPerc){
+			xValue = (xRightValue - xLeftValue);
+			xValue *= 100;
+		}else{
+			if (xLeftValue < 0){
+				xValue = (xLeftValue / xRightValue);
+			}else{
+				xValue = (xRightValue / xLeftValue);;
+			}
+			xValue = dbsfaces.math.round(xValue, 4);
+			xValue = (xValue - 1) * 100;
+		}
+		return dbsfaces.format.number(xValue, 2);
+	},
+	
 	//Procura ponto da caminho(path)
 	findPoint: function(e, pChartData){
 		var xDecimals = 1;
@@ -578,7 +777,6 @@ dbsfaces.chartX = {
 		}
 	},
 	
-
 	setMovingDeltaHandleData: function(pChartData, pDeltaHandleData){
 		//Indica se handle está em movimento
 		if (pDeltaHandleData == null){
@@ -614,171 +812,8 @@ dbsfaces.chartX = {
 	
 	clearChartValue: function(pChart){
 		pChartData.originalValues = [];
-	},
-	
-	
-	pvHover: function(pChartData, pChartValueData, pOldChartValueData){
-		//Remove hover anterios
-		if (pOldChartValueData != null){
-			if (pChartValueData != null 
-			 && pOldChartValueData == pChartValueData){
-				return pChartValueData;
-			}else{
-				pOldChartValueData.dom.self.removeClass("-hover");
-				//Esconde links entre os chartvalues
-				if (pChartData.type == "pie"){
-					pChartData.dom.self.find("> .-chart > .-links > .-hover").removeClass("-hover");
-					pChartData.dom.deltaCircle.removeClass("-hover");
-				}	
-			}
-		}
-		//Ativa hover atual
-		if (pChartValueData != null){
-			pChartValueData.dom.self.addClass("-hover");
-			if (pChartData.type == "line"){
-				//Move chartvalue para a frente de todos os outros
-				dbsfaces.ui.moveToFront(pChartValueData.dom.self);
-			}else if (pChartData.type == "pie"){
-				pChartData.dom.deltaCircle.addClass("-hover");
-				//Exibe links entre os chartvalues
-				var xLinks = pChartData.dom.self.find("> .-chart > .-links > [key='" + pChartValueData.key + "']");
-				xLinks.addClass("-hover");
-				xLinks = pChartData.dom.self.find("> .-chart > .-links > [b='" + pChartValueData.key + "']");
-				xLinks.addClass("-hover");
-				//Configura as cores do delta
-				if (pChartData.showDelta){
-					pChartData.dom.deltaCircle.svgAttr("fill", pChartValueData.dom.self.css("color"));
-					pChartData.dom.delta.css("color", pChartValueData.dom.info.svgAttr("fill"));
-				}
-			}
-		}
-		return pChartValueData;
-	},
-	
-	
-	pvShowDelta: function(pChartData, pChartValueData){
-		if (pChartData.type == "line"){
-			dbsfaces.chartX.pvShowDeltaChartLine(pChartData, pChartValueData);
-		}else if (pChartData.type == "pie"){
-			dbsfaces.chartX.pvShowDeltaChartPie(pChartData, pChartValueData);
-		}
-	},
-
-	pvShowDeltaChartPie: function(pChartData, pChartValueData){
-		dbsfaces.chartX.pvShowDeltaValueChartPie(pChartData, pChartValueData);
-		//Seleciona chartvalue encontrado
-		pChartData.dom.hoverChartValueData = dbsfaces.chartX.pvHover(pChartData, pChartValueData, pChartData.dom.hoverChartValueData);
-	},
-
-	pvShowDeltaValueChartPie: function(pChartData, pChartValueData){
-		if (pChartValueData == null){
-			dbsfaces.chartX.pvShowDeltaValue(pChartData, null);
-			pChartData.dom.deltaValue.text("");
-		}else{
-			dbsfaces.chartX.pvShowDeltaValue(pChartData, pChartValueData.perc);
-			var xText = pChartData.valuePrefix + dbsfaces.format.number(pChartValueData.value, pChartData.valueDecimalPlaces) + pChartData.valueSufix;
-			pChartData.dom.deltaValue.text(xText);
-			//Ajusta o tamanho do fonte a partir do raio do círculo
-			var xFontSize = (parseInt(pChartData.dom.deltaCircle.attr("r")) * 2) / xText.length;
-			pChartData.dom.deltaValue.css("font-size", xFontSize);
-		}
-	},
-
-	pvShowDeltaChartLine: function(pChartData, pChartValueData){
-		if (pChartData.dom.movingDeltaHandleData == null){return;}
-		var xChartsData = pChartData.dom.parent.data("data"); 
-		if (xChartsData == null
-		 || !xChartsData.showDelta){return;}
-		
-		var xX;
-		var xWidth;
-		var xTrocou = false;
-		//Retira hover de ambos para recolocar posteriormente. Isto evita apagar hover quando left e right estão no mesmo ponto
-		dbsfaces.chartX.pvHover(pChartData, null, pChartData.dom.rightDeltaHandleData.dom.chartValueData);
-		dbsfaces.chartX.pvHover(pChartData, null, pChartData.dom.leftDeltaHandleData.dom.chartValueData);
-		
-		//Salva qual o chartvaluedata está vinculado ao handle
-		pChartData.dom.movingDeltaHandleData.dom.chartValueData = pChartValueData;
-		//Se for selecionado o handle a direita, mas a posição selecionada estiver mais a esquerda do que handle a esquerda,
-		//Seta o handle a esquerda corrente como sendo a esquerda
-		//e o handle a direita passa a ser o handle a esquerda. 
-		if (pChartData.dom.movingDeltaHandleData == pChartData.dom.rightDeltaHandleData){
-			if (pChartValueData.x < parseFloat(pChartData.dom.leftDeltaHandleData.dom.handle.svgAttr("x"))){
-				pChartData.dom.rightDeltaHandleData = pChartData.dom.leftDeltaHandleData;
-				pChartData.dom.leftDeltaHandleData = pChartData.dom.movingDeltaHandleData;
-			}
-		//Vice-versa quando selecionado o handle a esquerda, conforme explicação acima.
-		}else{
-			if (pChartValueData.x > parseFloat(pChartData.dom.rightDeltaHandleData.dom.handle.svgAttr("x"))){
-				pChartData.dom.leftDeltaHandleData = pChartData.dom.rightDeltaHandleData;
-				pChartData.dom.rightDeltaHandleData = pChartData.dom.movingDeltaHandleData;
-			}
-		}
-		//Configura posição e tamanho do rect
-		if (pChartData.dom.leftDeltaHandleData.dom.chartValueData != null){
-			pChartData.dom.leftDeltaHandleData.dom.rect.svgAttr("width", pChartData.dom.leftDeltaHandleData.dom.chartValueData.x - xChartsData.infoWidth);
-			pChartData.dom.leftDeltaHandleData.dom.rect.svgAttr("x", xChartsData.infoWidth);
-			//Seta hover
-			dbsfaces.chartX.pvHover(pChartData, pChartData.dom.leftDeltaHandleData.dom.chartValueData, null);
-		}
-		if (pChartData.dom.rightDeltaHandleData.dom.chartValueData != null){
-			pChartData.dom.rightDeltaHandleData.dom.rect.svgAttr("width", xChartsData.width - pChartData.dom.rightDeltaHandleData.dom.chartValueData.x + xChartsData.infoWidth);
-			pChartData.dom.rightDeltaHandleData.dom.rect.svgAttr("x", pChartData.dom.rightDeltaHandleData.dom.chartValueData.x);
-			//Seta hover
-			dbsfaces.chartX.pvHover(pChartData, pChartData.dom.rightDeltaHandleData.dom.chartValueData, null);
-		}
-		//Configura posição do handle
-		pChartData.dom.movingDeltaHandleData.dom.handle.svgAttr("x", pChartValueData.x);
-		//Exibe valor do delta
-		dbsfaces.chartX.pvShowDeltaValueChartLine(pChartData);
-	},
-
-	pvShowDeltaValueChartLine: function(pChartData){
-		var xValue = dbsfaces.chartX.pvCalcDeltaChartLine(pChartData);
-		dbsfaces.chartX.pvShowDeltaValue(pChartData, xValue);
-	},
-
-	pvShowDeltaValue: function(pChartData, pValue){
-		if (pValue == null){
-//			pChartData.dom.deltaValueText.text("(na)");
-			pChartData.dom.deltaPercInt.text("");
-			pChartData.dom.deltaPercDec.text("");
-		}else{
-			var xSplit = dbsfaces.format.splitNumber(pValue);
-			pChartData.dom.deltaPercInt.text(xSplit.int);
-			pChartData.dom.deltaPercDec.text(xSplit.dec + "%");
-		}
-	},
-
-	pvCalcDeltaChartLine: function(pChartData){
-		if (pChartData.dom.rightDeltaHandleData.dom.chartValueData == null
-		 || pChartData.dom.rightDeltaHandleData.dom.chartValueData == null){
-			return null; 
-		}
-		var xLeftValue = pChartData.dom.leftDeltaHandleData.dom.chartValueData.value;
-		var xRightValue = pChartData.dom.rightDeltaHandleData.dom.chartValueData.value;
-		var xChartsData = pChartData.dom.parent.data("data");
-		if (xLeftValue == 0
-		 || xRightValue == 0
-		 || Math.sign(xLeftValue) != Math.sign(xRightValue)
-		 || xChartsData == null){
-			return null;
-		}
-		var xValue;
-		if (xChartsData.isPerc){
-			xValue = (xRightValue - xLeftValue);
-			xValue *= 100;
-		}else{
-			if (xLeftValue < 0){
-				xValue = (xLeftValue / xRightValue);
-			}else{
-				xValue = (xRightValue / xLeftValue);;
-			}
-			xValue = dbsfaces.math.round(xValue, 4);
-			xValue = (xValue - 1) * 100;
-		}
-		return dbsfaces.format.number(xValue, 2);
 	}
+	
 
 };
 
