@@ -101,6 +101,23 @@
     fill: gray;
 }
 
+
+.dbs_chartX.-pie.-selected.-hover > .-chart > .-values > .dbs_chartValueX{
+}
+
+.dbs_chartX.-pie.-selected.-hover > .-chart > .-values > .dbs_chartValueX:not(.-hover):not(.-link){
+	transition: stroke-opacity linear .5s;
+	stroke-opacity: 0.85;	
+}
+.dbs_chartX.-pie.-selected.-hoverLink > .-chart > .-values > .dbs_chartValueX:not(.-hover):not(.-link){
+	stroke-opacity: 0.5;
+	pointer-events: none;	
+}
+.dbs_chartX.-pie.-selected.-hoverLink > .-chart > .-links > .-link:not(.-hover){
+	fill-opacity: 0.4;
+	pointer-events: none;	
+}
+
 .dbs_chartX.-line.-showDelta > .-chart > .-values > .dbs_chartValueX{
 	pointer-events: none;
 }
@@ -132,3 +149,5 @@
 .dbs_chartX.-line.-selected > .-chart > .-values > .dbs_chartValueX.-line.-hover > .-info > .-value{
 	visibility: visible;
 }
+
+

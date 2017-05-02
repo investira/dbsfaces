@@ -87,7 +87,7 @@
 .dbs_chartX.-pie > .-chart > .-delta > .-circle{
 	visibility: hidden;
 	transform-origin: center;
-	stroke: currentColor;
+	fill: currentColor;
 	stroke-width: 0.1em;
 }
 
@@ -97,7 +97,7 @@
 
 
 .dbs_chartX.-pie > .-chart > .-delta > .-perc{
-	fill: currentColor;
+/* 	fill: currentColor; */
 	text-anchor: middle;
 	font-size: 1.7em;
     font-weight: 100;
@@ -108,7 +108,7 @@
 }
 
 .dbs_chartX.-pie > .-chart > .-delta > .-value{
-	fill: currentColor;
+/* 	fill: currentColor; */
 	text-anchor: middle;
     dominant-baseline: middle;
 }

@@ -15,4 +15,8 @@ public interface IDBSChartValue extends Serializable {
 	
 	public Double getDisplayValue();
 	public void setDisplayValue(Double pDisplayValue);
+	
+	public String getColor();
+	public void setColor(String pColor);
+	
 }

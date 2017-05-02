@@ -145,7 +145,7 @@ dbsfaces.chartX = {
 
 					//Cria componente chartValueData
 					if (xChartValueData == null){
-						var xChartValueData = dbsfaces.chartX.pvInitializeChartValuesCreateData(pChartData, pLabel, pRelationalGroupIndex);
+						var xChartValueData = dbsfaces.chartX.pvInitializeChartValuesCreateData(pChartData, pLabel, pRelationalGroupIndex, xOriginalValue);
 						//Adiciona valor normalizado
 						pChartData.dom.childrenData.push(xChartValueData);
 					}
@@ -234,7 +234,7 @@ dbsfaces.chartX = {
 	},
 
 	
-	pvInitializeChartValuesCreateData: function(pChartData, pLabel, pRelationalGroupIndex){
+	pvInitializeChartValuesCreateData: function(pChartData, pLabel, pRelationalGroupIndex, pOriginalValue){
 		var xChartValueData = {
 			dom : {
 				self : null, // o próprio chartvalue
@@ -261,11 +261,15 @@ dbsfaces.chartX = {
 			originalValues : [], //valores originals que agrupados neste chartvalue
 			x : null, //posição X no gráfico (dentro da escala)
 			y : null, //posição Y no gráfico (dentro da escala)
-			color: null, //Cor do valor,
+			color: pOriginalValue.color, //Cor do valor,
+			colorInverted: null, //Cor com luminancia invertida
 			perc: null, //Percentual que valor representa sobre o total
 			totalValue: 0, //Total até este chartvalue
 			globalSequence: 0, //Número sequencial do item do chartValue, considerando todos os gráficos 
 			arcInfo: null //Informacoes do arco quando for gráfico pie
+		}
+		if (typeof xChartValueData.color == "undefined"){
+			xChartValueData.color == null;
 		}
 		return xChartValueData;
 	},
@@ -459,7 +463,7 @@ dbsfaces.chartX = {
 		pChartData.dom.delta = dbsfaces.svg.g(pChartData.dom.chart, "-delta", null, null);
 		//Cria elemento Perc
 //		pChartData.dom.deltaPerc = dbsfaces.svg.text(pChartData.dom.delta, null, null, null, "-perc", null, {fill:pChartData.color, transform:"translate(0 -.3em)"});
-		pChartData.dom.deltaPerc = dbsfaces.svg.text(pChartData.dom.delta, null, null, null, "-perc", null, {fill:pChartData.color});
+		pChartData.dom.deltaPerc = dbsfaces.svg.text(pChartData.dom.delta, null, null, null, "-perc", null, null);
 		pChartData.dom.deltaPercInt = dbsfaces.svg.tspan(pChartData.dom.deltaPerc, null, "-int", null, null);
 		pChartData.dom.deltaPercDec = dbsfaces.svg.tspan(pChartData.dom.deltaPerc, null, "-dec", null, null);
 		//Cria elementos da guia do delta
@@ -524,29 +528,37 @@ dbsfaces.chartX = {
 
 	
 	pvShowDelta: function(pChartData, pChartValueData){
-		if (!pChartData.hoverLink){
-			if (pChartData.type == "line"){
-				dbsfaces.chartX.pvShowDeltaChartLine(pChartData, pChartValueData);
-			}else if (pChartData.type == "pie"){
-				dbsfaces.chartX.pvShowDeltaChartPie(pChartData, pChartValueData);
-			}
+		if (pChartData.type == "line"){
+			dbsfaces.chartX.pvShowDeltaChartLine(pChartData, pChartValueData);
+		}else if (pChartData.type == "pie"){
+			dbsfaces.chartX.pvShowDeltaChartPie(pChartData, pChartValueData);
 		}
 	},
 
 	pvShowDeltaChartPie: function(pChartData, pChartValueData){
-		if (pChartValueData == null){
-			//Exibe valor total do delta
-			dbsfaces.chartX.pvShowDeltaValue(pChartData, null);
-			//Exibe percentual do delta
-			dbsfaces.chartX.pvShowDeltaPerc(pChartData, null);
+		if (!pChartData.hoverLink){
+			if (pChartValueData == null){
+				//Exibe valor total do delta
+				dbsfaces.chartX.pvShowDeltaValue(pChartData, null);
+				//Exibe percentual do delta
+				dbsfaces.chartX.pvShowDeltaPerc(pChartData, null);
+			}else{
+				//Exibe valor do delta
+				dbsfaces.chartX.pvShowDeltaValue(pChartData, pChartValueData.value);
+				//Exibe percentual do delta
+				dbsfaces.chartX.pvShowDeltaPerc(pChartData, pChartValueData.perc);
+			}
+			//Seleciona chartvalue encontrado
+			pChartData.dom.hoverChartValueData = dbsfaces.chartX.pvHover(pChartData, pChartValueData, pChartData.dom.hoverChartValueData);
 		}else{
-			//Exibe valor do delta
-			dbsfaces.chartX.pvShowDeltaValue(pChartData, pChartValueData.value);
-			//Exibe percentual do delta
-			dbsfaces.chartX.pvShowDeltaPerc(pChartData, pChartValueData.perc);
+			if (pChartValueData == null){ //xxxx
+				pChartData.dom.deltaCircle.svgAttr("stroke", "");
+			}else{
+				if (pChartValueData.relationalGroupIndex != pChartData.dom.hoverChartValueData.relationalGroupIndex){
+					pChartData.dom.deltaCircle.svgAttr("stroke", pChartValueData.dom.self.css("color"));
+				}
+			}
 		}
-		//Seleciona chartvalue encontrado
-		pChartData.dom.hoverChartValueData = dbsfaces.chartX.pvHover(pChartData, pChartValueData, pChartData.dom.hoverChartValueData);
 	},
 
 	
@@ -631,8 +643,59 @@ dbsfaces.chartX = {
 	},
 
 	pvHover: function(pChartData, pChartValueData, pOldChartValueData){
-
 		//Remove hover anterios
+		if (pOldChartValueData != null){
+			if (pChartValueData != null 
+			 && pOldChartValueData == pChartValueData){
+				return pChartValueData;
+			}else{
+				//xxxhover
+				pOldChartValueData.dom.self.removeClass("-hover");
+				pChartData.dom.self.removeClass("-hover");
+				//Esconde links entre os chartvalues
+				if (pChartData.type == "pie"){
+					pChartData.dom.links.children(".-hover").removeClass("-hover");
+					pChartData.dom.values.children(".-link").removeClass("-link");
+//					pChartData.dom.self.find("> .-chart > .-links > .-hover").removeClass("-hover");
+					//Configura as cores do delta
+					dbsfaces.chartX.pvSetDeltaColor(pChartData, pChartValueData, "", "");
+				}	
+			}
+		}
+		//Ativa hover atual
+		if (pChartValueData != null){
+			pChartData.dom.self.addClass("-hover");
+			pChartValueData.dom.self.addClass("-hover");
+			if (pChartData.type == "line"){
+				//Move chartvalue para a frente de todos os outros
+				dbsfaces.ui.moveToFront(pChartValueData.dom.self);
+			}else if (pChartData.type == "pie"){
+//				var xLinks = pChartData.dom.self.find("> .-chart > .-links > [key='" + pChartValueData.key + "']");
+//				xLinks.addClass("-hover");
+				
+				//Exibe links entre os chartvalues
+				var xLinks = pChartData.dom.links.children("[b='" + pChartValueData.key + "']");
+//				xLinks.addClass("-hover");
+				
+				xLinks.each(function(){
+					var xLink = $(this); 
+					xLink.addClass("-hover");
+					pChartData.dom.childrenData.forEach(function(pCV){
+						if (pCV.key == xLink.attr("key")){
+							pCV.dom.self.addClass("-link");
+						}
+					});
+				});
+				//Configura as cores do delta
+				dbsfaces.chartX.pvSetDeltaColor(pChartData, pChartValueData, pChartValueData.dom.self.css("color"), pChartValueData.colorInverted);
+			}
+		}
+		//Artifício para corrigir problema no safari que não considera o transform do css aplicado dinamicamente
+		dbsfaces.ui.recreate(pChartData.dom.delta);
+		return pChartValueData;
+	},
+	
+	pvHoverLink: function(pChartData, pChartValueData, pOldChartValueData){
 		if (pOldChartValueData != null){
 			if (pChartValueData != null 
 			 && pOldChartValueData == pChartValueData){
@@ -645,7 +708,8 @@ dbsfaces.chartX = {
 				if (pChartData.type == "pie"){
 					pChartData.dom.self.find("> .-chart > .-links > .-hover").removeClass("-hover");
 					//Configura as cores do delta
-					pChartData.dom.delta.css("color", "");
+//					pChartData.dom.delta.css("color", "");
+					dbsfaces.chartX.pvSetDeltaColor(pChartData, pChartValueData, "", "");
 				}	
 			}
 		}
@@ -663,19 +727,24 @@ dbsfaces.chartX = {
 				xLinks = pChartData.dom.self.find("> .-chart > .-links > [b='" + pChartValueData.key + "']");
 				xLinks.addClass("-hover");
 				//Configura as cores do delta
-				if (pChartData.showDelta){
-					pChartData.dom.deltaCircle.svgAttr("fill", pChartValueData.dom.self.css("color"));
-					pChartData.dom.delta.css("color", pChartValueData.dom.info.svgAttr("fill"));
-				}
+				dbsfaces.chartX.pvSetDeltaColor(pChartData, pChartValueData, pChartValueData.dom.self.css("color"), pChartValueData.colorInverted);
 			}
 		}
-		//Artifício para corrigir problema no safari que não considera o transform do css aplicado dinamicamente
-		dbsfaces.ui.recreate(pChartData.dom.delta);
-		return pChartValueData;
+	},
+	
+	
+	pvSetDeltaColor: function(pChartData, pChartValueData, pColor, pColorInverted){
+		if (pChartData.showDelta){
+			pChartData.dom.delta.css("color", pColor);
+			pChartData.dom.deltaCircle.svgAttr("stroke",  pColorInverted);
+			pChartData.dom.deltaPerc.svgAttr("fill", pColorInverted);
+			pChartData.dom.deltaValue.svgAttr("fill", pColorInverted);
+		}
 	},
 	
 	pvSetHoverLink: function(pChartData){
 		var xClass = "-a_quick_pulse";
+		pChartData.dom.self.toggleClass("-hoverLink");
 		pChartData.dom.deltaCircle.toggleClass(xClass);
 		pChartData.hoverLink = pChartData.dom.deltaCircle.hasClass(xClass);
 		if (!pChartData.hoverLink){
@@ -683,9 +752,6 @@ dbsfaces.chartX = {
 		}
 	},
 
-	pvHoverLink: function(pChartData){
-	},
-	
 	pvCalcDeltaChartLine: function(pChartData){
 		if (pChartData.dom.rightDeltaHandleData.dom.chartValueData == null
 		 || pChartData.dom.rightDeltaHandleData.dom.chartValueData == null){

@@ -412,7 +412,6 @@ dbsfaces.chartsX = {
 			xInfoLabelX = "-" + xInfoLabelX;
 			xInfoPercX = "-" + xInfoPercX;
 		}
-		pChartValueData.dom.info.attr("fill", tinycolor(pChartValueData).invertLightness().setAlpha(1).toString());
 		pChartValueData.dom.info.attr("transform", xTransformInfo);
 		pChartValueData.dom.infoLabel.attr("x", xInfoLabelX);
 		pChartValueData.dom.infoValue.attr("x", xInfoLabelX);
@@ -493,19 +492,6 @@ dbsfaces.chartsX = {
 //					xStrokeWidth = xLinkArc;
 					//Linha do link entre chartValue A e B
 //					var xPath = "M" + xChartValueDataA.arcInfo.internalPoint.x + "," + xChartValueDataA.arcInfo.internalPoint.y;
-//					xPath += "S" + (pChartsData.width / 2) + "," + (pChartsData.height / 2) + " " + xChartValueDataB.arcInfo.internalPoint.x + "," + xChartValueDataB.arcInfo.internalPoint.y;
-//					var xPath = "M" + xChartValueDataA.arcInfo.internalPoint.x + "," + xChartValueDataA.arcInfo.internalPoint.y;
-//					xPath += "L" + (pChartsData.width / 2) + "," + (pChartsData.height / 2) + "L" + xChartValueDataB.arcInfo.internalPoint.x + "," + xChartValueDataB.arcInfo.internalPoint.y;
-					//Desenha elementodo arco e salva dados
-//					pChartValueData.arcInfo = dbsfaces.chartsX.pvDrawArc(pChartData, 
-//																				    pChartValueData.dom.point,
-//																				    ((pChartData.diameter / 2) - pChartsData.infoHeight), //Raio externo do arco
-//																				    pChartData.arcWidth, //Largura do arco
-//																				    pChartValueData.relationalGroupIndex, 
-//																				    xArcPercValuePrevious, 
-//																				    pChartValueData.perc,
-//																				    false);
-//					var xPath = "M" + xChartValueDataA.arcInfo.internalPoint.x + "," + xChartValueDataA.arcInfo.internalPoint.y;
 //					xPath += "L" + (pChartsData.width / 2) + "," + (pChartsData.height / 2) + "L" + xChartValueDataB.arcInfo.internalPoint.x + "," + xChartValueDataB.arcInfo.internalPoint.y;
 //					var xPath = "M" + xChartValueDataA.arcInfo.internalPoint.x + "," + xChartValueDataA.arcInfo.internalPoint.y;
 //					xPath += "S" + (pChartsData.width / 2) + "," + (pChartsData.height / 2) + " " + xChartValueDataB.arcInfo.internalPoint.x + "," + xChartValueDataB.arcInfo.internalPoint.y;
@@ -583,7 +569,13 @@ dbsfaces.chartsX = {
 			//Define colores dos chartvalue
 			pChartData.dom.childrenData.forEach(function(pChartValueData, pI){
 				var xColor = dbsfaces.chartsX.pvSetColor(pChartsData, pChartValueData, false);
-				pChartData.dom.self.find("> .-chart > .-links > [key='" + pChartValueData.key + "']").svgAttr("color", xColor);
+				pChartValueData.colorInverted = tinycolor(xColor).invertLightness().setAlpha(1).toString();
+				if (pChartData.type == "pie"){
+					//Cor que dos links
+					pChartData.dom.self.find("> .-chart > .-links > [key='" + pChartValueData.key + "']").svgAttr("color", xColor);
+					//Cor do texto das infos
+					pChartValueData.dom.info.attr("fill", pChartValueData.colorInverted);
+				}
 			});
 		});
 	},
