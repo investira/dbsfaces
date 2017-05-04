@@ -226,15 +226,17 @@ tinycolor.prototype = {
 	invertLightness: function(){
 		var xHSLA = tinycolor(this.getOriginalInput()).toHsl();
 		var xLightness = xHSLA.l;
-		if (xLightness > .5){
-			xLightness -= .75;
-			if (xLightness < 0){
-				xLightness = 0;
-			}
-		}else{
+		//Escuro
+		if (xLightness < .5){
 			xLightness += .75;
 			if (xLightness > 1){
 				xLightness = 1;
+			}
+		//Claro
+		}else{
+			xLightness -= .75;
+			if (xLightness < 0){
+				xLightness = 0;
 			}
 		}
 		return tinycolor("hsla(" + xHSLA.h + "," + xHSLA.s + "," + xLightness + "," + this.getAlpha() + ")");

@@ -235,6 +235,7 @@ dbsfaces.chartsX = {
 			});
 		}
 
+		var xCircleStrokeWidth = parseFloat(pChartData.dom.deltaCircle.css("stroke-width")) + 1;
 		//Largura do arco do ponto
 		pChartData.arcWidth = pChartsData.infoWidth; 
 		//Raio do posição do arco do ponto
@@ -242,12 +243,12 @@ dbsfaces.chartsX = {
 		//Raio do posição do arco que liga o ponto ao círculo central
 		pChartData.pointLinkRadius = pChartData.pointRadius - pChartData.arcWidth;
 		//Largura do posição do arco que liga o ponto ao círculo central
-		pChartData.pointLinkWidth =  (pChartData.pointLinkRadius / 3) + 2;
+		pChartData.pointLinkWidth =  (pChartData.pointLinkRadius / 3) + xCircleStrokeWidth;
 		
 		//Define dimensão do circulo interno do delta
 		pChartData.dom.deltaCircle.svgAttr("cx", pChartData.center.x);
 		pChartData.dom.deltaCircle.svgAttr("cy", pChartData.center.y);
-		pChartData.dom.deltaCircle.svgAttr("r", pChartData.pointLinkRadius - pChartData.pointLinkWidth + 2);
+		pChartData.dom.deltaCircle.svgAttr("r", pChartData.pointLinkRadius - pChartData.pointLinkWidth + xCircleStrokeWidth);
 	},
 	
 
@@ -369,7 +370,7 @@ dbsfaces.chartsX = {
 			}
 		}
 		
-		//Desenha elemento do arco
+		//Desenha elemento do arco - Point
 		var xArcInfo = dbsfaces.chartsX.pvDrawArc(pChartData, 
 												  pChartValueData.dom.point,
 												  pChartData.pointRadius, 
@@ -391,7 +392,7 @@ dbsfaces.chartsX = {
 		var xArcLink = dbsfaces.chartsX.pvDrawArc(pChartData, 
  								   				  pChartValueData.dom.pointLink,
  								   				  pChartData.pointLinkRadius + 1, //Adiciona 1 para encobrir espaço entre os elementos
- 								   				  pChartData.pointLinkWidth, //Adiciona 1 para encobrir espaço entre os elementos
+ 								   				  pChartData.pointLinkWidth, 
  								   				  pChartValueData.relationalGroupIndex, 
  								   				  xArcPercValuePrevious, 
  								   				  pChartValueData.perc,
@@ -454,12 +455,14 @@ dbsfaces.chartsX = {
 				pChartData.dom.deltaPerc.svgAttr("y", xMiddleY);
 				pChartData.dom.deltaPerc.svgAttr("x", xMiddleX);
 			}else if (pChartData.type == "pie"){
+				pChartData.dom.deltaInfo.svgAttr("transform", "translate(" + pChartData.center.x + " " + pChartData.center.y + ")");
+//				pChartData.dom.deltaInfo.svgAttr("transform-origin", "" + pChartData.center.x + " " + pChartData.center.y + "");
 				//Define posição do texto do valor do delta
-				pChartData.dom.deltaPerc.svgAttr("x", pChartData.center.x);
-				pChartData.dom.deltaPerc.svgAttr("y", pChartData.center.y);
-				//Define posição do texto do valor do delta
-				pChartData.dom.deltaValue.svgAttr("x", pChartData.center.x);
-				pChartData.dom.deltaValue.svgAttr("y", pChartData.center.y);
+//				pChartData.dom.deltaInfo.svgAttr("x", pChartData.center.x);
+//				pChartData.dom.deltaInfo.svgAttr("y", pChartData.center.y);
+//				//Define posição do texto do valor do delta
+//				pChartData.dom.deltaValue.svgAttr("x", pChartData.center.x);
+//				pChartData.dom.deltaValue.svgAttr("y", pChartData.center.y);
 			}
 		}
 	},
@@ -513,11 +516,11 @@ dbsfaces.chartsX = {
 	    //Cria Arco
 		var xD = "";
 		var xPath = null;
-		xD = "M" + dbsfaces.math.round(xA1.x,2) + "," + dbsfaces.math.round(xA1.y, 2); //Ponto inicial do arco 
-			xD += "A" + pChartValueData.arcInfo.internalRadius + "," + pChartValueData.arcInfo.internalRadius + " 0 " + pChartValueData.arcInfo.big + " " + pChartValueData.arcInfo.direction + " " + dbsfaces.math.round(xA2.x, 2) + "," + dbsfaces.math.round(xA2.y,2); //Arco externo até o ponto final 
-			xD += "L" + pChartData.center.x + "," + pChartData.center.y;
-			xD += "L" + dbsfaces.math.round(xA1.x,2) + "," + dbsfaces.math.round(xA1.y, 2);
-			xD += "Z";
+		xD = "M" + xA1.x + "," + xA1.y; //Ponto inicial do arco 
+		xD += "A" + (pChartValueData.arcInfo.internalRadius - 1) + "," + (pChartValueData.arcInfo.internalRadius - 1) + " 0 " + pChartValueData.arcInfo.big + " " + pChartValueData.arcInfo.direction + " " + dbsfaces.math.round(xA2.x, 2) + "," + dbsfaces.math.round(xA2.y,2); //Arco externo até o ponto final 
+		xD += "L" + pChartData.center.x + "," + pChartData.center.y;
+		xD += "L" + xA1.x + "," + xA1.y;
+		xD += "Z";
 		xPath = dbsfaces.svg.path(pChartData.dom.links, xD, "-link", null, {key:pKey, b:pKeyB});
 		//Exibe ao menos uma linha, mesmo que a distância seja praticamente zero
 		if (dbsfaces.math.distanceBetweenTwoPoints(xA1.x, xA1.y, xA2.x, xA2.y) < 0.5){
@@ -529,6 +532,13 @@ dbsfaces.chartsX = {
 		}
 		//Transform-origin 
 		dbsfaces.ui.cssAllBrowser(xPath, "transform-origin", pChartData.center.x + "px " + pChartData.center.y + "px");
+
+		//Arco que para ligar o link ao chartvalue
+		xA1 = dbsfaces.math.circlePoint(pChartData.center, pChartValueData.arcInfo.internalRadius - .5, pChartValueData.arcInfo.startAngle + xAngleScale);
+		xA2 = dbsfaces.math.circlePoint(pChartData.center, pChartValueData.arcInfo.internalRadius - .5, pChartValueData.arcInfo.startAngle + xAngleScale + pRelationalArcAngle);
+		xD = "M" + xA1.x + "," + xA1.y; 
+		xD += "A" + (pChartValueData.arcInfo.internalRadius - .5) + "," + (pChartValueData.arcInfo.internalRadius - .5) + " 0 " + pChartValueData.arcInfo.big + " " + pChartValueData.arcInfo.direction + " " + dbsfaces.math.round(xA2.x, 2) + "," + dbsfaces.math.round(xA2.y,2); //Arco externo até o ponto final 
+		xPath = dbsfaces.svg.path(pChartData.dom.links, xD, "-linkHover", null, {key:pKey, b:pKeyB});
 	},
 
 	
@@ -635,11 +645,11 @@ dbsfaces.chartsX = {
 		}
 
 		//Angulo inicial e final do arco
-		xInfo.startAngle = dbsfaces.math.round(xArcPercValuePrevious * pChartData.arcFator, 4); //Posição inicial básica
+		xInfo.startAngle = xArcPercValuePrevious * pChartData.arcFator; //Posição inicial básica
 		xInfo.startAngle += pChartData.arcFator * pRelationalGroupIndex * 100; //Posição com o shift em relação ao index do chart
 		xInfo.startAngle += pChartData.arcSpace * (pRelationalGroupIndex + 1) * 100; //Espaço entre os chart
 		xInfo.startAngle -= (pChartData.arcSpace / 2) * 100; //Centralização do espaço entre os chart
-		xInfo.endAngle = dbsfaces.math.round(xInfo.startAngle + (xArcPercValue * pChartData.arcFator), 4);
+		xInfo.endAngle = xInfo.startAngle + (xArcPercValue * pChartData.arcFator);
 		xInfo.centerAngle = xInfo.startAngle + ((xInfo.endAngle - xInfo.startAngle) / 2), //Ángulo do ponto no centro do arco
 		xInfo.externalRadius = pExternalRadius;
 		xInfo.centerRadius = xInfo.externalRadius - (pWidth / 2);
@@ -666,11 +676,13 @@ dbsfaces.chartsX = {
 	    }
 	    //Cria Arco
 		var xPath = "";
-		xPath += "M" + dbsfaces.math.round(x1.x,2) + "," + dbsfaces.math.round(x1.y, 2); //Ponto inicial do arco 
-		xPath += "A" + xInfo.centerRadius + "," + xInfo.centerRadius + " 0 " + xInfo.big + " " + xInfo.direction + " " + dbsfaces.math.round(x2.x, 2) + "," + dbsfaces.math.round(x2.y,2); //Arco externo até o ponto final 
+		xPath += "M" + x1.x + "," + x1.y; //Ponto inicial do arco 
+		xPath += "A" + xInfo.centerRadius + "," + xInfo.centerRadius + " 0 " + xInfo.big + " " + xInfo.direction + " " + x2.x + "," + x2.y; //Arco externo até o ponto final 
 		pPathElement.svgAttr("d", xPath);
 		//Define a largura do arco
 		pPathElement.css("stroke-width", pWidth);
+		//Salva stroke-width original para ser utilizado na restauração após alguma mudança do style
+		pPathElement.data("sw", parseFloat(pWidth) + 1);
 
 		return xInfo;
 	},

@@ -67,8 +67,8 @@
 	-moz-transform: scale(0);
 	-o-transform: scale(0);
 	transform: scale(0);
-	
 }
+
 .dbs_chartX.-pie > .-chart > .-links > .-link.-hover{
 	-webkit-transition: transform cubic-bezier(0, 1, 1, 1) .5s;
 	-moz-transition: transform cubic-bezier(0, 1, 1, 1) .5s;
@@ -80,8 +80,30 @@
 	transform: scale(1);
 }
 
+
+.dbs_chartX.-pie > .-chart > .-links > .-linkHover.-hover{
+/* 	stroke-opacity: 1; */
+	stroke-width: 1em;
+}
+.dbs_chartX.-pie > .-chart > .-links > .-linkHover{
+    fill: none;
+/*     stroke-opacity: 0; */
+    stroke: currentColor;
+/*     stroke-width: 2; */
+    stroke-width: 0;
+}
+
 .dbs_chartX.-pie > .-chart > .-delta{
+	pointer-events:none;
+	-webkit-transform-origin: center;
+	-moz-transform-origin: center;
+	-o-transform-origin: center;
+	transform-origin: center;
+}
+
+.dbs_chartX.-pie.-hover > .-chart > .-delta{
 	cursor: pointer;
+	pointer-events: auto;
 }
 
 .dbs_chartX.-pie > .-chart > .-delta > .-circle{
@@ -95,39 +117,44 @@
 	visibility: visible;
 }
 
-
-.dbs_chartX.-pie > .-chart > .-delta > .-perc{
-/* 	fill: currentColor; */
+.dbs_chartX.-pie > .-chart > .-delta  > .-info{
 	text-anchor: middle;
-	font-size: 1.7em;
-    font-weight: 100;
-	-webkit-transform: translateY(-.4em);
-	-moz-transform: translateY(-.4em);
-	-o-transform: translateY(-.4em);
-	transform: translateY(-.4em);
+	fill: currentColor;
 }
 
-.dbs_chartX.-pie > .-chart > .-delta > .-value{
-/* 	fill: currentColor; */
-	text-anchor: middle;
+.dbs_chartX.-pie > .-chart > .-delta > .-info > .-perc{
+	font-size: 1.7em;
+	-webkit-transform: translateY(-.5em);
+	-moz-transform: translateY(-.5em);
+	-o-transform: translateY(-.5em);
+	transform: translateY(-.5em);
+}
+
+.dbs_chartX.-pie > .-chart > .-delta > .-info > .-value{
     dominant-baseline: middle;
 }
 
-.dbs_chartX.-pie.-hover > .-chart > .-delta > .-perc{
+.dbs_chartX.-pie:not(.-hover) > .-chart > .-delta > .-info > .-value{
+	transform: scale(2);
 }
 
-.dbs_chartX.-pie.-hover > .-chart > .-delta > .-value{
-    font-weight: 100;
-    -webkit-transform: translateY(0.3em);
-    -moz-transform: translateY(0.3em);
-    -o-transform: translateY(0.3em);
-    transform: translateY(0.3em);
+
+.dbs_chartX.-pie > .-chart > .-delta > .-info > .-label{
+    -webkit-transform: translateY(1.3em);
+    -moz-transform: translateY(1.3em);
+    -o-transform: translateY(1.3em);
+    transform: translateY(1.3em);
 }
 
-.dbs_chartX.-pie.-hover > .-chart > .-delta > .-perc > .-int{
+
+.dbs_chartX.-pie.-hover > .-chart > .-delta > .-info > .-perc{
 }
 
-.dbs_chartX.-pie.-hover > .-chart > .-delta > .-perc > .-dec{
+
+.dbs_chartX.-pie.-hover > .-chart > .-delta > .-info > .-perc > .-int{
+}
+
+.dbs_chartX.-pie.-hover > .-chart > .-delta > .-info > .-perc > .-dec{
 	font-size: .5em;
 }
 
@@ -173,11 +200,14 @@
 	overflow: visible;
 }
 
-.dbs_chartX.-line.-selected.-moving > .-chart > .-delta > .-perc{
+.dbs_chartX.-line > .-chart > .-delta  > .-info{
+}
+
+.dbs_chartX.-line.-selected.-moving > .-chart > .-delta > .-info > .-perc{
 	opacity: 0.4;
 }
 
-.dbs_chartX.-line > .-chart > .-delta > .-perc{
+.dbs_chartX.-line > .-chart > .-delta > .-info > .-perc{
 	opacity: 0.9;
 	stroke:none;
 	text-anchor: middle;
@@ -197,10 +227,10 @@
     transition: opacity linear .3s;
 }
 
-.dbs_chartX.-line > .-chart > .-delta > .-perc > .-int{
+.dbs_chartX.-line > .-chart > .-delta > .-info > .-perc > .-int{
 }
 
-.dbs_chartX.-line > .-chart > .-delta > .-perc > .-dec{
+.dbs_chartX.-line > .-chart > .-delta > .-info > .-perc > .-dec{
 	font-size: .5em;
 }
 

@@ -510,7 +510,7 @@ dbsfaces.ui = {
 		}
 		var xI = xE.childElementCount;
 		if (xI > 0){
-			xI--;
+//			xI--;
 		}
 		xE.parentElement.insertBefore(xE, xE.parentElement.childNodes[xI]);
 	},
@@ -1085,8 +1085,8 @@ dbsfaces.math = {
 	
 	circlePoint: function(pCenter, pRadius, p2PIPercentual){
 		var xPoint = {};
-		xPoint.x = dbsfaces.math.round(pCenter.x + (pRadius * Math.sin(p2PIPercentual)), 2);
-		xPoint.y = dbsfaces.math.round(pCenter.y - (pRadius * Math.cos(p2PIPercentual)), 2);
+		xPoint.x = dbsfaces.math.round(pCenter.x + (pRadius * Math.sin(p2PIPercentual)), 6);
+		xPoint.y = dbsfaces.math.round(pCenter.y - (pRadius * Math.cos(p2PIPercentual)), 6);
 		return xPoint;
 	},
 	//Retorna lista com o valores binários(1,2,4,8) que compõem o valor informado
