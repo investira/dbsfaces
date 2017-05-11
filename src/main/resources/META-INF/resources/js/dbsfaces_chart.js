@@ -607,13 +607,12 @@ dbsfaces.chart = {
 			xDeltaValue.svgAttr("dy", ".38em");
 			xDeltaValue.text("");
 			//Valor
-			var xSpanValue =  dbsfaces.svg.createElement("tspan", null);
+			var xSpanValue =  dbsfaces.svg.createElement(xDeltaValue, "tspan", null);
 			xSpanValue.text(xValue);
-			xDeltaValue.append(xSpanValue);
+
 			//Simbolo do percentual
-			var xSpanPerc =  dbsfaces.svg.createElement("tspan", {"class": "-label"});
+			var xSpanPerc =  dbsfaces.svg.createElement(xDeltaValue, "tspan", {"class": "-label"});
 			xSpanPerc.text("%");
-			xDeltaValue.append(xSpanPerc);
 		}		
 
 		var xDeltaInfoGroup = pChart.data("deltainfogroup");

@@ -113,21 +113,20 @@ dbsfaces.sound = {
 }
 
 dbsfaces.svg = {
-	gsvg: function(pComponent, pX, pY, pWidth, pHeight, pStyleClass, pStyle, pAttrs){
-		var xG = dbsfaces.svg.g(pComponent, pStyleClass, pStyle, pAttrs);
+	gsvg: function(pParentElement, pX, pY, pWidth, pHeight, pStyleClass, pStyle, pAttrs){
+		var xG = dbsfaces.svg.g(pParentElement, pStyleClass, pStyle, pAttrs);
 		return dbsfaces.svg.svg(xG, null, null, null, null, null, null, null);
 	},
 	 
-	g: function(pComponent, pStyleClass, pStyle, pAttrs){
-		var xG = dbsfaces.svg.createElement('g', pAttrs);
+	g: function(pParentElement, pStyleClass, pStyle, pAttrs){
+		var xG = dbsfaces.svg.createElement(pParentElement, 'g', pAttrs);
 		dbsfaces.svg.setDefaultAttrs(xG, pStyleClass, pStyle);
 
-		pComponent.append(xG);
 		return xG;
 	},
 
-	svg: function(pComponent, pX, pY, pWidth, pHeight, pStyleClass, pStyle, pAttrs){
-		var xSVG = dbsfaces.svg.createElement('svg', pAttrs);
+	svg: function(pParentElement, pX, pY, pWidth, pHeight, pStyleClass, pStyle, pAttrs){
+		var xSVG = dbsfaces.svg.createElement(pParentElement, 'svg', pAttrs);
 		dbsfaces.svg.setDefaultAttrs(xSVG, pStyleClass, pStyle);
 
 		xSVG.svgAttr("x", pX)
@@ -135,45 +134,42 @@ dbsfaces.svg = {
 			.svgAttr("width", pWidth)
 			.svgAttr("height", pHeight);
 
-		pComponent.append(xSVG);
 		return xSVG;
 	},
 	
-	use: function(pComponent, pHRef, pStyleClass, pStyle, pAttrs){
-		var xUse = dbsfaces.svg.createElement('use', pAttrs);
+	use: function(pParentElement, pHRef, pStyleClass, pStyle, pAttrs){
+		var xUse = dbsfaces.svg.createElement(pParentElement, 'use', pAttrs);
 		dbsfaces.svg.setDefaultAttrs(xUse, pStyleClass, pStyle);
 		dbsfaces.svg.setAttributeHRef(xUse, pHRef);
 //		xUse.get(0).setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", "#" + pHRef);
 //		xUse.svgAttr("xlink:href", "#" + pHRef);
-		pComponent.append(xUse);
 		return xUse;
 	},
 
-	line: function(pComponent, pX1, pY1, pX2, pY2, pStyleClass, pStyle, pAttrs){
-		var xLine = dbsfaces.svg.createElement('line', pAttrs);
+	line: function(pParentElement, pX1, pY1, pX2, pY2, pStyleClass, pStyle, pAttrs){
+		var xLine = dbsfaces.svg.createElement(pParentElement, 'line', pAttrs);
 		dbsfaces.svg.setDefaultAttrs(xLine, pStyleClass, pStyle);
 		xLine.svgAttr("x1", pX1)
 			 .svgAttr("y1", pY1)
 			 .svgAttr("x2", pX2)
 			 .svgAttr("y2", pY2);
-		pComponent.append(xLine);
+
 		return xLine;
 	},
 	
-	circle: function(pComponent, pCX, pCY, pR, pStyleClass, pStyle, pAttrs){
-		var xCircle = dbsfaces.svg.createElement('circle', pAttrs);
+	circle: function(pParentElement, pCX, pCY, pR, pStyleClass, pStyle, pAttrs){
+		var xCircle = dbsfaces.svg.createElement(pParentElement, 'circle', pAttrs);
 		dbsfaces.svg.setDefaultAttrs(xCircle, pStyleClass, pStyle);
 
 		xCircle.svgAttr("cx", pCX)
 			   .svgAttr("cy", pCY)
 			   .svgAttr("r", pR);
 
-		pComponent.append(xCircle);
 		return xCircle;
 	},
 
-	rect: function(pComponent, pX, pY, pWidth, pHeight, pRX, pRY, pStyleClass, pStyle, pAttrs){
-		var xRect = dbsfaces.svg.createElement('rect', pAttrs);
+	rect: function(pParentElement, pX, pY, pWidth, pHeight, pRX, pRY, pStyleClass, pStyle, pAttrs){
+		var xRect = dbsfaces.svg.createElement(pParentElement, 'rect', pAttrs);
 		dbsfaces.svg.setDefaultAttrs(xRect, pStyleClass, pStyle);
 
 		xRect.svgAttr("x", pX)
@@ -183,12 +179,11 @@ dbsfaces.svg = {
 			 .svgAttr("height", pHeight)
 			 .svgAttr("width", pWidth);
 		
-		pComponent.append(xRect);
 		return xRect;
 	},
 	
-	ellipse: function(pComponent, pCX, pCY, pRX, pRY, pStyleClass, pStyle, pAttrs){
-		var xEllipse = dbsfaces.svg.createElement('ellipse', pAttrs);
+	ellipse: function(pParentElement, pCX, pCY, pRX, pRY, pStyleClass, pStyle, pAttrs){
+		var xEllipse = dbsfaces.svg.createElement(pParentElement, 'ellipse', pAttrs);
 		dbsfaces.svg.setDefaultAttrs(xEllipse, pStyleClass, pStyle);
 
 		xEllipse.svgAttr("cx", pCX)
@@ -196,65 +191,58 @@ dbsfaces.svg = {
 			    .svgAttr("rx", pRX)
 			    .svgAttr("ry", pRY);
 
-		pComponent.append(xEllipse);
 		return xEllipse;
 	},
 	
-	path: function(pComponent, pData, pStyleClass, pStyle, pAttrs){
-		var xPath = dbsfaces.svg.createElement('path', pAttrs);
+	path: function(pParentElement, pData, pStyleClass, pStyle, pAttrs){
+		var xPath = dbsfaces.svg.createElement(pParentElement, 'path', pAttrs);
 		dbsfaces.svg.setDefaultAttrs(xPath, pStyleClass, pStyle);
 		
 		xPath.svgAttr("d", pData);
 		
-		pComponent.append(xPath);
 		return xPath;
 	},
 
-	text: function(pComponent, pX, pY, pText, pStyleClass, pStyle, pAttrs){
-		var xText = dbsfaces.svg.createElement('text', pAttrs);
+	text: function(pParentElement, pX, pY, pText, pStyleClass, pStyle, pAttrs){
+		var xText = dbsfaces.svg.createElement(pParentElement, 'text', pAttrs);
 		dbsfaces.svg.setDefaultAttrs(xText, pStyleClass, pStyle);
 
 		xText.svgAttr("x", pX)
 			 .svgAttr("y", pY);
-
 		xText.text(pText);
-		pComponent.append(xText);
+
 		return xText;
 	},
 
-	tspan: function(pComponent, pText, pStyleClass, pStyle, pAttrs){
-		var xTspan = dbsfaces.svg.createElement('tspan', pAttrs);
+	tspan: function(pParentElement, pText, pStyleClass, pStyle, pAttrs){
+		var xTspan = dbsfaces.svg.createElement(pParentElement, 'tspan', pAttrs);
 		dbsfaces.svg.setDefaultAttrs(xTspan, pStyleClass, pStyle);
 
 		xTspan.text(pText);
-		pComponent.append(xTspan);
+
 		return xTspan;
 	},
 
-	textPath: function(pComponent, pHRef, pText, pStyleClass, pStyle, pAttrs){
-		var xTextPath = dbsfaces.svg.createElement('textPath', pAttrs);
+	textPath: function(pParentElement, pHRef, pText, pStyleClass, pStyle, pAttrs){
+		var xTextPath = dbsfaces.svg.createElement(pParentElement, 'textPath', pAttrs);
 		dbsfaces.svg.setDefaultAttrs(xTextPath, pStyleClass, pStyle);
 
 		xTextPath.text(pText);
 		dbsfaces.svg.setAttributeHRef(xTextPath, pHRef);
 		
-		pComponent.append(xTextPath);
-		
 		return xTextPath;
 	},
 	
-	linearGradient: function(pComponent, pId, pAttrs){
-		var xElement = dbsfaces.svg.createElement('linearGradient', pAttrs);
-		pComponent.append(xElement);
+	linearGradient: function(pParentElement, pId, pAttrs){
+		var xElement = dbsfaces.svg.createElement(pParentElement, 'linearGradient', pAttrs);
 
 		xElement.svgAttr("id", pId);
 		
 		return xElement;
 	},
 	
-	marker: function(pComponent, pId, pRefX, pRefY){
-		var xElement = dbsfaces.svg.createElement('marker', null);
-		pComponent.append(xElement);
+	marker: function(pParentElement, pId, pRefX, pRefY){
+		var xElement = dbsfaces.svg.createElement(pParentElement, 'marker', null);
 
 		xElement.svgAttr("id", pId)
 				.svgAttr("refx", pRefX)
@@ -263,17 +251,16 @@ dbsfaces.svg = {
 		return xElement;
 	},
 
-	stop: function(pComponent, pOffset, pStopColor){
-		var xElement = dbsfaces.svg.createElement('stop', null);
+	stop: function(pParentElement, pOffset, pStopColor){
+		var xElement = dbsfaces.svg.createElement(pParentElement, 'stop', null);
 
 		xElement.svgAttr("offset", pOffset)
 			    .svgAttr("stop-color", pStopColor);
 
-		pComponent.append(xElement);
 		return xElement;
 	},
 	
-	createElement: function(pTag, pAttrs){
+	createElement: function(pParentElement, pTag, pAttrs){
 		var xElement = $(document.createElementNS('http://www.w3.org/2000/svg', pTag));
 		//Seta atributos do componente.
 		if (pAttrs != null){
@@ -281,6 +268,7 @@ dbsfaces.svg = {
 				xElement.svgAttr(xAttr, pAttrs[xAttr]);
 			}
 		}
+		pParentElement.append(xElement);
 		return xElement;
 	},
 

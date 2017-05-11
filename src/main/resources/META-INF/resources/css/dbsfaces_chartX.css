@@ -83,14 +83,25 @@
 
 .dbs_chartX.-pie > .-chart > .-links > .-linkHover.-hover{
 /* 	stroke-opacity: 1; */
-	stroke-width: 1em;
+	stroke-width: .5em;
 }
+
+
 .dbs_chartX.-pie > .-chart > .-links > .-linkHover{
     fill: none;
-/*     stroke-opacity: 0; */
     stroke: currentColor;
-/*     stroke-width: 2; */
     stroke-width: 0;
+}
+
+.dbs_chartX.-pie.-selected.-hover.-hoverLink > .-chart > .-links > .-link:not(.-hover){
+	fill-opacity: 0.4;
+	pointer-events: none;	
+}
+
+.dbs_chartX.-pie.-selected.-hover.-hoverLink > .-chart > .-delta > .-circle{
+	stroke-width: .55em;
+	transform: scale(1.1);
+	transition: stroke-width linear .1s;
 }
 
 .dbs_chartX.-pie > .-chart > .-delta{
@@ -112,6 +123,7 @@
 	fill: currentColor;
 	stroke-width: 0.1em;
 }
+
 
 .dbs_chartX.-pie.-hover > .-chart > .-delta > .-circle{
 	visibility: visible;

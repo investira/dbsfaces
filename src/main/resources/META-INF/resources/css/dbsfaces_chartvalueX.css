@@ -108,21 +108,22 @@
 .dbs_chartX.-pie.-selected.-hover > .-chart > .-values > .dbs_chartValueX:not(.-hover):not(.-link){
 	transition: stroke-opacity linear .5s;
 	stroke-opacity: 0.1;
-	fill-opacity: 0.1;	
+	fill-opacity: 0.1;
 }
-.dbs_chartX.-pie.-selected.-hoverLink > .-chart > .-values > .dbs_chartValueX:not(.-hover):not(.-link){
-	stroke-opacity: 0.1;
+
+.dbs_chartX.-pie.-selected.-hover.-hoverLink > .-chart > .-values > .dbs_chartValueX:not(.-hover):not(.-link){
 	pointer-events: none;	
 }
-.dbs_chartX.-pie.-selected.-hoverLink > .-chart > .-links > .-link:not(.-hover){
-	fill-opacity: 0.4;
-	pointer-events: none;	
+
+.dbs_chartX.-pie.-selected.-hover.-hoverLink > .-chart > .-values > .dbs_chartValueX.-link:not(.-hoverLink){
+/* 	-webkit-filter: url('#chartsblur'); */
+/* 	-moz-filter: url('#chartsblur'); */
+/* 	-o-filter: url('#chartsblur'); */
+/* 	filter: url('#chartsblur');	 */
+	stroke-opacity: 0.5;
+	fill-opacity: 0.5;
 }
-.dbs_chartX.-pie.-selected.-hoverLink > .-chart > .-delta > .-circle{
-	stroke-width: .55em;
-	transform: scale(1.1);
-	transition: stroke-width linear .1s;
-}
+
 
 
 

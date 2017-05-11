@@ -550,38 +550,18 @@ dbsfaces.chartX = {
 			dbsfaces.chartX.pvShowDeltaChartPie(pChartData, pChartValueData);
 		}
 	},
-//xxxx
+
 	pvShowDeltaChartPie: function(pChartData, pChartValueData){
 		var xChartValue = null;
+		//Hover secundário(dos links)
 		if (pChartData.hoverLink){
 			pChartData.dom.hoverLinkChartValueData = dbsfaces.chartX.pvHoverLink(pChartData, pChartValueData, pChartData.dom.hoverLinkChartValueData);
+		//Hover principal
 		}else{
 			pChartData.dom.hoverChartValueData = dbsfaces.chartX.pvHover(pChartData, pChartValueData, pChartData.dom.hoverChartValueData);
-			dbsfaces.chartX.pvShowDeltaChartPieValues(pChartData, pChartValueData);
 		}
 
 	},
-	
-	XXXXpvShowDeltaChartPie: function(){
-		if (!pChartData.hoverLink){
-			dbsfaces.chartX.pvShowDeltaChartPieValues(pChartData, pChartValueData);
-			//Cor da borda do círcul iquao ao inverso da cor principal
-//			pChartData.dom.deltaCircle.svgAttr("stroke", tinycolor(pChartData.dom.parent.css("color")).invertLightness().setAlpha(1).toString() );
-			//Seleciona chartvalue encontrado
-			pChartData.dom.hoverChartValueData = dbsfaces.chartX.pvHover(pChartData, pChartValueData, pChartData.dom.hoverChartValueData);
-		}else{
-			if (pChartValueData == null){ //xxxx
-				//Cor da borda do círculo iqual a a cor do chartvalue selecionado
-//				pChartData.dom.deltaCircle.svgAttr("stroke", pChartData.dom.parent.data("data").currentColorInverted);
-			}else{
-				if (pChartValueData.relationalGroupIndex != pChartData.dom.hoverChartValueData.relationalGroupIndex){
-					//Cor da borda do círculo iqual a cor do chartvalue selecionado
-//					pChartData.dom.deltaCircle.svgAttr("stroke", pChartValueData.dom.self.css("color"));
-				}
-			}
-		}
-	},
-
 	
 	pvShowDeltaChartLine: function(pChartData, pChartValueData){
 		if (pChartData.dom.movingDeltaHandleData == null){return;}
@@ -633,17 +613,17 @@ dbsfaces.chartX = {
 		dbsfaces.chartX.pvShowDeltaPerc(pChartData, xValue);
 	},
 	
-	pvShowDeltaChartPieValues: function(pChartData, pChartValueData){
-		if (pChartValueData == null){
+	pvShowDeltaChartPieValues: function(pChartData, pPerc, pValue, pLabel){
+		if (pPerc == null){
 			//Exibe valor total do delta
 			dbsfaces.chartX.pvShowDeltaValue(pChartData, null, null);
 			//Exibe percentual do delta
 			dbsfaces.chartX.pvShowDeltaPerc(pChartData, null);
 		}else{
-			//Exibe valor do delta
-			dbsfaces.chartX.pvShowDeltaValue(pChartData, pChartValueData.value, pChartValueData.label);
 			//Exibe percentual do delta
-			dbsfaces.chartX.pvShowDeltaPerc(pChartData, pChartValueData.perc);
+			dbsfaces.chartX.pvShowDeltaPerc(pChartData, pPerc);
+			//Exibe valor do delta
+			dbsfaces.chartX.pvShowDeltaValue(pChartData, pValue, pLabel);
 		}
 	},
 	
@@ -705,27 +685,30 @@ dbsfaces.chartX = {
 			 && pOldChartValueData == pChartValueData){
 				return pChartValueData;
 			}else{
-//				pOldChartValueData.dom.self.removeClass("-a_quick_pulse");
+//				pOldChartValueData.dom.self.svgAttr("transform","scale(1)");
+				pOldChartValueData.dom.self.removeClass("-hoverLink");
+				pChartData.dom.self.removeClass("-hoverLink");
 				//Esconde links entre os chartvalues
 				if (pChartData.type == "pie"){
-					pChartData.dom.links.children(".-linkHover").removeClass("-hover");
-					//Configura as cores do delta
-					dbsfaces.chartX.pvSetDeltaColor(pChartData, pChartValueData, "", "");
+					var xLink = pChartData.dom.links.children(".-linkHover");
+					xLink.removeClass("-hover");
 				}	
 			}
 		}
 		//Ativa hover atual
 		if (pChartValueData != null){
+			pChartData.dom.self.addClass("-hoverLink");
 			if (pChartData.type == "line"){
 			}else if (pChartData.type == "pie"){
 				//XXXX
-//				pChartValueData.dom.self.removeClass("-a_quick_pulse");
-//				pChartValueData.dom.self[0].offsetWidth = pChartValueData.dom.self[0].offsetWidth;
-				pChartValueData.dom.self.addClass("-a_quick_pulse");
+				pChartValueData.dom.self.addClass("-hoverLink");
+//				pChartValueData.dom.self.svgAttr("transform","scale(1.03)");
 				var xLink = pChartData.dom.links.children(".-linkHover[key='" + pChartValueData.key + "'][b='" + pChartData.dom.hoverChartValueData.key + "']");
 				xLink.svgAddClass("-hover");
 				//Configura as cores do delta
 				dbsfaces.chartX.pvSetDeltaColor(pChartData, pChartValueData, pChartValueData.dom.self.css("color"), pChartValueData.colorInverted);
+				//Exibe informação o chartvalue selecionado
+				dbsfaces.chartX.pvShowDeltaChartPieValues(pChartData, pChartData.dom.hoverChartValueData.perc, pChartData.dom.hoverChartValueData.value, pChartValueData.label);
 			}
 		}
 		return pChartValueData;
@@ -770,18 +753,24 @@ dbsfaces.chartX = {
 						}
 					});
 				});
-				//xxxx
 				//Configura as cores do delta
 				dbsfaces.chartX.pvSetDeltaColor(pChartData, pChartValueData, pChartValueData.dom.self.css("color"), pChartValueData.colorInverted);
+				//Exibe informação o chartvalue selecionado
+				dbsfaces.chartX.pvShowDeltaChartPieValues(pChartData, pChartValueData.perc, pChartValueData.value, pChartValueData.label);
 			}
+		}else{
+			//exbibe valor total
+			dbsfaces.chartX.pvShowDeltaChartPieValues(pChartData, null);
 		}
 		//Artifício para corrigir problema no safari que não considera o transform do css aplicado dinamicamente
 		dbsfaces.ui.recreate(pChartData.dom.delta);
+		
+		//Exibe valores
+
 		return pChartValueData;
 	},
 	
 	pvSetDeltaColor: function(pChartData, pChartValueData, pColor, pColorInverted){
-		//xxxx
 		if (pChartData.showDelta){
 			pChartData.dom.deltaInfo.svgAttr("color", pColorInverted);
 			if (pChartData.hoverLink){
@@ -796,6 +785,9 @@ dbsfaces.chartX = {
 	pvActivateHoverLink: function(pChartData){
 		pChartData.dom.self.toggleClass("-hoverLink");
 		pChartData.hoverLink = pChartData.dom.self.hasClass("-hoverLink");
+		if (!pChartData.hoverLink){
+			dbsfaces.chartX.selectChartValue(pChartData, null);
+		}
 	},
 
 	pvCalcDeltaChartLine: function(pChartData){
@@ -881,7 +873,7 @@ dbsfaces.chartX = {
 	},
 	
 	selectChartValue: function(pChartData, pChartValueData){
-		//impede chadamas denecessárias se form o mesmo chartvalue já selacionado
+		//impede chadamas desnecessárias se form o mesmo chartvalue já selacionado
 		if (pChartData.hoverLink){
 			if (pChartData.dom.hoverLinkChartValueData == pChartValueData){
 				return;

@@ -10,13 +10,21 @@ dbs_chartsX = function(pId) {
 
 dbsfaces.chartsX = {
 	initialize: function(pCharts){
+//		dbsfaces.chartsX.pvInitializeDefs(pCharts);
 		var xChartsData = dbsfaces.chartsX.pvInitializeData(pCharts);
 		dbsfaces.chartsX.pvInitializeLayout(xChartsData);
 		dbsfaces.chartsX.pvInitializeAnalizeValues(xChartsData);
 		dbsfaces.chartsX.pvInitializeDraw(xChartsData);
 		xChartsData.dom.container.removeClass("-hide");
 	},
-
+	
+//	pvInitializeDefs: function(pCharts){
+//		var xSvg = dbsfaces.svg.svg(pCharts, null, null, null, null, null, null, {x:0, y:0});
+//		var xDef = dbsfaces.svg.createElement(xSvg, "defs");
+//		var xFilter = dbsfaces.svg.createElement(xDef, "filter", {id:"chartsblur", x:"-50%", y:"-50%", width:"200%", height:"200%", filterUnits:"userSpaceOnUse"});
+//		var xFilterGaussian = dbsfaces.svg.createElement(xFilter, "feGaussianBlur", {in:"SourceGraphic", stdDeviation:1});
+//	},
+	
 	pvInitializeData: function(pCharts){
 		//Salva chart's vinculados a este charts
 		var xData = {
