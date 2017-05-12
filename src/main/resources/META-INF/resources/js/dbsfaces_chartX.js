@@ -768,8 +768,10 @@ dbsfaces.chartX = {
 				dbsfaces.chartX.pvShowDeltaChartPieValues(pChartData, pChartValueData.perc, pChartValueData.value, pChartValueData.label);
 			}
 		}else{
-			//exbibe valor total
-			dbsfaces.chartX.pvShowDeltaChartPieValues(pChartData, null);
+			if (pChartData.type == "pie"){
+				//exbibe valor total
+				dbsfaces.chartX.pvShowDeltaChartPieValues(pChartData, null);
+			}
 		}
 		//Artifício para corrigir problema no safari que não considera o transform do css aplicado dinamicamente
 		dbsfaces.ui.recreate(pChartData.dom.delta);
