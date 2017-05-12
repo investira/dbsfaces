@@ -1,10 +1,10 @@
 .dbs_chartValueX{
 }
 
-.dbs_chartValueX{
-	cursor: pointer;
+.dbs_chartValueX > .-info > .-values.-hide{
+    visibility: hidden;
 }
-
+    
 .dbs_chartValueX.-pie{
 	pointer-events: painted;
     fill: currentColor;
@@ -56,6 +56,9 @@
 	display: none;
 }
 
+.dbs_chartValueX.-line{
+	cursor: pointer;
+}
 
 .dbs_chartValueX.-line > .-point{
 	stroke-width: .1em;
@@ -103,6 +106,7 @@
 
 
 .dbs_chartX.-pie.-selected.-hover > .-chart > .-values > .dbs_chartValueX{
+	cursor: pointer;
 }
 
 .dbs_chartX.-pie.-selected.-hover > .-chart > .-values > .dbs_chartValueX:not(.-hover):not(.-link){

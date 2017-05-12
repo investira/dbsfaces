@@ -477,7 +477,6 @@ dbsfaces.chartsX = {
 	
 	//Desenha link dos relacionamentos
 	pvInitializeDrawRelationships: function(pChartsData, pChartData){
-//		var xLinkArc = dbsfaces.math.round((pChartData.width / pChartData.relationalCaptionsCount) / 10, 0);
 		pChartData.relationships.forEach(function(pRelationship){
 			//Arco total 
 			var xLinkArc = (pChartData.arcFator * (pRelationship.total / pChartData.totalValue)) * 100;
@@ -649,7 +648,7 @@ dbsfaces.chartsX = {
 		var xArcPercValue = pPerc;
 		var xArcPercValuePrevious = pPercPrevious;
 		if (xArcPercValue > 99.99){
-			xArcPercValue = 99.99; //Artifício para evitar uma volta completa anulando a exibição de conetúdo
+			xArcPercValue = 99.99999; //Artifício para evitar uma volta completa anulando a exibição de conetúdo
 		}
 
 		//Angulo inicial e final do arco

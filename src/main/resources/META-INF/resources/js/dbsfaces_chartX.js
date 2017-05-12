@@ -361,6 +361,9 @@ dbsfaces.chartX = {
 			pChartValueData.dom.infoLabel = dbsfaces.svg.text(pChartValueData.dom.infoValues, "0.4em", null, pChartValueData.label, "-label", null, null);
 			//Texto do Valor
 			pChartValueData.dom.infoValue = dbsfaces.svg.text(pChartValueData.dom.infoValues, "0.1em", ".8em", pChartValueData.value, "-value", null, null);
+			if (pChartData.dom.childrenData.length == 1){
+				pChartValueData.dom.infoValues.addClass("-hide");
+			}
 			//BoxPerc
 			pChartValueData.dom.infoPercBox = dbsfaces.svg.rect(pChartValueData.dom.infoValues, "7em", "-1em", "1em", "1em", ".2em", ".2em", "-percBox", null, null); //'r' precisa ser um atributo por problema no FIREFOX
 			//Texto do Perc
@@ -615,16 +618,22 @@ dbsfaces.chartX = {
 	
 	pvShowDeltaChartPieValues: function(pChartData, pPerc, pValue, pLabel){
 		if (pPerc == null){
-			//Exibe valor total do delta
-			dbsfaces.chartX.pvShowDeltaValue(pChartData, null, null);
-			//Exibe percentual do delta
-			dbsfaces.chartX.pvShowDeltaPerc(pChartData, null);
-		}else{
-			//Exibe percentual do delta
-			dbsfaces.chartX.pvShowDeltaPerc(pChartData, pPerc);
-			//Exibe valor do delta
-			dbsfaces.chartX.pvShowDeltaValue(pChartData, pValue, pLabel);
+			//Seexistr somente um valor, exibe ele no centro
+			if (pChartData.dom.childrenData.length == 1){
+				//Utiliza label do primeiro e único item
+				pLabel = pChartData.dom.childrenData[0].label;
+				//Utiliza label do primeiro e único item
+				pValue = pChartData.dom.childrenData[0].value;
+				pPerc = "100%";
+			}else{
+				pLabel = null;
+				pValue = null;
+			}
 		}
+		//Exibe percentual do delta
+		dbsfaces.chartX.pvShowDeltaPerc(pChartData, pPerc);
+		//Exibe valor do delta
+		dbsfaces.chartX.pvShowDeltaValue(pChartData, pValue, pLabel);
 	},
 	
 	pvShowDeltaValue: function(pChartData, pValue, pLabel){
@@ -696,7 +705,7 @@ dbsfaces.chartX = {
 			}
 		}
 		//Ativa hover atual
-		if (pChartValueData != null){
+		if (pChartValueData != null && pChartData.dom.childrenData.length > 1){
 			pChartData.dom.self.addClass("-hoverLink");
 			if (pChartData.type == "line"){
 			}else if (pChartData.type == "pie"){
@@ -734,7 +743,7 @@ dbsfaces.chartX = {
 			}
 		}
 		//Ativa hover atual
-		if (pChartValueData != null){
+		if (pChartValueData != null && pChartData.dom.childrenData.length > 1){
 			pChartData.dom.self.addClass("-hover");
 			pChartValueData.dom.self.addClass("-hover");
 			if (pChartData.type == "line"){
@@ -785,6 +794,7 @@ dbsfaces.chartX = {
 	pvActivateHoverLink: function(pChartData){
 		pChartData.dom.self.toggleClass("-hoverLink");
 		pChartData.hoverLink = pChartData.dom.self.hasClass("-hoverLink");
+		//Desativa também o hover principal
 		if (!pChartData.hoverLink){
 			dbsfaces.chartX.selectChartValue(pChartData, null);
 		}
