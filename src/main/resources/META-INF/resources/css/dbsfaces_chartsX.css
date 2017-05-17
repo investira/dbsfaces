@@ -101,6 +101,10 @@
 /* 	padding: .3em; */
 }
 
+.dbs_chartsX.-hover > .-container > .-charts > .dbs_chartX.-bar:not(.-selected){
+	stroke-opacity: 0.1;
+}
+
 /* .dbs_chartsX > .-container > .-charts > .-container.-hide{ */
 /* 	opacity: 0; */
 /* } */

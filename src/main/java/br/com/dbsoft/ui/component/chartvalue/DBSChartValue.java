@@ -102,7 +102,7 @@ public class DBSChartValue extends DBSUIInput implements Serializable, NamingCon
 	public void setColor(String pColor) {
 		getStateHelper().put(PropertyKeys.color, pColor);
 		handleAttribute("color", pColor);
-		setDBSColor(DBSColor.fromString(pColor));
+//		setDBSColor(DBSColor.fromString(pColor));
 	}
 
 	public DBSColor getDBSColor() {
@@ -142,28 +142,6 @@ public class DBSChartValue extends DBSUIInput implements Serializable, NamingCon
 		getStateHelper().put(PropertyKeys.displayValue, pDisplayValue);
 		handleAttribute("displayValue", pDisplayValue);
 	}
-//	@Override
-//	public void restoreState(FacesContext context) {
-//	    Object[] rtrn = new Object[2];
-//	    rtrn[0] = super.saveState(context);
-//	    rtrn[1] = "dummy";
-//	}
 
-//	@Override
-//	public void restoreState(FacesContext pContext, Object pState) {
-//	    Object rtrn[] = (Object[])pState;
-//	    super.restoreState(pContext, rtrn[0]);
-////	    rtrn[0] = super.saveState(context);
-////	    rtrn[1] = "dummy";
-//		
-//	}
-//	
-//	@Override
-//	public Object saveState(FacesContext context) {
-//	    Object[] rtrn = new Object[2];
-//	    rtrn[0] = super.saveState(context);
-//	    rtrn[1] = "dummy";
-//	    return rtrn;
-//	}
 
 }

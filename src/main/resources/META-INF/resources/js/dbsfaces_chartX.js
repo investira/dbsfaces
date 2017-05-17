@@ -244,6 +244,7 @@ dbsfaces.chartX = {
 				parent : pChartData.dom.self,  //o pai(chart)
 				point : null, //elemento point
 				pointLink : null, //elemento de liga point ao centro
+				pointDif: null, //Ponto com a parte que é diferente dos outros chartvalue(com mesmo index) de outros chart
 				info : null, //elemento que contém infos
 				infoValues : null, //elemento que contém os elementos dos textos do info(somente usado no chartpie)
 				infoLabel : null, //elemento que contém o label
@@ -289,6 +290,8 @@ dbsfaces.chartX = {
 			dbsfaces.chartX.pvInitializeLayoutChartLine(pChartData);
 		}else if (pChartData.type == "pie"){
 			dbsfaces.chartX.pvInitializeLayoutChartPie(pChartData);
+		}else if (pChartData.type == "bar"){
+//			dbsfaces.chartX.pvInitializeLayoutChartBar(pChartData);
 		}
 
 		//Cria elementos do título dos relationalGroup
@@ -345,10 +348,21 @@ dbsfaces.chartX = {
 			//Texto do Valor
 			pChartValueData.dom.infoValue = dbsfaces.svg.text(pChartValueData.dom.info, null, null, pChartValueData.value, "-value", null, null);
 		}else if (pChartData.type == "bar"){
-			//Box
-			pChartValueData.dom.infoLabelBox = dbsfaces.svg.rect(pChartValueData.dom.info, null, null, null, null, ".2em", ".2em", "-labelBox", null, null); //'r' precisa ser um atributo por problema no FIREFOX
 			//Ponto
+//			pChartValueData.dom.point = dbsfaces.svg.rect(pChartValueData.dom.self, null, null, null, null, null, null, "-point", null, null); //'r' precisa ser um atributo por problema no FIREFOX
 			pChartValueData.dom.point = dbsfaces.svg.path(pChartValueData.dom.self, null, "-point", null, null);
+			//Ponto com a parte que é diferente dos outros chartvalue(com mesmo index) de outros chart  
+			pChartValueData.dom.pointDif = dbsfaces.svg.path(pChartValueData.dom.self, null, "-pointDif", null, null);
+			//Path
+			pChartValueData.dom.infoPath = dbsfaces.svg.path(pChartValueData.dom.info, null, "-path", null, null);
+			//LabelBox
+			pChartValueData.dom.infoLabelBox = dbsfaces.svg.rect(pChartValueData.dom.info, null, null, null, null, ".2em", ".2em", "-labelBox", null, null); //'r' precisa ser um atributo por problema no FIREFOX
+			//valueBox
+			pChartValueData.dom.infoValueBox = dbsfaces.svg.rect(pChartValueData.dom.info, null, null, null, null, ".2em", ".2em", "-valueBox", null, null); //'r' precisa ser um atributo por problema no FIREFOX
+			//Texto do Label
+			pChartValueData.dom.infoLabel = dbsfaces.svg.text(pChartValueData.dom.info, null, null, pChartValueData.label, "-label", null, null);
+			//Texto do Valor
+			pChartValueData.dom.infoValue = dbsfaces.svg.text(pChartValueData.dom.info, null, null, pChartValueData.value, "-value", null, null);
 		}else if (pChartData.type == "pie"){
 			//Ponto
 			pChartValueData.dom.point = dbsfaces.svg.path(pChartValueData.dom.self, null, "-point", null, {stroke:"currentColor", fill:"none"});
@@ -374,7 +388,7 @@ dbsfaces.chartX = {
 			pChartValueData.dom.infoPercDec = dbsfaces.svg.tspan(pChartValueData.dom.infoPerc, null, "-dec", null, null);
 		}
 		dbsfaces.ui.moveToBack(pChartValueData.dom.point);
-		if (pChartData.type == "pie"){
+		if (pChartData.type == "pie" || pChartData.type == "bar"){
 			//Captura movimento do mouse para seleciona ponto
 			pChartValueData.dom.self.on("mousemove touchmove touchstart", function(e){
 				var xChartValueData = null;
@@ -476,7 +490,7 @@ dbsfaces.chartX = {
 	},
 	
 	pvInitializeLayoutDelta: function(pChartData){
-		if (!pChartData.showDelta){return;}
+		if (pChartData.type == "line" && !pChartData.showDelta){return;}
 		pChartData.dom.delta = dbsfaces.svg.g(pChartData.dom.chart, "-delta", null, null);
 		pChartData.dom.deltaInfo = dbsfaces.svg.g(pChartData.dom.delta, "-info", null, null);
 		//Cria elemento Perc
@@ -518,22 +532,19 @@ dbsfaces.chartX = {
 		pChartData.dom.path = dbsfaces.svg.path(pChartData.dom.chart, null, "-path", "stroke:" + pChartData.color, null);
 		dbsfaces.ui.moveToBack(pChartData.dom.path);
 
-		
 		//Captura movimento para seleciona ponto
-		if (pChartData.type == "line"){
-			pChartData.dom.self.on("mousemove touchmove touchstart", function(e){
-				var xChart = $(this);
-				if (xChart.hasClass("-selected")){
-					//Timeout para diminuir a quantidade de chamada
-					clearTimeout(pChartData.findPointTimeout);
-					pChartData.findPointTimeout = setTimeout(function(){
-						dbsfaces.chartX.chartLinefindPoint(e, xChart.data("data"));
-					},5);
-				}
-				e.stopImmediatePropagation();
-				return false;
-			});
-		}
+		pChartData.dom.self.on("mousemove touchmove touchstart", function(e){
+			var xChart = $(this);
+			if (xChart.hasClass("-selected")){
+				//Timeout para diminuir a quantidade de chamada
+				clearTimeout(pChartData.findPointTimeout);
+				pChartData.findPointTimeout = setTimeout(function(){
+					dbsfaces.chartX.chartLinefindPoint(e, xChart.data("data"));
+				},5);
+			}
+			e.stopImmediatePropagation();
+			return false;
+		});
 	},
 
 	pvInitializeLayoutChartPie: function(pChartData){
@@ -545,12 +556,13 @@ dbsfaces.chartX = {
 		dbsfaces.ui.moveToBack(pChartData.dom.relationalCaptions);
 	},
 
-	
 	pvShowDelta: function(pChartData, pChartValueData){
 		if (pChartData.type == "line"){
 			dbsfaces.chartX.pvShowDeltaChartLine(pChartData, pChartValueData);
 		}else if (pChartData.type == "pie"){
 			dbsfaces.chartX.pvShowDeltaChartPie(pChartData, pChartValueData);
+		}else if (pChartData.type == "bar"){
+//			dbsfaces.chartX.pvShowDeltaChartPie(pChartData, pChartValueData);
 		}
 	},
 
@@ -688,13 +700,14 @@ dbsfaces.chartX = {
 	},
 
 	pvHoverLink: function(pChartData, pChartValueData, pOldChartValueData){
+		if (pChartData.relationships.length == 0){return};
+
 		//Remove hover anterios
 		if (pOldChartValueData != null){
 			if (pChartValueData != null 
 			 && pOldChartValueData == pChartValueData){
 				return pChartValueData;
 			}else{
-//				pOldChartValueData.dom.self.svgAttr("transform","scale(1)");
 				pOldChartValueData.dom.self.removeClass("-hoverLink");
 				pChartData.dom.self.removeClass("-hoverLink");
 				//Esconde links entre os chartvalues
@@ -707,11 +720,8 @@ dbsfaces.chartX = {
 		//Ativa hover atual
 		if (pChartValueData != null && pChartData.dom.childrenData.length > 1){
 			pChartData.dom.self.addClass("-hoverLink");
-			if (pChartData.type == "line"){
-			}else if (pChartData.type == "pie"){
-				//XXXX
+			if (pChartData.type == "pie"){
 				pChartValueData.dom.self.addClass("-hoverLink");
-//				pChartValueData.dom.self.svgAttr("transform","scale(1.03)");
 				var xLink = pChartData.dom.links.children(".-linkHover[key='" + pChartValueData.key + "'][b='" + pChartData.dom.hoverChartValueData.key + "']");
 				xLink.svgAddClass("-hover");
 				//Configura as cores do delta
@@ -733,6 +743,7 @@ dbsfaces.chartX = {
 			}else{
 				pOldChartValueData.dom.self.removeClass("-hover");
 				pChartData.dom.self.removeClass("-hover");
+				pChartData.dom.parent.removeClass("-hover");
 				//Esconde links entre os chartvalues
 				if (pChartData.type == "pie"){
 					pChartData.dom.links.children(".-hover").removeClass("-hover");
@@ -746,7 +757,9 @@ dbsfaces.chartX = {
 		if (pChartValueData != null && pChartData.dom.childrenData.length > 1){
 			pChartData.dom.self.addClass("-hover");
 			pChartValueData.dom.self.addClass("-hover");
-			if (pChartData.type == "line"){
+			pChartData.dom.parent.addClass("-hover");
+			if (pChartData.type == "line" 
+			 || pChartData.type == "bar"){
 				//Move chartvalue para a frente de todos os outros
 				dbsfaces.ui.moveToFront(pChartValueData.dom.self);
 			}else if (pChartData.type == "pie"){
@@ -773,8 +786,10 @@ dbsfaces.chartX = {
 				dbsfaces.chartX.pvShowDeltaChartPieValues(pChartData, null);
 			}
 		}
-		//Artifício para corrigir problema no safari que não considera o transform do css aplicado dinamicamente
-		dbsfaces.ui.recreate(pChartData.dom.delta);
+		if (pChartData.showDelta){
+			//Artifício para corrigir problema no safari que não considera o transform do css aplicado dinamicamente
+			dbsfaces.ui.recreate(pChartData.dom.delta);
+		}
 		
 		//Exibe valores
 
