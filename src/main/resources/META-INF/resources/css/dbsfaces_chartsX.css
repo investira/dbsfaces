@@ -34,7 +34,7 @@
 }
 .dbs_chartsX > .-container.-hide{
 /* 	opacity: 0; */
-/* 	visibility: hidden; */
+	visibility: hidden;
 }
 .dbs_chartsX > .-container > .-caption,
 .dbs_chartsX > .-container > .-childrenCaption,
