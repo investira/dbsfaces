@@ -280,6 +280,7 @@ dbsfaces.chartX = {
 
 	
 	pvInitializeLayout: function(pChartData){
+		if (pChartData.dom.childrenData.length == 0){return;}
 		//Cria elementos do chartvalueData e configura totalizador e index 
 		dbsfaces.chartX.pvInitializeLayoutChartValueCreateElement(pChartData);
 		

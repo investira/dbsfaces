@@ -143,34 +143,37 @@ dbsfaces.chartsX = {
 					pChartsData.width = pChartData.dom.chart[0].getBoundingClientRect().width;
 				}
 			});
-			if (pChartsData.type == "line" 
-			 || pChartsData.type == "bar"){
-				if (pChartsData.showLabel){
-					pChartsData.infoHeight = Math.round(parseFloat(pChartsData.dom.maxChartValueData.dom.infoLabel.css("font-size")) * 1.2, 0);
+			if (pChartsData.dom.minChartValueData != null
+			 && pChartsData.dom.maxChartValueData != null){
+				if (pChartsData.type == "line" 
+				 || pChartsData.type == "bar"){
+					if (pChartsData.showLabel){
+						pChartsData.infoHeight = Math.round(parseFloat(pChartsData.dom.maxChartValueData.dom.infoLabel.css("font-size")) * 1.2, 0);
+					}
+					if (pChartsData.showValue){
+						pChartsData.infoWidth = Math.round(Math.max(pChartsData.dom.maxChartValueData.dom.infoValue[0].getBoundingClientRect().width, 
+																	pChartsData.dom.minChartValueData.dom.infoValue[0].getBoundingClientRect().width) * 1.4, 0);
+					}
+					//Trai espaço dos infos da dimensão disponível para o gráfico principal
+					pChartsData.width -= pChartsData.infoWidth;
+					pChartsData.height -= pChartsData.infoHeight;
+					//Força a exibição do value da linha
+					pChartsData.dom.minChartValueData.dom.self.addClass("-showValue"); 
+					pChartsData.dom.maxChartValueData.dom.self.addClass("-showValue");
+					//Escale para ajustar as coordenadas dentro do espaço do gráfico
+					if (pChartsData.type == "line"){
+						xMaxCount--;
+					}
+					pChartsData.scaleX = pChartsData.width / xMaxCount;
+					if (pChartsData.type == "bar"){
+						pChartsData.pointWhiteSpace = pChartsData.scaleX * 0.1;
+						pChartsData.scaleX -= pChartsData.pointWhiteSpace;
+					}
+					pChartsData.scaleY = -pChartsData.height / (pChartsData.dom.maxChartValueData.value - pChartsData.dom.minChartValueData.value); //Scale vertical. obs:invertida já que a coordenada do svg desce quando o valor é maior;
+				}else if (pChartsData.type == "pie"){
+					pChartsData.infoWidth = pChartsData.dom.maxLabelChartValueData.dom.infoLabel[0].getComputedTextLength() * 1.10; 
+					pChartsData.infoHeight = 0; //Será configurado posteriomente como a altura do caption do relationalgroup(se houver);
 				}
-				if (pChartsData.showValue){
-					pChartsData.infoWidth = Math.round(Math.max(pChartsData.dom.maxChartValueData.dom.infoValue[0].getBoundingClientRect().width, 
-																pChartsData.dom.minChartValueData.dom.infoValue[0].getBoundingClientRect().width) * 1.4, 0);
-				}
-				//Trai espaço dos infos da dimensão disponível para o gráfico principal
-				pChartsData.width -= pChartsData.infoWidth;
-				pChartsData.height -= pChartsData.infoHeight;
-				//Força a exibição do value da linha
-				pChartsData.dom.minChartValueData.dom.self.addClass("-showValue"); 
-				pChartsData.dom.maxChartValueData.dom.self.addClass("-showValue");
-				//Escale para ajustar as coordenadas dentro do espaço do gráfico
-				if (pChartsData.type == "line"){
-					xMaxCount--;
-				}
-				pChartsData.scaleX = pChartsData.width / xMaxCount;
-				if (pChartsData.type == "bar"){
-					pChartsData.pointWhiteSpace = pChartsData.scaleX * 0.1;
-					pChartsData.scaleX -= pChartsData.pointWhiteSpace;
-				}
-				pChartsData.scaleY = -pChartsData.height / (pChartsData.dom.maxChartValueData.value - pChartsData.dom.minChartValueData.value); //Scale vertical. obs:invertida já que a coordenada do svg desce quando o valor é maior;
-			}else if (pChartsData.type == "pie"){
-				pChartsData.infoWidth = pChartsData.dom.maxLabelChartValueData.dom.infoLabel[0].getComputedTextLength() * 1.10; 
-				pChartsData.infoHeight = 0; //Será configurado posteriomente como a altura do caption do relationalgroup(se houver);
 			}
 		}else{
 			
