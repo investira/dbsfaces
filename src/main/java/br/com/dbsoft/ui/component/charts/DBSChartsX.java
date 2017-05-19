@@ -142,7 +142,7 @@ public class DBSChartsX extends DBSUIOutput implements NamingContainer{
 	}
 
 	public Boolean getShowDelta() {
-		return (Boolean) getStateHelper().eval(PropertyKeys.showDelta, false);
+		return (Boolean) getStateHelper().eval(PropertyKeys.showDelta, null);
 	}
 	public void setShowDelta(Boolean pShowDelta) {
 		getStateHelper().put(PropertyKeys.showDelta, pShowDelta);
@@ -184,10 +184,10 @@ public class DBSChartsX extends DBSUIOutput implements NamingContainer{
 		handleAttribute("valueSufix", pValueSufix);
 	}
 
-	public Integer getValueDecmialPlaces() {
+	public Integer getValueDecimalPlaces() {
 		return (Integer) getStateHelper().eval(PropertyKeys.valueDecimalPlaces, 0);
 	}
-	public void setValueDecmialPlaces(Integer pValueDecimalPlaces) {
+	public void setValueDecimalPlaces(Integer pValueDecimalPlaces) {
 		getStateHelper().put(PropertyKeys.valueDecimalPlaces, pValueDecimalPlaces);
 		handleAttribute("valueDecimalPlaces", pValueDecimalPlaces);
 	}

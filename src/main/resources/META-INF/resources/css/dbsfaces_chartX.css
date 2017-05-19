@@ -183,10 +183,17 @@
 }
 
 .dbs_chartX.-selected > .-chart{
-    pointer-events: painted;
+/*     pointer-events: painted; */
+    pointer-events: auto;
 }
+
+.dbs_chartX.-selected.-hover > .-chart{
+	pointer-events: bounding-box;
+}
+
 .dbs_chartX.-line > .-chart > .-path{
-    stroke-linecap: round;
+	pointer-events: bounding-box;
+	stroke-linecap: round;
     stroke-linejoin: round;
     fill: none;
     stroke-width: 1px;

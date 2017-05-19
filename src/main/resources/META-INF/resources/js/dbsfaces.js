@@ -869,14 +869,16 @@ dbsfaces.ui = {
 	},
 	
 	pointerEventToXY : function(e){
-        var xXY = {x:0, y:0};
+		var xXY = {x:0, y:0};
         if(e.type == 'touchstart' || e.type == 'touchmove' || e.type == 'touchend' || e.type == 'touchcancel'){
-          var xTouch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
-          xXY.x = xTouch.pageX;
-          xXY.y = xTouch.pageY;
+			var xTouch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+			xXY.x = xTouch.pageX;
+			xXY.y = xTouch.pageY;
         } else if (e.type == 'mousedown' || e.type == 'mouseup' || e.type == 'mousemove' || e.type == 'mouseover'|| e.type=='mouseout' || e.type=='mouseenter' || e.type=='mouseleave') {
-          xXY.x = e.clientX;
-          xXY.y = e.clientY;
+//			xXY.x = e.offsetX;
+//			xXY.y = e.offsetY;
+			xXY.x = e.clientX;
+			xXY.y = e.clientY;
         }
         return xXY;
      }

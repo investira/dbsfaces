@@ -12,6 +12,7 @@ import com.sun.faces.renderkit.RenderKitUtils;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
 import br.com.dbsoft.ui.component.DBSRenderer;
+import br.com.dbsoft.ui.component.charts.DBSChartsX.TYPE;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
 
@@ -29,7 +30,7 @@ public class DBSChartsXRenderer extends DBSRenderer {
 		//Tipo de gráficos não informado
 		if (xCharts.getType()==null){return;}
 		ResponseWriter 	xWriter = pContext.getResponseWriter();
-		String 			xClass = CSS.CHARTSX.MAIN + CSS.MODIFIER.NOT_SELECTABLE + " -hide";
+		String 			xClass = CSS.CHARTSX.MAIN + CSS.MODIFIER.NOT_SELECTABLE + " -hide ";
 //		TYPE 			xType = TYPE.get(xCharts.getType());
 
 		if (xCharts.getStyleClass()!=null){
@@ -42,7 +43,8 @@ public class DBSChartsXRenderer extends DBSRenderer {
 		if (xCharts.getShowValue()){
 			xClass += " -showValue ";
 		}
-		if (xCharts.getShowDelta()){
+		if ((xCharts.getShowDelta() != null && xCharts.getShowDelta()) || 
+		    (xCharts.getShowDelta() == null && TYPE.get(xCharts.getType()) == TYPE.PIE)){
 			xClass += " -showDelta ";
 		}
 

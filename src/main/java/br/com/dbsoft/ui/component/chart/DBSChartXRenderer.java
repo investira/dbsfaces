@@ -47,7 +47,8 @@ public class DBSChartXRenderer extends DBSRenderer {
 		if (xCharts.getShowValue()){
 			xClass += " -showValue ";
 		}
-		if (xCharts.getShowDelta()){
+		if ((xCharts.getShowDelta() != null && xCharts.getShowDelta()) || 
+		    (xCharts.getShowDelta() == null && xType == TYPE.PIE)){
 			xClass += " -showDelta ";
 		}
 
@@ -60,7 +61,7 @@ public class DBSChartXRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(xWriter, "class", xClass);
 			DBSFaces.encodeAttribute(xWriter, "caption", xChart.getCaption());
 			DBSFaces.encodeAttribute(xWriter, "color", xChart.getColor());
-			DBSFaces.encodeAttribute(xWriter, "vdp", xCharts.getValueDecmialPlaces());
+			DBSFaces.encodeAttribute(xWriter, "vdp", xCharts.getValueDecimalPlaces());
 			DBSFaces.encodeAttribute(xWriter, "vpf", xCharts.getValuePrefix());
 			DBSFaces.encodeAttribute(xWriter, "vsf", xCharts.getValueSufix());
 //			if (!DBSObject.isEmpty(xChart.getColor())){

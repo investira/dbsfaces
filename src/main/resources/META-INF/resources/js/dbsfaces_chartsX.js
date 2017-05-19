@@ -222,7 +222,6 @@ dbsfaces.chartsX = {
 				//Desenha infos
 //				dbsfaces.chartsX.pXInitializeDrawChartPieInfos(pChartData);
 			}else if (pChartsData.type == "box"){
-				dbsfaces.chartsX.pvInitializeDrawChartBarPointDif(pChartsData);
 			}
 		});
 		//Configura cor
@@ -595,8 +594,8 @@ dbsfaces.chartsX = {
 
 	
 	pvInitializeDrawDelta: function(pChartsData, pChartData){
-		if (pChartsData.showDelta){
-			if (pChartData.type == "line"){
+		if (pChartData.type == "line"){
+			if (pChartsData.showDelta){
 				//Primeiro item do delta
 				dbsfaces.chartX.setMovingDeltaHandleData(pChartData, pChartData.dom.leftDeltaHandleData);
 				dbsfaces.chartX.selectChartValue(pChartData, pChartData.dom.childrenData[0]);
@@ -619,16 +618,12 @@ dbsfaces.chartsX = {
 				//Texto do valor
 				pChartData.dom.deltaPerc.svgAttr("y", xMiddleY);
 				pChartData.dom.deltaPerc.svgAttr("x", xMiddleX);
-			}else if (pChartData.type == "pie"){
-				pChartData.dom.deltaInfo.svgAttr("transform", "translate(" + pChartData.center.x + " " + pChartData.center.y + ")");
 			}
+		}else if(pChartData.type == "pie"){
+			pChartData.dom.deltaInfo.svgAttr("transform", "translate(" + pChartData.center.x + " " + pChartData.center.y + ")");
 		}
 	},
 	
-	pvInitializeDrawChartBarPointDif: function(pChartsData){
-		
-		
-	},
 	
 	//Desenha link dos relacionamentos
 	pvInitializeDrawRelationships: function(pChartsData, pChartData){
