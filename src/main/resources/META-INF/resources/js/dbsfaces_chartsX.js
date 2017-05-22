@@ -2,7 +2,7 @@ dbs_chartsX = function(pId) {
 	var xCharts = $(pId);
 	//Prepara gráfico com a altura e largura
 	$(window).resize(function(e){
-		dbsfaces.chartsX.resize(xCharts);
+		dbsfaces.chartsX.resize(xCharts.data("data"));
 	});
 	
 	dbsfaces.chartsX.initialize(xCharts);
@@ -184,6 +184,7 @@ dbsfaces.chartsX = {
 
 	pvInitializeDraw: function(pChartsData){
 		//Loop em todos os gráficos
+		pChartsData.globalSequencesCount = 0;
 		pChartsData.dom.childrenData.forEach(function(pChartData){
 			//Configura qual o sequence
 			pChartData.globalSequence = pChartsData.globalSequencesCount + 1;
@@ -273,7 +274,9 @@ dbsfaces.chartsX = {
 		//Define dimensão do circulo interno do delta
 		pChartData.dom.deltaCircle.svgAttr("cx", pChartData.center.x);
 		pChartData.dom.deltaCircle.svgAttr("cy", pChartData.center.y);
-		pChartData.dom.deltaCircle.svgAttr("r", pChartData.pointLinkRadius - pChartData.pointLinkWidth + xCircleStrokeWidth);
+		pChartData.dom.deltaCircle.svgAttr("r", Math.max(pChartData.pointLinkRadius - pChartData.pointLinkWidth + xCircleStrokeWidth, 0.1));
+		dbsfaces.chartX.pvShowDeltaValue(pChartData, null, null);
+		dbsfaces.ui.recreate(pChartData.dom.delta); //Artifício para corrigir problema no chrome onde o alinhamento do texto não esta funcionando na criação
 	},
 	
 	pvInitializeDrawChartBarGroupByIndex: function(pChartsData, pChartValueData){
@@ -566,21 +569,21 @@ dbsfaces.chartsX = {
 		
 		//Configura Infos
 		var xTransformInfo = "translate(" + xArcInfo.internalPoint.x + " " + xArcInfo.internalPoint.y + ") rotate(" + (xArcInfo.degrees - 90) + ")";
-		var xInfoPercX = pChartValueData.dom.infoPerc.attr("x");
-		var xInfoLabelX = pChartValueData.dom.infoLabel.attr("x");
+		var xInfoPercX = parseFloat(pChartValueData.dom.infoPerc.attr("x"));
+		var xInfoLabelX = parseFloat(pChartValueData.dom.infoLabel.attr("x"));
 		var xInvert = " scale(-1, -1)";
 		//Inverte posição das informações a esquerda 
 		if (xArcInfo.degrees > 180){
 			pChartValueData.dom.infoValues.addClass("-invert");
 			pChartValueData.dom.infoPercBox.attr("transform", xInvert);
 			xTransformInfo += xInvert;
-			xInfoLabelX = "-" + xInfoLabelX;
-			xInfoPercX = "-" + xInfoPercX;
+			xInfoLabelX = "-" + Math.abs(xInfoLabelX);
+			xInfoPercX = "-" + Math.abs(xInfoPercX);
 		}
 		pChartValueData.dom.info.attr("transform", xTransformInfo);
-		pChartValueData.dom.infoLabel.attr("x", xInfoLabelX);
-		pChartValueData.dom.infoValue.attr("x", xInfoLabelX);
-		pChartValueData.dom.infoPerc.attr("x", xInfoPercX)
+		pChartValueData.dom.infoLabel.attr("x", xInfoLabelX + "em");
+		pChartValueData.dom.infoValue.attr("x", xInfoLabelX + "em");
+		pChartValueData.dom.infoPerc.attr("x", xInfoPercX + "em")
 									.attr("v",pChartValueData.perc);
 		
 //		var xHeight = pChartValueData.dom.point[0].getBoundingClientRect().height;
@@ -627,6 +630,7 @@ dbsfaces.chartsX = {
 	
 	//Desenha link dos relacionamentos
 	pvInitializeDrawRelationships: function(pChartsData, pChartData){
+		pChartData.dom.links.empty();
 		pChartData.relationships.forEach(function(pRelationship){
 			//Arco total 
 			var xLinkArc = (pChartData.arcFator * (pRelationship.total / pChartData.totalValue)) * 100;
@@ -752,6 +756,8 @@ dbsfaces.chartsX = {
 		var xL;
 		//Se não foi definida a cor pelo usuário, utiliza a cor corrente
 		if (xColor == null){
+			//Remove cor configurada anteriormente. 
+			pElementData.dom.self.css("color", "");
 			//Cor corrente
 			xColor = tinycolor(pElementData.dom.self.css("color"));
 			//Se for chart ou o chart não possui cor definida pelo usuário, ajusta a cor em degradê conforme a posição do item na sequencia global
@@ -845,8 +851,12 @@ dbsfaces.chartsX = {
 	},
 
 	resize: function(pChartsData){
+		pChartsData.dom.container.addClass("-hide");
+		dbsfaces.chartsX.pvInitializeAnalizeValues(pChartsData);
+		dbsfaces.chartsX.pvInitializeDraw(pChartsData);
+		pChartsData.dom.container.removeClass("-hide");
 	},
-
+	
 	selectChart: function(pChartsData, pChartId){
 		pChartsData.dom.childrenCaptionContainer.children().removeClass("-selected");
 		pChartsData.dom.childrenData.forEach(function(pChartData) {

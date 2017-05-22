@@ -80,13 +80,15 @@
 
 .dbs_chartValueX.-line > .-info > .-label{
     font-size: 0.8em;
-    color: currentColor;
+/*     color: currentColor; */
+	fill: currentColor;
 }
 .dbs_chartValueX.-line > .-info > .-value{
 	font-size: 0.8em;
     dominant-baseline: middle;
 	text-anchor: end;
-	color: currentColor;
+/* 	color: currentColor; */
+	fill: currentColor;
 }
 .dbs_chartValueX.-line > .-info > .-path{
 	stroke: currentColor;

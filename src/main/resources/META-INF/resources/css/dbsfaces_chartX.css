@@ -44,6 +44,7 @@
 
 .dbs_chartX.-pie > .-chart > .-relationalCaptions {
     stroke-opacity: 0.9;
+	fill: currentColor;
 }
 
 .dbs_chartX.-pie > .-chart > .-relationalCaptions * {

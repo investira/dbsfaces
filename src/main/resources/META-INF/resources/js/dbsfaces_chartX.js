@@ -660,42 +660,44 @@ dbsfaces.chartX = {
 	},
 	
 	pvShowDeltaValue: function(pChartData, pValue, pLabel){
-		var xDiameter = 0;
-		if (pValue == null){
-			pValue = pChartData.totalValue;
-//			if (pChartData.pointLinkRadius == 0){
-//				return;
-//			}
-//			xDiameter = pChartData.pointLinkRadius * 1.5;
-//		}else{
-//			xDiameter = parseInt(pChartData.dom.deltaCircle.attr("r")) * 1.5;
-		}
-		//Ajusta o tamanho do fonte a partir do raio do círculo
-//		var xValueFontSize = parseFloat(pChartData.dom.deltaValue.css("font-size"));
-//		xValueFontSize *= dbsfaces.math.round(xDiameter / pChartData.dom.deltaValue[0].getComputedTextLength(), 1);
-//		pChartData.dom.deltaValue.css("font-size", xValueFontSize);
-
+		var xValueText;
+		var xLabelText = pLabel;
 		var xMaxFontSize;
-		//Exibe Value -------------
-		if (pChartData.dom.maxLabelChartValueData == null){
-			xMaxFontSize = pChartData.dom.self.css("font-size");
+		if (pValue == null){
+			//Exibe Value -------------
+			xValueText = pChartData.valuePrefix + dbsfaces.format.number(pChartData.totalValue, pChartData.valueDecimalPlaces) + pChartData.valueSufix;
+			xMaxFontSize = dbsfaces.math.round((pChartData.dom.deltaCircle[0].getBoundingClientRect().width / xValueText.length) * 1.2, 1);
 		}else{
-			xMaxFontSize = dbsfaces.math.round(parseFloat(pChartData.dom.maxLabelChartValueData.dom.infoValues.css("font-size")),0);
-		}
-		var xValueText = pChartData.valuePrefix + dbsfaces.format.number(pValue, pChartData.valueDecimalPlaces) + pChartData.valueSufix;
-		pChartData.dom.deltaValue.text(xValueText);
-		pChartData.dom.deltaValue.css("font-size", xMaxFontSize);
-		
-		//Exibe Label -------------
-		if (pChartData.dom.deltaLabel != null){
-			if (pLabel == null){
-				pChartData.dom.deltaLabel.text("");
+			if (xLabelText == null){
+				xLabelText = "";
+			}
+			//Exibe Value -------------
+			xValueText = pChartData.valuePrefix + dbsfaces.format.number(pValue, pChartData.valueDecimalPlaces) + pChartData.valueSufix;
+			pChartData.dom.deltaValue.text(xValueText);
+			
+			//Ajusta o tamanho do fonte a partir do raio do círculo
+			var xMaxWidth = null;
+			if (pChartData.dom.maxLabelChartValueData != null){
+				xMaxWidth = pChartData.dom.maxLabelChartValueData.label.length;
+			}
+			if (pChartData.dom.maxChartValueData != null){
+				xMaxWidth = Math.max(xMaxWidth, pChartData.dom.maxChartValueData.label.length);
+			}
+			if (pChartData.dom.minChartValueData != null){
+				xMaxWidth = Math.max(xMaxWidth, pChartData.dom.minChartValueData.label.length);
+			}
+			if (xMaxWidth == null){
+				xMaxFontSize = pChartData.dom.self.css("font-size");
 			}else{
-				pChartData.dom.deltaLabel.text(pLabel);
-				pChartData.dom.deltaLabel.css("font-size", xMaxFontSize);
+				xMaxFontSize = dbsfaces.math.round((pChartData.dom.deltaCircle[0].getBoundingClientRect().width / xMaxWidth) * 1.7, 1);
 			}
 		}
-		xMaxFontSize
+		//Exibe Label -------------
+		if (pChartData.dom.deltaLabel != null){
+			pChartData.dom.deltaLabel.text(xLabelText);
+		}
+		pChartData.dom.deltaValue.text(xValueText);
+		pChartData.dom.delta.css("font-size", xMaxFontSize);
 	},
 
 
