@@ -109,7 +109,8 @@ import br.com.dbsoft.util.DBSIO.SORT_DIRECTION;
 	@ResourceDependency(library = "js", name = "dbsfaces_chartX.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_chartvalue.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_charts.js", target = "head"),
-	@ResourceDependency(library = "js", name = "dbsfaces_chart.js", target = "head")
+	@ResourceDependency(library = "js", name = "dbsfaces_chart.js", target = "head"),
+	@ResourceDependency(library = "js", name = "dbsinvest.js", target = "head")
 //	@ResourceDependency(library = "js", name = "eventsource.js", target = "head")
 })
 public abstract class DBSUIData extends UIData implements IDBSUIComponentBase {
