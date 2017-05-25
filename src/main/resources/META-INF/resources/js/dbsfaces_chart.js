@@ -922,6 +922,7 @@ dbsfaces.chart = {
 			}
 			xChartValueDataL = pChartData.dom.childrenData[xL];
 			xChartValueDataR = pChartData.dom.childrenData[xR];
+			console.log(xL + "\t" + xR + "\t" + xGap);
 		}
 		if (Math.abs(xChartValueDataL.x - xCurrentX) < Math.abs(xChartValueDataR.x - xCurrentX)){
 			xChartValueData = xChartValueDataL;

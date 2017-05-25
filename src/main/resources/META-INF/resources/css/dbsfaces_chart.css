@@ -198,7 +198,7 @@
 	stroke-linecap: round;
     stroke-linejoin: round;
     fill: none;
-    stroke-width: 1px;
+    stroke-width: .1em;
     stroke: currentColor;
 /*     shape-rendering: geometricprecision; */
 }
