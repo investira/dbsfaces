@@ -484,6 +484,7 @@ dbsfaces.ui = {
 	},
 	
 	moveToBack: function(pElement){
+		if (pElement == null || (typeof(pElement) == "undefined")){return;}
 		var xE = pElement;
 		if (xE instanceof jQuery){
 			xE = pElement.get(0);
@@ -492,6 +493,7 @@ dbsfaces.ui = {
 	},
 	
 	recreate: function(pElement){
+		if (pElement == null || (typeof(pElement) == "undefined")){return;}
 		var xE = pElement;
 		if (xE instanceof jQuery){
 			xE = pElement.get(0);

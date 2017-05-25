@@ -174,6 +174,21 @@ public class DBSSliderRenderer extends DBSRenderer {
 		pWriter.write(xJS);
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);		
 	}
+	
+//	/**
+//	 * Retorna lista com os valores no formato json
+//	 * @param pChart
+//	 * @return
+//	 * @throws IOException
+//	 */
+//	private String pvGetListRelationalCaptions(DBSSlider pSlider) throws IOException {
+//		if (pSlider.getValuesList() == null){return null;}
+//		String[] xValuesList = pSlider.getValuesList().split(";");
+//		for (int xI=0; xI < xValuesList.length; xI++){
+//			xRelationalCaptions[xI] = xRelationalCaptions[xI].trim();
+//		}
+//		return DBSJson.toJson(xRelationalCaptions).toString();
+//	}
 }
 
 

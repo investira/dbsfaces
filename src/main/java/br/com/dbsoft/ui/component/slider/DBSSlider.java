@@ -216,7 +216,7 @@ public class DBSSlider extends DBSUIInput {
 		if (pValuesList instanceof List){
 			pvSetValuesList((List<String>) pValuesList);
 		}else{
-			List<String> xValuesList = Arrays.asList(((String) pValuesList).split("\\s*,\\s*"));
+			List<String> xValuesList = Arrays.asList(((String) pValuesList).split("\\s*;\\s*"));
 			pvSetValuesList(xValuesList);
 		}
 	}

@@ -124,21 +124,24 @@ dbsfaces.chartsX = {
 			var xMaxCount = 0;
 			//Verifica menor e maior valor existentes em todos os gráficos para cálcular a escala
 			pChartsData.dom.childrenData.forEach(function(pChartData, pI) {
-				if (pChartsData.dom.minChartValueData == null || pChartData.dom.minChartValueData.value < pChartsData.dom.minChartValueData.value){
-					pChartsData.dom.minChartValueData = pChartData.dom.minChartValueData;
-				}
-				if (pChartsData.dom.maxChartValueData == null || pChartData.dom.maxChartValueData.value > pChartsData.dom.maxChartValueData.value){
-					pChartsData.dom.maxChartValueData = pChartData.dom.maxChartValueData;
-				}
-
-				//Quantidade máxima de itens de todos os gráficos
-				if (pChartData.originalValues.length > xMaxCount){
-					xMaxCount = pChartData.originalValues.length;
-				}
-				//Utiliza tamanho do primeiro chart para configurar o tamanho padrão das áreas de todos os chart.
-				if (pI == 0){
-					pChartsData.height = pChartData.dom.chart[0].getBoundingClientRect().height; 
-					pChartsData.width = pChartData.dom.chart[0].getBoundingClientRect().width;
+				if ((pChartData.type != "line" && pChartData.dom.childrenData.length > 0)
+				 || (pChartData.type == "line" && pChartData.dom.childrenData.length > 1)){
+					if (pChartsData.dom.minChartValueData == null || pChartData.dom.minChartValueData.value < pChartsData.dom.minChartValueData.value){
+						pChartsData.dom.minChartValueData = pChartData.dom.minChartValueData;
+					}
+					if (pChartsData.dom.maxChartValueData == null || pChartData.dom.maxChartValueData.value > pChartsData.dom.maxChartValueData.value){
+						pChartsData.dom.maxChartValueData = pChartData.dom.maxChartValueData;
+					}
+	
+					//Quantidade máxima de itens de todos os gráficos
+					if (pChartData.originalValues.length > xMaxCount){
+						xMaxCount = pChartData.originalValues.length;
+					}
+					//Utiliza tamanho do primeiro chart para configurar o tamanho padrão das áreas de todos os chart.
+					if (pI == 0){
+						pChartsData.height = pChartData.dom.chart[0].getBoundingClientRect().height; 
+						pChartsData.width = pChartData.dom.chart[0].getBoundingClientRect().width;
+					}
 				}
 			});
 			if (pChartsData.dom.minChartValueData != null
@@ -185,43 +188,46 @@ dbsfaces.chartsX = {
 		//Loop em todos os gráficos
 		pChartsData.globalSequencesCount = 0;
 		pChartsData.dom.childrenData.forEach(function(pChartData){
-			//Configura qual o sequence
-			pChartData.globalSequence = pChartsData.globalSequencesCount + 1;
-			//Centro do gráfico
-			pChartData.center.x = pChartsData.width / 2;
-			pChartData.center.y = pChartsData.height / 2;
-			
-			if (pChartsData.type == "pie"){
-				dbsfaces.chartsX.pvInitializeDrawInitializePie(pChartsData, pChartData);
-			}
-
-			//DrawPoints
-			//Loop em todos os pontos gráfico
-			pChartData.dom.childrenData.forEach(function(pChartValueData, pI){
-				if (pChartsData.type == "line"){
-					dbsfaces.chartsX.pvInitializeDrawChartLine(pChartsData, pChartData, pChartValueData);
-				}else if (pChartsData.type == "pie"){
-					dbsfaces.chartsX.pvInitializeDrawChartPie(pChartsData, pChartData, pChartValueData);
-				}else if (pChartsData.type == "bar"){
-					dbsfaces.chartsX.pvInitializeDrawChartBar(pChartsData, pChartData, pChartValueData);
+			if ((pChartsData.type != "line" && pChartData.dom.childrenData.length > 0)
+			 || (pChartsData.type == "line" && pChartData.dom.childrenData.length > 1)){
+				//Configura qual o sequence
+				pChartData.globalSequence = pChartsData.globalSequencesCount + 1;
+				//Centro do gráfico
+				pChartData.center.x = pChartsData.width / 2;
+				pChartData.center.y = pChartsData.height / 2;
+				
+				if (pChartsData.type == "pie"){
+					dbsfaces.chartsX.pvInitializeDrawInitializePie(pChartsData, pChartData);
 				}
-				//Soma um item a quantidade global de chartvalues
-				pChartsData.globalSequencesCount++;
-				//Configura o sequence global deste chartvalue
-				pChartValueData.globalSequence = pChartsData.globalSequencesCount;
-			});
-			
-			
-			//Configura posição inicial dos controles do delta 
-			dbsfaces.chartsX.pvInitializeDrawDelta(pChartsData, pChartData);
-			if (pChartsData.type == "line"){
-				//empty
-			}else if (pChartsData.type == "pie"){
-				//Desenha relacionamentos
-				dbsfaces.chartsX.pvInitializeDrawRelationships(pChartsData, pChartData);
-				//Desenha infos
-//				dbsfaces.chartsX.pXInitializeDrawChartPieInfos(pChartData);
-			}else if (pChartsData.type == "box"){
+	
+				//DrawPoints
+				//Loop em todos os pontos gráfico
+				pChartData.dom.childrenData.forEach(function(pChartValueData, pI){
+					if (pChartsData.type == "line"){
+						dbsfaces.chartsX.pvInitializeDrawChartLine(pChartsData, pChartData, pChartValueData);
+					}else if (pChartsData.type == "pie"){
+						dbsfaces.chartsX.pvInitializeDrawChartPie(pChartsData, pChartData, pChartValueData);
+					}else if (pChartsData.type == "bar"){
+						dbsfaces.chartsX.pvInitializeDrawChartBar(pChartsData, pChartData, pChartValueData);
+					}
+					//Soma um item a quantidade global de chartvalues
+					pChartsData.globalSequencesCount++;
+					//Configura o sequence global deste chartvalue
+					pChartValueData.globalSequence = pChartsData.globalSequencesCount;
+				});
+				
+				
+				//Configura posição inicial dos controles do delta 
+				dbsfaces.chartsX.pvInitializeDrawDelta(pChartsData, pChartData);
+				if (pChartsData.type == "line"){
+					//empty
+				}else if (pChartsData.type == "pie"){
+					//Desenha relacionamentos
+					dbsfaces.chartsX.pvInitializeDrawRelationships(pChartsData, pChartData);
+					//Desenha infos
+	//				dbsfaces.chartsX.pXInitializeDrawChartPieInfos(pChartData);
+				}else if (pChartsData.type == "box"){
+				}
 			}
 		});
 		//Configura cor
@@ -726,28 +732,31 @@ dbsfaces.chartsX = {
 	pvInitializeDrawSetColor: function(pChartsData){
 		//Loop por todos os gráficos
 		pChartsData.dom.childrenData.forEach(function(pChartData){
-			//Defini a cor principal do gráfico
-			var xColor = dbsfaces.chartsX.pvSetColor(pChartsData, pChartData, true);
-			//Caption
-			pChartData.colorTransparent = tinycolor(xColor.toString()).setAlpha(.5).toString();
-			pChartData.colorInverted = tinycolor(xColor.toString()).invertLightness().setAlpha(1).toString();
-			if (pChartData.dom.caption != null){
-				pChartData.dom.captionText.css("color", xColor);
-				pChartData.dom.caption.css("background-color", xColor)
-									  .css("border-color", pChartData.colorTransparent)
-									  .css("color", pChartData.colorInverted);
-			}
-			//Define colores dos chartvalue
-			pChartData.dom.childrenData.forEach(function(pChartValueData, pI){
-				var xColor = dbsfaces.chartsX.pvSetColor(pChartsData, pChartValueData, false);
-				pChartValueData.colorInverted = tinycolor(xColor).invertLightness().setAlpha(1).toString();
-				if (pChartData.type == "pie"){
-					//Cor que dos links
-					pChartData.dom.self.find("> .-chart > .-links > [key='" + pChartValueData.key + "']").svgAttr("color", xColor);
-					//Cor do texto das infos
-					pChartValueData.dom.info.attr("fill", pChartValueData.colorInverted);
+			if ((pChartsData.type != "line" && pChartData.dom.childrenData.length > 0)
+			 || (pChartsData.type == "line" && pChartData.dom.childrenData.length > 1)){
+				//Defini a cor principal do gráfico
+				var xColor = dbsfaces.chartsX.pvSetColor(pChartsData, pChartData, true);
+				//Caption
+				pChartData.colorTransparent = tinycolor(xColor.toString()).setAlpha(.5).toString();
+				pChartData.colorInverted = tinycolor(xColor.toString()).invertLightness().setAlpha(1).toString();
+				if (pChartData.dom.caption != null){
+					pChartData.dom.captionText.css("color", xColor);
+					pChartData.dom.caption.css("background-color", xColor)
+										  .css("border-color", pChartData.colorTransparent)
+										  .css("color", pChartData.colorInverted);
 				}
-			});
+				//Define colores dos chartvalue
+				pChartData.dom.childrenData.forEach(function(pChartValueData, pI){
+					var xColor = dbsfaces.chartsX.pvSetColor(pChartsData, pChartValueData, false);
+					pChartValueData.colorInverted = tinycolor(xColor).invertLightness().setAlpha(1).toString();
+					if (pChartData.type == "pie"){
+						//Cor que dos links
+						pChartData.dom.self.find("> .-chart > .-links > [key='" + pChartValueData.key + "']").svgAttr("color", xColor);
+						//Cor do texto das infos
+						pChartValueData.dom.info.attr("fill", pChartValueData.colorInverted);
+					}
+				});
+			}
 		});
 	},
 	
@@ -856,13 +865,13 @@ dbsfaces.chartsX = {
 		var xChartsData = pCharts.data("data");
 		clearTimeout(xChartsData.refreshTimeout);
 		xChartsData.refreshTimeout = setTimeout(function(){
-//			xChartsData.dom.container.addClass("-hide");
+			xChartsData.dom.container.addClass("-hide");
 			xChartsData.dom.childrenData.forEach(function(pChartData) {
-				dbsfaces.chartX.refresh(pChartData);
+				dbsfaces.chartX.refresh(pChartData.dom.self);
 			});
 			dbsfaces.chartsX.pvInitializeAnalizeValues(xChartsData);
 			dbsfaces.chartsX.pvInitializeDraw(xChartsData);
-//			xChartsData.dom.container.removeClass("-hide");
+			xChartsData.dom.container.removeClass("-hide");
 		},1);
 	},
 	

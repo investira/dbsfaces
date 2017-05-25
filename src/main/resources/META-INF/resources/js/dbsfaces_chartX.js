@@ -288,6 +288,9 @@ dbsfaces.chartX = {
 
 	
 	pvInitializeLayout: function(pChartData){
+		if ((pChartData.type != "line" && pChartData.dom.childrenData.length == 0)
+		 || (pChartData.type == "line" && pChartData.dom.childrenData.length < 2)){return;}
+
 		if (pChartData.dom.childrenData.length == 0){return;}
 		
 		pChartData.width = pChartData.dom.chart[0].getBoundingClientRect().width;
@@ -323,7 +326,7 @@ dbsfaces.chartX = {
 				xTotalValue = 0;
 			}
 			pChartValueData.index = pI;
-			dbsfaces.chartX.pvInitializeLayoutChartValuesCreate(pChartData, pChartValueData);
+			dbsfaces.chartX.pvInitializeLayoutChartValuesCreateDom(pChartData, pChartValueData);
 			//Força a exibição do primeiro e último item
 			if (pI == 0 || pI == pChartData.dom.childrenData.length - 1){
 				pChartValueData.dom.self.addClass("-showLabel");
@@ -342,7 +345,7 @@ dbsfaces.chartX = {
 		pChartData.dom.maxChartValueData.dom.self.addClass("-max");
 	},
 
-	pvInitializeLayoutChartValuesCreate: function(pChartData, pChartValueData){
+	pvInitializeLayoutChartValuesCreateDom: function(pChartData, pChartValueData){
 		//Cria ChartValue
 		pChartValueData.dom.self = dbsfaces.svg.g(pChartData.dom.values, "dbs_chartValueX -" + pChartData.type, null, {index: pChartValueData.index, relationalGroupIndex: pChartValueData.relationalGroupIndex});
 		//Salva data
@@ -504,9 +507,8 @@ dbsfaces.chartX = {
 		});
 		return xDeltaHandleHandle;
 	},
-	
 	pvInitializeLayoutDelta: function(pChartData){
-		if (pChartData.type == "line" && !pChartData.showDelta){return;}
+		if (pChartData.type == "line" && (!pChartData.showDelta || pChartData.dom.childrenData.length < 2)){return;}
 		if (pChartData.dom.delta !=null){pChartData.dom.delta.remove();}
 		pChartData.dom.delta = dbsfaces.svg.g(pChartData.dom.chart, "-delta", null, null);
 		pChartData.dom.deltaInfo = dbsfaces.svg.g(pChartData.dom.delta, "-info", null, null);
@@ -877,7 +879,7 @@ dbsfaces.chartX = {
 	
 	//Procura ponto da caminho(path)
 	chartLinefindPoint: function(e, pChartData){
-		if (pChartData.dom.childrenData.length == 0){return;}
+		if (pChartData.dom.childrenData.length < 2){return;}
 		var xChartsData = pChartData.dom.parent.data("data");
 		var xDecimals = 1;
 		var xChartPath = pChartData.dom.path[0];
@@ -1034,16 +1036,16 @@ dbsfaces.chartX = {
 		xChartData.originalValues.push(xValue);
 	},
 	
-	clearChartValue: function(pChart){
-		pChartData.originalValues = [];
+	refresh: function(pChart){
+		var xChartData = pChart.data("data");
+		dbsfaces.chartX.pvInitializeChartValues(xChartData);
+		dbsfaces.chartX.pvInitializeLayout(xChartData); 
 	},
 	
-	refresh: function(pChartData){
-//		dbsfaces.chartX.initialize(pChartData.dom.self, pChartData.originalValues, pChartData.relationalCaptions);
-		dbsfaces.chartX.pvInitializeChartValues(pChartData);
-		dbsfaces.chartX.pvInitializeLayout(pChartData); 
+	clear: function(pChart){
+		var xChartData = pChart.data("data");
+		xChartData.originalValues = [];
 	}
-	
 
 };
 

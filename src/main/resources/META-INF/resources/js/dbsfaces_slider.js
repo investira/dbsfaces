@@ -349,6 +349,7 @@ dbsfaces.slider = {
 		pSliderData.dom.input.attr("value", xValue);
 		//Salva como float
 		pSliderData.dom.input.data("value", pInputValue);
+		pSliderData.dom.self.val(pInputValue);
 
 	},
 
