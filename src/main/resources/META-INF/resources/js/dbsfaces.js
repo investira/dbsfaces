@@ -67,7 +67,6 @@ dbsfaces = {
 }
 
 var wAjaxTimeout;
-var wsAnimationTime = 200;   
 
 //var evt = (evt) ? evt : ((event) ? event : null); 
 //var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null); 
@@ -114,21 +113,20 @@ dbsfaces.sound = {
 }
 
 dbsfaces.svg = {
-	gsvg: function(pComponent, pX, pY, pWidth, pHeight, pStyleClass, pStyle, pAttrs){
-		var xG = dbsfaces.svg.g(pComponent, pStyleClass, pStyle, pAttrs);
+	gsvg: function(pParentElement, pX, pY, pWidth, pHeight, pStyleClass, pStyle, pAttrs){
+		var xG = dbsfaces.svg.g(pParentElement, pStyleClass, pStyle, pAttrs);
 		return dbsfaces.svg.svg(xG, null, null, null, null, null, null, null);
 	},
 	 
-	g: function(pComponent, pStyleClass, pStyle, pAttrs){
-		var xG = dbsfaces.svg.createElement('g', pAttrs);
+	g: function(pParentElement, pStyleClass, pStyle, pAttrs){
+		var xG = dbsfaces.svg.createElement(pParentElement, 'g', pAttrs);
 		dbsfaces.svg.setDefaultAttrs(xG, pStyleClass, pStyle);
 
-		pComponent.append(xG);
 		return xG;
 	},
 
-	svg: function(pComponent, pX, pY, pWidth, pHeight, pStyleClass, pStyle, pAttrs){
-		var xSVG = dbsfaces.svg.createElement('svg', pAttrs);
+	svg: function(pParentElement, pX, pY, pWidth, pHeight, pStyleClass, pStyle, pAttrs){
+		var xSVG = dbsfaces.svg.createElement(pParentElement, 'svg', pAttrs);
 		dbsfaces.svg.setDefaultAttrs(xSVG, pStyleClass, pStyle);
 
 		xSVG.svgAttr("x", pX)
@@ -136,45 +134,42 @@ dbsfaces.svg = {
 			.svgAttr("width", pWidth)
 			.svgAttr("height", pHeight);
 
-		pComponent.append(xSVG);
 		return xSVG;
 	},
 	
-	use: function(pComponent, pHRef, pStyleClass, pStyle, pAttrs){
-		var xUse = dbsfaces.svg.createElement('use', pAttrs);
+	use: function(pParentElement, pHRef, pStyleClass, pStyle, pAttrs){
+		var xUse = dbsfaces.svg.createElement(pParentElement, 'use', pAttrs);
 		dbsfaces.svg.setDefaultAttrs(xUse, pStyleClass, pStyle);
 		dbsfaces.svg.setAttributeHRef(xUse, pHRef);
 //		xUse.get(0).setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", "#" + pHRef);
 //		xUse.svgAttr("xlink:href", "#" + pHRef);
-		pComponent.append(xUse);
 		return xUse;
 	},
 
-	line: function(pComponent, pX1, pY1, pX2, pY2, pStyleClass, pStyle, pAttrs){
-		var xLine = dbsfaces.svg.createElement('line', pAttrs);
+	line: function(pParentElement, pX1, pY1, pX2, pY2, pStyleClass, pStyle, pAttrs){
+		var xLine = dbsfaces.svg.createElement(pParentElement, 'line', pAttrs);
 		dbsfaces.svg.setDefaultAttrs(xLine, pStyleClass, pStyle);
 		xLine.svgAttr("x1", pX1)
 			 .svgAttr("y1", pY1)
 			 .svgAttr("x2", pX2)
 			 .svgAttr("y2", pY2);
-		pComponent.append(xLine);
+
 		return xLine;
 	},
 	
-	circle: function(pComponent, pCX, pCY, pR, pStyleClass, pStyle, pAttrs){
-		var xCircle = dbsfaces.svg.createElement('circle', pAttrs);
+	circle: function(pParentElement, pCX, pCY, pR, pStyleClass, pStyle, pAttrs){
+		var xCircle = dbsfaces.svg.createElement(pParentElement, 'circle', pAttrs);
 		dbsfaces.svg.setDefaultAttrs(xCircle, pStyleClass, pStyle);
 
 		xCircle.svgAttr("cx", pCX)
 			   .svgAttr("cy", pCY)
 			   .svgAttr("r", pR);
 
-		pComponent.append(xCircle);
 		return xCircle;
 	},
 
-	rect: function(pComponent, pX, pY, pWidth, pHeight, pRX, pRY, pStyleClass, pStyle, pAttrs){
-		var xRect = dbsfaces.svg.createElement('rect', pAttrs);
+	rect: function(pParentElement, pX, pY, pWidth, pHeight, pRX, pRY, pStyleClass, pStyle, pAttrs){
+		var xRect = dbsfaces.svg.createElement(pParentElement, 'rect', pAttrs);
 		dbsfaces.svg.setDefaultAttrs(xRect, pStyleClass, pStyle);
 
 		xRect.svgAttr("x", pX)
@@ -184,12 +179,11 @@ dbsfaces.svg = {
 			 .svgAttr("height", pHeight)
 			 .svgAttr("width", pWidth);
 		
-		pComponent.append(xRect);
 		return xRect;
 	},
 	
-	ellipse: function(pComponent, pCX, pCY, pRX, pRY, pStyleClass, pStyle, pAttrs){
-		var xEllipse = dbsfaces.svg.createElement('ellipse', pAttrs);
+	ellipse: function(pParentElement, pCX, pCY, pRX, pRY, pStyleClass, pStyle, pAttrs){
+		var xEllipse = dbsfaces.svg.createElement(pParentElement, 'ellipse', pAttrs);
 		dbsfaces.svg.setDefaultAttrs(xEllipse, pStyleClass, pStyle);
 
 		xEllipse.svgAttr("cx", pCX)
@@ -197,84 +191,76 @@ dbsfaces.svg = {
 			    .svgAttr("rx", pRX)
 			    .svgAttr("ry", pRY);
 
-		pComponent.append(xEllipse);
 		return xEllipse;
 	},
 	
-	path: function(pComponent, pData, pStyleClass, pStyle, pAttrs){
-		var xPath = dbsfaces.svg.createElement('path', pAttrs);
+	path: function(pParentElement, pData, pStyleClass, pStyle, pAttrs){
+		var xPath = dbsfaces.svg.createElement(pParentElement, 'path', pAttrs);
 		dbsfaces.svg.setDefaultAttrs(xPath, pStyleClass, pStyle);
 		
 		xPath.svgAttr("d", pData);
 		
-		pComponent.append(xPath);
 		return xPath;
 	},
 
-	text: function(pComponent, pX, pY, pText, pStyleClass, pStyle, pAttrs){
-		var xText = dbsfaces.svg.createElement('text', pAttrs);
+	text: function(pParentElement, pX, pY, pText, pStyleClass, pStyle, pAttrs){
+		var xText = dbsfaces.svg.createElement(pParentElement, 'text', pAttrs);
 		dbsfaces.svg.setDefaultAttrs(xText, pStyleClass, pStyle);
 
 		xText.svgAttr("x", pX)
 			 .svgAttr("y", pY);
-
 		xText.text(pText);
-		pComponent.append(xText);
+
 		return xText;
 	},
 
-	tspan: function(pComponent, pText, pStyleClass, pStyle, pAttrs){
-		var xTspan = dbsfaces.svg.createElement('tspan', pAttrs);
+	tspan: function(pParentElement, pText, pStyleClass, pStyle, pAttrs){
+		var xTspan = dbsfaces.svg.createElement(pParentElement, 'tspan', pAttrs);
 		dbsfaces.svg.setDefaultAttrs(xTspan, pStyleClass, pStyle);
 
 		xTspan.text(pText);
-		pComponent.append(xTspan);
+
 		return xTspan;
 	},
 
-	textPath: function(pComponent, pHRef, pText, pStyleClass, pStyle, pAttrs){
-		var xTextPath = dbsfaces.svg.createElement('textPath', pAttrs);
+	textPath: function(pParentElement, pHRef, pText, pStyleClass, pStyle, pAttrs){
+		var xTextPath = dbsfaces.svg.createElement(pParentElement, 'textPath', pAttrs);
 		dbsfaces.svg.setDefaultAttrs(xTextPath, pStyleClass, pStyle);
 
 		xTextPath.text(pText);
 		dbsfaces.svg.setAttributeHRef(xTextPath, pHRef);
 		
-		pComponent.append(xTextPath);
-		
 		return xTextPath;
 	},
 	
-	linearGradient: function(pComponent, pId, pAttrs){
-		var xElement = dbsfaces.svg.createElement('linearGradient', pAttrs);
-		pComponent.append(xElement);
+	linearGradient: function(pParentElement, pId, pAttrs){
+		var xElement = dbsfaces.svg.createElement(pParentElement, 'linearGradient', pAttrs);
 
 		xElement.svgAttr("id", pId);
 		
 		return xElement;
 	},
 	
-	marker: function(pComponent, pId, pRefX, pRefY){
-		var xElement = dbsfaces.svg.createElement('marker', null);
-		pComponent.append(xElement);
+	marker: function(pParentElement, pId, pRefX, pRefY){
+		var xElement = dbsfaces.svg.createElement(pParentElement, 'marker', null);
 
-		xElement.svgAttr("id", pid)
+		xElement.svgAttr("id", pId)
 				.svgAttr("refx", pRefX)
 				.svgAttr("refy", pRefY);
 
 		return xElement;
 	},
 
-	stop: function(pComponent, pOffset, pStopColor){
-		var xElement = dbsfaces.svg.createElement('stop', null);
+	stop: function(pParentElement, pOffset, pStopColor){
+		var xElement = dbsfaces.svg.createElement(pParentElement, 'stop', null);
 
 		xElement.svgAttr("offset", pOffset)
 			    .svgAttr("stop-color", pStopColor);
 
-		pComponent.append(xElement);
 		return xElement;
 	},
 	
-	createElement: function(pTag, pAttrs){
+	createElement: function(pParentElement, pTag, pAttrs){
 		var xElement = $(document.createElementNS('http://www.w3.org/2000/svg', pTag));
 		//Seta atributos do componente.
 		if (pAttrs != null){
@@ -282,6 +268,7 @@ dbsfaces.svg = {
 				xElement.svgAttr(xAttr, pAttrs[xAttr]);
 			}
 		}
+		pParentElement.append(xElement);
 		return xElement;
 	},
 
@@ -495,12 +482,27 @@ dbsfaces.ui = {
 			xToE.appendChild(xE);
 		}
 	},
+	
 	moveToBack: function(pElement){
+		if (pElement == null || (typeof(pElement) == "undefined")){return;}
 		var xE = pElement;
 		if (xE instanceof jQuery){
 			xE = pElement.get(0);
 		}
 		xE.parentElement.insertBefore(xE, xE.parentElement.childNodes[0]);
+	},
+	
+	recreate: function(pElement){
+		if (pElement == null || (typeof(pElement) == "undefined")){return;}
+		var xE = pElement;
+		if (xE instanceof jQuery){
+			xE = pElement.get(0);
+		}
+		var xI = xE.childElementCount;
+		if (xI > 0){
+//			xI--;
+		}
+		xE.parentElement.insertBefore(xE, xE.parentElement.childNodes[xI]);
 	},
 	
 	getRectangle : function(obj) {
@@ -869,14 +871,16 @@ dbsfaces.ui = {
 	},
 	
 	pointerEventToXY : function(e){
-        var xXY = {x:0, y:0};
+		var xXY = {x:0, y:0};
         if(e.type == 'touchstart' || e.type == 'touchmove' || e.type == 'touchend' || e.type == 'touchcancel'){
-          var xTouch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
-          xXY.x = xTouch.pageX;
-          xXY.y = xTouch.pageY;
+			var xTouch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+			xXY.x = xTouch.pageX;
+			xXY.y = xTouch.pageY;
         } else if (e.type == 'mousedown' || e.type == 'mouseup' || e.type == 'mousemove' || e.type == 'mouseover'|| e.type=='mouseout' || e.type=='mouseenter' || e.type=='mouseleave') {
-          xXY.x = e.clientX;
-          xXY.y = e.clientY;
+//			xXY.x = e.offsetX;
+//			xXY.y = e.offsetY;
+			xXY.x = e.clientX;
+			xXY.y = e.clientY;
         }
         return xXY;
      }
@@ -1054,6 +1058,9 @@ dbsfaces.date = {
 }
 
 dbsfaces.math = {
+	PIDiameter: Math.PI * 2,
+	PIDiameterFactor: (Math.PI * 2) / 100,
+		
 	round: function(pValue, pDecimals){
 		var xP = Math.pow(10, pDecimals);
 		var xValue = pValue * xP;
@@ -1066,6 +1073,50 @@ dbsfaces.math = {
 		var xValue = pValue * xP;
 		xValue = Math[xValue < 0 ? 'ceil' : 'floor'](xValue);
 		return xValue / xP;
+	},
+	
+	circlePoint: function(pCenter, pRadius, p2PIPercentual){
+		var xPoint = {};
+		xPoint.x = dbsfaces.math.round(pCenter.x + (pRadius * Math.sin(p2PIPercentual)), 6);
+		xPoint.y = dbsfaces.math.round(pCenter.y - (pRadius * Math.cos(p2PIPercentual)), 6);
+		return xPoint;
+	},
+	//Retorna lista com o valores binários(1,2,4,8) que compõem o valor informado
+	//Bitwise operators treat their operands as a sequence of 32 bits (zeros and ones)
+	getBits: function(pBinaryNumber){
+		var xBitCount = 0;
+		var xBits = [];
+		var xTestNumber = pBinaryNumber;
+		var xBinaryNumber = pBinaryNumber;
+		while (xBinaryNumber > 0){
+			//Testa sempre o primeiro bit(já shiftado). 
+			if (xTestNumber & 1){
+				var xBit = Math.pow(2, xBitCount);
+				xBinaryNumber -= xBit;
+				xBits.push(xBit);
+			}
+			xBitCount++; 
+			//Shifta. Exclui os bits já testado do vaor original
+			xTestNumber = pBinaryNumber >> xBitCount;
+		}
+		return xBits;
+	},
+	
+	distanceBetweenTwoPoints: function(pX1, pY1, pX2, pY2){
+		var xA = pX1 - pX2
+		var xB = pY1 - pY2
+		return Math.sqrt(xA*xA + xB*xB);
+	},
+	
+	sign: function(pValue){
+		//Math.sign não funciona em browsers antigos
+		if (pValue > 0){
+			return 1;
+		}else if (pValue < 0){
+			return -1;
+		}else{
+			return 0;
+		}
 	}
 };
 
@@ -1118,7 +1169,7 @@ dbsfaces.format = {
 	number: function(pValue, pDecimals){
 //		var xLanguage = window.navigator.userLanguage || window.navigator.language;
 		pValue = dbsfaces.math.round(pValue, pDecimals);
-		return pValue.toLocaleString();
+		return pValue.toLocaleString(window.navigator.language, { minimumFractionDigits: pDecimals });
 //		var xDS = dbsfaces.format.getDecimalSeparator();
 //		console.log(xDS);
 //		//Ingles
@@ -1162,7 +1213,33 @@ dbsfaces.format = {
 			return ".";
 		}
 		return ",";
+	},
+	
+	splitNumber: function(pValue){
+		var xSplit = {
+			int: "",
+			dec: ""
+		}
+		if (pValue != null){
+			var xValue = parseFloat(pValue);
+			var xValueAbs = Math.abs(xValue);
+			xSplit.int = parseInt(xValueAbs);
+			xSplit.dec = String(dbsfaces.math.round(xValueAbs - xSplit.int, 2)).substring(1);
+			if (xValue < 0){
+				xSplit.int = "-" + xSplit.int;
+			}
+		}
+		return xSplit;
 	}
+	
+//	numberToString: function(pNumber){
+//		var xNumber = new BigDecimal(pNumber);
+//		var xNumberInt = parseInt(pNumber);
+//		var xDecimalPlaces = (xNumber - xNumberInt).toString().length;
+//		console.log(xDecimalPlaces);
+//		xNumberInt = pNumber * Math.pow(10, xDecimalPlaces);
+//		
+//	}
 
 };
 
@@ -1171,7 +1248,11 @@ dbsfaces.string = {
 	fromCharCode: function(pVal){
 		//Ajuste para os códigos numéricos retornados pelo teclado estendido.
 		return String.fromCharCode((96 <= pVal && pVal <= 105)? pVal-48 : pVal);
-	}	
+	},
+	
+	repeat: function(pString, pTimes){
+		return Array(pTimes).join(pString); //String.repeat não funciona em browsers antigos
+	}
 };
 
 dbsfaces.ajax = {

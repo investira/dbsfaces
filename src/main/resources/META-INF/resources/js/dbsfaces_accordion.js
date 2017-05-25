@@ -1,5 +1,6 @@
 dbs_accordion = function(pId) {
 	var wsResizing = false;
+	var wsAnimationTime = 200;
 
 	$(window).resize(function() {
 		if (wsResizing==false){
