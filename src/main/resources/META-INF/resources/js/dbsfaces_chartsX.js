@@ -2,7 +2,7 @@ dbs_chartsX = function(pId) {
 	var xCharts = $(pId);
 	//Prepara gráfico com a altura e largura
 	$(window).resize(function(e){
-		dbsfaces.chartsX.resize(xCharts.data("data"));
+		dbsfaces.chartsX.refresh(xCharts);
 	});
 	
 	dbsfaces.chartsX.initialize(xCharts);
@@ -39,7 +39,6 @@ dbsfaces.chartsX = {
 				childrenCaptionContainer : null,
 				minChartValueData: null, //ChartValue que contém menor valor
 				maxChartValueData: null, //ChartValue que contém maior valor
-				maxLabelChartValueData : null, //chartValue que contém o maior label
 				chartValuesByIndex: [] //ChartValues agrupados por index
 			},
 			type : pCharts.attr("type"),
@@ -55,7 +54,8 @@ dbsfaces.chartsX = {
 			infoWidth: 0, //Largura da coluna de informação(value)
 			infoHeight: 0, //ALtura da linha de informação(label)
 			globalSequencesCount: 0, //Quantidade total de chartvalues considerando todos os gráficos 
-			currentColorInverted: tinycolor(pCharts.css("color")).invertLightness().setAlpha(1).toString()
+			currentColorInverted: tinycolor(pCharts.css("color")).invertLightness().setAlpha(1).toString(),
+			refreshTimeout : null,
 		}
 		pCharts.data("data", xData);
 		xData.dom.caption = xData.dom.container.children(".-caption");
@@ -117,6 +117,8 @@ dbsfaces.chartsX = {
 	},
 	
 	pvInitializeAnalizeValues: function(pChartsData){
+		pChartsData.dom.minChartValueData = null;
+		pChartsData.dom.maxChartValueData = null;
 		//Inicializa com o largura e altura máximo
 		if (pChartsData.dom.childrenData.length > 0){
 			var xMaxCount = 0;
@@ -127,10 +129,6 @@ dbsfaces.chartsX = {
 				}
 				if (pChartsData.dom.maxChartValueData == null || pChartData.dom.maxChartValueData.value > pChartsData.dom.maxChartValueData.value){
 					pChartsData.dom.maxChartValueData = pChartData.dom.maxChartValueData;
-				}
-				//Salva maior label
-				if (pChartsData.dom.maxLabelChartValueData == null || pChartData.dom.maxLabelChartValueData.label.length > pChartsData.dom.maxLabelChartValueData.label.length){
-					pChartsData.dom.maxLabelChartValueData = pChartData.dom.maxLabelChartValueData;
 				}
 
 				//Quantidade máxima de itens de todos os gráficos
@@ -171,7 +169,7 @@ dbsfaces.chartsX = {
 					}
 					pChartsData.scaleY = -pChartsData.height / (pChartsData.dom.maxChartValueData.value - pChartsData.dom.minChartValueData.value); //Scale vertical. obs:invertida já que a coordenada do svg desce quando o valor é maior;
 				}else if (pChartsData.type == "pie"){
-					pChartsData.infoWidth = pChartsData.dom.maxLabelChartValueData.dom.infoLabel[0].getComputedTextLength() * 1.10; 
+					pChartsData.infoWidth = parseFloat(pChartsData.dom.childrenData[0].dom.values.width()) / 1.2;//pChartsData.dom.maxLabelChartValueData.dom.infoLabel[0].getComputedTextLength() * 1.10; 
 					pChartsData.infoHeight = 0; //Será configurado posteriomente como a altura do caption do relationalgroup(se houver);
 				}
 			}
@@ -285,13 +283,6 @@ dbsfaces.chartsX = {
 		}
 		pChartsData.dom.chartValuesByIndex[pChartValueData.index].push(pChartValueData);
 	},
-	
-	pvInitializeDrawChartBarCreateDif: function(pChartsData, pChartValueData){
-		if (pChartValueData.index > pChartsData.dom.chartValuesByIndex.length - 1){
-			pChartsData.dom.chartValuesByIndex.push([]);
-		}
-		pChartsData.dom.chartValuesByIndex[pChartValueData.index].push(pChartValueData);
-	},	
 	
 	pvInitializeDrawChartBar: function(pChartsData, pChartData, pChartValueData){
 		dbsfaces.chartsX.pvInitializeDrawChartBarGroupByIndex(pChartsData, pChartValueData);
@@ -581,16 +572,24 @@ dbsfaces.chartsX = {
 			xInfoPercX = "-" + Math.abs(xInfoPercX);
 		}
 		pChartValueData.dom.info.attr("transform", xTransformInfo);
-		pChartValueData.dom.infoLabel.attr("x", xInfoLabelX + "em");
-		pChartValueData.dom.infoValue.attr("x", xInfoLabelX + "em");
-		pChartValueData.dom.infoPerc.attr("x", xInfoPercX + "em")
+		pChartValueData.dom.infoLabel.attr("x", xInfoLabelX);
+		pChartValueData.dom.infoValue.attr("x", xInfoLabelX);
+		pChartValueData.dom.infoPerc.attr("x", xInfoPercX)
 									.attr("v",pChartValueData.perc);
 		
 //		var xHeight = pChartValueData.dom.point[0].getBoundingClientRect().height;
-		var xHeight = pChartValueData.dom.point[0].getTotalLength() * 0.7;
+		//Reduz fonte se altura do texto for maior que altura do ponto
+		var xHeight = pChartValueData.dom.point[0].getTotalLength() * 0.5;
 		if (parseFloat(pChartValueData.dom.infoLabel.css("font-size")) > xHeight){
 			pChartValueData.dom.infoLabel.css("font-size", xHeight);
+//			return false;
 		}
+		//Reduz fonte se largura do texto for maior que largura do ponto
+		if (pChartValueData.dom.infoLabel[0].getComputedTextLength() > (pChartsData.infoWidth * .95)){
+			pChartValueData.dom.infoLabel.css("font-size", pChartsData.infoWidth / (pChartValueData.label.length * 0.6));
+//			return false;
+		}
+		return true;
 	},
 
 
@@ -850,11 +849,18 @@ dbsfaces.chartsX = {
 		return xInfo;
 	},
 
-	resize: function(pChartsData){
-		pChartsData.dom.container.addClass("-hide");
-		dbsfaces.chartsX.pvInitializeAnalizeValues(pChartsData);
-		dbsfaces.chartsX.pvInitializeDraw(pChartsData);
-		pChartsData.dom.container.removeClass("-hide");
+	refresh: function(pCharts){
+		var xChartsData = pCharts.data("data");
+		clearTimeout(xChartsData.refreshTimeout);
+		xChartsData.refreshTimeout = setTimeout(function(){
+//			xChartsData.dom.container.addClass("-hide");
+			xChartsData.dom.childrenData.forEach(function(pChartData) {
+				dbsfaces.chartX.refresh(pChartData);
+			});
+			dbsfaces.chartsX.pvInitializeAnalizeValues(xChartsData);
+			dbsfaces.chartsX.pvInitializeDraw(xChartsData);
+//			xChartsData.dom.container.removeClass("-hide");
+		},1);
 	},
 	
 	selectChart: function(pChartsData, pChartId){

@@ -1116,7 +1116,6 @@ dbsfaces.math = {
 			return 0;
 		}
 	}
-
 };
 
 dbsfaces.number = {

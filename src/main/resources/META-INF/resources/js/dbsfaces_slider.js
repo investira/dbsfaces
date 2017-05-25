@@ -42,19 +42,24 @@ dbsfaces.slider = {
 	
 	pvInitializeData: function(pSlider, pValuesList, pMinValue, pMaxValue){
 		var xData = {
-			self: pSlider, //O próprio slider
+			dom : {
+				self: pSlider, //O próprio slider
+				container : pSlider.children(".-container"), //Elemento que contém o container
+				content : null, //Elemento dentro do container
+				input : null, //Elemento input
+				slider : null, //Elemento do slider
+				sliderValue : null, //Elemento do valor atual do slider
+				handle : null, //Puxador do slider
+				points : null, //Elemento que contém os pontos
+				point : null, //Elemento que contém um ponto
+				label : null//Elemento que contém o label do ponto
+			},
 			type : pSlider.attr("type"), //Tipo do slider v,o,s
 			dp : parseInt(pSlider.attr("dp")), //Quantidade de casas decimais(decimal points)
 			orientation : (pSlider.hasClass("-h") ? "h" : "v"), //Orientação vertical ou horizontal
 			valuesList : pValuesList, //Lista dos valores
 			min : parseFloat(pMinValue),  //Valor mínimo
 			max : parseFloat(pMaxValue), //Valor máximo
-			container : pSlider.children(".-container"), //Elemento que contém o container
-			content : null, //Elemento dentro do container
-			input : null, //Elemento input
-			slider : null, //Elemento do slider
-			sliderValue : null, //Elemento do valor atual do slider
-			handle : null, //Puxador do slider
 			ani : (pSlider.hasClass("-ani") ? true: false), //Se há animação
 			segmentPercFator : (1 / (pValuesList.length - 1)), //Fator de cada item da lista
 			length: null, //largura ou altura total do gráfico em px
@@ -62,18 +67,15 @@ dbsfaces.slider = {
 			startPos: null, //Posição em relação a tela quando iniciado o movimento
 			lengthFator: null, //Tamanho/posição atual em fator
 			timeout: null, //Timeout para disparar evento de Change quando valor alterado
-			valuesListNumeric: null, //lista dos valores convertida para valor númerico
-			points : null, //Elemento que contém os pontos
-			point : null, //Elemento que contém um ponto
-			label : null//Elemento que contém o label do ponto
+			valuesListNumeric: null //lista dos valores convertida para valor númerico
 		}
 		pSlider.data("data", xData);
 
-		xData.content = xData.container.children(".-content");
-		xData.input = xData.container.children(".-th_input-data");
-		xData.slider = xData.content.children(".-slider");
-		xData.handle = xData.content.children(".-handle");
-		xData.sliderValue = xData.slider.children(".-value");
+		xData.dom.content = xData.dom.container.children(".-content");
+		xData.dom.input = xData.dom.container.children(".-th_input-data");
+		xData.dom.slider = xData.dom.content.children(".-slider");
+		xData.dom.handle = xData.dom.content.children(".-handle");
+		xData.dom.sliderValue = xData.dom.slider.children(".-value");
 
 		if (xData.type == "v"){
 			xData.valuesListNumeric = [];
@@ -93,23 +95,23 @@ dbsfaces.slider = {
 		dbsfaces.slider.pvInitializeLayoutPoints(pSliderData);
 		dbsfaces.slider.resize(pSliderData);
 		setTimeout(function(e){
-			pSliderData.self.removeClass("-hide");
+			pSliderData.dom.self.removeClass("-hide");
 		},0);
 	},
 	
 	pvInitializeLayoutHorizontalVertical: function(pSliderData){
-		var xColor = tinycolor(pSliderData.self.css("color"));
-		var xColor2 = tinycolor(pSliderData.self.css("color"));
-		var xInverted = tinycolor(pSliderData.self.css("color")).invertLightness().setAlpha(1);
+		var xColor = tinycolor(pSliderData.dom.self.css("color"));
+		var xColor2 = tinycolor(pSliderData.dom.self.css("color"));
+		var xInverted = tinycolor(pSliderData.dom.self.css("color")).invertLightness().setAlpha(1);
 		//Slider
 		xColor2.setAlpha(.3);
-		pSliderData.slider.css("background", xColor2);
+		pSliderData.dom.slider.css("background", xColor2);
 		
 		//Slider value line
 		var xBackground;
 		xColor2.setAlpha(.70);
 		xBackground = "linear-gradient(135deg," + xColor2 + " 0%, " + xColor + " 100%)";
-		pSliderData.sliderValue.css("background", xBackground);
+		pSliderData.dom.sliderValue.css("background", xBackground);
 		
 		//Handle
 		xColor2.setAlpha(1);
@@ -120,16 +122,16 @@ dbsfaces.slider = {
 			xColor2.darken(10);
 			xBackground = "linear-gradient(135deg," + xColor + " 0%, " + xColor2 + " 100%)";
 		}
-		pSliderData.handle.css("background", xBackground);
-		pSliderData.handle.css("color", xInverted);
+		pSliderData.dom.handle.css("background", xBackground);
+		pSliderData.dom.handle.css("color", xInverted);
 	},
 	
 	pvInitializeCreatePoints: function(pSliderData){
 		//Apaga os pontos anteriores se já existirem
-		pSliderData.content.children(".-points").remove();
+		pSliderData.dom.content.children(".-points").remove();
 		//Cria points
 		var xPoints = $(document.createElement('div')).addClass("-points");
-		pSliderData.content.append(xPoints);
+		pSliderData.dom.content.append(xPoints);
 		//Cria point e label
 		if (pSliderData.valuesList.length  > 0){
 			var xValue = "";
@@ -172,12 +174,12 @@ dbsfaces.slider = {
 			dbsfaces.slider.pvInitializeCreatePointElement(xPoints);
 			dbsfaces.slider.pvInitializeCreatePointElement(xPoints);
 		}
-		pSliderData.points = pSliderData.content.children(".-points");
-		pSliderData.point = pSliderData.points.children(".-point");
-		pSliderData.label = pSliderData.points.children(".-label");
+		pSliderData.dom.points = pSliderData.dom.content.children(".-points");
+		pSliderData.dom.point = pSliderData.dom.points.children(".-point");
+		pSliderData.dom.label = pSliderData.dom.points.children(".-label");
 		if (pSliderData.type == "v"){
 			//Força que valor seja exatamente o valor do label selecionado
-			pSliderData.label.on("mousedown touchstart", function(e){
+			pSliderData.dom.label.on("mousedown touchstart", function(e){
 				dbsfaces.slider.setInputValue(pSliderData, $(this).attr("v"));
 				dbsfaces.slider.setValue(pSliderData);
 				e.stopImmediatePropagation();
@@ -192,30 +194,31 @@ dbsfaces.slider = {
 		pPoints.append(xPointElement);
 	},
 	
+
 	pvInitializeLayoutPoints: function(pSliderData){
-		if (pSliderData.points.length > 0){
-			pSliderData.self.addClass("-showValuesList");
+		if (pSliderData.dom.points.length > 0){
+			pSliderData.dom.self.addClass("-showValuesList");
 		}
 		//Point
 		var xValuePerc;
-		for (var xI=0; xI < pSliderData.point.length; xI++){
-			xValuePerc = (xI / (pSliderData.point.length - 1)) * 100;
+		for (var xI=0; xI < pSliderData.dom.point.length; xI++){
+			xValuePerc = (xI / (pSliderData.dom.point.length - 1)) * 100;
 			if (pSliderData.orientation == "h"){
-				$(pSliderData.point[xI]).css("left", xValuePerc + "%");
+				$(pSliderData.dom.point[xI]).css("left", xValuePerc + "%");
 			}else{
-				$(pSliderData.point[xI]).css("top", xValuePerc + "%");
+				$(pSliderData.dom.point[xI]).css("top", xValuePerc + "%");
 			}
 		}
 		//Label
-		for (var xI=0; xI < pSliderData.label.length; xI++){
+		for (var xI=0; xI < pSliderData.dom.label.length; xI++){
 			//Texto
-			$(pSliderData.label[xI]).text($(pSliderData.label[xI]).attr("l"));
+			$(pSliderData.dom.label[xI]).text($(pSliderData.dom.label[xI]).attr("l"));
 			//Posição
-			xValuePerc = (xI / (pSliderData.label.length - 1)) * 100;
+			xValuePerc = (xI / (pSliderData.dom.label.length - 1)) * 100;
 			if (pSliderData.orientation == "h"){
-				$(pSliderData.label[xI]).css("left", xValuePerc + "%");
+				$(pSliderData.dom.label[xI]).css("left", xValuePerc + "%");
 			}else{
-				$(pSliderData.label[xI]).css("top", xValuePerc + "%");
+				$(pSliderData.dom.label[xI]).css("top", xValuePerc + "%");
 			}
 //			$(pSliderData.label[xI]).data("perc", xValuePerc / 100);
 		}
@@ -223,14 +226,14 @@ dbsfaces.slider = {
 
 
 	jump: function(pSliderData, e){
-		pSliderData.self.addClass("-selected");
+		pSliderData.dom.self.addClass("-selected");
 		//Calcula fator em relação as coordenada do click
 		var xLengthFator = 0;
 		var xXY = dbsfaces.ui.pointerEventToXY(e);
 		if (pSliderData.orientation == "h"){
-			xLengthFator = (xXY.x - pSliderData.content[0].getBoundingClientRect().left) / pSliderData.length;
+			xLengthFator = (xXY.x - pSliderData.dom.content[0].getBoundingClientRect().left) / pSliderData.length;
 		}else{
-			xLengthFator = 1 - ((xXY.y - pSliderData.content[0].getBoundingClientRect().top) / pSliderData.length);
+			xLengthFator = 1 - ((xXY.y - pSliderData.dom.content[0].getBoundingClientRect().top) / pSliderData.length);
 		}
 		dbsfaces.slider.pvSetValuePerc(pSliderData, xLengthFator);
 
@@ -239,7 +242,7 @@ dbsfaces.slider = {
 	},
 
 	handleStart: function(pSliderData, e){
-		pSliderData.self.addClass("-selected");
+		pSliderData.dom.self.addClass("-selected");
 		var xXY = dbsfaces.ui.pointerEventToXY(e);
 		//Sala posição atual para calcular a diferença posteriormente
 		if (pSliderData.orientation == "h"){
@@ -256,7 +259,7 @@ dbsfaces.slider = {
 	
 	handleStop: function(pSliderData, e){
 		pSliderData.startPos = null;
-		pSliderData.self.removeClass("-selected");
+		pSliderData.dom.self.removeClass("-selected");
 		e.stopImmediatePropagation();
 		e.preventDefault();
 	},
@@ -285,17 +288,17 @@ dbsfaces.slider = {
 	resize: function(pSliderData){
 		//Atualiza dimensão
 		if (pSliderData.orientation == "h"){
-			pSliderData.length = pSliderData.content[0].getBoundingClientRect().width;
+			pSliderData.length = pSliderData.dom.content[0].getBoundingClientRect().width;
 		}else{
-			pSliderData.length = pSliderData.content[0].getBoundingClientRect().height;
+			pSliderData.length = pSliderData.dom.content[0].getBoundingClientRect().height;
 		}
 		dbsfaces.slider.setValue(pSliderData);
 	},
 
 
+	//Encontra o percentual a partir do valor e seta o slider
 	setValue: function(pSliderData){
-//		var xValue = pSlider.data("input")[0].value
-		var xValue = pSliderData.input.attr("value");
+		var xValue = pSliderData.dom.input.attr("value");
 		var xLengthFator = 0; 
 		if (pSliderData.type == "v"){
 			var xMin = pSliderData.min;
@@ -338,10 +341,14 @@ dbsfaces.slider = {
 	},
 
 	setInputValue: function(pSliderData, pInputValue){
+		var xValue = pInputValue;
 		//Salva como string
-		pSliderData.input.attr("value", dbsfaces.format.number(pInputValue, pSliderData.dp));
+		if (pSliderData.type == "v"){
+			xValue = dbsfaces.format.number(pInputValue, pSliderData.dp);
+		}
+		pSliderData.dom.input.attr("value", xValue);
 		//Salva como float
-		pSliderData.input.data("value", pInputValue);
+		pSliderData.dom.input.data("value", pInputValue);
 
 	},
 
@@ -385,7 +392,7 @@ dbsfaces.slider = {
 	},
 	
 	pvEncodeValue: function(pSliderData){
-		var xSliderValue = pSliderData.sliderValue;
+		var xSliderValue = pSliderData.dom.sliderValue;
 		var xValuePerc = pSliderData.lengthFator * 100;
 		if (pSliderData.orientation == "h"){
 			dbsfaces.slider.pvEncodeValueHorizontal(pSliderData, xValuePerc);
@@ -394,7 +401,7 @@ dbsfaces.slider = {
 		}
 
 		//Valor para ser capturado pelo pseudoselector :before:content
-		pSliderData.handle.attr("v", pSliderData.input.attr("value"));
+		pSliderData.dom.handle.attr("v", pSliderData.dom.input.attr("value"));
 
 		//Configura steps anteriores
 		dbsfaces.slider.pvHideLabels(pSliderData);
@@ -402,31 +409,31 @@ dbsfaces.slider = {
 		//Dispara que valor foi alterado
 		clearTimeout(pSliderData.timeout);
 		pSliderData.timeout = setTimeout(function(){
-									pSliderData.self.trigger("change");
+									pSliderData.dom.self.trigger("change", [{value:pSliderData.dom.input.data("value"), fator:pSliderData.lengthFator}]);
 								},0);
 	},
 
 	
 	pvEncodeValueHorizontal: function(pSliderData, pValuePerc){
-		pSliderData.sliderValue.css("width", pValuePerc + "%");
-		pSliderData.handle.css("left", pValuePerc + "%");
+		pSliderData.dom.sliderValue.css("width", pValuePerc + "%");
+		pSliderData.dom.handle.css("left", pValuePerc + "%");
 	},
 
 	pvEncodeValueVertical: function(pSliderData, pValuePerc){
-		pSliderData.sliderValue.css("height", pValuePerc + "%");
-		pSliderData.handle.css("top", 100 - pValuePerc + "%");
+		pSliderData.dom.sliderValue.css("height", pValuePerc + "%");
+		pSliderData.dom.handle.css("top", 100 - pValuePerc + "%");
 	},
 	
 	pvHideLabels: function(pSliderData){
 		var xCur;
 		if (pSliderData.orientation == "h"){
-			xCur = parseFloat(pSliderData.handle.css("left"));
+			xCur = parseFloat(pSliderData.dom.handle.css("left"));
 		}else{
-			xCur = parseFloat(pSliderData.handle.css("top"));
+			xCur = parseFloat(pSliderData.dom.handle.css("top"));
 		}
 		if (pSliderData.type == "v"){
-			for (var xI=0; xI < pSliderData.label.length; xI++){
-				var xLabelX = $(pSliderData.label[xI]);
+			for (var xI=0; xI < pSliderData.dom.label.length; xI++){
+				var xLabelX = $(pSliderData.dom.label[xI]);
 				var xSize;
 				var xMin;
 				var xMax;

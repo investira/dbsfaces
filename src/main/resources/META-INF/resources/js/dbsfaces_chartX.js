@@ -17,7 +17,7 @@ dbsfaces.chartX = {
 	initialize: function(pChart, pValues, pRelationalCaptions){
 		var xChartData = dbsfaces.chartX.pvInitializeData(pChart, pValues, pRelationalCaptions);
 		dbsfaces.chartX.pvInitializeChartValues(xChartData);
-		dbsfaces.chartX.pvInitializeLayout(xChartData);
+		dbsfaces.chartX.pvInitializeLayout(xChartData); 
 	},
 
 	pvInitializeData: function(pChart, pValues, pRelationalCaptions){
@@ -98,17 +98,22 @@ dbsfaces.chartX = {
 		if (xData.relationalCaptions == null){
 			xData.relationalCaptions = [];
 		}
-		xData.width = xData.dom.chart[0].getBoundingClientRect().width;
-		xData.height = xData.dom.chart[0].getBoundingClientRect().height;
 		pChart.data("data", xData);
-//		dbsfaces.chartX.addChartValue(pChart, 123);
-//		dbsfaces.chartX.clearChartValue(pChart);
+
 		return xData;
 	},
 	
 	pvInitializeChartValues: function(pChartData){
+		pChartData.dom.values.empty();
+		pChartData.dom.childrenData = [];
+		pChartData.dom.maxChartValueData = null;
+		pChartData.dom.minChartValueData = null;
+		pChartData.dom.maxLabelChartValueData = null;
+		pChartData.relationships = [];
+		pChartData.relationalCaptionsCount = 1;
+		pChartData.totalValue = 0;
+		pChartData.medValue = 0;
 		if (pChartData.originalValues.length > 0){
-			pChartData.relationships = [];
 			//Loop por todos os valores da originais recebidos
 			for (var xI = 0; xI < pChartData.originalValues.length; xI++){
 				var xOriginalValue = pChartData.originalValues[xI];
@@ -151,7 +156,7 @@ dbsfaces.chartX = {
 
 					//Cria componente chartValueData
 					if (xChartValueData == null){
-						var xChartValueData = dbsfaces.chartX.pvInitializeChartValuesCreateData(pChartData, pLabel, pRelationalGroupIndex, xOriginalValue);
+						xChartValueData = dbsfaces.chartX.pvInitializeChartValuesCreateData(pChartData, pLabel, pRelationalGroupIndex, xOriginalValue);
 						//Adiciona valor normalizado
 						pChartData.dom.childrenData.push(xChartValueData);
 					}
@@ -201,8 +206,10 @@ dbsfaces.chartX = {
 			//Calcula valor médio e salva
 			pChartData.medValue = (pChartData.totalValue * pChartData.relationalCaptionsCount) / pChartData.dom.childrenData.length;
 
-			//Ordena por RelationalGroup e valor
-			dbsfaces.chartX.pvInitializeChartValuesSort(pChartData);
+			if (pChartData.type == "pie"){
+				//Ordena por RelationalGroup e valor
+				dbsfaces.chartX.pvInitializeChartValuesSort(pChartData);
+			}
 		}
 	},
 
@@ -211,7 +218,7 @@ dbsfaces.chartX = {
 		//Ordena por RelationalGroup e valor
 		if (pChartData.type == "pie"){
 			pChartData.dom.childrenData.sort(function(a, b){
-				var x = a.relationalGroupIndex - b.relationalGroupIndex;
+				var x = b.relationalGroupIndex - a.relationalGroupIndex;
 				if (x == 0){
 					x = b.value - a.value;
 				}
@@ -224,8 +231,6 @@ dbsfaces.chartX = {
 			});
 		}
 	},
-	
-
 	
 	//Cria representação binária do somatórios do index dos labels
 	pvInitializeChartValuesAddKeyToBinaryKey: function(pBinaryKey, pIndex){
@@ -284,6 +289,10 @@ dbsfaces.chartX = {
 	
 	pvInitializeLayout: function(pChartData){
 		if (pChartData.dom.childrenData.length == 0){return;}
+		
+		pChartData.width = pChartData.dom.chart[0].getBoundingClientRect().width;
+		pChartData.height = pChartData.dom.chart[0].getBoundingClientRect().height;
+
 		//Cria elementos do chartvalueData e configura totalizador e index 
 		dbsfaces.chartX.pvInitializeLayoutChartValueCreateElement(pChartData);
 		
@@ -305,6 +314,9 @@ dbsfaces.chartX = {
 	pvInitializeLayoutChartValueCreateElement: function(pChartData){
 		var xTotalValue = 0;
 		var xRelationalGroupIndex = 0;
+		//Cria grupo dos values
+		if (pChartData.dom.values != null){pChartData.dom.values.remove();}
+		pChartData.dom.values = dbsfaces.svg.g(pChartData.dom.chart, "-values", null, null);
 		//Cria elementos do chartvalueData e configura totalizador e index 
 		pChartData.dom.childrenData.forEach(function(pChartValueData, pI){
 			if (xRelationalGroupIndex != pChartValueData.relationalGroupIndex){
@@ -331,7 +343,6 @@ dbsfaces.chartX = {
 	},
 
 	pvInitializeLayoutChartValuesCreate: function(pChartData, pChartValueData){
-//		var xChartValueData = dbsfaces.chartX.pvInitializeChartValuesCreateData(pChartData, pLabel, prelationalGroupIndex);
 		//Cria ChartValue
 		pChartValueData.dom.self = dbsfaces.svg.g(pChartData.dom.values, "dbs_chartValueX -" + pChartData.type, null, {index: pChartValueData.index, relationalGroupIndex: pChartValueData.relationalGroupIndex});
 		//Salva data
@@ -377,7 +388,7 @@ dbsfaces.chartX = {
 			//Container do value
 			pChartValueData.dom.infoValues = dbsfaces.svg.g(pChartValueData.dom.info, "-values", null, null);
 			//Texto do Label
-			pChartValueData.dom.infoLabel = dbsfaces.svg.text(pChartValueData.dom.infoValues, "0.2em", null, pChartValueData.label, "-label", null, null);
+			pChartValueData.dom.infoLabel = dbsfaces.svg.text(pChartValueData.dom.infoValues, "1", null, pChartValueData.label, "-label", null, null);
 			//Texto do Valor
 			pChartValueData.dom.infoValue = dbsfaces.svg.text(pChartValueData.dom.infoValues, "0.1em", ".8em", xValueText, "-value", null, null);
 			if (pChartData.dom.childrenData.length == 1){
@@ -496,6 +507,7 @@ dbsfaces.chartX = {
 	
 	pvInitializeLayoutDelta: function(pChartData){
 		if (pChartData.type == "line" && !pChartData.showDelta){return;}
+		if (pChartData.dom.delta !=null){pChartData.dom.delta.remove();}
 		pChartData.dom.delta = dbsfaces.svg.g(pChartData.dom.chart, "-delta", null, null);
 		pChartData.dom.deltaInfo = dbsfaces.svg.g(pChartData.dom.delta, "-info", null, null);
 		//Cria elemento Perc
@@ -534,6 +546,7 @@ dbsfaces.chartX = {
 
 	pvInitializeLayoutChartLine: function(pChartData){
 		//Cria elemento que será a linha que conecta os pontos
+		if (pChartData.dom.path != null){pChartData.dom.path.remove();}
 		pChartData.dom.path = dbsfaces.svg.path(pChartData.dom.chart, null, "-path", "stroke:" + pChartData.color, null);
 		dbsfaces.ui.moveToBack(pChartData.dom.path);
 
@@ -556,9 +569,11 @@ dbsfaces.chartX = {
 
 	pvInitializeLayoutChartPie: function(pChartData){
 		//Cria elemento que será a linha que conecta os pontos
+		if (pChartData.dom.links !=null){pChartData.dom.links.remove();}
 		pChartData.dom.links = dbsfaces.svg.g(pChartData.dom.chart, "-links", null, null);
 		dbsfaces.ui.moveToBack(pChartData.dom.links);
 		//Cria elemento que agrupa todos os captions dos relationsGroup
+		if (pChartData.dom.relationalCaptions !=null){pChartData.dom.relationalCaptions.remove();}
 		pChartData.dom.relationalCaptions = dbsfaces.svg.g(pChartData.dom.chart, "-relationalCaptions", null, null);
 		dbsfaces.ui.moveToBack(pChartData.dom.relationalCaptions);
 	},
@@ -666,7 +681,7 @@ dbsfaces.chartX = {
 		if (pValue == null){
 			//Exibe Value -------------
 			xValueText = pChartData.valuePrefix + dbsfaces.format.number(pChartData.totalValue, pChartData.valueDecimalPlaces) + pChartData.valueSufix;
-			xMaxFontSize = dbsfaces.math.round((pChartData.dom.deltaCircle[0].getBoundingClientRect().width / xValueText.length) * 1.2, 1);
+			xMaxFontSize = dbsfaces.math.round((pChartData.dom.deltaCircle[0].getBoundingClientRect().width / xValueText.length) * 1.1, 1);
 		}else{
 			if (xLabelText == null){
 				xLabelText = "";
@@ -863,47 +878,54 @@ dbsfaces.chartX = {
 	//Procura ponto da caminho(path)
 	chartLinefindPoint: function(e, pChartData){
 		if (pChartData.dom.childrenData.length == 0){return;}
+		var xChartsData = pChartData.dom.parent.data("data");
 		var xDecimals = 1;
 		var xChartPath = pChartData.dom.path[0];
 		var xXY = dbsfaces.ui.pointerEventToXY(e);
 		var xCurrentX = dbsfaces.math.round(xXY.x - pChartData.dom.self.offset().left + $(window).scrollLeft() - parseFloat(pChartData.dom.self.css("padding-left")), xDecimals);
-//	    var xBeginning = xCurrentX;
-//        var xEnd = dbsfaces.math.round(xChartPath.getTotalLength(), xDecimals);
-//		console.log(xCurrentX);
-		var xTestIndex = xChartPath.getPathSegAtLength(xCurrentX);
-		var xChartValueDataL = pChartData.dom.childrenData[xTestIndex];
-		var xChartValueDataR = xChartValueDataL;
-		var xChartValueData;
-		var xFound = false;
-		while (!xFound){
-			if (xTestIndex < pChartData.dom.childrenData.length - 1
-			 && xTestIndex >= 0){
-				xChartValueDataL = pChartData.dom.childrenData[xTestIndex];
-				xChartValueDataR = pChartData.dom.childrenData[xTestIndex + 1];
-				xFound = (xChartValueDataL.x <= xCurrentX) && (xChartValueDataR.x >= xCurrentX);
-				if (xChartValueDataL.x < xCurrentX){
-					xTestIndex++;
-				}else{
-					xTestIndex--;
-				}
-			}else{
-				break;
+		var xMaxIndex = pChartData.dom.childrenData.length - 1;
+		var xL = 0;
+		var xR = xMaxIndex;
+		var xGap = Math.round((xR - xL) / 2);
+		var xLA;
+		var xLB;
+		var xRA;
+		var xRB;
+		var xChartValueDataL = pChartData.dom.childrenData[xL]; //= pChartData.dom.childrenData[xTestIndex];
+		var xChartValueDataR = pChartData.dom.childrenData[xR]; // = pChartData.dom.childrenData[xTestIndex + 1];
+		var xChartValueData = null; // = xChartValueDataL;
+		while ((xR - xL) != 1){
+			xGap = Math.max(Math.trunc(xGap / 2), 1);
+			if (typeof pChartData.dom.childrenData[xL + 1] != "undefined"){
+				xLA = pChartData.dom.childrenData[xL + 1].x;
 			}
+			if (typeof pChartData.dom.childrenData[xL - 1] != "undefined"){
+				xLB = pChartData.dom.childrenData[xL - 1].x;
+			}
+			if (typeof pChartData.dom.childrenData[xR + 1] != "undefined"){
+				xRA = pChartData.dom.childrenData[xR + 1].x;
+			}
+			if (typeof pChartData.dom.childrenData[xR - 1] != "undefined"){
+				xRB = pChartData.dom.childrenData[xR - 1].x;
+			}
+			if (xCurrentX > xLA){
+				xL += xGap;
+			}else if (xCurrentX < xLB){
+				xL -= xGap;
+			}
+			if (xCurrentX < xRB){
+				xR -= xGap;
+			}else if (xCurrentX > xRA){
+				xR += xGap;
+			}
+			xChartValueDataL = pChartData.dom.childrenData[xL];
+			xChartValueDataR = pChartData.dom.childrenData[xR];
 		}
 		if (Math.abs(xChartValueDataL.x - xCurrentX) < Math.abs(xChartValueDataR.x - xCurrentX)){
 			xChartValueData = xChartValueDataL;
 		}else{
 			xChartValueData = xChartValueDataR;
 		}
-//		while (xDif > 1){
-//	        xTestIndex = xChartPath.getPathSegAtLength(xTestX); 
-//	        xTestPos = xChartPath.getPointAtLength(xTestX); 
-//			xChartValueData = pChartData.dom.childrenData[xTestIndex];
-//			console.log(xTestPos.x + "\t" + xChartValueData.x);
-//			xDif = xTestPos.x - xChartValueData.x;
-//			xTestX += xDif;
-//			xDif = Math.abs(xDif);
-//		}
 		dbsfaces.chartX.selectChartValue(pChartData, xChartValueData);
 	},
 	//Procura ponto da caminho(path)
@@ -994,6 +1016,7 @@ dbsfaces.chartX = {
 
 
 	addChartValue: function(pChart, pValue, pLabel, pDisplayValue, pTooltip){
+		var xChartData = pChart.data("data");
 		if (typeof pValue == "undefined"){
 			return;
 		}
@@ -1007,11 +1030,17 @@ dbsfaces.chartX = {
 			pTooltip = "";
 		}
 		var xValue = JSON.parse('{ "value":' + pValue + ', "label":"' + pLabel + '", "displayValue":"' + pDisplayValue + '", "tooltip":"' + pTooltip + '"}');
-		pChartData.originalValues.push(xValue);
+		xChartData.originalValues.push(xValue);
 	},
 	
 	clearChartValue: function(pChart){
 		pChartData.originalValues = [];
+	},
+	
+	refresh: function(pChartData){
+//		dbsfaces.chartX.initialize(pChartData.dom.self, pChartData.originalValues, pChartData.relationalCaptions);
+		dbsfaces.chartX.pvInitializeChartValues(pChartData);
+		dbsfaces.chartX.pvInitializeLayout(pChartData); 
 	}
 	
 

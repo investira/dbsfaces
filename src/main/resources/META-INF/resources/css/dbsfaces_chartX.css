@@ -189,11 +189,12 @@
 }
 
 .dbs_chartX.-selected.-hover > .-chart{
-	pointer-events: bounding-box;
+/* 	pointer-events: bounding-box; */
 }
 
 .dbs_chartX.-line > .-chart > .-path{
 	pointer-events: bounding-box;
+	cursor: pointer;
 	stroke-linecap: round;
     stroke-linejoin: round;
     fill: none;

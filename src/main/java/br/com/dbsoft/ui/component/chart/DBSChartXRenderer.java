@@ -92,9 +92,9 @@ public class DBSChartXRenderer extends DBSRenderer {
 		pWriter.startElement("svg", pChart);
 			DBSFaces.encodeSVGNamespaces(pWriter);
 			DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.FLEX_COL + "-chart");
-			pWriter.startElement("g", pChart);
-				DBSFaces.encodeAttribute(pWriter, "class", "-values");
-			pWriter.endElement("g");
+//			pWriter.startElement("g", pChart);
+//				DBSFaces.encodeAttribute(pWriter, "class", "-values");
+//			pWriter.endElement("g");
 		pWriter.endElement("svg");
 	}
 	
