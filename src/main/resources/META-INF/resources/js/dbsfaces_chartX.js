@@ -1016,6 +1016,7 @@ dbsfaces.chartX = {
 
 
 	addChartValue: function(pChart, pValue, pLabel, pDisplayValue, pTooltip){
+		if (pChart == null || typeof pChart == "undefined" || pChart.length == 0){return;}
 		var xChartData = pChart.data("data");
 		if (typeof pValue == "undefined"){
 			return;

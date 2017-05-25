@@ -169,7 +169,8 @@ dbsfaces.chartsX = {
 					}
 					pChartsData.scaleY = -pChartsData.height / (pChartsData.dom.maxChartValueData.value - pChartsData.dom.minChartValueData.value); //Scale vertical. obs:invertida já que a coordenada do svg desce quando o valor é maior;
 				}else if (pChartsData.type == "pie"){
-					pChartsData.infoWidth = parseFloat(pChartsData.dom.childrenData[0].dom.values.width()) / 1.2;//pChartsData.dom.maxLabelChartValueData.dom.infoLabel[0].getComputedTextLength() * 1.10; 
+					//Diametro do chart. Menor valor entre a altura e a largura
+					pChartsData.infoWidth = parseFloat(Math.min(pChartsData.width, pChartsData.height)) / 4;//pChartsData.dom.maxLabelChartValueData.dom.infoLabel[0].getComputedTextLength() * 1.10; 
 					pChartsData.infoHeight = 0; //Será configurado posteriomente como a altura do caption do relationalgroup(se houver);
 				}
 			}
@@ -850,6 +851,8 @@ dbsfaces.chartsX = {
 	},
 
 	refresh: function(pCharts){
+		if (pCharts == null || typeof pCharts == "undefined" || pCharts.length == 0){return;}
+
 		var xChartsData = pCharts.data("data");
 		clearTimeout(xChartsData.refreshTimeout);
 		xChartsData.refreshTimeout = setTimeout(function(){
