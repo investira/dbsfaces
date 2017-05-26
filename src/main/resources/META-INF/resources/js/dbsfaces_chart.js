@@ -896,7 +896,7 @@ dbsfaces.chart = {
 		var xChartValueDataL = pChartData.dom.childrenData[xL]; //= pChartData.dom.childrenData[xTestIndex];
 		var xChartValueDataR = pChartData.dom.childrenData[xR]; // = pChartData.dom.childrenData[xTestIndex + 1];
 		var xChartValueData = null; // = xChartValueDataL;
-		while ((xR - xL) != 1){
+		while ((xR - xL) != 1 && ((xChartValueDataL.x != xCurrentX) || (xChartValueDataR.x != xCurrentX)) ){
 			xGap = Math.max(Math.trunc(xGap / 2), 1);
 			if (typeof pChartData.dom.childrenData[xL + 1] != "undefined"){
 				xLA = pChartData.dom.childrenData[xL + 1].x;
@@ -910,19 +910,18 @@ dbsfaces.chart = {
 			if (typeof pChartData.dom.childrenData[xR - 1] != "undefined"){
 				xRB = pChartData.dom.childrenData[xR - 1].x;
 			}
-			if (xCurrentX > xLA){
+			if (xCurrentX >= xLA){
 				xL += xGap;
 			}else if (xCurrentX < xLB){
 				xL -= xGap;
 			}
-			if (xCurrentX < xRB){
+			if (xCurrentX <= xRB){
 				xR -= xGap;
 			}else if (xCurrentX > xRA){
 				xR += xGap;
 			}
 			xChartValueDataL = pChartData.dom.childrenData[xL];
 			xChartValueDataR = pChartData.dom.childrenData[xR];
-			console.log(xL + "\t" + xR + "\t" + xGap);
 		}
 		if (Math.abs(xChartValueDataL.x - xCurrentX) < Math.abs(xChartValueDataR.x - xCurrentX)){
 			xChartValueData = xChartValueDataL;
