@@ -289,15 +289,12 @@ dbsfaces.slider = {
 
 	resize: function(pSliderData){
 		//Atualiza dimensão
-		clearTimeout(pSliderData.resizeTimeout);
-		pSliderData.resizeTimeout = setTimeout(function(e){
-			if (pSliderData.orientation == "h"){
-				pSliderData.length = pSliderData.dom.content[0].getBoundingClientRect().width;
-			}else{
-				pSliderData.length = pSliderData.dom.content[0].getBoundingClientRect().height;
-			}
-			dbsfaces.slider.setValue(pSliderData);
-		},1);
+		if (pSliderData.orientation == "h"){
+			pSliderData.length = pSliderData.dom.content[0].getBoundingClientRect().width;
+		}else{
+			pSliderData.length = pSliderData.dom.content[0].getBoundingClientRect().height;
+		}
+		dbsfaces.slider.setValue(pSliderData);
 	},
 
 
