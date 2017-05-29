@@ -1058,8 +1058,8 @@ dbsfaces.date = {
 }
 
 dbsfaces.math = {
-	PIDiameter: Math.PI * 2,
-	PIDiameterFactor: (Math.PI * 2) / 100,
+	PICircle: Math.PI * 2,
+	PICircleFactor: (Math.PI * 2) / 100,
 		
 	round: function(pValue, pDecimals){
 		var xP = Math.pow(10, pDecimals);

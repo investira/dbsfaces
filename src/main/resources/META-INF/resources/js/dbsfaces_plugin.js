@@ -170,11 +170,42 @@
         return this;
     },
    
-   $.fn.onView = function() {
-	   dbsfaces.onView.initialize(this);
-       return this;
-   }
+    $.fn.onView = function() {
+    	dbsfaces.onView.initialize(this);
+    	return this;
+    },
 
+    $.fn.fontSizeFit = function(pContainer) {
+		this.each(function(){
+	    	var xObject = $(this);
+	    	var xPreVisibility = xObject.css("visibility");
+	    	xObject.css("visibility", "hidden");
+	    	xObject.css("font-size", "");
+//	    	window.getComputedStyle(xObject[0], null);
+//	    	var xStyle = window.getComputedStyle(xObject.parent()[0], null);
+	    	var xStyle = window.getComputedStyle(xObject[0], null);
+	    	var xOF = parseFloat(xStyle.getPropertyValue("font-size"));
+	    	var xOH = xObject[0].getBoundingClientRect().height;
+	    	var xOW = xObject[0].getBoundingClientRect().width;
+	    	var xCH = pContainer[0].getBoundingClientRect().height;
+	    	var xCW = pContainer[0].getBoundingClientRect().width;
+	    	//Limite pela altura
+	    	if (xCH < xCW){
+	    		xOF *= xCH / xOH;
+	    	//Limite pela largura
+	    	}else{
+	    		xOF *= xCW / xOW;
+	    	}
+	    	xObject.css("visibility", xPreVisibility);
+	    	xObject.css("font-size", xOF);
+
+	    	console.log(xOW + "\t" + xOW + "\t" + xCW);
+	    	console.log(xOH + "\t" + xOH + "\t" + xCH);
+	    	console.log(xOF + "\t");
+//	    	console.log(xObject[0].getComputedTextLength() + "\t" + xObject[0].getBoundingClientRect().width + "\t" + xObject.width());
+		});
+		return this;
+    }
 
 })(jQuery);
 

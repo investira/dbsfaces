@@ -92,6 +92,8 @@ public class DBSChartRenderer extends DBSRenderer {
 		pWriter.startElement("svg", pChart);
 			DBSFaces.encodeSVGNamespaces(pWriter);
 			DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.FLEX_COL + "-chart");
+//			DBSFaces.encodeAttribute(pWriter, "viewBox","0 0 400 400");
+//			DBSFaces.encodeAttribute(pWriter, "preserveAspectRatio", "xMidYMid meet");
 //			pWriter.startElement("g", pChart);
 //				DBSFaces.encodeAttribute(pWriter, "class", "-values");
 //			pWriter.endElement("g");

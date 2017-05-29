@@ -75,14 +75,6 @@ dbsfaces.chart = {
 			valueSufix: pChart.attr("vsf"), //Prefixo do valor
 			showDelta: pChart.hasClass("-showDelta"),
 			globalSequence: 0, //Número sequencial do item do chartValue, considerando todos os gráficos 
-			diameter: 0, //diametro do máximo (menor valor entre a altura e largura
-			center : {x:0, y:0}, //Centro do gráfico
-			arcWidth: 0, //largura do arco principal
-			arcFator: null, //Arco de cada relationalGroup(Divide diametro entres os relationalGroups)
-			arcSpace: 0.0005, //Espaço entre os arcos dos relationalgroups
-			pointRadius: 0, //Raio da posição do arco
-			pointLinkRadius: 0, //Raio da posição do arco que liga o arco principal do chartvalue ao centro
-			pointLinkWidth: 0, //Largura do arco que liga o arco principal do chartvalue ao centro
 			hoverLink: false //se hover sobre os link está ativo
 		}
 		//COnfigura como cor nula quando não tiver sido informada. Posteriormente será calculado uma cor baseada no atributo CSS color(currentColor).
@@ -688,33 +680,37 @@ dbsfaces.chart = {
 			if (xLabelText == null){
 				xLabelText = "";
 			}
-			//Exibe Value -------------
 			xValueText = pChartData.valuePrefix + dbsfaces.format.number(pValue, pChartData.valueDecimalPlaces) + pChartData.valueSufix;
-			pChartData.dom.deltaValue.text(xValueText);
+//			pChartData.dom.deltaValue.text(xValueText);
 			
 			//Ajusta o tamanho do fonte a partir do raio do círculo
-			var xMaxWidth = null;
-			if (pChartData.dom.maxLabelChartValueData != null){
-				xMaxWidth = pChartData.dom.maxLabelChartValueData.label.length;
-			}
-			if (pChartData.dom.maxChartValueData != null){
-				xMaxWidth = Math.max(xMaxWidth, pChartData.dom.maxChartValueData.label.length);
-			}
-			if (pChartData.dom.minChartValueData != null){
-				xMaxWidth = Math.max(xMaxWidth, pChartData.dom.minChartValueData.label.length);
-			}
-			if (xMaxWidth == null){
-				xMaxFontSize = pChartData.dom.self.css("font-size");
-			}else{
-				xMaxFontSize = dbsfaces.math.round((pChartData.dom.deltaCircle[0].getBoundingClientRect().width / xMaxWidth) * 1.7, 1);
-			}
+//			var xMaxWidth = null;
+//			if (pChartData.dom.maxLabelChartValueData != null){
+//				xMaxWidth = pChartData.dom.maxLabelChartValueData.label.length;
+//			}
+//			if (pChartData.dom.maxChartValueData != null){
+//				xMaxWidth = Math.max(xMaxWidth, pChartData.dom.maxChartValueData.label.length);
+//			}
+//			if (pChartData.dom.minChartValueData != null){
+//				xMaxWidth = Math.max(xMaxWidth, pChartData.dom.minChartValueData.label.length);
+//			}
+//			if (xMaxWidth == null){
+//				xMaxFontSize = pChartData.dom.self.css("font-size");
+//			}else{
+//				xMaxFontSize = dbsfaces.math.round((pChartData.dom.deltaCircle[0].getBoundingClientRect().width / xMaxWidth) * 1.7, 1);
+//			}
 		}
+		//Exibe Value -------------
+		pChartData.dom.deltaValue.text(xValueText);
+
 		//Exibe Label -------------
 		if (pChartData.dom.deltaLabel != null){
 			pChartData.dom.deltaLabel.text(xLabelText);
 		}
-		pChartData.dom.deltaValue.text(xValueText);
-		pChartData.dom.delta.css("font-size", xMaxFontSize);
+		
+//		pChartData.dom.deltaValue.fontSizeFit(pChartData.dom.delta);
+//		pChartData.dom.deltaLabel.fontSizeFit(pChartData.dom.delta);
+//		pChartData.dom.delta.css("font-size", xMaxFontSize);
 	},
 
 
@@ -929,56 +925,6 @@ dbsfaces.chart = {
 			xChartValueData = xChartValueDataR;
 		}
 		dbsfaces.chart.selectChartValue(pChartData, xChartValueData);
-	},
-	//Procura ponto da caminho(path)
-	chartLinefindPoint2: function(e, pChartData){
-		var xDecimals = 1;
-		var xXY = dbsfaces.ui.pointerEventToXY(e);
-//		var xCurrentX = dbsfaces.math.round(xXY.x - pChartData.dom.self.offset().left + $(window).scrollLeft() - parseFloat(pChartData.dom.self.css("padding-left")), xDecimals);
-		var xCurrentX = dbsfaces.math.round(xXY.x, xDecimals);
-		if (xCurrentX < 0){return;}
-		var xChartPath = pChartData.dom.path[0];
-	    var xBeginning = xCurrentX;
-        var xEnd = dbsfaces.math.round(xChartPath.getTotalLength(), xDecimals);
-        var xTargetLenght;
-        var xTargetPos;
-        var xTargetPosX;
-        //Procura ponto da caminho(path) que o X é iqual a posição X selecionada
-        while (Math.abs(xBeginning - xEnd) > 1) {
-        	xTargetLenght = xBeginning +  dbsfaces.math.round((xEnd - xBeginning) / 2, xDecimals); //Meio do caminho
-			xTargetPos = xChartPath.getPointAtLength(xTargetLenght); //Ponto do path 
-			xTargetPosX = dbsfaces.math.round(xTargetPos.x, xDecimals);
-			if (xTargetPosX < xCurrentX){
-				xBeginning = xTargetLenght;
-			}else if (xTargetPosX > xCurrentX){
-				xEnd = xTargetLenght;
-			}else{
-				break; //Encontrou posição
-			}
-        }
-		if (typeof(xTargetPos) != "undefined"){
-			//Procura qual dos chartsValues está mais próximo a posição do cursor
-			var xTotalSegs = pChartData.dom.path.svgGetPathTotalSegs();
-			var xIndex = xChartPath.getPathSegAtLength(xTargetLenght);
-			var xClosestX = xCurrentX;
-			var xChartValueData = pChartData.dom.childrenData[xIndex];
-			var xX = Number(xChartValueData.x);
-			var xY = Number(xChartValueData.y);
-			//Se cursos estiver antes do ponto, seleciona o chartvalue anterior
-			if (xCurrentX < xX && xIndex > 0){
-				xClosestX = pChartData.dom.childrenData[xIndex - 1].x;
-			//Se cursos não estiver após do ponto, seleciona o chartvalue posterior
-			}else if(xCurrentX > xX && xIndex < (xTotalSegs - 1)){
-				xClosestX = pChartData.dom.childrenData[xIndex + 1].x;
-			}
-			var xXMiddle = (Number(xClosestX) + xX) / 2;
-			//Escolhe o item anterior se estiver antes do meio do caminho entre o próximo item
-			if (xCurrentX < xXMiddle){
-				xChartValueData = pChartData.dom.childrenData[xIndex - 1];
-			}
-			//Seleciona chartvalue encontrado
-			dbsfaces.chart.selectChartValue(pChartData, xChartValueData);
-		}
 	},
 	
 	selectChartValue: function(pChartData, pChartValueData){
