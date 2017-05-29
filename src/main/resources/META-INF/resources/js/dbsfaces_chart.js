@@ -73,6 +73,7 @@ dbsfaces.chart = {
 			valueDecimalPlaces: parseInt(pChart.attr("vdp")), //DecimalPlaces
 			valuePrefix: pChart.attr("vpf"), //Prefixo do valor
 			valueSufix: pChart.attr("vsf"), //Prefixo do valor
+			isPerc: (pChart.attr("vsf") == "%"),
 			showDelta: pChart.hasClass("-showDelta"),
 			globalSequence: 0, //Número sequencial do item do chartValue, considerando todos os gráficos 
 			hoverLink: false //se hover sobre os link está ativo
@@ -851,14 +852,15 @@ dbsfaces.chart = {
 		var xLeftValue = pChartData.dom.leftDeltaHandleData.dom.chartValueData.value;
 		var xRightValue = pChartData.dom.rightDeltaHandleData.dom.chartValueData.value;
 		var xChartsData = pChartData.dom.parent.data("data");
-		if (xLeftValue == 0
-		 || xRightValue == 0
-		 || dbsfaces.math.sign(xLeftValue) != dbsfaces.math.sign(xRightValue)
-		 || xChartsData == null){
+		if (xChartsData == null
+		 || (pChartData.isPerc == false &&
+				(xLeftValue == 0 
+			  || xRightValue == 0 
+			  || dbsfaces.math.sign(xLeftValue) != dbsfaces.math.sign(xRightValue)))){
 			return null;
 		}
 		var xValue;
-		if (xChartsData.isPerc){
+		if (pChartData.isPerc){
 			xValue = (xRightValue - xLeftValue);
 			xValue *= 100;
 		}else{

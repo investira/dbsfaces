@@ -46,7 +46,6 @@ dbsfaces.charts = {
 			showLabel : pCharts.hasClass("-showLabel"),
 			showValue : pCharts.hasClass("-showValue"),
 			showDelta : pCharts.hasClass("-showDelta"),
-			isPerc: false, //Se valores são percentuais. usado no cálculo do delta
 			width : null, //Largura do espaço que contém o gráfico incluindo sem as colunas e linhas de informação
 			height : null, //Altura do espaço que contém o grático incluindo sem as colunas e linhas de informação
 			scaleX : null, //Fator de proporção dos ponto do gráfico com os ponto em tela

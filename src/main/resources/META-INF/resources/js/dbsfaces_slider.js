@@ -67,7 +67,8 @@ dbsfaces.slider = {
 			startPos: null, //Posição em relação a tela quando iniciado o movimento
 			lengthFator: null, //Tamanho/posição atual em fator
 			timeout: null, //Timeout para disparar evento de Change quando valor alterado
-			valuesListNumeric: null //lista dos valores convertida para valor númerico
+			valuesListNumeric: null, //lista dos valores convertida para valor númerico
+			resizeTimeout: null
 		}
 		pSlider.data("data", xData);
 
@@ -94,7 +95,8 @@ dbsfaces.slider = {
 		dbsfaces.slider.pvInitializeLayoutHorizontalVertical(pSliderData);
 		dbsfaces.slider.pvInitializeLayoutPoints(pSliderData);
 		dbsfaces.slider.resize(pSliderData);
-		setTimeout(function(e){
+		clearTimeout(pSliderData.resizeTimeout);
+		pSliderData.resizeTimeout = setTimeout(function(e){
 			pSliderData.dom.self.removeClass("-hide");
 		},0);
 	},
@@ -287,12 +289,15 @@ dbsfaces.slider = {
 
 	resize: function(pSliderData){
 		//Atualiza dimensão
-		if (pSliderData.orientation == "h"){
-			pSliderData.length = pSliderData.dom.content[0].getBoundingClientRect().width;
-		}else{
-			pSliderData.length = pSliderData.dom.content[0].getBoundingClientRect().height;
-		}
-		dbsfaces.slider.setValue(pSliderData);
+		clearTimeout(pSliderData.resizeTimeout);
+		pSliderData.resizeTimeout = setTimeout(function(e){
+			if (pSliderData.orientation == "h"){
+				pSliderData.length = pSliderData.dom.content[0].getBoundingClientRect().width;
+			}else{
+				pSliderData.length = pSliderData.dom.content[0].getBoundingClientRect().height;
+			}
+			dbsfaces.slider.setValue(pSliderData);
+		},1);
 	},
 
 

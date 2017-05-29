@@ -12,6 +12,7 @@ dbsfaces.progress = {
 	},
 	
 	resize: function(pProgress){
+		pProgress.addClass("-hide");
 		dbsfaces.progress.pvSetValue(pProgress, pProgress.attr("v"));
 		dbsfaces.progress.pvInitializeLayout(pProgress);
 	},
