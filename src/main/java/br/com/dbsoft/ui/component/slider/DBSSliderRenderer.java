@@ -162,13 +162,14 @@ public class DBSSliderRenderer extends DBSRenderer {
 	
 	private void pvEncodeJS(DBSSlider pSlider, ResponseWriter pWriter) throws IOException{
 		DBSFaces.encodeJavaScriptTagStart(pSlider, pWriter);
-		Gson xListValuesJson = new Gson();
+		Gson xJson = new Gson();
 		String xJS = "$(document).ready(function() { \n" +
 				     " var xSliderId = dbsfaces.util.jsid('" + pSlider.getClientId() + "'); \n " + 
 				     " dbs_slider(xSliderId, " + 
-				     			  xListValuesJson.toJsonTree(pSlider.getValuesList(), List.class) + ", " +
-				     			  xListValuesJson.toJson(pSlider.getMinValue()) + ", " +
-				     			  xListValuesJson.toJson(pSlider.getMaxValue()) +
+				     			  xJson.toJsonTree(pSlider.getValuesList(), List.class) + ", " +
+				     			  xJson.toJsonTree(pSlider.getLabelsList(), List.class) + ", " +
+				     			  xJson.toJson(pSlider.getMinValue()) + ", " +
+				     			  xJson.toJson(pSlider.getMaxValue()) +
 				     			  "); \n" +
                      "}); \n"; 
 		pWriter.write(xJS);

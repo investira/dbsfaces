@@ -1,5 +1,5 @@
-dbs_slider = function(pId, pValuesList, pMinValue, pMaxValue) {
-	dbsfaces.slider.initialize($(pId), pValuesList, pMinValue, pMaxValue);
+dbs_slider = function(pId, pValuesList, pLabelsList, pMinValue, pMaxValue) {
+	dbsfaces.slider.initialize($(pId), pValuesList, pLabelsList, pMinValue, pMaxValue);
 
 	$(window).resize(function(e){
 		dbsfaces.slider.resize($(pId).data("data"));
@@ -33,14 +33,14 @@ dbs_slider = function(pId, pValuesList, pMinValue, pMaxValue) {
 }
 
 dbsfaces.slider = {
-	initialize: function(pSlider, pValuesList, pMinValue, pMaxValue){
-		dbsfaces.slider.pvInitializeData(pSlider, pValuesList, pMinValue, pMaxValue);
+	initialize: function(pSlider, pValuesList, pLabelsList, pMinValue, pMaxValue){
+		dbsfaces.slider.pvInitializeData(pSlider, pValuesList, pLabelsList, pMinValue, pMaxValue);
 		dbsfaces.slider.pvInitializeCreatePoints(pSlider.data("data"));
 		dbsfaces.slider.pvInitializeLayout(pSlider.data("data"));
 	},
 
 	
-	pvInitializeData: function(pSlider, pValuesList, pMinValue, pMaxValue){
+	pvInitializeData: function(pSlider, pValuesList, pLabelsList, pMinValue, pMaxValue){
 		var xData = {
 			dom : {
 				self: pSlider, //O próprio slider
@@ -56,8 +56,10 @@ dbsfaces.slider = {
 			},
 			type : pSlider.attr("type"), //Tipo do slider v,o,s
 			dp : parseInt(pSlider.attr("dp")), //Quantidade de casas decimais(decimal points)
+			value: null, //Valor atual
 			orientation : (pSlider.hasClass("-h") ? "h" : "v"), //Orientação vertical ou horizontal
 			valuesList : pValuesList, //Lista dos valores
+			labelsList : pLabelsList, //Lista dos labels
 			min : parseFloat(pMinValue),  //Valor mínimo
 			max : parseFloat(pMaxValue), //Valor máximo
 			ani : (pSlider.hasClass("-ani") ? true: false), //Se há animação
@@ -71,20 +73,21 @@ dbsfaces.slider = {
 			resizeTimeout: null
 		}
 		pSlider.data("data", xData);
-
 		xData.dom.content = xData.dom.container.children(".-content");
 		xData.dom.input = xData.dom.container.children(".-th_input-data");
 		xData.dom.slider = xData.dom.content.children(".-slider");
 		xData.dom.handle = xData.dom.content.children(".-handle");
 		xData.dom.sliderValue = xData.dom.slider.children(".-value");
-
+		
+		dbsfaces.slider.setInputValue(xData, xData.dom.input.attr("value"));
 		if (xData.type == "v"){
 			xData.valuesListNumeric = [];
 			for (var xI=0; xI < pValuesList.length; xI++){
 				if (typeof(pValuesList[xI]) == "number"){
 					xData.valuesListNumeric.push(pValuesList[xI]);
 				}else{
-					xData.valuesListNumeric.push(parseFloat(pValuesList[xI].replace(/[^0-9]/g, '')));
+//					xData.valuesListNumeric.push(parseFloat(pValuesList[xI].replace(/[^0-9]/g, '')));
+					xData.valuesListNumeric.push(parseFloat(pValuesList[xI]));
 				}
 			}
 		}
@@ -157,13 +160,15 @@ dbsfaces.slider = {
 				}
 				
 				xValue = pSliderData.valuesList[xIndex];
-				//Label iqual ao valor em formato númerico
-				if (pSliderData.type == "v"){
-					//Formata número
-					xLabel = dbsfaces.format.number(xValue, pSliderData.dp);
-				}else{
-					//Label iqual ao valor
-					xLabel = xValue;
+				xLabel = pSliderData.labelsList[xIndex];
+				if ((typeof xLabel == "undefined") || xLabel == ""){
+					//Label iqual ao valor em formato númerico
+					if (pSliderData.type == "v"){
+						//Formata número
+						xLabel = dbsfaces.format.number(xValue, pSliderData.dp);
+					}else{
+						xLabel = xValue;
+					}
 				}
 				//Point
 				dbsfaces.slider.pvInitializeCreatePointElement(xPoints);
@@ -300,12 +305,13 @@ dbsfaces.slider = {
 
 	//Encontra o percentual a partir do valor e seta o slider
 	setValue: function(pSliderData){
-		var xValue = pSliderData.dom.input.attr("value");
+		var xValue = pSliderData.value; //dom.input.attr("value");
 		var xLengthFator = 0; 
 		if (pSliderData.type == "v"){
 			var xMin = pSliderData.min;
 			var xMax = pSliderData.max;
-			xLengthFator = dbsfaces.math.round(parseFloat(xValue.replace(/[^0-9]/g, '')), 10);
+//			xLengthFator = dbsfaces.math.round(parseFloat(xValue.replace(/[^0-9]/g, '')), 10);
+			xLengthFator = dbsfaces.math.round(parseFloat(xValue), 10);
 			//Procura qual o item da lista foi selecionado
 			if (pSliderData.valuesListNumeric.length > 0){
 				//Verifica se valor ultrapassou os limites
@@ -350,7 +356,7 @@ dbsfaces.slider = {
 		}
 		pSliderData.dom.input.attr("value", xValue);
 		//Salva como float
-		pSliderData.dom.input.data("value", pInputValue);
+		pSliderData.value = pInputValue;
 		pSliderData.dom.self.val(pInputValue);
 
 	},

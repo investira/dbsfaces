@@ -3090,7 +3090,15 @@
 		</attribute>
 		<attribute>
 			<description>
-                Lista de valores. Valores devem ser separador por ";". ex: a; b; c;
+                Lista de valores. Valores devem ser separador por ";". ex: 1; 3; 4;
+            </description>
+			<name>valuesList</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+		</attribute>
+		<attribute>
+			<description>
+                Lista alternativa dos labels dos. Labels devem ser separador por ";". ex: a; b; c;
             </description>
 			<name>valuesList</name>
 			<required>false</required>

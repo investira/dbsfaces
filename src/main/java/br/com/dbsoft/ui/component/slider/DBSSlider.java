@@ -23,6 +23,7 @@ public class DBSSlider extends DBSUIInput {
 		animated,
 		tooltip,
 		valuesList,
+		labelsList,
 		invertValuesListPosition,
 		contentAlignment,
 		obs;
@@ -226,6 +227,25 @@ public class DBSSlider extends DBSUIInput {
 		handleAttribute("valuesList", pValuesList);
 	}
 	
+	public Object getLabelsList() {
+		return getStateHelper().eval(PropertyKeys.labelsList, Arrays.asList());
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void setLabelsList(Object pLabelsList) {
+		if (pLabelsList == null){return;}
+		if (pLabelsList instanceof List){
+			pvSetLabelsList((List<String>) pLabelsList);
+		}else{
+			List<String> xLabelsList = Arrays.asList(((String) pLabelsList).split("\\s*;\\s*"));
+			pvSetLabelsList(xLabelsList);
+		}
+	}
+
+	public void pvSetLabelsList(List<String> pLabelsList) {
+		getStateHelper().put(PropertyKeys.labelsList, pLabelsList);
+		handleAttribute("labelsList", pLabelsList);
+	}
 	
 	public String getContentAlignment() {
 		return (String) getStateHelper().eval(PropertyKeys.contentAlignment, null);
