@@ -1,158 +1,156 @@
 dbs_progress = function(pId) {
 	dbsfaces.progress.initialize($(pId));
 	$(window).resize(function(e){
-		dbsfaces.progress.resize($(pId));
+		dbsfaces.progress.resize($(pId).data("data"));
 	});
 }
 
 dbsfaces.progress = {
 	initialize: function(pProgress){
-		dbsfaces.progress.pvInitializeData(pProgress);
-		dbsfaces.progress.resize(pProgress);
+		var xProgressData = dbsfaces.progress.pvInitializeData(pProgress);
+		dbsfaces.progress.resize(xProgressData);
 	},
 	
-	resize: function(pProgress){
-		pProgress.addClass("-hide");
-		dbsfaces.progress.pvSetValue(pProgress, pProgress.attr("v"));
-		dbsfaces.progress.pvInitializeLayout(pProgress);
+	resize: function(pProgressData){
+		pProgressData.dom.self.addClass("-hide");
+		dbsfaces.progress.pvSetValue(pProgressData, pProgressData.dom.self.attr("v"));
+		dbsfaces.progress.pvInitializeLayout(pProgressData);
 	},
 	
 	pvInitializeData: function(pProgress){
-		pProgress.data("type", (pProgress.hasClass("-c") ? "c": (pProgress.hasClass("-h") ? "h" : "v")));
-		pProgress.data("container", pProgress.children(".-container"));
-		pProgress.data("content", pProgress.data("container").children(".-content"));
-		pProgress.data("progress", pProgress.data("content").children(".-progress"));
-		pProgress.data("label", pProgress.data("progress").find(".-label").first());
-		pProgress.data("labelvalue", pProgress.data("label").children(".-value"));
-		pProgress.data("labelsufix", pProgress.data("label").children(".-sufix"));
-		pProgress.data("point", pProgress.data("content").find("> g > .-point"));
-		pProgress.data("back", pProgress.data("content").find("> g > .-back"));
-		pProgress.data("ani", (pProgress.hasClass("-ani") ? true: false));
+		var xData = {
+			dom : {
+				self: pProgress,
+				container: pProgress.children(".-container"),
+				content: null,
+				progress: null,
+				label: null,
+				labelValue: null,
+				labelSufix: null,
+				point: null,
+				back: null
+			},
+			type: (pProgress.hasClass("-c") ? "c": (pProgress.hasClass("-h") ? "h" : "v")),
+			ani: (pProgress.hasClass("-ani") ? true: false),
+			percFator: 0, //percentual em fator
+			percI: 0, //parte inteira do percentual
+			percD: 0, //parte decimal do percentual
+			dimension: 0, //Comprimento do slider,
+			sw: 0, //stroke width,
+			totalLength: 0 //Comprimento do path do slider
+		}
+		pProgress.data("data", xData);
+		xData.dom.content = xData.dom.container.children(".-content");
+		xData.dom.progress = xData.dom.content.children(".-progress");
+		xData.dom.label = xData.dom.progress.find(".-label").first();
+		xData.dom.labelValue = xData.dom.label.children(".-value");
+		xData.dom.labelSufix = xData.dom.label.children(".-sufix");
+		xData.dom.point = xData.dom.content.find("> g > .-point");
+		xData.dom.back = xData.dom.content.find("> g > .-back");
+		return xData;
 	},
 
-	pvInitializeLayout: function(pProgress){
-		if (pProgress.data("type") == "c"){
-			dbsfaces.progress.pvInitializeLayoutCircle(pProgress);
+	pvInitializeLayout: function(pProgressData){
+		if (pProgressData.type == "c"){
+			dbsfaces.progress.pvInitializeLayoutCircle(pProgressData);
 		}else{
-			dbsfaces.progress.pvInitializeLayoutHorizontalVertical(pProgress);
+			dbsfaces.progress.pvInitializeLayoutHorizontalVertical(pProgressData);
 		}
-		pProgress.removeClass("-hide");
+		pProgressData.dom.self.removeClass("-hide");
 		setTimeout(function(e){
-			dbsfaces.progress.pvEncodeValue(pProgress);
+			dbsfaces.progress.pvEncodeValue(pProgressData);
 		}, 0);
 	},
 
-	pvInitializeLayoutHorizontalVertical: function(pProgress){
-		var xColor = tinycolor(pProgress.css("color"));
-		pProgress.data("content").css("border-color", xColor.setAlpha(.2))
+	pvInitializeLayoutHorizontalVertical: function(pProgressData){
+		var xColor = tinycolor(pProgressData.dom.self.css("color"));
+		pProgressData.dom.content.css("border-color", xColor.setAlpha(.2))
 		   						 .css("background-color", xColor.setAlpha(.05));
-		pProgress.data("progress").css("color", xColor.setAlpha(1).invertLightness());
+		pProgressData.dom.progress.css("color", xColor.setAlpha(1).invertLightness());
 		var xBackground = "linear-gradient(135deg," + xColor.setAlpha(.70) + " 0%, " + xColor.setAlpha(1) + " 100%)";
-
-		pProgress.data("progress").css("background", xBackground);
+		pProgressData.dom.progress.css("background", xBackground);
 	},
 	
-	pvInitializeLayoutCircle: function(pProgress){
-		var xColor = tinycolor(pProgress.css("color"));
-		var xStops = pProgress.data("content").find("> defs > linearGradient > stop");
+	pvInitializeLayoutCircle: function(pProgressData){
+		var xColor = tinycolor(pProgressData.dom.self.css("color"));
+		var xStops = pProgressData.dom.content.find("> defs > linearGradient > stop");
 		$(xStops[0]).svgAttr("stop-color", xColor.setAlpha(.7));
 		$(xStops[1]).svgAttr("stop-color", xColor.setAlpha(1));
-		dbsfaces.progress.pvInitializeLayoutCirclePath(pProgress);
+		dbsfaces.progress.pvInitializeLayoutCirclePath(pProgressData);
 	},
 	
-	pvInitializeLayoutCirclePath: function(pProgress){
-		var xDimension = pProgress.data("dimension");
-		var xStrokeWidth = parseFloat(pProgress.data("point").css("stroke-width")) - 1;
-		var xDimensionHalf = xDimension / 2; 
+	pvInitializeLayoutCirclePath: function(pProgressData){
+		var xStrokeWidth = parseFloat(pProgressData.dom.point.css("stroke-width")) - 1;
+		var xDimensionHalf = pProgressData.dimension / 2; 
 		var xStrokeWidthHalf = xStrokeWidth / 2;
 		var xPath = "";
-		pProgress.data("sw", xStrokeWidth); //Salva strokewidth
+		pProgressData.sw = xStrokeWidth; //Salva strokewidth
 		xPath += "M" + xDimensionHalf + "," + xStrokeWidthHalf;
 		xPath += "A" + (xDimensionHalf - xStrokeWidthHalf) + "," + (xDimensionHalf - xStrokeWidthHalf);
 		xPath += " 0 1 1 ";
 		xPath += xDimensionHalf - .0001 + "," + xStrokeWidthHalf;
-		pProgress.data("point").svgAttr("d", xPath);
-		pProgress.data("back").svgAttr("d", xPath);
-		dbsfaces.progress.pvInitializeDash(pProgress);
+		pProgressData.dom.point.svgAttr("d", xPath);
+		pProgressData.dom.back.svgAttr("d", xPath);
+		dbsfaces.progress.pvInitializeDash(pProgressData);
 	},
 
 
-	pvInitializeDash: function(pProgress){
-		var xPoint = pProgress.data("point")[0];
+	pvInitializeDash: function(pProgressData){
+		var xPoint = pProgressData.dom.point[0];
 		if (typeof(xPoint.getTotalLength) == "undefined"){return;}
-		var xTotalLenght = xPoint.getTotalLength();
-		pProgress.data("point").css("stroke-dasharray", xTotalLenght);
-		pProgress.data("point").css("stroke-dashoffset", xTotalLenght);
-		pProgress.data("totallenght", xTotalLenght);
+		pProgressData.totalLength = xPoint.getTotalLength();
+		pProgressData.dom.point.css("stroke-dasharray", pProgressData.totalLength);
+		pProgressData.dom.point.css("stroke-dashoffset", pProgressData.totalLength);
 	},
 
-	pvEncodeValue: function(pProgress){
-		var xType = pProgress.data("type");
-		if (xType == "c"){
-			dbsfaces.progress.pvEncodeValueCircle(pProgress);
-		}else if (xType == "h"){
-			dbsfaces.progress.pvEncodeValueHorizontal(pProgress);
+	pvEncodeValue: function(pProgressData){
+		if (pProgressData.type == "c"){
+			dbsfaces.progress.pvEncodeValueCircle(pProgressData);
+		}else if (pProgressData.type == "h"){
+			dbsfaces.progress.pvEncodeValueHorizontal(pProgressData);
 		}else{
-			dbsfaces.progress.pvEncodeValueVertical(pProgress);
+			dbsfaces.progress.pvEncodeValueVertical(pProgressData);
 		}
-		dbsfaces.progress.pvEncodeValueLabel(pProgress, xType);
+		dbsfaces.progress.pvEncodeValueLabel(pProgressData);
 	},
 
-	pvEncodeValueLabel: function(pProgress, pType){
-		var xDimension = pProgress.data("dimension");
+	pvEncodeValueLabel: function(pProgressData){
 		var xLabelFontSize; 
-		var xLabel = pProgress.data("label");
-		var xLabelValue = pProgress.data("labelvalue");
-		var xLabelSufix = pProgress.data("labelsufix");
-		var xValue = pProgress.attr("v");
-		var xPerc = pProgress.attr("perc");
-		var xClass = "";
-
-		if (pType == "c"){
-			xLabelFontSize = (xDimension - (pProgress.data("sw") * 2)) / 2.2;
-			xLabel.svgAttr("x", xDimension / 2);
-			xLabel.svgAttr("y", (xDimension + (xLabelFontSize / 2)) / 2);
+		if (pProgressData.type == "c"){
+			xLabelFontSize = (pProgressData.dimension - (pProgressData.sw * 2)) / 2.2;
+			pProgressData.dom.label.svgAttr("x", pProgressData.dimension / 2)
+								   .svgAttr("y", (pProgressData.dimension + (xLabelFontSize / 2)) / 2);
 		}else{
-			xLabelFontSize = xDimension * .35;
+			xLabelFontSize = pProgressData.dimension * .35;
 		}
-		xLabel.css("font-size", xLabelFontSize);
-//		if (xValue > 45){
-//			xLabel.addClass("-th_i");
-//		}else{
-//			xLabel.removeClass("-th_i");
-//		}
-		pProgress.data("labelvalue").text(pProgress.data("percI"));
-		pProgress.data("labelsufix").text(pProgress.data("percD") + "%");
+		pProgressData.dom.label.css("font-size", xLabelFontSize);
+		pProgressData.dom.labelValue.text(pProgressData.percI);
+		pProgressData.dom.labelSufix.text(pProgressData.percD + "%");
 	},
 	
-	pvEncodeValueHorizontal: function(pProgress){
-		var xContent = pProgress.data("progress");
-		var xValue = pProgress.attr("v");
-		xContent.css("width", xValue + "%");
+	pvEncodeValueHorizontal: function(pProgressData){
+		pProgressData.dom.progress.css("width", pProgressData.dom.self.attr("v") + "%");
 	},
 
-	pvEncodeValueVertical: function(pProgress){
-		var xContent = pProgress.data("progress");
-		var xValue = pProgress.attr("v");
-		xContent.css("height", xValue + "%");
+	pvEncodeValueVertical: function(pProgressData){
+		pProgressData.dom.progress.css("height", pProgressData.dom.self.attr("v") + "%");
 	},
 
-	pvEncodeValueCircle: function(pProgress){
-		var xPoint = pProgress.data("point");
-		var xPerc = pProgress.data("perc");
-		var xTotalLenght = pProgress.data("totallenght") - (pProgress.data("totallenght") * xPerc);
-		pProgress.data("point").css("stroke-dashoffset", xTotalLenght);
+	pvEncodeValueCircle: function(pProgressData){
+		var xTotalLenght = pProgressData.totalLength - (pProgressData.totalLength * pProgressData.percFator);
+		pProgressData.dom.point.css("stroke-dashoffset", xTotalLenght);
 	},
 	
-	pvSetValue: function(pProgress, pValue){
+	pvSetValue: function(pProgressData, pValue){
 		pValue = dbsfaces.math.round(parseFloat(pValue),2);
 		xInt = String(dbsfaces.math.trunc(pValue, 0)); //Parte interira
 		xDec = String(dbsfaces.math.round(pValue - xInt, 4)).substring(1, 4); //Parte decimal
-		pProgress.attr("v", pValue);
-		pProgress.data("percI", xInt);
-		pProgress.data("percD", xDec);
-		pProgress.data("perc", (pValue / 100));
-		pProgress.data("dimension", Math.min(pProgress[0].getBoundingClientRect().height, pProgress[0].getBoundingClientRect().width));
+		pProgressData.dom.self.attr("v", pValue);
+		pProgressData.percI = xInt;
+		pProgressData.percD = xDec;
+		pProgressData.percFator = (pValue / 100);
+		pProgressData.dimension = Math.min(pProgressData.dom.self[0].getBoundingClientRect().height, pProgressData.dom.self[0].getBoundingClientRect().width);
+		pProgressData.dom.self.val(pProgressData.percFator);
 	}
 
 }
