@@ -711,7 +711,8 @@ dbsfaces.charts = {
 		pChartData.dom.links.empty();
 		pChartData.relationships.forEach(function(pRelationship){
 			//Arco total 
-			var xLinkArc = (pChartsData.arcFator * (pRelationship.total / pChartData.totalValue)) * 100;
+			var xLinkPerc = (pRelationship.total / pChartData.totalValue) * 100;
+			var xLinkArc = pChartsData.arcFator * xLinkPerc;
 			//Lê lista com o index que compõem o relacionamento do valor informado
 			var xKeys = dbsfaces.charts.pvGetKeys(pRelationship.key);
 			//Analise combinatória entre todaos os index para criar o link entre eles
@@ -721,11 +722,10 @@ dbsfaces.charts = {
 				for (var xB = xA + 1; xB < xKeys.length; xB++){
 					//ChartValue B
 					var xChartValueDataB = dbsfaces.charts.pvGetChartValueDataFromKey(pChartData, xKeys[xB]);
-//					console.log(xChartValueDataA.label + "\t" + xChartValueDataA.perc + "\t" + xChartValueDataB.label + "\t" + xChartValueDataB.perc + "\t" + pRelationship.total + "\t" + pChartData.totalValue);
 					//Arco do valor A
-					dbsfaces.charts.pvInitializeDrawRelationshipsArc(pChartsData, pChartData, xChartValueDataA, xLinkArc, xKeys[xA], xKeys[xB]);
+					dbsfaces.charts.pvInitializeDrawRelationshipsArc(pChartsData, pChartData, xChartValueDataA, xLinkArc, xKeys[xA], xKeys[xB], pRelationship.total, xLinkPerc);
 					//Arco do valor B
-					dbsfaces.charts.pvInitializeDrawRelationshipsArc(pChartsData, pChartData, xChartValueDataB, xLinkArc, xKeys[xB], xKeys[xA]);
+					dbsfaces.charts.pvInitializeDrawRelationshipsArc(pChartsData, pChartData, xChartValueDataB, xLinkArc, xKeys[xB], xKeys[xA], pRelationship.total, xLinkPerc);
 					//Largura da linha
 //					var xStrokeWidth = dbsfaces.math.round(xLinkArc * (pRelationship.total / pChartData.totalValue),2);
 //					if (xStrokeWidth < 0.3){
@@ -744,7 +744,7 @@ dbsfaces.charts = {
 	},
 	
 	//Desenha link dos relacionamentos
-	pvInitializeDrawRelationshipsArc: function(pChartsData, pChartData, pChartValueData, pRelationalArcAngle, pKey, pKeyB){
+	pvInitializeDrawRelationshipsArc: function(pChartsData, pChartData, pChartValueData, pRelationalArcAngle, pKey, pKeyB, pValue, pPerc){
 		var xAngleScale;
 		//Distância entre os angulos
 		xAngleScale = pChartValueData.arcInfo.endAngle - pChartValueData.arcInfo.startAngle;
@@ -772,12 +772,14 @@ dbsfaces.charts = {
 		//Transform-origin 
 		dbsfaces.ui.cssAllBrowser(xPath, "transform-origin", pChartsData.center.x + "px " + pChartsData.center.y + "px");
 
-		//Arco que para ligar o link ao chartvalue
+		//Arco que para ligar o link ao chartvalue(proporcional)
 		xA1 = dbsfaces.math.circlePoint(pChartsData.center, pChartValueData.arcInfo.internalRadius - .5, pChartValueData.arcInfo.startAngle + xAngleScale);
 		xA2 = dbsfaces.math.circlePoint(pChartsData.center, pChartValueData.arcInfo.internalRadius - .5, pChartValueData.arcInfo.startAngle + xAngleScale + pRelationalArcAngle);
 		xD = "M" + xA1.x + "," + xA1.y; 
 		xD += "A" + (pChartValueData.arcInfo.internalRadius - .5) + "," + (pChartValueData.arcInfo.internalRadius - .5) + " 0 " + pChartValueData.arcInfo.big + " " + pChartValueData.arcInfo.direction + " " + dbsfaces.math.round(xA2.x, 2) + "," + dbsfaces.math.round(xA2.y,2); //Arco externo até o ponto final 
 		xPath = dbsfaces.svg.path(pChartData.dom.links, xD, "-linkHover", null, {key:pKey, b:pKeyB});
+		//Salva valores proporcionais do relacionamento para serem exibidos quando hoverlink for selecionado
+		xPath.data("data", {value:pValue, perc:pPerc});
 	},
 
 	

@@ -729,7 +729,7 @@ dbsfaces.chart = {
 	pvHoverLink: function(pChartData, pChartValueData, pOldChartValueData){
 		if (pChartData.relationships.length == 0){return};
 
-		//Remove hover anterios
+		//Remove hover anterior
 		if (pOldChartValueData != null){
 			if (pChartValueData != null 
 			 && pOldChartValueData == pChartValueData){
@@ -750,11 +750,17 @@ dbsfaces.chart = {
 			if (pChartData.type == "pie"){
 				pChartValueData.dom.self.addClass("-hoverLink");
 				var xLink = pChartData.dom.links.children(".-linkHover[key='" + pChartValueData.key + "'][b='" + pChartData.dom.hoverChartValueData.key + "']");
-				xLink.svgAddClass("-hover");
-				//Configura as cores do delta
-				dbsfaces.chart.pvSetDeltaColor(pChartData, pChartValueData, pChartValueData.dom.self.css("color"), pChartValueData.colorInverted);
-				//Exibe informação o chartvalue selecionado
-				dbsfaces.chart.pvShowDeltaChartPieValues(pChartData, pChartData.dom.hoverChartValueData.perc, pChartData.dom.hoverChartValueData.value, pChartValueData.label);
+				if (xLink.length > 0){
+					xLink.svgAddClass("-hover");
+					var xLinkData = xLink.data("data");
+					//Configura as cores do delta
+					dbsfaces.chart.pvSetDeltaColor(pChartData, pChartValueData, pChartValueData.dom.self.css("color"), pChartValueData.colorInverted);
+					//Exibe informação o chartvalue selecionado
+					dbsfaces.chart.pvShowDeltaChartPieValues(pChartData, xLinkData.perc, xLinkData.value, pChartValueData.label);
+				}else{
+					//Exibe informação o chartvalue selecionado
+					dbsfaces.chart.pvShowDeltaChartPieValues(pChartData, pChartValueData.perc, pChartValueData.value, pChartValueData.label);
+				}
 			}
 		}
 		return pChartValueData;
@@ -762,7 +768,7 @@ dbsfaces.chart = {
 
 	
 	pvHover: function(pChartData, pChartValueData, pOldChartValueData){
-		//Remove hover anterios
+		//Remove hover anterior
 		if (pOldChartValueData != null){
 			if (pChartValueData != null 
 			 && pOldChartValueData == pChartValueData){
