@@ -148,7 +148,7 @@ dbsfaces.charts = {
 						pChartsData.dom.maxChartValueData = pChartData.dom.maxChartValueData;
 					}
 					//Salva maior label entre todos os valores de todoas os gráficos
-					if (pChartsData.dom.maxLabelChartValueData == null || pChartData.dom.maxLabelChartValueData.label.length > pChartsData.dom.maxLabelChartValueData.label.length){
+					if (pChartsData.dom.maxLabelChartValueData == null || pChartData.dom.maxLabelChartValueData.displayValue.length > pChartsData.dom.maxLabelChartValueData.displayValue.length){
 						pChartsData.dom.maxLabelChartValueData = pChartData.dom.maxLabelChartValueData;
 					}
 					//Salva maior label entre todos os valores de todoas os gráficos
@@ -175,8 +175,7 @@ dbsfaces.charts = {
 						pChartsData.infoHeight = Math.round(parseFloat(pChartsData.dom.maxChartValueData.dom.infoLabel.css("font-size")) * 1.2, 0);
 					}
 					if (pChartsData.showValue){
-						pChartsData.infoWidth = Math.round(Math.max(pChartsData.dom.maxChartValueData.dom.infoValue[0].getBoundingClientRect().width, 
-																	pChartsData.dom.minChartValueData.dom.infoValue[0].getBoundingClientRect().width) * 1.2, 0);
+						pChartsData.infoWidth = Math.round(pChartsData.dom.maxLabelChartValueData.dom.infoValue[0].getBoundingClientRect().width * 1.2, 0);
 					}
 					//Trai espaço dos infos da dimensão disponível para o gráfico principal
 					pChartsData.width -= pChartsData.infoWidth;
