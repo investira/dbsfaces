@@ -1182,29 +1182,32 @@ dbsfaces.format = {
 	},
 	
 	//Retorna o número simplificado com mil, mi, bi, tri, quatri.
-	numberSimplify: function(pVal){
-		var xVal = Number(pVal);
+	numberSimplify: function(pValue, pDecimals){
+		if (typeof pDecimals == "undefined"){
+			pDecimals = 2;
+		}
+		var xVal = parseFloat(pValue);
 		var xLength = dbsfaces.math.round(xVal, 0).toString().length;
 		if (xLength == 0){return;}
 		var xSimple = (xVal / Math.pow(10, ((xLength -1) - ((xLength -1) % 3))));
 		var xSuf = "";
 		if (xLength > 15){
-			xSuf = "quatri";
+			xSuf = " quatri";
 		}else if (xLength > 12){
-			xSuf = "tri";
+			xSuf = " tri";
 		}else if (xLength > 9){
-			xSuf = "bi";
+			xSuf = " bi";
 		}else if (xLength > 6){
-			xSuf = "mi";
+			xSuf = " mi";
 		}else if (xLength > 3){
-			xSuf = "mil";
+			xSuf = " mil";
 		}else{
 			xSimple = xVal;
 		}
 		if (xSuf != ""){
-			return dbsfaces.format.number(xSimple, 2) + xSuf;
+			return dbsfaces.format.number(xSimple, pDecimals) + xSuf;
 		}else{
-			return dbsfaces.format.number(xVal, 2);
+			return dbsfaces.format.number(xVal, pDecimals);
 		}		
 	},
 	

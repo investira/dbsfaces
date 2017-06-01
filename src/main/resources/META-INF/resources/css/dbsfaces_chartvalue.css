@@ -87,8 +87,11 @@
 	font-size: 0.8em;
     dominant-baseline: middle;
 	text-anchor: end;
-/* 	color: currentColor; */
 	fill: currentColor;
+/* 	-webkit-transform: translateX(.5em); */
+/* 	-moz-transform: translateX(.5em); */
+/* 	-o-transform: translateX(.5em); */
+/* 	transform: translateX(.5em); */
 }
 .dbs_chartValue.-line > .-info > .-path{
 	stroke: currentColor;

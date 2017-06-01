@@ -345,7 +345,14 @@ dbsfaces.chart = {
 		pChartValueData.dom.self.data("data", pChartValueData);
 		//Cria Elemento que contém infos
 		pChartValueData.dom.info = dbsfaces.svg.g(pChartValueData.dom.self, "-info", null, null);
-		var xValueText = pChartData.valuePrefix + dbsfaces.format.number(pChartValueData.value, pChartData.valueDecimalPlaces) + pChartData.valueSufix;
+		var xValueText = pChartData.valuePrefix;
+		if (pChartData.valuePrefix.valueSufix == "" || pChartData.valuePrefix.valueSufix == "%"){
+			xValueText += dbsfaces.format.number(pChartValueData.value, pChartData.valueDecimalPlaces);
+		}else{
+			xValueText += dbsfaces.format.numberSimplify(pChartValueData.value, pChartData.valueDecimalPlaces);
+		}
+		xValueText += pChartData.valueSufix;
+
 		if (pChartData.type == "line"){
 			//Ponto
 			pChartValueData.dom.point = dbsfaces.svg.circle(pChartValueData.dom.self, null, null, null, "-point", null, {r:".3em"}); //'r' precisa ser um atributo por problema no FIREFOX
@@ -971,7 +978,7 @@ dbsfaces.chart = {
 	},
 
 
-	addChartValue: function(pChart, pValue, pLabel, pDisplayValue, pTooltip){
+	addChartValue: function(pChart, pValue, pLabel, pDisplayValue, pTooltip, pColor){
 		if (pChart == null || typeof pChart == "undefined" || pChart.length == 0){return;}
 		var xChartData = pChart.data("data");
 		if (typeof pValue == "undefined"){
@@ -986,7 +993,10 @@ dbsfaces.chart = {
 		if (typeof pTooltip == "undefined"){
 			pTooltip = "";
 		}
-		var xValue = JSON.parse('{ "value":' + pValue + ', "label":"' + pLabel + '", "displayValue":"' + pDisplayValue + '", "tooltip":"' + pTooltip + '"}');
+		if (typeof pColor == "undefined"){
+			pColor = "";
+		}
+		var xValue = JSON.parse('{ "value":' + pValue + ', "label":"' + pLabel + '", "displayValue":"' + pDisplayValue + '", "tooltip":"' + pTooltip + '", "color":"' + pColor + '"}');
 		xChartData.originalValues.push(xValue);
 	},
 	

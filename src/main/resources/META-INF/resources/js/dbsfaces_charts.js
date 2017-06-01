@@ -176,7 +176,7 @@ dbsfaces.charts = {
 					}
 					if (pChartsData.showValue){
 						pChartsData.infoWidth = Math.round(Math.max(pChartsData.dom.maxChartValueData.dom.infoValue[0].getBoundingClientRect().width, 
-																	pChartsData.dom.minChartValueData.dom.infoValue[0].getBoundingClientRect().width) * 1.4, 0);
+																	pChartsData.dom.minChartValueData.dom.infoValue[0].getBoundingClientRect().width) * 1.2, 0);
 					}
 					//Trai espaço dos infos da dimensão disponível para o gráfico principal
 					pChartsData.width -= pChartsData.infoWidth;
@@ -228,22 +228,6 @@ dbsfaces.charts = {
 							}
 						});
 					});
-					
-					
-//					var xComprimento = pChartsData.diameter * Math.PI;
-					//Calcula o menor fonte em função do menor valor
-//					var xHeight = (((pChartsData.diameter * Math.PI) / pChartsData.relationalCaptionsCount) / xTotalValue) * pChartsData.dom.minChartValueData.value;
-//					xHeight *= .5;
-//					pChartsData.infoFontSize = Math.min(xHeight, parseFloat(pChartsData.dom.self.css("fontSize")));
-//					console.log(xHeight + "\t" + parseFloat(pChartsData.dom.self.css("fontSize")));
-//					//Calcula largura a partir do maior texto usando o menor fonte calcula acima 
-//					pChartsData.dom.maxLabelChartValueData.dom.infoLabel.css("fontSize", pChartsData.infoFontSize);
-//					var xStyle = window.getComputedStyle(pChartsData.dom.maxLabelChartValueData.dom.self[0]);
-//					pChartsData.infoWidth = pChartsData.dom.maxLabelChartValueData.dom.infoLabel[0].getComputedTextLength()* 1.1;
-////					pChartsData.infoWidth = pChartsData.dom.maxLabelChartValueData.dom.infoLabel.width();
-////					console.log(pChartsData.dom.maxLabelChartValueData.dom.infoLabel.width());
-//					console.log(pChartsData.infoFontSize);
-//					pChartsData.infoWidth = parseFloat(Math.min(pChartsData.width, pChartsData.height)) / 4;//pChartsData.dom.maxLabelChartValueData.dom.infoLabel[0].getComputedTextLength() * 1.10; 
 					pChartsData.infoHeight = 0; //Será configurado posteriomente como a altura do caption do relationalgroup(se houver);
 				}
 			}
@@ -555,7 +539,7 @@ dbsfaces.charts = {
 				xY += xHalf;
 			}
 			//Configura elementos
-			pChartValueData.dom.infoValue.svgAttr("x", pChartsData.infoWidth * .80)
+			pChartValueData.dom.infoValue.svgAttr("x", xValueBoxWidth - 4)
 			      						 .svgAttr("y", xY);
 			pChartValueData.dom.infoValueBox.svgAttr("width", xValueBoxWidth)
 						   					.svgAttr("height", xValueBoxHeight)
