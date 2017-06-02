@@ -3,7 +3,6 @@ package br.com.dbsoft.ui.component.dialog;
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
-
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
@@ -12,11 +11,10 @@ import com.sun.faces.renderkit.RenderKitUtils;
 
 import br.com.dbsoft.message.IDBSMessages;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes;
+import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.dialog.DBSDialog.POSITION;
 import br.com.dbsoft.ui.component.dialog.DBSDialog.TYPE;
-import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
-
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.ui.core.DBSMessagesFacesContext;

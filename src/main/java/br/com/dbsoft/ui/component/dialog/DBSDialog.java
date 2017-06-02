@@ -13,7 +13,6 @@ import javax.faces.event.SystemEventListener;
 
 import br.com.dbsoft.message.IDBSMessages;
 import br.com.dbsoft.ui.component.DBSUIOutput;
-
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSNumber;
 

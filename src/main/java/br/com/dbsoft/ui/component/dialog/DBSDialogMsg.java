@@ -2,7 +2,7 @@ package br.com.dbsoft.ui.component.dialog;
 
 import javax.faces.component.FacesComponent;
 
-import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
+import br.com.dbsoft.message.IDBSMessageBase.MESSAGE_TYPE;
 import br.com.dbsoft.ui.core.DBSFaces;
 
 
