@@ -37,6 +37,8 @@ dbsfaces.chartValue = {
 			label : pLabel.trim(), //Label já desmembrado do group label
 			relationalGroupIndex: pRelationalGroupIndex, //Index em relação ao label quando houver mais de uma
 			originalValues : [], //valores originals que agrupados neste chartvalue
+			style: pOriginalValue.style,
+			styleClass: pOriginalValue.styleClass,
 			x : null, //posição X no gráfico (dentro da escala)
 			y : null, //posição Y no gráfico (dentro da escala)
 			color: pOriginalValue.color, //Cor do valor,
@@ -47,7 +49,13 @@ dbsfaces.chartValue = {
 			arcInfo: null //Informacoes do arco quando for gráfico pie
 		}
 		if (typeof xChartValueData.color == "undefined"){
-			xChartValueData.color == null;
+			xChartValueData.color = null;
+		}
+		if (typeof xChartValueData.style == "undefined"){
+			xChartValueData.style = null;
+		}
+		if (typeof xChartValueData.styleClass == "undefined"){
+			xChartValueData.styleClass = null;
 		}
 		return xChartValueData;
 	},
@@ -55,6 +63,8 @@ dbsfaces.chartValue = {
 	initializeLayoutCreateDom: function(pChartData, pChartValueData){
 		//Cria ChartValue
 		pChartValueData.dom.self = dbsfaces.svg.g(pChartData.dom.values, "dbs_chartValue -" + pChartData.type, null, {index: pChartValueData.index, relationalGroupIndex: pChartValueData.relationalGroupIndex});
+		pChartValueData.dom.self.addClass(pChartValueData.styleClass);
+		pChartValueData.dom.self.attr("style", pChartValueData.style);
 		//Salva data
 		pChartValueData.dom.self.data("data", pChartValueData);
 		//Cria Elemento que contém infos

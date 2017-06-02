@@ -204,6 +204,8 @@ public class DBSChartRenderer extends DBSRenderer {
     		xValue.setDisplayValue(pSource.getDisplayValue());
     		xValue.setTooltip(pSource.getTooltip());
     		xValue.setColor(pSource.getColor());
+    		xValue.setStyle(pSource.getStyle());
+    		xValue.setStyleClass(pSource.getStyleClass());
     		pList.add(xValue);
         }
 	}

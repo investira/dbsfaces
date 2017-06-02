@@ -9,6 +9,8 @@ public class DBSDadosChartValue implements IDBSChartValue{
 	private Double value;
 	private Double displayValue;
 	private String color;
+	private String style;
+	private String styleClass;
 	
 	@Override
 	public String getLabel() {
@@ -49,5 +51,21 @@ public class DBSDadosChartValue implements IDBSChartValue{
 	@Override
 	public void setColor(String pColor) {
 		color = pColor;
+	}
+	@Override
+	public String getStyle() {
+		return style;
+	}
+	@Override
+	public void setStyle(String pStyle) {
+		style = pStyle;
+	}
+	@Override
+	public String getStyleClass() {
+		return styleClass;
+	}
+	@Override
+	public void setStyleClass(String pStyleClass) {
+		styleClass = pStyleClass;
 	}
 }

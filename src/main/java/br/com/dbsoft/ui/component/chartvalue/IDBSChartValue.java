@@ -18,5 +18,10 @@ public interface IDBSChartValue extends Serializable {
 	
 	public String getColor();
 	public void setColor(String pColor);
-	
+
+	public String getStyle();
+	public void setStyle(String pStyle);
+
+	public String getStyleClass();
+	public void setStyleClass(String pStyleClass);
 }

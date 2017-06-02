@@ -39,6 +39,7 @@ dbsfaces.charts = {
 				childrenCaptionContainer : null,
 				minChartValueData: null, //ChartValue que contém menor valor
 				maxChartValueData: null, //ChartValue que contém maior valor
+				maxDisplayValueChartValueData : null,//chartValue que contém o maior display value
 				maxLabelChartValueData : null,//chartValue que contém o maior label
 				chartValuesByIndex: [] //ChartValues agrupados por index
 			},
@@ -129,6 +130,7 @@ dbsfaces.charts = {
 	pvInitializeAnalizeValues: function(pChartsData){
 		pChartsData.dom.minChartValueData = null;
 		pChartsData.dom.maxChartValueData = null;
+		pChartsData.dom.maxDisplayValueChartValueData = null;
 		pChartsData.dom.maxLabelChartValueData = null;
 		pChartsData.relationalCaptionsCount = 1;
 		//Inicializa com o largura e altura máximo
@@ -147,8 +149,12 @@ dbsfaces.charts = {
 					if (pChartsData.dom.maxChartValueData == null || pChartData.dom.maxChartValueData.value > pChartsData.dom.maxChartValueData.value){
 						pChartsData.dom.maxChartValueData = pChartData.dom.maxChartValueData;
 					}
+					//Salva maior display value entre todos os valores de todoas os gráficos
+					if (pChartsData.dom.maxDisplayValueChartValueData == null || pChartData.dom.maxDisplayValueChartValueData.displayValue.length > pChartsData.dom.maxDisplayValueChartValueData.displayValue.length){
+						pChartsData.dom.maxDisplayValueChartValueData = pChartData.dom.maxDisplayValueChartValueData;
+					}
 					//Salva maior label entre todos os valores de todoas os gráficos
-					if (pChartsData.dom.maxLabelChartValueData == null || pChartData.dom.maxLabelChartValueData.displayValue.length > pChartsData.dom.maxLabelChartValueData.displayValue.length){
+					if (pChartsData.dom.maxLabelChartValueData == null || pChartData.dom.maxLabelChartValueData.label.length > pChartsData.dom.maxLabelChartValueData.label.length){
 						pChartsData.dom.maxLabelChartValueData = pChartData.dom.maxLabelChartValueData;
 					}
 					//Salva maior label entre todos os valores de todoas os gráficos
@@ -175,7 +181,7 @@ dbsfaces.charts = {
 						pChartsData.infoHeight = Math.round(parseFloat(pChartsData.dom.maxChartValueData.dom.infoLabel.css("font-size")) * 1.2, 0);
 					}
 					if (pChartsData.showValue){
-						pChartsData.infoWidth = Math.round(pChartsData.dom.maxLabelChartValueData.dom.infoValue[0].getBoundingClientRect().width * 1.2, 0);
+						pChartsData.infoWidth = Math.round(pChartsData.dom.maxDisplayValueChartValueData.dom.infoValue[0].getBoundingClientRect().width * 1.2, 0);
 					}
 					//Trai espaço dos infos da dimensão disponível para o gráfico principal
 					pChartsData.width -= pChartsData.infoWidth;
@@ -209,18 +215,21 @@ dbsfaces.charts = {
 					//Calcula largura do arco dos points.
 					pChartsData.infoWidth = 0;
 					var xHeightScale = ((pChartsData.diameter / pChartsData.relationalCaptionsCount) / xTotalValue) * 1.3;
-					pChartsData.dom.maxLabelChartValueData.dom.infoLabel.css("fontSize", "");
-					var xMainFontSize = parseFloat(pChartsData.dom.container.css("fontSize"));
+					pChartsData.dom.maxDisplayValueChartValueData.dom.infoLabel.css("font-size", "");
+					var xMainFontSize = parseFloat(pChartsData.dom.container.css("font-size"));
+					//Salva o comprimento do texto mais longo
+					var xMaxTextLegth = Math.max(pChartsData.dom.maxDisplayValueChartValueData.dom.infoLabel[0].getComputedTextLength(),
+												 pChartsData.dom.maxLabelChartValueData.dom.infoLabel[0].getComputedTextLength());
 					//Redutor para equalizar a largura do arco com o diametro, preservando o espaço no centro do círculo.
-					var xRedutor = (pChartsData.diameter / 7) / pChartsData.dom.maxLabelChartValueData.dom.infoLabel[0].getComputedTextLength();
+					var xRedutor = (pChartsData.diameter / 7) / xMaxTextLegth;
 					if (xRedutor > 1){
 						xRedutor = 1;
 					}
 					//Verifica qual o point possui maior width
 					pChartsData.dom.childrenData.forEach(function(pChartData) {
-						pChartData.dom.delta.css("fontSize" , xRedutor + "em");
+						pChartData.dom.delta.css("font-size" , xRedutor + "em");
 						pChartData.dom.childrenData.forEach(function(pChartValueData) {
-							pChartValueData.dom.infoLabel.css("fontSize", Math.min(xHeightScale * pChartValueData.value * xRedutor, xMainFontSize * xRedutor));
+							pChartValueData.dom.infoLabel.css("font-size", Math.min(xHeightScale * pChartValueData.value * xRedutor, xMainFontSize * xRedutor));
 							var xWidth = pChartValueData.dom.infoLabel[0].getComputedTextLength() * 1.1;
 							if (xWidth > pChartsData.infoWidth){
 								pChartsData.infoWidth = xWidth;
@@ -636,15 +645,15 @@ dbsfaces.charts = {
 //		var xHeight = pChartValueData.dom.point[0].getBoundingClientRect().height;
 		//Reduz fonte se altura do texto for maior que altura do ponto
 		//Reduz fonte se largura do texto for maior que largura do ponto
-		if (pChartValueData.dom.infoLabel[0].getComputedTextLength() > (pChartsData.infoWidth * .95)){
+//		if (pChartValueData.dom.infoLabel[0].getComputedTextLength() > (pChartsData.infoWidth * .95)){
 //			pChartValueData.dom.infoLabel.css("font-size", pChartsData.infoWidth / (pChartValueData.label.length * 0.6));
-			return false;
-		}
-		var xHeight = pChartValueData.dom.point[0].getTotalLength() * 0.5;
-		if (parseFloat(pChartValueData.dom.infoLabel.css("font-size")) > xHeight){
+//			return false;
+//		}
+//		var xHeight = pChartValueData.dom.point[0].getTotalLength() * 0.5;
+//		if (parseFloat(pChartValueData.dom.infoLabel.css("font-size")) > xHeight){
 //			pChartValueData.dom.infoLabel.css("font-size", xHeight);
 //			return false;
-		}
+//		}
 //		pChartValueData.dom.infoLabel.textfill({
 //	        maxFontPixels: 36
 //	    });

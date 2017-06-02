@@ -198,10 +198,18 @@
 	display:none;
 }
 
+.dbs_chart.-line > .-chart > .-values > .dbs_chartValue.-line.-markerLabel > .-info > .-label,
+.dbs_chart.-line > .-chart > .-values > .dbs_chartValue.-line.-markerValue > .-info > .-value,
+.dbs_chart.-line > .-chart > .-values > .dbs_chartValue.-line.-marker > .-info > .-label,
+.dbs_chart.-line > .-chart > .-values > .dbs_chartValue.-line.-marker > .-info > .-value,
 .dbs_chart.-line > .-chart > .-values > .dbs_chartValue.-line.-showLabel > .-info > .-label,
 .dbs_chart.-line > .-chart > .-values > .dbs_chartValue.-line.-showValue > .-info > .-value{
 	visibility: visible;
 }
+.dbs_chart.-line > .-chart > .-values > .dbs_chartValue.-line.-marker > .-info > .-path{
+	visibility: visible;
+}
+
 .dbs_chart.-line.-selected > .-chart > .-values > .dbs_chartValue.-line.-showLabel.-hide > .-info > .-label,
 .dbs_chart.-line.-selected > .-chart > .-values > .dbs_chartValue.-line.-showValue.-hide > .-info > .-value{
 	visibility: hidden;
@@ -215,7 +223,6 @@
 .dbs_chart.-line.-selected > .-chart > .-values > .dbs_chartValue.-line.-hover > .-info > .-value{
 	visibility: visible;
 }
-
 
 
 .dbs_chart.-bar.-showDelta > .-chart > .-values > .dbs_chartValue{

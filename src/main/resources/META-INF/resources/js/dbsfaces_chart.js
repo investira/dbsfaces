@@ -34,6 +34,7 @@ dbsfaces.chart = {
 				info : pChart.children(".-info"), //Container das infos
 				minChartValueData : null, //chartValue que contém o valor máximo
 				maxChartValueData : null, //chartValue que contém o valor mínimo
+				maxDisplayValueChartValueData : null,//chartValue que contém o maior valor
 				maxLabelChartValueData : null,//chartValue que contém o maior label
 				path: null, //Desenho do caminho
 				links: null, //Links entres os chartvalues
@@ -101,6 +102,7 @@ dbsfaces.chart = {
 		pChartData.dom.childrenData = [];
 		pChartData.dom.maxChartValueData = null;
 		pChartData.dom.minChartValueData = null;
+		pChartData.dom.maxDisplayValueChartValueData = null;
 		pChartData.dom.maxLabelChartValueData = null;
 		pChartData.relationships = [];
 		pChartData.relationalCaptionsCount = 1;
@@ -172,8 +174,12 @@ dbsfaces.chart = {
 					if (pChartData.dom.maxChartValueData == null || xChartValueData.value > pChartData.dom.maxChartValueData.value){
 						pChartData.dom.maxChartValueData = xChartValueData;
 					}
+					//Salva maior display value
+					if (pChartData.dom.maxDisplayValueChartValueData == null || xChartValueData.displayValue.length > pChartData.dom.maxDisplayValueChartValueData.displayValue.length){
+						pChartData.dom.maxDisplayValueChartValueData = xChartValueData;
+					}
 					//Salva maior label
-					if (pChartData.dom.maxLabelChartValueData == null || xChartValueData.displayValue.length > pChartData.dom.maxLabelChartValueData.displayValue.length){
+					if (pChartData.dom.maxLabelChartValueData == null || xChartValueData.label.length > pChartData.dom.maxLabelChartValueData.label.length){
 						pChartData.dom.maxLabelChartValueData = xChartValueData;
 					}
 
@@ -592,24 +598,6 @@ dbsfaces.chart = {
 				xLabelText = "";
 			}
 			xValueText = pChartData.valuePrefix + dbsfaces.format.number(pValue, pChartData.valueDecimalPlaces) + pChartData.valueSufix;
-//			pChartData.dom.deltaValue.text(xValueText);
-			
-			//Ajusta o tamanho do fonte a partir do raio do círculo
-//			var xMaxWidth = null;
-//			if (pChartData.dom.maxLabelChartValueData != null){
-//				xMaxWidth = pChartData.dom.maxLabelChartValueData.label.length;
-//			}
-//			if (pChartData.dom.maxChartValueData != null){
-//				xMaxWidth = Math.max(xMaxWidth, pChartData.dom.maxChartValueData.label.length);
-//			}
-//			if (pChartData.dom.minChartValueData != null){
-//				xMaxWidth = Math.max(xMaxWidth, pChartData.dom.minChartValueData.label.length);
-//			}
-//			if (xMaxWidth == null){
-//				xMaxFontSize = pChartData.dom.self.css("font-size");
-//			}else{
-//				xMaxFontSize = dbsfaces.math.round((pChartData.dom.deltaCircle[0].getBoundingClientRect().width / xMaxWidth) * 1.7, 1);
-//			}
 		}
 		//Exibe Value -------------
 		pChartData.dom.deltaValue.text(xValueText);
@@ -618,10 +606,6 @@ dbsfaces.chart = {
 		if (pChartData.dom.deltaLabel != null){
 			pChartData.dom.deltaLabel.text(xLabelText);
 		}
-		
-//		pChartData.dom.deltaValue.fontSizeFit(pChartData.dom.delta);
-//		pChartData.dom.deltaLabel.fontSizeFit(pChartData.dom.delta);
-//		pChartData.dom.delta.css("font-size", xMaxFontSize);
 	},
 
 
@@ -881,7 +865,7 @@ dbsfaces.chart = {
 	},
 
 
-	addChartValue: function(pChart, pValue, pLabel, pDisplayValue, pTooltip, pColor){
+	addChartValue: function(pChart, pValue, pLabel, pDisplayValue, pTooltip, pColor, pStyleClass, pStyle){
 		if (pChart == null || typeof pChart == "undefined" || pChart.length == 0){return;}
 		var xChartData = pChart.data("data");
 		if (typeof pValue == "undefined"){
@@ -899,7 +883,20 @@ dbsfaces.chart = {
 		if (typeof pColor == "undefined"){
 			pColor = "";
 		}
-		var xValue = JSON.parse('{ "value":' + pValue + ', "label":"' + pLabel + '", "displayValue":"' + pDisplayValue + '", "tooltip":"' + pTooltip + '", "color":"' + pColor + '"}');
+		if (typeof pStyleClass == "undefined"){
+			pStyleClass = "";
+		}
+		if (typeof pStyle == "undefined"){
+			pStyle = "";
+		}
+		var xValue = JSON.parse('{ "value":' + pValue +
+								', "label":"' + pLabel + 
+								'", "displayValue":"' + pDisplayValue + 
+								'", "tooltip":"' + pTooltip + 
+								'", "color":"' + pColor +
+								'", "styleClass":"' + pStyleClass +
+								'", "style":"' + pStyle +
+								'"}');
 		xChartData.originalValues.push(xValue);
 	},
 	
