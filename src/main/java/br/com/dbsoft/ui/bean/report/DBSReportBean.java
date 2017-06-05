@@ -8,11 +8,8 @@ import java.util.Map;
 import javax.enterprise.context.Conversation;
 import javax.inject.Inject;
 
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import br.com.dbsoft.error.DBSIOException;
-import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
+import br.com.dbsoft.message.IDBSMessageBase.MESSAGE_TYPE;
 import br.com.dbsoft.ui.bean.DBSBeanModalMessages;
 import br.com.dbsoft.ui.bean.report.DBSReportBeanEvent.REPORT_EVENT;
 import br.com.dbsoft.ui.core.DBSReportFormUtil;
@@ -20,6 +17,9 @@ import br.com.dbsoft.util.DBSFormat;
 import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSObject;
 import br.com.dbsoft.util.DBSString;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 /**
  * Os DBSReportBean devem ser declarados como @ConversationScoped.

@@ -1,6 +1,6 @@
 package br.com.dbsoft.ui.component.beandialogmessages;
 import br.com.dbsoft.error.DBSIOException;
-import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
+import br.com.dbsoft.message.IDBSMessageBase.MESSAGE_TYPE;
 
 public interface IDBSBeanDialogMessages {
 	

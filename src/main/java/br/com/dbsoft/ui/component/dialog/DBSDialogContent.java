@@ -9,11 +9,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import br.com.dbsoft.message.IDBSMessage;
+import br.com.dbsoft.message.IDBSMessageBase.MESSAGE_TYPE;
 import br.com.dbsoft.message.IDBSMessages;
-import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
 import br.com.dbsoft.ui.component.DBSUICommand;
 import br.com.dbsoft.ui.component.DBSUIOutput;
-
 import br.com.dbsoft.ui.component.button.DBSButton;
 import br.com.dbsoft.ui.component.dialog.DBSDialog.TYPE;
 import br.com.dbsoft.ui.core.DBSFaces;

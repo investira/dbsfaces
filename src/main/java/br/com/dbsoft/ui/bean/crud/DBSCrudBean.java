@@ -23,7 +23,7 @@ import br.com.dbsoft.io.DBSDAO;
 import br.com.dbsoft.io.DBSResultDataModel;
 import br.com.dbsoft.message.DBSMessage;
 import br.com.dbsoft.message.IDBSMessage;
-import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
+import br.com.dbsoft.message.IDBSMessageBase.MESSAGE_TYPE;
 import br.com.dbsoft.ui.bean.DBSBeanModalMessages;
 import br.com.dbsoft.ui.bean.crud.DBSCrudBeanEvent.CRUD_EVENT;
 import br.com.dbsoft.ui.component.DBSUIInput;
@@ -32,9 +32,9 @@ import br.com.dbsoft.ui.component.modalcrudmessages.IDBSModalCrudMessages;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSDate;
 import br.com.dbsoft.util.DBSIO;
+import br.com.dbsoft.util.DBSIO.SORT_DIRECTION;
 import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSObject;
-import br.com.dbsoft.util.DBSIO.SORT_DIRECTION;
 
 
 /**

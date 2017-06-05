@@ -10,7 +10,7 @@ import javax.faces.context.FacesContext;
 import br.com.dbsoft.message.DBSMessage;
 import br.com.dbsoft.message.DBSMessages;
 import br.com.dbsoft.message.IDBSMessage;
-import br.com.dbsoft.message.IDBSMessage.MESSAGE_TYPE;
+import br.com.dbsoft.message.IDBSMessageBase.MESSAGE_TYPE;
 import br.com.dbsoft.message.IDBSMessageListener;
 import br.com.dbsoft.message.IDBSMessages;
 import br.com.dbsoft.ui.core.DBSFaces.FACESCONTEXT_ATTRIBUTE;
