@@ -39,6 +39,7 @@ import br.com.dbsoft.ui.core.DBSFaces;
 	@ResourceDependency(library = "css", name = "dbsfaces_inputmask.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_img.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_listbox.css", target = "head"),
+	@ResourceDependency(library = "css", name = "dbsfaces_link.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_label.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_checkbox.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_messagelist.css", target = "head"),
