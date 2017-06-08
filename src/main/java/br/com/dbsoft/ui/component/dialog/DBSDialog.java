@@ -373,7 +373,6 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer, SystemEve
 	@Override
 	public void processEvent(SystemEvent pEvent) throws AbortProcessingException {
 		DBSDialogContent xContent = (DBSDialogContent) getFacet(FACET_CONTENT); 
-//		System.out.println("DBSDialog processEvent \t" + getClientId());
 		//Cria componente 'content' do tipo DBSDialogContent dentro do dialog que será responsábel pelo encode do conteúdo do dialog.
 		if (xContent == null){
 //			System.out.println("DBSDialog processEvent new \t" + getClientId());
