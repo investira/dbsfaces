@@ -90,6 +90,10 @@ dbsfaces.slider = {
 					xData.valuesListNumeric.push(parseFloat(pValuesList[xI]));
 				}
 			}
+			if (xData.valuesListNumeric.length > 0){
+				xData.min = xData.valuesListNumeric[0];
+				xData.max = xData.valuesListNumeric[xData.valuesListNumeric.length - 1];
+			}
 		}
 
 	},
@@ -303,15 +307,28 @@ dbsfaces.slider = {
 	},
 
 
+	setInputValue: function(pSliderData, pInputValue){
+		var xValue = pInputValue;
+		//Salva como string
+		if (pSliderData.type == "v"){
+			xValue = dbsfaces.format.number(pInputValue, pSliderData.dp);
+		}
+		pSliderData.dom.input.attr("value", xValue);
+		//Salva como float
+		pSliderData.value = pInputValue;
+		pSliderData.dom.self.val(pInputValue);
+
+	},
+
 	//Encontra o percentual a partir do valor e seta o slider
 	setValue: function(pSliderData){
-		var xValue = pSliderData.value; //dom.input.attr("value");
+		var xValue = dbsfaces.math.round(pSliderData.value, pSliderData.dp);
 		var xLengthFator = 0; 
 		if (pSliderData.type == "v"){
 			var xMin = pSliderData.min;
 			var xMax = pSliderData.max;
 //			xLengthFator = dbsfaces.math.round(parseFloat(xValue.replace(/[^0-9]/g, '')), 10);
-			xLengthFator = dbsfaces.math.round(parseFloat(xValue), 10);
+			xLengthFator = parseFloat(xValue);
 			//Procura qual o item da lista foi selecionado
 			if (pSliderData.valuesListNumeric.length > 0){
 				//Verifica se valor ultrapassou os limites
@@ -330,6 +347,7 @@ dbsfaces.slider = {
 				}
 				//Calcula fator
 				xLengthFator = pSliderData.segmentPercFator * ((xLengthFator - xMin) / (xMax - xMin));
+//				xLengthFator = pSliderData.segmentPercFator * ((xLengthFator / (xMax - xMin)) - xMin);
 				xLengthFator += (pSliderData.segmentPercFator * (xI - 1));
 			}else{
 				//Calcula fator
@@ -348,21 +366,8 @@ dbsfaces.slider = {
 		dbsfaces.slider.pvSetValuePerc(pSliderData, xLengthFator);
 	},
 
-	setInputValue: function(pSliderData, pInputValue){
-		var xValue = pInputValue;
-		//Salva como string
-		if (pSliderData.type == "v"){
-			xValue = dbsfaces.format.number(pInputValue, pSliderData.dp);
-		}
-		pSliderData.dom.input.attr("value", xValue);
-		//Salva como float
-		pSliderData.value = pInputValue;
-		pSliderData.dom.self.val(pInputValue);
-
-	},
-
 	pvSetValuePerc: function(pSliderData, pLengthFator){
-		pLengthFator = dbsfaces.math.round(parseFloat(pLengthFator), 10);
+		pLengthFator = parseFloat(pLengthFator);
 		if (pLengthFator > 1){
 			pLengthFator = 1;
 		}else if(pLengthFator < 0){
@@ -376,11 +381,18 @@ dbsfaces.slider = {
 			var xValuePercFator = pLengthFator;
 			//Calcula novo percentual relativo considerando o intervalo do segmento
 			if (pSliderData.valuesListNumeric.length > 0){
-				xI = dbsfaces.math.trunc(((pSliderData.valuesListNumeric.length - 1) * (pLengthFator - 0.01)), 0);
+//				xI = dbsfaces.math.trunc(((pSliderData.valuesListNumeric.length - 1) * (pLengthFator - 0.01)), 0);
+				xI = dbsfaces.math.trunc(((pSliderData.valuesListNumeric.length - 1) * pLengthFator), 0);
 				xValuePercFator = pLengthFator - (pSliderData.segmentPercFator * xI);
 				xValuePercFator /= pSliderData.segmentPercFator;
-				xMin = parseFloat(pSliderData.valuesListNumeric[xI]);
-				xMax = parseFloat(pSliderData.valuesListNumeric[xI + 1]);
+//				xValuePercFator = pLengthFator - (pSliderData.segmentPercFator * (xI + 1));
+				if (xI == pSliderData.valuesListNumeric.length - 1){
+					xMin = parseFloat(pSliderData.valuesListNumeric[xI]);
+					xMax = xMin;
+				}else{
+					xMin = parseFloat(pSliderData.valuesListNumeric[xI]);
+					xMax = parseFloat(pSliderData.valuesListNumeric[xI + 1]);
+				}
 			}else{
 				xMin = pSliderData.min;
 				xMax = pSliderData.max;
@@ -389,7 +401,7 @@ dbsfaces.slider = {
 			xInputValue = dbsfaces.math.round(xInputValue, pSliderData.dp);
 		}else{
 			//Encontra o valor da lista mais próximo ao percentual
-			xI = dbsfaces.math.round(((pSliderData.valuesList.length - 1) * pLengthFator), 0);
+			xI = dbsfaces.math.trunc(((pSliderData.valuesList.length - 1) * pLengthFator), 0);
 			pLengthFator = xI / (pSliderData.valuesList.length - 1);
 			xInputValue = pSliderData.valuesList[xI];
 		}
