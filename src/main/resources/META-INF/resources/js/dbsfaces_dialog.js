@@ -4,16 +4,20 @@ dbs_dialog = function(pId) {
 //	dbsfaces.dialog.initialize(xDialog);
 
 	$(pId).on("close", function(){
-		dbsfaces.dialog.pvClose(xDialog);
+		var xDialogData = xDialog.data("data");
+		dbsfaces.dialog.pvClose(xDialogData);
 	});
 	$(pId).on("open", function(){
-		dbsfaces.dialog.pvOpen(xDialog);
+		var xDialogData = xDialog.data("data");
+		dbsfaces.dialog.pvOpen(xDialogData);
 	});
 	$(pId).on("stopTimeout", function(){
-		dbsfaces.dialog.stopTimeout(xDialog);
+		var xDialogData = xDialog.data("data");
+		dbsfaces.dialog.stopTimeout(xDialogData);
 	});
 	$(pId).on("startTimeout", function(){
-		dbsfaces.dialog.startTimeout(xDialog);
+		var xDialogData = xDialog.data("data");
+		dbsfaces.dialog.startTimeout(xDialogData);
 	});
 
 	$(window).resize(function(e){
@@ -31,8 +35,9 @@ dbs_dialog = function(pId) {
 
 	$(pId + " > .-container > .-mask").on("mousedown touchstart", function(e){
 		if (xDialog.attr("disabled")){return;}
+		var xDialogData = xDialog.data("data");
 		//Fecha se possuior botão de fechar padrão
-		if (xDialog.data("bthandle").length != 0){
+		if (xDialogData.dom.bthandle.length != 0){
 			dbsfaces.dialog.show(xDialog);
 		}
 		return false;
@@ -82,9 +87,11 @@ dbs_dialogContent = function(pId) {
 			xDialog.trigger("closed");
 			$(this).parent().removeClass("-opened").addClass("-closed");
 			//Envia confirmação da mensagem se houver somente o botão yes
-			if (xDialog.attr("type") == "msg"
-		   	 && xDialog.data("btyes") != null){
-				xDialog.data("btyes").click();
+			var xDialogData = xDialog.data("data");
+			if (xDialogData.type == "msg"
+		   	 && xDialogData.dom.btyes != null
+		   	 && xDialogData.dom.btyes.length > 0){
+				xDialogData.dom.btyes.click();
 			}
 		//Foi aberto
 		}else{
@@ -106,22 +113,24 @@ dbs_dialogContent = function(pId) {
 	
 	$(pId + " > .-container > .-content > .-bthandle").on("mousedown touchstart", function(e){
 		if (xDialog.attr("disabled")){return;}
-		/*fecha normalmente se não houver timeout ou for modal*/
-		if (xDialog.data("timeout") == "0"){
+		/*fecha normalmente se não houver closeTimeout ou for modal*/
+		var xDialogData = xDialog.data("data");
+		if (xDialogData.closeTimeout == "0"){
 			dbsfaces.dialog.show(xDialog);
 		}else{
 			/*Aguarda finalização do touch e mouse por 200ms para verificar se é um cancelamento do timeout*/
-			xDialog.data("time", new Date().getTime());
+			xDialogData.time = new Date().getTime();
 		}
 	});
 	
 	/*Fecha o dialog*/
 	$(pId + " > .-container > .-content > .-bthandle").on("mouseup touchend", function(e){
 		if (xDialog.attr("disabled")){return;}
-		if (xDialog.data("timeout") == "0"){return;}
+		var xDialogData = xDialog.data("data");
+		if (xDialogData.closeTimeout == "0"){return;}
 		var xTime = new Date().getTime();
 		//Fecha normalmente
-		if (xTime - xDialog.data("time") < 200){
+		if (xTime - xDialogData.time < 200){
 			dbsfaces.dialog.show(xDialog);
 		//Interrompe o fechamento
 		}else{
@@ -168,7 +177,7 @@ dbs_dialogContent = function(pId) {
 		return false;
 	});
 	
-	/*Animação do timeout*/
+	/*Ao final da animação do closeTimeout*/
 	$(pId + " > .-container > .-content > .-bthandle").on(dbsfaces.EVENT.ON_TRANSITION_END, function(e){
 		dbsfaces.dialog.show(xDialog);
 		return false;
@@ -184,116 +193,145 @@ dbs_dialogContent = function(pId) {
 dbsfaces.dialog = {
 
 	initialize: function(pDialog){
-		dbsfaces.dialog.pvInitializeData(pDialog);
-		dbsfaces.dialog.pvInitializeLayout(pDialog);
-		dbsfaces.dialog.pvInitializeCloseTimeout(pDialog);
+		var xDialogData = dbsfaces.dialog.pvInitializeData(pDialog);
+		dbsfaces.dialog.pvInitializeLayout(xDialogData);
+		dbsfaces.dialog.pvInitializeCloseTimeout(xDialogData);
 	},
 		
 	pvInitializeData: function(pDialog){
-		pDialog.data("container", pDialog.children(".-container"));;
-		pDialog.data("content", pDialog.data("container").children(".-content"));
-		pDialog.data("icon", pDialog.data("container").children(".-icon"));
-		pDialog.data("mask", pDialog.data("container").children(".-mask"));
-		pDialog.data("sub_container", pDialog.data("content").children(".-sub_container"));
-		pDialog.data("divscroll", pDialog.data("sub_container").children("div"));
-		pDialog.data("sub_content", pDialog.data("divscroll").find("> div > .-sub_content"));
-		pDialog.data("header", pDialog.data("content").children(".-header"));
-		pDialog.data("header_content", pDialog.data("header").children(".-content"));
-		pDialog.data("header_icon", pDialog.data("header_content").children(".-icon"));
-		pDialog.data("footer", pDialog.data("content").children(".-footer"));
-		pDialog.data("footer_content", pDialog.data("footer").children(".-content"));
-		pDialog.data("footer_toolbar", pDialog.data("footer").children(".-toolbar"));
-		pDialog.data("bthandle", pDialog.data("content").children(".-bthandle"));
-		pDialog.data("padding", parseFloat(pDialog.data("sub_content").css("padding")));
-		pDialog.data("timeout", dbsfaces.util.getNotEmpty(pDialog.attr("timeout"),"0"));
-		pDialog.data("parent", pDialog.parent().closest(".dbs_dialog"));
-//		pDialog.attr("previousOpen", null);
+		var xData = {
+			dom: {
+				self: pDialog,
+				parent: pDialog.parent().closest(".dbs_dialog"),
+				container: pDialog.children(".-container"),
+				content: null,
+				icon: null,
+				mask: null,
+				sub_container: null,
+				divscroll: null,
+				sub_content: null,
+				header: null,
+				header_content: null,
+				header_icon: null,
+				header_caption: null,
+				header_caption_label: null,
+				footer: null,
+				footer_content: null,
+				footer_toolbar: null,
+				bthandle: null,
+				btyes: null
+			},
+			type: pDialog.attr("type"),
+			closeTimeout: dbsfaces.util.getNotEmpty(pDialog.attr("ct"), "0"),
+			time: null,
+			padding: null
+		}
+		xData.dom.content = xData.dom.container.children(".-content");
+		xData.dom.icon = xData.dom.container.children(".-icon");
+		xData.dom.mask = xData.dom.container.children(".-mask");
+		xData.dom.sub_container = xData.dom.content.children(".-sub_container");
+		xData.dom.divscroll = xData.dom.sub_container.children("div");
+		xData.dom.sub_content = xData.dom.divscroll.find("> div > .-sub_content");
+		xData.dom.header = xData.dom.content.children(".-header");
+		xData.dom.header_content = xData.dom.header.children(".-content");
+		xData.dom.header_icon = xData.dom.header_content.children(".-icon");
+		xData.dom.header_caption = xData.dom.header_content.children(".-caption");
+		xData.dom.header_caption_label = xData.dom.header_caption.children(".-label");
+		xData.dom.footer = xData.dom.content.children(".-footer");
+		xData.dom.footer_content = xData.dom.footer.children(".-content");
+		xData.dom.footer_toolbar = xData.dom.footer.children(".-toolbar");
+		xData.dom.bthandle = xData.dom.content.children(".-bthandle");
+		
+		xData.padding = parseFloat(xData.dom.sub_content.css("padding"));
+
+		pDialog.data("data", xData);
+
 		var xBtYes = null;
 		//Verifrica se há somente o botão de ok quando for mensagem.
-		if (pDialog.attr("type") == "msg"
-		 && pDialog.data("footer_toolbar").length == 1){
-			xBtYes = dbsfaces.util.getNotEmpty(pDialog.data("footer_toolbar").children("[id$='btyes']"),null);
+		if (xData.type == "msg"
+		 && xData.dom.footer_toolbar.length == 1){
+			xBtYes = dbsfaces.util.getNotEmpty(xData.dom.footer_toolbar.children("[id$='btyes']"),null);
 			if (xBtYes !=null
 			 && xBtYes.css("display") != "none"){
 				 xBtYes = null;			
 			}
 		}
-		pDialog.data("btyes", xBtYes);
+		xData.dom.btyes = xBtYes;
+		return xData;
 	},
 	
-	pvInitializeLayout: function(pDialog){
-		dbsfaces.dialog.pvAjustLayout(pDialog);
+	pvInitializeLayout: function(pDialogData){
+		dbsfaces.dialog.pvAjustLayout(pDialogData);
 
-		pDialog.data("container").css("opacity", "");
+		pDialogData.dom.container.css("opacity", "");
 		//Configura cor como transparencia a partir da cor definida pelo usuário
 		var xColorClose;
 		//Cor do header
-		var xIsDark = tinycolor(pDialog.data("content").css("background-color")).isDark();
+		var xIsDark = tinycolor(pDialogData.dom.content.css("background-color")).isDark();
 		if (xIsDark){
-			if (pDialog.data("header_icon").length > 0){
-				pDialog.data("header_icon").removeClass("-dark");
+			if (pDialogData.dom.header_icon.length > 0){
+				pDialogData.dom.header_icon.removeClass("-dark");
 			}
-			pDialog.data("header_content").addClass("-light")
+			pDialogData.dom.header_content.addClass("-light")
 										  .removeClass("-dark");
 		}else{
-			if (pDialog.data("header_icon").length > 0){
-				pDialog.data("header_icon").addClass("-dark");
+			if (pDialogData.dom.header_icon.length > 0){
+				pDialogData.dom.header_icon.addClass("-dark");
 			}
-			pDialog.data("header_content").addClass("-dark")
+			pDialogData.dom.header_content.addClass("-dark")
 										  .removeClass("-light");
 		}
-		if (pDialog.data("header_content").length > 0){
+		if (pDialogData.dom.header_content.length > 0){
 			//Ajusta tamanho do icone do header
-			var xHeight = pDialog.data("header_content")[0].getBoundingClientRect().height / parseFloat(pDialog.data("header_content").css("font-size"));
-			pDialog.data("header_icon").children().css("font-size", xHeight + "em");
+			var xHeight = pDialogData.dom.header_content[0].getBoundingClientRect().height / parseFloat(pDialogData.dom.header_content.css("font-size"));
+			pDialogData.dom.header_icon.children().css("font-size", xHeight + "em");
 		}
 		
 		//Cor da barra de timeout
-		if (pDialog.attr("type") != "mod"){
+		if (pDialogData.type != "mod"){
 			if (xIsDark){
 				xColorClose = "rgba(255,255,255,.1)";
 			}else{
 				xColorClose = "rgba(0,0,0,.1)";
 			}
-			pDialog.data("bthandle").css("border-color", xColorClose)
-							  	     .css("background-color", xColorClose);
+			pDialogData.dom.bthandle.css("border-color", xColorClose)
+							  	    .css("background-color", xColorClose);
 		}
 		//Largura mínima em função da largura do header
-		var xMinWidth = pDialog.data("padding") * 2;
+		var xMinWidth = pDialogData.padding * 2;
 		var xEle;
-		xEle = pDialog.data("header").find("> .-content > .-caption > .-icon");
+		xEle = pDialogData.dom.header_caption.children(".-icon");
 		if (xEle.length != 0){
 			xMinWidth += xEle[0].clientWidth;
 		}
-		xEle = pDialog.data("header").find("> .-content > .-caption > .-label");
+		xEle = pDialogData.dom.header_caption.children(".-label");
 		if (xEle.length != 0){
 			xMinWidth += xEle[0].clientWidth;
 		}
-		pDialog.data("sub_content").css("min-width", xMinWidth);
+		pDialogData.dom.sub_content.css("min-width", xMinWidth);
 	},
 	
-	pvInitializeCloseTimeout: function(pDialog){
-		if (pDialog.data("timeout") == "0"){return;}
-		if (pDialog.attr("timeout") == "a"){
-			pDialog.data("timeout", dbsfaces.ui.getTimeFromTextLength(pDialog.data("sub_content").text()) / 1000);
+	pvInitializeCloseTimeout: function(pDialogData){
+		if (pDialogData.closeTimeout == "0"){return;}
+		var xTime = 5;
+		if (pDialogData.closeTimeout == "a"){
+			xTime = dbsfaces.ui.getTimeFromTextLength(pDialogData.dom.sub_content.text()) / 1000;
 		}
-//		var xTime = parseFloat(pDialog.data("timeout"));
-		var xTime = parseFloat(5);
-		dbsfaces.ui.cssTransition(pDialog.data("bthandle"), "width " + xTime + "s linear, height " + xTime + "s linear");
+		dbsfaces.ui.cssTransition(pDialogData.dom.bthandle, "width " + xTime + "s linear, height " + xTime + "s linear");
 	},
 
 	
-	stopTimeout: function(pDialog){
-		pDialog.data("bthandle").addClass("-stopped");
+	stopTimeout: function(pDialogData){
+		pDialogData.dom.bthandle.addClass("-stopped");
 	},
 	
-	startTimeout: function(pDialog){
-		pDialog.data("bthandle").removeClass("-stopped");
+	startTimeout: function(pDialogData){
+		pDialogData.dom.bthandle.removeClass("-stopped");
 	},
 
 	/*Força o scroll já que ele não funciona naturalente no mobile*/
-	scroll: function(pDialog, pDx, pDy){
-		var xDiv = pDialog.data("divscroll");
+	scroll: function(pDialogData, pDx, pDy){
+		var xDiv = pDialogData.dom.divscroll;
 		xDiv.scrollLeft(xDiv.data("scrollx") + pDx);
 		xDiv.scrollTop(xDiv.data("scrolly") + pDy);
 	},
@@ -301,18 +339,20 @@ dbsfaces.dialog = {
 	/*Força o scroll já que ele não funciona naturalente no mobile*/
 	//Salva posição atual do scroll
 	scrollStart: function(pDialog){
-		var xDiv = pDialog.data("divscroll");
+		var xDialogData = pDialog.data("data");
+		var xDiv = xDialogData.dom.divscroll;
 		xDiv.data("scrollx", xDiv.scrollLeft());
 		xDiv.data("scrolly", xDiv.scrollTop());
 	},
 
 	wipe: function(pDialog, pDirection){
-		if (pDialog.data("bthandle").length == 0){
+		var xDialogData = pDialog.data("data");
+		if (xDialogData.dom.bthandle.length == 0){
 			return false;
 		}
 
-		if (pDialog.attr("type") == "nav" //For nav
-		 ||	(pDialog.attr("type") == "msg" && pDialog.data("btyes") != null)){ //ou Msg on só há o botão ok
+		if (xpDialogData.dom.type == "nav" //For nav
+		 ||	(xDialogData.dom.type == "msg" && xDialogData.dom.btyes != null)){ //ou Msg on só há o botão ok
 			if ((pDialog.attr("p") == "t"
 			  && pDirection == "u")
 			 || (pDialog.attr("p") == "b"
@@ -331,55 +371,119 @@ dbsfaces.dialog = {
 
 	resized: function(pDialog){
 		if (!pDialog.hasClass("-closed")){
-			dbsfaces.dialog.pvAjustLayout(pDialog);
+			dbsfaces.dialog.pvAjustLayout(pDialog.data("data"));
 		}
 	},
 
 	show: function(pDialog){
+		if ((typeof pDialog == "undefined") || pDialog.length == 0){return;}
+		var xDialogData = pDialog.data("data");
 		//Está fechado e vai abrir
 		if (pDialog.hasClass("-closed")){
-			dbsfaces.dialog.pvOpen(pDialog);
+			dbsfaces.dialog.pvOpen(xDialogData);
 		}else{
-			dbsfaces.dialog.pvClose(pDialog);
+			dbsfaces.dialog.pvClose(xDialogData);
 		}
 	},
+	
+	setMsg: function(pDialog, pMsgType, pMsgText){
+		var xDialogData = pDialog.data("data");
+		var xIcon = xDialogData.dom.header_icon.children("div");
+		var xCaption = xDialogData.dom.header_caption_label;
+		var xMsgTypeData = dbsfaces.dialog.pvMsgTypeGetData(pMsgType);
+		xDialogData.dom.sub_content.text(pMsgText);
+		dbsfaces.dialog.pvInitializeCloseTimeout(xDialogData);
+		
+		xIcon.attr("class", "");
+		xIcon.addClass(xMsgTypeData.iconClass);
+		xCaption.text(xMsgTypeData.caption);
+	},
+	
+	pvMsgTypeGetData: function(pMsgType){
+		if (pMsgType == null || (typeof pMsgType == "undefined")){return null;}
+		pMsgType = pMsgType.trim().toLowerCase();
+		var xData = {
+			caption: null,
+			iconClass: null,
+			question: null
+		}
+		if (pMsgType == "a"){
+			xData.caption = "Sobre";
+			xData.iconClass = "-i_information";
+			xData.question = false;
+ 		}else if (pMsgType == "s"){
+			xData.caption = "Sucesso";
+			xData.iconClass = "-i_sucess";
+			xData.question = false;
+ 		}else if (pMsgType == "i"){
+			xData.caption = "Informação";
+			xData.iconClass = "-i_information";
+			xData.question = false;
+ 		}else if (pMsgType == "t"){
+			xData.caption = "Importante";
+			xData.iconClass = "-i_important";
+			xData.question = true;
+ 		}else if (pMsgType == "w"){
+			xData.caption = "Atenção";
+			xData.iconClass = "-i_warning";
+			xData.question = false;
+ 		}else if (pMsgType == "c"){
+			xData.caption = "Confirmar";
+			xData.iconClass = "-i_question_confirm";
+			xData.question = true;
+ 		}else if (pMsgType == "g"){
+			xData.caption = "Ignorar";
+			xData.iconClass = "-i_question_ignore";
+			xData.question = true;
+ 		}else if (pMsgType == "p"){
+			xData.caption = "Proibido";
+			xData.iconClass = "-i_forbidden";
+			xData.question = false;
+ 		}else if (pMsgType == "e"){
+			xData.caption = "Erro";
+			xData.iconClass = "-i_error";
+			xData.question = false;
+ 		}
+		return xData;
+	},
+	
 
-	pvOpen: function(pDialog){
-		dbsfaces.dialog.pvAjustLayout(pDialog);
-		pDialog.removeClass("-closed");
-		if (!pDialog.attr("disabled")){
+	pvOpen: function(pDialogData){
+		dbsfaces.dialog.pvAjustLayout(pDialogData);
+		pDialogData.dom.self.removeClass("-closed");
+		if (!pDialogData.dom.self.attr("disabled")){
 //			if (pDialog.data("parent").not(".-closed").length > 0){
-				dbsfaces.ui.disableBackgroundInputs(pDialog);
-				dbsfaces.dialog.pvFreeze(pDialog, true);
+				dbsfaces.ui.disableBackgroundInputs(pDialogData.dom.self);
+				dbsfaces.dialog.pvFreeze(pDialogData, true);
 				//Coloca o foco no primeiro campo de input dentro do dialog
-				dbsfaces.ui.focusOnFirstInput(pDialog);
+				dbsfaces.ui.focusOnFirstInput(pDialogData.dom.self);
 //			}
 		}
 	},
 	
-	pvClose: function(pDialog){
-		pDialog.addClass("-closed");
+	pvClose: function(pDialogData){
+		pDialogData.dom.self.addClass("-closed");
 		//Retira foco do componente que possuir foco
 		$(":focus").blur();
-		dbsfaces.dialog.startTimeout(pDialog);
+		dbsfaces.dialog.startTimeout(pDialogData);
 		//Destrava tudo por não existe dialog pai aberto
-		if (pDialog.data("parent").length == 0){
+		if (pDialogData.dom.parent.length == 0){
 			dbsfaces.ui.enableForegroundInputs($("body"));
-			dbsfaces.dialog.pvFreeze(pDialog, false);
-			pDialog.attr('disabled', null);
+			dbsfaces.dialog.pvFreeze(pDialogData.dom.self, false);
+			pDialogData.dom.self.attr('disabled', null);
 		//Destrava somente dialog pai
 		}else{
-			pDialog.data("parent").attr('disabled', null);
-			dbsfaces.ui.enableForegroundInputs(pDialog.data("parent"));
+			pDialogData.dom.parent.attr('disabled', null);
+			dbsfaces.ui.enableForegroundInputs(pDialogData.dom.parent);
 		}
 	},
 
-	pvFreeze: function(pDialog, pOn){
+	pvFreeze: function(pDialogData, pOn){
 		if (pOn){
 			$("html").addClass("dbs_dialog-freeze");
 			//Previnir scroll em mobile se não for um filho deste dialog
 			$(".dbs_dialog-freeze").on("touchstart touchmove", function(e){
-				if ($.contains(pDialog[0], e.originalEvent.srcElement.classList)){
+				if ($.contains(pDialogData.dom.self[0], e.originalEvent.srcElement.classList)){
 					return false;
 				}
 			});
@@ -390,30 +494,24 @@ dbsfaces.dialog = {
 		}
 	},
 	
-	pvAjustLayout: function(pDialog){
+	pvAjustLayout: function(pDialogData){
 		//Força content-size para 's'
 		if (dbsfaces.util.isMobile()
-		&& (pDialog.attr("type") == "mod" 
-		 || pDialog.attr("type") == "nav"
-		 || (pDialog.attr("type") == "msg" && pDialog.attr("p") != "c"))){
-			pDialog.attr("cs","s");
+		&& (pDialogData.type == "mod" 
+		 || pDialogData.type == "nav"
+		 || (pDialogData.type == "msg" && pDialogData.dom.self.attr("p") != "c"))){
+			pDialogData.dom.self.attr("cs","s");
 		}
-		if (pDialog.data("parent").length > 0
-		 && pDialog.data("parent").attr("cs") != "s"){
-			pDialog.attr("p","c");
+		if (pDialogData.dom.parent.length > 0
+		 && pDialogData.dom.parent.attr("cs") != "s"){
+			pDialogData.dom.self.attr("p","c");
 		}
 		//Configura o padding
-		var xHeaderContent = pDialog.data("header_content");
-		var xFooter = pDialog.data("footer");
-		var xSubContainer = pDialog.data("sub_container");
-		
-		if (xHeaderContent.length > 0){
-			var xHeaderHeight = xHeaderContent[0].clientHeight;
-			xSubContainer.css("padding-top", xHeaderHeight);
+		if (pDialogData.dom.header_content.length > 0){
+			pDialogData.dom.sub_container.css("padding-top", pDialogData.dom.header_content[0].clientHeight);
 		}
-		if (xFooter.length > 0){
-			var xFooterHeight = xFooter[0].clientHeight;
-			xSubContainer.css("padding-bottom", xFooterHeight);
+		if (pDialogData.dom.footer.length > 0){
+			pDialogData.dom.sub_container.css("padding-bottom", pDialogData.dom.footer[0].clientHeight);
 		}
 
 	}

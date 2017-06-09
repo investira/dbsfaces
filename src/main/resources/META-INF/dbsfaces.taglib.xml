@@ -603,6 +603,14 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
+		<attribute>
+			<description>
+                Se exibe já aberto. Padrao é true.
+            </description>
+			<name>open</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
 	</tag>
 	<tag>
 		<tag-name>dialogmod</tag-name>

@@ -56,7 +56,7 @@ public class DBSDialogRenderer extends DBSRenderer{
 			//Configura time somente quando não for MOD
 			if (xType == TYPE.MSG 
 			&& !xDialog.getCloseTimeout().equals("0")){
-				DBSFaces.encodeAttribute(xWriter, "timeout", xDialog.getCloseTimeout());
+				DBSFaces.encodeAttribute(xWriter, "ct", xDialog.getCloseTimeout());
 			}
 			DBSFaces.encodeAttribute(xWriter, "p", xDialog.getPosition());
 			DBSFaces.encodeAttribute(xWriter, "cs", xDialog.getContentSize());
@@ -75,7 +75,7 @@ public class DBSDialogRenderer extends DBSRenderer{
 	
 	
 	private void pvEncodeContainer(DBSDialog pDialog, TYPE pType, FacesContext pContext, ResponseWriter pWriter) throws IOException {
-		if (pType == TYPE.MSG && !pDialog.hasMessage()){return;}
+		if (pType == TYPE.MSG && pDialog.getChildCount() == 0 && !pDialog.hasMessage()){return;}
 		String xClass = CSS.MODIFIER.CONTAINER;
 		pWriter.startElement("div", pDialog);
 //			if (!pDialog.getOpen()){
@@ -107,8 +107,6 @@ public class DBSDialogRenderer extends DBSRenderer{
 			if (!DBSObject.isEmpty(pDialog.getMsgFor())){
 				//Recupera as mensagens
 				pDialog.setOpen(pvInitializeDBSMessages(pDialog, pContext));
-			}else{
-				pDialog.setOpen(pDialog.getChildCount() > 0);
 			}
 		}
 	}

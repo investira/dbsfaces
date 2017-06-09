@@ -134,31 +134,31 @@ public class DBSDialogContent extends DBSUIOutput{
 
 	private void pvEncodeCaption(DBSDialog pDialog, TYPE pType, UIComponent pFacetHeaderRight, UIComponent pFacetHeaderLeft, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 		//Icone do tipo de mensagem
+		MESSAGE_TYPE xMsgType = MESSAGE_TYPE.get(pDialog.getMsgType());
 		if(pType == TYPE.MSG
-	  	&& pDialog.hasMessage()){
+	  	&& (pDialog.hasMessage() || pDialog.getChildCount() > 0)){
 			pWriter.startElement("div", pDialog);
 				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.ICON);
 				pWriter.startElement("div", pDialog);
-					DBSFaces.encodeAttribute(pWriter, "class", MESSAGE_TYPE.get(pDialog.getMsgType()).getIconClass());
+					if (xMsgType != null){
+						DBSFaces.encodeAttribute(pWriter, "class", xMsgType.getIconClass());
+					}
 				pWriter.endElement("div");
 			pWriter.endElement("div");
 		}
 		pWriter.startElement("div", pDialog);
 			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CAPTION + CSS.MODIFIER.NOT_SELECTABLE);
-			if (pDialog.getMsgType() != null
-			 || !DBSObject.isEmpty(pDialog.getCaption())){
-				//Label
-				pWriter.startElement("div", pDialog);
-					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LABEL);
-					//Se não for mensagem padrão, usa caption informada pelo usuário
-					if (pDialog.getMsgType() == null){
-						pWriter.write(pDialog.getCaption());
-					//Tipo de mensagem como caption
-					}else{
-						pWriter.write(MESSAGE_TYPE.get(pDialog.getMsgType()).getName());
-					}
-				pWriter.endElement("div");
-			}
+			//Label
+			pWriter.startElement("div", pDialog);
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LABEL);
+				//Se não for mensagem padrão, usa caption informada pelo usuário
+				if (xMsgType == null && pDialog.getCaption() != null){
+					pWriter.write(pDialog.getCaption());
+				//Tipo de mensagem como caption
+				}else if (xMsgType != null){
+					pWriter.write(xMsgType.getName());
+				}
+			pWriter.endElement("div");
 			
 			//Encode o conteudo do Header definido no FACET HEADER_LEFT
 			if (!DBSObject.isNull(pFacetHeaderLeft)){
@@ -183,7 +183,7 @@ public class DBSDialogContent extends DBSUIOutput{
 		MESSAGE_TYPE xMsgType = MESSAGE_TYPE.get(pDialog.getMsgType());
 //		if (xMsgType.getRequireConfirmation()){
 		if (pType == TYPE.NAV 
-		|| (pType == TYPE.MSG && !xMsgType.getIsQuestion())){
+		|| (pType == TYPE.MSG && (xMsgType == null || !xMsgType.getIsQuestion()))){
 			String xClass = "-bthandle" + CSS.THEME.ACTION;
 			//Exibe espaço do button timeout
 			pWriter.startElement("div", pDialog);
@@ -273,6 +273,14 @@ public class DBSDialogContent extends DBSUIOutput{
 		}else if (pDialog.getDBSMessages() != null && pDialog.getDBSMessages().size() > 0){
 			pWriter.write(pDialog.getDBSMessages().getListMessage().get(0).getMessageText());
 		}
+//	if (pDialog.getChildren().size() > 0){
+//		//Encode dos conteúdo
+//		DBSFaces.renderChildren(pContext, pDialog);
+//	}else if (pDialog.getDBSMessages() != null && pDialog.getDBSMessages().size() > 0){
+//		pWriter.write(pDialog.getDBSMessages().getListMessage().get(0).getMessageText());
+//	}else{
+//		pDialog.encodeChildren(pContext);
+//	}
 	}
 
 	/**
@@ -349,7 +357,7 @@ public class DBSDialogContent extends DBSUIOutput{
 		DBSUICommand xActionSourceNO = xActionSource;
 		DBSUICommand xActionSourceYES = xActionSource;
 		//DOIS BOTÕES - NÃO(NO) e SIM(YES)
-		if (xMsgType.getIsQuestion()){
+		if (xMsgType != null && xMsgType.getIsQuestion()){
 			//BOTÃO - NÃO(NO)
 			if (xMsgType.getIsError()){
 				//Não utiliza o action do botão que originou este dialog se mensagem for erro. Erro impede que action seja efetuado.
@@ -360,7 +368,7 @@ public class DBSDialogContent extends DBSUIOutput{
 		}else{
 			xStyle = "display:none;";
 			//Não utiliza o action do botão que originou este dialog se mensagem for erro. Erro impede que action seja efetuado.
-			if (xMsgType.getIsError()){
+			if (xMsgType == null || xMsgType.getIsError()){
 				xActionSourceYES = null;
 			}
 		}

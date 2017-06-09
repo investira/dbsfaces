@@ -711,13 +711,13 @@
 }
 
 
-.dbs_dialog[timeout].-closed > .-container > .-content > .-bthandle{
+.dbs_dialog[ct].-closed > .-container > .-content > .-bthandle{
     -webkit-transition: none !important;
     -moz-transition: none !important;
     transition: none !important;
 }
 
-.dbs_dialog[timeout] > .-container > .-content > .-bthandle:after{
+.dbs_dialog[ct] > .-container > .-content > .-bthandle:after{
     content: "";
     display: inline-block;
     position: absolute;
@@ -729,24 +729,24 @@
     transition: inherit;
 	border-radius: inherit;
 }
-.dbs_dialog[timeout][p="c"] > .-container > .-content > .-bthandle:after,
-.dbs_dialog[timeout][p="t"] > .-container > .-content > .-bthandle:after,
-.dbs_dialog[timeout][p="b"] > .-container > .-content > .-bthandle:after{
+.dbs_dialog[ct][p="c"] > .-container > .-content > .-bthandle:after,
+.dbs_dialog[ct][p="t"] > .-container > .-content > .-bthandle:after,
+.dbs_dialog[ct][p="b"] > .-container > .-content > .-bthandle:after{
     width: 0%;
     height: 100%;
 }
-.dbs_dialog[timeout][p="c"] > .-container.-opened > .-content > .-bthandle:not(.-stopped):after,
-.dbs_dialog[timeout][p="t"] > .-container.-opened > .-content > .-bthandle:not(.-stopped):after,
-.dbs_dialog[timeout][p="b"] > .-container.-opened > .-content > .-bthandle:not(.-stopped):after{
+.dbs_dialog[ct][p="c"] > .-container.-opened > .-content > .-bthandle:not(.-stopped):after,
+.dbs_dialog[ct][p="t"] > .-container.-opened > .-content > .-bthandle:not(.-stopped):after,
+.dbs_dialog[ct][p="b"] > .-container.-opened > .-content > .-bthandle:not(.-stopped):after{
 	width: 100%;
 }
-.dbs_dialog[timeout][p="l"] > .-container > .-content > .-bthandle:after,
-.dbs_dialog[timeout][p="r"] > .-container > .-content > .-bthandle:after{
+.dbs_dialog[ct][p="l"] > .-container > .-content > .-bthandle:after,
+.dbs_dialog[ct][p="r"] > .-container > .-content > .-bthandle:after{
     height: 0%;
     width: 100%;
 }
-.dbs_dialog[timeout][p="l"] > .-container.-opened > .-content > .-bthandle:not(.-stopped):after,
-.dbs_dialog[timeout][p="r"] > .-container.-opened > .-content > .-bthandle:not(.-stopped):after{
+.dbs_dialog[ct][p="l"] > .-container.-opened > .-content > .-bthandle:not(.-stopped):after,
+.dbs_dialog[ct][p="r"] > .-container.-opened > .-content > .-bthandle:not(.-stopped):after{
 	height: 100%;
 }
 
