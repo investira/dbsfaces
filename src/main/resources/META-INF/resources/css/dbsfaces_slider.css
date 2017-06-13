@@ -219,6 +219,8 @@
     display: inline-block;
 }
 
+
+
 .dbs_slider.-h > .-container > .-content > .-handle{
     top: 50%;
 }
@@ -226,46 +228,46 @@
     left: 50%;
 }
 
-.dbs_slider[type="v"] > .-container > .-content > .-handle:before{
+.dbs_slider[type="v"] > .-container > .-content > .-handle > .-label{
     display: none;
-    content: attr(v);
     position: absolute;
     background: inherit;
-    padding: .1em .3em;
+    padding: .08em .3em .1em .3em;
     border-radius: .3em;
     z-index: 1;
     font-size: .9em;
 }
-.dbs_slider[type="v"].-showValuesList > .-container > .-content > .-handle:before,
-.dbs_slider[type="v"].-selected > .-container > .-content > .-handle:before{
+.dbs_slider[type="v"].-showValuesList > .-container > .-content > .-handle > .-label,
+.dbs_slider[type="v"].-selected > .-container > .-content > .-handle > .-label{
     display: inline-block;
 }
 
-.dbs_slider[type="v"].-h > .-container > .-content > .-handle:before{
-    -webkit-transform: translateX(-50%);
-    -moz-transform: translateX(-50%);
-    -o-transform: translateX(-50%);
-    transform: translateX(-50%);
-}
-.dbs_slider[type="v"].-v > .-container > .-content > .-handle:before{
-    -webkit-transform: translateY(-50%);
-    -moz-transform: translateY(-50%);
-    -o-transform: translateY(-50%);
-    transform: translateY(-50%);
+.dbs_slider[type="v"].-h > .-container > .-content > .-handle > .-label{
+/*     -webkit-transform: translateX(-50%); */
+/*     -moz-transform: translateX(-50%); */
+/*     -o-transform: translateX(-50%); */
+/*     transform: translateX(-50%); */
 }
 
-.dbs_slider[type="v"].-h > .-container > .-content > .-handle:before{
+.dbs_slider[type="v"].-v > .-container > .-content > .-handle > .-label{
+/*     -webkit-transform: translateY(-50%); */
+/*     -moz-transform: translateY(-50%); */
+/*     -o-transform: translateY(-50%); */
+/*     transform: translateY(-50%); */
+}
+
+.dbs_slider[type="v"].-h > .-container > .-content > .-handle > .-label{
 	top: -2.6em;
 }
-.dbs_slider[type="v"].-h.-i > .-container > .-content > .-handle:before{
+.dbs_slider[type="v"].-h.-i > .-container > .-content > .-handle > .-label{
 	top: 1.2em;
 }
 
-.dbs_slider[type="v"].-v > .-container > .-content > .-handle:before{
+.dbs_slider[type="v"].-v > .-container > .-content > .-handle > .-label{
     right: 1.2em;
     left: initial;
 }
-.dbs_slider[type="v"].-v.-i > .-container > .-content > .-handle:before{
+.dbs_slider[type="v"].-v.-i > .-container > .-content > .-handle > .-label{
     left: 1.2em;
     right: initial;
 }

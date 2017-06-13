@@ -139,6 +139,9 @@ public class DBSSliderRenderer extends DBSRenderer {
 			//Handle
 			pWriter.startElement("div", pSlider);
 				DBSFaces.encodeAttribute(pWriter, "class", "-handle");
+				pWriter.startElement("div", pSlider);
+					DBSFaces.encodeAttribute(pWriter, "class", "-label");
+				pWriter.endElement("div");	
 			pWriter.endElement("div");	
 		pWriter.endElement("div");
 		pvEncodeInput(pSlider, pWriter);

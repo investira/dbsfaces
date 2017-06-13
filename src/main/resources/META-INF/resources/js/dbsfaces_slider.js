@@ -50,6 +50,7 @@ dbsfaces.slider = {
 				slider : null, //Elemento do slider
 				sliderValue : null, //Elemento do valor atual do slider
 				handle : null, //Puxador do slider
+				handleLabel : null, //label do valor selecionado no puxador
 				points : null, //Elemento que contém os pontos
 				point : null, //Elemento que contém um ponto
 				label : null//Elemento que contém o label do ponto
@@ -77,6 +78,7 @@ dbsfaces.slider = {
 		xData.dom.input = xData.dom.container.children(".-th_input-data");
 		xData.dom.slider = xData.dom.content.children(".-slider");
 		xData.dom.handle = xData.dom.content.children(".-handle");
+		xData.dom.handleLabel = xData.dom.handle.children(".-label");
 		xData.dom.sliderValue = xData.dom.slider.children(".-value");
 		
 		dbsfaces.slider.setInputValue(xData, xData.dom.input.attr("value"));
@@ -415,14 +417,15 @@ dbsfaces.slider = {
 	pvEncodeValue: function(pSliderData){
 		var xSliderValue = pSliderData.dom.sliderValue;
 		var xValuePerc = pSliderData.lengthFator * 100;
+		//Valor para ser capturado pelo pseudoselector :before:content
+		pSliderData.dom.handleLabel.text(pSliderData.dom.input.attr("value"));
+
 		if (pSliderData.orientation == "h"){
 			dbsfaces.slider.pvEncodeValueHorizontal(pSliderData, xValuePerc);
 		}else{
 			dbsfaces.slider.pvEncodeValueVertical(pSliderData, xValuePerc);
 		}
 
-		//Valor para ser capturado pelo pseudoselector :before:content
-		pSliderData.dom.handle.attr("v", pSliderData.dom.input.attr("value"));
 
 		//Configura steps anteriores
 		dbsfaces.slider.pvHideLabels(pSliderData);
@@ -438,19 +441,49 @@ dbsfaces.slider = {
 	pvEncodeValueHorizontal: function(pSliderData, pValuePerc){
 		pSliderData.dom.sliderValue.css("width", pValuePerc + "%");
 		pSliderData.dom.handle.css("left", pValuePerc + "%");
+		var xCenter = (pSliderData.dom.handleLabel[0].getBoundingClientRect().width / 2);
+		var xLeft;
+		var xR = (pSliderData.dom.handle[0].getBoundingClientRect().left + xCenter) -
+		   	     (pSliderData.dom.slider[0].getBoundingClientRect().left + pSliderData.dom.slider[0].getBoundingClientRect().width);
+		var xL = (pSliderData.dom.handle[0].getBoundingClientRect().left - xCenter) -
+  	     		 pSliderData.dom.slider[0].getBoundingClientRect().left;
+		if (xR > 0){
+			xLeft = -xCenter - xR;
+		}else if (xL < 0){
+			xLeft = -xCenter - xL;
+		}else{
+			xLeft = -xCenter;
+		}
+		pSliderData.dom.handleLabel.css("left", xLeft);
 	},
 
 	pvEncodeValueVertical: function(pSliderData, pValuePerc){
 		pSliderData.dom.sliderValue.css("height", pValuePerc + "%");
 		pSliderData.dom.handle.css("top", 100 - pValuePerc + "%");
+		var xCenter = (pSliderData.dom.handleLabel[0].getBoundingClientRect().height / 2);
+		var xTop;
+		var xT = (pSliderData.dom.handle[0].getBoundingClientRect().top + xCenter) -
+		   	     (pSliderData.dom.slider[0].getBoundingClientRect().top + pSliderData.dom.slider[0].getBoundingClientRect().height);
+		var xB = (pSliderData.dom.handle[0].getBoundingClientRect().top - xCenter) -
+  	     		 pSliderData.dom.slider[0].getBoundingClientRect().top;
+		if (xT > 0){
+			xTop = -xCenter - xT;
+		}else if (xB < 0){
+			xTop = -xCenter - xB;
+		}else{
+			xTop = -xCenter;
+		}
+		pSliderData.dom.handleLabel.css("top", xTop);
 	},
 	
 	pvHideLabels: function(pSliderData){
 		var xCur;
 		if (pSliderData.orientation == "h"){
 			xCur = parseFloat(pSliderData.dom.handle.css("left"));
+//			xCur = pSliderData.dom.handle[0].getBoundingClientRect().left;
 		}else{
 			xCur = parseFloat(pSliderData.dom.handle.css("top"));
+//			xCur = pSliderData.dom.handle[0].getBoundingClientRect().top;
 		}
 		if (pSliderData.type == "v"){
 			for (var xI=0; xI < pSliderData.dom.label.length; xI++){
