@@ -81,6 +81,7 @@ public class DBSLinkRenderer extends DBSUICommandRenderer {
 	}
 	
 	private void pvRenderHref(FacesContext pContext, ResponseWriter pWriter, DBSLink pLink) throws IOException{
+		if (pLink.getActionExpression() == null){return;}
 		String hrefVal = pLink.getActionExpression().getExpressionString();
         // render an empty value for href if it is not specified
         if (null == hrefVal || 0 == hrefVal.length()) {
