@@ -389,11 +389,14 @@ dbsfaces.inputText = {
 			}
 			
 			var xValue = pInput.val();
+			
+//			var xSelectionStart = e.originalEvent.currentTarget.selectionStart;
+//			var xSelectionEnd = e.originalEvent.currentTarget.selectionEnd;
 			var xSelectionStart = xValue.length;
 			var xSelectionEnd = xValue.length;
-			if (pInput[0].hasOwnProperty("selectionStart")){
-				xSelectionStart = pInput.get(0).selectionStart;
-				xSelectionEnd = pInput.get(0).selectionEnd;
+			if (pInput[0].__proto__.hasOwnProperty("selectionStart")){
+				xSelectionStart = pInput[0].selectionStart;
+				xSelectionEnd = pInput[0].selectionEnd;
 			}
 			var xS = xSelectionEnd - xSelectionStart;
 			var xSS = xSelectionStart + 1;

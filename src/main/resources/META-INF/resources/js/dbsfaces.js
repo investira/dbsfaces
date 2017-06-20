@@ -579,7 +579,7 @@ dbsfaces.ui = {
 		if (pObj instanceof jQuery){
 			xE = pObj[0];
 		}
-		if (xE.hasOwnProperty("selectionStart")){
+		if (xE.__proto__.hasOwnProperty("selectionStart")){
 			xE.setSelectionRange(pStart, pEnd);
 		}
 	},
