@@ -314,6 +314,18 @@ label.-th_input-data,
 	overflow: hidden;
 }
 
+.-th_input-data.-lower{
+	text-transform: lowercase;
+}
+.-th_input-data.-upper{
+	text-transform: uppercase;
+}
+.-th_input-data.-proper,
+.-th_input-data.-upperfirst{
+	text-transform: capitalize;
+}
+
+
 .-th_input-data[type=text].-readOnly,
 .-th_input-data[type=password].-readOnly,
 .-th_input-data[type=email].-readOnly,

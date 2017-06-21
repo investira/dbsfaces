@@ -2,27 +2,29 @@ dbs_inputText = function(pId) {
 	var wSearching = false;
 	var wBlur = false;
 
+	dbsfaces.inputText.initialize($(pId));
 	
 	$(pId + " input").focusin(function(e){
 		wSearching = false;
 		dbsfaces.ui.selectAll(this);
 	});
+
 	//Verificar caixa da digitação
-	$(pId + "-data.-upper").keydown(function(e){
-		dbsfaces.inputText.letterCase(pId, $(this), e,"upper");
-	});	
-
-	$(pId + "-data.-lower").keydown(function(e){
-		dbsfaces.inputText.letterCase(pId, $(this), e,"lower");
-	});	
-
-	$(pId + "-data.-proper").keydown(function(e){
-		dbsfaces.inputText.letterCase(pId, $(this), e,"proper");
-	});	
-	
-	$(pId + "-data.-upperfirst").keydown(function(e){
-		dbsfaces.inputText.letterCase(pId, $(this), e,"upperfirst");
-	});	
+//	$(pId + "-data.-upper").keydown(function(e){
+//		dbsfaces.inputText.letterCase(pId, $(this), e,"upper");
+//	});	
+//
+//	$(pId + "-data.-lower").keydown(function(e){
+//		dbsfaces.inputText.letterCase(pId, $(this), e,"lower");
+//	});	
+//
+//	$(pId + "-data.-proper").keydown(function(e){
+//		dbsfaces.inputText.letterCase(pId, $(this), e,"proper");
+//	});	
+//	
+//	$(pId + "-data.-upperfirst").keydown(function(e){
+//		dbsfaces.inputText.letterCase(pId, $(this), e,"upperfirst");
+//	});	
 	
 	$(pId + " > .-container > .-input > .-th_input-data").focus(function(e){
 		$(pId + "-suggestion").addClass("-th_input-data-FOCUS");
@@ -162,6 +164,24 @@ dbs_inputText = function(pId) {
 
 
 dbsfaces.inputText = {
+		
+	initialize: function(pInputText){
+		dbsfaces.inputText.pvInitializeData(pInputText);
+	},
+
+	pvInitializeData: function(pInputText){
+		var xData = {
+			dom : {
+				self: pInputText //O próprio slider
+			},
+			type : pInputText.attr("type"),
+			time : null,
+			timeout : null
+		}
+		pInputText.data("data", xData);
+		return xData;
+	},
+		
 	wTime: +new Date(),
 	wTimeout: 0,
 
@@ -373,12 +393,16 @@ dbsfaces.inputText = {
 			return; //Sai para não converte o caracter recebido quando foi tecla especial como um Ctrl-C
 		}
 		if(e.which >= 65 && e.which <=90){
-			if (pLetterCase!="upper" &&
-				pLetterCase!="lower" &&
-				pLetterCase!="proper" &&
+			if (pLetterCase!="proper" &&
 				pLetterCase!="upperfirst"){
 				return;
 			}
+//			if (pLetterCase!="upper" &&
+//				pLetterCase!="lower" &&
+//				pLetterCase!="proper" &&
+//				pLetterCase!="upperfirst"){
+//				return;
+//			}
 			//Só testa tamanho máximo se imput não for com suggestion
 			if (!dbsfaces.inputText.isSuggestion(pId)){ 
 				if (typeof pInput.attr("maxlength") != "undefined"){
@@ -421,7 +445,7 @@ dbsfaces.inputText = {
 			}
 			e.preventDefault();
 			//Agrupo o inicio + valor digitado + final da texto. Isto previne os casos que a substituição no meio do texto
-			xValue = xValue.substring(0, xSelectionStart) + String.fromCharCode(e.which + xMinusculo) + xValue.substring(xSelectionEnd, 200);
+			xValue = xValue.substring(0, xSelectionStart) + String.fromCharCode(e.which + xMinusculo) + xValue.substring(xSelectionEnd);
 			pInput.val(xValue);
 //			pInput.get(0).setSelectionRange(xSS, xSS); 
 			dbsfaces.ui.selectRange(pInput, xSS, xSS);
