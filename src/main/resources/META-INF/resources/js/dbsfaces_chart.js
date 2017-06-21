@@ -847,6 +847,8 @@ dbsfaces.chart = {
 			//Seleção simples do chartvalue 
 			pChartData.dom.hoverChartValueData = dbsfaces.chart.pvHover(pChartData, pChartValueData, pChartData.dom.hoverChartValueData);
 		}
+		//Dispara evento informando que houve mudança no item selecionado
+		pChartData.dom.parent.trigger("change", pChartData);
 	},
 	
 	setMovingDeltaHandleData: function(pChartData, pDeltaHandleData){
