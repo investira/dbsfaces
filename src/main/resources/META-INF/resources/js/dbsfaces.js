@@ -434,9 +434,11 @@ dbsfaces.ui = {
 		xStyles += ".-th_input-data[type=text],";
 		xStyles += ".-th_input-data[type=password], ";
 		xStyles += ".-th_input-data[type=email], ";
+		xStyles += ".-th_input-data[type=search], ";
 		xStyles += ".-th_input-data[type=tel], ";
 		xStyles += ".-th_input-data[type=number], ";
 		xStyles += ".-th_input-data[type=date], ";
+		xStyles += ".-th_input-data[type=week], ";
 		xStyles += ".-th_input-data[type=time], ";
 		xStyles += ".-th_input-data[type=url], ";
 		xStyles += "select.-th_input-data,  ";
@@ -554,10 +556,11 @@ dbsfaces.ui = {
 		if (pObj instanceof jQuery){
 			xE = pObj[0];
 		}
-		//timeout para evitar que o click desmarque o item selecionado
-		setTimeout( function(){
-			dbsfaces.ui.selectRange(xE, 0, xE.value.length);
-		}, 1 );
+		xE.select();
+//		//timeout para evitar que o click desmarque o item selecionado
+//		setTimeout( function(){
+//			dbsfaces.ui.selectRange(xE, 0, xE.value.length);
+//		}, 1 );
 	},
 	//Retira a seleção de qualquer texto
 	selectNone: function(pObj){
@@ -583,6 +586,28 @@ dbsfaces.ui = {
 			xE.setSelectionRange(pStart, pEnd);
 		}
 	},
+	
+//	function insertTextAtCursor(text) {
+//	    var sel, range, textNode;
+//	    if (window.getSelection) {
+//	        sel = window.getSelection();
+//	        if (sel.getRangeAt && sel.rangeCount) {
+//	            range = sel.getRangeAt(0).cloneRange();
+//	            range.deleteContents();
+//	            textNode = document.createTextNode(text);
+//	            range.insertNode(textNode);
+//
+//	            // Move caret to the end of the newly inserted text node
+//	            range.setStart(textNode, textNode.length);
+//	            range.setEnd(textNode, textNode.length);
+//	            sel.removeAllRanges();
+//	            sel.addRange(range);
+//	        }
+//	    } else if (document.selection && document.selection.createRange) {
+//	        range = document.selection.createRange();
+//	        range.pasteHTML(text);
+//	    }
+//	}
 	
 	disableBackgroundInputs: function(pSourceId){
 		var xE = pSourceId;
