@@ -34,9 +34,9 @@ dbs_slider = function(pId, pValuesList, pLabelsList, pMinValue, pMaxValue) {
 
 dbsfaces.slider = {
 	initialize: function(pSlider, pValuesList, pLabelsList, pMinValue, pMaxValue){
-		dbsfaces.slider.pvInitializeData(pSlider, pValuesList, pLabelsList, pMinValue, pMaxValue);
-		dbsfaces.slider.pvInitializeCreatePoints(pSlider.data("data"));
-		dbsfaces.slider.pvInitializeLayout(pSlider.data("data"));
+		var xSliderData= dbsfaces.slider.pvInitializeData(pSlider, pValuesList, pLabelsList, pMinValue, pMaxValue);
+		dbsfaces.slider.pvInitializeCreatePoints(xSliderData);
+		dbsfaces.slider.pvInitializeLayout(xSliderData);
 	},
 
 	
@@ -97,7 +97,7 @@ dbsfaces.slider = {
 				xData.max = xData.valuesListNumeric[xData.valuesListNumeric.length - 1];
 			}
 		}
-
+		return xData;
 	},
 
 	pvInitializeLayout: function(pSliderData){
