@@ -26,9 +26,6 @@ public abstract class DBSActionController{
 	private Boolean			wExecuting = false;
 	
 	
-	/**
-	 * @param pMessageControlClientId ClientId do componente que receberá as mensagens quando houver.
-	 */
 	public DBSActionController() {
 		wBeforeMessages.addMessagesListener(wLocalListener);
 		wAfterMessages.addMessagesListener(wLocalListener);
@@ -59,12 +56,12 @@ public abstract class DBSActionController{
 			afterExecute(wAfterMessages);
 		}
 //		System.out.println("actioController sendmessage [" + (pvGetMessages().hasMessages() ? pvGetMessages().getListMessage().get(0).getMessageKey() : "") + "]");
-		pvSendMessages(wMessageControlClientId);
-		if (pvCanFinalize()){
-			pvFinalize();
+		if (pvSendMessages(wMessageControlClientId)){
+			if (pvCanFinalize()){
+				return getOutcome();
+			}
 		}
-		return getOutcome();
-
+		return null;
 	}
 	
 	/**
@@ -119,9 +116,9 @@ public abstract class DBSActionController{
 	}
 
 	/**
-	 * Envia mensagens.
+	 * Envia mensagens e retorna se pode ser redirecionado.
 	 * @param pClientId
-	 * @return
+	 * @return 
 	 */
 	private final boolean pvSendMessages(String pClientId){
 		DBSMessagesFacesContext.sendMessages(pvGetMessages(), pClientId); 
@@ -154,15 +151,19 @@ public abstract class DBSActionController{
 	 * @return
 	 */
 	private final boolean pvCanFinalize(){
-		return wExecuting && !wBeforeMessages.hasMessages() && !wAfterMessages.hasMessages();
+		boolean xFinalize = wExecuting && !wBeforeMessages.hasMessages() && !wAfterMessages.hasMessages();
+		if (xFinalize){
+			pvFinalize();
+		}
+		return xFinalize;
 	}
 	
 	
 	private final boolean pvCanRedirect(){
 		boolean xRedirect = !wBeforeMessages.hasMessages() && !wAfterMessages.hasMessages();
-		if (xRedirect){
-			pvFinalize();
-		}
+//		if (xRedirect){
+//			pvFinalize();
+//		}
 		return xRedirect;
 	}
 
