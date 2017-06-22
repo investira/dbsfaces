@@ -47,7 +47,7 @@ public class DBSDialogContent extends DBSUIOutput{
 //							System.out.println("DBSDialogRenderer decode messaga Validated--\t" + xMsgKey + "\t" + xClientId);
 							if (xMessage.getMessageType().getIsQuestion()){
 								if (xSourceId.equals(xClientId + ":" + DBSDialog.BUTTON_NO)){
-									//Seta mensagem como validada negativamente. Lembrando que o validade dispara eventuais listeners atralados a mensagem.
+									//Seta mensagem como validada negativamente. Lembrando que o validade dispara eventuais listeners atrelados a mensagem.
 									xMessage.setMessageValidated(false);
 								} else if (xSourceId.equals(xClientId + ":" + DBSDialog.BUTTON_YES)){
 									//Seta mensagem como validada positivamente
