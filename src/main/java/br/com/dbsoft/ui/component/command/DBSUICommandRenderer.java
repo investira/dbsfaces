@@ -13,6 +13,15 @@ import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
 
 
+/**
+ * Controla se botão foi selecionado
+ * Adiciona evento para ser chamado após a execução do action
+ * 
+ * No DBSUICommandAfterActionEvent
+ * 		Se após execução do action houver mensagem, não efetua o outcome
+ * 			Forma o update do componente que gerou o action para informar que existe mensagem
+ * 			Salva action original para ser chamado após a exibição da últgima mensagem que não seja de erro
+ */
 public class DBSUICommandRenderer extends DBSRenderer implements ActionListener {
 	
     @Override

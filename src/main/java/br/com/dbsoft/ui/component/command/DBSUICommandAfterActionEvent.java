@@ -13,6 +13,11 @@ import br.com.dbsoft.ui.core.DBSMessagesFacesContext;
 import br.com.dbsoft.ui.core.DBSFaces.FACESCONTEXT_ATTRIBUTE;
 
 
+/**
+ * 		Se após execução do action houver mensagem, não efetua o outcome
+ * 			Forma o update do componente que gerou o action para informar que existe mensagem
+ * 			Salva action original para ser chamado após a exibição da últgima mensagem que não seja de erro
+ */
 public class DBSUICommandAfterActionEvent extends FacesEvent {
 
 	private static final long serialVersionUID = 654791198375318147L;
