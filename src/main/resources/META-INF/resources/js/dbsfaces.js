@@ -90,7 +90,6 @@ $(document).on("keydown", function(e){
 //Inicializa tamanho do fonte quando for class for responsivo(-th_responsive)
 $(document).ready(function() { 
 	dbsfaces.ui.initializeTheme();
-//	dbsfaces.ui.initializeParallax();
 //	dbsfaces.ui.initializeResponsive();
 //	$(window).resize(function() {
 //		dbsfaces.ui.initializeResponsive();
