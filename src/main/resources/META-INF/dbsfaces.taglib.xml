@@ -3205,7 +3205,7 @@
 		</attribute>
 		<attribute>
 			<description>
-            	action
+            	action. Caso o método chamado retorne um outcome, este será ignorado se for incluida qualquer mensagem do context.
             </description>
 			<name>action</name>
 			<required>true</required>
@@ -3419,7 +3419,7 @@
 		</attribute>
 		<attribute>
 			<description>
-            	action
+            	action. Caso o método chamado retorne um outcome, este será ignorado se for incluida qualquer mensagem do context.
             </description>
 			<name>action</name>
 			<required>true</required>
@@ -3948,7 +3948,7 @@
 		</attribute>
 		<attribute>
 			<description>
-            	action
+            	action. Caso o método chamado retorne um outcome, este será ignorado se for incluida qualquer mensagem do context.
             </description>
 			<name>action</name>
 			<required>true</required>
