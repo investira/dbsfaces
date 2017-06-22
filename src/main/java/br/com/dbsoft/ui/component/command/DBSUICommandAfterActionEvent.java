@@ -33,14 +33,14 @@ public class DBSUICommandAfterActionEvent extends FacesEvent {
 	public void processListener(FacesListener pListener) {
 //		System.out.println("DBSUICommandAfterActionEvent processListener");
 		FacesContext xContext = FacesContext.getCurrentInstance();
-		//Verifica se há mensagem
+		//Se não houver qualquer mensagem
 		if (DBSMessagesFacesContext.getMessage(DBSMessagesFacesContext.ALL) == null){
-			//Salva qual ACTION ORIGINAL
+			//Remove ACTION ORIGINAL salvo anteriormente
 			xContext.getAttributes().put(FACESCONTEXT_ATTRIBUTE.ACTION_SOURCE, null);
 			return;
 		}
 //		System.out.println("DBSUICommandAfterActionEvent processListener TEM MENSAGEM");
-		//Força a atualização do componente que indicará se há mensagem
+		//Força a atualização do componente que indica se há mensagem que fica dentro do componente que originou o action(button menuitem, etc), para setar nele, via JS, se há mensagem.
 		xContext.getPartialViewContext().getRenderIds().add(getComponent().getClientId() + DBSUICommand.FACET_MESSAGE);
 		//Força que se mantenha na mesma página(inibe qualquer redirect)
 		ActionSource2 xAS = (ActionSource2) wActionEvent.getSource();
