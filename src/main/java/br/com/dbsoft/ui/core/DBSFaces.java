@@ -121,9 +121,10 @@ public class  DBSFaces {
     	 */
     	public static final String ACTION_SOURCE = "DBSACTIONSOURCE";
     	/**
-    	 * Componente que originou a ação.
+    	 * Indicador que método do bean chamado pelo action é controlado com actionController
     	 */
-    	public static final String ACTION_MESSAGEKEY = "DBSACTIONMESSAGEKEY";
+    	public static final String ACTION_CONTROLLED = "DBSACTIONCONTROLLED";
+//    	public static final String ACTION_MESSAGEKEY = "DBSACTIONMESSAGEKEY";
     }
     
 	public static class ID

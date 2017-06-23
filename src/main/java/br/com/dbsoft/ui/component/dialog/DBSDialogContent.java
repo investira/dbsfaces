@@ -18,6 +18,7 @@ import br.com.dbsoft.ui.component.dialog.DBSDialog.TYPE;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.ui.core.DBSFaces.FACESCONTEXT_ATTRIBUTE;
+import br.com.dbsoft.util.DBSBoolean;
 import br.com.dbsoft.util.DBSObject;
 
 @FacesComponent(DBSDialogContent.COMPONENT_TYPE)
@@ -43,7 +44,7 @@ public class DBSDialogContent extends DBSUIOutput{
 						IDBSMessage xMessage = xMessages.getMessage(xMsgKey);
 						if (xMessage != null){
 							//Salva qual a mensagem esta sendo validada para ser utilizado na execução do action
-							pContext.getAttributes().put(FACESCONTEXT_ATTRIBUTE.ACTION_MESSAGEKEY, xMsgKey);
+//							pContext.getAttributes().put(FACESCONTEXT_ATTRIBUTE.ACTION_MESSAGEKEY, xMsgKey);
 //							System.out.println("DBSDialogRenderer decode messaga Validated--\t" + xMsgKey + "\t" + xClientId);
 							if (xMessage.getMessageType().getIsQuestion()){
 								if (xSourceId.equals(xClientId + ":" + DBSDialog.BUTTON_NO)){
@@ -353,7 +354,12 @@ public class DBSDialogContent extends DBSUIOutput{
 		
 		//Cria botões
 		String xStyle = "";
-		DBSUICommand xActionSource = (DBSUICommand) pContext.getAttributes().get(FACESCONTEXT_ATTRIBUTE.ACTION_SOURCE);
+
+		DBSUICommand xActionSource = null;
+		//Se o action chamou método do bean controlado por actionController, força que o botão seja o mesmo action original para que o método seja chamado novamente após a confirmação
+		if (DBSBoolean.toBoolean(FacesContext.getCurrentInstance().getAttributes().get(FACESCONTEXT_ATTRIBUTE.ACTION_CONTROLLED))){
+			xActionSource = (DBSUICommand) pContext.getAttributes().get(FACESCONTEXT_ATTRIBUTE.ACTION_SOURCE);
+		};
 		DBSUICommand xActionSourceNO = xActionSource;
 		DBSUICommand xActionSourceYES = xActionSource;
 		//DOIS BOTÕES - NÃO(NO) e SIM(YES)
