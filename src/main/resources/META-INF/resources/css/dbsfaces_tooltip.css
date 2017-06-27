@@ -19,7 +19,7 @@
 
 .-tooltip.-tt{
 	text-align: center;
-	font-size: 10px;
+	font-size: .9em;
     -webkit-transition: opacity .3s; 
     -moz-transition: opacity .3s;
     -o-transition: opacity .3s;
