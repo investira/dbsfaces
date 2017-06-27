@@ -929,8 +929,8 @@ dbsfaces.charts = {
 		if (pCharts == null || typeof pCharts == "undefined" || pCharts.length == 0){return;}
 
 		var xChartsData = pCharts.data("data");
-		clearTimeout(xChartsData.refreshTimeout);
-		xChartsData.refreshTimeout = setTimeout(function(){
+//		clearTimeout(xChartsData.refreshTimeout);
+//		xChartsData.refreshTimeout = setTimeout(function(){
 			xChartsData.dom.container.addClass("-hide");
 			xChartsData.dom.childrenData.forEach(function(pChartData) {
 				dbsfaces.chart.refresh(pChartData.dom.self);
@@ -938,7 +938,7 @@ dbsfaces.charts = {
 			dbsfaces.charts.pvInitializeAnalizeValues(xChartsData);
 			dbsfaces.charts.pvInitializeDraw(xChartsData);
 			xChartsData.dom.container.removeClass("-hide");
-		},2);
+//		},2);
 	},
 	
 	selectChart: function(pChartsData, pChartId){
