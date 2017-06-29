@@ -3019,6 +3019,7 @@
 					&lt;li&gt;v = values&lt;/li&gt;
 					&lt;li&gt;s = steps&lt;/li&gt;
 					&lt;li&gt;o = options&lt;/li&gt;
+					&lt;li&gt;o = range&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>type</name>
@@ -3065,15 +3066,34 @@
 
 		<attribute>
 			<description>
-                Valor atual. 
+                Valor atual (ignorado para Slider do tipo "r"). 
             </description>
 			<name>value</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
+		
 		<attribute>
 			<description>
-                Valor Máximo (somente para Slider do tipo "v"). Valor default é 100. 
+                Valor inicial (somente para Slider do tipo "r"). 
+            </description>
+			<name>beginValue</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+		</attribute>
+
+		<attribute>
+			<description>
+                Valor final (somente para Slider do tipo "r"). 
+            </description>
+			<name>endValue</name>
+			<required>false</required>
+			<type>java.lang.Double</type>
+		</attribute>
+
+		<attribute>
+			<description>
+                Valor Máximo (somente para Slider do tipo "v" e "r"). Valor default é 100. 
             </description>
 			<name>maxValue</name>
 			<required>false</required>
@@ -3081,7 +3101,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Valor Mínimo (somente para Slider do tipo "v"). Valor default é 0. 
+                Valor Mínimo (somente para Slider do tipo "v" e "r"). Valor default é 0. 
             </description>
 			<name>minValue</name>
 			<required>false</required>

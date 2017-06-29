@@ -17,6 +17,7 @@ import br.com.dbsoft.ui.component.slider.DBSSlider.ORIENTATION;
 import br.com.dbsoft.ui.component.slider.DBSSlider.TYPE;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
+import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSObject;
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSSlider.RENDERER_TYPE)
@@ -29,10 +30,23 @@ public class DBSSliderRenderer extends DBSRenderer {
         
         decodeBehaviors(pContext, xSlider);
         
-        String xValue = DBSFaces.getDecodedComponenteValue(pContext, pvGetInputClientId(xSlider));
-        if (xValue != null){
-        	xSlider.setSubmittedValue(xValue);
-        }
+		TYPE xType = TYPE.get(xSlider.getType());
+		String xValue;
+		if (xType == TYPE.RANGE){
+			xValue = DBSFaces.getDecodedComponenteValue(pContext, pvGetInputClientId(xSlider) + "_begin");
+	        if (xValue != null){
+	        	xSlider.setBeginValue(DBSNumber.toDouble(xValue));
+	        }
+			xValue = DBSFaces.getDecodedComponenteValue(pContext, pvGetInputClientId(xSlider) + "_end");
+	        if (xValue != null){
+	        	xSlider.setEndValue(DBSNumber.toDouble(xValue));
+	        }
+		}else{
+			xValue = DBSFaces.getDecodedComponenteValue(pContext, pvGetInputClientId(xSlider));
+	        if (xValue != null){
+	        	xSlider.setSubmittedValue(xValue);
+	        }
+		}
 //		String xClientIdAction = getInputDataClientId(xInputNumber);
 //		if (pContext.getExternalContext().getRequestParameterMap().containsKey(xClientIdAction)) {
 //			Object xSubmittedValue = pContext.getExternalContext().getRequestParameterMap().get(xClientIdAction);
@@ -106,14 +120,14 @@ public class DBSSliderRenderer extends DBSRenderer {
 			}
 			xWriter.startElement("div", xSlider);
 				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER + CSS.MODIFIER.NOT_SELECTABLE);
-				pvEncodeContent(xSlider, xWriter);
+				pvEncodeContent(xSlider, xWriter, xType);
 			xWriter.endElement("div");
 			DBSFaces.encodeTooltip(pContext, xSlider, xSlider.getTooltip());
 			pvEncodeJS(xSlider, xWriter);
 		xWriter.endElement("div");
 	}
 	
-	private void pvEncodeContent(DBSSlider pSlider, ResponseWriter pWriter) throws IOException{
+	private void pvEncodeContent(DBSSlider pSlider, ResponseWriter pWriter, TYPE pType) throws IOException{
 		pWriter.startElement("div", pSlider);
 			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
 			//Label
@@ -136,25 +150,53 @@ public class DBSSliderRenderer extends DBSRenderer {
 					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.VALUE);
 				pWriter.endElement("div");
 			pWriter.endElement("div");
-			//Handle
-			pWriter.startElement("div", pSlider);
-				DBSFaces.encodeAttribute(pWriter, "class", "-handle");
+			if (pType == TYPE.RANGE){
+				//Handle
 				pWriter.startElement("div", pSlider);
-					DBSFaces.encodeAttribute(pWriter, "class", "-label");
+					DBSFaces.encodeAttribute(pWriter, "class", "-handle -begin");
+					pWriter.startElement("div", pSlider);
+						DBSFaces.encodeAttribute(pWriter, "class", "-label");
+					pWriter.endElement("div");	
 				pWriter.endElement("div");	
-			pWriter.endElement("div");	
+				pWriter.startElement("div", pSlider);
+					DBSFaces.encodeAttribute(pWriter, "class", "-handle -end");
+					pWriter.startElement("div", pSlider);
+						DBSFaces.encodeAttribute(pWriter, "class", "-label");
+					pWriter.endElement("div");	
+				pWriter.endElement("div");	
+			}else{
+				//Handle
+				pWriter.startElement("div", pSlider);
+					DBSFaces.encodeAttribute(pWriter, "class", "-handle");
+					pWriter.startElement("div", pSlider);
+						DBSFaces.encodeAttribute(pWriter, "class", "-label");
+					pWriter.endElement("div");	
+				pWriter.endElement("div");	
+			}
 		pWriter.endElement("div");
-		pvEncodeInput(pSlider, pWriter);
+		
+		if (pType == TYPE.RANGE){
+			pvEncodeInput(pSlider, pWriter, pSlider.getBeginValue(), "begin");
+			pvEncodeInput(pSlider, pWriter, pSlider.getEndValue(), "end");
+		}else{
+			pvEncodeInput(pSlider, pWriter, pSlider.getValue(), null);
+		}
 	}
 
-	private void pvEncodeInput(DBSSlider pSlider, ResponseWriter pWriter) throws IOException{
+	private void pvEncodeInput(DBSSlider pSlider, ResponseWriter pWriter, Object pValue, String pSuffix) throws IOException{
 		String xTag = (pSlider.getReadOnly() ? "span": "input");
+		String xId = pvGetInputClientId(pSlider);
+		if (pSuffix == null){
+			pSuffix = "";
+		}else{
+			xId += "_" + pSuffix;
+		}
 		pWriter.startElement(xTag, pSlider);
-			DBSFaces.encodeAttribute(pWriter, "id", pvGetInputClientId(pSlider));
-			DBSFaces.encodeAttribute(pWriter, "name", pvGetInputClientId(pSlider));
+			DBSFaces.encodeAttribute(pWriter, "id", xId);
+			DBSFaces.encodeAttribute(pWriter, "name", xId);
 			DBSFaces.encodeAttribute(pWriter, "type", "hidden");
-			DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pSlider));
-			DBSFaces.encodeAttribute(pWriter, "value", DBSObject.getNotNull(pSlider.getValue(),0));
+			DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pSlider) + " -" + pSuffix);
+			DBSFaces.encodeAttribute(pWriter, "value", DBSObject.getNotNull(pValue,0));
 		pWriter.endElement(xTag);
 	}
 	

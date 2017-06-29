@@ -19,6 +19,8 @@ public class DBSSlider extends DBSUIInput {
 		orientation,
 		maxValue,
 		minValue,
+		beginValue,
+		endValue,
 		decimalPlaces,
 		animated,
 		tooltip,
@@ -45,7 +47,8 @@ public class DBSSlider extends DBSUIInput {
 	public static enum TYPE {
 		VALUES 				("v"),
 		STEPS 				("s"),	
-	    OPTIONS				("o");
+	    OPTIONS				("o"),
+		RANGE   			("r");
 		
 		private String 	wName;
 		
@@ -179,6 +182,23 @@ public class DBSSlider extends DBSUIInput {
 		handleAttribute("minValue", pMinValue);
 	}
 
+	public Double getBeginValue() {
+		return (Double) getStateHelper().eval(PropertyKeys.beginValue, 0D);
+	}
+	
+	public void setBeginValue(Double pvBeginValue) {
+		getStateHelper().put(PropertyKeys.beginValue, pvBeginValue);
+		handleAttribute("beginValue", pvBeginValue);
+	}
+
+	public Double getEndValue() {
+		return (Double) getStateHelper().eval(PropertyKeys.endValue, 100D);
+	}
+	
+	public void setEndValue(Double pEndValue) {
+		getStateHelper().put(PropertyKeys.endValue, pEndValue);
+		handleAttribute("endValue", pEndValue);
+	}
 
 	public void setAnimated(Boolean pAnimated) {
 		getStateHelper().put(PropertyKeys.animated, pAnimated);

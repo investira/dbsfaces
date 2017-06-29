@@ -10,25 +10,35 @@ dbs_slider = function(pId, pValuesList, pLabelsList, pMinValue, pMaxValue) {
 	
 	$(pId + " > .-container").on("mousedown touchstart", function(e){
 		dbsfaces.slider.jump($(pId).data("data"), e);
-		dbsfaces.slider.handleStart($(pId).data("data"), e);
+		dbsfaces.slider.handleMoveStart($(pId).data("data"), e);
 	});
 	$(pId + " > .-container").on("mouseup touchend", function(e){
-		dbsfaces.slider.handleStop($(pId).data("data"), e);
+		dbsfaces.slider.handleMoveStop($(pId).data("data"), e);
 	});
 	$(pId + " > .-container").on("mouseleave", function(e){
-		dbsfaces.slider.handleStop($(pId).data("data"), e);
+		dbsfaces.slider.handleMoveStop($(pId).data("data"), e);
 	});
 	$(pId + " > .-container").on("mousemove touchmove", function(e){
 		if ($(pId).data("data").startPos == null){return false;}
 		if (e.originalEvent.type == "mousemove" 
 		 && e.which == 0){
-			dbsfaces.slider.handleStop($(pId).data("data"), e);
+			dbsfaces.slider.handleMoveStop($(pId).data("data"), e);
 			return;
 		}
 		dbsfaces.slider.handleMove($(pId).data("data"), e);
 	});	
 	$(pId).on("mouseleave", function(e){
-		dbsfaces.slider.handleStop($(pId).data("data"), e);
+		dbsfaces.slider.handleMoveStop($(pId).data("data"), e);
+	});
+	$(pId + " > .-container > .-content > .-handle").on("mousedown touchstart", function(e){
+		var xSliderData = $(pId).data("data");
+		if (xSliderData.type != "r"){return;}
+		var xHandle = $(this);
+		if (xHandle.hasClass("-begin")){
+			dbsfaces.slider.pvSetCurrentHandle(xSliderData, "b");
+		}else if (xHandle.hasClass("-end")){
+			dbsfaces.slider.pvSetCurrentHandle(xSliderData, "e");
+		}
 	});
 }
 
@@ -39,7 +49,6 @@ dbsfaces.slider = {
 		dbsfaces.slider.pvInitializeLayout(xSliderData);
 	},
 
-	
 	pvInitializeData: function(pSlider, pValuesList, pLabelsList, pMinValue, pMaxValue){
 		var xData = {
 			dom : {
@@ -47,20 +56,29 @@ dbsfaces.slider = {
 				container : pSlider.children(".-container"), //Elemento que contém o container
 				content : null, //Elemento dentro do container
 				input : null, //Elemento input
+				inputBegin : null, //Elemento input
+				inputEnd : null, //Elemento input
 				slider : null, //Elemento do slider
 				sliderValue : null, //Elemento do valor atual do slider
 				handle : null, //Puxador do slider
 				handleLabel : null, //label do valor selecionado no puxador
+				handleBegin : null, //Puxador do slider
+				handleBeginLabel : null, //label do valor selecionado no puxador
+				handleEnd : null, //Puxador do slider
+				handleEndLabel : null, //label do valor selecionado no puxador
 				points : null, //Elemento que contém os pontos
 				point : null, //Elemento que contém um ponto
 				label : null//Elemento que contém o label do ponto
 			},
-			type : pSlider.attr("type"), //Tipo do slider v,o,s
+			type : pSlider.attr("type"), //Tipo do slider v,o,s,r
 			dp : parseInt(pSlider.attr("dp")), //Quantidade de casas decimais(decimal points)
 			value: null, //Valor atual
+			valueBegin: null, //Valor atual máximo - Slider type = "r" range
+			valueEnd: null, //Valor atual mínimo - Slider type = "r" range
 			orientation : (pSlider.hasClass("-h") ? "h" : "v"), //Orientação vertical ou horizontal
 			valuesList : pValuesList, //Lista dos valores
 			labelsList : pLabelsList, //Lista dos labels
+			currentHandle : null, //Handle selecionado "b", "e" ou null(quando type não for "r")
 			min : parseFloat(pMinValue),  //Valor mínimo
 			max : parseFloat(pMaxValue), //Valor máximo
 			ani : (pSlider.hasClass("-ani") ? true: false), //Se há animação
@@ -75,20 +93,39 @@ dbsfaces.slider = {
 		}
 		pSlider.data("data", xData);
 		xData.dom.content = xData.dom.container.children(".-content");
-		xData.dom.input = xData.dom.container.children(".-th_input-data");
 		xData.dom.slider = xData.dom.content.children(".-slider");
-		xData.dom.handle = xData.dom.content.children(".-handle");
-		xData.dom.handleLabel = xData.dom.handle.children(".-label");
+		if (xData.type == "r"){
+			xData.dom.inputBegin = xData.dom.container.children(".-th_input-data.-begin");
+			xData.dom.inputEnd = xData.dom.container.children(".-th_input-data.-end");
+			xData.dom.handleBegin = xData.dom.content.children(".-handle.-begin");
+			xData.dom.handleBeginLabel = xData.dom.handleBegin.children(".-label");
+			xData.dom.handleEnd = xData.dom.content.children(".-handle.-end");
+			xData.dom.handleEndLabel = xData.dom.handleEnd.children(".-label");
+			//Seta posição inicial
+			dbsfaces.slider.pvSetCurrentHandle(xData, "b");
+			dbsfaces.slider.setInputValue(xData, xData.dom.inputBegin.attr("value"));
+			//Seta posição final
+			dbsfaces.slider.pvSetCurrentHandle(xData, "e");
+			dbsfaces.slider.setInputValue(xData, xData.dom.inputEnd.attr("value"));
+
+			dbsfaces.slider.pvSetCurrentHandle(xData, null);
+		}else{
+			//Seta posicao atual
+			xData.dom.input = xData.dom.container.children(".-th_input-data");
+			xData.dom.handle = xData.dom.content.children(".-handle");
+			xData.dom.handleLabel = xData.dom.handle.children(".-label");
+			dbsfaces.slider.pvSetCurrentHandle(xData, null);
+			dbsfaces.slider.setInputValue(xData, xData.dom.input.attr("value"));
+		}
 		xData.dom.sliderValue = xData.dom.slider.children(".-value");
-		
-		dbsfaces.slider.setInputValue(xData, xData.dom.input.attr("value"));
-		if (xData.type == "v"){
+		if (xData.type == "v"
+		 || xData.type == "r"){
 			xData.valuesListNumeric = [];
 			for (var xI=0; xI < pValuesList.length; xI++){
 				if (typeof(pValuesList[xI]) == "number"){
 					xData.valuesListNumeric.push(pValuesList[xI]);
 				}else{
-//					xData.valuesListNumeric.push(parseFloat(pValuesList[xI].replace(/[^0-9]/g, '')));
+//				xData.valuesListNumeric.push(parseFloat(pValuesList[xI].replace(/[^0-9]/g, '')));
 					xData.valuesListNumeric.push(parseFloat(pValuesList[xI]));
 				}
 			}
@@ -97,6 +134,7 @@ dbsfaces.slider = {
 				xData.max = xData.valuesListNumeric[xData.valuesListNumeric.length - 1];
 			}
 		}
+		
 		return xData;
 	},
 
@@ -133,8 +171,15 @@ dbsfaces.slider = {
 			xColor2.darken(10);
 			xBackground = "linear-gradient(135deg," + xColor + " 0%, " + xColor2 + " 100%)";
 		}
-		pSliderData.dom.handle.css("background", xBackground);
-		pSliderData.dom.handle.css("color", xInverted);
+		if (pSliderData.type == "r"){
+			pSliderData.dom.handleBegin.css("background", xBackground);
+			pSliderData.dom.handleBegin.css("color", xInverted);
+			pSliderData.dom.handleEnd.css("background", xBackground);
+			pSliderData.dom.handleEnd.css("color", xInverted);
+		}else{
+			pSliderData.dom.handle.css("background", xBackground);
+			pSliderData.dom.handle.css("color", xInverted);
+		}
 	},
 	
 	pvInitializeCreatePoints: function(pSliderData){
@@ -169,7 +214,8 @@ dbsfaces.slider = {
 				xLabel = pSliderData.labelsList[xIndex];
 				if ((typeof xLabel == "undefined") || xLabel == ""){
 					//Label iqual ao valor em formato númerico
-					if (pSliderData.type == "v"){
+					if (pSliderData.type == "v"
+					 || pSliderData.type == "r"){
 						//Formata número
 						xLabel = dbsfaces.format.number(xValue, pSliderData.dp);
 					}else{
@@ -199,7 +245,6 @@ dbsfaces.slider = {
 				e.preventDefault();
 			});
 		}
-
 	},
 
 	pvInitializeCreatePointElement:function(pPoints){
@@ -237,6 +282,21 @@ dbsfaces.slider = {
 		}
 	},
 
+	pvSetCurrentHandle: function(pSliderData, pHandle){
+		pSliderData.currentHandle = pHandle;
+		if (pHandle == "b"){
+			pSliderData.dom.input = pSliderData.dom.inputBegin;
+			pSliderData.dom.handle = pSliderData.dom.handleBegin;
+			pSliderData.dom.handleLabel = pSliderData.dom.handleBeginLabel;
+			pSliderData.value = pSliderData.valueBegin;
+		}else if (pHandle == "e"){
+			pSliderData.dom.input = pSliderData.dom.inputEnd;
+			pSliderData.dom.handle = pSliderData.dom.handleEnd;
+			pSliderData.dom.handleLabel = pSliderData.dom.handleEndLabel;
+			pSliderData.value = pSliderData.valueEnd;
+		}
+	},
+	
 
 	jump: function(pSliderData, e){
 		pSliderData.dom.self.addClass("-selected");
@@ -254,7 +314,7 @@ dbsfaces.slider = {
 		e.preventDefault();
 	},
 
-	handleStart: function(pSliderData, e){
+	handleMoveStart: function(pSliderData, e){
 		pSliderData.dom.self.addClass("-selected");
 		var xXY = dbsfaces.ui.pointerEventToXY(e);
 		//Sala posição atual para calcular a diferença posteriormente
@@ -270,7 +330,7 @@ dbsfaces.slider = {
 		e.preventDefault();
 	},
 	
-	handleStop: function(pSliderData, e){
+	handleMoveStop: function(pSliderData, e){
 		pSliderData.startPos = null;
 		pSliderData.dom.self.removeClass("-selected");
 		e.stopImmediatePropagation();
@@ -310,23 +370,32 @@ dbsfaces.slider = {
 
 
 	setInputValue: function(pSliderData, pInputValue){
+		if (pSliderData.dom.input == null){return;}
 		var xValue = pInputValue;
 		//Salva como string
-		if (pSliderData.type == "v"){
+		if (pSliderData.type == "v"
+		 || pSliderData.type == "r"){
 			xValue = dbsfaces.format.number(pInputValue, pSliderData.dp);
 		}
 		pSliderData.dom.input.attr("value", xValue);
 		//Salva como float
 		pSliderData.value = pInputValue;
 		pSliderData.dom.self.val(pInputValue);
-
+		if (pSliderData.currentHandle == "b"){
+			pSliderData.dom.inputBegin.attr("value", xValue);
+			pSliderData.valueBegin = pSliderData.value;
+		}else if (pSliderData.currentHandle == "e"){
+			pSliderData.dom.inputEnd.attr("value", xValue);
+			pSliderData.valueEnd = pSliderData.value;
+		}
 	},
 
 	//Encontra o percentual a partir do valor e seta o slider
 	setValue: function(pSliderData){
 		var xValue = dbsfaces.math.round(pSliderData.value, pSliderData.dp);
 		var xLengthFator = 0; 
-		if (pSliderData.type == "v"){
+		if (pSliderData.type == "v"
+		 || pSliderData.type == "r"){
 			var xMin = pSliderData.min;
 			var xMax = pSliderData.max;
 //			xLengthFator = dbsfaces.math.round(parseFloat(xValue.replace(/[^0-9]/g, '')), 10);
@@ -369,6 +438,7 @@ dbsfaces.slider = {
 	},
 
 	pvSetValuePerc: function(pSliderData, pLengthFator){
+		if (pSliderData.dom.input == null){return;}
 		pLengthFator = parseFloat(pLengthFator);
 		if (pLengthFator > 1){
 			pLengthFator = 1;
@@ -377,7 +447,8 @@ dbsfaces.slider = {
 		}
 		var xInputValue;
 		var xI = null;
-		if (pSliderData.type == "v"){
+		if (pSliderData.type == "v"
+		 || pSliderData.type == "r"){
 			var xMax;
 			var xMin;
 			var xValuePercFator = pLengthFator;
@@ -439,7 +510,23 @@ dbsfaces.slider = {
 
 	
 	pvEncodeValueHorizontal: function(pSliderData, pValuePerc){
-		pSliderData.dom.sliderValue.css("width", pValuePerc + "%");
+		if (pSliderData.type == "r"){
+			if (pValuePerc < parseFloat(pSliderData.dom.handleBegin[0].style.left)){
+				dbsfaces.slider.pvSetCurrentHandle(pSliderData, "b");
+			}else if (pValuePerc > parseFloat(pSliderData.dom.handleEnd[0].style.left)){
+				dbsfaces.slider.pvSetCurrentHandle(pSliderData, "e");
+			}
+			if (pSliderData.currentHandle == "b"){
+				xWidth = parseFloat(pSliderData.dom.handleEnd[0].style.left) - pValuePerc;
+				pSliderData.dom.sliderValue.css("left", pValuePerc + "%");
+				pSliderData.dom.sliderValue.css("width", xWidth + "%");
+			}else{
+				xWidth = pValuePerc - parseFloat(pSliderData.dom.handleBegin[0].style.left);
+				pSliderData.dom.sliderValue.css("width", xWidth + "%");
+			}
+		}else{
+			pSliderData.dom.sliderValue.css("width", pValuePerc + "%");
+		}
 		pSliderData.dom.handle.css("left", pValuePerc + "%");
 		var xCenter = (pSliderData.dom.handleLabel[0].getBoundingClientRect().width / 2);
 		var xLeft;
@@ -485,7 +572,8 @@ dbsfaces.slider = {
 			xCur = parseFloat(pSliderData.dom.handle.css("top"));
 //			xCur = pSliderData.dom.handle[0].getBoundingClientRect().top;
 		}
-		if (pSliderData.type == "v"){
+		if (pSliderData.type == "v"
+		 || pSliderData.type == "r"){
 			for (var xI=0; xI < pSliderData.dom.label.length; xI++){
 				var xLabelX = $(pSliderData.dom.label[xI]);
 				var xSize;
