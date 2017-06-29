@@ -107,8 +107,6 @@ dbsfaces.slider = {
 			//Seta posição final
 			dbsfaces.slider.pvSetCurrentHandle(xData, "e");
 			dbsfaces.slider.setInputValue(xData, xData.dom.inputEnd.attr("value"));
-
-			dbsfaces.slider.pvSetCurrentHandle(xData, null);
 		}else{
 			//Seta posicao atual
 			xData.dom.input = xData.dom.container.children(".-th_input-data");
@@ -137,6 +135,7 @@ dbsfaces.slider = {
 		
 		return xData;
 	},
+	
 
 	pvInitializeLayout: function(pSliderData){
 		dbsfaces.slider.pvInitializeLayoutHorizontalVertical(pSliderData);
@@ -365,7 +364,14 @@ dbsfaces.slider = {
 		}else{
 			pSliderData.length = pSliderData.dom.content[0].getBoundingClientRect().height;
 		}
-		dbsfaces.slider.setValue(pSliderData);
+		if (pSliderData.type == "r"){
+			dbsfaces.slider.pvSetCurrentHandle(pSliderData, "b");
+			dbsfaces.slider.setValue(pSliderData);
+			dbsfaces.slider.pvSetCurrentHandle(pSliderData, "e");
+			dbsfaces.slider.setValue(pSliderData);
+		}else{
+			dbsfaces.slider.setValue(pSliderData);
+		}
 	},
 
 
@@ -497,7 +503,6 @@ dbsfaces.slider = {
 			dbsfaces.slider.pvEncodeValueVertical(pSliderData, xValuePerc);
 		}
 
-
 		//Configura steps anteriores
 		dbsfaces.slider.pvHideLabels(pSliderData);
 
@@ -511,24 +516,14 @@ dbsfaces.slider = {
 	
 	pvEncodeValueHorizontal: function(pSliderData, pValuePerc){
 		if (pSliderData.type == "r"){
-			if (pValuePerc < parseFloat(pSliderData.dom.handleBegin[0].style.left)){
-				dbsfaces.slider.pvSetCurrentHandle(pSliderData, "b");
-			}else if (pValuePerc > parseFloat(pSliderData.dom.handleEnd[0].style.left)){
-				dbsfaces.slider.pvSetCurrentHandle(pSliderData, "e");
+			if ((pSliderData.currentHandle == "e" && pValuePerc < parseFloat(pSliderData.dom.handleBegin[0].style.left))
+  		     || (pSliderData.currentHandle == "b" && pValuePerc > parseFloat(pSliderData.dom.handleEnd[0].style.left))){
+				dbsfaces.slider.pvHandleSwitch(pSliderData);
 			}
-			if (pSliderData.currentHandle == "b"){
-				xWidth = parseFloat(pSliderData.dom.handleEnd[0].style.left) - pValuePerc;
-				pSliderData.dom.sliderValue.css("left", pValuePerc + "%");
-				pSliderData.dom.sliderValue.css("width", xWidth + "%");
-			}else{
-				xWidth = pValuePerc - parseFloat(pSliderData.dom.handleBegin[0].style.left);
-				pSliderData.dom.sliderValue.css("width", xWidth + "%");
-			}
-		}else{
-			pSliderData.dom.sliderValue.css("width", pValuePerc + "%");
 		}
 		pSliderData.dom.handle.css("left", pValuePerc + "%");
 		var xCenter = (pSliderData.dom.handleLabel[0].getBoundingClientRect().width / 2);
+		//Center handle label
 		var xLeft;
 		var xR = (pSliderData.dom.handle[0].getBoundingClientRect().left + xCenter) -
 		   	     (pSliderData.dom.slider[0].getBoundingClientRect().left + pSliderData.dom.slider[0].getBoundingClientRect().width);
@@ -542,12 +537,27 @@ dbsfaces.slider = {
 			xLeft = -xCenter;
 		}
 		pSliderData.dom.handleLabel.css("left", xLeft);
+		//termometro
+		if (pSliderData.type == "r"){
+			var xBegin = parseFloat(pSliderData.dom.handleBegin[0].style.left);
+			var xEnd = parseFloat(pSliderData.dom.handleEnd[0].style.left);
+			pSliderData.dom.sliderValue.css("left", xBegin + "%");
+			pSliderData.dom.sliderValue.css("width", (xEnd - xBegin) + "%");
+		}else{
+			pSliderData.dom.sliderValue.css("width", pValuePerc + "%");
+		}
 	},
 
 	pvEncodeValueVertical: function(pSliderData, pValuePerc){
-		pSliderData.dom.sliderValue.css("height", pValuePerc + "%");
+//		if (pSliderData.type == "r"){
+//			if ((pSliderData.currentHandle == "e" && pValuePerc < parseFloat(pSliderData.dom.handleBegin[0].style.left))
+//  		     || (pSliderData.currentHandle == "b" && pValuePerc > parseFloat(pSliderData.dom.handleEnd[0].style.left))){
+//				dbsfaces.slider.pvHandleSwitch(pSliderData);
+//			}
+//		}
 		pSliderData.dom.handle.css("top", 100 - pValuePerc + "%");
 		var xCenter = (pSliderData.dom.handleLabel[0].getBoundingClientRect().height / 2);
+		//Center handle label
 		var xTop;
 		var xT = (pSliderData.dom.handle[0].getBoundingClientRect().top + xCenter) -
 		   	     (pSliderData.dom.slider[0].getBoundingClientRect().top + pSliderData.dom.slider[0].getBoundingClientRect().height);
@@ -561,6 +571,33 @@ dbsfaces.slider = {
 			xTop = -xCenter;
 		}
 		pSliderData.dom.handleLabel.css("top", xTop);
+		//termometro
+		if (pSliderData.type == "r"){
+			var xBegin = parseFloat(pSliderData.dom.handleBegin[0].style.top);
+			var xEnd = parseFloat(pSliderData.dom.handleEnd[0].style.top);
+			pSliderData.dom.sliderValue.css("top", xBegin + "%");
+			pSliderData.dom.sliderValue.css("height", (xEnd - xBegin) + "%");
+		}else{
+			pSliderData.dom.sliderValue.css("height", pValuePerc + "%");
+		}
+	},
+	
+	pvHandleSwitch: function(pSliderData){
+		var xTmp = pSliderData.dom.handleBegin;
+		pSliderData.dom.handleBegin = pSliderData.dom.handleEnd;
+		pSliderData.dom.handleEnd = xTmp;
+		
+		pSliderData.dom.handleBegin.removeClass("-end").addClass("-begin");
+		pSliderData.dom.handleEnd.removeClass("-begin").addClass("-end");
+		
+		xTmp = pSliderData.dom.handleBeginLabel;
+		pSliderData.dom.handleBeginLabel = pSliderData.dom.handleEndLabel;
+		pSliderData.dom.handleEndLabel = xTmp;
+		if (pSliderData.currentHandle == "b"){
+			pSliderData.currentHandle = "e";
+		}else{
+			pSliderData.currentHandle = "b";
+		}
 	},
 	
 	pvHideLabels: function(pSliderData){
