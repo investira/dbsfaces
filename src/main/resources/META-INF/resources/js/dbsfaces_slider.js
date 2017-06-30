@@ -157,11 +157,17 @@ dbsfaces.slider = {
 		
 		//Slider value line
 		var xBackground;
-		xColor2.setAlpha(.70);
-		xBackground = "linear-gradient(135deg," + xColor2 + " 0%, " + xColor + " 100%)";
+		xColor.setAlpha(.9);
+		xColor2.setAlpha(.5);
+		if (pSliderData.orientation == "v"){
+			xBackground = "linear-gradient(135deg," + xColor + " 0%, " + xColor2 + " 100%)";
+		}else{
+			xBackground = "linear-gradient(135deg," + xColor2 + " 0%, " + xColor + " 100%)";
+		}
 		pSliderData.dom.sliderValue.css("background", xBackground);
 		
 		//Handle
+		xColor.setAlpha(1);
 		xColor2.setAlpha(1);
 		if (xColor.isDark()){
 			xColor2.lighten(10);
@@ -509,7 +515,7 @@ dbsfaces.slider = {
 		//Dispara que valor foi alterado
 		clearTimeout(pSliderData.timeout);
 		pSliderData.timeout = setTimeout(function(){
-									pSliderData.dom.self.trigger("change", [{value:pSliderData.dom.input.data("value"), fator:pSliderData.lengthFator}]);
+									pSliderData.dom.self.trigger("change", [{value:pSliderData.value, valueBegin:pSliderData.valueBegin, valueEnd:pSliderData.valueEnd, fator:pSliderData.lengthFator}]);
 								},0);
 	},
 
@@ -549,12 +555,12 @@ dbsfaces.slider = {
 	},
 
 	pvEncodeValueVertical: function(pSliderData, pValuePerc){
-//		if (pSliderData.type == "r"){
-//			if ((pSliderData.currentHandle == "e" && pValuePerc < parseFloat(pSliderData.dom.handleBegin[0].style.left))
-//  		     || (pSliderData.currentHandle == "b" && pValuePerc > parseFloat(pSliderData.dom.handleEnd[0].style.left))){
-//				dbsfaces.slider.pvHandleSwitch(pSliderData);
-//			}
-//		}
+		if (pSliderData.type == "r"){
+			if ((pSliderData.currentHandle == "e" && (100 - pValuePerc) > parseFloat(pSliderData.dom.handleBegin[0].style.top))
+  		     || (pSliderData.currentHandle == "b" && (100 - pValuePerc) < parseFloat(pSliderData.dom.handleEnd[0].style.top))){
+				dbsfaces.slider.pvHandleSwitch(pSliderData);
+			}
+		}
 		pSliderData.dom.handle.css("top", 100 - pValuePerc + "%");
 		var xCenter = (pSliderData.dom.handleLabel[0].getBoundingClientRect().height / 2);
 		//Center handle label
@@ -575,8 +581,9 @@ dbsfaces.slider = {
 		if (pSliderData.type == "r"){
 			var xBegin = parseFloat(pSliderData.dom.handleBegin[0].style.top);
 			var xEnd = parseFloat(pSliderData.dom.handleEnd[0].style.top);
-			pSliderData.dom.sliderValue.css("top", xBegin + "%");
-			pSliderData.dom.sliderValue.css("height", (xEnd - xBegin) + "%");
+			console.log(xBegin + "\t" + xEnd + "\t" + (xBegin - xEnd));
+			pSliderData.dom.sliderValue.css("height", (xBegin - xEnd) + "%");
+			pSliderData.dom.sliderValue.css("top", xEnd + "%");
 		}else{
 			pSliderData.dom.sliderValue.css("height", pValuePerc + "%");
 		}
