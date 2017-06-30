@@ -2,7 +2,6 @@ package br.com.dbsoft.ui.component.datatable;
 
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
@@ -604,7 +603,8 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	 */
 	private void pvSetCurrentRowIndex(FacesContext pContext, UIComponent pComponent, boolean pDecode){
 		DBSDataTable 	xDataTable = (DBSDataTable) pComponent;
-		String xRowIndex = pContext.getExternalContext().getRequestParameterMap().get(pvGetInputFooId(pContext, xDataTable));
+		String xRowIndex = DBSFaces.getDecodedComponenteValue(pContext, pvGetInputFooId(pContext, xDataTable));
+//		String xRowIndex = pContext.getExternalContext().getRequestParameterMap().get(pvGetInputFooId(pContext, xDataTable));
 		if (!DBSObject.isEmpty(xRowIndex)){
 			//No decode, set o rowIndex para que o valor selecionado pelo usuário, via submit, sensibilize efetivamente o valor corrente.
 			if (pDecode){
@@ -623,24 +623,40 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	 */
 	private void pvSetSortInputs(FacesContext pContext, UIComponent pComponent){
 		DBSDataTable 		xDataTable = (DBSDataTable) pComponent;
-		Map<String, String> xRequestMap = pContext.getExternalContext().getRequestParameterMap();
-		String xStr;
+//		Map<String, String> xRequestMap = pContext.getExternalContext().getRequestParameterMap();
+//		String xStr;
 		//Seta coluna que será utilizada para o sort
-		if (xRequestMap.containsKey(pvGetInputSortColumnId(pContext, xDataTable))){
-			xStr = DBSObject.getNotEmpty(xRequestMap.get(pvGetInputSortColumnId(pContext, xDataTable)), "");
-			//Somente seta valor se for diferente do já existente
-			if (!xDataTable.getSortColumn().equals(xStr)){
-				xDataTable.setSortColumn(xStr);
+		String xSortColumn = DBSFaces.getDecodedComponenteValue(pContext, pvGetInputSortColumnId(pContext, xDataTable));
+		if (xSortColumn != null){
+			if (!xDataTable.getSortColumn().equals(xSortColumn)){
+				xDataTable.setSortColumn(xSortColumn);
 				//Ignora o set da ordem, pois já é resetado para "A" neste caso
 				return;
 			}
 		}
+
+//		if (xRequestMap.containsKey(pvGetInputSortColumnId(pContext, xDataTable))){
+//			xStr = DBSObject.getNotEmpty(xRequestMap.get(pvGetInputSortColumnId(pContext, xDataTable)), "");
+//			//Somente seta valor se for diferente do já existente
+//			if (!xDataTable.getSortColumn().equals(xStr)){
+//				xDataTable.setSortColumn(xStr);
+//				//Ignora o set da ordem, pois já é resetado para "A" neste caso
+//				return;
+//			}
+//		}
 		//Set direção do sort
-		if (xRequestMap.containsKey(pvGetInputSortDirectionId(pContext, xDataTable))){
-			SORT_DIRECTION xDirection = SORT_DIRECTION.get(xRequestMap.get(pvGetInputSortDirectionId(pContext, xDataTable)));
+		String xSortDirection = DBSFaces.getDecodedComponenteValue(pContext, pvGetInputSortDirectionId(pContext, xDataTable));
+		if (xSortDirection != null){
+			SORT_DIRECTION xDirection = SORT_DIRECTION.get(xSortDirection);
 			//Somente seta valor se for diferente do já existente
 			xDataTable.setSortDirection(xDirection.getCode());
 		}
+			
+//		if (xRequestMap.containsKey(pvGetInputSortDirectionId(pContext, xDataTable))){
+//			SORT_DIRECTION xDirection = SORT_DIRECTION.get(xRequestMap.get(pvGetInputSortDirectionId(pContext, xDataTable)));
+//			//Somente seta valor se for diferente do já existente
+//			xDataTable.setSortDirection(xDirection.getCode());
+//		}
 	}
 
 	/**
