@@ -1,4 +1,6 @@
-dbs_slider = function(pId, pValuesList, pLabelsList, pMinValue, pMaxValue) {
+dbs_slider = function(pId, pValuesList, pLabelsList, pMinValue, pMaxValue, pLocale) {
+	dbsfaces.format.locale = pLocale;
+	
 	dbsfaces.slider.initialize($(pId), pValuesList, pLabelsList, pMinValue, pMaxValue);
 
 	$(window).resize(function(e){
@@ -71,13 +73,16 @@ dbsfaces.slider = {
 				label : null//Elemento que contém o label do ponto
 			},
 			type : pSlider.attr("type"), //Tipo do slider v,o,s,r
+			orientation : (pSlider.hasClass("-h") ? "h" : "v"), //Orientação vertical ou horizontal
 			dp : parseInt(pSlider.attr("dp")), //Quantidade de casas decimais(decimal points)
+			valuesList : pValuesList, //Lista dos valores
+			labelsList : pLabelsList, //Lista dos labels
 			value: null, //Valor atual
 			valueBegin: null, //Valor atual máximo - Slider type = "r" range
 			valueEnd: null, //Valor atual mínimo - Slider type = "r" range
-			orientation : (pSlider.hasClass("-h") ? "h" : "v"), //Orientação vertical ou horizontal
-			valuesList : pValuesList, //Lista dos valores
-			labelsList : pLabelsList, //Lista dos labels
+			lengthFator: null, //Tamanho/posição atual em fator
+			lengthFatorBegin: null, //Tamanho/posição atual em fator do begin
+			lengthFatorEnd: null, //Tamanho/posição atual em fator do end
 			currentHandle : null, //Handle selecionado "b", "e" ou null(quando type não for "r")
 			min : parseFloat(pMinValue),  //Valor mínimo
 			max : parseFloat(pMaxValue), //Valor máximo
@@ -86,7 +91,6 @@ dbsfaces.slider = {
 			length: null, //largura ou altura total do gráfico em px
 			lengthPos : null, //Posição atual em relação a length(ver atributo acima)
 			startPos: null, //Posição em relação a tela quando iniciado o movimento
-			lengthFator: null, //Tamanho/posição atual em fator
 			timeout: null, //Timeout para disparar evento de Change quando valor alterado
 			valuesListNumeric: null, //lista dos valores convertida para valor númerico
 			resizeTimeout: null
@@ -241,7 +245,8 @@ dbsfaces.slider = {
 		pSliderData.dom.points = pSliderData.dom.content.children(".-points");
 		pSliderData.dom.point = pSliderData.dom.points.children(".-point");
 		pSliderData.dom.label = pSliderData.dom.points.children(".-label");
-		if (pSliderData.type == "v"){
+		if (pSliderData.type == "v"
+		 || pSliderData.type == "r"){
 			//Força que valor seja exatamente o valor do label selecionado
 			pSliderData.dom.label.on("mousedown touchstart", function(e){
 				dbsfaces.slider.setInputValue(pSliderData, $(this).attr("v"));
@@ -283,7 +288,6 @@ dbsfaces.slider = {
 			}else{
 				$(pSliderData.dom.label[xI]).css("top", xValuePerc + "%");
 			}
-//			$(pSliderData.label[xI]).data("perc", xValuePerc / 100);
 		}
 	},
 
@@ -302,23 +306,41 @@ dbsfaces.slider = {
 		}
 	},
 	
+	pvFindHandle: function(pSliderData, pLengthFator){
+		var xDistBegin = Math.abs(pLengthFator - pSliderData.lengthFatorBegin);
+		var xDistEnd = Math.abs(pLengthFator - pSliderData.lengthFatorEnd);
+		if (xDistBegin < xDistEnd){
+			if (pSliderData.currentHandle != "b"){
+				dbsfaces.slider.pvSetCurrentHandle(pSliderData, "b");
+			}
+		}else{
+			if (pSliderData.currentHandle != "e"){
+				dbsfaces.slider.pvSetCurrentHandle(pSliderData, "e");
+			}
+		}
+	},
 
 	jump: function(pSliderData, e){
-		pSliderData.dom.self.addClass("-selected");
 		//Calcula fator em relação as coordenada do click
 		var xLengthFator = 0;
 		var xXY = dbsfaces.ui.pointerEventToXY(e);
+		pSliderData.dom.self.addClass("-selected");
 		if (pSliderData.orientation == "h"){
 			xLengthFator = (xXY.x - pSliderData.dom.content[0].getBoundingClientRect().left) / pSliderData.length;
 		}else{
 			xLengthFator = 1 - ((xXY.y - pSliderData.dom.content[0].getBoundingClientRect().top) / pSliderData.length);
 		}
+		//Seleciona o handle esta mais perto
+		if (pSliderData.type == "r"){
+			dbsfaces.slider.pvFindHandle(pSliderData, xLengthFator);
+		}
+		//Posiciona o slider
 		dbsfaces.slider.pvSetValuePerc(pSliderData, xLengthFator);
 
 		e.stopImmediatePropagation();
 		e.preventDefault();
 	},
-
+	
 	handleMoveStart: function(pSliderData, e){
 		pSliderData.dom.self.addClass("-selected");
 		var xXY = dbsfaces.ui.pointerEventToXY(e);
@@ -396,9 +418,11 @@ dbsfaces.slider = {
 		if (pSliderData.currentHandle == "b"){
 			pSliderData.dom.inputBegin.attr("value", xValue);
 			pSliderData.valueBegin = pSliderData.value;
+			pSliderData.lengthFatorBegin = pSliderData.lengthFator;
 		}else if (pSliderData.currentHandle == "e"){
 			pSliderData.dom.inputEnd.attr("value", xValue);
 			pSliderData.valueEnd = pSliderData.value;
+			pSliderData.lengthFatorEnd = pSliderData.lengthFator;
 		}
 	},
 
@@ -490,10 +514,10 @@ dbsfaces.slider = {
 			pLengthFator = xI / (pSliderData.valuesList.length - 1);
 			xInputValue = pSliderData.valuesList[xI];
 		}
-		//Salva inputValue
-		dbsfaces.slider.setInputValue(pSliderData, xInputValue);
 		//Salva percentual relativo a length(coordenada)
 		pSliderData.lengthFator = pLengthFator;
+		//Salva inputValue
+		dbsfaces.slider.setInputValue(pSliderData, xInputValue);
 		dbsfaces.slider.pvEncodeValue(pSliderData);
 	},
 	
@@ -581,7 +605,6 @@ dbsfaces.slider = {
 		if (pSliderData.type == "r"){
 			var xBegin = parseFloat(pSliderData.dom.handleBegin[0].style.top);
 			var xEnd = parseFloat(pSliderData.dom.handleEnd[0].style.top);
-			console.log(xBegin + "\t" + xEnd + "\t" + (xBegin - xEnd));
 			pSliderData.dom.sliderValue.css("height", (xBegin - xEnd) + "%");
 			pSliderData.dom.sliderValue.css("top", xEnd + "%");
 		}else{

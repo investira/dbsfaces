@@ -3,6 +3,7 @@ package br.com.dbsoft.ui.component.slider;
 import java.io.IOException;
 import java.util.List;
 
+import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -17,6 +18,7 @@ import br.com.dbsoft.ui.component.slider.DBSSlider.ORIENTATION;
 import br.com.dbsoft.ui.component.slider.DBSSlider.TYPE;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
+import br.com.dbsoft.util.DBSFormat;
 import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSObject;
 
@@ -31,16 +33,20 @@ public class DBSSliderRenderer extends DBSRenderer {
         decodeBehaviors(pContext, xSlider);
         
 		TYPE xType = TYPE.get(xSlider.getType());
-		String xValue;
+		Object xValue;
+		ValueExpression xVE;
 		if (xType == TYPE.RANGE){
 			xValue = DBSFaces.getDecodedComponenteValue(pContext, pvGetInputClientId(xSlider) + "_begin");
 	        if (xValue != null){
-	        	xSlider.setBeginValue(DBSNumber.toDouble(xValue));
+			 	xVE =  pComponent.getValueExpression("beginValue");
+			 	xVE.setValue(pContext.getELContext(), DBSNumber.toDouble(xValue));
 	        }
 			xValue = DBSFaces.getDecodedComponenteValue(pContext, pvGetInputClientId(xSlider) + "_end");
 	        if (xValue != null){
-	        	xSlider.setEndValue(DBSNumber.toDouble(xValue));
+			 	xVE =  pComponent.getValueExpression("endValue");
+			 	xVE.setValue(pContext.getELContext(), DBSNumber.toDouble(xValue));
 	        }
+        	xSlider.setSubmittedValue(null);
 		}else{
 			xValue = DBSFaces.getDecodedComponenteValue(pContext, pvGetInputClientId(xSlider));
 	        if (xValue != null){
@@ -214,10 +220,13 @@ public class DBSSliderRenderer extends DBSRenderer {
 				     			  xJson.toJsonTree(pSlider.getValuesList(), List.class) + ", " +
 				     			  xJson.toJsonTree(pSlider.getLabelsList(), List.class) + ", " +
 				     			  xJson.toJson(pSlider.getMinValue()) + ", " +
-				     			  xJson.toJson(pSlider.getMaxValue()) +
+				     			  xJson.toJson(pSlider.getMaxValue()) + ", " +
+				     			  "'" + DBSFormat.getLocale().getLanguage() + "-" + DBSFormat.getLocale().getCountry() + "'" +
 				     			  "); \n" +
                      "}); \n"; 
 		pWriter.write(xJS);
+//		System.out.println(DBSFormat.getLocale());
+		
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);		
 	}
 	
