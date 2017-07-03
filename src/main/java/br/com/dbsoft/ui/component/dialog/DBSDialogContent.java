@@ -38,7 +38,7 @@ public class DBSDialogContent extends DBSUIOutput{
 				//Se decode foi disparado em função de uma ação
 				if (xSourceId != null){
 					String xMsgKeyInputId = xClientId + ":" + DBSDialog.INPUT_MSGKEY;
-					String xMsgKey = DBSFaces.getDecodedComponenteValue(pContext, xMsgKeyInputId);
+					String xMsgKey = (String) DBSFaces.getDecodedComponenteValue(pContext, xMsgKeyInputId);
 					//Se existe alguma mensagem sendo validada
 					if (xMsgKey != null){
 						IDBSMessage xMessage = xMessages.getMessage(xMsgKey);
