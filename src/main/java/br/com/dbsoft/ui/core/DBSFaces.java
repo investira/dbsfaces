@@ -1304,8 +1304,8 @@ public class  DBSFaces {
 	 * @param pComponenteClientId
 	 * @return
 	 */
-	public static String getDecodedComponenteValue(FacesContext pContext, String pComponenteClientId){
-		String xValue = null;
+	public static Object getDecodedComponenteValue(FacesContext pContext, String pComponenteClientId){
+		Object xValue = null;
 //		if (RenderKitUtils.isPartialOrBehaviorAction(pContext, pComponenteClientId)
 //		|| pContext.getExternalContext().getRequestParameterMap().containsKey(pComponenteClientId)){ 
 		if (pContext.getExternalContext().getRequestParameterMap().containsKey(pComponenteClientId)){ 
