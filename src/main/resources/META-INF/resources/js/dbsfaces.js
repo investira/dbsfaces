@@ -899,7 +899,7 @@ dbsfaces.ui = {
         if(e.type == 'touchstart' || e.type == 'touchmove' || e.type == 'touchend' || e.type == 'touchcancel'){
 			var xTouch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
 			xXY.x = xTouch.pageX;
-			xXY.y = xTouch.pageY;
+			xXY.y = xTouch.pageY - $(window).scrollTop(); //Incluido por posicionamento errado quando há scroll - 30-jun-17
         } else if (e.type == 'mousedown' || e.type == 'mouseup' || e.type == 'mousemove' || e.type == 'mouseover'|| e.type=='mouseout' || e.type=='mouseenter' || e.type=='mouseleave') {
 //			xXY.x = e.offsetX;
 //			xXY.y = e.offsetY;
@@ -1190,19 +1190,11 @@ dbsfaces.number = {
 };
 
 dbsfaces.format = {
+	locale: window.navigator.language,
+	
 	number: function(pValue, pDecimals){
-//		var xLanguage = window.navigator.userLanguage || window.navigator.language;
 		pValue = dbsfaces.math.round(pValue, pDecimals);
-		return pValue.toLocaleString(window.navigator.language, { minimumFractionDigits: pDecimals });
-//		var xDS = dbsfaces.format.getDecimalSeparator();
-//		console.log(xDS);
-//		//Ingles
-//		if (xDS == ".") { 
-//	    	return pValue.toString().split("/(?=(?:\d{3})+(?:\.|$))/g").join(",");
-//	    	//Portugues
-//		}else{ 
-//	        return pValue.toString().split("/(?=(?:\d{3})+(?:,|$))/g").join(".");
-//	    }
+		return pValue.toLocaleString(dbsfaces.format.locale, { minimumFractionDigits: pDecimals });
 	},
 	
 	//Retorna o número simplificado com mil, mi, bi, tri, quatri.
