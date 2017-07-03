@@ -603,7 +603,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	 */
 	private void pvSetCurrentRowIndex(FacesContext pContext, UIComponent pComponent, boolean pDecode){
 		DBSDataTable 	xDataTable = (DBSDataTable) pComponent;
-		String xRowIndex = DBSFaces.getDecodedComponenteValue(pContext, pvGetInputFooId(pContext, xDataTable));
+		String xRowIndex = (String) DBSFaces.getDecodedComponenteValue(pContext, pvGetInputFooId(pContext, xDataTable));
 //		String xRowIndex = pContext.getExternalContext().getRequestParameterMap().get(pvGetInputFooId(pContext, xDataTable));
 		if (!DBSObject.isEmpty(xRowIndex)){
 			//No decode, set o rowIndex para que o valor selecionado pelo usuário, via submit, sensibilize efetivamente o valor corrente.
@@ -626,7 +626,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 //		Map<String, String> xRequestMap = pContext.getExternalContext().getRequestParameterMap();
 //		String xStr;
 		//Seta coluna que será utilizada para o sort
-		String xSortColumn = DBSFaces.getDecodedComponenteValue(pContext, pvGetInputSortColumnId(pContext, xDataTable));
+		String xSortColumn = (String) DBSFaces.getDecodedComponenteValue(pContext, pvGetInputSortColumnId(pContext, xDataTable));
 		if (xSortColumn != null){
 			if (!xDataTable.getSortColumn().equals(xSortColumn)){
 				xDataTable.setSortColumn(xSortColumn);
@@ -645,7 +645,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 //			}
 //		}
 		//Set direção do sort
-		String xSortDirection = DBSFaces.getDecodedComponenteValue(pContext, pvGetInputSortDirectionId(pContext, xDataTable));
+		String xSortDirection = (String) DBSFaces.getDecodedComponenteValue(pContext, pvGetInputSortDirectionId(pContext, xDataTable));
 		if (xSortDirection != null){
 			SORT_DIRECTION xDirection = SORT_DIRECTION.get(xSortDirection);
 			//Somente seta valor se for diferente do já existente
