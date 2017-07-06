@@ -1,6 +1,5 @@
 package br.com.dbsoft.ui.bean.crud;
 
-import java.lang.annotation.Annotation;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Timestamp;
@@ -8,11 +7,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.enterprise.context.Conversation;
-import javax.enterprise.context.ConversationScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 
 import br.com.dbsoft.core.DBSApproval;
 import br.com.dbsoft.core.DBSApproval.APPROVAL_STAGE;
@@ -296,12 +292,6 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 		}		
 	}
 
-	@Inject
-	private Conversation						wConversation;
-	
-	private static final long wConversationTimeout = 600000;  //10 minutos
-
-
 	protected DBSDAO<?>							wDAO;
 	private List<IDBSCrudBeanEventsListener>	wEventListeners = new ArrayList<IDBSCrudBeanEventsListener>();
 	private EditingMode							wEditingMode = EditingMode.NONE;
@@ -363,26 +353,6 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	private IDBSMessage					wMessaggeApprovalSameUser =
 													new DBSMessage(MESSAGE_TYPE.ERROR, DBSFaces.getBundlePropertyValue("dbsfaces", "crudbean.msg.approvalSameUser"));
 	
-	
-	/**
-	 * Retorna o ID da conversação
-	 * @return
-	 */
-	public String getCID(){
-		return wConversation.getId();
-	}
-	
-	/**
-	 * Inicia conversação caso exista a anotação 'ConversationScoped' na class
-	 */
-	public void conversationBegin(){
-		for (Annotation xAnnotation:this.getClass().getDeclaredAnnotations()){
-			if (xAnnotation.annotationType() == ConversationScoped.class){
-				pvConversationBegin();
-				break;
-			}
-		}
-	}
 	
 	@Override
 	protected void initializeClass() {
@@ -2427,19 +2397,6 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	protected void beforePaste(DBSCrudBeanEvent pEvent) throws DBSIOException{};
 	
 	// PRIVATE ============================================================================
-	
-
-	/**
-	 * Inicializa a conversação
-	 */
-	private void pvConversationBegin(){
-//		if (!FacesContext.getCurrentInstance().isPostback() && wConversation.isTransient()){
-		if (wConversation.isTransient()){
-			wConversation.begin();
-			wConversation.setTimeout(wConversationTimeout);
-		}
-	}
-	
 	/**
 	 * Atualiza dados da lista e dispara os eventos beforeRefresh e afterRefresh.<br/>
 	 * @throws DBSIOException
