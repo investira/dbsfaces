@@ -39,12 +39,16 @@ public class DBSSliderRenderer extends DBSRenderer {
 			xValue = DBSFaces.getDecodedComponenteValue(pContext, pvGetInputClientId(xSlider) + "_begin");
 	        if (xValue != null){
 			 	xVE =  pComponent.getValueExpression("beginValue");
-			 	xVE.setValue(pContext.getELContext(), DBSNumber.toDouble(xValue));
+			 	if (xVE != null){
+			 		xVE.setValue(pContext.getELContext(), DBSNumber.toDouble(xValue));
+			 	}
 	        }
 			xValue = DBSFaces.getDecodedComponenteValue(pContext, pvGetInputClientId(xSlider) + "_end");
 	        if (xValue != null){
 			 	xVE =  pComponent.getValueExpression("endValue");
-			 	xVE.setValue(pContext.getELContext(), DBSNumber.toDouble(xValue));
+			 	if (xVE != null){
+			 		xVE.setValue(pContext.getELContext(), DBSNumber.toDouble(xValue));
+			 	}
 	        }
         	xSlider.setSubmittedValue(null);
 		}else{
