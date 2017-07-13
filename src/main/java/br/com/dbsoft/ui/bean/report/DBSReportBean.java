@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.enterprise.context.Conversation;
-import javax.inject.Inject;
-
 import br.com.dbsoft.error.DBSIOException;
 import br.com.dbsoft.message.IDBSMessageBase.MESSAGE_TYPE;
 import br.com.dbsoft.ui.bean.DBSBeanModalMessages;
@@ -31,8 +28,6 @@ public abstract class DBSReportBean extends DBSBeanModalMessages {
 
 	private static final long serialVersionUID = -4729336621811839199L;
 
-	private static final long wTimeout = 600000;  //10 minutos
-
 	private static final String tabPageIdFiltros = "filtros";
 	private static final String tabPageIdVisualizar = "visualizar";
 	
@@ -55,19 +50,6 @@ public abstract class DBSReportBean extends DBSBeanModalMessages {
 	@Override
 	protected void finalizeClass(){
 		pvFireEventFinalize();
-	}
-	
-	@Inject
-	Conversation	wConversation;
-	
-	/**
-	 * Inicia a conversação
-	 */
-	public void conversationBegin(){
-		if (wConversation.isTransient()){
-			wConversation.begin();
-			wConversation.setTimeout(wTimeout);
-		}
 	}
 	
 	public String getCaption() {
