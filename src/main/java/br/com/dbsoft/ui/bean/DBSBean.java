@@ -8,7 +8,10 @@ import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.enterprise.context.Conversation;
+import javax.enterprise.context.ConversationScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
 
@@ -27,7 +30,11 @@ public abstract class DBSBean implements Serializable{
 	private   	DBSBean						wMasterBean = null;
 	private 	List<DBSBean>				wSlavesBean = new ArrayList<DBSBean>();
 	private 	Locale						wLocale;
- 
+	@Inject
+	private Conversation					wConversation;
+	private static final long wConversationTimeout = 600000;  //10 minutos
+	
+	
 	//--------------------------------------------------------------------------------------
 	//Código para impedir o erro de 'Cannot create a session after the response has been committed'
 	//que ocorre em algumas situações que a página(como resultado da quantidade de registros do ResultDataModel) por conter muitos dados
@@ -56,7 +63,39 @@ public abstract class DBSBean implements Serializable{
 			}
 			pvGetUserLocate();
 		}
+		//Se tiver anotação 'ConversationScoped', inicia a conversação
+		conversationBegin();
 		initializeClass();
+	}
+	
+	/**
+	 * Inicia conversação caso exista a anotação 'ConversationScoped' na class
+	 */
+	public void conversationBegin(){
+		for (Annotation xAnnotation:this.getClass().getDeclaredAnnotations()){
+			if (xAnnotation.annotationType() == ConversationScoped.class){
+				if (wConversation.isTransient()){
+					wConversation.begin();
+					wConversation.setTimeout(wConversationTimeout);
+				}
+				break;
+			}
+		}
+	}
+	
+	/**
+	 * Retorna o ID da conversação
+	 * @return
+	 */
+	public String getCID(){
+		return wConversation.getId();
+	}
+	
+	/**
+	 * Encerra a conversação
+	 */
+	public void endConversation(){
+		wConversation.end();
 	}
 	
 	private void pvGetUserLocate(){
