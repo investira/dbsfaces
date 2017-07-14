@@ -60,15 +60,15 @@ public abstract class DBSReportBean extends DBSBeanModalMessages {
 	@Inject
 	Conversation	wConversation;
 	
-	/**
-	 * Inicia a conversação
-	 */
-	public void conversationBegin(){
-		if (wConversation.isTransient()){
-			wConversation.begin();
-			wConversation.setTimeout(wTimeout);
-		}
-	}
+//	/**
+//	 * Inicia a conversação
+//	 */
+//	public void conversationBegin(){
+//		if (wConversation.isTransient()){
+//			wConversation.begin();
+//			wConversation.setTimeout(wTimeout);
+//		}
+//	}
 	
 	public String getCaption() {
 		return wCaption;
