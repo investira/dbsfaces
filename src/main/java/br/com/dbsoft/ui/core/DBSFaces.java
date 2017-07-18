@@ -141,6 +141,7 @@ public class  DBSFaces {
 	    public static final String DIALOGNAV = "dialognav";
 	    public static final String DIALOGMSG = "dialogmsg";
 	    public static final String DIALOGMOD = "dialogmod";
+	    public static final String DIALOGBTN = "dialogbtn";
 	    public static final String DIALOGCONTENT = "dialogcontent";
 	    public static final String MODAL = "modal";
 	    public static final String FILEUPLOAD = "fileUpload";

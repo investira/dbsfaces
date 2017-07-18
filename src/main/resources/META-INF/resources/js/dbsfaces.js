@@ -1099,11 +1099,88 @@ dbsfaces.math = {
 		return xValue / xP;
 	},
 	
+	//Encontra coordenada x,y a partir do centro, do raio e angulo
+	circlePointAngle: function(pCenter, pRadius, pAngle){
+		if (pAngle == null){return;}
+		pAngle = pAngle % 360;
+		if (pAngle < 0){
+			pAngle = 360 + pAngle;
+		}
+		var xPIPercentual = dbsfaces.math.PICircle * (pAngle / 360);
+		return dbsfaces.math.circlePoint(pCenter, pRadius, xPIPercentual);
+	},
+	
+	//Encontra coordenada x,y a partir do centro, do raio e percentual de PI(posição ao longo do arco)
 	circlePoint: function(pCenter, pRadius, p2PIPercentual){
 		var xPoint = {};
 		xPoint.x = dbsfaces.math.round(pCenter.x + (pRadius * Math.sin(p2PIPercentual)), 6);
 		xPoint.y = dbsfaces.math.round(pCenter.y - (pRadius * Math.cos(p2PIPercentual)), 6);
 		return xPoint;
+	},
+	
+	angleFromTreePoints: function(pP1, pP2, pVertex){
+		var xV1 = Math.sqrt(Math.pow(pVertex.x - pP1.x,2) +
+							Math.pow(pVertex.y - pP1.y, 2)); // P1 -> Vertex (b)   
+		var xV2 = Math.sqrt(Math.pow(pVertex.x - pP2.x, 2) +
+		                    Math.pow(pVertex.y - pP2.y, 2)); // p2 -> Vertex
+		var xVV = Math.sqrt(Math.pow(pP2.x - pP1.x, 2) +
+		                     Math.pow(pP2.y - pP1.y, 2)); // p1 > p2 
+		return Math.acos(((xV2*xV2) + (xV1*xV1) - (xVV * xVV))/(2 * xV2 * xV1)) * (180 / Math.PI);
+		
+	},
+	
+	//pH=Hipotenuza; pC:cateto oposto
+	rightTriangleVertexAngle: function(pHip, pCatOp){
+		return Math.asin(pCatOp/pHip)*(180/Math.PI);
+	},
+	
+	circleLength: function(pRadius, pAngle){
+		return dbsfaces.math.PICircle * pRadius * (pAngle / 360);
+	},
+	
+	circleLineIntersection: function(pCircleCenter, pCircleRadius, pLinePoint1, pLinePoint2){
+		var xI1 = {x:0, y:0}; //Ponto inicio da linha
+		var xI2 = {x:0, y:0}; //Ponto fim da linha
+
+		var xLAB = Math.sqrt(
+				    Math.pow(pLinePoint2.x - pLinePoint1.x, 2) + 
+				    Math.pow(pLinePoint2.y - pLinePoint1.y, 2));
+
+		// compute the direction vector D from A to B
+		var xD = {x:(pLinePoint2.x - pLinePoint1.x) / xLAB,
+				  y:(pLinePoint2.y - pLinePoint1.y) / xLAB};
+
+		// compute the value t of the closest point to the circle center (Cx, Cy)
+		var xT = xD.x * (pCircleCenter.x - pLinePoint1.x) + xD.y * (pCircleCenter.y - pLinePoint1.y);    
+
+		// compute the coordinates of the point E on line and closest to C
+		var xE = {x:xT * xD.x + pLinePoint1.x,
+				  y:xT * xD.y + pLinePoint1.y};
+
+		// compute the euclidean distance from E to C
+		var xLEC = Math.sqrt(
+					Math.pow(xE.x - pCircleCenter.x, 2) + 
+					Math.pow(xE.y - pCircleCenter.y, 2));
+
+		// test if the line intersects the circle
+		if (xLEC < pCircleRadius){
+		    // compute distance from t to circle intersection point
+		    var xDt = Math.sqrt(Math.pow(pCircleRadius, 2) - Math.pow(xLEC, 2));
+
+		    // compute first intersection point
+		    xI1.x = (xT-xDt) * xD.x + pLinePoint1.x;
+		    xI1.y = (xT-xDt) * xD.y + pLinePoint1.y;
+
+		    // compute second intersection point
+		    xI2.x = (xT+xDt) * xD.x + pLinePoint1.x;
+		    xI2.y = (xT+xDt) * xD.y + pLinePoint1.y;
+			return {point1:xI1, point2:xI2};
+		//tangente
+		}else if(xLEC == pCircleRadius){
+			return {point1:xE, point2:xE};
+		}else{
+			return null;
+		}
 	},
 	//Retorna lista com o valores binários(1,2,4,8) que compõem o valor informado
 	//Bitwise operators treat their operands as a sequence of 32 bits (zeros and ones)
@@ -1127,8 +1204,15 @@ dbsfaces.math = {
 	},
 	
 	distanceBetweenTwoPoints: function(pX1, pY1, pX2, pY2){
-		var xA = pX1 - pX2
-		var xB = pY1 - pY2
+		var xA;
+		var xB;
+		if (pX2 == null){
+			xA = pX1.x - pY1.x;
+			xB = pX1.y - pY1.y;
+		}else{
+			xA = pX1 - pX2
+			xB = pY1 - pY2
+		}
 		return Math.sqrt(xA*xA + xB*xB);
 	},
 	

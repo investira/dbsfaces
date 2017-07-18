@@ -66,7 +66,8 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer, SystemEve
 	public static enum TYPE {
 		NAV 			("nav"),
 	    MOD 			("mod"),
-		MSG 			("msg");	
+		MSG 			("msg"),
+		BTN 			("btn");	
 		
 		private String 	wName;
 		

@@ -200,6 +200,7 @@
 					&lt;li&gt;nav = navigation bars&lt;/li&gt;
 					&lt;li&gt;msg = mensages&lt;/li&gt;
 					&lt;li&gt;mod = modal&lt;/li&gt;
+					&lt;li&gt;btn = botões&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>type</name>
@@ -455,6 +456,76 @@
 			<type>java.lang.Boolean</type>
 		</attribute>
 	</tag>
+	<tag>
+		<tag-name>dialogbtn</tag-name>
+		<component>
+			<component-type>br.com.dbsoft.ui.component.dialogbtn</component-type>
+			<handler-class />
+		</component>
+		<attribute>
+			<description>
+                Identificador único do componente.
+            </description>
+			<name>id</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Class CSS que será utilizada
+            </description>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Adiciona style 
+            </description>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                rendered
+            </description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+            	iconClass
+            </description>
+			<name>iconClass</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Padding interno. O padrão é 0.4em;
+            </description>
+			<name>contentPadding</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Class CSS que será utilizada dentro do nav
+            </description>
+			<name>contentStyleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Se exibe já aberto. Padrao é false.
+            </description>
+			<name>open</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+	</tag>	
 	<tag>
 		<tag-name>dialogmsg</tag-name>
 		<component>

@@ -99,7 +99,9 @@ public class DBSDialogContent extends DBSUIOutput{
 					xWriter.startElement("div", xDialog);
 						xWriter.startElement("div", xDialog);
 							DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.SUB_CONTENT);
-							DBSFaces.encodeAttribute(xWriter, "style", "padding:" + xDialog.getContentPadding());
+							if (xType != TYPE.BTN){
+								DBSFaces.encodeAttribute(xWriter, "style", "padding:" + xDialog.getContentPadding());
+							}
 							pvEncodeChildren(xDialog, pContext, xWriter);
 						xWriter.endElement("div");
 					xWriter.endElement("div");
@@ -184,6 +186,7 @@ public class DBSDialogContent extends DBSUIOutput{
 		MESSAGE_TYPE xMsgType = MESSAGE_TYPE.get(pDialog.getMsgType());
 //		if (xMsgType.getRequireConfirmation()){
 		if (pType == TYPE.NAV 
+		|| pType == TYPE.BTN 
 		|| (pType == TYPE.MSG && (xMsgType == null || !xMsgType.getIsQuestion()))){
 			String xClass = "-bthandle" + CSS.THEME.ACTION;
 			//Exibe espaço do button timeout

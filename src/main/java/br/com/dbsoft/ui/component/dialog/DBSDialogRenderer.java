@@ -87,7 +87,11 @@ public class DBSDialogRenderer extends DBSRenderer{
 			pvEncodeIcon(pDialog, pWriter);
 			//Mask
 			pWriter.startElement("div", pDialog);
-				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.MASK + CSS.THEME.BC + CSS.THEME.INVERT);
+				xClass = CSS.MODIFIER.MASK;
+				if (pType != TYPE.BTN){
+					xClass += CSS.THEME.BC + CSS.THEME.INVERT;
+				}
+				DBSFaces.encodeAttribute(pWriter, "class", xClass);
 			pWriter.endElement("div");
 //			pvEncodeContent(pDialog, pType, pContext, pWriter);
 			

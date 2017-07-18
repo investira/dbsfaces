@@ -22,7 +22,7 @@ dbs_dialog = function(pId) {
 
 	$(window).resize(function(e){
 		setTimeout(function(){
-			dbsfaces.dialog.resized(xDialog);
+			dbsfaces.dialog.resize(xDialog);
 		},0);
 	});
 
@@ -232,6 +232,7 @@ dbsfaces.dialog = {
 		xData.dom.sub_container = xData.dom.content.children(".-sub_container");
 		xData.dom.divscroll = xData.dom.sub_container.children("div");
 		xData.dom.sub_content = xData.dom.divscroll.find("> div > .-sub_content");
+		xData.dom.buttons = xData.dom.sub_content.children().not("script");
 		xData.dom.header = xData.dom.content.children(".-header");
 		xData.dom.header_content = xData.dom.header.children(".-content");
 		xData.dom.header_icon = xData.dom.header_content.children(".-icon");
@@ -241,7 +242,7 @@ dbsfaces.dialog = {
 		xData.dom.footer_content = xData.dom.footer.children(".-content");
 		xData.dom.footer_toolbar = xData.dom.footer.children(".-toolbar");
 		xData.dom.bthandle = xData.dom.content.children(".-bthandle");
-		
+
 		xData.padding = parseFloat(xData.dom.sub_content.css("padding"));
 
 		pDialog.data("data", xData);
@@ -257,29 +258,204 @@ dbsfaces.dialog = {
 			}
 		}
 		xData.dom.btyes = xBtYes;
+		
 		return xData;
 	},
 	
+	pvLayoutBtn: function(pDialogData){
+		if (pDialogData.dom.buttons.length == 0){return;}
+		var xCC = {x:0, y:0}; //Ponto central do círculo
+		var xWC = {x:0, y:0}; //Ponto central da tela
+		var xCA = null;//Ponto inicio do cateto
+		var xCB = null;//Ponto inicio do cateto
+		var xI; //Interseção
+		var xC;//cateto;
+		var xRMin = dbsfaces.math.round(Math.max(pDialogData.dom.icon[0].getBoundingClientRect().width, pDialogData.dom.icon[0].getBoundingClientRect().height) * 1.2, 2); //Raio
+		var xR = xRMin;
+		var xButtonLength = dbsfaces.math.round(Math.max(pDialogData.dom.icon[0].getBoundingClientRect().width, pDialogData.dom.icon[0].getBoundingClientRect().height) * 1.1,2);
+		var xStartAngle = 0;
+		var xCircleTotalAngle = 1;
+		var xCircleTotalLength = 0;
+		var xCircleButtonLength;
+		var xCircleButtonAngle;
+		var xInter; //Lista com os pontos de interseção
+		var xWide = true;
+		var xVertexTL = {x:0,y:0};
+		var xVertexTR = {x:window.innerWidth,y:0};
+		var xVertexBL = {x:0,y:window.innerHeight};
+		var xVertexBR = {x:window.innerWidth,y:window.innerHeight};
+		var xLimites = [{point1:xVertexTL, point2:xVertexTR}, //Top
+		                {point1:xVertexTR, point2:xVertexBR}, //Right
+		                {point1:xVertexBR, point2:xVertexBL}, //Bottom
+		                {point1:xVertexBL, point2:xVertexTL}  // Left
+		                ];
+
+		//Centro do círculo ao redor do icone
+		xCC.x = dbsfaces.math.round(pDialogData.dom.icon[0].getBoundingClientRect().left + (pDialogData.dom.icon[0].getBoundingClientRect().width / 2), 2);
+		xCC.y = dbsfaces.math.round(pDialogData.dom.icon[0].getBoundingClientRect().top + (pDialogData.dom.icon[0].getBoundingClientRect().height / 2), 2);
+		
+		//Centraliza container com o centro do icone principal
+		dbsfaces.ui.cssAllBrowser(pDialogData.dom.content,"transform-origin",
+								 (pDialogData.dom.icon[0].getBoundingClientRect().width / 2) + "px " +
+								 (pDialogData.dom.icon[0].getBoundingClientRect().height / 2) + "px");
+		
+		//Centro da tela
+		xWC.x = window.innerWidth / 2;
+		xWC.y = window.innerHeight / 2;
+		
+		var xCount = 0;
+		//Encontra raio ideal
+		while(true && xCount < 400){
+			console.log("Raio:[" + xR + "]==============");
+			console.log("count:\t" + xCount);
+			xInter = [];
+			xCount++;
+			
+			xWide = true;
+
+			//Cria lista com pontos de interseção
+			xLimites.forEach(function(pLimit){
+				xI = dbsfaces.math.circleLineIntersection(xCC, xR, pLimit.point1, pLimit.point2);
+				if (xI !=null){
+					//Verifica se ponto está dentro dos limites da tela
+					if (xI.point1.x < xVertexTL.x || xI.point1.x > xVertexTR.x 
+				 	 || xI.point1.y < xVertexTL.y || xI.point1.y > xVertexBR.y){
+						xWide = false;
+					}else{
+						//Adiciona a lista
+						xInter.push(xI.point1);
+					}
+					//Verifica se ponto está dentro dos limites da tela
+					if (xI.point2.x < xVertexTL.x || xI.point2.x > xVertexTR.x 
+				 	 || xI.point2.y < xVertexTL.y || xI.point2.y > xVertexBR.y){
+						xWide = false;
+					}else{
+						//Adiciona a lista
+						xInter.push(xI.point2);
+					}
+				}
+			});
+			
+			//Ponto onde angulo é zero(ínicio do arco às 12 horas).
+			var xPointZero = dbsfaces.math.circlePointAngle(xCC, xR, 0);
+			
+			//Se tiver interseção com qualquer borda da tela
+			//Ordena para pontos mais próximo ao ponto on angulo zero(ínicio do arco às 12 horas).
+			if (xInter.length != 0){
+				if (xInter.length > 0){
+					xInter.sort(function(a, b){
+						var xDistA = dbsfaces.math.distanceBetweenTwoPoints(xPointZero, a);
+						var xDistB = dbsfaces.math.distanceBetweenTwoPoints(xPointZero, b);
+						return xDistA - xDistB;
+					});
+				}
+				//Calcula angulo ínicial ajustado em relação do Ponto Zero(ínicio do arco às 12 horas).
+				xStartAngle = dbsfaces.math.angleFromTreePoints(xPointZero, xInter[0], xCC);
+				if (xInter[0].x < xPointZero.x){
+					xStartAngle = -xStartAngle;
+				}
+
+				//Angulo total do círculo
+				xCircleTotalAngle = dbsfaces.math.angleFromTreePoints(xInter[0], xInter[1], xCC);
+				if (xWide){
+					xCircleTotalAngle = 360 - xCircleTotalAngle;
+				}
+//				console.log("vetor:\t" + (xCC.x - xWC.x) + "," + (xCC.y - xWC.y));
+//				console.log("Inter0:\t" + xInter[0].x + "," + xInter[0].y);
+//				console.log("Inter1:\t" + xInter[1].x + "," + xInter[1].y);
+//				console.log("PointZero:\t" + xPointZero.x + "," + xPointZero.y);
+			}
+			//Comprimento total do círculo
+			xCircleTotalLength = dbsfaces.math.circleLength(xR, xCircleTotalAngle);
+			//Comprimento disponível para um botão
+			xCircleButtonLength = xCircleTotalLength / pDialogData.dom.buttons.length;
+			if (xInter.length != 0 || xCircleTotalAngle == 360){
+				//Aumenta o raio até o comprimento disponível para um botão ser igual ou maior a um botão
+				if (Math.trunc(xCircleButtonLength) < Math.trunc(xButtonLength)){
+					xR += xR / 2;
+				}else if (Math.trunc(xCircleButtonLength) > Math.trunc(xButtonLength)){
+					if (xR > xRMin){
+						xR -= xR / 2;
+					}else{
+						xR = xRMin;
+						break;
+					}
+				}else{
+					break;
+				}
+			}else if (xCircleTotalAngle < 360){
+				xCircleTotalAngle += 1;
+				if (Math.trunc(xCircleButtonLength) < Math.trunc(xButtonLength)){
+					xCircleTotalAngle += xCircleTotalAngle / 2;
+					if (xCircleTotalAngle > 360){
+						xCircleTotalAngle = 360;
+					}
+				}else if (Math.trunc(xCircleButtonLength) > Math.trunc(xButtonLength)){
+					xCircleTotalAngle -= xCircleTotalAngle / 2;
+					if (xCircleTotalAngle < 0){
+						xCircleTotalAngle = 1;
+					}
+				}else{
+					break;
+				}
+				xStartAngle = xCircleTotalAngle / 2;  
+			}else{
+				break;
+			}
+		}
+
+		
+		//Angulo que cada botão ocupará
+		xCircleButtonAngle = xCircleTotalAngle / pDialogData.dom.buttons.length;
+		//Inverte o incremento para posicionar CCW(Anti-horário)
+		if (xCC.x >= xWC.x){
+			xCircleButtonAngle = -xCircleButtonAngle;
+		}
+		xStartAngle += (xCircleButtonAngle / 2);
+		
+		console.log("wide:\t" + xWide);
+		console.log("CircleTotalLength:\t" + xCircleTotalLength);
+		console.log("CircleButtonLength:\t" + xCircleButtonLength);
+		console.log("CircleButtonAngle:\t" + xCircleButtonAngle);
+		console.log("ButtonLength:\t" + xButtonLength);
+		console.log("WC:\t" + xWC.x + "," + xWC.y);
+		console.log("CC:\t" + xCC.x + "," + xCC.y);
+		console.log("Startangle:\t" + xStartAngle);
+		console.log("CircleTotalAngle:\t" + xCircleTotalAngle);
+
+		pDialogData.dom.buttons.each(function(){
+			var xButton = $(this);
+			var xPoint = dbsfaces.math.circlePointAngle({x:0,y:0}, xR, xStartAngle);
+			xButton.css("left", xPoint.x + "px");
+			xButton.css("top", xPoint.y + "px");
+			xStartAngle += xCircleButtonAngle;
+		});
+	},
+		
+
 	pvInitializeLayout: function(pDialogData){
 		dbsfaces.dialog.pvAjustLayout(pDialogData);
+		if (pDialogData.type == "btn"){
+			dbsfaces.dialog.pvLayoutBtn(pDialogData);
+		}
 
 		pDialogData.dom.container.css("opacity", "");
 		//Configura cor como transparencia a partir da cor definida pelo usuário
 		var xColorClose;
 		//Cor do header
-		var xIsDark = tinycolor(pDialogData.dom.content.css("background-color")).isDark();
+		var xIsDark = tinycolor(pDialogData.dom.content.css("color")).isDark();
 		if (xIsDark){
-			if (pDialogData.dom.header_icon.length > 0){
-				pDialogData.dom.header_icon.removeClass("-dark");
-			}
-			pDialogData.dom.header_content.addClass("-light")
-										  .removeClass("-dark");
-		}else{
 			if (pDialogData.dom.header_icon.length > 0){
 				pDialogData.dom.header_icon.addClass("-dark");
 			}
 			pDialogData.dom.header_content.addClass("-dark")
 										  .removeClass("-light");
+		}else{
+			if (pDialogData.dom.header_icon.length > 0){
+				pDialogData.dom.header_icon.removeClass("-dark");
+			}
+			pDialogData.dom.header_content.addClass("-light")
+										  .removeClass("-dark");
 		}
 		if (pDialogData.dom.header_content.length > 0){
 			//Ajusta tamanho do icone do header
@@ -290,9 +466,9 @@ dbsfaces.dialog = {
 		//Cor da barra de timeout
 		if (pDialogData.type != "mod"){
 			if (xIsDark){
-				xColorClose = "rgba(255,255,255,.1)";
-			}else{
 				xColorClose = "rgba(0,0,0,.1)";
+			}else{
+				xColorClose = "rgba(255,255,255,.1)";
 			}
 			pDialogData.dom.bthandle.css("border-color", xColorClose)
 							  	    .css("background-color", xColorClose);
@@ -351,7 +527,7 @@ dbsfaces.dialog = {
 			return false;
 		}
 
-		if (xpDialogData.dom.type == "nav" //For nav
+		if (xpDialogData.dom.type == "nav"
 		 ||	(xDialogData.dom.type == "msg" && xDialogData.dom.btyes != null)){ //ou Msg on só há o botão ok
 			if ((pDialog.attr("p") == "t"
 			  && pDirection == "u")
@@ -369,9 +545,15 @@ dbsfaces.dialog = {
 		return false;
 	},
 
-	resized: function(pDialog){
+	resize: function(pDialog){
+		if (typeof pDialog == "undefined"){return;}
+		var xDialogData = pDialog.data("data");
+		if (typeof xDialogData == "undefined"){return;}
 		if (!pDialog.hasClass("-closed")){
-			dbsfaces.dialog.pvAjustLayout(pDialog.data("data"));
+			dbsfaces.dialog.pvAjustLayout(xDialogData);
+		}
+		if (xDialogData.type == "btn"){
+			dbsfaces.dialog.pvLayoutBtn(xDialogData);
 		}
 	},
 
@@ -502,10 +684,15 @@ dbsfaces.dialog = {
 		 || (pDialogData.type == "msg" && pDialogData.dom.self.attr("p") != "c"))){
 			pDialogData.dom.self.attr("cs","s");
 		}
-		if (pDialogData.dom.parent.length > 0
-		 && pDialogData.dom.parent.attr("cs") != "s"){
-			pDialogData.dom.self.attr("p","c");
-		}
+		//Centraliza caso o pai ocupe tenha dimensão automática 
+		//Comentado em 06/jul/2017 nav alinhado a direita(menu) que fica dentro de nav estava sendo centralizado
+//		if (pDialogData.dom.parent.length > 0
+//		 && pDialogData.dom.parent.attr("cs") != "s"){
+//			console.log(pDialogData.dom.self.css("position"));
+//			if (pDialogData.dom.self.css("position") != "fixed"){
+//				pDialogData.dom.self.attr("p","c");
+//			}
+//		}
 		//Configura o padding
 		if (pDialogData.dom.header_content.length > 0){
 			pDialogData.dom.sub_container.css("padding-top", pDialogData.dom.header_content[0].clientHeight);
@@ -513,7 +700,6 @@ dbsfaces.dialog = {
 		if (pDialogData.dom.footer.length > 0){
 			pDialogData.dom.sub_container.css("padding-bottom", pDialogData.dom.footer[0].clientHeight);
 		}
-
 	}
 
 };
