@@ -279,7 +279,8 @@ dbsfaces.dialog = {
 		var xCircleButtonLength;
 		var xCircleButtonAngle;
 		var xInter; //Lista com os pontos de interseção
-		var xWide = true;
+		var xWide = true; //Se é um arco largo(>180)
+		var xPointZero; //Ponto onde o angulo é 0(posição 12hrs do relógio)
 		var xVertexTL = {x:0,y:0};
 		var xVertexTR = {x:window.innerWidth,y:0};
 		var xVertexBL = {x:0,y:window.innerHeight};
@@ -309,7 +310,10 @@ dbsfaces.dialog = {
 //			console.log("Raio:[" + xR + "]==============");
 			xInter = [];
 			xCount++;
-			
+			//Ponto onde angulo é zero(ínicio do arco às 12 horas).
+			xPointZero = dbsfaces.math.circlePointAngle(xCC, xR, 0);
+
+			//Se é um arco largo(>180)
 			xWide = true;
 
 			//Cria lista com pontos de interseção
@@ -319,6 +323,7 @@ dbsfaces.dialog = {
 					//Verifica se ponto está dentro dos limites da tela
 					if (xI.point1.x < xVertexTL.x || xI.point1.x > xVertexTR.x 
 				 	 || xI.point1.y < xVertexTL.y || xI.point1.y > xVertexBR.y){
+						//arco < 180
 						xWide = false;
 					}else{
 						//Adiciona a lista
@@ -327,6 +332,7 @@ dbsfaces.dialog = {
 					//Verifica se ponto está dentro dos limites da tela
 					if (xI.point2.x < xVertexTL.x || xI.point2.x > xVertexTR.x 
 				 	 || xI.point2.y < xVertexTL.y || xI.point2.y > xVertexBR.y){
+						//arco < 180
 						xWide = false;
 					}else{
 						//Adiciona a lista
@@ -335,23 +341,36 @@ dbsfaces.dialog = {
 				}
 			});
 			
-			//Ponto onde angulo é zero(ínicio do arco às 12 horas).
-			var xPointZero = dbsfaces.math.circlePointAngle(xCC, xR, 0);
 			
 			//Se tiver interseção com qualquer borda da tela
 			//Ordena para pontos mais próximo ao ponto on angulo zero(ínicio do arco às 12 horas).
 			if (xInter.length != 0){
-				if (xInter.length > 0){
-					xInter.sort(function(a, b){
-						var xDistA = dbsfaces.math.distanceBetweenTwoPoints(xPointZero, a);
-						var xDistB = dbsfaces.math.distanceBetweenTwoPoints(xPointZero, b);
-						return xDistA - xDistB;
-					});
-				}
+				xInter.sort(function(a, b){
+					var xDistA = dbsfaces.math.distanceBetweenTwoPoints(xPointZero, a);
+					var xDistB = dbsfaces.math.distanceBetweenTwoPoints(xPointZero, b);
+					var xDif = dbsfaces.math.round(xDistA - xDistB,5);
+//					console.log(xDif + "\t" + a.y + "," + b.y);
+					//Força que o ponto mais próximo seja definido pelo distancia do dos pontos horizontais
+					if (xDif == 0){
+						if (a.y == b.y){
+							//Quando estiver no topo, utiliza o ponto mais a direita.
+							if (a.y == 0){
+								xDif = b.x - a.x;
+							//Quando estiver em baixo, utiliza o ponto mais a esquerda.
+							}else{
+								xDif = a.x - b.x;
+							}
+						}
+					}
+					return xDif;
+				});
 				//Calcula angulo ínicial ajustado em relação do Ponto Zero(ínicio do arco às 12 horas).
 				xStartAngle = dbsfaces.math.angleFromTreePoints(xPointZero, xInter[0], xCC);
-				if (xInter[0].x < xPointZero.x){
+				if (xInter[0].x <= xPointZero.x){
 					xStartAngle = -xStartAngle;
+//					console.log("-A");
+				}else{
+//					console.log("+A");
 				}
 
 				//Angulo total do círculo
@@ -359,6 +378,8 @@ dbsfaces.dialog = {
 				if (xWide){
 					xCircleTotalAngle = 360 - xCircleTotalAngle;
 				}
+//				
+//				console.log("intersections:\t" + xInter.length);
 //				console.log("vetor:\t" + (xCC.x - xWC.x) + "," + (xCC.y - xWC.y));
 //				console.log("Inter0:\t" + xInter[0].x + "," + xInter[0].y);
 //				console.log("Inter1:\t" + xInter[1].x + "," + xInter[1].y);
@@ -376,7 +397,8 @@ dbsfaces.dialog = {
 					if (xR > xRMin){
 						xR -= xR / 2;
 					}else{
-						xR = xRMin;
+//						xCircleButtonLength = xButtonLength;
+//						xButtonLength = xCircleButtonLength;
 						break;
 					}
 				}else{
@@ -407,8 +429,11 @@ dbsfaces.dialog = {
 		//Angulo que cada botão ocupará
 		xCircleButtonAngle = xCircleTotalAngle / pDialogData.dom.buttons.length;
 		//Inverte o incremento para posicionar CCW(Anti-horário)
-		if (xCC.x >= xWC.x){
+		if (xCC.x < xWC.x){
+//			console.log("-I");
 			xCircleButtonAngle = -xCircleButtonAngle;
+		}else{
+//			console.log("+I");
 		}
 		xStartAngle += (xCircleButtonAngle / 2);
 		

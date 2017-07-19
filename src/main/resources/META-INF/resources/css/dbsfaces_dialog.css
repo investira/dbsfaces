@@ -429,6 +429,7 @@
     top: 0;
     left: 0;
 	z-index: 9999999;    
+	box-shadow: none !important;
 }
 
 .dbs_dialog[type="btn"] > .-container > .-content > .-sub_container{
