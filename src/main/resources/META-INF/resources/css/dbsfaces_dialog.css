@@ -476,8 +476,13 @@
 	-o-transform: scale(1) translate(-50%, -50%);
 	transform: scale(1) translate(-50%, -50%);
 	line-height: 0;
+	overflow: visible;
 }
 .dbs_dialog[type="btn"].-closed > .-container > .-content{
+    -webkit-transition: transform linear .1s;
+    -moz-transition: transform linear .1s;
+    -o-transition: transform linear .1s;
+    transition: transform linear .1s;
 	-moz-transform: scale(0) translate(-50%, -50%);
 	-o-transform: scale(0) translate(-50%, -50%);
 	transform: scale(0) translate(-50%, -50%);

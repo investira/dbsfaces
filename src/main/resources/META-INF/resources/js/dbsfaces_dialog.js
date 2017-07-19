@@ -306,8 +306,7 @@ dbsfaces.dialog = {
 		var xCount = 0;
 		//Encontra raio ideal
 		while(true && xCount < 400){
-			console.log("Raio:[" + xR + "]==============");
-			console.log("count:\t" + xCount);
+//			console.log("Raio:[" + xR + "]==============");
 			xInter = [];
 			xCount++;
 			
@@ -413,15 +412,16 @@ dbsfaces.dialog = {
 		}
 		xStartAngle += (xCircleButtonAngle / 2);
 		
-		console.log("wide:\t" + xWide);
-		console.log("CircleTotalLength:\t" + xCircleTotalLength);
-		console.log("CircleButtonLength:\t" + xCircleButtonLength);
-		console.log("CircleButtonAngle:\t" + xCircleButtonAngle);
-		console.log("ButtonLength:\t" + xButtonLength);
-		console.log("WC:\t" + xWC.x + "," + xWC.y);
-		console.log("CC:\t" + xCC.x + "," + xCC.y);
-		console.log("Startangle:\t" + xStartAngle);
-		console.log("CircleTotalAngle:\t" + xCircleTotalAngle);
+//		console.log("count:\t" + xCount);
+//		console.log("wide:\t" + xWide);
+//		console.log("CircleTotalLength:\t" + xCircleTotalLength);
+//		console.log("CircleButtonLength:\t" + xCircleButtonLength);
+//		console.log("CircleButtonAngle:\t" + xCircleButtonAngle);
+//		console.log("ButtonLength:\t" + xButtonLength);
+//		console.log("WC:\t" + xWC.x + "," + xWC.y);
+//		console.log("CC:\t" + xCC.x + "," + xCC.y);
+//		console.log("Startangle:\t" + xStartAngle);
+//		console.log("CircleTotalAngle:\t" + xCircleTotalAngle);
 
 		pDialogData.dom.buttons.each(function(){
 			var xButton = $(this);
