@@ -17,19 +17,22 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
+import javax.faces.application.ConfigurableNavigationHandler;
+import javax.faces.application.NavigationCase;
 import javax.faces.application.NavigationHandler;
 import javax.faces.application.ViewHandler;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIComponentBase;
 import javax.faces.component.UIForm;
+import javax.faces.component.UIOutcomeTarget;
 import javax.faces.component.UIParameter;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.ValueHolder;
@@ -41,6 +44,9 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
+import javax.faces.event.ActionListener;
+import javax.faces.flow.FlowHandler;
+import javax.faces.lifecycle.ClientWindow;
 import javax.faces.render.RenderKit;
 import javax.faces.view.ViewDeclarationLanguage;
 import javax.faces.view.facelets.FaceletContext;
@@ -48,8 +54,11 @@ import javax.faces.view.facelets.FaceletContext;
 import org.apache.log4j.Logger;
 import org.jboss.weld.context.SerializableContextualInstanceImpl;
 
+import com.sun.faces.flow.FlowHandlerImpl;
 import com.sun.faces.renderkit.RenderKitUtils;
+import com.sun.faces.renderkit.html_basic.HtmlBasicRenderer.Param;
 import com.sun.faces.util.DebugUtil;
+import com.sun.faces.util.Util;
 
 import br.com.dbsoft.core.DBSSDK;
 import br.com.dbsoft.core.DBSSDK.ENCODE;
@@ -99,6 +108,8 @@ public class  DBSFaces {
     public static final String JAVAX_FACES_LOCATION_BODY = "javax_faces_location_BODY";
     public static final String JAVAX_FACES_LOCATION_FORM = "javax_faces_location_FORM";
     
+	protected static final Param[] EMPTY_PARAMS = new Param[0];
+	
     
     @SuppressWarnings("deprecation")
 	public static final char ID_SEPARATOR = NamingContainer.SEPARATOR_CHAR; //UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance());
@@ -145,7 +156,6 @@ public class  DBSFaces {
 	    public static final String DIALOGCONTENT = "dialogcontent";
 	    public static final String MODAL = "modal";
 	    public static final String FILEUPLOAD = "fileUpload";
-	    public static final String FLOATBUTTON = "floatbutton";
 	    public static final String INPUTTEXT = "inputText";
 	    public static final String INPUTTEXTAREA = "inputTextArea";
 	    public static final String INPUTDATE = "inputDate";
@@ -584,12 +594,6 @@ public class  DBSFaces {
 			public static final String MAIN = " " + CLASS_PREFIX + ID.CHARTVALUE + " ";
 		}
 
-		public static class FLOATBUTTON
-		{
-			public static final String MAIN = " " + CLASS_PREFIX + ID.FLOATBUTTON + " ";
-		}
-
-		
 		public static class CHARTSX
 		{	
 			public static final String MAIN = " " + CLASS_PREFIX + ID.CHARTSX + " ";
@@ -1328,29 +1332,41 @@ public class  DBSFaces {
 		return pContext.getExternalContext().getRequestParameterMap().get(DBSFaces.PARTIAL_SOURCE_PARAM); 
 	}
 
+	public static String getSubmitString(String pExecute, String pUpdate){
+		String xLocalOnClick = "";
+		String xUpdate = pvRemoveFirstColon(pUpdate);
+		
+		//Ajax
+		if (!DBSObject.isEmpty(xUpdate)){
+			String xExecute = "";
+			if (!DBSObject.isEmpty(pExecute)){
+				xExecute = "execute:'" + pvRemoveFirstColon(pExecute) + "',";
+			}
+			xLocalOnClick = "jsf.ajax.request(this, event, {" + xExecute + " render:'" +  xUpdate +  "', onevent:dbsfaces.onajax, onerror:dbsfaces.onajaxerror}); return false";
+		}
+		return xLocalOnClick;
+	}
+
 	//############################ COMPONENTS AUXS ENCODES ################################################
 	/**
 	 * Retorna string em JS com o submit
 	 * @param pComponent
 	 * @param pSourceEvent Evento a ser disparado
 	 * @param pExecute
-	 * @param pClientUpdate
+	 * @param pUpdate
 	 * @return
 	 */
-	public static String getSubmitString(UIComponentBase pComponent, String pSourceEvent, String pExecute, String pClientUpdate){
+	public static String getSubmitString(DBSUICommand pComponent, String pSourceEvent, String pExecute, String pUpdate){
+
 //		Collection<ClientBehaviorContext.Parameter> params = getBehaviorParameters(xLink)
 //		RenderKitUtils.renderOnclick(pContext, xLink, params, "", true);
 		String xUserOnClick = (String) pComponent.getAttributes().get(pSourceEvent); 
 		String xLocalOnClick = xUserOnClick;
-		String xClientUpdate = pvRemoveFirstColon(pClientUpdate);
+		String xUpdate = pvRemoveFirstColon(pUpdate);
 		
 		//Ajax
-		if (!DBSObject.isEmpty(xClientUpdate)){
-			String xExecute = "";
-			if (!DBSObject.isEmpty(pExecute)){
-				xExecute = "execute:'" + pvRemoveFirstColon(pExecute) + "',";
-			}
-			xLocalOnClick = "jsf.ajax.request(this, event, {" + xExecute + " render:'" +  xClientUpdate +  "', onevent:dbsfaces.onajax, onerror:dbsfaces.onajaxerror}); return false";
+		if (!DBSObject.isEmpty(xUpdate)){
+			xLocalOnClick = getSubmitString(pExecute, xUpdate);
 //			xLocalOnClick = "mojarra.ab(this,event,'action','" + pvRemoveFirstColon(pExecute) + "','" + xClientUpdate + "',{'onevent':dbsfaces.onajax,'onerror':dbsfaces.onajaxerror});return false";
 
 			//			xExecute = "@this";
@@ -1363,7 +1379,15 @@ public class  DBSFaces {
 			}
 		//Não Ajax
 		}else{
-			if (DBSObject.isEmpty(pExecute)){
+			if (pComponent.getOutcome() != null){
+				FacesContext xContext = FacesContext.getCurrentInstance();
+				NavigationCase xNavCase = getNavigationCase(xContext, pComponent);
+				if (xNavCase !=null){
+				    String hrefVal = getEncodedTargetURL(xContext, pComponent, xNavCase);
+				    hrefVal += getFragment(pComponent);
+				    xLocalOnClick = getOnclickOutCome(pComponent, hrefVal);
+				}
+			}else if (DBSObject.isEmpty(pExecute)){
 //				System.out.println("Form/Execute não definido para o componente " + pComponent.getClientId()  + "!");
 			}else if (DBSObject.isEmpty(xLocalOnClick)){
 				StringBuilder xParam = new StringBuilder();
@@ -1393,7 +1417,251 @@ public class  DBSFaces {
 		return xLocalOnClick;
 	}
 	
+    /**
+     * Retorna código JS para set executado no onclick.
+     * @param component
+     * @param targetURI
+     * @return
+     */
+    protected static String getOnclickOutCome(UIComponent component, String targetURI) {
+
+        String onclick = (String) component.getAttributes().get("onclick");
+
+        if (onclick != null) {
+            onclick = onclick.trim();
+            if (onclick.length() > 0 && !onclick.endsWith(";")) {
+                onclick += "; ";
+            }
+        }
+        else {
+            onclick = "";
+        }
+
+        if (targetURI != null) {
+            onclick += "window.location.href='" + targetURI + "'; ";
+        }
+
+        onclick += "return false;";
+
+        return onclick;
+        
+    }
 	
+	 /**
+     * Invoke the {@link NavigationHandler} preemptively to resolve a {@link NavigationCase}
+     * for the outcome declared on the {@link UIOutcomeTarget} component. The current view id
+     * is used as the from-view-id when matching navigation cases and the from-action is
+     * assumed to be null.
+     *
+     * @param pContext the {@link FacesContext} for the current request
+     * @param pComponent the target {@link UIComponent}
+     *
+     * @return the NavigationCase represeting the outcome target
+     */
+    protected static NavigationCase getNavigationCase(FacesContext pContext, DBSUICommand pComponent) {
+        NavigationHandler xNavHandler = pContext.getApplication().getNavigationHandler();
+        if (!(xNavHandler instanceof ConfigurableNavigationHandler)) {
+//            if (logger.isLoggable(Level.WARNING)) {
+//                logger.log(Level.WARNING,
+//                    "jsf.outcome.target.invalid.navigationhandler.type",
+//                    component.getId());
+//            }
+            return null;
+        }
+
+        String xOutcome = pComponent.getOutcome();
+        if (xOutcome == null) {
+            xOutcome = pContext.getViewRoot().getViewId();
+            // QUESTION should we avoid the call to getNavigationCase() and instead instantiate one explicitly?
+            //String viewId = context.getViewRoot().getViewId();
+            //return new NavigationCase(viewId, null, null, null, viewId, false, false);
+        }
+        String xToFlowDocumentId = (String) pComponent.getAttributes().get(ActionListener.TO_FLOW_DOCUMENT_ID_ATTR_NAME);
+        NavigationCase xNavCase = null;
+        if (null == xToFlowDocumentId) {
+            xNavCase = ((ConfigurableNavigationHandler) xNavHandler).getNavigationCase(pContext, null, xOutcome);            
+        } else {
+            xNavCase = ((ConfigurableNavigationHandler) xNavHandler).getNavigationCase(pContext, null, xOutcome, xToFlowDocumentId);            
+        }
+
+//        if (navCase == null && logger.isLoggable(Level.WARNING)) {
+//            logger.log(Level.WARNING,
+//                    "jsf.outcometarget.navigation.case.not.resolved",
+//                    component.getId());
+//        }
+        return xNavCase;
+    }
+    
+    /**
+     * <p>Resolve the target view id and then delegate to
+     * {@link ViewHandler#getBookmarkableURL(javax.faces.context.FacesContext, String, java.util.Map, boolean)}
+     * to produce a redirect URL, which will add the page parameters if necessary
+     * and properly prioritizing the parameter overrides.</p>
+     *
+     * @param pContext the {@link FacesContext} for the current request
+     * @param pComponent the target {@link UIComponent}
+     * @param pNavCase the target navigation case
+     *
+     * @return an encoded URL for the provided navigation case
+     */
+    protected static String getEncodedTargetURL(FacesContext pContext, DBSUICommand pComponent, NavigationCase pNavCase) {
+        // FIXME getNavigationCase doesn't resolve the target viewId (it is part of CaseStruct)
+        String xToViewId = pNavCase.getToViewId(pContext);
+        Map<String,List<String>> xParams = getParamOverrides(pComponent);
+        addNavigationParams(pNavCase, xParams);
+        String xResult = null;
+        boolean xDidDisableClientWindowRendering = false;
+        ClientWindow xCW = null;
+
+        
+        try {
+            Map<String, Object> xAttrs = pComponent.getAttributes();
+            Object xVal = xAttrs.get("disableClientWindow");
+            if (null != xVal) {
+                xDidDisableClientWindowRendering = "true".equalsIgnoreCase(xVal.toString());
+            }
+            if (xDidDisableClientWindowRendering) {
+                xCW = pContext.getExternalContext().getClientWindow();
+                if (null != xCW) {
+                    xCW.disableClientWindowRenderMode(pContext);
+                }
+            }
+            
+            xResult = Util.getViewHandler(pContext).getBookmarkableURL(pContext,
+                                                               xToViewId,
+                                                               xParams,
+                                                               isIncludeViewParams(pComponent, pNavCase));
+        } finally {
+            if (xDidDisableClientWindowRendering && null != xCW) {
+                xCW.enableClientWindowRenderMode(pContext);
+            }
+        }
+        
+        return xResult;
+    }
+    
+	protected static void addNavigationParams(NavigationCase pNavCase, Map<String, List<String>> pExistingParams) {
+		Map<String, List<String>> xNavParams = pNavCase.getParameters();
+		FacesContext xContext = FacesContext.getCurrentInstance();
+		if (xNavParams != null && !xNavParams.isEmpty()) {
+			for (Map.Entry<String, List<String>> entry : xNavParams.entrySet()) {
+				String xNavParamName = entry.getKey();
+				// only add the navigation params to the existing params
+				// collection
+				// if the parameter name isn't already present within the
+				// existing
+				// collection
+				if (!pExistingParams.containsKey(xNavParamName)) {
+					if (entry.getValue().size() == 1) {
+						String xValue = entry.getValue().get(0);
+						String xSanitized = null != xValue && 2 < xValue.length() ? xValue.trim() : "";
+						String xS1 = "#" + "{";
+						String xS2 = "&" + "{";
+						if (xSanitized.contains(xS1) || xSanitized.contains(xS2)) {
+							xValue = xContext.getApplication().evaluateExpressionGet(xContext, xValue, String.class);
+							List<String> xValues = new ArrayList<String>();
+							xValues.add(xValue);
+							pExistingParams.put(xNavParamName, xValues);
+						} else {
+							pExistingParams.put(xNavParamName, entry.getValue());
+						}
+					} else {
+						pExistingParams.put(xNavParamName, entry.getValue());
+					}
+				}
+			}
+		}
+
+		String xToFlowDocumentId = pNavCase.getToFlowDocumentId();
+		if (null != xToFlowDocumentId) {
+			if (FlowHandler.NULL_FLOW.equals(xToFlowDocumentId)) {
+				List<String> xFlowDocumentIdValues = new ArrayList<String>();
+				xFlowDocumentIdValues.add(FlowHandler.NULL_FLOW);
+				pExistingParams.put(FlowHandler.TO_FLOW_DOCUMENT_ID_REQUEST_PARAM_NAME, xFlowDocumentIdValues);
+
+				FlowHandler xFH = xContext.getApplication().getFlowHandler();
+				if (xFH instanceof FlowHandlerImpl) {
+					FlowHandlerImpl xFHI = (FlowHandlerImpl) xFH;
+					List<String> xFlowReturnDepthValues = new ArrayList<String>();
+					xFlowReturnDepthValues.add("" + xFHI.getAndClearReturnModeDepth(xContext));
+					pExistingParams.put(FlowHandlerImpl.FLOW_RETURN_DEPTH_PARAM_NAME, xFlowReturnDepthValues);
+				}
+
+			} else {
+				String xFlowId = pNavCase.getFromOutcome();
+				List<String> xFlowDocumentIdValues = new ArrayList<String>();
+				xFlowDocumentIdValues.add(xToFlowDocumentId);
+				pExistingParams.put(FlowHandler.TO_FLOW_DOCUMENT_ID_REQUEST_PARAM_NAME, xFlowDocumentIdValues);
+
+				List<String> xFlowIdValues = new ArrayList<String>();
+				xFlowIdValues.add(xFlowId);
+				pExistingParams.put(FlowHandler.FLOW_ID_REQUEST_PARAM_NAME, xFlowIdValues);
+			}
+		}
+
+	}
+	
+    public static boolean isIncludeViewParams(DBSUICommand pComponent, NavigationCase pNavcase) {
+        return pComponent.isIncludeViewParams() || pNavcase.isIncludeViewParams();
+
+    }
+
+	public static Map<String, List<String>> getParamOverrides(UIComponent pComponent) {
+		Map<String, List<String>> xParams = new LinkedHashMap<String, List<String>>();
+		Param[] xDeclaredParams = getParamList(pComponent);
+		for (Param xCandidate : xDeclaredParams) {
+			// QUESTION shouldn't the trimming of name should be done elsewhere?
+			// null value is allowed as a way to suppress page parameter
+			if (xCandidate.name != null && xCandidate.name.trim().length() > 0) {
+				xCandidate.name = xCandidate.name.trim();
+				List<String> xValues = xParams.get(xCandidate.name);
+				if (xValues == null) {
+					xValues = new ArrayList<String>();
+					xParams.put(xCandidate.name, xValues);
+				}
+				xValues.add(xCandidate.value);
+			}
+		}
+
+		return xParams;
+	}
+	
+    
+    public static Param[] getParamList(UIComponent pCommand) {
+
+        if (pCommand.getChildCount() > 0) {
+            ArrayList<Param> parameterList = new ArrayList<Param>();
+
+            for (UIComponent kid : pCommand.getChildren()) {
+                if (kid instanceof UIParameter) {
+                    UIParameter uiParam = (UIParameter) kid;
+                    if (!uiParam.isDisable()) {
+                        Object value = uiParam.getValue();
+                        Param param = new Param(uiParam.getName(),
+                                                (value == null ? null :
+                                                 value.toString()));
+                        parameterList.add(param);
+                    }
+                }
+            }
+            return parameterList.toArray(new Param[parameterList.size()]);
+        } else {
+            return EMPTY_PARAMS;
+        }
+    }
+
+    public static String getFragment(UIComponent component) {
+
+        String fragment = (String) component.getAttributes().get("fragment");
+        fragment = (fragment != null ? fragment.trim() : "");
+        if (fragment.length() > 0) {
+            fragment = "#" + fragment;
+        }
+        return fragment;
+
+    }
+
+    
 	/**
 	 * Efetua o <b>writeAttribute</b> testanto se valor é nulo.
 	 * @param pWriter

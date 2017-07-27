@@ -124,7 +124,10 @@ public abstract class DBSUICommand extends UICommand implements IDBSUIComponentB
 		onclick,
 		readOnly,
 		tooltip,
-		closeDialog;
+		closeDialog,
+        includeViewParams,
+        outcome,
+        disableClientWindow;
 //		actionSourceClientId;
 
 		String toString;
@@ -221,9 +224,6 @@ public abstract class DBSUICommand extends UICommand implements IDBSUIComponentB
 		return (Boolean) getStateHelper().eval(PropertyKeys.closeDialog, false);
 	}	
 
-	public String getTooltip() {
-		return (String) getStateHelper().eval(PropertyKeys.tooltip, null);
-	}
 
 	/**
 //	 * ClientId do componente que originou a action que disparou o encode deste componente
@@ -242,9 +242,91 @@ public abstract class DBSUICommand extends UICommand implements IDBSUIComponentB
 //		return (String) getStateHelper().eval(PropertyKeys.actionSourceClientId, null);
 //	}
 
+	public String getTooltip() {
+		return (String) getStateHelper().eval(PropertyKeys.tooltip, null);
+	}
+
 	public void setTooltip(String pTooltip) {
 		getStateHelper().put(PropertyKeys.tooltip, pTooltip);
 		handleAttribute("tooltip", pTooltip);
+	}	
+
+    /**
+     * <p class="changed_added_2_0">Return whether or not the view
+     * parameters should be encoded into the target url.</p>
+     *
+     * @since 2.0
+     */
+    public boolean isIncludeViewParams() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.includeViewParams, false);
+    }
+
+    /**
+     * <p class="changed_added_2_0">Set whether or not the page
+     * parameters should be encoded into the target url.</p>
+     *
+     * @param pIncludeViewParams The state of the switch for encoding
+     * page parameters
+     *
+     * @since 2.0
+     */
+    public void setIncludeViewParams(boolean pIncludeViewParams) {
+        getStateHelper().put(PropertyKeys.includeViewParams, pIncludeViewParams);
+		handleAttribute("includeViewParams", pIncludeViewParams);
+    }
+    
+    /**
+     * <p class="changed_added_2_2">Return whether or not the client window
+     * should be encoded into the target url.</p>
+     *
+     * @since 2.0
+     */
+    public boolean isDisableClientWindow() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.disableClientWindow, false);
+    }
+    
+    /**
+     * <p class="changed_added_2_2">Set whether or not the client window
+     * should be encoded into the target url.</p>
+     * 
+     * @param pDisableClientWindow if @{code true}, the client window will not be included
+     * in this outcome target.
+     * 
+     * @since 2.2
+     */
+
+    public void setDisableClientWindow(boolean pDisableClientWindow) {
+        getStateHelper().put(PropertyKeys.disableClientWindow, pDisableClientWindow);
+		handleAttribute("disableClientWindow", pDisableClientWindow);
+    }
+
+
+
+    /**
+     * <p class="changed_added_2_0">Returns the <code>outcome</code>
+     * property of the <code>UIOutcomeTarget</code>. This value is
+     * passed to the {@link javax.faces.application.NavigationHandler}
+     * when resolving the target url of this component.</p>
+     *
+     * @since 2.0
+     */
+    public String getOutcome() {
+		return (String) getStateHelper().eval(PropertyKeys.outcome, null);
+    }
+
+    /**
+     * <p class="changed_added_2_0">Sets the <code>outcome</code>
+     * property of the <code>UIOutcomeTarget</code>.  This value is
+     * passed to the NavigationHandler when resolving the target url of
+     * this component.</p>
+     *
+     * @since 2.0
+     *
+     * @param outcome the navigation outcome
+     */
+	public void setOutcome(String pOutcome) {
+		getStateHelper().put(PropertyKeys.outcome, pOutcome);
+		handleAttribute("outcome", pOutcome);
 	}	
 
 	@Override

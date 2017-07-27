@@ -24,16 +24,12 @@ import javax.faces.render.Renderer;
 
 import org.apache.log4j.Logger;
 
-import com.sun.faces.renderkit.html_basic.HtmlBasicRenderer.Param;
-
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.util.DBSString;
 
 public class DBSRenderer extends Renderer {
 	
 	protected Logger			wLogger = Logger.getLogger(this.getClass());
-	
-	protected static final Param[] EMPTY_PARAMS = new Param[0];
 	
 	@Override
 	public boolean getRendersChildren() {
@@ -358,31 +354,9 @@ public class DBSRenderer extends Renderer {
                           !((ClientBehaviorHolder)component).getClientBehaviors().isEmpty())));
     }
     
+
     
-    protected Param[] getParamList(UIComponent command) {
-
-        if (command.getChildCount() > 0) {
-            ArrayList<Param> parameterList = new ArrayList<Param>();
-
-            for (UIComponent kid : command.getChildren()) {
-                if (kid instanceof UIParameter) {
-                    UIParameter uiParam = (UIParameter) kid;
-                    if (!uiParam.isDisable()) {
-                        Object value = uiParam.getValue();
-                        Param param = new Param(uiParam.getName(),
-                                                (value == null ? null :
-                                                 value.toString()));
-                        parameterList.add(param);
-                    }
-                }
-            }
-            return parameterList.toArray(new Param[parameterList.size()]);
-        } else {
-            return EMPTY_PARAMS;
-        }
-
-
-    }
+    
   
 	/**
 	 * Encode do id se tiver sido informado

@@ -3387,87 +3387,21 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
-	</tag>
-	<tag>
-		<description>Botão de menu flutuante. Os botões do menu devem ser do tipo dbs:menuitem como filhos do floatButton.</description>
-		<tag-name>floatButton</tag-name>
-		<component>
-			<component-type>br.com.dbsoft.ui.component.floatbutton</component-type>
-			<handler-class />
-		</component>
 		<attribute>
 			<description>
-                Identificador único do componente.
+                Se inclui os parametros da view na chamada do outcome.
             </description>
-			<name>id</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                Class CSS que será utilizada
-            </description>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                Adiciona style 
-            </description>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-            	icon Class
-            </description>
-			<name>iconClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                rendered
-            </description>
-			<name>rendered</name>
+			<name>includeViewParams</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
 		<attribute>
 			<description>
-                rendered
+                Tela destino, podendo ser um outcome definido do faces-config. O chamada ao action, caso tenha sido também informada, será desconsiderada.
             </description>
-			<name>disabled</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
-                Tooltip
-            </description>
-			<name>tooltip</name>
+			<name>outcome</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>Define a orientação do menu.
-						true: Horizontal;
-						false: Vertical;
-						Default: false;
-			</description>
-			<name>horizontal</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
-            	Localização padrão do componente nos 4 cantos da tela, sendo 1=top-left, 2=top-right, 3=bottom-right, 4= bottom-left. O padrão é 3=bottom-right;
-            </description>
-			<name>defaultLocation</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
 		</attribute>
 	</tag>
 	<tag>
@@ -3584,6 +3518,22 @@
 			<name>closeDialog</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+                Se inclui os parametros da view na chamada do outcome.
+            </description>
+			<name>includeViewParams</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+                Tela destino, podendo ser um outcome definido do faces-config. O chamada ao action, caso tenha sido também informada, será desconsiderada.
+            </description>
+			<name>outcome</name>
+			<required>false</required>
+			<type>java.lang.String</type>
 		</attribute>
 	</tag>
 	<tag>
@@ -4111,6 +4061,22 @@
 	           	evento onclick
             </description>
 			<name>onclick</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Se inclui os parametros da view na chamada do outcome.
+            </description>
+			<name>includeViewParams</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+                Tela destino, podendo ser um outcome definido do faces-config. O chamada ao action, caso tenha sido também informada, será desconsiderada.
+            </description>
+			<name>outcome</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
