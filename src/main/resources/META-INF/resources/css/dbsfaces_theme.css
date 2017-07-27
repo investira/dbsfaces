@@ -102,47 +102,7 @@ a {
 	outline: none !important;
 	border-collapse: separate;
 }
-/* .-th_action:not([disabled]):ACTIVE{ */
-/* 	opacity: 1;	 */
-/* 	background-color: rgba(254, 254, 255, 0.2) !important; */
-	
-/* 	-webkit-box-shadow: 0 0 0 1px rgba(254,254,255,.25); */
-/* 	-moz-box-shadow: 0 0 0 1px rgba(254,254,255,.25); */
-/* 	box-shadow: 0 0 0 1px rgba(254,254,255,.25); */
-	
-/* 	text-shadow: none; */
-	
-/* } */
 
-x.-th_action:not([disabled]):ACTIVE > *:not(style):not(script):after{
-	content: " ";
-	box-sizing: border-box;
-	position: absolute;
-	display: inline-block;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-/* 	opacity: 0.5; */
-	border: .5px solid;
-	border-radius: 100%;
-	-webkit-animation-name: -kf_sonar;
-	-webkit-animation-duration: .2s;
-	-webkit-animation-timing-function: cubic-bezier(.075,.82,.165,1);
-	-webkit-animation-fill-mode: both;
-	-moz-animation-name: -kf_sonar;
-	-moz-animation-duration: .2s;
-	-moz-animation-timing-function: cubic-bezier(.075,.82,.165,1);
-	-moz-animation-fill-mode: both;
-	animation-name: -kf_sonar;
-	animation-duration: .2s;
-	animation-timing-function: cubic-bezier(.075,.82,.165,1);
-	animation-fill-mode: both;
-	box-sizing: border-box;
-	pointer-events: none;
-}
-/* .-th_action:not([disabled]):FOCUS > *:not(style):not(script):after, */
-/* .-th_action:not([disabled]):HOVER > *:not(style):not(script):after, */
 .-th_action:not([disabled]):ACTIVE > *:not(style):not(script):after{
 	content: " ";
 	box-sizing: border-box;
