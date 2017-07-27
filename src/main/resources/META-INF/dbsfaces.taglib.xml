@@ -2767,14 +2767,14 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
-		<attribute>
-			<description>
-                Componente que será atualizado no ajax
-            </description>
-			<name>update</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
+<!-- 		<attribute> -->
+<!-- 			<description> -->
+<!--                 Componente que será atualizado no ajax -->
+<!--             </description> -->
+<!-- 			<name>update</name> -->
+<!-- 			<required>false</required> -->
+<!-- 			<type>java.lang.String</type> -->
+<!-- 		</attribute> -->
 		<attribute>
 			<description>
                 Tooltip
@@ -2878,22 +2878,22 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
-		<attribute>
-			<description>
-            	Componente que será atualizado no ajax
-            </description>
-			<name>update</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-            	Componentes que serão enviados na chamada ajax
-            </description>
-			<name>execute</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
+<!-- 		<attribute> -->
+<!-- 			<description> -->
+<!--             	Componente que será atualizado no ajax -->
+<!--             </description> -->
+<!-- 			<name>update</name> -->
+<!-- 			<required>true</required> -->
+<!-- 			<type>java.lang.String</type> -->
+<!-- 		</attribute> -->
+<!-- 		<attribute> -->
+<!-- 			<description> -->
+<!--             	Componentes que serão enviados na chamada ajax -->
+<!--             </description> -->
+<!-- 			<name>execute</name> -->
+<!-- 			<required>true</required> -->
+<!-- 			<type>java.lang.String</type> -->
+<!-- 		</attribute> -->
 		<attribute>
 			<description>
                 ReadOnly

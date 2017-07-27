@@ -43,16 +43,16 @@ public class DBSRadioRenderer extends DBSRenderer {
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xRadio.getClientId(pContext);
 		String xClass = CSS.RADIO.MAIN;
-		String xOnChange = null;
+//		String xOnChange = null;
 
 		if (xRadio.getStyleClass()!=null){
 			xClass += xRadio.getStyleClass();
 		}
 		
 		
-		if (xRadio.getUpdate()!=null){
-			xOnChange = DBSFaces.getSubmitString(xRadio, DBSFaces.HTML.EVENTS.ONCHANGE, xRadio.getExecute(), xRadio.getUpdate());
-		}
+//		if (xRadio.getUpdate()!=null){
+//			xOnChange = DBSFaces.getSubmitString(xRadio, DBSFaces.HTML.EVENTS.ONCHANGE, xRadio.getExecute(), xRadio.getUpdate());
+//		}
 		//HtmlInputText xInput = (HtmlInputText) FacesContext.getCurrentInstance().getApplication().createComponent(HtmlInputText.COMPONENT_TYPE);
 		//xRadio.getChildren().add(xInput);
 		//xInput.setValueExpression("value", pSelect.getValueExpression("value"));
@@ -60,9 +60,9 @@ public class DBSRadioRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
 			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
 			DBSFaces.encodeAttribute(xWriter, "class", xClass);
-			if (xOnChange!=null){
-				DBSFaces.encodeAttribute(xWriter, DBSFaces.HTML.EVENTS.ONCHANGE, xOnChange); 
-			}
+//			if (xOnChange!=null){
+//				DBSFaces.encodeAttribute(xWriter, DBSFaces.HTML.EVENTS.ONCHANGE, xOnChange); 
+//			}
 			DBSFaces.encodeAttribute(xWriter, "style", xRadio.getStyle());
 			if (xRadio.getChildren().size()>0){
 				pvEncodeInput(pContext, xRadio, xWriter);

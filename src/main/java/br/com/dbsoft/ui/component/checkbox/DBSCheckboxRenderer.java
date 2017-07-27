@@ -75,11 +75,11 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 	private void pvEncodeInput(FacesContext pContext, DBSCheckbox pCheckbox, ResponseWriter pWriter) throws IOException{
 		String xClientId = getInputDataClientId(pCheckbox);
 		//System.out.println("CHECKBOX=" + pCheckbox.getValue());
-		String xOnChange = null;
+//		String xOnChange = null;
 		
-		if (pCheckbox.getUpdate()!=null){
-			xOnChange = DBSFaces.getSubmitString(pCheckbox, DBSFaces.HTML.EVENTS.ONCHANGE, pCheckbox.getExecute(), pCheckbox.getUpdate());
-		}
+//		if (pCheckbox.getUpdate()!=null){
+//			xOnChange = DBSFaces.getSubmitString(pCheckbox, DBSFaces.HTML.EVENTS.ONCHANGE, pCheckbox.getExecute(), pCheckbox.getUpdate());
+//		}
 
 		pWriter.startElement("input", pCheckbox); 
 			DBSFaces.encodeAttribute(pWriter, "id", xClientId);
@@ -91,9 +91,9 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 			}else{
 				DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pCheckbox));
 			}
-			if (xOnChange!=null){
-				DBSFaces.encodeAttribute(pWriter, DBSFaces.HTML.EVENTS.ONCHANGE, xOnChange); 
-			}
+//			if (xOnChange!=null){
+//				DBSFaces.encodeAttribute(pWriter, DBSFaces.HTML.EVENTS.ONCHANGE, xOnChange); 
+//			}
 			if(pvIsChecked(pCheckbox.getValue())) {
 				DBSFaces.encodeAttribute(pWriter, "checked", "checked");
 			}

@@ -12,9 +12,9 @@ public class DBSRadio extends DBSUIInput {
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 	
 	protected enum PropertyKeys {
-		floatLeft,		
-		update,
-		execute;
+		floatLeft;		
+//		update,
+//		execute;
 
 		String toString;
 
@@ -43,21 +43,21 @@ public class DBSRadio extends DBSUIInput {
 		handleAttribute("floatLeft", pFloatLeft);
 	}
 	
-	public void setUpdate(String pUpdate) {
-		getStateHelper().put(PropertyKeys.update, pUpdate);
-		handleAttribute("update", pUpdate);
-	}
-	public String getUpdate() {
-		return (String) getStateHelper().eval(PropertyKeys.update, null);
-	}
-
-	public void setExecute(String pExecute) {
-		getStateHelper().put(PropertyKeys.execute, pExecute);
-		handleAttribute("execute", pExecute);
-	}
-	public String getExecute() {
-		return (String) getStateHelper().eval(PropertyKeys.execute, "");
-	}
+//	public void setUpdate(String pUpdate) {
+//		getStateHelper().put(PropertyKeys.update, pUpdate);
+//		handleAttribute("update", pUpdate);
+//	}
+//	public String getUpdate() {
+//		return (String) getStateHelper().eval(PropertyKeys.update, null);
+//	}
+//
+//	public void setExecute(String pExecute) {
+//		getStateHelper().put(PropertyKeys.execute, pExecute);
+//		handleAttribute("execute", pExecute);
+//	}
+//	public String getExecute() {
+//		return (String) getStateHelper().eval(PropertyKeys.execute, "");
+//	}
 
 }
 

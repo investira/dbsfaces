@@ -12,8 +12,8 @@ public class DBSCheckbox extends DBSUIInput{
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 
 	protected enum PropertyKeys {
-		update,
-		execute,
+//		update,
+//		execute,
 		invertLabel;
 
 		String toString;
@@ -35,21 +35,21 @@ public class DBSCheckbox extends DBSUIInput{
     }
 
 
-	public void setUpdate(String pUpdate) {
-		getStateHelper().put(PropertyKeys.update, pUpdate);
-		handleAttribute("update", pUpdate);
-	}
-	public String getUpdate() {
-		return (String) getStateHelper().eval(PropertyKeys.update, null);
-	}
-
-	public void setExecute(String pExecute) {
-		getStateHelper().put(PropertyKeys.execute, pExecute);
-		handleAttribute("execute", pExecute);
-	}
-	public String getExecute() {
-		return (String) getStateHelper().eval(PropertyKeys.execute, "");
-	}
+//	public void setUpdate(String pUpdate) {
+//		getStateHelper().put(PropertyKeys.update, pUpdate);
+//		handleAttribute("update", pUpdate);
+//	}
+//	public String getUpdate() {
+//		return (String) getStateHelper().eval(PropertyKeys.update, null);
+//	}
+//
+//	public void setExecute(String pExecute) {
+//		getStateHelper().put(PropertyKeys.execute, pExecute);
+//		handleAttribute("execute", pExecute);
+//	}
+//	public String getExecute() {
+//		return (String) getStateHelper().eval(PropertyKeys.execute, "");
+//	}
 	
 	
 	public void setInvertLabel(Boolean pInvertLabel) {
