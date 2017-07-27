@@ -583,8 +583,9 @@ dbsfaces.dialog = {
 	},
 
 	/* Força o scroll já que ele não funciona naturalente no mobile */
-	scroll : function(pDialogData, pDx, pDy) {
-		var xDiv = pDialogData.dom.divscroll;
+	scroll : function(pDialog, pDx, pDy) {
+		var xDialogData = pDialog.data("data");
+		var xDiv = xDialogData.dom.divscroll;
 		xDiv.scrollLeft(xDiv.data("scrollx") + pDx);
 		xDiv.scrollTop(xDiv.data("scrolly") + pDy);
 	},
@@ -604,8 +605,8 @@ dbsfaces.dialog = {
 			return false;
 		}
 
-		if (xpDialogData.dom.type == "nav"
-		|| (xDialogData.dom.type == "msg" && xDialogData.dom.btyes != null)) { // ou // Msg on só há o botão ok
+		if (xDialogData.type == "nav"
+		|| (xDialogData.type == "msg" && xDialogData.dom.btyes != null)) { // ou // Msg on só há o botão ok
 			if ((pDialog.attr("p") == "t" && pDirection == "u")
 			 || (pDialog.attr("p") == "b" && pDirection == "d")
 			 || (pDialog.attr("p") == "l" && pDirection == "l")
