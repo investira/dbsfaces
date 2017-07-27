@@ -88,10 +88,10 @@ public class DBSDialogRenderer extends DBSRenderer{
 			//Mask
 			pWriter.startElement("div", pDialog);
 				xClass = CSS.MODIFIER.MASK;
-				if (pType != TYPE.BTN){
-					xClass += CSS.THEME.BC + CSS.THEME.INVERT;
-				}
 				DBSFaces.encodeAttribute(pWriter, "class", xClass);
+				pWriter.startElement("div", pDialog);
+					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
+				pWriter.endElement("div");
 			pWriter.endElement("div");
 //			pvEncodeContent(pDialog, pType, pContext, pWriter);
 			
@@ -136,14 +136,12 @@ public class DBSDialogRenderer extends DBSRenderer{
 
 	
 	private void pvEncodeIcon(DBSDialog pDialog, ResponseWriter pWriter) throws IOException{
-		if (pDialog.getIconClass() != null){
+		pWriter.startElement("div", pDialog);
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.ICON + CSS.THEME.ACTION);
 			pWriter.startElement("div", pDialog);
-				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.ICON + CSS.THEME.ACTION);
-				pWriter.startElement("div", pDialog);
-					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + pDialog.getIconClass());
-				pWriter.endElement("div");
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + DBSObject.getNotNull(pDialog.getIconClass(), ""));
 			pWriter.endElement("div");
-		}
+		pWriter.endElement("div");
 	}
 
 	private boolean pvIsValid(DBSDialog pDialog){

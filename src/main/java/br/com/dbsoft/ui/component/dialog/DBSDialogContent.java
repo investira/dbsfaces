@@ -82,7 +82,7 @@ public class DBSDialogContent extends DBSUIOutput{
 		TYPE 	 			xType = TYPE.get(xDialog.getType());
 		String xClass = CSS.MODIFIER.CONTENT + CSS.THEME.FC + CSS.THEME.BC + xDialog.getContentStyleClass();
 		if (xType == TYPE.MSG){
-			//Usa o cor invertida quando pfor mensagem
+			//Usa o cor invertida quando for mensagem
 			xClass += CSS.THEME.INVERT;
 		}
 //		System.out.println("DBSDialogContent encodeBegin\t" + this.getClientId());
@@ -295,7 +295,7 @@ public class DBSDialogContent extends DBSUIOutput{
 	 */
 	private void pvEncodeToolbarSimpleButtonOk(DBSDialog pDialog, ResponseWriter pWriter) throws IOException{
 		//Só faz o encode se for MOD
-		String xClass = "-btok -i_ok" + CSS.THEME.ACTION;
+		String xClass = "-btok -i_ok -close" + CSS.THEME.ACTION;
 		//Exibe espaço do button ok
 		pWriter.startElement("div", pDialog);
 			DBSFaces.encodeAttribute(pWriter, "class", xClass);
