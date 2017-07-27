@@ -90,7 +90,7 @@ public class DBSLinkRenderer extends DBSUICommandRenderer {
 
         //Write Anchor attributes
         boolean namespaceParameters = false;
-        Param paramList[] = getParamList(pLink);
+        Param paramList[] = DBSFaces.getParamList(pLink);
         StringBuffer sb = new StringBuffer();
         sb.append(hrefVal);
         boolean paramWritten = (hrefVal.indexOf('?') > 0);
@@ -115,21 +115,12 @@ public class DBSLinkRenderer extends DBSUICommandRenderer {
                 paramWritten = true;
             }
         }
-        sb.append(getFragment(pLink));
+        sb.append(DBSFaces.getFragment(pLink));
         pWriter.writeURIAttribute("href",
         			pContext.getExternalContext()
                                        .encodeResourceURL(sb.toString()),
                                  "href");
 	}
 
-    protected String getFragment(UIComponent component) {
 
-        String fragment = (String) component.getAttributes().get("fragment");
-        fragment = (fragment != null ? fragment.trim() : "");
-        if (fragment.length() > 0) {
-            fragment = "#" + fragment;
-        }
-        return fragment;
-
-    }
 }
