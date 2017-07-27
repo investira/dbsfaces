@@ -526,13 +526,13 @@ dbsfaces.dialog = {
 				pDialogData.dom.header_icon.addClass("-dark");
 			}
 			pDialogData.dom.header_content.addClass("-dark").removeClass("-light");
-			pDialogData.dom.mask_content.addClass("-dark").removeClass("-light");
+			pDialogData.dom.mask_content.addClass("-light").removeClass("-dark");
 		} else {
 			if (pDialogData.dom.header_icon.length > 0) {
 				pDialogData.dom.header_icon.removeClass("-dark");
 			}
 			pDialogData.dom.header_content.addClass("-light").removeClass("-dark");
-			pDialogData.dom.mask_content.addClass("-light").removeClass("-dark");
+			pDialogData.dom.mask_content.addClass("-dark").removeClass("-light");
 		}
 		if (pDialogData.dom.header_content.length > 0) {
 			// Ajusta tamanho do icone do header
