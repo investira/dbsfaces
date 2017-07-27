@@ -125,7 +125,7 @@ public class DBSMessageListRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(pWriter, "type", "text");
 			DBSFaces.encodeAttribute(pWriter, "class", "-foo");
 			DBSFaces.encodeAttribute(pWriter, "autocomplete", "off");
-			DBSFaces.encodeAttribute(pWriter, "onclick", DBSFaces.getSubmitString(pMessageList, "", xClientId, xClientId));
+			DBSFaces.encodeAttribute(pWriter, "onclick", DBSFaces.getSubmitString(xClientId, xClientId));
 			DBSFaces.encodeAttribute(pWriter, "value", pMessageList.getMessageKey());
 		pWriter.endElement("input");
 	}
