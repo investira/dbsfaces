@@ -48,6 +48,7 @@
     display: table-cell;
 }
 
+
 .dbs_button.-on{
 	background-color: rgba(130, 220, 255,0.8) !important;
 }
@@ -68,20 +69,17 @@
 }
 
 .dbs_button > table > tbody {
-/* 	display: inline-block; */
 	margin: 0px;
 	padding: 0px;
 	line-height: 0px;
 	font-size: inherit;
 }
 .dbs_button > table > tbody > tr {
-/* 	display:inline-block; */
 	margin: 0px !important;
 	padding: 0px !important;
 	line-height: 0px !important;
 	font-size: inherit;
 	white-space: nowrap;
-/* 	display: table-row; */
 }
 
 .dbs_button > table > tbody > tr > td {
@@ -90,18 +88,15 @@
 	padding: 0px !important;
 	font-size: inherit;
 	white-space: normal;
-/*     display: table-cell; */
 }
 
 
 .dbs_button > table > tbody > tr > td > .-label,
 .dbs_button > table > tbody > tr > td > .-icon {
 	display: inline-block;
-/* 	display: block; */
 }
 
 .dbs_button > table > tbody > tr > td > .-label {
-	/* 	margin: -1px 0 0; 07-abr-15*/
 	padding: 0 1px 1px 0;
 	line-height: normal;
 	font-size: inherit;
