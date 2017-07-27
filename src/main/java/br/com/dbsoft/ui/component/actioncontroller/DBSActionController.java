@@ -6,8 +6,8 @@ import br.com.dbsoft.message.DBSMessages;
 import br.com.dbsoft.message.IDBSMessage;
 import br.com.dbsoft.message.IDBSMessages;
 import br.com.dbsoft.message.IDBSMessagesListener;
-import br.com.dbsoft.ui.core.DBSMessagesFacesContext;
 import br.com.dbsoft.ui.core.DBSFaces.FACESCONTEXT_ATTRIBUTE;
+import br.com.dbsoft.ui.core.DBSMessagesFacesContext;
 
 /**
  * Controla a execução de um action possibilitando o envio de mensagens e a respectiva validação.
@@ -50,7 +50,6 @@ public abstract class DBSActionController{
 		//Indica que action esta sendo controlado via actionController. Isso é importante para o DialogMsg que faz o encode dos botões com o action original para que o método seja chamado consecutivamente até que não haja mais mensagem.
 		FacesContext.getCurrentInstance().getAttributes().put(FACESCONTEXT_ATTRIBUTE.ACTION_CONTROLLED, true);
 		
-		wOk = false;
 		if (pvCanBeforeExecute()){
 //			System.out.println("actioController validate [" + (pvGetMessages().hasMessages() ? pvGetMessages().getListMessage().get(0).getMessageKey() : "") + "]");
 			beforeExecute(wBeforeMessages);
@@ -64,7 +63,9 @@ public abstract class DBSActionController{
 //		System.out.println("actioController sendmessage [" + (pvGetMessages().hasMessages() ? pvGetMessages().getListMessage().get(0).getMessageKey() : "") + "]");
 		if (pvSendMessages(wMessageControlClientId)){
 			if (pvCanFinalize()){
-				return getOutcome();
+				String xOutcome = getOutcome();
+				wOk = false;
+				return xOutcome;
 			}
 		}
 		return null;
