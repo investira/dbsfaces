@@ -297,6 +297,17 @@ dbsfaces.dialog = {
 		return xData;
 	},
 
+	/*Posições
+	 * TL = +A +I
+	 * TC = +A +I
+	 * TR = -A -I
+	 * BL = -A +I
+	 * BC = -A +I
+	 * BR = +A -I
+	 * CL = -A +I
+	 * CR = +A -I
+	 * C = -A +I
+	 */
 	pvLayoutBtn : function(pDialogData) {
 		if (pDialogData.dom.buttons.length == 0) {
 			return;
