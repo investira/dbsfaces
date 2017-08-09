@@ -3234,7 +3234,9 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 						pvBroadcastEvent(xE, false, false, false);
 						if (!xE.isOk()){
 							if (getIsApprovingOrReproving()){
-								addMessage("erroassinatura", MESSAGE_TYPE.ERROR, DBSFaces.getBundlePropertyValue("dbsfaces", "crudbean.msg.approvalAll"));
+								if (!wMessages.hasMessages()) {
+									addMessage("erroassinatura", MESSAGE_TYPE.ERROR, DBSFaces.getBundlePropertyValue("dbsfaces", "crudbean.msg.approvalAll"));
+								}
 								break;
 							}else{
 								addMessage("erroselecao", MESSAGE_TYPE.ERROR, DBSFaces.getBundlePropertyValue("dbsfaces", "crudbean.msg.editAll"));
