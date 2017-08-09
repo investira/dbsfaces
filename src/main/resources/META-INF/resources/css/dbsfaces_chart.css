@@ -160,14 +160,15 @@
 }
 
 
-.dbs_chart.-pie.-hover > .-chart > .-delta > .-info > .-perc{
+.dbs_chart.-pie:not(.-hover) > .-chart > .-delta > .-info > .-perc{
+	opacity: 0;
 }
 
 
-.dbs_chart.-pie.-hover > .-chart > .-delta > .-info > .-perc > .-int{
+.dbs_chart.-pie > .-chart > .-delta > .-info > .-perc > .-int{
 }
 
-.dbs_chart.-pie.-hover > .-chart > .-delta > .-info > .-perc > .-dec{
+.dbs_chart.-pie > .-chart > .-delta > .-info > .-perc > .-dec{
 	font-size: .5em;
 }
 

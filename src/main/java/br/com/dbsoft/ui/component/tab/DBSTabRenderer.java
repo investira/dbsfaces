@@ -83,7 +83,7 @@ public class DBSTabRenderer extends DBSRenderer {
 
 									DBSFaces.encodeAttribute(xWriter, "id", xPageClientId + "_aba");
 									DBSFaces.encodeAttribute(xWriter, "name", xPageClientId + "_aba");
-									DBSFaces.encodeAttribute(xWriter, "class", "-tab" + DBSFaces.CSS.THEME.FC + DBSFaces.CSS.THEME.INVERT);	
+									DBSFaces.encodeAttribute(xWriter, "class", "-tab" + DBSFaces.CSS.THEME.FC + DBSFaces.CSS.THEME.INVERT + CSS.NOT_SELECTABLE);	
 									DBSFaces.encodeAttribute(xWriter, "tabPage", xPageClientId);
 									
 									encodeClientBehaviors(pContext, xPage);
@@ -108,10 +108,10 @@ public class DBSTabRenderer extends DBSRenderer {
 	//									xWriter.writeAttribute("ontouchstart", "javascript:void(0)", "ontouchstart"); //Para ipad ativar o css:ACTIVE
 	//									xWriter.writeAttribute("href", "#", "href"); //Para ipad ativar o css:ACTIVE
 										xWriter.startElement("span", xTab);
-											DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.ICON + CSS.NOT_SELECTABLE + xPage.getIconClass());
+											DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.ICON + xPage.getIconClass());
 										xWriter.endElement("span");
 										xWriter.startElement("span", xTab);
-											DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CAPTION + CSS.NOT_SELECTABLE);
+											DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CAPTION);
 											xWriter.write(xPage.getCaption());
 										xWriter.endElement("span");
 									xWriter.endElement("a");
