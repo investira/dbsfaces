@@ -3303,7 +3303,9 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 					if (xCount < wSelectedRowsIndexes.size()){
 						xE.setCommittedRowCount(0);
 						xE.setOk(false);
-						addMessage("erroassinatura", MESSAGE_TYPE.ERROR, DBSFaces.getBundlePropertyValue("dbsfaces", "crudbean.msg.approvalAll"));
+						if (DBSObject.isEmpty(wMessages)) {
+							addMessage("erroassinatura", MESSAGE_TYPE.ERROR, DBSFaces.getBundlePropertyValue("dbsfaces", "crudbean.msg.approvalAll"));
+						}
 					}else{
 						xE.setCommittedRowCount(xCount);
 					}
