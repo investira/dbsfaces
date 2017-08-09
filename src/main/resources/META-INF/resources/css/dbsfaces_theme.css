@@ -103,7 +103,19 @@ a {
 	border-collapse: separate;
 }
 
-.-th_action:not([disabled]):ACTIVE > *:not(style):not(script):after{
+.-th_action.dbs_menuitem:not([disabled]):ACTIVE{
+	background-color: rgba(254, 254, 255, 0.2) !important;
+	opacity: 1;	
+	
+	-webkit-box-shadow: 0 0 0 1px rgba(254,254,255,.25);
+	-moz-box-shadow: 0 0 0 1px rgba(254,254,255,.25);
+	box-shadow: 0 0 0 1px rgba(254,254,255,.25);
+	
+	text-shadow: none;
+}
+
+
+.-th_action:not(.dbs_menuitem):not([disabled]):ACTIVE > *:not(style):not(script):after{
 	content: " ";
 	box-sizing: border-box;
 	position: absolute;
@@ -138,20 +150,9 @@ a {
 	box-sizing: border-box;
 	pointer-events: none;
 }
-/* .-th_action:not([disabled]):ACTIVE > *:not(style):not(script):after, */
-/* .-th_action:not([disabled]):HOVER > *:not(style):not(script):after{ */
-/* } */
 
-/* .-th_action:not([disabled]):FOCUS > *:not(style):not(script):after, */
-/* .-th_action:not([disabled]):HOVER > *:not(style):not(script):after{ */
-/* 	opacity: 0.3; */
-/* 	-webkit-animation-iteration-count: infinite; */
-/* 	-webkit-animation-duration: 3s; */
-/* 	-moz-animation-duration: 3s; */
-/* 	animation-duration: 3s; */
-/* } */
 
-.-th_action:not([disabled]):ACTIVE{
+.-th_action:not(.dbs_menuitem):not([disabled]):ACTIVE{
 	opacity: 1;	
 	border: unset !important;
 	background: unset !important;
