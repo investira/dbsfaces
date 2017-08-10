@@ -3463,8 +3463,10 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 			pvFireEventListeners(pEvent);
 		}catch(DBSIOException e){ 
 			//Configura a mensagem padrão do dialog
-			wMessageError.setMessageText(e.getLocalizedMessage());
-			wMessageError.setMessageTooltip(e.getOriginalException().getLocalizedMessage()); 
+//			wMessageError.setMessageText(e.getLocalizedMessage());
+//			wMessageError.setMessageTooltip(e.getOriginalException().getLocalizedMessage()); 
+			wMessageError.setMessageText("Erro executando operação.");
+			wMessageError.setMessageTooltip(e.getLocalizedMessage());
 			if (!DBSObject.isEmpty(e.getCause())){
 				wMessageError.setMessageTooltip(e.getCause().getMessage() + "<br/>" + e.getMessage());				
 			}
