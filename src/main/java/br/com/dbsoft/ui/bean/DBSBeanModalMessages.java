@@ -192,8 +192,10 @@ public abstract class DBSBeanModalMessages extends DBSBean implements IDBSModalM
 	 */
 	protected void addMessage(IDBSMessage pMessage){
 //		addMessage(pMessage.getMessageText(), pMessage.getMessageType(), pMessage.getMessageText(), pMessage.getMessageTooltip());
-		if (wMessages.hasMessages()) {wMessages.clear();} //TODO ALBERTO: Limpa as mensagens para mostrar apenas uma. Acontece um erro se houver mais uma mensagem na listagem;
-		wMessages.add(pMessage);
+		//TODO ALBERTO: Limita as mensagens para mostrar em apenas uma. Se já houverem mensagens, uma nova não é adicionada. Acontece um erro se houver mais uma mensagem na listagem;
+		if (!wMessages.hasMessages()) {
+			wMessages.add(pMessage);
+		} 
 	}
 	
 	/**
