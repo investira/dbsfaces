@@ -182,7 +182,8 @@ public abstract class DBSBeanModalMessages extends DBSBean implements IDBSModalM
 	 * @param pMessage
 	 */
 	protected void addMessage(String pMessageKey, MESSAGE_TYPE pMessageType, String pMessageText, String pMessageTooltip){
-		wMessages.add(new DBSMessage(pMessageKey, pMessageType, pMessageText, pMessageTooltip));
+		IDBSMessage xMessage = new DBSMessage(pMessageKey, pMessageType, pMessageText, pMessageTooltip);
+		addMessage(xMessage);
 	}
 
 	/**
@@ -190,7 +191,9 @@ public abstract class DBSBeanModalMessages extends DBSBean implements IDBSModalM
 	 * @param pMessage
 	 */
 	protected void addMessage(IDBSMessage pMessage){
-		addMessage(pMessage.getMessageText(), pMessage.getMessageType(), pMessage.getMessageText(), pMessage.getMessageTooltip());
+//		addMessage(pMessage.getMessageText(), pMessage.getMessageType(), pMessage.getMessageText(), pMessage.getMessageTooltip());
+		if (wMessages.hasMessages()) {wMessages.clear();} //TODO ALBERTO: Limpa as mensagens para mostrar apenas uma. Acontece um erro se houver mais uma mensagem na listagem;
+		wMessages.add(pMessage);
 	}
 	
 	/**
