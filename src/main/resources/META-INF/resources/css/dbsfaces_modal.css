@@ -153,6 +153,11 @@
     min-width: 2em;
 }
 
+.dbs_modal > .-modal > .-container > table > thead > .-toolbar > .-container .dbs_button[disabled]{
+	position: relative;
+	top: 3px;
+}
+
 .dbs_modal > .-modal > .-container > table > thead > .-toolbar > .-container .-right{
 	display: inline-flex;	
 	float: right;

@@ -375,7 +375,8 @@ public class DBSDialogContent extends DBSUIOutput{
 			pvEncodeMsgButton(pContext, DBSDialog.BUTTON_NO, "Não","-i_no -red", null, pDialog.getClientId(), xActionSourceNO);
 		//UM BOTÃO - SIM(YES)
 		}else{
-			xStyle = "display:none;";
+			xStyle = "width:0;height:0;position:absolute;"; //Exibe sem dimensão somente para poder receber o keydown
+//			xStyle = "display:none;";
 			//Não utiliza o action do botão que originou este dialog se mensagem for erro. Erro impede que action seja efetuado.
 			if (xMsgType == null || xMsgType.getIsError()){
 				xActionSourceYES = null;

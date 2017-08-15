@@ -94,6 +94,16 @@ dbs_dialogContent = function(pId) {
 		});
 	}
 
+	$(pId + " > .-container > .-content > .-footer > .-toolbar").keydown(function(e){
+		var xDialogData = xDialog.data("data");
+		if (xDialogData.type == "msg"
+		 && xDialogData.dom.btyes != null
+		 && xDialogData.dom.btyes.length > 0) {
+			xDialogData.dom.btyes.click();
+			return false;
+		}
+	});
+	
 	/* Após animação de abrir ou fechar */
 	$(pId + " > .-container > .-content").on(dbsfaces.EVENT.ON_TRANSITION_END, function(e) {
 		var xDialogData = xDialog.data("data");
@@ -109,6 +119,7 @@ dbs_dialogContent = function(pId) {
 			 && xDialogData.dom.btyes != null
 			 && xDialogData.dom.btyes.length > 0) {
 				xDialogData.dom.btyes.click();
+				return false;
 			}
 			// Foi aberto
 		} else {
@@ -285,10 +296,10 @@ dbsfaces.dialog = {
 		pDialog.data("data", xData);
 
 		var xBtYes = null;
-		// Verifrica se há somente o botão de ok quando for mensagem.
+		// Verifica se há somente o botão de ok quando for mensagem.
 		if (xData.type == "msg" && xData.dom.footer_toolbar.length == 1) {
 			xBtYes = dbsfaces.util.getNotEmpty(xData.dom.footer_toolbar.children("[id$='btyes']"), null);
-			if (xBtYes != null && xBtYes.css("display") != "none") {
+			if (xBtYes != null && parseInt(xBtYes.css("width")) != 0) {
 				xBtYes = null;
 			}
 		}
@@ -719,7 +730,13 @@ dbsfaces.dialog = {
 			dbsfaces.ui.disableBackgroundInputs(pDialogData.dom.self);
 			dbsfaces.dialog.pvFreeze(pDialogData, true);
 			// Coloca o foco no primeiro campo de input dentro do dialog
-			dbsfaces.ui.focusOnFirstInput(pDialogData.dom.self);
+			if (pDialogData.type == "msg"
+			 && pDialogData.dom.btyes != null
+			 && pDialogData.dom.btyes.length > 0) {
+				pDialogData.dom.btyes[0].focus();
+			}else{
+				dbsfaces.ui.focusOnFirstInput(pDialogData.dom.self);
+			}
 			// }
 		}
 	},
