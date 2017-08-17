@@ -1,5 +1,8 @@
 dbs_modal = function(pId) {
-    var wModal = $(pId + " > .-modal");
+	
+	dbsfaces.modal.initialize($(pId));
+    
+	var wModal = $(pId + " > .-modal");
     var wCaption = $(pId + " > .-modal > .-container > table > thead > tr > th");
 
     //Habilita os input caso não encontre mais modals
@@ -33,15 +36,15 @@ dbs_modal = function(pId) {
     dbsfaces.ui.focusOnFirstInput($(pId + dbsfaces.modal.getBackgroundComponentSelector()));
     
     
-	wCaption.off("mousedown.nnnmodal")
-	   		.on("mousedown.nnnmodal", function(e){
+    dbsfaces.modal.dragOff(wModal, wCaption);
+	wCaption.on("mousedown.nnnmodal", function(e){
         var xModalPositionOld = {left: wModal.offset().left,
-			 	   			   	  top: wModal.offset().top,
-			 	   			   	  width: wModal.outerWidth(),
-			 	   			   	  height: wModal.outerHeight()}; 
+			 	   			   	 top: wModal.offset().top,
+			 	   			   	 width: wModal.outerWidth(),
+			 	   			   	 height: wModal.outerHeight()}; 
 	   	if (e.which === 1){
-	   		wCaption.off("mousemove.nnnmodal")
-					.on("mousemove.nnnmodal",{pX:e.clientX, pY:e.clientY, pPosOld:xModalPositionOld}, function(e){
+			dbsfaces.modal.dragOff(wModal, wCaption);
+	   		wCaption.on("mousemove.nnnmodal",{pX:e.clientX, pY:e.clientY, pPosOld:xModalPositionOld}, function(e){
 //				console.log(wModal.offset().left + ":" + wModal.offset().top + "\t" + 
 //						    e.data.pPosOld.left + ":" + e.data.pPosOld.top + "\t" +
 //						    e.data.pX + ":" + e.data.pY + "\t" +
@@ -56,7 +59,7 @@ dbs_modal = function(pId) {
 		   		wModal.css("margin", "");
 		   		wModal.css("left", e.data.pPosOld.left + (e.clientX - e.data.pX) + "px");
 		   		wModal.css("top", e.data.pPosOld.top + (e.clientY - e.data.pY) + "px");
-
+		   		wModal.addClass("-moving");
 		        return false;
 			});
 	   	}
@@ -64,18 +67,35 @@ dbs_modal = function(pId) {
     
 	//Desliga move. Por algum bug, dragstart é eventualmente disparado durante o move
 	$(window).on("dragstart", function(e){
-		wCaption.off("mousemove.nnnmodal");
+		dbsfaces.modal.dragOff(wModal, wCaption);
+//		wCaption.off("mousemove.nnnmodal");
 	});
 	
 	//Desliga move
 	$(window).on("mouseup.nnnmodal", function(e){
-		wCaption.off("mousemove.nnnmodal");
+		dbsfaces.modal.dragOff(wModal, wCaption);
+//		wCaption.off("mousemove.nnnmodal");
 	});
     
 }
 
 
 dbsfaces.modal = {
+	initialize: function(pModel){
+		dbsfaces.modal.initializeData(pModel);
+	},
+	
+	initializeData: function(pModel){
+		var xData = {
+				dom : {
+					self : pModel,
+					modal : pModel.children(".-modal"),
+				    caption : pModel.find(" > .-modal > .-container > table > thead > tr > th")
+				}
+		}
+		pModel.data("data", xData);
+	},
+
 	show: function(pModal){
 		//Fixa tamanho da tela
 		pModal.css("width", pModal.outerWidth());
@@ -89,6 +109,11 @@ dbsfaces.modal = {
         		   .css("margin-top","-" + xH + "px")
         		   .css("opacity","1");
 
+	},
+	
+	dragOff: function(pModal, pCaption){
+		pModal.removeClass("-moving");
+		pCaption.off("mousemove.nnnmodal");
 	},
 
 //	disableBackgroundInputs: function(pId){
