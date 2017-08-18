@@ -15,12 +15,6 @@ import br.com.dbsoft.ui.core.DBSMessagesFacesContext;
  */
 public abstract class DBSActionController{
 
-//	private enum Phase{
-//		Before,
-//		Execute,
-//		After,
-//		End;
-//	}
 	private IDBSMessages 	wBeforeMessages = new DBSMessages(true);
 	private IDBSMessages 	wAfterMessages = new DBSMessages(true);
 	private LocalListener	wLocalListener = new LocalListener();
