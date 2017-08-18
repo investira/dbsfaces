@@ -35,6 +35,22 @@ public abstract class DBSActionController{
 		this();
 		wMessageControlClientId = pMessageControlClientId;
 	}
+	
+	/**
+	 * ClientId do componente da view que receberá as mensagens
+	 * @return
+	 */
+	public String getMessageControlClientId() {
+		return wMessageControlClientId;
+	}
+
+	/**
+	 * ClientId do componente da view que receberá as mensagens
+	 * @return
+	 */
+	public void setMessageControlClientId(String pMessageControlClientId) {
+		wMessageControlClientId = pMessageControlClientId;
+	}
 
 	/**
 	 * Efetua a chamada para o processamento.</br>
