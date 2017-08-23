@@ -2849,7 +2849,7 @@ public class  DBSFaces {
 		if (pSubmittedValue != null){
 		 	ValueExpression xVE =  pComponent.getValueExpression("value");
 		 	if (xVE != null){
-		 		try{
+//		 		try{
 			 		Class<?> xValueClass = xVE.getType(FacesContext.getCurrentInstance().getELContext());	 	
 					//Converte valor para nulo em determinados casos
 					if(pSubmittedValue.equals("")){
@@ -2878,9 +2878,9 @@ public class  DBSFaces {
 							xSubmittedValue = DBSDate.toTimestamp(pSubmittedValue);
 						}
 					}
-		 		}catch(Exception e){
-		 			wLogger.error(e);
-		 		}
+//		 		}catch(Exception e){
+//		 			wLogger.error(e);
+//		 		}
 			}
 	 	}
 	 	return xSubmittedValue;
