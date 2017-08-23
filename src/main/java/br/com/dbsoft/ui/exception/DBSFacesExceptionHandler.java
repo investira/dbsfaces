@@ -37,7 +37,6 @@ public class DBSFacesExceptionHandler  extends ExceptionHandlerWrapper {
 	@Override
 	public void handle() throws FacesException {
 		final Iterator<ExceptionQueuedEvent> i = getUnhandledExceptionQueuedEvents().iterator();         
-
 	    while (i.hasNext()) {             
 			ExceptionQueuedEvent xEvent = i.next();             
 			ExceptionQueuedEventContext xContext = (ExceptionQueuedEventContext) xEvent.getSource();               
@@ -50,13 +49,11 @@ public class DBSFacesExceptionHandler  extends ExceptionHandlerWrapper {
 			final ConfigurableNavigationHandler xNav = (ConfigurableNavigationHandler) xFC.getApplication().getNavigationHandler();               
 			try {                   
 				//Não encontrou a conversação (CoversationScoped)
-				if (xThrowable instanceof NonexistentConversationException){
-					//Se não finalizada a resposta
+				if ((xThrowable instanceof NonexistentConversationException) || (xThrowable.getCause() instanceof NonexistentConversationException)){
+					//Se não finalizada a resposta 
 					if (!xFC.getRenderResponse()){ 
 						//Atualiza integralmente a página atual
 						xNav.performNavigation(DBSFaces.getCurrentViewRefresh());
-//					}else{
-//						System.out.println("asdcascd");
 					}
 //					xFC.renderResponse();       
 				//View Expirada
@@ -67,7 +64,7 @@ public class DBSFacesExceptionHandler  extends ExceptionHandlerWrapper {
 //					xNav.performNavigation("/");
 //					xNav.handleNavigation(xFC, null, "/index.xhtml?faces-redirect=true");
 					xNav.handleNavigation(xFC, null, DBSFaces.getCurrentViewRefresh());
-				}else if (xThrowable instanceof ViewExpiredException){
+				}else if ((xThrowable instanceof ViewExpiredException) || (xThrowable.getCause() instanceof ViewExpiredException)){
 						//Direciona para a pasta raiz do sistema(normalmente o sistema irá redirecionar para a páginal index.xhtml)
 //						xNav.performNavigation(xFC.getExternalContext().getRequestContextPath());
 //						xFC.renderResponse();       
