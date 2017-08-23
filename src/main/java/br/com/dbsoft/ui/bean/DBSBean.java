@@ -24,15 +24,16 @@ import br.com.dbsoft.annotation.DBSEager;
 public abstract class DBSBean implements Serializable{
  
 	private static final long serialVersionUID = -5273728796912868413L;
+	private static final long wConversationTimeout = 600000;  //10 minutos
 
-	protected 	Logger 		wLogger =  Logger.getLogger(this.getClass());
-	
+	protected 	Logger 						wLogger =  Logger.getLogger(this.getClass());
+
+	@Inject
+	private 	Conversation				wConversation;
+
 	private   	DBSBean						wMasterBean = null;
 	private 	List<DBSBean>				wSlavesBean = new ArrayList<DBSBean>();
 	private 	Locale						wLocale;
-	@Inject
-	private Conversation					wConversation;
-	private static final long wConversationTimeout = 600000;  //10 minutos
 	
 	
 	//--------------------------------------------------------------------------------------
@@ -69,7 +70,8 @@ public abstract class DBSBean implements Serializable{
 	}
 	
 	/**
-	 * Inicia conversação caso exista a anotação 'ConversationScoped' na class
+	 * Inicia conversação caso exista a anotação 'ConversationScoped' na class.
+	 * É necessário que o componente form seja atualizado via ajax ou refresh da página
 	 */
 	public void conversationBegin(){
 		for (Annotation xAnnotation:this.getClass().getDeclaredAnnotations()){
