@@ -121,20 +121,29 @@ public class DBSDialogContent extends DBSUIOutput{
 	private void pvEncodeHeader(DBSDialog pDialog, TYPE pType, FacesContext pContext,  ResponseWriter pWriter) throws IOException{
 		UIComponent xHeaderLeft = pDialog.getFacet(DBSDialog.FACET_HEADER_LEFT);
 		UIComponent xHeaderRight = pDialog.getFacet(DBSDialog.FACET_HEADER_RIGHT);
-		if (xHeaderLeft == null
-		 && xHeaderRight == null
-		 && pDialog.getMsgType() == null
-		 && DBSObject.isEmpty(pDialog.getCaption())){return;}
+		if (!pvHasHeader(pDialog, xHeaderRight, xHeaderLeft)
+		 && pDialog.getMsgType() == null){return;}
 		pWriter.startElement("div", pDialog);
 			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.HEADER);
 			pWriter.startElement("div", pDialog);
 				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
-				DBSFaces.encodeAttribute(pWriter, "style", pvGetPaddingHeader(pDialog));
-					pvEncodeCaption(pDialog, pType, xHeaderRight, xHeaderLeft, pContext, pWriter);
+				//Set padding do cabeçalho iqual ao padding interno do content
+				if (pvHasHeader(pDialog, xHeaderRight, xHeaderLeft)){
+					DBSFaces.encodeAttribute(pWriter, "style", pvGetPaddingHeader(pDialog));
+				}
+				pvEncodeCaption(pDialog, pType, xHeaderRight, xHeaderLeft, pContext, pWriter);
 			pWriter.endElement("div");
 		pWriter.endElement("div");
 	}
 
+	private boolean pvHasHeader(DBSDialog pDialog, UIComponent pFacetHeaderRight, UIComponent pFacetHeaderLeft){
+		if (pFacetHeaderLeft == null
+		 && pFacetHeaderRight == null
+		 && DBSObject.isEmpty(pDialog.getCaption())){
+			return false;
+		}
+		return true;
+	}
 	private void pvEncodeCaption(DBSDialog pDialog, TYPE pType, UIComponent pFacetHeaderRight, UIComponent pFacetHeaderLeft, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 		//Icone do tipo de mensagem
 		MESSAGE_TYPE xMsgType = MESSAGE_TYPE.get(pDialog.getMsgType());
@@ -158,8 +167,8 @@ public class DBSDialogContent extends DBSUIOutput{
 				if (xMsgType == null && pDialog.getCaption() != null){
 					pWriter.write(pDialog.getCaption());
 				//Tipo de mensagem como caption
-				}else if (xMsgType != null){
-					pWriter.write(xMsgType.getName());
+//				}else if (xMsgType != null){
+//					pWriter.write(xMsgType.getName());
 				}
 			pWriter.endElement("div");
 			
@@ -180,6 +189,7 @@ public class DBSDialogContent extends DBSUIOutput{
 			
 		pWriter.endElement("div");
 	}
+	
 
 	private void pvEncodeHandle(DBSDialog pDialog, TYPE pType, ResponseWriter pWriter) throws IOException{
 		//Não cria bar de fechar se for MOD ou existir Toolbar
@@ -377,16 +387,21 @@ public class DBSDialogContent extends DBSUIOutput{
 		}else{
 			xStyle = "width:0;height:0;position:absolute;"; //Exibe sem dimensão somente para poder receber o keydown
 //			xStyle = "display:none;";
-			//Não utiliza o action do botão que originou este dialog se mensagem for erro. Erro impede que action seja efetuado.
-			if (xMsgType == null || xMsgType.getIsError()){
-				xActionSourceYES = null;
+			//Se esta é a última mensagem para ser validada.
+			if (pDialog.getDBSMessages().notValidatedSize() <= 1){
+				//Não utiliza o action do botão que originou este dialog se mensagem for erro. Erro impede que action seja efetuado.
+				if (xMsgType == null || xMsgType.getIsError()){
+						xActionSourceYES = null;
+	//					pvEncodeMsgButtonRecall(pContext, DBSDialog.BUTTON_YES, "Sim","-i_yes -green", xStyle, pDialog.getClientId(), xActionSourceYES);
+	//					return;
+				}
 			}
 		}
 		//BOTÃO - SIM(YES)
 		pvEncodeMsgButton(pContext, DBSDialog.BUTTON_YES, "Sim","-i_yes -green", xStyle, pDialog.getClientId(), xActionSourceYES); 
 	}
 
-
+	
 	private void pvEncodeMsgButton(FacesContext pContext, 
 								   String 		pId, 
 								   String 		pLabel, 
@@ -437,4 +452,6 @@ public class DBSDialogContent extends DBSUIOutput{
 		pWriter.write(xJS);
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);		
 	}
+	
+
 }

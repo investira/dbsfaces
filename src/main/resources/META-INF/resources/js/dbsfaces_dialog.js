@@ -269,6 +269,7 @@ dbsfaces.dialog = {
 			},
 			type : pDialog.attr("type"),
 			closeTimeout : dbsfaces.util.getNotEmpty(pDialog.attr("ct"), "0"),
+			contentAligment : dbsfaces.util.getNotEmpty(pDialog.attr("ca"), ""),
 			time : null,
 			padding : null
 		}
@@ -536,20 +537,20 @@ dbsfaces.dialog = {
 			if (pDialogData.dom.header_icon.length > 0) {
 				pDialogData.dom.header_icon.addClass("-dark");
 			}
-			pDialogData.dom.header_content.addClass("-dark").removeClass("-light");
+			pDialogData.dom.content.addClass("-dark").removeClass("-light");
 			pDialogData.dom.mask_content.addClass("-light").removeClass("-dark");
 		} else {
 			if (pDialogData.dom.header_icon.length > 0) {
 				pDialogData.dom.header_icon.removeClass("-dark");
 			}
-			pDialogData.dom.header_content.addClass("-light").removeClass("-dark");
+			pDialogData.dom.content.addClass("-light").removeClass("-dark");
 			pDialogData.dom.mask_content.addClass("-dark").removeClass("-light");
 		}
-		if (pDialogData.dom.header_content.length > 0) {
+//		if (pDialogData.dom.header_content.length > 0) {
 			// Ajusta tamanho do icone do header
-			var xHeight = pDialogData.dom.header_content[0].getBoundingClientRect().height / parseFloat(pDialogData.dom.header_content.css("font-size"));
-			pDialogData.dom.header_icon.children().css("font-size",	xHeight + "em");
-		}
+//			var xHeight = pDialogData.dom.header_content[0].getBoundingClientRect().height / parseFloat(pDialogData.dom.header_content.css("font-size"));
+//			pDialogData.dom.header_icon.children().css("font-size",	xHeight + "em");
+//		}
 
 		// Cor da barra de timeout
 		if (pDialogData.type != "mod") {
@@ -799,6 +800,15 @@ dbsfaces.dialog = {
 		if (pDialogData.dom.footer.length > 0) {
 			pDialogData.dom.sub_container.css("padding-bottom", pDialogData.dom.footer[0].clientHeight);
 		}
+		if (pDialogData.type == "msg"){
+			//Preserva espaço do icone
+			pDialogData.dom.sub_container.css("padding-left", parseFloat(pDialogData.dom.sub_container.css("padding-right")) + pDialogData.dom.header_icon[0].clientWidth); 
+		}
+		if (pDialogData.contentAligment == "c"){
+			//Centraliza conteúdo
+			pDialogData.dom.sub_content.css("top", (pDialogData.dom.divscroll[0].clientHeight / 2) - (pDialogData.dom.sub_content[0].clientHeight / 2)); 
+		}
+
 		//Ajusta posição da máscara em função da posição do icone para que fique sempre no canto superior esquerdo da tela
 		pDialogData.dom.mask_content.css("top", "-" + pDialogData.dom.icon[0].getBoundingClientRect().top + "px");
 		pDialogData.dom.mask_content.css("left", "-" + pDialogData.dom.icon[0].getBoundingClientRect().left + "px");
