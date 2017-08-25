@@ -224,37 +224,37 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 	 * Esta próporia classe para ser acessada pelos ActionController
 	 * @return
 	 */
-	protected DBSDialogCrudBean getOuter() {return this;}
+	protected final DBSDialogCrudBean getOuter() {return this;}
 	
 	/**
 	 * Configuração da inserção
 	 * @return
 	 */
-	public Config getInsertConfig(){return wInsertConfig;}
+	public final Config getInsertConfig(){return wInsertConfig;}
 	
 	/**
 	 * Configuração da edição
 	 * @return
 	 */
-	public Config getUpdateConfig(){return wUpdateConfig;}
+	public final Config getUpdateConfig(){return wUpdateConfig;}
 	
 	/**
 	 * Configuração da deleção
 	 * @return
 	 */
-	public Config getDeleteConfig(){return wDeleteConfig;}
+	public final Config getDeleteConfig(){return wDeleteConfig;}
 	
 	/**
 	 * Configuração da aprovação
 	 * @return
 	 */
-	public Config getApproveConfig(){return wApproveConfig;}
+	public final Config getApproveConfig(){return wApproveConfig;}
 
 	/**
 	 * Configuração da reprovação
 	 * @return
 	 */
-	public Config getReproveConfig(){return wReproveConfig;}
+	public final Config getReproveConfig(){return wReproveConfig;}
 
 	// =====================================================================
 	// ACTIONS e ACTIONS CONTROLLER
@@ -526,7 +526,7 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 	// ATTRIBUTES
 	// =====================================================================
 
-	public Boolean isDialogOpened(){
+	public final Boolean isDialogOpened(){
 		if (wCrudBeanAction.equals(CrudBeanAction.INSERT) && wInsertConfig.hasDialog()
 		 || wCrudBeanAction.equals(CrudBeanAction.UPDATE) && wUpdateConfig.hasDialog()
 		 || wCrudBeanAction.equals(CrudBeanAction.DELETE) && wDeleteConfig.hasDialog()
@@ -541,7 +541,7 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 	 * View destino após a confirmação
 	 * @return
 	 */
-	public String getOutcome(){
+	public final String getOutcome(){
 		return wOutcome;
 	}
 	
@@ -549,7 +549,7 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 	 * View destino após a confirmação
 	 * @return
 	 */
-	public void setOutcome(String pOutcome){
+	public final void setOutcome(String pOutcome){
 		wOutcome = pOutcome;
 	}
 	
@@ -557,7 +557,7 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 	 * Ação em andamento
 	 * @return
 	 */
-	public CrudBeanAction getCrudBeanAction(){
+	public final CrudBeanAction getCrudBeanAction(){
 		return wCrudBeanAction;
 	}
 	
