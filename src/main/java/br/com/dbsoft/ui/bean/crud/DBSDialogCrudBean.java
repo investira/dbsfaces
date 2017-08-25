@@ -224,37 +224,37 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 	 * Esta próporia classe para ser acessada pelos ActionController
 	 * @return
 	 */
-	protected final DBSDialogCrudBean getOuter() {return this;}
+	protected DBSDialogCrudBean getOuter() {return this;}
 	
 	/**
 	 * Configuração da inserção
 	 * @return
 	 */
-	public final Config getInsertConfig(){return wInsertConfig;}
+	public Config getInsertConfig(){return wInsertConfig;}
 	
 	/**
 	 * Configuração da edição
 	 * @return
 	 */
-	public final Config getUpdateConfig(){return wUpdateConfig;}
+	public Config getUpdateConfig(){return wUpdateConfig;}
 	
 	/**
 	 * Configuração da deleção
 	 * @return
 	 */
-	public final Config getDeleteConfig(){return wDeleteConfig;}
+	public Config getDeleteConfig(){return wDeleteConfig;}
 	
 	/**
 	 * Configuração da aprovação
 	 * @return
 	 */
-	public final Config getApproveConfig(){return wApproveConfig;}
+	public Config getApproveConfig(){return wApproveConfig;}
 
 	/**
 	 * Configuração da reprovação
 	 * @return
 	 */
-	public final Config getReproveConfig(){return wReproveConfig;}
+	public Config getReproveConfig(){return wReproveConfig;}
 
 	// =====================================================================
 	// ACTIONS e ACTIONS CONTROLLER
@@ -403,47 +403,47 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 
 	};
 	
-	public final void insert(){
+	public void insert(){
 		pvDoAction(CrudBeanAction.INSERT);
 	}
-	public final void update(){
+	public void update(){
 		pvDoAction(CrudBeanAction.UPDATE);
 	}
-	public final void delete(){
+	public void delete(){
 		pvDoAction(CrudBeanAction.DELETE);
 	}
-	public final void approve(){
+	public void approve(){
 		pvDoAction(CrudBeanAction.APPROVE);
 	}
-	public final void reprove(){
+	public void reprove(){
 		pvDoAction(CrudBeanAction.REPROVE);
 	}
 
-	public final void validate(){
+	public void validate(){
 		if (wCrudBeanAction.equals(CrudBeanAction.NONE)){return;}
 		wACValidate.execute();
 	}
 	
-	public final void confirm(){
+	public void confirm(){
 		if (wCrudBeanAction.equals(CrudBeanAction.NONE)){return;}
 		wACConfirm.execute();
 	}
 
-	public final void cancel(){
+	public void cancel(){
 		if (wCrudBeanAction.equals(CrudBeanAction.NONE)){return;}
 		wACCancel.execute();
 	}
 
 	
-	public final void copy(){
+	public void copy(){
 		if (!wCrudBeanAction.equals(CrudBeanAction.NONE)){return;}
 	}
 
-	public final void paste(){
+	public void paste(){
 		if (wCrudBeanAction.equals(CrudBeanAction.NONE)){return;}
 	}
 
-	public final void move(){
+	public void move(){
 		if (!wCrudBeanAction.equals(CrudBeanAction.NONE)){return;}
 	}
 
@@ -470,15 +470,15 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 	protected void beforeConfirm(IDBSMessages pMessagesToSend) throws DBSIOException{};
 
 	/**
-	 * Disparado antes de iniciar a válidação de fator.<br/>
-	 * Neste método deve-se implementar ajustes dos dados que se façam para adequa-los antes de iniciar a validação no <b>onValidate</b> 
+	 * Disparado antes de iniciar a validação de fato no <b>onValidade</b>.<br/>
+	 * Neste método deve-se implementar ajustes dos dados que se façam necessários para adequa-los antes de iniciar a validação. 
 	 * @param pMessagesToSend Mensagens a serem enviadas
 	 * @throws DBSIOException
 	 */
 	protected void beforeValidate(IDBSMessages pMessagesToSend) throws DBSIOException{};
 
 	/**
-	 * Disparado antes de iniciar a execução.<br/> 
+	 * Disparado antes de iniciar a confirmação no <b>onConfirm</b>.<br/> 
 	 * @param pMessagesToSend Mensagens a serem enviadas
 	 * @throws DBSIOException
 	 */
@@ -526,7 +526,7 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 	// ATTRIBUTES
 	// =====================================================================
 
-	public final Boolean isDialogOpened(){
+	public Boolean isDialogOpened(){
 		if (wCrudBeanAction.equals(CrudBeanAction.INSERT) && wInsertConfig.hasDialog()
 		 || wCrudBeanAction.equals(CrudBeanAction.UPDATE) && wUpdateConfig.hasDialog()
 		 || wCrudBeanAction.equals(CrudBeanAction.DELETE) && wDeleteConfig.hasDialog()
@@ -541,7 +541,7 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 	 * View destino após a confirmação
 	 * @return
 	 */
-	public final String getOutcome(){
+	public String getOutcome(){
 		return wOutcome;
 	}
 	
@@ -549,7 +549,7 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 	 * View destino após a confirmação
 	 * @return
 	 */
-	public final void setOutcome(String pOutcome){
+	public void setOutcome(String pOutcome){
 		wOutcome = pOutcome;
 	}
 	
@@ -557,7 +557,7 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 	 * Ação em andamento
 	 * @return
 	 */
-	public final CrudBeanAction getCrudBeanAction(){
+	public CrudBeanAction getCrudBeanAction(){
 		return wCrudBeanAction;
 	}
 	
