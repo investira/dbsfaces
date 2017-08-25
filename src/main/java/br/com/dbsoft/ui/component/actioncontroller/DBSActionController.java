@@ -182,7 +182,7 @@ public abstract class DBSActionController{
 	protected void onError(IDBSMessages pMessagesToSend){}
 	
 	/**
-	 * Evento disparado após a execusão do <b>beforeExecute</b> e não existir mensagem a serem exibidas.</br>
+	 * Evento disparado após a execusão do <b>beforeExecute</b> e não existir mensagem a ser exibida.</br>
 	 * Implementação do processamento que se deseja efetuar.
 	 * Pode-se enviar mensagens de erro ou informações gerados pela execução utilizando o <b>pMessagesToSend</b>.<br/>
 	 * Por questão de organização do código, para envio de mensagens não geradas pela execução, 
@@ -193,7 +193,7 @@ public abstract class DBSActionController{
 	protected abstract boolean onExecute(IDBSMessages pMessagesToSend);
 	
 	/**
-	 * Envia mensagens e retorna se pode ser redirecionado(quando não há mais mensagens a serem exibidas).
+	 * Envia mensagens e retorna se pode ser redirecionado(quando não há mensagem a ser exibida).
 	 * @param pClientId
 	 * @return 
 	 */
