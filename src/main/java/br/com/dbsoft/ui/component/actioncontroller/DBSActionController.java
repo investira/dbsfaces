@@ -2,15 +2,18 @@ package br.com.dbsoft.ui.component.actioncontroller;
 
 import javax.faces.context.FacesContext;
 
+import br.com.dbsoft.message.DBSMessage;
 import br.com.dbsoft.message.DBSMessages;
 import br.com.dbsoft.message.IDBSMessage;
 import br.com.dbsoft.message.IDBSMessages;
 import br.com.dbsoft.message.IDBSMessagesListener;
+import br.com.dbsoft.message.IDBSMessageBase.MESSAGE_TYPE;
 import br.com.dbsoft.ui.core.DBSFaces.FACESCONTEXT_ATTRIBUTE;
 import br.com.dbsoft.ui.core.DBSMessagesFacesContext;
 
 /**
  * Controla a execução de um action possibilitando o envio de mensagens e a respectiva validação.
+ * @author ricardo.villar
  *
  */
 public abstract class DBSActionController{
@@ -21,14 +24,34 @@ public abstract class DBSActionController{
 	private String			wMessageControlClientId = null;
 	private	Boolean 		wOk = false;
 	private Boolean			wExecuting = false;
+	private String			wOutcome = null;
+	private	IDBSMessage 	wMessageError = new DBSMessage(MESSAGE_TYPE.ERROR,"Erro: %s");
 	
 	
+	/**
+	 * Controla a execução de um action possibilitando o envio de mensagens e a respectiva validação.<br/>
+	 * <b>Eventos</b>:
+	 * <ul>
+	 * <li>beforeExecute</li>
+	 * <li>onExecute</li>
+	 * <li>afterExecute</li>
+	 * <li>onSuccess ou onError</li>
+	 * </ul>
+	 */
 	public DBSActionController() {
 		wBeforeMessages.addMessagesListener(wLocalListener);
 		wAfterMessages.addMessagesListener(wLocalListener);
 	}
 	
 	/**
+	 * Controla a execução de um action possibilitando o envio de mensagens e a respectiva validação.<br/>
+	 * <b>Eventos</b>:
+	 * <ul>
+	 * <li>beforeExecute</li>
+	 * <li>onExecute</li>
+	 * <li>afterExecute</li>
+	 * <li>onSuccess ou onError</li>
+	 * </ul>
 	 * @param pMessageControlClientId ClientId do componente que receberá as mensagens quando houver.
 	 */
 	public DBSActionController(String pMessageControlClientId) {
@@ -40,7 +63,7 @@ public abstract class DBSActionController{
 	 * ClientId do componente da view que receberá as mensagens
 	 * @return
 	 */
-	public String getMessageControlClientId() {
+	public final String getMessageControlClientId() {
 		return wMessageControlClientId;
 	}
 
@@ -48,74 +71,22 @@ public abstract class DBSActionController{
 	 * ClientId do componente da view que receberá as mensagens
 	 * @return
 	 */
-	public void setMessageControlClientId(String pMessageControlClientId) {
+	public final void setMessageControlClientId(String pMessageControlClientId) {
 		wMessageControlClientId = pMessageControlClientId;
 	}
-
+	
 	/**
-	 * Efetua a chamada para o processamento.</br>
-	 * @return Outcome
+	 * Página a ser direcionada após a finalização <b>com sucesso</b> do processamento e exibição de todas as mensagens.<br/>
+	 * @param pOutcome
 	 */
-	public final String execute(){
-		//Indica que action esta sendo controlado via actionController. Isso é importante para o DialogMsg que faz o encode dos botões com o action original para que o método seja chamado consecutivamente até que não haja mais mensagem.
-		FacesContext.getCurrentInstance().getAttributes().put(FACESCONTEXT_ATTRIBUTE.ACTION_CONTROLLED, true);
-		
-		if (pvCanBeforeExecute()){
-//			System.out.println("actioController validate [" + (pvGetMessages().hasMessages() ? pvGetMessages().getListMessage().get(0).getMessageKey() : "") + "]");
-			beforeExecute(wBeforeMessages);
-		}
-		if (pvCanExecute()){
-//			System.out.println("actioController execute [" + (pvGetMessages().hasMessages() ? pvGetMessages().getListMessage().get(0).getMessageKey() : "") + "]");
-			wExecuting = true;
-			wOk = onExecute(wAfterMessages);
-			afterExecute(wAfterMessages);
-		}
-//		System.out.println("actioController sendmessage [" + (pvGetMessages().hasMessages() ? pvGetMessages().getListMessage().get(0).getMessageKey() : "") + "]");
-		if (pvSendMessages(wMessageControlClientId)){
-			if (pvCanFinalize()){
-				String xOutcome = getOutcome();
-				wOk = false;
-				return xOutcome;
-			}
-		}
-		return null;
+	public final void setOutcome(String pOutcome){
+		wOutcome = pOutcome;
 	}
-	
-	/**
-	 * Retorna se execução foi finalizada com sucesso.
-	 * @return
-	 */
-	public final boolean isOk(){
-		return wOk;
-	}
-	
-
-	/**
-	 * Evento disparado antes de executar o processamento existente em <b>onExecute</b>.</br>
-	 * Este evento deve ser utilizado para enviar mensagens de validação ou confirmação anterior a execução utilizando o <b>pMessagesToSend</b>. 
-	 * @param pMessagesToSend 
-	 */
-	protected void beforeExecute(IDBSMessages pMessagesToSend){};
-	/**
-	 * Evento disparado após a execusão do processamento existente em <b>onExecute</b>.</br>
-	 * Este evento deve ser utilizado para enviar mensagens de erro ou informações gerados pela execução utilizando o <b>pMessagesToSend</b>.
-	 * @param pMessagesToSend
-	 */
-	protected void afterExecute(IDBSMessages pMessagesToSend){};
-	
 	/**
 	 * @return Página a ser direcionada após a finalização <b>com sucesso</b> do processamento e exibição de todas as mensagens.
 	 */
-	protected String getOutcome(){return null;};
-	
-	/**
-	 * Implementação do processamento que se deseja efetuar.
-	 * Pode-se enviar mensagens de erro ou informações gerados pela execução utilizando o <b>pMessagesToSend</b>.<br/>
-	 * Para envio de mensagens não geradas pela execução, recomenda-se a utilização do evento <b>afterExecute</b> por questão de organização do código.
-	 * @return Se o processamento foi executado com sucesso.
-	 */
-	protected abstract boolean onExecute(IDBSMessages pMessagesToSend);
-	
+	public final String getOutcome(){return wOutcome;};
+
 	/**
 	 * Mensagens que serão exibidas antes da execução do processamento principal.
 	 * @return
@@ -131,15 +102,105 @@ public abstract class DBSActionController{
 	protected final IDBSMessages getMessagesAfterAction(){
 		return wAfterMessages;
 	}
+	
+	/**
+	 * Efetua a chamada para o processamento.</br>
+	 * @return Outcome
+	 */
+	public final String execute(){
+		//Indica que action esta sendo controlado via actionController. Isso é importante para o DialogMsg que faz o encode dos botões com o action original para que o método seja chamado consecutivamente até que não haja mais mensagem.
+		FacesContext.getCurrentInstance().getAttributes().put(FACESCONTEXT_ATTRIBUTE.ACTION_CONTROLLED, true);
+		try {
+			if (pvCanBeforeExecute()){
+				//Reseta controles
+				wOutcome = null;
+				wOk = false;
+	//			System.out.println("actioController validate [" + (pvGetMessages().hasMessages() ? pvGetMessages().getListMessage().get(0).getMessageKey() : "") + "]");
+				beforeExecute(wBeforeMessages);
+			}
+			if (pvCanExecute()){
+	//			System.out.println("actioController execute [" + (pvGetMessages().hasMessages() ? pvGetMessages().getListMessage().get(0).getMessageKey() : "") + "]");
+				wExecuting = true;
+				wOk = onExecute(wAfterMessages);
+				afterExecute(wAfterMessages);
+				if (wOk){
+					onSuccess(wAfterMessages);
+				}else{
+					onError(wAfterMessages);
+				}
+			}
+	//		System.out.println("actioController sendmessage [" + (pvGetMessages().hasMessages() ? pvGetMessages().getListMessage().get(0).getMessageKey() : "") + "]");
+			//Envia mensagens e retorna se pode seguir com o outcome(quando não há mais mensagens a serem exibidas).
+			if (pvSendMessages(wMessageControlClientId)){
+				return wOutcome;
+			}
+		} catch (Exception e) {
+			wMessageError.setMessageText(e.getLocalizedMessage());
+			wBeforeMessages.add(wMessageError);
+		}
+		return null;
+	}
+	
+	/**
+	 * Retorna se execução foi finalizada com sucesso.
+	 * @return
+	 */
+	public final boolean isOk(){
+		return wOk;
+	}
+	
+	/**
+	 * Evento disparado antes de executar o <b>onExecute</b>.</br>
+	 * Este evento deve ser utilizado para enviar mensagens de validação ou confirmação antes da execução do <b>onExecute</b>. 
+	 * @param pMessagesToSend Mensagens a serem enviadas.
+	 */
+	protected void beforeExecute(IDBSMessages pMessagesToSend){}
 
 	/**
-	 * Envia mensagens e retorna se pode ser redirecionado.
+	 * Evento disparado após a execusão do <b>onExecute</b> independentemente se ele retornou true ou false.</br>
+	 * Ele deve ser <b>somente</b> utilizado para casos onde o código seja iqual independemente do resultado da execução. 
+	 * @param pMessagesToSend Mensagens a serem enviadas.
+	 */
+	protected void afterExecute(IDBSMessages pMessagesToSend){}
+
+	/**
+	 * Evento disparado após a execusão do <b>afterExecute</b> quando quando não existir erro no <b>onExecute</b>.</br>
+	 * É importante setar o <b>Outcome</b> caso haja redirecionamento para outra página. 
+	 * Se existir redirecionamento, ele ocorrerá após a exibição de todas as mensagens.
+	 * Este evento deve ser utilizado para enviar mensagens de sucesso ou informações gerados pela execução utilizando o <b>pMessagesToSend</b>.
+	 * @param pMessagesToSend Mensagens a serem enviadas.
+	 */
+	protected void onSuccess(IDBSMessages pMessagesToSend){}
+
+	/**
+	 * Evento disparado após a execusão do <b>afterExecute</b> quando quando <b>existir erro</b> no <b>onExecute</b>.</br>
+	 * É importante setar o <b>Outcome</b> caso haja redirecionamento para outra página. 
+	 * Se existir redirecionamento, ele ocorrerá após a exibição de todas as mensagens.
+	 * Este evento deve ser utilizado para enviar mensagens de erro gerados pela execução utilizando o <b>pMessagesToSend</b>.
+	 * @param pMessagesToSend Mensagens a serem enviadas.
+	 */
+	protected void onError(IDBSMessages pMessagesToSend){}
+	
+	/**
+	 * Evento disparado após a execusão do <b>beforeExecute</b> e não existir mensagem a serem exibidas.</br>
+	 * Implementação do processamento que se deseja efetuar.
+	 * Pode-se enviar mensagens de erro ou informações gerados pela execução utilizando o <b>pMessagesToSend</b>.<br/>
+	 * Por questão de organização do código, para envio de mensagens não geradas pela execução, 
+	 * recomenda-se a utilização do evento <b>onSuccess</b> em caso de sucesso ou <b>onError</b> em caso de erro ou <b>afterExecute</b>.
+	 * @param pMessagesToSend Mensagens a serem enviadas.
+	 * @return Se o processamento foi executado com sucesso.
+	 */
+	protected abstract boolean onExecute(IDBSMessages pMessagesToSend);
+	
+	/**
+	 * Envia mensagens e retorna se pode ser redirecionado(quando não há mais mensagens a serem exibidas).
 	 * @param pClientId
 	 * @return 
 	 */
 	private final boolean pvSendMessages(String pClientId){
 		DBSMessagesFacesContext.sendMessages(pvGetMessages(), pClientId); 
-		return pvCanRedirect();
+//		return pvCanRedirect();
+		return pvCanFinalize();
 	}
 
 	/**
@@ -162,9 +223,7 @@ public abstract class DBSActionController{
 	}
 	
 	/**
-	 * Se pode executar o processamento desejado.<br/>
-	 * Dentro deste if, deve-se implementar o processamento e
-	 * setar as mensagens de erro ou finalização utilizando <b>getMessagesAfterAction().add</b>.
+	 * 
 	 * @return
 	 */
 	private final boolean pvCanFinalize(){
@@ -175,15 +234,14 @@ public abstract class DBSActionController{
 		return xFinalize;
 	}
 	
-	
-	private final boolean pvCanRedirect(){
-		boolean xRedirect = !wBeforeMessages.hasMessages() && !wAfterMessages.hasMessages();
-//		if (xRedirect){
-//			pvFinalize();
-//		}
-		return xRedirect;
-	}
+//	private final boolean pvCanRedirect(){
+//		boolean xRedirect = !wBeforeMessages.hasMessages() && !wAfterMessages.hasMessages();
+//
+//		return xRedirect;
+//	}
 
+	public IDBSMessages getMessages(){return pvGetMessages();}
+	
 	private final IDBSMessages pvGetMessages(){
 		if (wBeforeMessages.hasMessages()){
 			return wBeforeMessages;
@@ -217,8 +275,8 @@ public abstract class DBSActionController{
 		@Override
 		public void afterMessageValidated(IDBSMessages pMessages, IDBSMessage pMessage){
 //			System.out.println("actioController afterMessageValidated\t [" + pMessage.getMessageKey() + "]");
-			//Se for mensagem que interrompe(Error) e validada como false. 
-			if (pMessage.getMessageType().getIsError() && !pMessage.isMessageValidatedTrue()){ 
+			//Finaliza(reseta) action se não houver mais mensagens a serem validadas e a esta última mensagem for do tipo que interrompe(Error) e tiver sido validada como false. 
+			if (pMessage.getMessageType().getIsError() && !pMessage.isMessageValidatedTrue() && pMessages.notValidatedSize().equals(0)){ 
 				pvFinalize();
 			}
 		}
