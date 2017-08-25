@@ -411,24 +411,24 @@ textarea.-th_input-data:FOCUS,
 	outline: none;
 }
 
-.-th_input .-error {
-	background-color: rgb(255, 255, 210);
-}
-.-th_input .-invalid {
-	/* background-color: rgb(215, 225, 236); */
-    background-color: rgba(215, 225, 236, 0.41);
-    border-color: red !important;
-/*     border: 1px hsla(0, 100%, 51%, 0.65) solid; */
-}
-.-th_input .-required {
-	background-color: rgb(224, 224, 224);
-}
 
 .-th_input > .-container {
 	white-space: nowrap;
 	display: inline-block;
     position: relative;
     width: 100%;
+}
+
+.-th_input .-error {
+	background-color: rgb(255, 255, 210);
+}
+.-th_input .-invalid {
+	background-color: rgba(247, 198, 178, 0.41) !important;
+/*     border-color: red !important; */
+/*     border: 1px hsla(0, 100%, 51%, 0.65) solid; */
+}
+.-th_input .-required {
+	background-color: rgb(224, 224, 224);
 }
 
 
