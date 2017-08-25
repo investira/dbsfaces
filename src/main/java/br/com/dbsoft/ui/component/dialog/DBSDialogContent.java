@@ -388,7 +388,8 @@ public class DBSDialogContent extends DBSUIOutput{
 			xStyle = "width:0;height:0;position:absolute;"; //Exibe sem dimensão somente para poder receber o keydown
 //			xStyle = "display:none;";
 			//Se esta é a última mensagem para ser validada.
-			if (pDialog.getDBSMessages().notValidatedSize() <= 1){
+			if (pDialog.getDBSMessages() == null 
+			 || pDialog.getDBSMessages().notValidatedSize() <= 1){
 				//Não utiliza o action do botão que originou este dialog se mensagem for erro. Erro impede que action seja efetuado.
 				if (xMsgType == null || xMsgType.getIsError()){
 						xActionSourceYES = null;
