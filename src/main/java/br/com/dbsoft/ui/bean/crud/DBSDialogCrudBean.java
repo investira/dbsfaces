@@ -463,7 +463,8 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 	protected boolean onInitialize(IDBSMessages pMessagesToSend) throws DBSIOException{return true;};
 
 	/**
-	 * Disparado antes de iniciar a execução.<br/> 
+	 * Disparado antes de iniciar a execução e antes do <b>beforeValidate</b> e <b>onValidate</b>.<br/> 
+	 * A ação será interrompida caso exista alguma mensagem não validada.</b> 
 	 * @param pMessagesToSend Mensagens a serem enviadas
 	 * @throws DBSIOException
 	 */
