@@ -150,22 +150,22 @@ public abstract class DBSActionController{
 	}
 	
 	/**
-	 * Evento disparado antes de executar o <b>onExecute</b>.</br>
+	 * Disparado antes de executar o <b>onExecute</b>.</br>
 	 * Este evento deve ser utilizado para enviar mensagens de validação ou confirmação antes da execução do <b>onExecute</b>. 
 	 * @param pMessagesToSend Mensagens a serem enviadas.
 	 */
 	protected void beforeExecute(IDBSMessages pMessagesToSend){}
 
 	/**
-	 * Evento disparado após a execusão do <b>onExecute</b> independentemente se ele retornou true ou false.</br>
-	 * Ele deve ser <b>somente</b> utilizado para casos onde o código seja iqual independemente do resultado da execução. 
+	 * Disparado após a execusão do <b>onExecute</b> independentemente se ele retornou true ou false.</br>
+	 * Ele deve ser <b>somente</b> utilizado para casos onde o código seja iqual independemente do resultado da execução.</br>
 	 * @param pMessagesToSend Mensagens a serem enviadas.
 	 */
 	protected void afterExecute(IDBSMessages pMessagesToSend){}
 
 	/**
-	 * Evento disparado após a execusão do <b>afterExecute</b> quando quando não existir erro no <b>onExecute</b>.</br>
-	 * É importante setar o <b>Outcome</b> caso haja redirecionamento para outra página. 
+	 * Disparado após a execusão do <b>afterExecute</b> quando não existir erro no <b>onExecute</b>.</br>
+	 * É importante setar o <b>Outcome</b> caso haja redirecionamento para outra página.</br>
 	 * Se existir redirecionamento, ele ocorrerá após a exibição de todas as mensagens.
 	 * Este evento deve ser utilizado para enviar mensagens de sucesso ou informações gerados pela execução utilizando o <b>pMessagesToSend</b>.
 	 * @param pMessagesToSend Mensagens a serem enviadas.
@@ -173,17 +173,17 @@ public abstract class DBSActionController{
 	protected void onSuccess(IDBSMessages pMessagesToSend){}
 
 	/**
-	 * Evento disparado após a execusão do <b>afterExecute</b> quando quando <b>existir erro</b> no <b>onExecute</b>.</br>
-	 * É importante setar o <b>Outcome</b> caso haja redirecionamento para outra página. 
-	 * Se existir redirecionamento, ele ocorrerá após a exibição de todas as mensagens.
+	 * Disparado após a execusão do <b>afterExecute</b> quando <b>existir erro</b> no <b>onExecute</b>.</br>
+	 * É importante setar o <b>Outcome</b> caso haja redirecionamento para outra página.</br>
+	 * Se existir redirecionamento, ele ocorrerá após a exibição de todas as mensagens.</br>
 	 * Este evento deve ser utilizado para enviar mensagens de erro gerados pela execução utilizando o <b>pMessagesToSend</b>.
 	 * @param pMessagesToSend Mensagens a serem enviadas.
 	 */
 	protected void onError(IDBSMessages pMessagesToSend){}
 	
 	/**
-	 * Evento disparado após a execusão do <b>beforeExecute</b> e não existir mensagem a ser exibida.</br>
-	 * Implementação do processamento que se deseja efetuar.
+	 * Disparado após a execusão do <b>beforeExecute</b> e não existir mensagem a ser exibida.</br>
+	 * Neste método deve-se implementar o processamento que se deseja efetuar.</br>
 	 * Pode-se enviar mensagens de erro ou informações gerados pela execução utilizando o <b>pMessagesToSend</b>.<br/>
 	 * Por questão de organização do código, para envio de mensagens não geradas pela execução, 
 	 * recomenda-se a utilização do evento <b>onSuccess</b> em caso de sucesso ou <b>onError</b> em caso de erro ou <b>afterExecute</b>.
