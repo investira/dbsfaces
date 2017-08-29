@@ -423,7 +423,7 @@ textarea.-th_input-data:FOCUS,
 	background-color: rgb(255, 255, 210);
 }
 .-th_input .-invalid {
-	background-color: rgba(247, 198, 178, 0.41) !important;
+	background-color: rgba(255, 120, 120, 0.2) !important;
 /*     border-color: red !important; */
 /*     border: 1px hsla(0, 100%, 51%, 0.65) solid; */
 }
