@@ -564,14 +564,14 @@ dbsfaces.dialog = {
 		// Largura mínima em função da largura do header
 		var xMinWidth = pDialogData.padding * 2;
 		var xEle;
-		xEle = pDialogData.dom.header_caption.children(".-icon");
-		if (xEle.length != 0) {
-			xMinWidth += xEle[0].clientWidth;
+//		xEle = pDialogData.dom.header_caption.children(".-icon");
+//		if (xEle.length != 0) {
+//			xMinWidth += xEle[0].clientWidth;
+//		}
+		if (pDialogData.dom.header_caption_label.children().length > 0) {
+			xMinWidth += pDialogData.dom.header_caption_label[0].clientWidth;
 		}
-		xEle = pDialogData.dom.header_caption.children(".-label");
-		if (xEle.length != 0) {
-			xMinWidth += xEle[0].clientWidth;
-		}
+		console.log(pDialogData.dom.header_caption_label.length + "\t" + pDialogData.dom.self.attr("id") + "\t" + xMinWidth);
 		pDialogData.dom.sub_content.css("min-width", xMinWidth);
 	},
 
