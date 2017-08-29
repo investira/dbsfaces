@@ -300,11 +300,11 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 }
 
 .dbs_dialog > .-container > .-content.-dark > .-header > .-content > .-icon{
-    text-shadow: 0em 0em 1px rgba(255,255,255,.9), 0.02em 0.02em 0.02em rgba(255, 255, 255,.85), -0.02em -0.02em 0.02em rgba(0,0,0,.85);
+    text-shadow: 0em 0em .015em rgba(255,255,255,.9), 0.015em 0.015em 0.015em rgba(255, 255, 255,.85), -0.015em -0.015em 0.015em rgba(0,0,0,.85);
 }
 
 .dbs_dialog > .-container > .-content.-light > .-header > .-content > .-icon{
-    text-shadow: 0em 0em 1px rgba(100,100,100,.9), 0.02em 0.02em 0.02em rgba(255, 255, 255,.85), -0.02em -0.02em 0.02em rgba(0,0,0,.85);
+    text-shadow: 0em 0em .015em rgba(100,100,100,.9), 0.015em 0.015em 0.015em rgba(255, 255, 255,.85), -0.015 em -0.015em 0.015em rgba(0,0,0,.85);
 }
 
 .dbs_dialog > .-container > .-content > .-header > .-content > .-icon > .-i_information{
