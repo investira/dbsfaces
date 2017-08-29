@@ -238,17 +238,17 @@ public class DBSDialogContent extends DBSUIOutput{
 	 */
 	private void pvEncodeToolbar(DBSDialog pDialog, TYPE pType, FacesContext pContext, ResponseWriter pWriter) throws IOException{
 		UIComponent xToolbar = pDialog.getFacet(DBSDialog.FACET_TOOLBAR);
-		if ((xToolbar != null) 
+		if (xToolbar != null 
 		 || pType == TYPE.MOD
 		 || pType == TYPE.MSG){
 			pWriter.startElement("div", pDialog);
 				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.TOOLBAR);
-				if (pType == TYPE.MOD){
-					if (xToolbar == null){
-						pvEncodeToolbarSimpleButtonOk(pDialog, pWriter);
-					}
-				}else if (pType == TYPE.MSG){
+				if (pType == TYPE.MSG){
 					pvEncodeToolbarMSGControls(pDialog, pContext, pWriter);
+//				}else if (pType == TYPE.MOD){
+//					if (xToolbar == null){
+//						pvEncodeToolbarSimpleButtonOk(pDialog, pWriter);
+//					}
 				}
 				if (xToolbar != null){
 					xToolbar.encodeAll(pContext);
