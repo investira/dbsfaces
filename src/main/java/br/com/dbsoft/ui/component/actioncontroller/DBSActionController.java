@@ -34,8 +34,8 @@ public abstract class DBSActionController{
 	 * <ul>
 	 * <li>beforeExecute</li>
 	 * <li>onExecute</li>
-	 * <li>afterExecute</li>
 	 * <li>onSuccess ou onError</li>
+	 * <li>afterExecute</li>
 	 * </ul>
 	 */
 	public DBSActionController() {
@@ -49,8 +49,8 @@ public abstract class DBSActionController{
 	 * <ul>
 	 * <li>beforeExecute</li>
 	 * <li>onExecute</li>
-	 * <li>afterExecute</li>
 	 * <li>onSuccess ou onError</li>
+	 * <li>afterExecute</li>
 	 * </ul>
 	 * @param pMessageControlClientId ClientId do componente que receberá as mensagens quando houver.
 	 */
@@ -58,7 +58,7 @@ public abstract class DBSActionController{
 		this();
 		wMessageControlClientId = pMessageControlClientId;
 	}
-	
+
 	/**
 	 * ClientId do componente da view que receberá as mensagens
 	 * @return
@@ -112,6 +112,7 @@ public abstract class DBSActionController{
 		FacesContext.getCurrentInstance().getAttributes().put(FACESCONTEXT_ATTRIBUTE.ACTION_CONTROLLED, true);
 		try {
 			if (pvCanBeforeExecute()){
+//				System.out.println(wNumero + "\t" + this.hashCode() + "\tbeforeExecute:");
 				//Reseta controles
 				wOutcome = null;
 				wOk = false;
@@ -121,18 +122,22 @@ public abstract class DBSActionController{
 			if (pvCanExecute()){
 	//			System.out.println("actioController execute [" + (pvGetMessages().hasMessages() ? pvGetMessages().getListMessage().get(0).getMessageKey() : "") + "]");
 				wExecuting = true;
+//				System.out.println(wNumero + "\t" + this.hashCode() + "\tonExecute");
 				wOk = onExecute(wAfterMessages);
-				afterExecute(wAfterMessages);
 				if (wOk){
 					onSuccess(wAfterMessages);
 				}else{
 					onError(wAfterMessages);
 				}
+//				System.out.println(wNumero + "\t" + this.hashCode() + "\tonAfterExecute:" );
+				afterExecute(wAfterMessages);
 			}
 	//		System.out.println("actioController sendmessage [" + (pvGetMessages().hasMessages() ? pvGetMessages().getListMessage().get(0).getMessageKey() : "") + "]");
 			//Envia mensagens e retorna se pode seguir com o outcome(quando não há mais mensagens a serem exibidas).
 			if (pvSendMessages(wMessageControlClientId)){
-				return wOutcome;
+				if (pvCanFinalize()){
+					return wOutcome;
+				}
 			}
 		} catch (Exception e) {
 			wMessageError.setMessageText(e.getLocalizedMessage());
@@ -148,7 +153,7 @@ public abstract class DBSActionController{
 	public final boolean isOk(){
 		return wOk;
 	}
-	
+
 	/**
 	 * Disparado antes de executar o <b>onExecute</b>.</br>
 	 * Este evento deve ser utilizado para enviar mensagens de validação ou confirmação antes da execução do <b>onExecute</b>. 
@@ -156,31 +161,6 @@ public abstract class DBSActionController{
 	 */
 	protected void beforeExecute(IDBSMessages pMessagesToSend){}
 
-	/**
-	 * Disparado após a execusão do <b>onExecute</b> independentemente se ele retornou true ou false.</br>
-	 * Ele deve ser <b>somente</b> utilizado para casos onde o código seja iqual independemente do resultado da execução.</br>
-	 * @param pMessagesToSend Mensagens a serem enviadas.
-	 */
-	protected void afterExecute(IDBSMessages pMessagesToSend){}
-
-	/**
-	 * Disparado após a execusão do <b>afterExecute</b> quando não existir erro no <b>onExecute</b>.</br>
-	 * É importante setar o <b>Outcome</b> caso haja redirecionamento para outra página.</br>
-	 * Se existir redirecionamento, ele ocorrerá após a exibição de todas as mensagens.
-	 * Este evento deve ser utilizado para enviar mensagens de sucesso ou informações gerados pela execução utilizando o <b>pMessagesToSend</b>.
-	 * @param pMessagesToSend Mensagens a serem enviadas.
-	 */
-	protected void onSuccess(IDBSMessages pMessagesToSend){}
-
-	/**
-	 * Disparado após a execusão do <b>afterExecute</b> quando <b>existir erro</b> no <b>onExecute</b>.</br>
-	 * É importante setar o <b>Outcome</b> caso haja redirecionamento para outra página.</br>
-	 * Se existir redirecionamento, ele ocorrerá após a exibição de todas as mensagens.</br>
-	 * Este evento deve ser utilizado para enviar mensagens de erro gerados pela execução utilizando o <b>pMessagesToSend</b>.
-	 * @param pMessagesToSend Mensagens a serem enviadas.
-	 */
-	protected void onError(IDBSMessages pMessagesToSend){}
-	
 	/**
 	 * Disparado após a execusão do <b>beforeExecute</b> e não existir mensagem a ser exibida.</br>
 	 * Neste método deve-se implementar o processamento que se deseja efetuar.</br>
@@ -191,6 +171,36 @@ public abstract class DBSActionController{
 	 * @return Se o processamento foi executado com sucesso.
 	 */
 	protected abstract boolean onExecute(IDBSMessages pMessagesToSend);
+
+	/**
+	 * Disparado após a execusão do <b>onExecute</b> quando não existir erro.</br>
+	 * É importante setar o <b>Outcome</b> caso haja redirecionamento para outra página.</br>
+	 * Se existir redirecionamento, ele ocorrerá após a exibição de todas as mensagens.
+	 * Este evento deve ser utilizado para enviar mensagens de sucesso ou informações gerados pela execução utilizando o <b>pMessagesToSend</b>.
+	 * @param pMessagesToSend Mensagens a serem enviadas.
+	 */
+	protected void onSuccess(IDBSMessages pMessagesToSend){}
+
+	/**
+	 * Disparado após a execusão do <b>onExecute</b> quando <b>existir erro</b>.</br>
+	 * É importante setar o <b>Outcome</b> caso haja redirecionamento para outra página.</br>
+	 * Se existir redirecionamento, ele ocorrerá após a exibição de todas as mensagens.</br>
+	 * Este evento deve ser utilizado para enviar mensagens de erro gerados pela execução utilizando o <b>pMessagesToSend</b>.
+	 * @param pMessagesToSend Mensagens a serem enviadas.
+	 */
+	protected void onError(IDBSMessages pMessagesToSend){}
+	
+	/**
+	 * Disparado após a execusão do <b>onSuccess</b> ou <b>onError</b> independentemente se a execução ocorreu com ou sem erro.</br>
+	 * Ele deve ser <b>somente</b> utilizado para casos onde o código seja iqual independemente do resultado da execução.</br>
+	 * @param pMessagesToSend Mensagens a serem enviadas.
+	 */
+	protected void afterExecute(IDBSMessages pMessagesToSend){}
+
+	/**
+	 * Disparado após a execusão do <b>afterExecute</b> e antes de retornar o <b>Outcome</b>.</br>
+	 */
+	protected void onFinalize(){}
 	
 	/**
 	 * Envia mensagens e retorna se pode ser redirecionado(quando não há mensagem a ser exibida).
@@ -199,9 +209,9 @@ public abstract class DBSActionController{
 	 */
 	private final boolean pvSendMessages(String pClientId){
 		DBSMessagesFacesContext.sendMessages(pvGetMessages(), pClientId); 
-//		return pvCanRedirect();
-		return pvCanFinalize();
+		return pvCanRedirect();
 	}
+	
 
 	/**
 	 * Se pode executar as rotinas de validação e confirmação anterior a execução.<br/>
@@ -234,11 +244,10 @@ public abstract class DBSActionController{
 		return xFinalize;
 	}
 	
-//	private final boolean pvCanRedirect(){
-//		boolean xRedirect = !wBeforeMessages.hasMessages() && !wAfterMessages.hasMessages();
-//
-//		return xRedirect;
-//	}
+	private final boolean pvCanRedirect(){
+		boolean xRedirect = !wBeforeMessages.hasMessages() && !wAfterMessages.hasMessages();
+		return xRedirect;
+	}
 
 	public IDBSMessages getMessages(){return pvGetMessages();}
 	
@@ -252,6 +261,8 @@ public abstract class DBSActionController{
 
 	
 	private final void pvFinalize(){
+//		System.out.println(wNumero + "\t" + this.hashCode() + "\tFinalize");
+		onFinalize();
 		wBeforeMessages.clear();
 		wAfterMessages.clear();
 		wExecuting = false;
@@ -274,6 +285,8 @@ public abstract class DBSActionController{
 
 		@Override
 		public void afterMessageValidated(IDBSMessages pMessages, IDBSMessage pMessage){
+//			System.out.println(wNumero + "\t" + this.hashCode() + "\tAfterMessageValidated");
+
 //			System.out.println("actioController afterMessageValidated\t [" + pMessage.getMessageKey() + "]");
 			//Finaliza(reseta) action se não houver mais mensagens a serem validadas e a esta última mensagem for do tipo que interrompe(Error) e tiver sido validada como false. 
 			if (pMessage.getMessageType().getIsError() && !pMessage.isMessageValidatedTrue() && pMessages.notValidatedSize().equals(0)){ 
