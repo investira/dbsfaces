@@ -121,7 +121,11 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 		 * Mensagem deverá ser to tipo CONFIRM.
 		 */
 		public void setMessageBeforeConfirmation(IDBSMessage pMessageBeforeConfirmation) {
-			if (!pMessageBeforeConfirmation.getMessageType().equals(MESSAGE_TYPE.CONFIRM)){return;}
+			if (pMessageBeforeConfirmation !=null 
+			&& !pMessageBeforeConfirmation.getMessageType().equals(MESSAGE_TYPE.CONFIRM)){
+				wLogger.error("setMessageBeforeConfirmation:\tMensagem precisa ser do tipo CONFIRM");
+				return;
+			}
 			wMessageBeforeConfirmation = pMessageBeforeConfirmation;
 		}
 		/**
@@ -136,7 +140,11 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 		 * Mensagem deverá ser to tipo SUCESS.
 		 */
 		public void setMessageAfterConfirmation(IDBSMessage pMessageAfterConfirmation) {
-			if (!pMessageAfterConfirmation.getMessageType().equals(MESSAGE_TYPE.SUCCESS)){return;}
+			if (pMessageAfterConfirmation !=null
+			&& !pMessageAfterConfirmation.getMessageType().equals(MESSAGE_TYPE.SUCCESS)){
+				wLogger.error("setMessageBeforeConfirmation:\tMensagem precisa ser do tipo SUCESS");
+				return;
+			}
 			wMessageAfterConfirmation = pMessageAfterConfirmation;
 		}
 		/**
@@ -151,7 +159,11 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 		 * Mensagem deverá ser to tipo IGNORE.
 		 */
 		public void setMessageBeforeIgnore(IDBSMessage pMessageBeforeIgnore) {
-			if (!pMessageBeforeIgnore.getMessageType().equals(MESSAGE_TYPE.IGNORE)){return;}
+			if (pMessageBeforeIgnore !=null
+			&& !pMessageBeforeIgnore.getMessageType().equals(MESSAGE_TYPE.IGNORE)){
+				wLogger.error("setMessageBeforeConfirmation:\tMensagem precisa ser do tipo IGNORE");
+				return;
+			}
 			wMessageBeforeIgnore = pMessageBeforeIgnore;
 		}
 		
@@ -269,6 +281,7 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 			} catch (DBSIOException e) {
 				wMessageError.setMessageText(e.getLocalizedMessage());
 				pMessagesToSend.add(wMessageError);
+				getOuter().pvFinalize();
 			}
 			return false;
 		}
@@ -286,6 +299,7 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 			} catch (DBSIOException e) {
 				wMessageError.setMessageText(e.getLocalizedMessage());
 				pMessagesToSend.add(wMessageError);
+				getOuter().pvFinalize();
 			}
 		}
 		
@@ -296,6 +310,7 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 			} catch (DBSIOException e) {
 				wMessageError.setMessageText(e.getLocalizedMessage());
 				pMessagesToSend.add(wMessageError);
+				getOuter().pvFinalize();
 			}
 			return false;
 		}
@@ -312,12 +327,14 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 				if (!pMessagesToSend.isAllMessagesValidatedTrue()){return;}
 				//----
 				wACValidate.execute();
-				if (!wACValidate.isOk()){return;}
-				//----
-				pMessagesToSend.add(wConfigs.get(wCrudBeanAction).wMessageBeforeConfirmation);
+				pMessagesToSend.addAll(wACValidate.getMessages());
+				if (!pMessagesToSend.isAllMessagesValidatedTrue()){return;}
+				//---- Mensagem padrão(se existir)
+				pMessagesToSend.add(wConfigs.get(wCrudBeanAction).getMessageBeforeConfirmation());
 			} catch (DBSIOException e) {
 				wMessageError.setMessageText(e.getLocalizedMessage());
 				pMessagesToSend.add(wMessageError);
+				getOuter().pvFinalize();
 			}
 		}
 		
@@ -327,51 +344,61 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 				//----
 				wACValidate.execute();
 				pMessagesToSend.addAll(wACValidate.getMessages());
-				if (wACValidate.isOk()){
-					return getOuter().onConfirm(pMessagesToSend) && pMessagesToSend.isAllMessagesValidatedTrue();
-				}
-				return false;
+				if (!pMessagesToSend.isAllMessagesValidatedTrue()){return false;}
 				//----
+				return getOuter().onConfirm(pMessagesToSend) && pMessagesToSend.isAllMessagesValidatedTrue();
 			} catch (DBSIOException e) {
 				wMessageError.setMessageText(e.getLocalizedMessage());
 				pMessagesToSend.add(wMessageError);
+				getOuter().pvFinalize();
 			}
 			return false;
 		}
 
 		@Override
-		protected void afterExecute(IDBSMessages pMessagesToSend) {
-			//----
-			try {
-				getOuter().afterConfirm(pMessagesToSend);
-			} catch (DBSIOException e) {
-				wMessageError.setMessageText(e.getLocalizedMessage());
-				pMessagesToSend.add(wMessageError);
-			}
-		}
-
-		@Override
 		protected void onSuccess(IDBSMessages pMessagesToSend) {
-			//----
 			try {
+				//----
 				getOuter().onSuccess(pMessagesToSend);
 				if (!pMessagesToSend.hasMessages()){
-					pMessagesToSend.add(wConfigs.get(wCrudBeanAction).wMessageAfterConfirmation);
+					//---- Mensagem padrão(se existir)
+					pMessagesToSend.add(wConfigs.get(wCrudBeanAction).getMessageAfterConfirmation());
 				}
 			} catch (DBSIOException e) {
 				wMessageError.setMessageText(e.getLocalizedMessage());
 				pMessagesToSend.add(wMessageError);
+				getOuter().pvFinalize();
 			}
 		}
 
 		@Override
 		protected void onError(IDBSMessages pMessagesToSend) {
-			//----
 			try {
+				//----
 				getOuter().onError(pMessagesToSend);
 			} catch (DBSIOException e) {
 				wMessageError.setMessageText(e.getLocalizedMessage());
 				pMessagesToSend.add(wMessageError);
+				getOuter().pvFinalize();
+			}
+		}
+
+		@Override
+		protected void afterExecute(IDBSMessages pMessagesToSend) {
+			try {
+				//----
+				getOuter().afterConfirm(pMessagesToSend);
+			} catch (DBSIOException e) {
+				wMessageError.setMessageText(e.getLocalizedMessage());
+				pMessagesToSend.add(wMessageError);
+				getOuter().pvFinalize();
+			}
+		}
+		
+		@Override
+		protected void onFinalize() {
+			if (isOk()){
+				getOuter().pvFinalize();
 			}
 		}
 	};
@@ -384,6 +411,8 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 			try {
 				getOuter().beforeCancel(pMessagesToSend);
 				if (!pMessagesToSend.isAllMessagesValidatedTrue()){return;}
+				//---- Mensagem padrão(se existir)
+				pMessagesToSend.add(wConfigs.get(wCrudBeanAction).getMessageBeforeIgnore());
 			} catch (DBSIOException e) {
 				wMessageError.setMessageText(e.getLocalizedMessage());
 				pMessagesToSend.add(wMessageError);
@@ -397,6 +426,8 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 			} catch (DBSIOException e) {
 				wMessageError.setMessageText(e.getLocalizedMessage());
 				pMessagesToSend.add(wMessageError);
+			}finally {
+				getOuter().pvFinalize();
 			}
 			return false;
 		}
@@ -425,6 +456,7 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 	}
 	
 	public void confirm(){
+		System.out.println("confirm action");
 		if (wCrudBeanAction.equals(CrudBeanAction.NONE)){return;}
 		wACConfirm.execute();
 	}
@@ -488,7 +520,7 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 	/**
 	 * Disparado após <b>onValidade</b>.<br/>
 	 * Neste método deve-se implementar o código para efetivar o crud.<br/>
-	 * Pode-se enviar mensagens de erro ou informações gerados pela execução utilizando o <b>pMessagesToSend</b>.<br/>
+	 * Pode-se enviar mensagens gerados pela execução utilizando o <b>pMessagesToSend</b>.<br/>
 	 * Por questão de organização do código, para envio de mensagens não geradas pela execução, 
 	 * recomenda-se a utilização do evento <b>onSuccess</b> em caso de sucesso ou <b>onError</b> em caso de erro ou <b>afterExecute</b>.
 	 * @param pMessagesToSend Mensagens a serem enviadas
@@ -517,11 +549,22 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 	 */
 	protected void onError(IDBSMessages pMessagesToSend) throws DBSIOException{};
 
-	@SuppressWarnings("unused")
+	/**
+	 * Disparado antes de iniciar o cancelamento da ação e antes do <b>onCancel</b>.</br>
+	 * O cancelamento será interrompido caso exista alguma mensagem não validada. 
+	 * @param pMessagesToSend
+	 * @throws DBSIOException
+	 */
 	protected void beforeCancel(IDBSMessages pMessagesToSend) throws DBSIOException{};
 	
-	@SuppressWarnings("unused")
+	/**
+	 * Disparado após o <b>onCancel</b>.
+	 * @param pMessagesToSend
+	 * @return
+	 * @throws DBSIOException
+	 */
 	protected boolean onCancel(IDBSMessages pMessagesToSend) throws DBSIOException{return true;};
+
 	
 	// =====================================================================
 	// ATTRIBUTES
@@ -571,12 +614,14 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 	 * @return
 	 */
 	private void pvDoAction(CrudBeanAction pCrudBeanAction){
-		//Configura o Action
 		try{
+			//Configura o Action
 			if (pvSetCrudBeanAction(pCrudBeanAction)){
+				//Executa a inicialização do Action
 				wACInitialize.execute();
 			}
 		}finally{
+			//Impede a ativação do Action caso exista erro na inicialização
 			if (!wACInitialize.isOk()){
 				wCrudBeanAction.equals(CrudBeanAction.NONE);
 			}
@@ -595,6 +640,13 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 		if (!pCrudBeanAction.equals(CrudBeanAction.NONE) && !wCrudBeanAction.equals(CrudBeanAction.NONE)){return false;}
 		wCrudBeanAction = pCrudBeanAction;
 		return true;
+	}
+	
+	/**
+	 * Finaliza Action
+	 */
+	private void pvFinalize(){
+		pvSetCrudBeanAction(CrudBeanAction.NONE);
 	}
 	
 }
