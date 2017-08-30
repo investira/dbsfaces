@@ -320,7 +320,7 @@ dbsfaces.dialog = {
 	 * CR = +A -I
 	 * C = -A +I
 	 */
-	pvLayoutBtn : function(pDialogData) {
+	pvDialogBtnLayout : function(pDialogData) {
 		if (pDialogData.dom.buttons.length == 0) {
 			return;
 		}
@@ -524,7 +524,7 @@ dbsfaces.dialog = {
 	pvInitializeLayout : function(pDialogData) {
 		dbsfaces.dialog.pvAjustLayout(pDialogData);
 		if (pDialogData.type == "btn") {
-			dbsfaces.dialog.pvLayoutBtn(pDialogData);
+			dbsfaces.dialog.pvDialogBtnLayout(pDialogData);
 		}
 
 		pDialogData.dom.container.css("opacity", "");
@@ -643,7 +643,7 @@ dbsfaces.dialog = {
 			dbsfaces.dialog.pvAjustLayout(xDialogData);
 		}
 		if (xDialogData.type == "btn") {
-			dbsfaces.dialog.pvLayoutBtn(xDialogData);
+			dbsfaces.dialog.pvDialogBtnLayout(xDialogData);
 		}
 	},
 
