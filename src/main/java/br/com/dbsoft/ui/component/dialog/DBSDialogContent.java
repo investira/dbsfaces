@@ -145,8 +145,7 @@ public class DBSDialogContent extends DBSUIOutput{
 					pWriter.endElement("div");
 				}
 				//Encode do icon + caption
-					pvEncodeCaption(pDialog, pType, pWriter);
-//				}
+				pvEncodeCaption(pDialog, pType, pWriter);
 				//Encode o conteudo do Header definido no FACET HEADER_RIGHT
 				if (!DBSObject.isNull(xHeaderRight)){
 					pWriter.startElement("div", pDialog);
@@ -193,11 +192,7 @@ public class DBSDialogContent extends DBSUIOutput{
 			if (xMsgType == null && pDialog.getCaption() != null){
 				pWriter.startElement("div", pDialog);
 					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LABEL);
-					//Se não for mensagem padrão, usa caption informada pelo usuário
-						pWriter.write(pDialog.getCaption());
-					//Tipo de mensagem como caption
-	//				}else if (xMsgType != null){
-	//					pWriter.write(xMsgType.getName());
+					pWriter.write(pDialog.getCaption());
 				pWriter.endElement("div");
 				}
 		pWriter.endElement("div");
@@ -259,10 +254,6 @@ public class DBSDialogContent extends DBSUIOutput{
 				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.TOOLBAR);
 				if (pType == TYPE.MSG){
 					pvEncodeToolbarMSGControls(pDialog, pContext, pWriter);
-//				}else if (pType == TYPE.MOD){
-//					if (xToolbar == null){
-//						pvEncodeToolbarSimpleButtonOk(pDialog, pWriter);
-//					}
 				}
 				if (xToolbar != null){
 					xToolbar.encodeAll(pContext);
@@ -301,30 +292,8 @@ public class DBSDialogContent extends DBSUIOutput{
 		}else if (pDialog.getDBSMessages() != null && pDialog.getDBSMessages().size() > 0){
 			pWriter.write(pDialog.getDBSMessages().getListMessage().get(0).getMessageText());
 		}
-//	if (pDialog.getChildren().size() > 0){
-//		//Encode dos conteúdo
-//		DBSFaces.renderChildren(pContext, pDialog);
-//	}else if (pDialog.getDBSMessages() != null && pDialog.getDBSMessages().size() > 0){
-//		pWriter.write(pDialog.getDBSMessages().getListMessage().get(0).getMessageText());
-//	}else{
-//		pDialog.encodeChildren(pContext);
-//	}
 	}
 
-	/**
-	 * Botão padrão do close quando não existir toolbar em MOD e MSG(Center)
-	 * @param pDialog
-	 * @param pWriter
-	 * @throws IOException
-	 */
-//	private void pvEncodeToolbarSimpleButtonOk(DBSDialog pDialog, ResponseWriter pWriter) throws IOException{
-//		//Só faz o encode se for MOD
-//		String xClass = "-btok -i_ok -close" + CSS.THEME.ACTION;
-//		//Exibe espaço do button ok
-//		pWriter.startElement("div", pDialog);
-//			DBSFaces.encodeAttribute(pWriter, "class", xClass);
-//		pWriter.endElement("div");
-//	}
 
 	/**
 	 * Controles para confirmação da mesagem
@@ -431,7 +400,6 @@ public class DBSDialogContent extends DBSUIOutput{
 		xBtn.setIconClass(CSS.MODIFIER.ICON + pIconClass);
 		xBtn.setStyle(pStyle);
 //		xBtn.setExecute("@this " + pExecute + ":" + DBSDialog.INPUT_MSGKEY);
-//		xBtn.setExecute(pExecute);
 //		xBtn.setExecute(pExecute);
 		xBtn.setExecute(getClientId());
 		if (pActionSource == null){
