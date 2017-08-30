@@ -246,6 +246,10 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 }
 
 .dbs_dialog > .-container > .-content > .-header > .-content {
+	-webkit-flex-wrap: nowrap;
+	-moz-flex-wrap: nowrap;
+	-o-flex-wrap: nowrap;
+	flex-wrap: nowrap;
 /* 	position: relative; */
 /* 	border-width: 0 0 1px 0; */
 /* 	border-style: solid; */
