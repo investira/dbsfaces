@@ -121,17 +121,28 @@ public class DBSDialogContent extends DBSUIOutput{
 	private void pvEncodeHeader(DBSDialog pDialog, TYPE pType, FacesContext pContext,  ResponseWriter pWriter) throws IOException{
 		UIComponent xHeaderLeft = pDialog.getFacet(DBSDialog.FACET_HEADER_LEFT);
 		UIComponent xHeaderRight = pDialog.getFacet(DBSDialog.FACET_HEADER_RIGHT);
-		if (!pvHasHeader(pDialog, xHeaderRight, xHeaderLeft)
-		 && pDialog.getMsgType() == null){return;}
+		if (!pvHasHeader(pDialog, xHeaderRight, xHeaderLeft) && pDialog.getMsgType() == null){return;}
 		pWriter.startElement("div", pDialog);
-			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.HEADER);
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.HEADER + CSS.MODIFIER.NOT_SELECTABLE);
 			pWriter.startElement("div", pDialog);
-				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
-				//Set padding do cabeçalho iqual ao padding interno do content
-				if (pvHasHeader(pDialog, xHeaderRight, xHeaderLeft)){
-					DBSFaces.encodeAttribute(pWriter, "style", pvGetPaddingHeader(pDialog));
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + CSS.THEME.FLEX);
+				//Encode o conteudo do Header definido no FACET HEADER_LEFT
+				if (!DBSObject.isNull(xHeaderLeft)){
+					pWriter.startElement("div", pDialog);
+						DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LEFT + CSS.THEME.FLEX_COL);
+						xHeaderLeft.encodeAll(pContext);
+					pWriter.endElement("div");
 				}
-				pvEncodeCaption(pDialog, pType, xHeaderRight, xHeaderLeft, pContext, pWriter);
+				//Encode do icon + caption
+					pvEncodeCaption(pDialog, pType, pWriter);
+//				}
+				//Encode o conteudo do Header definido no FACET HEADER_RIGHT
+				if (!DBSObject.isNull(xHeaderRight)){
+					pWriter.startElement("div", pDialog);
+						DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.RIGHT + CSS.THEME.FLEX_COL);
+						xHeaderRight.encodeAll(pContext);
+					pWriter.endElement("div");
+				}
 			pWriter.endElement("div");
 		pWriter.endElement("div");
 	}
@@ -144,22 +155,29 @@ public class DBSDialogContent extends DBSUIOutput{
 		}
 		return true;
 	}
-	private void pvEncodeCaption(DBSDialog pDialog, TYPE pType, UIComponent pFacetHeaderRight, UIComponent pFacetHeaderLeft, FacesContext pContext, ResponseWriter pWriter) throws IOException{
-		//Icone do tipo de mensagem
+	private void pvEncodeCaption(DBSDialog pDialog, TYPE pType, ResponseWriter pWriter) throws IOException{
 		MESSAGE_TYPE xMsgType = MESSAGE_TYPE.get(pDialog.getMsgType());
-		if(pType == TYPE.MSG
-	  	&& (pDialog.hasMessage() || pDialog.getChildCount() > 0)){
+		pWriter.startElement("div", pDialog);
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CAPTION + CSS.THEME.FLEX_COL);
+			//Set padding do cabeçalho iqual ao padding interno do content
+			if (!DBSObject.isEmpty(pDialog.getCaption())){
+				DBSFaces.encodeAttribute(pWriter, "style", pvGetPaddingHeader(pDialog));
+			}
+			//Icon
 			pWriter.startElement("div", pDialog);
 				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.ICON);
 				pWriter.startElement("div", pDialog);
-					if (xMsgType != null){
+					if (pType == TYPE.MSG
+					 && xMsgType != null
+				  	 && (pDialog.hasMessage() || pDialog.getChildCount() > 0)){
+						//Icone do tipo de mensagem
 						DBSFaces.encodeAttribute(pWriter, "class", xMsgType.getIconClass());
+					}else{
+						//Icone principal
+						DBSFaces.encodeAttribute(pWriter, "class", pDialog.getIconClass());
 					}
 				pWriter.endElement("div");
 			pWriter.endElement("div");
-		}
-		pWriter.startElement("div", pDialog);
-			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CAPTION + CSS.MODIFIER.NOT_SELECTABLE);
 			//Label
 			pWriter.startElement("div", pDialog);
 				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LABEL);
@@ -171,23 +189,8 @@ public class DBSDialogContent extends DBSUIOutput{
 //					pWriter.write(xMsgType.getName());
 				}
 			pWriter.endElement("div");
-			
-			//Encode o conteudo do Header definido no FACET HEADER_LEFT
-			if (!DBSObject.isNull(pFacetHeaderLeft)){
-				pWriter.startElement("div", pDialog);
-					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LEFT);
-					pFacetHeaderLeft.encodeAll(pContext);
-				pWriter.endElement("div");
-			}
-			//Encode o conteudo do Header definido no FACET HEADER_RIGHT
-			if (!DBSObject.isNull(pFacetHeaderRight)){
-				pWriter.startElement("div", pDialog);
-					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.RIGHT);
-					pFacetHeaderRight.encodeAll(pContext);
-				pWriter.endElement("div");
-			}
-			
 		pWriter.endElement("div");
+		
 	}
 	
 
@@ -303,14 +306,14 @@ public class DBSDialogContent extends DBSUIOutput{
 	 * @param pWriter
 	 * @throws IOException
 	 */
-	private void pvEncodeToolbarSimpleButtonOk(DBSDialog pDialog, ResponseWriter pWriter) throws IOException{
-		//Só faz o encode se for MOD
-		String xClass = "-btok -i_ok -close" + CSS.THEME.ACTION;
-		//Exibe espaço do button ok
-		pWriter.startElement("div", pDialog);
-			DBSFaces.encodeAttribute(pWriter, "class", xClass);
-		pWriter.endElement("div");
-	}
+//	private void pvEncodeToolbarSimpleButtonOk(DBSDialog pDialog, ResponseWriter pWriter) throws IOException{
+//		//Só faz o encode se for MOD
+//		String xClass = "-btok -i_ok -close" + CSS.THEME.ACTION;
+//		//Exibe espaço do button ok
+//		pWriter.startElement("div", pDialog);
+//			DBSFaces.encodeAttribute(pWriter, "class", xClass);
+//		pWriter.endElement("div");
+//	}
 
 	/**
 	 * Controles para confirmação da mesagem

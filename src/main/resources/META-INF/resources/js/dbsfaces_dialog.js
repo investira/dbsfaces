@@ -258,9 +258,9 @@ dbsfaces.dialog = {
 				sub_content : null,
 				header : null,
 				header_content : null,
-				header_icon : null,
 				header_caption : null,
 				header_caption_label : null,
+				header_caption_icon : null,
 				footer : null,
 				footer_content : null,
 				footer_toolbar : null,
@@ -284,9 +284,9 @@ dbsfaces.dialog = {
 		xData.dom.buttons = xData.dom.sub_content.children().not("script");
 		xData.dom.header = xData.dom.content.children(".-header");
 		xData.dom.header_content = xData.dom.header.children(".-content");
-		xData.dom.header_icon = xData.dom.header_content.children(".-icon");
 		xData.dom.header_caption = xData.dom.header_content.children(".-caption");
 		xData.dom.header_caption_label = xData.dom.header_caption.children(".-label");
+		xData.dom.header_caption_icon = xData.dom.header_caption.children(".-icon");
 		xData.dom.footer = xData.dom.content.children(".-footer");
 		xData.dom.footer_content = xData.dom.footer.children(".-content");
 		xData.dom.footer_toolbar = xData.dom.footer.children(".-toolbar");
@@ -534,23 +534,24 @@ dbsfaces.dialog = {
 		// Cor do header
 		var xIsDark = tinycolor(pDialogData.dom.content.css("color")).isDark();
 		if (xIsDark) {
-			if (pDialogData.dom.header_icon.length > 0) {
-				pDialogData.dom.header_icon.addClass("-dark");
+			if (pDialogData.dom.header_caption_icon.length > 0) {
+				pDialogData.dom.header_caption_icon.addClass("-dark");
 			}
 			pDialogData.dom.content.addClass("-dark").removeClass("-light");
 			pDialogData.dom.mask_content.addClass("-light").removeClass("-dark");
 		} else {
-			if (pDialogData.dom.header_icon.length > 0) {
-				pDialogData.dom.header_icon.removeClass("-dark");
+			if (pDialogData.dom.header_caption_icon.length > 0) {
+				pDialogData.dom.header_caption_icon.removeClass("-dark");
 			}
 			pDialogData.dom.content.addClass("-light").removeClass("-dark");
 			pDialogData.dom.mask_content.addClass("-dark").removeClass("-light");
 		}
-//		if (pDialogData.dom.header_content.length > 0) {
-			// Ajusta tamanho do icone do header
-//			var xHeight = pDialogData.dom.header_content[0].getBoundingClientRect().height / parseFloat(pDialogData.dom.header_content.css("font-size"));
-//			pDialogData.dom.header_icon.children().css("font-size",	xHeight + "em");
-//		}
+		//Define tamanho padrão para os botões do header, que devem ficar com a largura e altura, iquais a altura do próprio header
+		pDialogData.dom.header_content.find(".-th_action").each(function(){
+			var xCaptionHeight = pDialogData.dom.header_content.css("height");
+			$(this).css("width", xCaptionHeight)
+				   .css("height", xCaptionHeight);
+		});
 
 		// Cor da barra de timeout
 		if (pDialogData.type != "mod") {
@@ -571,7 +572,7 @@ dbsfaces.dialog = {
 		if (pDialogData.dom.header_caption_label.children().length > 0) {
 			xMinWidth += pDialogData.dom.header_caption_label[0].clientWidth;
 		}
-		console.log(pDialogData.dom.header_caption_label.length + "\t" + pDialogData.dom.self.attr("id") + "\t" + xMinWidth);
+//		console.log(pDialogData.dom.header_caption_label.length + "\t" + pDialogData.dom.self.attr("id") + "\t" + xMinWidth);
 		pDialogData.dom.sub_content.css("min-width", xMinWidth);
 	},
 
@@ -662,7 +663,7 @@ dbsfaces.dialog = {
 
 	setMsg : function(pDialog, pMsgType, pMsgText) {
 		var xDialogData = pDialog.data("data");
-		var xIcon = xDialogData.dom.header_icon.children("div");
+		var xIcon = xDialogData.dom.header_caption_icon.children("div");
 		var xCaption = xDialogData.dom.header_caption_label;
 		var xMsgTypeData = dbsfaces.dialog.pvMsgTypeGetData(pMsgType);
 		xDialogData.dom.sub_content.text(pMsgText);
@@ -802,7 +803,7 @@ dbsfaces.dialog = {
 		}
 		if (pDialogData.type == "msg"){
 			//Preserva espaço do icone
-			pDialogData.dom.sub_container.css("padding-left", parseFloat(pDialogData.dom.sub_container.css("padding-right")) + pDialogData.dom.header_icon[0].clientWidth); 
+			pDialogData.dom.sub_container.css("padding-left", parseFloat(pDialogData.dom.sub_container.css("padding-right")) + pDialogData.dom.header_caption_icon[0].clientWidth); 
 		}
 		if (pDialogData.contentAligment == "c"){
 			//Centraliza conteúdo
