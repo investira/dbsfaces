@@ -8,7 +8,7 @@
     position: relative;
 /* 	z-index: 1; */
 /* 	line-height: initial; */
-	z-index:2;	
+	z-index:3;	
 }
 .dbs_dialog.-closed{
 	z-index:1;	
@@ -280,6 +280,7 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 .dbs_dialog > .-container > .-content > .-header > .-content > .-left > .-th_action,
 .dbs_dialog > .-container > .-content > .-header > .-content > .-right > .-th_action{
 	height: 100%;
+	border-radius: unset;
 }
 
 
