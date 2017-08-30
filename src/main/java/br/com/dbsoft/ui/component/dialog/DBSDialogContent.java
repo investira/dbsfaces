@@ -322,6 +322,7 @@ public class DBSDialogContent extends DBSUIOutput{
 		getFacets().remove(DBSDialog.INPUT_MSGKEY);
 		HtmlInputHidden xInput = (HtmlInputHidden) pContext.getApplication().createComponent(HtmlInputHidden.COMPONENT_TYPE);
 		xInput.setId(DBSDialog.INPUT_MSGKEY);
+		//Primeira mensagem da lista
 		xInput.setValue(pDialog.getDBSMessages().getListMessage().get(0).getMessageKey());
 		getFacets().put(DBSDialog.INPUT_MSGKEY, xInput);
 
