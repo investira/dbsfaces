@@ -546,13 +546,28 @@ dbsfaces.dialog = {
 			pDialogData.dom.content.addClass("-light").removeClass("-dark");
 			pDialogData.dom.mask_content.addClass("-dark").removeClass("-light");
 		}
-		//Define tamanho padrão para os botões do header, que devem ficar com a largura e altura, iquais a altura do próprio header
+		//Define tamanho padrão para os botões e status do header, que devem ficar com a largura e altura, iquais a altura do próprio header
+		var xCaptionHeight = pDialogData.dom.header_content.css("height");
 		pDialogData.dom.header_content.find(".-th_action").each(function(){
-			var xCaptionHeight = pDialogData.dom.header_content.css("height");
 			$(this).css("width", xCaptionHeight)
 				   .css("height", xCaptionHeight);
 		});
-
+		//Status 
+		var xStatus = pDialogData.dom.header_content.find(".-status");
+		if (xStatus.length > 0){
+			xStatus.css("width", xCaptionHeight)
+					.css("height", xCaptionHeight);
+			xStatus.css("background-color", pDialogData.dom.header_content.css("color"));
+			xStatus.css("border-top-left-radius", pDialogData.dom.content.css("border-top-left-radius"));
+			if (xIsDark) {
+				xStatus.addClass("-light");
+				xStatus.removeClass("-dark");
+			}else{
+				xStatus.addClass("-dark");
+				xStatus.removeClass("-light");
+			}
+		}
+		
 		// Cor da barra de timeout
 		if (pDialogData.type != "mod") {
 			if (xIsDark) {

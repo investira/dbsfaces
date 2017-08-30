@@ -35,8 +35,10 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer, SystemEve
 	
 	protected enum PropertyKeys {
 		type,
-		caption,
 		iconClass,
+		caption,
+		captionIconClass,
+		statusIconClass,
 		position,
 		contentStyleClass,
 		contentAlignment,
@@ -216,7 +218,24 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer, SystemEve
 		getStateHelper().put(PropertyKeys.caption, pCaption);
 		handleAttribute("caption", pCaption);
 	}
+
+	public String getCaptionIconClass() {
+		return (String) getStateHelper().eval(PropertyKeys.captionIconClass, null);
+	}
 	
+	public void setCaptionIconClass(String pCaptionIconClass) {
+		getStateHelper().put(PropertyKeys.captionIconClass, pCaptionIconClass);
+		handleAttribute("captionIconClass", pCaptionIconClass);
+	}
+
+	public String getStatusIconClass() {
+		return (String) getStateHelper().eval(PropertyKeys.statusIconClass, null);
+	}
+	
+	public void setStatusIconClass(String pStatusIconClass) {
+		getStateHelper().put(PropertyKeys.statusIconClass, pStatusIconClass);
+		handleAttribute("statusIconClass", pStatusIconClass);
+	}
 	public String getIconClass() {
 		return (String) getStateHelper().eval(PropertyKeys.iconClass, null);
 	}

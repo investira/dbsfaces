@@ -127,10 +127,21 @@ public class DBSDialogContent extends DBSUIOutput{
 			pWriter.startElement("div", pDialog);
 				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + CSS.THEME.FLEX);
 				//Encode o conteudo do Header definido no FACET HEADER_LEFT
-				if (!DBSObject.isNull(xHeaderLeft)){
+				if (!DBSObject.isNull(xHeaderLeft) 
+				 || !DBSObject.isEmpty(pDialog.getStatusIconClass())){
 					pWriter.startElement("div", pDialog);
 						DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LEFT + CSS.THEME.FLEX_COL);
-						xHeaderLeft.encodeAll(pContext);
+						if (!DBSObject.isEmpty(pDialog.getStatusIconClass())){
+							pWriter.startElement("div", pDialog);
+								DBSFaces.encodeAttribute(pWriter, "class", "-status");
+								pWriter.startElement("span", pDialog);
+									DBSFaces.encodeAttribute(pWriter, "class", pDialog.getStatusIconClass());
+								pWriter.endElement("span");
+							pWriter.endElement("div");
+						}
+						if (!DBSObject.isNull(xHeaderLeft)){
+							xHeaderLeft.encodeAll(pContext);
+						}
 					pWriter.endElement("div");
 				}
 				//Encode do icon + caption
@@ -174,21 +185,21 @@ public class DBSDialogContent extends DBSUIOutput{
 						DBSFaces.encodeAttribute(pWriter, "class", xMsgType.getIconClass());
 					}else{
 						//Icone principal
-						DBSFaces.encodeAttribute(pWriter, "class", pDialog.getIconClass());
+						DBSFaces.encodeAttribute(pWriter, "class", pDialog.getCaptionIconClass());
 					}
 				pWriter.endElement("div");
 			pWriter.endElement("div");
 			//Label
-			pWriter.startElement("div", pDialog);
-				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LABEL);
-				//Se não for mensagem padrão, usa caption informada pelo usuário
-				if (xMsgType == null && pDialog.getCaption() != null){
-					pWriter.write(pDialog.getCaption());
-				//Tipo de mensagem como caption
-//				}else if (xMsgType != null){
-//					pWriter.write(xMsgType.getName());
+			if (xMsgType == null && pDialog.getCaption() != null){
+				pWriter.startElement("div", pDialog);
+					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LABEL);
+					//Se não for mensagem padrão, usa caption informada pelo usuário
+						pWriter.write(pDialog.getCaption());
+					//Tipo de mensagem como caption
+	//				}else if (xMsgType != null){
+	//					pWriter.write(xMsgType.getName());
+				pWriter.endElement("div");
 				}
-			pWriter.endElement("div");
 		pWriter.endElement("div");
 		
 	}

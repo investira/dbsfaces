@@ -283,6 +283,7 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 }
 
 
+    
 .dbs_dialog > .-container > .-content > .-header > .-content > .-left{
 /* 	left: 0; */
 }
@@ -290,9 +291,26 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 /* 	right: 0; */
 }
 
+.dbs_dialog > .-container > .-content > .-header > .-content > .-left > .-status.-light{
+	color: rgba(255,255,255,0.8);	
+}
+.dbs_dialog > .-container > .-content > .-header > .-content > .-left > .-status.-dark{
+	color: rgba(0,0,0,0.8);
+}
+
+.dbs_dialog > .-container > .-content > .-header > .-content > .-left > .-status > span{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
 
 .dbs_dialog > .-container > .-content > .-header > .-content > .-caption {
-	text-align:left;
+	text-align: left;
 /* 	width: 100%; */
 /*     text-align: center; */
 /*     line-height: 100%; */
@@ -306,20 +324,26 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 /*     border-radius: .1em;  */
 }
 
-
-.dbs_dialog > .-container > .-content > .-header > .-content > .-caption > .-icon {
-    position: absolute;
+.dbs_dialog > .-container > .-content > .-header > .-content > .-caption > .-icon{
     display: inline-block;
+	font-size: .5em;
+}
+.dbs_dialog > .-container > .-content > .-header > .-content > .-caption > .-label{
+    display: inline-block;
+}
+
+.dbs_dialog[type="msg"] > .-container > .-content > .-header > .-content > .-caption > .-icon {
+    position: absolute;
     left: .1em;
     top: .1em;
 	font-size: 1.5em;
 }
 
-.dbs_dialog > .-container > .-content.-dark > .-header > .-content > .-caption > .-icon{
+.dbs_dialog[type="msg"] > .-container > .-content.-dark > .-header > .-content > .-caption > .-icon{
     text-shadow: 0em 0em .015em rgba(255,255,255,.9), 0.015em 0.015em 0.015em rgba(255, 255, 255,.85), -0.015em -0.015em 0.015em rgba(0,0,0,.85);
 }
 
-.dbs_dialog > .-container > .-content.-light > .-header > .-content > .-caption > .-icon{
+.dbs_dialog[type="msg"] > .-container > .-content.-light > .-header > .-content > .-caption > .-icon{
     text-shadow: 0em 0em .015em rgba(100,100,100,.9), 0.015em 0.015em 0.015em rgba(255, 255, 255,.85), -0.015em -0.015em 0.015em rgba(0,0,0,.85);
 }
 
@@ -350,22 +374,6 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 }
 
     
-.dbs_dialog > .-container > .-content > .-header > .-content > .-caption > .-icon {
-/* 	display: inline-block; */
-/* 	position: relative; */
-/* 	vertical-align: bottom; */
-/* 	padding-left: .2em; */
-}
-
-
-.dbs_dialog > .-container > .-content > .-header > .-content > .-caption > .-label {
-/*     font-weight: bold; */
-/*     font-size: 1.2em; */
-/* 	display: block; */
-/* 	display: inline-block; */
-/* 	padding: 0 1.4em; */
-}
-
 .dbs_dialog > .-container > .-content > .-bthandle.-stopped{
 	-webkit-transition: none !important;
 	-moz-transition: none !important;

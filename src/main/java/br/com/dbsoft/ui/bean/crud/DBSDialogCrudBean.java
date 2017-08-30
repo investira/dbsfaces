@@ -17,27 +17,41 @@ import br.com.dbsoft.ui.core.DBSFaces;
  * @author ricardo.villar
  *
  */
+/**
+ * @author ricardo.villar
+ *
+ */
+/**
+ * @author ricardo.villar
+ *
+ */
+/**
+ * @author ricardo.villar
+ *
+ */
 public abstract class DBSDialogCrudBean extends DBSBean {
 
 	private static final long serialVersionUID = 2736035271733987328L;
 
 	public static enum CrudBeanAction {
-		NONE 		("Not Editing", 0, ICrudAction.NONE),
-		INSERT 		("Insert", 1, ICrudAction.MERGING),
-		UPDATE 		("Update", 2, ICrudAction.MERGING), 
-		DELETE 		("Delete", 3, ICrudAction.DELETING),
-		VIEW 		("View", 4, ICrudAction.NONE),
-		APPROVE 	("Approve", 10, ICrudAction.MERGING),
-		REPROVE 	("Reprove", 11, ICrudAction.MERGING);
+		NONE 		("Not Editing", 0, ICrudAction.NONE, null),
+		INSERT 		("Insert", 1, ICrudAction.MERGING, " -i_add "),
+		UPDATE 		("Update", 2, ICrudAction.MERGING, " -i_edit "), 
+		DELETE 		("Delete", 3, ICrudAction.DELETING, " -i_delete "),
+		VIEW 		("View", 4, ICrudAction.NONE, " -i_eye "),
+		APPROVE 	("Approve", 10, ICrudAction.MERGING, " -i_prize_ribbon -gree "),
+		REPROVE 	("Reprove", 11, ICrudAction.MERGING, " -i_prize_ribbon -red ");
 		
 		private String 		wName;
 		private int 		wCode;
 		private ICrudAction wCrudAction;
+		private String		wIconClass;
 		
-		private CrudBeanAction(String pName, int pCode, ICrudAction pCrudAction) {
+		private CrudBeanAction(String pName, int pCode, ICrudAction pCrudAction, String pIconClass) {
 			this.wName = pName;
 			this.wCode = pCode;
 			this.wCrudAction = pCrudAction;
+			this.wIconClass = pIconClass;
 		}
 
 		public String getName() {
@@ -55,7 +69,15 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 		public ICrudAction getCrudAction() {
 			return wCrudAction;
 		}
-		
+
+		/**
+		 * Icone que representa a ação
+		 * @return
+		 */
+		public String getIconClass() {
+			return wIconClass;
+		}
+
 		public static CrudBeanAction get(int pCode) {
 			switch (pCode) {
 			case 0:
@@ -187,8 +209,9 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 	}
 	
 	private CrudBeanAction				wCrudBeanAction = CrudBeanAction.NONE;
-	private String					wOutcome = null;
-	private Map<CrudBeanAction, Config> 	wConfigs = new HashMap<CrudBeanAction, Config>();
+	private String						wOutcome = null;
+	private Map<CrudBeanAction, Config> wConfigs = new HashMap<CrudBeanAction, Config>();
+	private String						wCaption = null;
 	
 	private Config	wInsertConfig = new Config(false, 
 		       new DBSMessage(MESSAGE_TYPE.CONFIRM, DBSFaces.getBundlePropertyValue("dbsfaces", "crudbean.msg.confirmInsert")),
@@ -233,10 +256,15 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 	}
 	
 	/**
-	 * Esta próporia classe para ser acessada pelos ActionController
+	 * Cabeçalho do crud
 	 * @return
 	 */
-	protected DBSDialogCrudBean getOuter() {return this;}
+	public String getCaption(){return wCaption;}
+	/**
+	 * Cabeçalho do crud
+	 * @param pCaption
+	 */
+	public void setCaption(String pCaption){wCaption = pCaption;}
 	
 	/**
 	 * Configuração da inserção
@@ -267,6 +295,16 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 	 * @return
 	 */
 	public Config getReproveConfig(){return wReproveConfig;}
+
+	// =====================================================================
+	// PROTECTED
+	// =====================================================================
+	/**
+	 * Esta próporia classe para ser acessada pelos ActionController
+	 * @return
+	 */
+	protected DBSDialogCrudBean getOuter() {return this;}
+	
 
 	// =====================================================================
 	// ACTIONS e ACTIONS CONTROLLER
@@ -434,47 +472,94 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 
 	};
 	
+	/**
+	 * Ativa ação de inclusão.<br/>
+	 * Após dados inseridos, para confirmar ação deve-se chamar <b>confirm</b>.
+	 * Para cancelar ação deve-se chamar <b>cancel</b>.
+	 */
 	public void insert(){
 		pvDoAction(CrudBeanAction.INSERT);
 	}
+	
+	/**
+	 * Ativa ação de edição.<br/>
+	 * Após dados editados, para confirmar ação deve-se chamar <b>confirm</b>.
+	 * Para cancelar ação deve-se chamar <b>cancel</b>.
+	 */
 	public void update(){
 		pvDoAction(CrudBeanAction.UPDATE);
 	}
+	
+	/**
+	 * Ativa ação de exclusão.<br/>
+	 * Para confirmar ação deve-se chamar <b>confirm</b>.
+	 * Para cancelar ação deve-se chamar <b>cancel</b>.
+	 */
 	public void delete(){
 		pvDoAction(CrudBeanAction.DELETE);
 	}
+
+	/**
+	 * Ativa ação de aprovação.<br/>
+	 * Para confirmar ação deve-se chamar <b>confirm</b>.
+	 * Para cancelar ação deve-se chamar <b>cancel</b>.
+	 */
 	public void approve(){
 		pvDoAction(CrudBeanAction.APPROVE);
 	}
+	/**
+	 * Ativa ação de reprovação.<br/>
+	 * Para confirmar ação deve-se chamar <b>confirm</b>.
+	 * Para cancelar ação deve-se chamar <b>cancel</b>.
+	 */
 	public void reprove(){
 		pvDoAction(CrudBeanAction.REPROVE);
 	}
 
+	/**
+	 * Dispara os eventos de validação sem efetuar qualquer alteração.<br/>
+	 */
 	public void validate(){
 		if (wCrudBeanAction.equals(CrudBeanAction.NONE)){return;}
 		wACValidate.execute();
 	}
 	
+	/**
+	 * Confirma a execução da ação ativa.<br/>
+	 */
 	public void confirm(){
 		System.out.println("confirm action");
 		if (wCrudBeanAction.equals(CrudBeanAction.NONE)){return;}
 		wACConfirm.execute();
 	}
 
+	/**
+	 * Cancela a ação ativa.<br/>
+	 */
 	public void cancel(){
 		if (wCrudBeanAction.equals(CrudBeanAction.NONE)){return;}
 		wACCancel.execute();
 	}
 
 	
+	/**
+	 * Dispara evento para copia dos dados atuais para memória.<br/>
+	 */
 	public void copy(){
 		if (!wCrudBeanAction.equals(CrudBeanAction.NONE)){return;}
 	}
 
+	/**
+	 * Dispara evento para copia em memória para os dados atuais.<br/>
+	 */
 	public void paste(){
 		if (wCrudBeanAction.equals(CrudBeanAction.NONE)){return;}
 	}
 
+	
+	/**
+	 * Move para o próximo registro 
+	 */
 	public void move(){
 		if (!wCrudBeanAction.equals(CrudBeanAction.NONE)){return;}
 	}
