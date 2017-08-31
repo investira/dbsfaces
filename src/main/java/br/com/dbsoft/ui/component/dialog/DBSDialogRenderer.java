@@ -127,6 +127,7 @@ public class DBSDialogRenderer extends DBSRenderer{
 		pDialog.setDBSMessages(xMesssages); 
 		
 		if (xMesssages != null && xMesssages.size() > 0){
+			//Primeira mensagem
 			pDialog.setMsgType(xMesssages.getListMessage().get(0).getMessageType().getCode());
 			return true;
 		}else{
