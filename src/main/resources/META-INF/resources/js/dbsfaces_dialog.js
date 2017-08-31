@@ -261,6 +261,7 @@ dbsfaces.dialog = {
 				header_caption : null,
 				header_caption_label : null,
 				header_caption_icon : null,
+				header_action_icon: null,
 				footer : null,
 				footer_content : null,
 				footer_toolbar : null,
@@ -287,6 +288,7 @@ dbsfaces.dialog = {
 		xData.dom.header_caption = xData.dom.header_content.children(".-caption");
 		xData.dom.header_caption_label = xData.dom.header_caption.children(".-label");
 		xData.dom.header_caption_icon = xData.dom.header_caption.children(".-icon");
+		xData.dom.header_action_icon = xData.dom.header_content.find(".-action");
 		xData.dom.footer = xData.dom.content.children(".-footer");
 		xData.dom.footer_content = xData.dom.footer.children(".-content");
 		xData.dom.footer_toolbar = xData.dom.footer.children(".-toolbar");
@@ -546,25 +548,24 @@ dbsfaces.dialog = {
 			pDialogData.dom.content.addClass("-light").removeClass("-dark");
 			pDialogData.dom.mask_content.addClass("-dark").removeClass("-light");
 		}
-		//Define tamanho padrão para os botões e status do header, que devem ficar com a largura e altura, iquais a altura do próprio header
+		//Define tamanho padrão para os botões e icone do action do header, que devem ficar com a largura e altura, iquais a altura do próprio header
 		var xCaptionHeight = pDialogData.dom.header_content.css("height");
 		pDialogData.dom.header_content.find(".-th_action").each(function(){
 			$(this).css("width", xCaptionHeight)
 				   .css("height", xCaptionHeight);
 		});
-		//Status 
-		var xStatus = pDialogData.dom.header_content.find(".-status");
-		if (xStatus.length > 0){
-			xStatus.css("width", xCaptionHeight)
-					.css("height", xCaptionHeight);
-			xStatus.css("background-color", pDialogData.dom.header_content.css("color"));
-			xStatus.css("border-top-left-radius", pDialogData.dom.content.css("border-top-left-radius"));
+		//Icone do action 
+		if (pDialogData.dom.header_action_icon.length > 0){
+			pDialogData.dom.header_action_icon.css("width", xCaptionHeight)
+					   						  .css("height", xCaptionHeight);
+			pDialogData.dom.header_action_icon.css("background-color", pDialogData.dom.header_content.css("color"));
+			pDialogData.dom.header_action_icon.css("border-top-left-radius", pDialogData.dom.content.css("border-top-left-radius"));
 			if (xIsDark) {
-				xStatus.addClass("-light");
-				xStatus.removeClass("-dark");
+				pDialogData.dom.header_action_icon.addClass("-light");
+				pDialogData.dom.header_action_icon.removeClass("-dark");
 			}else{
-				xStatus.addClass("-dark");
-				xStatus.removeClass("-light");
+				pDialogData.dom.header_action_icon.addClass("-dark");
+				pDialogData.dom.header_action_icon.removeClass("-light");
 			}
 		}
 		
