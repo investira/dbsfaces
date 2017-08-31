@@ -290,6 +290,7 @@ public class DBSDialogContent extends DBSUIOutput{
 			//Encode dos conteúdo
 			DBSFaces.renderChildren(pContext, pDialog);
 		}else if (pDialog.getDBSMessages() != null && pDialog.getDBSMessages().size() > 0){
+			//Texto da primeira mensagem
 			pWriter.write(pDialog.getDBSMessages().getListMessage().get(0).getMessageText());
 		}
 	}
