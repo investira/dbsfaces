@@ -292,14 +292,14 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 /* 	right: 0; */
 }
 
-.dbs_dialog > .-container > .-content > .-header > .-content > .-left > .-status.-light{
+.dbs_dialog > .-container > .-content > .-header > .-content > .-left > .-action.-light{
 	color: rgba(255,255,255,0.8);	
 }
-.dbs_dialog > .-container > .-content > .-header > .-content > .-left > .-status.-dark{
+.dbs_dialog > .-container > .-content > .-header > .-content > .-left > .-action.-dark{
 	color: rgba(0,0,0,0.8);
 }
 
-.dbs_dialog > .-container > .-content > .-header > .-content > .-left > .-status > span{
+.dbs_dialog > .-container > .-content > .-header > .-content > .-left > .-action > span{
     position: absolute;
     top: 50%;
     left: 50%;
