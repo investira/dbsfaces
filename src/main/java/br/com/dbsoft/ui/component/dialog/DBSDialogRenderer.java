@@ -83,8 +83,10 @@ public class DBSDialogRenderer extends DBSRenderer{
 				xClass += CSS.MODIFIER.CLOSED;
 //			}
 			DBSFaces.encodeAttribute(pWriter, "class", xClass);
+			
 			//Icon
 			pvEncodeIcon(pDialog, pWriter);
+			
 			//Mask
 			pWriter.startElement("div", pDialog);
 				xClass = CSS.MODIFIER.MASK;
@@ -94,6 +96,7 @@ public class DBSDialogRenderer extends DBSRenderer{
 				pWriter.endElement("div");
 			pWriter.endElement("div");
 			
+			//Encode do conteúdo
 			DBSDialogContent xContent = (DBSDialogContent) pDialog.getFacet(DBSDialog.FACET_CONTENT); 
 			xContent.encodeAll(pContext);
 			
