@@ -38,7 +38,7 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer, SystemEve
 		iconClass,
 		caption,
 		captionIconClass,
-		statusIconClass,
+		actionIconClass,
 		position,
 		contentStyleClass,
 		contentAlignment,
@@ -228,13 +228,13 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer, SystemEve
 		handleAttribute("captionIconClass", pCaptionIconClass);
 	}
 
-	public String getStatusIconClass() {
-		return (String) getStateHelper().eval(PropertyKeys.statusIconClass, null);
+	public String getActionIconClass() {
+		return (String) getStateHelper().eval(PropertyKeys.actionIconClass, null);
 	}
 	
-	public void setStatusIconClass(String pStatusIconClass) {
-		getStateHelper().put(PropertyKeys.statusIconClass, pStatusIconClass);
-		handleAttribute("statusIconClass", pStatusIconClass);
+	public void setActionIconClass(String pActionIconClass) {
+		getStateHelper().put(PropertyKeys.actionIconClass, pActionIconClass);
+		handleAttribute("actionIconClass", pActionIconClass);
 	}
 	public String getIconClass() {
 		return (String) getStateHelper().eval(PropertyKeys.iconClass, null);

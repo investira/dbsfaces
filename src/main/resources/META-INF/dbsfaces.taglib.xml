@@ -739,9 +739,9 @@
 		</attribute>
 		<attribute>
 			<description>
-            	iconClass do status. Icone exibido a esquerta em negativo quando for dialog = Mod.
+            	iconClass do ação em execução. Icone exibido a esquerta em negativo quando for dialog = Mod.
             </description>
-			<name>statusIconClass</name>
+			<name>actionIconClass</name>
 			<required>true</required>
 			<type>java.lang.String</type>
 		</attribute>

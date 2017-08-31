@@ -128,14 +128,14 @@ public class DBSDialogContent extends DBSUIOutput{
 				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + CSS.THEME.FLEX);
 				//Encode o conteudo do Header definido no FACET HEADER_LEFT
 				if (!DBSObject.isNull(xHeaderLeft) 
-				 || !DBSObject.isEmpty(pDialog.getStatusIconClass())){
+				 || !DBSObject.isEmpty(pDialog.getActionIconClass())){
 					pWriter.startElement("div", pDialog);
 						DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LEFT + CSS.THEME.FLEX_COL);
-						if (!DBSObject.isEmpty(pDialog.getStatusIconClass())){
+						if (!DBSObject.isEmpty(pDialog.getActionIconClass())){
 							pWriter.startElement("div", pDialog);
-								DBSFaces.encodeAttribute(pWriter, "class", "-status");
+								DBSFaces.encodeAttribute(pWriter, "class", "-action");
 								pWriter.startElement("span", pDialog);
-									DBSFaces.encodeAttribute(pWriter, "class", pDialog.getStatusIconClass());
+									DBSFaces.encodeAttribute(pWriter, "class", pDialog.getActionIconClass());
 								pWriter.endElement("span");
 							pWriter.endElement("div");
 						}
