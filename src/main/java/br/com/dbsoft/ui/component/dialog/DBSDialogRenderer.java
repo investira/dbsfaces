@@ -93,7 +93,6 @@ public class DBSDialogRenderer extends DBSRenderer{
 					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
 				pWriter.endElement("div");
 			pWriter.endElement("div");
-//			pvEncodeContent(pDialog, pType, pContext, pWriter);
 			
 			DBSDialogContent xContent = (DBSDialogContent) pDialog.getFacet(DBSDialog.FACET_CONTENT); 
 			xContent.encodeAll(pContext);
