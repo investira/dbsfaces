@@ -34,7 +34,6 @@ public class DBSInputTextRenderer extends DBSRenderer {
     	decodeBehaviors(pContext, xInputText); 
 
 		String xValueClientId; 
-		
 		//Utiliza o valor da chave da sugestão como valor recebido
 		if (xInputText.hasSuggestion()){
 			//Se foi o submit do botão de refresh, chama o método para fazer o refresh da lista passando o valor digitado
@@ -81,7 +80,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent)
 			throws IOException {
 		if (!pComponent.isRendered()){return;}
-
+		
 		DBSInputText xInputText = (DBSInputText) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xInputText.getClientId(pContext);
@@ -97,8 +96,11 @@ public class DBSInputTextRenderer extends DBSRenderer {
 			//Container
 			xWriter.startElement("div", xInputText);
 				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
+					//Encode Label
 					DBSFaces.encodeLabel(pContext, xInputText, xWriter);
+					//Encode Input
 					pvEncodeInput(pContext, xInputText, xWriter);
+					//Encode Right Label
 					DBSFaces.encodeRightLabel(pContext, xInputText, xWriter);
 			xWriter.endElement("div");
 			DBSFaces.encodeTooltip(pContext, xInputText, xInputText.getTooltip());
@@ -107,7 +109,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 			pvEncodeJS(xInputText, xWriter);
 		}
 	}
-	
+
 	private void pvEncodeInput(FacesContext pContext, DBSInputText pInputText, ResponseWriter pWriter) throws IOException{
 		String xClientId = pInputText.getClientId();
 		String xClientIdData = getInputDataClientId(pInputText);
@@ -119,7 +121,7 @@ public class DBSInputTextRenderer extends DBSRenderer {
 		String xValue = "";
 		String xValueKey = "";
 		String xClass = DBSFaces.getInputDataClass(pInputText) + " -"+ pInputText.getLetterCase().toLowerCase();
-		
+	
 		//Seta valor que será exibido e armazena valor da respectiva chave
 		if (pInputText.getValue() != null){			
 			xValue = pInputText.getValue().toString();
