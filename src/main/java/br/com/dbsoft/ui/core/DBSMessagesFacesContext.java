@@ -1,5 +1,6 @@
 package br.com.dbsoft.ui.core;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -15,6 +16,7 @@ import br.com.dbsoft.message.IDBSMessageListener;
 import br.com.dbsoft.message.IDBSMessages;
 import br.com.dbsoft.ui.core.DBSFaces.FACESCONTEXT_ATTRIBUTE;
 import br.com.dbsoft.util.DBSObject;
+import br.com.dbsoft.util.DBSString;
 
 public class DBSMessagesFacesContext {
 
@@ -22,6 +24,7 @@ public class DBSMessagesFacesContext {
 	 * Todas e qualquer a mensagem.
 	 */
 	public final static String ALL = "@all";
+
 	/**
 	 * Mensagens que <b>não</b> são específicas de um clientId.
 	 */
@@ -33,28 +36,89 @@ public class DBSMessagesFacesContext {
 	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
 	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.<br/>
 	 * Mensagens do tipo <b>PROHIBID</b> e <b>ERROR</b> interrompem o redirect que eventualmente exista na execução de um action.
-	 * @param pMessage
+	 * @param pMessage Mensagem a ser enviada.
+	 * @param pClientId Id dos componentes "listeners" que receberão a mensagem, podendo ser: 
+	 * <ul>
+	 * <li>@global = Mensagens sem clientid (Default)</li>
+	 * <li>@all = Todas as mensagens</li>
+	 * <li>clientid do componente = Mensagem para um componente</li>
+	 * </ul>
+	 * @param pMessageListener Listener que receberá os eventos disparados pela mensagem
 	 */
 	public static void sendMessage(IDBSMessage pMessage, String pClientId, IDBSMessageListener pMessageListener){
-		if (pMessage == null){return;}
 		FacesContext xContext = FacesContext.getCurrentInstance();
-		if (xContext == null){return;}
-
-		//Envia mensagem padrão FacesMessage
-		pvSendFacesMessage(xContext, pMessage.getMessageType(), pMessage.getMessageText(), pClientId);
+		if (xContext == null
+		 || pMessage == null){return;}
 		//Força que mensagem tenha o listener informado
 		pMessage.addMessageListener(pMessageListener);
-		//Envia mensagem no padrão DBSMessages
-		pvSendDBSMessage(xContext, pMessage, pClientId);
+		List<String> xListClientIds = pvGetClientsIds(pClientId);
+		for (String xClientId: xListClientIds){
+			pvSendMessage(xContext, pMessage, xClientId);
+			//Envia mensagem no padrão DBSMessages
+			pvSendDBSMessage(xContext, pMessage, xClientId);
+		}
+		for (String xSourceId:pMessage.getMessageTargetsIds()){
+			//Envia mensagem padrão FacesMessage
+			pvSendMessage(xContext, pMessage, xSourceId);
+		}
 	}
-
+	
 	/**
 	 * Envia mensagem do tipo <b>FacesMessage</b> e <b>IDBSMessage</b>.<br/>
 	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>'m'(Message)</b>.<br/>
 	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
 	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.<br/>
 	 * Mensagens do tipo <b>PROHIBID</b> e <b>ERROR</b> interrompem o redirect que eventualmente exista na execução de um action.
-	 * @param pMessage
+	 * @param pMessages menssagens a serem envidas
+	 * @param pClientId Id dos componentes "listeners" que receberão a mensagem, podendo ser: 
+	 * <ul>
+	 * <li>@global = Mensagens sem clientid (Default)</li>
+	 * <li>@all = Todas as mensagens</li>
+	 * <li>clientid do componente = Mensagem para um componente</li>
+	 * </ul>
+	 * @param pMessageListener Listener que receberá os eventos disparados pela mensagem
+	 */
+	public static void sendMessages(IDBSMessages pMessages, String pClientId, IDBSMessageListener pMessageListener){
+		FacesContext xContext = FacesContext.getCurrentInstance();
+		if (xContext == null
+		 || pMessages == null){return;}
+		List<String> xListClientIds = pvGetClientsIds(pClientId);
+		Iterator<IDBSMessage> xMsgs = pMessages.iterator();
+		//Envia as mensagens individualmente
+		while (xMsgs.hasNext()){
+			IDBSMessage xMsg = xMsgs.next();
+			//Força que mensagem tenha o listener informado
+			xMsg.addMessageListener(pMessageListener);
+			//Envia mensagem padrão JSF para todos os clients
+			for (String xClientId: xListClientIds){
+				//Envia mensagem padrão FacesMessage
+				pvSendMessage(xContext, xMsg, xClientId);
+			}
+			for (String xSourceId:xMsg.getMessageTargetsIds()){
+				//Envia mensagem padrão FacesMessage
+				pvSendMessage(xContext, xMsg, xSourceId);
+			}
+		}
+		//Seta a lista de mensagems como a própria lista de mensagens recebida.
+		for (String xClientId: xListClientIds){
+			pvSendDBSMessages(xContext, pMessages, xClientId);
+		}
+	}
+	
+	/**
+	 * Envia mensagem do tipo <b>FacesMessage</b> e <b>IDBSMessage</b>.<br/>
+	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>'m'(Message)</b>.<br/>
+	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
+	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.<br/>
+	 * Mensagens do tipo <b>PROHIBID</b> e <b>ERROR</b> interrompem o redirect que eventualmente exista na execução de um action.
+	 * @param pMessage Mensagem a ser enviada.
+	 * @param pClientId Id dos componentes "listeners" que receberão a mensagem, podendo ser: 
+	 * <ul>
+	 * <li>@global = Mensagens sem clientid (Default)</li>
+	 * <li>@all = Todas as mensagens</li>
+	 * <li>clientid do componente = Mensagem para um componente</li>
+	 * </ul>
+	 * @param pMessageListener Listener que receberá os eventos disparados pela mensagem
 	 */
 	public static void sendMessage(IDBSMessage pMessage, String pClientId){
 		sendMessage(pMessage, pClientId, null);
@@ -66,8 +130,7 @@ public class DBSMessagesFacesContext {
 	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
 	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.<br/>
 	 * Mensagens do tipo <b>PROHIBID</b> e <b>ERROR</b> interrompem o redirect que eventualmente exista na execução de um action.
-	 * @param pMessage
-	 * @param pClientId null = mensagem global. <br/> clientId = id do componente para que se destina a mensagem.
+	 * @param pMessage Mensagem a ser enviada.
 	 */
 	public static void sendMessage(IDBSMessage pMessage){
 		sendMessage(pMessage, null);
@@ -79,9 +142,9 @@ public class DBSMessagesFacesContext {
 	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
 	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.<br/>
 	 * Mensagens do tipo <b>PROHIBID</b> e <b>ERROR</b> interrompem o redirect que eventualmente exista na execução de um action.
-	 * @param pClientId null = mensagem global. <br/> clientId = id do componente para que se destina a mensagem.
 	 * @param pMessageType
 	 * @param pMessageText
+	 * @param pClientId null = mensagem global. <br/> clientId = id do componente para que se destina a mensagem.
 	 */
 	public static void sendMessage(MESSAGE_TYPE pMessageType, String pMessageText, String pClientId){
 		DBSMessage xMsg = new DBSMessage(pMessageType, pMessageText);
@@ -133,31 +196,7 @@ public class DBSMessagesFacesContext {
 		sendMessage(xMsg, null, pMessageListener);
 	}	
 	
-	/**
-	 * Envia mensagem do tipo <b>FacesMessage</b> e <b>IDBSMessage</b>.<br/>
-	 * As mensagens <b>IDBSMessage</b> são somente capturadas pelo componenente <b>DBSDialog</b> com tipo <b>'m'(Message)</b>.<br/>
-	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
-	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.<br/>
-	 * Mensagens do tipo <b>PROHIBID</b> e <b>ERROR</b> interrompem o redirect que eventualmente exista na execução de um action.
-	 * @param pMessages
-	 * @param pClientId null = mensagem global. <br/> clientId = id do componente para que se destina a mensagem.
-	 * @param pMessageListener Listener que receberá os eventos disparados pela mensagem
-	 */
-	public static void sendMessages(IDBSMessages pMessages, String pClientId, IDBSMessageListener pMessageListener){
-		if (pMessages == null){return;}
-		FacesContext xContext = FacesContext.getCurrentInstance();
-		if (xContext == null){return;}
-		Iterator<IDBSMessage> xMsgs = pMessages.iterator();
-		//Envia as mensagens individualmente
-		while (xMsgs.hasNext()){
-			IDBSMessage xMsg = xMsgs.next();
-			//Envia mensagem padrão FacesMessage
-			pvSendFacesMessage(xContext, xMsg.getMessageType(), xMsg.getMessageText(), pClientId);
-			xMsg.addMessageListener(pMessageListener);
-		}
-		//Seta a lista de mensagems como a própria lista de mensagens recebida.
-		pvSetContextMessagesMapDBSMessages(xContext, pMessages, pClientId);
-	}
+
 	
 	/**
 	 * Envia mensagem do tipo <b>FacesMessage</b> e <b>IDBSMessage</b>.<br/>
@@ -192,8 +231,13 @@ public class DBSMessagesFacesContext {
 	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
 	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.<br/>
 	 * Mensagens do tipo <b>PROHIBID</b> e <b>ERROR</b> interrompem o redirect que eventualmente exista na execução de um action.
-	 * @param pMessages
-	 * @param pClientId null = mensagem global. <br/> clientId = id do componente para que se destina a mensagem.
+	 * @param pMessages Lista com mensagens a serem enviadas.
+	 * @param pClientId Id dos componentes "listeners" que receberão a mensagem, podendo ser: 
+	 * <ul>
+	 * <li>@global = Mensagens sem clientid (Default)</li>
+	 * <li>@all = Todas as mensagens</li>
+	 * <li>clientid do componente = Mensagem para um componente</li>
+	 * </ul>
 	 * @param pMessageListener Listener que receberá os eventos disparados pela mensagem
 	 */
 	public static <T extends IDBSMessage> void sendMessages(List<T> pMessages, String pClientId, IDBSMessageListener pMessageListener){
@@ -210,8 +254,13 @@ public class DBSMessagesFacesContext {
 	 * O componente <b>DBSDialog</b> também captura as mensagens <b>FacesMessage</b>.<br/>
 	 * As mensagens <b>FacesMessage</b> também são capturadas pelo componenente <b>messages</b> e <b>message</b> padrão do JSF.<br/>
 	 * Mensagens do tipo <b>PROHIBID</b> e <b>ERROR</b> interrompem o redirect que eventualmente exista na execução de um action.
-	 * @param pMessages
-	 * @param pClientId null = mensagem global. <br/> clientId = id do componente para que se destina a mensagem.
+	 * @param pMessages Lista com mensagens a serem enviadas.
+	 * @param pClientId Id dos componentes "listeners" que receberão a mensagem, podendo ser: 
+	 * <ul>
+	 * <li>@global = Mensagens sem clientid (Default)</li>
+	 * <li>@all = Todas as mensagens</li>
+	 * <li>clientid do componente = Mensagem para um componente</li>
+	 * </ul>
 	 */
 	public static <T extends IDBSMessage> void sendMessages(List<T> pMessages, String pClientId){
 		sendMessages(pMessages, pClientId, null);
@@ -240,7 +289,7 @@ public class DBSMessagesFacesContext {
 		IDBSMessages  	xMessages = null;
 		
 		pClientId = DBSObject.getNotEmpty(pClientId, ALL);
-		pClientId = pClientId.trim().toLowerCase();
+		pClientId = pClientId.trim();
 
 		xMessages = pvGetMessagesForClientId(xContext, pClientId);
 
@@ -250,21 +299,50 @@ public class DBSMessagesFacesContext {
 		return xMessages;
 	}
 	
+	//==============================================================
+	// PRIVATES
+	//==============================================================
+	
+	/**
+	 * Envia mensagem no padrão do JSF.<br/>
+	 * Se houver, seta o listener para a mensagem.<br/>
+	 * Adiciona clientId a lista de componetes que sofrerão updates.<br/>
+	 * @param pContext
+	 * @param pMessage Mensagem a ser enviada.
+	 * @param pClientId Id dos componentes "listeners" que receberão a mensagem, podendo ser: 
+	 * <ul>
+	 * <li>@global = Mensagens sem clientid (Default)</li>
+	 * <li>@all = Todas as mensagens</li>
+	 * <li>clientid do componente = Mensagem para um componente</li>
+	 * </ul>
+	 */
+	private static void pvSendMessage(FacesContext pContext, IDBSMessage pMessage, String pClientId){
+		//Envia mensagem padrão FacesMessage
+		pvSendFacesMessage(pContext, pMessage.getMessageType(), pMessage.getMessageText(), pClientId);
+		//Força que o componente seja atualizado caso exista uma mensagem destinada a ele.
+		if (!pClientId.equals(GLOBAL)
+		 && !pClientId.equals(ALL)){
+			pContext.getPartialViewContext().getRenderIds().add(pClientId);
+		}
+	}
+
 	/**
 	 * Envia mensagem IDBSMessage para o FacesContext 
 	 * @param pContext
-	 * @param pMessage
-	 * @param pClientId
+	 * @param pMessage Mensagem a ser enviada.
+	 * @param pClientId Id dos componentes "listeners" que receberão a mensagem, podendo ser: 
+	 * <ul>
+	 * <li>@global = Mensagens sem clientid (Default)</li>
+	 * <li>@all = Todas as mensagens</li>
+	 * <li>clientid do componente = Mensagem para um componente</li>
+	 * </ul>
 	 */
 	private static void pvSendDBSMessage(FacesContext pContext, IDBSMessage pMessage, String pClientId){
 		HashMap<String, IDBSMessages> xMap = pvGetContextMessagesMap(pContext);
 		
-		pClientId = DBSObject.getNotEmpty(pClientId, GLOBAL);
-		pClientId = pClientId.trim().toLowerCase();
-	
-		//Recupera mensagens referente ao clientId
+		//Recupera mensagens destinadas ao clientId
 		IDBSMessages xMessages = xMap.get(pClientId);
-		//Cria list se não existir
+		//Cria DBSMessages se não existir
 		if (xMessages == null){
 			xMessages = new DBSMessages();
 			//Inclui DBSMessages no map vinculado a este clienteId 
@@ -275,10 +353,34 @@ public class DBSMessagesFacesContext {
 	}
 
 	/**
-	 * Envia FacesMessage para a view
-	 * @param pClientId Nome do componente ao aqual esta vinculado a mensagem
+	 * Envia mensagem IDBSMessages para o FacesContext.</br>
+	 * Seta a lista de mensagems como a própria lista de mensagens recebida.
+	 * @param pContext
+	 * @param pMessages Mensagens a serem enviadas.
+	 * @param pClientId Id dos componentes "listeners" que receberão a mensagem, podendo ser: 
+	 * <ul>
+	 * <li>@global = Mensagens sem clientid (Default)</li>
+	 * <li>@all = Todas as mensagens</li>
+	 * <li>clientid do componente = Mensagem para um componente</li>
+	 * </ul>
+	 */
+	private static void pvSendDBSMessages(FacesContext pContext, IDBSMessages pMessages, String pClientId){
+		HashMap<String, IDBSMessages> xMap = pvGetContextMessagesMap(pContext);
+	
+		//Inclui DBSMessages no map vinculado a este clienteId 
+		xMap.put(pClientId, pMessages);
+	}
+	
+	/**
+	 * Envia FacesMessage para a view.
 	 * @param pSeverity Tipo de severidade da mensagem
 	 * @param pMessageText texto da mensagem
+	 * @param pClientId Id dos componentes "listeners" que receberão a mensagem, podendo ser: 
+	 * <ul>
+	 * <li>@global = Mensagens sem clientid (Default)</li>
+	 * <li>@all = Todas as mensagens</li>
+	 * <li>clientid do componente = Mensagem para um componente</li>
+	 * </ul>
 	 */
 	private static void pvSendFacesMessage(FacesContext pContext, FacesMessage.Severity pSeverity, String pMessageText, String pClientId){
 		if (pSeverity == null
@@ -288,9 +390,14 @@ public class DBSMessagesFacesContext {
 	
 	/**
 	 * Envia FacesMessage para a view
-	 * @param pClientId Nome do componente ao aqual esta vinculado a mensagem
 	 * @param pSeverity Tipo de severidade da mensagem
 	 * @param pMessageText texto da mensagem
+	 * @param pClientId Id dos componentes "listeners" que receberão a mensagem, podendo ser: 
+	 * <ul>
+	 * <li>@global = Mensagens sem clientid (Default)</li>
+	 * <li>@all = Todas as mensagens</li>
+	 * <li>clientid do componente = Mensagem para um componente</li>
+	 * </ul>
 	 */
 	private static void pvSendFacesMessage(FacesContext pContext, MESSAGE_TYPE pMessageType, String pMessageText, String pClientId){
 		if (pMessageType == null
@@ -302,7 +409,12 @@ public class DBSMessagesFacesContext {
 	 * Retorna a lista de mensagens do tipo IDBSMessage destinadas ao <b>clientId</b> informado ou <i>null</i> se não encontrar mensagem.
 	 * Caso <b>clientId</b> seja nulo, retorna todas as mensagens.
 	 * @param pContext
-	 * @param pClientId
+	 * @param pClientId Id dos componentes "listeners" que receberão a mensagem, podendo ser: 
+	 * <ul>
+	 * <li>@global = Mensagens sem clientid (Default)</li>
+	 * <li>@all = Todas as mensagens</li>
+	 * <li>clientid do componente = Mensagem para um componente</li>
+	 * </ul>
 	 * @return
 	 */
 	private static IDBSMessages pvGetMessagesForClientId(FacesContext pContext, String pClientId){
@@ -332,7 +444,12 @@ public class DBSMessagesFacesContext {
 	 * Retorna a lista de mensagens do tipo IDBSMessage, a partir de <i>FacesMessage</i> contida do <i>FacesContext</i>, 
 	 * destinadas ao <b>clientId</b> informado ou <i>null</i> se não encontrar mensagem.
 	 * @param pContext
-	 * @param pClientId
+	 * @param pClientId Id dos componentes "listeners" que receberão a mensagem, podendo ser: 
+	 * <ul>
+	 * <li>@global = Mensagens sem clientid (Default)</li>
+	 * <li>@all = Todas as mensagens</li>
+	 * <li>clientid do componente = Mensagem para um componente</li>
+	 * </ul>
 	 * @return
 	 */
 	private static IDBSMessages pvGetFacesMessageForClientId(FacesContext pContext, String pClientId){
@@ -371,22 +488,6 @@ public class DBSMessagesFacesContext {
 		}
 		return xMessages;
 	}
-	
-	/**
-	 * Envia mensagem IDBSMessages para o FacesContext. 
-	 * @param pContext
-	 * @param pMessage
-	 * @param pClientId
-	 */
-	private static void pvSetContextMessagesMapDBSMessages(FacesContext pContext, IDBSMessages pMessages, String pClientId){
-		HashMap<String, IDBSMessages> xMap = pvGetContextMessagesMap(pContext);
-		
-		pClientId = DBSObject.getNotEmpty(pClientId, GLOBAL);
-		pClientId = pClientId.trim().toLowerCase();
-	
-		//Inclui DBSMessages no map vinculado a este clienteId 
-		xMap.put(pClientId, pMessages);
-	}
 
 
 	/**
@@ -405,4 +506,21 @@ public class DBSMessagesFacesContext {
 		return xMap;
 	}	
 
+
+	/**
+	 * Retorna lista com clients ids.<br/>
+	 * Se não existe clients ids, retorna informando que mensagem será para GLOBAL(qualquer componente que escute facesmessages).
+	 * @param pClientId
+	 * @return
+	 */
+	private static List<String> pvGetClientsIds(String pClientId){
+		List<String> xListClientIds = new ArrayList<String>();
+		if (!DBSObject.isEmpty(pClientId)){
+			xListClientIds = DBSString.toArrayListRegex(pClientId.trim(), "[,;\\s]");
+		}else{
+			xListClientIds.add(GLOBAL);
+		}
+		return xListClientIds;
+	}
+	
 }

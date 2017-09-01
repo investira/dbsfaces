@@ -13,7 +13,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.SystemEvent;
-import javax.faces.event.SystemEventListener;
 
 import com.sun.faces.facelets.compiler.UIInstructions;
 import com.sun.faces.facelets.tag.ui.ComponentRef;
@@ -24,7 +23,7 @@ import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.util.DBSString;
 
 @FacesComponent(DBSComponentTree.COMPONENT_TYPE)
-public class DBSComponentTree extends DBSUIInput implements NamingContainer, SystemEventListener {
+public class DBSComponentTree extends DBSUIInput implements NamingContainer {
 	
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.COMPONENTTREE;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
@@ -62,21 +61,22 @@ public class DBSComponentTree extends DBSUIInput implements NamingContainer, Sys
     }
 	
 	@Override
-	public void processEvent(SystemEvent event) throws AbortProcessingException {
-		UIComponent xComponent = (UIComponent) event.getSource();
+	public void processEvent(SystemEvent pEvent) throws AbortProcessingException {
+		UIComponent xComponent = (UIComponent) pEvent.getSource();
 		//Exclui da view qualquer HtmlForm que seja filho do DBSComponentTree para evitar que os action não funcionem
 		if (pvIsComponentTreeChild(xComponent)){
 			xComponent.getParent().getChildren().addAll(xComponent.getChildren());
 			xComponent.getParent().getChildren().remove(xComponent);
 		}
+		super.processEvent(pEvent);
 	}
 
 	@Override
-	public boolean isListenerForSource(Object source) {
+	public boolean isListenerForSource(Object pSource) {
 		//Força para que quando o clientId for utilizado, seja considerado o RowIndex no nome
 		//Parace ser um bug, mas este artifício também é utilizado no UIData com o comentário // reset the client id (see spec 3.1.6)
 		this.setId(this.getId());
-		return source instanceof HtmlForm;
+		return (pSource instanceof HtmlForm) || super.isListenerForSource(pSource);
 	} 
 	
 	private Boolean pvIsComponentTreeChild(UIComponent pComponent){

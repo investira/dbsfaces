@@ -17,25 +17,13 @@ import br.com.dbsoft.ui.core.DBSFaces;
  * @author ricardo.villar
  *
  */
-/**
- * @author ricardo.villar
- *
- */
-/**
- * @author ricardo.villar
- *
- */
-/**
- * @author ricardo.villar
- *
- */
 public abstract class DBSDialogCrudBean extends DBSBean {
 
 	private static final long serialVersionUID = 2736035271733987328L;
 
 	public static enum CrudBeanAction {
 		NONE 		("Not Editing", 0, ICrudAction.NONE, null),
-		INSERT 		("Insert", 1, ICrudAction.MERGING, " -i_add "),
+		INSERT 		("Insert", 1, ICrudAction.MERGING, " -i_insert "),
 		UPDATE 		("Update", 2, ICrudAction.MERGING, " -i_edit "), 
 		DELETE 		("Delete", 3, ICrudAction.DELETING, " -i_delete "),
 		VIEW 		("View", 4, ICrudAction.NONE, " -i_eye "),
@@ -98,120 +86,12 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 		}		
 	}
 
-	public class Config{
-		/**
-		 * Se possui tela modal de dialogo
-		 */
-		private boolean wHasDialog = false;
-		
-		/**
-		 * Se possui mensagem de confirmação antes de executar a ação. Seta como null caso não exista.
-		 */
-		private IDBSMessage wMessageBeforeConfirmation = null;
-		
-		/**
-		 * Se possui mensagem de confirmação após a execução da ação. Seta como null caso não exista.
-		 */
-		private IDBSMessage wMessageAfterConfirmation = null;
-		
-		/**
-		 * Se possui mensagem de do comando de ignorar. Seta como null caso não exista.
-		 */
-		private IDBSMessage wMessageBeforeIgnore = null;
-		
-		/**
-		 * @return Se possui tela modal de dialogo
-		 */
-		public boolean hasDialog() {
-			return wHasDialog;
-		}
-		/**
-		 * @param pHasDialog Se possui tela modal de dialogo
-		 */
-		public void setHasDialog(boolean pHasDialog) {
-			wHasDialog = pHasDialog;
-		}
-		/**
-		 * @return Mensagem de confirmação antes de executar a ação. Seta como null caso não exista.
-		 */
-		public IDBSMessage getMessageBeforeConfirmation() {
-			return wMessageBeforeConfirmation;
-		}
-		/**
-		 * @param pMessageBeforeConfirmation Mensagem de confirmação antes de executar a ação. 
-		 * Setar como null caso não exista.
-		 * Mensagem deverá ser to tipo CONFIRM.
-		 */
-		public void setMessageBeforeConfirmation(IDBSMessage pMessageBeforeConfirmation) {
-			if (pMessageBeforeConfirmation !=null 
-			&& !pMessageBeforeConfirmation.getMessageType().equals(MESSAGE_TYPE.CONFIRM)){
-				wLogger.error("setMessageBeforeConfirmation:\tMensagem precisa ser do tipo CONFIRM");
-				return;
-			}
-			wMessageBeforeConfirmation = pMessageBeforeConfirmation;
-		}
-		/**
-		 * @return Mensagem de confirmação após a execução da ação. Seta como null caso não exista
-		 */
-		public IDBSMessage getMessageAfterConfirmation() {
-			return wMessageAfterConfirmation;
-		}
-		/**
-		 * @param pMessageAfterConfirmation Mensagem de confirmação após a execução da ação. 
-		 * Setar como null caso não exista
-		 * Mensagem deverá ser to tipo SUCESS.
-		 */
-		public void setMessageAfterConfirmation(IDBSMessage pMessageAfterConfirmation) {
-			if (pMessageAfterConfirmation !=null
-			&& !pMessageAfterConfirmation.getMessageType().equals(MESSAGE_TYPE.SUCCESS)){
-				wLogger.error("setMessageBeforeConfirmation:\tMensagem precisa ser do tipo SUCESS");
-				return;
-			}
-			wMessageAfterConfirmation = pMessageAfterConfirmation;
-		}
-		/**
-		 * @return Mensagem de do comando de ignorar. Seta como null caso não exista.
-		 */
-		public IDBSMessage getMessageBeforeIgnore() {
-			return wMessageBeforeIgnore;
-		}
-		/**
-		 * @param pMessageBeforeIgnore Mensagem de do comando de ignorar. 
-		 * Setar como null caso não exista.
-		 * Mensagem deverá ser to tipo IGNORE.
-		 */
-		public void setMessageBeforeIgnore(IDBSMessage pMessageBeforeIgnore) {
-			if (pMessageBeforeIgnore !=null
-			&& !pMessageBeforeIgnore.getMessageType().equals(MESSAGE_TYPE.IGNORE)){
-				wLogger.error("setMessageBeforeConfirmation:\tMensagem precisa ser do tipo IGNORE");
-				return;
-			}
-			wMessageBeforeIgnore = pMessageBeforeIgnore;
-		}
-		
-		Config(){};
-		Config (boolean pHasDialog, IDBSMessage pMessageBeforeConfirmation, IDBSMessage pMessageAfterConfirmation, IDBSMessage pMessageBeforeIgnore){
-			setValues(pHasDialog, pMessageBeforeConfirmation, pMessageAfterConfirmation, pMessageBeforeIgnore);
-		}
-		
-		/**
-		 * @param pHasDialog Se possui tela modal de dialogo
-		 * @param pMessageBeforeConfirmation Se possui mensagem de confirmação antes de executar a ação. Seta como null caso não exista.
-		 * @param pMessageAfterConfirmation Se possui mensagem de confirmação após a execução da ação. Seta como null caso não exista.
-		 * @param pMessageBeforeIgnore Se possui mensagem de do comando de ignorar. Seta como null caso não exista.
-		 */
-		public void setValues(boolean pHasDialog, IDBSMessage pMessageBeforeConfirmation, IDBSMessage pMessageAfterConfirmation, IDBSMessage pMessageBeforeIgnore){
-			wHasDialog = pHasDialog;
-			wMessageBeforeConfirmation = pMessageBeforeConfirmation;
-			wMessageAfterConfirmation = pMessageAfterConfirmation;
-			wMessageBeforeIgnore = pMessageBeforeIgnore;
-		}
-	}
-	
 	private CrudBeanAction				wCrudBeanAction = CrudBeanAction.NONE;
 	private String						wOutcome = null;
 	private Map<CrudBeanAction, Config> wConfigs = new HashMap<CrudBeanAction, Config>();
 	private String						wCaption = null;
+	private String						wCaptionIconClass = null;
+	private String						wId = null;
 	
 	private Config	wInsertConfig = new Config(false, 
 		       new DBSMessage(MESSAGE_TYPE.CONFIRM, DBSFaces.getBundlePropertyValue("dbsfaces", "crudbean.msg.confirmInsert")),
@@ -265,7 +145,35 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 	 * @param pCaption
 	 */
 	public void setCaption(String pCaption){wCaption = pCaption;}
-	
+
+	/**
+	 * Icone do cabeçalho
+	 * @return
+	 */
+	public String getCaptionIconClass(){return wCaptionIconClass;}
+	/**
+	 * Icone do cabeçalho
+	 * @param pCaptionIconClass
+	 */
+	public void setCaptionIconClass(String pCaptionIconClass){wCaptionIconClass = pCaptionIconClass;}
+
+	/**
+	 * Id do form quando for dialog
+	 * @return
+	 */
+	public String getId(){return wId;}
+	/**
+	 * Id do form quando for dialog
+	 * @param pId
+	 */
+	public void setId(String pId){wId = pId;}
+
+	/**
+	 * Icone do status atual
+	 * @return
+	 */
+	public String getActionIconClass(){return wCrudBeanAction.getIconClass();}
+
 	/**
 	 * Configuração da inserção
 	 * @return
@@ -733,5 +641,118 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 	private void pvFinalize(){
 		pvSetCrudBeanAction(CrudBeanAction.NONE);
 	}
+
 	
+	// =====================================================================
+	// CLASS CONFIG
+	// =====================================================================
+	public class Config{
+		/**
+		 * Se possui tela modal de dialogo
+		 */
+		private boolean wHasDialog = false;
+		
+		/**
+		 * Se possui mensagem de confirmação antes de executar a ação. Seta como null caso não exista.
+		 */
+		private IDBSMessage wMessageBeforeConfirmation = null;
+		
+		/**
+		 * Se possui mensagem de confirmação após a execução da ação. Seta como null caso não exista.
+		 */
+		private IDBSMessage wMessageAfterConfirmation = null;
+		
+		/**
+		 * Se possui mensagem de do comando de ignorar. Seta como null caso não exista.
+		 */
+		private IDBSMessage wMessageBeforeIgnore = null;
+		
+		/**
+		 * @return Se possui tela modal de dialogo
+		 */
+		public boolean hasDialog() {
+			return wHasDialog;
+		}
+		/**
+		 * @param pHasDialog Se possui tela modal de dialogo
+		 */
+		public void setHasDialog(boolean pHasDialog) {
+			wHasDialog = pHasDialog;
+		}
+		/**
+		 * @return Mensagem de confirmação antes de executar a ação. Seta como null caso não exista.
+		 */
+		public IDBSMessage getMessageBeforeConfirmation() {
+			return wMessageBeforeConfirmation;
+		}
+		/**
+		 * @param pMessageBeforeConfirmation Mensagem de confirmação antes de executar a ação. 
+		 * Setar como null caso não exista.
+		 * Mensagem deverá ser to tipo CONFIRM.
+		 */
+		public void setMessageBeforeConfirmation(IDBSMessage pMessageBeforeConfirmation) {
+			if (pMessageBeforeConfirmation !=null 
+			&& !pMessageBeforeConfirmation.getMessageType().equals(MESSAGE_TYPE.CONFIRM)){
+				wLogger.error("setMessageBeforeConfirmation:\tMensagem precisa ser do tipo CONFIRM");
+				return;
+			}
+			wMessageBeforeConfirmation = pMessageBeforeConfirmation;
+		}
+		/**
+		 * @return Mensagem de confirmação após a execução da ação. Seta como null caso não exista
+		 */
+		public IDBSMessage getMessageAfterConfirmation() {
+			return wMessageAfterConfirmation;
+		}
+		/**
+		 * @param pMessageAfterConfirmation Mensagem de confirmação após a execução da ação. 
+		 * Setar como null caso não exista
+		 * Mensagem deverá ser to tipo SUCESS.
+		 */
+		public void setMessageAfterConfirmation(IDBSMessage pMessageAfterConfirmation) {
+			if (pMessageAfterConfirmation !=null
+			&& !pMessageAfterConfirmation.getMessageType().equals(MESSAGE_TYPE.SUCCESS)){
+				wLogger.error("setMessageBeforeConfirmation:\tMensagem precisa ser do tipo SUCESS");
+				return;
+			}
+			wMessageAfterConfirmation = pMessageAfterConfirmation;
+		}
+		/**
+		 * @return Mensagem de do comando de ignorar. Seta como null caso não exista.
+		 */
+		public IDBSMessage getMessageBeforeIgnore() {
+			return wMessageBeforeIgnore;
+		}
+		/**
+		 * @param pMessageBeforeIgnore Mensagem de do comando de ignorar. 
+		 * Setar como null caso não exista.
+		 * Mensagem deverá ser to tipo IGNORE.
+		 */
+		public void setMessageBeforeIgnore(IDBSMessage pMessageBeforeIgnore) {
+			if (pMessageBeforeIgnore !=null
+			&& !pMessageBeforeIgnore.getMessageType().equals(MESSAGE_TYPE.IGNORE)){
+				wLogger.error("setMessageBeforeConfirmation:\tMensagem precisa ser do tipo IGNORE");
+				return;
+			}
+			wMessageBeforeIgnore = pMessageBeforeIgnore;
+		}
+		
+		Config(){};
+		Config (boolean pHasDialog, IDBSMessage pMessageBeforeConfirmation, IDBSMessage pMessageAfterConfirmation, IDBSMessage pMessageBeforeIgnore){
+			setValues(pHasDialog, pMessageBeforeConfirmation, pMessageAfterConfirmation, pMessageBeforeIgnore);
+		}
+		
+		/**
+		 * @param pHasDialog Se possui tela modal de dialogo
+		 * @param pMessageBeforeConfirmation Se possui mensagem de confirmação antes de executar a ação. Seta como null caso não exista.
+		 * @param pMessageAfterConfirmation Se possui mensagem de confirmação após a execução da ação. Seta como null caso não exista.
+		 * @param pMessageBeforeIgnore Se possui mensagem de do comando de ignorar. Seta como null caso não exista.
+		 */
+		public void setValues(boolean pHasDialog, IDBSMessage pMessageBeforeConfirmation, IDBSMessage pMessageAfterConfirmation, IDBSMessage pMessageBeforeIgnore){
+			wHasDialog = pHasDialog;
+			wMessageBeforeConfirmation = pMessageBeforeConfirmation;
+			wMessageAfterConfirmation = pMessageAfterConfirmation;
+			wMessageBeforeIgnore = pMessageBeforeIgnore;
+		}
+	}
 }

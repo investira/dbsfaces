@@ -9,13 +9,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.SystemEvent;
-import javax.faces.event.SystemEventListener;
 
 import br.com.dbsoft.ui.component.DBSUIInput;
 import br.com.dbsoft.ui.core.DBSFaces;
 
 @FacesComponent(DBSFileUpload.COMPONENT_TYPE)
-public class DBSFileUpload extends DBSUIInput implements NamingContainer, SystemEventListener{
+public class DBSFileUpload extends DBSUIInput implements NamingContainer{
 
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.FILEUPLOAD;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
@@ -94,6 +93,7 @@ public class DBSFileUpload extends DBSUIInput implements NamingContainer, System
 	public void processEvent(SystemEvent pEvent) throws AbortProcessingException {
 		//Adiciona os botões de start e cancel
 		DBSFaces.createFileUploadButtons(this);
+		super.processEvent(pEvent);
 	}
 
 

@@ -7,8 +7,14 @@ import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIInput;
 import javax.faces.component.behavior.ClientBehaviorHolder;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.PostValidateEvent;
+import javax.faces.event.SystemEvent;
+import javax.faces.event.SystemEventListener;
 
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.util.DBSObject;
 
 @ResourceDependencies({
 	// Estas libraries serão carregadas junto com o projeto
@@ -105,7 +111,7 @@ import br.com.dbsoft.ui.core.DBSFaces;
 	@ResourceDependency(library = "js", name = "dbsinvest.js", target = "head")
 //	@ResourceDependency(library = "js", name = "eventsource.js", target = "head")
 })
-public abstract class DBSUIInput extends UIInput implements IDBSUIComponentBase, ClientBehaviorHolder {
+public abstract class DBSUIInput extends UIInput implements IDBSUIComponentBase, ClientBehaviorHolder, SystemEventListener  {
 	
 	protected enum PropertyKeys {
 		label,
@@ -129,6 +135,39 @@ public abstract class DBSUIInput extends UIInput implements IDBSUIComponentBase,
 		public String toString() {
 			return ((this.toString != null) ? this.toString : super.toString());
 		}
+	}
+	
+	public DBSUIInput() {
+		 FacesContext xContext = FacesContext.getCurrentInstance();
+//		 xContext.getViewRoot().subscribeToViewEvent(PostAddToViewEvent.class, this);
+//		 xContext.getViewRoot().subscribeToViewEvent(PreValidateEvent.class,this);
+		 xContext.getViewRoot().subscribeToViewEvent(PostValidateEvent.class,this);
+//		 xContext.getViewRoot().subscribeToViewEvent(PreRenderViewEvent.class,this);
+//		 xContext.getViewRoot().subscribeToViewEvent(PreRenderComponentEvent.class,this);
+		// -------------------------------------------------------------------------------
+//		 xContext.getViewRoot().subscribeToViewEvent(PostConstructViewMapEvent.class,this);
+//		 xContext.getViewRoot().subscribeToViewEvent(PostRestoreStateEvent.class,this);
+//		 xContext.getViewRoot().subscribeToViewEvent(PreDestroyViewMapEvent.class,this);
+//		 xContext.getViewRoot().subscribeToViewEvent(PreRemoveFromViewEvent.class,this);	
+	}
+	
+	
+	@Override
+	public void processEvent(SystemEvent event) throws AbortProcessingException {
+		//Força que componente seja atualizado via ajax caso esteja com erro para que se possa verifica novamente se o erro persiste.
+		if (event.getSource() instanceof DBSUIInput){
+			DBSUIInput xInput = (DBSUIInput) event.getSource();
+//			System.out.println("ProcessEvent:\t" + xInput.getClientId() + "\t" + xInput.isValid() + "\t" + xInput.getValidatorMessage());
+			if (!DBSObject.isEmpty(xInput.getValidatorMessage())){
+				FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add(xInput.getClientId());
+			}
+		}
+	}
+	
+	
+	@Override
+	public boolean isListenerForSource(Object pSource) {
+		return pSource.equals(this);
 	}
 	
 	@Override
@@ -229,5 +268,10 @@ public abstract class DBSUIInput extends UIInput implements IDBSUIComponentBase,
 	public Boolean getReadOnly() {
 		return (Boolean) getStateHelper().eval(PropertyKeys.readOnly, false);
 	}	
+
+//	System.out.println("Inputtext decode:\t" + xInputText.getClientId() + "\t" + xInputText.isValid());
+//	if (xInputText.isValid()){
+//		pContext.getPartialViewContext().getRenderIds().add(xInputText.getClientId());
+//	}
 
 }

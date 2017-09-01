@@ -65,6 +65,9 @@ import br.com.dbsoft.core.DBSSDK.ENCODE;
 import br.com.dbsoft.core.DBSSDK.NETWORK.METHOD;
 import br.com.dbsoft.core.DBSSDK.SYS.WEB_CLIENT;
 import br.com.dbsoft.error.DBSIOException;
+import br.com.dbsoft.message.IDBSMessage;
+import br.com.dbsoft.message.IDBSMessageBase.MESSAGE_TYPE;
+import br.com.dbsoft.message.IDBSMessages;
 import br.com.dbsoft.ui.bean.DBSBean;
 import br.com.dbsoft.ui.bean.DBSBeanModalMessages;
 import br.com.dbsoft.ui.bean.crud.DBSCrudBean;
@@ -1992,7 +1995,7 @@ public class  DBSFaces {
 	}
 	
 	/**
-	 * Retorna a classe utilizada nos inputs no campo na área que recebe os dados
+	 * Retorna a classe utilizada nos inputs na área que recebe os dados
 	 * @param pInput
 	 * @return
 	 */
@@ -2007,8 +2010,21 @@ public class  DBSFaces {
 		if (xInput.getReadOnly()){
 			xClass += CSS.MODIFIER.READONLY;
 		}
-		if (!xInput.isValid()){
-			xClass += CSS.MODIFIER.INVALID;
+		//Verifica se existe mensagem enviada para este componente e inclui class conforme tipo de mensagem.
+		IDBSMessages xMessages = DBSMessagesFacesContext.getMessages(pInput.getClientId());
+		if (xMessages != null){
+			//Retorna mensagem mais severa
+			IDBSMessage xMessage = xMessages.getMostSevereMessage();
+			if (xMessage != null){
+				xClass += xMessage.getMessageType().getInputStyleClass();
+				//Copia texto da mensagem para indicar que input recebeu mensagem.
+				//No ProcessEvento do DBSUIInput, este input será forçado a fazer novo update para verificar se erro persite.
+				xInput.setValidatorMessage(xMessage.getMessageText());
+				xInput.setValid(false);
+//				System.out.println("getInputDataClass:\t" + xInput.getClientId() + "\t" + xInput.isValid());
+			}else if (!xInput.isValid()){
+				xClass += MESSAGE_TYPE.ERROR.getInputStyleClass();
+			}
 		}
 		return xClass;
 	}

@@ -422,13 +422,43 @@ textarea.-th_input-data:FOCUS,
 .-th_input .-error {
 	background-color: rgb(255, 255, 210);
 }
-.-th_input .-invalid {
+.-th_input .-invalid{
 	background-color: rgba(255, 120, 120, 0.2) !important;
 /*     border-color: red !important; */
 /*     border: 1px hsla(0, 100%, 51%, 0.65) solid; */
 }
+
 .-th_input .-required {
 	background-color: rgb(224, 224, 224);
+}
+
+
+.-th_input .-msg_a {
+/* 	background-color: rgba(255, 120, 120, 0.2) !important; */
+}
+.-th_input .-msg_s {
+/* 	background-color: rgba(255, 120, 120, 0.2) !important; */
+}
+.-th_input .-msg_i {
+/* 	background-color: rgba(255, 120, 120, 0.2) !important; */
+}
+.-th_input .-msg_t {
+/* 	background-color: rgba(255, 120, 120, 0.2) !important; */
+}
+.-th_input .-msg_w {
+	background-color: rgba(255, 120, 120, 0.2) !important;
+}
+.-th_input .-msg_c {
+	background-color: rgba(255, 120, 120, 0.2) !important;
+}
+.-th_input .-msg_g {
+	background-color: rgba(255, 120, 120, 0.2) !important;
+}
+.-th_input .-msg_p {
+	background-color: rgba(255, 0, 0, 0.3) !important;
+}
+.-th_input .-msg_e {
+	background-color: rgba(255, 0, 0, 0.14) !important;
 }
 
 
