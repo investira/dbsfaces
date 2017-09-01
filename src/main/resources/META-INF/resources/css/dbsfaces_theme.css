@@ -268,7 +268,7 @@ select,
 .-th_input-data > label,
 .-th_input-data > .-data {
 	font-family: inherit;
-	font-weight: normal;
+	font-weight: inherit;
 /* 	color: rgb(13, 25, 45); */
 }
 
@@ -294,7 +294,7 @@ select{
 .-th_input-label,
 .-th_input-suggestion {
 	font-size: inherit;
-	font-weight: normal;
+	font-weight: inherit;
 }
 
 .-th_input-data,
@@ -308,7 +308,8 @@ select{
 	display: inline-block;
 	font-style: normal;
 	text-shadow: none !important;
-	font-weight: normal !important;
+	font-weight: inherit;
+/* 	font-weight: normal !important; */
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
