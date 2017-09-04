@@ -320,6 +320,7 @@ public class DBSMessagesFacesContext {
 		//Envia mensagem padrão FacesMessage
 		pvSendFacesMessage(pContext, pMessage.getMessageType(), pMessage.getMessageText(), pClientId);
 		//Força que o componente seja atualizado caso exista uma mensagem destinada a ele.
+		//Isto permite que o encode de indicativo de erro,etc.
 		if (!pClientId.equals(GLOBAL)
 		 && !pClientId.equals(ALL)){
 			pContext.getPartialViewContext().getRenderIds().add(pClientId);
