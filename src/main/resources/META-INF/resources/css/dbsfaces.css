@@ -180,6 +180,15 @@ svg{
 	-webkit-tap-highlight-color: transparent;
 	cursor: default;
 }
+.-ghost{
+	padding:0;
+	margin:0;
+	border:none;
+	width:0;
+	height:0;
+	position:absolute;
+	pointer-events:none;
+}
 .-odd {}
 .-opened {}
 .-left {text-align: left !important;}
