@@ -367,33 +367,33 @@ public class DBSDialogContent extends DBSUIOutput{
 				//Não utiliza o action do botão que originou este dialog se mensagem for erro. Erro impede que action seja efetuado.
 				xActionSourceNO = null;
 			}
-			pvEncodeMsgButton(pContext, DBSDialog.BUTTON_NO, "Não","-i_no -red", null, pDialog.getClientId(), xActionSourceNO);
+			pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_NO, "Não","-i_no -red", null, xActionSourceNO);
 		//UM BOTÃO - SIM(YES)
 		}else{
-			xStyle = "width:0;height:0;position:absolute;"; //Exibe sem dimensão somente para poder receber o keydown
+			xStyle = "padding:0;margin:0;border:none;width:0;height:0;position:absolute;pointer-events:none"; //Exibe sem dimensão somente para poder receber o keydown
 //			xStyle = "display:none;";
-			//Se esta é a última mensagem para ser validada.
+			//Se esta for a última mensagem para ser validada.
 			if (pDialog.getDBSMessages() == null 
 			 || pDialog.getDBSMessages().notValidatedSize() <= 1){
 				//Não utiliza o action do botão que originou este dialog se mensagem for erro. Erro impede que action seja efetuado.
 				if (xMsgType == null || xMsgType.getIsError()){
-						xActionSourceYES = null;
-	//					pvEncodeMsgButtonRecall(pContext, DBSDialog.BUTTON_YES, "Sim","-i_yes -green", xStyle, pDialog.getClientId(), xActionSourceYES);
-	//					return;
+					xActionSourceYES = null;
+//					pvEncodeMsgButtonRecall(pContext, DBSDialog.BUTTON_YES, "Sim","-i_yes -green", xStyle, pDialog.getClientId(), xActionSourceYES);
+//					return;
 				}
 			}
 		}
 		//BOTÃO - SIM(YES)
-		pvEncodeMsgButton(pContext, DBSDialog.BUTTON_YES, "Sim","-i_yes -green", xStyle, pDialog.getClientId(), xActionSourceYES); 
+		pvEncodeMsgButton(pDialog, pContext, DBSDialog.BUTTON_YES, "Sim","-i_yes -green", xStyle, xActionSourceYES); 
 	}
 
 	
-	private void pvEncodeMsgButton(FacesContext pContext, 
+	private void pvEncodeMsgButton(DBSDialog 	pDialog,
+								   FacesContext pContext, 
 								   String 		pId, 
 								   String 		pLabel, 
 								   String 		pIconClass, 
 								   String 		pStyle, 
-								   String 		pExecute, 
 								   DBSUICommand pActionSource) throws IOException{
 		DBSButton xBtn = (DBSButton) pContext.getApplication().createComponent(DBSButton.COMPONENT_TYPE);
 //		xBtn.setTransient(true);
@@ -401,24 +401,25 @@ public class DBSDialogContent extends DBSUIOutput{
 		xBtn.setLabel(pLabel);
 		xBtn.setIconClass(CSS.MODIFIER.ICON + pIconClass);
 		xBtn.setStyle(pStyle);
-//		xBtn.setExecute("@this " + pExecute + ":" + DBSDialog.INPUT_MSGKEY);
-//		xBtn.setExecute(pExecute);
 		xBtn.setExecute(getClientId());
 		if (pActionSource == null){
 			xBtn.setUpdate("@none");
 		}else{
 			xBtn.setActionExpression(pActionSource.getActionExpression());
-			String xUpdate = DBSObject.getNotNull(pActionSource.getUpdate() , "");
-			if (xUpdate.indexOf(pExecute) == -1){
-				xUpdate += " :" + pExecute;
+			//Limitar o update ao próprio dialog de mensagem quando exister mais de uma mensagem pare evitar updates em campos externos antes de todas as mensagens serem exibidas
+			if(pDialog.getDBSMessages() != null && pDialog.getDBSMessages().notValidatedSize() > 1){
+				xBtn.setUpdate(pDialog.getClientId());
+			}else{
+				String xUpdate = DBSObject.getNotNull(pActionSource.getUpdate() , "");
+				//Inclui este dialog no execute se não estiver
+				if (xUpdate.indexOf(pDialog.getClientId()) == -1){
+					xUpdate += " :" + pDialog.getClientId();
+				}
+				xBtn.setUpdate(xUpdate);
 			}
-			xBtn.setUpdate(xUpdate);
-			
-//			xBtn.setUpdate(pExecute);
 		}
 		xBtn.setCloseDialog(true);
 		getFacets().put(pId, xBtn);
-//		getChildren().add(xBtn);
 		xBtn.encodeAll(pContext);
 	}
 	
