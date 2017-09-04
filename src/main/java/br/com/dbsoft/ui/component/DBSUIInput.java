@@ -138,6 +138,7 @@ public abstract class DBSUIInput extends UIInput implements IDBSUIComponentBase,
 	}
 	
 	public DBSUIInput() {
+//		System.out.println("DBSUIInput Constructor\t" + this.getClientId());
 		 FacesContext xContext = FacesContext.getCurrentInstance();
 //		 xContext.getViewRoot().subscribeToViewEvent(PostAddToViewEvent.class, this);
 //		 xContext.getViewRoot().subscribeToViewEvent(PreValidateEvent.class,this);
@@ -154,10 +155,11 @@ public abstract class DBSUIInput extends UIInput implements IDBSUIComponentBase,
 	
 	@Override
 	public void processEvent(SystemEvent event) throws AbortProcessingException {
+//		System.out.println("DBSUIInput ProcessEvent:\t");
 		//Força que componente seja atualizado via ajax caso esteja com erro para que se possa verifica novamente se o erro persiste.
 		if (event.getSource() instanceof DBSUIInput){
 			DBSUIInput xInput = (DBSUIInput) event.getSource();
-//			System.out.println("ProcessEvent:\t" + xInput.getClientId() + "\t" + xInput.isValid() + "\t" + xInput.getValidatorMessage());
+//			System.out.println("DBSUIInput ProcessEvent:\t" + xInput.getClientId() + "\t" + xInput.isValid() + "\t" + xInput.getValidatorMessage());
 			if (!DBSObject.isEmpty(xInput.getValidatorMessage())){
 				FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add(xInput.getClientId());
 			}
@@ -167,6 +169,7 @@ public abstract class DBSUIInput extends UIInput implements IDBSUIComponentBase,
 	
 	@Override
 	public boolean isListenerForSource(Object pSource) {
+//		System.out.println("DBSUIInput isListenerForSource");
 		return pSource.equals(this);
 	}
 	
