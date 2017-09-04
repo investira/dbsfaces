@@ -20,11 +20,11 @@ public abstract class DBSUIInputText extends DBSUIInput {
 		}
 	}
 	
-	public java.lang.Integer getMaxLength() {
+	public Integer getMaxLength() {
 		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxlength, 0);
 	}
 	
-	public void setMaxLength(java.lang.Integer pmaxlength) {
+	public void setMaxLength(Integer pmaxlength) {
 		getStateHelper().put(PropertyKeys.maxlength, pmaxlength);
 		handleAttribute("maxlength", pmaxlength);
 	}
