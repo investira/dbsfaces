@@ -1989,7 +1989,7 @@ public abstract class DBSCrudOldBean extends DBSBeanModalMessages implements IDB
 		 && wAllowApprove){
 			if (wUserId== null){
 				//wLogger.error("[DBSCrudBean]UserId - Não informado");
-				addMessage("UserId", MESSAGE_TYPE.ERROR,"DBSCrudBean: UserId - Não informado!");
+				addMessage("UserId", MESSAGE_TYPE.ERROR,"DBSCrudOldBean: UserId - Não informado!");
 				return DBSFaces.getCurrentView();
 			}
 			//Só permite a seleção quando o dialog em exibição
@@ -2024,7 +2024,7 @@ public abstract class DBSCrudOldBean extends DBSBeanModalMessages implements IDB
 		if (wAllowApproval && wAllowApprove){
 			if (wUserId== null){
 				//wLogger.error("[DBSCrudBean]UserId - Não informado");
-				addMessage("UserId", MESSAGE_TYPE.ERROR,"DBSCrudBean: UserId - Não informado!");
+				addMessage("UserId", MESSAGE_TYPE.ERROR,"DBSCrudOldBean: UserId - Não informado!");
 				return DBSFaces.getCurrentView();
 			}
 			if (wEditingMode==EditingMode.NONE){
