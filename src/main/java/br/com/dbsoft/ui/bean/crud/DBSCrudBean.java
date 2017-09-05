@@ -17,7 +17,7 @@ import br.com.dbsoft.ui.core.DBSFaces;
  * @author ricardo.villar
  *
  */
-public abstract class DBSDialogCrudBean extends DBSBean {
+public abstract class DBSCrudBean extends DBSBean {
 
 	private static final long serialVersionUID = 2736035271733987328L;
 
@@ -126,7 +126,7 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 //	private IDBSMessage		wMessaggeApprovalSameUser =
 //				new DBSMessage(MESSAGE_TYPE.ERROR, DBSFaces.getBundlePropertyValue("dbsfaces", "crudbean.msg.approvalSameUser"));
 	
-	public DBSDialogCrudBean() {
+	public DBSCrudBean() {
 		//Configuração padrão das ações
 		wConfigs.put(CrudBeanAction.INSERT, wInsertConfig);
 		wConfigs.put(CrudBeanAction.UPDATE, wUpdateConfig);
@@ -211,7 +211,7 @@ public abstract class DBSDialogCrudBean extends DBSBean {
 	 * Esta próporia classe para ser acessada pelos ActionController
 	 * @return
 	 */
-	protected DBSDialogCrudBean getOuter() {return this;}
+	protected DBSCrudBean getOuter() {return this;}
 	
 
 	// =====================================================================
