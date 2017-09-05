@@ -310,7 +310,7 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer, SystemEve
 	
 	public void setMsgFor(String pMsgFor) {
 		if (pMsgFor != null && pMsgFor.length() > 0){
-			pMsgFor = pMsgFor.trim().toLowerCase();
+			pMsgFor = pMsgFor.trim();
 		}
 		getStateHelper().put(PropertyKeys.msgFor, pMsgFor);
 		handleAttribute("msgFor", pMsgFor);
