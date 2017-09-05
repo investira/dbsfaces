@@ -70,7 +70,7 @@ import br.com.dbsoft.message.IDBSMessageBase.MESSAGE_TYPE;
 import br.com.dbsoft.message.IDBSMessages;
 import br.com.dbsoft.ui.bean.DBSBean;
 import br.com.dbsoft.ui.bean.DBSBeanModalMessages;
-import br.com.dbsoft.ui.bean.crud.DBSCrudBean;
+import br.com.dbsoft.ui.bean.crud.DBSCrudOldBean;
 import br.com.dbsoft.ui.bean.report.DBSReportBean;
 import br.com.dbsoft.ui.component.DBSUICommand;
 import br.com.dbsoft.ui.component.DBSUIInput;
@@ -2908,30 +2908,30 @@ public class  DBSFaces {
 	 * @param pCrudBean
 	 * @param pIsRecursive
 	 */
-	public static void finalizeCrudBeans(DBSCrudBean pCrudBean, boolean pIsRecursive){
+	public static void finalizeCrudBeans(DBSCrudOldBean pCrudBean, boolean pIsRecursive){
 		ExternalContext xEC = FacesContext.getCurrentInstance().getExternalContext();
 	    for (Entry<String, Object> xEntry : xEC.getSessionMap().entrySet()) {
 	        if((xEntry.getValue() instanceof SerializableContextualInstanceImpl)){
 	            @SuppressWarnings("rawtypes")
 				SerializableContextualInstanceImpl xImpl = (SerializableContextualInstanceImpl) xEntry.getValue();
 	            Object xO = xImpl.getInstance();
-	            if (xO instanceof DBSCrudBean){
+	            if (xO instanceof DBSCrudOldBean){
 	            	try {
 	            		//Exclui da seção qualquer outro DBSCrudBean, para que seja reinializado caso seja chamado novamente.
 	            		//Isso permite que os valores(principalmente os das listas no initilize) destes DBSCrudBean, sejam refeitos
-	            		DBSCrudBean xCrud = (DBSCrudBean) xO;
+	            		DBSCrudOldBean xCrud = (DBSCrudOldBean) xO;
 	            		//1) Se quem chamou for nulo
 	            		//2) Se é uma chamada recursiva e crudbean na memória for o mesmo testado
 	            		//3) Se NÃO é uma chamada recursiva e não tiver pai e for o master e o crud em memória não tiver pai e não for o próprio que chamou esta rotina
 	            		if (pCrudBean == null ||
 	            			(pIsRecursive && xCrud.equals(pCrudBean)) ||
 	            			(!pIsRecursive && pCrudBean.getParentCrudBean() == null && pCrudBean.getMasterBean() == null && xCrud.getParentCrudBean()==null && !xCrud.equals(pCrudBean))){
-	            			for (DBSCrudBean xChild:xCrud.getChildrenCrudBean()){
+	            			for (DBSCrudOldBean xChild:xCrud.getChildrenCrudBean()){
 	            				finalizeCrudBeans(xChild, true);
 	            			}
 	            			for (DBSBean xChild:xCrud.getSlavesBean()){
-	            				if (xChild instanceof DBSCrudBean){
-	            					finalizeCrudBeans((DBSCrudBean)xChild, true);
+	            				if (xChild instanceof DBSCrudOldBean){
+	            					finalizeCrudBeans((DBSCrudOldBean)xChild, true);
 	            				}
 	            			}
 							xEC.getSessionMap().remove(xEntry.getKey());
@@ -2954,10 +2954,10 @@ public class  DBSFaces {
 	@Deprecated
 	public static void finalizeDBSBeans(DBSBean pDBSBean, Boolean pIsChild){
 		if (!pIsChild){ //Se não for chamada recursiva
-			DBSCrudBean xDBSCrudBean = null;
+			DBSCrudOldBean xDBSCrudBean = null;
 			if (pDBSBean !=null ){
-	    		if (pDBSBean instanceof DBSCrudBean){
-	    			xDBSCrudBean = (DBSCrudBean) pDBSBean; 
+	    		if (pDBSBean instanceof DBSCrudOldBean){
+	    			xDBSCrudBean = (DBSCrudOldBean) pDBSBean; 
 	    		}
 				if (pDBSBean.getMasterBean() != null || //Se for escravo
 				    (xDBSCrudBean != null && //Se for filho
@@ -2974,9 +2974,9 @@ public class  DBSFaces {
 	            Object xO = xImpl.getInstance();
 	            if (xO instanceof DBSBeanModalMessages){
 	            	DBSBeanModalMessages 	xSessionBean = (DBSBeanModalMessages) xO;
-            		DBSCrudBean xSessionCrudBean = null;
-            		if (xSessionBean instanceof DBSCrudBean){
-            			xSessionCrudBean = (DBSCrudBean) xSessionBean;
+            		DBSCrudOldBean xSessionCrudBean = null;
+            		if (xSessionBean instanceof DBSCrudOldBean){
+            			xSessionCrudBean = (DBSCrudOldBean) xSessionBean;
             		}
             		Boolean xFinaliza = true;
             		//Não finaliza de for o próprio bean ou algum filho ou escravo tiver o respectivo pai ou master como o prório bean 
@@ -2996,7 +2996,7 @@ public class  DBSFaces {
         					finalizeDBSBeans(xChild, true);
             			}
             			if (xSessionCrudBean != null){
-                			for (DBSCrudBean xChild:xSessionCrudBean.getChildrenCrudBean()){
+                			for (DBSCrudOldBean xChild:xSessionCrudBean.getChildrenCrudBean()){
             					finalizeDBSBeans(xChild, true);
                 			}
             			}
@@ -3029,16 +3029,16 @@ public class  DBSFaces {
 	            
 	            Object xSessionBean = xImpl.getInstance();
 	            if (xSessionBean.equals(pSessionBean)){
-		    		DBSCrudBean xDBSCrudBean = null;
+		    		DBSCrudOldBean xDBSCrudBean = null;
 		    		DBSBeanModalMessages xDBSBean = null;
 	            	if (xSessionBean instanceof DBSBeanModalMessages){
 		    			xDBSBean = (DBSBeanModalMessages) xSessionBean; 
             			for (DBSBean xChild:xDBSBean.getSlavesBean()){
     		    			finalizeSessionBean(xChild, true);
             			}
-    	            	if (xSessionBean instanceof DBSCrudBean){
-    		    			xDBSCrudBean = (DBSCrudBean) xSessionBean; 
-                			for (DBSCrudBean xChild:xDBSCrudBean.getChildrenCrudBean()){
+    	            	if (xSessionBean instanceof DBSCrudOldBean){
+    		    			xDBSCrudBean = (DBSCrudOldBean) xSessionBean; 
+                			for (DBSCrudOldBean xChild:xDBSCrudBean.getChildrenCrudBean()){
                 				finalizeSessionBean(xChild, true);
                 			}
     	            	}

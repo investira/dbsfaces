@@ -11,7 +11,7 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 
-import br.com.dbsoft.ui.bean.crud.DBSCrudBean;
+import br.com.dbsoft.ui.bean.crud.DBSCrudOldBean;
 import br.com.dbsoft.ui.component.DBSUIComponentBase;
 import br.com.dbsoft.ui.component.datatable.DBSDataTable;
 import br.com.dbsoft.ui.core.DBSFaces;
@@ -54,12 +54,12 @@ public class DBSCrudTable extends DBSUIComponentBase implements NamingContainer,
     }
 
 
-	public DBSCrudBean getCrudBean() {
-		return (DBSCrudBean) getStateHelper().eval(PropertyKeys.crudBean, null);
+	public DBSCrudOldBean getCrudBean() {
+		return (DBSCrudOldBean) getStateHelper().eval(PropertyKeys.crudBean, null);
 	}
 
 
-	public void setCrudBean(DBSCrudBean pCrudBean) {
+	public void setCrudBean(DBSCrudOldBean pCrudBean) {
 		getStateHelper().put(PropertyKeys.crudBean, pCrudBean);
 		//handleAttribute("crudBean", pCrudBean);
 	}

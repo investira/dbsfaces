@@ -19,7 +19,7 @@ import javax.faces.validator.MethodExpressionValidator;
 
 import com.sun.faces.facelets.compiler.UIInstructions;
 
-import br.com.dbsoft.ui.bean.crud.DBSCrudBean;
+import br.com.dbsoft.ui.bean.crud.DBSCrudOldBean;
 import br.com.dbsoft.ui.component.DBSUIComponentBase;
 import br.com.dbsoft.ui.core.DBSFaces;
 
@@ -76,12 +76,12 @@ public class DBSCrudDialog extends DBSUIComponentBase implements NamingContainer
     }
 
 
-	public DBSCrudBean getCrudBean() {
-		return (DBSCrudBean) getStateHelper().eval(PropertyKeys.crudBean, null);
+	public DBSCrudOldBean getCrudBean() {
+		return (DBSCrudOldBean) getStateHelper().eval(PropertyKeys.crudBean, null);
 	}
 
 
-	public void setCrudBean(DBSCrudBean pCrudBean) {
+	public void setCrudBean(DBSCrudOldBean pCrudBean) {
 		getStateHelper().put(PropertyKeys.crudBean, pCrudBean);
 	}
 

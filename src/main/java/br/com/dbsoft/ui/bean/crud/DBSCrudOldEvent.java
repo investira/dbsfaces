@@ -1,14 +1,14 @@
 package br.com.dbsoft.ui.bean.crud;
 
 import br.com.dbsoft.event.DBSEvent;
-import br.com.dbsoft.ui.bean.crud.DBSCrudBean.EditingMode;
-import br.com.dbsoft.ui.bean.crud.DBSCrudBean.EditingStage;
+import br.com.dbsoft.ui.bean.crud.DBSCrudOldBean.EditingMode;
+import br.com.dbsoft.ui.bean.crud.DBSCrudOldBean.EditingStage;
 
 /**
  * @author ricardo.villar
  *
  */
-public class DBSCrudBeanEvent extends DBSEvent<DBSCrudBean> implements IDBSCrudBeanEvent{
+public class DBSCrudOldEvent extends DBSEvent<DBSCrudOldBean> implements IDBSCrudOldEvent{
 
 	public static enum CRUD_EVENT{
 		INITIALIZE,
@@ -37,7 +37,7 @@ public class DBSCrudBeanEvent extends DBSEvent<DBSCrudBean> implements IDBSCrudB
 	private CRUD_EVENT 	wEvent = null;
 	private EditingMode wEditingMode = EditingMode.NONE;
 	
-	public DBSCrudBeanEvent(DBSCrudBean pObject, CRUD_EVENT pEvent, EditingMode pEditingMode) {
+	public DBSCrudOldEvent(DBSCrudOldBean pObject, CRUD_EVENT pEvent, EditingMode pEditingMode) {
 		super(pObject);
 		wEvent = pEvent;
 		wEditingMode = pEditingMode;

@@ -21,7 +21,7 @@ import br.com.dbsoft.message.DBSMessage;
 import br.com.dbsoft.message.IDBSMessage;
 import br.com.dbsoft.message.IDBSMessageBase.MESSAGE_TYPE;
 import br.com.dbsoft.ui.bean.DBSBeanModalMessages;
-import br.com.dbsoft.ui.bean.crud.DBSCrudBeanEvent.CRUD_EVENT;
+import br.com.dbsoft.ui.bean.crud.DBSCrudOldEvent.CRUD_EVENT;
 import br.com.dbsoft.ui.component.DBSUIInput;
 import br.com.dbsoft.ui.component.DBSUIInputText;
 import br.com.dbsoft.ui.component.modalcrudmessages.IDBSModalCrudMessages;
@@ -179,7 +179,7 @@ import br.com.dbsoft.util.DBSObject;
  * 	AFTER_EDIT
  * 
  */
-public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSModalCrudMessages{
+public abstract class DBSCrudOldBean extends DBSBeanModalMessages implements IDBSModalCrudMessages{
 
 	private static final long serialVersionUID = -8550893738791483527L;
 
@@ -293,7 +293,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	}
 
 	protected DBSDAO<?>							wDAO;
-	private List<IDBSCrudBeanEventsListener>	wEventListeners = new ArrayList<IDBSCrudBeanEventsListener>();
+	private List<IDBSCrudOldEventsListener>	wEventListeners = new ArrayList<IDBSCrudOldEventsListener>();
 	private EditingMode							wEditingMode = EditingMode.NONE;
 	private EditingStage						wEditingStage = EditingStage.NONE;
 	private FormStyle							wFormStyle = FormStyle.DIALOG;
@@ -339,8 +339,8 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	private Boolean								wRevalidateBeforeCommit = false;
 	private Integer								wUserId;
 	private Boolean								wMultipleSelection = false;
-	private DBSCrudBean							wParentCrudBean = null;
-	private List<DBSCrudBean>					wChildrenCrudBean = new ArrayList<DBSCrudBean>();
+	private DBSCrudOldBean							wParentCrudBean = null;
+	private List<DBSCrudOldBean>					wChildrenCrudBean = new ArrayList<DBSCrudOldBean>();
 
 
 	//Mensagens
@@ -377,14 +377,14 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * Lembre-se de remove-la utilizando removeEventListener quando a classe for destruida, para evitar que ela seja chamada quando já não deveria. 
 	 * @param pEventListener Classe
 	 */
-	public void addEventListener(IDBSCrudBeanEventsListener pEventListener) {
+	public void addEventListener(IDBSCrudOldEventsListener pEventListener) {
 		if (!wEventListeners.contains(pEventListener)){
 			wEventListeners.add(pEventListener);
 		}
 	}
 
 	
-	public void removeEventListener(IDBSCrudBeanEventsListener pEventListener) {
+	public void removeEventListener(IDBSCrudOldEventsListener pEventListener) {
 		if (wEventListeners.contains(pEventListener)){
 			wEventListeners.remove(pEventListener);
 		}
@@ -1191,7 +1191,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * Desta forma, qualquer edição do crud filho, dependerá da confirmação no crud pai.
 	 * @param pCrudBean
 	 */
-	public void setParentCrudBean(DBSCrudBean pCrudBean) {
+	public void setParentCrudBean(DBSCrudOldBean pCrudBean) {
 		wParentCrudBean = pCrudBean;
 		if (!pCrudBean.getChildrenCrudBean().contains(this)){
 			pCrudBean.getChildrenCrudBean().add(this);
@@ -1205,7 +1205,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * Desta forma, qualquer edição do crud filho, dependerá da confirmação no crud pai.
 	 * @param pCrudBean
 	 */
-	public DBSCrudBean getParentCrudBean() {
+	public DBSCrudOldBean getParentCrudBean() {
 		return wParentCrudBean;
 	}
 
@@ -1217,7 +1217,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * Permitindo que os cruds filhos atualizem seus dados em função da posição atual deste crud.
 	 * @return
 	 */
-	public List<DBSCrudBean> getChildrenCrudBean() {
+	public List<DBSCrudOldBean> getChildrenCrudBean() {
 		return wChildrenCrudBean;
 	}
 	
@@ -2166,7 +2166,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * Conexão com o banco encontra-se aberta.<br/>
 	 * @param pEvent Informações do evento
 	 */
-	protected abstract void initialize(DBSCrudBeanEvent pEvent) throws DBSIOException;
+	protected abstract void initialize(DBSCrudOldEvent pEvent) throws DBSIOException;
 
 
 	/**
@@ -2174,7 +2174,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * Conexão com o banco já se encontra fechada.<br/>
 	 * @param pEvent Informações do evento
 	 */
-	protected void finalize(DBSCrudBeanEvent pEvent){};
+	protected void finalize(DBSCrudOldEvent pEvent){};
 	
 	
 	/**
@@ -2182,7 +2182,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * Conexão com o banco já se encontra fechada.<br/>
 	 * @param pEvent Informações do evento
 	 */
-	protected void beforeClose(DBSCrudBeanEvent pEvent) throws DBSIOException {} ;
+	protected void beforeClose(DBSCrudOldEvent pEvent) throws DBSIOException {} ;
 
 	/**
 	 * Disparado antes de limpar os dados existentes e fazer uma nova pesquisa.<br/>
@@ -2194,7 +2194,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * @param pEvent Informações do evento
 	 * @throws DBSIOException 
 	 */
-	protected void beforeRefresh(DBSCrudBeanEvent pEvent) throws DBSIOException{};
+	protected void beforeRefresh(DBSCrudOldEvent pEvent) throws DBSIOException{};
 	
 	/**
 	 * Disparado após efetuada uma nova pesquisa.<br/>
@@ -2203,7 +2203,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * Conexão com o banco encontra-se aberta.<br/>
 	 * @param pEvent Informações do evento
 	 */
-	protected void afterRefresh(DBSCrudBeanEvent pEvent) throws DBSIOException{};
+	protected void afterRefresh(DBSCrudOldEvent pEvent) throws DBSIOException{};
 
 	
 	/**
@@ -2218,7 +2218,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * Conexão com o banco encontra-se aberta.<br/> 
 	 * @param pEvent Informações do evento
 	 */
-	protected void beforeEdit(DBSCrudBeanEvent pEvent) throws DBSIOException {};
+	protected void beforeEdit(DBSCrudOldEvent pEvent) throws DBSIOException {};
 	
 	/**
 	 * Disparado logo após a finalização da edição(insert/delete/update), independentemente da edição ter sido confirmada ou ignorada.<br/>
@@ -2227,7 +2227,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * deve-se consultar o atributo editingMode do Evento(ex:if (pEvent.getEditingMode() == EditingMode.INSERTING){}).<br/>
 	 * @param pEvent Informações do evento
 	 */
-	protected void afterEdit(DBSCrudBeanEvent pEvent) throws DBSIOException {};
+	protected void afterEdit(DBSCrudOldEvent pEvent) throws DBSIOException {};
 	
 	/**
 	 * Disparado antes de iniciar um insert.<br/>
@@ -2237,14 +2237,14 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * Conexão com o banco encontra-se aberta.<br/>
 	 * @param pEvent Informações do evento
 	 */
-	protected void beforeInsert(DBSCrudBeanEvent pEvent) throws DBSIOException{};
+	protected void beforeInsert(DBSCrudOldEvent pEvent) throws DBSIOException{};
 	
 	/**
 	 * Disparado antes de exibir os dados em uma edição ou exclusão.<br/>
 	 * Conexão com o banco encontra-se aberta.<br/>
 	 * @param pEvent Informações do evento
 	 */
-	protected void beforeView(DBSCrudBeanEvent pEvent) throws DBSIOException{};
+	protected void beforeView(DBSCrudOldEvent pEvent) throws DBSIOException{};
 	
 	/**
 	 * Disparado depois de exibir os dados.<br/>
@@ -2252,7 +2252,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * Conexão com o banco encontra-se aberta.<br/>
 	 * @param pEvent Informações do evento
 	 */
-	protected void afterView(DBSCrudBeanEvent pEvent) throws DBSIOException{};
+	protected void afterView(DBSCrudOldEvent pEvent) throws DBSIOException{};
 	
 	/**
 	 * Disparado depois do evento de validação, <b>validate</b>, e mensagem de confirmação.<br/>
@@ -2274,7 +2274,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * @param pEvent Informações do evento
 	 * @throws DBSIOException 
 	 */
-	protected void beforeCommit(DBSCrudBeanEvent pEvent) throws DBSIOException {
+	protected void beforeCommit(DBSCrudOldEvent pEvent) throws DBSIOException {
 		//Copia dos valores pois podem ter sido alterados durante o beforecommit
 		if (wConnection == null){return;}
 		//Aprovação/Reprovação
@@ -2319,21 +2319,21 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * Conexão com o banco encontra-se aberta.
 	 * @param pEvent Informações do evento
 	 */
-	protected void afterCommit(DBSCrudBeanEvent pEvent) throws DBSIOException {}
+	protected void afterCommit(DBSCrudOldEvent pEvent) throws DBSIOException {}
 
 	/**
 	 * Disparado quando houver problema de validação ou não houver a confirmação do usuário para continuar.<br/>
 	 * Conexão com o banco encontra-se aberta.
 	 * @param pEvent Informações do evento
 	 */
-	protected void beforeIgnore(DBSCrudBeanEvent pEvent) throws DBSIOException {}
+	protected void beforeIgnore(DBSCrudOldEvent pEvent) throws DBSIOException {}
 
 	/**
 	 * Disparado depois de ignorar o CRUD.<br/>
 	 * Conexão com o banco encontra-se aberta.
 	 * @param pEvent Informações do evento
 	 */
-	protected void afterIgnore(DBSCrudBeanEvent pEvent){}
+	protected void afterIgnore(DBSCrudOldEvent pEvent){}
 
 	/**
 	 * Disparado antes de efetuar a seleção da linha através do checkbox padrão do datatable. 
@@ -2341,14 +2341,14 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * Conexão com o banco encontra-se aberta.
 	 * @param pEvent Informações do evento
 	 */
-	protected void beforeSelect(DBSCrudBeanEvent pEvent) throws DBSIOException {}
+	protected void beforeSelect(DBSCrudOldEvent pEvent) throws DBSIOException {}
 
 	/**
 	 * Disparado depois da seleção de algum item.<br/>
 	 * Conexão com o banco encontra-se aberta.
 	 * @param pEvent Informações do evento
 	 */
-	protected void afterSelect(DBSCrudBeanEvent pEvent){}
+	protected void afterSelect(DBSCrudOldEvent pEvent){}
 
 	/**
 	 * Disparado antes do evento <b>validate</b>.
@@ -2356,7 +2356,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * Conexão com o banco encontra-se aberta.
 	 * @param pEvent Informações do evento
 	 */
-	protected void beforeValidate(DBSCrudBeanEvent pEvent) throws DBSIOException{}
+	protected void beforeValidate(DBSCrudOldEvent pEvent) throws DBSIOException{}
 
 	/**
 	 * Disparado após indicar que deseja salvar os dados.<br/>
@@ -2371,7 +2371,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * Conexão com o banco encontra-se aberta.
 	 * @param pEvent Informações do evento
 	 */
-	protected void validate(DBSCrudBeanEvent pEvent) throws DBSIOException{}
+	protected void validate(DBSCrudOldEvent pEvent) throws DBSIOException{}
 
 	/**
 	 * Disparado depois de copiada a posição do registro atual.<br/>
@@ -2382,7 +2382,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * Conexão com o banco encontra-se aberta.
 	 * @param pEvent Informações do evento
 	 */
-	protected void afterCopy(DBSCrudBeanEvent pEvent) throws DBSIOException{};
+	protected void afterCopy(DBSCrudOldEvent pEvent) throws DBSIOException{};
 
 	/**
 	 * Disparado depois de copiada a posição do registro atual.<br/>
@@ -2394,7 +2394,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * Conexão com o banco encontra-se aberta.
 	 * @param pEvent Informações do evento
 	 */
-	protected void beforePaste(DBSCrudBeanEvent pEvent) throws DBSIOException{};
+	protected void beforePaste(DBSCrudOldEvent pEvent) throws DBSIOException{};
 	
 	// PRIVATE ============================================================================
 	/**
@@ -2548,8 +2548,8 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * Configura o crudbean filhos com a mesma conexão do pai
 	 * @param pBean
 	 */
-	private void pvBroadcastConnection(DBSCrudBean pBean){
-		for (DBSCrudBean xChildBean:pBean.getChildrenCrudBean()){
+	private void pvBroadcastConnection(DBSCrudOldBean pBean){
+		for (DBSCrudOldBean xChildBean:pBean.getChildrenCrudBean()){
 			//Força o fechamento da conexão para evitar que fique uma conexão aberta perdida na memória
 			Connection xCn = xChildBean.getConnection();
 	
@@ -2717,7 +2717,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * @param pEvent
 	 * @throws DBSIOException 
 	 */
-	private void pvBeforeCommitSetAutomaticColumnsValues(DBSCrudBeanEvent pEvent) throws DBSIOException{
+	private void pvBeforeCommitSetAutomaticColumnsValues(DBSCrudOldEvent pEvent) throws DBSIOException{
 		DBSColumn 	xColumn = null;
 		//Delete
 		if(wConnection == null ||
@@ -2759,7 +2759,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * Configura os valores dos campos da assinatura eletrônica
 	 * @throws DBSIOException 
 	 */
-	private void pvBeforeCommitSetAutomaticColumnsValuesApproval(DBSCrudBeanEvent pEvent) throws DBSIOException{
+	private void pvBeforeCommitSetAutomaticColumnsValuesApproval(DBSCrudOldEvent pEvent) throws DBSIOException{
 		DBSColumn 		xColumn = null;
 		APPROVAL_STAGE 	xApprovalNextStage = null;
 		Integer 		xUserId = null;
@@ -3012,7 +3012,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 
 	//Events -----------------------------------------------------
 	private void pvFireEventInitialize(){
-		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.INITIALIZE, getEditingMode());
+		DBSCrudOldEvent xE = new DBSCrudOldEvent(this, CRUD_EVENT.INITIALIZE, getEditingMode());
 		try {
 			pvBroadcastEvent(xE, false, true, true);
 		} catch (Exception e) {
@@ -3022,7 +3022,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	}
 	
 	private void pvFireEventFinalize(){
-		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.FINALIZE, getEditingMode());
+		DBSCrudOldEvent xE = new DBSCrudOldEvent(this, CRUD_EVENT.FINALIZE, getEditingMode());
 		try {
 			pvBroadcastEvent(xE, false, false, true);
 		} catch (Exception e) {
@@ -3032,7 +3032,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	}
 
 	private boolean pvFireEventBeforeClose(){
-		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_CLOSE, getEditingMode());
+		DBSCrudOldEvent xE = new DBSCrudOldEvent(this, CRUD_EVENT.BEFORE_CLOSE, getEditingMode());
 		try {
 			pvBroadcastEvent(xE, true, true, true);
 		} catch (Exception e) {
@@ -3043,7 +3043,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	}
 
 	private boolean pvFireEventBeforeView(){
-		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_VIEW, getEditingMode());
+		DBSCrudOldEvent xE = new DBSCrudOldEvent(this, CRUD_EVENT.BEFORE_VIEW, getEditingMode());
 		try {
 			pvBroadcastEvent(xE, true, true, true);
 		} catch (Exception e) {
@@ -3054,7 +3054,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	}
 	
 	private void pvFireEventAfterView(){
-		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.AFTER_VIEW, getEditingMode());
+		DBSCrudOldEvent xE = new DBSCrudOldEvent(this, CRUD_EVENT.AFTER_VIEW, getEditingMode());
 		//Marca que não houve edição nos campos, para que as configurações iniciais nos campos efetuadas no BeforeView sejam aceita sem ficarem caracterizadas como edição do usuário. 
 		setValueChanged(false); 
 
@@ -3067,7 +3067,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	}
 
 	private boolean pvFireEventBeforeInsert() throws DBSIOException{
-		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_INSERT, getEditingMode());
+		DBSCrudOldEvent xE = new DBSCrudOldEvent(this, CRUD_EVENT.BEFORE_INSERT, getEditingMode());
 		
 		if (wDAO != null){
 			openConnection();
@@ -3099,7 +3099,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * @return
 	 */
 	private boolean pvFireEventBeforeEdit(EditingMode pEditingMode){
-		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_EDIT, pEditingMode);
+		DBSCrudOldEvent xE = new DBSCrudOldEvent(this, CRUD_EVENT.BEFORE_EDIT, pEditingMode);
 		//Marca que não houve edição nos campos 
 		setValueChanged(false); 
 		try{
@@ -3119,7 +3119,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * @return
 	 */
 	private boolean pvFireEventAfterEdit(EditingMode pEditingMode){
-		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.AFTER_EDIT, pEditingMode);
+		DBSCrudOldEvent xE = new DBSCrudOldEvent(this, CRUD_EVENT.AFTER_EDIT, pEditingMode);
 		try{
 			pvBroadcastEvent(xE, false, false, true);
 		} catch (Exception e) {
@@ -3130,7 +3130,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	}
 
 	private boolean pvFireEventBeforeRefresh(){
-		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_REFRESH, getEditingMode());
+		DBSCrudOldEvent xE = new DBSCrudOldEvent(this, CRUD_EVENT.BEFORE_REFRESH, getEditingMode());
 		try{
 			pvBroadcastEvent(xE, true, true, true);
 		} catch (Exception e) { 
@@ -3141,7 +3141,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	}
 	
 	private void pvFireEventAfterRefresh(){
-		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.AFTER_REFRESH, getEditingMode());
+		DBSCrudOldEvent xE = new DBSCrudOldEvent(this, CRUD_EVENT.AFTER_REFRESH, getEditingMode());
 		try{
 			pvBroadcastEvent(xE, true, true, true);
 		} catch (Exception e) {
@@ -3155,7 +3155,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * @return
 	 */
 	private boolean pvFireEventBeforeIgnore(){
-		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_IGNORE, getEditingMode());
+		DBSCrudOldEvent xE = new DBSCrudOldEvent(this, CRUD_EVENT.BEFORE_IGNORE, getEditingMode());
 		try{
 			pvBroadcastEvent(xE, false, false, false);
 		} catch (Exception e) {
@@ -3170,7 +3170,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * @return
 	 */
 	private void pvFireEventAfterIgnore(){
-		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.AFTER_IGNORE, getEditingMode());
+		DBSCrudOldEvent xE = new DBSCrudOldEvent(this, CRUD_EVENT.AFTER_IGNORE, getEditingMode());
 		try{
 			pvBroadcastEvent(xE, false, false, false);
 		} catch (Exception e) {
@@ -3185,7 +3185,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * @return
 	 */
 	private boolean pvFireEventBeforeValidate(){
-		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_VALIDATE, getEditingMode());
+		DBSCrudOldEvent xE = new DBSCrudOldEvent(this, CRUD_EVENT.BEFORE_VALIDATE, getEditingMode());
 		try{
 			/*Faz loop entre todos os registros selecionados quando for:
 			 * .Aprovação e reprovação
@@ -3219,7 +3219,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * @return
 	 */
 	private boolean pvFireEventValidate(){
-		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.VALIDATE, getEditingMode());
+		DBSCrudOldEvent xE = new DBSCrudOldEvent(this, CRUD_EVENT.VALIDATE, getEditingMode());
 		try{
 			/*Faz loop entre todos os registros selecionados quando for:
 			 * .Aprovação e reprovação
@@ -3260,7 +3260,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	}
 
 	private boolean pvFireEventBeforeCommit(){
-		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_COMMIT, getEditingMode());
+		DBSCrudOldEvent xE = new DBSCrudOldEvent(this, CRUD_EVENT.BEFORE_COMMIT, getEditingMode());
 		String xErrorMsg = null;
 		//Chame o metodo(evento) local para quando esta classe for extendida
 		try {
@@ -3374,7 +3374,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * 
 	 */
 	private void pvFireEventAfterCommit(){
-		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.AFTER_COMMIT, getEditingMode());
+		DBSCrudOldEvent xE = new DBSCrudOldEvent(this, CRUD_EVENT.AFTER_COMMIT, getEditingMode());
 		try{
 			pvBroadcastEvent(xE, false, false, false);
 			//Marca o parent como alterado caso o crud filho tenha confirmado alguma edição
@@ -3392,7 +3392,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * @return
 	 */
 	private boolean pvFireEventBeforeSelect(){
-		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_SELECT, getEditingMode());
+		DBSCrudOldEvent xE = new DBSCrudOldEvent(this, CRUD_EVENT.BEFORE_SELECT, getEditingMode());
 		try{
 			pvBroadcastEvent(xE, false, true, true);
 		} catch (Exception e) {
@@ -3403,7 +3403,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	}
 	
 	private void pvFireEventAfterSelect(){
-		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.AFTER_SELECT, getEditingMode());
+		DBSCrudOldEvent xE = new DBSCrudOldEvent(this, CRUD_EVENT.AFTER_SELECT, getEditingMode());
 		try{
 			pvBroadcastEvent(xE, false, true, true);
 		} catch (Exception e) {
@@ -3417,7 +3417,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * @return
 	 */
 	private void pvFireEventAfterCopy(){
-		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.AFTER_COPY, getEditingMode());
+		DBSCrudOldEvent xE = new DBSCrudOldEvent(this, CRUD_EVENT.AFTER_COPY, getEditingMode());
 		try{
 			pvBroadcastEvent(xE, false, true, true);
 		} catch (Exception e) {
@@ -3431,7 +3431,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * @return
 	 */
 	private boolean pvFireEventBeforePaste(){
-		DBSCrudBeanEvent xE = new DBSCrudBeanEvent(this, CRUD_EVENT.BEFORE_PASTE, getEditingMode());
+		DBSCrudOldEvent xE = new DBSCrudOldEvent(this, CRUD_EVENT.BEFORE_PASTE, getEditingMode());
 		try{
 			pvBroadcastEvent(xE, false, true, true);
 		} catch (Exception e) {
@@ -3450,7 +3450,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * @param pCloseConnection Se fecha a conexão após disparar os eventos
 	 * @throws Exception 
 	 */
-	private void pvBroadcastEvent(DBSCrudBeanEvent pEvent, boolean pInvokeChildren, boolean pOpenConnection, boolean pCloseConnection) throws Exception {
+	private void pvBroadcastEvent(DBSCrudOldEvent pEvent, boolean pInvokeChildren, boolean pOpenConnection, boolean pCloseConnection) throws Exception {
 		try{
 			if (pOpenConnection){
 				openConnection();
@@ -3496,7 +3496,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	}
 	
 	//Chama a metodo(evento) dentro das classe foram adicionadas na lista que possuem a implementação da respectiva interface
-	private void pvFireEventLocal(DBSCrudBeanEvent pEvent) throws DBSIOException{
+	private void pvFireEventLocal(DBSCrudOldEvent pEvent) throws DBSIOException{
 		if (pEvent.isOk()){
 			switch (pEvent.getEvent()) {
 			case INITIALIZE:
@@ -3572,10 +3572,10 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	 * @param pEvent
 	 * @throws DBSIOException
 	 */
-	private void pvFireEventChildren(DBSCrudBeanEvent pEvent) throws DBSIOException{
+	private void pvFireEventChildren(DBSCrudOldEvent pEvent) throws DBSIOException{
 		if (pEvent.isOk()){
 			//Busca por beans vinculados e este bean
-			for (DBSCrudBean xBean:wChildrenCrudBean){
+			for (DBSCrudOldBean xBean:wChildrenCrudBean){
 				/* O refreshList dos CrudBean filhos serão disparados caso 
 				 * o beforeView e before_insert deste crudBean seja disparado.<br>
 				 * Permitindo que os cruds filhos atualizem seus dados em função da posição atual deste crud.
@@ -3657,7 +3657,7 @@ public abstract class DBSCrudBean extends DBSBeanModalMessages implements IDBSMo
 	}
 	
 	//Chama a metodo(evento) dentro das classe foram adicionadas na lista que possuem a implementação da respectiva interface
-	private void pvFireEventListeners(DBSCrudBeanEvent pEvent) throws DBSIOException{
+	private void pvFireEventListeners(DBSCrudOldEvent pEvent) throws DBSIOException{
 		if (pEvent.isOk()){
 			for (int xX=0; xX<wEventListeners.size(); xX++){
 				switch (pEvent.getEvent()) {
