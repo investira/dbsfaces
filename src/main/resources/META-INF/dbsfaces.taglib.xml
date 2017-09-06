@@ -2610,6 +2610,14 @@
 			<required>false</required>
 			<type>java.sql.Date</type>
 		</attribute>
+		<attribute>
+			<description>
+                Converter
+            </description>
+			<name>converter</name>
+			<required>true</required>
+			<type>javax.faces.convert.Converter</type>
+		</attribute>
 	</tag>
 	<tag>
 		<tag-name>combobox</tag-name>
@@ -2706,11 +2714,19 @@
 		</attribute>
 		<attribute>
 			<description>
-                List
+                LinkedHashMap contendo chave e descrição.
             </description>
 			<name>list</name>
 			<required>true</required>
 			<type>java.util.Map</type>
+		</attribute>
+		<attribute>
+			<description>
+                Converter
+            </description>
+			<name>converter</name>
+			<required>true</required>
+			<type>javax.faces.convert.Converter</type>
 		</attribute>
 	</tag>
 	<tag>
@@ -2925,6 +2941,14 @@
 			<name>floatLeft</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+                Converter
+            </description>
+			<name>converter</name>
+			<required>true</required>
+			<type>javax.faces.convert.Converter</type>
 		</attribute>
 	</tag>
 	<tag>

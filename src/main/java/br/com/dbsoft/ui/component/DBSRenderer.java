@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
+import javax.faces.component.UIInput;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIParameter;
 import javax.faces.component.UIViewRoot;
@@ -20,6 +21,8 @@ import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
 import javax.faces.render.Renderer;
 
 import org.apache.log4j.Logger;
@@ -30,6 +33,22 @@ import br.com.dbsoft.util.DBSString;
 public class DBSRenderer extends Renderer {
 	
 	protected Logger			wLogger = Logger.getLogger(this.getClass());
+	
+	@Override
+	public Object getConvertedValue(FacesContext pContext, UIComponent pComponent, Object pSubmittedValue)
+			throws ConverterException {
+		if (pSubmittedValue instanceof String) {
+			// run it through the Converter (if any)
+			Converter converter = ((UIInput) pComponent).getConverter();
+			Object newValue = pSubmittedValue;
+			if (converter != null) {
+				newValue = converter.getAsObject(pContext, pComponent, (String) pSubmittedValue);
+			}
+			return newValue;
+		}else{
+			return pSubmittedValue;
+		}
+	}
 	
 	@Override
 	public boolean getRendersChildren() {
