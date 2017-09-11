@@ -734,7 +734,7 @@
             	iconClass do título.
             </description>
 			<name>captionIconClass</name>
-			<required>true</required>
+			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
@@ -742,7 +742,7 @@
             	iconClass do ação em execução. Icone exibido a esquerta em negativo quando for dialog = Mod.
             </description>
 			<name>actionIconClass</name>
-			<required>true</required>
+			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
@@ -750,7 +750,7 @@
             	iconClass principal do botão para abrir o dialog. Dialog pode também ser aberto por JS.
             </description>
 			<name>iconClass</name>
-			<required>true</required>
+			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
