@@ -31,6 +31,19 @@ dbsfaces.tooltip = {
 	},
 	
 	initializeData: function(pSourceComponent){
+//		var xData = {
+//			dom : {
+//				self: pSourceComponent.children(".-tooltip");
+//				parent: pSourceComponent;
+//				container:  null,
+//				content: null
+//			}
+//			delay: null,
+//			dl: null,
+//			setPos: null,
+//			timershow: null,
+//			timerhide: null
+//		}
 		var xTooltip = pSourceComponent.children(".-tooltip");
 		if (xTooltip.length == 0){
 			xTooltip == null;
