@@ -10,6 +10,7 @@ import javax.faces.render.FacesRenderer;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
+import br.com.dbsoft.util.DBSObject;
 
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSMenuitemSeparator.RENDERER_TYPE)
@@ -22,7 +23,8 @@ public class DBSMenuitemSeparatorRenderer extends DBSRenderer {
 		DBSMenuitemSeparator xMenuitemSeparator = (DBSMenuitemSeparator) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		xWriter.startElement("span", xMenuitemSeparator);
-			DBSFaces.encodeAttribute(xWriter, "class", CSS.MENUITEMSEPARATOR.MAIN);
+			DBSFaces.encodeAttribute(xWriter, "class", CSS.MENUITEMSEPARATOR.MAIN + DBSObject.getNotNull(xMenuitemSeparator.getStyleClass(), ""));
+			DBSFaces.encodeAttribute(xWriter, "style", xMenuitemSeparator.getStyle());
 		xWriter.endElement("span");
 	}
 
