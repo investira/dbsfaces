@@ -907,7 +907,29 @@ dbsfaces.ui = {
 			xXY.y = e.clientY;
         }
         return xXY;
-     }
+     },
+     
+     getPosition: function(pSelector) { // crossbrowser version
+ 		var xEle = pSelector;
+		if (xEle instanceof jQuery){
+			xEle = pSelector[0];
+		}
+	    var xBox = xEle.getBoundingClientRect();
+
+	    var xBody = document.body;
+	    var xDocEl = document.documentElement;
+
+	    var xScrollTop = window.pageYOffset || xDocEl.scrollTop || xBody.scrollTop;
+	    var xScrollLeft = window.pageXOffset || xDocEl.scrollLeft || xBody.scrollLeft;
+
+	    var xClientTop = xDocEl.clientTop || xBody.clientTop || 0;
+	    var xClientLeft = xDocEl.clientLeft || xBody.clientLeft || 0;
+
+	    var xTop  = xBox.top +  xScrollTop - xClientTop;
+	    var xLeft = xBox.left + xScrollLeft - xClientLeft;
+
+	    return { top: Math.round(xTop), left: Math.round(xLeft) };
+    }
 
 }
 
