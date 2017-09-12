@@ -178,7 +178,7 @@ svg{
 	user-select: none !important;
 	
 	-webkit-tap-highlight-color: transparent;
-	cursor: default;
+	pointer-events: none; /* evita exibir cursor de seleção */
 }
 .-ghost{
 	padding:0;
