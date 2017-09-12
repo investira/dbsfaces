@@ -19,9 +19,14 @@
 }
 
 .dbs_menuitemSeparator{
-	border-top: 1px solid rgba(0, 0, 0, 0.4) !important;
-	border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+	border-top: 1px solid rgba(0, 0, 0, 0.3) !important;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;	
 	display: block;
+}
+
+.dbs_menuitemSeparator.-white{
+	border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.6) !important;
 }
 
 
@@ -37,6 +42,7 @@
 	white-space: nowrap;
 /* 	transition: background-color .1s; */
 	pointer-events: none;
+	padding: 0em .3em;
 }	
 
 .dbs_menu:not([disabled]):not(.-disabled) .dbs_menuitem:not([disabled]):not(.-disabled){
@@ -232,7 +238,8 @@
 }
 
 .dbs_menu[class~="-menu_scroll"] .dbs_menuitemSeparator{
-    margin: .2em 0;
+/*     margin: .2em 0; */
+    margin: 1px 0;
 }
 
 
