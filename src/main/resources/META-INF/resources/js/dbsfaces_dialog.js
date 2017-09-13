@@ -1,29 +1,22 @@
 dbs_dialog = function(pId) {
+};
+
+dbs_dialogContent = function(pId) {
 	var xDialog = $(pId);
 
-	// dbsfaces.dialog.initialize(xDialog);
+	var xDialogData = dbsfaces.dialog.initialize(xDialog);
 
-	$(pId).on("close", function() {
-		var xDialogData = xDialog.data("data");
+	xDialogData.dom.self.on("close", function() {
 		dbsfaces.dialog.pvClose(xDialogData);
 	});
-	$(pId).on("open", function() {
-		var xDialogData = xDialog.data("data");
+	xDialogData.dom.self.on("open", function() {
 		dbsfaces.dialog.pvOpen(xDialogData);
 	});
-	$(pId).on("stopTimeout", function() {
-		var xDialogData = xDialog.data("data");
+	xDialogData.dom.self.on("stopTimeout", function() {
 		dbsfaces.dialog.stopTimeout(xDialogData);
 	});
-	$(pId).on("startTimeout", function() {
-		var xDialogData = xDialog.data("data");
+	xDialogData.dom.self.on("startTimeout", function() {
 		dbsfaces.dialog.startTimeout(xDialogData);
-	});
-
-	$(window).resize(function(e) {
-		setTimeout(function() {
-			dbsfaces.dialog.resize(xDialog);
-		}, 0);
 	});
 
 	$(pId + " > .-container > .-th_action").on("mousedown touchstart", function(e) {
@@ -34,11 +27,10 @@ dbs_dialog = function(pId) {
 		return false;
 	});
 
-	$(pId + " > .-container > .-mask").on("mousedown touchstart", function(e) {
+	xDialogData.dom.mask.on("mousedown touchstart", function(e) {
 		if (xDialog.attr("disabled")) {
 			return;
 		}
-		var xDialogData = xDialog.data("data");
 		// Fecha se possuior botão de fechar padrão
 		if (xDialogData.dom.bthandle.length != 0) {
 			dbsfaces.dialog.show(xDialog);
@@ -58,35 +50,27 @@ dbs_dialog = function(pId) {
 			$(dbsfaces.util.jsid(xList.pop())).trigger("close");
 		}
 	}
-	;
-
-};
-
-dbs_dialogContent = function(pId) {
-	var xDialog = $(pId);
-
-	dbsfaces.dialog.initialize(xDialog);
 
 	/* Captura movimento touch para verificar se é para fechar o dialog */
-	if (!xDialog.data("c")) {
-		$(pId + " > .-container > .-content").touchwipe({
+	if (xDialogData.type != "mod"){
+		xDialogData.dom.content.touchwipe({
 			wipeLeft : function() {
-				return dbsfaces.dialog.wipe(xDialog, "l");
+				return dbsfaces.dialog.wipe(xDialogData, "l");
 			},
 			wipeRight : function() {
-				return dbsfaces.dialog.wipe(xDialog, "r");
+				return dbsfaces.dialog.wipe(xDialogData, "r");
 			},
 			wipeUp : function() {
-				return dbsfaces.dialog.wipe(xDialog, "u");
+				return dbsfaces.dialog.wipe(xDialogData, "u");
 			},
 			wipeDown : function() {
-				return dbsfaces.dialog.wipe(xDialog, "d");
+				return dbsfaces.dialog.wipe(xDialogData, "d");
 			},
 			onStart : function() {
-				dbsfaces.dialog.scrollStart(xDialog);
+				dbsfaces.dialog.scrollStart(xDialogData);
 			},
 			onMove : function(dx, dy) {
-				dbsfaces.dialog.scroll(xDialog, dx, dy);
+				dbsfaces.dialog.scroll(xDialogData, dx, dy);
 			},
 			min_move_x : 25,
 			min_move_y : 25,
@@ -94,8 +78,7 @@ dbs_dialogContent = function(pId) {
 		});
 	}
 
-	$(pId + " > .-container > .-content > .-footer > .-toolbar").keydown(function(e){
-		var xDialogData = xDialog.data("data");
+	xDialogData.dom.footer_toolbar.keydown(function(e){
 		if (xDialogData.type == "msg"
 		 && xDialogData.dom.btyes != null
 		 && xDialogData.dom.btyes.length > 0) {
@@ -105,11 +88,13 @@ dbs_dialogContent = function(pId) {
 	});
 	
 	/* Após animação de abrir ou fechar */
-	$(pId + " > .-container > .-content").on(dbsfaces.EVENT.ON_TRANSITION_END, function(e) {
-		var xDialogData = xDialog.data("data");
+	xDialogData.dom.content.on(dbsfaces.EVENT.ON_TRANSITION_END, function(e) {
 		// Foi fechado
 		if (xDialog.hasClass("-closed")) {
 			xDialog.trigger("closed");
+//			xDialogData.dom.content.css("left", "")
+//									.css("top", "")
+//									.css("transform", "none");
 			xDialogData.dom.container.removeClass("-opened").addClass("-closed");
 //			xDialogData.dom.self.removeClass("-opened").addClass("-closed");
 //			$(this).parent().removeClass("-opened").addClass("-closed");
@@ -126,6 +111,9 @@ dbs_dialogContent = function(pId) {
 			xDialogData.dom.container.removeClass("-closed").addClass("-opened");
 //			xDialogData.dom.self.removeClass("-closed").addClass("-opened");
 //			$(this).parent().removeClass("-closed").addClass("-opened");
+//			xDialogData.dom.content.css("left", xDialogData.dom.content.css("left"))
+//									.css("top", xDialogData.dom.content.css("top"))
+//									.css("transform", "none");
 			xDialog.trigger("opened");
 		}
 	});
@@ -141,12 +129,11 @@ dbs_dialogContent = function(pId) {
 	// dbsfaces.dialog.show(xDialog);
 	// });
 
-	$(pId + " > .-container > .-content > .-bthandle").on("mousedown touchstart", function(e) {
+	xDialogData.dom.bthandle.on("mousedown touchstart", function(e) {
 		if (xDialog.attr("disabled")) {
 			return;
 		}
 		/* fecha normalmente se não houver closeTimeout ou for modal */
-		var xDialogData = xDialog.data("data");
 		if (xDialogData.closeTimeout == "0") {
 			dbsfaces.dialog.show(xDialog);
 		} else {
@@ -159,11 +146,10 @@ dbs_dialogContent = function(pId) {
 	});
 
 	/* Fecha o dialog */
-	$(pId + " > .-container > .-content > .-bthandle").on("mouseup touchend", function(e) {
+	xDialogData.dom.bthandle.on("mouseup touchend", function(e) {
 		if (xDialog.attr("disabled")) {
 			return;
 		}
-		var xDialogData = xDialog.data("data");
 		if (xDialogData.closeTimeout == "0") {
 			return;
 		}
@@ -222,15 +208,57 @@ dbs_dialogContent = function(pId) {
 	});
 
 	/* Ao final da animação do closeTimeout */
-	$(pId + " > .-container > .-content > .-bthandle").on(dbsfaces.EVENT.ON_TRANSITION_END, function(e) {
+	xDialogData.dom.bthandle.on(dbsfaces.EVENT.ON_TRANSITION_END, function(e) {
 		dbsfaces.dialog.show(xDialog);
 		return false;
 	});
+	
 
-	// if (xDialog.data("closeCanceled")){
-	// xDialog.data("closeCanceled", false);
-	// dbsfaces.dialog.show(xDialog);
-	// }
+	/* move */
+	dbsfaces.dialog.dragOff(xDialogData);
+	xDialogData.dom.header.on("mousedown.dialog", function(e){
+		//Salva posição atual
+        var xModalPositionOld = {left: xDialogData.dom.content.offset().left,
+			 	   			   	 top: xDialogData.dom.content.offset().top,
+			 	   			   	 width: xDialogData.dom.content.outerWidth(),
+			 	   			   	 height: xDialogData.dom.content.outerHeight()}; 
+	   	if (e.which === 1){
+	   		//Desliga drag
+			dbsfaces.dialog.dragOff(xDialogData);
+			//Liga drag
+	   		xDialogData.dom.header.on("mousemove.dialog",{pX:e.clientX, pY:e.clientY, pPosOld:xModalPositionOld}, function(e){
+				var xLeft;
+				var xTop;
+		        //Seta posição
+				xDialogData.dom.content.css("margin", "");
+				xDialogData.dom.content.css("left", e.data.pPosOld.left + (e.clientX - e.data.pX) + "px");
+				xDialogData.dom.content.css("top", e.data.pPosOld.top + (e.clientY - e.data.pY) + "px");
+				xDialogData.dom.content.addClass("-moving");
+		        return false;
+			});
+	   	}
+	});
+
+	xDialogData.dom.header.on("mouseleave.dialog", function(e){
+		dbsfaces.dialog.dragOff(xDialogData);
+	});
+
+	//Desliga move. Por algum bug, dragstart é eventualmente disparado durante o move
+	$(window).on("dragstart", function(e){
+		dbsfaces.dialog.dragOff(xDialogData);
+	});
+	
+	//Desliga move
+	$(window).on("mouseup.dialog", function(e){
+		dbsfaces.dialog.dragOff(xDialogData);
+	});
+
+	$(window).resize(function(e) {
+		clearTimeout(xDialogData.resizeTimeout);
+		xDialogData.resizeTimeout = setTimeout(function(){
+			dbsfaces.dialog.resize(xDialogData);
+		}, 1);
+	});
 
 };
 
@@ -240,6 +268,7 @@ dbsfaces.dialog = {
 		var xDialogData = dbsfaces.dialog.pvInitializeData(pDialog);
 		dbsfaces.dialog.pvInitializeLayout(xDialogData);
 		dbsfaces.dialog.pvInitializeCloseTimeout(xDialogData);
+		return xDialogData;
 	},
 
 	pvInitializeData : function(pDialog) {
@@ -272,7 +301,9 @@ dbsfaces.dialog = {
 			closeTimeout : dbsfaces.util.getNotEmpty(pDialog.attr("ct"), "0"),
 			contentAligment : dbsfaces.util.getNotEmpty(pDialog.attr("ca"), ""),
 			time : null,
-			padding : null
+			padding : null,
+			p : pDialog.attr("p"),
+			resizeTimeout : null
 		}
 		xData.dom.content = xData.dom.container.children(".-content");
 		xData.dom.icon = xData.dom.container.children(".-icon");
@@ -524,7 +555,8 @@ dbsfaces.dialog = {
 	},
 
 	pvInitializeLayout : function(pDialogData) {
-		dbsfaces.dialog.pvAjustLayout(pDialogData);
+//		console.log(pDialogData.dom.self[0].id + "\t" + "pvInitializeLayout");
+//		dbsfaces.dialog.pvAjustLayout(pDialogData);
 		if (pDialogData.type == "btn") {
 			dbsfaces.dialog.pvDialogBtnLayout(pDialogData);
 		}
@@ -612,55 +644,48 @@ dbsfaces.dialog = {
 	},
 
 	/* Força o scroll já que ele não funciona naturalente no mobile */
-	scroll : function(pDialog, pDx, pDy) {
-		var xDialogData = pDialog.data("data");
-		var xDiv = xDialogData.dom.divscroll;
+	scroll : function(pDialogData, pDx, pDy) {
+		var xDiv = pDialogData.dom.divscroll;
 		xDiv.scrollLeft(xDiv.data("scrollx") + pDx);
 		xDiv.scrollTop(xDiv.data("scrolly") + pDy);
 	},
 
 	/* Força o scroll já que ele não funciona naturalente no mobile */
 	// Salva posição atual do scroll
-	scrollStart : function(pDialog) {
-		var xDialogData = pDialog.data("data");
-		var xDiv = xDialogData.dom.divscroll;
+	scrollStart : function(pDialogData) {
+		var xDiv = pDialogData.dom.divscroll;
 		xDiv.data("scrollx", xDiv.scrollLeft());
 		xDiv.data("scrolly", xDiv.scrollTop());
 	},
 
-	wipe : function(pDialog, pDirection) {
-		var xDialogData = pDialog.data("data");
-		if (xDialogData.dom.bthandle.length == 0) {
+	wipe : function(pDialogData, pDirection) {
+		if (pDialogData.dom.bthandle.length == 0) {
 			return false;
 		}
 
-		if (xDialogData.type == "nav"
-		|| (xDialogData.type == "msg" && xDialogData.dom.btyes != null)) { // ou // Msg on só há o botão ok
-			if ((pDialog.attr("p") == "t" && pDirection == "u")
-			 || (pDialog.attr("p") == "b" && pDirection == "d")
-			 || (pDialog.attr("p") == "l" && pDirection == "l")
-			 || (pDialog.attr("p") == "r" && pDirection == "r")
-			 || (pDialog.attr("p") == "c")) {
-				dbsfaces.dialog.show(pDialog);
+		if (pDialogData.type == "nav"
+		|| (pDialogData.type == "msg" && pDialogData.dom.btyes != null)) { // ou // Msg on só há o botão ok
+			if ((pDialogData.p == "t" && pDirection == "u")
+			 || (pDialogData.p == "b" && pDirection == "d")
+			 || (pDialogData.p == "l" && pDirection == "l")
+			 || (pDialogData.p == "r" && pDirection == "r")
+			 || (pDialogData.p == "c")) {
+				dbsfaces.dialog.show(pDialogData.dom.self);
 				return true;
 			}
 		}
 		return false;
 	},
 
-	resize : function(pDialog) {
-		if (typeof pDialog == "undefined") {
+	resize : function(pDialogData) {
+		if (typeof pDialogData == "undefined") {
 			return;
 		}
-		var xDialogData = pDialog.data("data");
-		if (typeof xDialogData == "undefined") {
-			return;
+		if (!pDialogData.dom.self.hasClass("-closed")) {
+			dbsfaces.dialog.pvAjustLayout(pDialogData);
 		}
-		if (!pDialog.hasClass("-closed")) {
-			dbsfaces.dialog.pvAjustLayout(xDialogData);
-		}
-		if (xDialogData.type == "btn") {
-			dbsfaces.dialog.pvDialogBtnLayout(xDialogData);
+		if (pDialogData.type == "btn") {
+			dbsfaces.dialog.pvDialogBtnLayout(pDialogData);
 		}
 	},
 
@@ -826,10 +851,23 @@ dbsfaces.dialog = {
 			pDialogData.dom.sub_content.css("top", (pDialogData.dom.divscroll[0].clientHeight / 2) - (pDialogData.dom.sub_content[0].clientHeight / 2)); 
 		}
 
-		//Ajusta posição da máscara em função da posição do icone para que fique sempre no canto superior esquerdo da tela
-		pDialogData.dom.mask_content.css("top", "-" + pDialogData.dom.icon[0].getBoundingClientRect().top + "px");
-		pDialogData.dom.mask_content.css("left", "-" + pDialogData.dom.icon[0].getBoundingClientRect().left + "px");
+		if (pDialogData.type == "mod"){
+			//Centraliza
+			pDialogData.dom.content.css("left", (window.innerWidth / 2) - (pDialogData.dom.content[0].clientWidth / 2))
+									.css("top", (window.innerHeight / 2) - (pDialogData.dom.content[0].clientHeight / 2));
 
+		}
+
+		//Ajusta posição da máscara em função da posição do icone para que fique sempre no canto superior esquerdo da tela
+		pDialogData.dom.mask_content.css("top", "-" + pDialogData.dom.icon[0].getBoundingClientRect().top + "px")
+									.css("left", "-" + pDialogData.dom.icon[0].getBoundingClientRect().left + "px");
+
+	},
+	
+	dragOff: function(pDialogData){
+		pDialogData.dom.content.removeClass("-moving");
+		pDialogData.dom.header.off("mousemove.dialog");
 	}
+
 
 };
