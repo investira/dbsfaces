@@ -50,7 +50,7 @@ public class DBSDialogRenderer extends DBSRenderer{
 			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
 			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
 			DBSFaces.encodeAttribute(xWriter, "class", xClass);
-			DBSFaces.encodeAttribute(xWriter, "style", xDialog.getStyle());
+			DBSFaces.encodeAttribute(xWriter, "style", "visibility:hidden; " + DBSObject.getNotNull(xDialog.getStyle(), ""));
 			DBSFaces.encodeAttribute(xWriter, "type", xDialog.getType());
 			
 			//Configura time somente quando não for MOD

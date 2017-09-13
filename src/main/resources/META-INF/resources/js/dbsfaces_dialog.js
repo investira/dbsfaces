@@ -254,12 +254,13 @@ dbs_dialogContent = function(pId) {
 	});
 
 	$(window).resize(function(e) {
-		clearTimeout(xDialogData.resizeTimeout);
-		xDialogData.resizeTimeout = setTimeout(function(){
+//		clearTimeout(xDialogData.resizeTimeout);
+//		xDialogData.resizeTimeout = setTimeout(function(){
 			dbsfaces.dialog.resize(xDialogData);
-		}, 1);
+//		}, 1);
 	});
 
+	xDialogData.dom.self.css("visibility", "");
 };
 
 dbsfaces.dialog = {
@@ -384,6 +385,9 @@ dbsfaces.dialog = {
 						{point1 : xVertexBL,point2 : xVertexTL} // Left
 						];
 		var xPadding = pDialogData.dom.icon_content.css("padding"); //Salva padding para utilizá-lo também em todos os botões filhos
+		if (xPadding == ""){
+			xPadding = pDialogData.dom.icon_content.css("padding-top"); //Artifício para resolver problema no firebox que não retorna valor do "padding" único
+		}
 		// Centro do círculo ao redor do icone
 		xCC.x = dbsfaces.math.round(pDialogData.dom.icon[0].getBoundingClientRect().left + (pDialogData.dom.icon[0].getBoundingClientRect().width / 2), 2);
 		xCC.y = dbsfaces.math.round(pDialogData.dom.icon[0].getBoundingClientRect().top + (pDialogData.dom.icon[0].getBoundingClientRect().height / 2), 2);
@@ -401,7 +405,7 @@ dbsfaces.dialog = {
 //			console.log("Raio:[" + xR + "]==============");
 			xInter = [];
 			xCount++;
-			// Ponto onde angulo é zero(ínicio do arco às 12 horas).
+			// Ponto onde angulo é zero(início do arco às 12 horas).
 			xPointZero = dbsfaces.math.circlePointAngle(xCC, xR, 0);
 
 			// Se é um arco largo(>180)
@@ -533,16 +537,17 @@ dbsfaces.dialog = {
 		}
 		xStartAngle += (xCircleButtonAngle / 2);
 
-//		 console.log("count:\t" + xCount);
-//		 console.log("wide:\t" + xWide);
-//		 console.log("CircleTotalLength:\t" + xCircleTotalLength);
-//		 console.log("CircleButtonLength:\t" + xCircleButtonLength);
-//		 console.log("CircleButtonAngle:\t" + xCircleButtonAngle);
-//		 console.log("ButtonLength:\t" + xButtonLength);
-//		 console.log("WC:\t" + xWC.x + "," + xWC.y);
-//		 console.log("CC:\t" + xCC.x + "," + xCC.y);
-//		 console.log("Startangle:\t" + xStartAngle);
-//		 console.log("CircleTotalAngle:\t" + xCircleTotalAngle);
+//		console.log("count:\t" + xCount);
+//		console.log("wide:\t" + xWide);
+//		console.log("CircleTotalLength:\t" + xCircleTotalLength);
+//		console.log("CircleButtonLength:\t" + xCircleButtonLength);
+//		console.log("CircleButtonAngle:\t" + xCircleButtonAngle);
+//		console.log("ButtonLength:\t" + xButtonLength);
+//		console.log("WC:\t" + xWC.x + "," + xWC.y);
+//		console.log("CC:\t" + xCC.x + "," + xCC.y);
+//		console.log("Startangle:\t" + xStartAngle);
+//		console.log("CircleTotalAngle:\t" + xCircleTotalAngle);
+//		console.log("Padding:\t" + xPadding + "\t" + pDialogData.padding);
 
 		pDialogData.dom.buttons.each(function() {
 			var xButton = $(this);
@@ -580,16 +585,16 @@ dbsfaces.dialog = {
 			pDialogData.dom.content.addClass("-light").removeClass("-dark");
 			pDialogData.dom.mask_content.addClass("-dark").removeClass("-light");
 		}
-		//Define tamanho padrão para os botões e icone do action do header, que devem ficar com a largura e altura, iquais a altura do próprio header
-		var xCaptionHeight = pDialogData.dom.header_content.css("height");
-		pDialogData.dom.header_content.find(".-th_action").each(function(){
-			$(this).css("width", xCaptionHeight)
-				   .css("height", xCaptionHeight);
-		});
+//		//Define tamanho padrão para os botões e icone do action do header, que devem ficar com a largura e altura, iquais a altura do próprio header
+//		var xCaptionHeight = pDialogData.dom.header_content.css("height");
+//		pDialogData.dom.header_content.find(".-th_action").each(function(){
+//			$(this).css("width", xCaptionHeight)
+//				   .css("height", xCaptionHeight);
+//		});
 		//Icone do action 
 		if (pDialogData.dom.header_action_icon.length > 0){
-			pDialogData.dom.header_action_icon.css("width", xCaptionHeight)
-					   						  .css("height", xCaptionHeight);
+//			pDialogData.dom.header_action_icon.css("width", xCaptionHeight)
+//					   						  .css("height", xCaptionHeight);
 			pDialogData.dom.header_action_icon.css("background-color", pDialogData.dom.header_content.css("color"));
 			pDialogData.dom.header_action_icon.css("border-top-left-radius", pDialogData.dom.content.css("border-top-left-radius"));
 			if (xIsDark) {
@@ -862,6 +867,19 @@ dbsfaces.dialog = {
 		pDialogData.dom.mask_content.css("top", "-" + pDialogData.dom.icon[0].getBoundingClientRect().top + "px")
 									.css("left", "-" + pDialogData.dom.icon[0].getBoundingClientRect().left + "px");
 
+		//Define tamanho padrão para os botões e icone do action do header, que devem ficar com a largura e altura, iquais a altura do próprio header
+		if (pDialogData.dom.header_content.length > 0){
+			var xCaptionHeight = pDialogData.dom.header_content[0].clientHeight;
+			pDialogData.dom.header_content.find(".-th_action").each(function(){
+				$(this).css("width", xCaptionHeight)
+					   .css("height", xCaptionHeight);
+			});
+			//Icone do action 
+			if (pDialogData.dom.header_action_icon.length > 0){
+				pDialogData.dom.header_action_icon.css("width", xCaptionHeight)
+						   						  .css("height", xCaptionHeight);
+			}
+		}
 	},
 	
 	dragOff: function(pDialogData){
