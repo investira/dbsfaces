@@ -254,10 +254,12 @@ dbs_dialogContent = function(pId) {
 	});
 
 	$(window).resize(function(e) {
-//		clearTimeout(xDialogData.resizeTimeout);
-//		xDialogData.resizeTimeout = setTimeout(function(){
+		console.log("resize");
+		//Timeout para reduriz as chamadas consecutivas
+		clearTimeout(xDialogData.resizeTimeout);
+		xDialogData.resizeTimeout = setTimeout(function(){
 			dbsfaces.dialog.resize(xDialogData);
-//		}, 1);
+		}, 20);
 	});
 
 	xDialogData.dom.self.css("visibility", "");
@@ -771,6 +773,9 @@ dbsfaces.dialog = {
 	},
 
 	pvOpen : function(pDialogData) {
+		$(document.activeElement).blur();
+		setTimeout(function(){
+			
 		dbsfaces.dialog.pvAjustLayout(pDialogData);
 		pDialogData.dom.self.removeClass("-closed");
 		if (!pDialogData.dom.self.attr("disabled")) {
@@ -787,6 +792,7 @@ dbsfaces.dialog = {
 			}
 			// }
 		}
+		},1);
 	},
 
 	pvClose : function(pDialogData) {
@@ -823,13 +829,6 @@ dbsfaces.dialog = {
 	},
 
 	pvAjustLayout : function(pDialogData) {
-		// Força content-size para 's'
-		if (dbsfaces.util.isMobile()
-		&& (pDialogData.type == "mod" 
-		 || pDialogData.type == "nav" 
-		 || (pDialogData.type == "msg" && pDialogData.dom.self.attr("p") != "c"))) {
-			pDialogData.dom.self.attr("cs", "s");
-		}
 		// Centraliza caso o pai ocupe tenha dimensão automática
 		// Comentado em 06/jul/2017 nav alinhado a direita(menu) que fica dentro
 		// de nav estava sendo centralizado
@@ -856,11 +855,20 @@ dbsfaces.dialog = {
 			pDialogData.dom.sub_content.css("top", (pDialogData.dom.divscroll[0].clientHeight / 2) - (pDialogData.dom.sub_content[0].clientHeight / 2)); 
 		}
 
-		if (pDialogData.type == "mod"){
+		// Força content-size para 's' Ocupara tela inteira
+		if (dbsfaces.util.isMobile()
+		&& (pDialogData.type == "mod" 
+		 || pDialogData.type == "nav" 
+		 || (pDialogData.type == "msg" && pDialogData.dom.self.attr("p") != "c"))) {
+			pDialogData.dom.self.attr("cs", "s"); //Preenche tela inteira
+		}
+		if (pDialogData.dom.self.attr("cs") == "s"){
+			pDialogData.dom.content.css("left", 0)
+									.css("top", 0);
+		}else{
 			//Centraliza
 			pDialogData.dom.content.css("left", (window.innerWidth / 2) - (pDialogData.dom.content[0].clientWidth / 2))
 									.css("top", (window.innerHeight / 2) - (pDialogData.dom.content[0].clientHeight / 2));
-
 		}
 
 		//Ajusta posição da máscara em função da posição do icone para que fique sempre no canto superior esquerdo da tela

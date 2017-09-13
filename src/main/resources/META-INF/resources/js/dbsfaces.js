@@ -544,9 +544,13 @@ dbsfaces.ui = {
 	//Posiciona do próximo campo dentro do container informado
 	focusOnFirstInput: function(pContainer){
 		//Seta foco no primeiro campo de input
+		if (!(pContainer instanceof jQuery)){
+			xE = $(pContainer);
+		}
+		$(document.activeElement).blur();
 		var xEle = pContainer.find("input:first, select:first, textarea:first");
 		if (xEle.length != 0 ){
-			xEle.get(0).focus();
+			xEle[0].focus();
 		}
 	},
 	//Seleciona todo o texto
