@@ -406,7 +406,6 @@ dbsfaces.slider = {
 	pvSetLength:  function(pSliderData){
 		//Atualiza dimensão
 		if (pSliderData.orientation == "h"){
-			console.log(pSliderData.dom.content[0].getBoundingClientRect().width);
 			pSliderData.length = pSliderData.dom.content[0].getBoundingClientRect().width;
 		}else{
 			pSliderData.length = pSliderData.dom.content[0].getBoundingClientRect().height;
@@ -484,7 +483,6 @@ dbsfaces.slider = {
 	},
 
 	pvSetValuePerc: function(pSliderData, pLengthFator){
-		console.log("pLengthFator\t" + pLengthFator + "\t" + pSliderData.length);
 		if (pSliderData.dom.input == null){return;}
 		pLengthFator = parseFloat(pLengthFator);
 		if (pLengthFator > 1){
