@@ -902,7 +902,7 @@ dbsfaces.ui = {
 		var xXY = {x:0, y:0};
         if(e.type == 'touchstart' || e.type == 'touchmove' || e.type == 'touchend' || e.type == 'touchcancel'){
 			var xTouch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
-			xXY.x = xTouch.pageX;
+			xXY.x = xTouch.pageX - $(window).scrollLeft(); //Incluido em - 18-sep-17 - Ainda não testado
 			xXY.y = xTouch.pageY - $(window).scrollTop(); //Incluido por posicionamento errado quando há scroll - 30-jun-17
         } else if (e.type == 'mousedown' || e.type == 'mouseup' || e.type == 'mousemove' || e.type == 'mouseover'|| e.type=='mouseout' || e.type=='mouseenter' || e.type=='mouseleave') {
 //			xXY.x = e.offsetX;
