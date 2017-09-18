@@ -243,7 +243,8 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
     
 
 .dbs_dialog > .-container > .-content > .-sub_container > div > div > .-sub_content > *:not(style):not(script){
-    display: inline-block;
+    display: block;
+/*     display: inline-block; */
 }
 
 
