@@ -1031,8 +1031,9 @@ td > .-icon{
 .-i_shopping_cart:before{content:"\ea0b"}
 .-i_tag:before{content:"\ea0c"}
 .-i_barcode:before{content:"\ea0d"}
-.-i_novem:before{content:"\ea0e"}
-.-i_ifeed:before{content:"\ea0f"}
-.-i_ifeed_icon:before{content:"\ea10"}
-.-i_dbsoft:before{content:"\ea11"}
-.-i_dbsoft_icon:before{content:"\ea12"}
+.-i_qr:before {content: "\ea0e"}
+.-i_novem:before {content: "\ea0f"}
+.-i_ifeed:before {content: "\ea10"}
+.-i_ifeed_icon:before {content: "\ea11"}
+.-i_dbsoft:before {content: "\ea12"}
+.-i_dbsoft_icon:before {content: "\ea13"}
