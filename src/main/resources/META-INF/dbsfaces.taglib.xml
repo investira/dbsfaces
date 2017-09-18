@@ -3267,7 +3267,7 @@
 			<description>
                 Lista alternativa dos labels dos. Labels devem ser separador por ";". ex: a; b; c;
             </description>
-			<name>valuesList</name>
+			<name>labelsList</name>
 			<required>false</required>
 			<type>java.lang.Object</type>
 		</attribute>
