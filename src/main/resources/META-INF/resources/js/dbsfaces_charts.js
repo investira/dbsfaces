@@ -178,7 +178,12 @@ dbsfaces.charts = {
 				if (pChartsData.type == "line" 
 				 || pChartsData.type == "bar"){
 					if (pChartsData.showLabel){
-						pChartsData.infoHeight = Math.round(parseFloat(pChartsData.dom.maxChartValueData.dom.infoLabel.css("font-size")) * 1.2, 0);
+						var xFS = pChartsData.dom.maxChartValueData.dom.infoLabel.css("font-size");
+						if (xFS.length > 0){
+							pChartsData.infoHeight = Math.round(parseFloat(pChartsData.dom.maxChartValueData.dom.infoLabel.css("font-size")) * 1.2, 0);
+						}else{
+							pChartsData.infoHeight = 0;
+						}
 					}
 					if (pChartsData.showValue){
 						pChartsData.infoWidth = Math.round(pChartsData.dom.maxDisplayValueChartValueData.dom.infoValue[0].getBoundingClientRect().width * 1.2, 0);
