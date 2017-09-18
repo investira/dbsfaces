@@ -17,6 +17,8 @@
 	display: inline-block;
 	position: relative;	
 	overflow: visible;
+	-webkit-flex: 1 1 100%;
+	-moz-flex: 1 1 100%;
 	flex: 1 1 100%;
 	shape-rendering: geometricPrecision;
 	height: 100%;
@@ -30,6 +32,8 @@
 .dbs_chart > .-info{
 	display: inline-block;
 	position: relative;	
+	-webkit-flex: 1 1 0em;
+	-moz-flex: 1 1 0em;
 	flex: 1 1 0em;
 /* 	display: none; */
 /* 	content: ""; */
