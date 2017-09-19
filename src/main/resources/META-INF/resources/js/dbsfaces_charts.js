@@ -203,7 +203,10 @@ dbsfaces.charts = {
 						pChartsData.pointWhiteSpace = pChartsData.scaleX * 0.1;
 						pChartsData.scaleX -= pChartsData.pointWhiteSpace;
 					}
-					pChartsData.scaleY = -pChartsData.height / (pChartsData.dom.maxChartValueData.value - pChartsData.dom.minChartValueData.value); //Scale vertical. obs:invertida já que a coordenada do svg desce quando o valor é maior;
+					pChartsData.scaleY = pChartsData.dom.maxChartValueData.value - pChartsData.dom.minChartValueData.value;
+					if (pChartsData.scaleY > 0){
+						pChartsData.scaleY = -pChartsData.height / pChartsData.scaleY; //Scale vertical. obs:invertida já que a coordenada do svg desce quando o valor é maior;
+					}
 				}else if (pChartsData.type == "pie"){
 					//Configura medida do arco de cada relationa group
 					//Divide diametro entres os relationalGroups
