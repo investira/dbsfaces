@@ -421,6 +421,7 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
     overflow: hidden;
 	bottom: 0;
 	width: 100%;
+	z-index: 1;
 }
 
 .dbs_dialog > .-container > .-content > .-footer > .-content {
@@ -428,7 +429,6 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 }
 
 .dbs_dialog > .-container > .-content > .-footer > .-toolbar {
-	position: relative;
     position: relative;
     display: flex;
     display: -webkit-flex;
