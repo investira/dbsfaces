@@ -170,6 +170,8 @@ dbs_dialogContent = function(pId) {
 	 */
 	$(pId + " .-th_action.-closeDialog").on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e) {
 		var xButton = $(this);
+		//Ignora se este botão pertencer a outro dialog filho
+		if (xButton.closest(".dbs_dialog") != $(pId)){return;}
 		// Já foi fechado
 		if (xDialog.hasClass("-closed")) {
 			return;
@@ -215,43 +217,45 @@ dbs_dialogContent = function(pId) {
 	
 
 	/* move */
-	dbsfaces.dialog.dragOff(xDialogData);
-	xDialogData.dom.header.on("mousedown.dialog", function(e){
-		//Salva posição atual
-        var xModalPositionOld = {left: xDialogData.dom.content.offset().left,
-			 	   			   	 top: xDialogData.dom.content.offset().top,
-			 	   			   	 width: xDialogData.dom.content.outerWidth(),
-			 	   			   	 height: xDialogData.dom.content.outerHeight()}; 
-	   	if (e.which === 1){
-	   		//Desliga drag
-			dbsfaces.dialog.dragOff(xDialogData);
-			//Liga drag
-	   		xDialogData.dom.header.on("mousemove.dialog",{pX:e.clientX, pY:e.clientY, pPosOld:xModalPositionOld}, function(e){
-				var xLeft;
-				var xTop;
-		        //Seta posição
-				xDialogData.dom.content.css("margin", "");
-				xDialogData.dom.content.css("left", e.data.pPosOld.left + (e.clientX - e.data.pX) + "px");
-				xDialogData.dom.content.css("top", e.data.pPosOld.top + (e.clientY - e.data.pY) + "px");
-				xDialogData.dom.content.addClass("-moving");
-		        return false;
-			});
-	   	}
-	});
-
-	xDialogData.dom.header.on("mouseleave.dialog", function(e){
+	if (xDialogData.type == "mod"){
 		dbsfaces.dialog.dragOff(xDialogData);
-	});
-
-	//Desliga move. Por algum bug, dragstart é eventualmente disparado durante o move
-	$(window).on("dragstart", function(e){
-		dbsfaces.dialog.dragOff(xDialogData);
-	});
+		xDialogData.dom.header.on("mousedown.dialog", function(e){
+			//Salva posição atual
+	        var xModalPositionOld = {left: xDialogData.dom.content.offset().left,
+				 	   			   	 top: xDialogData.dom.content.offset().top,
+				 	   			   	 width: xDialogData.dom.content.outerWidth(),
+				 	   			   	 height: xDialogData.dom.content.outerHeight()}; 
+		   	if (e.which === 1){
+		   		//Desliga drag
+				dbsfaces.dialog.dragOff(xDialogData);
+				//Liga drag
+		   		xDialogData.dom.header.on("mousemove.dialog",{pX:e.clientX, pY:e.clientY, pPosOld:xModalPositionOld}, function(e){
+					var xLeft;
+					var xTop;
+			        //Seta posição
+					xDialogData.dom.content.css("margin", "");
+					xDialogData.dom.content.css("left", e.data.pPosOld.left + (e.clientX - e.data.pX) + "px");
+					xDialogData.dom.content.css("top", e.data.pPosOld.top + (e.clientY - e.data.pY) + "px");
+					xDialogData.dom.content.addClass("-moving");
+			        return false;
+				});
+		   	}
+		});
 	
-	//Desliga move
-	$(window).on("mouseup.dialog", function(e){
-		dbsfaces.dialog.dragOff(xDialogData);
-	});
+		xDialogData.dom.header.on("mouseleave.dialog", function(e){
+			dbsfaces.dialog.dragOff(xDialogData);
+		});
+	
+		//Desliga move. Por algum bug, dragstart é eventualmente disparado durante o move
+		$(window).on("dragstart", function(e){
+			dbsfaces.dialog.dragOff(xDialogData);
+		});
+		
+		//Desliga move
+		$(window).on("mouseup.dialog", function(e){
+			dbsfaces.dialog.dragOff(xDialogData);
+		});
+	}
 
 	$(window).resize(function(e) {
 //		console.log("resize");
