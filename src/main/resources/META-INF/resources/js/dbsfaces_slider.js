@@ -443,10 +443,11 @@ dbsfaces.slider = {
 	setValue: function(pSlider, pValue){
 		var xSliderData = pSlider.data("data");
 		xSliderData.value = parseFloat(pValue);
-		var xValue = dbsfaces.math.round(xSliderData.value, xSliderData.dp);
+		var xValue;
 		var xLengthFator = 0; 
 		if (xSliderData.type == "v"
 		 || xSliderData.type == "r"){
+			xValue = dbsfaces.math.round(xSliderData.value, xSliderData.dp);
 			var xMin = xSliderData.min;
 			var xMax = xSliderData.max;
 			xLengthFator = parseFloat(xValue);
@@ -474,7 +475,7 @@ dbsfaces.slider = {
 				xLengthFator = (xLengthFator - xMin) / (xMax - xMin); 
 			}
 		}else{
-			xValue = xValue.trim().toLowerCase();
+			xValue = pValue.trim().toLowerCase();
 			//Procura qual o item da lista foi selecionado
 			for (var xI=0; xI < xSliderData.valuesList.length; xI++){
 				if (xSliderData.valuesList[xI].toLowerCase() == xValue){
@@ -533,7 +534,7 @@ dbsfaces.slider = {
 			}
 		}else{
 			//Encontra o valor da lista mais próximo ao percentual
-			xI = dbsfaces.math.trunc(((pSliderData.valuesList.length - 1) * pLengthFator), 0);
+			xI = dbsfaces.math.round(((pSliderData.valuesList.length - 1) * pLengthFator), 0);
 			pLengthFator = xI / (pSliderData.valuesList.length - 1);
 			xInputValue = pSliderData.valuesList[xI];
 		}
@@ -587,17 +588,20 @@ dbsfaces.slider = {
 		pSliderData.dom.handle.css("left", pValuePerc + "%");
 		var xCenter = (pSliderData.dom.handleLabel[0].getBoundingClientRect().width / 2);
 		//Center handle label
-		var xLeft;
-		var xR = (pSliderData.dom.handle[0].getBoundingClientRect().left + xCenter) -
-		   	     (pSliderData.dom.slider[0].getBoundingClientRect().left + pSliderData.dom.slider[0].getBoundingClientRect().width);
-		var xL = (pSliderData.dom.handle[0].getBoundingClientRect().left - xCenter) -
-  	     		 pSliderData.dom.slider[0].getBoundingClientRect().left;
-		if (xR > 0){
-			xLeft = -xCenter - xR;
-		}else if (xL < 0){
-			xLeft = -xCenter - xL;
-		}else{
-			xLeft = -xCenter;
+		var xLeft = -xCenter;
+		
+		//Limita pontos extremos para dentro da áreas
+		if (pSliderData.type == "r"
+		 || pSliderData.type == "v"){
+			var xR = (pSliderData.dom.handle[0].getBoundingClientRect().left + xCenter) -
+			   	     (pSliderData.dom.slider[0].getBoundingClientRect().left + pSliderData.dom.slider[0].getBoundingClientRect().width);
+			var xL = (pSliderData.dom.handle[0].getBoundingClientRect().left - xCenter) -
+	  	     		 pSliderData.dom.slider[0].getBoundingClientRect().left;
+			if (xR > 0){
+				xLeft = -xCenter - xR;
+			}else if (xL < 0){
+				xLeft = -xCenter - xL;
+			}
 		}
 		pSliderData.dom.handleLabel.css("left", xLeft);
 		//termometro
