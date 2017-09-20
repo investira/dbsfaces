@@ -3130,7 +3130,7 @@
 					&lt;li&gt;v = values&lt;/li&gt;
 					&lt;li&gt;s = steps&lt;/li&gt;
 					&lt;li&gt;o = options&lt;/li&gt;
-					&lt;li&gt;o = range&lt;/li&gt;
+					&lt;li&gt;r = range(min e max)&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>type</name>
