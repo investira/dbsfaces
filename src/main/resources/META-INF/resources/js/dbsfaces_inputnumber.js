@@ -6,6 +6,7 @@ dbs_inputNumber = function(pId, pInputData, pType, pMask, pMaskEmptyChr, pDecDig
 	}
 	
 	var xDBSMask = $(pInputData).dbsmask({
+		parentDom: $(pId)[0],
 		type: pType,  
 		mask: pMask,
 		maskEmptyChr: pMaskEmptyChr,
@@ -269,7 +270,7 @@ dbsfaces.inputNumber = {
 	
 	setValue: function(pInputNumber, pValue){
 		var xInputNumberData = pInputNumber.data("data");
-		xInputNumberData.dom.inputData[0].value = pValue;
+		xInputNumberData.dbsmask.setValue(pValue);
 		xInputNumberData.dbsmask.formatNumber();
 	}
 }

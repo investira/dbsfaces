@@ -15,7 +15,7 @@
 			validNumbers   : "1234567890",
 			validAlphas    : "abcdefghijklmnopqrstuvwxyz",
 			validAlphaNums : "abcdefghijklmnopqrstuvwxyz1234567890",
-
+			parentDom	   : null,
 			groupDigits    : 3,
 			decDigits      : 2,
 			currencySymbol : '',
@@ -326,7 +326,7 @@
 			ev.preventDefault();
 
 			if(this.options.stripMask){
-				this.domNode.value = this.stripMask();
+				this.setValue(this.stripMask());
 			}
 			
 			//Dispara evento se valor foi alterado
@@ -414,7 +414,7 @@
 			 ,  range = new Range( this )
 			 , output = range.replaceWith( chr );
 
-			this.domNode.value = output;
+			this.setValue(output);
 			if( range[0] === range[1] ){
 				this.setSelection( range[0] + 1, range[0] + 1 );
 			}else{
@@ -422,6 +422,18 @@
 			}
 		},
 
+		setValue: function(pValue){
+			this.domNode.value = pValue;
+			if (this.options.parentDom !=null){
+				//Copia valor para componente pai
+				if (this.options.parentDom instanceof jQuery){
+					this.options.parentDom[0].value = pValue;
+				}else{
+					this.options.parentDom.value = pValue;
+				}
+			}
+		},
+		
 	 	setEnd: function() {
 //			var len = this.domNode.value.length - this.options.decDigits;
 //			if (this.options.decDigits > 0){
@@ -488,12 +500,12 @@
 				}else if(typeof(ret) != 'undefined'){
 					if( this.isFixed() ){
 						var p = this.getSelectionStart();
-						this.domNode.value = this.wearMask( ret );
+						this.setValue(this.wearMask( ret ));
 						this.setSelection( p, p+1 );
 						this.selectNext();
 					}else if( this.isNumber() ){
 						var range = new Range( this );
-						this.domNode.value = ret;
+						this.setValue(ret);
 						this.setSelection( range );
 						this.pvFormatNumber();
 					}
@@ -616,7 +628,7 @@
 			return chr;
 		},
 
-		formatNumber: function() {
+		pvFormatNumber: function(pSetPosition) {
 			// stripLeadingZeros
 			var olen = this.domNode.value.length
 			 ,  str2 = this.stripMask()
@@ -670,13 +682,17 @@
 				decsymb = "";
 			}
 
-			this.domNode.value = this.options.currencySymbol + neg + str1 + decsymb + str2;
+			this.setValue(this.options.currencySymbol + neg + str1 + decsymb + str2);
+			//Posiciona cursor
+			if (pSetPosition != false){
+				curpos = this.domNode.value.length - curpos;
+				//posiciona após o ponto decimal
+				this.setSelection(curpos, curpos);
+			}
 		},
 
-		pvFormatNumber: function() {
-			formatNumber();
-			//posiciona após o ponto decimal
-			this.setSelection(curpos, curpos);
+		formatNumber: function() {
+			this.pvFormatNumber(false);
 		},
 
 		getObjForm: function() {
@@ -697,6 +713,7 @@
 		this['0']  = this.range[0];
 		this['1']  = this.range[1];
 	}
+	
 	Range.prototype = {
 		valueOf : function(){
 			var len = this.len - this.obj.domNode.value.length;

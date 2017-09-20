@@ -251,7 +251,7 @@ dbsfaces.slider = {
 			//Força que valor seja exatamente o valor do label selecionado
 			pSliderData.dom.label.on("mousedown touchstart", function(e){
 				dbsfaces.slider.setInputValue(pSliderData, $(this).attr("v"));
-				dbsfaces.slider.setValue(pSliderData);
+				dbsfaces.slider.setValue(pSliderData.dom.self, pSliderData.value);
 				e.stopImmediatePropagation();
 				e.preventDefault();
 			});
@@ -394,11 +394,11 @@ dbsfaces.slider = {
 
 		if (pSliderData.type == "r"){
 			dbsfaces.slider.pvSetCurrentHandle(pSliderData, "b");
-			dbsfaces.slider.setValue(pSliderData);
+			dbsfaces.slider.setValue(pSliderData.dom.self, pSliderData.value);
 			dbsfaces.slider.pvSetCurrentHandle(pSliderData, "e");
-			dbsfaces.slider.setValue(pSliderData);
+			dbsfaces.slider.setValue(pSliderData.dom.self, pSliderData.value);
 		}else{
-			dbsfaces.slider.setValue(pSliderData);
+			dbsfaces.slider.setValue(pSliderData.dom.self, pSliderData.value);
 		}
 	},
 
@@ -436,35 +436,37 @@ dbsfaces.slider = {
 	},
 
 	//Encontra o percentual a partir do valor e seta o slider
-	setValue: function(pSliderData){
-		var xValue = dbsfaces.math.round(pSliderData.value, pSliderData.dp);
+	setValue: function(pSlider, pValue){
+		var xSliderData = pSlider.data("data");
+		xSliderData.value = parseFloat(pValue);
+		var xValue = dbsfaces.math.round(xSliderData.value, xSliderData.dp);
 		var xLengthFator = 0; 
-		if (pSliderData.type == "v"
-		 || pSliderData.type == "r"){
-			var xMin = pSliderData.min;
-			var xMax = pSliderData.max;
+		if (xSliderData.type == "v"
+		 || xSliderData.type == "r"){
+			var xMin = xSliderData.min;
+			var xMax = xSliderData.max;
 //			xLengthFator = dbsfaces.math.round(parseFloat(xValue.replace(/[^0-9]/g, '')), 10);
 			xLengthFator = parseFloat(xValue);
 			//Procura qual o item da lista foi selecionado
-			if (pSliderData.valuesListNumeric.length > 0){
+			if (xSliderData.valuesListNumeric.length > 0){
 				//Verifica se valor ultrapassou os limites
-				if (xLengthFator < pSliderData.valuesListNumeric[0]){
-					xLengthFator = pSliderData.valuesListNumeric[0];
-				}else if(xLengthFator > pSliderData.valuesListNumeric[pSliderData.valuesListNumeric.length - 1]){
-					xLengthFator = pSliderData.valuesListNumeric[pSliderData.valuesListNumeric.length - 1];
+				if (xLengthFator < xSliderData.valuesListNumeric[0]){
+					xLengthFator = xSliderData.valuesListNumeric[0];
+				}else if(xLengthFator > xSliderData.valuesListNumeric[xSliderData.valuesListNumeric.length - 1]){
+					xLengthFator = xSliderData.valuesListNumeric[xSliderData.valuesListNumeric.length - 1];
 				}
 				//Procura item na lista
-				for (var xI=0; xI < pSliderData.valuesListNumeric.length; xI++){
-					if (pSliderData.valuesListNumeric[xI] > xLengthFator){
-						xMax = pSliderData.valuesListNumeric[xI];
-						xMin = pSliderData.valuesListNumeric[xI -1];
+				for (var xI=0; xI < xSliderData.valuesListNumeric.length; xI++){
+					if (xSliderData.valuesListNumeric[xI] > xLengthFator){
+						xMax = xSliderData.valuesListNumeric[xI];
+						xMin = xSliderData.valuesListNumeric[xI -1];
 						break;
 					}
 				}
 				//Calcula fator
-				xLengthFator = pSliderData.segmentPercFator * ((xLengthFator - xMin) / (xMax - xMin));
+				xLengthFator = xSliderData.segmentPercFator * ((xLengthFator - xMin) / (xMax - xMin));
 //				xLengthFator = pSliderData.segmentPercFator * ((xLengthFator / (xMax - xMin)) - xMin);
-				xLengthFator += (pSliderData.segmentPercFator * (xI - 1));
+				xLengthFator += (xSliderData.segmentPercFator * (xI - 1));
 			}else{
 				//Calcula fator
 				xLengthFator = (xLengthFator - xMin) / (xMax - xMin); 
@@ -472,14 +474,14 @@ dbsfaces.slider = {
 		}else{
 			xValue = xValue.trim().toLowerCase();
 			//Procura qual o item da lista foi selecionado
-			for (var xI=0; xI < pSliderData.valuesList.length; xI++){
-				if (pSliderData.valuesList[xI].toLowerCase() == xValue){
-					 xLengthFator = xI / (pSliderData.valuesList.length - 1);
+			for (var xI=0; xI < xSliderData.valuesList.length; xI++){
+				if (xSliderData.valuesList[xI].toLowerCase() == xValue){
+					 xLengthFator = xI / (xSliderData.valuesList.length - 1);
 					 break;
 				}
 			}
 		}
-		dbsfaces.slider.pvSetValuePerc(pSliderData, xLengthFator);
+		dbsfaces.slider.pvSetValuePerc(xSliderData, xLengthFator);
 	},
 
 	pvSetValuePerc: function(pSliderData, pLengthFator){
