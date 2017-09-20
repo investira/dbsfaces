@@ -115,7 +115,7 @@ a {
 }
 
 
-.-th_action:not(.dbs_menuitem):not([disabled]):ACTIVE > *:not(style):not(script):after{
+.-th_action:not(.dbs_menuitem):not([disabled]):ACTIVE > *:not(style):not(script):not(.-tooltip):after{
 	content: " ";
 	box-sizing: border-box;
 	position: absolute;
