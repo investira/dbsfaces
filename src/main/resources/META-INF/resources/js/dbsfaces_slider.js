@@ -445,7 +445,6 @@ dbsfaces.slider = {
 		 || xSliderData.type == "r"){
 			var xMin = xSliderData.min;
 			var xMax = xSliderData.max;
-//			xLengthFator = dbsfaces.math.round(parseFloat(xValue.replace(/[^0-9]/g, '')), 10);
 			xLengthFator = parseFloat(xValue);
 			//Procura qual o item da lista foi selecionado
 			if (xSliderData.valuesListNumeric.length > 0){
@@ -465,7 +464,6 @@ dbsfaces.slider = {
 				}
 				//Calcula fator
 				xLengthFator = xSliderData.segmentPercFator * ((xLengthFator - xMin) / (xMax - xMin));
-//				xLengthFator = pSliderData.segmentPercFator * ((xLengthFator / (xMax - xMin)) - xMin);
 				xLengthFator += (xSliderData.segmentPercFator * (xI - 1));
 			}else{
 				//Calcula fator
@@ -481,10 +479,10 @@ dbsfaces.slider = {
 				}
 			}
 		}
-		dbsfaces.slider.pvSetValuePerc(xSliderData, xLengthFator);
+		dbsfaces.slider.pvSetValuePerc(xSliderData, xLengthFator, true);
 	},
 
-	pvSetValuePerc: function(pSliderData, pLengthFator){
+	pvSetValuePerc: function(pSliderData, pLengthFator, pFixedValue){
 		if (pSliderData.dom.input == null){return;}
 		pLengthFator = parseFloat(pLengthFator);
 		if (pLengthFator > 1){
@@ -519,14 +517,15 @@ dbsfaces.slider = {
 			}
 			xInputValue = ((xMax - xMin) * xValuePercFator) + xMin;
 			xInputValue = dbsfaces.math.round(xInputValue, pSliderData.dp);
-
-			//Força valor considerar somente os dois primeiros números relevantes
-			var xOnlyNumbers = dbsfaces.format.number(xInputValue, pSliderData.dp).replace(/[^-\d]/g, '');
-			var xTruncSize = xOnlyNumbers.length - 2;
-			if (xTruncSize > 0){
-				xTruncSize = Math.pow(10, xTruncSize);
-				xOnlyNumbers = parseFloat(xOnlyNumbers);
-				xInputValue = (dbsfaces.math.trunc(xOnlyNumbers / xTruncSize, 0) * xTruncSize) / Math.pow(10, pSliderData.dp);
+			if (typeof pFixedValue == "undefined"){
+				//Força valor considerar somente os dois primeiros números relevantes
+				var xOnlyNumbers = dbsfaces.format.number(xInputValue, pSliderData.dp).replace(/[^-\d]/g, '');
+				var xTruncSize = xOnlyNumbers.length - 2;
+				if (xTruncSize > 0){
+					xTruncSize = Math.pow(10, xTruncSize);
+					xOnlyNumbers = parseFloat(xOnlyNumbers);
+					xInputValue = (dbsfaces.math.trunc(xOnlyNumbers / xTruncSize, 0) * xTruncSize) / Math.pow(10, pSliderData.dp);
+				}
 			}
 		}else{
 			//Encontra o valor da lista mais próximo ao percentual
