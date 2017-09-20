@@ -84,6 +84,10 @@ dbsfaces.slider = {
 			lengthFator: null, //Tamanho/posição atual em fator
 			lengthFatorBegin: null, //Tamanho/posição atual em fator do begin
 			lengthFatorEnd: null, //Tamanho/posição atual em fator do end
+			changeValue: null, //Tamanho/posição quando foi disparado o último change
+			changeValueBegin: null, //Tamanho/posição quando foi disparado o último change
+			changeValueEnd: null, //Tamanho/posição quando foi disparado o último change
+			changeLengthFator: null, //Tamanho/posição quando foi disparado o último change
 			currentHandle : null, //Handle selecionado "b", "e" ou null(quando type não for "r")
 			min : parseFloat(pMinValue),  //Valor mínimo
 			max : parseFloat(pMaxValue), //Valor máximo
@@ -555,11 +559,21 @@ dbsfaces.slider = {
 		//Configura steps anteriores
 		dbsfaces.slider.pvHideLabels(pSliderData);
 
-		//Dispara que valor foi alterado
-		clearTimeout(pSliderData.timeout);
-		pSliderData.timeout = setTimeout(function(){
-									pSliderData.dom.self.trigger("change", [{value:pSliderData.value, valueBegin:pSliderData.valueBegin, valueEnd:pSliderData.valueEnd, fator:pSliderData.lengthFator}]);
-								},0);
+		//Verifica se há necessidade de disparar o change
+		if (pSliderData.changeValue != pSliderData.value
+		 || pSliderData.changeValueBegin != pSliderData.valueBegin
+		 || pSliderData.changeCalueEnd != pSliderData.valueEnd
+		 || pSliderData.changeLengthFator != pSliderData.lengthFator){
+			pSliderData.changeValue = pSliderData.value;
+			pSliderData.changeValueBegin = pSliderData.valueBegin;
+			pSliderData.changeValueEnd = pSliderData.valueEnd;
+			pSliderData.changeLengthFator = pSliderData.lengthFator;
+			//Dispara que valor foi alterado
+			clearTimeout(pSliderData.timeout);
+			pSliderData.timeout = setTimeout(function(){
+				pSliderData.dom.self.trigger("change", [{value:pSliderData.value, valueBegin:pSliderData.valueBegin, valueEnd:pSliderData.valueEnd, fator:pSliderData.lengthFator}]);
+			},0);
+		}
 	},
 
 	
