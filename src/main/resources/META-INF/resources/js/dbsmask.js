@@ -427,9 +427,9 @@
 			if (this.options.parentDom !=null){
 				//Copia valor para componente pai
 				if (this.options.parentDom instanceof jQuery){
-					this.options.parentDom[0].value = pValue;
+					this.options.parentDom[0].value = this.stripMask();
 				}else{
-					this.options.parentDom.value = pValue;
+					this.options.parentDom.value = this.stripMask();
 				}
 			}
 		},
@@ -640,7 +640,7 @@
 
 			//apaga sinal se houver
 			str1 = str1.replace('-', '');
-			//Impeder a exibição do sinal quando o valor for vázio
+			//Impedir a exibição do sinal quando o valor for vázio
 			if (str1 == ""){
 				$(this.node).attr("n","");
 			}
