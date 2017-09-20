@@ -264,7 +264,7 @@
 
 .dbs_slider[type="r"].-h > .-container > .-content > .-handle > .-label,
 .dbs_slider[type="v"].-h > .-container > .-content > .-handle > .-label{
-	top: -2.6em;
+	top: -2.55em;
 }
 .dbs_slider[type="r"].-h.-i > .-container > .-content > .-handle > .-label,
 .dbs_slider[type="v"].-h.-i > .-container > .-content > .-handle > .-label{
