@@ -16,9 +16,9 @@ dbs_inputNumber = function(pId, pInputData, pType, pMask, pMaskEmptyChr, pDecDig
         stripMask: false  
 	});
 
-	if (!$(pId).attr("increment")){return;}
-	
 	dbsfaces.inputNumber.initialize($(pId), $(pInputData), xDBSMask, pType, pMask, pMaskEmptyChr, pDecDigits, pGroupSymbol, pDecSymbol, pGroupDigits);
+//	if (!$(pId).attr("increment")){return;}
+	
 	
 //	$(pInputData).on("focusin", function(e){
 //		dbsfaces.inputNumber.open($(pId));
@@ -96,25 +96,33 @@ dbs_inputNumber = function(pId, pInputData, pType, pMask, pMaskEmptyChr, pDecDig
 dbsfaces.inputNumber = {
 
 	initialize: function(pInputNumber, pInputData, pDBSMask, pType, pMask, pMaskEmptyChr, pDecDigits, pGroupSymbol, pDecSymbol, pGroupDigits){
-		pInputNumber.data("inputdata", pInputData);
-		pInputNumber.data("dbsmask", pDBSMask);
-		pInputNumber.data("type", pType);
-		pInputNumber.data("mask", pMask);
-		pInputNumber.data("maskemptychr", pMaskEmptyChr);
-		pInputNumber.data("decdigits", Math.pow(10, parseFloat(pDecDigits)));
-		pInputNumber.data("groupsymbol", pGroupSymbol);
-		pInputNumber.data("decsymbol", pDecSymbol);
-		pInputNumber.data("groupdigits", pGroupDigits);
-		pInputNumber.data("container", pInputNumber.children(".-container"));
-		pInputNumber.data("input", pInputNumber.data("container").children(".-input"));
-		pInputNumber.data("buttonscontainer", pInputNumber.find(" > .-container > .-input > .-buttons > .-container"));
-		pInputNumber.data("direction", pInputNumber.data("buttonscontainer").children(".-direction"));
-		var xColor = tinycolor(pInputNumber.css("color")).invertLightness();
-		pInputNumber.data("buttonscontainer").children(".-th_action").css("color", xColor.toHslString());
-		pInputNumber.data("increment", 1);
-		pInputNumber.data("repeat", 0);
-		pInputNumber.data("maxvalue", parseFloat(pInputData.attr("maxvalue")) * pInputNumber.data("decdigits"));
-		pInputNumber.data("minvalue", parseFloat(pInputData.attr("minvalue")) * pInputNumber.data("decdigits"));
+		var xData = {
+			dom : {
+				self : pInputNumber,
+				inputData : pInputData
+			},
+			dbsmask : pDBSMask
+		}
+		pInputNumber.data("data", xData);
+//		pInputNumber.data("inputdata", pInputData);
+//		pInputNumber.data("dbsmask", pDBSMask);
+//		pInputNumber.data("type", pType);
+//		pInputNumber.data("mask", pMask);
+//		pInputNumber.data("maskemptychr", pMaskEmptyChr);
+//		pInputNumber.data("decdigits", Math.pow(10, parseFloat(pDecDigits)));
+//		pInputNumber.data("groupsymbol", pGroupSymbol);
+//		pInputNumber.data("decsymbol", pDecSymbol);
+//		pInputNumber.data("groupdigits", pGroupDigits);
+//		pInputNumber.data("container", pInputNumber.children(".-container"));
+//		pInputNumber.data("input", pInputNumber.data("container").children(".-input"));
+//		pInputNumber.data("buttonscontainer", pInputNumber.find(" > .-container > .-input > .-buttons > .-container"));
+//		pInputNumber.data("direction", pInputNumber.data("buttonscontainer").children(".-direction"));
+//		var xColor = tinycolor(pInputNumber.css("color")).invertLightness();
+//		pInputNumber.data("buttonscontainer").children(".-th_action").css("color", xColor.toHslString());
+//		pInputNumber.data("increment", 1);
+//		pInputNumber.data("repeat", 0);
+//		pInputNumber.data("maxvalue", parseFloat(pInputData.attr("maxvalue")) * pInputNumber.data("decdigits"));
+//		pInputNumber.data("minvalue", parseFloat(pInputData.attr("minvalue")) * pInputNumber.data("decdigits"));
 	},
 
 
@@ -227,10 +235,7 @@ dbsfaces.inputNumber = {
 	},
 	
 	reset: function(pInputNumber, e){
-		var xDBSMask = pInputNumber.data("dbsmask");
-		var xInputData = pInputNumber.data("inputdata");
-		xInputData[0].value = 0;
-		xDBSMask.formatNumber();
+		dbsfaces.inputNumber.setValue(pInputNumber, 0);
 		dbsfaces.inputNumber.pvCancelBlur(pInputNumber, e);
 	},
 	
@@ -261,5 +266,11 @@ dbsfaces.inputNumber = {
 			e.stopImmediatePropagation();
 		}
 	},
+	
+	setValue: function(pInputNumber, pValue){
+		var xInputNumberData = pInputNumber.data("data");
+		xInputNumberData.dom.inputData[0].value = pValue;
+		xInputNumberData.dbsmask.formatNumber();
+	}
 }
 
