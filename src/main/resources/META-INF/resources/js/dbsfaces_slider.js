@@ -516,13 +516,16 @@ dbsfaces.slider = {
 				xMax = pSliderData.max;
 			}
 			xInputValue = ((xMax - xMin) * xValuePercFator) + xMin;
-			var xTruncSize = 1;
-			//Força valor para ser multiplo de 1% do menor valor, para desprezar os valores menos relevantes
-			if (xMin > 0) {
-				xTruncSize = xMin * 0.01; 
-				xInputValue = dbsfaces.math.trunc(xInputValue / xTruncSize, 0) * xTruncSize;
-			}
 			xInputValue = dbsfaces.math.round(xInputValue, pSliderData.dp);
+
+			//Força valor considerar somente os dois primeiros números relevantes
+			var xOnlyNumbers = dbsfaces.format.number(xInputValue, pSliderData.dp).replace(/[^-\d]/g, '');
+			var xTruncSize = xOnlyNumbers.length - 2;
+			if (xTruncSize > 0){
+				xTruncSize = Math.pow(10, xTruncSize);
+				xOnlyNumbers = parseFloat(xOnlyNumbers);
+				xInputValue = (dbsfaces.math.trunc(xOnlyNumbers / xTruncSize, 0) * xTruncSize) / Math.pow(10, pSliderData.dp);
+			}
 		}else{
 			//Encontra o valor da lista mais próximo ao percentual
 			xI = dbsfaces.math.trunc(((pSliderData.valuesList.length - 1) * pLengthFator), 0);
