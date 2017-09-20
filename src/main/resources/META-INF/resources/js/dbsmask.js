@@ -173,7 +173,7 @@
 							var self = this;
 							//Formata apóa a finalização da deleção
 							setTimeout(function(){
-								self.formatNumber();
+								self.pvFormatNumber();
 							}, 0);
 							break;
 						case 109: // MENOS
@@ -212,7 +212,7 @@
 
 									if(val !== false){
 										this.updateSelection( chr );
-										this.formatNumber();
+										this.pvFormatNumber();
 									}
 									this.node.trigger( "valid", ev, this.node );
 								} else {	
@@ -291,7 +291,7 @@
 				}else{
 					$(this.node).attr("n","-");
 				}
-				this.formatNumber();
+				this.pvFormatNumber();
 			}
 		},
 
@@ -495,7 +495,7 @@
 						var range = new Range( this );
 						this.domNode.value = ret;
 						this.setSelection( range );
-						this.formatNumber();
+						this.pvFormatNumber();
 					}
 					return false;
 				}
@@ -671,8 +671,10 @@
 			}
 
 			this.domNode.value = this.options.currencySymbol + neg + str1 + decsymb + str2;
-//			this.setSelection( range );
-			curpos = this.domNode.value.length - curpos;
+		},
+
+		pvFormatNumber: function() {
+			formatNumber();
 			//posiciona após o ponto decimal
 			this.setSelection(curpos, curpos);
 		},
