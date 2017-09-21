@@ -9,10 +9,17 @@
 }
 
 .dbs_checkbox > .-container > .-th_input-label:after {
-	content: "";
+/* 	content: ""; */
 }
 .dbs_checkbox > .-container > .-th_input-data {
 	background-color: transparent;
-	height: 19px;
+	height: 1.5em;
+	top: 1px;
 }
 		
+  
+@media screen and (max-width: 768px){
+	.-th_responsive .dbs_checkbox > .-container > .-th_input-data{
+	    left: calc(50% - .5em);
+	}
+}

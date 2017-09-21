@@ -13,15 +13,17 @@
 }
 
 .dbs_radio > table > tbody > tr > td > .-th_input-data {
-	background-color: transparent;
-	height: 19px;
+    position: relative;
+    background-color: transparent;
+    width: unset !important;
+    top: calc(50% - .5em);
 }
 
 .dbs_radio > table > tbody > tr > td > .-th_input-label {
-	margin-right: 10px;
 	display: inline-block; 
-	padding: 0px 0px 0px 3px;
-	margin: 0px;
+	margin-right: 1em;
+	padding: 0 0 0 .3em;
+	margin: 0;
 	vertical-align: middle;
 }
 
