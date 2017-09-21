@@ -8,18 +8,34 @@
 .dbs_checkbox > .-container > .-th_input-label {
 }
 
-.dbs_checkbox > .-container > .-th_input-label:after {
-/* 	content: ""; */
-}
+
 .dbs_checkbox > .-container > .-th_input-data {
-	background-color: transparent;
-	height: 1.5em;
-	top: 1px;
+    position: relative;
+    visibility: hidden;
+    overflow: visible;
+    background-color: transparent;
+    height: 1.4em;
+    width: 1.4em !important;
 }
-		
+
+.dbs_checkbox > .-container > .-th_input-data:not([disabled]):after{
+	cursor: pointer;	
+}
+
+.dbs_checkbox > .-container > .-th_input-data:after{
+    font-family: 'dbsfaces_icons' !important;
+    visibility: visible;
+    position: relative;
+    content: "\e919";
+    font-size: 1.5em;
+}
+
+.dbs_checkbox > .-container > .-th_input-data:checked:after{
+	content: "\e91a";
+}
   
 @media screen and (max-width: 768px){
-	.-th_responsive .dbs_checkbox > .-container > .-th_input-data{
+	.-th_responsive .dbs_checkbox > .-container > .-th_input-data:after{
 	    left: calc(50% - .5em);
 	}
 }

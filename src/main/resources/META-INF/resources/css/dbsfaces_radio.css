@@ -12,13 +12,6 @@
 	white-space: nowrap;
 }
 
-.dbs_radio > table > tbody > tr > td > .-th_input-data {
-    position: relative;
-    background-color: transparent;
-    width: unset !important;
-    top: calc(50% - .5em);
-}
-
 .dbs_radio > table > tbody > tr > td > .-th_input-label {
 	display: inline-block; 
 	margin-right: 1em;
@@ -27,3 +20,27 @@
 	vertical-align: middle;
 }
 
+.dbs_radio > table > tbody > tr > td > .-th_input-data {
+    visibility: hidden;
+    overflow: visible;
+    background-color: transparent;
+    position: relative;
+    height: 1.4em;
+    width: 1.2em !important;
+}
+
+.dbs_radio > table > tbody > tr > td > .-th_input-data:not([disabled]):after{
+	cursor: pointer;	
+}
+
+.dbs_radio > table > tbody > tr > td > .-th_input-data:after{
+    font-family: 'dbsfaces_icons' !important;
+    visibility: visible;
+    position: relative;
+    content: "\e91c";
+    font-size: 1.5em;
+}
+
+.dbs_radio > table > tbody > tr > td > .-th_input-data:checked:after{
+	content: "\e91d";
+}
