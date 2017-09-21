@@ -557,7 +557,7 @@ dbsfaces.slider = {
 			dbsfaces.slider.pvEncodeValueVertical(pSliderData, xValuePerc);
 		}
 
-		//Configura steps anteriores
+		//Configura exibição ou não dos labels
 		dbsfaces.slider.pvHideLabels(pSliderData);
 
 		//Verifica se há necessidade de disparar o change
@@ -676,8 +676,8 @@ dbsfaces.slider = {
 			xCur = parseFloat(pSliderData.dom.handle.css("top"));
 //			xCur = pSliderData.dom.handle[0].getBoundingClientRect().top;
 		}
-		if (pSliderData.type == "v"
-		 || pSliderData.type == "r"){
+//		if (pSliderData.type == "v"
+//		 || pSliderData.type == "r"){
 			for (var xI=0; xI < pSliderData.dom.label.length; xI++){
 				var xLabelX = $(pSliderData.dom.label[xI]);
 				var xSize;
@@ -698,6 +698,6 @@ dbsfaces.slider = {
 					xLabelX.css("opacity", "");
 				}
 			}
-		}
+//		}
 	}
 }
