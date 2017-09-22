@@ -254,7 +254,9 @@ dbsfaces.chart = {
 	
 	pvInitializeLayout: function(pChartData){
 		if ((pChartData.type != "line" && pChartData.dom.childrenData.length == 0)
-		 || (pChartData.type == "line" && pChartData.dom.childrenData.length < 2)){return;}
+		 || (pChartData.type == "line" && pChartData.dom.childrenData.length < 2)){
+			return;
+		}
 
 		if (pChartData.dom.childrenData.length == 0){return;}
 		
@@ -911,6 +913,7 @@ dbsfaces.chart = {
 	clear: function(pChart){
 		var xChartData = pChart.data("data");
 		xChartData.originalValues = [];
+		if (xChartData.dom.path != null){xChartData.dom.path.remove();}
 	}
 
 };
