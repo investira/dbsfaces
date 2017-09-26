@@ -207,7 +207,6 @@ public class  DBSFaces {
 	    public static final String PUSH = "push";
 	    public static final String MESSAGELIST = "messageList";
 	    public static final String QUICKINFO = "quickInfo";
-	    public static final String RANGE = "quickRangeSelection";
 	    public static final String CHARTS = "charts";
 	    public static final String CHART = "chart";
 	    public static final String CHARTVALUE = "chartValue";
@@ -575,11 +574,6 @@ public class  DBSFaces {
 		public static class QUICKINFO
 		{	
 			public static final String MAIN = " " + CLASS_PREFIX + ID.QUICKINFO + " ";
-		}
-
-		public static class RANGE
-		{	
-			public static final String MAIN = " " + CLASS_PREFIX + ID.RANGE + " ";
 		}
 
 		public static class CHARTS
