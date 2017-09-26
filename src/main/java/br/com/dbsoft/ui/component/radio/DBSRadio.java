@@ -13,8 +13,7 @@ public class DBSRadio extends DBSUIInput {
 	
 	protected enum PropertyKeys {
 		floatLeft;		
-//		update,
-//		execute;
+
 
 		String toString;
 
@@ -42,23 +41,6 @@ public class DBSRadio extends DBSUIInput {
 		getStateHelper().put(PropertyKeys.floatLeft, pFloatLeft);
 		handleAttribute("floatLeft", pFloatLeft);
 	}
-	
-//	public void setUpdate(String pUpdate) {
-//		getStateHelper().put(PropertyKeys.update, pUpdate);
-//		handleAttribute("update", pUpdate);
-//	}
-//	public String getUpdate() {
-//		return (String) getStateHelper().eval(PropertyKeys.update, null);
-//	}
-//
-//	public void setExecute(String pExecute) {
-//		getStateHelper().put(PropertyKeys.execute, pExecute);
-//		handleAttribute("execute", pExecute);
-//	}
-//	public String getExecute() {
-//		return (String) getStateHelper().eval(PropertyKeys.execute, "");
-//	}
-
 }
 
 
