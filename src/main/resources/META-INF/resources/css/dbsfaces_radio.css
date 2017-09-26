@@ -21,10 +21,10 @@
 }
 
 .dbs_radio > table > tbody > tr > td > .-th_input-data {
+    position: relative;
     visibility: hidden;
     overflow: visible;
     background-color: transparent;
-    position: relative;
     height: 1.4em;
     width: 1.2em !important;
 }
