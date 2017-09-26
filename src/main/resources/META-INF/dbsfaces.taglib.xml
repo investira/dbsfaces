@@ -2910,22 +2910,6 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
-<!-- 		<attribute> -->
-<!-- 			<description> -->
-<!--             	Componente que será atualizado no ajax -->
-<!--             </description> -->
-<!-- 			<name>update</name> -->
-<!-- 			<required>true</required> -->
-<!-- 			<type>java.lang.String</type> -->
-<!-- 		</attribute> -->
-<!-- 		<attribute> -->
-<!-- 			<description> -->
-<!--             	Componentes que serão enviados na chamada ajax -->
-<!--             </description> -->
-<!-- 			<name>execute</name> -->
-<!-- 			<required>true</required> -->
-<!-- 			<type>java.lang.String</type> -->
-<!-- 		</attribute> -->
 		<attribute>
 			<description>
                 ReadOnly
@@ -2949,6 +2933,14 @@
 			<name>converter</name>
 			<required>true</required>
 			<type>javax.faces.convert.Converter</type>
+		</attribute>
+		<attribute>
+			<description>
+                Nome do grupo que agrupará logicamente o option. Se não informado, grupo será o id do componente.
+            </description>
+			<name>group</name>
+			<required>false</required>
+			<type>java.lang.String</type>
 		</attribute>
 	</tag>
 	<tag>

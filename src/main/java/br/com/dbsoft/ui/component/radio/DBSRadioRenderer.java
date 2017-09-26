@@ -11,6 +11,7 @@ import javax.faces.render.FacesRenderer;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
+import br.com.dbsoft.util.DBSObject;
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSRadio.RENDERER_TYPE)
 public class DBSRadioRenderer extends DBSRenderer {
@@ -22,8 +23,16 @@ public class DBSRadioRenderer extends DBSRenderer {
         
         decodeBehaviors(pContext, xRadio);
         
-		String xClientId = xRadio.getClientId(pContext);
-
+		String xClientId = pvGetItemClientId(pContext, xRadio);
+//        if (DBSObject.isEmpty(xRadio.getGroup())){
+//        	xClientId = xRadio.getClientId(pContext);
+//        }else{
+//			if (xRadio.getNamingContainer() == null){
+//				xClientId = xRadio.getGroup();
+//			}else{
+//				xClientId = xRadio.getNamingContainer().getClientId() + ":" + xRadio.getGroup();
+//			}        	
+//        }
 		Object xSubmittedValue = pContext.getExternalContext().getRequestParameterMap().get(xClientId);
         if(xSubmittedValue != null) {
             xRadio.setSubmittedValue(xSubmittedValue);
@@ -94,8 +103,18 @@ public class DBSRadioRenderer extends DBSRenderer {
 					}
 					pWriter.startElement("input", pRadio);
 						DBSFaces.encodeAttribute(pWriter, "id", xClientId + xI);
+//						DBSFaces.encodeAttribute(pWriter, "id", xItem.getClientId());
 						DBSFaces.encodeAttribute(pWriter, "type", "radio");
-						DBSFaces.encodeAttribute(pWriter, "name", xClientId);
+						DBSFaces.encodeAttribute(pWriter, "name", pvGetItemClientId(pContext, pRadio));
+//						if (DBSObject.isEmpty(pRadio.getGroup())){
+//							DBSFaces.encodeAttribute(pWriter, "name", xClientId);
+//						}else{
+//							if (pRadio.getNamingContainer() == null){
+//								DBSFaces.encodeAttribute(pWriter, "name", pRadio.getGroup());
+//							}else{
+//								DBSFaces.encodeAttribute(pWriter, "name", pRadio.getNamingContainer().getClientId() + ":" + pRadio.getGroup());
+//							}
+//						}
 						if (pRadio.getReadOnly()){
 							DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pRadio) + CSS.MODIFIER.DISABLED);
 							DBSFaces.encodeAttribute(pWriter, "disabled", "disabled");
@@ -114,6 +133,7 @@ public class DBSRadioRenderer extends DBSRenderer {
 					if (xS.getItemLabel() != null && !xS.getItemLabel().equals("")){
 						pWriter.startElement("label", pRadio);
 							DBSFaces.encodeAttribute(pWriter, "for", xClientId + xI);
+//							DBSFaces.encodeAttribute(pWriter, "for", xItem.getClientId());
 							DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.INPUT_LABEL);
 							DBSFaces.encodeAttribute(pWriter, "style","width:" + pRadio.getLabelWidth() + ";");
 							pWriter.write(" " + xS.getItemLabel());
@@ -123,6 +143,20 @@ public class DBSRadioRenderer extends DBSRenderer {
 				xI++;
 			}
 		}
+	}
+	
+	private String pvGetItemClientId(FacesContext pContext, DBSRadio pRadio){
+		String xItemClientid = null;
+		if (DBSObject.isEmpty(pRadio.getGroup())){
+			xItemClientid = pRadio.getClientId(pContext);
+		}else{
+			if (pRadio.getNamingContainer() == null){
+				xItemClientid = pRadio.getGroup();
+			}else{
+				xItemClientid = pRadio.getNamingContainer().getClientId() + ":" + pRadio.getGroup();
+			}
+		}
+		return xItemClientid;
 	}
 
 }

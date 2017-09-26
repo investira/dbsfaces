@@ -12,6 +12,7 @@ public class DBSRadio extends DBSUIInput {
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 	
 	protected enum PropertyKeys {
+		group,
 		floatLeft;		
 
 
@@ -41,6 +42,17 @@ public class DBSRadio extends DBSUIInput {
 		getStateHelper().put(PropertyKeys.floatLeft, pFloatLeft);
 		handleAttribute("floatLeft", pFloatLeft);
 	}
+	
+	public String getGroup() {
+		return (String) getStateHelper().eval(PropertyKeys.group, null);
+	}
+	
+	public void setGroup(String pGroup) {
+		getStateHelper().put(PropertyKeys.group, pGroup);
+		handleAttribute("group", pGroup);
+	}
+
+	
 }
 
 
