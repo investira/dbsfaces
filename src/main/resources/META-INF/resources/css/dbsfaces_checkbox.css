@@ -33,9 +33,3 @@
 .dbs_checkbox > .-container > .-th_input-data:checked:after{
 	content: "\e91a";
 }
-  
-@media screen and (max-width: 768px){
-	.-th_responsive .dbs_checkbox > .-container > .-th_input-data:after{
-	    left: calc(50% - .5em);
-	}
-}
