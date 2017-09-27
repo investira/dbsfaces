@@ -24,9 +24,6 @@
 			showMask       : true,
 			stripMask      : false,
 
-			lastFocus      : 0,
-			oldValue	   : '',
-
 			number : {
 				stripMask : false,
 				showMask  : false
@@ -37,6 +34,10 @@
 			this.node    = node;
 			this.domNode = node[0];
 			this.options = $.extend({}, this.options, this.options[options.type] || {}, options);
+			this.oldValue = '';
+			this.rawValue = '';
+			
+
 			var self     = this;
 
 			this.node
@@ -298,7 +299,7 @@
 
 		onFocus: function(ev) {
 			//Salva valor atual para comparar com o novo
-			this.options.oldValue = this.domNode.value;
+			this.oldValue = this.domNode.value;
 			
 			ev.stopPropagation();
 			ev.preventDefault();
@@ -330,9 +331,7 @@
 			}
 			
 			//Dispara evento se valor foi alterado
-			if (this.options.oldValue != this.domNode.value){
-				$(this.node).trigger("change");
-			}
+			this.pvTriggerChange();
 		},
 
 		selectAll: function() {
@@ -424,14 +423,25 @@
 
 		setValue: function(pValue){
 			this.domNode.value = pValue;
+			this.rawValue = this.stripMask();
 			if (this.options.parentDom !=null){
 				//Copia valor para componente pai
 				if (this.options.parentDom instanceof jQuery){
-					this.options.parentDom[0].value = this.stripMask();
+					this.options.parentDom[0].value = this.rawValue;
 				}else{
-					this.options.parentDom.value = this.stripMask();
+					this.options.parentDom.value = this.rawValue;
 				}
+				this.pvTriggerChange();
 			}
+		},
+		
+		pvTriggerChange: function(){
+			if (this.oldValue != this.rawValue){
+				this.oldValue = this.rawValue;
+				$(this.node).trigger("change");
+				return true;
+			}
+			return false;
 		},
 		
 	 	setEnd: function() {
