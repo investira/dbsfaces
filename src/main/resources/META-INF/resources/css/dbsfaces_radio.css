@@ -5,7 +5,9 @@
 	display: table;
 }
 
-.dbs_radio > table > tbody > tr .-th_input {}
+.dbs_radio > table > tbody > tr .-th_input:not([disabled]){
+	cursor: pointer;	
+}
 
 .dbs_radio > table > tbody > tr > td {
 	display: table;
@@ -18,6 +20,11 @@
 	padding: 0 0 0 .3em;
 	margin: 0;
 	vertical-align: middle;
+    cursor: inherit;
+}
+
+.dbs_radio > table > tbody > tr > .-th_input[disabled] > .-th_input-label{
+	cursor: default;
 }
 
 .dbs_radio > table > tbody > tr > td > .-th_input-data {
@@ -27,10 +34,7 @@
     background-color: transparent;
     height: 1.4em;
     width: 1.2em !important;
-}
-
-.dbs_radio > table > tbody > tr > td > .-th_input-data:not([disabled]):after{
-	cursor: pointer;	
+    cursor: inherit;
 }
 
 .dbs_radio > table > tbody > tr > td > .-th_input-data:after{

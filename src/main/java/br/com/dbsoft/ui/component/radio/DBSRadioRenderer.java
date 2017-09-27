@@ -97,7 +97,12 @@ public class DBSRadioRenderer extends DBSRenderer {
 			if (xItem.getClass().equals(UISelectItem.class)){
 				UISelectItem xS = (UISelectItem) xItem;
 				pWriter.startElement("td", pRadio);
-					DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.INPUT);
+					if (pRadio.getReadOnly()){
+						DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.INPUT + CSS.MODIFIER.DISABLED);
+						DBSFaces.encodeAttribute(pWriter, "disabled", "disabled");
+					}else{
+						DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.INPUT);
+					}
 					if (pRadio.getFloatLeft()){
 						DBSFaces.encodeAttribute(pWriter, "style", "float:left;");
 					}
@@ -134,7 +139,7 @@ public class DBSRadioRenderer extends DBSRenderer {
 						pWriter.startElement("label", pRadio);
 							DBSFaces.encodeAttribute(pWriter, "for", xClientId + xI);
 //							DBSFaces.encodeAttribute(pWriter, "for", xItem.getClientId());
-							DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.INPUT_LABEL);
+							DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.INPUT_LABEL + CSS.NOT_SELECTABLE);
 							DBSFaces.encodeAttribute(pWriter, "style","width:" + pRadio.getLabelWidth() + ";");
 							pWriter.write(" " + xS.getItemLabel());
 						pWriter.endElement("label");
