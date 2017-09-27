@@ -111,6 +111,7 @@ dbsfaces.chart = {
 		if (pChartData.originalValues.length > 0){
 			//Loop por todos os valores da originais recebidos
 			for (var xI = 0; xI < pChartData.originalValues.length; xI++){
+				pChartData.originalValues[xI].value = dbsfaces.math.round(pChartData.originalValues[xI].value, pChartData.valueDecimalPlaces);
 				var xOriginalValue = pChartData.originalValues[xI];
 				//Defini valor padrão, caso displayvalue não tenha sido informado
 				xOriginalValue.displayValue = ((typeof xOriginalValue.displayValue == "undefined" || xOriginalValue.displayValue == "") ? xOriginalValue.value : xOriginalValue.displayValue);
@@ -872,25 +873,25 @@ dbsfaces.chart = {
 	addChartValue: function(pChart, pValue, pLabel, pDisplayValue, pTooltip, pColor, pStyleClass, pStyle){
 		if (pChart == null || typeof pChart == "undefined" || pChart.length == 0){return;}
 		var xChartData = pChart.data("data");
-		if (typeof pValue == "undefined"){
+		if (typeof pValue == "undefined" || pValue == null){
 			return;
 		}
-		if (typeof pLabel == "undefined"){
+		if (typeof pLabel == "undefined" || pLabel == null){
 			pLabel = pValue.toString();
 		}
-		if (typeof pDisplayValue == "undefined"){
+		if (typeof pDisplayValue == "undefined" || pDisplayValue == null){
 			pDisplayValue = pLabel;
 		}
-		if (typeof pTooltip == "undefined"){
+		if (typeof pTooltip == "undefined" || pTooltip == null){
 			pTooltip = "";
 		}
-		if (typeof pColor == "undefined"){
+		if (typeof pColor == "undefined" || pColor == null){
 			pColor = "";
 		}
-		if (typeof pStyleClass == "undefined"){
+		if (typeof pStyleClass == "undefined" || pStyleClass == null){
 			pStyleClass = "";
 		}
-		if (typeof pStyle == "undefined"){
+		if (typeof pStyle == "undefined" || pStyle == null){
 			pStyle = "";
 		}
 		var xValue = JSON.parse('{ "value":' + pValue +
