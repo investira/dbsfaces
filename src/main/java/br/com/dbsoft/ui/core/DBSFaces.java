@@ -2571,7 +2571,9 @@ public class  DBSFaces {
 			return "";
 		} finally {
 			try {
-				xBuffer.close();
+				if (!DBSObject.isNull(xBuffer)) {
+					xBuffer.close();
+				}
 			} catch (IOException e) {
 				wLogger.error(e);
 				DBSIO.throwIOException(e);
