@@ -27,7 +27,6 @@ public class DBSSlider extends DBSUIInput {
 		valuesList,
 		labelsList,
 		invertValuesListPosition,
-		contentAlignment,
 		obs;
 		
 		String toString;
@@ -47,7 +46,6 @@ public class DBSSlider extends DBSUIInput {
 	public static enum TYPE {
 		VALUES 				("v"),
 		STEPS 				("s"),	
-	    OPTIONS				("o"),
 		RANGE   			("r");
 		
 		private String 	wName;
@@ -111,37 +109,6 @@ public class DBSSlider extends DBSUIInput {
 	
 	}
 	
-	public static enum CONTENT_ALIGNMENT {
-		TOP 			("t"),
-	    BOTTOM 			("b"),
-		LEFT 			("l"),
-	    RIGHT 			("r"),
-		CENTER 			("c");	
-		
-		private String 	wName;
-		
-		private CONTENT_ALIGNMENT(String pName) {
-			this.wName = pName;
-		}
-
-		public String getName() {
-			return wName;
-		}
-
-		public static CONTENT_ALIGNMENT get(String pCode) {
-			if (pCode == null){
-				return CENTER;
-			}			
-			pCode = pCode.trim().toLowerCase();
-	    	for (CONTENT_ALIGNMENT xCA:CONTENT_ALIGNMENT.values()) {
-	    		if (xCA.getName().equals(pCode)){
-	    			return xCA;
-	    		}
-	    	}
-	    	return null;
-		}	
-	}
-
 	public DBSSlider(){
 		setRendererType(DBSSlider.RENDERER_TYPE);
     }
@@ -267,19 +234,6 @@ public class DBSSlider extends DBSUIInput {
 		handleAttribute("labelsList", pLabelsList);
 	}
 	
-	public String getContentAlignment() {
-		return (String) getStateHelper().eval(PropertyKeys.contentAlignment, null);
-	}
-	
-	public void setContentAlignment(String pContentAlignment) {
-		if (CONTENT_ALIGNMENT.get(pContentAlignment) == null){
-			System.out.println("ContentAlignment invalid\t:" + pContentAlignment);
-			return;
-		}
-		getStateHelper().put(PropertyKeys.contentAlignment, pContentAlignment);
-		handleAttribute("contentAlignment", pContentAlignment);
-	}
-
 	public void setDecimalPlaces(Integer pDecimalPlaces) {
 		getStateHelper().put(PropertyKeys.decimalPlaces, pDecimalPlaces);
 		handleAttribute("decimalPlaces", pDecimalPlaces);

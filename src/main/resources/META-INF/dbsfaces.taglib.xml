@@ -3121,7 +3121,6 @@
 				&lt;ul&gt;
 					&lt;li&gt;v = values&lt;/li&gt;
 					&lt;li&gt;s = steps&lt;/li&gt;
-					&lt;li&gt;o = options&lt;/li&gt;
 					&lt;li&gt;r = range(min e max)&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
@@ -3160,7 +3159,7 @@
 		</attribute>
 		<!-- <attribute> -->
 		<!-- <description> -->
-		<!-- Se exibe o label quando for Slider do tipo "s" e "o". -->
+		<!-- Se exibe o label quando for Slider do tipo "s". -->
 		<!-- </description> -->
 		<!-- <name>showLabel</name> -->
 		<!-- <required>false</required> -->
@@ -3270,22 +3269,6 @@
 			<name>invertValuesListPosition</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
-			<description>
-				&lt;span style="font-size:small"&gt;
-				Alinhamento do conteúdo.&lt;br/&gt;
-				&lt;ul&gt;
-					&lt;li&gt;t = TOP&lt;/li&gt;
-					&lt;li&gt;b = BOTTOM&lt;/li&gt;
-					&lt;li&gt;l = LEFT&lt;/li&gt;
-					&lt;li&gt;r = RIGHT&lt;/li&gt;
-					&lt;li&gt;c = CENTER&lt;/li&gt;
-				&lt;ul&gt;
-				&lt;/span&gt; </description>
-			<name>contentAlignment</name>
-			<required>false</required>
-			<type>java.lang.Sting</type>
 		</attribute>
 	</tag>
 	<tag>
