@@ -1356,10 +1356,21 @@ dbsfaces.format = {
 	},
 	
 	getDecimalSeparator: function(){
-		if ((1.1).toLocaleString().indexOf(".") >= 0){
+		if (dbsfaces.format.number(1.1, 1).indexOf(".") >= 0){
 			return ".";
 		}
 		return ",";
+//		if ((1.1).toLocaleString().indexOf(".") >= 0){
+//			return ".";
+//		}
+//		return ",";
+	},
+
+	getGroupSeparator: function(){
+		if (dbsfaces.format.number(1.1, 1).indexOf(".") >= 0){
+			return ",";
+		}
+		return ".";
 	},
 	
 	splitNumber: function(pValue){
