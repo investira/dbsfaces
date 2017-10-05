@@ -57,13 +57,13 @@ public class DBSChartsRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(xWriter, "groupid", xCharts.getGroupId());
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xCharts, DBSPassThruAttributes.getAttributes(Key.CHARTS));
 
-			pvEncodeContainer(pContext, xWriter, xCharts);
+			pvEncodeContainer(pContext, xCharts, xWriter);
 			
-			pvEncodeJS(xWriter, xCharts);
+			pvEncodeJS(xCharts, xWriter);
 		xWriter.endElement("div");
 	}
 	
-	private void pvEncodeJS(ResponseWriter pWriter, DBSCharts pCharts) throws IOException{
+	private void pvEncodeJS(DBSCharts pCharts, ResponseWriter pWriter) throws IOException{
 		DBSFaces.encodeJavaScriptTagStart(pCharts, pWriter);
 //		Gson xDeltaListJson = new Gson();
 		String xJS = "$(document).ready(function() { \n" +
@@ -77,7 +77,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);		
 	}
 	
-	private void pvEncodeContainer(FacesContext pContext, ResponseWriter pWriter, DBSCharts pCharts) throws IOException{
+	private void pvEncodeContainer(FacesContext pContext, DBSCharts pCharts, ResponseWriter pWriter) throws IOException{
 		//CONTAINER--------------------------
 		pWriter.startElement("div", pCharts);
 			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER  + CSS.THEME.FLEX + " -hide") ;

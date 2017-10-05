@@ -74,14 +74,14 @@ public class DBSChartRenderer extends DBSRenderer {
 			
 			encodeClientBehaviors(pContext, xChart);
 
-			pvEncodeContainer(xWriter, xChart, xType);
+			pvEncodeContainer(xChart, xWriter, xType);
 			
-			pvEncodeJS(xWriter, xChart);
+			pvEncodeJS(xChart, xWriter);
 			
 		xWriter.endElement("div");
 	}
 
-	private void pvEncodeContainer(ResponseWriter pWriter, DBSChart pChart, TYPE pType) throws IOException{
+	private void pvEncodeContainer(DBSChart pChart, ResponseWriter pWriter, TYPE pType) throws IOException{
 		//CONTAINER--------------------------
 		if (pType == TYPE.LINE
 		 || pType == TYPE.BAR){
@@ -105,7 +105,7 @@ public class DBSChartRenderer extends DBSRenderer {
 	 * @param pChart
 	 * @throws IOException
 	 */
-	private void pvEncodeJS(ResponseWriter pWriter, DBSChart pChart) throws IOException{
+	private void pvEncodeJS(DBSChart pChart, ResponseWriter pWriter) throws IOException{
 		String xList = pvGetListChartValue(pChart);
 		String xRelationalCaptions = pvGetListRelationalCaptions(pChart);
 		

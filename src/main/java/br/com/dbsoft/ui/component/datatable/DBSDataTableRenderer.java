@@ -290,7 +290,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 						if (xC instanceof DBSDataTableColumn){
 							DBSDataTableColumn xDTC = (DBSDataTableColumn) xC;
 							if (xDTC.isRendered()){
-								pvEncodeColumnHeader(xDTC, pContext, pDataTable, pWriter);
+								pvEncodeColumnHeader(pContext, pDataTable, pWriter, xDTC);
 							}
 						}else{
 							xC.encodeAll(pContext);
@@ -310,7 +310,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	 * @param pWriter
 	 * @throws IOException
 	 */
-	private void pvEncodeFocusInput(FacesContext pContext, DBSDataTable pDataTable,ResponseWriter pWriter) throws IOException {
+	private void pvEncodeFocusInput(FacesContext pContext, DBSDataTable pDataTable, ResponseWriter pWriter) throws IOException {
 		//Input para controle do focus e caracteres digitados----
 		pWriter.startElement("input", pDataTable);
 			DBSFaces.encodeAttribute(pWriter, "id", pvGetInputFooId(pContext, pDataTable));
@@ -375,7 +375,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	 * @param pWriter
 	 * @throws IOException
 	 */
-	private void pvEncodeDataTableBody(FacesContext pContext,DBSDataTable pDataTable, ResponseWriter pWriter) throws IOException {
+	private void pvEncodeDataTableBody(FacesContext pContext, DBSDataTable pDataTable, ResponseWriter pWriter) throws IOException {
 		pWriter.startElement("tbody", pDataTable);		
         	int 		xRowClassIndex = 0;
 			String[]	xRowClasses;
@@ -405,7 +405,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 						if (xC instanceof DBSDataTableColumn){
 							DBSDataTableColumn xDTC = (DBSDataTableColumn) xC;
 							if (xDTC.isRendered()){
-								pvEncodeColumnBody(xDTC, pContext, pDataTable, pWriter);
+								pvEncodeColumnBody(pContext, pDataTable, pWriter, xDTC);
 							}
 						}
 					}
@@ -481,9 +481,9 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	 * @param pWriter
 	 * @throws IOException
 	 */
-	private void pvEncodeColumnHeader(DBSDataTableColumn pColumn, FacesContext pContext, DBSDataTable pDataTable, ResponseWriter pWriter) throws IOException{
+	private void pvEncodeColumnHeader(FacesContext pContext, DBSDataTable pDataTable, ResponseWriter pWriter, DBSDataTableColumn pColumn) throws IOException{
 		UIComponent xHeader = pColumn.getFacet(DBSDataTable.FACET_HEADER);
-		pvEncodeColumn(pColumn, pColumn.getStyleClass(), xHeader, pContext, pDataTable, pWriter);
+		pvEncodeColumn(pContext, pDataTable, pWriter, pColumn, pColumn.getStyleClass(), xHeader);
 	}
 
 	/**
@@ -493,8 +493,8 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	 * @param pWriter
 	 * @throws IOException
 	 */
-	private void pvEncodeColumnBody(DBSDataTableColumn pColumn, FacesContext pContext, DBSDataTable pDataTable,ResponseWriter pWriter) throws IOException{
-		pvEncodeColumn(null, pColumn.getStyleClass(), pColumn, pContext, pDataTable, pWriter);
+	private void pvEncodeColumnBody(FacesContext pContext, DBSDataTable pDataTable,ResponseWriter pWriter, DBSDataTableColumn pColumn) throws IOException{
+		pvEncodeColumn(pContext, pDataTable, pWriter, null, pColumn.getStyleClass(), pColumn);
 	}
 	
 	/**
@@ -505,7 +505,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	 * @throws IOException
 	 */
 	private void pvEncodeColumnAux(FacesContext pContext, DBSDataTable pDataTable, ResponseWriter pWriter) throws IOException{
-		pvEncodeColumn(null, DBSFaces.getDataTableDataColumnStyleClass("X", ""), null, pContext, pDataTable, pWriter);
+		pvEncodeColumn(pContext, pDataTable, pWriter, null, DBSFaces.getDataTableDataColumnStyleClass("X", ""), null);
 	}
 	
 	/**
@@ -519,7 +519,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	 * @param pWriter
 	 * @throws IOException
 	 */
-	private void pvEncodeColumn(DBSDataTableColumn pColumn, String pStyleClass, UIComponent pColumnContent, FacesContext pContext, DBSDataTable pDataTable, ResponseWriter pWriter) throws IOException{
+	private void pvEncodeColumn(FacesContext pContext, DBSDataTable pDataTable, ResponseWriter pWriter, DBSDataTableColumn pColumn, String pStyleClass, UIComponent pColumnContent) throws IOException{
 		String xTag = (pColumn == null ? "td" : "th");
 		pWriter.startElement(xTag, pDataTable);
 			//Se for cabeçalho e coluna puder ser ordenada.

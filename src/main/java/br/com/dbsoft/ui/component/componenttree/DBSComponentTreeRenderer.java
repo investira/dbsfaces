@@ -112,21 +112,21 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 					xWriter.startElement("ul", pComponent);
 						DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.EXTRAINFO);
 						xComponenttree.setRowIndex(0);
-						pvEncodeExtraInfo(pContext, xWriter, xComponenttree, xComponenttree.getFacetsAndChildren());
+						pvEncodeExtraInfo(pContext, xComponenttree, xWriter, xComponenttree.getFacetsAndChildren());
 					xWriter.endElement("ul");
 					
 					//Encode da lista dos componentes filhos
 					xWriter.startElement("ul", pComponent);
 						DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CAPTION);
 						xComponenttree.setRowIndex(0);
-						pvEncodeNodes(pContext, xWriter, xComponenttree, xComponenttree.getFacetsAndChildren());
+						pvEncodeNodes(pContext, xComponenttree, xWriter, xComponenttree.getFacetsAndChildren());
 						xComponenttree.setRowIndex(-1);
 					xWriter.endElement("ul");
 					
 				xWriter.endElement("div");
 				
 				//Encode dos componentes para controle da seleção do item da lista
-				pvEncodeSelection(pContext, xWriter, xComponenttree);
+				pvEncodeSelection(pContext, xComponenttree, xWriter);
 				
 				
 			xWriter.endElement("div");
@@ -144,7 +144,7 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 	 * @param pParentComponents
 	 * @throws IOException
 	 */
-	private void pvEncodeExtraInfo(FacesContext pContext, ResponseWriter pWriter, DBSComponentTree pComponenttree, Iterator<UIComponent> pParentComponents) throws IOException{
+	private void pvEncodeExtraInfo(FacesContext pContext, DBSComponentTree pComponenttree, ResponseWriter pWriter, Iterator<UIComponent> pParentComponents) throws IOException{
 		UIComponent xExtraInfo = pComponenttree.getFacet(DBSComponentTree.FACET_EXTRAINFO);
 		while (pParentComponents.hasNext()){
 			UIComponent xChild = pParentComponents.next();
@@ -153,7 +153,7 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 				if (!pComponenttree.isValidComponent(xChild) ||
 					!pComponenttree.isValidIdPrefix(xChild.getId())){
 					//Chamada recursiva para buscar componentes filhos que sejam controlados
-					pvEncodeExtraInfo(pContext, pWriter, pComponenttree, xChild.getFacetsAndChildren());
+					pvEncodeExtraInfo(pContext, pComponenttree, pWriter, xChild.getFacetsAndChildren());
 				//Se for componente controlado
 				}else{
 					pComponenttree.setRowIndex(pComponenttree.getRowIndex() + 1);
@@ -193,7 +193,7 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 										DBSFaces.encodeAttribute(pWriter, "style", "display:none;");
 									}
 									pWriter.startElement("ul", pComponenttree);
-										pvEncodeExtraInfo(pContext, pWriter, pComponenttree, xChild.getFacetsAndChildren());
+										pvEncodeExtraInfo(pContext, pComponenttree, pWriter, xChild.getFacetsAndChildren());
 									pWriter.endElement("ul");
 								pWriter.endElement("div");
 							}
@@ -225,14 +225,14 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 	 * @param pParentComponents
 	 * @throws IOException
 	 */
-	private void pvEncodeNodes(FacesContext pContext, ResponseWriter pWriter, DBSComponentTree pComponenttree, Iterator<UIComponent> pParentComponents) throws IOException{
+	private void pvEncodeNodes(FacesContext pContext, DBSComponentTree pComponenttree, ResponseWriter pWriter, Iterator<UIComponent> pParentComponents) throws IOException{
 		UIComponent xExtraInfo = pComponenttree.getFacet(DBSComponentTree.FACET_EXTRAINFO);
 		while (pParentComponents.hasNext()){
 			UIComponent xChild = pParentComponents.next();
 			if (!xChild.equals(xExtraInfo)){
 				if (!pComponenttree.isValidComponent(xChild) ||
 					!pComponenttree.isValidIdPrefix(xChild.getId())){
-					pvEncodeNodes(pContext, pWriter, pComponenttree, xChild.getFacetsAndChildren());
+					pvEncodeNodes(pContext, pComponenttree, pWriter, xChild.getFacetsAndChildren());
 				}else{
 					String xValue = null;
 					String xIconClass = "";
@@ -302,7 +302,7 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 										DBSFaces.encodeAttribute(pWriter, "style", "display:none;");
 									}
 									pWriter.startElement("ul", pComponenttree);
-							    		pvEncodeNodes(pContext, pWriter, pComponenttree, xChild.getFacetsAndChildren());
+							    		pvEncodeNodes(pContext, pComponenttree, pWriter, xChild.getFacetsAndChildren());
 									pWriter.endElement("ul");
 								pWriter.endElement("div");
 							}
@@ -320,7 +320,7 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 	 * @param pComponenttree
 	 * @throws IOException
 	 */
-	private void pvEncodeSelection(FacesContext pContext, ResponseWriter pWriter, DBSComponentTree pComponenttree) throws IOException  {
+	private void pvEncodeSelection(FacesContext pContext, DBSComponentTree pComponenttree, ResponseWriter pWriter) throws IOException  {
 		pWriter.startElement("input", pComponenttree);
 			DBSFaces.encodeAttribute(pWriter, "id", pvGetFxExpandedIds(pComponenttree));
 			DBSFaces.encodeAttribute(pWriter, "name", pvGetFxExpandedIds(pComponenttree));

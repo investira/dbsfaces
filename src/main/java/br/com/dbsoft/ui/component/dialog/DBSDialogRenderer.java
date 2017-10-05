@@ -37,7 +37,7 @@ public class DBSDialogRenderer extends DBSRenderer{
 		TYPE 	 			xType = TYPE.get(xDialog.getType());
 		String 				xClientId = xDialog.getClientId(pContext);
 
-		pvInitialize(xDialog, pContext);
+		pvInitialize(pContext, xDialog);
 
 		if (!pvIsValid(xDialog)){return;}
 		
@@ -67,14 +67,14 @@ public class DBSDialogRenderer extends DBSRenderer{
 			}
 			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xDialog, DBSPassThruAttributes.getAttributes(Key.DIALOG));
 
-			pvEncodeContainer(xDialog, xType, pContext, xWriter);
+			pvEncodeContainer(pContext, xDialog, xWriter, xType);
 			
 			pvEncodeJS(xDialog, xWriter);
 		xWriter.endElement("div");	
 	}
 	
 	
-	private void pvEncodeContainer(DBSDialog pDialog, TYPE pType, FacesContext pContext, ResponseWriter pWriter) throws IOException {
+	private void pvEncodeContainer(FacesContext pContext, DBSDialog pDialog, ResponseWriter pWriter, TYPE pType) throws IOException {
 		if (pType == TYPE.MSG && pDialog.getChildCount() == 0 && !pDialog.hasMessage()){return;}
 		String xClass = CSS.MODIFIER.CONTAINER;
 		pWriter.startElement("div", pDialog);
@@ -104,7 +104,7 @@ public class DBSDialogRenderer extends DBSRenderer{
 	}
 	
 
-	private void pvInitialize(DBSDialog pDialog, FacesContext pContext) throws IOException{
+	private void pvInitialize(FacesContext pContext, DBSDialog pDialog) throws IOException{
 //		pDialog.setDBSMessage(null);
 		TYPE 	 xType = TYPE.get(pDialog.getType());
 		//Configura mensagem vinda por facesmessage ou children
@@ -112,7 +112,7 @@ public class DBSDialogRenderer extends DBSRenderer{
 			//É mensagem FacesMessage ou DBSMessage
 			if (!DBSObject.isEmpty(pDialog.getMsgFor())){
 				//Recupera as mensagens
-				pDialog.setOpen(pvInitializeDBSMessages(pDialog, pContext));
+				pDialog.setOpen(pvInitializeDBSMessages(pContext, pDialog));
 			}
 		}
 	}
@@ -124,7 +124,7 @@ public class DBSDialogRenderer extends DBSRenderer{
 	 * @return
 	 * @throws IOException
 	 */
-	private boolean pvInitializeDBSMessages(DBSDialog pDialog, FacesContext pContext) throws IOException{
+	private boolean pvInitializeDBSMessages(FacesContext pContext, DBSDialog pDialog) throws IOException{
 		IDBSMessages xMesssages = DBSMessagesFacesContext.getMessages(pDialog.getMsgFor());
 		pDialog.setDBSMessages(xMesssages); 
 		

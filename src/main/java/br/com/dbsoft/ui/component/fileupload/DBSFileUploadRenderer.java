@@ -63,7 +63,7 @@ public class DBSFileUploadRenderer extends DBSRenderer {
 				
 				pvEncodeToolbar(pContext, xFileUpload, xWriter);
 		
-				pvEncodeInput(pContext, xFileUpload, xWriter);
+				pvEncodeInput(xFileUpload, xWriter);
 				
 				pvEncodeMessage(xFileUpload, xWriter);
 
@@ -93,7 +93,7 @@ public class DBSFileUploadRenderer extends DBSRenderer {
 		pWriter.endElement("div");
 	}
 
-	private void pvEncodeInput(@SuppressWarnings("unused") FacesContext pContext, DBSFileUpload pFileUpload, ResponseWriter pWriter) throws IOException{
+	private void pvEncodeInput(DBSFileUpload pFileUpload, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("input", pFileUpload);
 			DBSFaces.encodeAttribute(pWriter, "id", pFileUpload.getClientId().replaceAll(":", "_") + CSS.MODIFIER.INPUT.trim());
 			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.INPUT);

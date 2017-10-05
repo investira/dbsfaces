@@ -65,7 +65,7 @@ public class DBSModalRenderer extends DBSRenderer {
 				xWriter.startElement("div", xModal);
 					DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER); 
 
-					pvEncodeTable(pContext, xWriter, xModal);
+					pvEncodeTable(pContext, xModal, xWriter);
 				
 				xWriter.endElement("div");
 
@@ -86,7 +86,7 @@ public class DBSModalRenderer extends DBSRenderer {
 
 	}
 
-	private void pvEncodeTable(FacesContext pContext, ResponseWriter pWriter, DBSModal pModal) throws IOException{
+	private void pvEncodeTable(FacesContext pContext, DBSModal pModal, ResponseWriter pWriter) throws IOException{
 		pWriter.startElement("table", pModal);
 			DBSFaces.encodeAttribute(pWriter, "cellspacing", "0px");
 			DBSFaces.encodeAttribute(pWriter, "cellpadding", "0px");
@@ -94,21 +94,21 @@ public class DBSModalRenderer extends DBSRenderer {
 			//HEADER
 			pWriter.startElement("thead", pModal);
 				//CAPTION 
-				pvEncodeCaption(pWriter, pModal);
+				pvEncodeCaption(pModal, pWriter);
 				
 				//TOOLBAR
-				pvEncodeToolbar(pContext, pWriter, pModal);
+				pvEncodeToolbar(pContext, pModal, pWriter);
 			pWriter.endElement("thead");
 			
 			//BODY
 			pWriter.startElement("tbody", pModal);
 				//CONTENT and CHILDREN
-				pvEncodeMessage(pContext, pWriter, pModal);
+				pvEncodeMessage(pContext, pModal, pWriter);
 			pWriter.endElement("tbody");
 
 			//FOOTER
 			pWriter.startElement("tfoot", pModal);
-				pvEncodeFooter(pContext, pWriter, pModal);
+				pvEncodeFooter(pContext, pModal, pWriter);
 			pWriter.endElement("tfoot");
 		pWriter.endElement("table");
 	}
@@ -119,7 +119,7 @@ public class DBSModalRenderer extends DBSRenderer {
 	 * @param pModal
 	 * @throws IOException
 	 */
-	private void pvEncodeCaption(ResponseWriter pWriter, DBSModal pModal) throws IOException{
+	private void pvEncodeCaption(DBSModal pModal, ResponseWriter pWriter) throws IOException{
 		String xCaption = null;
 		if (pModal.getCaption()!=null){
 			xCaption = pModal.getCaption();
@@ -152,7 +152,7 @@ public class DBSModalRenderer extends DBSRenderer {
 	 * @param pModal
 	 * @throws IOException
 	 */
-	private void pvEncodeToolbar(FacesContext pContext, ResponseWriter pWriter, DBSModal pModal) throws IOException{
+	private void pvEncodeToolbar(FacesContext pContext, DBSModal pModal, ResponseWriter pWriter) throws IOException{
 		UIComponent xToolbar = pModal.getFacet("toolbar");
 		if (xToolbar!=null){
 			pWriter.startElement("tr", pModal);
@@ -173,7 +173,7 @@ public class DBSModalRenderer extends DBSRenderer {
 	 * @param pModal
 	 * @throws IOException
 	 */
-	private void pvEncodeMessage(FacesContext pContext, ResponseWriter pWriter, DBSModal pModal) throws IOException{
+	private void pvEncodeMessage(FacesContext pContext, DBSModal pModal, ResponseWriter pWriter) throws IOException{
 		MESSAGE_TYPE 	xMT = MESSAGE_TYPE.get(pModal.getMessageType());
 		String			xIconId = pModal.getClientId() + "_icon"; //Id para ser utilizado no tooptip do icon.
 
@@ -231,7 +231,7 @@ public class DBSModalRenderer extends DBSRenderer {
 	 * @param pModal
 	 * @throws IOException
 	 */
-	private void pvEncodeFooter(FacesContext pContext, ResponseWriter pWriter, DBSModal pModal) throws IOException{
+	private void pvEncodeFooter(FacesContext pContext, DBSModal pModal, ResponseWriter pWriter) throws IOException{
 
 		UIComponent xFooter = pModal.getFacet("footer");
 		

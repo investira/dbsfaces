@@ -68,7 +68,7 @@ public class DBSLinkRenderer extends DBSUICommandRenderer {
 					DBSFaces.encodeAttribute(xWriter, DBSFaces.HTML.EVENTS.ONCLICK, xOnClick); 
 				//}
 			}else{
-				pvRenderHref(pContext, xWriter, xLink);
+				pvRenderHref(pContext, xLink, xWriter);
 			}
 			xWriter.write(DBSString.toString(xLink.getValue(), ""));
 			DBSFaces.renderChildren(pContext, xLink);
@@ -80,7 +80,7 @@ public class DBSLinkRenderer extends DBSUICommandRenderer {
 		}
 	}
 	
-	private void pvRenderHref(FacesContext pContext, ResponseWriter pWriter, DBSLink pLink) throws IOException{
+	private void pvRenderHref(FacesContext pContext, DBSLink pLink, ResponseWriter pWriter) throws IOException{
 		if (pLink.getActionExpression() == null){return;}
 		String hrefVal = pLink.getActionExpression().getExpressionString();
         // render an empty value for href if it is not specified
