@@ -127,6 +127,8 @@ public class DBSComponentTreeRenderer extends DBSRenderer {
 				
 				//Encode dos componentes para controle da seleção do item da lista
 				pvEncodeSelection(pContext, xComponenttree, xWriter);
+
+				xComponenttree.setRowIndex(-1);
 				
 				pvEncodeJS(xComponenttree, xWriter);
 			xWriter.endElement("div");
