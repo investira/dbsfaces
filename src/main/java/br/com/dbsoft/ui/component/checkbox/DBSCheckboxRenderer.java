@@ -65,11 +65,11 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 				DBSFaces.encodeRightLabel(pContext, xCheckbox, xWriter);
 			xWriter.endElement("div");
 			DBSFaces.encodeTooltip(pContext, xCheckbox, xCheckbox.getTooltip());
+			//Javascript
+			if (!xCheckbox.getReadOnly()){
+				pvEncodeJS(xCheckbox, xWriter);
+			}
 		xWriter.endElement("div");
-		//Javascript
-		if (!xCheckbox.getReadOnly()){
-			pvEncodeJS(xCheckbox, xWriter);
-		}
 	}
 
 	private void pvEncodeInput(FacesContext pContext, DBSCheckbox pCheckbox, ResponseWriter pWriter) throws IOException{

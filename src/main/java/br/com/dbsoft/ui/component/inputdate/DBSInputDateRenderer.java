@@ -127,17 +127,17 @@ public class DBSInputDateRenderer extends DBSRenderer {
 
 			xWriter.endElement("div");
 			DBSFaces.encodeTooltip(pContext, xInputDate, xInputDate.getTooltip());
-		xWriter.endElement("div");
 
-		if (!xInputDate.getReadOnly()){
-			DBSFaces.encodeJavaScriptTagStart(pComponent, xWriter);
-			String xJS = "$(document).ready(function() { \n" +
-					     " var xInputDateId = dbsfaces.util.jsid('" + xClientId + "'); \n " + 
-					     " dbs_inputDate(xInputDateId); \n" +
-	                     "}); \n"; 
-			xWriter.write(xJS);
-			DBSFaces.encodeJavaScriptTagEnd(xWriter);
-		}
+			if (!xInputDate.getReadOnly()){
+				DBSFaces.encodeJavaScriptTagStart(pComponent, xWriter);
+				String xJS = "$(document).ready(function() { \n" +
+						     " var xInputDateId = dbsfaces.util.jsid('" + xClientId + "'); \n " + 
+						     " dbs_inputDate(xInputDateId); \n" +
+		                     "}); \n"; 
+				xWriter.write(xJS);
+				DBSFaces.encodeJavaScriptTagEnd(xWriter);
+			}
+			xWriter.endElement("div");
 	}
 	
 	private void pvEncodeInput(FacesContext pContext, DBSInputDate pInputDate, ResponseWriter pWriter) throws IOException{

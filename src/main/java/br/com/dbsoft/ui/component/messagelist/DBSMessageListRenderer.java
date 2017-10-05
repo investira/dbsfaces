@@ -108,11 +108,11 @@ public class DBSMessageListRenderer extends DBSRenderer {
 				}
 			}
 			pvEncodeMessageInputFoo(pContext, xMessageList, xWriter);
+			pvEncodeJS(xMessageList, xWriter, (xNew > 0 && xType != MESSAGE_TYPE.INFORMATION)); //Emite beep se houver nova mensagem que não seja INFORMATION
 		xWriter.endElement("div");
 		
 		xMessageList.setDeleting(false); //Reset indicador que estava sendo efetuado um delete
 
-		pvEncodeJS(xMessageList, xWriter, (xNew > 0 && xType != MESSAGE_TYPE.INFORMATION)); //Emite beep se houver nova mensagem que não seja INFORMATION
 	}
 	
 	private void pvEncodeMessageInputFoo(FacesContext pContext, DBSMessageList pMessageList, ResponseWriter pWriter) throws IOException {

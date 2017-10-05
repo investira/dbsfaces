@@ -32,13 +32,13 @@ public class DBSPushRenderer extends DBSRenderer {
 					DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTENT);
 				xWriter.endElement("span");
 			}
+			DBSFaces.encodeJavaScriptTagStart(pComponent, xWriter);
+			String xJS = "$(document).ready(function() { \n" +
+					     " var xPushId = dbsfaces.util.jsid('" + xClientId + "'); \n " + 
+					     " dbs_push(xPushId,'" + xPush.getUrl() + "'); \n" +
+	                     "}); \n"; 
+			xWriter.write(xJS);
+			DBSFaces.encodeJavaScriptTagEnd(xWriter);				
 		xWriter.endElement("span");
-		DBSFaces.encodeJavaScriptTagStart(pComponent, xWriter);
-		String xJS = "$(document).ready(function() { \n" +
-				     " var xPushId = dbsfaces.util.jsid('" + xClientId + "'); \n " + 
-				     " dbs_push(xPushId,'" + xPush.getUrl() + "'); \n" +
-                     "}); \n"; 
-		xWriter.write(xJS);
-		DBSFaces.encodeJavaScriptTagEnd(xWriter);				
 	}
 }

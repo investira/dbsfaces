@@ -51,8 +51,8 @@ public class DBSQuickInfoRenderer extends DBSRenderer {
 			xWriter.endElement("div");
 			//Tooltip
 			DBSFaces.encodeTooltip(pContext, pComponent, xQuickInfo.getTooltip());
+			pvEncodeJS(xQuickInfo, xWriter);
 		xWriter.endElement("div");
-		pvEncodeJS(xQuickInfo, xWriter);
 	}
 	
 	/**

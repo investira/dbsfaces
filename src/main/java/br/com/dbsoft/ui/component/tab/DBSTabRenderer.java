@@ -166,6 +166,7 @@ public class DBSTabRenderer extends DBSRenderer {
 					xWriter.endElement("div");
 				xWriter.endElement("div");
 			xWriter.endElement("div");
+			pvEncodeJS(pComponent, xWriter);
 		xWriter.endElement("div");
 
 		//Chamada assincrona para carregar a página	
@@ -188,7 +189,6 @@ public class DBSTabRenderer extends DBSRenderer {
 			}
 		}
 
-		pvEncodeJS(pComponent, xWriter);
 	}
 	
 	/**

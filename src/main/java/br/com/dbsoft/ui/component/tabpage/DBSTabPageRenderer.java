@@ -47,7 +47,6 @@ public class DBSTabPageRenderer extends DBSRenderer {
 		DBSTabPage xTabPage = (DBSTabPage) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xTabPage.getClientId(pContext);
-//		DBSTab xTab = (DBSTab) xTabPage.getParent();
 
 		String xClass = CSS.TABPAGE.MAIN + xTabPage.getStyleClass();
 //		String xSelectedPage = DBSObject.getNotNull(pContext.getExternalContext().getRequestParameterMap().get(xTab.getInputId(true)), "").toString().toUpperCase();
@@ -55,10 +54,6 @@ public class DBSTabPageRenderer extends DBSRenderer {
 		xWriter.startElement("div", xTabPage);
 			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
 			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
-//			if (xClientId.toUpperCase().equals(xTab.getSelectedTabPage().toUpperCase())
-//			 || xClientId.toUpperCase().equals(xSelectedPage)){
-//				xClass = xClass + " " + CSS.MODIFIER.SELECTED;
-//			}
 			DBSFaces.encodeAttribute(xWriter, "class", xClass);
 			DBSFaces.encodeAttribute(xWriter, "style",xTabPage.getStyle());
 //			encodeClientBehaviors(pContext, xTabPage);
@@ -69,12 +64,9 @@ public class DBSTabPageRenderer extends DBSRenderer {
 			throws IOException {
 		if (!pComponent.isRendered()){return;}
 		
-		ResponseWriter xWriter = pContext.getResponseWriter();
+			ResponseWriter xWriter = pContext.getResponseWriter();
+			pvEncodeJS(pComponent, xWriter);
 		xWriter.endElement("div"); //Final do Div com o id _content
-		super.encodeEnd(pContext, pComponent);
-		
-		pvEncodeJS(pComponent, xWriter);
-		
 	}
 	
 	/**

@@ -94,14 +94,14 @@ public class DBSDataTableRenderer extends DBSRenderer {
 		}
 		DBSDataTable 	xDataTable = (DBSDataTable) pComponent;
 		ResponseWriter 	xWriter = pContext.getResponseWriter();
+		xDataTable.setRowIndex(-1);
 
 			xWriter.endElement("div");
+			pvEncodeJS(xDataTable, xWriter);
 		xWriter.endElement("div");
 
-		xDataTable.setRowIndex(-1);
 		
 		//Scripts
-		pvEncodeJS(xDataTable, xWriter);
 	}
 
 
@@ -472,6 +472,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
                      "}); \n"; 
 		pWriter.write(xJS);
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);	
+		
 	}
 	
 	/**

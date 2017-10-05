@@ -76,20 +76,20 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 					DBSFaces.encodeRightLabel(pContext, xInputNumber, xWriter);
 			xWriter.endElement("div");
 			DBSFaces.encodeTooltip(pContext, xInputNumber, xInputNumber.getTooltip());
-		xWriter.endElement("div");
 
-		//Não gera o JS quando for somente leitura
-		if (!xInputNumber.getReadOnly()){
-			DBSFaces.encodeJavaScriptTagStart(pComponent, xWriter);
-			//Comentado o JS com $(document).ready por não inicializar corretamente o campo no IE
-			
-			String xJS = "$(document).ready(function() { \n"
-						+ " var xInputNumberId = dbsfaces.util.jsid('" + pComponent.getClientId() + "'); \n "
-						+ " var xInputNumberDataId = dbsfaces.util.jsid('" + getInputDataClientId(xInputNumber) + "'); \n "
-						+ " dbs_inputNumber(xInputNumberId, xInputNumberDataId," + pvGetMaskParm(xInputNumber) + "); \n" + "}); \n";
-			xWriter.write(xJS);
-			DBSFaces.encodeJavaScriptTagEnd(xWriter);
-		}
+			//Não gera o JS quando for somente leitura
+			if (!xInputNumber.getReadOnly()){
+				DBSFaces.encodeJavaScriptTagStart(pComponent, xWriter);
+				//Comentado o JS com $(document).ready por não inicializar corretamente o campo no IE
+				
+				String xJS = "$(document).ready(function() { \n"
+							+ " var xInputNumberId = dbsfaces.util.jsid('" + pComponent.getClientId() + "'); \n "
+							+ " var xInputNumberDataId = dbsfaces.util.jsid('" + getInputDataClientId(xInputNumber) + "'); \n "
+							+ " dbs_inputNumber(xInputNumberId, xInputNumberDataId," + pvGetMaskParm(xInputNumber) + "); \n" + "}); \n";
+				xWriter.write(xJS);
+				DBSFaces.encodeJavaScriptTagEnd(xWriter);
+			}
+		xWriter.endElement("div");
 	}
 
 	private String pvGetMaskParm(DBSInputNumber pInputNumber) {

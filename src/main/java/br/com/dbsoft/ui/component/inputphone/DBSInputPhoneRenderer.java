@@ -80,17 +80,17 @@ public class DBSInputPhoneRenderer extends DBSRenderer {
 
 			xWriter.endElement("div");
 			DBSFaces.encodeTooltip(pContext, xInputPhone, xInputPhone.getTooltip());
-		xWriter.endElement("div");
 
-		if (!xInputPhone.getReadOnly()){
-			DBSFaces.encodeJavaScriptTagStart(pComponent, xWriter);
-			String xJS = "$(document).ready(function() { \n" +
-					     " var xInputPhoneId = dbsfaces.util.jsid('" + xClientId + "'); \n " + 
-					     " dbs_inputPhone(xInputPhoneId); \n" +
-	                     "}); \n"; 
-			xWriter.write(xJS);
-			DBSFaces.encodeJavaScriptTagEnd(xWriter);		
-		}
+			if (!xInputPhone.getReadOnly()){
+				DBSFaces.encodeJavaScriptTagStart(pComponent, xWriter);
+				String xJS = "$(document).ready(function() { \n" +
+						     " var xInputPhoneId = dbsfaces.util.jsid('" + xClientId + "'); \n " + 
+						     " dbs_inputPhone(xInputPhoneId); \n" +
+		                     "}); \n"; 
+				xWriter.write(xJS);
+				DBSFaces.encodeJavaScriptTagEnd(xWriter);		
+			}
+		xWriter.endElement("div");
 	}
 	
 	private void pvEncodeInput(FacesContext pContext, DBSInputPhone pInputPhone, ResponseWriter pWriter) throws IOException{

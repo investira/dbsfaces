@@ -59,16 +59,16 @@ public class DBSInputMaskRenderer extends DBSRenderer {
 					DBSFaces.encodeRightLabel(pContext, xInputMask, xWriter);
 			xWriter.endElement("div");
 			DBSFaces.encodeTooltip(pContext, xInputMask, xInputMask.getTooltip());
+			if (!xInputMask.getReadOnly()){
+				DBSFaces.encodeJavaScriptTagStart(pComponent, xWriter);
+				String xJS = "$(document).ready(function() { \n" +
+						     " var xInputMaskId = dbsfaces.util.jsid('" + getInputDataClientId(xInputMask) + "'); \n " + 
+						     " dbs_inputMask(xInputMaskId," + pvGetMaskParm(xInputMask) + "); \n" +
+		                     "}); \n"; 
+				xWriter.write(xJS);
+				DBSFaces.encodeJavaScriptTagEnd(xWriter);		
+			}
 		xWriter.endElement("div");
-		if (!xInputMask.getReadOnly()){
-			DBSFaces.encodeJavaScriptTagStart(pComponent, xWriter);
-			String xJS = "$(document).ready(function() { \n" +
-					     " var xInputMaskId = dbsfaces.util.jsid('" + getInputDataClientId(xInputMask) + "'); \n " + 
-					     " dbs_inputMask(xInputMaskId," + pvGetMaskParm(xInputMask) + "); \n" +
-	                     "}); \n"; 
-			xWriter.write(xJS);
-			DBSFaces.encodeJavaScriptTagEnd(xWriter);		
-		}
 	}
 	
 	private String pvGetMaskParm(DBSInputMask pInputMask){
