@@ -52,10 +52,6 @@
 }
 	
 
-.dbs_slider > .-container > .-th_input-data{
-	display:none;
-}
-
 .dbs_slider > .-container > .-content > .-label{
 	cursor: default;
 	position: relative;
@@ -97,6 +93,7 @@
 	position: relative;
 }
 
+
 .dbs_slider[type="s"].-h > .-container > .-content > .-sub_container{
 /* 	padding: 0 .825em; */
 }
@@ -124,6 +121,44 @@
 }
 
 .dbs_slider.-v.-i > .-container > .-content > .-sub_container{
+}
+.dbs_slider > .-container > .-content > .-sub_container > .-th_input{
+    position: absolute;
+	font-size: .6em;
+	display: none;
+}
+
+.dbs_slider.-h > .-container > .-content > .-sub_container > .-th_input{
+	width: 100%;
+}
+.dbs_slider.-h.-i > .-container > .-content > .-sub_container > .-th_input{
+}
+.dbs_slider.-h:not([type="r"]) > .-container > .-content > .-sub_container > .-th_input{
+    text-align: center;
+}
+.dbs_slider.-h[type="r"] > .-container > .-content > .-sub_container > .-th_input.-begin{
+    text-align: left;
+}
+.dbs_slider.-h[type="r"] > .-container > .-content > .-sub_container > .-th_input.-end{
+    text-align: right;
+}
+
+.dbs_slider.-v > .-container > .-content > .-sub_container > .-th_input{
+    left: 3em;
+    right: unset;
+}
+.dbs_slider.-v.-i > .-container > .-content > .-sub_container > .-th_input{
+	right: 3em;
+	left: unset;	
+}
+.dbs_slider.-v:not([type="r"]) > .-container > .-content > .-sub_container > .-th_input{
+    top: calc(50% - 1em);
+}
+.dbs_slider.-v[type="r"] > .-container > .-content > .-sub_container > .-th_input.-begin{
+    bottom: 0;
+}
+.dbs_slider.-v[type="r"] > .-container > .-content > .-sub_container > .-th_input.-end{
+    top: 0;
 }
 
 .dbs_slider:not(.-readOnly):not([disabled]) > .-container > .-content > .-sub_container > .-slider,
@@ -212,10 +247,10 @@
 }
 
 .dbs_slider.-h > .-container > .-content > .-sub_container > .-handle{
-	bottom: 2.35em;
+	top: 0;
 }
 .dbs_slider.-h.-i > .-container > .-content > .-sub_container > .-handle{
-	bottom: .7em;
+	top: 1.65em;
 }
 
 .dbs_slider.-v > .-container > .-content > .-sub_container > .-handle{

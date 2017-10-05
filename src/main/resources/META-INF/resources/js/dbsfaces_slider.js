@@ -1,5 +1,5 @@
 dbs_slider = function(pId, pValuesList, pLabelsList, pMinValue, pMaxValue, pLocale) {
-	dbsfaces.format.locale = pLocale;
+	dbsfaces.setLocale(pLocale);
 	
 	var xSliderData = dbsfaces.slider.initialize($(pId), pValuesList, pLabelsList, pMinValue, pMaxValue);
 
@@ -98,8 +98,8 @@ dbsfaces.slider = {
 			changeValueEnd: null, //Tamanho/posição quando foi disparado o último change
 			changeLengthFator: null, //Tamanho/posição quando foi disparado o último change
 			currentHandle : null, //Handle selecionado "b", "e" ou null(quando type não for "r")
-			min : parseFloat(pMinValue),  //Valor mínimo
-			max : parseFloat(pMaxValue), //Valor máximo
+			min : dbsfaces.number.parseFloat(pMinValue),  //Valor mínimo
+			max : dbsfaces.number.parseFloat(pMaxValue), //Valor máximo
 			ani : (pSlider.hasClass("-ani") ? true: false), //Se há animação
 			segmentFator : null, //Fator de cada item da lista
 			length: null, //largura ou altura total do gráfico em px
@@ -114,8 +114,8 @@ dbsfaces.slider = {
 		xData.dom.sub_container = xData.dom.content.children(".-sub_container");
 		xData.dom.slider = xData.dom.sub_container.children(".-slider");
 		if (xData.type == "r"){
-			xData.dom.inputBegin = xData.dom.container.children(".-th_input-data.-begin");
-			xData.dom.inputEnd = xData.dom.container.children(".-th_input-data.-end");
+			xData.dom.inputBegin = xData.dom.sub_container.find(".-begin .-th_input-data");
+			xData.dom.inputEnd = xData.dom.sub_container.find(".-end .-th_input-data");
 			xData.dom.handleBegin = xData.dom.sub_container.children(".-handle.-begin");
 			xData.dom.handleBeginLabel = xData.dom.handleBegin.children(".-label");
 			xData.dom.handleEnd = xData.dom.sub_container.children(".-handle.-end");
@@ -128,7 +128,7 @@ dbsfaces.slider = {
 			dbsfaces.slider.pvSetInputValue(xData, xData.dom.inputEnd.attr("value"));
 		}else{
 			//Seta posicao atual
-			xData.dom.input = xData.dom.container.children(".-th_input-data");
+			xData.dom.input = xData.dom.sub_container.find(".-th_input-data");
 			xData.dom.handle = xData.dom.sub_container.children(".-handle");
 			xData.dom.handleLabel = xData.dom.handle.children(".-label");
 			dbsfaces.slider.setCurrentHandle(xData, null);
@@ -144,7 +144,7 @@ dbsfaces.slider = {
 					xData.valuesListNumeric.push(pValuesList[xI]);
 				}else{
 //				xData.valuesListNumeric.push(parseFloat(pValuesList[xI].replace(/[^0-9]/g, '')));
-					xData.valuesListNumeric.push(parseFloat(pValuesList[xI]));
+					xData.valuesListNumeric.push(dbsfaces.number.parseFloat(pValuesList[xI]));
 				}
 			}
 			if (xData.valuesListNumeric.length > 0){
@@ -461,7 +461,7 @@ dbsfaces.slider = {
 	//Encontra o percentual a partir do valor e seta o slider
 	setValue: function(pSlider, pValue){
 		var xSliderData = pSlider.data("data");
-		xSliderData.value = parseFloat(pValue);
+		xSliderData.value = dbsfaces.number.parseFloat(pValue);
 		var xValue;
 		var xLengthFator = 0; 
 		if (xSliderData.type == "v"
@@ -528,11 +528,11 @@ dbsfaces.slider = {
 				xValuePercFator = pLengthFator - (pSliderData.segmentFator * xI);
 				xValuePercFator /= pSliderData.segmentFator;
 				if (xI == pSliderData.valuesListNumeric.length - 1){
-					xMin = parseFloat(pSliderData.valuesListNumeric[xI]);
+					xMin = dbsfaces.number.parseFloat(pSliderData.valuesListNumeric[xI]);
 					xMax = xMin;
 				}else{
-					xMin = parseFloat(pSliderData.valuesListNumeric[xI]);
-					xMax = parseFloat(pSliderData.valuesListNumeric[xI + 1]);
+					xMin = dbsfaces.number.parseFloat(pSliderData.valuesListNumeric[xI]);
+					xMax = dbsfaces.number.parseFloat(pSliderData.valuesListNumeric[xI + 1]);
 				}
 			}else{
 				xMin = pSliderData.min;
@@ -546,7 +546,7 @@ dbsfaces.slider = {
 				var xTruncSize = xOnlyNumbers.length - 2;
 				if (xTruncSize > 0){
 					xTruncSize = Math.pow(10, xTruncSize);
-					xOnlyNumbers = parseFloat(xOnlyNumbers);
+					xOnlyNumbers = dbsfaces.number.parseFloat(xOnlyNumbers);
 					xInputValue = (dbsfaces.math.trunc(xOnlyNumbers / xTruncSize, 0) * xTruncSize) / Math.pow(10, pSliderData.dp);
 				}
 			}

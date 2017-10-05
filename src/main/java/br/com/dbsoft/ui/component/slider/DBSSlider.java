@@ -4,12 +4,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.faces.component.FacesComponent;
+import javax.faces.component.NamingContainer;
 
 import br.com.dbsoft.ui.component.DBSUIInput;
 import br.com.dbsoft.ui.core.DBSFaces;
 
 @FacesComponent(DBSSlider.COMPONENT_TYPE)
-public class DBSSlider extends DBSUIInput {
+public class DBSSlider extends DBSUIInput implements NamingContainer {
 
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.SLIDER;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
@@ -132,7 +133,7 @@ public class DBSSlider extends DBSUIInput {
 	}
 	
 	public Double getMaxValue() {
-		return (Double) getStateHelper().eval(PropertyKeys.maxValue, 100D);
+		return (Double) getStateHelper().eval(PropertyKeys.maxValue, null);
 	}
 	
 	public void setMaxValue(Double pMaxValue) {
@@ -141,7 +142,7 @@ public class DBSSlider extends DBSUIInput {
 	}
 
 	public Double getMinValue() {
-		return (Double) getStateHelper().eval(PropertyKeys.minValue, 0D);
+		return (Double) getStateHelper().eval(PropertyKeys.minValue, null);
 	}
 	
 	public void setMinValue(Double pMinValue) {
