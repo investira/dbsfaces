@@ -1,5 +1,7 @@
-dbs_chart = function(pId, pValues, pRelationalCaptions) {
+dbs_chart = function(pId, pValues, pRelationalCaptions, pLocale) {
 	var xChart = $(pId);
+	dbsfaces.setLocale(pLocale);
+	
 	dbsfaces.chart.initialize(xChart, pValues, pRelationalCaptions);
 	
 	xChart.on("mouseleave", function(e){

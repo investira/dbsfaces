@@ -63,6 +63,16 @@ dbsfaces = {
 		PARTIAL_EXECUTE: "javax.faces.partial.execute",
 		PARTIAL_RENDER: "javax.faces.partial.render",
 		PARTIAL_AJAX: "javax.faces.partial.ajax"
+	},
+	
+	locale: null,
+	decimalSeparator: null,
+	groupSeparator: null,
+	
+	setLocale: function(pLocale){
+		this.locale = pLocale;
+		this.decimalSeparator = dbsfaces.format.getDecimalSeparator();
+		this.groupSeparator = dbsfaces.format.getGroupSeparator();
 	}
 }
 
@@ -1274,7 +1284,7 @@ dbsfaces.math = {
 
 dbsfaces.number = {
 	isNumber: function(pVal){
-		return !isNaN(parseFloat(pVal)) && isFinite(pVal);
+		return !isNaN(dbsfaces.nunber.parseFloat(pVal)) && isFinite(pVal);
 	},
 	
 	sizeInBytes: function(pVal){
@@ -1314,15 +1324,27 @@ dbsfaces.number = {
 	
 	getOnlyNumber: function(pValue){
 		return pValue.replace(/[^-\d\.]/g, '');
+ 	},
+ 	
+
+ 	//Converte para float verificando a pontuação quando for string
+ 	parseFloat: function(pValue){
+ 		if (Number(pValue) === pValue){
+ 			return pValue;
+ 		}else if (typeof pValue === 'string' || pValue instanceof String){
+ 			pValue = pValue.replaceAll(dbsfaces.groupSeparator, "");
+ 			pValue = pValue.replaceAll(dbsfaces.decimalSeparator, ".");
+ 			return parseFloat(pValue);
+ 		}
  	}
 };
 
 dbsfaces.format = {
-	locale: window.navigator.language,
 	
 	number: function(pValue, pDecimals){
+		pValue = dbsfaces.number.parseFloat(pValue);
 		pValue = dbsfaces.math.round(pValue, pDecimals);
-		return pValue.toLocaleString(dbsfaces.format.locale, { minimumFractionDigits: pDecimals });
+		return pValue.toLocaleString(dbsfaces.locale, { minimumFractionDigits: pDecimals });
 	},
 	
 	//Retorna o número simplificado com mil, mi, bi, tri, quatri.
@@ -1330,7 +1352,7 @@ dbsfaces.format = {
 		if (typeof pDecimals == "undefined"){
 			pDecimals = 2;
 		}
-		var xVal = parseFloat(pValue);
+		var xVal = dbsfaces.number.parseFloat(pValue);
 		var xLength = dbsfaces.math.round(xVal, 0).toString().length;
 		if (xLength == 0){return;}
 		var xSimple = (xVal / Math.pow(10, ((xLength -1) - ((xLength -1) % 3))));
@@ -1360,10 +1382,6 @@ dbsfaces.format = {
 			return ".";
 		}
 		return ",";
-//		if ((1.1).toLocaleString().indexOf(".") >= 0){
-//			return ".";
-//		}
-//		return ",";
 	},
 
 	getGroupSeparator: function(){
@@ -1379,10 +1397,13 @@ dbsfaces.format = {
 			dec: ""
 		}
 		if (pValue != null){
-			var xValue = parseFloat(pValue);
+			var xValue = dbsfaces.number.parseFloat(pValue);
 			var xValueAbs = Math.abs(xValue);
 			xSplit.int = parseInt(xValueAbs);
-			xSplit.dec = String(dbsfaces.math.round(xValueAbs - xSplit.int, 2)).substring(1);
+			xSplit.dec = String(dbsfaces.math.round(xValueAbs - xSplit.int, 2)).substring(2);
+			if (xSplit.dec.length > 0){
+				xSplit.dec = dbsfaces.decimalSeparator + xSplit.dec;
+			}
 			if (xValue < 0){
 				xSplit.int = "-" + xSplit.int;
 			}
@@ -1552,4 +1573,9 @@ dbsfaces.onajaxerror = function(e){
 	xEle.trigger(dbsfaces.EVENT.ON_AJAX_ERROR);
 	return false;
 };
+
+
+if (dbsfaces.locale == null){
+	dbsfaces.setLocale(window.navigator.language);
+}
 

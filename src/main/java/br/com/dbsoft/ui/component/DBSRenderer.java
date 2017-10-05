@@ -28,6 +28,7 @@ import javax.faces.render.Renderer;
 import org.apache.log4j.Logger;
 
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
+import br.com.dbsoft.util.DBSFormat;
 import br.com.dbsoft.util.DBSString;
 
 public class DBSRenderer extends Renderer {
@@ -374,7 +375,13 @@ public class DBSRenderer extends Renderer {
     }
     
 
-    
+    /**
+     * Retorna localização ex:pt-BR
+     * @return
+     */
+    protected String getLocale(){
+    	return "'" + DBSFormat.getLocale().getLanguage() + "-" + DBSFormat.getLocale().getCountry() + "'";
+    }
     
   
 	/**

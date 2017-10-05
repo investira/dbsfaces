@@ -12,8 +12,8 @@ public class DBSInputNumber extends DBSUIInputText {
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.INPUTNUMBER;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 
-	private static String wMaxValue = "999999999999999"; //trilhões
-	private static String wMinValue = "-" + wMaxValue;
+	private static Double wMaxValue = 999999999999999D; //trilhões
+	private static Double wMinValue = -wMaxValue;
 	
 	protected enum PropertyKeys {
 		secret,
@@ -61,20 +61,20 @@ public class DBSInputNumber extends DBSUIInputText {
 		return (Integer) getStateHelper().eval(PropertyKeys.decimalPlaces, 2);
 	}	
 
-	public void setMaxValue(String pMaxValue) {
+	public void setMaxValue(Double pMaxValue) {
 		getStateHelper().put(PropertyKeys.maxValue, pMaxValue);
 		handleAttribute("maxValue", pMaxValue);
 	}
-	public String getMaxValue() {
-		return (String) getStateHelper().eval(PropertyKeys.maxValue, wMaxValue);
+	public Double getMaxValue() {
+		return (Double) getStateHelper().eval(PropertyKeys.maxValue, wMaxValue);
 	}	
 
-	public void setMinValue(String pMinValue) {
+	public void setMinValue(Double pMinValue) {
 		getStateHelper().put(PropertyKeys.minValue, pMinValue);
 		handleAttribute("minValue", pMinValue);
 	}
-	public String getMinValue() {
-		return (String) getStateHelper().eval(PropertyKeys.minValue, wMinValue);
+	public Double getMinValue() {
+		return (Double) getStateHelper().eval(PropertyKeys.minValue, wMinValue);
 	}	
 	
 	public void setSize(Integer pSize) {

@@ -2361,19 +2361,19 @@
 		</attribute>
 		<attribute>
 			<description>
-            	Valor máximo
+            	Valor Máximo
             </description>
 			<name>maxValue</name>
 			<required>false</required>
-			<type>java.lang.String</type>
+			<type>java.lang.Double</type>
 		</attribute>
 		<attribute>
 			<description>
-            	Valor mínimo
+            	Valor Mínimo
             </description>
 			<name>minValue</name>
 			<required>false</required>
-			<type>java.lang.String</type>
+			<type>java.lang.Double</type>
 		</attribute>
 		<attribute>
 			<description>

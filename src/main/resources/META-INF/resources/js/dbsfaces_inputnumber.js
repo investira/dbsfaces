@@ -1,5 +1,6 @@
-dbs_inputNumber = function(pId, pInputData, pType, pMask, pMaskEmptyChr, pDecDigits, pGroupSymbol, pDecSymbol, pGroupDigits) {
-
+dbs_inputNumber = function(pId, pInputData, pType, pMask, pMaskEmptyChr, pDecDigits, pGroupDigits, pLocale) {
+	dbsfaces.setLocale(pLocale);
+	
 	if (!dbsfaces.util.isMobile()){
 		//Retirado para não dar erro no firefox desktop 
 		$(pInputData).attr("pattern", null);
@@ -11,18 +12,18 @@ dbs_inputNumber = function(pId, pInputData, pType, pMask, pMaskEmptyChr, pDecDig
 		mask: pMask,
 		maskEmptyChr: pMaskEmptyChr,
         decDigits: pDecDigits,
-		groupSymbol: pGroupSymbol, 
+		groupSymbol: dbsfaces.groupSeparator, 
         groupDigits: pGroupDigits,   
-        decSymbol: pDecSymbol, 
+        decSymbol: dbsfaces.decimalSeparator, 
         stripMask: false  
 	});
 
-	dbsfaces.inputNumber.initialize($(pId), $(pInputData), xDBSMask, pType, pMask, pMaskEmptyChr, pDecDigits, pGroupSymbol, pDecSymbol, pGroupDigits);
+	dbsfaces.inputNumber.initialize($(pId), $(pInputData), xDBSMask, pType, pMask, pMaskEmptyChr, pDecDigits, pGroupDigits);
 }
 
 dbsfaces.inputNumber = {
 
-	initialize: function(pInputNumber, pInputData, pDBSMask, pType, pMask, pMaskEmptyChr, pDecDigits, pGroupSymbol, pDecSymbol, pGroupDigits){
+	initialize: function(pInputNumber, pInputData, pDBSMask, pType, pMask, pMaskEmptyChr, pDecDigits, pGroupDigits){
 		var xData = {
 			dom : {
 				self : pInputNumber,

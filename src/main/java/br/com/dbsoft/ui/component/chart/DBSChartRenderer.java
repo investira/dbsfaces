@@ -112,10 +112,11 @@ public class DBSChartRenderer extends DBSRenderer {
 		DBSFaces.encodeJavaScriptTagStart(pChart, pWriter);
 		String xJS = "$(document).ready(function() { \n" +
 				     " var xChartId = dbsfaces.util.jsid('" + pChart.getClientId() + "'); \n " + 
-				     " dbs_chart(xChartId" 
-				     			  + "," + xList
-				     			  + "," + xRelationalCaptions
-				     			  + "); \n" +
+				     " dbs_chart(xChartId" + "," + 
+				     		xList + "," + 
+				     		xRelationalCaptions + "," +
+				     		getLocale() +
+				     	"); \n" +
                      "}); \n"; 
 		pWriter.write(xJS); 
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);		

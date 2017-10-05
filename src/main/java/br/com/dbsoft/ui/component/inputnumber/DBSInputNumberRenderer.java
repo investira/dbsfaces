@@ -97,8 +97,8 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 		String xMask;
 		String xMaskEmptyChr;
 		String xDecDigits;
-		String xGroupSymbol = "";
-		String pDecSymbol = "";
+//		String xGroupSymbol = "";
+//		String pDecSymbol = "";
 		String pGroupDigits = "3";
 		if (pInputNumber.getLeadingZero()) {
 			xType = "fixed";
@@ -113,20 +113,15 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 			xMaskEmptyChr = " ";
 		}
 		xDecDigits = pInputNumber.getDecimalPlaces().toString();
-		xGroupSymbol = DBSFormat.getGroupSeparator();
 		if (!pInputNumber.getSeparateThousand()) {
 			pGroupDigits = "0";
-		}
-		if (pInputNumber.getDecimalPlaces() > 0){
-			pDecSymbol = DBSFormat.getDecimalSeparator();
 		}
 		return "'" + xType + "'," + 
 			   "'" + xMask + "'," + 
 			   "'" + xMaskEmptyChr + "'," + 
 			   xDecDigits + "," + 
-			   "'" + xGroupSymbol + "'," + 
-			   "'" + pDecSymbol + "'," +
-			   "'" + pGroupDigits + "'";
+			   "'" + pGroupDigits + "'," +
+  			   getLocale();
 	}
 
 	private void pvEncodeInput(FacesContext pContext, DBSInputNumber pInputNumber, ResponseWriter pWriter) throws IOException {
@@ -134,8 +129,8 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 		String xClientId = getInputDataClientId(pInputNumber);
 //		String xStyle = DBSFaces.getCSSStyleWidthFromInputSize(xSize);
 		//Calcula o tamanho máximo sem a formatação
-		Integer xMaxSize = (pInputNumber.getMaxValue().length() > pInputNumber.getMinValue().length() ? 
-							pInputNumber.getMaxValue():pInputNumber.getMinValue()).replaceAll("\\D+", "").length();
+		Integer xMaxSize = (pInputNumber.getMaxValue().toString().length() > pInputNumber.getMinValue().toString().length() ? 
+							pInputNumber.getMaxValue():pInputNumber.getMinValue()).toString().replaceAll("\\D+", "").length();
 //		Integer xMaxSize = DBSFormat.getFormattedNumber((pInputNumber.getMaxValue().length() > pInputNumber.getMinValue().length()?pInputNumber.getMaxValue():pInputNumber.getMinValue()), 
 //				   NUMBER_SIGN.MINUS_PREFIX, 
 //				   pvGetNumberMask(pInputNumber)).replaceAll("\\D+", "").length();
@@ -225,7 +220,7 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 		//Reduz a quantidade permitida de caracteres
 		String xFormat;
 		Double xValue;
-		if (pInputNumber.getMaxValue().length() > pInputNumber.getMinValue().length()){
+		if (pInputNumber.getMaxValue().toString().length() > pInputNumber.getMinValue().toString().length()){
 			xValue  = DBSNumber.toDouble(pInputNumber.getMaxValue());
 			xFormat = DBSFormat.getFormattedNumber(xValue, NUMBER_SIGN.MINUS_PREFIX, pvGetNumberMask(pInputNumber));
 		}else{
@@ -243,7 +238,7 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 	 * @param pValue
 	 * @return
 	 */
-	private String pvLimitBySize(DBSInputNumber pInputNumber, String pValue){
+	private Double pvLimitBySize(DBSInputNumber pInputNumber, Double pValue){
 		Double  xValue;
 		Integer xDif;
 		String 	xFormat;
@@ -260,9 +255,10 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 			if (xValue < 0){
 				xNewLimit = "-" + xNewLimit;
 			}
-			return BigDecimal.valueOf(DBSNumber.toInteger(xNewLimit)).toPlainString();
+//			return BigDecimal.valueOf(DBSNumber.toInteger(xNewLimit)).toPlainString();
+			return BigDecimal.valueOf(DBSNumber.toInteger(xNewLimit)).doubleValue();
 		}
-		return pValue;
+		return xValue;
 
 	}
 	/**
