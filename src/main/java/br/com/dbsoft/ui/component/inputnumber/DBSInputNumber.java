@@ -54,6 +54,7 @@ public class DBSInputNumber extends DBSUIInputText {
 	}	
 
 	public void setDecimalPlaces(Integer pDecimalPlaces) {
+		pDecimalPlaces = DBSNumber.abs(pDecimalPlaces);
 		getStateHelper().put(PropertyKeys.decimalPlaces, pDecimalPlaces);
 		handleAttribute("decimalPlaces", pDecimalPlaces);
 	}
@@ -78,12 +79,13 @@ public class DBSInputNumber extends DBSUIInputText {
 	}	
 	
 	public void setSize(Integer pSize) {
+		pSize = DBSNumber.abs(pSize);
 		getStateHelper().put(PropertyKeys.size, pSize);
 		handleAttribute("size", pSize);
 	}
 
 	public Integer getSize() {
-		return (Integer) getStateHelper().eval(PropertyKeys.size, 12);
+		return (Integer) getStateHelper().eval(PropertyKeys.size, null);
 	}
 	
 	public void setLeadingZero(Boolean pLeadingZero) {

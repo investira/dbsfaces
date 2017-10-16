@@ -84,7 +84,8 @@ var wAjaxTimeout;
 //Desabilita TECLAS ESPECÍFICAS para INPUTS ESPECÍFICOS
 $(document).on("keydown", function(e){
 	if ((e.which == 13) && //ENTER
-		(e.target.type=="text"))  {
+		(e.target.type=="text")){
+		$(e.target).blur();
 		return false;
 	} 
 	if ((e.which == 8 //BACKSPACE
@@ -1138,23 +1139,27 @@ dbsfaces.date = {
 dbsfaces.math = {
 	PICircle: Math.PI * 2,
 	PICircleFactor: (Math.PI * 2) / 100,
-		
+
 	round: function(pValue, pDecimals){
+		if (isNaN(pValue)){return;}
 		var xP = Math.pow(10, pDecimals);
-		var xValue = pValue * xP;
-		xValue = Math.round(pValue * xP);
-		return dbsfaces.math.trunc(xValue / xP, pDecimals);
+		var xValue = Number(Math.round(pValue * xP).toPrecision(16)); //Precision para evitar ERRO ex: 123459 * 100 = 123458.99999999999
+		xValue = Math[xValue < 0 ? 'ceil' : 'floor'](xValue);
+		return xValue / xP;
 	},
 	
 	trunc: function(pValue, pDecimals){
+		if (isNaN(pValue)){return;}
 		var xP = Math.pow(10, pDecimals);
-		var xValue = pValue * xP;
+		var xValue = Number((pValue * xP).toPrecision(16)); //Precision para evitar ERRO ex: 123459 * 100 = 123458.99999999999
 		xValue = Math[xValue < 0 ? 'ceil' : 'floor'](xValue);
 		return xValue / xP;
 	},
 	
 	//Encontra coordenada x,y a partir do centro, do raio e angulo
 	circlePointAngle: function(pCenter, pRadius, pAngle){
+		if (isNaN(pAngle)){return;}
+		if (isNaN(pRadius)){return;}
 		if (pAngle == null){return;}
 		pAngle = pAngle % 360;
 		if (pAngle < 0){
@@ -1284,7 +1289,7 @@ dbsfaces.math = {
 
 dbsfaces.number = {
 	isNumber: function(pVal){
-		return !isNaN(dbsfaces.nunber.parseFloat(pVal)) && isFinite(pVal);
+		return !isNaN(dbsfaces.number.parseFloat(pVal)) && isFinite(pVal);
 	},
 	
 	sizeInBytes: function(pVal){
@@ -1341,10 +1346,17 @@ dbsfaces.number = {
 
 dbsfaces.format = {
 	
-	number: function(pValue, pDecimals){
+	number: function(pValue, pDecimals, pSeparateThousand){
 		pValue = dbsfaces.number.parseFloat(pValue);
 		pValue = dbsfaces.math.round(pValue, pDecimals);
-		return pValue.toLocaleString(dbsfaces.locale, { minimumFractionDigits: pDecimals });
+		var xOptions = {
+			minimumFractionDigits: pDecimals,
+			useGrouping: true
+		}
+		if (!(typeof pSeparateThousand == "undefined")){
+			xOptions.useGrouping = pSeparateThousand;
+		}
+		return pValue.toLocaleString(dbsfaces.locale, xOptions);
 	},
 	
 	//Retorna o número simplificado com mil, mi, bi, tri, quatri.
@@ -1409,16 +1421,52 @@ dbsfaces.format = {
 			}
 		}
 		return xSplit;
+	},
+
+	mask: function(pValue, pMask, pEmptyChr){
+		if (pValue ==null 
+		 || pEmptyChr == null){
+			return "";
+		}
+		
+		if (pMask == ""){
+			return pValue;
+		}
+		
+		//9=Numeric; a=Alpha; x=AlphaNumeric
+		var xFV = "";
+		var xValue = pValue;
+		var xVI = 0;
+		var xAchou;
+		for (var xMI =0; xMI < pMask.length; xMI++){
+			var xMC = pMask.substring(xMI, xMI+1).toUpperCase();
+			if (xMC == "9" 
+			 || xMC == "A"){
+				//Busca próximo caracter válido dentro do valor informado, para preencher a respectivo campo na máscara
+				xAchou = false;
+				while (xVI < xValue.length){
+					 var xVC = xValue.charAt(xVI);
+					 xVI++;
+//					 if (xVC.test(/[0-9A-Za-z]/)){
+					if (/[0-9A-Za-z]/.test(xVC)){
+						 xFV += xVC;
+						 xAchou = true;
+						 break;
+					 }
+				}
+				//Se não achou um caracter válido, preenche com o caracter vázio
+				if (!xAchou){
+					xFV += pEmptyChr;
+				}
+			}else{
+				//Incorpora o caracter da máscara ao valor
+				xFV += xMC;
+			}
+		}
+		return xFV;
 	}
+
 	
-//	numberToString: function(pNumber){
-//		var xNumber = new BigDecimal(pNumber);
-//		var xNumberInt = parseInt(pNumber);
-//		var xDecimalPlaces = (xNumber - xNumberInt).toString().length;
-//		console.log(xDecimalPlaces);
-//		xNumberInt = pNumber * Math.pow(10, xDecimalPlaces);
-//		
-//	}
 
 };
 

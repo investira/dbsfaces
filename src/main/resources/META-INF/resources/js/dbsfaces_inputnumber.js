@@ -1,44 +1,42 @@
-dbs_inputNumber = function(pId, pInputData, pType, pMask, pMaskEmptyChr, pDecDigits, pGroupDigits, pLocale) {
+dbs_inputNumber = function(pId, pInputDataId, pDecimalPlaces, pSeparateThousand, pLeadingZero, pMinValue, pMaxValue, pLocale) {
 	dbsfaces.setLocale(pLocale);
+	var xInputData = $(pInputDataId);
 	
-	if (!dbsfaces.util.isMobile()){
-		//Retirado para não dar erro no firefox desktop 
-		$(pInputData).attr("pattern", null);
-	}
-	
-	var xDBSMask = $(pInputData).dbsmask({
-		parentDom: $(pId)[0],
-		type: pType,  
-		mask: pMask,
-		maskEmptyChr: pMaskEmptyChr,
-        decDigits: pDecDigits,
-		groupSymbol: dbsfaces.groupSeparator, 
-        groupDigits: pGroupDigits,   
-        decSymbol: dbsfaces.decimalSeparator, 
-        stripMask: false  
-	});
-
-	dbsfaces.inputNumber.initialize($(pId), $(pInputData), xDBSMask, pType, pMask, pMaskEmptyChr, pDecDigits, pGroupDigits);
+	dbsfaces.inputNumber.initialize($(pId), xInputData, pDecimalPlaces, pSeparateThousand, pLeadingZero, pMinValue, pMaxValue);
 }
 
 dbsfaces.inputNumber = {
 
-	initialize: function(pInputNumber, pInputData, pDBSMask, pType, pMask, pMaskEmptyChr, pDecDigits, pGroupDigits){
+	initialize: function(pInputNumber, pInputData, pDecimalPlaces, pSeparateThousand, pLeadingZero, pMinValue, pMaxValue){
 		var xData = {
 			dom : {
 				self : pInputNumber,
 				inputData : pInputData
 			},
-			dbsmask : pDBSMask
+			dbsmask : null
 		}
+
+		if (!dbsfaces.util.isMobile()){
+			//Retirado para não dar erro no firefox desktop 
+			pInputData.attr("pattern", null);
+		}
+		xData.dbsmask = pInputData.dbsmask({
+			parentDom :  pInputNumber,
+			type : "number",
+			maskEmptyChr : (pLeadingZero ? "0":""),
+			decimalPlaces : dbsfaces.number.parseFloat(pDecimalPlaces), 
+			separateThousand : pSeparateThousand,
+			maxLength: dbsfaces.number.parseFloat(pInputData.attr("maxlength")),
+			minValue: dbsfaces.number.parseFloat(pMinValue),
+			maxValue: dbsfaces.number.parseFloat(pMaxValue)
+		});
+
 		pInputNumber.data("data", xData);
 	},
 
-
 	setValue: function(pInputNumber, pValue){
 		var xInputNumberData = pInputNumber.data("data");
-		xInputNumberData.dbsmask.setValue(pValue);
-		xInputNumberData.dbsmask.formatNumber();
+		xInputNumberData.dbsmask.pvSetValue(pValue);
 	}
 }
 

@@ -14,7 +14,6 @@ import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.util.DBSFormat;
 import br.com.dbsoft.util.DBSFormat.NUMBER_SIGN;
 import br.com.dbsoft.util.DBSNumber;
-import br.com.dbsoft.util.DBSString;
 
 /**
  * @author ricardo.villar
@@ -92,54 +91,53 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 		xWriter.endElement("div");
 	}
 
+//	private String pvGetMaskParm(DBSInputNumber pInputNumber) {
+//		String xType;
+//		String xMask;
+//		String xMaskEmptyChr;
+//		String xDecDigits;
+//		String pGroupDigits = "3";
+//		if (pInputNumber.getLeadingZero()) {
+//			xType = "fixed";
+//		} else {
+//			xType = "number";
+//		}
+//		if (pInputNumber.getLeadingZero()) {
+//			xMask = DBSString.repeat("9", pInputNumber.getSize());
+//			xMaskEmptyChr = "0";
+//		} else {
+//			xMask = "0";
+//			xMaskEmptyChr = " ";
+//		}
+//		xDecDigits = pInputNumber.getDecimalPlaces().toString();
+//		if (!pInputNumber.getSeparateThousand()) {
+//			pGroupDigits = "0";
+//		}
+//		return "'" + xType + "'," + 
+//			   "'" + xMask + "'," + 
+//			   "'" + xMaskEmptyChr + "'," + 
+//			   xDecDigits + "," + 
+//			   "'" + pGroupDigits + "'," +
+//  			   getLocale();
+//	}
+
 	private String pvGetMaskParm(DBSInputNumber pInputNumber) {
-		String xType;
-		String xMask;
-		String xMaskEmptyChr;
-		String xDecDigits;
-//		String xGroupSymbol = "";
-//		String pDecSymbol = "";
-		String pGroupDigits = "3";
-		if (pInputNumber.getLeadingZero()) {
-			xType = "fixed";
-		} else {
-			xType = "number";
-		}
-		if (pInputNumber.getLeadingZero()) {
-			xMask = DBSString.repeat("9", pInputNumber.getSize());
-			xMaskEmptyChr = "0";
-		} else {
-			xMask = "0";
-			xMaskEmptyChr = " ";
-		}
-		xDecDigits = pInputNumber.getDecimalPlaces().toString();
-		if (!pInputNumber.getSeparateThousand()) {
-			pGroupDigits = "0";
-		}
-		return "'" + xType + "'," + 
-			   "'" + xMask + "'," + 
-			   "'" + xMaskEmptyChr + "'," + 
-			   xDecDigits + "," + 
-			   "'" + pGroupDigits + "'," +
+		return pInputNumber.getDecimalPlaces().toString() + "," + 
+			   pInputNumber.getSeparateThousand() + "," +
+			   pInputNumber.getLeadingZero() + "," +
+			   "'" + DBSNumber.toPlainString(pInputNumber.getMinValue()) + "'," + 
+			   "'" + DBSNumber.toPlainString(pInputNumber.getMaxValue()) + "'," +
   			   getLocale();
 	}
 
 	private void pvEncodeInput(FacesContext pContext, DBSInputNumber pInputNumber, ResponseWriter pWriter) throws IOException {
-		Integer xSize = pvGetSize(pInputNumber); //Ajusta tamanho considerando os pontos e virgulas.
+		Integer xSize = pInputNumber.getSize();
 		String xClientId = getInputDataClientId(pInputNumber);
-//		String xStyle = DBSFaces.getCSSStyleWidthFromInputSize(xSize);
-		//Calcula o tamanho máximo sem a formatação
-		Integer xMaxSize = (pInputNumber.getMaxValue().toString().length() > pInputNumber.getMinValue().toString().length() ? 
-							pInputNumber.getMaxValue():pInputNumber.getMinValue()).toString().replaceAll("\\D+", "").length();
-//		Integer xMaxSize = DBSFormat.getFormattedNumber((pInputNumber.getMaxValue().length() > pInputNumber.getMinValue().length()?pInputNumber.getMaxValue():pInputNumber.getMinValue()), 
-//				   NUMBER_SIGN.MINUS_PREFIX, 
-//				   pvGetNumberMask(pInputNumber)).replaceAll("\\D+", "").length();
-//		Integer xWidth  = DBSFormat.getFormattedNumber(pInputNumber.getMaxValue(), NUMBER_SIGN.MINUS_PREFIX, pvGetNumberMask(pInputNumber)).replaceAll("\\D+", "").length();
-		String xStyle = DBSFaces.getCSSStyleWidthFromInputSize(xMaxSize + pInputNumber.getDecimalPlaces());
+		String xStyle = ""; // DBSFaces.getCSSStyleWidthFromInputSize(pInputNumber.getSize());
 		String xStyleClass = "";
 		String xValue = "";
 		if (pInputNumber.getValueDouble() != null){
-			if (DBSNumber.toDouble(pInputNumber.getMinValue())<0){
+			if (pInputNumber.getMinValue()<0){
 				//Exibe valor com sinal
 				xValue = DBSFormat.getFormattedNumber(pInputNumber.getValueDouble(), NUMBER_SIGN.MINUS_PREFIX, pvGetNumberMask(pInputNumber));
 			}else{
@@ -147,11 +145,11 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 				xValue = DBSFormat.getFormattedNumber(pInputNumber.getValueDouble(), NUMBER_SIGN.NONE, pvGetNumberMask(pInputNumber));
 			}
 		}
-		if (!pInputNumber.getLeadingZero()){
+//		if (!pInputNumber.getLeadingZero()){
 			xStyle += " text-align:right;";
-		}
-		if (pInputNumber.getValueDouble() > DBSNumber.toDouble(pInputNumber.getMaxValue()) ||
-			pInputNumber.getValueDouble() < DBSNumber.toDouble(pInputNumber.getMinValue())){
+//		}
+		if (pInputNumber.getValueDouble() > pInputNumber.getMaxValue() ||
+			pInputNumber.getValueDouble() < pInputNumber.getMinValue()){
 			xStyleClass = CSS.MODIFIER.ERROR;
 		}
 
@@ -176,8 +174,8 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 					DBSFaces.encodeAttribute(pWriter, "style", xStyle);
 					DBSFaces.encodeAttribute(pWriter, "placeHolder", pInputNumber.getPlaceHolder());
 					DBSFaces.setSizeAttributes(pWriter, xSize, null);
-					DBSFaces.encodeAttribute(pWriter, "minValue", pInputNumber.getMinValue()); 
-					DBSFaces.encodeAttribute(pWriter, "maxValue", pInputNumber.getMaxValue());
+//					DBSFaces.encodeAttribute(pWriter, "minValue", DBSNumber.toPlainString(pInputNumber.getMinValue())); 
+//					DBSFaces.encodeAttribute(pWriter, "maxValue", DBSNumber.toPlainString(pInputNumber.getMaxValue()));
 					//Verifica se o sinal é negativo
 					if (DBSNumber.toDouble(pInputNumber.getMinValue())<0){
 						if (pInputNumber.getValueDouble()<0){
@@ -202,7 +200,6 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 	private String pvGetNumberMask(DBSInputNumber pInputNumber) {
 		Integer xLeadingZeroSize;
 		Boolean xShowSeparator;
-
 		if (pInputNumber.getLeadingZero()) {
 			xLeadingZeroSize = pInputNumber.getSize() - pInputNumber.getDecimalPlaces();
 			xShowSeparator = false;
@@ -214,20 +211,20 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 	}
 	
 	private void pvInitialize(DBSInputNumber pInputNumber){
-		pInputNumber.setMaxValue(pvLimitBySize(pInputNumber, pInputNumber.getMaxValue()));
-		pInputNumber.setMinValue(pvLimitBySize(pInputNumber, pInputNumber.getMinValue()));
-		//Se tamanho em caracteres do limite for inferior a quantidade permitida de caracteres
-		//Reduz a quantidade permitida de caracteres
-		String xFormat;
-		Double xValue;
-		if (pInputNumber.getMaxValue().toString().length() > pInputNumber.getMinValue().toString().length()){
-			xValue  = DBSNumber.toDouble(pInputNumber.getMaxValue());
-			xFormat = DBSFormat.getFormattedNumber(xValue, NUMBER_SIGN.MINUS_PREFIX, pvGetNumberMask(pInputNumber));
+		//Limita valores até o tamanho máximo em caracteres permitido no campo.
+		if (pInputNumber.getSize() != null){
+			pInputNumber.setMaxValue(pvLimitBySize(pInputNumber, pInputNumber.getMaxValue()));
+			pInputNumber.setMinValue(pvLimitBySize(pInputNumber, pInputNumber.getMinValue()));
+		//Limita o tamanho do campo pela maior quantidade de caracteres dos valores máximo ou mínimo. O que for maior.
 		}else{
-			xValue  = DBSNumber.toDouble(pInputNumber.getMinValue());
+			String xFormat;
+			Double xValue;
+			if (DBSNumber.toPlainString(pInputNumber.getMaxValue()).length() > DBSNumber.toPlainString(pInputNumber.getMinValue()).length()){
+				xValue  = pInputNumber.getMaxValue();
+			}else{
+				xValue  = pInputNumber.getMinValue();
+			}
 			xFormat = DBSFormat.getFormattedNumber(xValue, NUMBER_SIGN.MINUS_PREFIX, pvGetNumberMask(pInputNumber));
-		}
-		if (xFormat.length() < pInputNumber.getSize()){
 			pInputNumber.setSize(xFormat.length());
 		}
 	}
@@ -239,12 +236,10 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 	 * @return
 	 */
 	private Double pvLimitBySize(DBSInputNumber pInputNumber, Double pValue){
-		Double  xValue;
 		Integer xDif;
 		String 	xFormat;
-		xValue  = DBSNumber.toDouble(pValue);
-		xFormat = DBSFormat.getFormattedNumber(xValue, NUMBER_SIGN.MINUS_PREFIX, pvGetNumberMask(pInputNumber));
-		xDif = xFormat.length() -  pInputNumber.getSize();
+		xFormat = DBSFormat.getFormattedNumber(pValue, NUMBER_SIGN.MINUS_PREFIX, pvGetNumberMask(pInputNumber));
+		xDif = xFormat.length() - pInputNumber.getSize();
 		//Se valor limite for superior a quantidade permitida de caracteres
 		//Limita valor a quantidade de caracteres possíveis
 		if (xDif > 0){
@@ -252,26 +247,13 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 			if (!DBSNumber.isNumber(xNewLimit.substring(0, 1))){
 				xNewLimit = xNewLimit.substring(1);
 			}
-			if (xValue < 0){
+			if (pValue < 0){
 				xNewLimit = "-" + xNewLimit;
 			}
-//			return BigDecimal.valueOf(DBSNumber.toInteger(xNewLimit)).toPlainString();
-			return BigDecimal.valueOf(DBSNumber.toInteger(xNewLimit)).doubleValue();
+			return BigDecimal.valueOf(DBSNumber.toDouble(xNewLimit)).doubleValue();
 		}
-		return xValue;
+		return pValue;
 
-	}
-	/**
-	 * Retorma tamanho máximo de caracteres que sertão exibidos, considerando o valor máximo e respectivos pontos/virgulas
-	 * @param pInputNumber
-	 * @return
-	 */
-	private Integer pvGetSize(DBSInputNumber pInputNumber){
-		Integer xSize = pInputNumber.getSize(); 
-		if (xSize < 1){
-			xSize = 1;
-		}
-		return xSize;
 	}
 
 

@@ -53,17 +53,20 @@ public class DBSInputMaskRenderer extends DBSRenderer {
 			//Container
 			xWriter.startElement("div", xInputMask);
 				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
-
+					//Label
 					DBSFaces.encodeLabel(pContext, xInputMask, xWriter);
+					//Input
 					pvEncodeInput(pContext, xInputMask, xWriter);
+					//Right Label
 					DBSFaces.encodeRightLabel(pContext, xInputMask, xWriter);
 			xWriter.endElement("div");
 			DBSFaces.encodeTooltip(pContext, xInputMask, xInputMask.getTooltip());
 			if (!xInputMask.getReadOnly()){
 				DBSFaces.encodeJavaScriptTagStart(pComponent, xWriter);
 				String xJS = "$(document).ready(function() { \n" +
-						     " var xInputMaskId = dbsfaces.util.jsid('" + getInputDataClientId(xInputMask) + "'); \n " + 
-						     " dbs_inputMask(xInputMaskId," + pvGetMaskParm(xInputMask) + "); \n" +
+							 " var xInputMaskId = dbsfaces.util.jsid('" + pComponent.getClientId() + "'); \n " +
+						     " var xInputMaskDataId = dbsfaces.util.jsid('" + getInputDataClientId(xInputMask) + "'); \n " + 
+						     " dbs_inputMask(xInputMaskId, xInputMaskDataId," + pvGetMaskParm(xInputMask) + "); \n" +
 		                     "}); \n"; 
 				xWriter.write(xJS);
 				DBSFaces.encodeJavaScriptTagEnd(xWriter);		

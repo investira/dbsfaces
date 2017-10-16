@@ -52,7 +52,7 @@ public class DBSInputMask extends DBSUIInputText {
 	}	
 
 	public void setMaskEmptyChr(java.lang.String pMaskEmptyChr) {
-		getStateHelper().put(PropertyKeys.mask, pMaskEmptyChr);
+		getStateHelper().put(PropertyKeys.maskEmptyChr, pMaskEmptyChr);
 		handleAttribute("maskEmptyChr", pMaskEmptyChr);
 	}
 	public java.lang.String getMaskEmptyChr() {
