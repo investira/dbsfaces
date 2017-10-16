@@ -82,7 +82,7 @@ public class DBSSliderRenderer extends DBSRenderer {
 		DBSSlider xSlider = (DBSSlider) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xSlider.getClientId(pContext);
-		String xClass = CSS.SLIDER.MAIN + CSS.THEME.INPUT + CSS.MODIFIER.NOT_SELECTABLE + " -hide ";
+		String xClass = CSS.SLIDER.MAIN + CSS.THEME.INPUT + CSS.MODIFIER.NOT_SELECTABLE + " -hide ";// + " -editing";
 		
 		TYPE 		xType = TYPE.get(xSlider.getType());
 		ORIENTATION xOrientation = ORIENTATION.get(xSlider.getOrientation());
@@ -144,8 +144,16 @@ public class DBSSliderRenderer extends DBSRenderer {
 				//slider value
 				pWriter.startElement("div", pSlider);
 					DBSFaces.encodeAttribute(pWriter, "class", "-slider");
+//					pWriter.startElement("div", pSlider);
+//						DBSFaces.encodeAttribute(pWriter, "class", "-text");
+//						pWriter.write("1234.34343");
+//					pWriter.endElement("div");
 					pWriter.startElement("div", pSlider);
 						DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.VALUE);
+//						pWriter.startElement("div", pSlider);
+//							DBSFaces.encodeAttribute(pWriter, "class", "-text");
+//							pWriter.write("1234.34343");
+//						pWriter.endElement("div");
 					pWriter.endElement("div");
 				pWriter.endElement("div");
 				//Inputs
@@ -179,26 +187,31 @@ public class DBSSliderRenderer extends DBSRenderer {
 	}
 	
 	private void pvEncodeContentHandle(DBSSlider pSlider, ResponseWriter pWriter, TYPE pType) throws IOException{
+		String xClass = " -handle ";
+		String xClassLabel = " -label ";
+		if (pType == TYPE.RANGE || pType == TYPE.VALUES){
+			xClassLabel += "-th_action";
+		}
 		if (pType == TYPE.RANGE){
 			//Handle
 			pWriter.startElement("div", pSlider);
-				DBSFaces.encodeAttribute(pWriter, "class", "-handle -begin");
+				DBSFaces.encodeAttribute(pWriter, "class", xClass + " -begin");
 				pWriter.startElement("div", pSlider);
-					DBSFaces.encodeAttribute(pWriter, "class", "-label");
+					DBSFaces.encodeAttribute(pWriter, "class", xClassLabel);
 				pWriter.endElement("div");	
 			pWriter.endElement("div");	
 			pWriter.startElement("div", pSlider);
-				DBSFaces.encodeAttribute(pWriter, "class", "-handle -end");
+				DBSFaces.encodeAttribute(pWriter, "class", xClass + " -end");
 				pWriter.startElement("div", pSlider);
-					DBSFaces.encodeAttribute(pWriter, "class", "-label");
+					DBSFaces.encodeAttribute(pWriter, "class", xClassLabel);
 				pWriter.endElement("div");	
 			pWriter.endElement("div");	
 		}else{
 			//Handle
 			pWriter.startElement("div", pSlider);
-				DBSFaces.encodeAttribute(pWriter, "class", "-handle");
+				DBSFaces.encodeAttribute(pWriter, "class", xClass);
 				pWriter.startElement("div", pSlider);
-					DBSFaces.encodeAttribute(pWriter, "class", "-label");
+					DBSFaces.encodeAttribute(pWriter, "class", xClassLabel);
 				pWriter.endElement("div");	
 			pWriter.endElement("div");	
 		}
@@ -218,9 +231,18 @@ public class DBSSliderRenderer extends DBSRenderer {
 				xInput = (DBSInputNumber) pContext.getApplication().createComponent(DBSInputNumber.COMPONENT_TYPE);
 				xInput.setId(xId);
 				pSlider.getFacets().put(xId, xInput);
+				xInput.setDecimalPlaces(pSlider.getDecimalPlaces());
+				xInput.setStyleClass(xClass);
 			}
-			xInput.setDecimalPlaces(pSlider.getDecimalPlaces());
-			xInput.setStyleClass(xClass);
+			if (pSlider.getValuesList() !=null){
+				@SuppressWarnings("unchecked")
+				List<String> xList = (List<String>) pSlider.getValuesList();
+				if (xList.size() > 0){
+					xInput.setMinValue(DBSNumber.toDouble(xList.get(0)));
+					xInput.setMaxValue(DBSNumber.toDouble(xList.get(xList.size()-1)));
+//					System.out.println(xList.get(xList.size()-1));
+				}
+			}
 			xInput.setReadOnly(pSlider.getReadOnly());
 			xInput.setValue(DBSObject.getNotNull(pValue,0));
 			xInput.encodeAll(pContext);

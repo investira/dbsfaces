@@ -1,6 +1,6 @@
 dbs_slider = function(pId, pValuesList, pLabelsList, pMinValue, pMaxValue, pLocale) {
 	dbsfaces.setLocale(pLocale);
-	
+
 	var xSliderData = dbsfaces.slider.initialize($(pId), pValuesList, pLabelsList, pMinValue, pMaxValue);
 
 	$(window).resize(function(e){
@@ -13,42 +13,108 @@ dbs_slider = function(pId, pValuesList, pLabelsList, pMinValue, pMaxValue, pLoca
 	xSliderData.dom.slider.on("mousedown touchstart", function(e){
 		dbsfaces.slider.jump(xSliderData, e);
 		dbsfaces.slider.handleMoveStart(xSliderData, e);
+		$(document.activeElement).blur();
+		e.stopImmediatePropagation();
+		return false;
 	});
 	xSliderData.dom.slider.on("mouseup touchend", function(e){
 		dbsfaces.slider.handleMoveStop(xSliderData, e);
+		e.stopImmediatePropagation();
+		return false;
 	});
 	xSliderData.dom.slider.on("mouseleave", function(e){
 		dbsfaces.slider.handleMoveStop(xSliderData, e);
+		e.stopImmediatePropagation();
+		return false;
 	});
 	xSliderData.dom.slider.on("mousemove touchmove", function(e){
 		if (xSliderData.startPos == null){return false;}
 		if (e.originalEvent.type == "mousemove" 
 		 && e.which == 0){
 			dbsfaces.slider.handleMoveStop(xSliderData, e);
-			return;
+			e.stopImmediatePropagation();
+			return false;
 		}
 		dbsfaces.slider.handleMove(xSliderData, e);
+		e.stopImmediatePropagation();
+		return false;
 	});	
 	xSliderData.dom.self.on("mouseleave", function(e){
 		dbsfaces.slider.handleMoveStop(xSliderData, e);
-	});
-	xSliderData.dom.handle.on("mousedown touchstart", function(e){
-//		var xSliderData = $(pId).data("data");
-		if (xSliderData.type != "r"){return;}
-		var xHandle = $(this);
-		if (xHandle.hasClass("-begin")){
-			dbsfaces.slider.setCurrentHandle(xSliderData, "b");
-		}else if (xHandle.hasClass("-end")){
-			dbsfaces.slider.setCurrentHandle(xSliderData, "e");
-		}
+		e.stopImmediatePropagation();
+		return false;
 	});
 	xSliderData.dom.label.on("mousedown touchstart", function(e){
 		dbsfaces.slider.jump(xSliderData, e);
+		e.stopImmediatePropagation();
+		return false;
 	});
 	xSliderData.dom.point.on("mousedown touchstart", function(e){
 		dbsfaces.slider.jump(xSliderData, e);
+		e.stopImmediatePropagation();
+		return false;
 	});
-
+	if (xSliderData.dom.inputBegin!=null){
+		xSliderData.dom.inputBegin.on("keydown", function(e){
+			dbsfaces.slider.setCurrentHandle(xSliderData, "b");
+			dbsfaces.slider.setValue(xSliderData.dom.self, this.value);
+		});
+		xSliderData.dom.inputBegin.on("blur", function(e){
+			var xBeginValue = dbsfaces.number.parseFloat(xSliderData.dom.inputBegin[0].value);
+			var xEndValue = dbsfaces.number.parseFloat(xSliderData.dom.inputEnd[0].value);
+			if (xBeginValue > xEndValue){
+				dbsfaces.slider.setCurrentHandle(xSliderData, "b");
+				dbsfaces.slider.setValue(xSliderData.dom.self, xEndValue);
+			}
+			dbsfaces.slider.setEditing(xSliderData, false);
+		});
+		xSliderData.dom.handleBeginLabel.on("mousedown touchstart", function(e){
+			dbsfaces.slider.setCurrentHandle(xSliderData, "b");
+			dbsfaces.slider.setEditing(xSliderData, true, xSliderData.dom.inputBegin);
+			e.stopImmediatePropagation();
+			return false;
+		});
+	}
+	if (xSliderData.dom.inputEnd!=null){
+		xSliderData.dom.inputEnd.on("keydown", function(e){
+			dbsfaces.slider.setCurrentHandle(xSliderData, "e");
+			dbsfaces.slider.setValue(xSliderData.dom.self, this.value);
+		});
+		xSliderData.dom.inputEnd.on("blur", function(e){
+			var xBeginValue = dbsfaces.number.parseFloat(xSliderData.dom.inputBegin[0].value);
+			var xEndValue = dbsfaces.number.parseFloat(xSliderData.dom.inputEnd[0].value);
+			if (xEndValue < xBeginValue){
+				dbsfaces.slider.setCurrentHandle(xSliderData, "e");
+				dbsfaces.slider.setValue(xSliderData.dom.self, xBeginValue);
+			}
+			dbsfaces.slider.setEditing(xSliderData, false);
+		});
+		xSliderData.dom.handleEndLabel.on("mousedown touchstart", function(e){
+			dbsfaces.slider.setCurrentHandle(xSliderData, "e");
+			dbsfaces.slider.setEditing(xSliderData, true, xSliderData.dom.inputEnd);
+			e.stopImmediatePropagation();
+			return false;
+		});
+	}
+	xSliderData.dom.inputs.on("change", function(e){
+		e.stopImmediatePropagation();
+		return false;
+	});
+	if (xSliderData.dom.inputBegin == null && xSliderData.dom.inputEnd == null){
+		xSliderData.dom.input.on("keydown", function(e){
+			dbsfaces.slider.setCurrentHandle(xSliderData, null);
+			dbsfaces.slider.setValue(xSliderData.dom.self, this.value);
+		});		
+		xSliderData.dom.input.on("blur", function(e){
+			dbsfaces.slider.setEditing(xSliderData, false);
+		});
+		xSliderData.dom.handleLabel.on("mousedown touchstart", function(e){
+			dbsfaces.slider.setCurrentHandle(xSliderData, null);
+			dbsfaces.slider.setEditing(xSliderData, true, xSliderData.dom.input);
+			e.stopImmediatePropagation();
+			return false;
+		});
+	}
 }
 
 dbsfaces.slider = {
@@ -65,6 +131,7 @@ dbsfaces.slider = {
 				self: pSlider, //O próprio slider
 				container : pSlider.children(".-container"), //Elemento que contém o container
 				content : null, //Elemento dentro do container
+				inputs : null, //Elementos inputs
 				input : null, //Elemento input
 				inputBegin : null, //Elemento input
 				inputEnd : null, //Elemento input
@@ -113,6 +180,7 @@ dbsfaces.slider = {
 		xData.dom.content = xData.dom.container.children(".-content");
 		xData.dom.sub_container = xData.dom.content.children(".-sub_container");
 		xData.dom.slider = xData.dom.sub_container.children(".-slider");
+		xData.dom.inputs = xData.dom.sub_container.find(".-th_input-data");
 		if (xData.type == "r"){
 			xData.dom.inputBegin = xData.dom.sub_container.find(".-begin .-th_input-data");
 			xData.dom.inputEnd = xData.dom.sub_container.find(".-end .-th_input-data");
@@ -122,17 +190,23 @@ dbsfaces.slider = {
 			xData.dom.handleEndLabel = xData.dom.handleEnd.children(".-label");
 			//Seta posição inicial
 			dbsfaces.slider.setCurrentHandle(xData, "b");
-			dbsfaces.slider.pvSetInputValue(xData, xData.dom.inputBegin.attr("value"));
+			dbsfaces.slider.pvSetInputValue(xData, xData.dom.inputBegin[0].value);
 			//Seta posição final
 			dbsfaces.slider.setCurrentHandle(xData, "e");
-			dbsfaces.slider.pvSetInputValue(xData, xData.dom.inputEnd.attr("value"));
+			dbsfaces.slider.pvSetInputValue(xData, xData.dom.inputEnd[0].value);
+			xData.dom.inputEnd.attr("minValue", xData.min);
+			xData.dom.inputEnd.attr("maxValue", xData.max);
+			xData.dom.inputBegin.attr("minValue", xData.min);
+			xData.dom.inputBegin.attr("maxValue", xData.max);
 		}else{
 			//Seta posicao atual
 			xData.dom.input = xData.dom.sub_container.find(".-th_input-data");
 			xData.dom.handle = xData.dom.sub_container.children(".-handle");
 			xData.dom.handleLabel = xData.dom.handle.children(".-label");
 			dbsfaces.slider.setCurrentHandle(xData, null);
-			dbsfaces.slider.pvSetInputValue(xData, xData.dom.input.attr("value"));
+			dbsfaces.slider.pvSetInputValue(xData, xData.dom.input[0].value);
+			xData.dom.input.attr("minValue", xData.min);
+			xData.dom.input.attr("maxValue", xData.max);
 		}
 		xData.dom.sliderValue = xData.dom.slider.children(".-value");
 		if (xData.type == "v"
@@ -187,6 +261,9 @@ dbsfaces.slider = {
 		xBackground = "linear-gradient(135deg," + xColor2 + " 0%, " + xColor + " 100%)";
 		pSliderData.dom.sliderValue.css("background", xBackground);
 		
+		//Inputs
+		pSliderData.dom.inputs.addClass("-th_bc");
+		
 		//Handle
 //		xColor.setAlpha(1);
 //		xColor2.setAlpha(1);
@@ -225,7 +302,7 @@ dbsfaces.slider = {
 			xPoints.insertBefore(pSliderData.dom.handle);
 		}
 		//Cria point e label
-		if (pSliderData.valuesList.length  > 0){
+		if (pSliderData.valuesList.length > 0){
 			var xValue = "";
 			var xLabel = "";
 			var xClass = "";
@@ -412,6 +489,15 @@ dbsfaces.slider = {
 		e.preventDefault();
 	},
 
+	setEditing: function(pSliderData, pEditing, pInputData){
+		if (pEditing){
+			pSliderData.dom.self.addClass("-editing");
+			pInputData.focus();
+		}else{
+			pSliderData.dom.self.removeClass("-editing");
+		}
+	},
+	
 	setCurrentHandle: function(pSliderData, pHandle){
 		pSliderData.currentHandle = pHandle;
 		if (pHandle == "b"){
@@ -419,11 +505,13 @@ dbsfaces.slider = {
 			pSliderData.dom.handle = pSliderData.dom.handleBegin;
 			pSliderData.dom.handleLabel = pSliderData.dom.handleBeginLabel;
 			pSliderData.value = pSliderData.valueBegin;
+			pSliderData.dom.self.removeClass("-end").addClass("-begin");
 		}else if (pHandle == "e"){
 			pSliderData.dom.input = pSliderData.dom.inputEnd;
 			pSliderData.dom.handle = pSliderData.dom.handleEnd;
 			pSliderData.dom.handleLabel = pSliderData.dom.handleEndLabel;
 			pSliderData.value = pSliderData.valueEnd;
+			pSliderData.dom.self.removeClass("-begin").addClass("-end");
 		}
 	},
 	
@@ -460,6 +548,7 @@ dbsfaces.slider = {
 
 	//Encontra o percentual a partir do valor e seta o slider
 	setValue: function(pSlider, pValue){
+		if ((typeof pValue == "undefined") || pValue.length == 0){return;}
 		var xSliderData = pSlider.data("data");
 		xSliderData.value = dbsfaces.number.parseFloat(pValue);
 		var xValue;
@@ -567,24 +656,29 @@ dbsfaces.slider = {
 	
 	pvSetInputValue: function(pSliderData, pInputValue){
 		if (pSliderData.dom.input == null){return;}
-		var xValue = pInputValue;
+		var xFormattedValue = pInputValue;
 		//Salva como string
 		if (pSliderData.type == "v"
 		 || pSliderData.type == "r"){
-			xValue = dbsfaces.format.number(pInputValue, pSliderData.dp);
+			xFormattedValue = dbsfaces.format.number(pInputValue, pSliderData.dp);
 		}
-		pSliderData.dom.input.attr("value", xValue);
 		//Salva como float
 		pSliderData.value = pInputValue;
+
 		pSliderData.dom.self.val(pInputValue);
 		if (pSliderData.currentHandle == "b"){
-			pSliderData.dom.inputBegin.attr("value", xValue);
+			pSliderData.dom.inputBegin[0].value = xFormattedValue;
+			pSliderData.dom.inputBegin.attr("value", xFormattedValue);
 			pSliderData.valueBegin = pSliderData.value;
 			pSliderData.lengthFatorBegin = pSliderData.lengthFator;
 		}else if (pSliderData.currentHandle == "e"){
-			pSliderData.dom.inputEnd.attr("value", xValue);
+			pSliderData.dom.inputEnd[0].value = xFormattedValue;
+			pSliderData.dom.inputEnd.attr("value", xFormattedValue);
 			pSliderData.valueEnd = pSliderData.value;
 			pSliderData.lengthFatorEnd = pSliderData.lengthFator;
+		}else{
+			pSliderData.dom.input[0].value = xFormattedValue;
+			pSliderData.dom.input.attr("value", xFormattedValue);
 		}
 	},
 
@@ -619,10 +713,10 @@ dbsfaces.slider = {
 			pSliderData.changeValueEnd = pSliderData.valueEnd;
 			pSliderData.changeLengthFator = pSliderData.lengthFator;
 			//Dispara que valor foi alterado
-			clearTimeout(pSliderData.timeout);
-			pSliderData.timeout = setTimeout(function(){
-				pSliderData.dom.input.trigger("change", [{value:pSliderData.value, valueBegin:pSliderData.valueBegin, valueEnd:pSliderData.valueEnd, fator:pSliderData.lengthFator}]);
-			},0);
+//			clearTimeout(pSliderData.timeout);
+//			pSliderData.timeout = setTimeout(function(){
+				pSliderData.dom.self.trigger("change", [{value:pSliderData.value, valueBegin:pSliderData.valueBegin, valueEnd:pSliderData.valueEnd, fator:pSliderData.lengthFator}]);
+//			},0);
 		}
 	},
 
@@ -632,7 +726,11 @@ dbsfaces.slider = {
 			//Inverte handle . Quem era o menor passa a ser maior o vice-versa
 			if ((pSliderData.currentHandle == "e" && pValuePerc < parseFloat(pSliderData.dom.handleBegin[0].style.left))
   		     || (pSliderData.currentHandle == "b" && pValuePerc > parseFloat(pSliderData.dom.handleEnd[0].style.left))){
-				dbsfaces.slider.pvHandleSwitch(pSliderData);
+				if (!pSliderData.dom.self.hasClass("-editing")){
+					dbsfaces.slider.pvHandleSwitch(pSliderData);
+				}else{
+					return;
+				}
 			}
 		}
 		//Posição do handle
@@ -674,7 +772,9 @@ dbsfaces.slider = {
 			//Inverte handle . Quem era o menor passa a ser maior o vice-versa
 			if ((pSliderData.currentHandle == "e" && (100 - pValuePerc) > parseFloat(pSliderData.dom.handleBegin[0].style.top))
   		     || (pSliderData.currentHandle == "b" && (100 - pValuePerc) < parseFloat(pSliderData.dom.handleEnd[0].style.top))){
-				dbsfaces.slider.pvHandleSwitch(pSliderData);
+				if (!pSliderData.dom.self.hasClass("-editing")){
+					dbsfaces.slider.pvHandleSwitch(pSliderData);
+				}
 			}
 		}
 		//Handle

@@ -57,6 +57,7 @@
 	position: relative;
 }
 
+
 .dbs_slider.-h > .-container > .-content > .-label{
 	width: 100%;
     left: 0;
@@ -122,25 +123,33 @@
 
 .dbs_slider.-v.-i > .-container > .-content > .-sub_container{
 }
+
 .dbs_slider > .-container > .-content > .-sub_container > .-th_input{
+	display: none;
     position: absolute;
 	font-size: .6em;
-	display: none;
+	font-weight: bold;
 }
 
 .dbs_slider.-h > .-container > .-content > .-sub_container > .-th_input{
-	width: 100%;
-}
-.dbs_slider.-h.-i > .-container > .-content > .-sub_container > .-th_input{
-}
-.dbs_slider.-h:not([type="r"]) > .-container > .-content > .-sub_container > .-th_input{
+/* 	width: 100%; */
+/* 	top: -.1em; */
+    width: 100%;
+    left: 0;
+	bottom: unset;
+	top: 1.8em;
     text-align: center;
 }
+
+.dbs_slider.-h.-i > .-container > .-content > .-sub_container > .-th_input{
+	bottom: 1.8em;
+	top: unset;
+}
 .dbs_slider.-h[type="r"] > .-container > .-content > .-sub_container > .-th_input.-begin{
-    text-align: left;
+	left: 0;
 }
 .dbs_slider.-h[type="r"] > .-container > .-content > .-sub_container > .-th_input.-end{
-    text-align: right;
+	right: 0;
 }
 
 .dbs_slider.-v > .-container > .-content > .-sub_container > .-th_input{
@@ -160,6 +169,29 @@
 .dbs_slider.-v[type="r"] > .-container > .-content > .-sub_container > .-th_input.-end{
     top: 0;
 }
+
+.dbs_slider.-editing:not(.-begin):not(.-end) > .-container > .-content > .-sub_container > .-th_input,
+.dbs_slider.-editing.-begin > .-container > .-content > .-sub_container > .-th_input.-begin,
+.dbs_slider.-editing.-end > .-container > .-content > .-sub_container > .-th_input.-end{
+	display: inline-block;
+}
+
+
+.dbs_slider.-editing > .-container > .-content > .-sub_container > .-points{
+	visibility: hidden;
+}
+.dbs_slider.-editing > .-container > .-content > .-sub_container > .-handle{
+	visibility: hidden;
+}
+.dbs_slider > .-container > .-content > .-sub_container > .-th_input .-th_input-data{
+    padding-top: 0;
+    padding-bottom: 0;
+/*     padding-left: 0; */
+    border: none;
+/*     background-color: rgba(255,255,255,1); */
+    box-shadow: -1px -1px 0 rgba(0,0,0,.2), 1px 1px 0 rgba(255,255,255,0.2);
+}
+
 
 .dbs_slider:not(.-readOnly):not([disabled]) > .-container > .-content > .-sub_container > .-slider,
 .dbs_slider:not(.-readOnly):not([disabled]) > .-container > .-content > .-sub_container > .-points > .-label{
@@ -204,15 +236,40 @@
     left:0;
 	height: 100%;
 	width: 100%;
+	overflow: hidden;
 }
+
+/* .dbs_slider[type="v"] > .-container > .-content > .-sub_container > .-slider > .-text, */
+/* .dbs_slider[type="v"] > .-container > .-content > .-sub_container > .-slider > .-value > .-text{ */
+/*     position: absolute; */
+/*     opacity: .5; */
+/*     font-size: .7em; */
+/*     top: .5em; */
+/*     left: 87px; */
+/* } */
+
+/* .dbs_slider[type="v"] > .-container > .-content > .-sub_container > .-slider > .-text{ */
+/* 	color: black; */
+/* } */
+
+/* .dbs_slider[type="v"] > .-container > .-content > .-sub_container > .-slider > .-value > .-text{ */
+/* 	color: white; */
+/* } */
 
 .dbs_slider.-h > .-container > .-content > .-sub_container > .-slider > .-value{
     top:0;
     width: 0;
 }
+
+.dbs_slider[type="r"].-h > .-container > .-content > .-sub_container > .-slider > .-value{
+	min-width: 1px;
+}
 .dbs_slider.-v > .-container > .-content > .-sub_container > .-slider > .-value{
     bottom:0;
 	height: 0;
+}
+.dbs_slider[type="r"].-v > .-container > .-content > .-sub_container > .-slider > .-value{
+	min-height: 1px;
 }
 .dbs_slider[type="s"].-h > .-container > .-content > .-sub_container > .-slider > .-value,
 .dbs_slider[type="v"].-h > .-container > .-content > .-sub_container > .-slider > .-value{
@@ -250,7 +307,7 @@
 	top: 0;
 }
 .dbs_slider.-h.-i > .-container > .-content > .-sub_container > .-handle{
-	top: 1.65em;
+    top: 1.7em;
 }
 
 .dbs_slider.-v > .-container > .-content > .-sub_container > .-handle{
@@ -267,13 +324,19 @@
     z-index: 1;
     font-size: .6em;
 }
+
 .dbs_slider.-showValuesList > .-container > .-content > .-sub_container > .-handle > .-label,
 .dbs_slider.-selected > .-container > .-content > .-sub_container > .-handle > .-label{
-	visibility: visible;
+	visibility: inherit;
 	cursor: default;
+}
+.dbs_slider[type="v"] > .-container > .-content > .-sub_container > .-handle > .-label,
+.dbs_slider[type="r"] > .-container > .-content > .-sub_container > .-handle > .-label{
+/* 	cursor: pointer; */
 }
 
 .dbs_slider.-h > .-container > .-content > .-sub_container > .-handle > .-label{
+	line-height: 1.1;
 }
 .dbs_slider.-h.-i > .-container > .-content > .-sub_container > .-handle > .-label{
 }
@@ -284,6 +347,30 @@
 .dbs_slider.-v.-i > .-container > .-content > .-sub_container > .-handle > .-label{
 	text-align:right;
    	width: 100%;
+}
+/* .dbs_slider:not([type="s"]):not(.-readOnly):not([disabled]) > .-container > .-content > .-label:after{ */
+.dbs_slider:not([type="s"]):not(.-readOnly):not([disabled]).-h > .-container > .-content > .-sub_container > .-handle > .-label:after,
+.dbs_slider:not([type="s"]):not(.-readOnly):not([disabled]).-v:not(.-i) > .-container > .-content > .-sub_container > .-handle > .-label:after{
+    position: relative;
+    content: "\e905";
+    font-family: 'dbsfaces_icons';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: .9em;
+    top: .1em;
+    pointer-events: all;
+    cursor: pointer;
+}
+.dbs_slider:not([type="s"]):not(.-readOnly):not([disabled]).-v.-i > .-container > .-content > .-sub_container > .-handle > .-label:before{
+    position: relative;
+    content: "\e905";
+    font-family: 'dbsfaces_icons';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: .9em;
+    top: .1em;
+    pointer-events: all;
+    cursor: pointer;
 }
 
 
