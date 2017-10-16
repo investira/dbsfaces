@@ -186,6 +186,7 @@
 .dbs_slider > .-container > .-content > .-sub_container > .-th_input .-th_input-data{
     padding-top: 0;
     padding-bottom: 0;
+    padding-left: .1em;
 /*     padding-left: 0; */
     border: none;
 /*     background-color: rgba(255,255,255,1); */
@@ -237,6 +238,18 @@
 	height: 100%;
 	width: 100%;
 	overflow: hidden;
+}
+
+.dbs_slider.-h:not(.-selected) > .-container > .-content > .-sub_container > .-slider > .-value{
+	-webkit-transition: width .2s ease-in-out;
+	moz-transition: width .2s ease-in-out;
+	transition: width .2s ease-in-out;
+}
+
+.dbs_slider.-v:not(.-selected) > .-container > .-content > .-sub_container > .-slider > .-value{
+	-webkit-transition: height .2s ease-in-out;
+	moz-transition: height .2s ease-in-out;
+	transition: height .2s ease-in-out;
 }
 
 /* .dbs_slider[type="v"] > .-container > .-content > .-sub_container > .-slider > .-text, */
@@ -323,6 +336,8 @@
 	display: inline-block;
     z-index: 1;
     font-size: .6em;
+	border-color: transparent;
+	border-style: solid;
 }
 
 .dbs_slider.-showValuesList > .-container > .-content > .-sub_container > .-handle > .-label,
@@ -337,12 +352,14 @@
 
 .dbs_slider.-h > .-container > .-content > .-sub_container > .-handle > .-label{
 	line-height: 1.1;
+	border-width: 0 .5em 0 .5em;
 }
 .dbs_slider.-h.-i > .-container > .-content > .-sub_container > .-handle > .-label{
 }
 
 .dbs_slider.-v > .-container > .-content > .-sub_container > .-handle > .-label{
 	text-align:left;
+	border-width: 5em 0 .5em 0;
 }
 .dbs_slider.-v.-i > .-container > .-content > .-sub_container > .-handle > .-label{
 	text-align:right;
