@@ -1,4 +1,5 @@
 .dbs_inputText{
+    text-align: left;
 }
 
 .dbs_inputText > .-container {
@@ -13,15 +14,21 @@
 .dbs_inputText > .-container > .-th_input-label {
 }
 
+.dbs_inputText > .-container > .-th_input-data {
+	text-align: inherit;
+}
+
 .dbs_inputText > .-container > .-input > .-th_input-suggestion-key,
 .dbs_inputText > .-container > .-input > .-th_input-submit{
 	display:none;
+    text-align: inherit;
 }
 
 .dbs_inputText > .-container > .-input > .-th_input-suggestion{
 	position: absolute;
 	color: rgb(0, 180, 255);	
 	border-color: transparent;
+    text-align: inherit;
 } 
 
 .dbs_inputText > .-container > .-input > .-th_input-suggestion.-th_input-data-FOCUS{
@@ -29,6 +36,7 @@
 }
 
 .dbs_inputText > .-container > .-input > .-th_input-data{
+    text-align: inherit;
 	position: relative;
 }
 
