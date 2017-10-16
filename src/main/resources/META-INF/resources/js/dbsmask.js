@@ -317,10 +317,11 @@
 		},
 
 		pvSetValueNumber: function(pValue){
-			var xFormattedValue = "";
 			//Converte string com número(sem pontuação) para valor numérico
+			var xFormattedValue;
 			if (pValue == ""){
-				pValue = 0;
+				return "";
+//				pValue = this.options.minValue;
 			}else{
 				pValue = dbsfaces.number.parseFloat(pValue);
 			}
@@ -328,14 +329,18 @@
 			if (this.options.decimalPlaces > 0){
 				pValue /= Math.pow(10, this.options.decimalPlaces);
 			}
-			xFormattedValue = dbsfaces.format.number(pValue, this.options.decimalPlaces, this.options.separateThousand);
-			if (this.options.maxLength != null && xFormattedValue.length > this.options.maxLength){
-				return;
-			}
-			if (this.options.minValue != null && pValue < this.options.minValue){
-				return;
-			}
+			//Se valor for superior ao máximo
 			if (this.options.maxValue != null && pValue > this.options.maxValue){
+				pValue = this.options.maxValue;
+			}
+			//Se valor for inferior ao mínimo
+			if (this.options.minValue != null && pValue < this.options.minValue){
+				pValue = this.options.minValue;
+			}
+			//Formata número
+			xFormattedValue =  dbsfaces.format.number(pValue, this.options.decimalPlaces, this.options.separateThousand);
+			//Se tamanho for superior ao permitido
+			if (this.options.maxLength != null && xFormattedValue.length > this.options.maxLength){
 				return;
 			}
 			if (!this.options.separateThousand && this.options.maskEmptyChr != ""){

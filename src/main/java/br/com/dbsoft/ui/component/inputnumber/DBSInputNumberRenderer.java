@@ -91,42 +91,12 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 		xWriter.endElement("div");
 	}
 
-//	private String pvGetMaskParm(DBSInputNumber pInputNumber) {
-//		String xType;
-//		String xMask;
-//		String xMaskEmptyChr;
-//		String xDecDigits;
-//		String pGroupDigits = "3";
-//		if (pInputNumber.getLeadingZero()) {
-//			xType = "fixed";
-//		} else {
-//			xType = "number";
-//		}
-//		if (pInputNumber.getLeadingZero()) {
-//			xMask = DBSString.repeat("9", pInputNumber.getSize());
-//			xMaskEmptyChr = "0";
-//		} else {
-//			xMask = "0";
-//			xMaskEmptyChr = " ";
-//		}
-//		xDecDigits = pInputNumber.getDecimalPlaces().toString();
-//		if (!pInputNumber.getSeparateThousand()) {
-//			pGroupDigits = "0";
-//		}
-//		return "'" + xType + "'," + 
-//			   "'" + xMask + "'," + 
-//			   "'" + xMaskEmptyChr + "'," + 
-//			   xDecDigits + "," + 
-//			   "'" + pGroupDigits + "'," +
-//  			   getLocale();
-//	}
-
 	private String pvGetMaskParm(DBSInputNumber pInputNumber) {
 		return pInputNumber.getDecimalPlaces().toString() + "," + 
 			   pInputNumber.getSeparateThousand() + "," +
 			   pInputNumber.getLeadingZero() + "," +
-			   "'" + DBSNumber.toPlainString(pInputNumber.getMinValue()) + "'," + 
-			   "'" + DBSNumber.toPlainString(pInputNumber.getMaxValue()) + "'," +
+			   "'" + DBSFormat.getFormattedNumber(pInputNumber.getMinValue(), pInputNumber.getDecimalPlaces()) + "'," + 
+			   "'" + DBSFormat.getFormattedNumber(pInputNumber.getMaxValue(), pInputNumber.getDecimalPlaces()) + "'," +
   			   getLocale();
 	}
 
@@ -174,8 +144,6 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 					DBSFaces.encodeAttribute(pWriter, "style", xStyle);
 					DBSFaces.encodeAttribute(pWriter, "placeHolder", pInputNumber.getPlaceHolder());
 					DBSFaces.setSizeAttributes(pWriter, xSize, null);
-//					DBSFaces.encodeAttribute(pWriter, "minValue", DBSNumber.toPlainString(pInputNumber.getMinValue())); 
-//					DBSFaces.encodeAttribute(pWriter, "maxValue", DBSNumber.toPlainString(pInputNumber.getMaxValue()));
 					//Verifica se o sinal é negativo
 					if (DBSNumber.toDouble(pInputNumber.getMinValue())<0){
 						if (pInputNumber.getValueDouble()<0){
@@ -186,7 +154,6 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 						!pInputNumber.getAutocomplete().toLowerCase().equals("true")){
 						DBSFaces.encodeAttribute(pWriter, "autocomplete", "off");
 					}
-	
 	
 					DBSFaces.encodeAttribute(pWriter, "size", xSize);
 					DBSFaces.encodeAttribute(pWriter, "maxlength", xSize);
