@@ -352,14 +352,14 @@
 
 .dbs_slider.-h > .-container > .-content > .-sub_container > .-handle > .-label{
 	line-height: 1.1;
-	border-width: 0 .5em 0 .5em;
+	border-width: 0 .2em 0 .2em;
 }
 .dbs_slider.-h.-i > .-container > .-content > .-sub_container > .-handle > .-label{
 }
 
 .dbs_slider.-v > .-container > .-content > .-sub_container > .-handle > .-label{
 	text-align:left;
-	border-width: 5em 0 .5em 0;
+	border-width: .2em 0 .2em 0;
 }
 .dbs_slider.-v.-i > .-container > .-content > .-sub_container > .-handle > .-label{
 	text-align:right;
