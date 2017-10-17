@@ -17,7 +17,8 @@
 .dbs_radio > table > tbody > tr > td > .-th_input-label {
 	display: inline-block; 
 	margin-right: 1em;
-	padding: 0 0 0 .3em;
+/* 	padding: 0 0 0 .3em; */
+	padding: 0;
 	margin: 0;
 	vertical-align: middle;
     cursor: inherit;
@@ -32,8 +33,8 @@
     visibility: hidden;
     overflow: visible;
     background-color: transparent;
-    height: 1.4em;
-    width: 1.2em !important;
+    height: 1.5em !important;
+    width: 1.5em !important;
     cursor: inherit;
 }
 
