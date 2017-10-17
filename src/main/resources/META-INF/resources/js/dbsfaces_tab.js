@@ -20,6 +20,17 @@ dbs_tab = function(pId) {
 }
 
 dbsfaces.tab = {
+//	initialize: function(pTab){
+//		var xData = {
+//			dom : {
+//				self: pTab,
+//				container: null,
+//				tabs: null
+//			},
+//			showTabPageOnClick: false
+//		}
+//	},
+	
 	showTab: function(pId, pTabPageRawId){
 		if ($(pId).attr("showTabPageOnClick") == "false"){
 			return;
@@ -48,7 +59,6 @@ dbsfaces.tab = {
 		}
 
 		var xTabPageId = $(pTabAba).attr("tabpage");
-		
 		//Salva id da aba selecionada
 		var xInputId = $(pId).closest(".dbs_tab").get(0).id + ":input";
 
@@ -64,7 +74,7 @@ dbsfaces.tab = {
 
 		
 		//evento indicando será selecionado
-		$(xTabPageId).trigger("click.tab");
+		$(dbsfaces.util.jsid(xTabPageId)).trigger("click.tab");
 	},
 
 	clickTabPage: function(pTabPageId){
