@@ -128,7 +128,7 @@
  	display: none; 
     position: absolute;
 	font-size: .7em;
-	font-weight: bold;
+	font-weight: 400;
 }
 
 .dbs_slider.-h > .-container > .-content > .-sub_container > .-th_input{
