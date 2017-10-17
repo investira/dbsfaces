@@ -234,11 +234,12 @@ dbsfaces.slider = {
 	
 
 	pvInitializeLayout: function(pSliderData){
-		dbsfaces.slider.pvInitializeLayoutHorizontalVertical(pSliderData);
-		dbsfaces.slider.pvInitializeLayoutPoints(pSliderData);
-		dbsfaces.slider.resize(pSliderData);
+		//Timeout para dar tempo de saber a dimensão do componente pai
 		clearTimeout(pSliderData.resizeTimeout);
 		pSliderData.resizeTimeout = setTimeout(function(e){
+			dbsfaces.slider.pvInitializeLayoutHorizontalVertical(pSliderData);
+			dbsfaces.slider.pvInitializeLayoutPoints(pSliderData);
+			dbsfaces.slider.resize(pSliderData);
 			pSliderData.dom.self.removeClass("-hide");
 		},0);
 	},
