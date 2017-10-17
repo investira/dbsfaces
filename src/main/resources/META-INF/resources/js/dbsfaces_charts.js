@@ -226,10 +226,10 @@ dbsfaces.charts = {
 					pChartsData.dom.maxDisplayValueChartValueData.dom.infoLabel.css("font-size", "");
 					var xMainFontSize = parseFloat(pChartsData.dom.container.css("font-size"));
 					//Salva o comprimento do texto mais longo
-					var xMaxTextLegth = Math.max(pChartsData.dom.maxDisplayValueChartValueData.dom.infoLabel[0].getComputedTextLength(),
-												 pChartsData.dom.maxLabelChartValueData.dom.infoLabel[0].getComputedTextLength());
+					var xMaxTextLength = Math.max(pChartsData.dom.maxDisplayValueChartValueData.dom.infoLabel[0].getComputedTextLength(),
+												  pChartsData.dom.maxLabelChartValueData.dom.infoLabel[0].getComputedTextLength());
 					//Redutor para equalizar a largura do arco com o diametro, preservando o espaço no centro do círculo.
-					var xRedutor = (pChartsData.diameter / 7) / xMaxTextLegth;
+					var xRedutor = dbsfaces.math.trunc((pChartsData.diameter / 7.5) / xMaxTextLength, 2);
 					if (xRedutor > 1){
 						xRedutor = 1;
 					}
@@ -237,7 +237,8 @@ dbsfaces.charts = {
 					pChartsData.dom.childrenData.forEach(function(pChartData) {
 						pChartData.dom.delta.css("font-size" , xRedutor + "em");
 						pChartData.dom.childrenData.forEach(function(pChartValueData) {
-							pChartValueData.dom.infoLabel.css("font-size", Math.min(xHeightScale * pChartValueData.value * xRedutor, xMainFontSize * xRedutor));
+							pChartValueData.dom.infoLabel.css("font-size", dbsfaces.math.trunc(Math.min(xHeightScale * pChartValueData.value * xRedutor, xMainFontSize * xRedutor),1) + "px");
+//							pChartValueData.dom.infoLabel.css("font-size", Math.min(xHeightScale * pChartValueData.value * xRedutor, xMainFontSize * xRedutor));
 							var xWidth = pChartValueData.dom.infoLabel[0].getComputedTextLength() * 1.1;
 							if (xWidth > pChartsData.infoWidth){
 								pChartsData.infoWidth = xWidth;
