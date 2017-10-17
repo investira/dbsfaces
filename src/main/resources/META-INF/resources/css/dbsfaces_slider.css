@@ -125,9 +125,9 @@
 }
 
 .dbs_slider > .-container > .-content > .-sub_container > .-th_input{
-	display: none;
+ 	display: none; 
     position: absolute;
-	font-size: .6em;
+	font-size: .7em;
 	font-weight: bold;
 }
 
@@ -137,12 +137,12 @@
     width: 100%;
     left: 0;
 	bottom: unset;
-	top: 1.8em;
+	top: 1.5em;
     text-align: center;
 }
 
 .dbs_slider.-h.-i > .-container > .-content > .-sub_container > .-th_input{
-	bottom: 1.8em;
+	bottom: 1.5em;
 	top: unset;
 }
 .dbs_slider.-h[type="r"] > .-container > .-content > .-sub_container > .-th_input.-begin{
@@ -317,10 +317,10 @@
 }
 
 .dbs_slider.-h > .-container > .-content > .-sub_container > .-handle{
-	top: 0;
+    top: 0em;
 }
 .dbs_slider.-h.-i > .-container > .-content > .-sub_container > .-handle{
-    top: 1.7em;
+    top: 1.6em;
 }
 
 .dbs_slider.-v > .-container > .-content > .-sub_container > .-handle{
@@ -334,8 +334,8 @@
     visibility: hidden;
     position: absolute;
 	display: inline-block;
+    font-size: .7em;
     z-index: 1;
-    font-size: .6em;
 	border-color: transparent;
 	border-style: solid;
 }
@@ -351,7 +351,7 @@
 }
 
 .dbs_slider.-h > .-container > .-content > .-sub_container > .-handle > .-label{
-	line-height: 1.1;
+	line-height: 1;
 	border-width: 0 .2em 0 .2em;
 }
 .dbs_slider.-h.-i > .-container > .-content > .-sub_container > .-handle > .-label{
@@ -399,8 +399,8 @@
 
 .dbs_slider.-h > .-container > .-content > .-sub_container > .-points{
 	left: 0;
-    width: 100%;
     top: 0;
+    width: 100%;
 }
 
 .dbs_slider.-v > .-container > .-content > .-sub_container > .-points{
@@ -453,12 +453,12 @@
 
 .dbs_slider[type="s"].-h > .-container > .-content > .-sub_container > .-points > .-point{
 	height: 1.65em;
-    top: .7em;
+    top: 0.7em;
     bottom: unset;
 }
 
 .dbs_slider[type="s"].-h.-i > .-container > .-content > .-sub_container > .-points > .-point{
-    bottom: .7em;
+	bottom: .7em;
     top: unset;
 }
 
@@ -497,7 +497,7 @@
 .dbs_slider[type="r"].-h > .-container > .-content > .-sub_container > .-points > .-point{
     height: .3em;
 	width: 1px;
-	top: 1.35em;
+    top: 1.4em;
 }
 
 .dbs_slider[type="v"].-h.-i > .-container > .-content > .-sub_container > .-points > .-point,
@@ -522,12 +522,13 @@
 .dbs_slider > .-container > .-content > .-sub_container > .-points > .-label{
 	position: absolute;
     display: inline-block;
-    font-size: .6em;
+    font-size: .7em;
 	-webkit-transition: opacity linear .2s;
 	-moz-transition: opacity linear .2s;
 	-o-transition: opacity linear .2s;
 	transition: opacity linear .2s;
 	opacity: 0.5;	
+	line-height: 1;
 }
 
 .dbs_slider.-v > .-container > .-content > .-sub_container > .-points > .-label{

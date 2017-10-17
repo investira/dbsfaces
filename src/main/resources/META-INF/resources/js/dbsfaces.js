@@ -1184,6 +1184,9 @@ dbsfaces.math = {
 		                    Math.pow(pVertex.y - pP2.y, 2)); // p2 -> Vertex
 		var xVV = Math.sqrt(Math.pow(pP2.x - pP1.x, 2) +
 		                     Math.pow(pP2.y - pP1.y, 2)); // p1 > p2 
+		if (xV1 == 0 && xV2 == 0 && xVV == 0){
+			return 0;
+		}
 		return Math.acos(((xV2*xV2) + (xV1*xV1) - (xVV * xVV))/(2 * xV2 * xV1)) * (180 / Math.PI);
 		
 	},
