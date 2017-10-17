@@ -359,7 +359,7 @@
 
 .dbs_slider.-v > .-container > .-content > .-sub_container > .-handle > .-label{
 	text-align:left;
-	border-width: .2em 0 .2em 0;
+    border-width: 0;
 }
 .dbs_slider.-v.-i > .-container > .-content > .-sub_container > .-handle > .-label{
 	text-align:right;
