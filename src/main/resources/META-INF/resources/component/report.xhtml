@@ -43,7 +43,7 @@
 						<f:ajax event="click" listener="#{cc.reportBean.showTabPageFiltros()}" render=":#{cc.form}:#{cc.clientId}" onevent="dbsfaces.onajax" onerror="dbsfaces.onajaxerror" />
 						<cc:renderFacet name="filter"/>
 					</dbs:tabPage>
-					<dbs:tabPage id="#{cc.reportBean.tabPageIdVisualizar}" caption="Visualização" styleClass="-report" iconClass="-i_paper_printer">
+					<dbs:tabPage id="#{cc.reportBean.tabPageIdVisualizar}" caption="Visualização" styleClass="-report" iconClass="-i_eye">
 						<f:ajax event="click" listener="#{cc.reportBean.create()}"  execute=":#{cc.form}:#{cc.clientId}" render=":#{cc.form}:#{cc.clientId}" onevent="dbsfaces.onajax" onerror="dbsfaces.onajaxerror"/>
 						<c:if test="#{!cc.reportBean.hasMessage}">
 							<dbs:div id="container" styleClass="-container" style="width:100%; height:100%;">
