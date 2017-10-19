@@ -4,7 +4,7 @@
 	width: 100%;
 	left: 0;
 	top: 0;
-	padding: .3em;
+	padding: .5em 1px 1px 1px;
 	box-sizing: border-box;
     -webkit-flex-flow: column nowrap;
     -moz-flex-flow: column nowrap;
