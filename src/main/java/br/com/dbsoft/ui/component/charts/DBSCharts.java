@@ -15,6 +15,8 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.CHARTS;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
+	
+	public final static String FACET_FILTER = "filter";
 
 
 	protected enum PropertyKeys {

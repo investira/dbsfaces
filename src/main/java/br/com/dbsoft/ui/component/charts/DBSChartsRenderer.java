@@ -90,11 +90,20 @@ public class DBSChartsRenderer extends DBSRenderer {
 				pWriter.endElement("div");
 			}
 
+			//FILTER--------------------------
+			UIComponent xFilter = pCharts.getFacet(DBSCharts.FACET_FILTER);
+			if (xFilter !=null){
+				pWriter.startElement("div", pCharts);
+					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.FILTER  + CSS.THEME.FLEX_COL + CSS.NOT_SELECTABLE);
+					xFilter.encodeAll(pContext);
+				pWriter.endElement("div");
+			}
+
 			//SUBCAPTION--------------------------
 			pWriter.startElement("div", pCharts);
 				DBSFaces.encodeAttribute(pWriter, "class", "-childrenCaption"  + CSS.THEME.FLEX_COL + CSS.NOT_SELECTABLE);
 				pWriter.startElement("div", pCharts);
-					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER + CSS.THEME.FLEX);
+					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER + CSS.THEME.BUTTONS_STRIP);
 				pWriter.endElement("div");
 			pWriter.endElement("div");
 
