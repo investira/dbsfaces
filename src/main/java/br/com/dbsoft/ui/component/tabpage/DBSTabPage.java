@@ -123,6 +123,7 @@ public class DBSTabPage extends DBSUIComponentBase implements NamingContainer, C
 	}	
 
 	public Boolean getAjax() {
+//		return false;
 		return (Boolean) getStateHelper().eval(PropertyKeys.ajax, false);
 	}
 	

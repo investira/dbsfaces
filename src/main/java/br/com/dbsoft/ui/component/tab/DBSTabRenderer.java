@@ -62,109 +62,18 @@ public class DBSTabRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
 			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
 			DBSFaces.encodeAttribute(xWriter, "class", xClass);
-			if (!xTab.getShowTabPageOnClick()){
-				DBSFaces.encodeAttribute(xWriter, "showTabPageOnClick", "false");
+			if (xTab.getShowTabPageOnClick()){
+				DBSFaces.encodeAttribute(xWriter, "soc", true);
 			}
 			DBSFaces.encodeAttribute(xWriter, "style", xTab.getStyle());
 			//Container
 			xWriter.startElement("div", xTab);
-				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
+				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER + CSS.THEME.FLEX);
 				//Abas com os título ========================================================================
-				xWriter.startElement("div", xTab);
-					DBSFaces.encodeAttribute(xWriter, "class", "-tabs");
-//					for (int xI=xTab.getChildren().size()-1; xI >= 0; xI--){
-					for (int xI=0; xI <= xTab.getChildren().size()-1; xI++){	
-						if (xTab.getChildren().get(xI) instanceof DBSTabPage){
-							DBSTabPage xPage = (DBSTabPage) xTab.getChildren().get(xI);
-							if (xPage.isRendered()){
-								xWriter.startElement("div", xTab);  
-									String xPageId = xPage.getAttributes().get("id").toString();
-									String xPageClientId = xClientId + DBSFaces.ID_SEPARATOR + xPageId;
-
-									DBSFaces.encodeAttribute(xWriter, "id", xPageClientId + "_aba");
-									DBSFaces.encodeAttribute(xWriter, "name", xPageClientId + "_aba");
-									DBSFaces.encodeAttribute(xWriter, "class", "-tab" + DBSFaces.CSS.THEME.FC  + DBSFaces.CSS.THEME.BC + DBSFaces.CSS.THEME.INVERT + CSS.NOT_SELECTABLE);	
-									DBSFaces.encodeAttribute(xWriter, "tabPage", xPageClientId);
-									
-									encodeClientBehaviors(pContext, xPage);
-									
-									//Marca a primiera aba como selecionada
-									if (xI==0){
-										if (xSelectedTabPage.equals("")){
-											xSelectedTabPage = xPageClientId;
-											xTab.setSelectedTabPage(xPageClientId);
-										}
-									}
-
-//									if (xPageClientId.equals(xSelectedTabPage)){
-//										xPage.setSelected(true);
-//										DBSFaces.setAttribute(xWriter, "class", CSS.MODIFIER.SELECTED, null);
-//									}
-									
-									xWriter.startElement("a", xTab);
-										if (xPage.getAjax()){
-											DBSFaces.encodeAttribute(xWriter, "style", "opacity:0.2");
-										}
-	//									xWriter.writeAttribute("ontouchstart", "javascript:void(0)", "ontouchstart"); //Para ipad ativar o css:ACTIVE
-	//									xWriter.writeAttribute("href", "#", "href"); //Para ipad ativar o css:ACTIVE
-										xWriter.startElement("span", xTab);
-											DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.ICON + xPage.getIconClass());
-										xWriter.endElement("span");
-										xWriter.startElement("span", xTab);
-											DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CAPTION);
-											xWriter.write(xPage.getCaption());
-										xWriter.endElement("span");
-									xWriter.endElement("a");
-									if (xPage.getAjax()){
-										xWriter.startElement("span", xTab);
-											DBSFaces.encodeAttribute(xWriter, "class", "loading_container");
-											xWriter.startElement("span", xTab);
-												DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.LOADING);
-											xWriter.endElement("span");
-										xWriter.endElement("span");
-									}
-								xWriter.endElement("div");
-							}
-						}
-					}
-				xWriter.endElement("div");
+				pvEncodeAba(pContext, xTab, xWriter, xSelectedTabPage);
 				
 				//Conteúdo da páginas ======================================================================================
-				xWriter.startElement("div", xTab);
-					DBSFaces.encodeAttribute(xWriter, "class", "-tabPage");
-					xWriter.startElement("div", xTab);
-						DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTENT);
-
-						//Input para salvar a pagina selecionada ====================================================
-						HtmlInputHidden xInput = (HtmlInputHidden) xTab.getFacet("input");
-						if (xInput == null){
-							xInput = (HtmlInputHidden) pContext.getApplication().createComponent(HtmlInputHidden.COMPONENT_TYPE);
-							xInput.setId(xTab.getInputId(false));
-							xTab.getFacets().put("input", xInput);
-						}
-						xInput.setValue(xSelectedTabPage);
-						xInput.encodeAll(pContext);
-
-						//Encode das páginas filhas, sem o conteúdo, pois será posteriormente chamado via atualização ajax
-//						for (int xI=xTab.getChildren().size()-1; xI >= 0; xI--){
-						for (int xI=0; xI <= xTab.getChildren().size()-1; xI++){	
-							if (xTab.getChildren().get(xI) instanceof DBSTabPage){
-								DBSTabPage xPage = (DBSTabPage) xTab.getChildren().get(xI);
-								if (xPage.isRendered()){
-									xPage.encodeBegin(pContext);
-									//Ignora o encode do conteúdo da página
-									if (!xPage.getAjax()){
-										xPage.encodeChildren(pContext);
-									}
-									xPage.encodeEnd(pContext);
-								}
-							}
-						}
-					
-//						renderChildren(pContext, xTab);
-	
-					xWriter.endElement("div");
-				xWriter.endElement("div");
+				pvEncodePage(pContext, xTab, xWriter, xSelectedTabPage);
 			xWriter.endElement("div");
 			pvEncodeJS(pComponent, xWriter);
 		xWriter.endElement("div");
@@ -189,6 +98,111 @@ public class DBSTabRenderer extends DBSRenderer {
 			}
 		}
 
+	}
+	
+	//Abas com os título ========================================================================
+	private void pvEncodeAba(FacesContext pContext, DBSTab pTab, ResponseWriter pWriter, String pSelectedTabPage) throws IOException{
+		String xClientId = pTab.getClientId(pContext);
+		pWriter.startElement("div", pTab);
+			DBSFaces.encodeAttribute(pWriter, "class", "-captions" + CSS.THEME.FLEX_COL);
+			pWriter.startElement("div", pTab);
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER + CSS.THEME.FLEX);
+	//			for (int xI=pTab.getChildren().size()-1; xI >= 0; xI--){
+				for (int xI=0; xI <= pTab.getChildren().size()-1; xI++){	
+					if (pTab.getChildren().get(xI) instanceof DBSTabPage){
+						DBSTabPage xPage = (DBSTabPage) pTab.getChildren().get(xI);
+						if (xPage.isRendered()){
+							pWriter.startElement("div", pTab);  
+								String xPageId = xPage.getAttributes().get("id").toString();
+								String xPageClientId = xClientId + DBSFaces.ID_SEPARATOR + xPageId;
+	
+								DBSFaces.encodeAttribute(pWriter, "id", xPageClientId + "_aba");
+								DBSFaces.encodeAttribute(pWriter, "name", xPageClientId + "_aba");
+								DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CAPTION + CSS.THEME.FLEX_COL + CSS.NOT_SELECTABLE + CSS.THEME.BC + CSS.THEME.FC + CSS.THEME.INVERT);	
+								DBSFaces.encodeAttribute(pWriter, "tabPageid", xPageClientId);
+								
+								encodeClientBehaviors(pContext, xPage);
+								
+								//Marca a primiera aba como selecionada
+								if (xI==0){
+									if (pSelectedTabPage.equals("")){
+										pSelectedTabPage = xPageClientId;
+										pTab.setSelectedTabPage(xPageClientId);
+									}
+								}
+	
+	//							if (xPageClientId.equals(xSelectedTabPage)){
+	//								xPage.setSelected(true);
+	//								DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.SELECTED, null);
+	//							}
+								
+								pWriter.startElement("a", pTab);
+									if (xPage.getAjax()){
+										DBSFaces.encodeAttribute(pWriter, "style", "opacity:0.2");
+									}
+	//									pWriter.writeAttribute("ontouchstart", "javascript:void(0)", "ontouchstart"); //Para ipad ativar o css:ACTIVE
+	//									pWriter.writeAttribute("href", "#", "href"); //Para ipad ativar o css:ACTIVE
+									pWriter.startElement("span", pTab);
+										DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.ICON + xPage.getIconClass());
+									pWriter.endElement("span");
+									pWriter.startElement("span", pTab);
+										DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.VALUE);
+										pWriter.write(xPage.getCaption());
+									pWriter.endElement("span");
+								pWriter.endElement("a");
+								if (xPage.getAjax()){
+									pWriter.startElement("span", pTab);
+										DBSFaces.encodeAttribute(pWriter, "class", "loading_container");
+										pWriter.startElement("span", pTab);
+											DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LOADING);
+										pWriter.endElement("span");
+									pWriter.endElement("span");
+								}
+							pWriter.endElement("div");
+						}
+					}
+				}
+			pWriter.endElement("div");
+		pWriter.endElement("div");
+	}
+
+	//Abas com os título ========================================================================
+	private void pvEncodePage(FacesContext pContext, DBSTab pTab, ResponseWriter pWriter, String pSelectedTabPage) throws IOException{
+		pWriter.startElement("div", pTab);
+			DBSFaces.encodeAttribute(pWriter, "class", "-tabPages" + CSS.THEME.FLEX_COL);
+			pWriter.startElement("div", pTab);
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
+	
+				//Input para salvar a pagina selecionada ====================================================
+				HtmlInputHidden xInput = (HtmlInputHidden) pTab.getFacet("input");
+				if (xInput == null){
+					xInput = (HtmlInputHidden) pContext.getApplication().createComponent(HtmlInputHidden.COMPONENT_TYPE);
+					xInput.setId(pTab.getInputId(false));
+					pTab.getFacets().put("input", xInput);
+				}
+				xInput.setValue(pSelectedTabPage);
+				xInput.encodeAll(pContext);
+	
+				//Encode das páginas filhas, sem o conteúdo, pois será posteriormente chamado via atualização ajax
+	//			for (int xI=pTab.getChildren().size()-1; xI >= 0; xI--){
+				for (int xI=0; xI <= pTab.getChildren().size()-1; xI++){	
+					if (pTab.getChildren().get(xI) instanceof DBSTabPage){
+						DBSTabPage xPage = (DBSTabPage) pTab.getChildren().get(xI);
+						if (xPage.isRendered()){
+							xPage.encodeBegin(pContext);
+							//Ignora o encode do conteúdo da página
+							if (!xPage.getAjax()){
+								xPage.encodeChildren(pContext);
+							}
+							xPage.encodeEnd(pContext);
+						}
+					}
+				}
+			
+	//			renderChildren(pContext, pTab);
+	
+			pWriter.endElement("div");
+		pWriter.endElement("div");
 	}
 	
 	/**

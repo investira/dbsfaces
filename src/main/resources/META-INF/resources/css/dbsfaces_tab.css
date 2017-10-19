@@ -1,117 +1,144 @@
 .dbs_tab {}
 
 .dbs_tab > .-container{
-/* 	padding-top: 2px; */
-	display: inline-block; /*INcluido em 15/07/2013 por Ricardo, pois */
-	text-align: left;
 	position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-flex-flow: column nowrap;
+    -moz-flex-flow: column nowrap;
+    flex-flow: column nowrap;
+    -webkit-justify-content: flex-start;
+    -moz-justify-content: flex-start;
+    justify-content: flex-start;
+    -webkit-transition: opacity .2s;
+    -moz-transition: opacity .2s;
+    -o-transition: opacity .2s;
+    transition: opacity .2s;
+    opacity: 1;
 }
 
-.dbs_tab > .-container, 
-.dbs_tab > .-container > .-tabPage, 
-.dbs_tab > .-container > .-tabPage > .-content{
-	width: 100%;
+
+
+.dbs_tab > .-container > .-captions{
+    -webkit-flex: 0 1 1em;
+    -moz-flex: 0 1 1em;
+    flex: 0 1 1em;
+    -webkit-align-self: start;
+    -moz-align-self: start;
+    align-self: start;
+}
+
+.dbs_tab > .-container > .-captions > .-container{
+    -webki-flex-wrap: nowrap;
+    -moz-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+	height: 2em;
+}
+
+.dbs_tab > .-container > .-captions > .-container > .-caption{
+    text-align: center;
+    cursor: pointer;
+    -webkit-flex: 1 1 auto;
+    -moz-flex: 1 1 auto;
+    flex: 1 1 auto;
+/* 	border-width: 1px 1px 1px 0; */
+/*     border-style: solid; */
+    border-width: 0;
+    border-radius: none;
+	padding: 0.1em .7em;
+}
+
+.dbs_tab > .-container > .-captions > .-container > .-caption:first-child {
+    border-radius: .3em 0 0 .3em;
+}
+.dbs_tab > .-container > .-captions > .-container > .-caption:last-child {
+    border-radius: 0 .3em .3em 0;
+}
+
+.dbs_tab > .-container > .-captions > .-container > .-caption:not(:first-child):before,
+.dbs_tab > .-container > .-captions > .-container > .-caption:first-child:after,
+.dbs_tab > .-container > .-captions > .-container > .-caption:not(:last-child):after,
+.dbs_tab > .-container > .-captions > .-container > .-caption:last-child:before{
+	content: "";
+	position: absolute;
 	height: 100%;
-} 	
+	top: 0;
+	border-style: solid;
+}
+.dbs_tab > .-container > .-captions > .-container > .-caption:not(:first-child):before,
+.dbs_tab > .-container > .-captions > .-container > .-caption:last-child:before{
+	border-width: 0 0 0 1px;
+	border-color: rgba(255,255,255,.32);
+	left:0;
+}
+.dbs_tab > .-container > .-captions > .-container > .-caption:not(:last-child):after,
+.dbs_tab > .-container > .-captions > .-container > .-caption:first-child:after{
+	border-width: 0 1px 0 0;
+	border-color: rgba(0,0,0,.32);
+	right:0;
+}
 
-.dbs_tab > .-container > .-tabPage{
-	top:0;
-	margin-top: -1.6em; /*Utilizar o tamanho do título da aba*/
-	padding-top: 1.6em; /*Utilizar o tamanho do título da aba*/
-} 	
 
-.dbs_tab > .-container > .-tabPage > .-content{
-	display: inline-block;
+.dbs_tab > .-container > .-captions > .-container > .-caption.-selected{
+    background: transparent !important;
+	color: unset !important;
+}
 
-    border-top: 0px;
-    border-left: 1px;
-    border-right: 1px;
-    border-bottom: 1px;
-    -webkit-border-radius: 0px 0px .3em .3em;
-    -moz-border-radius: 0px 0px .3em .3em;
-    border-radius: 0px 0px .3em .3em;
-    border-style: solid;
-    border-color: rgb(210,210,210);
-    overflow: hidden;
-} 	
+.dbs_tab > .-container > .-captions > .-container > .-caption:not(.-selected){
+    border-width: 0;
+}
+    
 
-.dbs_tab > .-container > .-tabs{
-/* 	display:inline-block; */
-    display: block;
-    height: 1.6em; /*Tamanho do título da aba. Ver também .dbs_tab > .-container > .-tabPage*/
+.dbs_tab > .-container > .-captions > .-container > .-caption > a {
     position: relative;
-    text-align: left;
-   	white-space: pre; /* retira spaços em branco entre o título de as páginas(Problema causado por Strict DOCTYPE */
-/*    	z-index: 1; comentado em 24/02/2015 - Ricardo. Estava sobreponto o menu*/
-}	
-
-
-.dbs_tab > .-container > .-tabs > .-tab{
-	position:relative;
-/*    	z-index: 1; comentado em 24/02/2015 - Ricardo. Estabva sobreponto o menu*/
-	display:inline-block;
-	height: 100%;
-	padding-left: .6em;
-    padding-right: .6em;
-/* 	float:right; */
-    margin: 0px -.5em 0px 0px;
-	border-top: 1px;
-	border-left: 1px;
-	border-right: 1px;
-	border-bottom: 0px;
-	border-color: rgb(140,140,140);
-	border-style: solid;
-
-	font-weight: normal;
-    text-shadow: none;
-	cursor: pointer;
-	-webkit-border-radius: 0px .3em 0px 0px;  
-	-moz-border-radius: 0px .3em 0px 0px;
-	border-radius:0px .3em 0px 0px;
-	
-	background-image: url("#{request.contextPath}/images/back_texture_black.png"); /*IE*/
-	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjQiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=),url("#{request.contextPath}/images/back_texture_black.png");
-	background: -moz-linear-gradient(top, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%), url("#{request.contextPath}/images/back_texture_black.png"); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0.4)), color-stop(100%,rgba(255,255,255,0))), url("#{request.contextPath}/images/back_texture_black.png"); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, rgba(255,255,255,0.4) 0%,rgba(255,255,255,0) 100%), url("#{request.contextPath}/images/back_texture_black.png"); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, rgba(255,255,255,0.4) 0%,rgba(255,255,255,0) 100%), url("#{request.contextPath}/images/back_texture_black.png"); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top, rgba(255,255,255,0.4) 0%,rgba(255,255,255,0) 100%), url("#{request.contextPath}/images/back_texture_black.png"); /* IE10+ */
-	background: linear-gradient(top, rgba(255,255,255,0.4) 0%,rgba(255,255,255,0) 100%), url("#{request.contextPath}/images/back_texture_black.png"); /* W3C */
-}	
-
-
-.dbs_tab > .-container > .-tabs > .-tab.-selected{
-	z-index: 1;
-	border-top: 1px;
-	border-left: 1px;
-	border-right: 1px;
-	border-bottom: 0px;
-	border-style: solid;
-	text-shadow: none;
-	border-color: rgb(210,210,210);
-/* 	display:block; */
-	position:relative;
-	background: rgb(245,245,245);
+	display: inline-block;
+    top: calc(50% - .6em);
 }
-.dbs_tab > .-container > .-tabs > .-tab > a {
-	display: block;
-	height: 100%;
-	width: 100%;	
+
+.dbs_tab > .-container > .-captions > .-container > .-caption > a > .-icon:before{
+/*     position: relative; */
+/* 	font-size: 1em; */
+/*     top: .1em; */
+}
+.dbs_tab > .-container > .-captions > .-container > .-caption > a > .-icon{
+/*   	float: left; */
+/*     position: relative; */
+/*     top: .05em;	 */
+/*     position: relative; */
+/*     font-size: .9em; */
+/*     top: .1em; */
+/* 	position: absolute; */
+/*     font-size: 1.45em; */
+/*     top: .1em; */
+
+    float: left;
+    line-height: 1em;
+/*     position: relative; */
+/*     display: inline-block; */
+/*     top: .15em; */
+}
+.dbs_tab > .-container > .-captions > .-container > .-caption > a > .-icon:after{
+	content: "";
+	clear: both;
+}
+
+.dbs_tab > .-container > .-captions > .-container > .-caption > a > .-value{
+/* 	vertical-align: middle; */
 }
 
 
-.dbs_tab > .-container > .-tabs > .-tab > .loading_container{
+.dbs_tab > .-container > .-captions > .-container > .-caption > .loading_container{
 	position: absolute;
 	display: block;
 	top: 0px;
 	left: 50%;
 	padding: 1em;
 	margin-left: -.6em;
-/* 	padding: 10px; */
-/* 	margin-left: -6px; */
 }
 
-.dbs_tab > .-container > .-tabs > .-tab > .loading_container .-loading{
+.dbs_tab > .-container > .-captions > .-container > .-caption > .loading_container .-loading{
 	-ms-filter: invert(100%);
     -o-filter: invert(100%);
     -moz-filter: invert(100%);
@@ -119,40 +146,43 @@
     filter: invert(100%);
 }
 
-.dbs_tab > .-container > .-tabs > .-tab > a > .-icon{
-  	float: left;
+.dbs_tab > .-container > .-tabPages{
+	display: inline-block;
     position: relative;
-/*     top: 2px */
-    top: .1em;	
-}
+    padding: 0.4em;
+    -webkit-flex: 1 1 1em;
+    -moz-flex: 1 1 1em;
+    flex: 1 1 1em;
+	overflow: auto;
+} 	
 
-.dbs_tab > .-container > .-tabs > .-tab > a > .-caption{
-	float:left;
-	color:inherit;
-	display:inline-block;
-	line-height: 100%;
-/* 	padding-top:4px; */
-/* 	padding-left:4px; */
-/* 	padding-right:2px; */
-	padding-top: .2em;
-    padding-left: .2em;
-    padding-right: .1em;
-}
+.dbs_tab > .-container > .-tabPages > .-content{
+	display: inline-block;
+    width: 100%;
+    height: 100%;
+	position: relative;
+} 	
 
-.dbs_tab > .-container > .-tabs > .-tab > a.-iconclose{
-	display:inline-block;
-	position:relative;
-/* 	margin-left:6px; */
-/* 	left:1px; */
-/* 	top:4px; */
-	margin-left: .6em;
-	left: .1em;
-	top: .4em;
-}
 
-.dbs_tab > .-container > .-tabs > .-tab > a.-iconclose:HOVER{
-	background-position: -33px -0px;
-}
 
+@media screen and (min-width: 320px) {
+	.dbs_tab > .-container{
+	    border-radius: .3em .3em 0 0;
+	    border-width: 1px;
+		border-style: solid;
+/* 	    border-style: outset; */
+	    
+		border-bottom-color: rgba(50,50,50,0.4);
+		border-right-color: rgba(50,50,50,0.4);
+		border-top-color: rgba(200,200,200,0.4);
+		border-left-color: rgba(200,200,200,.4);
+	}
+	.dbs_tab > .-container > .-captions > .-container > .-caption:first-child {
+	    border-radius: .3em 0 0 0;
+	}
+	.dbs_tab > .-container > .-captions > .-container > .-caption:last-child {
+	    border-radius: 0 .3em 0 0;
+	}
+}
 
 
