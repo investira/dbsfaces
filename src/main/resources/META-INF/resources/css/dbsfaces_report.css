@@ -10,17 +10,17 @@
 
 
 .dbs_report > div {
-	background-image: url("#{request.contextPath}/images/back_texture_white.png");
-	background-repeat: repeat;
-	background-color: rgba(0, 0, 0, 0.05);
+/* 	background-image: url("#{request.contextPath}/images/back_texture_white.png"); */
+/* 	background-repeat: repeat; */
+/* 	background-color: rgba(0, 0, 0, 0.05); */
 }
 
 
 .dbs_report > .-content:first-child {
 	border-width: 0px;
-	-moz-border-radius: 3px 3px 0px 0px;
-  	-webkit-border-radius: 3px 3px 0px 0px;
-	border-radius:3px 3px 0px 0px;
+	-moz-border-radius: .3em .3em 0px 0px;
+  	-webkit-border-radius: .3em .3em 0px 0px;
+	border-radius: .3em .3em 0px 0px;
 }
 
 .dbs_report > .-content{
