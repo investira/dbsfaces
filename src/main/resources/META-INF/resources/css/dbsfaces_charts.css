@@ -39,54 +39,52 @@
 /* 	visibility: hidden; */
 }
 .dbs_charts > .-container > .-caption,
+.dbs_charts > .-container > .-filter,
 .dbs_charts > .-container > .-childrenCaption,
 .dbs_charts > .-container > .-footer{
-    -webkit-flex: 1 1 1em;
-    -moz-flex: 1 1 1em;
-    flex: 1 1 1em;
+    -webkit-flex: 0 1 1em;
+    -moz-flex: 0 1 1em;
+    flex: 0 1 1em;
+/*     -webkit-flex: 1 1 1em; */
+/*     -moz-flex: 1 1 1em; */
+/*     flex: 1 1 1em; */
 }
+
 
 .dbs_charts > .-container > .-caption{
-	text-align: left;	
+	text-align: left;
+	font-weight: bold;
+    line-height: 1.5;	
 }
 
+.dbs_charts > .-container > .-filter{
+	padding: .3em 0 .3em 0;
+}
 .dbs_charts > .-container > .-childrenCaption{
 	
 }
-.dbs_charts > .-container > .-childrenCaption > .-container{
-	
-}
 
+.dbs_charts > .-container > .-childrenCaption > .-container{
+}
 
 .dbs_charts > .-container > .-childrenCaption > .-container > .-caption{
-/*     margin: .1em; */
-    border: 1px;
-	border-style: solid;
-    border-radius: .3em;
-	font-weight: bold;
-	text-align: center;
-	cursor: pointer;	
-	-webkit-flex: 1 1 1em;
-	-moz-flex: 1 1 1em;
-	flex: 1 1 1em;
-}
-.dbs_charts > .-container > .-childrenCaption > .-container > .-caption:not(last-child){
-	margin-right: .1em;
+    cursor: pointer;
+	padding: 0.1em .7em;
 }
 
-.dbs_charts > .-container > .-childrenCaption > .-container > .-caption:not(.-selected){
+.dbs_charts > .-container > .-childrenCaption > .-container > .-caption.-selected{
     background: transparent !important;
+    color: unset !important;
 }
     
 .dbs_charts > .-container > .-childrenCaption > .-container > .-caption > .-text{
 }
 
 .dbs_charts > .-container > .-childrenCaption > .-container > .-caption.-selected > .-text{
-	color: inherit !important;
 }
 
 .dbs_charts > .-container > .-childrenCaption > .-container > .-caption:not(.-selected) > .-text{
-	background-color: transparent;
+	color: inherit !important;
 }
 
 .dbs_charts > .-container > .-charts{
@@ -95,13 +93,9 @@
 	-webkit-flex: 1 1 100%;
 	-moz-flex: 1 1 100%;
 	flex: 1 1 100%;
-    border: 1px solid rgba(0,0,0,.1);
 	top: 0;
 	left: 0;
-    border-radius: .5em;
     box-sizing: border-box;
-	background-color: rgba(0,0,0,.03);
-/* 	padding: .3em; */
 }
 
 .dbs_charts.-hover > .-container > .-charts > .dbs_chart.-bar:not(.-selected){
