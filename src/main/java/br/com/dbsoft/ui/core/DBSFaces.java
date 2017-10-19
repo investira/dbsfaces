@@ -272,6 +272,7 @@ public class  DBSFaces {
 			public static final String VERTICAL_LINE_AFTER = " -th_lineVerticalAfter ";
 			public static final String FLEX = " -th_flex ";
 			public static final String FLEX_COL = " -th_col ";
+			public static final String BUTTONS_STRIP = " -th_buttons_strip ";
 		}
 		
 		
