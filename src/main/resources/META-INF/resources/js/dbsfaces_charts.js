@@ -256,6 +256,11 @@ dbsfaces.charts = {
 	},
 	
 	pvInitializeDraw: function(pChartsData){
+		if (pChartsData.height < 5
+		 || pChartsData.width < 5){
+//			pChartsData.dom.childrenCaptionContainer.append( "<p>Dimensões mínimas são 5px,5px.<br/>Espaços está com " + pChartsData.width + "px, " + pChartsData.height + "px</p>" );;
+			return;
+		}
 		//Loop em todos os gráficos
 		pChartsData.globalSequencesCount = 0;
 		pChartsData.dom.childrenData.forEach(function(pChartData){
@@ -817,8 +822,10 @@ dbsfaces.charts = {
 				if (pChartData.dom.caption != null){
 					pChartData.dom.captionText.css("color", xColor);
 					pChartData.dom.caption.css("background-color", xColor)
-										  .css("border-color", pChartData.colorTransparent)
 										  .css("color", pChartData.colorInverted);
+//					pChartData.dom.caption.css("background-color", xColor)
+//					  .css("border-color", pChartData.colorTransparent)
+//					  .css("color", pChartData.colorInverted);
 				}
 				//Define colores dos chartvalue
 				pChartData.dom.childrenData.forEach(function(pChartValueData, pI){
