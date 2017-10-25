@@ -317,10 +317,10 @@
 }
 
 .dbs_slider.-h > .-container > .-content > .-sub_container > .-handle{
-    top: 0em;
+	top: -0.05em;
 }
 .dbs_slider.-h.-i > .-container > .-content > .-sub_container > .-handle{
-    top: 1.6em;
+    top: 1.66em;
 }
 
 .dbs_slider.-v > .-container > .-content > .-sub_container > .-handle{
