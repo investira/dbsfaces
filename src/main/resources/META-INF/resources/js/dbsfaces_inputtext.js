@@ -2,12 +2,8 @@ dbs_inputText = function(pId) {
 	var wSearching = false;
 	var wBlur = false;
 
-	dbsfaces.inputText.initialize($(pId));
+	var xInputTextData = dbsfaces.inputText.initialize($(pId));
 	
-	$(pId + " input").focusin(function(e){
-		wSearching = false;
-		dbsfaces.ui.selectAll(this);
-	});
 
 	//Verificar caixa da digitação
 //	$(pId + "-data.-upper").keydown(function(e){
@@ -26,18 +22,26 @@ dbs_inputText = function(pId) {
 //		dbsfaces.inputText.letterCase(pId, $(this), e,"upperfirst");
 //	});	
 	
-	$(pId + " > .-container > .-input > .-th_input-data").focus(function(e){
-		$(pId + "-suggestion").addClass("-th_input-data-FOCUS");
+//	$(pId + " input").focusin(function(e){
+	xInputTextData.dom.inputData.focusin(function(e){
+		wSearching = false;
+		dbsfaces.ui.selectAll(this);
+	});
+
+//	$(pId + " > .-container > .-input > .-th_input-data").focus(function(e){
+	xInputTextData.dom.inputData.focus(function(e){
+		xInputTextData.dom.suggestion.addClass("-th_input-data-FOCUS");
 	});
 	
 	
-	$(pId + " > .-container > .-input > .-th_input-data").blur(function(e){
-		$(pId + "-suggestion").removeClass("-th_input-data-FOCUS");
+//	$(pId + " > .-container > .-input > .-th_input-data").blur(function(e){
+	xInputTextData.dom.inputData.blur(function(e){
+		xInputTextData.dom.suggestion.removeClass("-th_input-data-FOCUS");
 		dbsfaces.ui.selectNone(this);
 		wTime = +new Date();
 
 		//Esconde a lista
-		dbsfaces.inputText.hideList(pId);
+		dbsfaces.inputText.hideList(xInputTextData);
 
 		//Omite blur caso pesquisa esteja em execução
 		//Irá disparar após recebimento da resposta
@@ -46,32 +50,34 @@ dbs_inputText = function(pId) {
 			e.stopPropagation();
 			e.stopImmediatePropagation();
 		}else{
-			dbsfaces.inputText.validateNullText(pId);
+			dbsfaces.inputText.validateNullText(xInputTextData);
 		}
 	});
 
+	
 	/* copia a sugestão para o input ou navega pela lista de sugestões*/
-	$(pId + " > .-container > .-input > .-th_input-data").keydown(function(e){
+//	$(pId + " > .-container > .-input > .-th_input-data").keydown(function(e){
+	xInputTextData.dom.inputData.keydown(function(e){
 		//Confirma sugestão com tab e seta para a direita
 		if ((e.which == 13 || //ENTER
 			 e.which == 39) && //RIGHT
 			$(this).get(0).selectionEnd == $(this).val().length) { //Se o cursor estiver no final do texto digitado pelo usuário
 			e.stopImmediatePropagation();
-			dbsfaces.inputText.acceptSuggestion(pId);
+			dbsfaces.inputText.acceptSuggestion(xInputTextData);
 			if (e.which == 13){
-				dbsfaces.inputText.hideList(pId);
+				dbsfaces.inputText.hideList(xInputTextData);
 				return false;
 			}
 		//Navega na lista de sugestões	
 		}else if(e.which==40   //DOWN
 			  || e.which==38){ //UP
 			//Se existe suggestion, controla a exibição e a navegação
-			if (dbsfaces.inputText.isSuggestion(pId)){
+			if (dbsfaces.inputText.isSuggestion(xInputTextData)){
 				e.preventDefault();
 				e.stopPropagation();
 				//Exibe suggestions no primeiro click
-				if ($(pId + "-list").css("display") == "none"){
-					dbsfaces.inputText.showList(pId);
+				if (xInputTextData.dom.list.css("display") == "none"){
+					dbsfaces.inputText.showList(xInputTextData);
 				}else{
 					//Navega na lista de sugestões
 					dbsfaces.dataTable.moveToNextOrPreviousRow(pId + "-dataTable", e.which);
@@ -81,7 +87,7 @@ dbs_inputText = function(pId) {
 		}else{
 			if (dbsfaces.inputText.isValidKey(e)){
 				//Apaga sugestão, pois será efetuada uma nova pesquisa no keyup
-				dbsfaces.inputText.clearSuggestion(pId);
+				dbsfaces.inputText.clearSuggestion(xInputTextData);
 			}
 			//Limpa campo da posição do cursos até o fim
 			if (e.which == 8){ //BACKSPACES
@@ -91,93 +97,111 @@ dbs_inputText = function(pId) {
 	});
 	
 	//Faz a pesquisa ===================================================
-	$(pId + " > .-container > .-input").keyup(function(e){
-		if (dbsfaces.inputText.isValidKey(e)){
-			dbsfaces.inputText.requestSuggestion(pId);
-		}
-	});
-
-	$(pId + " > .-container > .-input > .-th_input-data").on("paste", function(e){
-		dbsfaces.inputText.requestSuggestion(pId);
+//	$(pId + " > .-container > .-input > .-th_input-data").on("paste", function(e){
+	xInputTextData.dom.inputData.on("paste", function(e){
+		dbsfaces.inputText.requestSuggestion(xInputTextData);
 		
 	});
 
 	//Click o icone de pesquisar
-	$(pId + " > .-container > .-input > .-i_find").on("click", function(e){
-		if ($(pId + "-list").css("display") == "none"){
-			dbsfaces.inputText.showList(pId);
-			$(pId + "-data").focus();
+	xInputTextData.dom.inputFind.on("click", function(e){
+		if (xInputTextData.dom.list.css("display") == "none"){
+			dbsfaces.inputText.showList(xInputTextData);
+			xInputTextData.dom.inputData.focus();
 		}else{
-			dbsfaces.inputText.hideList(pId);
+			dbsfaces.inputText.hideList(xInputTextData);
 		}
 		return false;
 	});
 	
 	//Inicia pesquisa de dados
-	$(pId + "-submit").on(dbsfaces.EVENT.ON_AJAX_BEGIN, function(e){
+//	$(pId + "-submit").on(dbsfaces.EVENT.ON_AJAX_BEGIN, function(e){
+	xInputTextData.dom.submit.on(dbsfaces.EVENT.ON_AJAX_BEGIN, function(e){
 		wSearching = true;
 
-		$(pId + " > .-container > .-input").append("<div class='-loading'></div>");
-		$(pId + " > .-container > .-input > .-i_find").hide();
+		xInputTextData.dom.input.append("<div class='-loading'></div>");
+		xInputTextData.dom.inputFind.hide();
 		e.stopImmediatePropagation();
 	});
 	
 	//Recebe a resposta da requisição da sugestão
-	$(pId + "-submit").on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
+//	$(pId + "-submit").on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
+	xInputTextData.dom.submit.on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
 		wSearching = false;
 		
 		//Dispara o blur caso tenha sido ignorado originalmente
 		if (wBlur){
-			dbsfaces.inputText.triggerBlur(pId);
+			dbsfaces.inputText.triggerBlur(xInputTextData);
 		}
-
-		$(pId + " > .-container > .-input > .-loading").remove();
-		$(pId + " > .-container > .-input > .-i_find").show();
-		dbsfaces.inputText.fixLayout(pId);
-		dbsfaces.inputText.showFirstSuggestion(pId);
+		xInputTextData.dom.input.children(".-loading").remove();
+		xInputTextData.dom.inputFind.show();
+		dbsfaces.inputText.fixLayout(xInputTextData);
+		dbsfaces.inputText.showFirstSuggestion(xInputTextData);
 		
 		e.stopImmediatePropagation();
 	});
-	
+
+//	$(pId + " > .-container > .-input").keyup(function(e){
+	xInputTextData.dom.input.keyup(function(e){
+		if (dbsfaces.inputText.isValidKey(e)){
+			dbsfaces.inputText.requestSuggestion(xInputTextData);
+		}
+	});
+
 	//Item selecionado da lista
-	$(pId + " > .-container > .-input").on(dbsfaces.EVENT.ON_ROW_SELECTED, ".-list", function(e, pRow){
-		dbsfaces.inputText.suggestionReceived(pId, pRow, true);
+//	$(pId + " > .-container > .-input").on(dbsfaces.EVENT.ON_ROW_SELECTED, ".-list", function(e, pRow){
+	xInputTextData.dom.input.on(dbsfaces.EVENT.ON_ROW_SELECTED, ".-list", function(e, pRow){
+		dbsfaces.inputText.suggestionReceived(xInputTextData, pRow, true);
 	});
 	
 	//Seta foco na lista
-	$(pId + " > .-container > .-input").on("click", ".-list", function(e){
-		$(pId + "-data").focus();
+//	$(pId + " > .-container > .-input").on("click", ".-list", function(e){
+	xInputTextData.dom.input.on("click", ".-list", function(e){
+		xInputTextData.dom.inputData.focus();
 		
-		$(this).css("opacity","0");					
+		xInputTextData.dom.self.css("opacity","0");					
 		setTimeout(function() {
-			$(pId + "-list").hide();
+			xInputTextData.dom.list.hide();
 	  	}, 300);
 	});
 
 	
 	//Validação inicial
-	dbsfaces.inputText.validateNullText(pId);
+	dbsfaces.inputText.validateNullText(xInputTextData);
 
-	dbsfaces.inputText.fixLayout(pId);
+	dbsfaces.inputText.fixLayout(xInputTextData);
 		
 }
 
 
 dbsfaces.inputText = {
-		
+	
 	initialize: function(pInputText){
-		dbsfaces.inputText.pvInitializeData(pInputText);
+		var xInputTextData = dbsfaces.inputText.pvInitializeData(pInputText);
+		return xInputTextData; 
 	},
 
 	pvInitializeData: function(pInputText){
+		var xId = dbsfaces.util.jsid(pInputText[0].id);
 		var xData = {
 			dom : {
-				self: pInputText //O próprio slider
+				self: pInputText, //O próprio slider
+				input: $(xId + " > .-container > .-input"),
+				inputData: $(xId + "-data"),
+				inputFind: null,
+				suggestion: $(xId + "-suggestion"),
+				suggestionKey: $(xId + "-suggestion-key"),
+				list: $(xId + "-list"),
+				dataTable: $(xId + "-dataTable"),
+				submit: $(xId + "-submit")
 			},
 			type : pInputText.attr("type"),
-			time : null,
+			nullText: null,
+			time : +new Date(),
 			timeout : null
 		}
+		xData.dom.inputFind = xData.dom.input.children(".-i_find");
+		xData.nullText = xData.dom.suggestionKey.attr("nulltext");
 		pInputText.data("data", xData);
 		return xData;
 	},
@@ -185,15 +209,12 @@ dbsfaces.inputText = {
 	wTime: +new Date(),
 	wTimeout: 0,
 
-	requestSuggestion: function(pId){
-		dbsfaces.inputText.clearSuggestion(pId);
+	requestSuggestion: function(pInputTextData){
+		dbsfaces.inputText.clearSuggestion(pInputTextData);
 		//Não faze pesquisa se valor for vázio
-		var xValue = $.trim($(pId + "-data").val());
-		var xNullText = $(pId + "-suggestion-key").attr("nulltext");
-		if (xValue==""
-		 || xValue==xNullText){
-			return;
-		}
+		var xValue = pInputTextData.dom.inputData.val().trim();
+		if (dbsfaces.inputText.pvIsNullText(pInputTextData, xValue)){return;}
+
 		/* delay para evitar chamadas ajax contantes */
 		if (dbsfaces.inputText.wTime == 0){
 			dbsfaces.inputText.wTime = +new Date();
@@ -205,7 +226,7 @@ dbsfaces.inputText = {
 			}
 			//Aguarda um tempo para chamar a rotina de sugestão
 			dbsfaces.inputText.wTimeOut = window.setTimeout(function(){
-				$(pId + "-submit").click();
+				pInputTextData.dom.submit.click();
 				//Substituir o botão por uma chamada ajax. Estudar pq a chama ajax abaixo não funciona
 //				jsf.ajax.request($(pId + "-submit"), "click", {execute: $(pId).get(0).id, render: $(pId).get(0).id + "-list", onevent:dbsfaces.onajax, onerror:dbsfaces.onajaxerror}); 
 //				return false;
@@ -213,108 +234,113 @@ dbsfaces.inputText = {
 		}
 	},
 
-	clearSuggestion: function(pId){
-		$(pId + "-suggestion").val("");
-		$(pId + "-suggestion-key").attr("key", "");
+	clearSuggestion: function(pInputTextData){
+		pInputTextData.dom.suggestion.val("");
+		pInputTextData.dom.suggestionKey.attr("key", "");
 		//Verifica se houve mudança antes de disparar evento
-		if ($(pId + "-suggestion-key").val() != ""){
-			$(pId + "-suggestion-key").val("");
-			dbsfaces.inputText.triggerChange(pId);
+		if (pInputTextData.dom.suggestionKey.val() != ""){
+			pInputTextData.dom.suggestionKey.val("");
+			dbsfaces.inputText.triggerChange(pInputTextData);
 		};
-		dbsfaces.inputText.validate(pId);
+		dbsfaces.inputText.validate(pInputTextData);
 	},
 
-	acceptSuggestion: function(pId){
-		var xSuggestionValue = $.trim($(pId + "-suggestion").val());
+	acceptSuggestion: function(pInputTextData){
+		var xSuggestionValue = pInputTextData.dom.suggestion.val().trim();
 		//Verifica se houve mudança antes de disparar evento
-		if ($(pId + "-suggestion-key").val() != $(pId + "-suggestion-key").attr("key")){
+		if (pInputTextData.dom.suggestionKey.val() != pInputTextData.dom.suggestionKey.attr("key")){
 			//Seta valor selecionado
-			$(pId + "-suggestion-key").val($(pId + "-suggestion-key").attr("key"));
-			$(pId + "-data").val(xSuggestionValue);
-			dbsfaces.inputText.triggerChange(pId);
+			pInputTextData.dom.suggestionKey.val(pInputTextData.dom.suggestionKey.attr("key"));
+			pInputTextData.dom.inputData.val(xSuggestionValue);
+			dbsfaces.inputText.triggerChange(pInputTextData);
 		};
-		dbsfaces.inputText.validate(pId);
+		dbsfaces.inputText.validate(pInputTextData);
 	},
 	
 	//Copia valor da lista para a sugestão
-	suggestionReceived: function(pId, pRow, pFromRowSelected){
+	suggestionReceived: function(pInputTextData, pRow, pFromRowSelected){
 		//Se encontrou alguma sugestão
-		if ($(pRow).length > 0){
-			var xRowKey = $(pRow).find('td .-key');
-			var xRowValue = $(pRow).children('td.-dv');
-			var xSuggestionValue = $.trim($(xRowValue).text());
-			var xSuggestionKey = $.trim($(xRowKey).text());
-			var xValue = $.trim($(pId + "-data").val());
+		var xRow = $(pRow);
+		if (xRow.length > 0){
+			var xRowKey = xRow.find('td .-key');
+			var xRowValue = xRow.children('td.-dv');
+			var xSuggestionValue = $(xRowValue).text().trim();
+			var xSuggestionKey = $(xRowKey).text().trim();
+			var xValue = pInputTextData.dom.inputData.val().trim();
 			//Se não foi seleção da linha a partir da lista de sugestões, verifica se inicio do texto recebido é iqual a texto digitado.
 			//Se não for, ignora sugestão recebida
 			if (!pFromRowSelected){
 				var xSuggestionValueTrunc = xSuggestionValue.substr(0, xValue.length);
 				//Apaga sugestão se inicio do texto recebido não for iqual ao digitado.
-				if (xSuggestionValueTrunc!=xValue){
-					dbsfaces.inputText.clearSuggestion(pId);
+				if (xSuggestionValueTrunc.toUpperCase() != xValue.toUpperCase()){
+					dbsfaces.inputText.clearSuggestion(pInputTextData);
 					return;
+				}else{
+					pInputTextData.dom.inputData.val(xSuggestionValueTrunc);
 				} 
 			}
-			$(pId + "-suggestion-key").attr("key", xSuggestionKey);
-			$(pId + "-suggestion").val(xSuggestionValue);
+			pInputTextData.dom.suggestionKey.attr("key", xSuggestionKey);
+			pInputTextData.dom.suggestion.val(xSuggestionValue);
 			//Se texto digitado já for igual a sugestão ou
 			//foi seleção a partir da lista de sugestões, aceita a sugestão automaticamente
 			if (pFromRowSelected 
 			|| xValue == xSuggestionValue){
-				dbsfaces.inputText.acceptSuggestion(pId);
+				dbsfaces.inputText.acceptSuggestion(pInputTextData);
 			}
 		//Se não encontrou alguma sugestão
 		}else{
-			dbsfaces.inputText.clearSuggestion(pId);
+			dbsfaces.inputText.clearSuggestion(pInputTextData);
 		}
 		
 	},
 
-	showFirstSuggestion: function(pId){
+	showFirstSuggestion: function(pInputTextData){
 		//Le primeiro item da lista
-		var xRow = $(pId + "-dataTable tbody").find("tr:first");
+//		var xRow = $(pId + "-dataTable tbody").find("tr:first");
+		var xRow = pInputTextData.dom.dataTable.find("tbody").find("tr:first");
 
-		dbsfaces.inputText.suggestionReceived(pId, xRow, false);
+		dbsfaces.inputText.suggestionReceived(pInputTextData, xRow, false);
 	},
 
-	validate: function(pId){
+	validate: function(pInputTextData){
 		//Sai caso input não seja do tipo que controla suggestion
-		if (dbsfaces.inputText.isSuggestion(pId)){
+		if (dbsfaces.inputText.isSuggestion(pInputTextData)){
 			//Verifica conteúdo da seleção
-			var xSuggestionValue = $.trim($(pId + "-suggestion").val());
-			var xValue = $.trim($(pId + "-data").val());
-			var xNullText = $(pId + "-suggestion-key").attr("nulltext");
-			if (xValue==""
-			 || xValue==xNullText){
-				dbsfaces.inputText.removeError(pId);
-			}else if (xSuggestionValue==xValue){
+			var xSuggestionValue = pInputTextData.dom.suggestion.val().trim();
+			var xValue = pInputTextData.dom.inputData.val();
+			if (dbsfaces.inputText.pvIsNullText(pInputTextData, xValue)){
+				dbsfaces.inputText.removeError(pInputTextData);
+			}else if (xSuggestionValue == xValue){
 				//Confirma a sugestão
-				dbsfaces.inputText.removeError(pId);
+				dbsfaces.inputText.removeError(pInputTextData);
 			}else{
 				//Campo com erro
-				dbsfaces.inputText.addError(pId);
+				dbsfaces.inputText.addError(pInputTextData);
 			}
 		}
 	},		
 	
-	validateNullText: function(pId){
-		if (dbsfaces.inputText.isSuggestion(pId)){
-			var xValue = $.trim($(pId + "-data").val());
-			var xNullText = $(pId + "-suggestion-key").attr("nulltext");
-			if (xValue==""){
-				$(pId + "-data").val(xNullText);
+	pvIsNullText: function(pInputTextData, pText){
+		return (pText == "" || pText == pInputTextData.nullText);
+	},
+	
+	validateNullText: function(pInputTextData){
+		if (dbsfaces.inputText.isSuggestion(pInputTextData)){
+			var xValue = pInputTextData.dom.inputData.val();
+			if (xValue == ""){
+				pInputTextData.dom.inputData.val(pInputTextData.nullText);
 			}
 		}
 	},
 
-	triggerChange: function(pId){
-		$(pId + "-data").trigger("change");
+	triggerChange: function(pInputTextData){
+		pInputTextData.dom.inputData.trigger("change");
 	},		
 	
-	triggerBlur: function(pId){
+	triggerBlur: function(pInputTextData){
 		wBlur = false;
-		$(pId + "-data").trigger("blur");
-		dbsfaces.inputText.validateNullText(pId);
+		pInputTextData.dom.inputData.trigger("blur");
+		dbsfaces.inputText.validateNullText(pInputTextData);
 	},
 	
 	
@@ -345,50 +371,53 @@ dbsfaces.inputText = {
 			return true;
 		} 	
 	},
-	removeError: function(pId){
-		$(pId + "-suggestion").removeClass("-error");
-		$(pId + "-data").removeClass("-error");
+	removeError: function(pInputTextData){
+		pInputTextData.dom.suggestion.removeClass("-error");
+		pInputTextData.dom.inputData.removeClass("-error");
 	},
 
-	addError: function(pId){
-		$(pId + "-suggestion").addClass("-error");
-		$(pId + "-data").addClass("-error");
+	addError: function(pInputTextData){
+		pInputTextData.dom.suggestion.addClass("-error");
+		pInputTextData.dom.inputData.addClass("-error");
 	},
 	
-	fixLayout: function(pId){
-		if ($(pId + "-dataTable").length == 0){
+	fixLayout: function(pInputTextData){
+		var xId = dbsfaces.util.jsid(pInputTextData.dom.self[0].id);
+		pInputTextData.dom.list = $(xId + "-list");
+		pInputTextData.dom.dataTable = $(xId + "-dataTable");
+		if (pInputTextData.dom.dataTable.length == 0){
 			return;
 		}
-		$(pId + "-dataTable tbody:first").attr('tabindex', '-1');
-		$(pId + "-dataTable input:first.-foo").attr('tabindex', '-1');
+		pInputTextData.dom.dataTable.find("tbody:first").attr('tabindex', '-1');
+		pInputTextData.dom.dataTable.find("input:first.-foo").attr('tabindex', '-1');
 		
-		var xWidth = $(pId + "-data").outerWidth();
-		$(pId + "-dataTable thead:first").css('min-width', xWidth);
-		$(pId + "-dataTable tbody:first").css('min-width', xWidth);
+		var xWidth = pInputTextData.dom.inputData.outerWidth();
+		pInputTextData.dom.dataTable.find("thead:first").css('min-width', xWidth);
+		pInputTextData.dom.dataTable.find("tbody:first").css('min-width', xWidth);
 	},
 	
 	//Indica se inputtext é do tipo suggestion
-	isSuggestion: function(pId){
-		return ($(pId + "-list").length > 0);
+	isSuggestion: function(pInputTextData){
+		return (pInputTextData.dom.list.length > 0);
 	},
 	
-	showList: function(pId){
-		if (dbsfaces.inputText.isSuggestion(pId)){
-			$(pId + "-list").css("opacity","1").show();
+	showList: function(pInputTextData){
+		if (dbsfaces.inputText.isSuggestion(pInputTextData)){
+			pInputTextData.dom.list.css("opacity","1").show();
 		}
 	},
 
 	//Esconde a lista
-	hideList: function(pId){
-		if (dbsfaces.inputText.isSuggestion(pId)){
-			$(pId + "-list").css("opacity","0");					
+	hideList: function(pInputTextData){
+		if (dbsfaces.inputText.isSuggestion(pInputTextData)){
+			pInputTextData.dom.list.css("opacity","0");					
 			setTimeout(function() {
-				$(pId + "-list").hide();
+				pInputTextData.dom.list.hide();
 		  	}, 100);
 		}
 	},
 	
-	letterCase: function(pId, pInput, e, pLetterCase){
+	letterCase: function(pInputTextData, pInput, e, pLetterCase){
 		if (e.metaKey){
 			return; //Sai para não converte o caracter recebido quando foi tecla especial como um Ctrl-C
 		}
@@ -404,7 +433,7 @@ dbsfaces.inputText = {
 //				return;
 //			}
 			//Só testa tamanho máximo se imput não for com suggestion
-			if (!dbsfaces.inputText.isSuggestion(pId)){ 
+			if (!dbsfaces.inputText.isSuggestion(pInputTextData)){ 
 				if (typeof pInput.attr("maxlength") != "undefined"){
 					if (pInput.val().length >= parseInt(pInput.attr("maxlength"))){
 						return;

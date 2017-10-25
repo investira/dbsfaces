@@ -59,20 +59,20 @@
 
 .dbs_inputText > .-container > .-input > .-loading,
 .dbs_inputText > .-container > .-input > .-i_find{
-	position: absolute;
+	position: absolute !important;
 	z-index: 1;
-	right: 4px;
+	right: .3em;
 	opacity: 0.3;
 }
 
 .dbs_inputText > .-container > .-input > .-i_find{
-	top: 5px;
+	top: .5em;
 	cursor: pointer;
 }
 
 .dbs_inputText > .-container > .-input > .-loading{
-	top: 9px;
- 	left: initial;
+	top: .3em !important;
+ 	left: unset !important;
 }
 
 .dbs_inputText > .-container > .-input > .-list > .dbs_dataTable > .-container{
