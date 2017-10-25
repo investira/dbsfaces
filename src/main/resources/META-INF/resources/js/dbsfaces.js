@@ -1481,7 +1481,8 @@ dbsfaces.string = {
 	},
 	
 	repeat: function(pString, pTimes){
-		return Array(pTimes).join(pString); //String.repeat não funciona em browsers antigos
+//		return pString.repeat(pTimes);
+		return Array(pTimes + 1).join(pString); //String.repeat não funciona em browsers antigos
 	}
 };
 
