@@ -504,8 +504,11 @@ textarea.-th_input-data:FOCUS,
 
 /* BUTTONS STRIP-------------- */
 .-th_buttons_strip {
-    display: flex;
+	display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+	display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+	display: -ms-flexbox;
     display: -webkit-flex;
+    display: flex;
 	-webkit-flex-flow: row nowrap;
 	-moz-flex-flow: row nowrap;
 	flex-flow: row nowrap;
