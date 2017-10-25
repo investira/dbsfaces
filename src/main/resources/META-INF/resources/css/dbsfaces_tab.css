@@ -153,6 +153,9 @@
     -webkit-flex: 1 1 1em;
     -moz-flex: 1 1 1em;
     flex: 1 1 1em;
+    -webkit-flex: 1 1 1em;
+    -moz-flex: 1 1 1em;
+    flex: 1 1 1em;
 	overflow: auto;
 } 	
 

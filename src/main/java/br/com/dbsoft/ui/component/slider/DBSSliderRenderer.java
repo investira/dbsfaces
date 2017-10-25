@@ -230,9 +230,10 @@ public class DBSSliderRenderer extends DBSRenderer {
 			if (xInput == null){
 				xInput = (DBSInputNumber) pContext.getApplication().createComponent(DBSInputNumber.COMPONENT_TYPE);
 				xInput.setId(xId);
-				pSlider.getFacets().put(xId, xInput);
+				xInput.setOnFocusSelectAll(true);
 				xInput.setDecimalPlaces(pSlider.getDecimalPlaces());
 				xInput.setStyleClass(xClass);
+				pSlider.getFacets().put(xId, xInput);
 			}
 			if (pSlider.getValuesList() !=null){
 				@SuppressWarnings("unchecked")

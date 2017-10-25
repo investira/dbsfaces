@@ -24,8 +24,8 @@ public class DBSInputNumber extends DBSUIInputText {
 		maxValue,
 		minValue,
 		autocomplete,
-		currencySymbol;
-//		increment;
+		currencySymbol,
+		onFocusSelectAll;
 
 		String toString;
 
@@ -128,12 +128,12 @@ public class DBSInputNumber extends DBSUIInputText {
 		return DBSNumber.toDouble(super.getValue());
 	}
 	
-//	public void setIncrement(Boolean pIncrement) {
-//		getStateHelper().put(PropertyKeys.increment, pIncrement);
-//		handleAttribute("increment", pIncrement);
-//	}
-//	public Boolean getIncrement() {
-//		return (Boolean) getStateHelper().eval(PropertyKeys.increment, false);
-//	}	
+	public void setOnFocusSelectAll(Boolean pOnFocusSelectAll) {
+		getStateHelper().put(PropertyKeys.onFocusSelectAll, pOnFocusSelectAll);
+		handleAttribute("onFocusSelectAll", pOnFocusSelectAll);
+	}
+	public Boolean getOnFocusSelectAll() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.onFocusSelectAll, false);
+	}	
 
 }

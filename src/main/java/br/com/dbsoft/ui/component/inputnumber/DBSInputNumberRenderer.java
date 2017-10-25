@@ -93,6 +93,7 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 
 	private String pvGetMaskParm(DBSInputNumber pInputNumber) {
 		return pInputNumber.getDecimalPlaces().toString() + "," + 
+			   pInputNumber.getOnFocusSelectAll() + "," +
 			   pInputNumber.getSeparateThousand() + "," +
 			   pInputNumber.getLeadingZero() + "," +
 			   "'" + DBSFormat.getFormattedNumber(pInputNumber.getMinValue(), pInputNumber.getDecimalPlaces()) + "'," + 
@@ -137,12 +138,25 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 						DBSFaces.encodeAttribute(pWriter, "type", "password");
 					} else {
 						DBSFaces.encodeAttribute(pWriter, "type", "text");
+//						DBSFaces.encodeAttribute(pWriter, "type", "number");
+//						DBSFaces.encodeAttribute(pWriter, "type", "tel");
 					}
-					DBSFaces.encodeAttribute(pWriter, "pattern", "[0-9]*"); //Força a exibição do teclado númerico no mobile
-					DBSFaces.encodeAttribute(pWriter, "inputmode", "numeric");
 					DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputNumber) + xStyleClass);
 					DBSFaces.encodeAttribute(pWriter, "style", xStyle);
 					DBSFaces.encodeAttribute(pWriter, "placeHolder", pInputNumber.getPlaceHolder());
+					
+//					DBSFaces.encodeAttribute(pWriter, "pattern", "[0-9]+([\\.,][0-9]+)?");
+//					DBSFaces.encodeAttribute(pWriter, "pattern", "[0-9]+([,\\.][0-9]+)?");
+//					DBSFaces.encodeAttribute(pWriter, "pattern", "-?(\\d+|\\d+\\.,\\d+|\\.,\\d+)([eE][-+]?\\d+)?");
+//					DBSFaces.encodeAttribute(pWriter, "min", "-1000000"); //Força a exibição do teclado númerico no mobile
+//					DBSFaces.encodeAttribute(pWriter, "lang","en-150"); //Força a exibição do teclado númerico no mobile
+
+					DBSFaces.encodeAttribute(pWriter, "formnovalidate", "formnovalidate");
+					DBSFaces.encodeAttribute(pWriter, "pattern", "\\d*"); //Força a exibição do teclado númerico no mobile
+					
+					DBSFaces.encodeAttribute(pWriter, "step", "any"); //Força a exibição do teclado númerico no mobile
+					DBSFaces.encodeAttribute(pWriter, "inputmode", "numeric");
+					DBSFaces.encodeAttribute(pWriter, "oninvalid", "setCustomValidity(' ')");
 					DBSFaces.setSizeAttributes(pWriter, xSize, null);
 					//Verifica se o sinal é negativo
 					if (DBSNumber.toDouble(pInputNumber.getMinValue())<0){

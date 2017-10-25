@@ -2361,6 +2361,14 @@
 		</attribute>
 		<attribute>
 			<description>
+                Se seleciona todo o conteúdo quando receber o foco, para que tudo seja substiuido pelo valor que será digitado.
+            </description>
+			<name>onFocusSelectAll</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>		
+		<attribute>
+			<description>
             	Valor Máximo
             </description>
 			<name>maxValue</name>

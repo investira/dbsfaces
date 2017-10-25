@@ -1,13 +1,13 @@
-dbs_inputNumber = function(pId, pInputDataId, pDecimalPlaces, pSeparateThousand, pLeadingZero, pMinValue, pMaxValue, pLocale) {
+dbs_inputNumber = function(pId, pInputDataId, pDecimalPlaces, pOnFocusSelectAll, pSeparateThousand, pLeadingZero, pMinValue, pMaxValue, pLocale) {
 	dbsfaces.setLocale(pLocale);
 	var xInputData = $(pInputDataId);
 	
-	dbsfaces.inputNumber.initialize($(pId), xInputData, pDecimalPlaces, pSeparateThousand, pLeadingZero, pMinValue, pMaxValue);
+	dbsfaces.inputNumber.initialize($(pId), xInputData, pDecimalPlaces, pOnFocusSelectAll, pSeparateThousand, pLeadingZero, pMinValue, pMaxValue);
 }
 
 dbsfaces.inputNumber = {
 
-	initialize: function(pInputNumber, pInputData, pDecimalPlaces, pSeparateThousand, pLeadingZero, pMinValue, pMaxValue){
+	initialize: function(pInputNumber, pInputData, pDecimalPlaces, pOnFocusSelectAll, pSeparateThousand, pLeadingZero, pMinValue, pMaxValue){
 		var xData = {
 			dom : {
 				self : pInputNumber,
@@ -18,13 +18,14 @@ dbsfaces.inputNumber = {
 
 		if (!dbsfaces.util.isMobile()){
 			//Retirado para não dar erro no firefox desktop 
-			pInputData.attr("pattern", null);
+//			pInputData.attr("pattern", null);
 		}
 		xData.dbsmask = pInputData.dbsmask({
 			parentDom :  pInputNumber,
 			type : "number",
 			maskEmptyChr : (pLeadingZero ? "0":""),
 			decimalPlaces : dbsfaces.number.parseFloat(pDecimalPlaces), 
+			onFocusSelectAll : pOnFocusSelectAll,
 			separateThousand : pSeparateThousand,
 			maxLength: dbsfaces.number.parseFloat(pInputData.attr("maxlength")),
 			minValue: dbsfaces.number.parseFloat(pMinValue),
