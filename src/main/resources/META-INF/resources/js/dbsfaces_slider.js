@@ -751,9 +751,9 @@ dbsfaces.slider = {
 			var xL = (pSliderData.dom.handle[0].getBoundingClientRect().left - xCenter) -
 	  	     		 pSliderData.dom.slider[0].getBoundingClientRect().left;
 			if (xR > 0){
-				xLeft = -xCenter - xR;
+				xLeft -= xR;
 			}else if (xL < 0){
-				xLeft = -xCenter - xL;
+				xLeft -= xL;
 			}
 		}
 		pSliderData.dom.handleLabel.css("left", xLeft);
