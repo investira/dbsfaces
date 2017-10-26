@@ -1,14 +1,7 @@
 dbs_dataTable = function(pId) {
-	var wW = 15;
-	var wTable = pId + " > .-container > .-content > table ";
-    var wRow = $(wTable + " > tbody > tr:first");
+	var xDataTableData = dbsfaces.dataTable.initialize($(pId));
+    var wRow = xDataTableData.dom.tbody.find("> tr:first");
     var wSelectedRow;
-	wW = wW + $(pId + " > .-container > .-header > .-filter > .-input").outerWidth();
-	wW = wW + $(pId + " > .-container > .-header > .-filter > .-button").outerWidth();
-	
-	dbsfaces.dataTable.initialize($(pId));
-	
-	$(pId).css("min-width", wW + "px");
 	
 	//Exclui campo para evitar a exibição do teclado 
 	if (dbsfaces.util.isMobile()){
@@ -16,80 +9,66 @@ dbs_dataTable = function(pId) {
 //		$(pId + " > .-container > input.-foo").remove();
 	}
 
-	wW = wRow.outerWidth() + 2;
-	wW = wW - wRow.children(".-CX").outerWidth();
-//	$(wTable + " > tbody").css("min-width", wW);
-//	$(wTable + " > thead").css("min-width", wW);
-//	$(wTable + " > thead > tr").css("min-width", wW);
-
-	dbsfaces.dataTable.adjustContent(pId);
-	dbsfaces.dataTable.showOverflowShadow($(wTable));
-	dbsfaces.dataTable.positionOnSelectedRow(pId);
+	dbsfaces.dataTable.showOverflowShadow(xDataTableData.dom.table);
 
 	//	Inibir outros selects que possam ter sido disparados por componentes filhos deste.
-	$(pId + " .-container").on("select", function(e){
+	xDataTableData.dom.container.on("select", function(e){
 		return false;
 	});
 	
-	$(wTable).scroll(function(){
+	xDataTableData.dom.table.scroll(function(){
 		dbsfaces.dataTable.showOverflowShadow($(this));
 	});
-	
-	var xMouseover = function(e) {
-		dbsfaces.dataTable.rowFocusAdd(pId, this);
-	}
 
-	var xMousemove = function(e){
-		$(this).off("mousemove");
-		$(wTable + " > tbody > tr").off('mouseover.datatable') 
-								   .on('mouseover.datatable', xMouseover); 
-	}
 
-	/*hover*/
-	$(wTable + " > tbody > tr").off('mouseover.datatable') 
-							   .on('mouseover.datatable', xMouseover);
-
-	$(pId).mouseout(function(e){
-		dbsfaces.dataTable.rowFocusRemove(pId);
+	xDataTableData.dom.self.mouseout(function(e){
+		dbsfaces.dataTable.rowFocusRemove(xDataTableData);
 	})
 
-	$(wTable + " > tbody > tr").focusin(function(e){
+
+	/*hover*/
+	xDataTableData.dom.rows.off('mouseover.datatable'); 
+	xDataTableData.dom.rows.on('mouseover.datatable', function(e){
+		dbsfaces.dataTable.rowFocusAdd(xDataTableData, $(this));
+	});
+
+	xDataTableData.dom.rows.focusin(function(e){
 		//Somente seleciona se for diferente do selecionado anteriormente
 		if (this != wSelectedRow){
 			wSelectedRow = this;
-			dbsfaces.dataTable.rowSelect(pId, this);
+			dbsfaces.dataTable.rowSelect(xDataTableData, $(this));
 		}
 	});
 	
 	/*Força o foco no click*/
-	$(wTable + " > tbody > tr").click(function(e){
+	xDataTableData.dom.rows.click(function(e){
 		//Se click foi em campo de input, não precisa forçar o foco no input-foo, para não dar problema na edição diretamente no grid
 		if ($(e.target).hasClass("-th_input-data:not(.-readOnly)")
 		 || $(e.target).is("input:not(.-readOnly)")){
-			dbsfaces.dataTable.headFocusAdd(pId);
+			dbsfaces.dataTable.headFocusAdd(xDataTableData);
 		}else{
 			//Força foco no input para possibilitar a navegação pelas setas(up/down)
-			$(pId + " > .-container > input.-foo").focus().click();
+			xDataTableData.dom.input.focus().click();
 		}
 		//Somente seleciona se for diferente do selecionado anteriormente
 		if (this != wSelectedRow){
 			wSelectedRow = this;
-			dbsfaces.dataTable.rowSelect(pId, this);
+			dbsfaces.dataTable.rowSelect(xDataTableData, $(this));
 		}
 //		e.preventDefault();
 	});
 	
 	/*Executa o click na linha */
-	$(wTable + " > tbody > tr").dblclick(function (e){
+	xDataTableData.dom.rows.dblclick(function (e){
 		//ignora execução padrão do dblclick e marca a linha
 		if (!$(pId).hasClass("-formStyle_Table")){
 			var xB = $(this).find("td > .-selectOne");
 	    	if (xB.length > 0){
 	    		e.stopImmediatePropagation();
 				e.preventDefault();
-	    		dbsfaces.dataTable.headFocusRemove(pId);
-	       		dbsfaces.dataTable.rowFocusRemove(pId);
-	       		dbsfaces.dataTable.rowDeselect(pId);
+	    		dbsfaces.dataTable.headFocusRemove(xDataTableData);
+	       		dbsfaces.dataTable.rowFocusRemove(xDataTableData);
+	       		dbsfaces.dataTable.rowDeselect(xDataTableData);
 	       		//Submit da seleção
 	    		xB.click();
 	    	}
@@ -98,58 +77,55 @@ dbs_dataTable = function(pId) {
     });
 
 	/*Evitar a propagação do evento click do campo e dispara o click para o datagrid*/
-	$(pId + " > .-container > input.-foo").click(function(e){
+	xDataTableData.dom.input.click(function(e){
 		e.stopImmediatePropagation();
-		$(pId).trigger('click');
+		xDataTableData.dom.self.trigger('click');
 		return false;
 	});
 	
-	$(pId + " > .-container > input.-foo").on("select", function(e){
+	xDataTableData.dom.input.on("select", function(e){
 //		e.stopImmediatePropagation(); 
 		return false;
 	});
-	
-	//Click no botão pesquisar
-	$(pId + " > .-container > .-header > .-filter > .-button > .dbs_button").on("click", function(e){
-		//Resete da linha selecionada anteriormente
-		wSelectedRow = null;
-		dbsfaces.dataTable.rowSelect(pId, wSelectedRow);
-	});
 
-	$(pId + " > .-container > input.-foo").keydown(function(e){
+	
+	xDataTableData.dom.input.keydown(function(e){
 		if(e.keyCode==40 || //DOWN
 		   e.keyCode==38){  //UP
-			dbsfaces.dataTable.moveToNextOrPreviousRow(pId, e.keyCode);
-			var xRow = $(wTable + " > tbody > tr");
-			var xTBody = xRow.parent();
-			xRow.off("mouseover.datatable");
-			xTBody.off('mousemove.datatable');
-			xTBody.on('mousemove.datatable', xMousemove);
+			dbsfaces.dataTable.moveToNextOrPreviousRow(xDataTableData, e.keyCode);
 			return false;
 		}
 	});  
 	
-	$(pId + " > .-container > input.-foo").focusin(function(e){
-		var xE = $(wTable + " > tbody > tr.-selected");
+	xDataTableData.dom.input.focusin(function(e){
+		var xE = xDataTableData.dom.tbody.find("> tr.-selected");
 		//Exibe foco do cabeçalho das colunas
-		dbsfaces.dataTable.headFocusAdd(pId);
+		dbsfaces.dataTable.headFocusAdd(xDataTableData);
 		e.stopPropagation();
 		//Comentado em 28/08/2013 - no IE, retirava o foco do input.-foo, deixando de funcionar a nagevação por seta
 		//$(pId).trigger('focus'); 
 	}); 
 	
-	$(pId + " > .-container > input.-foo").focusout(function(e){
-		dbsfaces.dataTable.headFocusRemove(pId);
+	xDataTableData.dom.input.focusout(function(e){
+		dbsfaces.dataTable.headFocusRemove(xDataTableData);
 		e.stopPropagation();
-		$(pId).trigger('blur');
+		xDataTableData.dom.self.trigger('blur');
 	}); 
 	
-	$(pId + " > .-container > .-content > table ").scroll(function(e){
+	xDataTableData.dom.table.scroll(function(e){
 		dbsfaces.dataTable.adjustWidth(pId, this);
 	}); 
 
+	
+	//Click no botão pesquisar
+	xDataTableData.dom.filter.find(" > .-button > .dbs_button").on("click", function(e){
+		//Resete da linha selecionada anteriormente
+		wSelectedRow = null;
+		dbsfaces.dataTable.rowSelect(xDataTableData, wSelectedRow);
+	});
+
 	//Controle de Sort
-	$(pId + " .-container > .-content > table > thead > tr > th.-sort").on("click", function(e){
+	xDataTableData.dom.table.find(" > thead > tr > th.-sort").on("click", function(e){
 		var xInputSortColumn = $(pId + "\\:sortcolumn");
 		var xInputSortDirection = $(pId + "\\:sortdirection");
 		var xDirection = xInputSortDirection.attr("value");
@@ -172,7 +148,7 @@ dbs_dataTable = function(pId) {
 		xInputSortColumn.attr("value", xSortColumn);
 		xInputSortDirection.attr("value", xDirection);
 		
-		$(pId + " > .-container > .-sort").click();
+		xDataTableData.dom.sort.click();
 	});
 	
 
@@ -183,10 +159,51 @@ dbs_dataTable = function(pId) {
 
 dbsfaces.dataTable = {
 	initialize: function(pDataTable){
-//		pDataTable.data("input", pDataTable.find(".-container > input.-foo"));
-//		pDataTable.data("body", pDataTable.find(".-container > .-content > table > tbody"));
-//		pDataTable.data("tr", pDataTable.children("tr"));
+		var xDataTableData = dbsfaces.dataTable.initializeData(pDataTable);
+		dbsfaces.dataTable.initializeLayout(xDataTableData);
+		return xDataTableData;
 	},
+
+	initializeData: function(pDataTable){
+		var xData = {
+			dom : {
+				self: pDataTable,
+				container: null,
+				content: null,
+				header: null,
+				input: null,
+				table: null,
+				tbody: null,
+				rows: null,
+				focus: null
+			}
+		}
+		xData.dom.container = xData.dom.self.children(".-container");
+		xData.dom.content = xData.dom.container.children(".-content");
+		xData.dom.input = xData.dom.container.children("input.-foo");
+		xData.dom.sort = xData.dom.container.children(".-sort");
+		xData.dom.header = xData.dom.container.children(".-header");
+		xData.dom.filter = xData.dom.header.children(".-filter");
+		xData.dom.table = xData.dom.content.children("table");
+		xData.dom.tbody = xData.dom.table.children("tbody");
+		xData.dom.rows = xData.dom.tbody.children("tr");
+		pDataTable.data("data", xData);
+		return xData;
+	},
+	
+	initializeLayout: function(pDataTableData){
+	    var wW = 15;
+		wW = wW + pDataTableData.dom.filter.find(" > .-input").outerWidth();
+		wW = wW + pDataTableData.dom.filter.find(" > .-button").outerWidth();
+		pDataTableData.dom.self.css("min-width", wW + "px");
+
+		dbsfaces.dataTable.pvAdjustContent(pDataTableData);
+		dbsfaces.dataTable.pvPositionOnSelectedRow(pDataTableData);
+
+//		wW = wRow.outerWidth() + 2;
+//		wW = wW - wRow.children(".-CX").outerWidth();
+	},
+	
 
 	focus: function(e){
 		var xTBody = $(dbsfaces.util.jsid(e.source.id) + " > .-container > .-content > table > tbody");
@@ -204,82 +221,86 @@ dbsfaces.dataTable = {
 		}
 	},
 		
-	rowSelect: function(pId, pNew){
-		if(!$(pId).hasClass("-selectable")){
+	rowSelect: function(pDataTableData, pNew){
+		if(!pDataTableData.dom.self.hasClass("-selectable")){
 			return;
 		}
-		dbsfaces.dataTable.rowFocusRemove(pId);
-		dbsfaces.dataTable.rowDeselect(pId);
+		dbsfaces.dataTable.rowFocusRemove(pDataTableData);
+		dbsfaces.dataTable.rowDeselect(pDataTableData);
 		if (pNew != null){
-			var xRowIndex = $(pNew).attr("index");
+			var xRowIndex = pNew.attr("index");
 			//Valor de fato que será utilizado no submit
-			$(pId + " > .-container > input.-foo").val(xRowIndex);
+			pDataTableData.dom.input.val(xRowIndex);
 			//Sincroniza atributo value com o value interno do componente
-			$(pId + " > .-container > input.-foo").attr("value", xRowIndex);
-			$(pNew).addClass("-selected");
+			pDataTableData.dom.input.attr("value", xRowIndex);
+			pNew.addClass("-selected");
 		}
 		//Precisa ser o mesmo componente onde está o encodeBehavior
-		$(pId).trigger(dbsfaces.EVENT.ON_ROW_SELECTED, pNew);
-//		$(pId).trigger("select.datatable");
-//		$(pId + " > .-container > input.-foo").select();
+		pDataTableData.dom.self.trigger(dbsfaces.EVENT.ON_ROW_SELECTED, pNew);
 	},
 
-	rowDeselect: function(pId){
-		$(pId + " > .-container > .-content > table > tbody > tr.-selected").removeClass("-selected");
+	rowDeselect: function(pDataTableData){
+//		pDataTableData.dom.tbody.find(" > tr.-selected").removeClass("-selected");
+		pDataTableData.dom.rows.filter(".-selected").removeClass("-selected");
 	},
 	
-	rowFocusAdd: function(pId, pNew){
-		dbsfaces.dataTable.rowFocusRemove(pId);
-		$(pNew).addClass("-focus");
+	rowFocusAdd: function(pDataTableData, pNew){
+		dbsfaces.dataTable.rowFocusRemove(pDataTableData);
+		pDataTableData.dom.focus = pNew;
+		pDataTableData.dom.focus.addClass("-focus");
 	},
 	
-	rowFocusRemove: function(pId){
-		$(pId + " > .-container > .-content > table > tbody > tr.-focus").removeClass("-focus");
+	rowFocusRemove: function(pDataTableData){
+		if (pDataTableData.dom.focus != null){
+			pDataTableData.dom.focus.removeClass("-focus");
+			pDataTableData.dom.focus = null;
+		}
+//		$(pId + " > .-container > .-content > table > tbody > tr.-focus").removeClass("-focus");
 	},
 	
-	headFocusAdd: function(pId){
-		$(pId + " > .-container > .-content > table > thead > tr").addClass("-focus");
+	headFocusAdd: function(pDataTableData){
+		pDataTableData.dom.table.find(" > thead > tr").addClass("-focus");
 	},
 	
-	headFocusRemove: function(pId){
-		$(pId + " > .-container > .-content > table > thead > tr").removeClass("-focus");
+	headFocusRemove: function(pDataTableData){
+		pDataTableData.dom.table.find(" > thead > tr").removeClass("-focus");
 	},
 
 	
-	moveToNextOrPreviousRow: function(pId, pKeyCode){
+	moveToNextOrPreviousRow: function(pDataTableData, pKeyCode){
 		var xNew;
 		var xDirection = 0;
-		var xRow = $(pId + " > .-container > .-content > table > tbody > tr");
-		var xTBody = xRow.parent();
+		var xRow = pDataTableData.dom.rows;
+		var xTBody = pDataTableData.dom.tbody;
 
-		if (xTBody.find(".-selected").length == 0){
+		if (xRow.filter(".-selected").length == 0){
 			xNew = xRow.first();
 		}else{
 			if (pKeyCode==40){ //DOWN
 				xNew = xRow.filter(".-selected").next();
-				if ($(xNew).length == 0){
+				if (xNew.length == 0){
 					xNew = xRow.last();
 				}else{
 					xDirection = 1;
 				}
 			}else if (pKeyCode==38){ //UP
 				xNew = xRow.filter(".-selected").prev();
-				if ($(xNew).length == 0){
+				if (xNew.length == 0){
 					xNew = xRow.first();
 				}else{
 					xDirection = -1;
 				}
 			}
 		}
-		if ($(xNew).length > 0){ 
-			dbsfaces.dataTable.rowSelect(pId, xNew);
-			if (xDirection!=0){
+		if (xNew.length > 0){ 
+			dbsfaces.dataTable.rowSelect(pDataTableData, xNew);
+			if (xDirection != 0){
 				var xNewPos = xTBody.scrollTop() + xNew.position().top + xNew.outerHeight();
 				var xLT = xTBody.scrollTop() + xNew.outerHeight();
 				var xLB = xTBody.scrollTop() + xTBody.outerHeight();
 				if ((xNewPos) > xLB ||
 					(xNewPos) < xLT){
-					if (xDirection<0){
+					if (xDirection < 0){
 						xTBody.scrollTop(xNewPos - xNew.outerHeight());
 					}else{
 						xTBody.scrollTop(xNewPos - xTBody.outerHeight());
@@ -310,28 +331,26 @@ dbsfaces.dataTable = {
 			pE.addClass("-scrollLeftRight");
 		}
 	},	
-	
-	//Ajuste scroll para o item selectionado
-	positionOnSelectedRow: function(pId){
-		var xNew;
-		var xRow = $(pId + " > .-container > .-content > table > tbody > tr");
-		
-		xNew = xRow.filter(".-selected");
-		if ($(xNew).length != 0){
-			xNew.parent().scrollTop($(xNew).position().top - $(xNew).height() - xNew.parent().offset().top);
-		}
-	},
 
 	adjustWidth: function(pId, e){
 //		Força o tamanho da conteudo da tabela para evitar problema de exibição no FF
 //		$(e).children().css("width", $(e).scrollLeft() + $(e).width());
 	},
 
-	adjustContent: function(pId){
-		var xHeader = $(pId + " > .-container > .-header");
-		var wH = xHeader.actual('outerHeight');
-		$(pId + " > .-container > .-content").css("margin-top", "-" + wH + "px")
-		                                     .css("padding-top", wH + "px");
+	
+	//Ajuste scroll para o item selectionado
+	pvPositionOnSelectedRow: function(pDataTableData){
+//		var xRow = $(pId + " > .-container > .-content > table > tbody > tr");
+		var xNew = pDataTableData.dom.rows.filter(".-selected");
+		if (xNew.length > 0){
+			xNew.parent().scrollTop(xNew.position().top - xNew.height() - xNew.parent().offset().top);
+		}
+	},
+
+	pvAdjustContent: function(pDataTableData){
+		var wH = pDataTableData.dom.header.actual('outerHeight');
+		pDataTableData.dom.content.css("margin-top", "-" + wH + "px")
+		                          .css("padding-top", wH + "px");
 	}
 }
 

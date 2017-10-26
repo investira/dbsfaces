@@ -4,7 +4,6 @@ dbs_inputText = function(pId) {
 
 	var xInputTextData = dbsfaces.inputText.initialize($(pId));
 	
-
 	//Verificar caixa da digitação
 //	$(pId + "-data.-upper").keydown(function(e){
 //		dbsfaces.inputText.letterCase(pId, $(this), e,"upper");
@@ -22,23 +21,20 @@ dbs_inputText = function(pId) {
 //		dbsfaces.inputText.letterCase(pId, $(this), e,"upperfirst");
 //	});	
 	
-//	$(pId + " input").focusin(function(e){
 	xInputTextData.dom.inputData.focusin(function(e){
 		wSearching = false;
 		dbsfaces.ui.selectAll(this);
 	});
 
-//	$(pId + " > .-container > .-input > .-th_input-data").focus(function(e){
 	xInputTextData.dom.inputData.focus(function(e){
 		xInputTextData.dom.suggestion.addClass("-th_input-data-FOCUS");
 	});
 	
 	
-//	$(pId + " > .-container > .-input > .-th_input-data").blur(function(e){
 	xInputTextData.dom.inputData.blur(function(e){
 		xInputTextData.dom.suggestion.removeClass("-th_input-data-FOCUS");
 		dbsfaces.ui.selectNone(this);
-		wTime = +new Date();
+		xInputTextData.time = +new Date();
 
 		//Esconde a lista
 		dbsfaces.inputText.hideList(xInputTextData);
@@ -56,7 +52,6 @@ dbs_inputText = function(pId) {
 
 	
 	/* copia a sugestão para o input ou navega pela lista de sugestões*/
-//	$(pId + " > .-container > .-input > .-th_input-data").keydown(function(e){
 	xInputTextData.dom.inputData.keydown(function(e){
 		//Confirma sugestão com tab e seta para a direita
 		if ((e.which == 13 || //ENTER
@@ -80,7 +75,7 @@ dbs_inputText = function(pId) {
 					dbsfaces.inputText.showList(xInputTextData);
 				}else{
 					//Navega na lista de sugestões
-					dbsfaces.dataTable.moveToNextOrPreviousRow(pId + "-dataTable", e.which);
+					dbsfaces.dataTable.moveToNextOrPreviousRow(xInputTextData.dom.dataTable.data("data"), e.which);
 				}
 			}
 		//Se não for tab, shift ou setas para a direira ou esquerda
@@ -97,7 +92,6 @@ dbs_inputText = function(pId) {
 	});
 	
 	//Faz a pesquisa ===================================================
-//	$(pId + " > .-container > .-input > .-th_input-data").on("paste", function(e){
 	xInputTextData.dom.inputData.on("paste", function(e){
 		dbsfaces.inputText.requestSuggestion(xInputTextData);
 		
@@ -115,7 +109,6 @@ dbs_inputText = function(pId) {
 	});
 	
 	//Inicia pesquisa de dados
-//	$(pId + "-submit").on(dbsfaces.EVENT.ON_AJAX_BEGIN, function(e){
 	xInputTextData.dom.submit.on(dbsfaces.EVENT.ON_AJAX_BEGIN, function(e){
 		wSearching = true;
 
@@ -125,13 +118,12 @@ dbs_inputText = function(pId) {
 	});
 	
 	//Recebe a resposta da requisição da sugestão
-//	$(pId + "-submit").on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
 	xInputTextData.dom.submit.on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
 		wSearching = false;
 		
 		//Dispara o blur caso tenha sido ignorado originalmente
 		if (wBlur){
-			dbsfaces.inputText.triggerBlur(xInputTextData);
+			dbsfaces.inputText.pvTriggerBlur(xInputTextData);
 		}
 		xInputTextData.dom.input.children(".-loading").remove();
 		xInputTextData.dom.inputFind.show();
@@ -141,7 +133,6 @@ dbs_inputText = function(pId) {
 		e.stopImmediatePropagation();
 	});
 
-//	$(pId + " > .-container > .-input").keyup(function(e){
 	xInputTextData.dom.input.keyup(function(e){
 		if (dbsfaces.inputText.isValidKey(e)){
 			dbsfaces.inputText.requestSuggestion(xInputTextData);
@@ -149,13 +140,11 @@ dbs_inputText = function(pId) {
 	});
 
 	//Item selecionado da lista
-//	$(pId + " > .-container > .-input").on(dbsfaces.EVENT.ON_ROW_SELECTED, ".-list", function(e, pRow){
 	xInputTextData.dom.input.on(dbsfaces.EVENT.ON_ROW_SELECTED, ".-list", function(e, pRow){
 		dbsfaces.inputText.suggestionReceived(xInputTextData, pRow, true);
 	});
 	
 	//Seta foco na lista
-//	$(pId + " > .-container > .-input").on("click", ".-list", function(e){
 	xInputTextData.dom.input.on("click", ".-list", function(e){
 		xInputTextData.dom.inputData.focus();
 		
@@ -177,11 +166,11 @@ dbs_inputText = function(pId) {
 dbsfaces.inputText = {
 	
 	initialize: function(pInputText){
-		var xInputTextData = dbsfaces.inputText.pvInitializeData(pInputText);
+		var xInputTextData = dbsfaces.inputText.initializeData(pInputText);
 		return xInputTextData; 
 	},
 
-	pvInitializeData: function(pInputText){
+	initializeData: function(pInputText){
 		var xId = dbsfaces.util.jsid(pInputText[0].id);
 		var xData = {
 			dom : {
@@ -206,9 +195,6 @@ dbsfaces.inputText = {
 		return xData;
 	},
 		
-	wTime: +new Date(),
-	wTimeout: 0,
-
 	requestSuggestion: function(pInputTextData){
 		dbsfaces.inputText.clearSuggestion(pInputTextData);
 		//Não faze pesquisa se valor for vázio
@@ -216,16 +202,16 @@ dbsfaces.inputText = {
 		if (dbsfaces.inputText.pvIsNullText(pInputTextData, xValue)){return;}
 
 		/* delay para evitar chamadas ajax contantes */
-		if (dbsfaces.inputText.wTime == 0){
-			dbsfaces.inputText.wTime = +new Date();
+		if (pInputTextData.time == 0){
+			pInputTextData.time = +new Date();
 		}else{
-			xDelay = +new Date() - dbsfaces.inputText.wTime;
-			dbsfaces.inputText.wTime = +new Date();
+			xDelay = +new Date() - pInputTextData.time;
+			pInputTextData.time = +new Date();
 			if (xDelay < 550){
-				window.clearTimeout(dbsfaces.inputText.wTimeOut); //Cancela request anterior
+				window.clearTimeout(pInputTextData.timeout); //Cancela request anterior
 			}
 			//Aguarda um tempo para chamar a rotina de sugestão
-			dbsfaces.inputText.wTimeOut = window.setTimeout(function(){
+			pInputTextData.timeout = setTimeout(function(){
 				pInputTextData.dom.submit.click();
 				//Substituir o botão por uma chamada ajax. Estudar pq a chama ajax abaixo não funciona
 //				jsf.ajax.request($(pId + "-submit"), "click", {execute: $(pId).get(0).id, render: $(pId).get(0).id + "-list", onevent:dbsfaces.onajax, onerror:dbsfaces.onajaxerror}); 
@@ -240,9 +226,9 @@ dbsfaces.inputText = {
 		//Verifica se houve mudança antes de disparar evento
 		if (pInputTextData.dom.suggestionKey.val() != ""){
 			pInputTextData.dom.suggestionKey.val("");
-			dbsfaces.inputText.triggerChange(pInputTextData);
+			dbsfaces.inputText.pvTriggerChange(pInputTextData);
 		};
-		dbsfaces.inputText.validate(pInputTextData);
+		dbsfaces.inputText.pvValidate(pInputTextData);
 	},
 
 	acceptSuggestion: function(pInputTextData){
@@ -252,9 +238,9 @@ dbsfaces.inputText = {
 			//Seta valor selecionado
 			pInputTextData.dom.suggestionKey.val(pInputTextData.dom.suggestionKey.attr("key"));
 			pInputTextData.dom.inputData.val(xSuggestionValue);
-			dbsfaces.inputText.triggerChange(pInputTextData);
+			dbsfaces.inputText.pvTriggerChange(pInputTextData);
 		};
-		dbsfaces.inputText.validate(pInputTextData);
+		dbsfaces.inputText.pvValidate(pInputTextData);
 	},
 	
 	//Copia valor da lista para a sugestão
@@ -302,20 +288,20 @@ dbsfaces.inputText = {
 		dbsfaces.inputText.suggestionReceived(pInputTextData, xRow, false);
 	},
 
-	validate: function(pInputTextData){
+	pvValidate: function(pInputTextData){
 		//Sai caso input não seja do tipo que controla suggestion
 		if (dbsfaces.inputText.isSuggestion(pInputTextData)){
 			//Verifica conteúdo da seleção
 			var xSuggestionValue = pInputTextData.dom.suggestion.val().trim();
 			var xValue = pInputTextData.dom.inputData.val();
 			if (dbsfaces.inputText.pvIsNullText(pInputTextData, xValue)){
-				dbsfaces.inputText.removeError(pInputTextData);
+				dbsfaces.inputText.pvRemoveError(pInputTextData);
 			}else if (xSuggestionValue == xValue){
 				//Confirma a sugestão
-				dbsfaces.inputText.removeError(pInputTextData);
+				dbsfaces.inputText.pvRemoveError(pInputTextData);
 			}else{
 				//Campo com erro
-				dbsfaces.inputText.addError(pInputTextData);
+				dbsfaces.inputText.pvAddError(pInputTextData);
 			}
 		}
 	},		
@@ -333,11 +319,11 @@ dbsfaces.inputText = {
 		}
 	},
 
-	triggerChange: function(pInputTextData){
+	pvTriggerChange: function(pInputTextData){
 		pInputTextData.dom.inputData.trigger("change");
 	},		
 	
-	triggerBlur: function(pInputTextData){
+	pvTriggerBlur: function(pInputTextData){
 		wBlur = false;
 		pInputTextData.dom.inputData.trigger("blur");
 		dbsfaces.inputText.validateNullText(pInputTextData);
@@ -371,12 +357,12 @@ dbsfaces.inputText = {
 			return true;
 		} 	
 	},
-	removeError: function(pInputTextData){
+	pvRemoveError: function(pInputTextData){
 		pInputTextData.dom.suggestion.removeClass("-error");
 		pInputTextData.dom.inputData.removeClass("-error");
 	},
 
-	addError: function(pInputTextData){
+	pvAddError: function(pInputTextData){
 		pInputTextData.dom.suggestion.addClass("-error");
 		pInputTextData.dom.inputData.addClass("-error");
 	},
