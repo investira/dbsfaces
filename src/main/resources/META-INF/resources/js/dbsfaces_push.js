@@ -11,7 +11,7 @@ dbs_push = function(pId, pUrl, pDelay) {
 	xEventSource.addEventListener('update', function(e) {
 		var xData = dbsfaces_push.validIds(xPush, e.data);
 		if (xData.length > 0){
-			dbsfaces.ajax.request(xPush[0].id, null, xData, dbsfaces_push.status, dbsfaces.ui.showLoadingError(pId), null, pDelay);
+			dbsfaces.ajax.request(xPush[0].id, null, xData, dbsfaces_push.status, dbsfaces_push.status, null, pDelay);
 		}
 		return false;
 	}, false);
@@ -51,6 +51,7 @@ dbsfaces_push = {
 		}else if (e.status == "statechange"){
 			dbsfaces_push.showUpdate(xDomIcon);
 		}else{
+			dbsfaces_push.showError(xDomIcon);
 			console.log(e.status);
 		}
 	},
