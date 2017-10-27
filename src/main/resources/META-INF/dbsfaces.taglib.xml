@@ -43,7 +43,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -162,7 +162,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -170,7 +170,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -269,7 +269,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada dentro do nav
+                Class CSS dentro do nav
             </description>
 			<name>contentStyleClass</name>
 			<required>false</required>
@@ -350,7 +350,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -358,7 +358,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -441,7 +441,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada dentro do nav
+                Class CSS dentro do nav
             </description>
 			<name>contentStyleClass</name>
 			<required>false</required>
@@ -472,7 +472,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -480,7 +480,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -511,7 +511,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada dentro do nav
+                Class CSS dentro do nav
             </description>
 			<name>contentStyleClass</name>
 			<required>false</required>
@@ -542,7 +542,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -550,7 +550,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -618,7 +618,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada dentro do nav
+                Class CSS dentro do nav
             </description>
 			<name>contentStyleClass</name>
 			<required>false</required>
@@ -699,7 +699,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -707,7 +707,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -807,7 +807,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada dentro do nav
+                Class CSS dentro do nav
             </description>
 			<name>contentStyleClass</name>
 			<required>false</required>
@@ -1137,7 +1137,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -1145,7 +1145,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -1244,7 +1244,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -1252,7 +1252,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -1323,7 +1323,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -1331,7 +1331,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -1803,7 +1803,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -1811,7 +1811,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -1960,7 +1960,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -1968,7 +1968,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -2098,7 +2098,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -2106,7 +2106,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -2223,7 +2223,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -2231,7 +2231,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -2401,7 +2401,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -2409,7 +2409,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -2546,7 +2546,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -2554,7 +2554,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -2572,7 +2572,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -2580,7 +2580,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -2667,7 +2667,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -2675,7 +2675,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -2769,7 +2769,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -2777,7 +2777,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -2888,7 +2888,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -2896,7 +2896,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -2975,7 +2975,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -2983,7 +2983,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -3108,7 +3108,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -3116,7 +3116,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -3295,7 +3295,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -3303,7 +3303,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -3443,7 +3443,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -3451,7 +3451,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -3575,7 +3575,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -3583,7 +3583,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -3638,7 +3638,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -3646,7 +3646,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -3838,7 +3838,7 @@
 		</component>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -3846,7 +3846,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -3917,7 +3917,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -3925,7 +3925,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -3980,7 +3980,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -3988,7 +3988,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -4120,7 +4120,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -4128,7 +4128,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -4151,7 +4151,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -4159,7 +4159,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -4222,7 +4222,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -4230,7 +4230,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -4296,7 +4296,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -4304,7 +4304,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -4330,7 +4330,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS que será utilizada
+                Class CSS
             </description>
 			<name>styleClass</name>
 			<required>false</required>
@@ -4338,7 +4338,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Adiciona style 
+                Style CSS 
             </description>
 			<name>style</name>
 			<required>false</required>
@@ -4385,7 +4385,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Url do DBSPushServlet
+                Url do DBSPushServlet. Utilize #{request.contextPath} para informar o caminho completo.
             </description>
 			<name>url</name>
 			<required>true</required>
@@ -4398,6 +4398,30 @@
 			<name>showStatus</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+                Tempo de espera em ms antes de efetuar o request. O padrão é 0 (sem delay).
+            </description>
+			<name>delay</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+		</attribute>
+		<attribute>
+			<description>
+                Class CSS
+            </description>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Style CSS 
+            </description>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
 		</attribute>
 	</tag>
 	<tag>

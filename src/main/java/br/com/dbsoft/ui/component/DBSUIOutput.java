@@ -42,6 +42,7 @@ import br.com.dbsoft.ui.core.DBSFaces;
 	@ResourceDependency(library = "css", name = "dbsfaces_messagelist.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_menu.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_progress.css", target = "head"),
+	@ResourceDependency(library = "css", name = "dbsfaces_push.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_reportform.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_report.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_slider.css", target = "head"),

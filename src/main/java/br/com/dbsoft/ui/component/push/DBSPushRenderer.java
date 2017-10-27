@@ -23,19 +23,22 @@ public class DBSPushRenderer extends DBSRenderer {
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xPush.getClientId(pContext);
 		String xClass = CSS.PUSH.MAIN;
+		if (xPush.getStyleClass()!=null){
+			xClass += xPush.getStyleClass();
+		}
 		xWriter.startElement("span", xPush);
 			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
 			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
 			DBSFaces.encodeAttribute(xWriter, "class", xClass);
+			DBSFaces.encodeAttribute(xWriter, "style", xPush.getStyle());
 			if (xPush.getShowStatus()){
 				xWriter.startElement("span", xPush);
-					DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTENT);
 				xWriter.endElement("span");
 			}
 			DBSFaces.encodeJavaScriptTagStart(pComponent, xWriter);
 			String xJS = "$(document).ready(function() { \n" +
 					     " var xPushId = dbsfaces.util.jsid('" + xClientId + "'); \n " + 
-					     " dbs_push(xPushId,'" + xPush.getUrl() + "'); \n" +
+					     " dbs_push(xPushId,'" + xPush.getUrl() + "'," + xPush.getDelay() + "); \n" +
 	                     "}); \n"; 
 			xWriter.write(xJS);
 			DBSFaces.encodeJavaScriptTagEnd(xWriter);				

@@ -1487,8 +1487,9 @@ dbsfaces.string = {
 };
 
 dbsfaces.ajax = {
-	request: function(pSourceId, pExecuteIds, pRenderIds, pOnEvent, pOnError, pParams){
+	request: function(pSourceId, pExecuteIds, pRenderIds, pOnEvent, pOnError, pParams, pDelay, pTimeout){
 		if (pSourceId == null){return;}
+		
 		pSourceId = dbsfaces.util.jsid(pSourceId);
 		var xSource = $(pSourceId);
 
@@ -1497,6 +1498,13 @@ dbsfaces.ajax = {
 	    
 	    var xUrl = xForm.attr("action");
 	    if (xUrl == null){return;}
+	    
+	    if (pDelay == null || pDelay == "undefined"){
+	    	pDelay = 0;
+	    }
+	    if (pTimeout == null || pTimeout == "undefined"){
+	    	pTimeout = 0;
+	    }
 	    
 		var xData = xForm.serialize();
 		xData += "&" + dbsfaces.JAVAX.SOURCE + "=" + xSource[0].id; 
@@ -1514,7 +1522,7 @@ dbsfaces.ajax = {
 			pRenderIds = pRenderIds.replace("@form", xForm[0].id);
 			xData += "&" + dbsfaces.JAVAX.PARTIAL_RENDER + "=" + pRenderIds;
 		}
-		if (pParams != null){
+		if (pParams != "undefined" && pParams != null){
 			xData += "&params=" + pParams;
 		}
 		
@@ -1571,7 +1579,15 @@ dbsfaces.ajax = {
 	        }
 	    };
         xhrOptions.global = false;
-        $.ajax(xhrOptions);
+		
+        if (pDelay > 0){
+        	clearTimeout(xSource.data("pushtimeout"));
+        	xSource.data("pushtimeout", setTimeout(function(e){
+        		$.ajax(xhrOptions);
+        	}, pDelay));
+        }else{
+    		$.ajax(xhrOptions);
+        }
 	},
 	
 	response: function(pData){

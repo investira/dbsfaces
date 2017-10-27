@@ -90,17 +90,26 @@ a {
 	outline-width: 0px !important;
 }
 
-.-th_action[disabled] {
-	cursor: default;
+.-th_action {
 	opacity: 0.9;
+	cursor: default;
 	pointer-events: none;
 }
 
-.-th_action:not([disabled]){
+.-th_action:not([disabled]):not(.-selected){
 	opacity: 0.95;
 	cursor: pointer;
 	outline: none !important;
 	border-collapse: separate;
+	pointer-events: auto;
+}
+
+.-th_action:not([disabled]):ACTIVE{
+	opacity: 1;	
+	border: unset !important;
+	background: unset !important;
+	background-color: unset !important;
+	box-shadow: unset !important;
 }
 
 .-th_action.dbs_menuitem:not([disabled]):ACTIVE{
@@ -114,8 +123,8 @@ a {
 	text-shadow: none;
 }
 
-
-.-th_action:not(.dbs_menuitem):not([disabled]):ACTIVE > *:not(style):not(script):not(.-tooltip):after{
+.-th_action:not(.dbs_menuitem):not(.-selected):not([disabled]):ACTIVE > *:not(style):not(script):not(.-tooltip):after,
+.-th_action:not(.dbs_menuitem):not(.-selected):not([disabled]):ACTIVE:empty:after{
 	content: " ";
 	box-sizing: border-box;
 	position: absolute;
@@ -151,14 +160,6 @@ a {
 	pointer-events: none;
 }
 
-
-.-th_action:not(.dbs_menuitem):not([disabled]):ACTIVE{
-	opacity: 1;	
-	border: unset !important;
-	background: unset !important;
-	background-color: unset !important;
-	box-shadow: unset !important;
-}
 
 
 .-th_action:not([disabled]):HOVER,
