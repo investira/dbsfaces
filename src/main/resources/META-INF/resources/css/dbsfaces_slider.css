@@ -330,6 +330,15 @@
 	width: 100%;
 	left: -1.75em;
 }
+
+.dbs_slider > .-container > .-content > .-sub_container > .-handle.-begin > .-label{
+/*     right: 0;	right: 0; */ */
+/* 	left: unset !important; */
+}
+.dbs_slider > .-container > .-content > .-sub_container > .-handle.-end > .-label{
+/* 	left: 0 !important; */
+}
+
 .dbs_slider > .-container > .-content > .-sub_container > .-handle > .-label{
     visibility: hidden;
     position: absolute;
@@ -348,6 +357,9 @@
 .dbs_slider[type="v"] > .-container > .-content > .-sub_container > .-handle > .-label,
 .dbs_slider[type="r"] > .-container > .-content > .-sub_container > .-handle > .-label{
 /* 	cursor: pointer; */
+}
+.dbs_slider[type="r"].-h > .-container > .-content > .-sub_container > .-handle > .-label {
+    border: 0;
 }
 
 .dbs_slider.-h > .-container > .-content > .-sub_container > .-handle > .-label{

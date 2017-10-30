@@ -174,7 +174,8 @@ dbsfaces.slider = {
 			startPos: null, //Posição em relação a tela quando iniciado o movimento
 			timeout: null, //Timeout para disparar evento de Change quando valor alterado
 			valuesListNumeric: null, //lista dos valores convertida para valor númerico
-			resizeTimeout: null
+			resizeTimeout: null,
+			switched: false
 		}
 		pSlider.data("data", xData);
 		xData.dom.content = xData.dom.container.children(".-content");
@@ -505,14 +506,18 @@ dbsfaces.slider = {
 			pSliderData.dom.input = pSliderData.dom.inputBegin;
 			pSliderData.dom.handle = pSliderData.dom.handleBegin;
 			pSliderData.dom.handleLabel = pSliderData.dom.handleBeginLabel;
-			pSliderData.value = pSliderData.valueBegin;
 			pSliderData.dom.self.removeClass("-end").addClass("-begin");
+			pSliderData.value = pSliderData.valueBegin;
+			pSliderData.lengthFator = pSliderData.lengthFatorBegin;
+			pSliderData.changeValue = pSliderData.changeValueBegin;
 		}else if (pHandle == "e"){
 			pSliderData.dom.input = pSliderData.dom.inputEnd;
 			pSliderData.dom.handle = pSliderData.dom.handleEnd;
 			pSliderData.dom.handleLabel = pSliderData.dom.handleEndLabel;
-			pSliderData.value = pSliderData.valueEnd;
 			pSliderData.dom.self.removeClass("-begin").addClass("-end");
+			pSliderData.value = pSliderData.valueEnd;
+			pSliderData.lengthFator = pSliderData.lengthFatorEnd;
+			pSliderData.changeValue = pSliderData.changeValueEnd;
 		}
 	},
 	
@@ -653,6 +658,19 @@ dbsfaces.slider = {
 		//Salva inputValue
 		dbsfaces.slider.pvSetInputValue(pSliderData, xInputValue);
 		dbsfaces.slider.pvEncodeValue(pSliderData);
+		//Se houve inversão do handle
+		if (pSliderData.switched){
+			pSliderData.switched = false;
+			//Força noveo encode do valor do handle anterior para que seja reposicionado
+			var xCurrentHandle = pSliderData.currentHandle;
+			if (pSliderData.currentHandle == "b"){
+				dbsfaces.slider.setCurrentHandle(pSliderData, "e");
+			}else{
+				dbsfaces.slider.setCurrentHandle(pSliderData, "b");
+			}
+			dbsfaces.slider.pvEncodeValue(pSliderData);
+			dbsfaces.slider.setCurrentHandle(pSliderData, xCurrentHandle);
+		}
 	},
 	
 	pvSetInputValue: function(pSliderData, pInputValue){
@@ -686,11 +704,11 @@ dbsfaces.slider = {
 	pvEncodeValue: function(pSliderData){
 		var xSliderValue = pSliderData.dom.sliderValue;
 		var xValuePerc = pSliderData.lengthFator * 100;
-		//Valor para ser capturado pelo pseudoselector :before:content
 		if (pSliderData.type == "s"
 		 && pSliderData.lengthFator == 0){
 			pSliderData.dom.handleLabel.text("");
 		}else{
+			//Valor para ser capturado pelo pseudoselector :before:content
 			pSliderData.dom.handleLabel.text(pSliderData.dom.input.attr("value"));
 		}
 		
@@ -736,27 +754,50 @@ dbsfaces.slider = {
 		}
 		//Posição do handle
 		pSliderData.dom.handle.css("left", pValuePerc + "%");
-		var xCenter = (pSliderData.dom.handleLabel[0].getBoundingClientRect().width / 2);
-		if (pSliderData.type == "s"){
-			xCenter += (pSliderData.dom.slider[0].getBoundingClientRect().width * pSliderData.segmentFator) / 2;
-		}
-		//Center handle label
-		var xLeft = -xCenter;
-		
-		//Limita pontos extremos para dentro da áreas
-		if (pSliderData.type == "r"
-		 || pSliderData.type == "v"){
-			var xR = (pSliderData.dom.handle[0].getBoundingClientRect().left + xCenter) -
-			   	     (pSliderData.dom.slider[0].getBoundingClientRect().left + pSliderData.dom.slider[0].getBoundingClientRect().width);
-			var xL = (pSliderData.dom.handle[0].getBoundingClientRect().left - xCenter) -
-	  	     		 pSliderData.dom.slider[0].getBoundingClientRect().left;
-			if (xR > 0){
-				xLeft -= xR;
-			}else if (xL < 0){
-				xLeft -= xL;
+		var xAlignShift = 0;
+		if (pSliderData.type == "v"
+		 || pSliderData.type == "s"){
+			xAlignShift = (pSliderData.dom.handleLabel[0].getBoundingClientRect().width / 2);
+			if (pSliderData.type == "s"){
+				xAlignShift += (pSliderData.dom.slider[0].getBoundingClientRect().width * pSliderData.segmentFator) / 2;
 			}
+			//Center handle label
+			var xLeft = -xAlignShift;
+			
+			//Limita pontos extremos para dentro da áreas
+			if (pSliderData.type == "v"){
+				var xR = (pSliderData.dom.handle[0].getBoundingClientRect().left + xAlignShift) -
+						 (pSliderData.dom.slider[0].getBoundingClientRect().left + pSliderData.dom.slider[0].getBoundingClientRect().width);
+				var xL = (pSliderData.dom.handle[0].getBoundingClientRect().left - xAlignShift) -
+						  pSliderData.dom.slider[0].getBoundingClientRect().left;
+				if (xR > 0){
+					xLeft -= xR;
+				}else if (xL < 0){
+					xLeft -= xL;
+				}
+			}
+			pSliderData.dom.handleLabel.css("left", xLeft);
+		}else{
+			if (pSliderData.currentHandle == "b"){
+				xAlignShift = pSliderData.dom.handleLabel[0].getBoundingClientRect().width;
+				var xL = (pSliderData.dom.handle[0].getBoundingClientRect().left - xAlignShift) -
+				  		  pSliderData.dom.slider[0].getBoundingClientRect().left;
+				if (xL < 0){
+					xAlignShift += xL;
+				}
+				xAlignShift = -xAlignShift;
+			}else{
+				xAlignShift = 0
+				var xR = (pSliderData.dom.handle[0].getBoundingClientRect().left + pSliderData.dom.handleLabel[0].getBoundingClientRect().width) -
+				 		 (pSliderData.dom.slider[0].getBoundingClientRect().left + pSliderData.dom.slider[0].getBoundingClientRect().width);
+				if (xR > 0){
+					xAlignShift -= xR;
+				}
+//				xAlignShift = -xAlignShift;
+			}
+			//Limita pontos extremos para dentro da áreas
+			pSliderData.dom.handleLabel.css("left", xAlignShift);
 		}
-		pSliderData.dom.handleLabel.css("left", xLeft);
 		//termometro
 		if (pSliderData.type == "r"){
 			var xBegin = parseFloat(pSliderData.dom.handleBegin[0].style.left);
@@ -821,16 +862,38 @@ dbsfaces.slider = {
 		pSliderData.dom.handleBegin = pSliderData.dom.handleEnd;
 		pSliderData.dom.handleEnd = xTmp;
 		
-		pSliderData.dom.handleBegin.removeClass("-end").addClass("-begin");
-		pSliderData.dom.handleEnd.removeClass("-begin").addClass("-end");
-		
 		xTmp = pSliderData.dom.handleBeginLabel;
 		pSliderData.dom.handleBeginLabel = pSliderData.dom.handleEndLabel;
 		pSliderData.dom.handleEndLabel = xTmp;
+
+		xTmp = pSliderData.dom.inputBegin;
+		pSliderData.dom.inputBegin = pSliderData.dom.inputEnd;
+		pSliderData.dom.inputEnd = xTmp;
+
+		xTmp = pSliderData.valueBegin;
+		pSliderData.valueBegin = pSliderData.valueEnd;
+		pSliderData.valueEnd = xTmp;
+
+		xTmp = pSliderData.lengthFatorBegin;
+		pSliderData.lengthFatorBegin = pSliderData.lengthFatorEnd;
+		pSliderData.lengthFatorEnd = xTmp;
+
+		xTmp = pSliderData.changeValueBegin;
+		pSliderData.changeValueBegin = pSliderData.changeValueEnd;
+		pSliderData.changeValueEnd = xTmp;
+
+		pSliderData.dom.handleBegin.removeClass("-end").addClass("-begin");
+		pSliderData.dom.handleEnd.removeClass("-begin").addClass("-end");
+		
+//		bbb
+//		dbsfaces.slider.setCurrentHandle(pSliderData, pSliderData.currentHandle);
+//		dbsfaces.slider.pvEncodeValue(pSliderData);
+//		dbsfaces.slider.pvSetInputValue(pSliderData, pSliderData.dom.inputBegin[0].value);
+		pSliderData.switched = true;
 		if (pSliderData.currentHandle == "b"){
-			pSliderData.currentHandle = "e";
+			dbsfaces.slider.setCurrentHandle(pSliderData, "e");
 		}else{
-			pSliderData.currentHandle = "b";
+			dbsfaces.slider.setCurrentHandle(pSliderData, "b");
 		}
 	},
 	
