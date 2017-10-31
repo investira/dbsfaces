@@ -54,7 +54,6 @@ public class DBSComboboxRenderer extends DBSRenderer {
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xCombobox.getClientId(pContext);
 		String xClass = CSS.COMBOBOX.MAIN + CSS.THEME.INPUT;
-		Object xOldValue = xCombobox.getValue();
 		if (xCombobox.getStyleClass()!=null){
 			xClass += xCombobox.getStyleClass();
 		}
@@ -68,31 +67,28 @@ public class DBSComboboxRenderer extends DBSRenderer {
 			xWriter.startElement("div", xCombobox);
 				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
 					DBSFaces.encodeLabel(pContext, xCombobox, xWriter);
-					pvEncodeInput(pContext, xCombobox, xWriter);
+					pvEncodeInput(xCombobox, xWriter);
 					DBSFaces.encodeRightLabel(pContext, xCombobox, xWriter);
 			xWriter.endElement("div");
 			DBSFaces.encodeTooltip(pContext, xCombobox, xCombobox.getTooltip());
-		
+
 			if (!xCombobox.getReadOnly()){
-				DBSFaces.encodeJavaScriptTagStart(pComponent, xWriter);
-				String xJS = "";
-				//Dispara evento change quando houver mudança de valor durante o encode.
-				//
-				if (!DBSObject.isEqual(xOldValue, xCombobox.getValue())){
-					xJS = " dbsfaces.combobox.triggerChange(xComboboxId); \n";
-				}
-				xJS = "$(document).ready(function() { \n" +
-						     " var xComboboxId = dbsfaces.util.jsid('" + xClientId + "'); \n " + 
-						     " dbs_combobox(xComboboxId); \n" +
-						     xJS +
-		                     "}); \n"; 
-				xWriter.write(xJS);
-				DBSFaces.encodeJavaScriptTagEnd(xWriter);	
+				pvEncodeJS(xCombobox, xWriter);
 			}
 		xWriter.endElement("div");
 	}
 
-	private void pvEncodeInput(FacesContext pContext, DBSCombobox pCombobox, ResponseWriter pWriter) throws IOException{
+	private void pvEncodeJS(UIComponent pComponent, ResponseWriter pWriter) throws IOException{
+		DBSFaces.encodeJavaScriptTagStart(pComponent, pWriter);
+		String xJS = "$(document).ready(function() { \n" +
+					     " var xComboboxId = dbsfaces.util.jsid('" + pComponent.getClientId() + "'); \n " + 
+					     " dbs_combobox(xComboboxId); \n" +
+		                "}); \n"; 
+		pWriter.write(xJS);
+		DBSFaces.encodeJavaScriptTagEnd(pWriter);		
+	}
+
+	private void pvEncodeInput(DBSCombobox pCombobox, ResponseWriter pWriter) throws IOException{
 		String xClientId = getInputDataClientId(pCombobox);
 		String xStyle = "";
 		Object xValueKey = "";
@@ -180,7 +176,7 @@ public class DBSComboboxRenderer extends DBSRenderer {
 					DBSFaces.encodeAttribute(pWriter, "id", xClientId);
 					DBSFaces.encodeAttribute(pWriter, "name", xClientId);
 					DBSFaces.encodeAttribute(pWriter, "size", "1");
-					encodeClientBehaviors(pContext, pCombobox);
+//					encodeClientBehaviors(pContext, pCombobox);
 					if (xList != null
 					 && xList.size() > 0){
 						for (Map.Entry<Object, Object> xListItem : xList.entrySet()) {
