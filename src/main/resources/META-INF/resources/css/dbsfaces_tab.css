@@ -166,20 +166,17 @@
 	display: inline-block;
     position: relative;
     padding: 0.4em;
-    -webkit-flex: 1 1 1em;
-    -moz-flex: 1 1 1em;
-    flex: 1 1 1em;
-    -webkit-flex: 1 1 1em;
-    -moz-flex: 1 1 1em;
-    flex: 1 1 1em;
+    -webkit-flex: 1 1 100%;
+    -moz-flex: 1 1 100%;
+    flex: 1 1 100%;
 	overflow: auto;
 } 	
 
 .dbs_tab > .-container > .-tabPages > .-content{
 	display: inline-block;
+	position: relative;
     width: 100%;
     height: 100%;
-	position: relative;
 } 	
 
 

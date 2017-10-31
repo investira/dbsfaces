@@ -208,8 +208,13 @@
 	width: 2em;
 }
 .dbs_modal > .-modal > .-container > table > tbody > tr > td > table > tbody > tr > .-container{
+	vertical-align: top;
 }
 .dbs_modal > .-modal > .-container > table > tbody > tr > td > table > tbody > tr > .-container > .-content{
+	overflow: auto;
+}
+.dbs_modal.-confirmation > .-modal > .-container > table > tbody > tr > td > table > tbody > tr > .-container {
+    vertical-align: middle;
 }
 
 .dbs_modal > .-modal > .-container > table > tbody > tr > td > table > tbody > tr > .-container > .-content .-th_input:not(td), 
@@ -220,6 +225,7 @@
 .dbs_modal.-confirmation > .-modal > .-container > table > tbody > tr > td > table > tbody > tr > .-container > .-content{
 	text-align: center;
 }
+
 
 
 .dbs_modal > .-modal > .-container > table > tfoot{
