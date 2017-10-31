@@ -256,16 +256,17 @@ dbsfaces.charts = {
 	},
 	
 	pvInitializeDraw: function(pChartsData){
-		if (pChartsData.height < 5
-		 || pChartsData.width < 5){
-//			pChartsData.dom.childrenCaptionContainer.append( "<p>Dimensões mínimas são 5px,5px.<br/>Espaços está com " + pChartsData.width + "px, " + pChartsData.height + "px</p>" );;
-			return;
-		}
 		//Loop em todos os gráficos
 		pChartsData.globalSequencesCount = 0;
 		pChartsData.dom.childrenData.forEach(function(pChartData){
 			if ((pChartsData.type != "line" && pChartData.dom.childrenData.length > 0)
 			 || (pChartsData.type == "line" && pChartData.dom.childrenData.length > 1)){
+				if (pChartsData.height < 5
+				 || pChartsData.width < 5){
+					throw new Error(pChartsData.dom.self[0].id + "\t" + pChartData.dom.childrenData.length + ":Dimensões mínimas são 5px,5px. \t Dimensões estão com " + pChartsData.width + "px, " + pChartsData.height + "px");
+//							pChartsData.dom.childrenCaptionContainer.append( "<p>Dimensões mínimas são 5px,5px.<br/>Espaços está com " + pChartsData.width + "px, " + pChartsData.height + "px</p>" );;
+					return;
+				}
 				//Configura qual o sequence
 				pChartData.globalSequence = pChartsData.globalSequencesCount + 1;
 				//Centro do gráfico
@@ -945,8 +946,8 @@ dbsfaces.charts = {
 		if (pCharts == null || typeof pCharts == "undefined" || pCharts.length == 0){return;}
 
 		var xChartsData = pCharts.data("data");
-//		clearTimeout(xChartsData.refreshTimeout);
-//		xChartsData.refreshTimeout = setTimeout(function(){
+		clearTimeout(xChartsData.refreshTimeout);
+		xChartsData.refreshTimeout = setTimeout(function(){
 			xChartsData.dom.container.addClass("-hide");
 			xChartsData.dom.childrenData.forEach(function(pChartData) {
 				dbsfaces.chart.refresh(pChartData.dom.self);
@@ -954,7 +955,7 @@ dbsfaces.charts = {
 			dbsfaces.charts.pvInitializeAnalizeValues(xChartsData);
 			dbsfaces.charts.pvInitializeDraw(xChartsData);
 			xChartsData.dom.container.removeClass("-hide");
-//		},2);
+		},1);
 	},
 	
 	selectChart: function(pChartsData, pChartId){
