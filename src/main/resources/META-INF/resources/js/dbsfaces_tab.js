@@ -68,8 +68,8 @@ dbsfaces.tab = {
 		xCaption.addClass("-selected");
 		xTabPage.addClass("-selected");
 		//Troca cor
-		xCaption.css("background-color", pTabData.color)
-				.css("color", pTabData.colorInverted);
+//		xCaption.css("background-color", pTabData.color)
+//				.css("color", pTabData.colorInverted);
 		dbsfaces.tab.resize(pTabData);
 	},
 

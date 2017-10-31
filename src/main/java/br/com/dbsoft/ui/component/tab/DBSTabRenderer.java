@@ -118,7 +118,7 @@ public class DBSTabRenderer extends DBSRenderer {
 	
 								DBSFaces.encodeAttribute(pWriter, "id", xPageClientId + "_aba");
 								DBSFaces.encodeAttribute(pWriter, "name", xPageClientId + "_aba");
-								DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CAPTION + CSS.THEME.ACTION + CSS.THEME.FLEX_COL + CSS.NOT_SELECTABLE + CSS.THEME.BC + CSS.THEME.FC + CSS.THEME.INVERT);	
+								DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CAPTION + CSS.THEME.FLEX_COL + CSS.NOT_SELECTABLE + CSS.THEME.BC + CSS.THEME.FC + CSS.THEME.INVERT);	
 								DBSFaces.encodeAttribute(pWriter, "tabPageid", xPageClientId);
 								
 								encodeClientBehaviors(pContext, xPage);

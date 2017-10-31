@@ -4175,15 +4175,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Geração dinamica das tabpages atraves do Controller das páginas no tab 
-            </description>
-			<name>tabPages</name>
-			<required>false</required>
-			<type>br.com.dbsoft.ui.component.tabPagesController</type>
-		</attribute>
-		<attribute>
-			<description>
-                Se exibe conteúdo da aba logo após o click na aba. Default = true. Quando for false, deverá ser utilizado o atributo SelectedTabPage para ativar a página selecionada. 
+                Se exibe conteúdo da aba logo após o click na aba via JS. Default = true. Quando for false, deverá ser utilizado o atributo SelectedTabPage para ativar a página selecionada. 
             </description>
 			<name>showTabPageOnClick</name>
 			<required>false</required>
