@@ -260,9 +260,10 @@ dbs_dialogContent = function(pId) {
 	$(window).resize(function(e) {
 //		console.log("resize");
 		//Timeout para reduriz as chamadas consecutivas
-		clearTimeout(xDialogData.resizeTimeout);
+		var xTmpDialogData = $(pId).data("data");
+		clearTimeout(xTmpDialogData.resizeTimeout);
 		xDialogData.resizeTimeout = setTimeout(function(){
-			dbsfaces.dialog.resize(xDialogData);
+			dbsfaces.dialog.resize($(pId).data("data"));
 		}, 20);
 	});
 

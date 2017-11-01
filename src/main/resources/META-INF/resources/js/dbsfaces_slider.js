@@ -4,7 +4,7 @@ dbs_slider = function(pId, pValuesList, pLabelsList, pMinValue, pMaxValue, pLoca
 	var xSliderData = dbsfaces.slider.initialize($(pId), pValuesList, pLabelsList, pMinValue, pMaxValue);
 
 	$(window).resize(function(e){
-		dbsfaces.slider.resize(xSliderData);
+		dbsfaces.slider.resize($(pId).data("data"));
 	});
 	
 	if (xSliderData.dom.self.hasClass("-readOnly")){return;}

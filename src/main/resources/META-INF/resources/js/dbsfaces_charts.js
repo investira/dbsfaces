@@ -1,29 +1,29 @@
 dbs_charts = function(pId) {
-	var xCharts = $(pId);
+	var xCharts = pId;
+	var xChartsData = dbsfaces.charts.initialize($(pId));
 	//Prepara gráfico com a altura e largura
 	$(window).resize(function(e){
-		dbsfaces.charts.refresh(xCharts);
+//		console.log("xCharts[0]:\t" + document.body.contains(xCharts[0]));
+//		console.log("$(pId)[0]:\t" + document.body.contains($(pId)[0]));
+//		console.log("xChartsData.dom.self[0]:\t" + document.body.contains(xChartsData.dom.self[0]));
+//		console.log("$(dbsfaces.util.jsid(xChartsData.dom.self[0].id))[0]:\t" + document.body.contains($(dbsfaces.util.jsid(xChartsData.dom.self[0].id))[0]));
+//		console.log("$(dbsfaces.util.jsid(xChartsData.dom.self[0].id)).data('data').dom.self[0]:\t" + document.body.contains($(dbsfaces.util.jsid(xChartsData.dom.self[0].id)).data("data").dom.self[0]));
+//		console.log("xChartsData.dom.childrenData[0].dom.self[0]:\t" + document.body.contains(xChartsData.dom.childrenData[0].dom.self[0]));
+//		console.log("$(dbsfaces.util.jsid(xChartsData.dom.self[0].id)).data('data').dom.childrenData[0].dom.self[0]:\t" + document.body.contains($(dbsfaces.util.jsid(xChartsData.dom.self[0].id)).data("data").dom.childrenData[0].dom.self[0]));
+//		console.log("----\n");
+		dbsfaces.charts.resize($(pId));
 	});
-	
-	dbsfaces.charts.initialize(xCharts);
 };
 
 dbsfaces.charts = {
 	initialize: function(pCharts){
-//		dbsfaces.charts.pvInitializeDefs(pCharts);
 		var xChartsData = dbsfaces.charts.pvInitializeData(pCharts);
 		dbsfaces.charts.pvInitializeLayout(xChartsData);
 		dbsfaces.charts.pvInitializeAnalizeValues(xChartsData);
 		dbsfaces.charts.pvInitializeDraw(xChartsData);
 		xChartsData.dom.container.removeClass("-hide");
+		return xChartsData;
 	},
-	
-//	pvInitializeDefs: function(pCharts){
-//		var xSvg = dbsfaces.svg.svg(pCharts, null, null, null, null, null, null, {x:0, y:0});
-//		var xDef = dbsfaces.svg.createElement(xSvg, "defs");
-//		var xFilter = dbsfaces.svg.createElement(xDef, "filter", {id:"chartsblur", x:"-50%", y:"-50%", width:"200%", height:"200%", filterUnits:"userSpaceOnUse"});
-//		var xFilterGaussian = dbsfaces.svg.createElement(xFilter, "feGaussianBlur", {in:"SourceGraphic", stdDeviation:1});
-//	},
 	
 	pvInitializeData: function(pCharts){
 		//Salva chart's vinculados a este charts
@@ -67,6 +67,7 @@ dbsfaces.charts = {
 			globalSequencesCount: 0, //Quantidade total de chartvalues considerando todos os gráficos 
 			currentColorInverted: tinycolor(pCharts.css("color")).invertLightness().setAlpha(1).toString(),
 			refreshTimeout : null,
+			resizeTimeout: null
 		}
 		pCharts.data("data", xData);
 		xData.dom.caption = xData.dom.container.children(".-caption");
@@ -78,7 +79,7 @@ dbsfaces.charts = {
 		//Configura numero do index do chart.
 		xData.dom.charts.children(".dbs_chart").each(function(pIndex){
 			$(this).data("data").index = pIndex;
-			//Adiciona elemento chart na lista de filhos do charts. Artifício para manter a ordem dos elementos independentemente da ordem dentro do com pai.
+			//Adiciona elemento chart na lista de filhos do charts. Artifício para manter a ordem dos elementos independentemente da ordem dentro do pai.
 			xData.dom.childrenData.push($(this).data("data"));
 		});
 		return xData;
@@ -167,8 +168,11 @@ dbsfaces.charts = {
 					}
 					//Utiliza tamanho do primeiro chart para configurar o tamanho padrão das áreas de todos os chart.
 					if (pI == 0){
-						pChartsData.height = pChartData.dom.chart[0].getBoundingClientRect().height; 
-						pChartsData.width = pChartData.dom.chart[0].getBoundingClientRect().width;
+//						console.log(pChartData.dom.chart[0].getBoundingClientRect().height);
+//						var xRect = dbsfaces.ui.getRect(pChartData.dom.chart);
+						var xRect = pChartData.dom.chart.getDim();
+						pChartsData.height = xRect.height; 
+						pChartsData.width = xRect.width;
 						xTotalValue = pChartData.totalValue;
 					}
 				}
@@ -249,7 +253,6 @@ dbsfaces.charts = {
 				}
 			}
 		}else{
-			
 			pChartsData.height = pChartsData.dom.charts[0].getBoundingClientRect().height;
 			pChartsData.width = pChartsData.dom.charts[0].getBoundingClientRect().width;
 		}
@@ -654,27 +657,6 @@ dbsfaces.charts = {
 		pChartValueData.dom.infoPerc.attr("x", xInfoPercX)
 									.attr("v",pChartValueData.perc);
 		
-		
-		
-//		pChartValueData.dom.infoLabel.css("font-size", pChartsData.infoFontSize);
-//		var xHeight = pChartValueData.dom.point[0].getBoundingClientRect().height;
-		//Reduz fonte se altura do texto for maior que altura do ponto
-		//Reduz fonte se largura do texto for maior que largura do ponto
-//		if (pChartValueData.dom.infoLabel[0].getComputedTextLength() > (pChartsData.infoWidth * .95)){
-//			pChartValueData.dom.infoLabel.css("font-size", pChartsData.infoWidth / (pChartValueData.label.length * 0.6));
-//			return false;
-//		}
-//		var xHeight = pChartValueData.dom.point[0].getTotalLength() * 0.5;
-//		if (parseFloat(pChartValueData.dom.infoLabel.css("font-size")) > xHeight){
-//			pChartValueData.dom.infoLabel.css("font-size", xHeight);
-//			return false;
-//		}
-//		pChartValueData.dom.infoLabel.textfill({
-//	        maxFontPixels: 36
-//	    });
-//		pChartValueData.dom.infoPerc.fontSizeFit(pChartValueData.dom.info);
-//		pChartValueData.dom.infoLabel.fontSizeFit(pChartValueData.dom.info);
-
 		return true;
 	},
 
@@ -942,6 +924,17 @@ dbsfaces.charts = {
 		return xInfo;
 	},
 
+	resize: function(pCharts){
+		if (pCharts == null || typeof pCharts == "undefined" || pCharts.length == 0){return;}
+
+		var xChartsData = pCharts.data("data");
+		clearTimeout(xChartsData.resizeTimeout);
+		xChartsData.resizeTimeout = setTimeout(function(){
+			dbsfaces.charts.refresh(pCharts);
+			console.log("resize");
+		},200);
+	},
+
 	refresh: function(pCharts){
 		if (pCharts == null || typeof pCharts == "undefined" || pCharts.length == 0){return;}
 
@@ -957,7 +950,7 @@ dbsfaces.charts = {
 			xChartsData.dom.container.removeClass("-hide");
 		},1);
 	},
-	
+
 	selectChart: function(pChartsData, pChartId){
 		pChartsData.dom.childrenCaptionContainer.children().removeClass("-selected");
 		pChartsData.dom.childrenData.forEach(function(pChartData) {

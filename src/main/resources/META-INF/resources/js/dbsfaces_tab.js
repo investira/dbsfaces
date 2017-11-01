@@ -11,7 +11,7 @@ dbs_tab = function(pId) {
 	});
 	
 	$(window).resize(function(e){
-		dbsfaces.tab.resize(xTabData);
+		dbsfaces.tab.resize($(pId).data("data"));
 	});
 }
 
