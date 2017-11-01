@@ -205,6 +205,22 @@
 //	    	console.log(xObject[0].getComputedTextLength() + "\t" + xObject[0].getBoundingClientRect().width + "\t" + xObject.width());
 		});
 		return this;
+    },
+
+    $.fn.getDim = function() {
+		var xRect = {width:0, height:0, top:0, bottom:0, left:0, right:0, x:0, y:0};
+ 		var xEle = this[0];
+//		$(xEle).height(); //Artifício para obrigar a atualização da dimensão do componente
+		var xBCR = xEle.getBoundingClientRect();
+		xRect.width = xBCR.width;
+		xRect.height = xBCR.height;
+		xRect.top = xBCR.top - $(window).scrollTop();
+		xRect.bottom = xBCR.bottom;
+		xRect.left = xBCR.left - $(window).scrollLeft();
+		xRect.right = xBCR.right;
+		xRect.x = xBCR.x;
+		xRect.y = xBCR.y;
+        return xRect;
     }
 
 })(jQuery);
