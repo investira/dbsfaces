@@ -29,7 +29,7 @@ public class DBSChartsRenderer extends DBSRenderer {
 		//Tipo de gráficos não informado
 		if (xCharts.getType()==null){return;}
 		ResponseWriter 	xWriter = pContext.getResponseWriter();
-		String 			xClass = CSS.CHARTS.MAIN + CSS.MODIFIER.NOT_SELECTABLE + " -hide ";
+		String 			xClass = CSS.CHARTS.MAIN + CSS.MODIFIER.NOT_SELECTABLE;
 //		TYPE 			xType = TYPE.get(xCharts.getType());
 
 		if (xCharts.getStyleClass()!=null){
@@ -65,12 +65,9 @@ public class DBSChartsRenderer extends DBSRenderer {
 	
 	private void pvEncodeJS(DBSCharts pCharts, ResponseWriter pWriter) throws IOException{
 		DBSFaces.encodeJavaScriptTagStart(pCharts, pWriter);
-//		Gson xDeltaListJson = new Gson();
 		String xJS = "$(document).ready(function() { \n" +
 				     " var xChartsId = dbsfaces.util.jsid('" + pCharts.getClientId() + "'); \n " + 
 				     " dbs_charts(xChartsId" 
-//				     			+ ", " + xDeltaListJson.toJsonTree(pCharts.getDeltaList(), List.class)
-//				     			+ ", " + xDeltaListJson.toJsonTree(pCharts.getDeltaList(), List.class)
 				                + "); \n" +
                      "}); \n"; 
 		pWriter.write(xJS);
