@@ -14,11 +14,16 @@
 	-moz-flex-flow: column nowrap;
 	flex-flow: column nowrap;
 
-	-webkit-transition: opacity .2s;
-	-moz-transition: opacity .2s;
-	-o-transition: opacity .2s;
-	transition: opacity .2s;
-	opacity: 1;
+	-webkit-transition: fill-opacity .5s cubic-bezier(0,1,.165,1), stroke-opacity .5s cubic-bezier(0,1,.165,1);
+	-moz-transition: fill-opacity .5s cubic-bezier(0,1,.165,1), stroke-opacity .5s cubic-bezier(0,1,.165,1);
+	-o-transition: fill-opacity .5s cubic-bezier(0,1,.165,1), stroke-opacity .5s cubic-bezier(0,1,.165,1);
+	transition: fill-opacity .5s cubic-bezier(0,1,.165,1), stroke-opacity .5s cubic-bezier(0,1,.165,1);
+
+/* 	stroke-opacity: 1; */
+/* 	fill-opacity: 1; */
+	
+/* 	transition: opacity .2s linear; */
+/* 	opacity: 1; */
 	
 /* 	-webkit-justify-content: space-between; */
 /* 	-moz-justify-content: space-between; */
@@ -31,11 +36,12 @@
 /*     -webkit-align-content: strech; */
 /*     -moz-align-content: strech; */
 /*     align-content: flex-start; */
+
 }
 .dbs_charts > .-container.-hide{
-/* 	opacity: 0; */
 	stroke-opacity: 0;
 	fill-opacity: 0;
+/* 	opacity: 0; */
 /* 	visibility: hidden; */
 }
 .dbs_charts > .-container > .-caption,
