@@ -1769,10 +1769,12 @@ public class  DBSFaces {
 	 * @throws IOException
 	 */
 	public static void encodeJavaScriptTagStart(UIComponent pComponent, ResponseWriter pWriter, String pAttrs) throws IOException{
-		pWriter.startElement("script", pComponent);
-		encodeAttribute(pWriter, "type", "text/javascript");
+		
+		pWriter.write('\n');
+		pWriter.startElement("script", null);
+		pWriter.writeAttribute("type", "text/javascript", null);
+//		pWriter.writeAttribute("src", "", null);
 		encodeAttributes(pWriter, pAttrs);
-//		pWriter.write("	<script type='text/javascript'> \n");
 		//pWriter.write(" /* <![CDATA[ */ \n");
 	}
 
@@ -1780,7 +1782,8 @@ public class  DBSFaces {
 	public static void encodeJavaScriptTagEnd(ResponseWriter pWriter) throws IOException{
 		//pWriter.write(" /* ]]> */ ");
 		pWriter.endElement("script");
-//		pWriter.write(" </script> \n");
+       pWriter.append('\r');
+       pWriter.append('\n');
 	}
 	
 	public static void encodeJavaScriptBeep(ResponseWriter pWriter) throws IOException{
