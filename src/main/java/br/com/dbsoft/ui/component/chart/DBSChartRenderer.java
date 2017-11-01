@@ -110,14 +110,21 @@ public class DBSChartRenderer extends DBSRenderer {
 		String xRelationalCaptions = pvGetListRelationalCaptions(pChart);
 		
 		DBSFaces.encodeJavaScriptTagStart(pChart, pWriter);
-		String xJS = "$(document).ready(function() { \n" +
-				     " var xChartId = dbsfaces.util.jsid('" + pChart.getClientId() + "'); \n " + 
-				     " dbs_chart(xChartId" + "," + 
-				     		xList + "," + 
-				     		xRelationalCaptions + "," +
-				     		getLocale() +
-				     	"); \n" +
-                     "}); \n"; 
+		String xJS = " var xChartId = dbsfaces.util.jsid('" + pChart.getClientId() + "'); \n " +
+			     " dbs_chart(xChartId" + "," + 
+			     		xList + "," + 
+			     		xRelationalCaptions + "," +
+			     		getLocale() +
+			     	"); \n";
+		//RETIRADO O $(document).ready PARA TODAS O CÓDIGO LOGO DE IMEDIATO
+//		String xJS = "$(document).ready(function() { \n" +
+//				     " var xChartId = dbsfaces.util.jsid('" + pChart.getClientId() + "'); \n " + 
+//				     " dbs_chart(xChartId" + "," + 
+//				     		xList + "," + 
+//				     		xRelationalCaptions + "," +
+//				     		getLocale() +
+//				     	"); \n" +
+//                     "}); \n"; 
 		pWriter.write(xJS); 
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);		
 	}
