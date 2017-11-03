@@ -82,7 +82,7 @@
     top: calc(50% - .6em);
     
 /* 	opacity: 0.5; */
-	border: .5px solid;
+	border: 1px solid;
 	border-radius: 100%;
 	-webkit-animation-name: -kf_sonar;
 	-moz-animation-name: -kf_sonar;
