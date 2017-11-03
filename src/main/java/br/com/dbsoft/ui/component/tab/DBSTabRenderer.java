@@ -68,7 +68,7 @@ public class DBSTabRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(xWriter, "style", xTab.getStyle());
 			//Container
 			xWriter.startElement("div", xTab);
-				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER + CSS.THEME.FLEX);
+				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER + CSS.THEME.FLEX + " -hide");
 				//Abas com os título ========================================================================
 				pvEncodeAba(pContext, xTab, xWriter, xSelectedTabPage);
 				

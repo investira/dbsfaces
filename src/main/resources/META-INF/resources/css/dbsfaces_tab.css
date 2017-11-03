@@ -12,10 +12,10 @@
     -webkit-justify-content: flex-start;
     -moz-justify-content: flex-start;
     justify-content: flex-start;
-    -webkit-transition: opacity .2s;
-    -moz-transition: opacity .2s;
-    -o-transition: opacity .2s;
-    transition: opacity .2s;
+    -webkit-transition: opacity .1s linear;
+    -moz-transition: opacity .1s linear;
+    -o-transition: opacity .1s linear;
+    transition: opacity .1s linear;
     opacity: 1;
     
 	border-radius: .3em .3em 0 0;
@@ -26,8 +26,12 @@
 	border-right-color: rgba(50,50,50,0.4);
 	border-top-color: rgba(200,200,200,0.4);
 	border-left-color: rgba(200,200,200,.4);
+	
 }
 
+.dbs_tab > .-container.-hide{
+	opacity: 0;
+}
 
 
 .dbs_tab > .-container > .-captions{

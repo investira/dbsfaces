@@ -26,6 +26,7 @@ dbsfaces.tab = {
 				dbsfaces.tab.showTabPage(xTabData.dom.input.val(), xTabData);
 			}
 		}
+		xTabData.dom.container.removeClass("-hide");
 		return xTabData;
 	},
 	
