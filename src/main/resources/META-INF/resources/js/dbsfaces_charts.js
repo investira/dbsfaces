@@ -926,12 +926,10 @@ dbsfaces.charts = {
 
 	resize: function(pCharts){
 		if (pCharts == null || typeof pCharts == "undefined" || pCharts.length == 0){return;}
-
 		var xChartsData = pCharts.data("data");
 		clearTimeout(xChartsData.resizeTimeout);
 		xChartsData.resizeTimeout = setTimeout(function(){
 			dbsfaces.charts.refresh(pCharts);
-			console.log("resize");
 		},200);
 	},
 
