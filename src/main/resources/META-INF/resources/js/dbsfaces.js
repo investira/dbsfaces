@@ -596,6 +596,7 @@ dbsfaces.ui = {
 		if (pObj instanceof jQuery){
 			xE = pObj[0];
 		}
+		if ($(xE).attr("type") == "email"){return;}
 		if (xE.__proto__.hasOwnProperty("selectionStart")){
 			xE.setSelectionRange(pStart, pEnd);
 		}
