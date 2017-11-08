@@ -24,7 +24,7 @@
 	line-height: initial;
 }
 .dbs_dialog[type="msg"] > .-container.-closed{
-/* 	position: absolute; */
+	position: absolute;
 }
 .dbs_dialog > .-container.-opened{
 /* 	z-index:100000;	 */
