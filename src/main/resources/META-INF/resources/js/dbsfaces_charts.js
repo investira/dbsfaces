@@ -829,7 +829,7 @@ dbsfaces.charts = {
 		var xColor = pElementData.color;
 		var xL;
 		//Se não foi definida a cor pelo usuário, utiliza a cor corrente
-		if (xColor == null){
+		if (xColor == "" || xColor == null){
 			//Remove cor configurada anteriormente. 
 			pElementData.dom.self.css("color", "");
 			//Cor corrente
