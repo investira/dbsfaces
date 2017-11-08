@@ -13,6 +13,7 @@
 }
 .dbs_dialog.-closed{
 /* 	z-index:1;	 */
+/* 	display:none;  */
 }
 
 .dbs_dialog > .-container{
@@ -22,7 +23,9 @@
 	left:0;
 	line-height: initial;
 }
-
+.dbs_dialog[type="msg"] > .-container.-closed{
+/* 	position: absolute; */
+}
 .dbs_dialog > .-container.-opened{
 /* 	z-index:100000;	 */
 }
@@ -68,7 +71,7 @@
     opacity: .3;
 }
 
-.dbs_dialog[type=btn] > .-container > .-mask > .-content{
+.dbs_dialog[type="btn"] > .-container > .-mask > .-content{
     opacity: .1;
 }
 
@@ -242,7 +245,7 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 }
     
 
-.dbs_dialog > .-container > .-content > .-sub_container > div > div > .-sub_content > *:not(style):not(script){
+.dbs_dialog:not(.-closed) > .-container > .-content > .-sub_container > div > div > .-sub_content > *:not(style):not(script){
     display: block;
 /*     display: inline-block; */
 }
