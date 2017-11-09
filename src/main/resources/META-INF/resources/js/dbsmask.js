@@ -307,18 +307,29 @@
 			if ((pKey == 38
 			  || pKey == 40)
 			  && this.split.begin.length > 0){
-				this.split.begin = dbsfaces.number.parseFloat(this.split.beginWithoutMask);
-				//Down
-				if (pKey == 40){
-					this.split.begin--;
-				//Up
-				}else{
-					this.split.begin++;
+				var xSign = Math.sign(this.split.begin) || 1;
+				if (this.split.beginWithoutMask != "-"){
+					this.split.begin = dbsfaces.number.parseFloat(this.split.beginWithoutMask);
+					//Down
+					if (pKey == 40){
+						this.split.begin--;
+					//Up
+					}else{
+						this.split.begin++;
+					}
+					if (xSign == -1 && this.split.begin == 0 && this.split.endWithoutMask.length > 0){
+						this.split.begin = "-";
+					}else{
+						this.split.begin = (this.split.begin).toString();
+					}
 				}
-				this.split.begin = (this.split.begin).toString();
 			//Menos
 			}else if (this.minusKeys[pKey]){
-				this.split.begin = dbsfaces.number.parseFloat(this.split.beginWithoutMask) * -1;
+				if (this.split.beginWithoutMask == ""){
+					this.split.begin = "-";
+				}else{
+					this.split.begin = dbsfaces.number.parseFloat(this.split.beginWithoutMask) * -1;
+				}
 				this.split.begin = (this.split.begin).toString();
 			}
 			if (this.options.decimalPlaces > 0){
@@ -364,6 +375,7 @@
 		
 		pvSetValue: function(pValue){
 			var xFormattedValue = this.pvGetValidValue(pValue);
+			if (xFormattedValue == "-"){return;}
 			if (this.isNumber()){
 //				if (xFormattedValue == ""){
 //					xFormattedValue = 0;
