@@ -194,10 +194,16 @@
 }
 
 
-.dbs_slider:not(.-readOnly):not([disabled]) > .-container > .-content > .-sub_container > .-slider,
+.dbs_slider:not(.-readOnly):not([disabled]).-h > .-container > .-content > .-sub_container > .-slider:ACTIVE{
+    cursor: ew-resize;
+}
+.dbs_slider:not(.-readOnly):not([disabled]).-v > .-container > .-content > .-sub_container > .-slider:ACTIVE{
+    cursor: ns-resize;
+}
+
 .dbs_slider:not(.-readOnly):not([disabled]) > .-container > .-content > .-sub_container > .-points > .-label{
 	pointer-events: all;
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .dbs_slider > .-container > .-content > .-sub_container > .-slider{
