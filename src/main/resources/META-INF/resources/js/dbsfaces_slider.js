@@ -637,12 +637,13 @@ dbsfaces.slider = {
 			xInputValue = dbsfaces.math.round(xInputValue, pSliderData.dp);
 			if (typeof pFixedValue == "undefined"){
 				//Força valor considerar somente os dois primeiros números relevantes
-				var xOnlyNumbers = dbsfaces.format.number(xInputValue, pSliderData.dp).replace(/[^-\d]/g, '');
+				var xSign = Math.sign(xInputValue) || 1;
+				var xOnlyNumbers = dbsfaces.format.number(xInputValue, pSliderData.dp).replace(/[^\d]/g, '');
 				var xTruncSize = xOnlyNumbers.length - 2;
 				if (xTruncSize > 0){
 					xTruncSize = Math.pow(10, xTruncSize);
 					xOnlyNumbers = dbsfaces.number.parseFloat(xOnlyNumbers);
-					xInputValue = (dbsfaces.math.trunc(xOnlyNumbers / xTruncSize, 0) * xTruncSize) / Math.pow(10, pSliderData.dp);
+					xInputValue = (dbsfaces.math.trunc(xOnlyNumbers / xTruncSize, 0) * xTruncSize) / Math.pow(10, pSliderData.dp) * xSign;
 				}
 			}
 		}else{
