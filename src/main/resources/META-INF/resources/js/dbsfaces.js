@@ -1369,6 +1369,10 @@ dbsfaces.format = {
 			pDecimals = 2;
 		}
 		var xVal = dbsfaces.number.parseFloat(pValue);
+		//Salva o sinal
+		var xSign = Math.sign(xVal) || 1;
+		//Retina o sinal
+		var xVal = Math.abs(xVal);
 		var xLength = dbsfaces.math.round(xVal, 0).toString().length;
 		if (xLength == 0){return;}
 		var xSimple = (xVal / Math.pow(10, ((xLength -1) - ((xLength -1) % 3))));
@@ -1386,11 +1390,8 @@ dbsfaces.format = {
 		}else{
 			xSimple = xVal;
 		}
-		if (xSuf != ""){
-			return dbsfaces.format.number(xSimple, pDecimals) + xSuf;
-		}else{
-			return dbsfaces.format.number(xVal, pDecimals);
-		}		
+		xSimple *= xSign;
+		return dbsfaces.format.number(xSimple, pDecimals) + xSuf;
 	},
 	
 	getDecimalSeparator: function(){
