@@ -125,7 +125,7 @@ public class DBSDialogContent extends DBSUIOutput{
 		pWriter.startElement("div", pDialog);
 			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.HEADER + CSS.MODIFIER.NOT_SELECTABLE);
 			pWriter.startElement("div", pDialog);
-				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + CSS.THEME.FLEX);
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + CSS.THEME.FLEX + CSS.THEME.BC + CSS.THEME.FC + CSS.THEME.INVERT);
 				//Encode o conteudo do Header definido no FACET HEADER_LEFT
 				if (!DBSObject.isNull(xHeaderLeft) 
 				 || !DBSObject.isEmpty(pDialog.getActionIconClass())){
@@ -176,6 +176,7 @@ public class DBSDialogContent extends DBSUIOutput{
 			//Icon
 			pWriter.startElement("div", pDialog);
 				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.ICON);
+				DBSFaces.encodeAttribute(pWriter, "style", "padding-right:" + pDialog.getContentPadding());
 				pWriter.startElement("div", pDialog);
 					if (pType == TYPE.MSG
 					 && xMsgType != null
