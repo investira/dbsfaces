@@ -160,6 +160,7 @@ dbsfaces.slider = {
 			lengthFator: null, //Tamanho/posição atual em fator
 			lengthFatorBegin: null, //Tamanho/posição atual em fator do begin
 			lengthFatorEnd: null, //Tamanho/posição atual em fator do end
+			lengthFatorZero: 0,//Tamanho/posição em fator do valor zero
 			changeValue: null, //Tamanho/posição quando foi disparado o último change
 			changeValueBegin: null, //Tamanho/posição quando foi disparado o último change
 			changeValueEnd: null, //Tamanho/posição quando foi disparado o último change
@@ -175,7 +176,9 @@ dbsfaces.slider = {
 			timeout: null, //Timeout para disparar evento de Change quando valor alterado
 			valuesListNumeric: null, //lista dos valores convertida para valor númerico
 			resizeTimeout: null,
-			switched: false
+			switched: false,
+			color: pSlider.css("color"),
+			gradientOrientation: (pSlider.hasClass("-h") ? "to right" : "to top")
 		}
 		pSlider.data("data", xData);
 		xData.dom.content = xData.dom.container.children(".-content");
@@ -229,7 +232,8 @@ dbsfaces.slider = {
 		}else{
 			xData.segmentFator = 1 / pValuesList.length;
 		}
-		
+		xData.lengthFatorZero = dbsfaces.slider.pvGetLengthFatorFromValue(xData, 0);
+
 		return xData;
 	},
 	
@@ -246,52 +250,44 @@ dbsfaces.slider = {
 	},
 	
 	pvInitializeLayoutHorizontalVertical: function(pSliderData){
-		var xColor = tinycolor(pSliderData.dom.self.css("color"));
-		var xColor2 = tinycolor(pSliderData.dom.self.css("color"));
-		var xInverted = tinycolor(pSliderData.dom.self.css("color")).invertLightness().setAlpha(1);
+		var xColor = tinycolor(pSliderData.color);
+		var xColor2 = tinycolor(pSliderData.color);
 		//Slider
 		var xSliderColor;
 		xColor.setAlpha(.2);
 		xColor2.setAlpha(.1);
-		xSliderColor = "linear-gradient(135deg," + xColor2 + " 0%, " + xColor + " 100%)";
+		if (pSliderData.lengthFatorZero == 0){
+			xSliderColor = "linear-gradient(" + pSliderData.gradientOrientation + "," + xColor2 + " 0%, " + xColor + " 100%)";
+		}else{
+			var xPercZero = pSliderData.lengthFatorZero * 100;
+			xSliderColor = "linear-gradient(" + pSliderData.gradientOrientation + ",rgba(255,0,0,.2) 0%, " + xColor2 + " " + xPercZero + "%, " + xColor + " 100%)";
+		}
 		pSliderData.dom.slider.css("background", xSliderColor);
+
+		//Inputs
+		pSliderData.dom.inputs.addClass("-th_bc");
+	},
+
+	pvSetSliderColor: function(pSliderData){
+		var xColor = tinycolor(pSliderData.color);
+		var xColor2 = tinycolor(pSliderData.color);
+		var xPercEnd = (1 / pSliderData.lengthFator) * 100;
 		
 		//Slider value line
 		var xBackground;
 		xColor.setAlpha(.9);
 		xColor2.setAlpha(.5);
-		xBackground = "linear-gradient(135deg," + xColor2 + " 0%, " + xColor + " 100%)";
+		if (pSliderData.lengthFatorZero == 0){
+			xBackground = "linear-gradient(" + pSliderData.gradientOrientation + "," + xColor2 + " 0%, " + xColor + " " + xPercEnd + "%)";
+		}else{
+			var xPercZero = (pSliderData.lengthFatorZero / pSliderData.lengthFator) * 100;
+//			xBackground = "linear-gradient(" + pSliderData.gradientOrientation + "," + xColor + " 0%, " + xColor2 + " " + xPercZero + "%, " + xColor + " " + xPercEnd + "%)";
+			xBackground = "linear-gradient(" + pSliderData.gradientOrientation + ",rgba(255,0,0,.5)0%, " + xColor2 + " " + xPercZero + "%, " + xColor + " " + xPercEnd + "%)";
+		}
 		pSliderData.dom.sliderValue.css("background", xBackground);
-		
-		//Inputs
-		pSliderData.dom.inputs.addClass("-th_bc");
-		
-		//Handle
-//		xColor.setAlpha(1);
-//		xColor2.setAlpha(1);
-//		if (xColor.isDark()){
-//			xColor2.lighten(10);
-//			xBackground = "linear-gradient(135deg," + xColor2 + " 0%, " + xColor + " 100%)";
-//		}else{
-//			xColor2.darken(10);
-//			xBackground = "linear-gradient(135deg," + xColor + " 0%, " + xColor2 + " 100%)";
-//		}
-//		if (pSliderData.type == "s"){
-			
-//			pSliderData.dom.point.css("box-shadow", "0px 0px 0px 0.25em " + xInverted);
-//			pSliderData.dom.point.css("color", xInverted);
-//		}
-//		if (pSliderData.type == "r"){
-//			pSliderData.dom.handleBegin.css("background", xBackground);
-//			pSliderData.dom.handleBegin.css("color", xInverted);
-//			pSliderData.dom.handleEnd.css("background", xBackground);
-//			pSliderData.dom.handleEnd.css("color", xInverted);
-//		}else{
-//			pSliderData.dom.handle.css("background", xBackground);
-//			pSliderData.dom.handle.css("color", xInverted);
-//		}
 	},
 	
+
 	pvInitializeCreatePoints: function(pSliderData){
 		//Apaga os pontos anteriores se já existirem
 		pSliderData.dom.content.children(".-points").remove();
@@ -554,36 +550,40 @@ dbsfaces.slider = {
 
 	//Encontra o percentual a partir do valor e seta o slider
 	setValue: function(pSlider, pValue){
-		if ((typeof pValue == "undefined") || pValue.length == 0){return;}
 		var xSliderData = pSlider.data("data");
+		if ((typeof pValue == "undefined") || pValue.length == 0){return;}
 		xSliderData.value = dbsfaces.number.parseFloat(pValue);
+		dbsfaces.slider.pvSetValuePerc(xSliderData, dbsfaces.slider.pvGetLengthFatorFromValue(xSliderData, xSliderData.value), true);
+	},
+	
+	pvGetLengthFatorFromValue: function(pSliderData, pValue){
 		var xValue;
 		var xLengthFator = 0; 
-		if (xSliderData.type == "v"
-		 || xSliderData.type == "r"){
-			xValue = dbsfaces.math.round(xSliderData.value, xSliderData.dp);
-			var xMin = xSliderData.min;
-			var xMax = xSliderData.max;
+		if (pSliderData.type == "v"
+		 || pSliderData.type == "r"){
+			var xMin = pSliderData.min;
+			var xMax = pSliderData.max;
+			xValue = dbsfaces.math.round(pValue, pSliderData.dp);
 			xLengthFator = parseFloat(xValue);
 			//Procura qual o item da lista foi selecionado
-			if (xSliderData.valuesListNumeric.length > 0){
+			if (pSliderData.valuesListNumeric.length > 0){
 				//Verifica se valor ultrapassou os limites
-				if (xLengthFator < xSliderData.valuesListNumeric[0]){
-					xLengthFator = xSliderData.valuesListNumeric[0];
-				}else if(xLengthFator > xSliderData.valuesListNumeric[xSliderData.valuesListNumeric.length - 1]){
-					xLengthFator = xSliderData.valuesListNumeric[xSliderData.valuesListNumeric.length - 1];
+				if (xLengthFator < pSliderData.valuesListNumeric[0]){
+					xLengthFator = pSliderData.valuesListNumeric[0];
+				}else if(xLengthFator > pSliderData.valuesListNumeric[pSliderData.valuesListNumeric.length - 1]){
+					xLengthFator = pSliderData.valuesListNumeric[pSliderData.valuesListNumeric.length - 1];
 				}
 				//Procura item na lista
-				for (var xI=0; xI < xSliderData.valuesListNumeric.length; xI++){
-					if (xSliderData.valuesListNumeric[xI] > xLengthFator){
-						xMax = xSliderData.valuesListNumeric[xI];
-						xMin = xSliderData.valuesListNumeric[xI -1];
+				for (var xI=0; xI < pSliderData.valuesListNumeric.length; xI++){
+					if (pSliderData.valuesListNumeric[xI] > xLengthFator){
+						xMax = pSliderData.valuesListNumeric[xI];
+						xMin = pSliderData.valuesListNumeric[xI -1];
 						break;
 					}
 				}
 				//Calcula fator
-				xLengthFator = xSliderData.segmentFator * ((xLengthFator - xMin) / (xMax - xMin));
-				xLengthFator += (xSliderData.segmentFator * (xI - 1));
+				xLengthFator = pSliderData.segmentFator * ((xLengthFator - xMin) / (xMax - xMin));
+				xLengthFator += (pSliderData.segmentFator * (xI - 1));
 			}else{
 				//Calcula fator
 				xLengthFator = (xLengthFator - xMin) / (xMax - xMin); 
@@ -591,18 +591,18 @@ dbsfaces.slider = {
 		}else{
 			xValue = pValue.trim().toLowerCase();
 			//Procura qual o item da lista foi selecionado
-			for (var xI=0; xI < xSliderData.valuesList.length; xI++){
-				if (xSliderData.valuesList[xI].toLowerCase() == xValue){
-					 xLengthFator = xI / xSliderData.valuesList.length;
+			for (var xI=0; xI < pSliderData.valuesList.length; xI++){
+				if (pSliderData.valuesList[xI].toLowerCase() == xValue){
+					 xLengthFator = xI / pSliderData.valuesList.length;
 					 break;
 				}
 			}
 		}
-		dbsfaces.slider.pvSetValuePerc(xSliderData, xLengthFator, true);
+		return xLengthFator;
 	},
 	
 	
-	pvSetValuePerc: function(pSliderData, pLengthFator, pFixedValue){
+	pvSetValuePerc: function(pSliderData, pLengthFator, pForceValue){
 		if (pSliderData.dom.input == null){return;}
 		pLengthFator = parseFloat(pLengthFator);
 		var xInputValue;
@@ -635,7 +635,7 @@ dbsfaces.slider = {
 			}
 			xInputValue = ((xMax - xMin) * xValuePercFator) + xMin;
 			xInputValue = dbsfaces.math.round(xInputValue, pSliderData.dp);
-			if (typeof pFixedValue == "undefined"){
+			if (typeof pForceValue == "undefined"){
 				//Força valor considerar somente os dois primeiros números relevantes
 				var xSign = Math.sign(xInputValue) || 1;
 				var xOnlyNumbers = dbsfaces.format.number(xInputValue, pSliderData.dp).replace(/[^\d]/g, '');
@@ -737,6 +737,7 @@ dbsfaces.slider = {
 //			pSliderData.timeout = setTimeout(function(){
 				pSliderData.dom.self.trigger("change", [{value:pSliderData.value, valueBegin:pSliderData.valueBegin, valueEnd:pSliderData.valueEnd, fator:pSliderData.lengthFator}]);
 //			},0);
+				dbsfaces.slider.pvSetSliderColor(pSliderData);
 		}
 	},
 
