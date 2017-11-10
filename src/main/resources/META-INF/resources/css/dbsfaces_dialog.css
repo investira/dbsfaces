@@ -272,6 +272,7 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 	-moz-flex-wrap: nowrap;
 	-o-flex-wrap: nowrap;
 	flex-wrap: nowrap;
+	
 /* 	position: relative; */
 /* 	border-width: 0 0 1px 0; */
 /* 	border-style: solid; */
@@ -822,6 +823,10 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 .dbs_dialog[type="mod"] > .-container > .-content > .-header{
 	cursor: move;
 }
+.dbs_dialog[type="mod"][cs="a"] > .-container > .-content > .-header > .-content {
+	border-radius: .15em .15em 0 0;
+}
+
 
 .dbs_dialog[p="t"] > .-container > .-content > .-header,
 .dbs_dialog[p="b"] > .-container > .-content > .-header{
