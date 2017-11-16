@@ -232,7 +232,9 @@ dbsfaces.slider = {
 		}else{
 			xData.segmentFator = 1 / pValuesList.length;
 		}
-		xData.lengthFatorZero = dbsfaces.slider.pvGetLengthFatorFromValue(xData, 0);
+		if (xData.min < 0){
+			xData.lengthFatorZero = dbsfaces.slider.pvGetLengthFatorFromValue(xData, "0");
+		}
 
 		return xData;
 	},
@@ -552,18 +554,19 @@ dbsfaces.slider = {
 	setValue: function(pSlider, pValue){
 		var xSliderData = pSlider.data("data");
 		if ((typeof pValue == "undefined") || pValue.length == 0){return;}
-		xSliderData.value = dbsfaces.number.parseFloat(pValue);
-		dbsfaces.slider.pvSetValuePerc(xSliderData, dbsfaces.slider.pvGetLengthFatorFromValue(xSliderData, xSliderData.value), true);
+		dbsfaces.slider.pvSetValuePerc(xSliderData, dbsfaces.slider.pvGetLengthFatorFromValue(xSliderData, pValue), true);
 	},
 	
 	pvGetLengthFatorFromValue: function(pSliderData, pValue){
+		pSliderData.value = dbsfaces.number.parseFloat(pValue);
 		var xValue;
-		var xLengthFator = 0; 
+		var xLengthFator = 0;
+		 
 		if (pSliderData.type == "v"
 		 || pSliderData.type == "r"){
 			var xMin = pSliderData.min;
 			var xMax = pSliderData.max;
-			xValue = dbsfaces.math.round(pValue, pSliderData.dp);
+			xValue = dbsfaces.math.round(pSliderData.value, pSliderData.dp);
 			xLengthFator = parseFloat(xValue);
 			//Procura qual o item da lista foi selecionado
 			if (pSliderData.valuesListNumeric.length > 0){
