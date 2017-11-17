@@ -314,8 +314,16 @@ dbsfaces.slider = {
 	pvInitializeLayoutSliderColor: function(pSliderData){
 		var xColor = tinycolor(pSliderData.color);
 		var xColor2 = tinycolor(pSliderData.color);
+		var xRed, xRed2;
 		var xPercEnd = (1 / pSliderData.lengthFator) * 100;
 
+		if (xColor.isDark()){
+			xRed = "rgba(120, 0, 0, 1) ";
+			xRed2 = "rgba(120, 0, 0, .8) ";
+		}else{
+			xRed = "rgba(255, 0, 0, 1) ";
+			xRed2 = "rgba(255, 0, 0, .8) ";
+		}
 		//Slider - Color do background integral
 		var xBackground;
 		xColor.setAlpha(1);
@@ -325,10 +333,10 @@ dbsfaces.slider = {
 		}else{
 			var xPercZero = pSliderData.lengthFatorZero * 100;
 			xBackground = "linear-gradient(" + pSliderData.gradientOrientation + "," 
-			           + "rgba(255,0,0,1) 0%, "
-			           + "rgba(255,0,0,.8) " + xPercZero + "%, " 
-			           + xColor2 + " " + xPercZero + "%, "
-			           + xColor + " 100%)";
+			            + xRed + " 0%, "
+			            + xRed2 + " " + xPercZero + "%, " 
+			            + xColor2 + " " + xPercZero + "%, "
+			            + xColor + " 100%)";
 		}
 		pSliderData.dom.sliderValueBackground.css("background", xBackground);
 	},
