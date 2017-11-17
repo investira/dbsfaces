@@ -129,31 +129,32 @@ dbsfaces.slider = {
 		var xData = {
 			dom : {
 				self: pSlider, //O próprio slider
-				container : pSlider.children(".-container"), //Elemento que contém o container
-				content : null, //Elemento dentro do container
-				inputs : null, //Elementos inputs
-				input : null, //Elemento input
-				inputBegin : null, //Elemento input
-				inputEnd : null, //Elemento input
-				sub_container : null, //Elemento que agrupo as informações do slider
-				slider : null, //Elemento do slider
-				sliderValue : null, //Elemento do valor atual do slider
-				handle : null, //Puxador do slider
-				handleLabel : null, //label do valor selecionado no puxador
-				handleBegin : null, //Puxador do slider
-				handleBeginLabel : null, //label do valor selecionado no puxador
-				handleEnd : null, //Puxador do slider
-				handleEndLabel : null, //label do valor selecionado no puxador
-				points : null, //Elemento que contém os pontos
-				point : null, //Elemento que contém um ponto
-				label : null//Elemento que contém o label do ponto
+				container: pSlider.children(".-container"), //Elemento que contém o container
+				content: null, //Elemento dentro do container
+				inputs: null, //Elementos inputs
+				input: null, //Elemento input
+				inputBegin: null, //Elemento input
+				inputEnd: null, //Elemento input
+				sub_container: null, //Elemento que agrupo as informações do slider
+				slider: null, //Elemento do slider
+				sliderValue: null, //Elemento do valor atual do slider
+				sliderValueBackground: null, //Elemento do valor atual do slider
+				handle: null, //Puxador do slider
+				handleLabel: null, //label do valor selecionado no puxador
+				handleBegin: null, //Puxador do slider
+				handleBeginLabel: null, //label do valor selecionado no puxador
+				handleEnd: null, //Puxador do slider
+				handleEndLabel: null, //label do valor selecionado no puxador
+				points: null, //Elemento que contém os pontos
+				point: null, //Elemento que contém um ponto
+				label: null//Elemento que contém o label do ponto
 			},
-			type : pSlider.attr("type"), //Tipo do slider v,o,s,r
-			orientation : (pSlider.hasClass("-h") ? "h" : "v"), //Orientação vertical ou horizontal
-			dp : parseInt(pSlider.attr("dp")), //Quantidade de casas decimais(decimal points)
+			type: pSlider.attr("type"), //Tipo do slider v,o,s,r
+			orientation: (pSlider.hasClass("-h") ? "h" : "v"), //Orientação vertical ou horizontal
+			dp: parseInt(pSlider.attr("dp")), //Quantidade de casas decimais(decimal points)
 			invert : (pSlider.hasClass("-i") ? true : false), //Se inverte a posição para exibição da lista dos valores
-			valuesList : pValuesList, //Lista dos valores
-			labelsList : pLabelsList, //Lista dos labels
+			valuesList: pValuesList, //Lista dos valores
+			labelsList: pLabelsList, //Lista dos labels
 			value: null, //Valor atual
 			valueBegin: null, //Valor atual máximo - Slider type = "r" range
 			valueEnd: null, //Valor atual mínimo - Slider type = "r" range
@@ -166,9 +167,9 @@ dbsfaces.slider = {
 			changeValueEnd: null, //Tamanho/posição quando foi disparado o último change
 			changeLengthFator: null, //Tamanho/posição quando foi disparado o último change
 			currentHandle : null, //Handle selecionado "b", "e" ou null(quando type não for "r")
-			min : dbsfaces.number.parseFloat(pMinValue),  //Valor mínimo
-			max : dbsfaces.number.parseFloat(pMaxValue), //Valor máximo
-			ani : (pSlider.hasClass("-ani") ? true: false), //Se há animação
+			min: dbsfaces.number.parseFloat(pMinValue),  //Valor mínimo
+			max: dbsfaces.number.parseFloat(pMaxValue), //Valor máximo
+			ani: (pSlider.hasClass("-ani") ? true: false), //Se há animação
 			segmentFator : null, //Fator de cada item da lista
 			length: null, //largura ou altura total do gráfico em px
 			lengthPos : null, //Posição atual em relação a length(ver atributo acima)
@@ -213,17 +214,48 @@ dbsfaces.slider = {
 			xData.dom.input.attr("maxValue", xData.max);
 		}
 		xData.dom.sliderValue = xData.dom.slider.children(".-value");
+		xData.dom.sliderValueBackground = xData.dom.sliderValue.children(".-background");
+
 		if (xData.type == "v"
 		 || xData.type == "r"){
 			xData.valuesListNumeric = [];
-			xData.segmentFator = 1 / (pValuesList.length - 1); //Fator de cada item da lista
-			for (var xI=0; xI < pValuesList.length; xI++){
+			var xZeroFound = xData.min < 0;
+			var xZeroCreate = false;
+			var xValue;
+			var xValueAnt = null;
+			var xZeroIndex = -1;
+			//Cria lista com os valores ja convertidos para número
+			for (var xI=0; xI < xData.valuesList.length; xI++){
 				if (typeof(pValuesList[xI]) == "number"){
-					xData.valuesListNumeric.push(pValuesList[xI]);
+					xValue = pValuesList[xI];
 				}else{
-//				xData.valuesListNumeric.push(parseFloat(pValuesList[xI].replace(/[^0-9]/g, '')));
-					xData.valuesListNumeric.push(dbsfaces.number.parseFloat(pValuesList[xI]));
+					xValue = dbsfaces.number.parseFloat(pValuesList[xI]);
 				}
+				xData.valuesListNumeric.push(xValue);
+				//Encontra qual index representa a posição 0
+				if (!xZeroFound){
+					 if (xValue == 0
+					  || (xValueAnt != null && xValue > 0 && xValueAnt < 0)){
+						 xZeroFound = true;
+						 xZeroIndex = xI;
+						 //Indica que zero deverá ser criado
+						 if(xValue != 0){
+							 xZeroCreate = true;
+						 }
+					 }
+					 xValueAnt = xValue;
+				}
+			}
+			//Cria posição do valor "0" se não existia na lista informada pelo usuário
+			if (xZeroCreate){
+				xData.valuesList.splice(xZeroIndex, 0, "0");
+				xData.labelsList.splice(xZeroIndex, 0, "0");
+				xData.valuesListNumeric.splice(xZeroIndex, 0, 0);
+			}
+			xData.segmentFator = 1 / (pValuesList.length - 1); //Fator de cada item da lista
+			//Armazena lenghtFator referente ao valor "0"
+			if (xZeroFound){
+				xData.lengthFatorZero = dbsfaces.slider.pvGetLengthFatorFromValue(xData, "0");
 			}
 			if (xData.valuesListNumeric.length > 0){
 				xData.min = xData.valuesListNumeric[0];
@@ -231,9 +263,6 @@ dbsfaces.slider = {
 			}
 		}else{
 			xData.segmentFator = 1 / pValuesList.length;
-		}
-		if (xData.min < 0){
-			xData.lengthFatorZero = dbsfaces.slider.pvGetLengthFatorFromValue(xData, "0");
 		}
 
 		return xData;
@@ -246,6 +275,7 @@ dbsfaces.slider = {
 		pSliderData.resizeTimeout = setTimeout(function(e){
 			dbsfaces.slider.pvInitializeLayoutHorizontalVertical(pSliderData);
 			dbsfaces.slider.pvInitializeLayoutPoints(pSliderData);
+			dbsfaces.slider.pvInitializeLayoutSliderColor(pSliderData);
 			dbsfaces.slider.resize(pSliderData);
 			pSliderData.dom.self.removeClass("-hide");
 		},0);
@@ -254,7 +284,7 @@ dbsfaces.slider = {
 	pvInitializeLayoutHorizontalVertical: function(pSliderData){
 		var xColor = tinycolor(pSliderData.color);
 		var xColor2 = tinycolor(pSliderData.color);
-		//Slider
+		//Slider - Color do background não selecionado
 		var xSliderColor;
 		xColor.setAlpha(.2);
 		xColor2.setAlpha(.1);
@@ -262,31 +292,45 @@ dbsfaces.slider = {
 			xSliderColor = "linear-gradient(" + pSliderData.gradientOrientation + "," + xColor2 + " 0%, " + xColor + " 100%)";
 		}else{
 			var xPercZero = pSliderData.lengthFatorZero * 100;
-			xSliderColor = "linear-gradient(" + pSliderData.gradientOrientation + ",rgba(255,0,0,.2) 0%, " + xColor2 + " " + xPercZero + "%, " + xColor + " 100%)";
+			xSliderColor = "linear-gradient(" + pSliderData.gradientOrientation + ", "
+					+ "rgba(255,0,0,.2) 0%, "
+					+ "rgba(255,0,0,.1) " + xPercZero + "%, "
+					+ xColor2 + " " + xPercZero + "%, " 
+					+ xColor + " 100%)";
 		}
 		pSliderData.dom.slider.css("background", xSliderColor);
+		
+		//Slider - Tamanho integral do background selecionado
+		if (pSliderData.orientation == "h"){
+			pSliderData.dom.sliderValueBackground.css("width", pSliderData.dom.slider.css("width"));
+		}else{
+			pSliderData.dom.sliderValueBackground.css("height", pSliderData.dom.slider.css("height"));
+		}
 
 		//Inputs
 		pSliderData.dom.inputs.addClass("-th_bc");
 	},
 
-	pvSetSliderColor: function(pSliderData){
+	pvInitializeLayoutSliderColor: function(pSliderData){
 		var xColor = tinycolor(pSliderData.color);
 		var xColor2 = tinycolor(pSliderData.color);
 		var xPercEnd = (1 / pSliderData.lengthFator) * 100;
-		
-		//Slider value line
+
+		//Slider - Color do background integral
 		var xBackground;
-		xColor.setAlpha(.9);
-		xColor2.setAlpha(.5);
+		xColor.setAlpha(1);
+		xColor2.setAlpha(.8);
 		if (pSliderData.lengthFatorZero == 0){
-			xBackground = "linear-gradient(" + pSliderData.gradientOrientation + "," + xColor2 + " 0%, " + xColor + " " + xPercEnd + "%)";
+			xBackground = "linear-gradient(" + pSliderData.gradientOrientation + "," + xColor2 + " 0%, " + xColor + " 100%)";
 		}else{
-			var xPercZero = (pSliderData.lengthFatorZero / pSliderData.lengthFator) * 100;
-//			xBackground = "linear-gradient(" + pSliderData.gradientOrientation + "," + xColor + " 0%, " + xColor2 + " " + xPercZero + "%, " + xColor + " " + xPercEnd + "%)";
-			xBackground = "linear-gradient(" + pSliderData.gradientOrientation + ",rgba(255,0,0,.5)0%, " + xColor2 + " " + xPercZero + "%, " + xColor + " " + xPercEnd + "%)";
+			var xPercZero = pSliderData.lengthFatorZero * 100;
+			xBackground = "linear-gradient(" + pSliderData.gradientOrientation + "," 
+			           + "rgba(255,0,0,1) 0%, "
+			           + "rgba(255,0,0,.8) " + xPercZero + "%, " 
+			           + xColor2 + " " + xPercZero + "%, "
+			           + xColor + " 100%)";
 		}
-		pSliderData.dom.sliderValue.css("background", xBackground);
+		pSliderData.dom.sliderValueBackground.css("background", xBackground);
 	},
 	
 
@@ -375,11 +419,11 @@ dbsfaces.slider = {
 		var xFator = pSliderData.segmentFator * 100; //Percentual que cada ponto representa
 		//Point
 		for (var xI=0; xI < pSliderData.dom.point.length; xI++){
-			xValuePerc = xFator * xI;
+			xValuePerc = "calc(" + (xFator * xI) + "% - 1px)";
 			if (pSliderData.orientation == "h"){
-				$(pSliderData.dom.point[xI]).css("left", xValuePerc + "%");
+				$(pSliderData.dom.point[xI]).css("left", xValuePerc);
 			}else{
-				$(pSliderData.dom.point[xI]).css("top", xValuePerc + "%");
+				$(pSliderData.dom.point[xI]).css("top", xValuePerc);
 			}
 		}
 		//Label
@@ -554,20 +598,20 @@ dbsfaces.slider = {
 	setValue: function(pSlider, pValue){
 		var xSliderData = pSlider.data("data");
 		if ((typeof pValue == "undefined") || pValue.length == 0){return;}
+		xSliderData.value = dbsfaces.number.parseFloat(pValue);
 		dbsfaces.slider.pvSetValuePerc(xSliderData, dbsfaces.slider.pvGetLengthFatorFromValue(xSliderData, pValue), true);
 	},
 	
 	pvGetLengthFatorFromValue: function(pSliderData, pValue){
-		pSliderData.value = dbsfaces.number.parseFloat(pValue);
-		var xValue;
+		var xValue = dbsfaces.number.parseFloat(pValue);
 		var xLengthFator = 0;
 		 
 		if (pSliderData.type == "v"
 		 || pSliderData.type == "r"){
 			var xMin = pSliderData.min;
 			var xMax = pSliderData.max;
-			xValue = dbsfaces.math.round(pSliderData.value, pSliderData.dp);
-			xLengthFator = parseFloat(xValue);
+			xValue = dbsfaces.math.round(xValue, pSliderData.dp);
+			xLengthFator = xValue;
 			//Procura qual o item da lista foi selecionado
 			if (pSliderData.valuesListNumeric.length > 0){
 				//Verifica se valor ultrapassou os limites
@@ -740,7 +784,6 @@ dbsfaces.slider = {
 //			pSliderData.timeout = setTimeout(function(){
 				pSliderData.dom.self.trigger("change", [{value:pSliderData.value, valueBegin:pSliderData.valueBegin, valueEnd:pSliderData.valueEnd, fator:pSliderData.lengthFator}]);
 //			},0);
-				dbsfaces.slider.pvSetSliderColor(pSliderData);
 		}
 	},
 
@@ -809,6 +852,7 @@ dbsfaces.slider = {
 			var xEnd = parseFloat(pSliderData.dom.handleEnd[0].style.left);
 			pSliderData.dom.sliderValue.css("left", xBegin + "%");
 			pSliderData.dom.sliderValue.css("width", (xEnd - xBegin) + "%");
+			pSliderData.dom.sliderValueBackground.css("left", "-" + pSliderData.dom.sliderValue.css("left"));
 		}else{
 			pSliderData.dom.sliderValue.css("width", pValuePerc + "%");
 		}
@@ -855,8 +899,9 @@ dbsfaces.slider = {
 		if (pSliderData.type == "r"){
 			var xBegin = parseFloat(pSliderData.dom.handleBegin[0].style.top);
 			var xEnd = parseFloat(pSliderData.dom.handleEnd[0].style.top);
-			pSliderData.dom.sliderValue.css("height", (xBegin - xEnd) + "%");
 			pSliderData.dom.sliderValue.css("top", xEnd + "%");
+			pSliderData.dom.sliderValue.css("height", (xBegin - xEnd) + "%");
+			pSliderData.dom.sliderValueBackground.css("top", "-" + pSliderData.dom.sliderValue.css("top"));
 		}else{
 			pSliderData.dom.sliderValue.css("height", pValuePerc + "%");
 		}
