@@ -44,12 +44,12 @@ dbs_slider = function(pId, pValuesList, pLabelsList, pMinValue, pMaxValue, pLoca
 		e.stopImmediatePropagation();
 		return false;
 	});
-	xSliderData.dom.label.on("mousedown touchstart", function(e){
+	xSliderData.dom.pointsLabel.on("mousedown touchstart", function(e){
 		dbsfaces.slider.jump(xSliderData, e);
 		e.stopImmediatePropagation();
 		return false;
 	});
-	xSliderData.dom.point.on("mousedown touchstart", function(e){
+	xSliderData.dom.pointsPoint.on("mousedown touchstart", function(e){
 		dbsfaces.slider.jump(xSliderData, e);
 		e.stopImmediatePropagation();
 		return false;
@@ -115,6 +115,19 @@ dbs_slider = function(pId, pValuesList, pLabelsList, pMinValue, pMaxValue, pLoca
 			return false;
 		});
 	}
+
+	xSliderData.updateIntervalDimension = setInterval(function(){
+		if (xSliderData.orientation == "h"){
+			if (xSliderData.dom.slider.css("width") != xSliderData.dom.sliderValueBackground.css("width")){
+				dbsfaces.slider.pvUpdateDimensions(xSliderData);
+			}
+		}else{
+			if (xSliderData.dom.sliderValueBackground.css("height") != xSliderData.dom.slider.css("height")){
+				dbsfaces.slider.pvUpdateDimensions(xSliderData);
+			}
+		}
+//		clearInterval(xSliderData.updateIntervalDimension);
+	},1);
 }
 
 dbsfaces.slider = {
@@ -122,6 +135,7 @@ dbsfaces.slider = {
 		var xSliderData= dbsfaces.slider.pvInitializeData(pSlider, pValuesList, pLabelsList, pMinValue, pMaxValue);
 		dbsfaces.slider.pvInitializeCreatePoints(xSliderData);
 		dbsfaces.slider.pvInitializeLayout(xSliderData);
+
 		return xSliderData;
 	},
 
@@ -131,6 +145,8 @@ dbsfaces.slider = {
 				self: pSlider, //O próprio slider
 				container: pSlider.children(".-container"), //Elemento que contém o container
 				content: null, //Elemento dentro do container
+				label: null, //Elemento do label
+				obs: null, //Elemento do obs
 				inputs: null, //Elementos inputs
 				input: null, //Elemento input
 				inputBegin: null, //Elemento input
@@ -146,8 +162,8 @@ dbsfaces.slider = {
 				handleEnd: null, //Puxador do slider
 				handleEndLabel: null, //label do valor selecionado no puxador
 				points: null, //Elemento que contém os pontos
-				point: null, //Elemento que contém um ponto
-				label: null//Elemento que contém o label do ponto
+				pointsPoint: null, //Elemento que contém um ponto
+				pointsLabel: null//Elemento que contém o label do ponto
 			},
 			type: pSlider.attr("type"), //Tipo do slider v,o,s,r
 			orientation: (pSlider.hasClass("-h") ? "h" : "v"), //Orientação vertical ou horizontal
@@ -177,12 +193,15 @@ dbsfaces.slider = {
 			timeout: null, //Timeout para disparar evento de Change quando valor alterado
 			valuesListNumeric: null, //lista dos valores convertida para valor númerico
 			resizeTimeout: null,
+			updateIntervalDimension: null,
 			switched: false,
 			color: pSlider.css("color"),
 			gradientOrientation: (pSlider.hasClass("-h") ? "to right" : "to top")
 		}
 		pSlider.data("data", xData);
 		xData.dom.content = xData.dom.container.children(".-content");
+		xData.dom.label = xData.dom.content.children(".-label");
+		xData.dom.obs = xData.dom.content.children(".-obs");
 		xData.dom.sub_container = xData.dom.content.children(".-sub_container");
 		xData.dom.slider = xData.dom.sub_container.children(".-slider");
 		xData.dom.inputs = xData.dom.sub_container.find(".-th_input-data");
@@ -278,7 +297,7 @@ dbsfaces.slider = {
 			dbsfaces.slider.pvInitializeLayoutSliderColor(pSliderData);
 			dbsfaces.slider.resize(pSliderData);
 			pSliderData.dom.self.removeClass("-hide");
-		},0);
+		}, 0);
 	},
 	
 	pvInitializeLayoutHorizontalVertical: function(pSliderData){
@@ -289,23 +308,19 @@ dbsfaces.slider = {
 		xColor.setAlpha(.2);
 		xColor2.setAlpha(.1);
 		if (pSliderData.lengthFatorZero == 0){
-			xSliderColor = "linear-gradient(" + pSliderData.gradientOrientation + "," + xColor2 + " 0%, " + xColor + " 100%)";
+			xSliderColor = "linear-gradient(" + pSliderData.gradientOrientation + "," 
+											  + xColor2 + " 0%, " 
+											  + xColor + " 100%)";
 		}else{
 			var xPercZero = pSliderData.lengthFatorZero * 100;
 			xSliderColor = "linear-gradient(" + pSliderData.gradientOrientation + ", "
-					+ "rgba(255,0,0,.2) 0%, "
-					+ "rgba(255,0,0,.1) " + xPercZero + "%, "
-					+ xColor2 + " " + xPercZero + "%, " 
-					+ xColor + " 100%)";
+											  + "rgba(255,0,0,.2) 0%, "
+											  + "rgba(255,0,0,.1) " + xPercZero + "%, "
+											  + xColor2 + " " + xPercZero + "%, " 
+											  + xColor + " 100%)";
 		}
 		pSliderData.dom.slider.css("background", xSliderColor);
 		
-		//Slider - Tamanho integral do background selecionado
-		if (pSliderData.orientation == "h"){
-			pSliderData.dom.sliderValueBackground.css("width", pSliderData.dom.slider.css("width"));
-		}else{
-			pSliderData.dom.sliderValueBackground.css("height", pSliderData.dom.slider.css("height"));
-		}
 
 		//Inputs
 		pSliderData.dom.inputs.addClass("-th_bc");
@@ -318,8 +333,8 @@ dbsfaces.slider = {
 		var xPercEnd = (1 / pSliderData.lengthFator) * 100;
 
 		if (xColor.isDark()){
-			xRed = "rgba(120, 0, 0, 1) ";
-			xRed2 = "rgba(120, 0, 0, .8) ";
+			xRed = "rgba(130, 0, 0, 1) ";
+			xRed2 = "rgba(130, 0, 0, .8) ";
 		}else{
 			xRed = "rgba(255, 0, 0, 1) ";
 			xRed2 = "rgba(255, 0, 0, .8) ";
@@ -329,14 +344,16 @@ dbsfaces.slider = {
 		xColor.setAlpha(1);
 		xColor2.setAlpha(.8);
 		if (pSliderData.lengthFatorZero == 0){
-			xBackground = "linear-gradient(" + pSliderData.gradientOrientation + "," + xColor2 + " 0%, " + xColor + " 100%)";
+			xBackground = "linear-gradient(" + pSliderData.gradientOrientation + "," 
+											 + xColor2 + " 0%, " 
+											 + xColor + " 100%)";
 		}else{
 			var xPercZero = pSliderData.lengthFatorZero * 100;
 			xBackground = "linear-gradient(" + pSliderData.gradientOrientation + "," 
-			            + xRed + " 0%, "
-			            + xRed2 + " " + xPercZero + "%, " 
-			            + xColor2 + " " + xPercZero + "%, "
-			            + xColor + " 100%)";
+								             + xRed + " 0%, "
+								             + xRed2 + " " + xPercZero + "%, " 
+								             + xColor2 + " " + xPercZero + "%, "
+								             + xColor + " 100%)";
 		}
 		pSliderData.dom.sliderValueBackground.css("background", xBackground);
 	},
@@ -399,12 +416,12 @@ dbsfaces.slider = {
 			dbsfaces.slider.pvInitializeCreatePointElement(xPoints, "");
 		}
 		pSliderData.dom.points = pSliderData.dom.sub_container.children(".-points");
-		pSliderData.dom.point = pSliderData.dom.points.children(".-point");
-		pSliderData.dom.label = pSliderData.dom.points.children(".-label");
+		pSliderData.dom.pointsPoint = pSliderData.dom.points.children(".-point");
+		pSliderData.dom.pointsLabel = pSliderData.dom.points.children(".-label");
 		if (pSliderData.type == "v"
 		 || pSliderData.type == "r"){
 			//Força que valor seja exatamente o valor do label selecionado
-			pSliderData.dom.label.on("mousedown touchstart", function(e){
+			pSliderData.dom.pointsLabel.on("mousedown touchstart", function(e){
 				dbsfaces.slider.pvSetInputValue(pSliderData, $(this).attr("v"));
 				dbsfaces.slider.setValue(pSliderData.dom.self, pSliderData.value);
 				e.stopImmediatePropagation();
@@ -426,12 +443,12 @@ dbsfaces.slider = {
 		var xValuePerc;
 		var xFator = pSliderData.segmentFator * 100; //Percentual que cada ponto representa
 		//Point
-		for (var xI=0; xI < pSliderData.dom.point.length; xI++){
+		for (var xI=0; xI < pSliderData.dom.pointsPoint.length; xI++){
 			xValuePerc = "calc(" + (xFator * xI) + "% - 1px)";
 			if (pSliderData.orientation == "h"){
-				$(pSliderData.dom.point[xI]).css("left", xValuePerc);
+				$(pSliderData.dom.pointsPoint[xI]).css("left", xValuePerc);
 			}else{
-				$(pSliderData.dom.point[xI]).css("top", xValuePerc);
+				$(pSliderData.dom.pointsPoint[xI]).css("top", xValuePerc);
 			}
 		}
 		//Label
@@ -440,21 +457,21 @@ dbsfaces.slider = {
 			//centraliza. Posiciona no centro da celula 
 			xBase += (xFator / 2);
 		}
-		for (var xI=0; xI < pSliderData.dom.label.length; xI++){
+		for (var xI=0; xI < pSliderData.dom.pointsLabel.length; xI++){
 			//Texto
-			$(pSliderData.dom.label[xI]).text($(pSliderData.dom.label[xI]).attr("l"));
+			$(pSliderData.dom.pointsLabel[xI]).text($(pSliderData.dom.pointsLabel[xI]).attr("l"));
 			//Posição
 			xValuePerc = xBase + (xFator * xI);
 			if (pSliderData.orientation == "h"){
-				$(pSliderData.dom.label[xI]).css("left", xValuePerc + "%");
+				$(pSliderData.dom.pointsLabel[xI]).css("left", xValuePerc + "%");
 			}else{
-				$(pSliderData.dom.label[xI]).css("top", xValuePerc + "%");
+				$(pSliderData.dom.pointsLabel[xI]).css("top", xValuePerc + "%");
 			}
 		}
 	},
 
 	resize: function(pSliderData){
-		dbsfaces.slider.pvSetLength(pSliderData);
+		dbsfaces.slider.pvUpdateDimensions(pSliderData);
 
 		if (pSliderData.type == "r"){
 			dbsfaces.slider.setCurrentHandle(pSliderData, "b");
@@ -467,7 +484,7 @@ dbsfaces.slider = {
 	},
 
 	jump: function(pSliderData, e){
-		dbsfaces.slider.pvSetLength(pSliderData);
+		dbsfaces.slider.pvUpdateDimensions(pSliderData);
 
 		//Calcula fator em relação as coordenada do click
 		var xLengthFator = 0;
@@ -490,7 +507,7 @@ dbsfaces.slider = {
 	},
 	
 	handleMoveStart: function(pSliderData, e){
-		dbsfaces.slider.pvSetLength(pSliderData);;
+		dbsfaces.slider.pvUpdateDimensions(pSliderData);;
 		pSliderData.dom.self.addClass("-selected");
 		var xXY = dbsfaces.ui.pointerEventToXY(e);
 		//Sala posição atual para calcular a diferença posteriormente
@@ -591,16 +608,6 @@ dbsfaces.slider = {
 		}
 	},
 
-
-	pvSetLength:  function(pSliderData){
-		//Atualiza dimensão
-		var xRect = dbsfaces.ui.getRect(pSliderData.dom.sub_container);
-		if (pSliderData.orientation == "h"){
-			pSliderData.length = xRect.width;
-		}else{
-			pSliderData.length = xRect.height;
-		}
-	},
 
 	//Encontra o percentual a partir do valor e seta o slider
 	setValue: function(pSlider, pValue){
@@ -914,6 +921,28 @@ dbsfaces.slider = {
 			pSliderData.dom.sliderValue.css("height", pValuePerc + "%");
 		}
 	},
+
+	
+	pvUpdateDimensions: function(pSliderData){
+		//Atualiza dimensão
+		var xRect = dbsfaces.ui.getRect(pSliderData.dom.sub_container);
+		if (pSliderData.orientation == "h"){
+			pSliderData.length = xRect.width;
+		}else{
+			pSliderData.length = xRect.height;
+		}
+
+		if (pSliderData.orientation == "h"){
+			//Slider - Tamanho integral do background selecionado
+			pSliderData.dom.sliderValueBackground.css("width", pSliderData.dom.slider.css("width"));
+			if (pSliderData.dom.label.length == 0){
+				pSliderData.dom.obs.addClass("-relative");
+			}
+		}else{
+			//Slider - Tamanho integral do background selecionado
+			pSliderData.dom.sliderValueBackground.css("height", pSliderData.dom.slider.css("height"));
+		}
+	},
 	
 	pvHandleSwitch: function(pSliderData){
 		var xTmp = pSliderData.dom.handleBegin;
@@ -969,8 +998,8 @@ dbsfaces.slider = {
 		xHandleMin *= .99;
 		xHandleMax *= 1.01;
 
-		for (var xI=0; xI < pSliderData.dom.label.length; xI++){
-			var xLabel = $(pSliderData.dom.label[xI]);
+		for (var xI=0; xI < pSliderData.dom.pointsLabel.length; xI++){
+			var xLabel = $(pSliderData.dom.pointsLabel[xI]);
 			var xLabelRect = dbsfaces.ui.getRect(xLabel);
 			var xSize;
 			var xMin;
