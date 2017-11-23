@@ -4180,7 +4180,8 @@
 					&lt;li&gt;l = left&lt;/li&gt;
 					&lt;li&gt;r = right&lt;/li&gt;
 					&lt;li&gt;c = centro&lt;/li&gt;
-					&lt;li&gt;e = distribuido igualmente&lt;/li&gt;
+					&lt;li&gt;e = distribuido com tamanho igual&lt;/li&gt;
+					&lt;li&gt;a = distribuido com tamanho ajustado&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt;
             </description>

@@ -18,6 +18,8 @@
     transition: opacity .1s linear;
     opacity: 1;
     
+	box-sizing: border-box;
+    
 	border-radius: .3em .3em 0 0;
 	border-width: 1px;
 	border-style: solid;
@@ -60,12 +62,26 @@
     -moz-align-self: stretch;
     align-self: stretch;
 }
+.dbs_tab.-a > .-container > .-captions{
+    -webkit-align-self: stretch;
+    -moz-align-self: stretch;
+    align-self: stretch;
+}
+
+.dbs_tab > .-container > .-captions > .-container > .-caption{
+    flex: 1 1 auto;
+}
+
+.dbs_tab.-e > .-container > .-captions > .-container > .-caption{
+    flex: 1 1 1em;
+}
+    
     
 
 .dbs_tab > .-container > .-captions > .-container{
-    -webki-flex-wrap: nowrap;
-    -moz-flex-wrap: nowrap;
-    flex-wrap: nowrap;
+    -webki-flex-flow: row nowrap;
+    -moz-flex-flow: row nowrap;
+    flex-flow: row nowrap;
 	height: 2em;
 }
 
@@ -181,6 +197,7 @@
     position: relative;
 	display: inline-block;
     top: calc(50% - .6em);
+    white-space: nowrap;
 }
 
 .dbs_tab > .-container > .-captions > .-container > .-caption > a > .-icon:before{
@@ -225,7 +242,8 @@
     -webkit-flex: 1 1 100%;
     -moz-flex: 1 1 100%;
     flex: 1 1 100%;
-	overflow: auto;
+/* 	overflow: auto; */
+	overflow: hidden;
 } 	
 
 .dbs_tab > .-container > .-tabPages > .-content{

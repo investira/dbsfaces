@@ -42,7 +42,8 @@ public class DBSTab extends DBSUIOutput implements NamingContainer, ClientBehavi
 		LEFT			("l"),
 	    RIGHT 			("r"),
 		CENTER 			("c"),
-		EVEN 			("e");	
+		EVEN 			("e"),	
+		AUTO 			("a");	
 		
 		private String 	wName;
 		
