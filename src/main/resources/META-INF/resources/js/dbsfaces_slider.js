@@ -117,15 +117,7 @@ dbs_slider = function(pId, pValuesList, pLabelsList, pMinValue, pMaxValue, pLoca
 	}
 
 	xSliderData.updateIntervalDimension = setInterval(function(){
-		if (xSliderData.orientation == "h"){
-			if (xSliderData.dom.slider.css("width") != xSliderData.dom.sliderValueBackground.css("width")){
-				dbsfaces.slider.pvUpdateDimensions(xSliderData);
-			}
-		}else{
-			if (xSliderData.dom.sliderValueBackground.css("height") != xSliderData.dom.slider.css("height")){
-				dbsfaces.slider.pvUpdateDimensions(xSliderData);
-			}
-		}
+		dbsfaces.slider.updateDimensions(xSliderData);
 //		clearInterval(xSliderData.updateIntervalDimension);
 	},1);
 }
@@ -293,7 +285,7 @@ dbsfaces.slider = {
 		clearTimeout(pSliderData.resizeTimeout);
 		pSliderData.resizeTimeout = setTimeout(function(e){
 			dbsfaces.slider.pvInitializeLayoutHorizontalVertical(pSliderData);
-			dbsfaces.slider.pvInitializeLayoutPoints(pSliderData);
+//			dbsfaces.slider.pvInitializeLayoutPoints(pSliderData);
 			dbsfaces.slider.pvInitializeLayoutSliderColor(pSliderData);
 			dbsfaces.slider.resize(pSliderData);
 			pSliderData.dom.self.removeClass("-hide");
@@ -327,22 +319,26 @@ dbsfaces.slider = {
 	},
 
 	pvInitializeLayoutSliderColor: function(pSliderData){
-		var xColor = tinycolor(pSliderData.color);
-		var xColor2 = tinycolor(pSliderData.color);
+		pSliderData.dom.sliderValueBackground.css("background", "");
+		pSliderData.dom.sliderValueBackground.addClass("-th_bc");
+		var xColor = tinycolor(pSliderData.dom.sliderValueBackground.css("background"));
+		var xColor2 = tinycolor(pSliderData.dom.sliderValueBackground.css("background"));
+		pSliderData.dom.sliderValueBackground.removeClass("-th_bc");
 		var xRed, xRed2;
 		var xPercEnd = (1 / pSliderData.lengthFator) * 100;
 
 		if (xColor.isDark()){
 			xRed = "rgba(130, 0, 0, 1) ";
-			xRed2 = "rgba(130, 0, 0, .8) ";
+			xRed2 = "rgba(130, 0, 0, .95) ";
 		}else{
 			xRed = "rgba(255, 0, 0, 1) ";
-			xRed2 = "rgba(255, 0, 0, .8) ";
+			xRed2 = "rgba(255, 0, 0, .95) ";
 		}
 		//Slider - Color do background integral
 		var xBackground;
 		xColor.setAlpha(1);
-		xColor2.setAlpha(.8);
+		xColor2.setAlpha(.95);
+		
 		if (pSliderData.lengthFatorZero == 0){
 			xBackground = "linear-gradient(" + pSliderData.gradientOrientation + "," 
 											 + xColor2 + " 0%, " 
@@ -355,7 +351,7 @@ dbsfaces.slider = {
 								             + xColor2 + " " + xPercZero + "%, "
 								             + xColor + " 100%)";
 		}
-		pSliderData.dom.sliderValueBackground.css("background", xBackground);
+		pSliderData.dom.sliderValueBackground.css("background-image", xBackground);
 	},
 	
 
@@ -471,7 +467,7 @@ dbsfaces.slider = {
 	},
 
 	resize: function(pSliderData){
-		dbsfaces.slider.pvUpdateDimensions(pSliderData);
+		dbsfaces.slider.updateDimensions(pSliderData);
 
 		if (pSliderData.type == "r"){
 			dbsfaces.slider.setCurrentHandle(pSliderData, "b");
@@ -484,7 +480,7 @@ dbsfaces.slider = {
 	},
 
 	jump: function(pSliderData, e){
-		dbsfaces.slider.pvUpdateDimensions(pSliderData);
+		dbsfaces.slider.updateDimensions(pSliderData);
 
 		//Calcula fator em relação as coordenada do click
 		var xLengthFator = 0;
@@ -507,7 +503,7 @@ dbsfaces.slider = {
 	},
 	
 	handleMoveStart: function(pSliderData, e){
-		dbsfaces.slider.pvUpdateDimensions(pSliderData);;
+		dbsfaces.slider.updateDimensions(pSliderData);;
 		pSliderData.dom.self.addClass("-selected");
 		var xXY = dbsfaces.ui.pointerEventToXY(e);
 		//Sala posição atual para calcular a diferença posteriormente
@@ -861,7 +857,7 @@ dbsfaces.slider = {
 			//Limita pontos extremos para dentro da áreas
 			pSliderData.dom.handleLabel.css("left", xAlignShift);
 		}
-		//termometro
+		//Slider Value
 		if (pSliderData.type == "r"){
 			var xBegin = parseFloat(pSliderData.dom.handleBegin[0].style.left);
 			var xEnd = parseFloat(pSliderData.dom.handleEnd[0].style.left);
@@ -923,12 +919,15 @@ dbsfaces.slider = {
 	},
 
 	
-	pvUpdateDimensions: function(pSliderData){
+	updateDimensions: function(pSliderData){
 		//Atualiza dimensão
-		var xRect = dbsfaces.ui.getRect(pSliderData.dom.sub_container);
+		var xRect = dbsfaces.ui.getRect($(pSliderData.dom.sub_container));
+//		console.log(pSliderData.dom.self[0].id + xRect.width);
 		if (pSliderData.orientation == "h"){
+			if (pSliderData.length == xRect.width){return;}
 			pSliderData.length = xRect.width;
 		}else{
+			if (pSliderData.length == xRect.height){return;}
 			pSliderData.length = xRect.height;
 		}
 
@@ -942,6 +941,8 @@ dbsfaces.slider = {
 			//Slider - Tamanho integral do background selecionado
 			pSliderData.dom.sliderValueBackground.css("height", pSliderData.dom.slider.css("height"));
 		}
+		dbsfaces.slider.pvInitializeLayoutPoints(pSliderData);
+		dbsfaces.slider.pvHideLabels(pSliderData);
 	},
 	
 	pvHandleSwitch: function(pSliderData){
