@@ -3108,6 +3108,14 @@
 		</attribute>
 		<attribute>
 			<description>
+                Texto informativo a ser exibido dentro do próprio campo
+            </description>
+			<name>placeHolder</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
 				&lt;span style="font-size:small"&gt;
 				Tipo de slider. Padrão é value 'v'.&lt;br/&gt;
 				&lt;ul&gt;
@@ -4163,6 +4171,22 @@
 			<name>rendered</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+				&lt;span style="font-size:small"&gt;
+				Alinhamento do título. Padrão é 'l'(left).&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;l = left&lt;/li&gt;
+					&lt;li&gt;r = right&lt;/li&gt;
+					&lt;li&gt;c = centro&lt;/li&gt;
+					&lt;li&gt;e = distribuido igualmente&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt;
+            </description>
+			<name>captionAlignment</name>
+			<required>false</required>
+			<type>java.lang.String</type>
 		</attribute>
 	</tag>
 	<tag>
