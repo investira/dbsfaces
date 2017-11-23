@@ -130,7 +130,8 @@ dbsfaces.chart = {
 				if (typeof xOriginalValue.label == "undefined"){
 					xLabels.push(xI); //Força que o label seja o index para que sempre exista um label
 				}else{
-					xLabels = xOriginalValue.label.split(/[;]+/);
+//					xLabels = xOriginalValue.label.split(/[;]+/);
+					xLabels = xOriginalValue.label.split(/\s*;\s*/);
 				}
 				
 				//Salva quantidade máxima de grupos de labels existentes
