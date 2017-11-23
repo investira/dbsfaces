@@ -213,6 +213,7 @@ public class  DBSFaces {
 	    public static final String CHARTSX = "chartsX";
 	    public static final String CHARTX = "chartX";
 	    public static final String CHARTVALUEX = "chartValueX";
+	    public static final String PAGEDSEARCH = "pagedSearch";
 	}
 
 	public static class HTML
@@ -605,6 +606,22 @@ public class  DBSFaces {
 		public static class CHARTVALUEX
 		{	
 			public static final String MAIN = " " + CLASS_PREFIX + ID.CHARTVALUEX + " ";
+		}
+		
+		public static class PAGEDSEARCH
+		{
+			public static final String MAIN = " " + CLASS_PREFIX + ID.PAGEDSEARCH + " ";
+			
+			public static final String R1 = " -R1";
+			public static final String R2 = " -R2";
+			public static final String INPUTSEARCH = " -input_search";
+			public static final String BT_SEARCH_MORE = " -bt_search_more";
+			public static final String VISIBLE_CONTAINER = " -visible_container";
+			public static final String VISIBLE_LIST = " -visible_list";
+			public static final String INVISIBLE_CONTAINER = " -invisible_container";
+			public static final String INVISIBLE_LIST = " -invisible_list";
+			public static final String PAGED_ITEM = "-paged_item";
+			public static final String LOADING = "-loading -small -hideLoading";
 		}
 
 	}
@@ -2373,6 +2390,7 @@ public class  DBSFaces {
 	
 	/**
 	 * Retorna ValueExpression a partir da string informada
+	 * @param pContext
 	 * @param pELValue
 	 * @param pValueTypeClass
 	 * @return
@@ -2399,6 +2417,7 @@ public class  DBSFaces {
 
 	/**
 	 * Retorna MethodExpression a partir da string informada
+	 * @param pContext
 	 * @param pELMethod
 	 * @param pReturnTypeClass
 	 * @param pExpectedParamTypes
