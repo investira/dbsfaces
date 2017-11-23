@@ -1,0 +1,34 @@
+.dbs_pagedSearch > .-container{
+	height: 100vh;
+    flex-direction: column !important;
+}
+.dbs_pagedSearch > .-container > .-R1 {
+	width: 100%;
+	height: 38px;
+    flex: 0 0 38px !important;
+}		
+.dbs_pagedSearch > .-container > .-R2 {
+	flex: 1;
+	width: 100%;
+	overflow:auto;
+}
+.dbs_pagedSearch > .-container > .-R2 > .-visible_container {
+}		
+.dbs_pagedSearch > .-container > .-R2 > .-visible_container > .-visible_list{
+}
+
+.dbs_pagedSearch > .-container > .-R2 > .-invisible_container {
+	display: none;
+}
+.dbs_pagedSearch > .-container > .-R2 > .-invisible_container > .-invisible_list{
+}
+
+.dbs_pagedSearch > .-container > .-R2 > .-invisible_container > .-invisible_list > .-pagedSearch_item{
+}
+
+.dbs_pagedSearch > .-container > .-R2 > .-showLoading{
+	display: block;
+}
+.dbs_pagedSearch > .-container > .-R2 > .-hideLoading{
+	display: none;
+}

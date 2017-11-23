@@ -525,7 +525,7 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
-	</tag>	
+	</tag>
 	<tag>
 		<tag-name>dialogmsg</tag-name>
 		<component>
@@ -1219,7 +1219,6 @@
 			<type>java.lang.String</type>
 		</attribute>
 	</tag>
-
 	<tag>
 		<tag-name>fileUpload</tag-name>
 		<component>
@@ -1750,8 +1749,7 @@
 					&lt;li&gt;url = Defines a field for entering a URL&lt;/li&gt;
 					&lt;li&gt;week&lt;/li&gt;
 				&lt;ul&gt;
-				&lt;/span&gt;
-            </description>
+				&lt;/span&gt; </description>
 			<name>type</name>
 			<required>false</required>
 			<type>java.lang.String</type>
@@ -2366,7 +2364,7 @@
 			<name>onFocusSelectAll</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
-		</attribute>		
+		</attribute>
 		<attribute>
 			<description>
             	Valor Máximo
@@ -2415,20 +2413,11 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
-		<!-- <attribute> -->
-		<!-- <description> -->
-		<!-- &lt;span style="font-size:small"&gt; -->
-		<!-- Indica se exibirá botões de incremento . Padrão = false&lt;br/&gt; -->
-		<!-- &lt;ul&gt; -->
-		<!-- &lt;li&gt;true = Exibe&lt;/li&gt; -->
-		<!-- &lt;li&gt;false = Não exibe&lt;/li&gt; -->
-		<!-- &lt;ul&gt; -->
-		<!-- &lt;/span&gt; -->
-		<!-- </description> -->
-		<!-- <name>increment</name> -->
-		<!-- <required>false</required> -->
-		<!-- <type>java.lang.Boolean</type> -->
-		<!-- </attribute> -->
+		<!-- <attribute> <description> &lt;span style="font-size:small"&gt; Indica 
+			se exibirá botões de incremento . Padrão = false&lt;br/&gt; &lt;ul&gt; &lt;li&gt;true 
+			= Exibe&lt;/li&gt; &lt;li&gt;false = Não exibe&lt;/li&gt; &lt;ul&gt; &lt;/span&gt; 
+			</description> <name>increment</name> <required>false</required> <type>java.lang.Boolean</type> 
+			</attribute> -->
 	</tag>
 	<tag>
 		<tag-name>inputMask</tag-name>
@@ -2807,14 +2796,9 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
-<!-- 		<attribute> -->
-<!-- 			<description> -->
-<!--                 Componente que será atualizado no ajax -->
-<!--             </description> -->
-<!-- 			<name>update</name> -->
-<!-- 			<required>false</required> -->
-<!-- 			<type>java.lang.String</type> -->
-<!-- 		</attribute> -->
+		<!-- <attribute> <description> Componente que será atualizado no ajax </description> 
+			<name>update</name> <required>false</required> <type>java.lang.String</type> 
+			</attribute> -->
 		<attribute>
 			<description>
                 Tooltip
@@ -3165,15 +3149,9 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
 		</attribute>
-		<!-- <attribute> -->
-		<!-- <description> -->
-		<!-- Se exibe o label quando for Slider do tipo "s". -->
-		<!-- </description> -->
-		<!-- <name>showLabel</name> -->
-		<!-- <required>false</required> -->
-		<!-- <type>java.lang.Boolean</type> -->
-		<!-- </attribute> -->
-
+		<!-- <attribute> <description> Se exibe o label quando for Slider do tipo 
+			"s". </description> <name>showLabel</name> <required>false</required> <type>java.lang.Boolean</type> 
+			</attribute> -->
 		<attribute>
 			<description>
                 Valor atual (ignorado para Slider do tipo "r"). 
@@ -3182,7 +3160,6 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
-		
 		<attribute>
 			<description>
                 Valor inicial (somente para Slider do tipo "r"). 
@@ -3191,7 +3168,6 @@
 			<required>false</required>
 			<type>java.lang.Double</type>
 		</attribute>
-
 		<attribute>
 			<description>
                 Valor final (somente para Slider do tipo "r"). 
@@ -3200,7 +3176,6 @@
 			<required>false</required>
 			<type>java.lang.Double</type>
 		</attribute>
-
 		<attribute>
 			<description>
                 Valor Máximo (somente para Slider do tipo "v" e "r"). Valor default é 100. 
@@ -4523,6 +4498,53 @@
 			<name>attributeValueExpression</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+		</attribute>
+	</tag>
+	<tag>
+		<tag-name>pagedSearch</tag-name>
+		<component>
+			<component-type>br.com.dbsoft.ui.component.pagedSearch</component-type>
+			<handler-class />
+		</component>
+		<attribute>
+			<description>
+                Identificador único do componente.
+            </description>
+			<name>id</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Indica se deseja exibir o status da conexão com o servlet
+            </description>
+			<name>pagedSearch</name>
+			<required>true</required>
+			<type>br.com.dbsoft.pagedSearch.IDBSPagedSeach</type>
+		</attribute>
+		<attribute>
+			<description>
+                Class CSS
+            </description>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Style CSS 
+            </description>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                rendered
+            </description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
 		</attribute>
 	</tag>
 </facelet-taglib>

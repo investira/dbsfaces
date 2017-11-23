@@ -62,6 +62,7 @@ import br.com.dbsoft.util.DBSIO.SORT_DIRECTION;
 	@ResourceDependency(library = "css", name = "dbsfaces_charts.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_chart.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_chartvalue.css", target = "head"),
+	@ResourceDependency(library = "css", name = "dbsfaces_pagedsearch.css", target = "head"),
 	@ResourceDependency(library = "js", name = "jquery-3.1.1.min.js", target = "head"),
 	@ResourceDependency(library = "js", name = "jquery.actual.min.js", target = "head"),
 	@ResourceDependency(library = "js", name = "tinycolor.js", target = "head"),
@@ -107,6 +108,7 @@ import br.com.dbsoft.util.DBSIO.SORT_DIRECTION;
 	@ResourceDependency(library = "js", name = "dbsfaces_chartvalue.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_charts.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_chart.js", target = "head"),
+	@ResourceDependency(library = "js", name = "dbsfaces_pagedsearch.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsinvest.js", target = "head")
 //	@ResourceDependency(library = "js", name = "eventsource.js", target = "head")
 })
