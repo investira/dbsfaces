@@ -38,10 +38,29 @@
     -webkit-flex: 0 1 1em;
     -moz-flex: 0 1 1em;
     flex: 0 1 1em;
-    -webkit-align-self: start;
-    -moz-align-self: start;
-    align-self: start;
 }
+
+.dbs_tab.-l > .-container > .-captions{
+    -webkit-align-self: flex-start;
+    -moz-align-self: flex-start;
+    align-self: flex-start;
+}
+.dbs_tab.-r > .-container > .-captions{
+    -webkit-align-self: flex-end;
+    -moz-align-self: flex-end;
+    align-self: flex-end;
+}
+.dbs_tab.-c > .-container > .-captions{
+    -webkit-align-self: center;
+    -moz-align-self: center;
+    align-self: center;
+}
+.dbs_tab.-e > .-container > .-captions{
+    -webkit-align-self: stretch;
+    -moz-align-self: stretch;
+    align-self: stretch;
+}
+    
 
 .dbs_tab > .-container > .-captions > .-container{
     -webki-flex-wrap: nowrap;

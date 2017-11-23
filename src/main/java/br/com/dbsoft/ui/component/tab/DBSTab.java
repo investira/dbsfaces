@@ -21,7 +21,8 @@ public class DBSTab extends DBSUIOutput implements NamingContainer, ClientBehavi
 	protected enum PropertyKeys {
 		selectedTabPage,
 		showTabPageOnClick,
-		tabPages;
+		tabPages,
+		captionAlignment;
 
 		String toString;
 
@@ -36,6 +37,41 @@ public class DBSTab extends DBSUIOutput implements NamingContainer, ClientBehavi
 			return ((this.toString != null) ? this.toString : super.toString());
 		}
 	}
+	
+	public static enum CAPTION_ALIGMENT {
+		LEFT			("l"),
+	    RIGHT 			("r"),
+		CENTER 			("c"),
+		EVEN 			("e");	
+		
+		private String 	wName;
+		
+		private CAPTION_ALIGMENT(String pName) {
+			this.wName = pName;
+		}
+
+		public String getName() {
+			return wName;
+		}
+		
+		public String getStyleClass() {
+			return " -" + wName;
+		}
+
+		public static CAPTION_ALIGMENT get(String pCode) {
+			if (pCode == null){
+				return LEFT;
+			}			
+			pCode = pCode.trim().toLowerCase();
+	    	for (CAPTION_ALIGMENT xT:CAPTION_ALIGMENT.values()) {
+	    		if (xT.getName().equals(pCode)){
+	    			return xT;
+	    		}
+	    	}
+	    	return null;
+		}	
+	}
+	
 	
     public DBSTab(){
 		setRendererType(DBSTab.RENDERER_TYPE);
@@ -71,6 +107,20 @@ public class DBSTab extends DBSUIOutput implements NamingContainer, ClientBehavi
 		getStateHelper().put(PropertyKeys.tabPages, pTabPages);
 		handleAttribute("tabPages", pTabPages);
 	}
+
+	public String getCaptionAlignment() {
+		return (String) getStateHelper().eval(PropertyKeys.captionAlignment, CAPTION_ALIGMENT.LEFT.getName());
+	}
+	
+	public void setCaptionAlignment(String pCaptionAlignment) {
+		CAPTION_ALIGMENT xCaptionAlignment = CAPTION_ALIGMENT.get(pCaptionAlignment);
+		if (xCaptionAlignment == null){
+			return;
+		}
+		getStateHelper().put(PropertyKeys.captionAlignment, pCaptionAlignment);
+		handleAttribute("captionAlignment", pCaptionAlignment);
+	}
+	
 
 	@Override
     public String getDefaultEventName()

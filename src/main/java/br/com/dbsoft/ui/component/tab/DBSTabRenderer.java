@@ -9,6 +9,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
+import br.com.dbsoft.ui.component.tab.DBSTab.CAPTION_ALIGMENT;
 import br.com.dbsoft.ui.component.tabpage.DBSTabPage;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
@@ -41,7 +42,7 @@ public class DBSTabRenderer extends DBSRenderer {
 		DBSTab xTab = (DBSTab) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xTab.getClientId(pContext);
-		String xClass = CSS.TAB.MAIN;
+		String xClass = CSS.TAB.MAIN + CAPTION_ALIGMENT.get(xTab.getCaptionAlignment()).getStyleClass();
 		//Recupera a tabpage corrente para evitar que mude quando ocorrer o post
 		String xSelectedTabPage;
 		if (xTab.getShowTabPageOnClick()){
