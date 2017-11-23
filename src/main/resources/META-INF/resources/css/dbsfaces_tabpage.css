@@ -1,7 +1,7 @@
 .dbs_tabPage{
-/* 	visibility: hidden; */
-	display: none;
-	position:relative;
+	visibility: hidden;
+	position: absolute;
+/* 	display: none; */
 	overflow: visible;
 	width:100%;
 /* 	padding: .3em; */
@@ -10,8 +10,8 @@
 
 .dbs_tabPage.-selected{
 /* 	display:table !important;	10/08/2013 - Comentado por não funcionar a height 100% no dbscom:report */
-/* 	visibility: visible;  */
-	display: inline-block;
+	visibility: visible; 
+	position:relative;
 }
 
 
