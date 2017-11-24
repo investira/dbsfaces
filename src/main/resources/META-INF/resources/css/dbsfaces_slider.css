@@ -325,22 +325,23 @@
 .dbs_slider.-h .-container > .-content > .-sub_container > .-slider > .-value > .-background:before{
     top: calc(50% - .6em);
     left: .5em;
-    -webkit-transition: top .1s cubic-bezier(0, 0.50, 0.50, 1), font-size .1s linear;
-    -moz-transition: top .1s cubic-bezier(0, 0.50, 0.50, 1), font-size .1s linear;
-    transition: top .1s cubic-bezier(0, 0.50, 0.50, 1), font-size .1s linear;
+    -webkit-transition: top .1s linear, font-size .1s linear;
+    -moz-transition: top .1s linear, font-size .1s linear;
+    transition: top .1s linear, font-size .1s linear;
 }
 
 .dbs_slider.-h.-editing .-container > .-content > .-sub_container > .-slider:before,
 .dbs_slider.-h.-editing .-container > .-content > .-sub_container > .-slider > .-value > .-background:before{
-    font-size: .5em;
+    font-size: .6em;
+    left: 0;
 }
 .dbs_slider.-h.-editing .-container > .-content > .-sub_container > .-slider:before,
 .dbs_slider.-h.-editing .-container > .-content > .-sub_container > .-slider > .-value > .-background:before{
-    top: -1.5em;
+    top: -1.3em;
 }
 .dbs_slider.-h.-i.-editing .-container > .-content > .-sub_container > .-slider:before,
 .dbs_slider.-h.-i.-editing .-container > .-content > .-sub_container > .-slider > .-value > .-background:before{
-    top: 3.4em;
+    top: 2.8em;
 }
 
 
