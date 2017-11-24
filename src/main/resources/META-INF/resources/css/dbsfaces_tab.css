@@ -40,6 +40,7 @@
     -webkit-flex: 0 1 1em;
     -moz-flex: 0 1 1em;
     flex: 0 1 1em;
+	line-height: normal;
 }
 
 .dbs_tab.-l > .-container > .-captions{
@@ -258,6 +259,11 @@
 	.dbs_tab > .-container{
 	    border: none;
 	}
+	
+	.dbs_tab > .-container > .-tabPages{
+    	padding: 0.4em 0;
+	}
+	
 	.dbs_tab > .-container > .-captions > .-container > .-caption:first-child {
 	    border-radius: .3em 0 0 .3em;
 	}

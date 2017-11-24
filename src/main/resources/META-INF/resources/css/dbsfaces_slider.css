@@ -2,6 +2,7 @@
 	display: inline-block;
 	position: relative;
 	border: none;
+	line-height: normal;
 }
 
 .dbs_slider.-h{
@@ -218,7 +219,7 @@
 .dbs_slider > .-container > .-content > .-sub_container > .-slider{
 	display: block;
     position: relative;
-    overflow: hidden;
+/*     overflow: hidden; */
 	padding: 0;
     margin: 0;
     border-radius: .3em;
@@ -324,7 +325,26 @@
 .dbs_slider.-h .-container > .-content > .-sub_container > .-slider > .-value > .-background:before{
     top: calc(50% - .6em);
     left: .5em;
+    -webkit-transition: top .1s cubic-bezier(0, 0.50, 0.50, 1), font-size .1s linear;
+    -moz-transition: top .1s cubic-bezier(0, 0.50, 0.50, 1), font-size .1s linear;
+    transition: top .1s cubic-bezier(0, 0.50, 0.50, 1), font-size .1s linear;
 }
+
+.dbs_slider.-h.-editing .-container > .-content > .-sub_container > .-slider:before,
+.dbs_slider.-h.-editing .-container > .-content > .-sub_container > .-slider > .-value > .-background:before{
+    font-size: .5em;
+}
+.dbs_slider.-h.-editing .-container > .-content > .-sub_container > .-slider:before,
+.dbs_slider.-h.-editing .-container > .-content > .-sub_container > .-slider > .-value > .-background:before{
+    top: -1.5em;
+}
+.dbs_slider.-h.-i.-editing .-container > .-content > .-sub_container > .-slider:before,
+.dbs_slider.-h.-i.-editing .-container > .-content > .-sub_container > .-slider > .-value > .-background:before{
+    top: 3.4em;
+}
+
+
+
 .dbs_slider.-v .-container > .-content > .-sub_container > .-slider:before,
 .dbs_slider.-v .-container > .-content > .-sub_container > .-slider > .-value > .-background:before{
     left: calc(50% - .55em);
