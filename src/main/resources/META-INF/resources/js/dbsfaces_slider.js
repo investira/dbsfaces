@@ -188,7 +188,9 @@ dbsfaces.slider = {
 			updateIntervalDimension: null,
 			switched: false,
 			color: pSlider.css("color"),
-			gradientOrientation: (pSlider.hasClass("-h") ? "to right" : "to top")
+			gradientOrientation: (pSlider.hasClass("-h") ? "to right" : "to top"),
+			showPlaceHolder: pSlider.hasClass("-pr"),
+			showValues: pSlider.hasClass("-sv")
 		}
 		pSlider.data("data", xData);
 		xData.dom.content = xData.dom.container.children(".-content");
@@ -767,10 +769,13 @@ dbsfaces.slider = {
 		 && pSliderData.lengthFator == 0){
 			pSliderData.dom.handleLabel.text("");
 		}else{
-			//Valor para ser capturado pelo pseudoselector :before:content
 			pSliderData.dom.handleLabel.text(pSliderData.dom.input.attr("value"));
 		}
-		
+		if (pSliderData.type == "v" 
+		&& !pSliderData.showPlaceHolder){
+			pSliderData.dom.slider.attr("pr", pSliderData.dom.handleLabel.text());
+			pSliderData.dom.sliderValueBackground.attr("pr", pSliderData.dom.handleLabel.text());
+		}
 		
 		if (pSliderData.orientation == "h"){
 			dbsfaces.slider.pvEncodeValueHorizontal(pSliderData, xValuePerc);

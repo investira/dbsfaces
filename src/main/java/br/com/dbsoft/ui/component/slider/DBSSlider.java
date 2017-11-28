@@ -28,7 +28,8 @@ public class DBSSlider extends DBSUIInput implements NamingContainer {
 		valuesList,
 		labelsList,
 		invertValuesListPosition,
-		obs;
+		obs,
+		showValues;
 		
 		String toString;
 
@@ -168,13 +169,13 @@ public class DBSSlider extends DBSUIInput implements NamingContainer {
 		handleAttribute("endValue", pEndValue);
 	}
 
-	public void setAnimated(Boolean pAnimated) {
-		getStateHelper().put(PropertyKeys.animated, pAnimated);
-		handleAttribute("animated", pAnimated);
+	public void setShowValues(Boolean pShowValues) {
+		getStateHelper().put(PropertyKeys.showValues, pShowValues);
+		handleAttribute("showValues", pShowValues);
 	}
 	
-	public Boolean getAnimated() {
-		return (Boolean) getStateHelper().eval(PropertyKeys.animated, false);
+	public Boolean getShowValues() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.showValues, true);
 	}	
 
 	public String getObs() {

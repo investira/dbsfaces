@@ -89,9 +89,6 @@ public class DBSSliderRenderer extends DBSRenderer {
 
 		xClass += xOrientation.getStyleClass();
 		
-		if (xSlider.getAnimated()){
-			xClass += " -ani ";
-		}
 		if (xSlider.getInvertValuesListPosition()){
 			xClass += CSS.MODIFIER.INVERT;
 		}
@@ -104,6 +101,13 @@ public class DBSSliderRenderer extends DBSRenderer {
 		if (!xSlider.isValid()){
 			xClass += CSS.MODIFIER.INVALID;
 		}
+		if (xSlider.getPlaceHolder() != null){
+			xClass += " -pr ";
+		}
+		if (xSlider.getShowValues()){
+			xClass += " -sv ";
+		}
+		
 		xWriter.startElement("div", xSlider);
 			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
 			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
