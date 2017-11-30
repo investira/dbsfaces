@@ -615,13 +615,21 @@ public class  DBSFaces {
 			public static final String R1 = " -R1";
 			public static final String R2 = " -R2";
 			public static final String INPUTSEARCH = " -input_search";
+			public static final String INPUTSUGGESTION = " -input_suggestion";
 			public static final String BT_SEARCH_MORE = " -bt_search_more";
 			public static final String VISIBLE_CONTAINER = " -visible_container";
-			public static final String VISIBLE_LIST = " -visible_list";
+			public static final String VISIBLE_LIST = " dbs_pagedSearch_container";
 			public static final String INVISIBLE_CONTAINER = " -invisible_container";
 			public static final String INVISIBLE_LIST = " -invisible_list";
-			public static final String PAGED_ITEM = "-paged_item";
+			public static final String PAGED_ITEM = "-item";
+			public static final String PAGED_ITEM_KEY = "-item_key";
+			public static final String PAGED_ITEM_DISPLAY = "-item_display_value";
 			public static final String LOADING = "-loading -small -hideLoading";
+			public static final String SELECT_KEY = "-select_key";
+			public static final String SELECT_ROW = "-select_row";
+			public static final String BT_SELECT = "-bt_select_item";
+
+
 		}
 
 	}

@@ -54,39 +54,41 @@ dbs_inputText = function(pId) {
 	/* copia a sugestão para o input ou navega pela lista de sugestões*/
 	xInputTextData.dom.inputData.keydown(function(e){
 		//Confirma sugestão com tab e seta para a direita
-		if ((e.which == 13 || //ENTER
+		if (dbsfaces.inputText.isSuggestion(xInputTextData)){
+			if ((e.which == 13 || //ENTER
 			 e.which == 39) && //RIGHT
-			$(this).get(0).selectionEnd == $(this).val().length) { //Se o cursor estiver no final do texto digitado pelo usuário
-			e.stopImmediatePropagation();
-			dbsfaces.inputText.acceptSuggestion(xInputTextData);
-			if (e.which == 13){
-				dbsfaces.inputText.hideList(xInputTextData);
-				return false;
-			}
-		//Navega na lista de sugestões	
-		}else if(e.which==40   //DOWN
-			  || e.which==38){ //UP
-			//Se existe suggestion, controla a exibição e a navegação
-			if (dbsfaces.inputText.isSuggestion(xInputTextData)){
-				e.preventDefault();
-				e.stopPropagation();
-				//Exibe suggestions no primeiro click
-				if (xInputTextData.dom.list.css("display") == "none"){
-					dbsfaces.inputText.showList(xInputTextData);
-				}else{
-					//Navega na lista de sugestões
-					dbsfaces.dataTable.moveToNextOrPreviousRow(xInputTextData.dom.dataTable.data("data"), e.which);
+			 $(this).get(0).selectionEnd == $(this).val().length) { //Se o cursor estiver no final do texto digitado pelo usuário
+				e.stopImmediatePropagation();
+				dbsfaces.inputText.acceptSuggestion(xInputTextData);
+				if (e.which == 13){
+					dbsfaces.inputText.hideList(xInputTextData);
+					return false;
 				}
-			}
-		//Se não for tab, shift ou setas para a direira ou esquerda
-		}else{
-			if (dbsfaces.inputText.isValidKey(e)){
-				//Apaga sugestão, pois será efetuada uma nova pesquisa no keyup
-				dbsfaces.inputText.clearSuggestion(xInputTextData);
-			}
-			//Limpa campo da posição do cursos até o fim
-			if (e.which == 8){ //BACKSPACES
-				dbsfaces.ui.selectEnd($(this));
+			//Navega na lista de sugestões	
+			}else if(e.which==40   //DOWN
+				  || e.which==38){ //UP
+				//Se existe suggestion, controla a exibição e a navegação
+				if (dbsfaces.inputText.isSuggestion(xInputTextData)){
+					e.preventDefault();
+					e.stopPropagation();
+					//Exibe suggestions no primeiro click
+					if (xInputTextData.dom.list.css("display") == "none"){
+						dbsfaces.inputText.showList(xInputTextData);
+					}else{
+						//Navega na lista de sugestões
+						dbsfaces.dataTable.moveToNextOrPreviousRow(xInputTextData.dom.dataTable.data("data"), e.which);
+					}
+				}
+			//Se não for tab, shift ou setas para a direira ou esquerda
+			}else{
+				if (dbsfaces.inputText.isValidKey(e)){
+					//Apaga sugestão, pois será efetuada uma nova pesquisa no keyup
+					dbsfaces.inputText.clearSuggestion(xInputTextData);
+				}
+				//Limpa campo da posição do cursos até o fim
+				if (e.which == 8){ //BACKSPACES
+					dbsfaces.ui.selectEnd($(this));
+				}
 			}
 		}
 	});

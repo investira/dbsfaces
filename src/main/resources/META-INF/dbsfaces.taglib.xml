@@ -4544,7 +4544,7 @@
             </description>
 			<name>pagedSearch</name>
 			<required>true</required>
-			<type>br.com.dbsoft.pagedSearch.IDBSPagedSeach</type>
+			<type>br.com.dbsoft.pagedSearch.DBSPagedSeachController</type>
 		</attribute>
 		<attribute>
 			<description>

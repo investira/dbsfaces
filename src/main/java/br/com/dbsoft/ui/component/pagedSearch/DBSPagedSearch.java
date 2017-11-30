@@ -5,7 +5,7 @@ import javax.faces.component.NamingContainer;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 
-import br.com.dbsoft.pagedSearch.IDBSPagedSearchController;
+import br.com.dbsoft.pagedSearch.DBSPagedSearchController;
 import br.com.dbsoft.ui.component.DBSUIComponentBase;
 import br.com.dbsoft.ui.core.DBSFaces;
 
@@ -17,10 +17,14 @@ public class DBSPagedSearch extends DBSUIComponentBase implements NamingContaine
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 	
 	public static final String FACET_INPUTSEARCH = "facetInputSearch";
+	public static final String FACET_INPUTSUGGESTION = "facetInputSuggestion";
 	public static final String FACET_SEARCHMORE = "facetSearchMore";
 	public static final String FACET_DIVINVISIVEL = "facetDivInvisivel";
+
+	public static final String FACET_SELECTBUTTON = "facetSelectButton";
 	
 	public static final String ID_INPUTSEARCH = "inputSearch";
+	public static final String ID_INPUTSUGGESTION = "inputSuggestion";
 	public static final String ID_BTSEARCHMORE = "btSearchMore";
 	public static final String ID_DIVRESULTS = "divResults";
 	public static final String ID_VISIBLELISTCONTAINER = "visibleList";
@@ -28,10 +32,18 @@ public class DBSPagedSearch extends DBSUIComponentBase implements NamingContaine
 	public static final String ID_INVISIBLELISTCONTAINER = "invisibleList";
 	public static final String ID_PAGEDLIST = "pagedList";
 	public static final String ID_ITEM = "pagedItem";
+	public static final String ID_ITEMKEY = "itemKey";
+	public static final String ID_ITEMDISPLAY = "itemDisplayValue";
+	public static final String ID_SELECT_KEY = "-selectKey";
+	public static final String ID_SELECT_ROW = "selectRow";
+	public static final String ID_BTSELECT = "selectItem";
 	
 	protected enum PropertyKeys {
-		pagedSearch,
 		var,
+		pagedSearch,
+		suggestion,
+		keyColumnName,
+		displayValueColumnName,
 		styleClass,
 		style;
 
@@ -57,16 +69,6 @@ public class DBSPagedSearch extends DBSUIComponentBase implements NamingContaine
         super.decode(pContext);
     }
 
-    @SuppressWarnings("rawtypes")
-	public IDBSPagedSearchController getPageSearch() {
-		return (IDBSPagedSearchController) getStateHelper().eval(PropertyKeys.pagedSearch, null);
-	}
-    @SuppressWarnings("rawtypes")
-	public void setPageSearch(IDBSPagedSearchController pPageSearch) {
-		getStateHelper().put(PropertyKeys.pagedSearch, pPageSearch);
-		handleAttribute("pagedSearch", pPageSearch);
-	}
-
     public String getVar() {
 		return (String) getStateHelper().eval(PropertyKeys.var, null);
 	}
@@ -75,6 +77,40 @@ public class DBSPagedSearch extends DBSUIComponentBase implements NamingContaine
 		handleAttribute("var", pVar);
 	}
 	
+    @SuppressWarnings("rawtypes")
+	public DBSPagedSearchController getPageSearch() {
+		return (DBSPagedSearchController) getStateHelper().eval(PropertyKeys.pagedSearch, null);
+	}
+    @SuppressWarnings("rawtypes")
+	public void setPageSearch(DBSPagedSearchController pPageSearch) {
+		getStateHelper().put(PropertyKeys.pagedSearch, pPageSearch);
+		handleAttribute("pagedSearch", pPageSearch);
+	}
+	
+    public Boolean getSuggestion() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.suggestion, null);
+	}
+	public void setSuggestion(Boolean pSuggestion) {
+		getStateHelper().put(PropertyKeys.suggestion, pSuggestion);
+		handleAttribute("suggestion", pSuggestion);
+	}
+	
+	public String getKeyColumnName() {
+		return (String) getStateHelper().eval(PropertyKeys.keyColumnName, null);
+	}
+	public void setKeyColumnName(String pKeyColumnName) {
+		getStateHelper().put(PropertyKeys.keyColumnName, pKeyColumnName);
+		handleAttribute("keyColumnName", pKeyColumnName);
+	}
+	
+	public String getDisplayValueColumnName() {
+		return (String) getStateHelper().eval(PropertyKeys.displayValueColumnName, null);
+	}
+	public void setDisplayValueColumnName(String pDisplayValueColumnName) {
+		getStateHelper().put(PropertyKeys.displayValueColumnName, pDisplayValueColumnName);
+		handleAttribute("displayValueColumnName", pDisplayValueColumnName);
+	}
+    
     public String getStyleClass() {
 		return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
 	}
