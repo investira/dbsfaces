@@ -614,6 +614,7 @@ public class  DBSFaces {
 			
 			public static final String R1 = " -R1";
 			public static final String R2 = " -R2";
+			public static final String INPUTVALOR = " -input_valor";
 			public static final String INPUTSEARCH = " -input_search";
 			public static final String INPUTSUGGESTION = " -input_suggestion";
 			public static final String BT_SEARCH_MORE = " -bt_search_more";
@@ -625,7 +626,6 @@ public class  DBSFaces {
 			public static final String PAGED_ITEM_KEY = "-item_key";
 			public static final String PAGED_ITEM_DISPLAY = "-item_display_value";
 			public static final String LOADING = "-loading -small -hideLoading";
-			public static final String SELECT_KEY = "-select_key";
 			public static final String SELECT_ROW = "-select_row";
 			public static final String BT_SELECT = "-bt_select_item";
 

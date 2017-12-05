@@ -32,14 +32,29 @@ public class DBSPagedSearchRenderer extends DBSRenderer {
 		if (!pComponent.isRendered()){return;}
 		
 		DBSPagedSearch xPagedSearch = (DBSPagedSearch) pComponent;
-		if (DBSObject.isNull(xPagedSearch.getPageSearch())){
-			return;
-		}
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xPagedSearch.getClientId(pContext);
 		String xClass = CSS.PAGEDSEARCH.MAIN;
 		if (xPagedSearch.getStyleClass()!=null){
 			xClass += xPagedSearch.getStyleClass();
+		}
+		
+		//Verifica se tem o mínimo pra cada tipo
+		if (DBSObject.isEqual(xPagedSearch.getType(), "select") 
+		 || DBSObject.isEqual(xPagedSearch.getType(), "suggestion")) {
+			if (DBSObject.isEmpty(xPagedSearch.getController())
+			 || DBSObject.isEmpty(xPagedSearch.getVar())
+			 || DBSObject.isEmpty(xPagedSearch.getDisplayValueColumnName())){
+				return;
+			}
+		} else if (DBSObject.isEqual(xPagedSearch.getType(), "search")) {
+			if (DBSObject.isEmpty(xPagedSearch.getController())
+			 || DBSObject.isEmpty(xPagedSearch.getVar())){
+				return;
+			}
+		} else if (DBSObject.isEqual(xPagedSearch.getType(), "normal")) {
+			pvEncodePesquisa(pContext, xPagedSearch, xWriter);
+			return;
 		}
 		
 		//DIV PRINCIPAL
@@ -48,13 +63,13 @@ public class DBSPagedSearchRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
 			DBSFaces.encodeAttribute(xWriter, "class", xClass);
 			DBSFaces.encodeAttribute(xWriter, "style", xPagedSearch.getStyle());
+			DBSFaces.encodeAttribute(xWriter, "type", xPagedSearch.getType());
 			//Container
 			xWriter.startElement("div", xPagedSearch);
 				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER + CSS.THEME.FLEX + CSS.MODIFIER.CENTER);
 
-				//INPUT COM A CHAVE DO ITEM SELECIONADO
-				if (!DBSObject.isEmpty(xPagedSearch.getKeyColumnName())) {
-					pvEncodeInputSelectedKey(xPagedSearch, xWriter);
+				//INPUT COM O INDEX DO ITEM SELECIONADO
+				if (DBSObject.isEqual(xPagedSearch.getType(), "select")) {
 					pvEncodeInputSelectedRow(pContext, xPagedSearch);
 					pvEncodeSelectButton(pContext, xPagedSearch, xWriter);
 				}
@@ -62,8 +77,12 @@ public class DBSPagedSearchRenderer extends DBSRenderer {
 				//DIV DE PESQUISA
 				pvEncodePesquisa(pContext, xPagedSearch, xWriter);
 				
-				//DIV DE RESULTADOS
-				pvEncodeResultados(pContext, xPagedSearch, xWriter);
+				if (DBSObject.isEqual(xPagedSearch.getType(), "search")
+				 || DBSObject.isEqual(xPagedSearch.getType(), "suggestion")
+				 || DBSObject.isEqual(xPagedSearch.getType(), "select")) {
+					//DIV DE RESULTADOS
+					pvEncodeResultados(pContext, xPagedSearch, xWriter);
+				}
 			xWriter.endElement("div");
 			pvEncodeJS(xPagedSearch, xWriter);
 		xWriter.endElement("div");
@@ -71,22 +90,11 @@ public class DBSPagedSearchRenderer extends DBSRenderer {
 	
 	//MÉTODOS PRIVADOS ===========================================================================
 	/**
-	 * Cria o Input escondido com o valor chave do item da lista 
+	 * Cria o Input escondido com o index do item escolhido na lista. 
 	 * @param pPagedSearch
 	 * @param pWriter
 	 * @throws IOException
 	 */
-	private void pvEncodeInputSelectedKey(DBSPagedSearch pPagedSearch, ResponseWriter pWriter) throws IOException {
-		String xClientIdSelectedKey = pPagedSearch.getClientId() + DBSPagedSearch.ID_SELECT_KEY;
-		
-		pWriter.startElement("input", pPagedSearch);
-			DBSFaces.encodeAttribute(pWriter, "id", xClientIdSelectedKey);
-			DBSFaces.encodeAttribute(pWriter, "name", xClientIdSelectedKey);
-			DBSFaces.encodeAttribute(pWriter, "type", "hidden");
-			DBSFaces.encodeAttribute(pWriter, "class", CSS.PAGEDSEARCH.SELECT_KEY);
-		pWriter.endElement("input");
-	}
-	
 	private void pvEncodeInputSelectedRow(FacesContext pContext, DBSPagedSearch pPagedSearch) throws IOException {
 		DBSInputText xInputSelectedRow = (DBSInputText) pPagedSearch.getFacet(DBSPagedSearch.ID_SELECT_ROW);
 		if (DBSObject.isNull(xInputSelectedRow)) {
@@ -96,11 +104,11 @@ public class DBSPagedSearchRenderer extends DBSRenderer {
 			xInputSelectedRow.setStyleClass(CSS.PAGEDSEARCH.SELECT_ROW);
 			pPagedSearch.getFacets().put(DBSPagedSearch.ID_SELECT_ROW, xInputSelectedRow);
 		}
-		xInputSelectedRow.setValue(pPagedSearch.getPageSearch().getSelectedRow());
-		xInputSelectedRow.setValueExpression("value", DBSFaces.createValueExpression(pContext, pPagedSearch.getValueExpression(DBSPagedSearch.PropertyKeys.pagedSearch.name()).getExpressionString() +".selectedRow", String.class));
+		xInputSelectedRow.setValue(pPagedSearch.getController().getSelectedRow());
+		xInputSelectedRow.setValueExpression("value", DBSFaces.createValueExpression(pContext, pPagedSearch.getValueExpression(DBSPagedSearch.PropertyKeys.controller.name()).getExpressionString() +".selectedRow", String.class));
 		xInputSelectedRow.encodeAll(pContext);
 	}
-
+	
 	/**
 	 * Cria o Botão que configura o objeto selecionado (setSelectedItem) no DBSPagedSearchController.
 	 * @param pContext 
@@ -122,12 +130,11 @@ public class DBSPagedSearchRenderer extends DBSRenderer {
 		if (DBSObject.isNull(xAjaxBehavior)) {
 			xAjaxBehavior = (AjaxBehavior) pContext.getApplication().createBehavior(AjaxBehavior.BEHAVIOR_ID);
 			Collection<String> xExecute = new ArrayList<String>();
-//			xExecute.add(pvGetCliendIdSelectedRow(pPagedSearch));
 			xExecute.add(DBSPagedSearch.ID_SELECT_ROW);
 			xAjaxBehavior.setExecute(xExecute);
 			xSelect.addClientBehavior("click", xAjaxBehavior);
 		}
-		MethodExpression xMethod = DBSFaces.createMethodExpression(pContext, pPagedSearch.getValueExpression(DBSPagedSearch.PropertyKeys.pagedSearch.name()).getExpressionString() +".selectItem()", null, null);
+		MethodExpression xMethod = DBSFaces.createMethodExpression(pContext, pPagedSearch.getValueExpression(DBSPagedSearch.PropertyKeys.controller.name()).getExpressionString() +".selectItem()", null, null);
 		xAjaxBehavior.addAjaxBehaviorListener(new DBSAjaxBehaviorListener(xMethod));
 		xSelect.encodeAll(pContext);
 	}
@@ -142,10 +149,15 @@ public class DBSPagedSearchRenderer extends DBSRenderer {
 	private void pvEncodePesquisa(FacesContext pContext, DBSPagedSearch pPagedSearch, ResponseWriter pWriter) throws IOException {
 		pWriter.startElement("div", pPagedSearch);
 			DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.FLEX_COL + CSS.PAGEDSEARCH.R1);
-			//INPUTTEXT
+			//INPUT SEARCHPARAM
 			pvEncodeInputSearch(pContext, pPagedSearch, pWriter);
-			//INPUTTEXT SUGGESTION
-			pvEncodeInputSuggestion(pContext, pPagedSearch, pWriter);
+			//INPUT VALOR
+			pvEncodeInputValor(pContext, pPagedSearch);
+			//INPUT SUGGESTION
+			if (DBSObject.isEqual(pPagedSearch.getType(), "suggestion")
+			 || DBSObject.isEqual(pPagedSearch.getType(), "select")) {
+				pvEncodeInputSuggestion(pContext, pPagedSearch);
+			}
 			//COMMANDBUTTON ESCONDIDO
 			pvEncodeSearchMore(pContext, pPagedSearch, pWriter);
 		pWriter.endElement("div");
@@ -164,13 +176,19 @@ public class DBSPagedSearchRenderer extends DBSRenderer {
 			xInputSearch = (DBSInputText) pContext.getApplication().createComponent(DBSInputText.COMPONENT_TYPE);
 			xInputSearch.setId(DBSPagedSearch.ID_INPUTSEARCH);
 			xInputSearch.setStyleClass(CSS.PAGEDSEARCH.INPUTSEARCH);
-			xInputSearch.setPlaceHolder("Pesquisar");
+			xInputSearch.setPlaceHolder(pPagedSearch.getPlaceHolder());
+			xInputSearch.setLabel(pPagedSearch.getLabel());
+			xInputSearch.setLabelWidth(pPagedSearch.getLabelWidth());
+			xInputSearch.setMaxLength(pPagedSearch.getMaxLength());
+			xInputSearch.setTooltip(pPagedSearch.getTooltip());
+			xInputSearch.setRightLabel(pPagedSearch.getRightLabel());
 			xInputSearch.setLetterCase("upper");
+			xInputSearch.setReadOnly(pPagedSearch.getReadOnly());
 			pPagedSearch.getFacets().put(DBSPagedSearch.FACET_INPUTSEARCH, xInputSearch);
 		}
 		//AJAX DO INPUT
 		AjaxBehavior xAjaxBehavior = (AjaxBehavior) xInputSearch.getClientBehaviors().get(AjaxBehavior.BEHAVIOR_ID);
-		if (DBSObject.isNull(xAjaxBehavior)) {
+		if (!DBSObject.isEqual(pPagedSearch.getType(), "normal") && DBSObject.isNull(xAjaxBehavior)) {
 			xAjaxBehavior = (AjaxBehavior) pContext.getApplication().createBehavior(AjaxBehavior.BEHAVIOR_ID);
 			xAjaxBehavior.setDelay("500");
 			Collection<String> xExecute = new ArrayList<String>();
@@ -179,17 +197,38 @@ public class DBSPagedSearchRenderer extends DBSRenderer {
 			Collection<String> xRender = new ArrayList<String>();
 			xRender.add("@none");
 			xAjaxBehavior.setRender(xRender);
-			MethodExpression xMethod = DBSFaces.createMethodExpression(pContext, pPagedSearch.getValueExpression(DBSPagedSearch.PropertyKeys.pagedSearch.name()).getExpressionString() +".newSearch()", null, null);
+			MethodExpression xMethod = DBSFaces.createMethodExpression(pContext, pPagedSearch.getValueExpression(DBSPagedSearch.PropertyKeys.controller.name()).getExpressionString() +".newSearch()", null, null);
 			xAjaxBehavior.addAjaxBehaviorListener(new DBSAjaxBehaviorListener(xMethod));
 			xAjaxBehavior.setOnevent("dbsfaces.pagedSearch.newSearch");
 			xInputSearch.addClientBehavior("keyup", xAjaxBehavior);
 		}
-		xInputSearch.setValue(pPagedSearch.getPageSearch().getSearchParam());
-		xInputSearch.setValueExpression("value", DBSFaces.createValueExpression(pContext, pPagedSearch.getValueExpression(DBSPagedSearch.PropertyKeys.pagedSearch.name()).getExpressionString() +".searchParam", String.class));
+		xInputSearch.setValue(pPagedSearch.getController().getSearchParam());
+		xInputSearch.setValueExpression("value", DBSFaces.createValueExpression(pContext, pPagedSearch.getValueExpression(DBSPagedSearch.PropertyKeys.controller.name()).getExpressionString() +".searchParam", String.class));
 		xInputSearch.encodeAll(pContext);
+		
+		//Icon que indica para indicar que é possível efetuar pesquisa a partir do texto digitado
+		if (!DBSObject.isEqual(pPagedSearch.getType(), "normal")) {
+			pWriter.startElement("div", pPagedSearch);
+				DBSFaces.encodeAttribute(pWriter, "class", "-small -i_find");
+			pWriter.endElement("div");
+		}
 	}
 	
-	private void pvEncodeInputSuggestion(FacesContext pContext, DBSPagedSearch pPagedSearch, ResponseWriter pWriter) throws IOException {
+	private void pvEncodeInputValor(FacesContext pContext, DBSPagedSearch pPagedSearch) throws IOException {
+		DBSInputText xInputValor = (DBSInputText) pPagedSearch.getFacet(DBSPagedSearch.FACET_INPUT_VALOR);
+		if (DBSObject.isNull(xInputValor)) {
+			xInputValor = (DBSInputText) pContext.getApplication().createComponent(DBSInputText.COMPONENT_TYPE);
+			xInputValor.setId(DBSPagedSearch.FACET_INPUT_VALOR);
+			xInputValor.setType("hidden");
+			xInputValor.setStyleClass(CSS.PAGEDSEARCH.INPUTVALOR);
+			pPagedSearch.getFacets().put(DBSPagedSearch.FACET_INPUT_VALOR, xInputValor);
+		}
+		xInputValor.setValue(pPagedSearch.getValor());
+		xInputValor.setValueExpression("value", DBSFaces.createValueExpression(pContext, pPagedSearch.getValueExpression(DBSPagedSearch.PropertyKeys.valor.name()).getExpressionString(), String.class));
+		xInputValor.encodeAll(pContext);
+	}
+	
+	private void pvEncodeInputSuggestion(FacesContext pContext, DBSPagedSearch pPagedSearch) throws IOException {
 		DBSInputText xInputSuggestion = (DBSInputText) pPagedSearch.getFacet(DBSPagedSearch.FACET_INPUTSUGGESTION);
 		if (DBSObject.isNull(xInputSuggestion)) {
 			xInputSuggestion = (DBSInputText) pContext.getApplication().createComponent(DBSInputText.COMPONENT_TYPE);
@@ -226,9 +265,9 @@ public class DBSPagedSearchRenderer extends DBSRenderer {
 			xAjaxBehavior.setOnevent("dbsfaces.pagedSearch.setSearching");
 			xSearchMore.addClientBehavior("click", xAjaxBehavior);
 		}
-		xSearchMore.setValue(pPagedSearch.getPageSearch().getSearchParam());
+		xSearchMore.setValue(pPagedSearch.getController().getSearchParam());
 		
-		MethodExpression xMethod = DBSFaces.createMethodExpression(pContext, pPagedSearch.getValueExpression(DBSPagedSearch.PropertyKeys.pagedSearch.name()).getExpressionString() +".searchMore()", null, null);
+		MethodExpression xMethod = DBSFaces.createMethodExpression(pContext, pPagedSearch.getValueExpression(DBSPagedSearch.PropertyKeys.controller.name()).getExpressionString() +".searchMore()", null, null);
 		xAjaxBehavior.addAjaxBehaviorListener(new DBSAjaxBehaviorListener(xMethod));
 		xSearchMore.encodeAll(pContext);
 	}
@@ -261,11 +300,6 @@ public class DBSPagedSearchRenderer extends DBSRenderer {
 			
 			//LISTA INVISÍVEL
 			pvEncodeDivInvisibleList(pContext, pPagedSearch);
-			
-			//LOADING
-			pWriter.startElement("div", pPagedSearch);
-				DBSFaces.encodeAttribute(pWriter, "class", CSS.PAGEDSEARCH.LOADING);
-			pWriter.endElement("div");
 		pWriter.endElement("div");
 	}
 	
@@ -291,7 +325,7 @@ public class DBSPagedSearchRenderer extends DBSRenderer {
 					//Cria dataTable
 					HtmlDataTable xDT = (HtmlDataTable) pContext.getApplication().createComponent(HtmlDataTable.COMPONENT_TYPE);
 						xDT.setId(DBSPagedSearch.ID_PAGEDLIST);
-						xDT.setValueExpression("value", DBSFaces.createValueExpression(pContext, pPagedSearch.getValueExpression(DBSPagedSearch.PropertyKeys.pagedSearch.name()).getExpressionString() + ".getList()", ArrayList.class)); 
+						xDT.setValueExpression("value", DBSFaces.createValueExpression(pContext, pPagedSearch.getValueExpression(DBSPagedSearch.PropertyKeys.controller.name()).getExpressionString() + ".getList()", ArrayList.class)); 
 						xDT.setVar(pPagedSearch.getVar());
 						
 						//COLUNA UNICA
@@ -301,14 +335,7 @@ public class DBSPagedSearchRenderer extends DBSRenderer {
 								xItem.setId(DBSPagedSearch.ID_ITEM);
 								xItem.setStyleClass(CSS.PAGEDSEARCH.PAGED_ITEM);
 								//Adiciona a chave do item se foi configurada
-								if (!DBSObject.isEmpty(pPagedSearch.getKeyColumnName())) {
-									//Item Key
-									DBSInputText xInputKey = (DBSInputText) pContext.getApplication().createComponent(DBSInputText.COMPONENT_TYPE);
-										xInputKey.setId(DBSPagedSearch.ID_ITEMKEY);
-										xInputKey.setStyleClass(CSS.PAGEDSEARCH.PAGED_ITEM_KEY);
-										xInputKey.setType("hidden");
-										xInputKey.setValueExpression("value", DBSFaces.createValueExpression(pContext, pPagedSearch.getVar()+"."+pPagedSearch.getKeyColumnName(), String.class));
-									xItem.getChildren().add(xInputKey);
+								if (!DBSObject.isEmpty(pPagedSearch.getDisplayValueColumnName())) {
 									//Item DisplayValue
 									DBSInputText xInputDisplayValue = (DBSInputText) pContext.getApplication().createComponent(DBSInputText.COMPONENT_TYPE);
 										xInputDisplayValue.setId(DBSPagedSearch.ID_ITEMDISPLAY);

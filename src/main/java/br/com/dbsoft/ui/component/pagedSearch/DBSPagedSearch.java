@@ -2,25 +2,24 @@ package br.com.dbsoft.ui.component.pagedSearch;
 
 import javax.faces.component.FacesComponent;
 import javax.faces.component.NamingContainer;
-import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 
 import br.com.dbsoft.pagedSearch.DBSPagedSearchController;
-import br.com.dbsoft.ui.component.DBSUIComponentBase;
+import br.com.dbsoft.ui.component.DBSUIInputText;
 import br.com.dbsoft.ui.core.DBSFaces;
 
 
 @FacesComponent(DBSPagedSearch.COMPONENT_TYPE)
-public class DBSPagedSearch extends DBSUIComponentBase implements NamingContainer, ClientBehaviorHolder{
+public class DBSPagedSearch extends DBSUIInputText implements NamingContainer{
 
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.PAGEDSEARCH;
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 	
+	public static final String FACET_INPUT_VALOR = "facetInputValor";
 	public static final String FACET_INPUTSEARCH = "facetInputSearch";
 	public static final String FACET_INPUTSUGGESTION = "facetInputSuggestion";
 	public static final String FACET_SEARCHMORE = "facetSearchMore";
 	public static final String FACET_DIVINVISIVEL = "facetDivInvisivel";
-
 	public static final String FACET_SELECTBUTTON = "facetSelectButton";
 	
 	public static final String ID_INPUTSEARCH = "inputSearch";
@@ -34,18 +33,16 @@ public class DBSPagedSearch extends DBSUIComponentBase implements NamingContaine
 	public static final String ID_ITEM = "pagedItem";
 	public static final String ID_ITEMKEY = "itemKey";
 	public static final String ID_ITEMDISPLAY = "itemDisplayValue";
-	public static final String ID_SELECT_KEY = "-selectKey";
 	public static final String ID_SELECT_ROW = "selectRow";
 	public static final String ID_BTSELECT = "selectItem";
 	
 	protected enum PropertyKeys {
+		type,
+		valor,
 		var,
-		pagedSearch,
-		suggestion,
-		keyColumnName,
+		controller,
 		displayValueColumnName,
-		styleClass,
-		style;
+		contentStyleClass;
 
 		String toString;
 
@@ -69,6 +66,22 @@ public class DBSPagedSearch extends DBSUIComponentBase implements NamingContaine
         super.decode(pContext);
     }
 
+    public String getType() {
+		return (String) getStateHelper().eval(PropertyKeys.type, "normal");
+	}
+	public void setType(String pType) {
+		getStateHelper().put(PropertyKeys.type, pType);
+		handleAttribute("type", pType);
+	}
+	
+	public Object getValor() {
+		return getStateHelper().eval(PropertyKeys.valor, null);
+	}
+	public void setValor(Object pValor) {
+		getStateHelper().put(PropertyKeys.valor, pValor);
+		handleAttribute("valor", pValor);
+	}
+	
     public String getVar() {
 		return (String) getStateHelper().eval(PropertyKeys.var, null);
 	}
@@ -77,30 +90,14 @@ public class DBSPagedSearch extends DBSUIComponentBase implements NamingContaine
 		handleAttribute("var", pVar);
 	}
 	
-    @SuppressWarnings("rawtypes")
-	public DBSPagedSearchController getPageSearch() {
-		return (DBSPagedSearchController) getStateHelper().eval(PropertyKeys.pagedSearch, null);
+	@SuppressWarnings("rawtypes")
+	public DBSPagedSearchController getController() {
+		return (DBSPagedSearchController) getStateHelper().eval(PropertyKeys.controller, null);
 	}
     @SuppressWarnings("rawtypes")
-	public void setPageSearch(DBSPagedSearchController pPageSearch) {
-		getStateHelper().put(PropertyKeys.pagedSearch, pPageSearch);
-		handleAttribute("pagedSearch", pPageSearch);
-	}
-	
-    public Boolean getSuggestion() {
-		return (Boolean) getStateHelper().eval(PropertyKeys.suggestion, null);
-	}
-	public void setSuggestion(Boolean pSuggestion) {
-		getStateHelper().put(PropertyKeys.suggestion, pSuggestion);
-		handleAttribute("suggestion", pSuggestion);
-	}
-	
-	public String getKeyColumnName() {
-		return (String) getStateHelper().eval(PropertyKeys.keyColumnName, null);
-	}
-	public void setKeyColumnName(String pKeyColumnName) {
-		getStateHelper().put(PropertyKeys.keyColumnName, pKeyColumnName);
-		handleAttribute("keyColumnName", pKeyColumnName);
+	public void setController(DBSPagedSearchController pController) {
+		getStateHelper().put(PropertyKeys.controller, pController);
+		handleAttribute("controller", pController);
 	}
 	
 	public String getDisplayValueColumnName() {
@@ -111,20 +108,12 @@ public class DBSPagedSearch extends DBSUIComponentBase implements NamingContaine
 		handleAttribute("displayValueColumnName", pDisplayValueColumnName);
 	}
     
-    public String getStyleClass() {
-		return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    public String getContentStyleClass() {
+		return (String) getStateHelper().eval(PropertyKeys.contentStyleClass, null);
 	}
-	public void setStyleClass(String pStyleClass) {
-		getStateHelper().put(PropertyKeys.styleClass, pStyleClass);
-		handleAttribute("styleClass", pStyleClass);
+	public void setContentStyleClass(String pContentStyleClass) {
+		getStateHelper().put(PropertyKeys.contentStyleClass, pContentStyleClass);
+		handleAttribute("contentStyleClass", pContentStyleClass);
 	}
 	
-	public String getStyle() {
-		return (String) getStateHelper().eval(PropertyKeys.style, null);
-	}
-	public void setStyle(String pStyle) {
-		getStateHelper().put(PropertyKeys.style, pStyle);
-		handleAttribute("style", pStyle);
-	}
-
 }

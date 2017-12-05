@@ -4540,11 +4540,102 @@
 		</attribute>
 		<attribute>
 			<description>
+                Tipo de pagedSearch.
+                - normal: funciona como um DBSInputText
+                - search: efetua uma busca
+                - suggestion: efetua uma busca e sugere o primeiro item da lista de resultados
+                - select: aceita seleção de um item da lista de resultados. Este item será submetido como objeto no value.
+            </description>
+			<name>type</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+            	Valor do Componente. Caso o type seja select, será o objeto selecionado na lista de resultados.
+            </description>
+			<name>valor</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
                 Indica se deseja exibir o status da conexão com o servlet
             </description>
-			<name>pagedSearch</name>
+			<name>controller</name>
 			<required>true</required>
 			<type>br.com.dbsoft.pagedSearch.DBSPagedSeachController</type>
+		</attribute>
+		<attribute>
+			<description>
+                Valor norminal a ser exibido. Será um atributo do objeto definido no var.
+            </description>
+			<name>displayValueColumnName</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Class CSS para a lista de resultados
+            </description>
+			<name>contentStyleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Título do campo
+            </description>
+			<name>label</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Largura do label
+            </description>
+			<name>labelWidth</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Texto informativo a ser exibido dentro do próprio campo
+            </description>
+			<name>placeHolder</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Texto a ser exibido a direita do campo
+            </description>
+			<name>rightLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                rendered
+            </description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+                Tooltip
+            </description>
+			<name>tooltip</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                ReadOnly
+            </description>
+			<name>readOnly</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
 		</attribute>
 		<attribute>
 			<description>
@@ -4561,14 +4652,6 @@
 			<name>style</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
-                rendered
-            </description>
-			<name>rendered</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
 		</attribute>
 	</tag>
 </facelet-taglib>
