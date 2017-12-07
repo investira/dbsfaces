@@ -109,11 +109,6 @@ dbs_dialogContent = function(pId) {
 			// Foi aberto
 		} else {
 			xDialogData.dom.container.removeClass("-closed").addClass("-opened");
-//			xDialogData.dom.self.removeClass("-closed").addClass("-opened");
-//			$(this).parent().removeClass("-closed").addClass("-opened");
-//			xDialogData.dom.content.css("left", xDialogData.dom.content.css("left"))
-//									.css("top", xDialogData.dom.content.css("top"))
-//									.css("transform", "none");
 			xDialog.trigger("opened");
 		}
 	});
@@ -780,23 +775,22 @@ dbsfaces.dialog = {
 	pvOpen : function(pDialogData) {
 		$(document.activeElement).blur();
 		setTimeout(function(){
-			
-		dbsfaces.dialog.pvAjustLayout(pDialogData);
-		pDialogData.dom.self.removeClass("-closed");
-		if (!pDialogData.dom.self.attr("disabled")) {
-			// if (pDialog.data("parent").not(".-closed").length > 0){
-			dbsfaces.ui.disableBackgroundInputs(pDialogData.dom.self);
-			dbsfaces.dialog.pvFreeze(pDialogData, true);
-			// Coloca o foco no primeiro campo de input dentro do dialog
-			if (pDialogData.type == "msg"
-			 && pDialogData.dom.btyes != null
-			 && pDialogData.dom.btyes.length > 0) {
-				pDialogData.dom.btyes[0].focus();
-			}else{
-				dbsfaces.ui.focusOnFirstInput(pDialogData.dom.self);
+			dbsfaces.dialog.pvAjustLayout(pDialogData);
+			pDialogData.dom.self.removeClass("-closed");
+			if (!pDialogData.dom.self.attr("disabled")) {
+				// if (pDialog.data("parent").not(".-closed").length > 0){
+				dbsfaces.ui.disableBackgroundInputs(pDialogData.dom.self);
+				dbsfaces.dialog.pvFreeze(pDialogData, true);
+				// Coloca o foco no primeiro campo de input dentro do dialog
+				if (pDialogData.type == "msg"
+				 && pDialogData.dom.btyes != null
+				 && pDialogData.dom.btyes.length > 0) {
+					pDialogData.dom.btyes[0].focus();
+				}else{
+					dbsfaces.ui.focusOnFirstInput(pDialogData.dom.self);
+				}
+				// }
 			}
-			// }
-		}
 		},1);
 	},
 
@@ -864,7 +858,7 @@ dbsfaces.dialog = {
 		}
 		if (pDialogData.contentAligment == "c"){
 			//Centraliza conteúdo
-			pDialogData.dom.sub_content.css("top", (pDialogData.dom.divscroll[0].clientHeight / 2) - (pDialogData.dom.sub_content[0].clientHeight / 2)); 
+//			pDialogData.dom.sub_content.css("top", (pDialogData.dom.divscroll[0].clientHeight / 2) - (pDialogData.dom.sub_content[0].clientHeight / 2)); 
 		}
 
 		if (pDialogData.type == "mod"){
