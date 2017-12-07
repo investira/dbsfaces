@@ -304,9 +304,14 @@
 		//-----------------------------------
 		pvEditValueNumber: function(pKey){
 			//Up or Down
-			if ((pKey == 38
-			  || pKey == 40)
-			  && this.split.begin.length > 0){
+			if (pKey == 38
+			 || pKey == 40){
+				if (this.split.begin.length == 0){
+					if (this.options.minValue <= 0){
+						this.split.begin = 0
+						this.split.beginWithoutMask = 0;
+					}
+				}
 				var xSign = Math.sign(this.split.begin) || 1;
 				if (this.split.beginWithoutMask != "-"){
 					this.split.begin = dbsfaces.number.parseFloat(this.split.beginWithoutMask);
@@ -557,6 +562,11 @@
 		pvGetValidValue: function(pValue){
 			this.regex.lastIndex=0;
 			var xString = pValue.replace(this.regex, '');
+			if (xString == "-"){
+				if (this.options.minValue <= 0){
+					xString = "0";
+				}
+			}
 			this.regex.lastIndex=0;
 			return xString;
 		},
