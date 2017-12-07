@@ -655,6 +655,20 @@ public class DBSPassThruAttributes {
             ,attr("onselect","select")
             ,attr("tabindex")
         ))
+        .add("Slider",ar(
+            attr("onblur","blur")
+            ,attr("onchange","change")
+            ,attr("ondblclick","dblclick")
+            ,attr("onfocus","focus")
+            ,attr("onkeydown","keydown")
+            ,attr("onkeypress","keypress")
+            ,attr("onkeyup","keyup")
+            ,attr("onmousedown","mousedown")
+            ,attr("onmousemove","mousemove")
+            ,attr("onmouseout","mouseout")
+            ,attr("onmouseover","mouseover")
+            ,attr("onmouseup","mouseup")
+        )) 
         .add("TabPage",ar(
             attr("onblur","blur")
             ,attr("onchange","change")
@@ -728,6 +742,7 @@ public class DBSPassThruAttributes {
         RADIO("Radio"),
         REPORT("Report"),
         REPORTFORM("ReportForm"),
+        SLIDER("Slider"),
         TAB("Tab"),
         TABPAGE("TabPage"),
         UL("Ul");

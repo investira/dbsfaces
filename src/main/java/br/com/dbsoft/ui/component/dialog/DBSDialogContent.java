@@ -97,11 +97,12 @@ public class DBSDialogContent extends DBSUIOutput{
 				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.SUB_CONTAINER);
 				xWriter.startElement("div", xDialog);
 					xWriter.startElement("div", xDialog);
+					DBSFaces.encodeAttribute(xWriter, "class", CSS.THEME.FLEX);
+						if (xType != TYPE.BTN){
+							DBSFaces.encodeAttribute(xWriter, "style", "padding:" + xDialog.getContentPadding());
+						}
 						xWriter.startElement("div", xDialog);
-							DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.SUB_CONTENT);
-							if (xType != TYPE.BTN){
-								DBSFaces.encodeAttribute(xWriter, "style", "padding:" + xDialog.getContentPadding());
-							}
+							DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.SUB_CONTENT + CSS.THEME.FLEX_COL);
 							pvEncodeChildren(xDialog, pContext, xWriter);
 						xWriter.endElement("div");
 					xWriter.endElement("div");
@@ -176,7 +177,7 @@ public class DBSDialogContent extends DBSUIOutput{
 			//Icon
 			pWriter.startElement("div", pDialog);
 				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.ICON);
-				DBSFaces.encodeAttribute(pWriter, "style", "padding-right:" + pDialog.getContentPadding());
+//				DBSFaces.encodeAttribute(pWriter, "style", "padding-right:" + pDialog.getContentPadding());
 				pWriter.startElement("div", pDialog);
 					if (pType == TYPE.MSG
 					 && xMsgType != null
@@ -208,7 +209,7 @@ public class DBSDialogContent extends DBSUIOutput{
 		if (pType == TYPE.NAV 
 		|| pType == TYPE.BTN 
 		|| (pType == TYPE.MSG && (xMsgType == null || !xMsgType.getIsQuestion()))){
-			String xClass = "-bthandle" + CSS.THEME.ACTION;
+			String xClass = "-bthandle";
 			//Exibe espaço do button timeout
 			pWriter.startElement("div", pDialog);
 				DBSFaces.encodeAttribute(pWriter, "class", xClass);
