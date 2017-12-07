@@ -10,8 +10,11 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
 
 import com.google.gson.Gson;
+import com.sun.faces.renderkit.RenderKitUtils;
 
+import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSRenderer;
+import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
 import br.com.dbsoft.ui.component.inputnumber.DBSInputNumber;
 import br.com.dbsoft.ui.component.slider.DBSSlider;
 import br.com.dbsoft.ui.component.slider.DBSSlider.ORIENTATION;
@@ -87,6 +90,7 @@ public class DBSSliderRenderer extends DBSRenderer {
 		TYPE 		xType = TYPE.get(xSlider.getType());
 		ORIENTATION xOrientation = ORIENTATION.get(xSlider.getOrientation());
 
+
 		xClass += xOrientation.getStyleClass();
 		
 		if (xSlider.getInvertValuesListPosition()){
@@ -102,7 +106,7 @@ public class DBSSliderRenderer extends DBSRenderer {
 			xClass += CSS.MODIFIER.INVALID;
 		}
 		if (xSlider.getPlaceHolder() != null){
-			xClass += " -pr ";
+			xClass += " -ph ";
 		}
 		if (xSlider.getShowValues()){
 			xClass += " -sv ";
@@ -115,6 +119,10 @@ public class DBSSliderRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(xWriter, "style", xSlider.getStyle());
 			DBSFaces.encodeAttribute(xWriter, "type", xType.getName());
 			DBSFaces.encodeAttribute(xWriter, "dp", xSlider.getDecimalPlaces());
+			if (xSlider.getReadOnly()){
+				DBSFaces.encodeAttribute(xWriter, "disabled", "disabled");
+			}
+			RenderKitUtils.renderPassThruAttributes(pContext, xWriter, xSlider, DBSPassThruAttributes.getAttributes(Key.SLIDER));
 			xWriter.startElement("div", xSlider);
 				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER + CSS.MODIFIER.NOT_SELECTABLE);
 				pvEncodeContent(pContext, xSlider, xWriter, xType, xOrientation);
@@ -245,11 +253,12 @@ public class DBSSliderRenderer extends DBSRenderer {
 //					System.out.println(xList.get(xList.size()-1));
 				}
 			}
-			xInput.setReadOnly(pSlider.getReadOnly());
+//			xInput.setReadOnly(pSlider.getReadOnly());
 			xInput.setValue(DBSObject.getNotNull(pValue,0));
 			xInput.encodeAll(pContext);
 		}else{
-			String xTag = (pSlider.getReadOnly() ? "span": "input");
+//			String xTag = (pSlider.getReadOnly() ? "span": "input");
+			String xTag = "input";
 			xId = pvGetInputClientId(pSlider, "");
 			if (pSuffix == null){
 				pSuffix = "";
