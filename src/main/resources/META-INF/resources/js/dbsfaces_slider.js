@@ -11,9 +11,6 @@ dbs_slider = function(pId, pValuesList, pLabelsList, pMinValue, pMaxValue, pLoca
 		dbsfaces.slider.updateDimensions(xSliderData);
 	},1);
 
-	if (xSliderData.dom.self.hasClass("-readOnly")){return;}
-	if (xSliderData.dom.self.hasClass("-disabled")){return;}
-	
 	xSliderData.dom.slider.on("mousedown touchstart", function(e){
 		if (dbsfaces.slider.isReadOnly(xSliderData, e)){return false;}
 		dbsfaces.slider.jump(xSliderData, e);
