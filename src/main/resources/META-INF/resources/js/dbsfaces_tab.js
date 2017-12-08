@@ -4,7 +4,12 @@ dbs_tab = function(pId) {
 	xTabData.dom.caption.on("mousedown touchstart", function(e){
 		dbsfaces.tab.selectTabPage($(this).attr("tabpageid"), xTabData);
 	});
-
+	
+	xTabData.dom.container.on("change", function(e){
+		//Inibir change recebido por componentes filhos
+		return false;
+	});
+	
 	xTabData.dom.caption.on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
 		$(this).children("a").css("opacity",1);
 		$(this).children(".loading_container").remove();
@@ -72,6 +77,7 @@ dbsfaces.tab = {
 //		xCaption.css("background-color", pTabData.color)
 //				.css("color", pTabData.colorInverted);
 		dbsfaces.tab.resize(pTabData);
+		pTabData.dom.self.trigger("change", pTabPageRawId);
 	},
 
 	selectTabPage: function(pTabPageRawId, pTabData){
