@@ -573,9 +573,9 @@ textarea.-th_input-data:FOCUS,
 	-moz-align-content: strech;
 	align-content: strech;
     
+/* 	box-sizing: content-box; */
     box-sizing: border-box;
     
-/* 	box-sizing: content-box; */
 /* 	flex-basis: 99.99%; */
 }
 /* .-th_responsive .-th_flex.-v_center > .-th_col{ */
@@ -595,8 +595,9 @@ textarea.-th_input-data:FOCUS,
 	-webkit-flex-shrink: 0;
 	-moz-flex-shrink: 0;
     flex-shrink: 0;
-	box-sizing: content-box;
 	max-width: 100%;
+/* 	box-sizing: content-box; */
+    box-sizing: border-box;
 /* 	-webkit-align-self: flex-start; */
 /* 	-moz-align-self: flex-start; */
 /* 	align-self: flex-start; */
