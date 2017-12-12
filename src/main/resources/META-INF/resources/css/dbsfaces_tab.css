@@ -171,13 +171,13 @@
 
 .dbs_tab > .-container > .-captions > .-container > .-caption:not(:first-child):before,
 .dbs_tab > .-container > .-captions > .-container > .-caption:last-child:before{
-	border-width: 0 0 0 1px;
+	border-width: 0 0 0 .04em;
 	border-color: rgba(255,255,255,.32);
 	left:0;
 }
 .dbs_tab > .-container > .-captions > .-container > .-caption:not(:last-child):after,
 .dbs_tab > .-container > .-captions > .-container > .-caption:first-child:after{
-	border-width: 0 1px 0 0;
+	border-width: 0 .04em 0 0;
 	border-color: rgba(0,0,0,.32);
 	right:0;
 }
