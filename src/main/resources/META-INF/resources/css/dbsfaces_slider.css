@@ -68,7 +68,8 @@
 
 
 .dbs_slider.-h > .-container > .-content > .-label{
-	width: 100%;
+/* 	width: 100%; */
+	width: 0;
     left: 0;
 	text-align: left;
     padding-bottom: 0.08em;
