@@ -99,8 +99,8 @@ dbsfaces.progress = {
 		var xPoint = pProgressData.dom.point[0];
 		if (typeof(xPoint.getTotalLength) == "undefined"){return;}
 		pProgressData.totalLength = xPoint.getTotalLength();
-		pProgressData.dom.point.css("stroke-dasharray", pProgressData.totalLength);
-		pProgressData.dom.point.css("stroke-dashoffset", pProgressData.totalLength);
+		pProgressData.dom.point.css("stroke-dasharray", pProgressData.totalLength)
+							   .css("stroke-dashoffset", pProgressData.totalLength);
 	},
 
 	pvEncodeValue: function(pProgressData){
