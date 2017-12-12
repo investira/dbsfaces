@@ -300,6 +300,9 @@ dbsfaces.charts = {
 				//Configura posição inicial dos controles do delta 
 				dbsfaces.charts.pvInitializeDrawDelta(pChartsData, pChartData);
 				if (pChartsData.type == "line"){
+//					var xTotalLenght = pChartData.dom.path[0].getTotalLength();
+//					pChartData.dom.path.css("stroke-dasharray", xTotalLenght)
+//									   .css("stroke-dashoffset", xTotalLenght);
 					//empty
 				}else if (pChartsData.type == "pie"){
 					//Desenha relacionamentos
@@ -551,7 +554,7 @@ dbsfaces.charts = {
 							       		.svgAttr("y", "-.2em")
 							       		.svgAttr("style", xStyleBox);
 		}
-		//AJusta Layout Value
+		//Ajusta Layout Value
 		if (pChartsData.showValue){
 			xValueWidth = pChartsData.infoWidth;
 			xValueHeight = pChartValueData.dom.infoValue.height();
@@ -586,7 +589,7 @@ dbsfaces.charts = {
 			xPath = "M" + pChartValueData.x + "," + pChartValueData.y;
 			xPath += "L" + pChartsData.infoWidth + "," + pChartValueData.y;
 		}
-		//Desenha linha guia entre o vale e value
+		//Desenha linha guia entre o label e value
 		pChartValueData.dom.infoPath.svgAttr("d", xPath);
 	},
 
