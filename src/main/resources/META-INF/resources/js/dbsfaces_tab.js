@@ -77,7 +77,7 @@ dbsfaces.tab = {
 //		xCaption.css("background-color", pTabData.color)
 //				.css("color", pTabData.colorInverted);
 		dbsfaces.tab.resize(pTabData);
-		pTabData.dom.self.trigger("change", pTabPageRawId);
+		pTabData.dom.self.trigger("change", pTabPageRawId.substring(pTabPageRawId.lastIndexOf(":") + 1));
 	},
 
 	selectTabPage: function(pTabPageRawId, pTabData){
