@@ -812,10 +812,10 @@ dbsfaces.slider = {
 			pSliderData.changeValueEnd = pSliderData.valueEnd;
 			pSliderData.changeLengthFator = pSliderData.lengthFator;
 			//Dispara que valor foi alterado
-//			clearTimeout(pSliderData.timeout);
-//			pSliderData.timeout = setTimeout(function(){
+			clearTimeout(pSliderData.timeout);
+			pSliderData.timeout = setTimeout(function(){
 				pSliderData.dom.self.trigger("change", [{value:pSliderData.value, valueBegin:pSliderData.valueBegin, valueEnd:pSliderData.valueEnd, fator:pSliderData.lengthFator}]);
-//			},0);
+			},100);
 		}
 	},
 
