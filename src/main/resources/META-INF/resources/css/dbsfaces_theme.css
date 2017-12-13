@@ -208,11 +208,10 @@ a {
 	left: 0;
 }
 
-
 .-th_lineHorizontalAfter.-white:after,
 .-th_lineHorizontalBefore.-white:before{
-	border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
-	border-bottom: 1px solid rgba(255, 255, 255, 0.6) !important;
+	border-top-color: rgba(0, 0, 0, 0.1) !important;
+	border-bottom-color: rgba(255, 255, 255, 0.6) !important;
 	left: 0;
 }
 
@@ -230,9 +229,28 @@ a {
 
 .-th_lineVerticalAfter.-white:after,
 .-th_lineVerticalBefore.-white:before{
-	border-left: 1px solid rgba(0, 0, 0, 0.1) !important;
-	border-right: 1px solid rgba(255, 255, 255, 0.6) !important;
+	border-left-color: rgba(0, 0, 0, 0.1) !important;
+	border-right-color: rgba(255, 255, 255, 0.6) !important;
     top: 0px;
+}
+
+@media
+only screen and (-webkit-min-device-pixel-ratio: 2) and ( max-width: 2000px),
+only screen and (   min--moz-device-pixel-ratio: 2) and ( max-width: 2000px),
+only screen and (     -o-min-device-pixel-ratio: 2/1) and ( max-width: 2000px),
+only screen and (        min-device-pixel-ratio: 2) and ( max-width: 2000px),
+only screen and (                min-resolution: 192dpi) and ( max-width: 2000px),
+only screen and (                min-resolution: 2dppx) and ( max-width: 2000px) { 
+	.-th_lineHorizontalAfter:after,
+	.-th_lineHorizontalBefore:before{
+		border-top-width: .6px !important;
+		border-bottom-width: .6px !important;
+	}
+	.-th_lineVerticalAfter:after,
+	.-th_lineVerticalBefore:before{
+	    border-left-width: .6px !important;
+	    border-right-width: .6px !important;
+	}
 }
 
 .-th_input {
