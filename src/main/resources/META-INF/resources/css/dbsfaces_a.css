@@ -51,30 +51,10 @@
 	height: 100%;
 	border: 1px solid;
 	border-radius: inherit;
-	-webkit-animation-name: -kf_sonar;
-	-moz-animation-name: -kf_sonar;
-	animation-name: -kf_sonar;
+	-webkit-animation: -kf_sonar 3s infinite cubic-bezier(.075,.82,.165,1) 0s both;
+	-moz-animation: -kf_sonar 3s infinite cubic-bezier(.075,.82,.165,1) 0s both;
+	animation: -kf_sonar 3s infinite cubic-bezier(.075,.82,.165,1) 0s both;
 
-	-webkit-animation-duration: 3s;
-	-moz-animation-duration: 3s;
-	animation-duration: 3s;
-
-	-webkit-animation-timing-function: cubic-bezier(.075,.82,.165,1);
-	-moz-animation-timing-function: cubic-bezier(.075,.82,.165,1);
-	animation-timing-function: cubic-bezier(.075,.82,.165,1);
-
-	-webkit-animation-delay: .0s;
-	-moz-animation-delay: .0s;
-	animation-delay: .0s;
-
-	-webkit-animation-iteration-count: infinite;
-	-moz-animation-iteration-count: infinite;
-	animation-iteration-count: infinite;
-
-	-webkit-animation-fill-mode: both;
-	-moz-animation-fill-mode: both;
-	animation-fill-mode: both;
-	
 	box-sizing: border-box;
 }
 
