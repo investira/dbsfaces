@@ -160,7 +160,8 @@ public class DBSSliderRenderer extends DBSRenderer {
 					pWriter.startElement("div", pSlider);
 						DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.VALUE);
 						pWriter.startElement("div", pSlider);
-							DBSFaces.encodeAttribute(pWriter, "class", "-background" + CSS.THEME.BC + CSS.THEME.FC + CSS.THEME.INVERT);
+//							DBSFaces.encodeAttribute(pWriter, "class", "-background" + CSS.THEME.BC + CSS.THEME.FC + CSS.THEME.INVERT);
+							DBSFaces.encodeAttribute(pWriter, "class", "-background" + CSS.THEME.FC + CSS.THEME.INVERT);
 							DBSFaces.encodeAttribute(pWriter, "pr", pSlider.getPlaceHolder());
 						pWriter.endElement("div");
 					pWriter.endElement("div");

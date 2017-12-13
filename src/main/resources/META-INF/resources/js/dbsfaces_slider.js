@@ -7,9 +7,9 @@ dbs_slider = function(pId, pValuesList, pLabelsList, pMinValue, pMaxValue, pLoca
 		dbsfaces.slider.resize($(pId).data("data"));
 	});
 
-	xSliderData.updateIntervalDimension = setInterval(function(){
-		dbsfaces.slider.updateDimensions(xSliderData);
-	},1);
+//	xSliderData.updateIntervalDimension = setInterval(function(){
+//		dbsfaces.slider.updateDimensions(xSliderData);
+//	},1);
 
 	xSliderData.dom.slider.on("mousedown touchstart", function(e){
 		if (dbsfaces.slider.isReadOnly(xSliderData, e)){return false;}
@@ -305,12 +305,20 @@ dbsfaces.slider = {
 	},
 	
 	pvInitializeLayoutHorizontalVertical: function(pSliderData){
-		var xColor = tinycolor(pSliderData.color);
-		var xColor2 = tinycolor(pSliderData.color);
+//		var xColor = tinycolor(pSliderData.color);
+//		var xColor2 = tinycolor(pSliderData.color);
+
+		if (tinycolor(pSliderData.color).isDark()){
+			var xColor = tinycolor("black");
+			var xColor2 = tinycolor("black");
+		}else{
+			var xColor = tinycolor("white");
+			var xColor2 = tinycolor("white");
+		}
 		//Slider - Color do background não selecionado
 		var xSliderColor;
-		xColor.setAlpha(.2);
-		xColor2.setAlpha(.1);
+		xColor.setAlpha(.1);
+		xColor2.setAlpha(.07);
 		if (pSliderData.lengthFatorZero == 0){
 			xSliderColor = "linear-gradient(" + pSliderData.gradientOrientation + "," 
 											  + xColor2 + " 0%, " 
@@ -333,10 +341,13 @@ dbsfaces.slider = {
 	pvInitializeLayoutSliderColor: function(pSliderData){
 		//Recupera cor default do BC
 		pSliderData.dom.sliderValueBackground.css("background", "");
-		pSliderData.dom.sliderValueBackground.addClass("-th_bc"); /*artifícil para recuperar a cor do bc*/
-		var xColor = tinycolor(pSliderData.dom.sliderValueBackground.css("background"));
-		var xColor2 = tinycolor(pSliderData.dom.sliderValueBackground.css("background"));
-		pSliderData.dom.sliderValueBackground.removeClass("-th_bc");
+		/*artifícil para recuperar a cor do bc*/
+//		pSliderData.dom.sliderValueBackground.addClass("-th_bc"); 
+//		var xColor = tinycolor(pSliderData.dom.sliderValueBackground.css("background"));
+//		var xColor2 = tinycolor(pSliderData.dom.sliderValueBackground.css("background"));
+//		pSliderData.dom.sliderValueBackground.removeClass("-th_bc");
+		var xColor = tinycolor(pSliderData.color);
+		var xColor2 = tinycolor(pSliderData.color);
 		
 		var xRed, xRed2;
 		var xPercEnd = (1 / pSliderData.lengthFator) * 100;
@@ -365,7 +376,7 @@ dbsfaces.slider = {
 								             + xColor2 + " " + xPercZero + "%, "
 								             + xColor + " 100%)";
 		}
-		pSliderData.dom.sliderValueBackground.css("background-image", xBackground);
+		pSliderData.dom.sliderValueBackground.css("background", xBackground);
 	},
 	
 

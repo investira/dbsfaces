@@ -580,6 +580,24 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.32) !important;
 }
 
+
+@media
+only screen and (-webkit-min-device-pixel-ratio: 2) and ( max-width: 2000px),
+only screen and (   min--moz-device-pixel-ratio: 2) and ( max-width: 2000px),
+only screen and (     -o-min-device-pixel-ratio: 2/1) and ( max-width: 2000px),
+only screen and (        min-device-pixel-ratio: 2) and ( max-width: 2000px),
+only screen and (                min-resolution: 192dpi) and ( max-width: 2000px),
+only screen and (                min-resolution: 2dppx) and ( max-width: 2000px) { 
+	.dbs_slider.-h > .-container > .-content > .-sub_container > .-points > .-point{
+	    border-left-width: .6px !important;
+	    border-right-width: .6px !important;
+	}
+	.dbs_slider.-v > .-container > .-content > .-sub_container > .-points > .-point{
+	    border-top-width: .6px !important;
+	    border-bottom-width: .6px !important;
+	}
+}
+
 .dbs_slider[type="s"] > .-container > .-content > .-sub_container > .-points > .-point{
 }
 
@@ -596,7 +614,7 @@
 
 .dbs_slider[type="s"].-v > .-container > .-content > .-sub_container > .-points > .-point{
 	width: 1.65em;
-    height: 1px;
+    height: 0px;
     left: -1.65em;
     right: unset;
 }
@@ -620,7 +638,7 @@
 .dbs_slider[type="v"].-h > .-container > .-content > .-sub_container > .-points > .-point,
 .dbs_slider[type="r"].-h > .-container > .-content > .-sub_container > .-points > .-point{
     height: .3em;
-	width: 1px;
+	width: 0px;
     top: 1.4em;
 }
 
@@ -632,7 +650,7 @@
 
 .dbs_slider[type="v"].-v > .-container > .-content > .-sub_container > .-points > .-point,
 .dbs_slider[type="r"].-v > .-container > .-content > .-sub_container > .-points > .-point{
-    height: 1px;
+    height: 0px;
     width: .3em;
 	left: -1em;
 	right: unset;
