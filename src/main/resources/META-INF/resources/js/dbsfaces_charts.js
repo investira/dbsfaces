@@ -494,10 +494,15 @@ dbsfaces.charts = {
 	pvInitializeDrawChartLine: function(pChartsData, pChartData, pChartValueData){
 		var xX = pChartsData.infoWidth;
 		var xY = pChartsData.infoHeight;
+//		var xMaxX = pChartsData.infoWidth;
+//		var xMaxY = pChartsData.infoHeight;
 		var xPath;
 		xX += pChartValueData.index * pChartsData.scaleX;
 		xY += (pChartValueData.value - pChartsData.dom.maxChartValueData.value) * pChartsData.scaleY; //obs:invertida já que a coordenada do svg desce quando o valor é maior
 		
+//		xMaxX += (pChartData.dom.childrenData.length - 1) * pChartsData.scaleX;
+//		xMaxY += -pChartsData.dom.maxChartValueData.value * pChartsData.scaleY; //obs:invertida já que a coordenada do svg desce quando o valor é maior
+
 		xY = dbsfaces.math.round(xY, 0);
 		xX = dbsfaces.math.round(xX, 0);
 		
@@ -512,6 +517,9 @@ dbsfaces.charts = {
 		//Cria linha que conecta pontos
 		if (pChartValueData.index == 0){
 			xPath = "M";
+//			xMaxX = 310;
+//			xMaxY = 310;
+//			xPath = "M" + xMaxX + "," + xMaxY + " H 50 L";
 		}else{
 			xPath = pChartData.dom.path.svgAttr("d") + "L";
 		}
@@ -930,26 +938,25 @@ dbsfaces.charts = {
 	resize: function(pCharts){
 		if (pCharts == null || typeof pCharts == "undefined" || pCharts.length == 0){return;}
 		var xChartsData = pCharts.data("data");
-		clearTimeout(xChartsData.resizeTimeout);
-		xChartsData.resizeTimeout = setTimeout(function(){
-			dbsfaces.charts.refresh(pCharts);
-		},200);
+		xChartsData.dom.container.addClass("-hide");
+
+		dbsfaces.charts.refresh(pCharts);
 	},
 
 	refresh: function(pCharts){
 		if (pCharts == null || typeof pCharts == "undefined" || pCharts.length == 0){return;}
 
 		var xChartsData = pCharts.data("data");
+		xChartsData.dom.container.addClass("-hide");
 		clearTimeout(xChartsData.refreshTimeout);
 		xChartsData.refreshTimeout = setTimeout(function(){
-			xChartsData.dom.container.addClass("-hide");
 			xChartsData.dom.childrenData.forEach(function(pChartData) {
 				dbsfaces.chart.refresh(pChartData.dom.self);
 			});
 			dbsfaces.charts.pvInitializeAnalizeValues(xChartsData);
 			dbsfaces.charts.pvInitializeDraw(xChartsData);
 			xChartsData.dom.container.removeClass("-hide");
-		},1);
+		},200);
 	},
 
 	selectChart: function(pChartsData, pChartId){
