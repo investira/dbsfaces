@@ -4,6 +4,12 @@ dbs_pagedSearch = function(pId) {
 	//Efetua a primeira pesquisa
 	dbsfaces.pagedSearch.pvSynchronizeLists(xComponentData);
 	
+//	xComponentData.dom.inputData.on("keyup", function(e){
+//		if (dbsfaces.pagedSearch.pvIsValidKey(e)) {//RIGHT
+//			xComponentData.dom.btNewSearch.click();
+//		}
+//	});
+	
 	xComponentData.dom.inputData.on("keydown", function(e){
 //		console.log('Keydown');
 		var xComponent = $(dbsfaces.util.jsid(e.currentTarget.id)).parents('.dbs_pagedSearch');
@@ -13,11 +19,15 @@ dbs_pagedSearch = function(pId) {
 		}
 		
 		if (e.which == 39) {//RIGHT
-			//console.log('Suggestion aceito');
+//			console.log('Suggestion aceito');
 			var xItem = xComponent.children('.-container').children('.-R2').children('.-visible_container').children('.dbs_pagedSearch_container').children();
 			dbsfaces.pagedSearch.pvSelectSuggestion(xComponent, xItem[0]);
-		} else {
-			dbsfaces.pagedSearch.pvSetSuggestion(xComponentData, "");
+		} else if (e.which == 40 && xComponent.attr('hasChildren') == 'true') {//DOWN
+			if (xComponent.attr('type') != 'normal'){
+				dbsfaces.pagedSearch.pvShowSuggestion(xComponentData);
+			}
+		}else {
+			dbsfaces.pagedSearch.pvSetSuggestion(xComponentData.dom.self, "");
 		}
 		return dbsfaces.pagedSearch.pvIsValidKey(e);
 	});
@@ -42,6 +52,13 @@ dbs_pagedSearch = function(pId) {
 //		console.log('ITEM SELECIONADO: '+ xItem[0]);
 	});
 	
+	xComponentData.dom.inputData.on("focusout", function(e){
+//		console.log('focus out');
+		var xComponent = $(dbsfaces.util.jsid(e.currentTarget.id)).parents('.dbs_pagedSearch');
+		if (xComponent.attr('openWhenSearch') != 'true' && xComponent.attr('type') != 'normal'){
+			dbsfaces.pagedSearch.pvHideSuggestion(xComponentData);
+		}
+	});
 }
 
 dbsfaces.pagedSearch = {
@@ -59,7 +76,9 @@ dbsfaces.pagedSearch = {
 				searchBar: null,
 				input: null,
 				inputData: null,
-				inputValue: null,
+				inputValor: null,
+				inputValorData: null,
+				btNewSearch: null,
 				btSearchMore: null,
 				divResults: null,
 				visibleContainer: null,
@@ -78,6 +97,7 @@ dbsfaces.pagedSearch = {
 		xData.dom.inputValor = xData.dom.searchBar.children(".-input_valor");
 		xData.dom.inputValorData = xData.dom.inputValor.children(".-container").children('.-th_input-data');
 		xData.dom.inputIcon = xData.dom.searchBar.children(".-small");
+		xData.dom.btNewSearch = xData.dom.searchBar.children(".-bt_new_search");
 		xData.dom.btSearchMore = xData.dom.searchBar.children(".-bt_search_more");
 		xData.dom.divResults = xData.dom.container.children(".-R2");
 		xData.dom.visibleContainer = xData.dom.divResults.children(".-visible_container");
@@ -91,20 +111,19 @@ dbsfaces.pagedSearch = {
 	/* Limpa as listas de ativos. Tanto a Visível quanto a invisível. */
 	newSearch: function(e){
 		var xPSData = dbsfaces.pagedSearch.pvGetComponetData(e);
+		
 		if (e.status == "begin"){
 			//Reseta o index e as listas
 			xPSData.indexPesquisa = 0;
 			xPSData.dom.visibleList.empty();
 			xPSData.dom.invisibleList.empty();
 			if (xPSData.dom.self.attr('type') == 'suggestion'
-			 && xPSData.dom.self.attr('type') == 'select') {
-				dbsfaces.pagedSearch.pvSetSuggestion(xPSData, "");
+			 || xPSData.dom.self.attr('type') == 'select') {
+				dbsfaces.pagedSearch.pvSetSuggestion(xPSData.dom.self, "");
 			}
 		}
 		//Configura a pesquisa
 		dbsfaces.pagedSearch.pvSetSearching(xPSData, e);
-		//Copia o valor
-		dbsfaces.pagedSearch.pvCopyValor(xPSData);
 	},
 
 	setSearching: function (e) {
@@ -117,11 +136,6 @@ dbsfaces.pagedSearch = {
 			return;
 		}
 		return xEle.closest('.dbs_pagedSearch').data('data');
-	},
-	
-	pvCopyValor: function (pComponentData) {
-		pComponentData.dom.inputValorData[0].value = pComponentData.dom.inputData[0].value;
-		dbsfaces.ajax.request(pComponentData.dom.inputValor[0].id, pComponentData.dom.inputValor[0].id, null, null, null, null, 0);
 	},
 	
 	pvSetSearching: function (pComponentData, pEvent) {
@@ -177,9 +191,11 @@ dbsfaces.pagedSearch = {
 			//Limpa a lista invisível
 			pComponentData.dom.invisibleList.empty();
 			//Copia o valor mostrado para o suggestion
-			if (pComponentData.dom.inputData.val() != "") {
-				dbsfaces.pagedSearch.pvCopyValueToSuggestion(pComponentData);
-			}
+//			if (pComponentData.dom.inputData.val() != "") {
+//				dbsfaces.pagedSearch.pvCopyValueToSuggestion(pComponentData);
+//			}
+			//Recofigura o componente
+			dbs_pagedSearch(dbsfaces.util.jsid(pComponentData.dom.self[0].id)); 
 		}
 	},
 	
@@ -199,6 +215,10 @@ dbsfaces.pagedSearch = {
 			}
 			pComponentData.indexPesquisa++;
 		}
+		//Copia o valor mostrado para o suggestion
+		if (pComponentData.dom.inputData.val() != "") {
+			dbsfaces.pagedSearch.pvCopyValueToSuggestion(pComponentData);
+		}
 	},
 	
 	/**
@@ -209,20 +229,25 @@ dbsfaces.pagedSearch = {
 		var xItemDisplayValue = $(pComponentData.dom.visibleList.children()[0]).children(".-item_display_value").children(".-container").children(".-th_input-data");
 		var xSearchParam = pComponentData.dom.input.children(".-container").children(".-th_input-data")[0].value;
 		if (xItemDisplayValue[0] != null 
-		 && xItemDisplayValue[0].value.match("^"+xSearchParam.toUpperCase()) != null) {
-			dbsfaces.pagedSearch.pvSetSuggestion(pComponentData, xItemDisplayValue[0].value);
+		 && (xItemDisplayValue[0].value.toUpperCase()).match("^"+xSearchParam.toUpperCase()) != null) {
+			dbsfaces.pagedSearch.pvSetSuggestion(pComponentData.dom.self, xItemDisplayValue[0].value);
 		} else {
-			dbsfaces.pagedSearch.pvSetSuggestion(pComponentData, "");
+			dbsfaces.pagedSearch.pvSetSuggestion(pComponentData.dom.self, "");
 		}
 	},
 	
 	/**
 	 * Configura o valor do campo Suggestion
 	 */
-	pvSetSuggestion: function(pComponentData, pValue) {
-		if (pComponentData.dom.self.attr('type') == 'suggestion'
-		 || pComponentData.dom.self.attr('type') == 'select') {
-			var xInputSuggestion = pComponentData.dom.container.children(".-R1").children(".-input_suggestion").children('.-container').children('.-th_input-data');
+	pvSetSuggestion: function(pComponent, pValue) {
+//		if (pComponentData.dom.self.attr('type') == 'suggestion'
+//		 || pComponentData.dom.self.attr('type') == 'select') {
+//			var xInputSuggestion = pComponentData.dom.container.children(".-R1").children(".-input_suggestion").children('.-container').children('.-th_input-data');
+//			xInputSuggestion[0].value = pValue;
+//		}
+		if (pComponent.attr('type') == 'suggestion'
+		 || pComponent.attr('type') == 'select') {
+			var xInputSuggestion = pComponent.children('.-container').children(".-R1").children(".-input_suggestion").children('.-container').children('.-th_input-data');
 			xInputSuggestion[0].value = pValue;
 		}
 	},
@@ -233,25 +258,35 @@ dbsfaces.pagedSearch = {
 	pvSelectSuggestion: function(pComponent, pItem) {
 		var xComponentContainer = pComponent;
 		var xItemKey;
+		var xItemKeyValue;
 		var xItemDisplayValue;
 		var xRowID;
+		var xInputSearch;
+		var xInputValor;
 		var xSelectedRow;
 		var xSelectButton;
 		
 		xComponentContainer = pComponent.children('.-container');
+		xInputValor = $(xComponentContainer).children('.-R1').children('.-input_valor');
+		xItemKey = $(pItem).children(".-item_key");
+		xItemKeyValue = xItemKey.children(".-container").children(".-th_input-data")[0].value;
+		xInputValor.children('.-container').children('.-th_input-data')[0].value = xItemKeyValue;
+		
+		xInputSearch = xComponentContainer.children(".-R1").children(".-input_search").children('.-container').children('.-th_input-data');
+		xItemDisplayValue = $(pItem).children(".-item_display_value").children(".-container").children(".-th_input-data")[0].value;
+		xInputSearch[0].value = xItemDisplayValue;
+		//Executa o valor
+		dbsfaces.ajax.request(xInputSearch.attr('id'), xInputValor.attr('id'), null, null, null, null, 0);
 		
 		if (pComponent.attr('type') == 'select') {
 			xRowID = pItem.id.substring(0, pItem.id.length-10);
 			xRowID = xRowID.substring(xRowID.length-1);
-			xSelectedRow = xComponentContainer.children('.-select_row').children('.-container').children('.-th_input-data');
+			xSelectedRow = xComponentContainer.children(".-R1").children('.-select_row').children('.-container').children('.-th_input-data');
 			xSelectedRow[0].value = xRowID;
+			xSelectButton = xComponentContainer.children(".-R1").children('.-bt_select_item');
+			xSelectButton.click();
 		}
-		
-		xSelectButton = xComponentContainer.children('.-bt_select_item');
-		xSelectButton.click();
-		xItemDisplayValue = $(pItem).children(".-item_display_value").children(".-container").children(".-th_input-data")[0].value;
-		xInputSearch = xComponentContainer.children(".-R1").children(".-input_search").children('.-container').children('.-th_input-data');
-		xInputSearch[0].value = xItemDisplayValue;
+		dbsfaces.pagedSearch.pvSetSuggestion(pComponent, "");
 	},
 	
 	//Não fará pesquisa se for uma das teclas abaixo
@@ -281,6 +316,15 @@ dbsfaces.pagedSearch = {
 			return true;
 		} 	
 	},
+	
+	pvShowSuggestion: function(pComponentData) {
+		pComponentData.dom.divResults.removeClass('-hide');
+		pComponentData.dom.divResults.addClass('-show');
+	},
+	pvHideSuggestion: function(pComponentData) {
+		pComponentData.dom.divResults.removeClass('-show');
+		pComponentData.dom.divResults.addClass('-hide');
+	},
 
 	pvShowLoading: function(pComponentData) {
 		pComponentData.dom.inputIcon.removeClass('-i_find');
@@ -290,6 +334,14 @@ dbsfaces.pagedSearch = {
 	pvHideLoading: function(pComponentData) {
 		pComponentData.dom.inputIcon.removeClass('-loading');
 		pComponentData.dom.inputIcon.addClass('-i_find');
+	},
+	
+	pvSelectClick: function(e){
+		
 	}
 
+//	pvCopyValor: function (pComponentData) {
+//		pComponentData.dom.inputValorData[0].value = pComponentData.dom.inputData[0].value;
+//		dbsfaces.ajax.request(pComponentData.dom.inputValor[0].id, pComponentData.dom.inputValor[0].id, null, null, null, null, 0);
+//	},
 }

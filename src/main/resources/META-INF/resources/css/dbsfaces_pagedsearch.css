@@ -1,11 +1,12 @@
 .dbs_pagedSearch > .-container{
-	height: 100vh;
     min-width: 100px;
     flex-direction: column !important;
+    height: inherit;
 }
 .dbs_pagedSearch > .-container > .-select_row{
 	position: absolute;
 	visibility: hidden;
+	display: none;
 }
 .dbs_pagedSearch > .-container > .-R1 {
 	width: 100%;
@@ -17,7 +18,7 @@
     top: 25%;
     cursor: pointer;
     z-index: 1;
-    right: 4px;
+    right: 0.2em;
     opacity: 0.3;
 }
 .dbs_pagedSearch > .-container > .-R1 > .-loading {
@@ -43,6 +44,7 @@
 }
 
 .dbs_pagedSearch > .-container > .-R1 > .-input_suggestion {
+    position: relative;
 	opacity: 0.5;
 }
 .dbs_pagedSearch > .-container > .-R1 > .-input_search,
@@ -57,7 +59,29 @@
 	width: 100%;
 	overflow:auto;
 }
+
+.dbs_pagedSearch > .-container > .-R2.-suggestion{
+    position: absolute;
+    /* max-height: 150px; */
+    top: 2em;
+    z-index: 2;
+    width: 100%;
+    background: white;
+    text-align: inherit;
+}
+.dbs_pagedSearch > .-container > .-R2.-hide{
+	visibility: hidden;
+}
+.dbs_pagedSearch > .-container > .-R2.-show{
+    
+}
+
+.dbs_pagedSearch > .-container > .-R2.-suggestion > .-th_input-data-FOCUS{
+	box-shadow: none !important;
+}
+
 .dbs_pagedSearch > .-container > .-R2 > .-visible_container {
+    position: relative;
 }		
 
 .dbs_pagedSearch_container {
