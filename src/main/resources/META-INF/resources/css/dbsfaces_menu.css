@@ -25,8 +25,21 @@
 }
 
 .dbs_menuitemSeparator.-white{
-	border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
-	border-bottom: 1px solid rgba(255, 255, 255, 0.6) !important;
+	border-top-color: rgba(0, 0, 0, 0.1) !important;
+	border-bottom-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+@media
+only screen and (-webkit-min-device-pixel-ratio: 2) and ( max-width: 2000px),
+only screen and (   min--moz-device-pixel-ratio: 2) and ( max-width: 2000px),
+only screen and (     -o-min-device-pixel-ratio: 2/1) and ( max-width: 2000px),
+only screen and (        min-device-pixel-ratio: 2) and ( max-width: 2000px),
+only screen and (                min-resolution: 192dpi) and ( max-width: 2000px),
+only screen and (                min-resolution: 2dppx) and ( max-width: 2000px) { 
+	.dbs_menuitemSeparator{
+		border-top-width: .6px !important;
+		border-bottom-width: .6px !important;
+	}
 }
 
 
@@ -239,7 +252,7 @@
 
 .dbs_menu[class~="-menu_scroll"] .dbs_menuitemSeparator{
 /*     margin: .2em 0; */
-    margin: 1px 0;
+/*     margin: 1px 0; */
 }
 
 
