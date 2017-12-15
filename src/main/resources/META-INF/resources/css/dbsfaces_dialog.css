@@ -294,10 +294,15 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 /*     position: absolute; */
 /* 	top: 0; */
 /* 	z-index:1; */
-    -webkit-flex: 0 0 1px;
-    -moz-flex: 0 0 1px;
-    -o-flex: 0 0 1px;
-    flex: 0 0 1px;  
+/*     -webkit-flex: 0 0 1px; */
+/*     -moz-flex: 0 0 1px; */
+/*     -o-flex: 0 0 1px; */
+/*     flex: 0 0 1px;   */
+    -webkit-flex: 1 1 auto;
+    -moz-flex: 1 1 auto;
+    -o-flex: 1 1 auto;
+    flex: 1 1 auto;  
+    width: 100%;
 }
 
 .dbs_dialog > .-container > .-content > .-header > .-content > .-left > .-th_action,
