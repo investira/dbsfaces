@@ -493,7 +493,7 @@
 			}
 		},
 
-		pvIsDecimalPosition(){
+		pvIsDecimalPosition: function(){
 			if (this.options.decimalPlaces == 0){return false;}
 			var xCurrentPosition = this.pvGetCurrentPosition();
 			var xIsDecimalPosition = xCurrentPosition > 0 
