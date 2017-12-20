@@ -168,7 +168,8 @@
 	top: calc(.9em + .5px);
 }
 
-.dbs_slider.-h.-i > .-container > .-content > .-sub_container > .-th_input{
+.dbs_slider.-h.-i > .-container > .-content > .-sub_container > .-th_input,
+.dbs_slider.-h:not(.-sv) > .-container > .-content > .-sub_container > .-th_input{
 /* 	top: 0.1em; */
     top: calc(.2em);
 }
@@ -204,9 +205,6 @@
 }
 
 
-.dbs_slider.-ph.-editing > .-container > .-content > .-sub_container > .-points{
-	visibility: hidden;
-}
 .dbs_slider.-editing > .-container > .-content > .-sub_container > .-handle{
 	visibility: hidden;
 }
@@ -215,7 +213,7 @@
     min-height: 1.2em;
     height: 1.2em;
     padding-top: 0;
-    padding-bottom: 0;
+    padding-bottom: .01em;
     padding-left: .1em;
     border: none;
 /*     background-color: rgba(255,255,255,1); */
@@ -437,7 +435,7 @@
 	border-style: solid;
 }
 
-.dbs_slider.-showValuesList > .-container > .-content > .-sub_container > .-handle > .-label,
+.dbs_slider.-sv > .-container > .-content > .-sub_container > .-handle > .-label,
 .dbs_slider.-selected > .-container > .-content > .-sub_container > .-handle > .-label{
 	visibility: inherit;
 	cursor: default;
@@ -533,6 +531,9 @@
     width: 5em;
 }
 
+.dbs_slider.-v.-editing > .-container > .-content > .-sub_container > .-points{
+	visibility: hidden;
+}
 
 .dbs_slider.-h > .-container > .-content > .-sub_container > .-points:after{
 	content: "";

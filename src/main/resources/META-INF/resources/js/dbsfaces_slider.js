@@ -301,7 +301,7 @@ dbsfaces.slider = {
 			dbsfaces.slider.pvInitializeLayoutSliderColor(pSliderData);
 			dbsfaces.slider.resize(pSliderData);
 			pSliderData.dom.self.removeClass("-hide");
-		}, 0);
+		}, 550);
 	},
 	
 	pvInitializeLayoutHorizontalVertical: function(pSliderData){
@@ -458,9 +458,9 @@ dbsfaces.slider = {
 	
 
 	pvInitializeLayoutPoints: function(pSliderData){
-		if (pSliderData.dom.points.length > 0){
-			pSliderData.dom.self.addClass("-showValuesList");
-		}
+//		if (pSliderData.dom.points.length > 0){
+//			pSliderData.dom.self.addClass("-showValuesList");
+//		}
 		var xValuePerc;
 		var xFator = pSliderData.segmentFator * 100; //Percentual que cada ponto representa
 		//Point
