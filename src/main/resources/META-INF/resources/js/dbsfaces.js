@@ -570,11 +570,11 @@ dbsfaces.ui = {
 		if (pObj instanceof jQuery){
 			xE = pObj[0];
 		}
-		xE.select();
+//		xE.select();
 //		//timeout para evitar que o click desmarque o item selecionado
-//		setTimeout( function(){
-//			dbsfaces.ui.selectRange(xE, 0, xE.value.length);
-//		}, 1 );
+		setTimeout( function(){
+			dbsfaces.ui.selectRange(xE, 0, xE.value.length);
+		}, 1 );
 	},
 	//Retira a seleção de qualquer texto
 	selectNone: function(pObj){
