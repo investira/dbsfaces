@@ -44,7 +44,7 @@ dbsinvest = {
 		var xList = [];
 		//Total economizado
 		for (var x=0; x <= pN; x++){
-			xFV = dbsinvest.fv(pI, x, -pPMT, -pPV, pType);
+			xFV = dbsinvest.fv(pI, x, pPMT, pPV, pType);
 			xList.push({value:xFV, label:x});
 		}
 		return xList;
