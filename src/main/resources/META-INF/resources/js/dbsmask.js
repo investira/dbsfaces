@@ -120,7 +120,8 @@
 				setTimeout(function(e){
 					//Posiciona no inicio do número
 					if (xdbsmask.options.onFocusSelectAll){
-						xdbsmask.input.select();
+						dbsfaces.ui.selectAll(xdbsmask.input);
+//						xdbsmask.input.select();
 					}else if (xdbsmask.isMobile){
 						xdbsmask.pvSetCursorPosition(0);
 					}
