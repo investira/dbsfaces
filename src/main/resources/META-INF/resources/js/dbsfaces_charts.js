@@ -544,7 +544,7 @@ dbsfaces.charts = {
 			xLabelWidth = pChartValueData.dom.infoLabel[0].getBoundingClientRect().width;
 			xLabelHeight = pChartsData.infoHeight;
 			xLabelBoxHeight = xLabelHeight // pChartValueData.dom.infoLabel.height(); //;
-			xLabelBoxWidth = xLabelWidth * 1.10;
+			xLabelBoxWidth = xLabelWidth * 1.20;
 			//Verifica limites
 			xHalf = (xLabelWidth / 2);
 			xX -= xHalf;
@@ -558,7 +558,7 @@ dbsfaces.charts = {
 			     						 .svgAttr("y", ".7em");
 			pChartValueData.dom.infoLabelBox.svgAttr("width", xLabelBoxWidth)
 							       		.svgAttr("height", xLabelBoxHeight)
-							       		.svgAttr("x", xX - (xLabelBoxWidth * .05))
+							       		.svgAttr("x", xX - (xLabelBoxWidth * .10))
 							       		.svgAttr("y", "-.2em")
 							       		.svgAttr("style", xStyleBox);
 		}
@@ -567,7 +567,7 @@ dbsfaces.charts = {
 			xValueWidth = pChartsData.infoWidth;
 			xValueHeight = pChartValueData.dom.infoValue.height();
 			xValueBoxHeight = xValueHeight;
-			xValueBoxWidth = xValueWidth * 0.90;
+			xValueBoxWidth = xValueWidth;
 			//Verifica limites
 			xHalf = (xValueHeight / 2);
 			if (xY + xHalf > (pChartsData.height + pChartsData.infoHeight)){
@@ -580,7 +580,7 @@ dbsfaces.charts = {
 			      						 .svgAttr("y", xY);
 			pChartValueData.dom.infoValueBox.svgAttr("width", xValueBoxWidth)
 						   					.svgAttr("height", xValueBoxHeight)
-						   					.svgAttr("x", 0)
+						   					.svgAttr("x", - (xLabelBoxWidth * .10))
 						   					.svgAttr("y", xY - (xValueBoxHeight / 2))
 						   					.svgAttr("style", xStyleBox);
 		}
