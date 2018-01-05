@@ -267,8 +267,10 @@ public class  DBSFaces {
 			public static final String INPUT = " -th_input ";
 			public static final String INPUT_LABEL = " -th_input-label ";
 			public static final String INPUT_DATA = " -th_input-data ";
+			public static final String HORIZONTAL_LINE = " -th_lineHorizontal ";
 			public static final String HORIZONTAL_LINE_BEFORE = " -th_lineHorizontalBefore ";
 			public static final String HORIZONTAL_LINE_AFTER = " -th_lineHorizontalAfter ";
+			public static final String VERTICAL_LINE = " -th_lineVertical ";
 			public static final String VERTICAL_LINE_BEFORE = " -th_lineVerticalBefore ";
 			public static final String VERTICAL_LINE_AFTER = " -th_lineVerticalAfter ";
 			public static final String FLEX = " -th_flex ";
