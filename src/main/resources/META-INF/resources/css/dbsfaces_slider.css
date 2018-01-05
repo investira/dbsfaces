@@ -3,6 +3,7 @@
 	position: relative;
 	border: none;
 	line-height: normal;
+	pointer-events: none;
 }
 
 .dbs_slider.-h{
@@ -19,7 +20,7 @@
     top: 0;
 	display: inline-block;
     line-height: normal;
-	z-index: 1;
+/* 	z-index: auto; */
     width: 100%;
     height: 100%;
 }
@@ -119,6 +120,7 @@
 
 .dbs_slider > .-container > .-content > .-sub_container{
 	position: relative;
+	pointer-events: all;
 }
 
 

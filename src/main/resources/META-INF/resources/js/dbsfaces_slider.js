@@ -69,16 +69,19 @@ dbs_slider = function(pId, pValuesList, pLabelsList, pMinValue, pMaxValue, pLoca
 		return false;
 	});
 	if (xSliderData.dom.inputBegin!=null){
+		xSliderData.dom.inputBegin.on("change", function(e){
+			return false;
+		});
 		xSliderData.dom.inputBegin.on("keydown", function(e){
 			dbsfaces.slider.setCurrentHandle(xSliderData, "b");
-			dbsfaces.slider.setValue(xSliderData.dom.self, this.value);
+			dbsfaces.slider.pvSetValue(xSliderData, this.value);
 		});
 		xSliderData.dom.inputBegin.on("blur", function(e){
 			var xBeginValue = dbsfaces.number.parseFloat(xSliderData.dom.inputBegin[0].value);
 			var xEndValue = dbsfaces.number.parseFloat(xSliderData.dom.inputEnd[0].value);
 			if (xBeginValue > xEndValue){
 				dbsfaces.slider.setCurrentHandle(xSliderData, "b");
-				dbsfaces.slider.setValue(xSliderData.dom.self, xEndValue);
+				dbsfaces.slider.pvSetValue(xSliderData, xEndValue);
 			}
 			dbsfaces.slider.setEditing(xSliderData, false);
 		});
@@ -90,16 +93,19 @@ dbs_slider = function(pId, pValuesList, pLabelsList, pMinValue, pMaxValue, pLoca
 		});
 	}
 	if (xSliderData.dom.inputEnd!=null){
+		xSliderData.dom.inputEnd.on("change", function(e){
+			return false;
+		});
 		xSliderData.dom.inputEnd.on("keydown", function(e){
 			dbsfaces.slider.setCurrentHandle(xSliderData, "e");
-			dbsfaces.slider.setValue(xSliderData.dom.self, this.value);
+			dbsfaces.slider.pvSetValue(xSliderData, this.value);
 		});
 		xSliderData.dom.inputEnd.on("blur", function(e){
 			var xBeginValue = dbsfaces.number.parseFloat(xSliderData.dom.inputBegin[0].value);
 			var xEndValue = dbsfaces.number.parseFloat(xSliderData.dom.inputEnd[0].value);
 			if (xEndValue < xBeginValue){
 				dbsfaces.slider.setCurrentHandle(xSliderData, "e");
-				dbsfaces.slider.setValue(xSliderData.dom.self, xBeginValue);
+				dbsfaces.slider.pvSetValue(xSliderData, xBeginValue);
 			}
 			dbsfaces.slider.setEditing(xSliderData, false);
 		});
@@ -115,9 +121,12 @@ dbs_slider = function(pId, pValuesList, pLabelsList, pMinValue, pMaxValue, pLoca
 		return false;
 	});
 	if (xSliderData.dom.inputBegin == null && xSliderData.dom.inputEnd == null){
+		xSliderData.dom.input.on("change", function(e){
+			return false;
+		});
 		xSliderData.dom.input.on("keydown", function(e){
 			dbsfaces.slider.setCurrentHandle(xSliderData, null);
-			dbsfaces.slider.setValue(xSliderData.dom.self, this.value);
+			dbsfaces.slider.pvSetValue(xSliderData, this.value);
 		});		
 		xSliderData.dom.input.on("blur", function(e){
 			dbsfaces.slider.setEditing(xSliderData, false);
@@ -137,7 +146,7 @@ dbsfaces.slider = {
 		var xSliderData= dbsfaces.slider.pvInitializeData(pSlider, pValuesList, pLabelsList, pMinValue, pMaxValue);
 		dbsfaces.slider.pvInitializeCreatePoints(xSliderData);
 		dbsfaces.slider.pvInitializeLayout(xSliderData);
-
+		dbsfaces.slider.pvTriggerChange(xSliderData);
 		return xSliderData;
 	},
 
@@ -180,10 +189,14 @@ dbsfaces.slider = {
 			lengthFatorBegin: null, //Tamanho/posição atual em fator do begin
 			lengthFatorEnd: null, //Tamanho/posição atual em fator do end
 			lengthFatorZero: 0,//Tamanho/posição em fator do valor zero
-			changeValue: null, //Tamanho/posição quando foi disparado o último change
-			changeValueBegin: null, //Tamanho/posição quando foi disparado o último change
-			changeValueEnd: null, //Tamanho/posição quando foi disparado o último change
-			changeLengthFator: null, //Tamanho/posição quando foi disparado o último change
+			oldValue: null, //Tamanho/posição quando foi disparado o último change
+			oldValueBegin: null, //Tamanho/posição quando foi disparado o último change
+			oldValueEnd: null, //Tamanho/posição quando foi disparado o último change
+			oldLengthFator: null, //Tamanho/posição quando foi disparado o último change
+			previousValue: null, //Tamanho/posição anterior
+			previousValueBegin: null, //Tamanho/posição anterior
+			previousValueEnd: null, //Tamanho/posição anterior
+			previousLengthFator: null, //Tamanho/posição anterior
 			currentHandle : null, //Handle selecionado "b", "e" ou null(quando type não for "r")
 			min: dbsfaces.number.parseFloat(pMinValue),  //Valor mínimo
 			max: dbsfaces.number.parseFloat(pMaxValue), //Valor máximo
@@ -200,7 +213,8 @@ dbsfaces.slider = {
 			color: pSlider.css("color"),
 			gradientOrientation: (pSlider.hasClass("-h") ? "to right" : "to top"),
 			showPlaceHolder: pSlider.hasClass("-ph"),
-			showValues: pSlider.hasClass("-sv")
+			showValues: pSlider.hasClass("-sv"),
+			error: null
 		}
 		pSlider.data("data", xData);
 		xData.dom.content = xData.dom.container.children(".-content");
@@ -236,6 +250,7 @@ dbsfaces.slider = {
 			xData.dom.input.attr("minValue", xData.min);
 			xData.dom.input.attr("maxValue", xData.max);
 		}
+		
 		xData.dom.sliderValue = xData.dom.slider.children(".-value");
 		xData.dom.sliderValueBackground = xData.dom.sliderValue.children(".-background");
 
@@ -294,6 +309,7 @@ dbsfaces.slider = {
 
 	pvInitializeLayout: function(pSliderData){
 		//Timeout para dar tempo de saber a dimensão do componente pai
+		dbsfaces.slider.resize(pSliderData);
 		clearTimeout(pSliderData.resizeTimeout);
 		pSliderData.resizeTimeout = setTimeout(function(e){
 			dbsfaces.slider.pvInitializeLayoutHorizontalVertical(pSliderData);
@@ -444,7 +460,7 @@ dbsfaces.slider = {
 			//Força que valor seja exatamente o valor do label selecionado
 			pSliderData.dom.pointsLabel.on("mousedown touchstart", function(e){
 				dbsfaces.slider.pvSetInputValue(pSliderData, $(this).attr("v"));
-				dbsfaces.slider.setValue(pSliderData.dom.self, pSliderData.value);
+				dbsfaces.slider.pvSetValue(xSliderData, pSliderData.value);
 				e.stopImmediatePropagation();
 				e.preventDefault();
 			});
@@ -496,11 +512,11 @@ dbsfaces.slider = {
 
 		if (pSliderData.type == "r"){
 			dbsfaces.slider.setCurrentHandle(pSliderData, "b");
-			dbsfaces.slider.setValue(pSliderData.dom.self, pSliderData.value);
+			dbsfaces.slider.pvSetValue(pSliderData, pSliderData.value);
 			dbsfaces.slider.setCurrentHandle(pSliderData, "e");
-			dbsfaces.slider.setValue(pSliderData.dom.self, pSliderData.value);
+			dbsfaces.slider.pvSetValue(pSliderData, pSliderData.value);
 		}else{
-			dbsfaces.slider.setValue(pSliderData.dom.self, pSliderData.value);
+			dbsfaces.slider.pvSetValue(pSliderData, pSliderData.value);
 		}
 	},
 
@@ -554,6 +570,10 @@ dbsfaces.slider = {
 	handleMoveStop: function(pSliderData, e){
 		pSliderData.startPos = null;
 		pSliderData.dom.self.removeClass("-selected");
+
+		//Dispara trigger que valorfoi alterado
+		dbsfaces.slider.pvTriggerChange(pSliderData);
+
 		e.stopImmediatePropagation();
 		e.preventDefault();
 	},
@@ -585,6 +605,8 @@ dbsfaces.slider = {
 			pInputData.focus();
 		}else{
 			pSliderData.dom.self.removeClass("-editing");
+			//Dispara trigger que valorfoi alterado
+			dbsfaces.slider.pvTriggerChange(pSliderData);
 		}
 	},
 	
@@ -597,7 +619,7 @@ dbsfaces.slider = {
 			pSliderData.dom.self.removeClass("-end").addClass("-begin");
 			pSliderData.value = pSliderData.valueBegin;
 			pSliderData.lengthFator = pSliderData.lengthFatorBegin;
-			pSliderData.changeValue = pSliderData.changeValueBegin;
+			pSliderData.oldValue = pSliderData.oldValueBegin;
 		}else if (pHandle == "e"){
 			pSliderData.dom.input = pSliderData.dom.inputEnd;
 			pSliderData.dom.handle = pSliderData.dom.handleEnd;
@@ -605,7 +627,7 @@ dbsfaces.slider = {
 			pSliderData.dom.self.removeClass("-begin").addClass("-end");
 			pSliderData.value = pSliderData.valueEnd;
 			pSliderData.lengthFator = pSliderData.lengthFatorEnd;
-			pSliderData.changeValue = pSliderData.changeValueEnd;
+			pSliderData.oldValue = pSliderData.oldValueEnd;
 		}
 	},
 	
@@ -638,8 +660,20 @@ dbsfaces.slider = {
 	setValue: function(pSlider, pValue){
 		var xSliderData = pSlider.data("data");
 		if ((typeof pValue == "undefined") || pValue.length == 0){return;}
-		xSliderData.value = dbsfaces.number.parseFloat(pValue);
-		dbsfaces.slider.pvSetValuePerc(xSliderData, dbsfaces.slider.pvGetLengthFatorFromValue(xSliderData, pValue), true);
+		dbsfaces.slider.pvSetValue(xSliderData, pValue);
+		dbsfaces.slider.pvTriggerChange(xSliderData)
+	},
+	
+	setTextValue: function(pSlider, pValue){
+		var xSliderData = pSlider.data("data");
+		if ((typeof pValue == "undefined") || pValue.length == 0){return;}
+		dbsfaces.slider.pvEncodeTextValue(xSliderData, pValue);
+	},
+
+	pvSetValue: function(pSliderData, pValue){
+		if ((typeof pValue == "undefined") || pValue.length == 0){return;}
+		pSliderData.value = dbsfaces.number.parseFloat(pValue);
+		dbsfaces.slider.pvSetValuePerc(pSliderData, dbsfaces.slider.pvGetLengthFatorFromValue(pSliderData, pValue), true);
 	},
 	
 	pvGetLengthFatorFromValue: function(pSliderData, pValue){
@@ -654,11 +688,14 @@ dbsfaces.slider = {
 			xLengthFator = xValue;
 			//Procura qual o item da lista foi selecionado
 			if (pSliderData.valuesListNumeric.length > 0){
+				pSliderData.error = null;
 				//Verifica se valor ultrapassou os limites
 				if (xLengthFator < pSliderData.valuesListNumeric[0]){
 					xLengthFator = pSliderData.valuesListNumeric[0];
+					pSliderData.error = "Valor " + pValue + " não pode ser inferior a " + xLengthFator;
 				}else if(xLengthFator > pSliderData.valuesListNumeric[pSliderData.valuesListNumeric.length - 1]){
 					xLengthFator = pSliderData.valuesListNumeric[pSliderData.valuesListNumeric.length - 1];
+					pSliderData.error = "Valor " + pValue + " não pode ser superior a " + xLengthFator;
 				}
 				//Procura item na lista
 				for (var xI=0; xI < pSliderData.valuesListNumeric.length; xI++){
@@ -722,16 +759,28 @@ dbsfaces.slider = {
 			}
 			xInputValue = ((xMax - xMin) * xValuePercFator) + xMin;
 			xInputValue = dbsfaces.math.round(xInputValue, pSliderData.dp);
+
+
 			if (typeof pForceValue == "undefined"){
 				//Força valor considerar somente os dois primeiros números relevantes
 				var xSign = Math.sign(xInputValue) || 1;
 				var xOnlyNumbers = dbsfaces.format.number(xInputValue, pSliderData.dp).replace(/[^\d]/g, '');
-				var xTruncSize = xOnlyNumbers.length - 2;
+//				var xTruncSize = String(Math.abs(xMax) - Math.abs(xMin)).length - 2;
+				var xTruncSize = dbsfaces.format.number(Math.abs(xMax) - Math.abs(xMin), pSliderData.dp).replace(/[^\d]/g, '').length - 2;
 				if (xTruncSize > 0){
 					xTruncSize = Math.pow(10, xTruncSize);
 					xOnlyNumbers = dbsfaces.number.parseFloat(xOnlyNumbers);
 					xInputValue = (dbsfaces.math.trunc(xOnlyNumbers / xTruncSize, 0) * xTruncSize) / Math.pow(10, pSliderData.dp) * xSign;
 				}
+				//Força valor considerar somente os dois primeiros números relevantes
+//				var xSign = Math.sign(xInputValue) || 1;
+//				var xOnlyNumbers = dbsfaces.format.number(xInputValue, pSliderData.dp).replace(/[^\d]/g, '');
+//				var xTruncSize = xOnlyNumbers.length - 2;
+//				if (xTruncSize > 0){
+//					xTruncSize = Math.pow(10, xTruncSize);
+//					xOnlyNumbers = dbsfaces.number.parseFloat(xOnlyNumbers);
+//					xInputValue = (dbsfaces.math.trunc(xOnlyNumbers / xTruncSize, 0) * xTruncSize) / Math.pow(10, pSliderData.dp) * xSign;
+//				}
 			}
 		}else{
 			if (pLengthFator > 0){
@@ -789,20 +838,37 @@ dbsfaces.slider = {
 		}
 	},
 
+	pvTriggerChange: function(pSliderData){
+		//Verifica se há necessidade de disparar o change
+		if (pSliderData.oldValue != pSliderData.value
+		 || pSliderData.oldValueBegin != pSliderData.valueBegin
+		 || pSliderData.oldValueEnd != pSliderData.valueEnd
+		 || pSliderData.oldLengthFator != pSliderData.lengthFator){
+			pSliderData.previousValue = pSliderData.oldValue;
+			pSliderData.previousValueBegin = pSliderData.oldValueBegin;
+			pSliderData.previousValueEnd = pSliderData.oldValueEnd;
+			pSliderData.previousLengthFator = pSliderData.oldLengthFator;
+
+			pSliderData.oldValue = pSliderData.value;
+			pSliderData.oldValueBegin = pSliderData.valueBegin;
+			pSliderData.oldValueEnd = pSliderData.valueEnd;
+			pSliderData.oldLengthFator = pSliderData.lengthFator;
+			//Dispara que valor foi alterado
+			clearTimeout(pSliderData.timeout);
+			pSliderData.timeout = setTimeout(function(){
+				pSliderData.dom.self.trigger("change", [{value:pSliderData.value, 
+														 valueBegin:pSliderData.valueBegin, 
+														 valueEnd:pSliderData.valueEnd, 
+														 lengthFator:pSliderData.lengthFator}]);
+			},100);
+		}
+	},
+
 	pvEncodeValue: function(pSliderData){
 		var xSliderValue = pSliderData.dom.sliderValue;
 		var xValuePerc = pSliderData.lengthFator * 100;
-		if (pSliderData.type == "s"
-		 && pSliderData.lengthFator == 0){
-			pSliderData.dom.handleLabel.text("");
-		}else{
-			pSliderData.dom.handleLabel.text(pSliderData.dom.input.attr("value"));
-		}
-		if (pSliderData.type == "v" 
-		&& !pSliderData.showPlaceHolder){
-			pSliderData.dom.slider.attr("pr", pSliderData.dom.handleLabel.text());
-			pSliderData.dom.sliderValueBackground.attr("pr", pSliderData.dom.handleLabel.text());
-		}
+
+		dbsfaces.slider.pvEncodeTextValue(pSliderData);
 		
 		if (pSliderData.orientation == "h"){
 			dbsfaces.slider.pvEncodeValueHorizontal(pSliderData, xValuePerc);
@@ -812,24 +878,27 @@ dbsfaces.slider = {
 
 		//Configura exibição ou não dos labels
 		dbsfaces.slider.pvHideLabels(pSliderData);
-
-		//Verifica se há necessidade de disparar o change
-		if (pSliderData.changeValue != pSliderData.value
-		 || pSliderData.changeValueBegin != pSliderData.valueBegin
-		 || pSliderData.changeCalueEnd != pSliderData.valueEnd
-		 || pSliderData.changeLengthFator != pSliderData.lengthFator){
-			pSliderData.changeValue = pSliderData.value;
-			pSliderData.changeValueBegin = pSliderData.valueBegin;
-			pSliderData.changeValueEnd = pSliderData.valueEnd;
-			pSliderData.changeLengthFator = pSliderData.lengthFator;
-			//Dispara que valor foi alterado
-			clearTimeout(pSliderData.timeout);
-			pSliderData.timeout = setTimeout(function(){
-				pSliderData.dom.self.trigger("change", [{value:pSliderData.value, valueBegin:pSliderData.valueBegin, valueEnd:pSliderData.valueEnd, fator:pSliderData.lengthFator}]);
-			},100);
-		}
 	},
 
+	pvEncodeTextValue: function(pSliderData, pValue){
+		var xValue;
+		if (typeof pValue == "undefined"){
+			xValue = pSliderData.dom.input.attr("value"); 
+		}else{
+			xValue = pValue;
+		}
+		if (pSliderData.type == "s"
+		 && pSliderData.lengthFator == 0){
+			pSliderData.dom.handleLabel.text("");
+		}else{
+			pSliderData.dom.handleLabel.text(xValue);
+		}
+		if (pSliderData.type == "v" 
+		&& !pSliderData.showPlaceHolder){
+			pSliderData.dom.slider.attr("pr", pSliderData.dom.handleLabel.text());
+			pSliderData.dom.sliderValueBackground.attr("pr", pSliderData.dom.handleLabel.text());
+		}
+	},
 	
 	pvEncodeValueHorizontal: function(pSliderData, pValuePerc){
 		if (pSliderData.type == "r"){
@@ -855,7 +924,7 @@ dbsfaces.slider = {
 			//Center handle label
 			var xLeft = -xAlignShift;
 			
-			//Limita pontos extremos para dentro da áreas
+			//Limita pontos extremos para dentro da área
 			if (pSliderData.type == "v"){
 				var xR = (pSliderData.dom.handle[0].getBoundingClientRect().left + xAlignShift) -
 						 (pSliderData.dom.slider[0].getBoundingClientRect().left + pSliderData.dom.slider[0].getBoundingClientRect().width);
@@ -886,7 +955,7 @@ dbsfaces.slider = {
 				}
 //				xAlignShift = -xAlignShift;
 			}
-			//Limita pontos extremos para dentro da áreas
+			//Limita pontos extremos para dentro da área
 			pSliderData.dom.handleLabel.css("left", xAlignShift);
 		}
 		//Slider Value
@@ -999,9 +1068,9 @@ dbsfaces.slider = {
 		pSliderData.lengthFatorBegin = pSliderData.lengthFatorEnd;
 		pSliderData.lengthFatorEnd = xTmp;
 
-		xTmp = pSliderData.changeValueBegin;
-		pSliderData.changeValueBegin = pSliderData.changeValueEnd;
-		pSliderData.changeValueEnd = xTmp;
+		xTmp = pSliderData.oldValueBegin;
+		pSliderData.oldValueBegin = pSliderData.oldValueEnd;
+		pSliderData.oldValueEnd = xTmp;
 
 		pSliderData.dom.handleBegin.removeClass("-end").addClass("-begin");
 		pSliderData.dom.handleEnd.removeClass("-begin").addClass("-end");
@@ -1019,6 +1088,7 @@ dbsfaces.slider = {
 	},
 	
 	pvHideLabels: function(pSliderData){
+		if (!pSliderData.showValues){return;}
 		var xHandleMin, xHandleMax;
 		var xHandleLabelRect = dbsfaces.ui.getRect(pSliderData.dom.handleLabel);
 		if (pSliderData.orientation == "h"){
@@ -1080,6 +1150,6 @@ dbsfaces.slider = {
 			}
 			pLabel.data("owner", xLabelOwner);
 		}
-		pLabel.css("opacity", xOpacity);
+//		pLabel.css("opacity", xOpacity);
 	}
 }
