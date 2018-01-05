@@ -38,10 +38,6 @@ dbs_dialogContent = function(pId) {
 		return false;
 	});
 
-	/* Exibe dialog já aberto */
-	if (xDialog.attr("o")) {
-		dbsfaces.dialog.show(xDialog);
-	}
 
 	/* Fecha dialog que originou o action */
 	if (xDialog.children().length == 0) {
@@ -257,12 +253,21 @@ dbs_dialogContent = function(pId) {
 		//Timeout para reduriz as chamadas consecutivas
 		var xTmpDialogData = $(pId).data("data");
 		clearTimeout(xTmpDialogData.resizeTimeout);
-		xDialogData.resizeTimeout = setTimeout(function(){
+//		xDialogData.resizeTimeout = setTimeout(function(){
 			dbsfaces.dialog.resize($(pId).data("data"));
-		}, 20);
+//		}, 20);
 	});
 
 	xDialogData.dom.self.css("visibility", "");
+	
+//	setTimeout(function(){
+		/* Exibe dialog já aberto */
+		if (xDialogData.opened) {
+			dbsfaces.dialog.show($(pId));
+		}
+		
+//	},1000);
+
 };
 
 dbsfaces.dialog = {
@@ -290,6 +295,8 @@ dbsfaces.dialog = {
 				sub_content : null,
 				header : null,
 				header_content : null,
+				header_content_left : null,
+				header_content_right : null,
 				header_caption : null,
 				header_caption_label : null,
 				header_caption_icon : null,
@@ -306,6 +313,7 @@ dbsfaces.dialog = {
 			time : null,
 			padding : null,
 			p : pDialog.attr("p"),
+			opened : pDialog.attr("o"),
 			resizeTimeout : null
 		}
 		xData.dom.content = xData.dom.container.children(".-content");
@@ -319,6 +327,8 @@ dbsfaces.dialog = {
 		xData.dom.buttons = xData.dom.sub_content.children().not("script");
 		xData.dom.header = xData.dom.content.children(".-header");
 		xData.dom.header_content = xData.dom.header.children(".-content");
+		xData.dom.header_content_left = xData.dom.header_content.children(".-left");
+		xData.dom.header_content_right = xData.dom.header_content.children(".-right");
 		xData.dom.header_caption = xData.dom.header_content.children(".-caption");
 		xData.dom.header_caption_label = xData.dom.header_caption.children(".-label");
 		xData.dom.header_caption_icon = xData.dom.header_caption.children(".-icon");
@@ -847,7 +857,16 @@ dbsfaces.dialog = {
 		// }
 		// Configura o padding
 		if (pDialogData.dom.header_content.length > 0) {
-			pDialogData.dom.sub_container.css("padding-top", pDialogData.dom.header_content[0].clientHeight);
+			pDialogData.dom.header_content.css("height", "");
+			var xMaxHeaderHeight = pDialogData.dom.header_content[0].clientHeight;
+			if (pDialogData.dom.header_content_left.length > 0){
+				xMaxHeaderHeight = Math.max(xMaxHeaderHeight, pDialogData.dom.header_content_left[0].clientHeight);
+			}
+			if (pDialogData.dom.header_content_right.length > 0){
+				xMaxHeaderHeight = Math.max(xMaxHeaderHeight, pDialogData.dom.header_content_right[0].clientHeight);
+			}
+			pDialogData.dom.sub_container.css("padding-top", xMaxHeaderHeight);
+			pDialogData.dom.header_content.css("height", xMaxHeaderHeight);
 		}
 		if (pDialogData.dom.footer.length > 0) {
 			pDialogData.dom.sub_container.css("padding-bottom", pDialogData.dom.footer[0].clientHeight);
@@ -879,10 +898,10 @@ dbsfaces.dialog = {
 		//Define tamanho padrão para os botões e icone do action do header, que devem ficar com a largura e altura, iquais a altura do próprio header
 		if (pDialogData.dom.header_content.length > 0){
 			var xCaptionHeight = pDialogData.dom.header_content[0].clientHeight;
-			pDialogData.dom.header_content.find(".-th_action").each(function(){
-				$(this).css("width", xCaptionHeight)
-					   .css("height", xCaptionHeight);
-			});
+//			pDialogData.dom.header_content.find(".-th_action:first-child").each(function(){
+//				$(this).css("width", xCaptionHeight)
+//					   .css("height", xCaptionHeight);
+//			});
 			//Icone do action 
 			if (pDialogData.dom.header_action_icon.length > 0){
 				pDialogData.dom.header_action_icon.css("width", xCaptionHeight)
