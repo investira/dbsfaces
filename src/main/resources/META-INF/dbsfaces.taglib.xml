@@ -269,9 +269,25 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS dentro do nav
+                Class CSS dentro do nav. Quando não informado o padrão é -th_bc -th_fc
             </description>
 			<name>contentStyleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Class CSS dentro do header. Quando não informado o padrão é -th_bc -th_fc -th_i
+            </description>
+			<name>headerStyleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Class CSS dentro do footer
+            </description>
+			<name>footerStyleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
@@ -618,7 +634,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS dentro do nav
+                Class CSS dentro do nav. Quando não informado o padrão é -th_bc -th_fc.
             </description>
 			<name>contentStyleClass</name>
 			<required>false</required>
@@ -807,9 +823,25 @@
 		</attribute>
 		<attribute>
 			<description>
-                Class CSS dentro do nav
+                Class CSS dentro do nav. Quando não informado o padrão é -th_bc -th_fc
             </description>
 			<name>contentStyleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Class CSS dentro do header. Quando não informado o padrão é -th_bc -th_fc -th_i
+            </description>
+			<name>headerStyleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Class CSS dentro do footer
+            </description>
+			<name>footerStyleClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>

@@ -14,6 +14,7 @@ import javax.faces.event.SystemEventListener;
 import br.com.dbsoft.message.IDBSMessages;
 import br.com.dbsoft.ui.component.DBSUIOutput;
 import br.com.dbsoft.ui.core.DBSFaces;
+import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.util.DBSNumber;
 
 
@@ -39,6 +40,8 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer, SystemEve
 		caption,
 		captionIconClass,
 		actionIconClass,
+		headerStyleClass,
+		footerStyleClass,
 		position,
 		contentStyleClass,
 		contentAlignment,
@@ -342,7 +345,7 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer, SystemEve
 	}
 
 	public String getContentStyleClass() {
-		return (String) getStateHelper().eval(PropertyKeys.contentStyleClass, "");
+		return (String) getStateHelper().eval(PropertyKeys.contentStyleClass, CSS.THEME.FC + CSS.THEME.BC);
 	}
 	
 	public void setContentStyleClass(String pContentStyleClass) {
@@ -350,6 +353,23 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer, SystemEve
 		handleAttribute("contentStyleClass", pContentStyleClass);
 	}
 
+	public String getHeaderStyleClass() {
+		return (String) getStateHelper().eval(PropertyKeys.headerStyleClass, CSS.THEME.BC + CSS.THEME.FC + CSS.THEME.INVERT);
+	}
+	
+	public void setHeaderStyleClass(String pHeaderStyleClass) {
+		getStateHelper().put(PropertyKeys.headerStyleClass, pHeaderStyleClass);
+		handleAttribute("headerStyleClass", pHeaderStyleClass);
+	}
+
+	public String getFooterStyleClass() {
+		return (String) getStateHelper().eval(PropertyKeys.headerStyleClass, "");
+	}
+	
+	public void setFooterStyleClass(String pFooterStyleClass) {
+		getStateHelper().put(PropertyKeys.footerStyleClass, pFooterStyleClass);
+		handleAttribute("footerStyleClass", pFooterStyleClass);
+	}
 
 	/**
 	 * Mensagens a serem exibidas

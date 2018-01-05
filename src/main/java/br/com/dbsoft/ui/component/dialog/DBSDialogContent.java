@@ -80,7 +80,7 @@ public class DBSDialogContent extends DBSUIOutput{
 		DBSDialog 			xDialog = (DBSDialog) getParent();
 		ResponseWriter 		xWriter = pContext.getResponseWriter();
 		TYPE 	 			xType = TYPE.get(xDialog.getType());
-		String xClass = CSS.MODIFIER.CONTENT + CSS.THEME.FC + CSS.THEME.BC + xDialog.getContentStyleClass();
+		String xClass = CSS.MODIFIER.CONTENT;
 		if (xType == TYPE.MSG){
 			//Usa o cor invertida quando for mensagem
 			xClass += CSS.THEME.INVERT;
@@ -94,7 +94,7 @@ public class DBSDialogContent extends DBSUIOutput{
 			pvEncodeHeader(xDialog, xType, pContext, xWriter);
 			//Sub_Container
 			xWriter.startElement("div", xDialog);
-				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.SUB_CONTAINER);
+				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.SUB_CONTAINER + xDialog.getContentStyleClass());
 				xWriter.startElement("div", xDialog);
 					xWriter.startElement("div", xDialog);
 					DBSFaces.encodeAttribute(xWriter, "class", CSS.THEME.FLEX);
@@ -126,7 +126,7 @@ public class DBSDialogContent extends DBSUIOutput{
 		pWriter.startElement("div", pDialog);
 			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.HEADER + CSS.MODIFIER.NOT_SELECTABLE);
 			pWriter.startElement("div", pDialog);
-				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + CSS.THEME.FLEX + CSS.THEME.BC + CSS.THEME.FC + CSS.THEME.INVERT);
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + CSS.THEME.FLEX + pDialog.getHeaderStyleClass());
 				//Encode o conteudo do Header definido no FACET HEADER_LEFT
 				if (!DBSObject.isNull(xHeaderLeft) 
 				 || !DBSObject.isEmpty(pDialog.getActionIconClass())){
@@ -231,7 +231,7 @@ public class DBSDialogContent extends DBSUIOutput{
 			if (xFooter != null){
 				pWriter.startElement("div", pDialog);
 					DBSFaces.encodeAttribute(pWriter, "style", pvGetPaddingFooter(pDialog));
-					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
+					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT + pDialog.getFooterStyleClass());
 					xFooter.encodeAll(pContext);
 				pWriter.endElement("div");
 			}
