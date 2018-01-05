@@ -22,6 +22,7 @@
 	top:0;
 	left:0;
 	line-height: initial;
+	z-index: 2;
 }
 
 .dbs_dialog > .-container.-opened{
@@ -129,6 +130,8 @@
 }
 
 .dbs_dialog > .-container > .-content.-moving{
+	-webkit-transition: none !important;
+	-moz-transition: none !important;
 	transition: none !important;
  	opacity: 0.5 !important; 
 }
@@ -168,7 +171,8 @@
 
 .dbs_dialog > .-container > .-content > .-sub_container > div{
     position: relative;
-    display: inline-block;
+/*     display: inline-block; /*21/dez/17 safari criava espaço desnecessário ricardo*/ */
+    display: block;
 	width: 100%;
     height: 100%;
     overflow: auto;
@@ -247,7 +251,7 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 }
 
 .dbs_dialog[type="mod"]:not(.-closed) > .-container > .-content > .-sub_container > div > div > .-sub_content > *:not(style):not(script){
-    display: inline-block;
+/*     display: inline-block; 12/dez/17 */
 }
 
 
@@ -257,14 +261,14 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 /*     overflow: hidden; */
 	top: 0;
 	width: 100%;
-    z-index: 1;
+     z-index: 1; 
 }
 
 .dbs_dialog > .-container > .-content > .-header:after{
 	content: "";
+	position:relative;
 	clear: both;
 	width: 100%;
-	position:relative;
 }
 
 .dbs_dialog > .-container > .-content > .-header > .-content {
@@ -280,18 +284,18 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 
 .dbs_dialog > .-container > .-content.-dark > .-header > .-content{
 /* 	border-color: rgba(0,0,0,.1); */
-	background-image: linear-gradient(-6deg, hsla(0, 0%, 0%, 0.04) 0%, hsla(0, 0%, 0%, 0) 80%);
+/* 	background-image: linear-gradient(-6deg, hsla(0, 0%, 0%, 0.04) 0%, hsla(0, 0%, 0%, 0) 80%); */
 }
 .dbs_dialog > .-container > .-content.-light > .-header > .-content{
 /* 	border-color: rgba(255,255,255,.1); */
-	background-image: linear-gradient(-6deg, hsla(0, 0%, 100%, 0) 0%, hsla(0, 0%, 100%, 0.09) 100%);
+/* 	background-image: linear-gradient(-6deg, hsla(0, 0%, 100%, 0) 0%, hsla(0, 0%, 100%, 0.09) 100%); */
 /* 	background-image: linear-gradient(0deg, hsla(0, 0%, 100%, 0) 1%, hsla(0, 0%, 100%, 0.03) 100%); */
 }
-    
+  
 .dbs_dialog > .-container > .-content > .-header > .-content > .-left,
 .dbs_dialog > .-container > .-content > .-header > .-content > .-right{
-/*     display: inline-block; */
-/*     position: absolute; */
+    display: inline-block;
+    position: absolute;
 /* 	top: 0; */
 /* 	z-index:1; */
 /*     -webkit-flex: 0 0 1px; */
@@ -300,10 +304,11 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 /*     flex: 0 0 1px;   */
     -webkit-flex: 1 1 auto;
     -moz-flex: 1 1 auto;
-    -o-flex: 1 1 auto;
-    flex: 1 1 auto;  
+    flex: 1 1 auto;
+    overflow: visible;
     width: 100%;
-}
+    box-sizing: content-box;
+}  
 
 .dbs_dialog > .-container > .-content > .-header > .-content > .-left > .-th_action,
 .dbs_dialog > .-container > .-content > .-header > .-content > .-right > .-th_action{
@@ -311,8 +316,7 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 	border-radius: unset;
 }
 
-
-    
+   
 .dbs_dialog > .-container > .-content > .-header > .-content > .-left{
 /* 	left: 0; */
 }
@@ -339,7 +343,9 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 
 
 .dbs_dialog > .-container > .-content > .-header > .-content > .-caption {
-	text-align: left;
+	text-align: center;
+	font-weight: bolder;
+	z-index: 1;
 /* 	width: 100%; */
 /*     text-align: center; */
 /*     line-height: 100%; */
@@ -354,11 +360,20 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 }
 
 .dbs_dialog > .-container > .-content > .-header > .-content > .-caption > .-icon{
-    display: inline-block;
-	font-size: .5em;
+	display: inline-block;
+    position: relative;
+    top: calc(50% - .5em);
 }
+.dbs_dialog > .-container > .-content > .-header > .-content > .-caption > .-icon > div{
+    font-size: 1.2em;
+    position: relative;
+}
+
 .dbs_dialog > .-container > .-content > .-header > .-content > .-caption > .-label{
     display: inline-block;
+    top: calc(50% - .5em);
+    position: relative;
+    vertical-align: top;
 }
 
 
@@ -843,6 +858,16 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 .dbs_dialog[p="c"] > .-container > .-content > .-header{
     width: 100%;
 }
+	
+.dbs_dialog[type="nav"] > .-container > .-content > .-header > .-content > .-left,
+.dbs_dialog[type="nav"] > .-container > .-content > .-header > .-content > .-right{
+    -webkit-flex: 1 1 auto;
+    -moz-flex: 1 1 auto;
+    -o-flex: 1 1 auto;
+    flex: 1 1 auto;  
+    width: 100%;
+}
+
 	
 /* bthandle ----------------------------------------------------- */
 
