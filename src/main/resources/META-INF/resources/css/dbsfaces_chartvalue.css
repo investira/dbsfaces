@@ -165,6 +165,8 @@
 }
 
 .dbs_chart.-pie.-selected.-hover > .-chart > .-values > .dbs_chartValue:not(.-hover):not(.-link){
+	-webkit-transition: stroke-opacity linear .5s;
+	-moz-transition: stroke-opacity linear .5s;
 	transition: stroke-opacity linear .5s;
 	stroke-opacity: 0.1;
 	fill-opacity: 0.1;
