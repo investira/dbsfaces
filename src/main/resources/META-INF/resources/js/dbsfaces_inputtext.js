@@ -33,7 +33,7 @@ dbs_inputText = function(pId) {
 	
 	xInputTextData.dom.inputData.blur(function(e){
 		xInputTextData.dom.suggestion.removeClass("-th_input-data-FOCUS");
-		dbsfaces.ui.selectNone(this);
+//		dbsfaces.ui.selectNone(this); //Safari estava impedindo o blur
 		xInputTextData.time = +new Date();
 
 		//Esconde a lista
