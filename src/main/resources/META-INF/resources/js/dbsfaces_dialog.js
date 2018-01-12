@@ -868,9 +868,16 @@ dbsfaces.dialog = {
 			pDialogData.dom.sub_container.css("padding-top", xMaxHeaderHeight);
 			pDialogData.dom.header_content.css("height", xMaxHeaderHeight);
 		}
+		var xPaddingBottom = 0;
 		if (pDialogData.dom.footer.length > 0) {
-			pDialogData.dom.sub_container.css("padding-bottom", pDialogData.dom.footer[0].clientHeight);
+//			xPaddingBottom += pDialogData.dom.footer[0].clientHeight;
+			xPaddingBottom += dbsfaces.ui.getRect(pDialogData.dom.footer).height;
 		}
+		if (pDialogData.dom.bthandle.length > 0) {
+//			xPaddingBottom += pDialogData.dom.bthandle[0].clientHeight;
+			xPaddingBottom += dbsfaces.ui.getRect(pDialogData.dom.bthandle).height;
+		}
+		pDialogData.dom.sub_container.css("padding-bottom", xPaddingBottom);
 		if (pDialogData.type == "msg"){
 			//Preserva espaço do icone
 			pDialogData.dom.sub_container.css("padding-left", parseFloat(pDialogData.dom.sub_container.css("padding-right")) + pDialogData.dom.header_caption_icon[0].clientWidth); 

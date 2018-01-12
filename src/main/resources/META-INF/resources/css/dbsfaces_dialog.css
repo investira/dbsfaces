@@ -466,7 +466,7 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
     
 	box-sizing: content-box;
 	
-	padding: 1px;
+/* 	padding: 1px; */
 }
 
 .dbs_dialog > .-container > .-content > .-footer > .-toolbar > * {
@@ -487,7 +487,10 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 
 
 /* CONTENT - DIMENSÃO ---------------------------------------------------*/
-/* TOP BOTTOM*/
+
+.dbs_dialog[type="msg"] > .-container > .-content{
+	overflow: hidden;	
+}
 .dbs_dialog[type="msg"] > .-container > .-content,
 .dbs_dialog[type="btn"] > .-container > .-content{
 	width: unset;
