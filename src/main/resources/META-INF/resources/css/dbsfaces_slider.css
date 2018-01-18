@@ -383,6 +383,7 @@
 .dbs_slider > .-container > .-content > .-sub_container > .-slider > .-value > .-background{
 	position:absolute;
 	border-radius: .3em;
+	-webkit-filter: blur(0); /*artifício para resolver problema no safari*/
 }
 .dbs_slider.-h > .-container > .-content > .-sub_container > .-slider > .-value > .-background{
 	height: 100%;
