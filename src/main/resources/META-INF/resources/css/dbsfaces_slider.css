@@ -207,6 +207,10 @@
 }
 
 
+.dbs_slider.-ph.-editing > .-container > .-content > .-sub_container > .-points{
+	visibility: hidden;
+}
+
 .dbs_slider.-editing > .-container > .-content > .-sub_container > .-handle{
 	visibility: hidden;
 }

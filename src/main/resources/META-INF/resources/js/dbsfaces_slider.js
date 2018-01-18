@@ -460,7 +460,7 @@ dbsfaces.slider = {
 			//Força que valor seja exatamente o valor do label selecionado
 			pSliderData.dom.pointsLabel.on("mousedown touchstart", function(e){
 				dbsfaces.slider.pvSetInputValue(pSliderData, $(this).attr("v"));
-				dbsfaces.slider.pvSetValue(xSliderData, pSliderData.value);
+				dbsfaces.slider.pvSetValue(pSliderData, pSliderData.value);
 				e.stopImmediatePropagation();
 				e.preventDefault();
 			});
@@ -1150,6 +1150,6 @@ dbsfaces.slider = {
 			}
 			pLabel.data("owner", xLabelOwner);
 		}
-//		pLabel.css("opacity", xOpacity);
+		pLabel.css("opacity", xOpacity);
 	}
 }
