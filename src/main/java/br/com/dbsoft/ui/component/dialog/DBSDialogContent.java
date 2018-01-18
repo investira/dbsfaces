@@ -114,8 +114,6 @@ public class DBSDialogContent extends DBSUIOutput{
 			pvEncodeHandle(xDialog, xType, xWriter);
 			pvEncodeJS(xDialog, xWriter);
 		xWriter.endElement("div");
-
-			
 	}
 	
 	

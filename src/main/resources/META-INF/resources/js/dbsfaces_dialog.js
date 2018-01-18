@@ -312,7 +312,7 @@ dbsfaces.dialog = {
 			contentAligment : dbsfaces.util.getNotEmpty(pDialog.attr("ca"), ""),
 			time : null,
 			padding : null,
-			p : pDialog.attr("p"),
+			position : pDialog.attr("p"),
 			opened : pDialog.attr("o"),
 			resizeTimeout : null
 		}
@@ -682,11 +682,11 @@ dbsfaces.dialog = {
 
 		if (pDialogData.type == "nav"
 		|| (pDialogData.type == "msg" && pDialogData.dom.btyes != null)) { // ou // Msg on só há o botão ok
-			if ((pDialogData.p == "t" && pDirection == "u")
-			 || (pDialogData.p == "b" && pDirection == "d")
-			 || (pDialogData.p == "l" && pDirection == "l")
-			 || (pDialogData.p == "r" && pDirection == "r")
-			 || (pDialogData.p == "c")) {
+			if ((pDialogData.position == "t" && pDirection == "u")
+			 || (pDialogData.position == "b" && pDirection == "d")
+			 || (pDialogData.position == "l" && pDirection == "l")
+			 || (pDialogData.position == "r" && pDirection == "r")
+			 || (pDialogData.position == "c")) {
 				dbsfaces.dialog.show(pDialogData.dom.self);
 				return true;
 			}
@@ -856,28 +856,40 @@ dbsfaces.dialog = {
 		// }
 		// }
 		// Configura o padding
+		var xMaxHeaderHeight = 0;
 		if (pDialogData.dom.header_content.length > 0) {
 			pDialogData.dom.header_content.css("height", "");
-			var xMaxHeaderHeight = pDialogData.dom.header_content[0].clientHeight;
+			xMaxHeaderHeight += dbsfaces.ui.getRect(pDialogData.dom.header_content).height;
 			if (pDialogData.dom.header_content_left.length > 0){
-				xMaxHeaderHeight = Math.max(xMaxHeaderHeight, pDialogData.dom.header_content_left[0].clientHeight);
+				xMaxHeaderHeight = Math.max(xMaxHeaderHeight, dbsfaces.ui.getRect(pDialogData.dom.header_content_left).height);
 			}
 			if (pDialogData.dom.header_content_right.length > 0){
-				xMaxHeaderHeight = Math.max(xMaxHeaderHeight, pDialogData.dom.header_content_right[0].clientHeight);
+				xMaxHeaderHeight = Math.max(xMaxHeaderHeight, dbsfaces.ui.getRect(pDialogData.dom.header_content_right).height);
 			}
-			pDialogData.dom.sub_container.css("padding-top", xMaxHeaderHeight);
+			if (pDialogData.position == "b"){
+				if (pDialogData.dom.bthandle.length > 0) {
+					xMaxHeaderHeight += dbsfaces.ui.getRect(pDialogData.dom.bthandle).height;
+				}
+			}
 			pDialogData.dom.header_content.css("height", xMaxHeaderHeight);
 		}
-		var xPaddingBottom = 0;
+		var xMaxFooterHeight = 0;
 		if (pDialogData.dom.footer.length > 0) {
-//			xPaddingBottom += pDialogData.dom.footer[0].clientHeight;
-			xPaddingBottom += dbsfaces.ui.getRect(pDialogData.dom.footer).height;
+			xMaxFooterHeight += dbsfaces.ui.getRect(pDialogData.dom.footer).height;
 		}
-		if (pDialogData.dom.bthandle.length > 0) {
-//			xPaddingBottom += pDialogData.dom.bthandle[0].clientHeight;
-			xPaddingBottom += dbsfaces.ui.getRect(pDialogData.dom.bthandle).height;
+		if (pDialogData.position == "t"){
+			if (pDialogData.dom.bthandle.length > 0) {
+				xMaxFooterHeight += dbsfaces.ui.getRect(pDialogData.dom.bthandle).height;
+			}
 		}
-		pDialogData.dom.sub_container.css("padding-bottom", xPaddingBottom);
+		if (pDialogData.contentAligment == "b"){
+			pDialogData.dom.sub_container.css("padding-bottom", xMaxHeaderHeight)
+			 							.css("padding-top", xMaxFooterHeight);
+		}else{
+			pDialogData.dom.sub_container.css("padding-top", xMaxHeaderHeight)
+			 							.css("padding-bottom", xMaxFooterHeight);
+		}
+		
 		if (pDialogData.type == "msg"){
 			//Preserva espaço do icone
 			pDialogData.dom.sub_container.css("padding-left", parseFloat(pDialogData.dom.sub_container.css("padding-right")) + pDialogData.dom.header_caption_icon[0].clientWidth); 

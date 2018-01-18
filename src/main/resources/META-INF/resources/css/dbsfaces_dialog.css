@@ -116,6 +116,7 @@
 	position: fixed;
 	display: inline-block;
 	white-space: nowrap;
+	line-height: 0;
 /* 	z-index: 9999999; */
 	z-index: 2;
 /* 	width: -webkit-fit-content; */
@@ -160,6 +161,7 @@
     width: 100%;
     position: relative;
     display: inline-block;
+    line-height: normal;
 /*     top: 0; */
 /*     left: 0; */
 /*     position: absolute; */
@@ -255,10 +257,10 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 .dbs_dialog > .-container > .-content > .-header{
     position: absolute;
     display: block;
-/*     overflow: hidden; */
-	top: 0;
+/*     overflow: hidden; 01/Jan/2018 estava impedindo a exibição de um nav(menu) que estava dentro do header de um dialog*/
 	width: 100%;
-     z-index: 1; 
+    z-index: 1;
+	line-height: normal; 
 }
 
 .dbs_dialog > .-container > .-content > .-header:after{
@@ -434,9 +436,9 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 	position: absolute;
     display: inline-block;
     overflow: hidden;
-	bottom: 0;
 	width: 100%;
 	z-index: 1;
+	line-height: normal;
 }
 
 .dbs_dialog > .-container > .-content > .-footer > .-content {
@@ -821,12 +823,17 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 	text-align: center;
 }
 
+.dbs_dialog[type="mod"] > .-container > .-content > .-sub_container > div > div > .-sub_content{
+	height: 100%;
+}
 .dbs_dialog[ca="t"] > .-container > .-content > .-sub_container > div > div > .-sub_content{
     top: 0;
     vertical-align: top;
 }
 .dbs_dialog[ca="b"] > .-container > .-content > .-sub_container > div > div > .-sub_content{
-    vertical-align: bottom;
+    -webkit-align-self: flex-end;
+    -moz-align-self: flex-end;
+    align-self: flex-end;
 }
 .dbs_dialog[ca="l"] > .-container > .-content > .-sub_container > div > div > .-sub_content{
     left: 0;
@@ -848,7 +855,20 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 	border-radius: .15em .15em 0 0;
 }
 
-
+.dbs_dialog[ca="t"] > .-container > .-content > .-header,
+.dbs_dialog[ca="c"] > .-container > .-content > .-header{
+	top: 0;	
+}
+.dbs_dialog[ca="b"] > .-container > .-content > .-header{
+	bottom: 0;	
+}
+.dbs_dialog[ca="r"] > .-container > .-content > .-header{
+	right: 0;	
+}
+.dbs_dialog[ca="l"] > .-container > .-content > .-header{
+	left: 0;	
+}
+    
 .dbs_dialog[p="t"] > .-container > .-content > .-header,
 .dbs_dialog[p="b"] > .-container > .-content > .-header{
     height: 100%;
@@ -863,7 +883,11 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
     text-align: left;
 }
 .dbs_dialog[p="c"] > .-container > .-content > .-header{
-    width: 100%;
+    width: 100.5%;
+}
+
+.dbs_dialog > .-container > .-content > .-header > .-content{
+    width: calc(100% + .5px);
 }
 	
 .dbs_dialog[type="nav"] > .-container > .-content > .-header > .-content > .-left,
@@ -998,6 +1022,19 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 }
 
 
+.dbs_dialog[ca="t"] > .-container > .-content > .-footer,
+.dbs_dialog[ca="c"] > .-container > .-content > .-footer{
+	bottom:0;	
+}
+.dbs_dialog[ca="b"] > .-container > .-content > .-footer{
+	top:0;	
+}
+.dbs_dialog[ca="l"] > .-container > .-content > .-footer{
+	left:0;	
+}
+.dbs_dialog[ca="r"] > .-container > .-content > .-footer{
+	right:0;	
+}
 /* LEFT VERTICAL / RIGHT HORIZONTAL */
 .dbs_dialog[p="l"] > .-container > .-content > .-footer{
 	left: 0;
