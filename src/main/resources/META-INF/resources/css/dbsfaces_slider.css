@@ -341,9 +341,6 @@
 .dbs_slider.-h .-container > .-content > .-sub_container > .-slider > .-value > .-background:before{
     top: calc(50% - .6em);
     right: .5em;
-    -webkit-transition: top .1s linear, font-size .1s linear;
-    -moz-transition: top .1s linear, font-size .1s linear;
-    transition: top .1s linear, font-size .1s linear;
 }
 .dbs_slider.-h.-ph .-container > .-content > .-sub_container > .-slider:before,
 .dbs_slider.-h.-ph .-container > .-content > .-sub_container > .-slider > .-value > .-background:before{
@@ -361,6 +358,9 @@
     font-size: .6em;
     left: 0;
     top: -1.3em;
+    -webkit-transition: top .1s linear, font-size .1s linear;
+    -moz-transition: top .1s linear, font-size .1s linear;
+    transition: top .1s linear, font-size .1s linear;
 }
 
 .dbs_slider.-h.-i.-editing .-container > .-content > .-sub_container > .-slider:before,
@@ -383,7 +383,8 @@
 .dbs_slider > .-container > .-content > .-sub_container > .-slider > .-value > .-background{
 	position:absolute;
 	border-radius: .3em;
-	-webkit-filter: blur(0); /*artifício para resolver problema no safari*/
+/* 	-webkit-filter: blur(0); artifício para resolver problema no safari */
+	-webkit-transform: translateZ(0); /*artifício para resolver problema no safari*/
 }
 .dbs_slider.-h > .-container > .-content > .-sub_container > .-slider > .-value > .-background{
 	height: 100%;
