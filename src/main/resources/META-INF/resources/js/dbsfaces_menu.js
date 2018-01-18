@@ -29,7 +29,7 @@ dbs_menu = function(pId) {
 		if ($(pId + "[class~=-menu_scroll]").length > 0) {
 //			console.log("Click\t" + $(this).find(" > .-caption > .-content > .-label").text());
 			dbsfaces.menu.setOpened(xMenuItem, !xMenuItem.hasClass("-opened"));
-//			return false;
+			return false;
 		}
 	});
 }
