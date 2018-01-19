@@ -956,7 +956,7 @@ dbsfaces.charts = {
 			dbsfaces.charts.pvInitializeAnalizeValues(xChartsData);
 			dbsfaces.charts.pvInitializeDraw(xChartsData);
 			xChartsData.dom.container.removeClass("-hide");
-		},200);
+		},1);
 	},
 
 	selectChart: function(pChartsData, pChartId){
