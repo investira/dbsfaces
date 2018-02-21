@@ -270,7 +270,10 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	private void pvEncodeDataTableHeader(FacesContext pContext, DBSDataTable pDataTable, ResponseWriter pWriter) throws IOException {
 		boolean xTemTitulo = false;
 		//Verifica se possui alguma coluna com título
-		for (UIComponent xC : pDataTable.getChildren()){
+		UIComponent xParent = DBSFaces.getParentFirstChild(pDataTable, DBSDataTableColumn.class);
+		if (xParent == null) {return;}
+
+		for (UIComponent xC : xParent.getChildren()){
 			if (xC instanceof DBSDataTableColumn){
 				DBSDataTableColumn xDTC = (DBSDataTableColumn) xC;
 				UIComponent xHeader = xDTC.getFacet(DBSDataTable.FACET_HEADER);
@@ -286,7 +289,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 				pWriter.startElement("tr", pDataTable);
 					//Colunas do usuário
 					pvConfigDataTableColumnsStyleClass(pContext, pDataTable);
-					for (UIComponent xC : pDataTable.getChildren()){
+					for (UIComponent xC : xParent.getChildren()){
 						if (xC instanceof DBSDataTableColumn){
 							DBSDataTableColumn xDTC = (DBSDataTableColumn) xC;
 							if (xDTC.isRendered()){
@@ -401,11 +404,14 @@ public class DBSDataTableRenderer extends DBSRenderer {
 					
 					//Encode das colunas----------------------------------
 					pvConfigDataTableColumnsStyleClass(pContext, pDataTable);
-					for (UIComponent xC : pDataTable.getChildren()){
-						if (xC instanceof DBSDataTableColumn){
-							DBSDataTableColumn xDTC = (DBSDataTableColumn) xC;
-							if (xDTC.isRendered()){
-								pvEncodeColumnBody(pContext, pDataTable, pWriter, xDTC);
+					UIComponent xParent = DBSFaces.getParentFirstChild(pDataTable, DBSDataTableColumn.class);
+					if (xParent != null) {
+						for (UIComponent xC : xParent.getChildren()){
+							if (xC instanceof DBSDataTableColumn){
+								DBSDataTableColumn xDTC = (DBSDataTableColumn) xC;
+								if (xDTC.isRendered()){
+									pvEncodeColumnBody(pContext, pDataTable, pWriter, xDTC);
+								}
 							}
 						}
 					}
@@ -428,33 +434,35 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	 * @throws IOException
 	 */
 	private void pvEncodeCSS(UIComponent pComponent, ResponseWriter pWriter, String pClientId) throws IOException {
+   		UIComponent xParent = DBSFaces.getParentFirstChild(pComponent, DBSDataTableColumn.class);
+		if (xParent == null) {return;}
 		DBSFaces.encodeStyleTagStart(pComponent, pWriter);
         	Integer xI = 0;
         	String	xCSS = "";
         	//Fixa o tamanho da cada coluna
-			for (UIComponent xC : pComponent.getChildren()){
-				if (xC instanceof DBSDataTableColumn){
-					DBSDataTableColumn xDTC = (DBSDataTableColumn) xC;
-					//Não cria css para a primeira e última coluna, pois foram criada automaticamente(não fazem parte das colunas criadas pelo usuário) para controle
-					if (pvIsUserColumn(xDTC)){
-						xI++;
-						if (!DBSObject.isEmpty(xDTC.getWidth())){
-							String xUserStyle = "";
-							if (xDTC.getStyle()!= null){
-								xUserStyle = xDTC.getStyle();
-							}
-							//Define a largura da coluna
-							xCSS += "#" + DBSFaces.convertToCSSId(pClientId) + " > .-container > .-content > table > * > tr > ." + DBSFaces.getDataTableDataColumnStyleClass(xI.toString(), "") + "{"  +
-									 "width:" + xDTC.getWidth() + ";"  +
-									 "min-width:" + xDTC.getWidth() + ";"  +
-									 "max-width:"  + xDTC.getWidth() + ";"  +
-									 xUserStyle +
-									"}\n";
+    		for (UIComponent xC : xParent.getChildren()){
+			if (xC instanceof DBSDataTableColumn){
+				DBSDataTableColumn xDTC = (DBSDataTableColumn) xC;
+				//Não cria css para a primeira e última coluna, pois foram criada automaticamente(não fazem parte das colunas criadas pelo usuário) para controle
+				if (pvIsUserColumn(xDTC)){
+					xI++;
+					if (!DBSObject.isEmpty(xDTC.getWidth())){
+						String xUserStyle = "";
+						if (xDTC.getStyle()!= null){
+							xUserStyle = xDTC.getStyle();
 						}
+						//Define a largura da coluna
+						xCSS += "#" + DBSFaces.convertToCSSId(pClientId) + " > .-container > .-content > table > * > tr > ." + DBSFaces.getDataTableDataColumnStyleClass(xI.toString(), "") + "{"  +
+								 "width:" + xDTC.getWidth() + ";"  +
+								 "min-width:" + xDTC.getWidth() + ";"  +
+								 "max-width:"  + xDTC.getWidth() + ";"  +
+								 xUserStyle +
+								"}\n";
 					}
 				}
 			}
-			pWriter.write(xCSS);
+		}
+		pWriter.write(xCSS);
 		DBSFaces.encodeStyleTagEnd(pWriter);	
 	}
 
@@ -484,6 +492,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	 */
 	private void pvEncodeColumnHeader(FacesContext pContext, DBSDataTable pDataTable, ResponseWriter pWriter, DBSDataTableColumn pColumn) throws IOException{
 		UIComponent xHeader = pColumn.getFacet(DBSDataTable.FACET_HEADER);
+		if (xHeader == null){return;}
 		pvEncodeColumn(pContext, pDataTable, pWriter, pColumn, pColumn.getStyleClass(), xHeader);
 	}
 
@@ -567,7 +576,10 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	 */
 	private static void pvConfigDataTableColumnsStyleClass(FacesContext pContext, DBSDataTable pDataTable){
 		Integer xI = 0;
-		for (UIComponent xC : pDataTable.getChildren()){
+		UIComponent xParent = DBSFaces.getParentFirstChild(pDataTable, DBSDataTableColumn.class);
+		if (xParent == null) {return;}
+
+		for (UIComponent xC : xParent.getChildren()){
 			if (xC instanceof DBSDataTableColumn){
 				DBSDataTableColumn xDTC = (DBSDataTableColumn) xC;
 				if (pvIsUserColumn(xDTC)){
@@ -666,11 +678,14 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	 * @return
 	 */
 	private boolean pvHasSortableColumns(DBSDataTable pDataTable){
-		for (UIComponent xC : pDataTable.getChildren()){
-			if (xC instanceof DBSDataTableColumn){
-				DBSDataTableColumn xDTC = (DBSDataTableColumn) xC;
-				if (xDTC.getSortable()){
-					return true;
+		UIComponent xParent = DBSFaces.getParentFirstChild(pDataTable, DBSDataTableColumn.class);
+		if (xParent != null) {
+			for (UIComponent xC : xParent.getChildren()){
+				if (xC instanceof DBSDataTableColumn){
+					DBSDataTableColumn xDTC = (DBSDataTableColumn) xC;
+					if (xDTC.getSortable()){
+						return true;
+					}
 				}
 			}
 		}
