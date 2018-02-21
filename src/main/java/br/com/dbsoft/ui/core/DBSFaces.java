@@ -656,15 +656,43 @@ public class  DBSFaces {
 	 * @return
 	 */
 	public static UIForm getForm(UIComponent pComponent) {
+		return getFirstParent(pComponent, UIForm.class);
+//		RenderKitUtils.getFormClientId(pComponent, pContext); //Anternativa ao código acima. Não testei. Ricardo
+	}	
+
+	/**
+	 * Retorna o primeiro Parent que encontrar que seja da class informada.
+	 * @param pComponent
+	 * @param pClass
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> T getFirstParent(UIComponent pComponent, Class<T> pClass) {
 		UIComponent xParent = pComponent.getParent();
-		while(xParent != null) {
-			if(xParent instanceof UIForm) {
-				return (UIForm) xParent;
+		while (xParent != null) {
+			if (xParent.getClass().isAssignableFrom(pClass)) {
+				return (T) xParent;
             }
 			xParent = xParent.getParent();
 		}
 		return null;
-//		RenderKitUtils.getFormClientId(pComponent, pContext); //Anternativa ao código acima. Não testei. Ricardo
+	}	
+	
+	/**
+	 * Retorna o Parent do primeiro Child que encontrar que seja da class informada.
+	 * @param pComponent
+	 * @param pClass
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> T getParentFirstChild(UIComponent pComponent, Class<T> pClass) {
+		for (UIComponent xC : pComponent.getChildren()){
+			if (xC.getClass().isAssignableFrom(pClass)) {
+				return (T) xC.getParent();
+            }
+			return getParentFirstChild(xC, pClass);
+		}
+		return null;
 	}	
 	
 	public static void showComponentParent(UIComponent pComponent, Integer pI){
