@@ -876,6 +876,7 @@ dbsfaces.chart = {
 	addChartValue: function(pChart, pValue, pLabel, pDisplayValue, pTooltip, pColor, pStyleClass, pStyle){
 		if (pChart == null || typeof pChart == "undefined" || pChart.length == 0){return;}
 		var xChartData = pChart.data("data");
+		if (typeof xChartData == "undefined"){return;}
 		if (typeof pValue == "undefined" || pValue == null){
 			return;
 		}
@@ -910,12 +911,14 @@ dbsfaces.chart = {
 	
 	refresh: function(pChart){
 		var xChartData = pChart.data("data");
+		if (typeof xChartData == "undefined"){return;}
 		dbsfaces.chart.pvInitializeChartValues(xChartData);
 		dbsfaces.chart.pvInitializeLayout(xChartData); 
 	},
 	
 	clear: function(pChart){
 		var xChartData = pChart.data("data");
+		if (typeof xChartData == "undefined"){return;}
 		xChartData.originalValues = [];
 		if (xChartData.dom.path != null){xChartData.dom.path.remove();}
 	}

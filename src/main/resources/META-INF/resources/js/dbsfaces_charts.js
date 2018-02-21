@@ -47,6 +47,7 @@ dbsfaces.charts = {
 			showLabel : pCharts.hasClass("-showLabel"),
 			showValue : pCharts.hasClass("-showValue"),
 			showDelta : pCharts.hasClass("-showDelta"),
+			showAnimation : pCharts.hasClass("-showAnimation"),
 			width : null, //Largura do espaço que contém o gráfico incluindo sem as colunas e linhas de informação
 			height : null, //Altura do espaço que contém o grático incluindo sem as colunas e linhas de informação
 			scaleX : null, //Fator de proporção dos ponto do gráfico com os ponto em tela
@@ -299,10 +300,12 @@ dbsfaces.charts = {
 				
 				//Configura posição inicial dos controles do delta 
 				dbsfaces.charts.pvInitializeDrawDelta(pChartsData, pChartData);
-				if (pChartsData.type == "line"){
-//					var xTotalLenght = pChartData.dom.path[0].getTotalLength();
-//					pChartData.dom.path.css("stroke-dasharray", xTotalLenght)
-//									   .css("stroke-dashoffset", xTotalLenght);
+				//Configura animação
+				if (pChartsData.type == "line" 
+				 && pChartsData.showAnimation){
+					var xTotalLenght = pChartData.dom.path[0].getTotalLength();
+					pChartData.dom.path.css("stroke-dasharray", xTotalLenght)
+									   .css("stroke-dashoffset", xTotalLenght);
 					//empty
 				}else if (pChartsData.type == "pie"){
 					//Desenha relacionamentos
@@ -530,8 +533,8 @@ dbsfaces.charts = {
 		xPath = null;
 		var xLabelWidth;
 		var xLabelHeight;
-		var xLabelBoxHeight;
-		var xLabelBoxWidth;
+		var xLabelBoxHeight = 0;
+		var xLabelBoxWidth = 0;
 		var xValueWidth;
 		var xValueHeight;
 		var xValueBoxHeight;
@@ -947,6 +950,8 @@ dbsfaces.charts = {
 		if (pCharts == null || typeof pCharts == "undefined" || pCharts.length == 0){return;}
 
 		var xChartsData = pCharts.data("data");
+		if (typeof xChartsData == "undefined"){return;}
+
 		xChartsData.dom.container.addClass("-hide");
 		clearTimeout(xChartsData.refreshTimeout);
 		xChartsData.refreshTimeout = setTimeout(function(){
@@ -956,6 +961,12 @@ dbsfaces.charts = {
 			dbsfaces.charts.pvInitializeAnalizeValues(xChartsData);
 			dbsfaces.charts.pvInitializeDraw(xChartsData);
 			xChartsData.dom.container.removeClass("-hide");
+			if (xChartsData.showAnimation){
+				xChartsData.dom.charts.removeClass("-showAnimation");
+				setTimeout(function(){
+					xChartsData.dom.charts.addClass("-showAnimation");
+				},0);
+			}
 		},1);
 	},
 

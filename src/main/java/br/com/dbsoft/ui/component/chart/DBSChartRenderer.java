@@ -22,6 +22,7 @@ import br.com.dbsoft.ui.component.charts.DBSCharts.TYPE;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
 import br.com.dbsoft.util.DBSJson;
+import br.com.dbsoft.util.DBSObject;
 
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSChart.RENDERER_TYPE)
@@ -31,13 +32,15 @@ public class DBSChartRenderer extends DBSRenderer {
 	public void encodeBegin(FacesContext pContext, UIComponent pComponent) throws IOException {
 		if (!pComponent.isRendered()){return;}
 		DBSChart xChart = (DBSChart) pComponent;
-		ResponseWriter 			xWriter = pContext.getResponseWriter();
-		String 					xClass = CSS.CHART.MAIN + CSS.THEME.FLEX;
-		DBSCharts				xCharts;
+		ResponseWriter 		xWriter = pContext.getResponseWriter();
+		String 				xClass = CSS.CHART.MAIN + CSS.THEME.FLEX;
+		DBSCharts			xCharts = null;
 		TYPE					xType;
-		if (!(xChart.getParent() instanceof DBSCharts)){return;}
 
-		xCharts = (DBSCharts) xChart.getParent();
+		//Procura pelo parent DSCharts;
+		xCharts = DBSFaces.getFirstParent(xChart, DBSCharts.class);
+		if (xCharts == null) {return;}
+
 		xType = TYPE.get(xCharts.getType());
 		xClass += xType.getStyleClass();
 		
@@ -52,7 +55,6 @@ public class DBSChartRenderer extends DBSRenderer {
 			xClass += " -showDelta ";
 		}
 
-		
 		String xClientId = xChart.getClientId(pContext);
 
 		xWriter.startElement("div", xChart);
@@ -143,7 +145,11 @@ public class DBSChartRenderer extends DBSRenderer {
 		}else{
 			xList = pvGetListFromChildren(pChart);
 		}
-		return DBSJson.toJsonTree(xList, List.class).toString();
+		if (xList == null) {
+			return "[]";
+		}else {
+			return DBSJson.toJsonTree(xList, List.class).toString();
+		}
 	}
 	
 	/**
@@ -172,17 +178,29 @@ public class DBSChartRenderer extends DBSRenderer {
 		int xRowCount = pChart.getRowCount(); 
 		pChart.setRowIndex(-1);
 		DBSChartValue xChartValue = null;
-		for (UIComponent xC : pChart.getChildren()){
+		UIComponent xParent = DBSFaces.getParentFirstChild(pChart, DBSChartValue.class);
+		for (UIComponent xC : xParent.getChildren()){
 			if (xC instanceof DBSChartValue){
 				xChartValue = (DBSChartValue) xC;
 		        for (int xRowIndex = 0; xRowIndex < xRowCount; xRowIndex++) {		
-		        	pChart.setRowIndex(xRowIndex);
+		        		pChart.setRowIndex(xRowIndex);
 					pvAddChartValue(xList, xChartValue);
 		        }
 		        pChart.setRowIndex(-1);
 				break;
 			}
 		}
+//		for (UIComponent xC : pChart.getChildren()){
+//			if (xC instanceof DBSChartValue){
+//				xChartValue = (DBSChartValue) xC;
+//		        for (int xRowIndex = 0; xRowIndex < xRowCount; xRowIndex++) {		
+//		        		pChart.setRowIndex(xRowIndex);
+//					pvAddChartValue(xList, xChartValue);
+//		        }
+//		        pChart.setRowIndex(-1);
+//				break;
+//			}
+//		}
         return xList;
 	} 
 
@@ -195,12 +213,20 @@ public class DBSChartRenderer extends DBSRenderer {
 	private List<IDBSChartValue> pvGetListFromChildren(DBSChart pChart) throws IOException {
 		List<IDBSChartValue> xList = new ArrayList<IDBSChartValue>();
 		DBSChartValue xChartValue = null;
-		for (UIComponent xC : pChart.getChildren()){
+		UIComponent xParent = DBSFaces.getParentFirstChild(pChart, DBSChartValue.class);
+		if (xParent == null) {return null;}
+		for (UIComponent xC : xParent.getChildren()){
 			if (xC instanceof DBSChartValue){
 				xChartValue = (DBSChartValue) xC;
 				pvAddChartValue(xList, xChartValue);
 			}
 		}
+//		for (UIComponent xC : pChart.getChildren()){
+//			if (xC instanceof DBSChartValue){
+//				xChartValue = (DBSChartValue) xC;
+//				pvAddChartValue(xList, xChartValue);
+//			}
+//		}
         return xList;
 	} 
 
@@ -208,7 +234,12 @@ public class DBSChartRenderer extends DBSRenderer {
     	if (pSource.isRendered()){
     		IDBSChartValue xValue = new DBSDadosChartValue();
     		xValue.setValue(pSource.getValue());
-    		xValue.setLabel(pSource.getLabel());
+    		//Se não existir label, força que seja o index da lista
+		if (DBSObject.isEmpty(pSource.getLabel())) {
+			xValue.setLabel(new Integer(pList.size()).toString());
+		}else {
+			xValue.setLabel(pSource.getLabel());
+		}
     		xValue.setDisplayValue(pSource.getDisplayValue());
     		xValue.setTooltip(pSource.getTooltip());
     		xValue.setColor(pSource.getColor());

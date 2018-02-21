@@ -184,11 +184,12 @@
 }
 
 .dbs_chart.-line{
-    opacity:0.7;	
+    opacity:0.6;	
 }
 
 .dbs_chart.-line.-selected{
     opacity:1;	
+    
 }
 
 .dbs_chart.-line.-selected.-moving{
@@ -204,27 +205,29 @@
 /* 	pointer-events: bounding-box; */
 }
 
+
+
 .dbs_chart.-line > .-chart > .-path{
 	pointer-events: bounding-box;
 	cursor: pointer;
 	stroke-linecap: round;
     stroke-linejoin: round;
     fill: none;
-    stroke-width: .2em;
     stroke: currentColor;
 /*     shape-rendering: geometricprecision; */
-/* 	stroke-dashoffset: 0; */
-/*     -webkit-transition: stroke-dashoffset .3s ease; */
-/*     -moz-transition: stroke-dashoffset .3s ease; */
-/*     transition: stroke-dashoffset .3s ease; */
+    stroke-width: .15em;
+    opacity:0.6;	
 }
-
-.dbs_chart.-line.-showDelta > .-chart > .-path{
-	opacity:0.7;
+.dbs_chart.-line.-selected > .-chart > .-path{
+    stroke-width: .2em;
+    opacity:1;	
 }
-.dbs_chart.-line.-showDelta.-selected.-moving > .-chart > .-path{
-	opacity:1;
-}
+/* .dbs_chart.-line.-showDelta:not(.-selected) > .-chart > .-path{ */
+/* 	opacity:0.7; */
+/* } */
+/* .dbs_chart.-line.-showDelta.-selected.-moving > .-chart > .-path{ */
+/* 	opacity:1; */
+/* } */
 
 .dbs_chart.-line > .-chart > .-delta{
 	visibility: hidden;

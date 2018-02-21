@@ -46,6 +46,9 @@ public class DBSChartsRenderer extends DBSRenderer {
 		    (xCharts.getShowDelta() == null && TYPE.get(xCharts.getType()) == TYPE.PIE)){
 			xClass += " -showDelta ";
 		}
+		if (xCharts.getShowAnimation()){
+			xClass += " -showAnimation ";
+		}
 
 		String xClientId = xCharts.getClientId(pContext);
 		xWriter.startElement("div", xCharts);

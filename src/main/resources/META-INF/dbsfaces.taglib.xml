@@ -956,14 +956,6 @@
 		</attribute>
 		<attribute>
 			<description>
-                Método que será chamado para atualizar efetuar sort após o usuário ter selecionado a coluna.
-            </description>
-			<name>sortAction</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description>
                 Método que será chamadado após usuário dar duploclick na linha que deseja selecionar
             </description>
 			<name>viewOneAction</name>
@@ -1028,7 +1020,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Método que será chamado após usuário seleciona uma coluna par ser ordernada. Método receber recever uma String. O id da coluna será passado como parametro para o método.
+                Método que será chamado após usuário seleciona uma coluna que será ordernada. Método receber uma String. O id da coluna será passado como parametro para o método.
             </description>
 			<name>sortAction</name>
 			<required>false</required>
@@ -3763,6 +3755,14 @@
 		</attribute>
 		<attribute>
 			<description>
+                Indica se será exibido a animação logo o início da exibição dos gr. O default é false.
+            </description>
+			<name>showAnimation</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
                 Lista de IDBSChartDelta para seleção rápida do intervalo do delta
             </description>
 			<name>deltaList</name>
@@ -3775,7 +3775,7 @@
 			O padrão é 1;
             </description>
 			<name>pieInternalCircleFator</name>
-			<required>true</required>
+			<required>false</required>
 			<type>java.lang.Double</type>
 		</attribute>
 	</tag>

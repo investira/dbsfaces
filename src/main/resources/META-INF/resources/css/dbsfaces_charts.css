@@ -104,11 +104,7 @@
     box-sizing: border-box;
 }
 
-.dbs_charts.-hover > .-container > .-charts > .dbs_chart.-bar:not(.-selected){
-	stroke-opacity: 0.1;
-}
-
-/* .dbs_charts > .-container > .-charts > .-container.-hide{ */
+./* .dbs_charts > .-container > .-charts > .-container.-hide{ */
 /* 	opacity: 0; */
 /* } */
 
@@ -129,3 +125,15 @@
 	font-size: .7em;
 	opacity:0.8;
 }
+
+.dbs_charts.-showAnimation > .-container:not(.-hide) .dbs_chart.-line > .-chart > .-path{
+	stroke-dashoffset: 0 !important;
+    -webkit-transition: stroke-dashoffset 1s ease-out;
+    -moz-transition: stroke-dashoffset 1s ease-out;
+    transition: stroke-dashoffset 1s ease-out;
+}
+
+dbs_charts.-hover > .-container > .-charts > .dbs_chart.-bar:not(.-selected){
+	stroke-opacity: 0.1;
+}
+

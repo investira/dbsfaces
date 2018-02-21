@@ -29,6 +29,7 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 		showValue,
 		showLabel,
 		showDelta,
+		showAnimation,
 		groupId,
 		pieInternalCircleFator,
 		deltaList;
@@ -150,6 +151,14 @@ public class DBSCharts extends DBSUIInput implements NamingContainer{
 	public void setShowDelta(Boolean pShowDelta) {
 		getStateHelper().put(PropertyKeys.showDelta, pShowDelta);
 		handleAttribute("showDelta", pShowDelta);
+	} 
+
+	public Boolean getShowAnimation() {
+		return (Boolean) getStateHelper().eval(PropertyKeys.showAnimation, false);
+	}
+	public void setShowAnimation(Boolean pShowAnimation) {
+		getStateHelper().put(PropertyKeys.showAnimation, pShowAnimation);
+		handleAttribute("showAnimation", pShowAnimation);
 	} 
 
 	/**
