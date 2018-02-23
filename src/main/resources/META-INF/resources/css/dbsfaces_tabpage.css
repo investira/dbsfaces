@@ -12,7 +12,7 @@
 .dbs_tabPage.-selected{
 /* 	display:table !important;	10/08/2013 - Comentado por não funcionar a height 100% no dbscom:report */
 	visibility: visible; 
-	position:relative;
+	position:relative !important;
 }
 
 
