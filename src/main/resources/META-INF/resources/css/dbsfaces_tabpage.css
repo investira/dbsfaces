@@ -1,6 +1,6 @@
 .dbs_tabPage{
 	visibility: hidden;
-	position: absolute;
+	position: absolute !important;
 /* 	display: none; */
 /* 	overflow: visible; */
 	overflow: auto;
