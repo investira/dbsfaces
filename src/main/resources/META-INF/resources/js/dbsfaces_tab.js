@@ -13,6 +13,7 @@ dbs_tab = function(pId) {
 	xTabData.dom.caption.on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function(e){
 		$(this).children("a").css("opacity",1);
 		$(this).children(".loading_container").remove();
+		xTabData.dom.tabPage = xTabData.dom.tabPages.find("> .-content > .dbs_tabPage");
 	});
 	
 	$(window).resize(function(e){
