@@ -13,7 +13,7 @@ import br.com.dbsoft.ui.core.DBSFaces;
 public class DBSSlider extends DBSUIInput implements NamingContainer {
 
 	public final static String COMPONENT_TYPE = DBSFaces.DOMAIN_UI_COMPONENT + "." + DBSFaces.ID.SLIDER;
-	public final static String RENDERER_TYPE = COMPONENT_TYPE;
+	public final static String RENDERER_TYPE = COMPONENT_TYPE; 
 	
 	protected enum PropertyKeys {
 		type,
