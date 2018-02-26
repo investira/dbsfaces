@@ -661,13 +661,19 @@ dbsfaces.slider = {
 		var xSliderData = pSlider.data("data");
 		if ((typeof pValue == "undefined") || pValue.length == 0){return;}
 		dbsfaces.slider.pvSetValue(xSliderData, pValue);
-		dbsfaces.slider.pvTriggerChange(xSliderData)
+		dbsfaces.slider.pvTriggerChange(xSliderData);
 	},
 	
 	setTextValue: function(pSlider, pValue){
 		var xSliderData = pSlider.data("data");
 		if ((typeof pValue == "undefined") || pValue.length == 0){return;}
 		dbsfaces.slider.pvEncodeTextValue(xSliderData, pValue);
+	},
+
+	setLabel: function(pSlider, pValue){
+		var xSliderData = pSlider.data("data");
+		if ((typeof pValue == "undefined") || pValue.length == 0){return;}
+		xSliderData.dom.label.text(pValue);
 	},
 
 	pvSetValue: function(pSliderData, pValue){
