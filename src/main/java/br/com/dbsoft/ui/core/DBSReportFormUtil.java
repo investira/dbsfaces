@@ -140,11 +140,18 @@ public class DBSReportFormUtil {
 				
 				String xDate = DBSFormat.getFormattedDateCustom(DBSDate.getNowTimestamp(),"yyyyMMddhhmmss"); 
 				String xReportFileName = pReportFileName + xDate + DBSNumber.getOnlyNumber(DBSHttp.getHttpServletRequest().getRemoteAddr().toString());
+				
 				//Gera o relatório em formato PDF e salva na pasta web
-
-				JasperExportManager.exportReportToPdfFile(pJasperPrint, pvGetReportFilePathWeb(DBSFile.getFileNamePDF(xReportFileName)));
-				//Retorna caminho completo do arquivo gerado
-				return pvGetReportRelativeFilePath(DBSFile.getFileNamePDF(xReportFileName));
+				if (DBSFile.mkDir(pvGetReportFilePathWeb(""))) {
+					String xPDFFile = pvGetReportFilePathWeb(DBSFile.getFileNamePDF(xReportFileName));
+					JasperExportManager.exportReportToPdfFile(pJasperPrint, xPDFFile);
+					//Retorna caminho completo do arquivo gerado
+					return pvGetReportRelativeFilePath(DBSFile.getFileNamePDF(xReportFileName));
+				} else {
+					wLogger.error("Erro ao gerar relatório " + pReportFileName + ": arquivo não criado.");
+					DBSMessagesFacesContext.sendMessage(MESSAGE_TYPE.ERROR, "Erro ao gerar relatório: arquivo não criado.", "mensagemErro");
+				}
+				
 			}
 		} catch (JRException e) {
 			wLogger.error("Erro ao gerar relatório " + pReportFileName + ": " + e);
