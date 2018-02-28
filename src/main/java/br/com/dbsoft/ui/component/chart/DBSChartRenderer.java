@@ -11,17 +11,17 @@ import javax.faces.render.FacesRenderer;
 
 import com.sun.faces.renderkit.RenderKitUtils;
 
+import br.com.dbsoft.json.DBSJson;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes;
 import br.com.dbsoft.ui.component.DBSPassThruAttributes.Key;
-import br.com.dbsoft.ui.component.chartvalue.DBSChartValue;
-import br.com.dbsoft.ui.component.chartvalue.DBSDadosChartValue;
-import br.com.dbsoft.ui.component.chartvalue.IDBSChartValue;
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.charts.DBSCharts;
 import br.com.dbsoft.ui.component.charts.DBSCharts.TYPE;
+import br.com.dbsoft.ui.component.chartvalue.DBSChartValue;
+import br.com.dbsoft.ui.component.chartvalue.DBSDadosChartValue;
+import br.com.dbsoft.ui.component.chartvalue.IDBSChartValue;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
-import br.com.dbsoft.util.DBSJson;
 import br.com.dbsoft.util.DBSObject;
 
 
@@ -148,7 +148,8 @@ public class DBSChartRenderer extends DBSRenderer {
 		if (xList == null) {
 			return "[]";
 		}else {
-			return DBSJson.toJsonTree(xList, List.class).toString();
+//			return DBSJson.toJsonTree(xList, List.class).toString();
+			return DBSJson.toJson(xList).toString();
 		}
 	}
 	
