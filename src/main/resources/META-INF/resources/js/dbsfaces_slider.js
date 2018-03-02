@@ -817,7 +817,8 @@ dbsfaces.slider = {
 	},
 	
 	pvSetInputValue: function(pSliderData, pInputValue){
-		if (pSliderData.dom.input == null){return;}
+		if (pSliderData.dom.input == null
+		 || typeof pInputValue == "undefined"){return;}
 		var xFormattedValue = pInputValue;
 		//Salva como string
 		if (pSliderData.type == "v"
