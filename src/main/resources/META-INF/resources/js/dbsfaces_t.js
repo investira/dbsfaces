@@ -49,6 +49,7 @@ dbsfaces.t.accordion = {
 	select: function(pElement){
 		pElement.siblings().addClass("-hide").removeClass("-selected");
 		pElement.removeClass("-hide").addClass("-selected");
+		pElement.trigger("select");
 //		dbsfaces.ui.cssAllBrowser(xItem, "transition-timing-function", "ease-out");
 	},
 
