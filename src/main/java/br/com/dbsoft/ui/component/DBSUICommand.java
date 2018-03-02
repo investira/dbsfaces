@@ -22,6 +22,7 @@ import br.com.dbsoft.ui.core.DBSFaces;
 	// Estas libraries serão carregadas junto com o projeto
 	@ResourceDependency(library = "css", name = "dbsfaces.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_a.css", target = "head"),
+	@ResourceDependency(library = "css", name = "dbsfaces_t.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_theme.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_accordion.css", target = "head"),
 	@ResourceDependency(library = "css", name = "dbsfaces_button.css", target = "head"),
@@ -74,6 +75,7 @@ import br.com.dbsoft.ui.core.DBSFaces;
 	@ResourceDependency(library = "js", name = "dbsmask.js", target = "head"),
 	@ResourceDependency(library = "javax.faces", name = "jsf.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces.js", target = "head"),
+	@ResourceDependency(library = "js", name = "dbsfaces_t.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_accordion.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_button.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_calendar.js", target = "head"),
@@ -112,8 +114,9 @@ import br.com.dbsoft.ui.core.DBSFaces;
 	@ResourceDependency(library = "js", name = "dbsfaces_quickinfo.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_chartvalue.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_charts.js", target = "head"),
+	@ResourceDependency(library = "js", name = "dbsfaces_chart.js", target = "head"),
 	@ResourceDependency(library = "js", name = "dbsfaces_pagedsearch.js", target = "head"),
-	@ResourceDependency(library = "js", name = "dbsfaces_chart.js", target = "head")
+	@ResourceDependency(library = "js", name = "dbsinvest.js", target = "head")
 //	@ResourceDependency(library = "js", name = "eventsource.js", target = "head")
 })
 public abstract class DBSUICommand extends UICommand implements IDBSUIComponentBase, ClientBehaviorHolder, SystemEventListener{
