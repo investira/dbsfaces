@@ -169,6 +169,7 @@ public class  DBSFaces {
 	    public static final String LOADING = "loading";
 	    public static final String IMG = "img";
 	    public static final String DIV = "div";
+	    public static final String DIVNC = "divnc";
 	    public static final String NAV = "nav";
 	    public static final String NAVMESSAGE = "navmessage";
 	    public static final String MENU = "menu";

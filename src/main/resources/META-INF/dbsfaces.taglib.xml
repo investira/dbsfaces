@@ -3630,6 +3630,69 @@
 		</attribute>
 	</tag>
 	<tag>
+		<tag-name>divnc</tag-name>
+		<component>
+			<component-type>br.com.dbsoft.ui.component.divnc</component-type>
+			<handler-class />
+		</component>
+		<attribute>
+			<description>
+                Identificador único do componente.
+            </description>
+			<name>id</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Class CSS
+            </description>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                Style CSS 
+            </description>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                selecionavel 
+            </description>
+			<name>selectable</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+                rendered
+            </description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+                Indica se página será carregada via ajax. Dispara evento ajax 'loaded' após finalizado a load.
+            </description>
+			<name>ajax</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+                Nome da tag que erá utilizado. O padrão é DIV, podendo ser outros como NAV, SECTION, etc.
+            </description>
+			<name>tagName</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
+	<tag>
 		<tag-name>charts</tag-name>
 		<component>
 			<component-type>br.com.dbsoft.ui.component.charts</component-type>
