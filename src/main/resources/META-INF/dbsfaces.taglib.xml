@@ -4330,6 +4330,14 @@
 		</attribute>
 		<attribute>
 			<description>
+            		Caption StyleClass
+            </description>
+			<name>captionStyleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
                 Style CSS 
             </description>
 			<name>style</name>

@@ -132,6 +132,7 @@
 /* 	height: unset; */
 }
 .dbs_tab[type="acc"] > .-container > .-captions > .-container > .-caption.-hide > .dbs_tabCaption{
+	pointer-events: none;
 }
 .dbs_tab[type="acc"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > a{
     position: relative;

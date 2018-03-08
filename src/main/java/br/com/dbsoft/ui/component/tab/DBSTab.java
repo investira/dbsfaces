@@ -22,7 +22,6 @@ public class DBSTab extends DBSUIOutput implements NamingContainer, ClientBehavi
 		type,
 		selectedTabPage,
 		showTabPageOnClick,
-		tabPages,
 		captionAlignment;
 
 		String toString;
@@ -141,15 +140,6 @@ public class DBSTab extends DBSUIOutput implements NamingContainer, ClientBehavi
 	public void setShowTabPageOnClick(Boolean pShowTabPageOnClick) {
 		getStateHelper().put(PropertyKeys.showTabPageOnClick, pShowTabPageOnClick);
 		handleAttribute("showTabPageOnClick", pShowTabPageOnClick);
-	}
-
-	public DBSTabPages getTabPages() {
-		return (DBSTabPages) getStateHelper().eval(PropertyKeys.tabPages, null);
-	}
-	
-	public void setTabPages(DBSTabPages pTabPages) {
-		getStateHelper().put(PropertyKeys.tabPages, pTabPages);
-		handleAttribute("tabPages", pTabPages);
 	}
 
 	public String getCaptionAlignment() {

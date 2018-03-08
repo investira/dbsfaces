@@ -20,16 +20,6 @@ public class DBSTabPageRenderer extends DBSRenderer {
 	public void decode(FacesContext pContext, UIComponent pComponent) {
 		if (!pComponent.isRendered()){return;}
 		decodeBehaviors(pContext, pComponent);
-//		DBSTabPage xTab = (DBSTabPage) pComponent;
-		/*recupera o nome do objeto que fez o submit*/
-		//DBSFaces.showMapContent(pContext.getExternalContext().getRequestParameterMap(), 0);
-//		String xObjName  = pContext.getExternalContext().getRequestParameterMap().get(DBSFaces.PARTIAL_SOURCE_PARAM);
-//		if (xObjName!=null){
-//			if (xTab.getTabPages()!=null){//Se houver controle dinamico
-//				xTab.getTabPages().removeTabPageUsingClientId(xObjName); //Remove a página se encontrar alguma com o nome informado
-//			}
-//		}
-		
 	}
 	
     @Override

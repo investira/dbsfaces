@@ -152,7 +152,7 @@ public class DBSTabRenderer extends DBSRenderer {
 									}
 									DBSFaces.encodeAttribute(pWriter, "class", xClass);	
 									pWriter.startElement("div", pTab);  
-										DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
+										DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER + xTabPage.getCaptionStyleClass());
 										UIComponent xCaption = xTabPage.getFacet("caption");
 										if (xCaption!=null) {
 											xCaption.encodeAll(pContext);

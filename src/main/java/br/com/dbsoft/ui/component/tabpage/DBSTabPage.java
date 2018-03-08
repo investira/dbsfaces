@@ -20,6 +20,7 @@ public class DBSTabPage extends DBSUIComponentBase implements NamingContainer, C
 	protected enum PropertyKeys {
 		caption,
 		captionIconClass,
+		captionStyleClass,
 		style,
 		styleClass,
 		selected,
@@ -43,16 +44,6 @@ public class DBSTabPage extends DBSUIComponentBase implements NamingContainer, C
 		}
 	}
  
-   public DBSTabPage(String pCaption, String pFile, boolean pCloseble, String pCloseAction, String pSelectedAction, String pStyle, String pStyleClass){
-    	this.setCaption(pCaption);
-    	this.setFile(pFile);
-    	this.setCloseble(pCloseble);
-    	this.setCloseAction(pCloseAction);
-    	this.setSelectedAction(pSelectedAction);
-    	this.setStyle(pStyle);
-    	this.setStyleClass(pStyleClass);
-    }
-   
 	public DBSTabPage(){
 		setRendererType(DBSTabPage.RENDERER_TYPE);
     }
@@ -95,6 +86,15 @@ public class DBSTabPage extends DBSUIComponentBase implements NamingContainer, C
 		handleAttribute("captionIconClass", pCaptionIconClass);
 	}	
 	
+	public String getCaptionStyleClass() {
+		return (String) getStateHelper().eval(PropertyKeys.captionStyleClass, "");
+	}
+	
+	public void setCaptionStyleClass(String pCaptionStyleClass) {
+		getStateHelper().put(PropertyKeys.captionStyleClass, pCaptionStyleClass);
+		handleAttribute("captionStyleClass", pCaptionStyleClass);
+	}
+
 	public Boolean getCloseble() {
 		return (Boolean) getStateHelper().eval(PropertyKeys.closeble, false);
 	}
@@ -104,14 +104,14 @@ public class DBSTabPage extends DBSUIComponentBase implements NamingContainer, C
 		handleAttribute("closeble", pCloseble);
 	}	
 
-	public String getFile() {
-		return (String) getStateHelper().eval(PropertyKeys.file, null);
-	}
-	
-	public void setFile(String pFile) {
-		getStateHelper().put(PropertyKeys.file, pFile);
-		handleAttribute("file", pFile);
-	}	
+//	public String getFile() {
+//		return (String) getStateHelper().eval(PropertyKeys.file, null);
+//	}
+//	
+//	public void setFile(String pFile) {
+//		getStateHelper().put(PropertyKeys.file, pFile);
+//		handleAttribute("file", pFile);
+//	}	
 
 	public Boolean getSelected() {
 		return (Boolean) getStateHelper().eval(PropertyKeys.selected, false);
