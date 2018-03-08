@@ -1,20 +1,29 @@
-.dbs_tabPage{
-/* 	visibility: hidden; */
-	opacity: 0;
+.dbs_tabPage[type="acc"]{
+/* 	opacity: 0; */
 	position: absolute !important;
-/* 	display: none; */
-/* 	overflow: visible; */
 	overflow: auto;
 	width:100%;
-/* 	padding: .3em; */
 	height: 100%;
 }
 
-.dbs_tabPage.-selected{
-/* 	display:table !important;	10/08/2013 - Comentado por não funcionar a height 100% no dbscom:report */
-/* 	visibility: visible;  */
+.dbs_tabPage[type="acc"].-selected{
+/* 	opacity: 1; */
+	position:relative !important;
+}
+.dbs_tabPage[type="acc"].-hide{
+	display: none;
+}
+
+.dbs_tabPage[type="tab"]{
+	opacity: 0;
+	position: absolute !important;
+	overflow: auto;
+	width:100%;
+	height: 100%;
+}
+
+.dbs_tabPage[type="tab"].-selected{
 	opacity: 1;
 	position:relative !important;
 }
-
 

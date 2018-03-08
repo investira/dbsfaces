@@ -8,6 +8,9 @@
   -webkit-animation: -kf_spin 2s infinite linear;
   animation: -kf_spin 2s infinite linear;
   display: inline-block;
+  
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .-a_spin_slow{
@@ -15,6 +18,8 @@
   -o-animation: -kf_spin 60s infinite linear;
   -webkit-animation: -kf_spin 60s infinite linear;
   animation: -kf_spin 60s infinite linear;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .-a_loading {
@@ -23,14 +28,18 @@
 	-webkit-animation: -kf_loading 0.5s infinite;
 	animation: -kf_loading 0.5s infinite;
 	display: inline-block;
+  	-webkit-backface-visibility: hidden;
+  	backface-visibility: hidden;
 }
 
 .-a_orbit {
-  -moz-animation: -kf_orbit 2s infinite linear;
-  -o-animation: -kf_orbit 2s infinite linear;
-  -webkit-animation: -kf_orbit 2s infinite linear;
-  animation: -kf_orbit 2s infinite linear;
-  display: inline-block;
+	-moz-animation: -kf_orbit 2s infinite linear;
+	-o-animation: -kf_orbit 2s infinite linear;
+	-webkit-animation: -kf_orbit 2s infinite linear;
+	animation: -kf_orbit 2s infinite linear;
+	display: inline-block;
+  	-webkit-backface-visibility: hidden;
+  	backface-visibility: hidden;
 }
 
 .-a_move_right{
@@ -38,6 +47,8 @@
 	-moz-animation: -kf_move_right 3s infinite linear;
 	-o-animation: -kf_move_right 3s infinite linear;
 	animation: -kf_move_right 3s infinite linear;
+  	-webkit-backface-visibility: hidden;
+  	backface-visibility: hidden;
 }
 
 .-a_sonar:after {
@@ -56,13 +67,17 @@
 	animation: -kf_sonar 3s infinite cubic-bezier(.075,.82,.165,1) 0s both;
 
 	box-sizing: border-box;
+  	-webkit-backface-visibility: hidden;
+  	backface-visibility: hidden;
 }
 
 .-a_quick_pulse {
-  -moz-animation: -kf_quick_pulse 1s 1 cubic-bezier(0.5, 0.05, 0.53, 1.04);
-  -o-animation: -kf_quick_pulse 1s 1 cubic-bezier(0.5, 0.05, 0.53, 1.04);
-  -webkit-animation: -kf_quick_pulse 1s 1 cubic-bezier(0.5, 0.05, 0.53, 1.04);
-  animation: -kf_quick_pulse .2s 1 cubic-bezier(0.5, 0.05, 0.53, 1.04);
+	-moz-animation: -kf_quick_pulse 1s 1 cubic-bezier(0.5, 0.05, 0.53, 1.04);
+	-o-animation: -kf_quick_pulse 1s 1 cubic-bezier(0.5, 0.05, 0.53, 1.04);
+	-webkit-animation: -kf_quick_pulse 1s 1 cubic-bezier(0.5, 0.05, 0.53, 1.04);
+	animation: -kf_quick_pulse .2s 1 cubic-bezier(0.5, 0.05, 0.53, 1.04);
+  	-webkit-backface-visibility: hidden;
+  	backface-visibility: hidden;
 }
 
 /* Keyframes----- */

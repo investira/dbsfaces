@@ -598,8 +598,8 @@ textarea.-th_input-data:FOCUS,
 
 .-th_flex{
     position: relative;
-    display: flex;
     display: -webkit-flex;
+    display: flex;
     
     -webkit-flex-flow: row wrap;
     -moz-flex-flow: row wrap;

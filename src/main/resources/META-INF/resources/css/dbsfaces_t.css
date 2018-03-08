@@ -19,29 +19,30 @@
 }
 
 .-t_accordion{
-    display: block;
-    overflow: hidden;
+	position: relative;
 	height: 100%;
-    width: 100%;
-}
-
-.-t_accordion > div{
 	width: 100%;
-    display: block;
-    position: relative;
-    overflow: hidden;
-    
-	-webkit-transition: left .3s, height .3s, opacity .3s;
-	-moz-transition: left .3s, height .3s, opacity .3s;
-	-o-transition: left .3s, height .3s, opacity .3s;
-	transition: left .3s, height .3s, opacity .3s;
-	left: 100vw;
-	pointer-events: all;
-	opacity: 1;
+}
+.-t_accordion > .-container{
+	position: relative;
+    height: 100%;
+	width: 100%;
+    flex-flow: column nowrap;
+	justify-content: start;
 }
 
-.-t_accordion > div.-hide{
-	height: 0 !important;
-	opacity: 0 !important;
-	pointer-events: none;
+.-t_accordion > .-container > div{
+	position:relative;
+	overflow:hidden;
+	transition: flex-basis .3s linear;
+	flex-grow: 0;
+	flex-basis: 0;
+	pointer-events:auto;
+}
+
+.-t_accordion > .-container > div.-hide{
+/* 	flex-grow: 0; */
+/* 	flex-basis: 0; */
+	padding: 0;
+	margin: 0;
 }

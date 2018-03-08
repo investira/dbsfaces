@@ -4245,6 +4245,20 @@
 		</attribute>
 		<attribute>
 			<description>
+				&lt;span style="font-size:small"&gt;
+				Tipo de tab. Padrão é 'tab'&lt;br/&gt;
+				&lt;ul&gt;
+					&lt;li&gt;tab = tab&lt;/li&gt;
+					&lt;li&gt;acc = accordion&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; </description>
+			<name>type</name>
+			<required>false</required>
+			<type>java.lang.Sting</type>
+		</attribute>
+		
+		<attribute>
+			<description>
                 SelectedTabPage
             </description>
 			<name>selectedTabPage</name>
@@ -4308,6 +4322,14 @@
 		</attribute>
 		<attribute>
 			<description>
+            		Caption IconClass
+            </description>
+			<name>iconClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
                 Style CSS 
             </description>
 			<name>style</name>
@@ -4322,14 +4344,7 @@
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
-		<attribute>
-			<description>
-            	icon Class
-            </description>
-			<name>iconClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
+
 		<attribute>
 			<description>
                 Selected

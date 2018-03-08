@@ -11,7 +11,7 @@ $(document).ready(function(){
 	});
 	
 	//ACCORDION
-	$(".-t_accordion > div").on("mousedown touchstart", function(e){
+	$(".-t_accordion > .-container > div").on("mousedown touchstart", function(e){
 		var xThis = $(this);
 		if (xThis.hasClass("-selected")){
 			dbsfaces.t.accordion.unSelect(xThis);

@@ -1063,7 +1063,16 @@ dbsfaces.util = {
 
 	isBlackBerry: function(){
 		var xNav = navigator.userAgent.toLowerCase();
-		if(xNav.match(/blackberry/i)) {
+		if(xNav.match(/blackberry/i) ||
+		   xNav.match(/bb/i)) {
+			return true;
+		};
+	    return false;
+	},
+	
+	isKindle: function(){
+		var xNav = navigator.userAgent.toLowerCase();
+		if(xNav.match(/KF/i)) {
 			return true;
 		};
 	    return false;
@@ -1072,6 +1081,7 @@ dbsfaces.util = {
 	isMobile: function(){
 	    if (this.isiOS()
 	     || this.isBlackBerry()
+	     || this.isKindle()
 	     || this.isAndroid()){
 	    	return true;
 	    }

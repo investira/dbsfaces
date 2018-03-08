@@ -503,12 +503,14 @@ public class  DBSFaces {
 		public static class TAB
 		{
 			public static final String MAIN = " " + CLASS_PREFIX + ID.TAB + " ";
+			public static final String CAPTION = " " + CLASS_PREFIX + ID.TAB.trim() + "Caption ";
 		}
 
 		public static class TABPAGE
 		{
 			public static final String MAIN = " " + CLASS_PREFIX + ID.TABPAGE + " ";
 		}
+
 
 		public static class ACCORDION
 		{
@@ -1305,6 +1307,10 @@ public class  DBSFaces {
 			xSB.append(pValue.trim());
 			xSB.append(";");
 		}
+		xSB.append(pAtribute.trim());
+		xSB.append(": ");
+		xSB.append(pValue.trim());
+		xSB.append(";");
 		return xSB.toString();
 	}
 	

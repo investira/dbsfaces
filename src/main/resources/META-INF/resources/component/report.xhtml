@@ -39,11 +39,11 @@
 					</dbscom:modalMessages>
 				</c:if>			
 				<dbs:tab id="report_tab" showTabPageOnClick="false" selectedTabPage="#{cc.clientId}:report_tab:#{cc.reportBean.currentTabPage}">
-					<dbs:tabPage id="#{cc.reportBean.tabPageIdFiltros}" rendered="#{not empty cc.facets.filter}" styleClass="-filter" caption="Filtros" iconClass="-i_filter" >
+					<dbs:tabPage id="#{cc.reportBean.tabPageIdFiltros}" rendered="#{not empty cc.facets.filter}" styleClass="-filter" caption="Filtros" captionIconClass="-i_filter" >
 						<f:ajax event="click" listener="#{cc.reportBean.showTabPageFiltros()}" render=":#{cc.form}:#{cc.clientId}" onevent="dbsfaces.onajax" onerror="dbsfaces.onajaxerror" />
 						<cc:renderFacet name="filter"/>
 					</dbs:tabPage>
-					<dbs:tabPage id="#{cc.reportBean.tabPageIdVisualizar}" caption="Visualização" styleClass="-report" iconClass="-i_eye">
+					<dbs:tabPage id="#{cc.reportBean.tabPageIdVisualizar}" caption="Visualização" styleClass="-report" captionIconClass="-i_eye">
 						<f:ajax event="click" listener="#{cc.reportBean.create()}"  execute=":#{cc.form}:#{cc.clientId}" render=":#{cc.form}:#{cc.clientId}" onevent="dbsfaces.onajax" onerror="dbsfaces.onajaxerror"/>
 						<c:if test="#{!cc.reportBean.hasMessage}">
 							<dbs:div id="container" styleClass="-container" style="width:100%; height:100%;">

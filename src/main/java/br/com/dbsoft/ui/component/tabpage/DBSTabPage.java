@@ -19,9 +19,9 @@ public class DBSTabPage extends DBSUIComponentBase implements NamingContainer, C
 	
 	protected enum PropertyKeys {
 		caption,
+		captionIconClass,
 		style,
 		styleClass,
-		iconClass,
 		selected,
 		file,
 		closeble,
@@ -84,6 +84,16 @@ public class DBSTabPage extends DBSUIComponentBase implements NamingContainer, C
 		getStateHelper().put(PropertyKeys.caption, pCaption);
 		handleAttribute("styleClass", pCaption);
 	}
+
+	
+	public String getCaptionIconClass() {
+		return (String) getStateHelper().eval(PropertyKeys.captionIconClass, "");
+	}
+	
+	public void setCaptionIconClass(String pCaptionIconClass) {
+		getStateHelper().put(PropertyKeys.captionIconClass, pCaptionIconClass);
+		handleAttribute("captionIconClass", pCaptionIconClass);
+	}	
 	
 	public Boolean getCloseble() {
 		return (Boolean) getStateHelper().eval(PropertyKeys.closeble, false);
@@ -112,15 +122,6 @@ public class DBSTabPage extends DBSUIComponentBase implements NamingContainer, C
 		handleAttribute("selected", pSelected);
 	}	
 
-	
-	public String getIconClass() {
-		return (String) getStateHelper().eval(PropertyKeys.iconClass, "");
-	}
-	
-	public void setIconClass(String pIconClass) {
-		getStateHelper().put(PropertyKeys.iconClass, pIconClass);
-		handleAttribute("iconClass", pIconClass);
-	}	
 
 	public Boolean getAjax() {
 //		return false;

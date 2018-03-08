@@ -8,6 +8,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
+import br.com.dbsoft.ui.component.tab.DBSTab;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
 
@@ -33,9 +34,9 @@ public class DBSTabPageRenderer extends DBSRenderer {
 	
     @Override
     public void encodeChildren(FacesContext pContext, UIComponent pComponent) throws IOException {
-    	if (!pComponent.isRendered()){return;}
-    	DBSTabPage xTabPage = (DBSTabPage) pComponent;
-    	DBSFaces.renderChildren(pContext, xTabPage);
+    		if (!pComponent.isRendered()){return;}
+	    	DBSTabPage xTabPage = (DBSTabPage) pComponent;
+	    	DBSFaces.renderChildren(pContext, xTabPage);
     }
     
 
@@ -47,7 +48,9 @@ public class DBSTabPageRenderer extends DBSRenderer {
 		DBSTabPage xTabPage = (DBSTabPage) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xTabPage.getClientId(pContext);
-
+		DBSTab xTab = DBSFaces.getFirstParent(xTabPage, DBSTab.class);
+		if (xTab == null) {return;}
+		
 		String xClass = CSS.TABPAGE.MAIN + xTabPage.getStyleClass();
 //		String xSelectedPage = DBSObject.getNotNull(pContext.getExternalContext().getRequestParameterMap().get(xTab.getInputId(true)), "").toString().toUpperCase();
 		
@@ -56,6 +59,8 @@ public class DBSTabPageRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
 			DBSFaces.encodeAttribute(xWriter, "class", xClass);
 			DBSFaces.encodeAttribute(xWriter, "style",xTabPage.getStyle());
+			DBSFaces.encodeAttribute(xWriter, "type", xTab.getType());
+
 //			encodeClientBehaviors(pContext, xTabPage);
 	}
 	

@@ -19,6 +19,7 @@ public class DBSTab extends DBSUIOutput implements NamingContainer, ClientBehavi
 	public final static String RENDERER_TYPE = COMPONENT_TYPE;
 	
 	protected enum PropertyKeys {
+		type,
 		selectedTabPage,
 		showTabPageOnClick,
 		tabPages,
@@ -38,8 +39,36 @@ public class DBSTab extends DBSUIOutput implements NamingContainer, ClientBehavi
 		}
 	}
 	
+	public static enum TYPE {
+		TAB 			("tab"),
+	    ACCORDION 	("acc");	
+		
+		private String 	wName;
+		
+		private TYPE(String pName) {
+			this.wName = pName;
+		}
+
+		public String getName() {
+			return wName;
+		}
+		
+		public static TYPE get(String pCode) {
+			if (pCode == null){
+				return TAB;
+			}			
+			pCode = pCode.trim().toLowerCase();
+	    	for (TYPE xT:TYPE.values()) {
+	    		if (xT.getName().equals(pCode)){
+	    			return xT;
+	    		}
+	    	}
+	    	return null;
+		}	
+	}
+	
 	public static enum CAPTION_ALIGMENT {
-		LEFT			("l"),
+		LEFT				("l"),
 	    RIGHT 			("r"),
 		CENTER 			("c"),
 		EVEN 			("e"),	
@@ -80,6 +109,20 @@ public class DBSTab extends DBSUIOutput implements NamingContainer, ClientBehavi
 	    //UIViewRoot xRoot = xContext.getViewRoot();
 	    //xRoot.subscribeToViewEvent(PreRenderViewEvent.class, this );
     }
+	
+	public String getType() {
+		return (String) getStateHelper().eval(PropertyKeys.type, TYPE.TAB.getName());
+	}
+	
+	public void setType(String pType) {
+		TYPE xType = TYPE.get(pType);
+		if (xType == null){
+			return;
+		}
+		getStateHelper().put(PropertyKeys.type, pType);
+		handleAttribute("type", pType);
+	}
+
 	
 	public String getSelectedTabPage() {
 		return (String) getStateHelper().eval(PropertyKeys.selectedTabPage, "");
