@@ -53,6 +53,11 @@
     position: relative;
 	vertical-align: middle;
 }
+/* .dbs_tab > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > .-content > .-caption > .-icon:after{ */
+/* 	position: absolute; */
+/* 	content: ""; */
+/* 	clear: both; */
+/* } */
 
 .dbs_tab[type="acc"] > .-container{
     height: inherit;
@@ -308,7 +313,6 @@
 .dbs_tab[type="tab"] > .-container > .-captions > .-container > .-caption.-selected{
     background: transparent !important;
 	color: unset !important;
-	cursor: default;
 }
 
 .dbs_tab[type="tab"] > .-container > .-captions > .-container > .-caption:not(.-selected){
@@ -337,7 +341,6 @@
 	background: none;	
 }
 .dbs_tab[type="tab"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption.-ajax{
-	cursor: default;
 	pointer-events: none;
 }
 
@@ -359,17 +362,26 @@
     position: relative;
     display: block;
     height: inherit;
+    line-height: 0;
 }
 
 .dbs_tab[type="tab"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > .-content > .-caption{
     top: calc(50% - .6em);
+    line-height: 0;
 }
 
 
+.dbs_tab[type="tab"] > .-container > .-captions > .-container > .-caption.-selected > .dbs_tabCaption,
+.dbs_tab[type="tab"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption.-ajax{
+	pointer-events: none;
+}
+
+.dbs_tab[type="tab"] > .-container > .-captions > .-container > .-caption:not(.-selected) > .dbs_tabCaption{
+	cursor: pointer;
+}
+
 .dbs_tab[type="tab"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption.-ajax > .-container > .-content > .-caption{
 	opacity: .2;
-	pointer-events: none;
-	cursor: default;
 }
 
 .dbs_tab[type="tab"]:not(.-selected):not([disabled]) > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > .-content > .-caption:ACTIVE:after{
@@ -411,16 +423,16 @@
     position: relative;
     top: -.05em;
 }
-.dbs_tab[type="tab"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > .-content > .-caption > .-icon:after{
-	content: "";
-	clear: both;
-}
+/* .dbs_tab[type="tab"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > .-content > .-caption > .-icon:after{ */
+/* 	content: ""; */
+/* 	clear: both; */
+/* } */
 
 .dbs_tab[type="tab"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > .-content > .-obs{
 	display:none;
 }
 
-.dbs_tab[type="tab"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > .loading_container{
+.dbs_tab[type="tab"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > .-content > .loading_container{
 	position: absolute;
 	display: none;
 	top: 0px;
@@ -428,11 +440,11 @@
 	padding: 1em;
 	margin-left: -.6em;
 }
-.dbs_tab[type="tab"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption.-ajax > .-container > .loading_container{
+.dbs_tab[type="tab"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption.-ajax > .-container > .-content > .loading_container{
 	display: block;
 }
 
-.dbs_tab[type="tab"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > .loading_container .-loading{
+.dbs_tab[type="tab"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > .-content > .loading_container .-loading{
 	position: absolute !important;
     -webkit-filter: invert(100%);
     -moz-filter: invert(100%);
