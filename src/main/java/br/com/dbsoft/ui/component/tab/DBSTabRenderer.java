@@ -14,6 +14,7 @@ import br.com.dbsoft.ui.component.tab.DBSTab.TYPE;
 import br.com.dbsoft.ui.component.tabpage.DBSTabPage;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
+import br.com.dbsoft.util.DBSObject;
 
 
 @FacesRenderer(componentFamily=DBSFaces.FAMILY, rendererType=DBSTab.RENDERER_TYPE)
@@ -111,11 +112,8 @@ public class DBSTabRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(pWriter, "class", "-captions" + CSS.THEME.FLEX_COL);
 			pWriter.startElement("div", pTab);
 				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER + CSS.THEME.FLEX);
-//				if (pType == TYPE.ACCORDION) {
-//					DBSFaces.encodeAttribute(pWriter, "style", getFlexBasis(pTab));
-//				}
-	//			for (int xI=pTab.getChildren().size()-1; xI >= 0; xI--){
-				for (int xI=0; xI <= pTab.getChildren().size()-1; xI++){	
+				UIComponent xParent = DBSFaces.getParentFirstChild(pTab, DBSTabPage.class);
+				for (int xI=0; xI < xParent.getChildren().size(); xI++){	
 					if (pTab.getChildren().get(xI) instanceof DBSTabPage){
 						DBSTabPage xTabPage = (DBSTabPage) pTab.getChildren().get(xI);
 						if (xTabPage.isRendered()){
@@ -140,11 +138,12 @@ public class DBSTabRenderer extends DBSRenderer {
 										pTab.setSelectedTabPage(xPageClientId);
 									}
 								}
-	
-	//							if (xPageClientId.equals(xSelectedTabPage)){
+
+								//							if (xPageClientId.equals(xSelectedTabPage)){
 	//								xPage.setSelected(true);
 	//								DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.SELECTED, null);
 	//							}
+								
 								pWriter.startElement("div", pTab);  
 									xClass = CSS.TAB.CAPTION ;
 									if (xTabPage.getAjax()){
@@ -152,31 +151,48 @@ public class DBSTabRenderer extends DBSRenderer {
 									}
 									DBSFaces.encodeAttribute(pWriter, "class", xClass);	
 									pWriter.startElement("div", pTab);  
-										DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER + xTabPage.getCaptionStyleClass());
-										UIComponent xCaption = xTabPage.getFacet("caption");
-										if (xCaption!=null) {
-											xCaption.encodeAll(pContext);
-										}else {
-											pWriter.startElement("a", pTab);
-				//									pWriter.writeAttribute("ontouchstart", "javascript:void(0)", "ontouchstart"); //Para ipad ativar o css:ACTIVE
-				//									pWriter.writeAttribute("href", "#", "href"); //Para ipad ativar o css:ACTIVE
+										DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER  + xTabPage.getCaptionStyleClass());
+										pWriter.startElement("div", pTab);  
+											DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
+											UIComponent xCaption = xTabPage.getFacet("caption");
+											if (xCaption!=null) {
+												xCaption.encodeAll(pContext);
+											}else {
+												pWriter.startElement("div", pTab);
+													DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CAPTION);
+					//									pWriter.writeAttribute("ontouchstart", "javascript:void(0)", "ontouchstart"); //Para ipad ativar o css:ACTIVE
+					//									pWriter.writeAttribute("href", "#", "href"); //Para ipad ativar o css:ACTIVE
+													pWriter.startElement("span", pTab);
+														DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.ICON + xTabPage.getCaptionIconClass());
+													pWriter.endElement("span");
+													pWriter.startElement("span", pTab);
+														DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.VALUE);
+														pWriter.write(xTabPage.getCaption());
+													pWriter.endElement("span");
+												pWriter.endElement("div");
+												if (pType.equals(TYPE.ACCORDION)){
+													UIComponent xCaptionObs = xTabPage.getFacet("caption_obs");
+													if (xCaptionObs!=null || !DBSObject.isEmpty(xTabPage.getCaptionObs())) {
+														pWriter.startElement("div", pTab);
+															DBSFaces.encodeAttribute(pWriter, "class", "-obs");
+															if (xCaptionObs!=null) {
+																xCaptionObs.encodeAll(pContext);
+															}else if (!DBSObject.isEmpty(xTabPage.getCaptionObs())){
+																pWriter.write(xTabPage.getCaptionObs());
+															}
+														pWriter.endElement("div");
+													}
+												}
+											}
+											if (xTabPage.getAjax()){
 												pWriter.startElement("span", pTab);
-													DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.ICON + xTabPage.getCaptionIconClass());
+													DBSFaces.encodeAttribute(pWriter, "class", "loading_container");
+													pWriter.startElement("span", pTab);
+														DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LOADING);
+													pWriter.endElement("span");
 												pWriter.endElement("span");
-												pWriter.startElement("span", pTab);
-													DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.VALUE);
-													pWriter.write(xTabPage.getCaption());
-												pWriter.endElement("span");
-											pWriter.endElement("a");
-										}
-										if (xTabPage.getAjax()){
-											pWriter.startElement("span", pTab);
-												DBSFaces.encodeAttribute(pWriter, "class", "loading_container");
-												pWriter.startElement("span", pTab);
-													DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LOADING);
-												pWriter.endElement("span");
-											pWriter.endElement("span");
-										}
+											}
+										pWriter.endElement("div");
 									pWriter.endElement("div");
 								pWriter.endElement("div");
 							pWriter.endElement("div");

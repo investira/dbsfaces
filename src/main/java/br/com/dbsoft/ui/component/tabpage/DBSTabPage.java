@@ -21,6 +21,7 @@ public class DBSTabPage extends DBSUIComponentBase implements NamingContainer, C
 		caption,
 		captionIconClass,
 		captionStyleClass,
+		captionObs,
 		style,
 		styleClass,
 		selected,
@@ -93,6 +94,15 @@ public class DBSTabPage extends DBSUIComponentBase implements NamingContainer, C
 	public void setCaptionStyleClass(String pCaptionStyleClass) {
 		getStateHelper().put(PropertyKeys.captionStyleClass, pCaptionStyleClass);
 		handleAttribute("captionStyleClass", pCaptionStyleClass);
+	}
+
+	public String getCaptionObs() {
+		return (String) getStateHelper().eval(PropertyKeys.captionObs, "");
+	}
+	
+	public void setCaptionObs(String pCaptionObs) {
+		getStateHelper().put(PropertyKeys.captionObs, pCaptionObs);
+		handleAttribute("captionObs", pCaptionObs);
 	}
 
 	public Boolean getCloseble() {

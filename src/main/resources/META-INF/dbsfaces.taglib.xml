@@ -4338,6 +4338,14 @@
 		</attribute>
 		<attribute>
 			<description>
+            		Texto complementar a ser exibido quanto tipo de tab for 'acc'.
+            </description>
+			<name>captionObs</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
                 Style CSS 
             </description>
 			<name>style</name>
