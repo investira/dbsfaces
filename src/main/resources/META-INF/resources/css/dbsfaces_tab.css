@@ -48,7 +48,7 @@
     white-space: nowrap;
 }
 
-.dbs_tab > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > .-content > .-caption > span{
+.dbs_tab > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > .-content > .-caption > *{
     display: inline-block;
     position: relative;
 	vertical-align: middle;
@@ -160,14 +160,14 @@
 
 
 
-.dbs_tab[type="acc"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > .-content > .-caption > span{
+.dbs_tab[type="acc"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > .-content > .-caption > *{
 	-webkit-transition: font-size .2s linear .1s;
 	-moz-transition: font-size .2s linear .1s;
 	transition: font-size .2s linear .1s;
 }
 
 
-.dbs_tab[type="acc"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption.-selected > .-container > .-content > .-caption > span{
+.dbs_tab[type="acc"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption.-selected > .-container > .-content > .-caption > *{
 	-webkit-transition: font-size .2s linear .05s;
 	-moz-transition: font-size .2s linear .05s;
 	transition: font-size .2s linear .05s;
@@ -367,7 +367,7 @@
 
 .dbs_tab[type="tab"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > .-content > .-caption{
     top: calc(50% - .6em);
-    line-height: 0;
+    line-height: 1;
 }
 
 
@@ -420,8 +420,8 @@
 	pointer-events: none;
 }
 .dbs_tab[type="tab"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > .-content > .-caption > .-icon:before{
-    position: relative;
-    top: -.05em;
+/*     position: relative; */
+/*     top: -.05em; */
 }
 /* .dbs_tab[type="tab"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > .-content > .-caption > .-icon:after{ */
 /* 	content: ""; */
