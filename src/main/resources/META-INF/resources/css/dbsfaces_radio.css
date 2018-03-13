@@ -1,51 +1,68 @@
 .dbs_radio{}
 
-.dbs_radio > table{
-	position: relative;
-	display: table;
+/* .dbs_radio > table{ */
+/* 	position: relative; */
+/* 	display: table; */
+/* } */
+
+
+.dbs_radio > .-th_input {
+/* 	float: left; */
+/* 	-webkit-flex-flow: column nowrap; */
+/* 	-moz-flex-flow: column nowrap; */
+/* 	flex-flow: column nowrap; */
+}
+.dbs_radio > .-th_input:after{
+	content: "";
+	clear: both;
 }
 
-.dbs_radio > table > tbody > tr .-th_input:not([disabled]){
+.dbs_radio > .-th_input:not([disabled]){
 	cursor: pointer;	
 }
 
-.dbs_radio > table > tbody > tr > td {
-	display: table;
-	white-space: nowrap;
-}
-
-.dbs_radio > table > tbody > tr > td > .-th_input-label {
-	display: inline-block; 
-	margin-right: 1em;
+.dbs_radio > .-th_input > .-th_input-label {
+/* 	margin-right: 1em; */
 /* 	padding: 0 0 0 .3em; */
-	padding: 0;
-	margin: 0;
-	vertical-align: middle;
+/* 	padding: 0; */
+/* 	margin: 0; */
+/* 	vertical-align: middle; */
     cursor: inherit;
+	white-space: normal;
+	-webkit-flex: 1 1 1em;
+	-moz-flex: 1 1 1em;
+	flex: 1 1 1em;
 }
 
-.dbs_radio > table > tbody > tr > .-th_input[disabled] > .-th_input-label{
+.dbs_radio > .-th_input[disabled] > .-th_input-label{
 	cursor: default;
 }
 
-.dbs_radio > table > tbody > tr > td > .-th_input-data {
+.dbs_radio > .-th_input > .-th_input-data {
     position: relative;
     visibility: hidden;
+    display: block;
     overflow: visible;
     background-color: transparent;
-    height: 1.5em !important;
-    width: 1.5em !important;
+/*     height: 1.5em !important; */
+/*     width: 1.5em !important; */
     cursor: inherit;
+	width: unset;
+    -webkit-flex: 0 0 1.5em;
+    -moz-flex: 0 0 1.5em;
+    flex: 0 0 1.5em;
 }
 
-.dbs_radio > table > tbody > tr > td > .-th_input-data:after{
+.dbs_radio > .-th_input > .-th_input-data:after{
     font-family: 'dbsfaces_icons' !important;
+    content: "\e91c";
     visibility: visible;
     position: relative;
-    content: "\e91c";
-    font-size: 1.5em;
+	font-size: 1.5em;
+    top: -.3em;
+    line-height: 1.5em;
 }
 
-.dbs_radio > table > tbody > tr > td > .-th_input-data:checked:after{
+.dbs_radio > .-th_input > .-th_input-data:checked:after{
 	content: "\e91d";
 }

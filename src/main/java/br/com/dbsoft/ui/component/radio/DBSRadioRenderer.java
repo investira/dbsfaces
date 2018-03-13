@@ -74,34 +74,26 @@ public class DBSRadioRenderer extends DBSRenderer {
 //			}
 			DBSFaces.encodeAttribute(xWriter, "style", xRadio.getStyle());
 			if (xRadio.getChildren().size()>0){
-				pvEncodeInput(pContext, xRadio, xWriter);
+				pvEncodeItens(pContext, xRadio, xWriter);
 			}
 			DBSFaces.encodeTooltip(pContext, xRadio, xRadio.getTooltip());
 		xWriter.endElement("div");
 	}
 
-	private void pvEncodeInput(FacesContext pContext, DBSRadio pRadio, ResponseWriter pWriter) throws IOException{
-		pWriter.startElement("table", pRadio);
-			pWriter.startElement("tbody", pRadio);
-				pWriter.startElement("tr", pRadio);
-					pvEncodeItem(pContext, pRadio, pWriter);
-				pWriter.endElement("tr");
-			pWriter.endElement("tbody");
-		pWriter.endElement("table");
-	}
 
-	private void pvEncodeItem(FacesContext pContext, DBSRadio pRadio, ResponseWriter pWriter) throws IOException{
+	private void pvEncodeItens(FacesContext pContext, DBSRadio pRadio, ResponseWriter pWriter) throws IOException{
 		String xClientId = pRadio.getClientId(pContext);
 		Integer xI = 0;
 		for (UIComponent xItem : pRadio.getChildren()) {
 			if (xItem.getClass().equals(UISelectItem.class)){
 				UISelectItem xS = (UISelectItem) xItem;
-				pWriter.startElement("td", pRadio);
+				pWriter.startElement("div", pRadio);
+					String xClass = CSS.THEME.INPUT + CSS.THEME.FLEX;
 					if (pRadio.getReadOnly()){
-						DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.INPUT + CSS.MODIFIER.DISABLED);
+						DBSFaces.encodeAttribute(pWriter, "class", xClass + CSS.MODIFIER.DISABLED);
 						DBSFaces.encodeAttribute(pWriter, "disabled", "disabled");
 					}else{
-						DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.INPUT);
+						DBSFaces.encodeAttribute(pWriter, "class", xClass);
 					}
 					if (pRadio.getFloatLeft()){
 						DBSFaces.encodeAttribute(pWriter, "style", "float:left;");
@@ -120,11 +112,12 @@ public class DBSRadioRenderer extends DBSRenderer {
 //								DBSFaces.encodeAttribute(pWriter, "name", pRadio.getNamingContainer().getClientId() + ":" + pRadio.getGroup());
 //							}
 //						}
+						xClass = DBSFaces.getInputDataClass(pRadio) + CSS.THEME.FLEX_COL;
 						if (pRadio.getReadOnly()){
-							DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pRadio) + CSS.MODIFIER.DISABLED);
+							DBSFaces.encodeAttribute(pWriter, "class", xClass + CSS.MODIFIER.DISABLED);
 							DBSFaces.encodeAttribute(pWriter, "disabled", "disabled");
 						}else{
-							DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pRadio));
+							DBSFaces.encodeAttribute(pWriter, "class", xClass);
 						}			
 						DBSFaces.encodeAttribute(pWriter, "value", xS.getItemValue());
 						if (pRadio.getValue()!=null){
@@ -138,13 +131,14 @@ public class DBSRadioRenderer extends DBSRenderer {
 					if (xS.getItemLabel() != null && !xS.getItemLabel().equals("")){
 						pWriter.startElement("label", pRadio);
 							DBSFaces.encodeAttribute(pWriter, "for", xClientId + xI);
-//							DBSFaces.encodeAttribute(pWriter, "for", xItem.getClientId());
-							DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.INPUT_LABEL + CSS.NOT_SELECTABLE);
-							DBSFaces.encodeAttribute(pWriter, "style","width:" + pRadio.getLabelWidth() + ";");
+							DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.INPUT_LABEL + CSS.NOT_SELECTABLE + CSS.THEME.FLEX_COL);
+							if (!DBSObject.isEmpty(pRadio.getLabelWidth())) {
+								DBSFaces.encodeAttribute(pWriter, "style","width:" + pRadio.getLabelWidth() + ";");
+							}
 							pWriter.write(" " + xS.getItemLabel());
 						pWriter.endElement("label");
 					}
-				pWriter.endElement("td");
+				pWriter.endElement("div");
 				xI++;
 			}
 		}
