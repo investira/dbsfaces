@@ -117,7 +117,7 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 			}
 		}
 //		if (!pInputNumber.getLeadingZero()){
-			xStyle += " text-align:right;";
+			xStyle += " text-align:right; ";
 //		}
 		if (pInputNumber.getValueDouble() > pInputNumber.getMaxValue() ||
 			pInputNumber.getValueDouble() < pInputNumber.getMinValue()){
@@ -128,6 +128,9 @@ public class DBSInputNumberRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(pWriter, "class", "-input");
 		
 			if (pInputNumber.getReadOnly()) {
+				if (!pInputNumber.getLeadingZero()) {
+					xStyle += DBSFaces.getCSSStyleWidthFromInputSize(pInputNumber.getSize());
+				}
 				// Se for somente leitura, gera código como <Span>
 				DBSFaces.encodeInputDataReadOnly(pInputNumber, pWriter, xClientId, false, xValue, xSize, null, xStyle);
 			} else {
