@@ -10,17 +10,6 @@ $(document).ready(function(){
 		return false;
 	});
 	
-	//ACCORDION
-	$(".-t_accordion > .-container > div").on("mousedown touchstart", function(e){
-		var xThis = $(this);
-		if (xThis.hasClass("-selected")){
-			dbsfaces.t.accordion.unSelect(xThis);
-		}else{
-			dbsfaces.t.accordion.select(xThis);
-		}
-		return false;
-	});
-	
 }); 
 
 dbsfaces.t = {}
@@ -45,15 +34,3 @@ dbsfaces.t.slide = {
 	}
 }
 
-dbsfaces.t.accordion = {
-	select: function(pElement){
-		pElement.siblings().addClass("-hide").removeClass("-selected");
-		pElement.removeClass("-hide").addClass("-selected");
-		pElement.trigger("select");
-//		dbsfaces.ui.cssAllBrowser(xItem, "transition-timing-function", "ease-out");
-	},
-
-	unSelect: function(pElement){
-		pElement.parent().children().removeClass("-hide").removeClass("-selected");
-	}
-}
