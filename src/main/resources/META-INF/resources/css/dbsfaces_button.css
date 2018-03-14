@@ -44,8 +44,8 @@
 }
 .dbs_button[disabled] > table > tbody > tr > td > .-icon{
 /*     height: inherit; */
-	vertical-align: middle;
-    display: table-cell;
+/* 	vertical-align: middle; */
+/*     display: table-cell; */
 }
 
 
