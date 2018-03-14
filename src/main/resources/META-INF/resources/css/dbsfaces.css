@@ -703,7 +703,7 @@ td > .-icon{
 	font-variant: normal;
 	text-transform: none;
 	line-height: 1;
-
+	height: 1em;
 	/* Better Font Rendering =========== */
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -712,7 +712,12 @@ td > .-icon{
 [class^="-i_"]:before, 
 [class*=" -i_"]:before {
 	font-family: 'dbsfaces_icons'  !important;
-	vertical-align: middle;
+/* 	vertical-align: middle; */
+	line-height: 1;
+    top: calc(50% - .5em);
+    position: relative;
+/* 	top: calc(50% - .5em); */
+/*     position: relative; */
 /* 	-webkit-font-smoothing: auto; */
 }
 
