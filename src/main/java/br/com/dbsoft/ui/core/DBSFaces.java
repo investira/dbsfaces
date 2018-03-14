@@ -1324,7 +1324,7 @@ public class  DBSFaces {
 			return "";
 		}
 //		Double xW = DBSNumber.round((pInputSize + 1) * 0.662, 3);
-		Double xW = DBSNumber.round((pInputSize + 1) * 0.56, 3);
+		Double xW = DBSNumber.round((pInputSize + 1) * 0.562, 3);
 		return "width:" + xW + "em;"; 
 	}
 
@@ -1953,18 +1953,20 @@ public class  DBSFaces {
 		}else{
 			pStyle += "white-space: pre; overflow:hidden;";
 		}
-		pWriter.startElement("span", pComponent);
+		pWriter.startElement("div", pComponent);
 			encodeAttribute(pWriter, "id", pClientId);
 			encodeAttribute(pWriter, "name", pClientId);
 			encodeAttribute(pWriter, "class", getInputDataClass(pComponent));
 			encodeAttribute(pWriter, "style", pStyle);
 			setSizeAttributes(pWriter, pTW, pTH);
-			if (DBSObject.isEmpty(pValue)){
-				pWriter.write(" ");
-			}else{
-				pWriter.write(pValue);
-			}
-		pWriter.endElement("span");
+			pWriter.startElement("div", pComponent);
+				if (DBSObject.isEmpty(pValue)){
+					pWriter.write(" ");
+				}else{
+					pWriter.write(pValue);
+				}
+			pWriter.endElement("div");
+		pWriter.endElement("div");
 	}
 
 	

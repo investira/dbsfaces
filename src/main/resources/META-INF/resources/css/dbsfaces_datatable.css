@@ -188,9 +188,9 @@
 	background: -ms-linear-gradient(top,  rgba(241,241,241,1) 0%,rgba(230,230,230,1) 100%); /* IE10+ */
 	background: linear-gradient(to bottom, rgb(241, 241, 241) 0%,rgba(230,230,230,1) 100%); /* W3C */
 	
-   	-webkit-box-shadow:0 2px 2px -2px rgba(0, 0, 0, 0.7);
-	-moz-box-shadow:0 1px 1px -1px rgba(0, 0, 0, 0.7);
-	box-shadow:0 1px 1px -1px rgba(0, 0, 0, 0.7);	
+   	-webkit-box-shadow:0 0px 3px -1px rgba(0, 0, 0, 0.7);
+	-moz-box-shadow:0 0px 3px -1px rgba(0, 0, 0, 0.7);
+	box-shadow:0 0px 3px -1px rgba(0, 0, 0, 0.7);	
 }
 
 .dbs_dataTable > .-container > .-content > table > tbody{

@@ -188,7 +188,7 @@ public class DBSInputDateRenderer extends DBSRenderer {
 			
 			DBSFaces.encodeInputDataReadOnly(pInputDate, pWriter, xClientId, false, xValue, xSize, null, xStyle);
 		}else{
-			pWriter.startElement("span", pInputDate);
+			pWriter.startElement("div", pInputDate);
 				DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pInputDate) + xStyleClass);
 				DBSFaces.setSizeAttributes(pWriter, xSize, null);
 				//Define a largura do campo
@@ -203,7 +203,7 @@ public class DBSInputDateRenderer extends DBSRenderer {
 				}else{
 					wLogger.error(xClientId + ":type inválido [" + pInputDate.getType() + "]");
 				}
-			pWriter.endElement("span");
+			pWriter.endElement("div");
 		}
 	}
 

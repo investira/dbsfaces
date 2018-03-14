@@ -159,14 +159,14 @@ public class DBSComboboxRenderer extends DBSRenderer {
 		if (pCombobox.getReadOnly()){
 			DBSFaces.encodeInputDataReadOnly(pCombobox, pWriter, xClientId, false, xValue.toString(), pCombobox.getSize(), null, xStyle);
 		}else{
-			pWriter.startElement("span", pCombobox);
+			pWriter.startElement("div", pCombobox);
 				DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pCombobox));
 				DBSFaces.encodeAttribute(pWriter, "style", xStyle);
 				DBSFaces.setSizeAttributes(pWriter, pCombobox.getSize(), null);
-				pWriter.startElement("span", pCombobox);
+				pWriter.startElement("div", pCombobox);
 					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.DATA);
 					pWriter.write(xValue);
-				pWriter.endElement("span");
+				pWriter.endElement("div");
 				//Encode do botão
 				pWriter.startElement("span", pCombobox);
 					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.BUTTON + CSS.MODIFIER.SMALL + " -i_navigate_down");
@@ -193,7 +193,7 @@ public class DBSComboboxRenderer extends DBSRenderer {
 						}
 					}
 				pWriter.endElement("select"); 
-			pWriter.endElement("span");
+			pWriter.endElement("div");
 		}
 	}
 	

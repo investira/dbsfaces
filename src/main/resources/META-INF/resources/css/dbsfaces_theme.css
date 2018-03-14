@@ -404,8 +404,17 @@ label.-th_input-data,
 .-th_input-data.-readOnly {
 	background-color: rgba(0, 0, 0, 0.05) !important;
 	overflow: hidden;
+/* 	padding-top: .2em; */
+/*     padding-bottom: .2em; */
 }
-
+.-th_input-data.-readOnly > div{
+    border: 1px transparent solid;
+    border-left: 0;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+}
 .-th_input-data.-lower{
 	text-transform: lowercase;
 }
@@ -431,12 +440,10 @@ textarea.-th_input-data.-readOnly,
 span.-th_input-data.-readOnly,
 div.-th_input-data.-readOnly,
 label.-th_input-data.-readOnly{
-/* 	padding: 1px 1px 1px 1px !important; */
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;
 	box-shadow: none;
 	border-color: rgba(0, 0, 0, 0.05);
-/* 	line-height: 15px; */
 }
 
 
