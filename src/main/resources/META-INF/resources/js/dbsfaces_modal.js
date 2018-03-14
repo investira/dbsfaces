@@ -23,11 +23,11 @@ dbs_modal = function(pId) {
     
     if ($(pId).hasClass("-confirmation")){
         //Exibe tela já que foi criada escondida para dar tempo de todos os componentes serem exibidos
-    	setTimeout(function(){
-        	dbsfaces.modal.show(wModal);
-    	}, 0);
+	    	setTimeout(function(){
+//	        	dbsfaces.modal.show(wModal);
+	    	}, 0);
     }else{
-    	dbsfaces.modal.show(wModal);
+//    		dbsfaces.modal.show(wModal);
     }
 
     
@@ -38,10 +38,14 @@ dbs_modal = function(pId) {
     
     dbsfaces.modal.dragOff(wModal, wCaption);
 	wCaption.on("mousedown.nnnmodal", function(e){
-        var xModalPositionOld = {left: wModal.offset().left,
-			 	   			   	 top: wModal.offset().top,
+        var xModalPositionOld = {left:  Number.parseFloat(wModal.css("left")),
+			 	   			   	 top:  Number.parseFloat(wModal.css("top")),
 			 	   			   	 width: wModal.outerWidth(),
 			 	   			   	 height: wModal.outerHeight()}; 
+//        var xModalPositionOld = {left: wModal.offset().left,
+//   			   	 top: wModal.offset().top,
+//   			   	 width: wModal.outerWidth(),
+//   			   	 height: wModal.outerHeight()}; 
 	   	if (e.which === 1){
 			dbsfaces.modal.dragOff(wModal, wCaption);
 	   		wCaption.on("mousemove.nnnmodal",{pX:e.clientX, pY:e.clientY, pPosOld:xModalPositionOld}, function(e){
@@ -57,6 +61,8 @@ dbs_modal = function(pId) {
 //		   		}
 		        //Seta posição
 		   		wModal.css("margin", "");
+//		   		wModal.css("left", dbsfaces.number.parseFloat(wModal.css("left")) + (e.clientX - e.data.pX) + "px");
+//		   		wModal.css("top", dbsfaces.number.parseFloat(wModal.css("top")) + (e.clientY - e.data.pY) + "px");
 		   		wModal.css("left", e.data.pPosOld.left + (e.clientX - e.data.pX) + "px");
 		   		wModal.css("top", e.data.pPosOld.top + (e.clientY - e.data.pY) + "px");
 		   		wModal.addClass("-moving");

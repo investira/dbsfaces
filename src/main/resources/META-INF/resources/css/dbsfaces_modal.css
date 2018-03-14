@@ -4,9 +4,9 @@
 .dbs_modal{
 	position: fixed;
 	display: block;
-	background-color: rgba(0, 0, 0, 0.05);
-	background-image: url("#{request.contextPath}/images/vidro.png");
-	background-repeat: repeat;
+	background-color: rgba(0, 0, 0, 0.10);
+/* 	background-image: url("#{request.contextPath}/images/vidro.png"); */
+/* 	background-repeat: repeat; */
 	top:0;
 	left:0;
 	width:100%;
@@ -23,17 +23,23 @@
 .dbs_modal > .-modal{
 	position: fixed;
 	display: inline-block;
-	opacity:0;
+/* 	opacity:0; */
 	
 	padding: 0;
     margin: 0;
 
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    
 	/* reset transform translate     */
-    transform-style: flat;
-    -webkit-transform: translateX(0) translateY(0);
-    -moz-transform: translateX(0) translateY(0);
-    -o-transform: translateX(0) translateY(0);
-    transform: translateX(0) translateY(0);
+/*     transform-style: flat; */
+/*     -webkit-transform: translateX(0) translateY(0); */
+/*     -moz-transform: translateX(0) translateY(0); */
+/*     -o-transform: translateX(0) translateY(0); */
+/*     transform: translateX(0) translateY(0); */
 	/* ================ */
 
 
@@ -155,7 +161,7 @@
     min-width: 2em;
 }
 
-.dbs_modal > .-modal > .-container > table > thead > .-toolbar > .-container .dbs_button[disabled]{
+.dbs_modal > .-modal > .-container > table > thead > .-toolbar > .-container .dbs_button.-disabled{
 	position: relative;
 	top: 3px;
 }
