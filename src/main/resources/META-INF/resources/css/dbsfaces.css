@@ -696,7 +696,7 @@ td > .-icon{
 /* } */
 [class^="-i_"], 
 [class*=" -i_"] {
-	font-family: 'dbsfaces_icons'  !important;
+	font-size: 1.45em;
 	speak: none;
 	font-style: normal;
 	font-weight: normal;
@@ -706,59 +706,64 @@ td > .-icon{
 
 	/* Better Font Rendering =========== */
 	-webkit-font-smoothing: antialiased;
-/* 	-webkit-font-smoothing: auto; */
 	-moz-osx-font-smoothing: grayscale;
 }
 
-
-
-[class^="-i_"], 
-[class*=" -i_"]{
-/* 	font-size:16px; */
-	font-size: 1.45em;
+[class^="-i_"]:before, 
+[class*=" -i_"]:before {
+	font-family: 'dbsfaces_icons'  !important;
+	vertical-align: middle;
+/* 	-webkit-font-smoothing: auto; */
 }
 
-[class^="-i_"].-small, 
-[class*=" -i_"].-small{
+
+[class^="-i_"]:before, 
+[class*=" -i_"]:before{
+/* 	font-size:16px; */
+/* 	font-size: 1.45em; */
+}
+
+[class^="-i_"].-small:before, 
+[class*=" -i_"].-small:before{
 /* 	font-size:9px; */
 	font-size: 0.82em;
 }
-[class^="-i_"].-large, 
-[class*=" -i_"].-large{
+[class^="-i_"].-large:before, 
+[class*=" -i_"].-large:before{
 /* 	font-size:32px; */
 	font-size: 2.9em;
 }
 
-[class^="-i_"].-red, 
-[class*=" -i_"].-red {
+[class^="-i_"].-red:before, 
+[class*=" -i_"].-red:before {
 	color:red;
 }
-[class^="-i_"].-red.-dark, 
-[class*=" -i_"].-red.-dark {
+[class^="-i_"].-red.-dark:before, 
+[class*=" -i_"].-red.-dark:before {
 	color:darkred;
 }
-[class^="-i_"].-yellow, 
-[class*=" -i_"].-yellow {
+[class^="-i_"].-yellow:before, 
+[class*=" -i_"].-yellow:before {
 	color:rgb(210,210,0);
 }
-[class^="-i_"].-yellow.-dark, 
-[class*=" -i_"].-yellow.-dark {
+[class^="-i_"].-yellow.-dark:before, 
+[class*=" -i_"].-yellow.-dark:before {
 	color:rgb(178, 178, 0);
 }
-[class^="-i_"].-blue, 
-[class*=" -i_"].-blue {
+[class^="-i_"].-blue:before, 
+[class*=" -i_"].-blue:before {
 	color:blue;
 }
-[class^="-i_"].-blue.-dark, 
-[class*=" -i_"].-blue.-dark {
+[class^="-i_"].-blue.-dark:before, 
+[class*=" -i_"].-blue.-dark:before {
 	color:darkblue;
 }
-[class^="-i_"].-green, 
-[class*=" -i_"].-green {
+[class^="-i_"].-green:before, 
+[class*=" -i_"].-green:before {
 	color:green;
 }
-[class^="-i_"].-green.-dark, 
-[class*=" -i_"].-green.-dark {
+[class^="-i_"].-green.-dark:before, 
+[class*=" -i_"].-green.-dark:before {
 	color:darkgreen;
 }
 
