@@ -66,8 +66,9 @@
 }
 
 .dbs_inputText > .-container > .-input > .-i_find{
-	top: .5em;
 	cursor: pointer;
+	top: 50%;
+    transform: translateY(-50%);
 }
 
 .dbs_inputText > .-container > .-input > .-loading{
