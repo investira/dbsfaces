@@ -366,8 +366,12 @@
 }
 
 .dbs_tab[type="tab"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > .-content > .-caption{
-    top: calc(50% - .6em);
+/*     top: calc(50% - .6em); */
     line-height: 1;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    transform: translateY(-50%);
 }
 
 
