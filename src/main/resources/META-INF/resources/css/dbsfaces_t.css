@@ -1,15 +1,11 @@
 .-t_slide{
-    display: block;
-    overflow: hidden;
 	height: 100%;
     width: 100%;
 }
 
 .-t_slide > div{
 	width: 100%;
-    display: block;
     position: relative;
-    overflow: hidden;
     
 	-webkit-transition: left .3s, height .3s;
 	-moz-transition: left .3s, height .3s;
