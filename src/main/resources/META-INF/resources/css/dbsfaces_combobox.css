@@ -17,6 +17,7 @@
 /* 	line-height: 1.4; COMENTADO EM 2016-01-13*/
 	text-align: left;
 	overflow: hidden;
+	line-height: 1;
 }
 
 .dbs_combobox > .-container > .-th_input-data > select {
