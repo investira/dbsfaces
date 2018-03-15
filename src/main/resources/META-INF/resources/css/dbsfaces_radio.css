@@ -61,8 +61,33 @@
 	font-size: 1.5em;
     top: -.3em;
     line-height: 1.5em;
+    -webkit-transition: text-shadow .1s cubic-bezier(0.47, 0, 0.75, 0.72);
+    -moz-transition: text-shadow .1s cubic-bezier(0.47, 0, 0.75, 0.72);
+    transition: text-shadow .1s cubic-bezier(0.47, 0, 0.75, 0.72);
 }
 
 .dbs_radio > .-th_input > .-th_input-data:checked:after{
 	content: "\e91d";
+	text-shadow: 0 0 .05em currentColor;
+}
+
+.dbs_radio > .-th_input > .-th_input-data:checked:before{
+    content: " ";
+    position: absolute;
+    display: inline-block;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 1px solid currentColor;
+    border-radius: inherit;
+    -webkit-animation: -kf_sonar .2s 1 cubic-bezier(.075,.82,.165,1) 0s both;
+    -moz-animation: -kf_sonar .2s 1 cubic-bezier(.075,.82,.165,1) 0s both;
+    animation: -kf_sonar .2s 1 cubic-bezier(.075,.82,.165,1) 0s both;
+    -webkit-backface-visibility: hidden;
+    box-sizing: border-box;
+    backface-visibility: hidden;
+    visibility: visible;
+    border-radius: 1em;
+
 }
