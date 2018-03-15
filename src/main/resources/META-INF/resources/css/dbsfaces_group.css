@@ -1,6 +1,6 @@
 .dbs_group{
     position: relative;
-	display: inline-block;
+/* 	display: inline-block; */
 }
 
 .dbs_group > .-container{
