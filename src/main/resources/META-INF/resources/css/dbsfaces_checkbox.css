@@ -6,16 +6,19 @@
 }
 
 .dbs_checkbox > .-container > .-th_input-label {
+	line-height: initial;
 }
 
 
 .dbs_checkbox > .-container > .-th_input-data {
     position: relative;
     visibility: hidden;
+    display: inline-block;
     overflow: visible;
     background-color: transparent;
-    height: 1.4em;
-    width: 1.4em !important;
+    height: 1.5em !important;
+    width: 1.5em !important;
+	cursor: inherit;
 }
 
 .dbs_checkbox > .-container > .-th_input-data:not([disabled]):after{
@@ -28,7 +31,7 @@
     position: relative;
     content: "\e919";
     font-size: 1.5em;
-        -webkit-transition: text-shadow .1s cubic-bezier(0.47, 0, 0.75, 0.72);
+	-webkit-transition: text-shadow .1s cubic-bezier(0.47, 0, 0.75, 0.72);
     -moz-transition: text-shadow .1s cubic-bezier(0.47, 0, 0.75, 0.72);
     transition: text-shadow .1s cubic-bezier(0.47, 0, 0.75, 0.72);
 }
@@ -55,5 +58,5 @@
     box-sizing: border-box;
     backface-visibility: hidden;
     visibility: visible;
-        border-radius: 1em;
+    border-radius: 1em;
 }

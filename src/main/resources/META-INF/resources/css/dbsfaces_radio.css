@@ -11,6 +11,8 @@
 /* 	-webkit-flex-flow: column nowrap; */
 /* 	-moz-flex-flow: column nowrap; */
 /* 	flex-flow: column nowrap; */
+    white-space: nowrap;
+    overflow: visible;
 }
 .dbs_radio > .-th_input:after{
 	content: "";
@@ -22,16 +24,12 @@
 }
 
 .dbs_radio > .-th_input > .-th_input-label {
-/* 	margin-right: 1em; */
-/* 	padding: 0 0 0 .3em; */
-/* 	padding: 0; */
-/* 	margin: 0; */
-/* 	vertical-align: middle; */
     cursor: inherit;
 	white-space: normal;
 	-webkit-flex: 1 1 1em;
 	-moz-flex: 1 1 1em;
 	flex: 1 1 1em;
+	line-height: initial;
 }
 
 .dbs_radio > .-th_input[disabled] > .-th_input-label{
@@ -41,26 +39,26 @@
 .dbs_radio > .-th_input > .-th_input-data {
     position: relative;
     visibility: hidden;
-    display: block;
+    display: inline-block;
     overflow: visible;
     background-color: transparent;
-/*     height: 1.5em !important; */
-/*     width: 1.5em !important; */
+    height: 1.5em !important;
+    width: 1.5em !important;
     cursor: inherit;
-	width: unset;
+/* 	width: unset !important; */
     -webkit-flex: 0 0 1.5em;
     -moz-flex: 0 0 1.5em;
     flex: 0 0 1.5em;
+    top: -.15em;
 }
 
-.dbs_radio > .-th_input > .-th_input-data:after{
+.dbs_radio > .-th_input > .-th_input-data:after {
     font-family: 'dbsfaces_icons' !important;
     content: "\e91c";
+    font-size: 1.5em;
     visibility: visible;
-    position: relative;
-	font-size: 1.5em;
-    top: -.3em;
-    line-height: 1.5em;
+    position: absolute;
+    top: 0;
     -webkit-transition: text-shadow .1s cubic-bezier(0.47, 0, 0.75, 0.72);
     -moz-transition: text-shadow .1s cubic-bezier(0.47, 0, 0.75, 0.72);
     transition: text-shadow .1s cubic-bezier(0.47, 0, 0.75, 0.72);
@@ -71,23 +69,23 @@
 	text-shadow: 0 0 .05em currentColor;
 }
 
-.dbs_radio > .-th_input > .-th_input-data:checked:before{
+
+.dbs_radio > .-th_input:active > .-th_input-data:before{
     content: " ";
     position: absolute;
+    font-size: 1.5em;
     display: inline-block;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    backface-visibility: hidden;
+    visibility: visible;
     border: 1px solid currentColor;
-    border-radius: inherit;
+    border-radius: 1em;
     -webkit-animation: -kf_sonar .2s 1 cubic-bezier(.075,.82,.165,1) 0s both;
     -moz-animation: -kf_sonar .2s 1 cubic-bezier(.075,.82,.165,1) 0s both;
     animation: -kf_sonar .2s 1 cubic-bezier(.075,.82,.165,1) 0s both;
     -webkit-backface-visibility: hidden;
     box-sizing: border-box;
-    backface-visibility: hidden;
-    visibility: visible;
-    border-radius: 1em;
-
 }
