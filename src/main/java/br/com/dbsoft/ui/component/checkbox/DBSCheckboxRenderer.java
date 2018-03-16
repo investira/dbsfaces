@@ -20,14 +20,14 @@ public class DBSCheckboxRenderer extends DBSRenderer {
     	DBSCheckbox xCheckbox = (DBSCheckbox) pComponent;
         if(xCheckbox.getReadOnly()) {return;}
         
-    	decodeBehaviors(pContext, xCheckbox);
+        decodeBehaviors(pContext, xCheckbox);
     	
 		String xClientIdAction = getInputDataClientId(xCheckbox);
 		String xSubmittedValue = pContext.getExternalContext().getRequestParameterMap().get(xClientIdAction);
         if(xSubmittedValue != null && pvIsChecked(xSubmittedValue)) {
-        	xCheckbox.setSubmittedValue(true);
+        		xCheckbox.setSubmittedValue(true);
         }else{
-	    	xCheckbox.setSubmittedValue(false);
+	    		xCheckbox.setSubmittedValue(false);
         }
 	}	
 
@@ -38,7 +38,7 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 		DBSCheckbox xCheckbox = (DBSCheckbox) pComponent;
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xCheckbox.getClientId(pContext);
-		String xClass = CSS.CHECKBOX.MAIN + CSS.THEME.INPUT;
+		String xClass = CSS.CHECKBOX.MAIN;
 		if (xCheckbox.getStyleClass()!=null){
 			xClass += xCheckbox.getStyleClass();
 		}
@@ -54,7 +54,7 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(xWriter, "style", xCheckbox.getStyle());
 			//Container
 			xWriter.startElement("div", xCheckbox);
-				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER);
+				DBSFaces.encodeAttribute(xWriter, "class", CSS.THEME.INPUT + CSS.THEME.FLEX + CSS.NOT_SELECTABLE);
 				if (!xCheckbox.getInvertLabel()){
 					DBSFaces.encodeLabel(pContext, xCheckbox, xWriter);
 				}
@@ -80,26 +80,31 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 //		if (pCheckbox.getUpdate()!=null){
 //			xOnChange = DBSFaces.getSubmitString(pCheckbox, DBSFaces.HTML.EVENTS.ONCHANGE, pCheckbox.getExecute(), pCheckbox.getUpdate());
 //		}
-
-		pWriter.startElement("input", pCheckbox); 
-			DBSFaces.encodeAttribute(pWriter, "id", xClientId);
-			DBSFaces.encodeAttribute(pWriter, "name", xClientId);
-			DBSFaces.encodeAttribute(pWriter, "type", "checkbox");
-			if (pCheckbox.getReadOnly()){
-				DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pCheckbox) + CSS.MODIFIER.DISABLED);
-				DBSFaces.encodeAttribute(pWriter, "disabled","disabled");
-			}else{
-				DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pCheckbox));
-			}
-//			if (xOnChange!=null){
-//				DBSFaces.encodeAttribute(pWriter, DBSFaces.HTML.EVENTS.ONCHANGE, xOnChange); 
-//			}
-			if(pvIsChecked(pCheckbox.getValue())) {
-				DBSFaces.encodeAttribute(pWriter, "checked", "checked");
-			}
-
-			encodeClientBehaviors(pContext, pCheckbox);
-		pWriter.endElement("input");
+		pWriter.startElement("div", pCheckbox);
+			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.INPUT);
+				pWriter.startElement("span", pCheckbox);
+					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.ICON);
+				pWriter.endElement("span");			
+				pWriter.startElement("input", pCheckbox); 
+				DBSFaces.encodeAttribute(pWriter, "id", xClientId);
+				DBSFaces.encodeAttribute(pWriter, "name", xClientId);
+				DBSFaces.encodeAttribute(pWriter, "type", "checkbox");
+				if (pCheckbox.getReadOnly()){
+					DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pCheckbox) + CSS.MODIFIER.DISABLED);
+					DBSFaces.encodeAttribute(pWriter, "disabled","disabled");
+				}else{
+					DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pCheckbox));
+				}
+	//			if (xOnChange!=null){
+	//				DBSFaces.encodeAttribute(pWriter, DBSFaces.HTML.EVENTS.ONCHANGE, xOnChange); 
+	//			}
+				if(pvIsChecked(pCheckbox.getValue())) {
+					DBSFaces.encodeAttribute(pWriter, "checked", "checked");
+				}
+	
+				encodeClientBehaviors(pContext, pCheckbox);
+			pWriter.endElement("input");
+		pWriter.endElement("div");
 	}
 	
     private static boolean pvIsChecked(Object pValue) {

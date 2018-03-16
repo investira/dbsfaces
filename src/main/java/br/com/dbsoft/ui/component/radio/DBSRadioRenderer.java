@@ -77,6 +77,9 @@ public class DBSRadioRenderer extends DBSRenderer {
 				pvEncodeItens(pContext, xRadio, xWriter);
 			}
 			DBSFaces.encodeTooltip(pContext, xRadio, xRadio.getTooltip());
+			if (!xRadio.getReadOnly()){
+				pvEncodeJS(xRadio, xWriter);
+			}
 		xWriter.endElement("div");
 	}
 
@@ -88,7 +91,7 @@ public class DBSRadioRenderer extends DBSRenderer {
 			if (xItem.getClass().equals(UISelectItem.class)){
 				UISelectItem xS = (UISelectItem) xItem;
 				pWriter.startElement("div", pRadio);
-					String xClass = CSS.THEME.INPUT + CSS.THEME.FLEX;
+					String xClass = CSS.THEME.INPUT + CSS.THEME.FLEX + CSS.NOT_SELECTABLE;
 					if (pRadio.getReadOnly()){
 						DBSFaces.encodeAttribute(pWriter, "class", xClass + CSS.MODIFIER.DISABLED);
 						DBSFaces.encodeAttribute(pWriter, "disabled", "disabled");
@@ -98,40 +101,41 @@ public class DBSRadioRenderer extends DBSRenderer {
 					if (pRadio.getFloatLeft()){
 						DBSFaces.encodeAttribute(pWriter, "style", "float:left;");
 					}
-					pWriter.startElement("input", pRadio);
-						DBSFaces.encodeAttribute(pWriter, "id", xClientId + xI);
-//						DBSFaces.encodeAttribute(pWriter, "id", xItem.getClientId());
-						DBSFaces.encodeAttribute(pWriter, "type", "radio");
-						DBSFaces.encodeAttribute(pWriter, "name", pvGetItemClientId(pContext, pRadio));
-//						if (DBSObject.isEmpty(pRadio.getGroup())){
-//							DBSFaces.encodeAttribute(pWriter, "name", xClientId);
-//						}else{
-//							if (pRadio.getNamingContainer() == null){
-//								DBSFaces.encodeAttribute(pWriter, "name", pRadio.getGroup());
-//							}else{
-//								DBSFaces.encodeAttribute(pWriter, "name", pRadio.getNamingContainer().getClientId() + ":" + pRadio.getGroup());
-//							}
-//						}
-						xClass = DBSFaces.getInputDataClass(pRadio) + CSS.THEME.FLEX_COL;
-						if (pRadio.getReadOnly()){
-							DBSFaces.encodeAttribute(pWriter, "class", xClass + CSS.MODIFIER.DISABLED);
-							DBSFaces.encodeAttribute(pWriter, "disabled", "disabled");
-						}else{
-							DBSFaces.encodeAttribute(pWriter, "class", xClass);
-						}			
-						DBSFaces.encodeAttribute(pWriter, "value", xS.getItemValue());
-						if (pRadio.getValue()!=null){
-							if (pRadio.getValue().toString().equals(xS.getItemValue())){
-								DBSFaces.encodeAttribute(pWriter, "checked", "checked");
-							}
+					if (pRadio.getValue()!=null){
+						if (pRadio.getValue().toString().equals(xS.getItemValue())){
+							DBSFaces.encodeAttribute(pWriter, "checked", "checked");
 						}
-						encodeClientBehaviors(pContext, pRadio);
-					pWriter.endElement("input");
+					}
+					pWriter.startElement("div", pRadio);
+						DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.INPUT);
+						pWriter.startElement("span", pRadio);
+							DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.ICON);
+						pWriter.endElement("span");
+						pWriter.startElement("input", pRadio);
+							DBSFaces.encodeAttribute(pWriter, "id", xClientId + xI);
+							DBSFaces.encodeAttribute(pWriter, "type", "radio");
+							DBSFaces.encodeAttribute(pWriter, "name", pvGetItemClientId(pContext, pRadio));
+							xClass = DBSFaces.getInputDataClass(pRadio) + CSS.THEME.FLEX_COL;
+							if (pRadio.getReadOnly()){
+								DBSFaces.encodeAttribute(pWriter, "class", xClass + CSS.MODIFIER.DISABLED);
+								DBSFaces.encodeAttribute(pWriter, "disabled", "disabled");
+							}else{
+								DBSFaces.encodeAttribute(pWriter, "class", xClass);
+							}			
+							DBSFaces.encodeAttribute(pWriter, "value", xS.getItemValue());
+							if (pRadio.getValue()!=null){
+								if (pRadio.getValue().toString().equals(xS.getItemValue())){
+									DBSFaces.encodeAttribute(pWriter, "checked", "checked");
+								}
+							}
+							encodeClientBehaviors(pContext, pRadio);
+						pWriter.endElement("input");
+					pWriter.endElement("div");
 					//Encode do label do radio caso tenha sido informado
 					if (xS.getItemLabel() != null && !xS.getItemLabel().equals("")){
 						pWriter.startElement("label", pRadio);
 							DBSFaces.encodeAttribute(pWriter, "for", xClientId + xI);
-							DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.INPUT_LABEL + CSS.NOT_SELECTABLE + CSS.THEME.FLEX_COL);
+							DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.INPUT_LABEL);
 							if (!DBSObject.isEmpty(pRadio.getLabelWidth())) {
 								DBSFaces.encodeAttribute(pWriter, "style","width:" + pRadio.getLabelWidth() + ";");
 							}
@@ -157,6 +161,17 @@ public class DBSRadioRenderer extends DBSRenderer {
 		}
 		return xItemClientid;
 	}
+	
+	private void pvEncodeJS(UIComponent pComponent, ResponseWriter pWriter) throws IOException{
+		DBSFaces.encodeJavaScriptTagStart(pComponent, pWriter);
+		String xJS = "$(document).ready(function() { \n" +
+					     " var xRadioId = dbsfaces.util.jsid('" + pComponent.getClientId() + "'); \n " + 
+					     " dbs_radio(xRadioId); \n" +
+		                "}); \n"; 
+		pWriter.write(xJS);
+		DBSFaces.encodeJavaScriptTagEnd(pWriter);		
+	}
+
 
 }
 
