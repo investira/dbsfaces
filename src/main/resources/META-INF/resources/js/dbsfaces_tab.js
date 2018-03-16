@@ -143,6 +143,7 @@ dbsfaces.tab = {
 //				.css("color", pTabData.colorInverted);
 		dbsfaces.tab.resize(pTabData);
 		pTabData.dom.self.trigger("change", pTabPageRawId.substring(pTabPageRawId.lastIndexOf(":") + 1));
+		xTabPage.trigger("select");
 	},
 
 	selectTabPage: function(pTabPageRawId, pTabData){
