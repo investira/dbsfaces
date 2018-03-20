@@ -8,63 +8,63 @@ dbs_slider = function(pId, pValuesList, pLabelsList, pMinValue, pMaxValue, pLoca
 	});
 
 //	xSliderData.updateIntervalDimension = setInterval(function(){
-//		dbsfaces.slider.updateDimensions(xSliderData);
+//		dbsfaces.slider.pvUpdateDimensions(xSliderData);
 //	},1);
 
 	xSliderData.dom.slider.on("mousedown touchstart", function(e){
-		if (dbsfaces.slider.isReadOnly(xSliderData, e)){return false;}
-		dbsfaces.slider.jump(xSliderData, e);
-		dbsfaces.slider.handleMoveStart(xSliderData, e);
+		if (dbsfaces.slider.pvIsReadOnly(xSliderData, e)){return false;}
+		dbsfaces.slider.pvJump(xSliderData, e);
+		dbsfaces.slider.pvHandleMoveStart(xSliderData, e);
 		$(document.activeElement).blur();
 		e.stopImmediatePropagation();
 		return false;
 	});
 	xSliderData.dom.slider.on("mouseup touchend", function(e){
-		if (dbsfaces.slider.isReadOnly(xSliderData, e)){return false;}
-		dbsfaces.slider.handleMoveStop(xSliderData, e);
+		if (dbsfaces.slider.pvIsReadOnly(xSliderData, e)){return false;}
+		dbsfaces.slider.pvHandleMoveStop(xSliderData, e);
 		e.stopImmediatePropagation();
 		return false;
 	});
 	xSliderData.dom.slider.on("mouseleave", function(e){
-		dbsfaces.slider.handleMoveStop(xSliderData, e);
+		dbsfaces.slider.pvHandleMoveStop(xSliderData, e);
 		e.stopImmediatePropagation();
 		return false;
 	});
 	xSliderData.dom.slider.on("mousemove touchmove", function(e){
-		if (dbsfaces.slider.isReadOnly(xSliderData, e)){return false;}
+		if (dbsfaces.slider.pvIsReadOnly(xSliderData, e)){return false;}
 		if (xSliderData.startPos == null){return false;}
 		if (e.originalEvent.type == "mousemove" 
 		 && e.which == 0){
-			dbsfaces.slider.handleMoveStop(xSliderData, e);
+			dbsfaces.slider.pvHandleMoveStop(xSliderData, e);
 			e.stopImmediatePropagation();
 			return false;
 		}
-		dbsfaces.slider.handleMove(xSliderData, e);
+		dbsfaces.slider.pvHandleMove(xSliderData, e);
 		e.stopImmediatePropagation();
 		return false;
 	});	
 	xSliderData.dom.self.on("mouseleave", function(e){
-		dbsfaces.slider.handleMoveStop(xSliderData, e);
+		dbsfaces.slider.pvHandleMoveStop(xSliderData, e);
 		e.stopImmediatePropagation();
 		return false;
 	});
 	xSliderData.dom.label.on("mousedown touchstart", function(e){
-		if (dbsfaces.slider.isReadOnly(xSliderData, e)){return false;}
+		if (dbsfaces.slider.pvIsReadOnly(xSliderData, e)){return false;}
 		if (xSliderData.dom.self.hasClass("-ph")){return;}
-		dbsfaces.slider.setCurrentHandle(xSliderData, null);
-		dbsfaces.slider.setEditing(xSliderData, true, xSliderData.dom.input);
+		dbsfaces.slider.pvSetCurrentHandle(xSliderData, null);
+		dbsfaces.slider.pvSetEditing(xSliderData, true, xSliderData.dom.input);
 		e.stopImmediatePropagation();
 		return false;
 	});
 	xSliderData.dom.pointsLabel.on("mousedown touchstart", function(e){
-		if (dbsfaces.slider.isReadOnly(xSliderData, e)){return false;}
-		dbsfaces.slider.jump(xSliderData, e);
+		if (dbsfaces.slider.pvIsReadOnly(xSliderData, e)){return false;}
+		dbsfaces.slider.pvJump(xSliderData, e);
 		e.stopImmediatePropagation();
 		return false;
 	});
 	xSliderData.dom.pointsPoint.on("mousedown touchstart", function(e){
-		if (dbsfaces.slider.isReadOnly(xSliderData, e)){return false;}
-		dbsfaces.slider.jump(xSliderData, e);
+		if (dbsfaces.slider.pvIsReadOnly(xSliderData, e)){return false;}
+		dbsfaces.slider.pvJump(xSliderData, e);
 		e.stopImmediatePropagation();
 		return false;
 	});
@@ -73,21 +73,21 @@ dbs_slider = function(pId, pValuesList, pLabelsList, pMinValue, pMaxValue, pLoca
 			return false;
 		});
 		xSliderData.dom.inputBegin.on("keydown", function(e){
-			dbsfaces.slider.setCurrentHandle(xSliderData, "b");
+			dbsfaces.slider.pvSetCurrentHandle(xSliderData, "b");
 			dbsfaces.slider.pvSetValue(xSliderData, this.value);
 		});
 		xSliderData.dom.inputBegin.on("blur", function(e){
 			var xBeginValue = dbsfaces.number.parseFloat(xSliderData.dom.inputBegin[0].value);
 			var xEndValue = dbsfaces.number.parseFloat(xSliderData.dom.inputEnd[0].value);
 			if (xBeginValue > xEndValue){
-				dbsfaces.slider.setCurrentHandle(xSliderData, "b");
+				dbsfaces.slider.pvSetCurrentHandle(xSliderData, "b");
 				dbsfaces.slider.pvSetValue(xSliderData, xEndValue);
 			}
-			dbsfaces.slider.setEditing(xSliderData, false);
+			dbsfaces.slider.pvSetEditing(xSliderData, false);
 		});
 		xSliderData.dom.handleBeginLabel.on("mousedown touchstart", function(e){
-			dbsfaces.slider.setCurrentHandle(xSliderData, "b");
-			dbsfaces.slider.setEditing(xSliderData, true, xSliderData.dom.inputBegin);
+			dbsfaces.slider.pvSetCurrentHandle(xSliderData, "b");
+			dbsfaces.slider.pvSetEditing(xSliderData, true, xSliderData.dom.inputBegin);
 			e.stopImmediatePropagation();
 			return false;
 		});
@@ -97,21 +97,21 @@ dbs_slider = function(pId, pValuesList, pLabelsList, pMinValue, pMaxValue, pLoca
 			return false;
 		});
 		xSliderData.dom.inputEnd.on("keydown", function(e){
-			dbsfaces.slider.setCurrentHandle(xSliderData, "e");
+			dbsfaces.slider.pvSetCurrentHandle(xSliderData, "e");
 			dbsfaces.slider.pvSetValue(xSliderData, this.value);
 		});
 		xSliderData.dom.inputEnd.on("blur", function(e){
 			var xBeginValue = dbsfaces.number.parseFloat(xSliderData.dom.inputBegin[0].value);
 			var xEndValue = dbsfaces.number.parseFloat(xSliderData.dom.inputEnd[0].value);
 			if (xEndValue < xBeginValue){
-				dbsfaces.slider.setCurrentHandle(xSliderData, "e");
+				dbsfaces.slider.pvSetCurrentHandle(xSliderData, "e");
 				dbsfaces.slider.pvSetValue(xSliderData, xBeginValue);
 			}
-			dbsfaces.slider.setEditing(xSliderData, false);
+			dbsfaces.slider.pvSetEditing(xSliderData, false);
 		});
 		xSliderData.dom.handleEndLabel.on("mousedown touchstart", function(e){
-			dbsfaces.slider.setCurrentHandle(xSliderData, "e");
-			dbsfaces.slider.setEditing(xSliderData, true, xSliderData.dom.inputEnd);
+			dbsfaces.slider.pvSetCurrentHandle(xSliderData, "e");
+			dbsfaces.slider.pvSetEditing(xSliderData, true, xSliderData.dom.inputEnd);
 			e.stopImmediatePropagation();
 			return false;
 		});
@@ -125,15 +125,15 @@ dbs_slider = function(pId, pValuesList, pLabelsList, pMinValue, pMaxValue, pLoca
 			return false;
 		});
 		xSliderData.dom.input.on("keydown", function(e){
-			dbsfaces.slider.setCurrentHandle(xSliderData, null);
+			dbsfaces.slider.pvSetCurrentHandle(xSliderData, null);
 			dbsfaces.slider.pvSetValue(xSliderData, this.value);
 		});		
 		xSliderData.dom.input.on("blur", function(e){
-			dbsfaces.slider.setEditing(xSliderData, false);
+			dbsfaces.slider.pvSetEditing(xSliderData, false);
 		});
 		xSliderData.dom.handleLabel.on("mousedown touchstart", function(e){
-			dbsfaces.slider.setCurrentHandle(xSliderData, null);
-			dbsfaces.slider.setEditing(xSliderData, true, xSliderData.dom.input);
+			dbsfaces.slider.pvSetCurrentHandle(xSliderData, null);
+			dbsfaces.slider.pvSetEditing(xSliderData, true, xSliderData.dom.input);
 			e.stopImmediatePropagation();
 			return false;
 		});
@@ -231,10 +231,10 @@ dbsfaces.slider = {
 			xData.dom.handleEnd = xData.dom.sub_container.children(".-handle.-end");
 			xData.dom.handleEndLabel = xData.dom.handleEnd.children(".-label");
 			//Seta posição inicial
-			dbsfaces.slider.setCurrentHandle(xData, "b");
+			dbsfaces.slider.pvSetCurrentHandle(xData, "b");
 			dbsfaces.slider.pvSetInputValue(xData, xData.dom.inputBegin[0].value);
 			//Seta posição final
-			dbsfaces.slider.setCurrentHandle(xData, "e");
+			dbsfaces.slider.pvSetCurrentHandle(xData, "e");
 			dbsfaces.slider.pvSetInputValue(xData, xData.dom.inputEnd[0].value);
 			xData.dom.inputEnd.attr("minValue", xData.min);
 			xData.dom.inputEnd.attr("maxValue", xData.max);
@@ -245,7 +245,7 @@ dbsfaces.slider = {
 			xData.dom.input = xData.dom.sub_container.find(".-th_input-data");
 			xData.dom.handle = xData.dom.sub_container.children(".-handle");
 			xData.dom.handleLabel = xData.dom.handle.children(".-label");
-			dbsfaces.slider.setCurrentHandle(xData, null);
+			dbsfaces.slider.pvSetCurrentHandle(xData, null);
 			dbsfaces.slider.pvSetInputValue(xData, xData.dom.input[0].value);
 			xData.dom.input.attr("minValue", xData.min);
 			xData.dom.input.attr("maxValue", xData.max);
@@ -507,21 +507,10 @@ dbsfaces.slider = {
 		}
 	},
 
-	resize: function(pSliderData){
-		dbsfaces.slider.updateDimensions(pSliderData);
 
-		if (pSliderData.type == "r"){
-			dbsfaces.slider.setCurrentHandle(pSliderData, "b");
-			dbsfaces.slider.pvSetValue(pSliderData, pSliderData.value);
-			dbsfaces.slider.setCurrentHandle(pSliderData, "e");
-			dbsfaces.slider.pvSetValue(pSliderData, pSliderData.value);
-		}else{
-			dbsfaces.slider.pvSetValue(pSliderData, pSliderData.value);
-		}
-	},
 
-	jump: function(pSliderData, e){
-		dbsfaces.slider.updateDimensions(pSliderData);
+	pvJump: function(pSliderData, e){
+		dbsfaces.slider.pvUpdateDimensions(pSliderData);
 
 		//Calcula fator em relação as coordenada do click
 		var xLengthFator = 0;
@@ -543,8 +532,8 @@ dbsfaces.slider = {
 		e.preventDefault();
 	},
 	
-	handleMoveStart: function(pSliderData, e){
-		dbsfaces.slider.updateDimensions(pSliderData);;
+	pvHandleMoveStart: function(pSliderData, e){
+		dbsfaces.slider.pvUpdateDimensions(pSliderData);;
 		pSliderData.dom.self.addClass("-selected");
 		var xXY = dbsfaces.ui.pointerEventToXY(e);
 		//Sala posição atual para calcular a diferença posteriormente
@@ -567,7 +556,7 @@ dbsfaces.slider = {
 		e.preventDefault();
 	},
 	
-	handleMoveStop: function(pSliderData, e){
+	pvHandleMoveStop: function(pSliderData, e){
 		pSliderData.startPos = null;
 		pSliderData.dom.self.removeClass("-selected");
 
@@ -578,7 +567,7 @@ dbsfaces.slider = {
 		e.preventDefault();
 	},
 	
-	handleMove: function(pSliderData, e){
+	pvHandleMove: function(pSliderData, e){
 		if (pSliderData.startPos == null){return;}
 		var xLengthPosNew = pSliderData.lengthPos;
 		var xLengthFator = 0;
@@ -599,7 +588,7 @@ dbsfaces.slider = {
 		e.preventDefault();
 	},
 
-	setEditing: function(pSliderData, pEditing, pInputData){
+	pvSetEditing: function(pSliderData, pEditing, pInputData){
 		if (pEditing){
 			pSliderData.dom.self.addClass("-editing");
 			pInputData.focus();
@@ -610,7 +599,7 @@ dbsfaces.slider = {
 		}
 	},
 	
-	setCurrentHandle: function(pSliderData, pHandle){
+	pvSetCurrentHandle: function(pSliderData, pHandle){
 		pSliderData.currentHandle = pHandle;
 		if (pHandle == "b"){
 			pSliderData.dom.input = pSliderData.dom.inputBegin;
@@ -631,7 +620,7 @@ dbsfaces.slider = {
 		}
 	},
 	
-	isReadOnly: function(pSliderData){
+	pvIsReadOnly: function(pSliderData){
 		return pSliderData.dom.self.hasClass("-readOnly") || pSliderData.dom.self.hasClass("-disabled");
 	},
 	
@@ -644,36 +633,15 @@ dbsfaces.slider = {
 			//Mas o handle ativo não é do inicio...
 			if (pSliderData.currentHandle != "b"){
 				//Ativa handle do inicio
-				dbsfaces.slider.setCurrentHandle(pSliderData, "b");
+				dbsfaces.slider.pvSetCurrentHandle(pSliderData, "b");
 			}
 		}else{
 			//Mas o handle ativo não é do fimn...
 			if (pSliderData.currentHandle != "e"){
 				//Ativa handle do fim
-				dbsfaces.slider.setCurrentHandle(pSliderData, "e");
+				dbsfaces.slider.pvSetCurrentHandle(pSliderData, "e");
 			}
 		}
-	},
-
-
-	//Encontra o percentual a partir do valor e seta o slider
-	setValue: function(pSlider, pValue){
-		var xSliderData = pSlider.data("data");
-		if ((typeof pValue == "undefined") || pValue.length == 0){return;}
-		dbsfaces.slider.pvSetValue(xSliderData, pValue);
-		dbsfaces.slider.pvTriggerChange(xSliderData);
-	},
-	
-	setTextValue: function(pSlider, pValue){
-		var xSliderData = pSlider.data("data");
-		if ((typeof pValue == "undefined") || pValue.length == 0){return;}
-		dbsfaces.slider.pvEncodeTextValue(xSliderData, pValue);
-	},
-
-	setLabel: function(pSlider, pValue){
-		var xSliderData = pSlider.data("data");
-		if ((typeof pValue == "undefined") || pValue.length == 0){return;}
-		xSliderData.dom.label.text(pValue);
 	},
 
 	pvSetValue: function(pSliderData, pValue){
@@ -807,12 +775,12 @@ dbsfaces.slider = {
 			//Força noveo encode do valor do handle anterior para que seja reposicionado
 			var xCurrentHandle = pSliderData.currentHandle;
 			if (pSliderData.currentHandle == "b"){
-				dbsfaces.slider.setCurrentHandle(pSliderData, "e");
+				dbsfaces.slider.pvSetCurrentHandle(pSliderData, "e");
 			}else{
-				dbsfaces.slider.setCurrentHandle(pSliderData, "b");
+				dbsfaces.slider.pvSetCurrentHandle(pSliderData, "b");
 			}
 			dbsfaces.slider.pvEncodeValue(pSliderData);
-			dbsfaces.slider.setCurrentHandle(pSliderData, xCurrentHandle);
+			dbsfaces.slider.pvSetCurrentHandle(pSliderData, xCurrentHandle);
 		}
 	},
 	
@@ -1027,7 +995,7 @@ dbsfaces.slider = {
 	},
 
 	
-	updateDimensions: function(pSliderData){
+	pvUpdateDimensions: function(pSliderData){
 		//Atualiza dimensão
 		var xRectSubContainer = dbsfaces.ui.getRect($(pSliderData.dom.sub_container));
 		if (pSliderData.orientation == "h"){
@@ -1083,14 +1051,14 @@ dbsfaces.slider = {
 		pSliderData.dom.handleEnd.removeClass("-begin").addClass("-end");
 		
 //		bbb
-//		dbsfaces.slider.setCurrentHandle(pSliderData, pSliderData.currentHandle);
+//		dbsfaces.slider.pvSetCurrentHandle(pSliderData, pSliderData.currentHandle);
 //		dbsfaces.slider.pvEncodeValue(pSliderData);
 //		dbsfaces.slider.pvSetInputValue(pSliderData, pSliderData.dom.inputBegin[0].value);
 		pSliderData.switched = true;
 		if (pSliderData.currentHandle == "b"){
-			dbsfaces.slider.setCurrentHandle(pSliderData, "e");
+			dbsfaces.slider.pvSetCurrentHandle(pSliderData, "e");
 		}else{
-			dbsfaces.slider.setCurrentHandle(pSliderData, "b");
+			dbsfaces.slider.pvSetCurrentHandle(pSliderData, "b");
 		}
 	},
 	
@@ -1158,5 +1126,38 @@ dbsfaces.slider = {
 			pLabel.data("owner", xLabelOwner);
 		}
 		pLabel.css("opacity", xOpacity);
+	},
+	
+	resize: function(pSliderData){
+		dbsfaces.slider.pvUpdateDimensions(pSliderData);
+
+		if (pSliderData.type == "r"){
+			dbsfaces.slider.pvSetCurrentHandle(pSliderData, "b");
+			dbsfaces.slider.pvSetValue(pSliderData, pSliderData.value);
+			dbsfaces.slider.pvSetCurrentHandle(pSliderData, "e");
+			dbsfaces.slider.pvSetValue(pSliderData, pSliderData.value);
+		}else{
+			dbsfaces.slider.pvSetValue(pSliderData, pSliderData.value);
+		}
+	},
+	//Encontra o percentual a partir do valor e seta o slider
+	setValue: function(pSlider, pValue){
+		var xSliderData = pSlider.data("data");
+		if ((typeof pValue == "undefined") || pValue.length == 0){return;}
+		dbsfaces.slider.pvSetValue(xSliderData, pValue);
+		dbsfaces.slider.pvTriggerChange(xSliderData);
+	},
+	
+	setTextValue: function(pSlider, pValue){
+		var xSliderData = pSlider.data("data");
+		if ((typeof pValue == "undefined") || pValue.length == 0){return;}
+		dbsfaces.slider.pvEncodeTextValue(xSliderData, pValue);
+	},
+
+	setLabel: function(pSlider, pValue){
+		var xSliderData = pSlider.data("data");
+		if ((typeof pValue == "undefined") || pValue.length == 0){return;}
+		xSliderData.dom.label.text(pValue);
 	}
+
 }
