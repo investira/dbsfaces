@@ -719,7 +719,7 @@ dbsfaces.slider = {
 				xLengthFator = (xLengthFator - xMin) / (xMax - xMin); 
 			}
 		}else{
-			xValue = pValue.trim().toLowerCase();
+			xValue = String(pValue).trim().toLowerCase();
 			//Procura qual o item da lista foi selecionado
 			for (var xI=0; xI < pSliderData.valuesList.length; xI++){
 				if (pSliderData.valuesList[xI].toLowerCase() == xValue){
