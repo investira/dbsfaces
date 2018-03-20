@@ -704,6 +704,8 @@ td > .-icon{
 	text-transform: none;
 	line-height: 1;
 	height: 1em;
+	width: 1em;
+    box-sizing: content-box;
 	/* Better Font Rendering =========== */
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
