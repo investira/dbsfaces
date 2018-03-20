@@ -129,21 +129,21 @@ dbsfaces.tab = {
 			xCaption.css("min-height", "");
 //			xCaption.siblings().css("min-height", "");
 			pTabData.dom.input.val(pTabPageRawId);
-			setTimeout(function(e){
-				var xRect = dbsfaces.ui.getRect(xCaption.children());
-				var xFontSize = dbsfaces.number.parseFloat(xCaption.css("font-size"));
-				var xHeight = xRect.height / xFontSize;
-				xHeight += "em";
-				xCaption.css("min-height", xHeight);
-				pTabData.dom.captions.css("min-height", xHeight);
-			},300);
+//			setTimeout(function(e){
+//				var xRect = dbsfaces.ui.getRect(xCaption.children());
+//				var xFontSize = dbsfaces.number.parseFloat(xCaption.css("font-size"));
+//				var xHeight = xRect.height / xFontSize;
+//				xHeight += "em";
+//				xCaption.css("min-height", xHeight);
+//				pTabData.dom.captions.css("min-height", xHeight);
+//			},300);
 		}
 		//Troca cor
 //		xCaption.css("background-color", pTabData.color)
 //				.css("color", pTabData.colorInverted);
 		dbsfaces.tab.resize(pTabData);
 		pTabData.dom.self.trigger("change", pTabPageRawId.substring(pTabPageRawId.lastIndexOf(":") + 1));
-		xTabPage.trigger("select");
+		xTabPage.trigger("select", !xDoUnSelect);
 	},
 
 	selectTabPage: function(pTabPageRawId, pTabData){
