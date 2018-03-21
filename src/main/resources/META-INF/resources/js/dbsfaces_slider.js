@@ -646,7 +646,10 @@ dbsfaces.slider = {
 
 	pvSetValue: function(pSliderData, pValue){
 		if ((typeof pValue == "undefined") || pValue.length == 0){return;}
-		pSliderData.value = dbsfaces.number.parseFloat(pValue);
+		if (pSliderData.type == "v"
+	     || pSliderData.type == "r"){
+			pSliderData.value = dbsfaces.number.parseFloat(pValue);
+		}
 		dbsfaces.slider.pvSetValuePerc(pSliderData, dbsfaces.slider.pvGetLengthFatorFromValue(pSliderData, pValue), true);
 	},
 	
@@ -691,7 +694,7 @@ dbsfaces.slider = {
 			//Procura qual o item da lista foi selecionado
 			for (var xI=0; xI < pSliderData.valuesList.length; xI++){
 				if (pSliderData.valuesList[xI].toLowerCase() == xValue){
-					 xLengthFator = xI / pSliderData.valuesList.length;
+					 xLengthFator = (xI + 1) / pSliderData.valuesList.length;
 					 break;
 				}
 			}
@@ -759,7 +762,7 @@ dbsfaces.slider = {
 		}else{
 			if (pLengthFator > 0){
 				//Encontra o valor da lista mais próximo ao percentual
-				xI = dbsfaces.math.trunc(((pSliderData.valuesList.length) * pLengthFator), 0) + 1;
+				xI = dbsfaces.math.trunc((pSliderData.valuesList.length * pLengthFator) + .99, 0);
 				pLengthFator = xI / pSliderData.valuesList.length;
 				xInputValue = pSliderData.valuesList[xI - 1];
 			}
