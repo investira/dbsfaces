@@ -835,10 +835,11 @@ dbsfaces.slider = {
 			clearTimeout(pSliderData.timeout);
 			pSliderData.timeout = setTimeout(function(){
 				pSliderData.dom.self.trigger("change", [{value:pSliderData.value, 
-														 valueBegin:pSliderData.valueBegin, 
-														 valueEnd:pSliderData.valueEnd, 
-														 lengthFator:pSliderData.lengthFator}]);
-			},100);
+														valueBegin:pSliderData.valueBegin, 
+														valueEnd:pSliderData.valueEnd, 
+														lengthFator:pSliderData.lengthFator,
+														previousValue: pSliderData.previousValue}]);
+			},10);
 		}
 	},
 
