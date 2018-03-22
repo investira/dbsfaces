@@ -100,7 +100,7 @@ public class DBSDialog extends DBSUIOutput implements NamingContainer, SystemEve
 	}
 	
 	public static enum POSITION {
-		TOP 			("t"),
+		TOP 				("t"),
 	    BOTTOM 			("b"),
 		LEFT 			("l"),
 	    RIGHT 			("r"),
