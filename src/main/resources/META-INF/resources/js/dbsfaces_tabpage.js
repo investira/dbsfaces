@@ -35,22 +35,4 @@ dbsfaces.tabPage = {
 			}
 		},10);
 	}
-//	setSelected: function(pTabPageData){
-//		var xTabId = pTabPageData.dom.parent[0].id;
-//		var xTabPageId = pTabPageData.dom.self[0].id;
-//		var xInputId = xTabId + ":input";
-//		var xSelectedTab = $(dbsfaces.util.jsid(xInputId)).val().trim();
-//		if (xTabPageId.toUpperCase() == xSelectedTab.toUpperCase()){
-//			dbsfaces.tab.selectTabPage(xTabPageId);
-//		}
-//	}
-//	setSelected: function(pId){
-//		var xTabId = $(pId).closest(".dbs_tab").get(0).id;
-//		var xTabPageId = $(pId).get(0).id;
-//		var xInputId = xTabId + ":input";
-//		var xSelectedTab = $(dbsfaces.util.jsid(xInputId)).val().trim().toUpperCase();
-//		if (xTabPageId.toUpperCase() == xSelectedTab){
-//			dbsfaces.tab.showTab(pId, xTabPageId);
-//		}
-//	}
 }
