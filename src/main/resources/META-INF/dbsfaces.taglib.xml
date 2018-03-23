@@ -4250,6 +4250,7 @@
 				&lt;ul&gt;
 					&lt;li&gt;tab = tab&lt;/li&gt;
 					&lt;li&gt;acc = accordion&lt;/li&gt;
+					&lt;li&gt;scr = scroll&lt;/li&gt;
 				&lt;ul&gt;
 				&lt;/span&gt; </description>
 			<name>type</name>
@@ -4324,7 +4325,7 @@
 			<description>
             		Caption IconClass
             </description>
-			<name>iconClass</name>
+			<name>captionIconClass</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>

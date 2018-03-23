@@ -69,7 +69,7 @@ public class DBSTabPage extends DBSUIComponentBase implements NamingContainer, C
 	}
 	
 	public String getCaption() {
-		return (String) getStateHelper().eval(PropertyKeys.caption, null);
+		return (String) getStateHelper().eval(PropertyKeys.caption, "");
 	}
 	
 	public void setCaption(String pCaption) {

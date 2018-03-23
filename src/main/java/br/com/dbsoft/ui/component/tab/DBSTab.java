@@ -40,7 +40,8 @@ public class DBSTab extends DBSUIOutput implements NamingContainer, ClientBehavi
 	
 	public static enum TYPE {
 		TAB 			("tab"),
-	    ACCORDION 	("acc");	
+	    ACCORDION 	("acc"),
+	    SCROLL 		("scr");	
 		
 		private String 	wName;
 		

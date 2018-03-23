@@ -116,12 +116,17 @@ public class DBSTabRenderer extends DBSRenderer {
 				for (int xI=0; xI < xParent.getChildren().size(); xI++){	
 					if (pTab.getChildren().get(xI) instanceof DBSTabPage){
 						DBSTabPage xTabPage = (DBSTabPage) pTab.getChildren().get(xI);
-						if (xTabPage.isRendered()){
+						UIComponent xCaption = xTabPage.getFacet("caption");
+						if (xTabPage.isRendered()
+						&& (xCaption != null 
+						 || !DBSObject.isEmpty(xTabPage.getCaption())
+						 || !DBSObject.isEmpty(xTabPage.getCaptionIconClass()))) {
 							pWriter.startElement("div", pTab);  
 								String xPageId = xTabPage.getAttributes().get("id").toString();
 								String xPageClientId = xClientId + DBSFaces.ID_SEPARATOR + xPageId;
 								String xClass = CSS.MODIFIER.CAPTION + CSS.NOT_SELECTABLE + CSS.THEME.FLEX_COL;
-								if (pType == TYPE.TAB) {
+								if (pType == TYPE.TAB
+								 || pType == TYPE.SCROLL) {
 									xClass += CSS.THEME.BC + CSS.THEME.FC + CSS.THEME.INVERT;
 								}
 								DBSFaces.encodeAttribute(pWriter, "id", xPageClientId + "_aba");
@@ -154,33 +159,40 @@ public class DBSTabRenderer extends DBSRenderer {
 										DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER  + xTabPage.getCaptionStyleClass());
 										pWriter.startElement("div", pTab);  
 											DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
-											UIComponent xCaption = xTabPage.getFacet("caption");
 											if (xCaption!=null) {
 												xCaption.encodeAll(pContext);
 											}else {
-												pWriter.startElement("div", pTab);
-													DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CAPTION);
-					//									pWriter.writeAttribute("ontouchstart", "javascript:void(0)", "ontouchstart"); //Para ipad ativar o css:ACTIVE
-					//									pWriter.writeAttribute("href", "#", "href"); //Para ipad ativar o css:ACTIVE
-													pWriter.startElement("span", pTab);
-														DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.ICON + xTabPage.getCaptionIconClass());
-													pWriter.endElement("span");
-													pWriter.startElement("span", pTab);
-														DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.VALUE);
-														pWriter.write(xTabPage.getCaption());
-													pWriter.endElement("span");
-												pWriter.endElement("div");
-												if (pType.equals(TYPE.ACCORDION)){
-													UIComponent xCaptionObs = xTabPage.getFacet("caption_obs");
-													if (xCaptionObs!=null || !DBSObject.isEmpty(xTabPage.getCaptionObs())) {
-														pWriter.startElement("div", pTab);
-															DBSFaces.encodeAttribute(pWriter, "class", "-obs");
-															if (xCaptionObs!=null) {
-																xCaptionObs.encodeAll(pContext);
-															}else if (!DBSObject.isEmpty(xTabPage.getCaptionObs())){
-																pWriter.write(xTabPage.getCaptionObs());
-															}
-														pWriter.endElement("div");
+												if (!DBSObject.isEmpty(xTabPage.getCaption())
+												 || !DBSObject.isEmpty(xTabPage.getCaptionIconClass())) {
+													pWriter.startElement("div", pTab);
+														DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CAPTION);
+						//									pWriter.writeAttribute("ontouchstart", "javascript:void(0)", "ontouchstart"); //Para ipad ativar o css:ACTIVE
+						//									pWriter.writeAttribute("href", "#", "href"); //Para ipad ativar o css:ACTIVE
+															
+														if (!DBSObject.isEmpty(xTabPage.getCaptionIconClass())) {
+															pWriter.startElement("span", pTab);
+																DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.ICON + xTabPage.getCaptionIconClass());
+															pWriter.endElement("span");
+														}
+														if (!DBSObject.isEmpty(xTabPage.getCaption())){
+															pWriter.startElement("span", pTab);
+																DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.VALUE);
+																pWriter.write(xTabPage.getCaption());
+															pWriter.endElement("span");
+														}
+													pWriter.endElement("div");
+													if (pType.equals(TYPE.ACCORDION)){
+														UIComponent xCaptionObs = xTabPage.getFacet("caption_obs");
+														if (xCaptionObs!=null || !DBSObject.isEmpty(xTabPage.getCaptionObs())) {
+															pWriter.startElement("div", pTab);
+																DBSFaces.encodeAttribute(pWriter, "class", "-obs");
+																if (xCaptionObs!=null) {
+																	xCaptionObs.encodeAll(pContext);
+																}else if (!DBSObject.isEmpty(xTabPage.getCaptionObs())){
+																	pWriter.write(xTabPage.getCaptionObs());
+																}
+															pWriter.endElement("div");
+														}
 													}
 												}
 											}

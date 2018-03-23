@@ -1,3 +1,33 @@
+
+.dbs_tabPage[type="scr"]{
+/* 	opacity: 0; */
+	position: absolute !important;
+	overflow: auto;
+	width:100%;
+	height: 100%;
+	top:0;
+	-webkit-transition: left .5s cubic-bezier(.18,.89,.32,1.28);
+	-moz-transition: left .5s cubic-bezier(.18,.89,.32,1.28);
+	transition: left .5s cubic-bezier(.18,.89,.32,1.28);
+}
+
+.dbs_tabPage[type="scr"]:not(.-selected){
+	pointer-events: none;
+}
+
+.dbs_tabPage[type="scr"].-selected{
+	left:0;
+/* 	position:relative !important; */
+}
+
+.dbs_tabPage[type="scr"].-prev{
+	left:-101vw;
+}
+.dbs_tabPage[type="scr"].-next{
+	left:101vw;
+}
+
+
 .dbs_tabPage[type="acc"]{
 /* 	opacity: 0; */
 	position: absolute !important;
@@ -20,6 +50,10 @@
 	overflow: auto;
 	width:100%;
 	height: 100%;
+}
+
+.dbs_tabPage[type="scr"]:not(.-selected){
+	pointer-events: none;
 }
 
 .dbs_tabPage[type="tab"].-selected{

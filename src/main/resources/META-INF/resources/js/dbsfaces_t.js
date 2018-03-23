@@ -1,16 +1,17 @@
 $(document).ready(function(){
 	//SLIDER
 	$(".-t_slide > div").on(dbsfaces.EVENT.ON_TRANSITION_END, function(e){
+//		console.log("transitend\t" + e.target);
 		var xThis = $(this);
 		var xParent = xThis.parent();
 		var xNext = xThis.next();
 		if (xNext.length > 0){
 			if (xParent.hasClass("-in")){
-				dbsfaces.t.slide.moveIn(xNext);
-			}else if (xParent.hasClass("-out_left")){
-				dbsfaces.t.slide.moveOutLeft(xNext);
-			}else if (xParent.hasClass("-out_right")){
-				dbsfaces.t.slide.moveOutRight(xNext);
+//				dbsfaces.t.slide.moveIn(xNext);
+			}else if (xParent.hasClass("-t_slide-left")){
+//				dbsfaces.t.slide.moveLeft(xNext);
+			}else if (xParent.hasClass("-t_slide-right")){
+//				dbsfaces.t.slide.moveRight(xNext);
 			}
 //			xNext.css("left", $(this).css("left"));
 //			dbsfaces.ui.cssAllBrowser(xNext, "transition-timing-function",  xThis.css("transition-timing-function"));
@@ -24,16 +25,17 @@ dbsfaces.t = {}
 
 dbsfaces.t.slide = {
 	moveIn: function(pSlide){
-		dbsfaces.t.slide.move(pSlide, "-in");
+		dbsfaces.t.slide.pvMove(pSlide, "-t_slide-in");
 	},	
 	moveOutLeft: function(pSlide){
-		dbsfaces.t.slide.move(pSlide, "-out_left");
+		dbsfaces.t.slide.pvMove(pSlide, "-t_slide-left");
 	},	
 	moveOutRight: function(pSlide){
-		dbsfaces.t.slide.move(pSlide, "-out_right");
+		dbsfaces.t.slide.pvMove(pSlide, "-t_slide-right");
 	},	
-	move: function(pSlide, pPosition){
-		pSlide.removeClass("-out_left").removeClass("-out_right").removeClass("-in").addClass(pPosition);
+	pvMove: function(pSlide, pPosition){
+		pSlide.removeClass("-t_slide-left").removeClass("-t_slide-right").removeClass("-t_slide-in").addClass(pPosition);
+		pSlide.trigger("change", pPosition);
 	}	
 
 }

@@ -39,16 +39,54 @@ dbs_tab = function(pId) {
 		}
 	});
 
+	if (xTabData.type == "scr"){
+		xTabData.dom.tabPages.touchwipe({
+			wipeLeft : function() {
+				var xTabPage = $(dbsfaces.util.jsid(xTabData.dom.input.val())).next();
+				if (xTabPage.length > 0){
+					dbsfaces.tab.selectTabPage(xTabPage[0].id, xTabData);
+				}
+//				return dbsfaces.dialog.wipe(xDialogData, "l");
+			},
+			wipeRight : function() {
+				var xTabPage = $(dbsfaces.util.jsid(xTabData.dom.input.val())).prev();
+				if (xTabPage.length > 0){
+					dbsfaces.tab.selectTabPage(xTabPage[0].id, xTabData);
+				}
+//				return dbsfaces.dialog.wipe(xDialogData, "r");
+			},
+			wipeUp : function() {
+//				return dbsfaces.dialog.wipe(xDialogData, "u");
+			},
+			wipeDown : function() {
+//				return dbsfaces.dialog.wipe(xDialogData, "d");
+			},
+			onStart : function() {
+//				dbsfaces.dialog.scrollStart(xDialogData);
+			},
+			onMove : function(dx, dy) {
+//				dbsfaces.dialog.scroll(xDialogData, dx, dy);
+			},
+			min_move_x : 25,
+			min_move_y : 25,
+			preventDefaultEvents : true
+		});
+	}
+	
 	$(window).resize(function(e){
 		dbsfaces.tab.resize($(pId).data("data"));
 	});
+	
+	
 }
 
 dbsfaces.tab = {
 
 	initialize: function(pTab){
 		var xTabData = dbsfaces.tab.initializeData(pTab);
-		if (xTabData.type == "tab"){
+		dbsfaces.tab.initializeLayout(xTabData);
+		if (xTabData.type == "tab" 
+		 || xTabData.type == "scr"){
 			if (xTabData.dom.tabPage.length > 0){
 				if (xTabData.dom.input.val() == ""){
 					dbsfaces.tab.showTabPage(xTabData.dom.tabPage[0].id, xTabData);
@@ -67,6 +105,7 @@ dbsfaces.tab = {
 				self: pTab,
 				container: null,
 				captions: null,
+				captions_container: null,
 				caption: null,
 				tabPages: null,
 				tabPage: null,
@@ -89,6 +128,13 @@ dbsfaces.tab = {
 		return xData;
 	},
 
+	initializeLayout: function(pTabData){
+		//Remove caption se não houver caption em nenhum tabpage
+		if (pTabData.dom.captions_container.children().length == 0){
+			pTabData.dom.captions.remove();
+		}
+	},
+	
 	showTabPage: function(pTabPageRawId, pTabData){
 		var xTabPage = $(dbsfaces.util.jsid(pTabPageRawId));
 		if (typeof pTabData == "undefined"){
@@ -120,7 +166,9 @@ dbsfaces.tab = {
 			xCaption.removeClass("-hide").addClass("-selected");
 			xCaption.children().removeClass("-hide").addClass("-selected");
 			
-			xTabPage.removeClass("-hide").addClass("-selected");
+			xTabPage.removeClass("-hide").removeClass("-next").removeClass("-prev").addClass("-selected");
+			xTabPage.prevAll().removeClass("-next").addClass("-prev");
+			xTabPage.nextAll().removeClass("-prev").addClass("-next");
 			xCaption.siblings().addClass("-hide");
 			xCaption.siblings().children().addClass("-hide");
 			xTabPage.siblings().addClass("-hide");
