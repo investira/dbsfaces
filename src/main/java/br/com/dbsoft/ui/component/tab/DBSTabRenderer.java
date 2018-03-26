@@ -74,9 +74,13 @@ public class DBSTabRenderer extends DBSRenderer {
 			//Container
 			xWriter.startElement("div", xTab);
 				DBSFaces.encodeAttribute(xWriter, "class", CSS.MODIFIER.CONTAINER + CSS.THEME.FLEX + " -hide");
-				//Abas com os título ========================================================================
-				pvEncodeAba(pContext, xTab, xWriter, xSelectedTabPage, xType);
-				
+
+				//Títulos das páginas ========================================================================
+				pvEncodeCaptions(pContext, xTab, xWriter, xSelectedTabPage, xType);
+
+				//Indicador da página ========================================================================
+				pvEncodePageIndicator(pContext, xTab, xWriter, xType);
+
 				//Conteúdo da páginas ======================================================================================
 				pvEncodePage(pContext, xTab, xWriter, xSelectedTabPage);
 			xWriter.endElement("div");
@@ -106,15 +110,16 @@ public class DBSTabRenderer extends DBSRenderer {
 	}
 	
 	//Abas com os título ========================================================================
-	private void pvEncodeAba(FacesContext pContext, DBSTab pTab, ResponseWriter pWriter, String pSelectedTabPage, TYPE pType) throws IOException{
+	private void pvEncodeCaptions(FacesContext pContext, DBSTab pTab, ResponseWriter pWriter, String pSelectedTabPage, TYPE pType) throws IOException{
 		String xClientId = pTab.getClientId(pContext);
+		UIComponent xParent = DBSFaces.getParentFirstChild(pTab, DBSTabPage.class);
+		if (xParent.getChildren().size() == 0) {return;}
 		pWriter.startElement("div", pTab);
 			DBSFaces.encodeAttribute(pWriter, "class", "-captions" + CSS.THEME.FLEX_COL);
 			pWriter.startElement("div", pTab);
 				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER + CSS.THEME.FLEX);
-				UIComponent xParent = DBSFaces.getParentFirstChild(pTab, DBSTabPage.class);
 				for (int xI=0; xI < xParent.getChildren().size(); xI++){	
-					if (pTab.getChildren().get(xI) instanceof DBSTabPage){
+					if (xParent.getChildren().get(xI) instanceof DBSTabPage){
 						DBSTabPage xTabPage = (DBSTabPage) pTab.getChildren().get(xI);
 						UIComponent xCaption = xTabPage.getFacet("caption");
 						if (xTabPage.isRendered()
@@ -144,69 +149,13 @@ public class DBSTabRenderer extends DBSRenderer {
 									}
 								}
 
-								//							if (xPageClientId.equals(xSelectedTabPage)){
+	//							if (xPageClientId.equals(xSelectedTabPage)){
 	//								xPage.setSelected(true);
 	//								DBSFaces.setAttribute(pWriter, "class", CSS.MODIFIER.SELECTED, null);
 	//							}
 								
-								pWriter.startElement("div", pTab);  
-									xClass = CSS.TAB.CAPTION ;
-									if (xTabPage.getAjax()){
-										xClass += " -ajax";
-									}
-									DBSFaces.encodeAttribute(pWriter, "class", xClass);	
-									pWriter.startElement("div", pTab);  
-										DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER  + xTabPage.getCaptionStyleClass());
-										pWriter.startElement("div", pTab);  
-											DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
-											if (xCaption!=null) {
-												xCaption.encodeAll(pContext);
-											}else {
-												if (!DBSObject.isEmpty(xTabPage.getCaption())
-												 || !DBSObject.isEmpty(xTabPage.getCaptionIconClass())) {
-													pWriter.startElement("div", pTab);
-														DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CAPTION);
-						//									pWriter.writeAttribute("ontouchstart", "javascript:void(0)", "ontouchstart"); //Para ipad ativar o css:ACTIVE
-						//									pWriter.writeAttribute("href", "#", "href"); //Para ipad ativar o css:ACTIVE
-															
-														if (!DBSObject.isEmpty(xTabPage.getCaptionIconClass())) {
-															pWriter.startElement("span", pTab);
-																DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.ICON + xTabPage.getCaptionIconClass());
-															pWriter.endElement("span");
-														}
-														if (!DBSObject.isEmpty(xTabPage.getCaption())){
-															pWriter.startElement("span", pTab);
-																DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.VALUE);
-																pWriter.write(xTabPage.getCaption());
-															pWriter.endElement("span");
-														}
-													pWriter.endElement("div");
-													if (pType.equals(TYPE.ACCORDION)){
-														UIComponent xCaptionObs = xTabPage.getFacet("caption_obs");
-														if (xCaptionObs!=null || !DBSObject.isEmpty(xTabPage.getCaptionObs())) {
-															pWriter.startElement("div", pTab);
-																DBSFaces.encodeAttribute(pWriter, "class", "-obs");
-																if (xCaptionObs!=null) {
-																	xCaptionObs.encodeAll(pContext);
-																}else if (!DBSObject.isEmpty(xTabPage.getCaptionObs())){
-																	pWriter.write(xTabPage.getCaptionObs());
-																}
-															pWriter.endElement("div");
-														}
-													}
-												}
-											}
-											if (xTabPage.getAjax()){
-												pWriter.startElement("span", pTab);
-													DBSFaces.encodeAttribute(pWriter, "class", "loading_container");
-													pWriter.startElement("span", pTab);
-														DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LOADING);
-													pWriter.endElement("span");
-												pWriter.endElement("span");
-											}
-										pWriter.endElement("div");
-									pWriter.endElement("div");
-								pWriter.endElement("div");
+								//Títulos
+								pvEncodeCaption(pContext, pTab, pWriter, xTabPage, pType);
 							pWriter.endElement("div");
 						}
 					}
@@ -215,6 +164,106 @@ public class DBSTabRenderer extends DBSRenderer {
 		pWriter.endElement("div");
 	}
 
+	//Abas com os título ========================================================================
+	private void pvEncodeCaption(FacesContext pContext, DBSTab pTab, ResponseWriter pWriter, DBSTabPage pTabPage, TYPE pType) throws IOException{
+		UIComponent xCaption = pTabPage.getFacet("caption");
+//		if (xCaption == null 
+//		 && DBSObject.isEmpty(pTabPage.getCaption())
+//		 && DBSObject.isEmpty(pTabPage.getCaptionIconClass())){
+//			return;
+//		}
+		String xClass = CSS.TAB.CAPTION ;
+		pWriter.startElement("div", pTab);  
+			if (pTabPage.getAjax()){
+				xClass += " -ajax";
+			}
+			DBSFaces.encodeAttribute(pWriter, "class", xClass);	
+			pWriter.startElement("div", pTab);  
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER  + pTabPage.getCaptionStyleClass());
+				pWriter.startElement("div", pTab);  
+					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
+					if (xCaption!=null) {
+						xCaption.encodeAll(pContext);
+					}else {
+						if (!DBSObject.isEmpty(pTabPage.getCaption())
+						 || !DBSObject.isEmpty(pTabPage.getCaptionIconClass())) {
+							pWriter.startElement("div", pTab);
+								DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CAPTION);
+//									pWriter.writeAttribute("ontouchstart", "javascript:void(0)", "ontouchstart"); //Para ipad ativar o css:ACTIVE
+//									pWriter.writeAttribute("href", "#", "href"); //Para ipad ativar o css:ACTIVE
+									
+								if (!DBSObject.isEmpty(pTabPage.getCaptionIconClass())) {
+									pWriter.startElement("span", pTab);
+										DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.ICON + pTabPage.getCaptionIconClass());
+									pWriter.endElement("span");
+								}
+								if (!DBSObject.isEmpty(pTabPage.getCaption())){
+									pWriter.startElement("span", pTab);
+										DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.VALUE);
+										pWriter.write(pTabPage.getCaption());
+									pWriter.endElement("span");
+								}
+							pWriter.endElement("div");
+							if (pType.equals(TYPE.ACCORDION)){
+								UIComponent xCaptionObs = pTabPage.getFacet("caption_obs");
+								if (xCaptionObs!=null || !DBSObject.isEmpty(pTabPage.getCaptionObs())) {
+									pWriter.startElement("div", pTab);
+										DBSFaces.encodeAttribute(pWriter, "class", "-obs");
+										if (xCaptionObs!=null) {
+											xCaptionObs.encodeAll(pContext);
+										}else if (!DBSObject.isEmpty(pTabPage.getCaptionObs())){
+											pWriter.write(pTabPage.getCaptionObs());
+										}
+									pWriter.endElement("div");
+								}
+							}
+						}
+					}
+					if (pTabPage.getAjax()){
+						pWriter.startElement("span", pTab);
+							DBSFaces.encodeAttribute(pWriter, "class", "loading_container");
+							pWriter.startElement("span", pTab);
+								DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.LOADING);
+							pWriter.endElement("span");
+						pWriter.endElement("span");
+					}
+				pWriter.endElement("div");
+			pWriter.endElement("div");
+		pWriter.endElement("div");
+	}
+
+	//Abas com os título ========================================================================
+	private void pvEncodePageIndicator(FacesContext pContext, DBSTab pTab, ResponseWriter pWriter, TYPE pType) throws IOException{
+		if (pType != TYPE.SCROLL) {return;}
+		UIComponent xParent = DBSFaces.getParentFirstChild(pTab, DBSTabPage.class);
+		if (xParent.getChildren().size() == 0) {return;}
+		String xClientId = pTab.getClientId(pContext);
+		pWriter.startElement("div", pTab);
+			DBSFaces.encodeAttribute(pWriter, "class", "-indicators" + CSS.THEME.FLEX_COL);
+			pWriter.startElement("div", pTab);
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
+				for (int xI=0; xI < xParent.getChildren().size(); xI++){	
+					if (xParent.getChildren().get(xI) instanceof DBSTabPage){
+						DBSTabPage xTabPage = (DBSTabPage) pTab.getChildren().get(xI);
+						if (xTabPage.isRendered()) {
+							pWriter.startElement("div", pTab);  
+								String xPageId = xTabPage.getAttributes().get("id").toString();
+								String xPageClientId = xClientId + DBSFaces.ID_SEPARATOR + xPageId;
+								String xClass = "-ind";
+
+								DBSFaces.encodeAttribute(pWriter, "id", xPageClientId + "_ind");
+								DBSFaces.encodeAttribute(pWriter, "name", xPageClientId + "_ind");
+								DBSFaces.encodeAttribute(pWriter, "class", xClass);	
+								DBSFaces.encodeAttribute(pWriter, "tabPageid", xPageClientId);
+								
+							pWriter.endElement("div");
+						}
+					}
+				}
+			pWriter.endElement("div");
+		pWriter.endElement("div");
+	}
+	
 	//Abas com os título ========================================================================
 	private void pvEncodePage(FacesContext pContext, DBSTab pTab, ResponseWriter pWriter, String pSelectedTabPage) throws IOException{
 		pWriter.startElement("div", pTab);

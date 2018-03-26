@@ -13,6 +13,19 @@ dbs_tab = function(pId) {
 		e.stopImmediatePropagation();
 		return false;
 	});
+
+	xTabData.dom.indicator.on("mousedown touchstart", function(e){
+		//Ainda carregando
+		var xThis = $(this);
+		if (xTabData.dom.caption.filter("[tabpageid='" + xThis.attr("tabpageid") + "']").children(".-ajax").length > 0){
+			return;
+		}
+
+		//Selecionar item
+		dbsfaces.tab.selectTabPage(xThis.attr("tabpageid"), xTabData);
+		e.stopImmediatePropagation();
+		return false;
+	});
 	
 	xTabData.dom.container.on("change", function(e){
 		//Inibir change recebido por componentes filhos
@@ -42,14 +55,14 @@ dbs_tab = function(pId) {
 	if (xTabData.type == "scr"){
 		xTabData.dom.tabPages.touchwipe({
 			wipeLeft : function() {
-				var xTabPage = $(dbsfaces.util.jsid(xTabData.dom.input.val())).next();
+				var xTabPage = $(dbsfaces.util.jsid(xTabData.dom.input.val())).next(".dbs_tabPage");
 				if (xTabPage.length > 0){
 					dbsfaces.tab.selectTabPage(xTabPage[0].id, xTabData);
 				}
 //				return dbsfaces.dialog.wipe(xDialogData, "l");
 			},
 			wipeRight : function() {
-				var xTabPage = $(dbsfaces.util.jsid(xTabData.dom.input.val())).prev();
+				var xTabPage = $(dbsfaces.util.jsid(xTabData.dom.input.val())).prev(".dbs_tabPage");
 				if (xTabPage.length > 0){
 					dbsfaces.tab.selectTabPage(xTabPage[0].id, xTabData);
 				}
@@ -107,6 +120,9 @@ dbsfaces.tab = {
 				captions: null,
 				captions_container: null,
 				caption: null,
+				indicators: null,
+				indicators_container: null,
+				indicator: null,
 				tabPages: null,
 				tabPage: null,
 				input: null
@@ -121,6 +137,9 @@ dbsfaces.tab = {
 		xData.dom.captions = xData.dom.container.children(".-captions");
 		xData.dom.captions_container = xData.dom.captions.children(".-container");
 		xData.dom.caption = xData.dom.captions_container.children(".-caption");
+		xData.dom.indicators = xData.dom.container.children(".-indicators");
+		xData.dom.indicators_container = xData.dom.indicators.children(".-container");
+		xData.dom.indicator = xData.dom.indicators_container.children(".-ind");
 		xData.dom.tabPages = xData.dom.container.children(".-tabPages");
 		xData.dom.tabPage = xData.dom.tabPages.find("> .-container > .dbs_tabPage");
 		xData.dom.input = xData.dom.tabPages.find("> .-container > input");
@@ -147,10 +166,12 @@ dbsfaces.tab = {
 		var xDoUnSelect = pTabData.type == "acc" && xTabPage.hasClass("-selected");
 		//Remove seleção anterior
 		pTabData.dom.caption.removeClass("-selected");
+		pTabData.dom.indicator.removeClass("-selected");
 		pTabData.dom.caption.children().removeClass("-selected");
 		pTabData.dom.tabPage.removeClass("-selected");
 		//Nova seleção
 		var xCaption = pTabData.dom.caption.filter("[tabpageid='" + pTabPageRawId + "']");
+		var xIndicator = pTabData.dom.indicator.filter("[tabpageid='" + pTabPageRawId + "']");
 		xCaption.siblings().css("min-height", "");
 		if (xDoUnSelect){
 			pTabData.dom.container.removeClass("-selected");
@@ -164,6 +185,7 @@ dbsfaces.tab = {
 		}else{
 			pTabData.dom.container.addClass("-selected");
 			xCaption.removeClass("-hide").addClass("-selected");
+			xIndicator.removeClass("-hide").addClass("-selected");
 			xCaption.children().removeClass("-hide").addClass("-selected");
 			
 			xTabPage.removeClass("-hide").removeClass("-next").removeClass("-prev").addClass("-selected");
@@ -171,6 +193,8 @@ dbsfaces.tab = {
 			xTabPage.nextAll().removeClass("-prev").addClass("-next");
 			xCaption.siblings().addClass("-hide");
 			xCaption.siblings().children().addClass("-hide");
+			xIndicator.siblings().addClass("-hide");
+			xIndicator.siblings().children().addClass("-hide");
 			xTabPage.siblings().addClass("-hide");
 			
 			pTabData.dom.captions.css("min-height", "");

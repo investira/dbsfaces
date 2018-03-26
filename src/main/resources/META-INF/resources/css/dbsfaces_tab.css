@@ -268,10 +268,83 @@
     filter: invert(100%);
 }
 
+
+.dbs_tab[type="scr"] > .-container > .-indicators{
+    -webkit-flex: 0 0 0em;
+    -moz-flex: 0 0 0em;
+    flex: 0 0 0em;
+    white-space: nowrap;
+    -webkit-align-self: center;
+    -moz-align-self: center;
+    align-self: center;
+    z-index:1;
+    bottom: 2em;
+    position: absolute;
+	width: 100%;
+}
+.dbs_tab[type="scr"] > .-container > .-indicators > .-container{
+
+    height: 1em;
+    position: absolute;
+    left: -50%;
+    width: 200%;
+    overflow: hidden;
+	-webkit-transition: transform .1s linear;
+	-moz-transition: transform .1s linear;
+	transition: transform .1s linear;
+}
+.dbs_tab[type="scr"] > .-container > .-indicators > .-container:hover{
+	-webkit-transform:scale(2);
+	-moz-transform:scale(2);
+	transform:scale(2);
+}
+.dbs_tab[type="scr"] > .-container > .-indicators > .-container > .-ind{
+	position: relative;
+    display: inline-block;
+    margin: .5em;
+    cursor: pointer;
+}
+
+
+.dbs_tab[type="scr"] > .-container > .-indicators > .-container > .-ind:before{
+	content: "";
+    display: block;
+    position: absolute;
+    border-width: .1em;
+    border-style: solid;
+    border-color: currentColor;
+    height: .2em;
+    width: .2em;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    opacity: .5;
+}
+
+.dbs_tab[type="scr"] > .-container > .-indicators > .-container > .-ind:after{
+    content: "";
+    display: block;
+    position: absolute;
+    border-width: 0;
+    border-style: solid;
+    border-color: currentColor;
+    height: 0;
+    width: 0;
+    -webkit-transition: border-width .3s linear;
+    -moz-transition: border-width .3s linear;
+    transition: border-width .3s linear;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+.dbs_tab[type="scr"] > .-container > .-indicators > .-container > .-ind.-selected:after{
+	border-width: .25em;	
+}
+
 .dbs_tab[type="scr"] > .-container > .-tabPages{
 	display: inline-block;
     position: relative;
-    padding: 0.4em;
+/*     padding: 0.4em; */
     -webkit-flex: 1 1 1em;
     -moz-flex: 1 1 1em;
     flex: 1 1 1em;
@@ -295,7 +368,7 @@
 	}
 	
 	.dbs_tab[type="scr"] > .-container > .-tabPages{
-    		padding: 0.4em 0;
+/*     		padding: 0.4em 0; */
 	}
 	
 	.dbs_tab[type="scr"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption:first-child {
