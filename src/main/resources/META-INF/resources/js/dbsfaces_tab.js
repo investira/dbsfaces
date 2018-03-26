@@ -14,7 +14,21 @@ dbs_tab = function(pId) {
 		return false;
 	});
 
+	xTabData.dom.indicators.on("mousemove touchmove", function(e){
+		var xPoint = dbsfaces.ui.pointerEventToXY(e);
+		var xThis = $(document.elementFromPoint(xPoint.x, xPoint.y));
+		var xTabPageId = xThis.attr("tabpageid");
+		if (typeof xTabPageId != "undefined"){
+			if (xTabData.dom.caption.filter("[tabpageid='" + xTabPageId + "']").children(".-ajax").length > 0){
+				return;
+			}
+			dbsfaces.tab.selectTabPage(xTabPageId, xTabData);
+		}
+		e.stopImmediatePropagation();
+		return false;
+	});
 	xTabData.dom.indicator.on("mousedown touchstart", function(e){
+		console.log(e.type + "\t" + e.target);
 		//Ainda carregando
 		var xThis = $(this);
 		if (xTabData.dom.caption.filter("[tabpageid='" + xThis.attr("tabpageid") + "']").children(".-ajax").length > 0){
