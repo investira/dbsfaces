@@ -447,6 +447,22 @@
 .dbs_tab[type="acc"] > .-container.-selected > .-captions > .-container{
 }
 
+.dbs_tab[type="acc"] > .-container > .-captions > .-container > .-i_action_points{
+	opacity:0;
+	position: absolute;
+	right: 0;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    transform: translateY(-50%); 
+}
+.dbs_tab[type="acc"] > .-container.-selected > .-captions > .-container > .-i_action_points{
+	-webkit-transition: opacity .25s linear .3s;    
+	-moz-transition: opacity .25s linear.3s;    
+	transition: opacity .25s linear .3s;   
+	opacity:.4;
+}
+
 .dbs_tab[type="acc"] > .-container > .-captions > .-container > .-caption{
 	overflow: hidden;
     -webkit-flex: 1 1 1em;
@@ -489,7 +505,9 @@
 /* } */
 
 
-
+.dbs_tab[type="acc"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption{
+	cursor: pointer;
+}
 .dbs_tab[type="acc"] > .-container > .-captions > .-container > .-caption.-selected > .dbs_tabCaption{
 }
 

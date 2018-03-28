@@ -118,6 +118,11 @@ public class DBSTabRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(pWriter, "class", "-captions" + CSS.THEME.FLEX_COL);
 			pWriter.startElement("div", pTab);
 				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER + CSS.THEME.FLEX);
+				if (pType.equals(TYPE.ACCORDION)){
+					pWriter.startElement("span", pTab);
+						DBSFaces.encodeAttribute(pWriter, "class", "-i_action_points");
+					pWriter.endElement("span");
+				}
 				for (int xI=0; xI < xParent.getChildren().size(); xI++){	
 					if (xParent.getChildren().get(xI) instanceof DBSTabPage){
 						DBSTabPage xTabPage = (DBSTabPage) pTab.getChildren().get(xI);
