@@ -44,17 +44,24 @@
 
 .dbs_tab > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > .-content > .-caption{
     position: relative;
-    display: inline-block;
+/*     display: inline-block; */
+/*     display: table; */
+	display: block;
     white-space: nowrap;
 }
 
 .dbs_tab > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > .-content > .-caption > *{
-    display: inline-block;
+/*     display: inline-block; */
+    display: inline-table;
     position: relative;
-	vertical-align: middle;
 }
 
-
+.dbs_tab > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > .-content > .-caption > .-icon{
+	vertical-align: middle;
+}
+.dbs_tab > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > .-content > .-caption > .-value{
+	vertical-align: unset;
+}
 
 
 .dbs_tab[type="scr"] > .-container{
@@ -387,9 +394,11 @@
 
 .dbs_tab[type="acc"] > .-container > div{
 	display: block;
-	-webkit-transition: 	flex .3s linear;
-	-moz-transition: flex .3s linear;
-	transition: 	flex .3s linear;
+	-webkit-transition: 	flex .31s linear;
+	-moz-transition: flex .31s linear;
+	transition: 	flex .31s linear;
+	filter: blur(0); /*Para tentar suavisar a animação*/
+	
 }
 
 .dbs_tab[type="acc"] > .-container > .-captions{
@@ -408,13 +417,15 @@
 
 .dbs_tab[type="acc"] > .-container > .-tabPages{
 	overflow: hidden;
+}
+
+.dbs_tab[type="acc"] > .-container > .-tabPages{
     -webkit-flex: 0 0 0;
     -moz-flex: 0 0 0;
     flex: 0 0 0;
 }
 
 .dbs_tab[type="acc"] > .-container.-selected > .-tabPages{
-	overflow: hidden;
     -webkit-flex: 1 1 100%;
     -moz-flex: 1 1 100%;
     flex: 1 1 100%;
@@ -441,6 +452,10 @@
     -webkit-flex: 1 1 1em;
     -moz-flex: 1 1 1em;
     flex: 1 1 1em;
+	-webkit-transition: opacity .25s linear;    
+	-moz-transition: opacity .25s linear;    
+	transition: opacity .25s linear;    
+/* 	filter: blur(0); */
 }
 .dbs_tab[type="acc"] > .-container.-selected > .-captions > .-container > .-caption{
 	-webkit-flex-basis: 0;
@@ -450,9 +465,28 @@
 
 .dbs_tab[type="acc"] > .-container > .-captions > .-container > .-caption.-selected{
 	overflow: visible;
+    opacity: 1;
 }
 .dbs_tab[type="acc"] > .-container > .-captions > .-container > .-caption.-hide{
+    opacity: 0;
 }
+/* .dbs_tab[type="acc"] > .-container > .-captions > .-container > .-caption{ */
+/* 	overflow: hidden; */
+/*     -webkit-flex: 1 1 1em; */
+/*     -moz-flex: 1 1 1em; */
+/*     flex: 1 1 1em; */
+/* } */
+/* .dbs_tab[type="acc"] > .-container.-selected > .-captions > .-container > .-caption{ */
+/* 	-webkit-flex-basis: 0; */
+/* 	-moz-flex-basis: 0; */
+/* 	flex-basis: 0; */
+/* } */
+
+/* .dbs_tab[type="acc"] > .-container > .-captions > .-container > .-caption.-selected{ */
+/* 	overflow: visible; */
+/* } */
+/* .dbs_tab[type="acc"] > .-container > .-captions > .-container > .-caption.-hide{ */
+/* } */
 
 
 
@@ -474,24 +508,27 @@
 
 
 
-.dbs_tab[type="acc"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > .-content > .-caption > *{
-	-webkit-transition: font-size .2s linear .1s;
-	-moz-transition: font-size .2s linear .1s;
-	transition: font-size .2s linear .1s;
+.dbs_tab[type="acc"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > .-content > .-caption > .-icon:before,
+.dbs_tab[type="acc"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > .-content > .-caption > .-value{
+	-webkit-transition: font-size .25s linear;
+	-moz-transition: font-size .25s linear;
+	transition: font-size .25s linear;
 }
 
 
-.dbs_tab[type="acc"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption.-selected > .-container > .-content > .-caption > *{
-	-webkit-transition: font-size .2s linear .05s;
-	-moz-transition: font-size .2s linear .05s;
-	transition: font-size .2s linear .05s;
+.dbs_tab[type="acc"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption.-selected > .-container > .-content > .-caption > .-icon:before,
+.dbs_tab[type="acc"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption.-selected > .-container > .-content > .-caption > .-value{
 }
 
 .dbs_tab[type="acc"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > .-content > .-caption > .-icon{
+    font-size: unset;
+}
+
+.dbs_tab[type="acc"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > .-content > .-caption > .-icon:before{
     font-size: 2.9em;
 }
-.dbs_tab[type="acc"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption.-selected > .-container > .-content > .-caption > .-icon{
-	font-size: 1.7em;
+.dbs_tab[type="acc"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption.-selected > .-container > .-content > .-caption > .-icon:before{
+	font-size: 1.45em;
 }
 .dbs_tab[type="acc"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container > .-content > .-caption > .-value{
     font-size: 1.4em;
@@ -511,7 +548,7 @@
 .dbs_tab[type="acc"] > .-container > .-captions > .-container > .-caption > .dbs_tabCaption.-selected > .-container > .-content > .-obs{
     font-size: 0;
     opacity: 0;
-    transition: font-size .2s linear, opacity .2s linear;
+/*     transition: font-size .2s linear, opacity .2s linear; */
     /* height: 0; */
 }
 

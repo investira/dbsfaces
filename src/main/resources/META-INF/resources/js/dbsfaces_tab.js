@@ -19,16 +19,17 @@ dbs_tab = function(pId) {
 		var xThis = $(document.elementFromPoint(xPoint.x, xPoint.y));
 		var xTabPageId = xThis.attr("tabpageid");
 		if (typeof xTabPageId != "undefined"){
+			//Ainda carregando
 			if (xTabData.dom.caption.filter("[tabpageid='" + xTabPageId + "']").children(".-ajax").length > 0){
 				return;
 			}
+			//Seleciona página
 			dbsfaces.tab.selectTabPage(xTabPageId, xTabData);
 		}
 		e.stopImmediatePropagation();
 		return false;
 	});
 	xTabData.dom.indicator.on("mousedown touchstart", function(e){
-		console.log(e.type + "\t" + e.target);
 		//Ainda carregando
 		var xThis = $(this);
 		if (xTabData.dom.caption.filter("[tabpageid='" + xThis.attr("tabpageid") + "']").children(".-ajax").length > 0){
@@ -55,15 +56,28 @@ dbs_tab = function(pId) {
 	});
 
 	xTabData.dom.captions.on(dbsfaces.EVENT.ON_TRANSITION_END, function(e) {
-		if (!$(e.target).is($(this))){return;}
+		var xThis = $(this);
+		if (!$(e.target).is(xThis)){return;}
+		console.log(e.target);
+		//Habilitar novo chamado após finalizada a transição
+		xTabData.dom.captions.css("pointer-events", "");
 		if (xTabData.type == "acc"){
-			var xTabPageRawId = xTabData.dom.input.val() + "_aba";
-			var xTabPage = $(dbsfaces.util.jsid(xTabPageRawId));
-			//Habilitar novo chamado após finalizada a transição
-			xTabData.dom.captions.css("pointer-events", "");
-			//Posiciona como primeiro item da lista
-			xTabPage.parent().prepend(xTabPage);
+			//Selecionado
+			if (xTabData.dom.input.val() != ""){
+				var xTabPageAbaRawId = xTabData.dom.input.val() + "_aba";
+				var xTabPageAba = $(dbsfaces.util.jsid(xTabPageAbaRawId));
+				//Limita tamanho mínimo para impedir que seja comprimido quando for desmarcada a seleção dele
+				//Posiciona como primeiro item da lista
+				xTabPageAba.parent().prepend(xTabPageAba);
+				xTabPageAba.css("min-height", xTabPageAba.height());
+				xThis.css("min-height", xTabPageAba.height());
+			}else{
+				xThis.css("min-height", "");
+				xTabData.dom.captions_container.children().css("min-height", "");
+			}
 		}
+		e.stopImmediatePropagation();
+		return false;
 	});
 
 	if (xTabData.type == "scr"){
@@ -175,7 +189,7 @@ dbsfaces.tab = {
 		}
 		//Impedir novo chamado enquanto não estiver concluida a transição
 		if (pTabData.type == "acc"){
-//			pTabData.dom.captions.css("pointer-events", "none");
+			pTabData.dom.captions.css("pointer-events", "none");
 		}
 		var xDoUnSelect = pTabData.type == "acc" && xTabPage.hasClass("-selected");
 		//Remove seleção anterior
@@ -186,7 +200,7 @@ dbsfaces.tab = {
 		//Nova seleção
 		var xCaption = pTabData.dom.caption.filter("[tabpageid='" + pTabPageRawId + "']");
 		var xIndicator = pTabData.dom.indicator.filter("[tabpageid='" + pTabPageRawId + "']");
-		xCaption.siblings().css("min-height", "");
+//		xCaption.siblings().css("min-height", "");
 		if (xDoUnSelect){
 			pTabData.dom.container.removeClass("-selected");
 			xCaption.removeClass("-hide").removeClass("-selected");
@@ -211,8 +225,8 @@ dbsfaces.tab = {
 			xIndicator.siblings().children().addClass("-hide");
 			xTabPage.siblings().addClass("-hide");
 			
-			pTabData.dom.captions.css("min-height", "");
-			xCaption.css("min-height", "");
+//			pTabData.dom.captions.css("min-height", "");
+//			xCaption.css("min-height", "");
 //			xCaption.siblings().css("min-height", "");
 			pTabData.dom.input.val(pTabPageRawId);
 //			setTimeout(function(e){

@@ -30,6 +30,7 @@
 
 .dbs_tabPage[type="acc"]{
 /* 	opacity: 0; */
+	filter: blur(0);
 	position: absolute !important;
 	overflow: auto;
 	width:100%;

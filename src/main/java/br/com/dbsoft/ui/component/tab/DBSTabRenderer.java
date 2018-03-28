@@ -193,15 +193,15 @@ public class DBSTabRenderer extends DBSRenderer {
 //									pWriter.writeAttribute("href", "#", "href"); //Para ipad ativar o css:ACTIVE
 									
 								if (!DBSObject.isEmpty(pTabPage.getCaptionIconClass())) {
-									pWriter.startElement("span", pTab);
+									pWriter.startElement("div", pTab);
 										DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.ICON + pTabPage.getCaptionIconClass());
-									pWriter.endElement("span");
+									pWriter.endElement("div");
 								}
 								if (!DBSObject.isEmpty(pTabPage.getCaption())){
-									pWriter.startElement("span", pTab);
+									pWriter.startElement("div", pTab);
 										DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.VALUE);
 										pWriter.write(pTabPage.getCaption());
-									pWriter.endElement("span");
+									pWriter.endElement("div");
 								}
 							pWriter.endElement("div");
 							if (pType.equals(TYPE.ACCORDION)){
