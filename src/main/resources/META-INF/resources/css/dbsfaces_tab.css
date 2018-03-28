@@ -277,17 +277,18 @@
 
 
 .dbs_tab[type="scr"] > .-container > .-indicators{
-    -webkit-flex: 0 0 0em;
-    -moz-flex: 0 0 0em;
-    flex: 0 0 0em;
+    -webkit-flex: 0 1 1.2em;
+    -moz-flex: 0 1 1.2em;
+    flex: 0 1 1.2em;
     white-space: nowrap;
     -webkit-align-self: center;
     -moz-align-self: center;
     align-self: center;
-    z-index:1;
-    bottom: 1em;
-    position: absolute;
+/*     z-index:1; */
 	width: 100%;
+	min-height: 1.5em;
+/*     bottom: 1em; */
+/*     position: absolute; */
 }
 .dbs_tab[type="scr"] > .-container > .-indicators > .-container{
 

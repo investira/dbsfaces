@@ -78,11 +78,11 @@ public class DBSTabRenderer extends DBSRenderer {
 				//Títulos das páginas ========================================================================
 				pvEncodeCaptions(pContext, xTab, xWriter, xSelectedTabPage, xType);
 
-				//Indicador da página ========================================================================
-				pvEncodePageIndicator(pContext, xTab, xWriter, xType);
-
 				//Conteúdo da páginas ======================================================================================
 				pvEncodePage(pContext, xTab, xWriter, xSelectedTabPage);
+
+				//Indicador da página ========================================================================
+				pvEncodePageIndicator(pContext, xTab, xWriter, xType);
 			xWriter.endElement("div");
 			pvEncodeJS(pComponent, xWriter);
 		xWriter.endElement("div");
