@@ -456,6 +456,7 @@
     -webkit-transform: translateY(-50%);
     -moz-transform: translateY(-50%);
     transform: translateY(-50%); 
+    pointer-events: none;
 }
 .dbs_tab[type="acc"] > .-container.-selected > .-captions > .-container > .-i_action_points{
 	-webkit-transition: opacity .25s linear .3s;    
