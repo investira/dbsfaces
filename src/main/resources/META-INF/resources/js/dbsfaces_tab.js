@@ -80,6 +80,28 @@ dbs_tab = function(pId) {
 		return false;
 	});
 
+	if (xTabData.type == "acc"){
+		xTabData.dom.tabPages.touchwipe({
+			wipeLeft : function() {
+			},
+			wipeRight : function() {
+			},
+			wipeUp : function() {
+			},
+			wipeDown : function() {
+				//Selecionar item
+				dbsfaces.tab.selectTabPage(xTabData.dom.input.val(), xTabData);
+			},
+			onStart : function() {
+			},
+			onMove : function(dx, dy) {
+			},
+			min_move_x : 25,
+			min_move_y : 25,
+			preventDefaultEvents : true
+		});
+	}
+
 	if (xTabData.type == "scr"){
 		xTabData.dom.tabPages.touchwipe({
 			wipeLeft : function() {

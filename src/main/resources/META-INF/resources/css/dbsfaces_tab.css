@@ -277,16 +277,16 @@
 
 
 .dbs_tab[type="scr"] > .-container > .-indicators{
-    -webkit-flex: 0 1 1.2em;
-    -moz-flex: 0 1 1.2em;
-    flex: 0 1 1.2em;
+    -webkit-flex: 0 1 1em;
+    -moz-flex: 0 1 1em;
+    flex: 0 1 1em;
     white-space: nowrap;
     -webkit-align-self: center;
     -moz-align-self: center;
     align-self: center;
 /*     z-index:1; */
 	width: 100%;
-	min-height: 1.5em;
+	min-height: 1em;
 /*     bottom: 1em; */
 /*     position: absolute; */
 }
@@ -451,12 +451,13 @@
 .dbs_tab[type="acc"] > .-container > .-captions > .-container > .-i_action_points{
 	opacity:0;
 	position: absolute;
-	right: 0;
+	left: 0;
     top: 50%;
     -webkit-transform: translateY(-50%);
     -moz-transform: translateY(-50%);
     transform: translateY(-50%); 
     pointer-events: none;
+	font-size: 1em;
 }
 .dbs_tab[type="acc"] > .-container.-selected > .-captions > .-container > .-i_action_points{
 	-webkit-transition: opacity .25s linear .3s;    

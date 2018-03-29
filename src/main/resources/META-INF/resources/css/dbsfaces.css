@@ -673,7 +673,7 @@ input.-foo {
 
 td > .-icon{
 /* 	margin-bottom: -4px !important; Comentado em 25/abr/2014 Ricardo - ocupava muito espaço para o icone da assinatura*/
-	margin: -4px 0 -4px 0 !important;
+	margin: -.4em 0 -.4em 0 !important;
 }
 
 /* Não modificar esta parte quando for incluido novos icones */
