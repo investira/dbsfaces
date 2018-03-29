@@ -285,7 +285,7 @@
     -moz-align-self: center;
     align-self: center;
 /*     z-index:1; */
-	width: 100%;
+/* 	width: 100%; */
 	min-height: 1em;
 /*     bottom: 1em; */
 /*     position: absolute; */
@@ -293,9 +293,9 @@
 .dbs_tab[type="scr"] > .-container > .-indicators > .-container{
 
     height: 1em;
-    position: absolute;
-    left: -50%;
-    width: 200%;
+/*     position: absolute; */
+/*     left: -50%; */
+/*     width: 200%; */
     overflow: hidden;
 	-webkit-transition: transform .1s linear;
 	-moz-transition: transform .1s linear;
