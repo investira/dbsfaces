@@ -927,7 +927,8 @@ dbsfaces.ui = {
      
    	getRect : function(pSelector){
 		var xRect = {width:0, height:0, top:0, bottom:0, left:0, right:0, x:0, y:0};
- 		var xEle = pSelector;
+ 		if (pSelector == null || (typeof (pSelector) == "undefined") || pSelector.length == 0){return null;}
+		var xEle = pSelector;
 		if (xEle instanceof jQuery){
 			xEle = pSelector[0];
 		}
