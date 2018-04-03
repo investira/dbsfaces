@@ -58,7 +58,6 @@ dbs_tab = function(pId) {
 	xTabData.dom.captions.on(dbsfaces.EVENT.ON_TRANSITION_END, function(e) {
 		var xThis = $(this);
 		if (!$(e.target).is(xThis)){return;}
-		console.log(e.target);
 		//Habilitar novo chamado após finalizada a transição
 		xTabData.dom.captions.css("pointer-events", "");
 		if (xTabData.type == "acc"){
