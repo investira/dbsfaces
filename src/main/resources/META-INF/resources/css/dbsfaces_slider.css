@@ -206,6 +206,10 @@
 	display: inline-block;
 }
 
+.dbs_slider[type="v"].-readOnly > .-container > .-content > .-sub_container > .-points,
+.dbs_slider[type="r"].-readOnly > .-container > .-content > .-sub_container > .-points{
+	visibility: hidden;
+}
 
 .dbs_slider.-ph.-editing > .-container > .-content > .-sub_container > .-points{
 	visibility: hidden;
@@ -528,7 +532,6 @@
     pointer-events: none;
     display: block;
 }
-
 .dbs_slider:not(.-sv) > .-container > .-content > .-sub_container > .-points > .-label{
 	display: none;
 }
