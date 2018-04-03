@@ -244,7 +244,7 @@ public class DBSTabRenderer extends DBSRenderer {
 		if (xParent.getChildren().size() == 0) {return;}
 		String xClientId = pTab.getClientId(pContext);
 		pWriter.startElement("div", pTab);
-			DBSFaces.encodeAttribute(pWriter, "class", "-indicators" + CSS.THEME.FLEX_COL);
+			DBSFaces.encodeAttribute(pWriter, "class", "-indicators" + CSS.THEME.FLEX_COL + CSS.NOT_SELECTABLE);
 			pWriter.startElement("div", pTab);
 				DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTAINER);
 				for (int xI=0; xI < xParent.getChildren().size(); xI++){	
