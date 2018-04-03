@@ -8,22 +8,25 @@ dbs_radio = function(pId) {
 
 
 dbsfaces.radio = {
-	setValue: function(pRadioItem){
-		if (pRadioItem == null || (typeof(pRadioItem) == "undefined")){return;}
-		var xE = pRadioItem;
+	setValue: function(pRadioInput){
+		if (pRadioInput == null || (typeof(pRadioInput) == "undefined") || pRadioInput.length == 0){return;}
+		var xE = pRadioInput;
 		if (!(xE instanceof jQuery)){
-			xE = $(pRadio);
+			xE = $(pRadioInput);
 		}
-
-		var xPrevious = xE.closest(".dbs_radio").find(".-th_input-data[checked]");
-		if (xPrevious.length > 0){
+		//Desmarca todos os itens do do mesmo grupo
+		$("[name='" + xE.attr("name") + "']").each(function(){
+			var xPrevious = $(this);
 			xPrevious[0].checked = false;
 			xPrevious.attr("checked", false);
 			xPrevious.closest(".-th_input").attr("checked", false);
-		}
+		});
 		xE[0].checked = true;
 		xE.attr("checked", true);
 		xE.closest(".-th_input").attr("checked", true);
+//		xE.closest(".dbs_radio").trigger("change", xE);
 		xE.trigger("change");
 	}
 }
+
+
