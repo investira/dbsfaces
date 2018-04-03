@@ -302,9 +302,9 @@
 	transition: transform .1s linear;
 }
 .dbs_tab[type="scr"] > .-container > .-indicators > .-container:hover{
-	-webkit-transform:scale(2);
-	-moz-transform:scale(2);
-	transform:scale(2);
+	-webkit-transform:scale(1.8);
+	-moz-transform:scale(1.8);
+	transform:scale(1.8);
 }
 .dbs_tab[type="scr"] > .-container > .-indicators > .-container > .-ind{
 	position: relative;
