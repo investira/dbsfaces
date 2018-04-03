@@ -1146,6 +1146,7 @@ dbsfaces.slider = {
 	},
 	//Encontra o percentual a partir do valor e seta o slider
 	setValue: function(pSlider, pValue){
+		if ((typeof pSlider == "undefined") || pSlider.length == 0){return;}
 		var xSliderData = pSlider.data("data");
 		if ((typeof pValue == "undefined") || pValue.length == 0){return;}
 		dbsfaces.slider.pvSetValue(xSliderData, pValue);
