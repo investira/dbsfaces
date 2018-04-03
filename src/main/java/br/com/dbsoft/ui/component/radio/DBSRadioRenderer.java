@@ -139,7 +139,7 @@ public class DBSRadioRenderer extends DBSRenderer {
 							if (!DBSObject.isEmpty(pRadio.getLabelWidth())) {
 								DBSFaces.encodeAttribute(pWriter, "style","width:" + pRadio.getLabelWidth() + ";");
 							}
-							pWriter.write(" " + xS.getItemLabel());
+							pWriter.write(xS.getItemLabel());
 						pWriter.endElement("label");
 					}
 				pWriter.endElement("div");
