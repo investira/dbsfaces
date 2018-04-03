@@ -2952,7 +2952,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Nome do grupo que agrupará logicamente o option. Se não informado, grupo será o id do componente.
+                Nome do grupo que agrupará logicamente o radial. Se não informado, grupo será o id do componente.
             </description>
 			<name>group</name>
 			<required>false</required>
@@ -3279,7 +3279,7 @@
 		</attribute>
 		<attribute>
 			<description>
-                Se inverte a posição para exibição da lista dos valores.
+                Se inverte a posição para exibição da lista dos valores. Padrão false.
             </description>
 			<name>invertValuesListPosition</name>
 			<required>false</required>
