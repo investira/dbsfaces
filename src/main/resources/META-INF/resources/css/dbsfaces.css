@@ -663,6 +663,10 @@ input.-foo {
 	max-height: 100px !important;
 }
 
+.-loading.-white {
+	background-image: url("#{request.contextPath}/images/loadingWhite.svg");
+}
+
 .-loading.-large {
 	font-size: 3em;
 	z-index: 999;

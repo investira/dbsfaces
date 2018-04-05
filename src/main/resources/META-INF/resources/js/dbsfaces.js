@@ -1073,7 +1073,8 @@ dbsfaces.util = {
 	
 	isKindle: function(){
 		var xNav = navigator.userAgent.toLowerCase();
-		if(xNav.match(/KF/i)) {
+		if(xNav.match(/kindle/i) ||
+		   xNav.match(/kf/i)) {
 			return true;
 		};
 	    return false;
