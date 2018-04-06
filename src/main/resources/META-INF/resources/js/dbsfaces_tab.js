@@ -61,6 +61,8 @@ dbs_tab = function(pId) {
 		//Habilitar novo chamado após finalizada a transição
 		xTabData.dom.captions.css("pointer-events", "");
 		if (xTabData.type == "acc"){
+			//Artifício necessário pois no chrome evento é diaparado para para flex-grow e flex-basis. No safari, somente para flex
+			if (e.originalEvent.propertyName != "flex-grow" && e.originalEvent.propertyName != "flex"){return false;}
 			//Selecionado
 			if (xTabData.dom.input.val() != ""){
 				var xTabPageAbaRawId = xTabData.dom.input.val() + "_aba";
@@ -74,6 +76,11 @@ dbs_tab = function(pId) {
 				xThis.css("min-height", "");
 				xTabData.dom.captions_container.children().css("min-height", "");
 			}
+		}
+		if (xTabData.dom.self.hasClass("-selected")){
+			xTabData.dom.self.trigger("opened.tab", xTabData.dom.input.val());
+		}else{
+			xTabData.dom.self.trigger("closed.tab");
 		}
 		e.stopImmediatePropagation();
 		return false;
@@ -223,7 +230,7 @@ dbsfaces.tab = {
 		var xIndicator = pTabData.dom.indicator.filter("[tabpageid='" + pTabPageRawId + "']");
 //		xCaption.siblings().css("min-height", "");
 		if (xDoUnSelect){
-			pTabData.dom.container.removeClass("-selected");
+			pTabData.dom.self.removeClass("-selected");
 			xCaption.removeClass("-hide").removeClass("-selected");
 			xCaption.children().removeClass("-hide").removeClass("-selected");
 			xCaption.siblings().removeClass("-hide").removeClass("-selected");
@@ -232,7 +239,7 @@ dbsfaces.tab = {
 			//Salva página selecionada
 			pTabData.dom.input.val(null);
 		}else{
-			pTabData.dom.container.addClass("-selected");
+			pTabData.dom.self.addClass("-selected");
 			xCaption.removeClass("-hide").addClass("-selected");
 			xIndicator.removeClass("-hide").addClass("-selected");
 			xCaption.children().removeClass("-hide").addClass("-selected");
@@ -263,8 +270,10 @@ dbsfaces.tab = {
 //		xCaption.css("background-color", pTabData.color)
 //				.css("color", pTabData.colorInverted);
 		dbsfaces.tab.resize(pTabData);
-		pTabData.dom.self.trigger("change", pTabPageRawId.substring(pTabPageRawId.lastIndexOf(":") + 1));
-		xTabPage.trigger("select", !xDoUnSelect);
+		//Dispara trigger e informa id da página selecionada
+		pTabData.dom.self.trigger("change.tab", pTabPageRawId.substring(pTabPageRawId.lastIndexOf(":") + 1));
+		//Dispara na página selecionada
+		xTabPage.trigger("select.tab", !xDoUnSelect);
 	},
 
 	selectTabPage: function(pTabPageRawId, pTabData){
