@@ -663,7 +663,7 @@
 					&lt;li&gt;a = about/Sobre&lt;/li&gt;
 					&lt;li&gt;s = success/sucesso&lt;/li&gt;
 					&lt;li&gt;i = information/informação&lt;/li&gt;
-					&lt;li&gt;i = impotant/importante&lt;/li&gt;
+					&lt;li&gt;t = impotant/importante&lt;/li&gt;
 					&lt;li&gt;w = warning/atenção (requer confirmação)&lt;/li&gt;
 					&lt;li&gt;c = confirmation/confirmação (requer confirmação)&lt;/li&gt;
 					&lt;li&gt;g = ignore/ignorar (requer confirmação)&lt;/li&gt;
