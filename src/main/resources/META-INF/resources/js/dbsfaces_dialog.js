@@ -28,6 +28,8 @@ dbs_dialogContent = function(pId) {
 	});
 
 	xDialogData.dom.mask.on("mousedown touchstart", function(e) {
+		e.stopImmediatePropagation();
+		e.preventDefault();
 		if (xDialog.attr("disabled")) {
 			return;
 		}
@@ -35,7 +37,6 @@ dbs_dialogContent = function(pId) {
 		if (xDialogData.dom.bthandle.length != 0) {
 			dbsfaces.dialog.show(xDialog);
 		}
-		return false;
 	});
 
 
@@ -43,7 +44,7 @@ dbs_dialogContent = function(pId) {
 	if (xDialog.children().length == 0) {
 		var xList = $("body").data("dbs_dialogs");
 		if (!(typeof xList === "undefined")) {
-			$(dbsfaces.util.jsid(xList.pop())).trigger("close");
+			$(dbsfaces.util.jsid(xList.pop())).trigger("close.dialog");
 		}
 	}
 
@@ -87,7 +88,7 @@ dbs_dialogContent = function(pId) {
 	xDialogData.dom.content.on(dbsfaces.EVENT.ON_TRANSITION_END, function(e) {
 		// Foi fechado
 		if (xDialog.hasClass("-closed")) {
-			xDialog.trigger("closed");
+			xDialog.trigger("closed.dialog");
 //			xDialogData.dom.content.css("left", "")
 //									.css("top", "")
 //									.css("transform", "none");
@@ -105,7 +106,7 @@ dbs_dialogContent = function(pId) {
 			// Foi aberto
 		} else {
 			xDialogData.dom.container.removeClass("-closed").addClass("-opened");
-			xDialog.trigger("opened");
+			xDialog.trigger("opened.dialog");
 		}
 	});
 
