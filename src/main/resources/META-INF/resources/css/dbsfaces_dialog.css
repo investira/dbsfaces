@@ -104,19 +104,19 @@
     top:0;
     left:0;
     vertical-align: middle;
+	font-size: inherit;
 }
 
 .dbs_dialog > .-container > .-icon > .-content {
 	position: relative;
 	cursor: pointer;
-	font-size: inherit;
 }
 
 .dbs_dialog > .-container > .-content{
 	position: fixed;
 	display: inline-block;
 	white-space: nowrap;
-	line-height: 0;
+/* 	line-height: 0; */
 /* 	z-index: 9999999; */
 	z-index: 2;
 /* 	width: -webkit-fit-content; */
@@ -141,8 +141,8 @@
 
 .dbs_dialog:not(.-closed) > .-container > .-content,
 .dbs_dialog > .-container.-opened > .-content{
-/* 	box-shadow: rgba(0, 0, 0, .6) 0px 0px 5px 3px !important; */
-	box-shadow: rgba(0, 0, 0, .6) 0 0 .4em .15em !important;
+/* 	box-shadow: rgba(0, 0, 0, .6) 0 0 .4em .15em !important; */
+	box-shadow: 0 0 0.6em 0.1em rgba(0,0,0,.2) !important;
 }
 
 .dbs_dialog.-closed > .-container.-closed > .-content{
@@ -160,7 +160,8 @@
     height: 100%;
     width: 100%;
     position: relative;
-    display: inline-block;
+/*     display: inline-block; */
+    display: block;
     line-height: normal;
 /*     top: 0; */
 /*     left: 0; */
@@ -334,10 +335,10 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
     position: absolute;
     top: 50%;
     left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    -moz-transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
+    -webkit-transform: translate3d(-50%, -50%, 0);
+    -moz-transform: translate3d(-50%, -50%, 0);
+    -o-transform: translate3d(-50%, -50%, 0);
+    transform: translate3d(-50%, -50%, 0);
 }
 
 
@@ -568,10 +569,10 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
     -moz-transition: transform cubic-bezier(0, 1.32, 0, 1.34) .2s;
     -o-transition: transform cubic-bezier(0, 1.32, 0, 1.34) .2s;
     transition: transform cubic-bezier(0, 1.32, 0, 1.34) .2s;
-	-webkit-transform: scale(1) translate(-50%, -50%);
-	-moz-transform: scale(1) translate(-50%, -50%);
-	-o-transform: scale(1) translate(-50%, -50%);
-	transform: scale(1) translate(-50%, -50%);
+	-webkit-transform: scale(1) translate3d(-50%, -50%, 0);
+	-moz-transform: scale(1) translate3d(-50%, -50%, 0);
+	-o-transform: scale(1) translate3d(-50%, -50%, 0);
+	transform: scale(1) translate3d(-50%, -50%, 0);
 	line-height: 0;
 	overflow: visible;
 }
@@ -580,34 +581,34 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
     -moz-transition: transform linear .1s;
     -o-transition: transform linear .1s;
     transition: transform linear .1s;
-	-moz-transform: scale(0) translate(-50%, -50%);
-	-o-transform: scale(0) translate(-50%, -50%);
-	transform: scale(0) translate(-50%, -50%);
+	-moz-transform: scale(0) translate3d(-50%, -50%, 0);
+	-o-transform: scale(0) translate3d(-50%, -50%, 0);
+	transform: scale(0) translate3d(-50%, -50%, 0);
 }
 
 .dbs_dialog[type="msg"] > .-container > .-content,
 .dbs_dialog[type="nav"] > .-container > .-content{
-	-webkit-transition: -webkit-transform .2s ease-out;
-	-moz-transition: -moz-transform .2s ease-out;
-	transition: transform .2s ease-out;
+	-webkit-transition: -webkit-transform .3s ease-out;
+	-moz-transition: -moz-transform .3s ease-out;
+	transition: transform .3s ease-out;
 }
 
 .dbs_dialog[type="mod"][p="t"] > .-container > .-content,
 .dbs_dialog[type="mod"][p="b"] > .-container > .-content{
-	-webkit-transition: -webkit-transform .2s ease-out, top .2s;
-	-moz-transition: -moz-transform .2s ease-out, top .2s;
-	transition: transform .2s ease-out, top .2s;
+	-webkit-transition: -webkit-transform .3s ease-out, top .3s;
+	-moz-transition: -moz-transform .3s ease-out, top .3s;
+	transition: transform .3s ease-out, top .3s;
 }
 .dbs_dialog[type="mod"][p="l"] > .-container > .-content,
 .dbs_dialog[type="mod"][p="r"] > .-container > .-content{
-	-webkit-transition: -webkit-transform .2s ease-out, left .2s;
-	-moz-transition: -moz-transform .2s ease-out, left .2s;
-	transition: transform .2s ease-out, left .2s;
+	-webkit-transition: -webkit-transform .3s ease-out, left .3s;
+	-moz-transition: -moz-transform .3s ease-out, left .3s;
+	transition: transform .3s ease-out, left .3s;
 }
 .dbs_dialog[type="mod"][p="c"] > .-container > .-content{
-	-webkit-transition: opacity .2s;
-	-moz-transition: opacity .2s;
-	transition: opacity .2s;
+	-webkit-transition: opacity .3s;
+	-moz-transition: opacity .3s;
+	transition: opacity .3s;
 }
 
 
@@ -617,9 +618,9 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 .dbs_dialog[type="msg"][p="t"] > .-container > .-content,
 .dbs_dialog[type="msg"][p="b"] > .-container > .-content{
 	left: 50%;
-    -moz-transform: translate(-50%, 0);
-    -webkit-transform: translate(-50%, 0);
-    transform: translate(-50%, 0);
+    -moz-transform: translate3d(-50%, 0, 0);
+    -webkit-transform: translate3d(-50%, 0, 0);
+    transform: translate3d(-50%, 0, 0);
 }
 
 /* LEFT RIGHT*/
@@ -628,9 +629,9 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 .dbs_dialog[type="msg"][p="l"] > .-container > .-content,
 .dbs_dialog[type="msg"][p="r"] > .-container > .-content{
 	top: 50%;
-    -moz-transform: translate(0, -50%);
-    -webkit-transform: translate(0, -50%);
-    transform: translate(0, -50%);
+    -moz-transform: translate3d(0, -50%, 0);
+    -webkit-transform: translate3d(0, -50%, 0);
+    transform: translate3d(0, -50%, 0);
 }
 
 
@@ -639,46 +640,46 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
 .dbs_dialog[type="msg"][p="c"] > .-container > .-content{
     left: 50%;
     top: 50%;
-	-webkit-transform: translate(-50%, -50%) scale(1);
-    -moz-transform: translate(-50%, -50%) scale(1);
-    transform: translate(-50%, -50%) scale(1);
+	-webkit-transform: translate3d(-50%, -50%, 0) scale(1);
+    -moz-transform: translate3d(-50%, -50%, 0) scale(1);
+    transform: translate3d(-50%, -50%, 0) scale(1);
 }
 
 /* TOP */
 .dbs_dialog[type="nav"][p="t"].-closed > .-container > .-content,
 .dbs_dialog[type="msg"][p="t"].-closed > .-container > .-content{
-	-webkit-transform: translate(-50%, -100%);
-	-moz-transform: translate(-50%, -100%);
-	transform: translate(-50%, -100%);
+	-webkit-transform: translate3d(-50%, -100%, 0);
+	-moz-transform: translate3d(-50%, -100%, 0);
+	transform: translate3d(-50%, -100%, 0);
 }
 /* BOTTOM */
 .dbs_dialog[type="nav"][p="b"].-closed > .-container > .-content,
 .dbs_dialog[type="msg"][p="b"].-closed > .-container > .-content{
-	-webkit-transform: translate(-50%, 100%);
-	-moz-transform: translate(-50%, 100%);
-	transform: translate(-50%, 100%);
+	-webkit-transform: translate3d(-50%, 100%, 0);
+	-moz-transform: translate3d(-50%, 100%, 0);
+	transform: translate3d(-50%, 100%, 0);
 }
 /* LEFT*/
 .dbs_dialog[type="nav"][p="l"].-closed > .-container > .-content,
 .dbs_dialog[type="msg"][p="l"].-closed > .-container > .-content{
-	-webkit-transform: translate(-100%, -50%);
-	-moz-transform: translate(-100%, -50%);
-	transform: translate(-100%, -50%);
+	-webkit-transform: translate3d(-100%, -50%, 0);
+	-moz-transform: translate3d(-100%, -50%, 0);
+	transform: translate3d(-100%, -50%, 0);
 }
 /* RIGHT*/
 .dbs_dialog[type="nav"][p="r"].-closed > .-container > .-content,
 .dbs_dialog[type="msg"][p="r"].-closed > .-container > .-content{
-	-webkit-transform: translate(100%, -50%);
-	-moz-transform: translate(100%, -50%);
-	transform: translate(100%, -50%);
+	-webkit-transform: translate3d(100%, -50%, 0);
+	-moz-transform: translate3d(100%, -50%, 0);
+	transform: translate3d(100%, -50%, 0);
 }
 /* CENTER*/
 .dbs_dialog[type="msg"].-c.-closed > .-container > .-content,
 .dbs_dialog[type="nav"][p="c"].-closed > .-container > .-content,
 .dbs_dialog[type="msg"][p="c"].-closed > .-container > .-content{
-    -webkit-transform: translate(-50%, -50%) scale(0);
-    -moz-transform: translate(-50%, -50%) scale(0);
-    transform: translate(-50%, -50%) scale(0);
+    -webkit-transform: translate3d(-50%, -50%, 0) scale(0);
+    -moz-transform: translate3d(-50%, -50%, 0) scale(0);
+    transform: translate3d(-50%, -50%, 0) scale(0);
 }
 
 /*MOD*/
@@ -883,11 +884,11 @@ dbs_dialog[type="btn"] > .-container > .-th_action:not([disabled]):INACTIVE {
     text-align: left;
 }
 .dbs_dialog[p="c"] > .-container > .-content > .-header{
-    width: 100.5%;
+    width: 100%;
 }
 
 .dbs_dialog > .-container > .-content > .-header > .-content{
-    width: calc(100% + .5px);
+    width: 100%;
 }
 	
 .dbs_dialog[type="nav"] > .-container > .-content > .-header > .-content > .-left,
