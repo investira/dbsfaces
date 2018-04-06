@@ -703,6 +703,7 @@ dbsfaces.slider = {
 	},
 	
 	
+	//Seta valor a partir do percentual do slider
 	pvSetValuePerc: function(pSliderData, pLengthFator, pForceValue){
 		if (pSliderData.dom.input == null){return;}
 		pLengthFator = parseFloat(pLengthFator);
@@ -1156,6 +1157,7 @@ dbsfaces.slider = {
 	setTextValue: function(pSlider, pValue){
 		var xSliderData = pSlider.data("data");
 		if ((typeof pValue == "undefined") || pValue.length == 0){return;}
+		dbsfaces.slider.pvSetValue(xSliderData, pValue);
 		dbsfaces.slider.pvEncodeTextValue(xSliderData, pValue);
 	},
 
