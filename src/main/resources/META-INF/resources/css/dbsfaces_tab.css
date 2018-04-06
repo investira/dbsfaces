@@ -33,6 +33,9 @@
     width: 100%;
 	text-align: center;
     white-space: nowrap;
+    -webkit-transform: translate3d(0,0,0);
+    -moz-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
 }
 
 .dbs_tab > .-container > .-captions > .-container > .-caption > .dbs_tabCaption > .-container{
@@ -390,7 +393,7 @@
 .dbs_tab[type="acc"] > .-container{
     height: inherit;
 }
-.dbs_tab[type="acc"] > .-container.-selected{
+.dbs_tab[type="acc"].-selected > .-container{
 }
 
 .dbs_tab[type="acc"] > .-container > div{
@@ -409,7 +412,7 @@
 	flex: 1 1 100%;
 }
 
-.dbs_tab[type="acc"] > .-container.-selected > .-captions{
+.dbs_tab[type="acc"].-selected > .-container > .-captions{
 	overflow: unset;
 	-webkit-flex: 0 1 1em;
 	-moz-flex: 0 1 1em;
@@ -426,7 +429,7 @@
     flex: 0 0 0;
 }
 
-.dbs_tab[type="acc"] > .-container.-selected > .-tabPages{
+.dbs_tab[type="acc"].-selected > .-container > .-tabPages{
     -webkit-flex: 1 1 100%;
     -moz-flex: 1 1 100%;
     flex: 1 1 100%;
@@ -445,7 +448,7 @@
 
 .dbs_tab[type="acc"] > .-container > .-captions > .-container{
 }
-.dbs_tab[type="acc"] > .-container.-selected > .-captions > .-container{
+.dbs_tab[type="acc"].-selected > .-container > .-captions > .-container{
 }
 
 .dbs_tab[type="acc"] > .-container > .-captions > .-container > .-i_action_points{
@@ -459,7 +462,7 @@
     pointer-events: none;
 	font-size: 1em;
 }
-.dbs_tab[type="acc"] > .-container.-selected > .-captions > .-container > .-i_action_points{
+.dbs_tab[type="acc"].-selected > .-container > .-captions > .-container > .-i_action_points{
 	-webkit-transition: opacity .25s linear .3s;    
 	-moz-transition: opacity .25s linear.3s;    
 	transition: opacity .25s linear .3s;   
@@ -476,7 +479,7 @@
 	transition: opacity .25s linear;    
 /* 	filter: blur(0); */
 }
-.dbs_tab[type="acc"] > .-container.-selected > .-captions > .-container > .-caption{
+.dbs_tab[type="acc"].-selected > .-container > .-captions > .-container > .-caption{
 	-webkit-flex-basis: 0;
 	-moz-flex-basis: 0;
 	flex-basis: 0;
@@ -575,7 +578,7 @@
 
 .dbs_tab[type="acc"] > .-container > .-tabPages{
 }
-.dbs_tab[type="acc"] > .-container.-selected > .-tabPages{
+.dbs_tab[type="acc"].-selected > .-container > .-tabPages{
 }
 
 
