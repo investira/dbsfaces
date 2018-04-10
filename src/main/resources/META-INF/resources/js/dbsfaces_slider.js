@@ -450,7 +450,7 @@ dbsfaces.slider = {
 		}else{
 			//Point
 			dbsfaces.slider.pvInitializeCreatePointElement(xPoints, "");
-			dbsfaces.slider.pvInitializeCreatePointElement(xPoints, "");
+//			dbsfaces.slider.pvInitializeCreatePointElement(xPoints, "");
 		}
 		pSliderData.dom.points = pSliderData.dom.sub_container.children(".-points");
 		pSliderData.dom.pointsPoint = pSliderData.dom.points.children(".-point");
@@ -650,7 +650,10 @@ dbsfaces.slider = {
 	     || pSliderData.type == "r"){
 			pSliderData.value = dbsfaces.number.parseFloat(pValue);
 		}
-		dbsfaces.slider.pvSetValuePerc(pSliderData, dbsfaces.slider.pvGetLengthFatorFromValue(pSliderData, pValue), true);
+		if (pSliderData.dom.self.hasClass("-readOnly")){
+		}else{
+			dbsfaces.slider.pvSetValuePerc(pSliderData, dbsfaces.slider.pvGetLengthFatorFromValue(pSliderData, pValue), true);
+		}
 	},
 	
 	pvGetLengthFatorFromValue: function(pSliderData, pValue){
@@ -661,16 +664,17 @@ dbsfaces.slider = {
 		 || pSliderData.type == "r"){
 			var xMin = pSliderData.min;
 			var xMax = pSliderData.max;
-			xValue = dbsfaces.math.round(xValue, pSliderData.dp);
-			xLengthFator = xValue;
+			xLengthFator = dbsfaces.math.round(xValue, pSliderData.dp);
 			//Procura qual o item da lista foi selecionado
 			if (pSliderData.valuesListNumeric.length > 0){
 				pSliderData.error = null;
 				//Verifica se valor ultrapassou os limites
 				if (xLengthFator < pSliderData.valuesListNumeric[0]){
+					//Utiliza primeiro valor da lista
 					xLengthFator = pSliderData.valuesListNumeric[0];
 					pSliderData.error = "Valor " + pValue + " não pode ser inferior a " + xLengthFator;
 				}else if(xLengthFator > pSliderData.valuesListNumeric[pSliderData.valuesListNumeric.length - 1]){
+					//Utiliza último valor da lista
 					xLengthFator = pSliderData.valuesListNumeric[pSliderData.valuesListNumeric.length - 1];
 					pSliderData.error = "Valor " + pValue + " não pode ser superior a " + xLengthFator;
 				}
@@ -738,27 +742,16 @@ dbsfaces.slider = {
 			xInputValue = ((xMax - xMin) * xValuePercFator) + xMin;
 			xInputValue = dbsfaces.math.round(xInputValue, pSliderData.dp);
 
-
 			if (typeof pForceValue == "undefined"){
 				//Força valor considerar somente os dois primeiros números relevantes
 				var xSign = Math.sign(xInputValue) || 1;
 				var xOnlyNumbers = dbsfaces.format.number(xInputValue, pSliderData.dp).replace(/[^\d]/g, '');
-//				var xTruncSize = String(Math.abs(xMax) - Math.abs(xMin)).length - 2;
 				var xTruncSize = dbsfaces.format.number(Math.abs(xMax) - Math.abs(xMin), pSliderData.dp).replace(/[^\d]/g, '').length - 2;
 				if (xTruncSize > 0){
 					xTruncSize = Math.pow(10, xTruncSize);
 					xOnlyNumbers = dbsfaces.number.parseFloat(xOnlyNumbers);
 					xInputValue = (dbsfaces.math.trunc(xOnlyNumbers / xTruncSize, 0) * xTruncSize) / Math.pow(10, pSliderData.dp) * xSign;
 				}
-				//Força valor considerar somente os dois primeiros números relevantes
-//				var xSign = Math.sign(xInputValue) || 1;
-//				var xOnlyNumbers = dbsfaces.format.number(xInputValue, pSliderData.dp).replace(/[^\d]/g, '');
-//				var xTruncSize = xOnlyNumbers.length - 2;
-//				if (xTruncSize > 0){
-//					xTruncSize = Math.pow(10, xTruncSize);
-//					xOnlyNumbers = dbsfaces.number.parseFloat(xOnlyNumbers);
-//					xInputValue = (dbsfaces.math.trunc(xOnlyNumbers / xTruncSize, 0) * xTruncSize) / Math.pow(10, pSliderData.dp) * xSign;
-//				}
 			}
 		}else{
 			if (pLengthFator > 0){
@@ -835,11 +828,11 @@ dbsfaces.slider = {
 			//Dispara que valor foi alterado
 			clearTimeout(pSliderData.timeout);
 			pSliderData.timeout = setTimeout(function(){
-				pSliderData.dom.self.trigger("change", [{value:pSliderData.value, 
-														valueBegin:pSliderData.valueBegin, 
-														valueEnd:pSliderData.valueEnd, 
-														lengthFator:pSliderData.lengthFator,
-														previousValue: pSliderData.previousValue}]);
+				pSliderData.dom.self.trigger("change", [{value:pSliderData.value,
+													    valueBegin:pSliderData.valueBegin, 
+													    valueEnd:pSliderData.valueEnd, 
+													    lengthFator:pSliderData.lengthFator,
+													    previousValue: pSliderData.previousValue}]);
 			},10);
 		}
 	},
