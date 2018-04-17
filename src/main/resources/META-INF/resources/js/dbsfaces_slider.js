@@ -1,3 +1,4 @@
+
 dbs_slider = function(pId, pValuesList, pLabelsList, pMinValue, pMaxValue, pLocale) {
 	dbsfaces.setLocale(pLocale);
 
@@ -650,10 +651,10 @@ dbsfaces.slider = {
 	     || pSliderData.type == "r"){
 			pSliderData.value = dbsfaces.number.parseFloat(pValue);
 		}
-		if (pSliderData.dom.self.hasClass("-readOnly")){
-		}else{
-			dbsfaces.slider.pvSetValuePerc(pSliderData, dbsfaces.slider.pvGetLengthFatorFromValue(pSliderData, pValue), true);
-		}
+		dbsfaces.slider.pvSetValuePerc(pSliderData, dbsfaces.slider.pvGetLengthFatorFromValue(pSliderData, pValue), true);
+//		if (pSliderData.dom.self.hasClass("-readOnly")){
+//			dbsfaces.slider.pvSetInputValue(pSliderData, pValue);
+//		}
 	},
 	
 	pvGetLengthFatorFromValue: function(pSliderData, pValue){
