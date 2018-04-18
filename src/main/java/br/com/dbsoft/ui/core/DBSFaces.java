@@ -63,7 +63,6 @@ import com.sun.faces.util.Util;
 import br.com.dbsoft.core.DBSSDK;
 import br.com.dbsoft.core.DBSSDK.ENCODE;
 import br.com.dbsoft.core.DBSSDK.NETWORK.METHOD;
-import br.com.dbsoft.core.DBSSDK.SYS.WEB_CLIENT;
 import br.com.dbsoft.error.DBSIOException;
 import br.com.dbsoft.message.IDBSMessage;
 import br.com.dbsoft.message.IDBSMessageBase.MESSAGE_TYPE;
@@ -81,6 +80,7 @@ import br.com.dbsoft.ui.component.datatable.DBSDataTable.SELECTION_TYPE;
 import br.com.dbsoft.ui.component.datatable.DBSDataTableColumn;
 import br.com.dbsoft.ui.component.fileupload.DBSFileUpload;
 import br.com.dbsoft.ui.component.inputnumber.DBSInputNumber;
+import br.com.dbsoft.userAgent.DadosUserAgent;
 import br.com.dbsoft.util.DBSBoolean;
 import br.com.dbsoft.util.DBSColor;
 import br.com.dbsoft.util.DBSDate;
@@ -89,6 +89,8 @@ import br.com.dbsoft.util.DBSIO;
 import br.com.dbsoft.util.DBSNumber;
 import br.com.dbsoft.util.DBSObject;
 import br.com.dbsoft.util.DBSString;
+import br.com.dbsoft.util.DBSSys;
+import br.com.dbsoft.util.DBSSys.SYS.WEB_CLIENT;
 /**
  * @author ricardo.villar
  *
@@ -3293,6 +3295,23 @@ public class  DBSFaces {
 		return xS.trim();
 	}
 	
+	/**
+	 * Recupera os dados do User-Agent do Contexto do Faces já formatados.
+	 * @return
+	 */
+	public static DadosUserAgent getUserAgent() {
+		FacesContext xFC = FacesContext.getCurrentInstance();
+		if (DBSObject.isNull(xFC)) {
+			return null;
+		}
+		ExternalContext xEC = xFC.getExternalContext();
+		if (DBSObject.isNull(xEC)) {
+			return null;
+		}
+		String xRawUserAgent = (xEC.getRequestHeaderMap().get("User-Agent"));
+		return DBSSys.getUserAgent(xRawUserAgent);
+	}
+	
 //	/**
 //	 * Envia FacesMessage para a view
 //	 * @param pClientId Nome do componente ao aqual esta vinculado a mensagem
@@ -3324,8 +3343,5 @@ public class  DBSFaces {
 //		}
 //		pvSendFacesMessage(xSeverity, pMessageText, pClientId);
 //	}	
-
-
-
 
 }
