@@ -1,5 +1,5 @@
 .*
 **/target
 !.gitignore
-main/dev/
-main/node_modules/
+src/main/dev/
+src/main/node_modules/
