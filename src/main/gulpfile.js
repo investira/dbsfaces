@@ -19,7 +19,7 @@ var wDep = {
 // Diretórios base do projeto
 var wBases = {
 	dev: 'dev/',
-	dist: 'webapp/',
+	dist: 'resources/META-INF/',
 	root: './'
 }
 
@@ -27,7 +27,7 @@ var wBases = {
 var wPaths = {
 	html: ['**/*.xhtml'],
 	js: '/**/*.js',
-	scss: 'style.scss',
+	scss: '*.scss', //'*.scss',
 	all: '**/*',
 	serverProject: 'localhost:8080/front-test/'
 }
@@ -36,8 +36,10 @@ var wPaths = {
 var wFolders = {
 	scss : 'scss',
 	js: 'js',
-	img: 'img',
+	img: 'images',
 	css: 'css',
+	pdf: 'pdf',
+	sound: 'sound',
 	resources: 'resources/'
 }
 
@@ -53,8 +55,8 @@ var wAutoPrefAttrs = {
 }
 // Nome de saída dos arquivos para produção
 var wOutputFiles = {
-	jsMin: 'scripts.min.js',
-	cssMin: 'style.min.css'
+	jsMin: 'dbsfaces.min.js',
+	cssMin: 'dbsfaces.min.css' //'dbsfaces.min.css'
 }
 
 // Atributos de configuração do gulp-imagemin
@@ -67,7 +69,7 @@ var wImageMinAttr = {
 // Caminhos de configuração
 var wConfig = {
 	scssFiles: wBases.root + wBases.dev + wFolders.scss + '/' + wPaths.scss,
-	cssFolder: wBases.root + wBases.dist + wFolders.resources + wFolders.css,
+	cssFolder: wBases.root + wBases.dist + wFolders.resources + wFolders.css + '/',
 
 	jsFolder: wBases.root + wBases.dev + wFolders.js + '/',
 	jsFiles: wBases.root + wBases.dev + wFolders.js + '/' + wPaths.js,
@@ -76,7 +78,11 @@ var wConfig = {
 	imagesFiles: wBases.root + wBases.dev + wFolders.img + '/' + wPaths.all,
 	imagesDistFolder: wBases.root + wBases.dist + wFolders.resources + wFolders.img,
 	
-	componentesFolder: wBases.root + wBases.dev + 'componentes'
+	componentesFolder: wBases.root + wBases.dev + 'component',
+
+	pdfDest: wBases.root + wBases.dist + wFolders.resources + wFolders.pdf + '/',
+
+	soundDest: wBases.root + wBases.dist + wFolders.resources + wFolders.sound + '/',
 }
 
 // Função para recupera a lista de arquivos por pasta a partir de um diretório especifico
@@ -111,6 +117,7 @@ wDep.gulp.task('sass-dev', function () {
 		.pipe(wDep.sass(wSassAttrs))
 		.pipe(wDep.autoprefixer(wAutoPrefAttrs))
 		.pipe(wDep.mmq({log: true}))
+		.pipe(wDep.concat(wOutputFiles.cssMin))
 		.pipe(wDep.minifyCss())
 		.pipe(wDep.sourcemaps.write())
 		.pipe(wDep.rename(wOutputFiles.cssMin))
@@ -127,6 +134,7 @@ wDep.gulp.task('sass-prod', function () {
 		.pipe(wDep.sass(wSassAttrs))
 		.pipe(wDep.autoprefixer(wAutoPrefAttrs))
 		.pipe(wDep.mmq({log: true}))
+		.pipe(wDep.concat(wOutputFiles.cssMin))
 		.pipe(wDep.minifyCss())
 		.pipe(wDep.rename(wOutputFiles.cssMin))
 		.pipe(wDep.gulp.dest(wConfig.cssFolder));
@@ -153,7 +161,7 @@ wDep.gulp.task('scripts-dev', function() {
  * e atualizar o navegador
  */
 wDep.gulp.task('scripts-prod', function() {
-	return wDep.gulp.src(wConfig.jsFiles)
+	return wDep.gulp.src(wConfig.jsFolder + 'components/' + wPaths.js)
         .pipe(wDep.concat(wOutputFiles.jsMin))
 		.pipe(wDep.gulp.dest(wConfig.jsDest))
 		.pipe(wDep.uglify())
@@ -174,10 +182,20 @@ wDep.gulp.task('images', () =>
 		.pipe(wDep.gulp.dest(wConfig.imagesDistFolder))
 );
 
-// Copia os arquivos .xthml
+// Copia os arquivos... 
 wDep.gulp.task('copy',function() {
+	//...xthml
 	wDep.gulp.src(wPaths.html, {cwd: wBases.dev})
-		.pipe(wDep.gulp.dest(wBases.dist));
+	.pipe(wDep.gulp.dest(wBases.dist + wFolders.resources));
+	//...js
+	wDep.gulp.src([wFolders.js + '/*.js'], {cwd: wBases.dev})
+		.pipe(wDep.gulp.dest(wConfig.jsDest));
+	//...pdf
+	wDep.gulp.src([wFolders.pdf + '/*.pdf'], {cwd: wBases.dev})
+		.pipe(wDep.gulp.dest(wConfig.pdfDest));
+	//...sound
+	wDep.gulp.src([wFolders.sound + '/*.mp3'], {cwd: wBases.dev})
+		.pipe(wDep.gulp.dest(wConfig.soundDest));
 });
 
 
