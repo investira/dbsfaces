@@ -1,0 +1,37 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:dbs="http://www.dbsoft.com.br/ui/dbsfaces" 
+	xmlns:dbscom="http://www.dbsoft.com.br/ui/dbsfacescom">
+		
+	<cc:interface componentType="br.com.dbsoft.ui.component.modalMessages">
+		<cc:attribute name="userBean" preferred="true" required="true"/>
+		<cc:attribute name="update"/>
+	</cc:interface>
+ 
+	<cc:implementation>
+		<!--Artifício para forçar o id para certificar que o clientId já vem completo com os nomes dos parents, já que por motivos desconhecidos isso não ocorre sempre -->
+		<f:event listener="#{cc.setId(cc.id)}" type="preRenderComponent"/>
+		<div id="#{cc.clientId}">
+			<c:if test="#{cc.userBean.hasMessage}">
+				<dbs:modal id="#{cc.id}_modalMessages"
+							messageType="#{cc.userBean.messageType.code}"
+							rendered="#{cc.userBean.hasMessage}"
+							update="#{cc.attrs.update}"
+							tooltip="#{cc.userBean.messageTooltip}">
+							<c:if test="#{!cc.userBean.messageType.isQuestion}">
+								<f:attribute name="okAction" value="#{cc.userBean.setMessageValidated(true)}"/>
+							</c:if>
+							<c:if test="#{cc.userBean.messageType.isQuestion}">
+								<f:attribute name="noAction" value="#{cc.userBean.setMessageValidated(false)}"/>
+								<f:attribute name="yesAction" value="#{cc.userBean.setMessageValidated(true)}"/>
+							</c:if>
+							<h:outputText value="#{cc.userBean.messageText}" escape="false"/>
+				</dbs:modal>		
+			</c:if>
+		</div>			
+	</cc:implementation>
+</ui:component>

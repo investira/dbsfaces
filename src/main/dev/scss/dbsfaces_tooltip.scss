@@ -1,0 +1,127 @@
+.-tooltip{
+	position: fixed;
+	opacity: 0;
+	pointer-events: none;
+	display: inline-block;
+    overflow: visible;
+	z-index: 2;
+	cursor:default;
+    line-height: normal;
+    
+/* 	line-height: 120%; */
+	text-shadow: none;
+	font-style: normal;
+
+    width: .5px;
+    height: .5px;
+    
+}
+
+.-tooltip.-tt{
+	text-align: center;
+	font-size: .9em;
+    -webkit-transition: opacity .3s; 
+    -moz-transition: opacity .3s;
+    -o-transition: opacity .3s;
+    transition: opacity .3s;
+}
+
+.-tooltip.-show{
+	pointer-events: initial;
+	opacity: 1;
+    -webkit-transition: none; 
+    -moz-transition: none;
+    -o-transition: none;
+    transition: none;
+}
+
+.-tooltip > .-container{
+	position: fixed;
+	display: inline-block;
+
+	margin:0px;
+	padding:0px;
+	
+	z-index: 10;
+	
+	-webkit-transform-origin: 0 0 0;
+	-moz-transform-origin: 0 0 0;
+	-o-transform-origin: 0 0 0;
+	transform-origin: 0 0 0;
+
+/*     -webkit-transform: translateX(0) translateY(0); */
+/*     -moz-transform: translateX(0) translateY(0); */
+/*     -o-transform: translateX(0) translateY(0); */
+/*     transform: translateX(0) translateY(0); */
+}
+
+.-tooltip > .-container > .-content{
+	margin:0px;
+	padding: 4px;
+
+	-moz-border-radius: 3px;
+ 	-webkit-border-radius: 3px;
+	border-radius:3px;
+	
+	border-style:none;
+
+	background-repeat: repeat;
+	background-color: currentColor;
+	-moz-box-shadow: 0px 0px 2px #222;  
+	-webkit-box-shadow: 0px 0px 2px #222;  
+	box-shadow: 0px 0px 2px #222;  
+}
+
+.-tooltip > .-container:before{
+    position:absolute;
+	content:'';
+    display:block;
+    width:0;
+    height:0;
+	z-index: 10;
+}
+
+
+.-tooltip.-l3 > .-container:before,
+.-tooltip.-l1 > .-container:before{
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+.-tooltip.-l1 > .-container:before{
+    border-top: 8px solid;
+	border-top-color: currentColor;
+    top:100%;
+}
+.-tooltip.-l3 > .-container:before{
+    border-bottom: 8px solid;
+	border-bottom-color: currentColor;
+    top: -7px;
+}
+
+.-tooltip.-l2 > .-container:before,
+.-tooltip.-l4 > .-container:before{
+	border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+.-tooltip.-l4 > .-container:before{
+    border-left: 8px solid;
+    border-left-color: currentColor;
+	left: 100%;
+}
+.-tooltip.-l2 > .-container:before{
+    border-right: 8px solid;
+    border-right-color: currentColor;
+    left: -7px;
+}
+

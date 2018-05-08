@@ -1,0 +1,16 @@
+.dbs_inputTextArea{
+}
+
+.dbs_inputTextArea > .-container{
+	position: relative;
+}
+
+.dbs_inputTextArea > .-container > .-th_input-label {
+    vertical-align: top !important;
+/*     top: .25em; */
+    position: relative;	
+}
+
+.dbs_inputTextArea > .-container > .-th_input-data {
+	resize:none;
+}

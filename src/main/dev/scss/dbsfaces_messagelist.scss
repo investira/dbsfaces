@@ -1,0 +1,208 @@
+.dbs_messageList{
+	font-stretch: normal;
+	font-weight: normal;
+	text-shadow: none;
+}
+
+.dbs_messageList:hover{
+	z-index: 1;
+}
+
+.dbs_messageList > .-container {
+	position: relative;
+	display: inline-block;
+	top: 0;
+}
+
+.dbs_messageList:hover > .-container > .-list{
+ 	display: block;	
+}
+
+.dbs_messageList > .-container > .-list.-opened{
+	display: block;
+}
+
+.dbs_messageList:hover > .-container > .-button{
+/* 			z-index: 3; */
+/* 			position: relative;	 */
+}
+
+
+.dbs_messageList > .-container > .-list{
+	display: none;	
+    position: absolute;
+	top: 1.3em;
+    right: 14px;
+    z-index: 3;
+    width: 270px;
+	-webkit-border-radius: 3px;  
+	-moz-border-radius: 3px; 
+	border-radius: 3px;
+    box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+.dbs_messageList > .-container > .-list > .-content{
+	max-height: 296px;
+	overflow-y: auto;
+	-webkit-border-radius: 3px;  
+	-moz-border-radius: 3px; 
+	border-radius: 3px;
+}
+
+.dbs_messageList > .-container > .-list > .-content > .-message{
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	border-top: 1px solid rgba(255, 255, 255, 0.7);
+	padding: 3px;
+	xposition: relative;
+	color: rgb(13,25,45);
+	overflow: hidden;
+}
+
+
+.dbs_messageList > .-container > .-list > .-content > .-message > .-container{
+	position: relative;
+	xmargin: 3px;
+	xoverflow: hidden;
+}
+.dbs_messageList > .-container > .-list > .-content > .-message > .-container > .-time{
+	font-size: 7px;
+	color: rgba(0,0,0,0.4);
+	position: absolute;
+}
+
+.dbs_messageList > .-container > .-list > .-content > .-message > .-container > .-content{
+    display: inline-block;
+    white-space: normal;
+    width: 100%;
+    padding-left: 25px;
+    padding-right: 25px;
+    text-align: center;
+	xposition: relative;
+}
+
+/* Artifício necessário para resolver problema na animação no IE quando a mensagem é excluida */
+.dbs_messageList > .-container > .-list:after {
+	content: " ";
+	font-size: 1px;
+	display: inline;
+	overflow: hidden;
+	line-height: 0;
+}
+
+.dbs_messageList > .-container > .-list > .-content > .-message > .-container > .-button{
+	margin-top: -8px;
+    position: absolute;
+    right: 1px;
+    top: 50%;
+    display:none;
+}
+
+.dbs_messageList > .-container > .-list > .-content > .-message > .-container > .-button > .dbs_button{
+	display:inline-block;
+	height: 16px;
+	width: 16px;	
+}
+
+.dbs_messageList > .-container > .-list > .-content > .-message > .-container > .-button > .dbs_button > span{
+	left: -1px;
+    position: relative;
+}
+
+.dbs_messageList > .-container > .-button{
+	display: inline-block;
+	position: relative;
+}
+
+.dbs_messageList > .-container > .-button > div{
+	float:left;
+}
+
+.dbs_messageList > .-container > .-button > .-count{
+	-webkit-border-radius: 10px;  
+	-moz-border-radius: 10px; 
+	border-radius: 10px;
+	
+    
+    border-style: none;
+    font-size: 8px;
+    left: -3px;
+    line-height: 11px;
+    overflow: hidden;
+    padding-left: 5px;
+    padding-right: 5px;
+    position: relative;
+    text-align: center;
+    top: -2px;
+    color: rgb(13,25,45);
+    text-shadow: 0px 0px 1px rgba(0,0,0,0.5);
+
+}
+  	
+.dbs_messageList > .-container > .-button > .-count.-severity0{ 
+	background-color: rgb(255, 236, 0); 
+}
+.dbs_messageList > .-container > .-button > .-count.-severity1{
+	background-color: rgb(255, 180, 0);
+}
+.dbs_messageList > .-container > .-button > .-count.-severity2{
+	background-color: rgb(255, 0, 0);
+}
+.dbs_messageList > .-container > .-button > .-count.-severity3{
+	background-color: rgb(255, 100, 0);
+}
+
+/* .dbs_messageList > .-container > .-list > .-content > .-message.-severity01{ */
+/* 	background-color: none; */
+/* } */
+.dbs_messageList > .-container > .-list > .-content > .-message.-severity0{
+	background-color: rgba(255, 236, 0, 0.27);
+}
+.dbs_messageList > .-container > .-list > .-content > .-message.-severity1{
+	background-color: rgba(255, 180, 0, 0.60);
+}
+.dbs_messageList > .-container > .-list > .-content > .-message.-severity2{
+	background-color: rgba(255, 0, 0, 0.70);
+}
+.dbs_messageList > .-container > .-list > .-content > .-message.-severity3{
+	background-color: rgba(255, 100, 0, 0.70);
+}
+
+.xdbs_messageList > .-list > .-content > .-message:hover {
+	color:white;
+	background: rgb(8,114,201); /* Old browsers */
+	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIxJSIgc3RvcC1jb2xvcj0iIzA4NzJjOSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMxZTU3OTkiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top, rgba(8,114,201,1) 1%, rgba(30,87,153,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,rgba(8,114,201,1)), color-stop(100%,rgba(30,87,153,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, rgba(8,114,201,1) 1%,rgba(30,87,153,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, rgba(8,114,201,1) 1%,rgba(30,87,153,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, rgba(8,114,201,1) 1%,rgba(30,87,153,1) 100%); /* IE10+ */
+	background: linear-gradient(top, rgba(8,114,201,1) 1%,rgba(30,87,153,1) 100%); /* W3C */
+}
+		
+.dbs_messageList > .-container > .-list > .-content > .-message:hover > .-container > .-button{
+	display:block;
+	cursor: pointer;
+}
+		
+/* Para resolver o problema no Safari que inibia o click do botão quando houvesse scrollbar		 */
+.dbs_messageList ::-webkit-scrollbar { 
+	width: 12px; 
+}
+.dbs_messageList ::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0px 0 3px rgba(0,0,0,0.3);
+	-webkit-border-radius: 0px 3px 3px 0px;  
+	-moz-border-radius: 0px 3px 3px 0px; 
+	border-radius: 0px 3px 3px 0px;
+}
+.dbs_messageList ::-webkit-scrollbar-thumb {
+	-webkit-border-radius: 3px;  
+	-moz-border-radius: 3px; 
+	border-radius: 3px;
+	-webkit-box-shadow: inset 0 0 4px rgba(13,25,45,0.05);
+	background: rgba(0,0,0,0.2);
+}
+	

@@ -1,0 +1,101 @@
+.dbs_checkbox{
+}
+
+.dbs_checkbox > .-th_input {
+    white-space: nowrap;
+    overflow: visible;
+	-webkit-flex-flow: row nowrap;
+	-moz-flex-flow: row nowrap;
+	flex-flow: row nowrap;
+    -webkit-justify-content: start;
+    -moz-justify-content: start;
+    justify-content: start;    
+    background-color: transparent;
+}
+
+.dbs_checkbox > .-th_input:after{
+	content: "";
+	clear: both;
+}
+.dbs_checkbox > .-th_input[disabled]{
+	pointer-events: none;
+}
+
+.dbs_checkbox > .-th_input:not([disabled]){
+	cursor: pointer;	
+}
+
+.dbs_checkbox > .-th_input > .-input{
+    position: relative;
+    display: inline-block;
+    overflow: visible;
+    cursor: inherit;
+    -webkit-flex: 0 0 1em;
+    -moz-flex: 0 0 1.1em;
+    flex: 0 0 1em;
+}
+
+.dbs_checkbox > .-th_input > .-input > .-icon{
+    display: inline-block;
+    position: relative;
+	height: 1em;
+    width: 1.2em;
+    top: .15em;
+    left: 0;
+	margin-right: .2em;
+}
+
+.dbs_checkbox > .-th_input > .-input > .-icon:before,
+.dbs_checkbox > .-th_input > .-input > .-icon:after{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1em;
+    height: 1em;
+    box-sizing: border-box;
+     line-height: 1;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+.dbs_checkbox > .-th_input > .-input > .-icon:before{
+    font-family: 'dbsfaces_icons' !important;
+    content: "\e919";
+    -webkit-transition: text-shadow .2s cubic-bezier(0.47, 0, 0.75, 0.72);
+    -moz-transition: text-shadow .2s cubic-bezier(0.47, 0, 0.75, 0.72);
+    transition: text-shadow .2s cubic-bezier(0.47, 0, 0.75, 0.72);
+}
+
+.dbs_checkbox > .-th_input[checked] > .-input > .-icon:before{
+	content: "\e91a";
+	text-shadow: 0 0 .01em currentColor;
+}
+
+.dbs_checkbox > .-th_input[checked]:not([disabled]) > .-input > .-icon:after{
+	content: "";
+    border: .1em solid currentColor;
+    border-radius: 1em;
+    	-webkit-animation: -kf_sonar .2s 1 cubic-bezier(.075,.82,.165,1) 0s both;
+    -moz-animation: -kf_sonar .2s 1 cubic-bezier(.075,.82,.165,1) 0s both;
+    animation: -kf_sonar .2s 1 cubic-bezier(.075,.82,.165,1) 0s both;
+}
+
+
+.dbs_checkbox > .-th_input > .-th_input-label {
+    cursor: inherit;
+	white-space: normal;
+	-webkit-flex: 0 1 auto;
+	-moz-flex: 0 1 auto;
+	flex: 0 1 auto;
+	line-height: initial;
+}
+
+.dbs_checkbox > .-th_input > .-input > .-th_input-data {
+    position: absolute;
+    display: inline-block;
+    visibility: hidden;
+    pointer-events: none;
+    height: 0!important;
+    width: 0!important;
+}
+
