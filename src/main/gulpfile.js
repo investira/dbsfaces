@@ -28,8 +28,8 @@ var wPaths = {
 	html: ['**/*.xhtml'],
 	js: '/**/*.js',
 	scss: '*.scss', //'*.scss',
-	all: '**/*',
-	serverProject: 'localhost:8080/front-test/'
+	all: '**/*'//,
+	//serverProject: 'localhost:8080/front-test/'
 }
 
 // Pastas de assets do projeto
@@ -121,8 +121,8 @@ wDep.gulp.task('sass-dev', function () {
 		.pipe(wDep.minifyCss())
 		.pipe(wDep.sourcemaps.write())
 		.pipe(wDep.rename(wOutputFiles.cssMin))
-		.pipe(wDep.gulp.dest(wConfig.cssFolder))
-		.pipe(wDep.browserSync.stream());
+		.pipe(wDep.gulp.dest(wConfig.cssFolder));
+		//.pipe(wDep.browserSync.stream());
 });
 
 /* 
@@ -152,8 +152,8 @@ wDep.gulp.task('scripts-dev', function() {
 		.pipe(wDep.gulp.dest(wConfig.jsDest))
 		.pipe(wDep.uglify())
 		.pipe(wDep.sourcemaps.write())
-		.pipe(wDep.gulp.dest(wConfig.jsDest))
-		.pipe(wDep.browserSync.stream());
+		.pipe(wDep.gulp.dest(wConfig.jsDest));
+		//.pipe(wDep.browserSync.stream());
 });
 
 /* 
@@ -201,10 +201,10 @@ wDep.gulp.task('copy',function() {
 
 // Observa alterações nos arquivos e atualiza o browser
 wDep.gulp.task('watch', function() {
-	wDep.browserSync.init({
-		proxy: wPaths.serverProject,
-		files: wBases.root + wBases.dist + wPaths.all
-	});
+//	wDep.browserSync.init({
+//		proxy: wPaths.serverProject,
+//		files: wBases.root + wBases.dist + wPaths.all
+//	});
 
 	wDep.gulp.watch( wBases.dev + wPaths.all, ['sass-dev', 'copy', 'scripts-dev'])
 		.on('change', function(pEvent){
