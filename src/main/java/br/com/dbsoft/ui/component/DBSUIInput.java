@@ -24,7 +24,7 @@ import br.com.dbsoft.util.DBSObject;
 	@ResourceDependency(library = "js", name = "js.cookie.js", target = "head"),
 	@ResourceDependency(library = "js", name = "tinycolor.js", target = "head"),
 	@ResourceDependency(library = "javax.faces", name = "jsf.js", target = "head"),
-	@ResourceDependency(library = "js", name = "dbsfaces.min.js", target = "head"),
+	@ResourceDependency(library = "js", name = "dbsfaces.min.js", target = "head")
 //	@ResourceDependency(library = "js", name = "eventsource.js", target = "head")
 })
 public abstract class DBSUIInput extends UIInput implements IDBSUIComponentBase, ClientBehaviorHolder, SystemEventListener  {
