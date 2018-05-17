@@ -27,7 +27,7 @@ var wBases = {
 var wPaths = {
 	html: ['**/*.xhtml'],
 	js: '/**/*.js',
-	scss: '*.scss', //'*.scss',
+	scss: 'dbsfaces.scss', //'*.scss',
 	all: '**/*'//,
 	//serverProject: 'localhost:8080/front-test/'
 }
@@ -38,8 +38,6 @@ var wFolders = {
 	js: 'js',
 	img: 'images',
 	css: 'css',
-	pdf: 'pdf',
-	sound: 'sound',
 	resources: 'resources/'
 }
 
@@ -79,32 +77,28 @@ var wConfig = {
 	imagesDistFolder: wBases.root + wBases.dist + wFolders.resources + wFolders.img,
 	
 	componentesFolder: wBases.root + wBases.dev + 'component',
-
-	pdfDest: wBases.root + wBases.dist + wFolders.resources + wFolders.pdf + '/',
-
-	soundDest: wBases.root + wBases.dist + wFolders.resources + wFolders.sound + '/',
 }
 
 // Função para recupera a lista de arquivos por pasta a partir de um diretório especifico
-function getFolders(pDir) {
+/*function getFolders(pDir) {
     return wDep.fs.readdirSync(pDir)
       .filter(function(pFile) {
         return wDep.fs.statSync(wDep.path.join(pDir, pFile)).isDirectory();
       });
-}
+}*/
 
 /* 
  * Concatena arquivos js a partir de uma lista de pastas, concatena estes arquivos,
  * nomeia o resultado com o nome da pasta pai e copia para a pasta de destino definida
  */
-wDep.gulp.task('join', function() {
+/*wDep.gulp.task('join', function() {
 	var xFolders = getFolders(wConfig.componentesFolder);
 	var xTasks = xFolders.map(function(pFolder) {
 	   return wDep.gulp.src(wDep.path.join(wConfig.componentesFolder, pFolder, wPaths.js))
 		 .pipe(wDep.concat(pFolder + '.js'))
 		 .pipe(wDep.gulp.dest(wConfig.jsFolder))    
 	});
-});
+});*/
 
 /* 
  * Compila SCSS para CSS, mapeia, prefixa os atributos, concatena as media querias, 
@@ -184,18 +178,9 @@ wDep.gulp.task('images', () =>
 
 // Copia os arquivos... 
 wDep.gulp.task('copy',function() {
-	//...xthml
-	wDep.gulp.src(wPaths.html, {cwd: wBases.dev})
-	.pipe(wDep.gulp.dest(wBases.dist + wFolders.resources));
 	//...js
 	wDep.gulp.src([wFolders.js + '/*.js'], {cwd: wBases.dev})
 		.pipe(wDep.gulp.dest(wConfig.jsDest));
-	//...pdf
-	wDep.gulp.src([wFolders.pdf + '/*.pdf'], {cwd: wBases.dev})
-		.pipe(wDep.gulp.dest(wConfig.pdfDest));
-	//...sound
-	wDep.gulp.src([wFolders.sound + '/*.mp3'], {cwd: wBases.dev})
-		.pipe(wDep.gulp.dest(wConfig.soundDest));
 });
 
 
@@ -213,7 +198,7 @@ wDep.gulp.task('watch', function() {
 });
 
 // No terminal na pasta 'main' do projeto execute o comando 'gulp dev'
-wDep.gulp.task('dev', ['join', 'sass-dev', 'copy', 'scripts-dev', 'watch']);
+wDep.gulp.task('dev', ['sass-dev', 'copy', 'scripts-dev', 'watch']);
 // No terminal na pasta 'main' do projeto execute o comando 'gulp prod'
 wDep.gulp.task('prod', ['sass-prod', 'copy', 'scripts-prod', 'images']);
 // No terminal na pasta 'main' do projeto execute o comando 'gulp prod-review'
