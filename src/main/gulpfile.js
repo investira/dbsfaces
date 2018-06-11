@@ -110,14 +110,14 @@ wDep.gulp.task('sass-dev', function () {
 	return wDep.gulp.src(wConfig.scssFiles)
 		.pipe(wDep.sourcemaps.init())
 		.pipe(wDep.sass(wSassAttrs))
-		.pipe(wDep.autoprefixer(wAutoPrefAttrs))
-		.pipe(wDep.mmq({log: true}))
+		//.pipe(wDep.autoprefixer(wAutoPrefAttrs))
+		//.pipe(wDep.mmq({log: true}))
 		.pipe(wDep.concat(wOutputFiles.cssMin))
 		//.pipe(wDep.minifyCss())
 		.pipe(wDep.sourcemaps.write())
 		.pipe(wDep.rename(wOutputFiles.cssMin))
-		.pipe(wDep.gulp.dest(wConfig.cssFolder));
-		//.pipe(wDep.browserSync.stream());
+		.pipe(wDep.gulp.dest(wConfig.cssFolder))
+		.pipe(wDep.browserSync.stream());
 });
 
 /* 
