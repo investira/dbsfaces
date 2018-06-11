@@ -44,7 +44,8 @@ var wFolders = {
 // Atributos de configuração do gulp-sass
 var wSassAttrs = {
 	errLogToConsole: true, 
-	outputStyle: 'compressed'
+	outputStyle: 'compact',
+	precision: 10
 }
 
 // Atributos de configuração do gulp-autoprefixer
@@ -112,7 +113,7 @@ wDep.gulp.task('sass-dev', function () {
 		.pipe(wDep.autoprefixer(wAutoPrefAttrs))
 		.pipe(wDep.mmq({log: true}))
 		.pipe(wDep.concat(wOutputFiles.cssMin))
-		.pipe(wDep.minifyCss())
+		//.pipe(wDep.minifyCss())
 		.pipe(wDep.sourcemaps.write())
 		.pipe(wDep.rename(wOutputFiles.cssMin))
 		.pipe(wDep.gulp.dest(wConfig.cssFolder));
