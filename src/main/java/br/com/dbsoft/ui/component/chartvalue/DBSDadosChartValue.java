@@ -1,5 +1,8 @@
 package br.com.dbsoft.ui.component.chartvalue;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
 public class DBSDadosChartValue implements IDBSChartValue{
 
 	private static final long serialVersionUID = -5134495345793538197L;
