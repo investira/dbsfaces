@@ -2,6 +2,14 @@ package br.com.dbsoft.ui.component.chartvalue;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
+
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=As.PROPERTY, property="@class", defaultImpl=DBSDadosChartValue.class)
+@JsonSubTypes({
+      @JsonSubTypes.Type(value=DBSDadosChartValue.class)
+  })
 public interface IDBSChartValue extends Serializable {
 
 	public String getLabel();
