@@ -159,13 +159,13 @@ public class DBSRenderer extends Renderer {
 //	}
     
     protected void encodeClientParameters(FacesContext pContext, UIComponent pComponent) throws IOException{
-    	if (pComponent.getChildCount() > 0){
-    		for (UIComponent xC: pComponent.getChildren()){
-    			if (xC instanceof UIParameter){
-    				xC.encodeAll(pContext);
-    			}
-    		}
-    	}
+	    	if (pComponent.getChildCount() > 0){
+	    		for (UIComponent xC: pComponent.getChildren()){
+	    			if (xC instanceof UIParameter){
+	    				xC.encodeAll(pContext);
+	    			}
+	    		}
+	    	}
     }
     
     protected void encodeClientBehaviors(FacesContext pContext, ClientBehaviorHolder pComponent) throws IOException {
@@ -192,7 +192,7 @@ public class DBSRenderer extends Renderer {
                     String xScript = xBehavior.getScript(xCBC);    //could be null if disabled
 
                     if(xScript != null) {
-                    	xWriter.writeAttribute("on" + xDomEvent, xScript, null);
+                    		xWriter.writeAttribute("on" + xDomEvent, xScript, null);
                     }
                 }
             }
