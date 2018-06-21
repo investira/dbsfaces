@@ -662,7 +662,7 @@ public class  DBSFaces {
 	 */
 	public static UIForm getForm(UIComponent pComponent) {
 		return getFirstParent(pComponent, UIForm.class);
-//		RenderKitUtils.getFormClientId(pComponent, pContext); //Anternativa ao código acima. Não testei. Ricardo
+//		RenderKitUtils.getForm(pComponent, pContext); //Anternativa ao código acima. Não testei. Ricardo
 	}	
 
 	/**
