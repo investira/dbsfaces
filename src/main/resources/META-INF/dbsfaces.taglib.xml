@@ -3398,7 +3398,18 @@
 		</attribute>
 		<attribute>
 			<description>
-	           	evento onclick
+				&lt;span style="font-size:small"&gt;
+				JS que será chamado no click.
+				Caso o Action também tenha sido informado, o JS será chamado antes da execução do action e durante as respostas ajax.
+				O JS se implementado considerando a recepção de uma parameto. Este parameto conterá um atributo .status onde:
+				&lt;ul&gt;
+					&lt;li&gt;validate = antes de chamar o action no bean&lt;/li&gt;
+					&lt;li&gt;begin = iniciado o chamado ao bean&lt;/li&gt;
+					&lt;li&gt;complete = finalizado o chamado ao bean&lt;/li&gt;
+					&lt;li&gt;success = respose com sucesso&lt;/li&gt;
+					&lt;li&gt;httpError = respose com error&lt;/li&gt;
+				&lt;ul&gt;
+				&lt;/span&gt; 
             </description>
 			<name>onclick</name>
 			<required>false</required>
@@ -3412,7 +3423,8 @@
 					&lt;li&gt;true = Fecha dialog pai (se houver)&lt;/li&gt;
 					&lt;li&gt;false = Não fecha&lt;/li&gt;
 				&lt;ul&gt;
-				&lt;/span&gt; </description>
+				&lt;/span&gt; 
+			</description>
 			<name>closeDialog</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>

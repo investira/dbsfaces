@@ -1,16 +1,27 @@
 package br.com.dbsoft.ui.component.command;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
+import javax.faces.component.behavior.AjaxBehavior;
+import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
+
+import com.sun.faces.renderkit.RenderKitUtils;
 
 import br.com.dbsoft.ui.component.DBSRenderer;
 import br.com.dbsoft.ui.component.DBSUICommand;
 import br.com.dbsoft.ui.core.DBSFaces;
 import br.com.dbsoft.ui.core.DBSFaces.CSS;
+import br.com.dbsoft.util.DBSObject;
 
 
 /**
@@ -84,6 +95,53 @@ public class DBSUICommandRenderer extends DBSRenderer implements ActionListener 
 		xClass.append(" ");
 		return xClass.toString();
 	}
+	
+	/**
+	 * Enconde do onclick
+	 * @param pContext
+	 * @param pComponent
+	 * @param pWriter
+	 * @throws IOException
+	 */
+	protected void encodeOnClick(FacesContext pContext, DBSUICommand pComponent, ResponseWriter pWriter) throws IOException  {
+		if (!pComponent.getReadOnly()){
+			if (pComponent.getActionExpression() != null){
+				DBSFaces.encodeAttribute(pWriter, "type", "submit");
+				//Cria behavior ajax padrão
+				if (!DBSObject.isEmpty(pComponent.getUpdate())
+				 || !DBSObject.isEmpty(pComponent.getExecute())) {
+					AjaxBehavior xAjaxBehavior = new AjaxBehavior();
+					if (DBSObject.isEmpty(pComponent.getonclick())){
+						xAjaxBehavior.setOnevent("dbsfaces.onajax");
+						xAjaxBehavior.setOnerror("dbsfaces.onajaxerror");
+					}else{
+//						String xOnClick = DBSObject.getNotNull(pComponent.getonclick(), "").replace(/ *\([^)]*\) */g, "").replace("/^(return )/","");
+						String xOnClick = DBSObject.getNotNull(pComponent.getonclick(), "").replaceAll("\\(.*?\\)(.*)", "").replaceAll("^(return )","").trim();
+//						String xOnClick = DBSObject.getNotNull(pComponent.getonclick(), "").replaceAll("(?<=\\().*?(?=\\))", "").replaceAll("^(return )","").trim();
+						xAjaxBehavior.setOnevent(xOnClick);
+						xAjaxBehavior.setOnerror(xOnClick);
+						xOnClick = "return " + xOnClick+ "({type:'event', status:'validate'});";
+						pComponent.setonclick(xOnClick);
+					}
+					if (!DBSObject.isEmpty(pComponent.getExecute())){
+						xAjaxBehavior.setExecute(Collections.unmodifiableList(Arrays.asList(pComponent.getExecute().split("[,\\s]+"))));
+					}else {
+						xAjaxBehavior.setExecute(Collections.unmodifiableList(Arrays.asList(RenderKitUtils.getFormClientId(pComponent, pContext))));
+					}
+					if (!DBSObject.isEmpty(pComponent.getUpdate())){
+						xAjaxBehavior.setRender(Collections.unmodifiableList(Arrays.asList(pComponent.getUpdate().split("[,\\s]+"))));
+					}
+					pComponent.addClientBehavior("action", xAjaxBehavior);
+				}
+				Collection<ClientBehaviorContext.Parameter> params = getBehaviorParameters(pComponent);
+				RenderKitUtils.renderOnclick(pContext, pComponent, params, null, false);
+			}else{
+				DBSFaces.encodeAttribute(pWriter, "type", "button");
+				RenderKitUtils.renderOnclick(pContext, pComponent, null, null, false);
+			}
+		}
+	}
+
 }
 
 

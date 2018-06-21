@@ -46,6 +46,7 @@ dbsfaces = {
 	},
 	
 	EVENT: {
+		ON_ACTION: "dbs_ON_ACTION",
 		ON_AJAX_BEGIN: "dbs_ON_AJAX_BEGIN",
 		ON_AJAX_COMPLETE: "dbs_ON_AJAX_COMPLETE",
 		ON_AJAX_SUCCESS: "dbs_ON_AJAX_SUCESS",
@@ -517,16 +518,16 @@ dbsfaces.ui = {
 		xE.parentElement.insertBefore(xE, xE.parentElement.childNodes[xI]);
 	},
 	
-	getRectangle : function(obj) {
-		var xE = obj;
+	getRectangle : function(pElement) {
+		var xE = pElement;
 		if (!(obj instanceof jQuery)){
-			xE = $(obj);
+			xE = $(pElement);
 		}
-	   var off = xE.offset();
+	   var xOff = xE.offset();
 	
 	   return {
-	          top: off.top,
-	          left: off.left,
+	          top: xOff.top,
+	          left: xOff.left,
 	          height: xE.outerHeight(),
 	          width: xE.outerWidth()
 	   };
@@ -1632,27 +1633,28 @@ dbsfaces.ajax = {
 	
 }
 		
+
 //Monitora evento ajax recebido e dispara evento dbsoft
 dbsfaces.onajax = function(e, pData){
-	xEle = $(e.source);
-	if (xEle.length == 0){
+	var xE = $(e.source);
+	if (xE.length == 0){
 		return;
 	}
 	if (e.status == "begin"){
-		xEle.addClass("-ajaxBegin");
-		xEle.trigger(dbsfaces.EVENT.ON_AJAX_BEGIN, pData);
+		xE.addClass("-ajaxBegin");
+		xE.trigger(dbsfaces.EVENT.ON_AJAX_BEGIN, pData);
 	}else if (e.status == "complete"){
-		xEle.trigger(dbsfaces.EVENT.ON_AJAX_COMPLETE, pData);
+		xE.trigger(dbsfaces.EVENT.ON_AJAX_COMPLETE, pData);
 	}else if (e.status == "success"){
-		xEle.removeClass("-ajaxBegin");
-		xEle.trigger(dbsfaces.EVENT.ON_AJAX_SUCCESS, pData);
+		xE.removeClass("-ajaxBegin");
+		xE.trigger(dbsfaces.EVENT.ON_AJAX_SUCCESS, pData);
 	}
 };
 
-dbsfaces.onajaxerror = function(e){
-	xEle = $(e.source);
-	xEle.removeClass("-ajaxBegin");
-	xEle.trigger(dbsfaces.EVENT.ON_AJAX_ERROR);
+dbsfaces.onajaxerror = function(e, pData){
+	var xE = $(e.source);
+	xE.removeClass("-ajaxBegin");
+	xE.trigger(dbsfaces.EVENT.ON_AJAX_ERROR, pData);
 	return false;
 };
 
