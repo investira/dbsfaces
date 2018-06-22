@@ -115,8 +115,9 @@ public class DBSUICommandRenderer extends DBSRenderer implements ActionListener 
 						xAjaxBehavior.setOnevent("dbsfaces.onajax");
 						xAjaxBehavior.setOnerror("dbsfaces.onajaxerror");
 					}else{
-//						String xOnClick = DBSObject.getNotNull(pComponent.getonclick(), "").replace(/ *\([^)]*\) */g, "").replace("/^(return )/","");
+						//Remove return, parenteses e respectivo conteúdo
 						String xOnClick = DBSObject.getNotNull(pComponent.getonclick(), "").replaceAll("\\(.*?\\)(.*)", "").replaceAll("^(return )","").trim();
+//						String xOnClick = DBSObject.getNotNull(pComponent.getonclick(), "").replace(/ *\([^)]*\) */g, "").replace("/^(return )/","");
 //						String xOnClick = DBSObject.getNotNull(pComponent.getonclick(), "").replaceAll("(?<=\\().*?(?=\\))", "").replaceAll("^(return )","").trim();
 						xAjaxBehavior.setOnevent(xOnClick);
 						xAjaxBehavior.setOnerror(xOnClick);

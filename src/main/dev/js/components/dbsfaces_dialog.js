@@ -653,86 +653,6 @@ dbsfaces.dialog = {
 		dbsfaces.ui.cssTransition(pDialogData.dom.bthandle, "width " + xTime + "s linear, height " + xTime + "s linear");
 	},
 
-	stopTimeout : function(pDialogData) {
-		pDialogData.dom.bthandle.addClass("-stopped");
-	},
-
-	startTimeout : function(pDialogData) {
-		pDialogData.dom.bthandle.removeClass("-stopped");
-	},
-
-	/* Força o scroll já que ele não funciona naturalente no mobile */
-	scroll : function(pDialogData, pDx, pDy) {
-		var xDiv = pDialogData.dom.divscroll;
-		xDiv.scrollLeft(xDiv.data("scrollx") + pDx);
-		xDiv.scrollTop(xDiv.data("scrolly") + pDy);
-	},
-
-	/* Força o scroll já que ele não funciona naturalente no mobile */
-	// Salva posição atual do scroll
-	scrollStart : function(pDialogData) {
-		var xDiv = pDialogData.dom.divscroll;
-		xDiv.data("scrollx", xDiv.scrollLeft());
-		xDiv.data("scrolly", xDiv.scrollTop());
-	},
-
-	wipe : function(pDialogData, pDirection) {
-		if (pDialogData.dom.bthandle.length == 0) {
-			return false;
-		}
-
-		if (pDialogData.type == "nav"
-		|| (pDialogData.type == "msg" && pDialogData.dom.btyes != null)) { // ou // Msg on só há o botão ok
-			if ((pDialogData.position == "t" && pDirection == "u")
-			 || (pDialogData.position == "b" && pDirection == "d")
-			 || (pDialogData.position == "l" && pDirection == "l")
-			 || (pDialogData.position == "r" && pDirection == "r")
-			 || (pDialogData.position == "c")) {
-				dbsfaces.dialog.show(pDialogData.dom.self);
-				return true;
-			}
-		}
-		return false;
-	},
-
-	resize : function(pDialogData) {
-		if (typeof pDialogData == "undefined") {
-			return;
-		}
-		if (!pDialogData.dom.self.hasClass("-closed")) {
-			dbsfaces.dialog.pvAjustLayout(pDialogData);
-		}
-		if (pDialogData.type == "btn") {
-			dbsfaces.dialog.pvDialogBtnLayout(pDialogData);
-		}
-	},
-
-	show : function(pDialog) {
-		if ((typeof pDialog == "undefined") || pDialog.length == 0) {
-			return;
-		}
-		var xDialogData = pDialog.data("data");
-		// Está fechado e vai abrir
-		if (pDialog.hasClass("-closed")) {
-			dbsfaces.dialog.pvOpen(xDialogData);
-		} else {
-			dbsfaces.dialog.pvClose(xDialogData);
-		}
-	},
-
-	setMsg : function(pDialog, pMsgType, pMsgText) {
-		var xDialogData = pDialog.data("data");
-		var xIcon = xDialogData.dom.header_caption_icon.children("div");
-		var xCaption = xDialogData.dom.header_caption_label;
-		var xMsgTypeData = dbsfaces.dialog.pvMsgTypeGetData(pMsgType);
-		xDialogData.dom.sub_content.text(pMsgText);
-		dbsfaces.dialog.pvInitializeCloseTimeout(xDialogData);
-
-		xIcon.attr("class", "");
-		xIcon.addClass(xMsgTypeData.iconClass);
-		xCaption.text(xMsgTypeData.caption);
-	},
-
 	pvMsgTypeGetData : function(pMsgType) {
 		if (pMsgType == null || (typeof pMsgType == "undefined")) {
 			return null;
@@ -930,6 +850,87 @@ dbsfaces.dialog = {
 		}
 	},
 	
+	stopTimeout : function(pDialogData) {
+		pDialogData.dom.bthandle.addClass("-stopped");
+	},
+
+	startTimeout : function(pDialogData) {
+		pDialogData.dom.bthandle.removeClass("-stopped");
+	},
+
+	/* Força o scroll já que ele não funciona naturalente no mobile */
+	scroll : function(pDialogData, pDx, pDy) {
+		var xDiv = pDialogData.dom.divscroll;
+		xDiv.scrollLeft(xDiv.data("scrollx") + pDx);
+		xDiv.scrollTop(xDiv.data("scrolly") + pDy);
+	},
+
+	/* Força o scroll já que ele não funciona naturalente no mobile */
+	// Salva posição atual do scroll
+	scrollStart : function(pDialogData) {
+		var xDiv = pDialogData.dom.divscroll;
+		xDiv.data("scrollx", xDiv.scrollLeft());
+		xDiv.data("scrolly", xDiv.scrollTop());
+	},
+
+	wipe : function(pDialogData, pDirection) {
+		if (pDialogData.dom.bthandle.length == 0) {
+			return false;
+		}
+
+		if (pDialogData.type == "nav"
+		|| (pDialogData.type == "msg" && pDialogData.dom.btyes != null)) { // ou // Msg on só há o botão ok
+			if ((pDialogData.position == "t" && pDirection == "u")
+			 || (pDialogData.position == "b" && pDirection == "d")
+			 || (pDialogData.position == "l" && pDirection == "l")
+			 || (pDialogData.position == "r" && pDirection == "r")
+			 || (pDialogData.position == "c")) {
+				dbsfaces.dialog.show(pDialogData.dom.self);
+				return true;
+			}
+		}
+		return false;
+	},
+
+	resize : function(pDialogData) {
+		if (typeof pDialogData == "undefined") {
+			return;
+		}
+		if (!pDialogData.dom.self.hasClass("-closed")) {
+			dbsfaces.dialog.pvAjustLayout(pDialogData);
+		}
+		if (pDialogData.type == "btn") {
+			dbsfaces.dialog.pvDialogBtnLayout(pDialogData);
+		}
+	},
+
+	show : function(pDialog) {
+		if ((typeof pDialog == "undefined") || pDialog.length == 0) {
+			return;
+		}
+		var xDialogData = pDialog.data("data");
+		// Está fechado e vai abrir
+		if (pDialog.hasClass("-closed")) {
+			dbsfaces.dialog.pvOpen(xDialogData);
+		} else {
+			dbsfaces.dialog.pvClose(xDialogData);
+		}
+	},
+
+	setMsg : function(pDialog, pMsgType, pMsgText) {
+		var xDialogData = pDialog.data("data");
+		var xIcon = xDialogData.dom.header_caption_icon.children("div");
+		var xCaption = xDialogData.dom.header_caption_label;
+		var xMsgTypeData = dbsfaces.dialog.pvMsgTypeGetData(pMsgType);
+		xDialogData.dom.sub_content.text(pMsgText);
+		dbsfaces.dialog.pvInitializeCloseTimeout(xDialogData);
+
+		xIcon.attr("class", "");
+		xIcon.addClass(xMsgTypeData.iconClass);
+		xCaption.text(xMsgTypeData.caption);
+	},
+
+
 	dragOff: function(pDialogData){
 		pDialogData.dom.content.removeClass("-moving");
 		pDialogData.dom.header.off("mousemove.dialog");
