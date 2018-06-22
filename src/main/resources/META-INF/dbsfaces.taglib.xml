@@ -340,7 +340,7 @@
 				Quando informado, define o nome do elemento que escutará as mensagens enviadas por &lt;b&gt;DBSFaces.sendMessage&lt;/b&gt;.&lt;br/&gt;
 				Caso exista um conteúdo filho deste componente, as mensagens enviadas por &lt;b&gt;DBSFaces.sendMessage&lt;/b&gt; serão desconsideradas.
 				&lt;ul&gt;
-					&lt;li&gt;@global = Mensagens sem clientid&lt;/li&gt;
+					&lt;li&gt;@global = Mensagens sem clientid (default)&lt;/li&gt;
 					&lt;li&gt;@all = Todas as mensagens&lt;/li&gt;
 					&lt;li&gt;clientid do componente = Mensagem para um componente&lt;/li&gt;
 				&lt;ul&gt;
