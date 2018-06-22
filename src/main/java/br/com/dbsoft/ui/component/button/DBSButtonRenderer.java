@@ -43,8 +43,10 @@ public class DBSButtonRenderer extends DBSUICommandRenderer {
 			DBSFaces.encodeAttribute(xWriter, "disabled", "disabled");
 		}
 		
+		//Encode on click
 		encodeOnClick(pContext, xButton, xWriter);
 
+		//Encode content 
 		if (xButton.getIconClass()!=null 
 		 || xButton.getLabel()!=null){
 			pvEncodeTable(xButton, xWriter);	
