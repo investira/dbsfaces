@@ -16,6 +16,11 @@ public class DBSDialogMsg extends DBSDialog{
 	public void setType(String pType) {}
 	
 	@Override
+	public String getMsgFor() {
+		return (String) getStateHelper().eval(PropertyKeys.msgFor, "@global");
+	}
+	
+	@Override
 	public String getIconClass(){return null;}
 	@Override
 	public void setIconClass(String pIconClass) {}
