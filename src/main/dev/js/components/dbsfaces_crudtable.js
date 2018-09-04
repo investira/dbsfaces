@@ -6,12 +6,8 @@ dbs_crudTable = function(pId) {
 	//Desta forma o vinculo é refeito a cada click.
 	$(xCheckbox).click(function(e){
 		//Refresh do toolbar e menssagens após o click no checkbox
-		$(this).children(".dbs_checkbox").off(dbsfaces.EVENT.ON_AJAX_SUCCESS)
-										 .on(dbsfaces.EVENT.ON_AJAX_SUCCESS, function (e){
-											 
-			//Força o refresh do toolbar quando for selecionado o checkbox para multiplaseleção
-			jsf.ajax.request(this, 'update', {render: $(pId).attr("id") + ':crudTableMessages ' + $(pId).attr("id") + ':dataTable:toolbar', onevent:dbsfaces.onajax, onerror:dbsfaces.onajaxerror});
-		});
+		//Força o refresh do toolbar quando for selecionado o checkbox para multiplaseleção
+		jsf.ajax.request(this, 'update', {render: $(pId).attr("id") + ':crudTableMessages ' + $(pId).attr("id") + ':dataTable:toolbar', onevent:dbsfaces.onajax, onerror:dbsfaces.onajaxerror});
 		
 		//Apaga indicador ajax no complete, pois o checkbox que disparou, já não existe no view, nao recebendo, portanto, o SUCESS.
 		$(xCheckbox + " > .dbs_checkbox").off(dbsfaces.EVENT.ON_AJAX_COMPLETE)

@@ -96,12 +96,12 @@ dbs_inputText = function(pId) {
 	//Faz a pesquisa ===================================================
 	xInputTextData.dom.inputData.on("paste", function(e){
 		dbsfaces.inputText.requestSuggestion(xInputTextData);
-		
 	});
 
 	//Click o icone de pesquisar
 	xInputTextData.dom.inputFind.on("click", function(e){
-		if (xInputTextData.dom.list.css("display") == "none"){
+		var xDisplay = xInputTextData.dom.list.css("display");
+		if (xDisplay == "none"){
 			dbsfaces.inputText.showList(xInputTextData);
 			xInputTextData.dom.inputData.focus();
 		}else{
@@ -113,7 +113,6 @@ dbs_inputText = function(pId) {
 	//Inicia pesquisa de dados
 	xInputTextData.dom.submit.on(dbsfaces.EVENT.ON_AJAX_BEGIN, function(e){
 		wSearching = true;
-
 		xInputTextData.dom.input.append("<div class='-loading'></div>");
 		xInputTextData.dom.inputFind.hide();
 		e.stopImmediatePropagation();
@@ -150,7 +149,7 @@ dbs_inputText = function(pId) {
 	xInputTextData.dom.input.on("click", ".-list", function(e){
 		xInputTextData.dom.inputData.focus();
 		
-		xInputTextData.dom.self.css("opacity","0");					
+		//xInputTextData.dom.self.css("opacity","0");					
 		setTimeout(function() {
 			xInputTextData.dom.list.hide();
 	  	}, 300);
@@ -216,8 +215,9 @@ dbsfaces.inputText = {
 			pInputTextData.timeout = setTimeout(function(){
 				pInputTextData.dom.submit.click();
 				//Substituir o botão por uma chamada ajax. Estudar pq a chama ajax abaixo não funciona
-//				jsf.ajax.request($(pId + "-submit"), "click", {execute: $(pId).get(0).id, render: $(pId).get(0).id + "-list", onevent:dbsfaces.onajax, onerror:dbsfaces.onajaxerror}); 
-//				return false;
+				//jsf.ajax.request(pInputTextData.dom.submit, "click", {execute: pInputTextData.dom.inputData[0].id, render: pInputTextData.dom.inputData[0].id + "-list", onevent:dbsfaces.onajax, onerror:dbsfaces.onajaxerror});
+				//jsf.ajax.request($(pId + "-submit"), "click", {execute: $(pId).get(0).id, render: $(pId).get(0).id + "-list", onevent:dbsfaces.onajax, onerror:dbsfaces.onajaxerror}); 
+				return false;
 			}, 550); //Time de delay para efetuar a chamada
 		}
 	},

@@ -15,7 +15,6 @@ import java.net.URLEncoder;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -2758,7 +2757,7 @@ public class  DBSFaces {
 						xCheckbox.setId("fxSelect");
 						xCheckbox.setValueExpression("value", DBSFaces.createValueExpression(xContext,  pDataTable.getSelected(), Boolean.class));
 						AjaxBehavior xAjax = (AjaxBehavior) xContext.getApplication().createBehavior(AjaxBehavior.BEHAVIOR_ID);
-						xAjax.setRender(Arrays.asList("@this"));
+//						xAjax.setRender(Arrays.asList("@this"));
 						xAjax.setOnevent("dbsfaces.onajax"); //Chamada para disparar evento dbsoft de monitoramento do ajax
 						xAjax.setOnerror("dbsfaces.onajaxerror");
 					try{

@@ -188,7 +188,14 @@ public class DBSInputTextRenderer extends DBSRenderer {
 						}
 						xBtn.setId(xClientIdButton);
 						xBtn.setStyleClass(CSS.INPUT.SUBMIT); 
-						//xBtn.setActionExpression(DBSFaces.createMethodExpression(pContext, pInputText.getSuggestionSearchAction(), String.class, new Class[0]));
+//						xBtn.setActionExpression(DBSFaces.createMethodExpression(pContext, pInputText.getSuggestionSearchAction(), String.class, new Class[0]));
+
+						//TODO ALBERTO: PALIATIVO!
+				        String[] xParms = new String[1]; 
+				    	xParms[0] = "";
+				        MethodExpression xME = DBSFaces.createMethodExpression(pContext, pInputText.getValueExpression(DBSInputText.PropertyKeys.suggestionsBean.name()).getExpressionString() + ".searchList", null, new Class[]{String.class}); 
+				        xBtn.setActionExpression(DBSFaces.createMethodExpression(pContext, xME.getExpressionString(), String.class, new Class[0]));
+						
 						if (pInputText.getSuggestionUpdate()!=null){
 							xBtn.setUpdate(xClientAjaxUpdate + " " + pInputText.getSuggestionUpdate());
 						}else{

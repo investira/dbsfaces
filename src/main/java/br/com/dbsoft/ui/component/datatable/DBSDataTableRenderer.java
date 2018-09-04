@@ -152,7 +152,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 						}
 					pWriter.endElement("div");
 				}
-		
+
 				// Filters -------------------------
 				if (xFilter != null) {
 					if (!pDataTable.getCaption().equals("")) {
@@ -245,6 +245,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 	 */
 	private void pvEncodeDataTable(FacesContext pContext,DBSDataTable pDataTable, ResponseWriter pWriter) throws IOException {
 		pDataTable.setRowIndex(-1);
+		
 		pWriter.startElement("div", pDataTable);
 			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.CONTENT);
 	        pWriter.startElement("table", pDataTable);
