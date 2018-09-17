@@ -55,6 +55,12 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 			//Container
 			xWriter.startElement("div", xCheckbox);
 				DBSFaces.encodeAttribute(xWriter, "class", CSS.THEME.INPUT + CSS.THEME.FLEX + CSS.NOT_SELECTABLE);
+				if(pvIsChecked(xCheckbox.getValue())) {
+					DBSFaces.encodeAttribute(xWriter, "checked", "checked");
+				}
+				if (xCheckbox.getReadOnly()){
+					DBSFaces.encodeAttribute(xWriter, "disabled","disabled");
+				}
 				if (!xCheckbox.getInvertLabel()){
 					DBSFaces.encodeLabel(pContext, xCheckbox, xWriter);
 				}

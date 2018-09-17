@@ -17,11 +17,11 @@
 	content: "";
 	clear: both;
 }
-.dbs_checkbox > .-th_input[disabled]{
+.dbs_checkbox[disabled]{
 	pointer-events: none;
 }
 
-.dbs_checkbox > .-th_input:not([disabled]){
+.dbs_checkbox:not([disabled]){
 	cursor: pointer;	
 }
 
