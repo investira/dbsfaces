@@ -10,7 +10,7 @@ dbs_dataTable = function(pId) {
 	}
 
 	dbsfaces.dataTable.showOverflowShadow(xDataTableData.dom.table);
-	
+
 	//	Inibir outros selects que possam ter sido disparados por componentes filhos deste.
 	xDataTableData.dom.container.on("select", function(e){
 		return false;
@@ -185,7 +185,6 @@ dbsfaces.dataTable = {
 		xData.dom.header = xData.dom.container.children(".-header");
 		xData.dom.filter = xData.dom.header.children(".-filter");
 		xData.dom.table = xData.dom.content.children("table");
-		xData.dom.selectAll = xData.dom.table.children("thead").children("tr").children("th.-checkbox");
 		xData.dom.tbody = xData.dom.table.children("tbody");
 		xData.dom.rows = xData.dom.tbody.children("tr");
 		pDataTable.data("data", xData);
