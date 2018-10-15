@@ -277,7 +277,9 @@ dbsfaces.tab = {
 	},
 
 	selectTabPage: function(pTabPageRawId, pTabData){
-		if (!(typeof pTabData.showTabPageOnClick == 'undefined') && !pTabData.showTabPageOnClick){
+		if (typeof pTabData == 'undefined'){return;}
+		if (typeof pTabData.showTabPageOnClick == 'undefined'){return;}
+		if (!pTabData.showTabPageOnClick){
 			return;
 		}
 		//Exibe página selecionada
