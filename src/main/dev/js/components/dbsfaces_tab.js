@@ -184,7 +184,7 @@ dbsfaces.tab = {
 				input: null
 			},
 			type: pTab.attr("type"),
-			showTabPageOnClick: pTab.attr("soc"),
+			showTabPageOnClick: pTab.attr("soc") || false,
 			color: pTab.css("color"),
 			colorInverted: tinycolor(pTab.css("color").toString()).invertLightness().setAlpha(1).toString(),
 			resizeTimeout: null
@@ -277,7 +277,7 @@ dbsfaces.tab = {
 	},
 
 	selectTabPage: function(pTabPageRawId, pTabData){
-		if (!pTabData.showTabPageOnClick){
+		if (!(typeof pTabData.showTabPageOnClick == 'undefined') && !pTabData.showTabPageOnClick){
 			return;
 		}
 		//Exibe página selecionada
