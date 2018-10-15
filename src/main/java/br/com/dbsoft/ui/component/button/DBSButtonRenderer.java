@@ -3,7 +3,6 @@ package br.com.dbsoft.ui.component.button;
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
-
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.FacesRenderer;
@@ -22,47 +21,70 @@ public class DBSButtonRenderer extends DBSUICommandRenderer {
 		ResponseWriter xWriter = pContext.getResponseWriter();
 		String xClientId = xButton.getClientId(pContext);
 		String xClass = CSS.BUTTON.MAIN + CSS.THEME.ACTION + getBasicStyleClass(xButton);
-
+		String xOnClick = null;
+		String xExecute = "";
+		if (xButton.getExecute() == null){
+			xExecute = getFormId(pContext, pComponent); 
+		}else{
+			xExecute = xButton.getExecute();
+		}
 		if (xButton.getReadOnly()){
 			xClass += CSS.MODIFIER.DISABLED;
 		}
+		
+		//if (xButton.getUpdate()!=null){
+			xOnClick = DBSFaces.getSubmitString(xButton, DBSFaces.HTML.EVENTS.ONCLICK, xExecute, xButton.getUpdate());
+		//}
 		
 		if (xButton.getReadOnly()){
 			xWriter.startElement("div", xButton);
 		}else{
 			xWriter.startElement("button", xButton);
 		}
-		//----------------------
-		DBSFaces.encodeAttribute(xWriter, "id", xClientId);
-		DBSFaces.encodeAttribute(xWriter, "name", xClientId);
-		DBSFaces.encodeAttribute(xWriter, "class", xClass);
-		DBSFaces.encodeAttribute(xWriter, "style", xButton.getStyle());
-		DBSFaces.encodeAttribute(xWriter, "value", xButton.getValue());
-		if (xButton.getDisabled()
-		 || xButton.getReadOnly()){
-			DBSFaces.encodeAttribute(xWriter, "disabled", "disabled");
-		}
-		
-		//Encode on click
-		encodeOnClick(pContext, xButton, xWriter);
-
-		//Encode content 
-		if (xButton.getIconClass()!=null 
-		 || xButton.getLabel()!=null){
-			pvEncodeTable(xButton, xWriter);	
-		}
-		
-		DBSFaces.renderChildren(pContext, xButton);
-
-		if (!xButton.getReadOnly()){
-			DBSFaces.encodeTooltip(pContext, xButton, xButton.getTooltip());
-		}
-		//----------------------
-		if (xButton.getReadOnly()){
-			xWriter.endElement("div");
-		}else{
-			xWriter.endElement("button");
-		}
+			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "name", xClientId);
+			DBSFaces.encodeAttribute(xWriter, "class", xClass);
+			DBSFaces.encodeAttribute(xWriter, "style", xButton.getStyle());
+			DBSFaces.encodeAttribute(xWriter, "value", xButton.getValue());
+//			DBSFaces.encodeAttribute(xWriter, "asid", xButton.getActionSourceClientId());
+			if (xButton.getDisabled()
+			 || xButton.getReadOnly()){
+				DBSFaces.encodeAttribute(xWriter, "disabled", "disabled");
+			}
+			
+			if (!xButton.getReadOnly()){
+//Comentado para sempre considerar o onclick criado acima. Forçando uma chamada ajax, desde que tenha sido informado o update.				
+//				if (xButton.getActionExpression() != null || 
+//					xButton.getonclick() != null){				
+//					xWriter.writeAttribute("ontouchstart", "", "ontouchstart"); //Para ipad ativar o css:ACTIVE
+					if (xButton.getActionExpression() != null){
+						DBSFaces.encodeAttribute(xWriter, "type", "submit");
+					}else{
+						DBSFaces.encodeAttribute(xWriter, "type", "button");
+					}
+					if (xButton.getClientBehaviors().isEmpty()){
+						DBSFaces.encodeAttribute(xWriter, DBSFaces.HTML.EVENTS.ONCLICK, xOnClick); 
+					}else{
+						encodeClientBehaviors(pContext, xButton);
+					}
+					//if (xButton.getUpdate()!=null){
+					//}
+//				}			
+			}
+			if (xButton.getIconClass()!=null 
+			 || xButton.getLabel()!=null){
+				pvEncodeTable(xButton, xWriter);	
+			}
+			
+			DBSFaces.renderChildren(pContext, xButton);
+			if (!xButton.getReadOnly()){
+				DBSFaces.encodeTooltip(pContext, xButton, xButton.getTooltip());
+			}
+			if (xButton.getReadOnly()){
+				xWriter.endElement("div");
+			}else{
+				xWriter.endElement("button");
+			}
 //		if (!xButton.getReadOnly()){
 			pvEncodeJS(xButton, xWriter);
 //		}

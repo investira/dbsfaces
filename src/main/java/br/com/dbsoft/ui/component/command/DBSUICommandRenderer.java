@@ -132,7 +132,9 @@ public class DBSUICommandRenderer extends DBSRenderer implements ActionListener 
 					if (!DBSObject.isEmpty(pComponent.getUpdate())){
 						xAjaxBehavior.setRender(Collections.unmodifiableList(Arrays.asList(pComponent.getUpdate().split("[,\\s]+"))));
 					}
-					pComponent.addClientBehavior("action", xAjaxBehavior);
+					if (DBSObject.isNull(pComponent.getClientBehaviors().get("action"))) {
+						pComponent.addClientBehavior("action", xAjaxBehavior);
+					}
 				}
 				Collection<ClientBehaviorContext.Parameter> params = getBehaviorParameters(pComponent);
 				RenderKitUtils.renderOnclick(pContext, pComponent, params, null, false);
