@@ -2,3 +2,4 @@
 **/target
 !.gitignore
 src/main/node_modules/
+/target/
