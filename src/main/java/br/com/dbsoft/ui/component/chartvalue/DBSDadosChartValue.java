@@ -1,5 +1,6 @@
 package br.com.dbsoft.ui.component.chartvalue;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
@@ -7,68 +8,75 @@ public class DBSDadosChartValue implements IDBSChartValue{
 
 	private static final long serialVersionUID = -5134495345793538197L;
 	
-	private String label;
-	private String tooltip;
-	private Double value;
-	private Double displayValue;
-	private String color;
-	private String style;
-	private String styleClass;
+	@JsonProperty("label")
+	private String wLabel;
+	@JsonProperty("tooltip")
+	private String wTooltip;
+	@JsonProperty("value")
+	private Double wValue;
+	@JsonProperty("displayValue")
+	private Double wDisplayValue;
+	@JsonProperty("color")
+	private String wColor;
+	@JsonProperty("style")
+	private String wStyle;
+	@JsonProperty("styleClass")
+	private String wStyleClass;
 	
 	@Override
 	public String getLabel() {
-		return label;
+		return wLabel;
 	}
 	@Override
 	public void setLabel(String pLabel) {
-		label = pLabel;
+		wLabel = pLabel;
 	}
 	@Override
 	public String getTooltip() {
-		return tooltip;
+		return wTooltip;
 	}
 	@Override
 	public void setTooltip(String pTooltip) {
-		tooltip = pTooltip;
+		wTooltip = pTooltip;
 	}
 	@Override
 	public Double getValue() {
-		return value;
+		return wValue;
 	}
 	@Override
 	public void setValue(Double pValue) {
-		value = pValue;
+		wValue = pValue;
 	}
 	@Override
 	public Double getDisplayValue() {
-		return displayValue;
+		return wDisplayValue;
 	}
 	@Override
 	public void setDisplayValue(Double pDisplayValue) {
-		displayValue = pDisplayValue;
+		wDisplayValue = pDisplayValue;
 	}
 	@Override
 	public String getColor() {
-		return color;
+		return wColor;
 	}
 	@Override
 	public void setColor(String pColor) {
-		color = pColor;
+		wColor = pColor;
 	}
 	@Override
 	public String getStyle() {
-		return style;
+		return wStyle;
 	}
 	@Override
 	public void setStyle(String pStyle) {
-		style = pStyle;
+		wStyle = pStyle;
 	}
 	@Override
 	public String getStyleClass() {
-		return styleClass;
+		return wStyleClass;
 	}
 	@Override
 	public void setStyleClass(String pStyleClass) {
-		styleClass = pStyleClass;
+		wStyleClass = pStyleClass;
 	}
 }
