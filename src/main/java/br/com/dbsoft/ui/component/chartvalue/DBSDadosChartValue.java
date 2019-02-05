@@ -1,5 +1,7 @@
 package br.com.dbsoft.ui.component.chartvalue;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -10,16 +12,21 @@ public class DBSDadosChartValue implements IDBSChartValue{
 	
 	@JsonProperty("label")
 	private String wLabel;
-	@JsonProperty("tooltip")
-	private String wTooltip;
 	@JsonProperty("value")
 	private Double wValue;
+	@JsonInclude(value=Include.NON_NULL)
+	@JsonProperty("tooltip")
+	private String wTooltip;
+	@JsonInclude(value=Include.NON_NULL)
 	@JsonProperty("displayValue")
 	private Double wDisplayValue;
+	@JsonInclude(value=Include.NON_NULL)
 	@JsonProperty("color")
 	private String wColor;
+	@JsonInclude(value=Include.NON_NULL)
 	@JsonProperty("style")
 	private String wStyle;
+	@JsonInclude(value=Include.NON_NULL)
 	@JsonProperty("styleClass")
 	private String wStyleClass;
 	
