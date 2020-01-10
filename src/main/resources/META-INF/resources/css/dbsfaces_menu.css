@@ -92,6 +92,7 @@
 .dbs_menuitem > .-caption > .-content{
 	display: table-cell;
 /* 	vertical-align: middle; */
+    padding-right: 1em; /* Espaço para adicionar, se preciso, o + de submenu */
 }
 
 .dbs_menuitem > .-caption > .-content > span{
@@ -113,9 +114,10 @@
 .dbs_menuitem > .-caption > .-content > .-childrenIcon{
 	font-size: .8em;
     position: absolute;
-    right: .45em;
     margin-top: 1em;
     margin-top: 0.85em;
+    /* left: -0.4em; */
+    right: 0em;
 }
 
 /*altera exibição do menu principal(Horinzontal)*/
