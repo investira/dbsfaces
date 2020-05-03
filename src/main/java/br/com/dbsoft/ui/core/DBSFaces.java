@@ -2580,7 +2580,7 @@ public class  DBSFaces {
 	 * @throws DBSIOException
 	 */
 	public static String getRenderedViewContent(String pURL, String pFile, List<String> pListParams) throws DBSIOException {
-		return getRenderedViewContent(DBSFile.getPathNormalized(pURL, pFile), pListParams);
+		return getRenderedViewContent(DBSFile.getURLNormalized(pURL, pFile), pListParams);
 	}
  	
 	/**
