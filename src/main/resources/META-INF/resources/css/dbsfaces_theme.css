@@ -660,6 +660,10 @@ textarea.-th_input-data:FOCUS,
 /* 	align-self: flex-start; */
 }
 
+.-container >.-captions >.-th_flex >.-th_col {
+	padding-top: 7px;
+}
+
 .-th_flex > .-th_col.-shrink{
 	-webkit-flex-shrink: 1;
 	-moz-flex-shrink: 1;
