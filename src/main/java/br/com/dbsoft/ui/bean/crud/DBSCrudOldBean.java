@@ -2788,7 +2788,7 @@ public abstract class DBSCrudOldBean extends DBSBeanModalMessages implements IDB
 		}
 		
 		//Salva o usuário que registrou
-		if (xApprovalNextStage==APPROVAL_STAGE.REGISTERED){ 
+		if (!getIsReproving() && xApprovalNextStage==APPROVAL_STAGE.REGISTERED){ 
 			//Salva usuário que registrou
 			xColumn = wDAO.getCommandColumn(getColumnNameApprovalUserIdRegistered());
 			if (xColumn!=null){xColumn.setValue(getUserId());}

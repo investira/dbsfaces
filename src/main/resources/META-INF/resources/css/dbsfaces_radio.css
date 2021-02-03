@@ -98,3 +98,7 @@
     width: 0!important;
 }
 
+.dbs_radio > .-th_input > .-input > .-th_input-data[disabled]{
+    pointer-events: none;
+}
+

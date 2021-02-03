@@ -92,7 +92,7 @@ public class DBSRadioRenderer extends DBSRenderer {
 				UISelectItem xS = (UISelectItem) xItem;
 				pWriter.startElement("div", pRadio);
 					String xClass = CSS.THEME.INPUT + CSS.THEME.FLEX + CSS.NOT_SELECTABLE;
-					if (pRadio.getReadOnly()){
+					if (pRadio.getReadOnly() || xS.isItemDisabled()){
 						DBSFaces.encodeAttribute(pWriter, "class", xClass + CSS.MODIFIER.DISABLED);
 						DBSFaces.encodeAttribute(pWriter, "disabled", "disabled");
 					}else{
