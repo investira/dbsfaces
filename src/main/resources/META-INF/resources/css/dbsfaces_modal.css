@@ -217,7 +217,7 @@
 	vertical-align: top;
 }
 .dbs_modal > .-modal > .-container > table > tbody > tr > td > table > tbody > tr > .-container > .-content{
-	overflow: auto;
+	/*overflow: auto;*/
 }
 .dbs_modal.-confirmation > .-modal > .-container > table > tbody > tr > td > table > tbody > tr > .-container {
     vertical-align: middle;

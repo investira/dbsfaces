@@ -24,6 +24,7 @@ public class DBSCheckboxRenderer extends DBSRenderer {
     	
 		String xClientIdAction = getInputDataClientId(xCheckbox);
 		String xSubmittedValue = pContext.getExternalContext().getRequestParameterMap().get(xClientIdAction);
+		System.out.println("Decode -" + xSubmittedValue);
         if(xSubmittedValue != null && pvIsChecked(xSubmittedValue)) {
         		xCheckbox.setSubmittedValue(true);
         }else{
@@ -42,10 +43,6 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 		if (xCheckbox.getStyleClass()!=null){
 			xClass += xCheckbox.getStyleClass();
 		}
-		
-		//HtmlInputText xInput = (HtmlInputText) FacesContext.getCurrentInstance().getApplication().createComponent(HtmlInputText.COMPONENT_TYPE);
-		//xCheckbox.getChildren().add(xInput);
-		//xInput.setValueExpression("value", pCheckbox.getValueExpression("value"));
 
 		xWriter.startElement("div", xCheckbox);
 			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
@@ -54,21 +51,22 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 			DBSFaces.encodeAttribute(xWriter, "style", xCheckbox.getStyle());
 			//Container
 			xWriter.startElement("div", xCheckbox);
-				DBSFaces.encodeAttribute(xWriter, "class", CSS.THEME.INPUT + CSS.THEME.FLEX + CSS.NOT_SELECTABLE);
+				DBSFaces.encodeAttribute(xWriter, "class", CSS.THEME.INPUT + CSS.NOT_SELECTABLE);
 				if(pvIsChecked(xCheckbox.getValue())) {
 					DBSFaces.encodeAttribute(xWriter, "checked", "checked");
 				}
 				if (xCheckbox.getReadOnly()){
 					DBSFaces.encodeAttribute(xWriter, "disabled","disabled");
 				}
+				
 				if (!xCheckbox.getInvertLabel()){
-					DBSFaces.encodeLabel(pContext, xCheckbox, xWriter);
+					pvEncodeLabel(pContext, xCheckbox, xWriter);
 				}
 				pvEncodeInput(pContext, xCheckbox, xWriter);
 				if (xCheckbox.getInvertLabel()){
-					DBSFaces.encodeLabel(pContext, xCheckbox, xWriter);
+					pvEncodeLabel(pContext, xCheckbox, xWriter);
 				}
-				DBSFaces.encodeRightLabel(pContext, xCheckbox, xWriter);
+				pvEncodeRightLabel(pContext, xCheckbox, xWriter);
 			xWriter.endElement("div");
 			DBSFaces.encodeTooltip(pContext, xCheckbox, xCheckbox.getTooltip());
 			//Javascript
@@ -80,36 +78,27 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 
 	private void pvEncodeInput(FacesContext pContext, DBSCheckbox pCheckbox, ResponseWriter pWriter) throws IOException{
 		String xClientId = getInputDataClientId(pCheckbox);
-		//System.out.println("CHECKBOX=" + pCheckbox.getValue());
-//		String xOnChange = null;
 		
-//		if (pCheckbox.getUpdate()!=null){
-//			xOnChange = DBSFaces.getSubmitString(pCheckbox, DBSFaces.HTML.EVENTS.ONCHANGE, pCheckbox.getExecute(), pCheckbox.getUpdate());
-//		}
 		pWriter.startElement("div", pCheckbox);
 			DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.INPUT);
 				pWriter.startElement("span", pCheckbox);
 					DBSFaces.encodeAttribute(pWriter, "class", CSS.MODIFIER.ICON);
 				pWriter.endElement("span");			
 				pWriter.startElement("input", pCheckbox); 
-				DBSFaces.encodeAttribute(pWriter, "id", xClientId);
-				DBSFaces.encodeAttribute(pWriter, "name", xClientId);
-				DBSFaces.encodeAttribute(pWriter, "type", "checkbox");
-				if (pCheckbox.getReadOnly()){
-					DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pCheckbox) + CSS.MODIFIER.DISABLED);
-					DBSFaces.encodeAttribute(pWriter, "disabled","disabled");
-				}else{
-					DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pCheckbox));
-				}
-	//			if (xOnChange!=null){
-	//				DBSFaces.encodeAttribute(pWriter, DBSFaces.HTML.EVENTS.ONCHANGE, xOnChange); 
-	//			}
-				if(pvIsChecked(pCheckbox.getValue())) {
-					DBSFaces.encodeAttribute(pWriter, "checked", "checked");
-				}
-	
-				encodeClientBehaviors(pContext, pCheckbox);
-			pWriter.endElement("input");
+					DBSFaces.encodeAttribute(pWriter, "id", xClientId);
+					DBSFaces.encodeAttribute(pWriter, "name", xClientId);
+					DBSFaces.encodeAttribute(pWriter, "type", "checkbox");
+					if (pCheckbox.getReadOnly()){
+						DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pCheckbox) + CSS.MODIFIER.DISABLED);
+						DBSFaces.encodeAttribute(pWriter, "disabled","disabled");
+					}else{
+						DBSFaces.encodeAttribute(pWriter, "class", DBSFaces.getInputDataClass(pCheckbox));
+					}
+					if(pvIsChecked(pCheckbox.getValue())) {
+						DBSFaces.encodeAttribute(pWriter, "checked", "checked");
+					}	
+					encodeClientBehaviors(pContext, pCheckbox);
+				pWriter.endElement("input");
 		pWriter.endElement("div");
 	}
 	
@@ -141,6 +130,46 @@ public class DBSCheckboxRenderer extends DBSRenderer {
 		pWriter.write(xJS);
 		DBSFaces.encodeJavaScriptTagEnd(pWriter);	
 	}
+	
+	
+	/**
+	 * Gera HTML padrão do label à esquerda do campo, já incluindo o sinal ":"
+	 * @param pContext
+	 * @param pInput
+	 * @param pWriter
+	 * @throws IOException
+	 */
+	private void pvEncodeLabel(FacesContext pContext, DBSCheckbox pCheckbox, ResponseWriter pWriter) throws IOException{
+		if (pCheckbox.getLabel()!=null){
+			String xStyle = "";
+			if (!pCheckbox.getLabelWidth().equals("")){
+				xStyle += " width:" + pCheckbox.getLabelWidth() + ";";
+			}
+			pWriter.startElement("label", pCheckbox);
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.INPUT_LABEL + CSS.NOT_SELECTABLE);
+				DBSFaces.encodeAttribute(pWriter, "style", xStyle);
+			pWriter.write(pCheckbox.getLabel().trim());
+			pWriter.endElement("label");
+		}
+	}
+	
+	/**
+	 * Gera HTML padrão do label à direita do campo
+	 * @param pContext
+	 * @param pInput
+	 * @param pWriter
+	 * @throws IOException
+	 */
+	public static void pvEncodeRightLabel(FacesContext pContext, DBSCheckbox pCheckbox, ResponseWriter pWriter) throws IOException{
+		if (pCheckbox.getRightLabel()!=null){
+			pWriter.startElement("label", pCheckbox);
+				DBSFaces.encodeAttribute(pWriter, "class", CSS.THEME.INPUT_LABEL + CSS.NOT_SELECTABLE);
+				DBSFaces.encodeAttribute(pWriter, "style", "margin:0 3px 0 3px; vertical-align: middle; display:inline-block;");
+			pWriter.write(pCheckbox.getRightLabel().trim());
+			pWriter.endElement("label");
+		}
+	}
+	
 }
 
 
