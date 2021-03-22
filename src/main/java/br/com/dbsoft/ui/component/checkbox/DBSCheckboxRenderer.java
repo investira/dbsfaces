@@ -24,7 +24,6 @@ public class DBSCheckboxRenderer extends DBSRenderer {
     	
 		String xClientIdAction = getInputDataClientId(xCheckbox);
 		String xSubmittedValue = pContext.getExternalContext().getRequestParameterMap().get(xClientIdAction);
-		System.out.println("Decode -" + xSubmittedValue);
         if(xSubmittedValue != null && pvIsChecked(xSubmittedValue)) {
         		xCheckbox.setSubmittedValue(true);
         }else{
