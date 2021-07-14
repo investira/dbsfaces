@@ -641,7 +641,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 //		String xStr;
 		//Seta coluna que será utilizada para o sort
 		String xSortColumn = (String) DBSFaces.getDecodedComponenteValue(pContext, pvGetInputSortColumnId(pContext, xDataTable));
-		if (xSortColumn != null){
+		if (!DBSObject.isEmpty(xSortColumn)){
 			if (!xDataTable.getSortColumn().equals(xSortColumn)){
 				xDataTable.setSortColumn(xSortColumn);
 				//Ignora o set da ordem, pois já é resetado para "A" neste caso
@@ -660,7 +660,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 //		}
 		//Set direção do sort
 		String xSortDirection = (String) DBSFaces.getDecodedComponenteValue(pContext, pvGetInputSortDirectionId(pContext, xDataTable));
-		if (xSortDirection != null){
+		if (!DBSObject.isEmpty(xSortDirection)){
 			SORT_DIRECTION xDirection = SORT_DIRECTION.get(xSortDirection);
 			//Somente seta valor se for diferente do já existente
 			xDataTable.setSortDirection(xDirection.getCode());
@@ -697,10 +697,13 @@ public class DBSDataTableRenderer extends DBSRenderer {
 		return pDataTable.getClientId(pContext) + ":" + DBSDataTable.INPUT_FOO_ID;
 	}
 	private String pvGetInputSortColumnId(FacesContext pContext, DBSDataTable pDataTable){
-		return pDataTable.getClientId(pContext) + ":" + DBSDataTable.INPUT_SORT_COLUMN_ID;
+		//Utilizado para desconsiderar o index no clienteId. 
+		return pDataTable.getClientId(pContext).replace(":" + pDataTable.getRowIndex(), "") + ":" + DBSDataTable.INPUT_SORT_COLUMN_ID;
+		
 	}
 	private String pvGetInputSortDirectionId(FacesContext pContext, DBSDataTable pDataTable){
-		return pDataTable.getClientId(pContext) + ":" + DBSDataTable.INPUT_SORT_DIRECTION_ID;
+		//Utilizado para desconsiderar o index no clienteId.
+		return pDataTable.getClientId(pContext).replace(":" + pDataTable.getRowIndex(), "") + ":" + DBSDataTable.INPUT_SORT_DIRECTION_ID;
 	}
 //	private String pvGetButtonSortId(FacesContext pContext, DBSDataTable pDataTable){
 //		return pDataTable.getClientId(pContext) + ":" + DBSDataTable.BUTTON_SORT_ID;
