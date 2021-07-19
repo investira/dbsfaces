@@ -62,9 +62,8 @@ public class DBSDataTableRenderer extends DBSRenderer {
 		//Cria botões no toolbar para edição diretamente na linha
 //		DBSFaces.createDataTableInlineEditToolbar(xDataTable);
 		
-		//pvSetCurrentRowIndex(pContext, pComponent, false);
-		
-		
+		pvSetCurrentRowIndex(pContext, pComponent, false);
+
 		//Encode principal
 		xWriter.startElement("div", xDataTable);
 			DBSFaces.encodeAttribute(xWriter, "id", xClientId);
@@ -642,13 +641,9 @@ public class DBSDataTableRenderer extends DBSRenderer {
 //		String xStr;
 		//Seta coluna que será utilizada para o sort
 		String xSortColumn = (String) DBSFaces.getDecodedComponenteValue(pContext, pvGetInputSortColumnId(pContext, xDataTable));
-		if (xSortColumn != null){
+		if (!DBSObject.isEmpty(xSortColumn)){
 			if (!xDataTable.getSortColumn().equals(xSortColumn)){
 				xDataTable.setSortColumn(xSortColumn);
-				//Caso ordene e exista alguma linha selecionada, posiciona o cursor na primeira linha.
-				if(xDataTable.getCurrentRowIndex() != -1) {
-					xDataTable.setCurrentRowIndex(0);
-				}
 				//Ignora o set da ordem, pois já é resetado para "A" neste caso
 				return;
 			}
@@ -665,7 +660,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 //		}
 		//Set direção do sort
 		String xSortDirection = (String) DBSFaces.getDecodedComponenteValue(pContext, pvGetInputSortDirectionId(pContext, xDataTable));
-		if (xSortColumn != null){
+		if (!DBSObject.isEmpty(xSortDirection)){
 			SORT_DIRECTION xDirection = SORT_DIRECTION.get(xSortDirection);
 			//Somente seta valor se for diferente do já existente
 			xDataTable.setSortDirection(xDirection.getCode());
