@@ -383,7 +383,10 @@
   > thead
   > tr
   > th.-sort.-selected {
-  background-color: rgba(0, 0, 0, 0.03);
+  	background: linear-gradient( to bottom, rgba(8, 114, 201, 0.18) 0%, rgba(30, 87, 153, 0.27) 100% );
+    background-color: rgb(255 255 255);
+    color: grey;
+    font-weight: bold;
 }
 .dbs_dataTable > .-container > .-content > table > thead > tr > th.-sort {
   padding-right: 8px;
