@@ -365,11 +365,12 @@ public class DBSDataTableRenderer extends DBSRenderer {
 			xBtn.setId(xClientIdButton);
 			xBtn.setStyleClass("-sort"); 
 			xBtn.setActionExpression(DBSFaces.createMethodExpression(pContext, pDataTable.getSortAction(), String.class, new Class[0]));
-			xBtn.setUpdate(pDataTable.getClientId());
+			//Atributo opcional, utilizado para renderizar dataTable(s) filho(s). 
+			String xSortChildRender = DBSString.getNotNull(pDataTable.getAttributes().get("sortChildRender"), "");
+			xBtn.setUpdate(pDataTable.getClientId().concat(" ").concat(xSortChildRender));
 			pDataTable.getFacets().put(xClientIdButton, xBtn);
 		}
 		xBtn.encodeAll(pContext);
-
 	}
 
 	/**
@@ -623,6 +624,12 @@ public class DBSDataTableRenderer extends DBSRenderer {
 			//No decode, set o rowIndex para que o valor selecionado pelo usuário, via submit, sensibilize efetivamente o valor corrente.
 			if (pDecode){
 				xDataTable.setRowIndex(DBSNumber.toInteger(xRowIndex)); 
+			}else {
+				//Apenas no encode.
+				//Caso exista alguma linha selecionada e esteja ordenado, posiciona o cursor na primeira linha.
+				if(DBSNumber.toInteger(xRowIndex) != -1 && !xDataTable.getSortColumn().equals("")) {
+					xRowIndex = "0"; 
+				}
 			}
 			//No encode, é ligo novamente o valor recebido para que o encode reflita a linha ainda marcada
 			xDataTable.setCurrentRowIndex(DBSNumber.toInteger(xRowIndex)); 
@@ -641,7 +648,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 //		String xStr;
 		//Seta coluna que será utilizada para o sort
 		String xSortColumn = (String) DBSFaces.getDecodedComponenteValue(pContext, pvGetInputSortColumnId(pContext, xDataTable));
-		if (!DBSObject.isEmpty(xSortColumn)){
+		if (xSortColumn != null){
 			if (!xDataTable.getSortColumn().equals(xSortColumn)){
 				xDataTable.setSortColumn(xSortColumn);
 				//Ignora o set da ordem, pois já é resetado para "A" neste caso
@@ -660,7 +667,7 @@ public class DBSDataTableRenderer extends DBSRenderer {
 //		}
 		//Set direção do sort
 		String xSortDirection = (String) DBSFaces.getDecodedComponenteValue(pContext, pvGetInputSortDirectionId(pContext, xDataTable));
-		if (!DBSObject.isEmpty(xSortDirection)){
+		if (xSortDirection != null){
 			SORT_DIRECTION xDirection = SORT_DIRECTION.get(xSortDirection);
 			//Somente seta valor se for diferente do já existente
 			xDataTable.setSortDirection(xDirection.getCode());
