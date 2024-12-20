@@ -687,7 +687,7 @@ td > .-icon{
 /* 		url('\#{request.contextPath}/images/dbsfaces_icons.woff?-95qbbc') format('woff'), */
 /* 		url('\#{request.contextPath}/images/dbsfaces_icons.ttf?-95qbbc') format('truetype'), */
 /* 		url('\#{request.contextPath}/images/dbsfaces_icons.svg?-95qbbc#dbsfaces_icons') format('svg');	 */
-	src:url('\#{request.contextPath}/images/dbsfaces_icons.ttf') format('truetype');
+	src:url('\#{request.contextPath}/images/dbsfaces_icons_v2.ttf') format('truetype');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -1059,4 +1059,11 @@ td > .-icon{
 .-i_investira_icon:before{content:"\ea16"}
 .-i_ifeed_icon:before{content:"\ea17"}
 .-i_dbsoft:before{content:"\ea18"}
-.-i_dbsoft_icon:before{content:"\ea19"}
+.-i_investira_ifeed:before{content:"\ea19"}
+.-i_investira_:before{content:"\ea1a"}
+.-i_investira_icon2:before{content:"\ea1b"}
+.-i_investira_biz:before{content:"\ea1c"}
+.-i_investira_pro:before{content:"\ea1d"}
+.-i_investira_vc:before{content:"\ea1e"}
+.-i_investira_icon3:before{content:"\ea1f"}
+.-i_investira_logo:before{content:"\ea20"}
